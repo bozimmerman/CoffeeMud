@@ -7,31 +7,15 @@ import java.util.*;
 
 public class Chant_Treeform extends Chant
 {
+	public String ID() { return "Chant_Treeform"; }
+	public String name(){ return "Treeform";}
+	public String displayText(){return "(Treeform)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	public int maxRange(){return 3;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
-	
-	public Chant_Treeform()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Treeform";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Treeform)";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(19);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Treeform();
-	}
+	public Environmental newInstance(){	return new Chant_Treeform();}
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -186,7 +170,7 @@ public class Chant_Treeform extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,22 +7,11 @@ import java.util.*;
 
 public class Chant_SenseLife extends Chant
 {
+	public String ID() { return "Chant_SenseLife"; }
+	public String name(){ return "Sense Life";}
+	public String displayText(){return "(Sense Life)";}
 	private Room lastRoom=null;
-	public Chant_SenseLife()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sense Life";
-		displayText="(Sense Life)";
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SenseLife();
-	}
+	public Environmental newInstance(){	return new Chant_SenseLife();}
 
 	public void unInvoke()
 	{
@@ -107,7 +96,7 @@ public class Chant_SenseLife extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

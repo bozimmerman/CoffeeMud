@@ -6,34 +6,12 @@ import java.util.*;
 
 public class Chant_SummonFear extends Chant
 {
-	public Chant_SummonFear()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Fear";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Afraid)";
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(8);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonFear();
-	}
+	public String ID() { return "Chant_SummonFear"; }
+	public String name(){ return "Summon Fear";}
+	public String displayText(){return "(Afraid)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 1;}
+	public Environmental newInstance(){	return new Chant_SummonFear();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -63,7 +41,7 @@ public class Chant_SummonFear extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> frighten(s) <T-NAMESELF> with <S-HIS-HER> chant.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{

@@ -7,26 +7,13 @@ import java.util.*;
 
 public class Chant_SummonFire extends Chant
 {
+	public String ID() { return "Chant_SummonFire"; }
+	public String name(){ return "Summon Fire";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
 	private Room FireLocation=null;
 	private Item littleFire=null;
-
-	public Chant_SummonFire()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Fire";
-		baseEnvStats().setLevel(5);
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonFire();
-	}
+	public Environmental newInstance(){	return new Chant_SummonFire();}
 
 	public void unInvoke()
 	{
@@ -67,7 +54,7 @@ public class Chant_SummonFire extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) for fire.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for fire.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

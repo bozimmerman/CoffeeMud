@@ -7,33 +7,12 @@ import java.util.*;
 
 public class Chant_Treemorph extends Chant
 {
+	public String ID() { return "Chant_Treemorph"; }
+	public String name(){ return "Treemorph";}
+	public String displayText(){return "(Treemorph)";}
+	public int quality(){return Ability.MALICIOUS;}
 	Item tree=null;
-	public Chant_Treemorph()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Treemorph";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Treemorph)";
-
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(19);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Treemorph();
-	}
+	public Environmental newInstance(){	return new Chant_Treemorph();}
 
 	public boolean tick(int tickID)
 	{
@@ -173,7 +152,7 @@ public class Chant_Treemorph extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,38 +7,14 @@ import java.util.*;
 
 public class Chant_Tangle extends Chant
 {
-
+	public String ID() { return "Chant_Tangle"; }
+	public String name(){ return "Tangle";}
+	public String displayText(){return "(Tangled)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 2;}
 	public int amountRemaining=0;
 	public Item thePlants=null;
-
-	public Chant_Tangle()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Tangle";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Tangled)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=2;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Tangle();
-	}
+	public Environmental newInstance(){	return new Chant_Tangle();}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -112,12 +88,12 @@ public class Chant_Tangle extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> begin(s) to chant.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> begin(s) to chant.^?");
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Chant_WaterBreathing extends Chant
 {
-
-	public Chant_WaterBreathing()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Water Breathing";
-		displayText="(Water Breathing)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(4);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_WaterBreathing();
-	}
+	public String ID() { return "Chant_WaterBreathing"; }
+	public String name(){ return "Water Breathing";}
+	public String displayText(){return "(Water Breathing)";}
+	public int quality(){return Ability.OK_SELF;}
+	public Environmental newInstance(){	return new Chant_WaterBreathing();}
 
 	public void unInvoke()
 	{
@@ -70,7 +51,7 @@ public class Chant_WaterBreathing extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

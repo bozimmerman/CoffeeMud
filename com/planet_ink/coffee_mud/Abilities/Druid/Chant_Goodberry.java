@@ -7,31 +7,12 @@ import java.util.*;
 
 public class Chant_Goodberry extends Chant
 {
-
-	public Chant_Goodberry()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Goodberry";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Goodberry();
-	}
+	public String ID() { return "Chant_Goodberry"; }
+	public String name(){ return "Goodberry";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Chant_Goodberry();}
 
 	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
 	{
@@ -87,7 +68,7 @@ public class Chant_Goodberry extends Chant
 		if(success)
 		{
 			int numAffected=Dice.roll(1,adjustedLevel(mob)/7,1);
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

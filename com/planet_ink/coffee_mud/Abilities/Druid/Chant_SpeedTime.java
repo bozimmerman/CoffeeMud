@@ -8,31 +8,12 @@ import java.util.*;
 
 public class Chant_SpeedTime extends Chant
 {
-	public Chant_SpeedTime()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Speed Time";
-		displayText="(Speed Time)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SpeedTime();
-	}
+	public String ID() { return "Chant_SpeedTime"; }
+	public String name(){ return "Speed Time";}
+	public String displayText(){return "(Speed Time)";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_SpeedTime();}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -42,13 +23,13 @@ public class Chant_SpeedTime extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<adjustedLevel(mob)/2;i++)
 					ExternalPlay.tickAllTickers(mob.location());
-				mob.location().show(mob,null,affectType,auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
+				mob.location().show(mob,null,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}
 		}
 		else

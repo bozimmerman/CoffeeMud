@@ -7,26 +7,12 @@ import java.util.*;
 
 public class Chant_WarpWood extends Chant
 {
-	public Chant_WarpWood()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Warp Wood";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_WarpWood();
-	}
+	public String ID() { return "Chant_WarpWood"; }
+	public String name(){ return "Warp Wood";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	return new Chant_WarpWood();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -72,8 +58,8 @@ public class Chant_WarpWood extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts warping!":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
+			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
 			if((mob.location().okAffect(msg))&&((mobTarget==null)||(mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);

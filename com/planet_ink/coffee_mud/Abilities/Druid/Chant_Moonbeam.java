@@ -8,29 +8,10 @@ import java.util.*;
 
 public class Chant_Moonbeam extends Chant
 {
-
-	public Chant_Moonbeam()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Moonbeam";
-		displayText="(Moonbeam)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Moonbeam();
-	}
+	public String ID() { return "Chant_Moonbeam"; }
+	public String name(){ return "Moonbeam";}
+	public String displayText(){return "(Moonbeam)";}
+	public Environmental newInstance(){	return new Chant_Moonbeam();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -65,7 +46,7 @@ public class Chant_Moonbeam extends Chant
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,auto?"A moonbeam begin(s) to follow <S-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
+		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"A moonbeam begin(s) to follow <S-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

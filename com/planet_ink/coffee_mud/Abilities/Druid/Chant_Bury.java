@@ -7,24 +7,12 @@ import java.util.*;
 
 public class Chant_Bury extends Chant
 {
-	public Chant_Bury()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bury";
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(3);
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Bury();
-	}
+	public String ID() { return "Chant_Bury"; }
+	public String name(){ return "Bury";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public Environmental newInstance()	{	return new Chant_Bury();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -58,7 +46,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> bury(s) <T-HIM-HERSELF>.":"^S<S-NAME> bury(s) <T-NAMESELF> while chanting, returning dust to dust.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> bury(s) <T-HIM-HERSELF>.":"^S<S-NAME> bury(s) <T-NAMESELF> while chanting, returning dust to dust.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -8,28 +8,14 @@ import java.util.*;
 
 public class Chant_Hibernation extends Chant
 {
+	public String ID() { return "Chant_Hibernation"; }
+	public String name(){ return "Hibernation";}
+	public String displayText(){return "(Hibernating)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
 	private int roundsHibernating=0;
-	public Chant_Hibernation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hibernation";
-		displayText="(Hibernating)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(19);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Hibernation();
-	}
+	public Environmental newInstance(){	return new Chant_Hibernation();}
 
 
 	public void unInvoke()

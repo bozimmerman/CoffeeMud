@@ -7,39 +7,15 @@ import java.util.*;
 
 public class Chant_PlantSnare extends Chant
 {
-
+	public String ID() { return "Chant_PlantSnare"; }
+	public String name(){ return "Plant Snare";}
+	public String displayText(){return "(Snared)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 2;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
 	public int amountRemaining=0;
-
-	public Chant_PlantSnare()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Plant Snare";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Snared)";
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=2;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_PlantSnare();
-	}
+	public Environmental newInstance(){	return new Chant_PlantSnare();}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -111,7 +87,7 @@ public class Chant_PlantSnare extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -120,7 +96,7 @@ public class Chant_PlantSnare extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

@@ -7,25 +7,11 @@ import java.util.*;
 
 public class Chant_Sunray extends Chant
 {
-	public Chant_Sunray()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sunray";
-		displayText="(Blinded by a sunray)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(17);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Sunray();
-	}
+	public String ID() { return "Chant_Sunray"; }
+	public String name(){ return "Sunray";}
+	public String displayText(){return "(Sunray)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public Environmental newInstance(){	return new Chant_Sunray();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -67,7 +53,7 @@ public class Chant_Sunray extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>. A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>. A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

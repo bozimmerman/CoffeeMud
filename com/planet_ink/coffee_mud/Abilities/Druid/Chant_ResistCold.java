@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Chant_ResistCold extends Chant
 {
-
-	public Chant_ResistCold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Cold";
-		displayText="(Resist Cold)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(4);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_ResistCold();
-	}
+	public String ID() { return "Chant_ResistCold"; }
+	public String name(){ return "Resist Cold";}
+	public String displayText(){return "(Resist Cold)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public Environmental newInstance(){	return new Chant_ResistCold();}
 
 
 	public void unInvoke()
@@ -67,7 +48,7 @@ public class Chant_ResistCold extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) for a warm field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for a warm field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,35 +7,15 @@ import java.util.*;
 
 public class Chant_WindGust extends Chant
 {
+	public String ID() { return "Chant_WindGust"; }
+	public String name(){ return "Wind Gust";}
+	public String displayText(){return "(Blown Down)";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int maxRange(){return 4;}
 	public boolean doneTicking=false;
-	public Chant_WindGust()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wind Gust";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Blown Down)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=4;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_WindGust();
-	}
+	public Environmental newInstance(){	return new Chant_WindGust();}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -102,7 +82,7 @@ public class Chant_WindGust extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -111,7 +91,7 @@ public class Chant_WindGust extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,"<T-NAME> get(s) blown back!");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					if((!msg.wasModified())&&(target.location()==mob.location()))

@@ -7,24 +7,12 @@ import java.util.*;
 
 public class Chant_CharmArea extends Chant
 {
-	public Chant_CharmArea()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Charm Area";
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(3);
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_CharmArea();
-	}
+	public String ID() { return "Chant_CharmArea"; }
+	public String name(){ return "Calm Area";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_CharmArea();}
 	
 	public boolean okAffect(Affect affect)
 	{
@@ -72,7 +60,7 @@ public class Chant_CharmArea extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"This area seems to twinkle with beauty.":"^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"This area seems to twinkle with beauty.":"^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,34 +7,13 @@ import java.util.*;
 
 public class Chant_Hunger extends Chant
 {
-	public Chant_Hunger()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hunger";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Hunger)";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Hunger();
-	}
+	public String ID() { return "Chant_Hunger"; }
+	public String name(){ return "Hunger";}
+	public String displayText(){return "(Hunger)";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_Hunger();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -56,7 +35,7 @@ public class Chant_Hunger extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

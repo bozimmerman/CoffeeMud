@@ -8,38 +8,15 @@ import java.util.*;
 
 public class Druid_MyPlants extends StdAbility
 {
-	public Druid_MyPlants()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="My Plants";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		displayText="(druidic passage)";
-		miscText="";
-		triggerStrings.addElement("MYPLANTS");
-		triggerStrings.addElement("PLANTS");
-		
-		canAffectCode=0;
-		canTargetCode=0;
-		quality=Ability.OK_SELF;
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Druid_MyPlants();
-	}
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Druid_MyPlants"; }
+	public String name(){ return "My Plants";}
+	public int quality(){return Ability.OK_SELF;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Druid_MyPlants();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public static Item myPlant(Room R, MOB mob, int which)
 	{

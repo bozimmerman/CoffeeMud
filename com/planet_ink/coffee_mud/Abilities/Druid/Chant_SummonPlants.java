@@ -7,26 +7,13 @@ import java.util.*;
 
 public class Chant_SummonPlants extends Chant
 {
+	public String ID() { return "Chant_SummonPlants"; }
+	public String name(){ return "Summon Plants";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
 	private Room PlantsLocation=null;
 	private Item littlePlants=null;
-
-	public Chant_SummonPlants()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Plants";
-		baseEnvStats().setLevel(5);
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonPlants();
-	}
+	public Environmental newInstance(){	return new Chant_SummonPlants();}
 
 	public void unInvoke()
 	{
@@ -114,7 +101,7 @@ public class Chant_SummonPlants extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) to the ground.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

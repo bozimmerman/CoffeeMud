@@ -7,32 +7,13 @@ import java.util.*;
 
 public class Chant_HoldAnimal extends Chant
 {
-	public Chant_HoldAnimal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hold Animal";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Hold Animal spell)";
-
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(15);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_HoldAnimal();
-	}
+	public String ID() { return "Chant_HoldAnimal"; }
+	public String name(){ return "Hold Animal";}
+	public String displayText(){return "(Hold Animal)";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_HoldAnimal();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -91,7 +72,7 @@ public class Chant_HoldAnimal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

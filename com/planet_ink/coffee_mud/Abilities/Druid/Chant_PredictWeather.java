@@ -8,29 +8,11 @@ import java.util.*;
 
 public class Chant_PredictWeather extends Chant
 {
+	public String ID() { return "Chant_PredictWeather"; }
+	public String name(){ return "Predict Weather";}
+	public String displayText(){return "(Predict Weather)";}
 	String lastPrediction="";
-	public Chant_PredictWeather()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Predict Weather";
-		displayText="(Predict Weather)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_PredictWeather();
-	}
+	public Environmental newInstance(){	return new Chant_PredictWeather();}
 	
 	public void unInvoke()
 	{
@@ -85,7 +67,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";

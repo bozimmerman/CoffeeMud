@@ -9,31 +9,18 @@ import java.util.*;
 
 public class Chant_LocateAnimals extends Chant
 {
+	public String ID() { return "Chant_LocateAnimals"; }
+	public String name(){ return "Locate Animals";}
+	private String displayText="(Locating Animals)";
+	public String displayText(){return displayText;}
 	Room lastRoom=null;
 	private MOB trackingWhom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Chant_LocateAnimals()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Locate Animals";
-		displayText="(locating animals)";
-		miscText="";
-
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_LocateAnimals();
-	}
+	public Environmental newInstance(){	return new Chant_LocateAnimals();}
+	
 	public int nextDirectionFromHere(Room location)
 	{
 		if(theTrail==null)
@@ -245,7 +232,7 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for the animals.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for the animals.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

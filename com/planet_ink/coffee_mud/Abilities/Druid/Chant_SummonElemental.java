@@ -7,34 +7,13 @@ import java.util.*;
 
 public class Chant_SummonElemental extends Chant
 {
-	public Chant_SummonElemental()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Elemental";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Summon Elemental)";
-
-		quality=Ability.BENEFICIAL_SELF;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonElemental();
-	}
+	public String ID() { return "Chant_SummonElemental"; }
+	public String name(){ return "Summon Elemental";}
+	public String displayText(){return "(Summon Elemental)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_SummonElemental();}
 
 	public boolean tick(int tickID)
 	{
@@ -65,7 +44,7 @@ public class Chant_SummonElemental extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,26 +7,13 @@ import java.util.*;
 
 public class Chant_Shillelagh extends Chant
 {
-	public Chant_Shillelagh()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shillelagh";
-		displayText="(Blessed)";
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(24);
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Shillelagh();
-	}
+	public String ID() { return "Chant_Shillelagh"; }
+	public String name(){ return "Shillelagh";}
+	public String displayText(){return "(Blessed)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Chant_Shillelagh();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -85,7 +72,7 @@ public class Chant_Shillelagh extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,30 +7,12 @@ import java.util.*;
 
 public class Chant_WaterWalking extends Chant
 {
+	public String ID() { return "Chant_WaterWalking"; }
+	public String name(){ return "Water Walking";}
+	public String displayText(){return "(Water Walking)";}
 	private boolean triggerNow=false;
-	public Chant_WaterWalking()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Water Walking";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Water Walking)";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_WaterWalking();
-	}
+	public Environmental newInstance(){	return new Chant_WaterWalking();}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -134,7 +116,7 @@ public class Chant_WaterWalking extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

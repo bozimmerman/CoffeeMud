@@ -7,35 +7,14 @@ import java.util.*;
 
 public class Chant_IllusionaryForest extends Chant
 {
+	public String ID() { return "Chant_IllusionaryForest"; }
+	public String name(){ return "Illusionary Forest";}
+	public String displayText(){return "(Illusionary Fores)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
 	Room newRoom=null;
-	public Chant_IllusionaryForest()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Illusionary Forest";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Illusionary Forest)";
-		quality=Ability.INDIFFERENT;
-		
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=Ability.CAN_ROOMS;
-
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_IllusionaryForest();
-	}
+	public Environmental newInstance(){	return new Chant_IllusionaryForest();}
 
 	public void unInvoke()
 	{
@@ -135,7 +114,7 @@ public class Chant_IllusionaryForest extends Chant
 				break;
 			}
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> chant(s) dramatically!^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,25 +7,12 @@ import java.util.*;
 
 public class Chant_NeutralizePoison extends Chant
 {
-	public Chant_NeutralizePoison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Neutralize Poison";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(11);
-		quality=Ability.OK_OTHERS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_NeutralizePoison();
-	}
+	public String ID() { return "Chant_NeutralizePoison"; }
+	public String name(){ return "Neutralize Poison";}
+	public int quality(){return Ability.OK_OTHERS;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_NeutralizePoison();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -62,7 +49,7 @@ public class Chant_NeutralizePoison extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> chant(s) for <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> chant(s) for <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

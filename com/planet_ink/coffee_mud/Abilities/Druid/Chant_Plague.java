@@ -7,29 +7,13 @@ import java.util.*;
 
 public class Chant_Plague extends Chant
 {
-	int plagueDown=4;
-
-	public Chant_Plague()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Plague";
-		displayText="(Plague)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(12);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-	
+	public String ID() { return "Chant_Plague"; }
+	public String name(){ return "Plague";}
+	public String displayText(){return "(Plague)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public Environmental newInstance(){	return new Chant_Plague();}
 	public String text(){return "DISEASE";}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Plague();
-	}
-
+	int plagueDown=4;
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -92,7 +76,7 @@ public class Chant_Plague extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

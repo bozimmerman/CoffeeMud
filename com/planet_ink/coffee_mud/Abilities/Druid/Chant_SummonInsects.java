@@ -7,37 +7,15 @@ import java.util.*;
 
 public class Chant_SummonInsects extends Chant
 {
+	public String ID() { return "Chant_SummonInsects"; }
+	public String name(){ return "Summon Insects";}
+	public String displayText(){return "(In a swarm of insects)";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 5;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	Room castingLocation=null;
-	public Chant_SummonInsects()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Insects";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(In a swarm of insects)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=5;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonInsects();
-	}
+	public Environmental newInstance(){	return new Chant_SummonInsects();}
 
 	public boolean tick(int tickID)
 	{
@@ -91,10 +69,10 @@ public class Chant_SummonInsects extends Chant
 		{
 			if(h==null)
 			{
-				mob.location().show(mob,null,affectType,auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding noone to sting, they flutter away.^?");
+				mob.location().show(mob,null,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding noone to sting, they flutter away.^?");
 				return false;
 			}
-			mob.location().show(mob,null,affectType,auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -103,7 +81,7 @@ public class Chant_SummonInsects extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))
 				   &&(mob.location().okAffect(msg2))

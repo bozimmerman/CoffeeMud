@@ -7,34 +7,13 @@ import java.util.*;
 
 public class Chant_SummonAnimal extends Chant
 {
-	public Chant_SummonAnimal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Animal";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Animal Summoning)";
-
-		quality=Ability.BENEFICIAL_SELF;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonAnimal();
-	}
+	public String ID() { return "Chant_SummonAnimal"; }
+	public String name(){ return "Summon Animal";}
+	public String displayText(){return "(Animal Summoning)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_SummonAnimal();}
 
 	public void unInvoke()
 	{
@@ -82,7 +61,7 @@ public class Chant_SummonAnimal extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,29 +7,10 @@ import java.util.*;
 
 public class Chant_AnimalFriendship extends Chant
 {
-	public Chant_AnimalFriendship()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Animal Friendship";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Animal Friendship)";
-
-		baseEnvStats().setLevel(2);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_AnimalFriendship();
-	}
+	public String ID() { return "Chant_AnimalFriendship"; }
+	public String name(){ return "Animal Friendship";}
+	public String displayText(){return "(Animal Friendship)";}
+	public Environmental newInstance()	{	return new Chant_AnimalFriendship();}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -90,7 +71,7 @@ public class Chant_AnimalFriendship extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) for animal friendship.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for animal friendship.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

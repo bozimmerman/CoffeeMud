@@ -7,23 +7,12 @@ import java.util.*;
 
 public class Chant_CalmAnimal extends Chant
 {
-	public Chant_CalmAnimal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Calm Animal";
-		baseEnvStats().setLevel(21);
-		quality=Ability.OK_OTHERS;
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_CalmAnimal();
-	}
+	public String ID() { return "Chant_CalmAnimal"; }
+	public String name(){ return "Calm Animal";}
+	public int quality(){return Ability.OK_OTHERS;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_CalmAnimal();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -52,7 +41,7 @@ public class Chant_CalmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) surrounded by a natural light.":"^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) surrounded by a natural light.":"^S<S-NAME> chant(s) to <T-NAMESELF> for calm.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,9 +7,26 @@ import java.util.*;
 
 public class Druid_ShapeShift extends StdAbility
 {
+	public String ID() { return "Druid_ShapeShift"; }
+	public String name(){ return "Shape Shift";}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"SHAPESHIFT"};
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	
+	public Environmental newInstance(){	return new Druid_ShapeShift();}
+	public int classificationCode(){return Ability.SKILL;}
+	
 	private int myRaceCode=-1;
 	private Race newRace=null;
 	private String raceName="";
+	public String displayText()
+	{
+		if((myRaceCode<0)||(newRace==null))
+			return super.displayText();
+		return "(in "+newRace.name().toLowerCase()+" form)";
+	}
 	
 	private static String[][] shapes={
 	{"Mouse",   "Kitten",   "Puppy",    "Robin",  "Garden Snake", "Cub",    "Grasshopper","Spider Monkey","Calf"},
@@ -26,32 +43,7 @@ public class Druid_ShapeShift extends StdAbility
 	{"WereBat","Manticore","WereWolf","Griffon","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
 	
-	public Druid_ShapeShift()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shape Shift";
-
-		displayText="(in your animal form)";
-		miscText="";
-		triggerStrings.addElement("SHAPESHIFT");
-		quality=Ability.OK_SELF;
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Druid_ShapeShift();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	
 	public void setMiscText(String newText)
 	{
 		if(newText.length()>0)
@@ -70,13 +62,6 @@ public class Druid_ShapeShift extends StdAbility
 				affectableStats.setReplacementName("a "+raceName.toLowerCase());
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
-	}
-	
-	public String displayText()
-	{
-		if((myRaceCode<0)||(newRace==null))
-			return super.displayText();
-		return "(in "+newRace.name().toLowerCase()+" form)";
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Chant_ResistFire extends Chant
 {
-
-	public Chant_ResistFire()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Fire";
-		displayText="(Resist Fire)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(6);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_ResistFire();
-	}
+	public String ID() { return "Chant_ResistFire"; }
+	public String name(){ return "Resist Fire";}
+	public String displayText(){return "(Resist Fire)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public Environmental newInstance(){	return new Chant_ResistFire();}
 
 	public void unInvoke()
 	{
@@ -67,7 +48,7 @@ public class Chant_ResistFire extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for a cool field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for a cool field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

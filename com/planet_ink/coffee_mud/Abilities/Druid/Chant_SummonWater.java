@@ -7,26 +7,13 @@ import java.util.*;
 
 public class Chant_SummonWater extends Chant
 {
+	public String ID() { return "Chant_SummonWater"; }
+	public String name(){ return "Summon Water";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
-
-	public Chant_SummonWater()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Water";
-		baseEnvStats().setLevel(5);
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonWater();
-	}
+	public Environmental newInstance(){	return new Chant_SummonWater();	}
 
 	public void unInvoke()
 	{
@@ -67,7 +54,7 @@ public class Chant_SummonWater extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) for water.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) for water.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

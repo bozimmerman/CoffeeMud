@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Chant_ResistLightning extends Chant
 {
-
-	public Chant_ResistLightning()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Lightning";
-		displayText="(Resist Lightning)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(8);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_ResistLightning();
-	}
+	public String ID() { return "Chant_ResistLightning"; }
+	public String name(){ return "Resist Lightning";}
+	public String displayText(){return "(Resist Lightning)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public Environmental newInstance(){	return new Chant_ResistLightning();}
 
 	public void unInvoke()
 	{
@@ -67,7 +48,7 @@ public class Chant_ResistLightning extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for a shimmering organic field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,34 +7,13 @@ import java.util.*;
 
 public class Chant_FeelCold extends Chant
 {
-	public Chant_FeelCold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Feel Cold";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Cold)";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_FeelCold();
-	}
+	public String ID() { return "Chant_FeelCold"; }
+	public String name(){ return "Feel Cold";}
+	public String displayText(){return "(Feel Cold)";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_FeelCold();}
 
 	public void unInvoke()
 	{
@@ -138,7 +117,7 @@ public class Chant_FeelCold extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

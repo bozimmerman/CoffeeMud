@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Chant_ResistGas extends Chant
 {
-
-	public Chant_ResistGas()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Gas";
-		displayText="(Resist Gas)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_ResistGas();
-	}
+	public String ID() { return "Chant_ResistGas"; }
+	public String name(){ return "Resist Gas";}
+	public String displayText(){return "(Resist Gas)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public Environmental newInstance(){	return new Chant_ResistGas();}
 
 	public void unInvoke()
 	{
@@ -67,7 +48,7 @@ public class Chant_ResistGas extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for a filtering field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) for a filtering field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

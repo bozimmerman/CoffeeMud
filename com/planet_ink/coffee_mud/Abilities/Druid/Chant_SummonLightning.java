@@ -7,36 +7,13 @@ import java.util.*;
 
 public class Chant_SummonLightning extends Chant
 {
-	public Chant_SummonLightning()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Lightning";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Lightning Bolt spell)";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(8);
-		maxRange=2;
-		minRange=0;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonLightning();
-	}
+	public String ID() { return "Chant_SummonLightning"; }
+	public String name(){ return "Summon Lightning";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 2;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Chant_SummonLightning();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -69,7 +46,7 @@ public class Chant_SummonLightning extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A lightning bolt streaks out of the sky!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A lightning bolt streaks out of the sky!":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly a lightning bolt streaks from the sky!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

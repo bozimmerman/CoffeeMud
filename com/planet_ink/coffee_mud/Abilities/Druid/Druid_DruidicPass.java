@@ -8,34 +8,16 @@ import java.util.*;
 
 public class Druid_DruidicPass extends StdAbility
 {
-	public Druid_DruidicPass()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Druidic Pass";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		displayText="(druidic passage)";
-		miscText="";
-		triggerStrings.addElement("PASS");
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		quality=Ability.OK_SELF;
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Druid_DruidicPass();
-	}
+	public String ID() { return "Druid_DruidicPass"; }
+	public String name(){ return "Druidic Pass";}
+	public String displayText(){return "(druidic passage)";}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"PASS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Druid_DruidicPass();	}
+	
 	public int classificationCode()
 	{
 		return Ability.SKILL;

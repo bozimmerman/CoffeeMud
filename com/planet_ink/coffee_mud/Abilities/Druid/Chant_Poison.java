@@ -7,26 +7,12 @@ import java.util.*;
 
 public class Chant_Poison extends Chant
 {
+	public String ID() { return "Chant_Poison"; }
+	public String name(){ return "Poison";}
+	public String displayText(){return "(Poisoned)";}
+	public int quality(){return Ability.MALICIOUS;}
 	int poisonTick=3;
-
-	public Chant_Poison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Poison";
-		displayText="(Poisoned)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(12);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Poison();
-	}
+	public Environmental newInstance(){	return new Chant_Poison();}
 
 	public boolean tick(int tickID)
 	{
@@ -86,7 +72,7 @@ public class Chant_Poison extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_POISON|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

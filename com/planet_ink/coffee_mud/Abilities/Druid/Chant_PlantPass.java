@@ -7,30 +7,12 @@ import java.util.*;
 
 public class Chant_PlantPass extends Chant
 {
-	public Chant_PlantPass()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Plant Pass";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_PlantPass();
-	}
+	public String ID() { return "Chant_PlantPass"; }
+	public String name(){ return "Plant Pass";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_PlantPass();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -72,7 +54,7 @@ public class Chant_PlantPass extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,myPlant,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?");
+			FullMsg msg=new FullMsg(mob,myPlant,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?");
 			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg)))
 			{
 				mob.location().send(mob,msg);

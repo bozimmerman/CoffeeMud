@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Chant_Barkskin extends Chant
 {
-	public Chant_Barkskin()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Barkskin";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Barkskin)";
-
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(5);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Barkskin();
-	}
+	public String ID() { return "Chant_Barkskin"; }
+	public String name(){ return "Barkskin";}
+	public String displayText(){return "(Barkskin)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public Environmental newInstance(){	return new Chant_Barkskin();}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -77,7 +57,7 @@ public class Chant_Barkskin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

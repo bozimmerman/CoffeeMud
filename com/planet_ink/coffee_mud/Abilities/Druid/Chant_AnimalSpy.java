@@ -7,30 +7,13 @@ import java.util.*;
 
 public class Chant_AnimalSpy extends Chant
 {
+	public String ID() { return "Chant_AnimalSpy"; }
+	public String name(){ return "Animal Spy";}
+	public String displayText(){return "(Animal Spy)";}
+	public int quality(){return Ability.OK_OTHERS;}
 	private MOB spy=null;
 	private boolean disable=false;
-	public Chant_AnimalSpy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Animal Spy";
-		displayText="(Animal Spy)";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_OTHERS;
-
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_AnimalSpy();
-	}
+	public Environmental newInstance()	{	return new Chant_AnimalSpy();}
 	
 	public boolean tick(int tickID)
 	{
@@ -155,8 +138,8 @@ public class Chant_AnimalSpy extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
 			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);

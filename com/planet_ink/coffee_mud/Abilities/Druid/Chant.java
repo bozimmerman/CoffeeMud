@@ -7,34 +7,24 @@ import java.util.*;
 
 public class Chant extends StdAbility
 {
-	protected int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-	public Chant()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a Druidic Chant";
-		displayText="(in the natural order)";
-		miscText="";
-		triggerStrings.addElement("CHANT");
-		triggerStrings.addElement("CH");
-		quality=Ability.OK_SELF;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=0;
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
+	public String ID() { return "Chant"; }
+	public String name(){ return "a Druidic Chant";}
+	public String displayText(){return "(in the natural order)";}
+	protected int affectType(boolean auto){
+		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		if(quality()==Ability.MALICIOUS)
+			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		return affectType;
 	}
-
-	public int classificationCode()
-	{
-		return Ability.CHANT;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant();
-	}
+	private static final String[] triggerStrings = {"CHANT","CH"};
+	public int quality(){return Ability.OK_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	
+	public Environmental newInstance(){	return new Chant();	}
+	public int classificationCode()	{ return Ability.CHANT;	}
 
 	public boolean appropriateToMyAlignment(int alignment)
 	{
@@ -57,11 +47,6 @@ public class Chant extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

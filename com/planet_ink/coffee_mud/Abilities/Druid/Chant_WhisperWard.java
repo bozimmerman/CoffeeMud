@@ -7,30 +7,17 @@ import java.util.*;
 
 public class Chant_WhisperWard extends Chant
 {
+	public String ID() { return "Chant_WhisperWard"; }
+	public String name(){ return "Whisperward";}
+	public String displayText(){return "(Whisperward)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	Room myRoomContainer=null;
 	int myTrigger=Affect.TYP_ENTER;
-
 	boolean waitingForLook=false;
-
-	public Chant_WhisperWard()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Whisperward";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
-		canTargetCode=Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
-		
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
+	public Environmental newInstance(){	return new Chant_WhisperWard();	}
+	
 
 	public void doMyThing()
 	{
@@ -39,11 +26,6 @@ public class Chant_WhisperWard extends Chant
 		unInvoke();
 		return;
 	}
-	public Environmental newInstance()
-	{
-		return new Chant_WhisperWard();
-	}
-	
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
@@ -150,7 +132,7 @@ public class Chant_WhisperWard extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

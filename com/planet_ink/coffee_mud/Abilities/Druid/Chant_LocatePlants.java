@@ -9,30 +9,16 @@ import java.util.*;
 
 public class Chant_LocatePlants extends Chant
 {
+	public String ID() { return "Chant_LocatePlants"; }
+	public String name(){ return "Locate Plants";}
+	public String displayText(){return "(Locating Plants)";}
 	Room lastRoom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Chant_LocatePlants()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Locate Plants";
-		displayText="(locating plants)";
-		miscText="";
-
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_LocatePlants();
-	}
+	public Environmental newInstance(){	return new Chant_LocatePlants();}
+	
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -236,7 +222,7 @@ public class Chant_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

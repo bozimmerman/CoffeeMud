@@ -6,35 +6,14 @@ import java.util.*;
 
 public class Chant_Earthquake extends Chant
 {
-	public Chant_Earthquake()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Earthquake";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Earthquake)";
-
-
-		canAffectCode=0;
-		canTargetCode=0;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(15);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-		maxRange=3;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Earthquake();
-	}
+	public String ID() { return "Chant_Earthquake"; }
+	public String name(){ return "Earthquake";}
+	public String displayText(){return "(Earthquake)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	public int maxRange(){return 3;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_Earthquake();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -92,7 +71,7 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> chant(s) thunderously.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> chant(s) thunderously.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -101,7 +80,7 @@ public class Chant_Earthquake extends Chant
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

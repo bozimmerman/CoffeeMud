@@ -7,28 +7,13 @@ import java.util.*;
 
 public class Chant_SummonMount extends Chant
 {
-	public Chant_SummonMount()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Mount";
-		displayText="(Mount)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonMount();
-	}
+	public String ID() { return "Chant_SummonMount"; }
+	public String name(){ return "Summon Mount";}
+	public String displayText(){return "(Mount)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_SummonMount();}
 	
 	public void unInvoke()
 	{
@@ -94,7 +79,7 @@ public class Chant_SummonMount extends Chant
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,29 +7,12 @@ import java.util.*;
 
 public class Chant_DistantGrowth extends Chant
 {
-	public Chant_DistantGrowth()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Distant Growth";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ROOMS;
-
-		baseEnvStats().setLevel(10);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_DistantGrowth();
-	}
+	public String ID() { return "Chant_DistantGrowth"; }
+	public String name(){ return "Distant Growth";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_ROOMS;}
+	public Environmental newInstance(){	return new Chant_DistantGrowth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -73,7 +56,7 @@ public class Chant_DistantGrowth extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> chant(s) about a far away place.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) about a far away place.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

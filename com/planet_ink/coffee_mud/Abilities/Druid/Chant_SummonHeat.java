@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Chant_SummonHeat extends Chant
 {
-	public Chant_SummonHeat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Heat";
-		displayText="(Summon Heat)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_SummonHeat();
-	}
+	public String ID() { return "Chant_SummonHeat"; }
+	public String name(){ return "Summon Heat";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_SummonHeat();}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -50,7 +30,7 @@ public class Chant_SummonHeat extends Chant
 		boolean success=profficiencyCheck(-size,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for heat!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for heat!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

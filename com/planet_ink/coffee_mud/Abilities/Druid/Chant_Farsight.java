@@ -7,29 +7,12 @@ import java.util.*;
 
 public class Chant_Farsight extends Chant
 {
-	public Chant_Farsight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Farsight";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(9);
-		canAffectCode=0;
-		canTargetCode=0;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Farsight();
-	}
+	public String ID() { return "Chant_Farsight"; }
+	public String name(){ return "Farsight";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_Farsight();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -48,7 +31,7 @@ public class Chant_Farsight extends Chant
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a far off vision, but the magic fades.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> chant(s) for a far off vision.^?");
+			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> chant(s) for a far off vision.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

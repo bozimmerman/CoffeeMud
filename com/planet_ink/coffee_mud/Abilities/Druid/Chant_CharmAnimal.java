@@ -7,35 +7,14 @@ import java.util.*;
 
 public class Chant_CharmAnimal extends Chant
 {
-	public Chant_CharmAnimal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Charm Animal";
+	public String ID() { return "Chant_CharmAnimal"; }
+	public String name(){ return "Calm Animal";}
+	public String displayText(){return "(Charmed)";}
+	public int quality(){return Ability.MALICIOUS;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
 
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Charmed)";
-
-		quality=Ability.MALICIOUS;
-
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_CharmAnimal();
-	}
+	public Environmental newInstance(){	return new Chant_CharmAnimal();}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -117,7 +96,7 @@ public class Chant_CharmAnimal extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

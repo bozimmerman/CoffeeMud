@@ -7,30 +7,12 @@ import java.util.*;
 
 public class Chant_Treemind extends Chant
 {
+	public String ID() { return "Chant_Treemind"; }
+	public String name(){ return "Treemind";}
+	public String displayText(){return "(Treemind)";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
 	int amountAbsorbed=0;
-	public Chant_Treemind()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Treemind";
-		displayText="(Treemind)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Chant_Treemind();
-	}
+	public Environmental newInstance(){	return new Chant_Treemind();}
 
 	public void unInvoke()
 	{
@@ -87,7 +69,7 @@ public class Chant_Treemind extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				amountAbsorbed=0;
