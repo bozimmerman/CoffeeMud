@@ -47,6 +47,24 @@ public class Prayer extends StdAbility
 			return "pray(s)";
 	}
 	
+	protected String inTheNameOf(MOB mob)
+	{
+		if(mob.getMyDeity()!=null)
+			return " in the name of "+mob.getMyDeity();
+		return "";
+	}
+	protected String hisHerDiety(MOB mob)
+	{
+		if(mob.getMyDeity()!=null)
+			return mob.getMyDeity().name();
+		return "<S-HIS-HER> god";
+	}
+	protected String ofDiety(MOB mob)
+	{
+		if(mob.getMyDeity()!=null)
+			return " of "+mob.getMyDeity();
+		return "";
+	}
 	protected String prayingWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)

@@ -36,7 +36,7 @@ public class Prayer_Sacrifice extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened. 
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> sacrifice(s) <T-HIM-HERSELF>.":"^S<S-NAME> sacrifice(s) <T-NAMESELF> to <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> sacrifice(s) <T-HIM-HERSELF>.":"^S<S-NAME> sacrifice(s) <T-NAMESELF> to "+hisHerDiety(mob)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

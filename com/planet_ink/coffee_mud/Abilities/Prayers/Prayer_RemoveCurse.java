@@ -31,7 +31,7 @@ public class Prayer_RemoveCurse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be released from <S-HIS-HER> curse.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> call(s) on "+hisHerDiety(mob)+" for <T-NAME> to be released from <S-HIS-HER> curse.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -59,7 +59,7 @@ public class Prayer_RemoveCurse extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> call(s) on <S-HIS-HER> god to relase <T-NAME> from <T-HIS-HER> curse, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> call(s) on "+hisHerDiety(mob)+" to release <T-NAME> from <T-HIS-HER> curse, but nothing happens.");
 
 
 		// return whether it worked

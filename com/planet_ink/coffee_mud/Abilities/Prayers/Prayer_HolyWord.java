@@ -59,8 +59,8 @@ public class Prayer_HolyWord extends Prayer
 
 		boolean success=profficiencyCheck(0,auto);
 
-		String str=auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word of <S-HIS-HER> god to <T-NAMESELF>.^?";
-		String missStr="<S-NAME> speak(s) the holy word of <S-HIS-HER> god, but nothing happens.";
+		String str=auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
+		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";
 		Room room=mob.location();
 		if(room!=null)
 		for(int i=0;i<room.numInhabitants();i++)

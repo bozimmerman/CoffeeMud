@@ -43,7 +43,7 @@ public class Prayer_MassHarm extends Prayer
 					}
 				}
 				else
-					maliciousFizzle(mob,target,"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+", but <S-HIS-HER> god does not heed.");
+					maliciousFizzle(mob,target,"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+", but "+hisHerDiety(mob)+" does not heed.");
 			}
 		}
 

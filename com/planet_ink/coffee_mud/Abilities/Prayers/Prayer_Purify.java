@@ -39,7 +39,10 @@ public class Prayer_Purify extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for the power to purify <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),
+									auto?"":"^S<S-NAME> purify <T-NAMESELF>"+inTheNameOf(mob)+".^?",
+									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?",
+									auto?"":"^S<S-NAME> purifies <T-NAMESELF>"+inTheNameOf(mob)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

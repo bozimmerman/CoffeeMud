@@ -68,6 +68,25 @@ public class FullMsg implements Affect
 		othersMsg=othersMessage;
 	}
 
+	public FullMsg(MOB source,
+				   Environmental target,
+				   Environmental tool,
+				   int newSourceCode,
+				   String sourceMessage,
+				   String targetMessage,
+				   String othersMessage)
+	{
+		myAgent=source;
+		myTarget=target;
+		myTool=tool;
+		sourceMsg=sourceMessage;
+		targetMsg=targetMessage;
+		targetCode=newSourceCode;
+		sourceCode=newSourceCode;
+		othersCode=newSourceCode;
+		othersMsg=othersMessage;
+	}
+	
 	public Affect copyOf()
 	{
 		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());

@@ -98,7 +98,7 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) life-like senses!":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) life-like senses!":"^S<S-NAME> listen(s) for a message from "+hisHerDiety(mob)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Prayer_SenseLife extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> listen(s) to <S-HIS-HER> god for a message, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> listen(s) to "+hisHerDiety(mob)+" for a message, but there is no answer.");
 
 
 		// return whether it worked
