@@ -58,6 +58,11 @@ public class As extends StdCommand
 			mob.tell("You don't know of anyone by that name.");
 			return false;
 		}
+		if(M.soulMate()!=null)
+		{
+		    mob.tell(M.Name()+" is being possessed at the moment.");
+		    return false;
+		}
 		Session oldSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
@@ -66,6 +71,7 @@ public class As extends StdCommand
 		int oldBitmap=M.getBitmap();
 		M.setSession(mySession);
 		mySession.setMob(M);
+		M.setSoulMate(mob);
 		if(((String)commands.firstElement()).equalsIgnoreCase("here")
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
@@ -90,6 +96,7 @@ public class As extends StdCommand
 				M.location().delInhabitant(M);
 			M.setLocation(oldRoom);
 		}
+		M.setSoulMate(null);
 		M.setSession(oldSession);
 		M.setBitmap(oldBitmap);
 		mySession.setMob(mob);
