@@ -169,7 +169,7 @@ public class Prop_Familiar extends Property
 		for(int i=0;i<names.length;i++)
 			if(newText.trim().equalsIgnoreCase(names[i]))
 			{ familiarType=i; break;}
-		displayText="(familiarity with the "+names[familiarType]+")";
+		displayText="(Familiarity with the "+names[familiarType]+")";
 	}
 	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

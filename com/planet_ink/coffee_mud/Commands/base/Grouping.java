@@ -109,9 +109,9 @@ public class Grouping
 		msg.append("] "+Util.padRight(who.name(),15));
 		if(!shortForm)
 		{
-			msg.append(Util.padRight("hp("+Util.padRight(""+who.curState().getHitPoints(),3)+"/"+Util.padRight(""+who.maxState().getHitPoints(),3)+")",12));
-			msg.append(Util.padRight("mn("+Util.padRight(""+who.curState().getMana(),3)+"/"+Util.padRight(""+who.maxState().getMana(),3)+")",12));
-			msg.append(Util.padRight("mv("+Util.padRight(""+who.curState().getMovement(),3)+"/"+Util.padRight(""+who.maxState().getMovement(),3)+")",12));
+			msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
+			msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
+			msg.append(Util.padRightPreserve("mv("+Util.padRightPreserve(""+who.curState().getMovement(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
 		}
 		msg.append("\n\r");
 		return msg;

@@ -94,7 +94,7 @@ public class GenStaff extends GenWeapon implements Wand
 		MOB mob=affect.source();
 		switch(affect.targetMinor())
 		{
-		case Affect.TYP_CAST_SPELL:
+		case Affect.TYP_WAND_USE:
 			if(affect.amITarget(this))
 				waveIfAble(mob,affect.tool(),affect.targetMessage(),this);
 			break;

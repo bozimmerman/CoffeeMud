@@ -26,8 +26,21 @@ public class StdTitle extends StdItem implements LandTitle
 		return new StdTitle();
 	}
 	
-	public int landPrice(){return baseGoldValue();}
-	public void setLandPrice(int price){ setBaseValue(price);}
+	public int landPrice()
+	{
+		LandTitle A=fetchLandTitle(null);
+		if(A==null)	return 0;
+		return A.landPrice();
+	}
+	public void setLandPrice(int price)
+	{ 
+		LandTitle A=fetchLandTitle(null);
+		if(A==null)	return;
+		A.setLandPrice(price);
+		Room R=CMMap.getRoom(landRoomID());
+		if(R==null) return;
+		ExternalPlay.DBUpdateRoom(R);
+	}
 	public String landOwner()
 	{
 		LandTitle A=fetchLandTitle(null);
@@ -95,7 +108,6 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unsellable room: "+landRoomID());
 				return;
 			}
-			A.setLandPrice(landPrice());
 			A.setLandOwner("");
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
@@ -122,16 +134,15 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Ungiveable room: "+landRoomID());
 				return;
 			}
-			A.setLandPrice(landPrice());
 			A.setLandOwner(msg.target().name());
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
 		}
 		else
-		if((msg.targetMinor()==Affect.TYP_BUY)
-		&&(msg.tool()==this)
-		&&(msg.target()!=null)
-		&&(msg.target() instanceof MOB))
+		if((msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.amITarget(this))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof ShopKeeper))
 		{
 			Room R=CMMap.getRoom(landRoomID());
 			if(R==null)
@@ -147,10 +158,11 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}
-			A.setLandPrice(landPrice());
-			A.setLandOwner(msg.target().name());
+			setBaseValue(landPrice());
+			A.setLandOwner(msg.source().name());
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);
+			recoverEnvStats();
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class Engraving extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,"You mess up your engravey.");
+					commonTell(mob,"You mess up your engraving.");
 				else
 				{
 					String desc=found.description();

@@ -99,6 +99,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				I.setReadable(true);
 				I.setName("id");
 				I.setReadableText("This room is "+R.ID());
+				I.setDescription("This room is "+R.ID());
 				R.addItem(I);
 				updateItems=true;
 			}

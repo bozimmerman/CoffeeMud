@@ -126,7 +126,7 @@ public class JewelMaking extends CommonSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			commonTell(mob,"You'll need to build a fire first.");
+			commonTell(mob,"A fire will need to be built first.");
 			return false;
 		}
 		building=null;

@@ -133,7 +133,7 @@ public class Smelting extends CommonSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			commonTell(mob,"Build a fire first.");
+			commonTell(mob,"A fire will need to be built first.");
 			return false;
 		}
 		building=null;

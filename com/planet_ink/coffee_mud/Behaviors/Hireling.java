@@ -41,11 +41,13 @@ public class Hireling extends StdBehavior
 			Integer I=(Integer)partials.get(workingFor);
 			partials.remove(workingFor);
 			ExternalPlay.standIfNecessary(observer);
-			if(!canFreelyBehaveNormal(observer))
+			if(!canActAtAll(observer))
 			{
 				workingFor="";
 				onTheJobUntil=null;
 				observer.setFollowing(null);
+				if(observer.getStartRoom()!=null)
+					observer.getStartRoom().bringMobHere(observer,false);
 				return;
 			}
 			MOB talkTo=null;
@@ -111,10 +113,12 @@ public class Hireling extends StdBehavior
 	{
 		super.affect(affecting,affect);
 		MOB source=affect.source();
-		if(!canFreelyBehaveNormal(affecting)) return;
+		if(!canActAtAll(affecting)) return;
 		
 		MOB observer=(MOB)affecting;
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
+		&&(!affect.amISource(observer))
+		&&(!affect.source().isMonster())
 		&&((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
 			||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 		&&(onTheJobUntil==null))
@@ -172,7 +176,7 @@ public class Hireling extends StdBehavior
 					onTheJobUntil.add(Calendar.MINUTE,minutes());
 					ExternalPlay.follow(observer,source,false);
 					observer.setFollowing(source);
-					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(3)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
+					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
 				}
 			}
 		}

@@ -245,7 +245,7 @@ public class Alchemy extends CommonSkill
 				}
 				if((fire==null)||(!mob.location().isContent(fire)))
 				{
-					commonTell(mob,"There will need to build a fire first.");
+					commonTell(mob,"A fire will need to be built first.");
 					return false;
 				}
 				experienceToLose+=theSpell.qualifyingLevel(mob)*15;

@@ -267,7 +267,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		case ALCHEMIST:
 			return (thisThang instanceof Potion);
 		case LANDSELLER:
-			return (thisThang.ID().equals("StdLandTitle"));
+			return (thisThang instanceof LandTitle);
 		}
 
 		return false;
@@ -439,15 +439,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				return false;
 			}
 			case Affect.TYP_LIST:
-			{
-				if(storeInventory.size()==0)
-				{
-					ExternalPlay.quickSay(this,mob,"I'm fresh out of everything right now. Sorry.",false,false);
-					return false;
-				}
-				else
-					return true;
-			}
+				return true;
 			default:
 				break;
 			}
@@ -464,7 +456,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
+				if((affect.tool()!=null)
+				   &&((doISellThis(affect.tool())))
+				   ||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:
@@ -475,7 +469,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
-					if(!affect.tool().ID().equals("StdTitle"))
+					if(affect.tool() instanceof LandTitle)
 						storeInventory.addElement(affect.tool());
 					if(affect.tool() instanceof Item)
 					{
@@ -596,8 +590,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				return;
 			case Affect.TYP_LIST:
-				if(storeInventory.size()>0)
-					ExternalPlay.quickSay(this,mob,"\n\r"+listInventory(mob).toString()+"^T",true,false);
+				{
+					StringBuffer str=listInventory(mob);
+					if(str.length()==0)
+						ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
+					else
+						ExternalPlay.quickSay(this,mob,"\n\r"+str+"^T",true,false);
+				}
 				return;
 			default:
 				break;
@@ -611,12 +610,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(product==null)
 			return val;
 		if(product instanceof Item)
-		{
-			if(product.ID().equals("StdTitle")&&(product.name().endsWith("(Copy)")))
-				val=100;
-			else
-				val=((Item)product).value();
-		}
+			val=((Item)product).value();
 		else
 		if(product instanceof Ability)
 		{
@@ -670,16 +664,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					Item I=CMClass.getItem("StdTitle");
 					I.setDisplayText("The title to "+R.ID()+" has foolishly been left here.");
 					((LandTitle)I).setLandRoomID(R.ID());
-					if(((LandTitle)I).landOwner().length()>0)
+					if(((LandTitle)I).landOwner().length()==0)
 					{
 						I.setName("the Title to "+R.ID());
-						((LandTitle)I).setLandPrice(((LandTitle)A).landPrice());
+						I.setBaseValue(((LandTitle)A).landPrice());
 					}
 					else
+					if(((LandTitle)I).landOwner().equals(mob.name()))
 					{
 						I.setName("the Title to "+R.ID()+" (Copy)");
-						((LandTitle)I).setLandPrice(((LandTitle)A).landPrice());
+						I.setBaseValue(10);
 					}
+					else
+						continue;
 					I.recoverEnvStats();
 					V.addElement(I);
 				}
@@ -694,6 +691,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		int csize=0;
 		Vector inventory=getUniqueStoreInventory();
 		inventory=addRealEstate(inventory,mob);
+		if(inventory.size()==0) return msg;
+		
+		int totalCols=(whatISell==ShopKeeper.LANDSELLER)?1:2;
+		int totalWidth=60/totalCols;
+		
 		for(int i=0;i<inventory.size();i++)
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
@@ -706,8 +708,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 		}
 		
-		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",30-csize);
-		msg.append(c+c+"^^^N\n\r");
+		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
+		msg.append(c+((totalCols>1)?c:"")+"^^^N\n\r");
 		int colNum=0;
 		for(int i=0;i<inventory.size();i++)
 		{
@@ -717,8 +719,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),30-csize);
-				if((++colNum)>2)
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");
 					colNum=1;
