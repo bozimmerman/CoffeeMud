@@ -29,6 +29,11 @@ public class TelnetSession extends Thread implements Session
 
 	private boolean lastWasCR=false;
 
+	public Calendar lastStart=null;
+	public Calendar lastStop=null;
+	public long milliTotal=0;
+	public long tickTotal=0;
+	
 	public static String[] clookup=null;
 	private int termID = 0;	//0 = NOANSI, 1 = ANSI
 	public int currentColor=(int)'N';
@@ -83,6 +88,9 @@ public class TelnetSession extends Thread implements Session
 		}
 	}
 
+	public long getTotalMillis(){return milliTotal;}
+	public long getTotalTicks(){return tickTotal;}
+	
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
 	{ mob=newmob;}
@@ -1088,8 +1096,14 @@ public class TelnetSession extends Thread implements Session
 									if(snoops.size()>0)
 										for(int s=0;s<snoops.size();s++)
 											((Session)snoops.elementAt(s)).rawPrintln(Util.combine(CMDS,0));
+									if((lastStart!=null)&&(lastStop!=null))
+									{
+										milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+										tickTotal++;
+									}
+									lastStart=Calendar.getInstance();
 									ExternalPlay.doCommand(mob,CMDS);
-									lastCMDDateTime=Calendar.getInstance();
+									lastStop=Calendar.getInstance();
 								}
 								needPrompt=true;
 							}

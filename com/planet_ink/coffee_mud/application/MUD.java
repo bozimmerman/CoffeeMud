@@ -278,6 +278,7 @@ public class MUD extends Thread implements Host
 
 		acceptConnections = true;
 		Log.sysOut("MUD","Initialization complete.");
+		ExternalPlay.setSystemStarted();
 		offlineReason=new String("UNKNOWN");
 		return true;
 	}

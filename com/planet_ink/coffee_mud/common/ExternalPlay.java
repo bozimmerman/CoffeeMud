@@ -6,11 +6,18 @@ public class ExternalPlay
 {
 	private static ExternalCommand player=null;
 	private static ExternalSystem sysPlayer=null;
+	private static final Calendar startTime=Calendar.getInstance();
+	private static boolean systemStarted=false;
 	
 	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer)
 	{
 		player=newPlayer;
 		sysPlayer=otherNewPlayer;
+	}
+	
+	public static Calendar getStartTime()
+	{
+		return startTime;
 	}
 	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
@@ -25,6 +32,9 @@ public class ExternalPlay
 		if(player!=null) return player.getOpenRoomID(areaName);
 		return "";
 	}
+	public static void setSystemStarted(){systemStarted=true;}
+	public static boolean getSystemStarted(){return systemStarted;}
+	
 	public static void obliterateArea(String areaName)
 	{
 		if(player!=null) player.obliterateArea(areaName);
@@ -37,6 +47,12 @@ public class ExternalPlay
 	{
 		if(player!=null) player.resetRoom(room);
 	}
+	public static StringBuffer systemReport()
+	{
+		if(sysPlayer!=null) return sysPlayer.systemReport();
+		return new StringBuffer("");
+	}
+	
 	public static Ability getToEvoke(MOB mob, Vector commands)
 	{
 		if(player!=null) return player.getToEvoke(mob,commands);

@@ -283,6 +283,16 @@ public class Lister
 		mob.tell(lines.toString());
 	}
 	
+	public StringBuffer listReports(MOB mob)
+	{
+		StringBuffer buf=new StringBuffer("");
+		buf.append("\n\rCoffeeMud System Report:\n\r");
+		long totalTime=Calendar.getInstance().getTimeInMillis()-ExternalPlay.getStartTime().getTimeInMillis();
+		buf.append("The system has been running for "+Util.returnTime(totalTime,0)+".\n\r");
+		buf.append(ExternalPlay.systemReport());
+		return buf;
+	}
+	
 	public void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -372,9 +382,12 @@ public class Lister
 		if("SESSIONS".startsWith(listThis))
 			mob.tell(listSessions(mob).toString());
 		else
+		if("REPORTS".startsWith(listThis))
+			mob.tell(listReports(mob).toString());
+		else
 		if("THREADS".startsWith(listThis))
 			mob.tell(listThreads(mob).toString());
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, or AREA.");
+			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, or AREA.");
 	}
 }

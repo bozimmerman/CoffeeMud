@@ -79,6 +79,8 @@ public interface Session
 	
 	public String getAddress();
 	public int getStatus();
+	public long getTotalMillis();
+	public long getTotalTicks();
 	
 	public static final int STATUS_OK=0;
 	public static final int STATUS_LOGIN=1;

@@ -29,6 +29,27 @@ public class Util
 		return thisStr;
 	}
 	
+	public static String returnTime(long millis, long ticks)
+	{
+		String avg="";
+		if(ticks>0)
+			avg=", Average="+(millis/ticks)+"ms";
+		if(millis<1000) return millis+"ms"+avg;
+		long seconds=millis/1000;
+		millis-=(seconds*1000);
+		if(seconds<60) return seconds+"s "+millis+"ms"+avg;
+		long minutes=seconds/60;
+		seconds-=(minutes*60);
+		if(minutes<60) return minutes+"m "+seconds+"s "+millis+"ms"+avg;
+		long hours=minutes/60;
+		minutes-=(hours*60);
+		if(hours<24) return hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
+		long days=hours/24;
+		hours-=(days*24);
+		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
+		
+	}
+	
 	public static Vector copyVector(Vector V)
 	{
 		Vector V2=new Vector();

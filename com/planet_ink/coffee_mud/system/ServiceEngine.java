@@ -13,24 +13,17 @@ public class ServiceEngine
 	{
 		Tick tock=null;
 
-		int v=tickGroup.size()-1;
-		while(v>=0)
+		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			if(almostTock.tickers.size()==0)
-				tickGroup.removeElementAt(v);
-			else
+			if((tock==null)&&(almostTock.tickers.size()<Host.MAX_TICK_CLIENTS))
+				tock=almostTock;
+			for(int t=0;t<almostTock.tickers.size();t++)
 			{
-				if((tock==null)&&(almostTock.tickers.size()<Host.MAX_TICK_CLIENTS))
-					tock=almostTock;
-				for(int t=0;t<almostTock.tickers.size();t++)
-				{
-					TockClient client=(TockClient)almostTock.tickers.elementAt(t);
-					if((client.clientObject==E)&&(client.tickID==tickID))
-						return null;
-				}
+				TockClient client=(TockClient)almostTock.tickers.elementAt(t);
+				if((client.clientObject==E)&&(client.tickID==tickID))
+					return null;
 			}
-			v--;
 		}
 
 		if(tock!=null)
@@ -144,6 +137,83 @@ public class ServiceEngine
 					return true;
 		}
 		return false;
+	}
+
+	
+	public static StringBuffer report()
+	{
+		StringBuffer buf=new StringBuffer("");
+		buf.append("\n\rService Engine report:\n\r");
+		int totalTickers=0;
+		long totalMillis=0;
+		long totalTicks=0;
+		int topGroupNumber=-1;
+		long topGroupMillis=0;
+		long topGroupTicks=0;
+		long topObjectMillis=0;
+		long topObjectTicks=0;
+		int topObjectGroup=0;
+		Environmental topObjectClient=null;
+		for(int v=0;v<tickGroup.size();v++)
+		{
+			Tick almostTock=(Tick)tickGroup.elementAt(v);
+			totalTickers+=almostTock.tickers.size();
+			totalMillis+=almostTock.milliTotal;
+			totalTicks+=almostTock.tickTotal;
+			if(almostTock.milliTotal>topGroupMillis)
+			{
+				topGroupMillis=almostTock.milliTotal;
+				topGroupTicks=almostTock.tickTotal;
+				topGroupNumber=v;
+			}
+			for(int i=0;i<almostTock.tickers.size();i++)
+			{
+				TockClient C=(TockClient)almostTock.tickers.elementAt(i);
+				if(C.milliTotal>topObjectMillis)
+				{
+					topObjectMillis=C.milliTotal;
+					topObjectTicks=C.tickTotal;
+					topObjectClient=C.clientObject;
+					topObjectGroup=v;
+				}
+			}
+		}
+			
+		buf.append("There are "+totalTickers+" ticking objects in "+tickGroup.size()+" threads.\n\r");
+		buf.append("The ticking objects have consumed: "+Util.returnTime(totalMillis,totalTicks)+".\n\r");
+		buf.append("The most active group, #"+topGroupNumber+", has consumed: "+Util.returnTime(topGroupMillis,topGroupTicks)+".\n\r");
+		buf.append("The most active object has been '"+topObjectClient.name()+"', from group #"+topObjectGroup+".\n\r");
+		buf.append("That object has consumed: "+Util.returnTime(topObjectMillis,topObjectTicks)+".\n\r");
+		buf.append("\n\r");
+		buf.append("Save Thread report:\n\r");
+		buf.append("The Save Thread has consumed: "+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+".\n\r");
+		buf.append("\n\r");
+		buf.append("Session report:\n\r");
+		long totalMOBMillis=0;
+		long totalMOBTicks=0;
+		long topMOBMillis=0;
+		long topMOBTicks=0;
+		MOB topMOBClient=null;
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=Sessions.elementAt(s);
+			totalMOBMillis+=S.getTotalMillis();
+			totalMOBTicks+=S.getTotalTicks();
+			if(S.getTotalMillis()>topMOBMillis)
+			{
+				topMOBMillis=S.getTotalMillis();
+				topMOBTicks=S.getTotalTicks();
+				topMOBClient=S.mob();
+			}
+		}
+		buf.append("There are "+Sessions.size()+" ticking players logged on.\n\r");
+		buf.append("The ticking players have consumed: "+Util.returnTime(totalMOBMillis,totalMOBTicks)+".\n\r");
+		if(topMOBClient!=null)
+		{
+			buf.append("The most active mob has been '"+topMOBClient.name()+"'\n\r");
+			buf.append("That mob has consumed: "+Util.returnTime(topMOBMillis,topMOBTicks)+".\n\r");
+		}
+		return buf;
 	}
 	
 	public static void tickAllTickers(Room here)

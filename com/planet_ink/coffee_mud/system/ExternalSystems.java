@@ -29,6 +29,11 @@ public class ExternalSystems implements ExternalSystem
 		MOBloader.DBUpdateFollowers(mob);
 	}
 	
+	public StringBuffer systemReport()
+	{
+		return ServiceEngine.report();
+	}
+		
 	public void DBReadContent(Room thisRoom)
 	{
 		RoomLoader.DBReadContent(thisRoom);

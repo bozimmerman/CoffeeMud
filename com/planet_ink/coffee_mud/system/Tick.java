@@ -10,6 +10,11 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class Tick extends Thread
 {
+	public Calendar lastStart=null;
+	public Calendar lastStop=null;
+	public long milliTotal=0;
+	public long tickTotal=0;
+	
 	public Vector tickers=new Vector();
 
 	private static int tickObjCounter=0;
@@ -28,7 +33,6 @@ public class Tick extends Thread
 	}
 
 	public boolean awake=false;
-	public Calendar lastAwoke=Calendar.getInstance();
 	public TockClient lastClient=null;
 
 	public void shutdown()
@@ -65,23 +69,36 @@ public class Tick extends Thread
 	
 	public void run()
 	{
+		lastStart=Calendar.getInstance();
 		while(true)
 		{
 			try
 			{
+				lastStop=Calendar.getInstance();
+				milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+				tickTotal++;
 				awake=false;
 				Thread.sleep(Host.TICK_TIME);
 				awake=true;
-				lastAwoke=Calendar.getInstance();
+				lastStart=Calendar.getInstance();
 				lastClient=null;
-
-				int i=0;
-				while(i<tickers.size())
+				if(ExternalPlay.getSystemStarted())
 				{
-					TockClient client=(TockClient)tickers.elementAt(i);
-					lastClient=client;
-					if(!tickTicker(client,tickers))
-						i++;
+					int i=0;
+					while(i<tickers.size())
+					{
+						TockClient client=(TockClient)tickers.elementAt(i);
+						lastClient=client;
+						if((client.lastStart!=null)&&(client.lastStop!=null))
+						{
+							client.milliTotal+=(client.lastStop.getTimeInMillis()-client.lastStart.getTimeInMillis());
+							client.tickTotal++;
+						}
+						client.lastStart=Calendar.getInstance();
+						if(!tickTicker(client,tickers))
+							i++;
+						client.lastStop=Calendar.getInstance();
+					}
 				}
 			}
 			catch(InterruptedException ioe)

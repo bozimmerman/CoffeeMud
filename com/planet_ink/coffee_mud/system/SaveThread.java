@@ -13,6 +13,10 @@ public class SaveThread extends Thread
 	public boolean reset=true;
 	public final static int TIME_SAVE_DELAY=18; // 3 hours...
 	public int timeSaveTicker=0;
+	public Calendar lastStart=null;
+	public Calendar lastStop=null;
+	public static long milliTotal=0;
+	public static long tickTotal=0;
 
 	public SaveThread()
 	{
@@ -109,7 +113,7 @@ public class SaveThread extends Thread
 		{
 			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(v);
 			if((almostTock.awake)
-			&&(almostTock.lastAwoke.before(lastDateTime)))
+			&&(almostTock.lastStop.before(lastDateTime)))
 			{
 				TockClient client=almostTock.lastClient;
 				if(client!=null)
@@ -188,6 +192,7 @@ public class SaveThread extends Thread
 
 	public void run()
 	{
+		lastStart=Calendar.getInstance();
 		if(started)
 		{
 			System.out.println("DUPLICATE SAVETHREAD RUNNING!!");
@@ -202,7 +207,11 @@ public class SaveThread extends Thread
 				checkHealth();
 				tickTock();
 				int processed=0;
+				lastStop=Calendar.getInstance();
+				milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
+				tickTotal++;
 				Thread.sleep(SAVE_DELAY);
+				lastStart=Calendar.getInstance();
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob=(MOB)e.nextElement();

@@ -38,4 +38,5 @@ public interface ExternalSystem
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String leigeID);
 	public void tickAllTickers(Room here);
+	public StringBuffer systemReport();
 }

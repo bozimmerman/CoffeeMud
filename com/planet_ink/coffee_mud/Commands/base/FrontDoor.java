@@ -272,8 +272,11 @@ public class FrontDoor
 								listOfClasses.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
 							}
 
-						mob.session().println("Your current stats are: \n\r"+mob.charStats().getStats(maxStat));
-						mob.session().println("This would qualify you for ^H"+classes.toString()+"^N.");
+						mob.session().println("Your current stats are: \n\r"
+											  +mob.charStats().getStats(maxStat)
+											  +Util.padRight("TOTAL POINTS",15)+": "+CharStats.MAX_STATS+"/"+(18*5));
+						
+						mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
 						if(!mob.session().confirm("^BWould you like to re-roll (y/N)?^N","N"))
 							mayCont=false;

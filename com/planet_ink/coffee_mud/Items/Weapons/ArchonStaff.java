@@ -67,8 +67,8 @@ public class ArchonStaff extends Staff implements Wand
 				if(message.toUpperCase().indexOf("REFRESH")>0)
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
-					target.resetToMaxState();
 					target.recoverMaxState();
+					target.resetToMaxState();
 					target.tell("You feel refreshed!");
 					return;
 				}
