@@ -479,7 +479,7 @@ public class StdMOB implements MOB
 
 	public void setVictim(MOB mob)
 	{
-		if(mob==null) atRange=-1;
+		if(mob==null) setAtRange(-1);
 		if(victim==mob) return;
 		if(mob==this) return;
 		victim=mob;
@@ -730,18 +730,18 @@ public class StdMOB implements MOB
 					}
 					
 					// establish and enforce range
-					if((atRange<0)&&(riding()!=null))
+					if((rangeToTarget()<0)&&(riding()!=null))
 					{
 						if((target==riding())||(riding().amRiding(target)))
-							atRange=0;
+							setAtRange(0);
 						else
 						if((riding() instanceof MOB)
 						   &&(((MOB)riding()).isInCombat())
 						   &&(((MOB)riding()).getVictim()==target)
 						   &&(((MOB)riding()).rangeToTarget()>=0)
-						   &&(((MOB)riding()).rangeToTarget()<atRange))
+						   &&(((MOB)riding()).rangeToTarget()<rangeToTarget()))
 						{
-							atRange=((MOB)riding()).rangeToTarget();
+							setAtRange(((MOB)riding()).rangeToTarget());
 							recoverEnvStats();
 						}
 						else
@@ -753,28 +753,28 @@ public class StdMOB implements MOB
 							   &&(otherMOB.isInCombat())
 							   &&(otherMOB.getVictim()==target)
 							   &&(otherMOB.rangeToTarget()>=0)
-							   &&(otherMOB.rangeToTarget()<atRange))
+							   &&(otherMOB.rangeToTarget()<rangeToTarget()))
 							{
-								atRange=otherMOB.rangeToTarget();
+								setAtRange(otherMOB.rangeToTarget());
 								recoverEnvStats();
 								break;
 							}
 						}
 					}
-					if(atRange<0)
+					if(rangeToTarget()<0)
 					{
 						if(target.getVictim()==null) 
-							atRange=maxRange(affect.tool());
+							setAtRange(maxRange(affect.tool()));
 						else
 						if(target.getVictim()==this)
 						{
 							if(target.rangeToTarget()>=0)
-								atRange=target.rangeToTarget();
+								setAtRange(target.rangeToTarget());
 							else
-								atRange=maxRange(affect.tool());
+								setAtRange(maxRange(affect.tool()));
 						}
 						else
-							atRange=maxRange(affect.tool());
+							setAtRange(maxRange(affect.tool()));
 						recoverEnvStats();
 					}
 				}
@@ -971,15 +971,15 @@ public class StdMOB implements MOB
 			// and now, the consequences of range
 			if((location()!=null)
 			   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-			   &&(atRange>maxRange(affect.tool())))
+			   &&(rangeToTarget()>maxRange(affect.tool())))
 			{
 				String newstr="<S-NAME> advance(s) at ";
 				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.name());
 				boolean ok=location().okAffect(affect);
-				if(ok) atRange--;
+				if(ok) setAtRange(rangeToTarget()-1);
 				if(victim!=null)
 				{
-					victim.setAtRange(atRange);
+					victim.setAtRange(rangeToTarget());
 					victim.recoverEnvStats();
 				}
 				recoverEnvStats();
@@ -988,12 +988,12 @@ public class StdMOB implements MOB
 			else
 			if(affect.tool()!=null)
 			{
-				int useRange=atRange;
+				int useRange=rangeToTarget();
 				Environmental tool=affect.tool();
 				if(getVictim()!=null)
 				{
 					if(getVictim()==target)
-						useRange=atRange;
+						useRange=rangeToTarget();
 					else
 					{
 						if(target.getVictim()==this)
@@ -1085,7 +1085,7 @@ public class StdMOB implements MOB
 			}
 
 			if((rangeToTarget()>0)&&(!isInCombat()))
-				atRange=-1;
+				setAtRange(-1);
 			
 			switch(affect.targetMinor())
 			{
