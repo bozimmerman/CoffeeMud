@@ -2,17 +2,20 @@ package com.planet_ink.coffee_mud.utils;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import javax.naming.*;
+import javax.naming.directory.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 
 
 public class SMTPclient
 {
 	/** Default port number */
-    static final int DEFAULT_PORT = 25;
+    public static final int DEFAULT_PORT = 25;
 	/** network end of line */
-    static final String EOL = "\r\n"; 
+    protected static final String EOL = "\r\n"; 
 	/** default timeout */
-	static final int DEFAULT_TIMEOUT=10000;
+	protected static final int DEFAULT_TIMEOUT=10000;
 
 	/** Reply buffer */
     protected BufferedReader reply = null;
@@ -21,14 +24,27 @@ public class SMTPclient
 	/** Socket to use */
     protected Socket sock = null;
 
+	static Attribute doMXLookup( String hostName ) 
+		throws NamingException 
+	{
+		Hashtable env = new Hashtable();
+		env.put("java.naming.factory.initial",
+		        "com.sun.jndi.dns.DnsContextFactory");
+		DirContext ictx = new InitialDirContext( env );
+		Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
+		Attribute attr = attrs.get( "MX" );
+		if( attr == null ) return( null );
+		return( attr );
+	}
+  
     /**
      *   Create a SMTP object pointing to the specified host
      *   @param hostid The host to connect to.
      *   @exception UnknownHostException
      *   @exception IOException
      */
-    public SMTPclient( String hostid) throws UnknownHostException, IOException {
-        this(hostid, DEFAULT_PORT);
+    public SMTPclient() throws UnknownHostException, IOException {
+        this("127.0.0.1", DEFAULT_PORT);
     }
 
 	/** Main constructor that initialized  internal structures*/
@@ -63,6 +79,46 @@ public class SMTPclient
             if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
         }
     }
+	
+	public SMTPclient (String emailAddress) throws IOException, 
+												   BadEmailAddressException,
+												   NamingException
+	{
+		int x=emailAddress.indexOf("@");
+		if(x<0) throw new BadEmailAddressException("Malformed email address");
+		String domain=emailAddress.substring(x+1).trim();
+		if(domain.length()==0) throw new BadEmailAddressException("Malformed email address");
+		Attribute mx=doMXLookup(domain);
+		if((mx==null)||(mx.size()==0))
+		   throw new BadEmailAddressException("No MX Record for '"+domain+"'");
+		boolean connected=false;
+		for(NamingEnumeration e=mx.getAll();e.hasMore();)
+		{
+			String hostid=(String)e.next();
+			int y=hostid.lastIndexOf(" ");
+			if(y>=0) hostid=hostid.substring(y+1).trim();
+			try
+			{
+				sock = new Socket( hostid, DEFAULT_PORT );
+				reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+				sock.setSoTimeout(DEFAULT_TIMEOUT);
+				send = new PrintWriter( sock.getOutputStream() );
+				String rstr = reply.readLine();
+				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
+				while (rstr.indexOf('-') == 3) {
+				    rstr = reply.readLine();
+				    if (!rstr.startsWith("220")) throw new ProtocolException(rstr);
+				}
+				connected=true;
+				break;
+			}
+			catch(IOException ex)
+			{
+				// just try the next one.
+			}
+		}
+		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
+	}
 	
 	/**
 	* Send a message

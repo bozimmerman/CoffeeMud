@@ -63,11 +63,6 @@ public class SMTPserver extends Thread implements Tickable
 			return false;
 		}
 
-		if (page.getStr("SMTPPORT").trim().length()==0)
-		{
-			Log.errOut(getName(),"ERROR: required parameter missing: SMTPPORT");
-			return false;
-		}
 		if (page.getStr("DOMAIN").trim().length()==0)
 		{
 			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
@@ -116,15 +111,16 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 	
-	public boolean isAnEmailJournal(String journal)
+	public String getAnEmailJournal(String journal)
 	{
-		if(journals==null) return false;
+		if(journals==null) return null;
+		journal=Util.replaceAll(journal,"_"," ");
 		for(int i=0;i<journals.size();i++)
 		{
 			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return true;
+				return (String)journals.elementAt(i,1);
 		}
-		return false;
+		return null;
 	}
 	public boolean isAForwardingJournal(String journal)
 	{
@@ -208,9 +204,9 @@ public class SMTPserver extends Thread implements Tickable
 
 		try
 		{
-			servsock=new ServerSocket(page.getInt("SMTPPORT"), q_len, bindAddr);
+			servsock=new ServerSocket(SMTPclient.DEFAULT_PORT, q_len, bindAddr);
 
-			Log.sysOut(getName(),"Started on port: "+page.getInt("SMTPPORT"));
+			Log.sysOut(getName(),"Started on port: "+SMTPclient.DEFAULT_PORT);
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 
@@ -304,15 +300,6 @@ public class SMTPserver extends Thread implements Tickable
 		super.interrupt();
 	}
 
-	public int getPort()
-	{
-		return page.getInt("SMTPPORT");
-	}
-
-	public String getPortStr()
-	{
-		return page.getStr("SMTPPORT");
-	}
 	public int getMaxMsgs()
 	{
 		String s=page.getStr("MAXMSGS");

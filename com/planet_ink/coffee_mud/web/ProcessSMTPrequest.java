@@ -39,7 +39,7 @@ public class ProcessSMTPrequest extends Thread
 		String name=s;
 		if(x>0)
 		{
-			
+			name=s.substring(0,x).trim();
 			String domain=s.substring(x+1).trim();
 			if(!domain.toUpperCase().endsWith(server.domainName().toUpperCase()))
 			{
@@ -51,8 +51,8 @@ public class ProcessSMTPrequest extends Thread
 				return null;
 			}
 		}
-		if(server.isAnEmailJournal(name))
-			return name;
+		if(server.getAnEmailJournal(name)!=null)
+			return server.getAnEmailJournal(name);
 		if((server.mailboxName().length()>0)
 		&&(CMClass.DBEngine().DBUserSearch(null,name)))
 			return name;
@@ -153,10 +153,11 @@ public class ProcessSMTPrequest extends Thread
 						{
 							for(int i=0;i<to.size();i++)
 							{
-								if(server.isAnEmailJournal((String)to.elementAt(i)))
+								String journal=server.getAnEmailJournal((String)to.elementAt(i));
+								if(journal!=null)
 								{
 									String fdat=finalData.toString().trim();
-									if(server.isASubscribeOnlyJournal((String)to.elementAt(1)))
+									if(server.isASubscribeOnlyJournal(journal))
 									{
 										if(!subject.trim().equalsIgnoreCase("subscribe")
 										&&(!subject.trim().equalsIgnoreCase("unsubscribe"))
@@ -166,12 +167,12 @@ public class ProcessSMTPrequest extends Thread
 											MOB M=CMMap.getLoadPlayer(from);
 											if((M==null)||(!M.isASysOp(null)))
 											{
-												replyData=("552 Mailbox '"+((String)to.elementAt(i))+"' only accepts subscribe/unsubscribe."+cr).getBytes();
+												replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
 												break;
 											}
 										}
 									}
-									CMClass.DBEngine().DBWriteJournal((String)to.elementAt(i),
+									CMClass.DBEngine().DBWriteJournal(journal,
 																	  from,
 																	  "ALL",
 																	  subject,
@@ -539,7 +540,7 @@ public class ProcessSMTPrequest extends Thread
 									}
 									else
 									{
-										if(server.isAnEmailJournal(name))
+										if(server.getAnEmailJournal(name)!=null)
 										{
 											boolean jerror=false;
 											if(server.getJournalCriteria(name).length()>0)
