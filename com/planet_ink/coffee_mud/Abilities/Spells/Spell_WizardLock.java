@@ -130,6 +130,16 @@ public class Spell_WizardLock extends Spell
 					Exit exit=(Exit)target;
 					exit.setDoorsNLocks(exit.hasADoor(),false,exit.defaultsClosed(),
 										exit.hasALock(),true,exit.defaultsLocked());
+					Room R=mob.location();
+					Room R2=null;
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+						if(R.getExitInDir(d)==target)
+						{ R2=R.getRoomInDir(d); break;}
+					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
+					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
+					||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+						CMClass.DBEngine().DBUpdateExits(R);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 				else

@@ -278,10 +278,11 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_DemonGate",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_PolymorphSelf",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_Permanency",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_Geas",false);
 
 			// level 30
-			CMAble.addCharAbilityMapping(ID(),30,"Spell_Wish",false);
+			if(ID().equals("Mage"))
+				CMAble.addCharAbilityMapping(ID(),30,"Spell_Wish",true);
 		}
 	}
 

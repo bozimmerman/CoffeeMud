@@ -20,6 +20,12 @@ public class Spell_Permanency extends Spell
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
+		
+		if((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))
+		{
+			mob.tell("You aren't powerful enough to cast this.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -53,11 +59,29 @@ public class Spell_Permanency extends Spell
 				}
 				else
 				{
-					int exp=10*CMAble.lowestQualifyingLevel(theOne.ID());
-					mob.tell("You lose "+exp+" experience points.");
-					MUDFight.postExperience(mob,null,null,-exp,false);
-					theOne.makeLongLasting();
 					theOne.makeNonUninvokable();
+					theOne.setBorrowed(target,false);
+					mob.baseState().setMana(mob.baseState().getMana()-100);
+					mob.maxState().setMana(mob.maxState().getMana()-100);
+					target.text();
+					if((target instanceof Room)
+					&&((CoffeeUtensils.doesOwnThisProperty(mob,(Room)target))
+						||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),(Room)target)))))
+						CMClass.DBEngine().DBUpdateRoom((Room)target);
+					else
+					if(target instanceof Exit)
+					{
+						Room R=mob.location();
+						Room R2=null;
+						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							if(R.getExitInDir(d)==target)
+							{ R2=R.getRoomInDir(d); break;}
+						if((CoffeeUtensils.doesOwnThisProperty(mob,R))
+						||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
+						||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
+						||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+							CMClass.DBEngine().DBUpdateExits(R);
+					}
 					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}
