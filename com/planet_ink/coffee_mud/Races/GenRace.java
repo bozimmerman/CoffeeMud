@@ -487,7 +487,7 @@ public class GenRace extends StdRace
 		}
 	}
 	protected static String[] CODES={"ID","NAME","CAT","WEAR","VWEIGHT","BWEIGHT",
-									 "VHEIGHT","FHEIGHT","MHEIGHT","PLAYER","LEAVE",
+									 "VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE",
 									 "ARRIVE","HEALTHRACE","BODY","ESTATS",
 									 "ASTATS","CSTATS","ASTATE",
 									 "NUMRSC","GETRSCID","GETRSCPARM",
