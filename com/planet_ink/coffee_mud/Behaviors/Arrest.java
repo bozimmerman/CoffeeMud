@@ -1589,52 +1589,75 @@ public class Arrest extends StdBehavior
 		&&((msg.tool()==null)||(msg.source().isMine(msg.tool())))
 		&&(msg.target()!=msg.source())
 		&&(!msg.target().name().equals(msg.source().name()))
-		&&(msg.target() instanceof MOB)
-		&&(!isTheJudge(laws,(MOB)msg.target())))
+		&&(msg.target() instanceof MOB))
 		{
-			boolean justResisting=false;
-			if(isAnyKindOfOfficer(laws,(MOB)msg.target()))
-				for(int i=laws.warrants().size()-1;i>=0;i--)
+			
+			if(isTheJudge(laws,(MOB)msg.target()))
+			{
+				Room R=msg.source().location();
+				if(!msg.source().isMonster())
+				for(int i=0;i<R.numInhabitants();i++)
 				{
-					LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-					if((W.criminal()==msg.source())
-					&&(W.arrestingOfficer()!=null)
-					&&(W.criminal().location()!=null)
-					&&(W.criminal().location().isInhabitant(W.arrestingOfficer())))
+					MOB M=R.fetchInhabitant(i);
+					if((M!=null)
+					&&(M!=msg.target())
+					&&(M!=msg.source())
+					&&(M.getVictim()!=msg.source())
+					&&(isAnyKindOfOfficer(laws,M)))
 					{
-						justResisting=true;
-						break;
+						if(msg.source().amFollowing()==M)
+							msg.source().setFollowing(null);
+						CommonMsgs.say(M,null,"Ack! Treason! Die!",false,false);
+						M.setVictim(msg.source());
 					}
 				}
-			if(justResisting)
+			}
+			else
 			{
-				if(laws.basicCrimes().containsKey("RESISTINGARREST"))
+				boolean justResisting=false;
+				if(isAnyKindOfOfficer(laws,(MOB)msg.target()))
+					for(int i=laws.warrants().size()-1;i>=0;i--)
+					{
+						LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+						if((W.criminal()==msg.source())
+						&&(W.arrestingOfficer()!=null)
+						&&(W.criminal().location()!=null)
+						&&(W.criminal().location().isInhabitant(W.arrestingOfficer())))
+						{
+							justResisting=true;
+							break;
+						}
+					}
+				if(justResisting)
 				{
-					String[] info=(String[])laws.basicCrimes().get("RESISTINGARREST");
+					if(laws.basicCrimes().containsKey("RESISTINGARREST"))
+					{
+						String[] info=(String[])laws.basicCrimes().get("RESISTINGARREST");
+						fillOutWarrant(msg.source(),
+										laws,
+										myArea,
+										null,
+										info[Law.BIT_CRIMELOCS],
+										info[Law.BIT_CRIMEFLAGS],
+										info[Law.BIT_CRIMENAME],
+										info[Law.BIT_SENTENCE],
+										info[Law.BIT_WARNMSG]);
+					}
+				}
+				else
+				if(laws.basicCrimes().containsKey("ASSAULT"))
+				{
+					String[] info=(String[])laws.basicCrimes().get("ASSAULT");
 					fillOutWarrant(msg.source(),
 									laws,
 									myArea,
-									null,
+									msg.target(),
 									info[Law.BIT_CRIMELOCS],
 									info[Law.BIT_CRIMEFLAGS],
 									info[Law.BIT_CRIMENAME],
 									info[Law.BIT_SENTENCE],
 									info[Law.BIT_WARNMSG]);
 				}
-			}
-			else
-			if(laws.basicCrimes().containsKey("ASSAULT"))
-			{
-				String[] info=(String[])laws.basicCrimes().get("ASSAULT");
-				fillOutWarrant(msg.source(),
-								laws,
-								myArea,
-								msg.target(),
-								info[Law.BIT_CRIMELOCS],
-								info[Law.BIT_CRIMEFLAGS],
-								info[Law.BIT_CRIMENAME],
-								info[Law.BIT_SENTENCE],
-								info[Law.BIT_WARNMSG]);
 			}
 		}
 

@@ -1,4 +1,4 @@
-cast a spell in cuffs, but I can assure you he won't be able to
+zapper check for deities
 item generation behavior?
 we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
 Execution skill for Arrest

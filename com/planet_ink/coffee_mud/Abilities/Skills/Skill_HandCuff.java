@@ -37,6 +37,7 @@ public class Skill_HandCuff extends StdAbility
 
 	public int amountRemaining=0;
 	public boolean oldAssist=false;
+	public boolean oldGuard=false;
 
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -138,6 +139,8 @@ public class Skill_HandCuff extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
 			if(!oldAssist)
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
+			if(oldGuard)
+				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			CommonMsgs.stand(mob,true);
 		}
 	}
@@ -183,8 +186,18 @@ public class Skill_HandCuff extends StdAbility
 							oldAssist=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(!oldAssist)
 								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
-							CommonMsgs.doStandardCommand(target,"NoFollow",Util.makeVector("UNFOLLOW","QUIETLY"));
+							oldGuard=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+							if(oldGuard)
+								target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
+							boolean oldNOFOL=Util.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
+							if(target.numFollowers()>0)
+								CommonMsgs.doStandardCommand(target,"NoFollow",Util.makeVector("UNFOLLOW","QUIETLY"));
+							target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							CommonMsgs.follow(target,mob,true);
+							if(oldNOFOL)
+								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_NOFOLLOW));
+							else
+								target.setBitmap(Util.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							target.setFollowing(mob);
 						}
 					}
