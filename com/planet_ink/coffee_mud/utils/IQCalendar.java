@@ -125,21 +125,32 @@ public class IQCalendar extends GregorianCalendar
 		DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
 
 		// for those stupid SQLServer date formats, clean them up!
-		if((TheDate.indexOf(".")==19)
-		||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
+		if((TheDate.indexOf(".")==19)||(TheDate.indexOf("-")==4))
 		{
-			int HH=Util.s_int(TheDate.substring(11,13));
-			int MM=Util.s_int(TheDate.substring(14,16));
-			TheDate=TheDate.substring(5,7)+"/"+TheDate.substring(8,10)+"/"+TheDate.substring(0,4);
-			String AP="AM";
-			if(HH==0) HH=12;
-			else
-			if(HH>=12)
+			int monthdiv=TheDate.indexOf("-",5);
+			if(monthdiv>4)
 			{
-				AP="PM";
-				if(HH>12) HH=HH-12;
+				String oldDate=TheDate;
+				TheDate=oldDate.substring(5,monthdiv).trim()+"/"+oldDate.substring(monthdiv+1,monthdiv+3).trim()+"/"+oldDate.substring(0,4);
+			
+				int divider=oldDate.indexOf(":",monthdiv+2);
+				if(divider>monthdiv)
+				{
+					int HH=Util.s_int(oldDate.substring(divider-2,divider).trim());
+					int MM=Util.s_int(oldDate.substring(divider+1,divider+3).trim());
+					String AP="AM";
+					if(HH==0) HH=12;
+					else
+					if(HH>=12)
+					{
+						AP="PM";
+						if(HH>12) HH=HH-12;
+					}
+					TheDate=TheDate+" "+Integer.toString(HH)+":"+Integer.toString(MM)+" "+AP;
+				}
+				else
+					TheDate=TheDate+" 12:00 PM";
 			}
-			TheDate=TheDate+" "+Integer.toString(HH)+":"+Integer.toString(MM)+" "+AP;
 		}
 
 		// If it has no time, give it one!
