@@ -100,7 +100,7 @@ public class Domesticating extends CommonSkill
 		messedUp=!profficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.name()+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

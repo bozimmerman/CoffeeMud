@@ -257,7 +257,7 @@ public class JewelMaking extends CraftingSkill
 			beingDone.addElement(jewelI);
 			messedUp=!profficiencyCheck(mob,0,auto);
 			completion=10;
-			FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 			if(mob.location().okMessage(mob,msg))
 			{
 				jewelI.destroy();

@@ -177,7 +177,7 @@ public class Painting extends CommonSkill
 		completion=completion-mob.envStats().level()+5;
 		if(completion<10) completion=10;
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

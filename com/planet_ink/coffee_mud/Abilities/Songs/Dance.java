@@ -108,7 +108,7 @@ public class Dance extends StdAbility
 
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),true,ID())<0)
+		&&(!CMAble.qualifiesByLevel(mob,this))
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

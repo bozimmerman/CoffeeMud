@@ -73,6 +73,7 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_ENERGY:
 					case EnvResource.MATERIAL_PRECIOUS:
 					case EnvResource.MATERIAL_ROCK:
+					case EnvResource.MATERIAL_UNKNOWN:
 						break;
 					default:
 						((Item)affected).destroy();
@@ -91,6 +92,7 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_MITHRIL:
 					case EnvResource.MATERIAL_PRECIOUS:
 					case EnvResource.MATERIAL_ROCK:
+					case EnvResource.MATERIAL_UNKNOWN:
 						break;
 					default:
 						((Item)affected).destroy();
@@ -140,6 +142,7 @@ public class Burning extends StdAbility
 			case EnvResource.MATERIAL_PRECIOUS:
 			case EnvResource.MATERIAL_ENERGY:
 			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_UNKNOWN:
 				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is HOT!");
 				break;
 			default:
@@ -176,6 +179,7 @@ public class Burning extends StdAbility
 				case EnvResource.MATERIAL_PRECIOUS:
 				case EnvResource.MATERIAL_ENERGY:
 				case EnvResource.MATERIAL_ROCK:
+				case EnvResource.MATERIAL_UNKNOWN:
 					return true;
 				default:
 					break;
@@ -218,6 +222,8 @@ public class Burning extends StdAbility
 		if(target==null) return false;
 		if(target.fetchEffect("Burning")==null)
 		{
+			if((target instanceof Item)&&(((Item)target).material()==EnvResource.RESOURCE_NOTHING))
+				return false;
 			if((mob!=null)&&(mob.location()!=null))
 			{
 				FullMsg msg=new FullMsg(mob,target,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,null);

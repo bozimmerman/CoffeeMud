@@ -50,6 +50,10 @@ public class Chant_DeepDarkness extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
+		if(Sense.isGlowing(affected))
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_GLOWING);
+		if(Sense.isLightSource(affected))
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_LIGHTSOURCE);
 		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 	}
 

@@ -98,7 +98,7 @@ public class Chopping extends CommonSkill
 		}
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) chopping wood.");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) chopping wood.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

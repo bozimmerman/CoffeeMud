@@ -653,7 +653,7 @@ public class Cooking extends CraftingSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		FullMsg msg=new FullMsg(mob,cooking,null,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
+		FullMsg msg=new FullMsg(mob,cooking,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_OK_ACTION,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -261,7 +261,7 @@ public class LockSmith extends CraftingSkill
 		messedUp=!profficiencyCheck(mob,profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

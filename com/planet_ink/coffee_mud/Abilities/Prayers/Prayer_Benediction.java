@@ -24,7 +24,8 @@ public class Prayer_Benediction extends Prayer
 		MOB mob=(MOB)affected;
 		int pts=adjustedLevel(invoker())/5;
 		CharStats chk=new DefaultCharStats(0);
-		mob.charStats().getCurrentClass().affectCharStats(mob,chk);
+		for(int c=0;c<mob.charStats().numClasses();c++)
+			mob.charStats().getMyClass(c).affectCharStats(mob,chk);
 		int num=0;
 		for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
 			if(chk.getStat(i)>0) num++;

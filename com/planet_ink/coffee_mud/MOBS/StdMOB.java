@@ -254,7 +254,8 @@ public class StdMOB implements MOB
 		if(getMyDeity()!=null) getMyDeity().affectEnvStats(this,envStats);
 		if(charStats!=null)
 		{
-			charStats().getCurrentClass().affectEnvStats(this,envStats);
+			for(int c=0;c<charStats().numClasses();c++)
+				charStats().getMyClass(c).affectEnvStats(this,envStats);
 			charStats().getMyRace().affectEnvStats(this,envStats);
 		}
 
@@ -334,7 +335,8 @@ public class StdMOB implements MOB
 		}
 		if(location()!=null)
 			location().affectCharStats(this,charStats);
-		charStats.getCurrentClass().affectCharStats(this,charStats);
+		for(int c=0;c<charStats.numClasses();c++)
+			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
 	}
 	public void setBaseCharStats(CharStats newBaseCharStats)
@@ -1091,8 +1093,9 @@ public class StdMOB implements MOB
 
 		if(charStats!=null)
 		{
-			if(!charStats().getCurrentClass().okMessage(this,msg))
-				return false;
+			for(int c=0;c<charStats().numClasses();c++)
+				if(!charStats().getMyClass(c).okMessage(this,msg))
+					return false;
 			if(!charStats().getMyRace().okMessage(this, msg))
 				return false;
 		}
@@ -1732,7 +1735,8 @@ public class StdMOB implements MOB
 
 		if(charStats!=null)
 		{
-			charStats().getCurrentClass().executeMsg(this,msg);
+			for(int c=0;c<charStats().numClasses();c++)
+				charStats().getMyClass(c).executeMsg(this,msg);
 			charStats().getMyRace().executeMsg(this,msg);
 		}
 
@@ -2388,7 +2392,8 @@ public class StdMOB implements MOB
 			}
 
 			tickStatus=Tickable.STATUS_CLASS;
-			charStats().getCurrentClass().tick(ticking,tickID);
+			for(int c=0;c<charStats().numClasses();c++)
+				charStats().getMyClass(c).tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;

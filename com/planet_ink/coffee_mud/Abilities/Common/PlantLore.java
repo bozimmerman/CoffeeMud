@@ -116,7 +116,7 @@ public class PlantLore extends CommonSkill
 			success=true;
 		int duration=45-mob.envStats().level();
 		if(duration<5) duration=5;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) observing the growth in this area.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -77,8 +77,11 @@ public class Chant_Rockfeet extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,0,-1);
-				target.tell("Your hands and feet feel extremely heavy!");
+				if(msg.value()<=0)
+				{
+					maliciousAffect(mob,target,0,-1);
+					target.tell("Your hands and feet feel extremely heavy!");
+				}
 			}
 		}
 		else

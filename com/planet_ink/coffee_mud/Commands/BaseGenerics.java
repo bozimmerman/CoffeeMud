@@ -706,9 +706,9 @@ public class BaseGenerics extends StdCommand
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
-			case 'A': Sense.setGettable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
-			case 'B': Sense.setDroppable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))); break;
-			case 'C': Sense.setRemovable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))); break;
+			case 'A': Sense.setGettable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
+			case 'B': Sense.setDroppable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))); break;
+			case 'C': Sense.setRemovable(E,(Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))); break;
 			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
 						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 					  else

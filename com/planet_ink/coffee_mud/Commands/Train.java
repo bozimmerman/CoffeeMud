@@ -29,7 +29,8 @@ public class Train extends StdCommand
 		{
 			CharStats copyStats=mob.baseCharStats().cloneCharStats();
 			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
-			mob.charStats().getCurrentClass().affectCharStats(mob,copyStats);
+			for(int c=0;c<mob.charStats().numClasses();c++)
+				mob.charStats().getMyClass(c).affectCharStats(mob,copyStats);
 			curStat=copyStats.getStat(abilityCode);
 			if(curStat<18)
 				trainsRequired=1;

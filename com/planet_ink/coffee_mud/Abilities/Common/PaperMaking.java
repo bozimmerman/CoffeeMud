@@ -207,7 +207,7 @@ public class PaperMaking extends CraftingSkill
 			return true;
 		}
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -229,7 +229,7 @@ public class Druid_ShapeShift extends StdAbility
 			while(V.size()>0)
 			{
 				Ability choice=null;
-				int sortByLevel=Integer.MAX_VALUE;;
+				int sortByLevel=Integer.MAX_VALUE;
 				for(int v=0;v<V.size();v++)
 				{
 					Ability A=(Ability)V.elementAt(v);

@@ -10,10 +10,32 @@ public class Chant_Brittle extends Chant
 	public String ID() { return "Chant_Brittle"; }
 	public String name(){return "Brittle";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return CAN_ITEMS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Chant_Brittle();}
-
+	private int oldCondition=-1;
+	private boolean noRecurse=true;
+	public void affectEnvStats(Environmental E, EnvStats stats)
+	{
+		super.affectEnvStats(E,stats);
+		if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
+		{
+			noRecurse=true;
+			if(oldCondition==-1) 
+				oldCondition=((Item)E).usesRemaining();
+			if(((Item)E).usesRemaining()<oldCondition)
+			{
+				Room R=CoffeeUtensils.roomLocation(E);
+				if(R!=null)
+					R.showHappens(CMMsg.MSG_OK_ACTION,E.name()+" is destroyed!");
+				((Item)E).destroy();
+			}
+			else
+				((Item)E).setUsesRemaining(oldCondition);
+			noRecurse=false;
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true);
@@ -52,7 +74,7 @@ public class Chant_Brittle extends Chant
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-
+		oldCondition=-1;
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -66,8 +88,12 @@ public class Chant_Brittle extends Chant
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
 					mob.location().send(mob,msg2);
-				if(msg.value()<=0)
-					target.setUsesRemaining(1);
+				if((msg.value()<=0)&&(msg2.value()<=0))
+				{
+					if(target.subjectToWearAndTear())
+						oldCondition=target.usesRemaining();
+					maliciousAffect(mob,target,0,-1);
+				}
 			}
 		}
 		else

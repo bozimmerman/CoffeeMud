@@ -173,7 +173,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

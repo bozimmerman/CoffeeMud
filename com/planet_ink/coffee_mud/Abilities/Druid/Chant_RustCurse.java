@@ -109,8 +109,11 @@ public class Chant_RustCurse extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,0,-1);
-				target.tell("You feel damp!");
+				if(msg.value()<=0)
+				{
+					maliciousAffect(mob,target,0,-1);
+					target.tell("You feel damp!");
+				}
 			}
 		}
 		else

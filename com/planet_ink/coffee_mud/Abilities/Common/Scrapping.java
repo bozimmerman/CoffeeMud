@@ -162,7 +162,7 @@ public class Scrapping extends CommonSkill
 		foundShortName="nothing";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			for(int v=0;v<V.size();v++)

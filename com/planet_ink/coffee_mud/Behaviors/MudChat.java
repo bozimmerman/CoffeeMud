@@ -387,7 +387,10 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(l-1)==')'))
 						{
 							if(match(expression.substring(1,expression.length()-1),str,rest))
+							{
+								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);
+							}
 						}
 					}
 				}
@@ -432,7 +435,10 @@ public class MudChat extends StdBehavior
 						&&(expression.charAt(l-1)==c2))
 						{
 							if(match(expression.substring(1,expression.length()-1),str,rest))
+							{
+								if(myResponses==null) myResponses=new Vector();
 								myResponses.addAll(possResponses);
+							}
 						}
 					}
 				}

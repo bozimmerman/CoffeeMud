@@ -13,7 +13,7 @@ public class Prayer_AuraHeal extends Prayer
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
 	public Environmental newInstance(){	return new Prayer_AuraHeal();	}
 	private int tickDown=4;
 

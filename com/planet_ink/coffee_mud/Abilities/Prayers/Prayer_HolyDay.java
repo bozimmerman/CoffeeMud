@@ -14,7 +14,7 @@ public class Prayer_HolyDay extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_HolyDay();	}
 	private String godName="the gods";
 

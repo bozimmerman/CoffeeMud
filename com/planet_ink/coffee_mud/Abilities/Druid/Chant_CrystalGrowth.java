@@ -74,6 +74,9 @@ public class Chant_CrystalGrowth extends Chant
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
+				Ability A2=CMClass.getAbility("Chant_Brittle");
+				if(A2!=null)
+					building.addNonUninvokableEffect(A2);
 
 				building.recoverEnvStats();
 				building.text();

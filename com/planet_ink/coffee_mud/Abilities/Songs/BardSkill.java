@@ -23,7 +23,7 @@ public class BardSkill extends StdAbility
 		if((!auto)
 		&&(!mob.isMonster())
 		&&(!exemptFromArmorReq())
-		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),true,ID())<0)
+		&&(!CMAble.qualifiesByLevel(mob,this))
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

@@ -668,7 +668,7 @@ public class Masonry extends CraftingSkill
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<15) completion=15;
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -102,7 +102,7 @@ public class Mining extends CommonSkill
 		}
 		int duration=50-mob.envStats().level();
 		if(duration<15) duration=15;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

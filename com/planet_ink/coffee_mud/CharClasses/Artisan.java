@@ -121,18 +121,21 @@ public class Artisan extends StdCharClass
 		if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
-			int exp=0;
-			for(int a=0;a<mob.numEffects();a++)
+			if(mob.charStats().getCurrentClass()==this)
 			{
-				Ability A=mob.fetchEffect(a);
-				if((A!=null)
-				&&(!A.isAutoInvoked())
-				&&(mob.isMine(A))
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-					exp++;
+				int exp=0;
+				for(int a=0;a<mob.numEffects();a++)
+				{
+					Ability A=mob.fetchEffect(a);
+					if((A!=null)
+					&&(!A.isAutoInvoked())
+					&&(mob.isMine(A))
+					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+						exp++;
+				}
+				if(exp>0)
+					MUDFight.postExperience(mob,null,mob.getLiegeID(),exp,true);
 			}
-			if(exp>0)
-				MUDFight.postExperience(mob,null,mob.getLiegeID(),exp,true);
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -179,7 +182,9 @@ public class Artisan extends StdCharClass
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)
+		&&(msg.source().charStats().getCurrentClass()==this)			  
+		&&(!myChar.isMonster()))
 		{
 			boolean spellLike=((msg.tool()!=null)
 							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))

@@ -147,7 +147,9 @@ public class Apprentice extends StdCharClass
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)
+		&&(msg.source().charStats().getCurrentClass()==this)			  
+		&&(!myChar.isMonster()))
 		{
 			boolean spellLike=((msg.tool()!=null)
 							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))

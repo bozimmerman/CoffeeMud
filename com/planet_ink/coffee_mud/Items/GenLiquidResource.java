@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GenLiquidResource extends GenWater implements EnvResource, Drink
+public class GenLiquidResource extends GenDrink implements EnvResource, Drink
 {
 	public String ID(){	return "GenLiquidResource";}
 	public GenLiquidResource()

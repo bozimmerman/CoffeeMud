@@ -29,7 +29,7 @@ public class Druid_GolemForm extends StdAbility
 			unInvoke();
 			return "";
 		}
-		return "(in "+newRace.name().toLowerCase()+" form)";
+		return "(in "+raceName+" form)";
 	}
 
 	private static String[] shapes={
@@ -58,31 +58,31 @@ public class Druid_GolemForm extends StdAbility
 			switch(raceLevel)
 			{
 			case 0:
-				affectableStats.setArmor(affectableStats.armor()+10);
+				affectableStats.setArmor(affectableStats.armor()-10);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10);
 				affectableStats.setDamage(affectableStats.attackAdjustment()+5);
 				affectableStats.setSpeed(affectableStats.speed()/1.5);
 				break;
 			case 1:
-				affectableStats.setArmor(affectableStats.armor()+20);
+				affectableStats.setArmor(affectableStats.armor()-20);
 				affectableStats.setSpeed(affectableStats.speed()/2.0);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
 				affectableStats.setDamage(affectableStats.attackAdjustment()+10);
 				break;
 			case 2:
-				affectableStats.setArmor(affectableStats.armor()+40);
+				affectableStats.setArmor(affectableStats.armor()-40);
 				affectableStats.setSpeed(affectableStats.speed()/2.5);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+40);
 				affectableStats.setDamage(affectableStats.attackAdjustment()+20);
 				break;
 			case 3:
-				affectableStats.setArmor(affectableStats.armor()+60);
+				affectableStats.setArmor(affectableStats.armor()-60);
 				affectableStats.setSpeed(affectableStats.speed()/3.0);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+80);
 				affectableStats.setDamage(affectableStats.attackAdjustment()+40);
 				break;
 			case 4:
-				affectableStats.setArmor(affectableStats.armor()+80);
+				affectableStats.setArmor(affectableStats.armor()-80);
 				affectableStats.setSpeed(affectableStats.speed()/4.0);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+160);
 				affectableStats.setDamage(affectableStats.attackAdjustment()+80);
@@ -241,7 +241,7 @@ public class Druid_GolemForm extends StdAbility
 				mob.location().send(mob,msg);
 				raceName=getRaceName(classLevel);
 				newRace=getRace(classLevel);
-				raceLevel=classLevel;
+				raceLevel=getRaceLevel(classLevel);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);
 				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");

@@ -100,7 +100,7 @@ public class Chant_Den extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a treehouse!^?");
+			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) for a den!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -127,7 +127,7 @@ public class Chant_Den extends Chant
 				A=CMClass.getAbility("Prop_NoTeleportOut");
 				if(A!=null) newRoom.addEffect(A);
 
-				newRoom.rawExits()[Directions.DOWN]=E;
+				newRoom.rawExits()[Directions.getOpDirectionCode(d)]=E;
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,mob.location(),(int)MudHost.TICKS_PER_MUDDAY);
 			}

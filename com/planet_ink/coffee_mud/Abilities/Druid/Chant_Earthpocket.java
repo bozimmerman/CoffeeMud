@@ -9,11 +9,11 @@ public class Chant_Earthpocket extends Chant
 {
 	public String ID() { return "Chant_Earthpocket"; }
 	public String name(){return "Earthpocket";}
+	public String displayText(){return "(Earthpocket: "+(super.tickDown/MudHost.TICKS_PER_MUDDAY)+")";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){ return new Chant_Earthpocket();}
 	private Container pocket=null;
-	
 
 	public void unInvoke()
 	{
@@ -75,13 +75,29 @@ public class Chant_Earthpocket extends Chant
 			else
 			if(pocket.owner() instanceof Room)
 			{
-				if(pocket.owner()==((MOB)affected).location())
-					return;
-				pocket.removeFromOwnerContainer();
 				if(((MOB)affected).location()!=null)
 				{
 					if(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
+					{
+						if(Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+						{
+							pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
+							pocket.recoverEnvStats();
+						}
 						((MOB)affected).location().bringItemHere(pocket,0);
+					}
+					else
+					if(!Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+					{
+						pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
+						pocket.recoverEnvStats();
+					}
+				}
+				else
+				if(!Util.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+				{
+					pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
+					pocket.recoverEnvStats();
 				}
 			}
 		}
@@ -135,6 +151,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.setDisplayText("an empty pitch-black pocket is in the wall here.");
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
 				pocket.recoverEnvStats();
+				target.location().addItem(pocket);
 				beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY*5);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");
 			}

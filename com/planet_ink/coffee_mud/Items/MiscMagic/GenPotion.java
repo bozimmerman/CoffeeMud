@@ -2,10 +2,10 @@ package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.GenWater;
+import com.planet_ink.coffee_mud.Items.GenDrink;
 import java.util.*;
 
-public class GenPotion extends GenWater implements Potion
+public class GenPotion extends GenDrink implements Potion
 {
 	public String ID(){	return "GenPotion";}
 	protected Ability theSpell;

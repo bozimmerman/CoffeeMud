@@ -177,7 +177,7 @@ public class AnimalTaming extends CommonSkill
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="taming "+M.name();
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

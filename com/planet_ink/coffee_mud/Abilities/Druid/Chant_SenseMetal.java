@@ -33,7 +33,7 @@ public class Chant_SenseMetal extends Chant
 		&&(msg.tool()==null)
 		&&(((((Room)msg.target()).myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 		   ||((((Room)msg.target()).myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
-			msg.source().tell("You sense metals strongly in the earth here.");
+			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"You sense metals strongly in the earth here.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
 	}
 	

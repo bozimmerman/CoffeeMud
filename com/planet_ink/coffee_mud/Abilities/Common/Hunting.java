@@ -197,7 +197,7 @@ public class Hunting extends CommonSkill
 			}
 		}
 		int duration=10+(mob.envStats().level()/4);
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

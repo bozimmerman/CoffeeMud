@@ -15,7 +15,8 @@ public class Chant_EndureRust extends Chant
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int quality(){return Ability.BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Chant_EndureRust();}
-
+	private HashSet dontbother=new HashSet();
+	
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
@@ -23,18 +24,22 @@ public class Chant_EndureRust extends Chant
 		super.unInvoke();
 	}
 	
-	public void executeMsg(Environmental host, CMMsg msg)
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((((msg.target()==affected)&&(affected instanceof Item))
 			||(msg.target() instanceof Item)&&(affected instanceof MOB)&&(((MOB)affected).isMine(msg.target())))
 		&&(msg.targetMinor()==CMMsg.TYP_WATER))
 		{
-			Room R=CoffeeUtensils.roomLocation(affected);
-			if(R!=null)
-				R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<T-NAME> resist(s) the oxidizing affects.");
-			msg.setValue(msg.value()+1);
+			if(!dontbother.contains(msg.target()))
+			{
+				Room R=CoffeeUtensils.roomLocation(affected);
+				dontbother.add(msg.target());
+				if(R!=null)
+					R.show(msg.source(),affected,CMMsg.MSG_OK_VISUAL,"<T-NAME> resist(s) the oxidizing affects.");
+			}
+			return false;
 		}
-		super.executeMsg(host,msg);
+		return super.okMessage(host,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -63,6 +68,7 @@ public class Chant_EndureRust extends Chant
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, causing a rust proof film to envelope <T-HIM-HER>!^?");
 		if(mob.location().okMessage(mob,msg))
 		{
+			dontbother.clear();
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);
 		}

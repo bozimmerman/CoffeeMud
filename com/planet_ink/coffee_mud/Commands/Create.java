@@ -292,8 +292,8 @@ public class Create extends BaseGenerics
 			}
 		}
 		if(areaType.length()==0) areaType="StdArea";
-		A.setName(areaName);
 		A=CMClass.DBEngine().DBCreateArea(areaName,areaType);
+		A.setName(areaName);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
 	}
 
