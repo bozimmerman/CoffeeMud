@@ -78,7 +78,7 @@ public class ArchonStaff extends Staff implements Wand
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					mob.location().show(mob,target,Affect.MSG_OK_ACTION,me.name()+" "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!");
+					mob.location().show(mob,target,Affect.MSG_OK_ACTION,me.name()+" "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!");
 					ExternalPlay.postDamage(mob,target,null,(++flameDamage));
 					return;
 				}
@@ -103,7 +103,7 @@ public class ArchonStaff extends Staff implements Wand
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
 					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+flameDamage,Affect.NO_EFFECT,null));
 				}
 			}

@@ -452,15 +452,15 @@ public class TheFight
 	}
 
 
-	public String hitString(int weaponType, int damageAmount, String weaponName)
+	public String standardHitString(int weaponType, int weaponClass, int damageAmount, String weaponName)
 	{
-		if((weaponType!=Weapon.TYPE_NATURAL)||(weaponName==null)||(weaponName.length()==0))
-			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
+		if((weaponClass!=Weapon.CLASS_NATURAL)||(weaponName==null)||(weaponName.length()==0))
+			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
 		else
-			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAMESELF>";
+			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
 	}
 
-	public String hitWord(int weaponType, int damageAmount)
+	public String standardHitWord(int weaponType, int damageAmount)
 	{
 		switch(weaponType)
 		{
@@ -507,13 +507,13 @@ public class TheFight
 				return "cut(s)";
 			else
 			if(damageAmount<25)
-				return "claw(s)";
+				return "hurt(s)";
 			else
 			if(damageAmount<35)
 				return "rip(s)";
 			else
 			if(damageAmount<50)
-				return "gore(s)";
+				return "crunch(es)";
 			else
 			if(damageAmount<75)
 				return "MASSACRE(S)";
@@ -662,7 +662,7 @@ public class TheFight
 			else
 				return "OBLITERATE(S)";
 		default:
-			return hitWord(Weapon.TYPE_BURSTING,damageAmount);
+			return standardHitWord(Weapon.TYPE_BURSTING,damageAmount);
 		}
 	}
 
@@ -759,26 +759,26 @@ public class TheFight
 			return "you are death incarnate! ("+prowess+")";
 	}
 
-	public String missString(int weaponType, String weaponName)
+	public String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
 	{
 		switch(weaponType)
 		{
 		case Weapon.TYPE_BASHING:
-			return "<S-NAME> swing(s) at <T-NAMESELF> and miss(es).";
+			return "<S-NAME> swing(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+" and miss(es).";
 		case Weapon.TYPE_NATURAL:
-			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		case Weapon.TYPE_SLASHING:
-			return "<S-NAME> swing(s) at <T-NAMESELF> and miss(es).";
+			return "<S-NAME> swing(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		case Weapon.TYPE_PIERCING:
-			return "<S-NAME> lunge(s) at <T-NAMESELF> and miss(es).";
+			return "<S-NAME> lunge(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		case Weapon.TYPE_BURNING:
-			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		case Weapon.TYPE_BURSTING:
-			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		case Weapon.TYPE_SHOOT:
-			return "<S-NAME> shoot(s) at <T-NAMESELF> and miss(es).";
+			return "<S-NAME> shoot(s) at <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		default:
-			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+			return "<S-NAME> attack(s) <T-NAMESELF> "+(useExtendedMissString?"with "+weaponName:"")+"and miss(es).";
 		}
 	}
 
@@ -820,7 +820,7 @@ public class TheFight
 									target,
 									weapon,
 									Affect.MSG_NOISYMOVEMENT,
-									hitString(weapon.weaponType(),damageInt,weapon.name()));
+									weapon.hitString(damageInt));
 			msg.tagModified(true);
 			// why was there no okaffect here?
 			if(source.location().okAffect(msg))
@@ -837,7 +837,7 @@ public class TheFight
 									target,
 									weapon,
 									Affect.MSG_NOISYMOVEMENT,
-									missString(weapon.weaponType(),weapon.name()));
+									weapon.missString());
 			// why was there no okaffect here?
 			if(source.location().okAffect(msg))
 				source.location().send(source,msg);

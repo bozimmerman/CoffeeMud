@@ -19,7 +19,8 @@ public class Lantern extends LightSource
 		baseEnvStats().setWeight(5);
 		material=Item.METAL;
 		durationTicks=200;
-		destroyedWhenBurnedOut=false;
+		this.destroyedWhenBurnedOut=false;
+		this.goesOutInTheRain=false;
 		baseGoldValue=60;
 	}
 	public Environmental newInstance()
@@ -37,7 +38,7 @@ public class Lantern extends LightSource
 				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
-						if(!burnedOut)
+						if(getDuration()>0)
 						{
 							mob.tell(name()+" still has some oil left in it.");
 							return false;
@@ -84,8 +85,8 @@ public class Lantern extends LightSource
 					if(amountToTake>thePuddle.amountOfLiquidRemaining)
 						amountToTake=0;
 					thePuddle.amountOfLiquidRemaining-=amountToTake;
-					lit=false;
-					burnedOut=false;
+					light(false);
+					setDuration(200);
 					description="The lantern still looks like it has some oil in it.";
 				}
 				break;

@@ -60,4 +60,6 @@ public class Halfling extends StdRace
 		p1.setDescription("They appear to be for a dimunitive person, and extend barely past the knee at that.");
 		wearOutfit(mob,s1,null,p1);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

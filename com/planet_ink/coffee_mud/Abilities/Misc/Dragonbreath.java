@@ -129,7 +129,7 @@ public class Dragonbreath extends StdAbility
 					if(msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The "+stuffWord+" "+ExternalPlay.hitWord(WeaponType,damage)+" <S-NAME>!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The "+stuffWord+" "+ExternalPlay.standardHitWord(WeaponType,damage)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,damage);
 				}
 			}

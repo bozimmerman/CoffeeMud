@@ -8,6 +8,7 @@ public class StdWeapon extends StdItem implements Weapon
 {
 	protected int weaponType=TYPE_NATURAL;
 	protected int weaponClassification=CLASS_NATURAL;
+	protected boolean useExtendedMissString=false;
 
 	public StdWeapon()
 	{
@@ -19,7 +20,7 @@ public class StdWeapon extends StdItem implements Weapon
 		wornLogicalAnd=false;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(1);
+		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=15;
 		material=Item.METAL;
@@ -106,5 +107,14 @@ public class StdWeapon extends StdItem implements Weapon
 			return "STAFF";
 		}
 		return "";
+	}
+	
+	public String missString()
+	{
+		return ExternalPlay.standardMissString(weaponType,name(),useExtendedMissString);
+	}
+	public String hitString(int damageAmount)
+	{
+		return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+name();
 	}
 }

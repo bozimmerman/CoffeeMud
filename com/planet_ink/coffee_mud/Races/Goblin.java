@@ -34,4 +34,14 @@ public class Goblin extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(70+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("nasty little claws");
+			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+		}
+		return naturalWeapon;
+	}
 }

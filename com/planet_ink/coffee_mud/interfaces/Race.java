@@ -8,6 +8,7 @@ public interface Race
 	public void newCharacter(MOB mob);
 	public void setWeight(MOB mob);
 	public void outfit(MOB mob);
+	public Weapon myNaturalWeapon();
 	
 	public String arriveStr();
 	public String leaveStr();

@@ -36,4 +36,14 @@ public class Giant extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(800+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a pair of gigantic fists");
+			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+		}
+		return naturalWeapon;
+	}
 }

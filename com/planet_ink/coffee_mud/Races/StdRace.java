@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Races;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Dice;
 import java.util.*;
 
 public class StdRace implements Race
@@ -10,6 +11,8 @@ public class StdRace implements Race
 	protected String name="MOB";
 	protected int practicesAtFirstLevel=0;
 	protected int trainsAtFirstLevel=0;
+	protected Weapon naturalWeapon=null;
+	protected Vector naturalWeaponChoices=null;
 	public String ID()
 	{
 		return myID;
@@ -79,6 +82,47 @@ public class StdRace implements Race
 		mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
 		mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
 
+	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+			naturalWeapon=(Weapon)CMClass.getWeapon("Natural");
+		return naturalWeapon;
+	}
+	
+	public Weapon funHumanoidWeapon()
+	{
+		if(naturalWeaponChoices==null)
+		{
+			naturalWeaponChoices=new Vector();
+			for(int i=1;i<7;i++)
+			{
+				naturalWeapon=CMClass.getWeapon("StdWeapon");
+				switch(i)
+				{
+					case 1:
+					case 2:
+					case 3:
+					naturalWeapon.setName("a quick punch");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+					case 4:
+					naturalWeapon.setName("fingernails and teeth");
+					naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+					break;
+					case 5:
+					naturalWeapon.setName("an elbow");
+					naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+					break;
+					case 6:
+					naturalWeapon.setName("a backhand");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+				}
+				naturalWeaponChoices.addElement(naturalWeapon);
+			}
+		}
+		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),0)-1);
 	}
 	public void setWeight(MOB mob)
 	{

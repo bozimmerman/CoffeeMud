@@ -38,6 +38,28 @@ public class JournalLoader
 				if(D!=null) DBConnector.DBDone(D);
 				return null;
 			}
+			Vector oldJournal=journal;
+			journal=new Vector();
+			while(oldJournal.size()>0)
+			{
+				Vector useEntry=null;
+				long byDate=Long.MAX_VALUE;
+				for(int j=0;j<oldJournal.size();j++)
+				{
+					Vector entry=(Vector)oldJournal.elementAt(j);
+					long date=Util.s_long((String)entry.elementAt(2));
+					if(date<byDate)
+					{
+						byDate=date;
+						useEntry=entry;
+					}
+				}
+				if(useEntry!=null)
+				{
+					oldJournal.removeElement(useEntry);
+					journal.addElement(useEntry);
+				}
+			}
 		}
 		return journal;
 	}

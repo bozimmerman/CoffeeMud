@@ -145,7 +145,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.wasModified())
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"The gas "+ExternalPlay.hitWord(-1,dmg)+" <S-NAME>!");
+					target.location().show(target,null,Affect.MSG_OK_ACTION,"The gas "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,dmg);
 				}
 			}
@@ -160,7 +160,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				target.location().show(target,null,Affect.MSG_OK_ACTION,"A sudden blast of gas "+ExternalPlay.hitWord(-1,dmg)+" <S-NAME>");
+				target.location().show(target,null,Affect.MSG_OK_ACTION,"A sudden blast of gas "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>");
 				ExternalPlay.postDamage(target,target,this,dmg);
 			}
 		}
@@ -177,7 +177,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			target.location().send(target,msg);
 			if(msg.wasModified())
 				dmg=(int)Math.round(Util.div(dmg,2.0));
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"The needle "+ExternalPlay.hitWord(-1,dmg)+" <S-NAME>!");
+			target.location().show(target,null,Affect.MSG_OK_ACTION,"The needle "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
 			ExternalPlay.postDamage(target,target,this,dmg);
 
 			Ability P=CMClass.getAbility("Poison");
@@ -196,7 +196,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			target.location().send(target,msg);
 			if(msg.wasModified())
 				dmg=(int)Math.round(Util.div(dmg,2.0));
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"The blade "+ExternalPlay.hitWord(-1,dmg)+" <S-NAME>!");
+			target.location().show(target,null,Affect.MSG_OK_ACTION,"The blade "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
 			Ability P=CMClass.getAbility("Poison");
 			P.invoke(invoker,target,true);
 			ExternalPlay.postDamage(target,target,this,dmg);

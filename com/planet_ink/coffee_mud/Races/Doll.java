@@ -28,4 +28,6 @@ public class Doll extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 5);
 		mob.baseEnvStats().setWeight(3+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

@@ -32,4 +32,14 @@ public class SongBird extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 3);
 		mob.baseEnvStats().setWeight(2+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a menacing beak");
+			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+		}
+		return naturalWeapon;
+	}
 }

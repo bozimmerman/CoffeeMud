@@ -36,4 +36,14 @@ public class Centipede extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 1);
 		mob.baseEnvStats().setWeight(weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a deadly maw");
+			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+		}
+		return naturalWeapon;
+	}
 }

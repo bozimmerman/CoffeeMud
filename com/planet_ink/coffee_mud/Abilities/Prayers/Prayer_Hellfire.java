@@ -50,7 +50,7 @@ public class Prayer_Hellfire extends Prayer
 					int harming=Dice.roll(3,mob.envStats().level(),15);
 					if(target.getAlignment()>650)
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The unholy spell "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
+						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The unholy spell "+ExternalPlay.standardHitWord(-1,harming)+" <S-NAME>!");
 						ExternalPlay.postDamage(mob,target,this,harming);
 					}
 				}

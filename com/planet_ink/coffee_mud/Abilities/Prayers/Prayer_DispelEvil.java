@@ -52,7 +52,7 @@ public class Prayer_DispelEvil extends Prayer
 				if(target.getAlignment()<350)
 				{
 					target.setAlignment(mob.getAlignment()+100);
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,"The wicked spell "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
+					target.location().show(target,null,Affect.MSG_OK_VISUAL,"The wicked spell "+ExternalPlay.standardHitWord(-1,harming)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,harming);
 					
 				}

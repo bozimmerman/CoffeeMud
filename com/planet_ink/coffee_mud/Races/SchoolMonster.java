@@ -28,4 +28,14 @@ public class SchoolMonster extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(30+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("sharp claws");
+			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+		}
+		return naturalWeapon;
+	}
 }

@@ -379,7 +379,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.SYSMSGS:
 					if(mob.isASysOp(mob.location()))
-						mob.toggleReadSysopMsgs();
+						sysopSkills.toggleSysopMsgs(mob);
 					break;
 				case CommandSet.TAKE:
 					if(mob.isASysOp(mob.location()))

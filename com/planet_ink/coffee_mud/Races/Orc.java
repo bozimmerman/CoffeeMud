@@ -33,4 +33,6 @@ public class Orc extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(190+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

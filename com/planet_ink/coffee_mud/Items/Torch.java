@@ -18,7 +18,8 @@ public class Torch extends LightSource
 		durationTicks=30;
 
 		material=Item.WOODEN;
-		destroyedWhenBurnedOut=true;
+		this.destroyedWhenBurnedOut=true;
+		this.goesOutInTheRain=true;
 		baseGoldValue=1;
 	}
 	public Environmental newInstance()

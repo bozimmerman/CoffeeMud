@@ -61,7 +61,7 @@ public class Undead_LifeDrain extends StdAbility
 				mob.curState().adjMana(-much,mob.maxState());
 				if(msg.wasModified())
 					much = (int)Math.round(Util.div(much,2.0));
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The drain "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,much)+" <S-NAME>!");
+				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The drain "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,much)+" <S-NAME>!");
 				mob.curState().adjHitPoints(much,mob.maxState());
 				ExternalPlay.postDamage(mob,target,this,much);
 				mob.tell("You feel a little better!");

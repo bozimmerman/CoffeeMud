@@ -65,7 +65,7 @@ public class Spell_MagicMissile extends Spell
 						damage += Dice.roll(1,10,1);
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"The missile "+ExternalPlay.hitWord(-1,damage)+" <S-NAME>!");
+							target.location().show(target,null,Affect.MSG_OK_ACTION,"The missile "+ExternalPlay.standardHitWord(-1,damage)+" <S-NAME>!");
 							ExternalPlay.postDamage(mob,target,this,damage);
 						}
 					}

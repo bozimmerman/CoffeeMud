@@ -62,4 +62,6 @@ public class Gnome extends StdRace
 		p1.setDescription("This pair of small pants is made of bits and pieces of many other pants, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
 		wearOutfit(mob,s1,s2,p1);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

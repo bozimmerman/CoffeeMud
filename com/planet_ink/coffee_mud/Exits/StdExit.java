@@ -306,7 +306,7 @@ public class StdExit implements Exit
 	public StringBuffer viewableText(MOB mob, Room room)
 	{
 		StringBuffer Say=new StringBuffer("");
-		if(mob.readSysopMsgs())
+		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 		{
 			if(room==null)
 				Say.append("^Z(null)^? ");
@@ -372,7 +372,7 @@ public class StdExit implements Exit
 				}
 				else
 					mob.tell("You don't see anything special.");
-				if(mob.readSysopMsgs())
+				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					mob.tell("Misc   : "+text());
 			}
 			else

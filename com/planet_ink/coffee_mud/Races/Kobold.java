@@ -41,4 +41,6 @@ public class Kobold extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(30+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

@@ -35,4 +35,14 @@ public class WaterFowl extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10);
 		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a menacing beak");
+			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+		}
+		return naturalWeapon;
+	}
 }

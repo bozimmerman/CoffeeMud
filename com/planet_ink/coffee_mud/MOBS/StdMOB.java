@@ -24,8 +24,6 @@ public class StdMOB implements MOB
 
 	protected Session mySession=null;
 	protected boolean pleaseDestroy=false;
-	private boolean readSysopMsgs;
-
 	protected String description="";
 	protected String displayText="";
 	protected String miscText="";
@@ -203,16 +201,6 @@ public class StdMOB implements MOB
 	public EnvStats envStats()
 	{
 		return envStats;
-	}
-
-	public boolean readSysopMsgs()
-	{
-		return readSysopMsgs;
-	}
-	public void toggleReadSysopMsgs()
-	{
-		readSysopMsgs=!readSysopMsgs;
-		tell("Extended messages are now : "+(readSysopMsgs?"ON":"OFF"));
 	}
 
 	public EnvStats baseEnvStats()
@@ -534,6 +522,12 @@ public class StdMOB implements MOB
 	{
 		mySession=newSession;
 		setBitmap(getBitmap());
+	}
+	public Weapon myNaturalWeapon()
+	{
+		if((charStats()!=null)&&(charStats().getMyRace()!=null))
+			return charStats().getMyRace().myNaturalWeapon();
+		return (Weapon)CMClass.getWeapon("Natural").newInstance();
 	}
 
 	public String displayText()
@@ -905,7 +899,7 @@ public class StdMOB implements MOB
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
 				{
 					StringBuffer myDescription=new StringBuffer("");
-					if(mob.readSysopMsgs())
+					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
@@ -1002,7 +996,7 @@ public class StdMOB implements MOB
 				{
 					if((isInCombat())&&(!amDead))
 					{
-						Weapon weapon=(Weapon)CMClass.getWeapon("Natural").newInstance();
+						Weapon weapon=affect.source().myNaturalWeapon();
 						if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
 							weapon=(Weapon)affect.tool();
 						boolean isHit=ExternalPlay.doAttack(affect.source(),this,weapon);
@@ -1089,7 +1083,7 @@ public class StdMOB implements MOB
 			&&(Sense.canBeSeenBy(this,mob)))
 			{
 				StringBuffer myDescription=new StringBuffer("");
-				if(mob.readSysopMsgs())
+				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");

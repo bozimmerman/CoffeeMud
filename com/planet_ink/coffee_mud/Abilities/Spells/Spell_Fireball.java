@@ -70,7 +70,7 @@ public class Spell_Fireball extends Spell
 					int damage = Dice.roll(numDice, 6, 10);
 					if(msg2.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
-					mob.location().show(target,null,Affect.MSG_OK_ACTION,"The blast "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
+					mob.location().show(target,null,Affect.MSG_OK_ACTION,"The blast "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,damage);
 				}
 			}

@@ -56,7 +56,7 @@ public class Prayer_Deathfinger extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=(int)Math.round(Util.div(target.curState().getHitPoints(),2.0));
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The deathfinger "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The deathfinger "+ExternalPlay.standardHitWord(-1,harming)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,harming);
 				}
 			}

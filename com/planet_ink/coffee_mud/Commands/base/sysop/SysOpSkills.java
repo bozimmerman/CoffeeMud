@@ -8,6 +8,14 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class SysOpSkills
 {
+	public void toggleSysopMsgs(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_SYSOPMSGS);
+		else
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_SYSOPMSGS);
+		mob.tell("Extended messages are now : "+(((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)?"ON":"OFF"));
+	}
 	private Room findRoom(String roomID)
 	{
 		for(int m=0;m<CMMap.map.size();m++)
@@ -388,9 +396,12 @@ public class SysOpSkills
 		commands.removeElementAt(0);
 		String str="Prop_WizInvis";
 		Ability A=mob.fetchAffect(str);
-		if((A!=null)&&(Util.combine(commands,0).trim().equalsIgnoreCase("OFF")))
+		if(Util.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
-		   A.unInvoke();
+		   if(A!=null)
+			   A.unInvoke();
+		   else
+			   mob.tell("You are not wizinvisible!");
 		   return true;
 		}
 		else

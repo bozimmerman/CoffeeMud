@@ -76,7 +76,7 @@ public class Spell_Disintegrate extends Spell
 							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
 						else
 						{
-							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"The wicked spell "+ExternalPlay.hitWord(Weapon.TYPE_BURSTING,((MOB)target).curState().getHitPoints())+" <T-NAME>.");
+							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"The wicked spell "+ExternalPlay.standardHitWord(Weapon.TYPE_BURSTING,((MOB)target).curState().getHitPoints())+" <T-NAME>.");
 							return false;
 						}
 					}

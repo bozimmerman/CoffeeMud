@@ -62,4 +62,6 @@ public class Elf extends StdRace
 		p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 		wearOutfit(mob,s1,s2,p1);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

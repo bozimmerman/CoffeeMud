@@ -30,4 +30,6 @@ public interface Weapon extends Item
 	public void setWeaponClassification(int newClassification);
 	public String typeDescription();
 	public String classifictionDescription();
+	public String hitString(int damageAmount);
+	public String missString();
 }

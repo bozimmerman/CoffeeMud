@@ -20,6 +20,7 @@ public class GenLantern extends GenLightSource
 		material=Item.METAL;
 		setDuration(200);
 		destroyedWhenBurnedOut=false;
+		goesOutInTheRain=false;
 		baseGoldValue=60;
 		recoverEnvStats();
 	}

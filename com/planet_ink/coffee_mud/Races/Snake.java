@@ -34,4 +34,14 @@ public class Snake extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10);
 		mob.baseEnvStats().setWeight(25+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("deadly fangs");
+			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
 }

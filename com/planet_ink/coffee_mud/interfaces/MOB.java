@@ -18,8 +18,15 @@ public interface MOB
 	public void setUserInfo(String newUsername, String newPassword, Calendar newCalendar);
 	public void setChannelMask(int newMask);
 	public int getChannelMask();
-	public boolean readSysopMsgs();
-	public void toggleReadSysopMsgs();
+	public int getBitmap();
+	public void setBitmap(int bitmap);
+	
+	public static final int ATT_AUTOGOLD=1;
+	public static final int ATT_AUTOLOOT=2;
+	public static final int ATT_AUTOEXITS=4;
+	public static final int ATT_AUTOASSIST=8;
+	public static final int ATT_ANSI=16;
+	public static final int ATT_SYSOPMSGS=32;
 	
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
@@ -82,6 +89,7 @@ public interface MOB
 	public CharState baseState();
 	public void setBaseState(CharState newState);
 	public void resetToMaxState();
+	public Weapon myNaturalWeapon();
 	
 	// mental characteristics
 	public String getWorshipCharID();
@@ -129,13 +137,4 @@ public interface MOB
 	public int numAbilities();
 	public Ability fetchAbility(int index);
 	public Ability fetchAbility(String ID);
-	
-	public int getBitmap();
-	public void setBitmap(int bitmap);
-	
-	public static final int ATT_AUTOGOLD=1;
-	public static final int ATT_AUTOLOOT=2;
-	public static final int ATT_AUTOEXITS=4;
-	public static final int ATT_AUTOASSIST=8;
-	public static final int ATT_ANSI=16;
 }

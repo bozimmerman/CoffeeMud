@@ -6,7 +6,8 @@ public interface ExternalCommand
 	// combat
 	public void postAttack(MOB attacker, MOB target, Item weapon);
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage);
-	public String hitWord(int weaponType, int damageAmount);
+	public String standardHitWord(int weaponType, int damageAmount);
+	public String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString);
 	public void strike(MOB source, MOB target, Weapon weapon, boolean success);
 	public boolean isHit(MOB attacker, MOB target);
 	public Hashtable properTargets(Ability A, MOB caster);

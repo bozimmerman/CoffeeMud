@@ -84,7 +84,7 @@ public class Spell_ChainLightening extends Spell
 							damage = (int)Math.round(Util.div(damage,2.0));
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"The strike "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
+							target.location().show(target,null,Affect.MSG_OK_ACTION,"The strike "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
 							ExternalPlay.postDamage(mob,target,this,damage);
 						}
 					}

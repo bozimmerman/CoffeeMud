@@ -272,7 +272,7 @@ public class StdContainer extends StdItem implements Container
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					StringBuffer buf=new StringBuffer("");
-					if(mob.readSysopMsgs())
+					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					{
 						buf.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rUses :"+usesRemaining()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\r"+description()+"'\n\r");
 						buf.append("Key  : "+keyName()+"\n\r");

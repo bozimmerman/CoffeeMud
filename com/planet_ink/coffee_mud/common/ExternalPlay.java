@@ -20,9 +20,14 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage);
 	}
-	public static String hitWord(int weaponType, int damageAmount)
+	public static String standardHitWord(int weaponType, int damageAmount)
 	{
-		if(player!=null) return player.hitWord(weaponType,damageAmount);
+		if(player!=null) return player.standardHitWord(weaponType,damageAmount);
+		return "";
+	}
+	public static String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
+	{
+		if(player!=null) return player.standardMissString(weaponType,weaponName,useExtendedMissString);
 		return "";
 	}
 	public static boolean wear(MOB mob, Item item)

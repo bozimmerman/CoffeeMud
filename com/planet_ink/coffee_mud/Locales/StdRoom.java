@@ -440,14 +440,14 @@ public class StdRoom
 	public void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
-		if(mob.readSysopMsgs())
+		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 		{
 			if(myArea!=null)
 				Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
 			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}
-		if((Sense.canBeSeenBy(this,mob))||(mob.readSysopMsgs()))
+		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
 		{
 			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			Say.append("^L" + description()+"^N\n\r\n\r");
@@ -457,10 +457,10 @@ public class StdRoom
 		{
 			Item item=fetchItem(c);
 			if((item!=null)&&(item.location()==null))
-				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||(mob.readSysopMsgs())))
+				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
 				{
 					Say.append("     ");
-					if(mob.readSysopMsgs())
+					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 						Say.append("^H("+CMClass.className(item)+")^N ");
 
 					Say.append("^I");
@@ -474,9 +474,9 @@ public class StdRoom
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
+			if((mob2!=null)&&(mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
 			{
-				if(mob.readSysopMsgs())
+				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					Say.append("^H("+CMClass.className(mob2)+")^N ");
 
 				Say.append("^M");

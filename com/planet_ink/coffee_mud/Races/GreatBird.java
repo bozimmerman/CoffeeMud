@@ -33,4 +33,14 @@ public class GreatBird extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 3);
 		mob.baseEnvStats().setWeight(2+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("some sharp talons");
+			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
 }

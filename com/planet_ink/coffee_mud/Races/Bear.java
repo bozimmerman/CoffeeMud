@@ -27,4 +27,15 @@ public class Bear extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(350+weightModifier);
 	}
+	
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a pair of huge claws");
+			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
+		}
+		return naturalWeapon;
+	}
 }

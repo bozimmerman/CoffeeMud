@@ -47,4 +47,6 @@ public class HalfElf extends StdRace
 		Armor p1=CMClass.getArmor("GenPants");
 		wearOutfit(mob,s1,s2,p1);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }

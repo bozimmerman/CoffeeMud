@@ -75,7 +75,7 @@ public class Spell_HeatMetal extends Spell
 			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY))&&(item.material()==Item.METAL)&&(item.location()==null)&&(!mob.amDead()))
 			{
 				int damage=Dice.roll(1,6,1);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,item.name()+" "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,item.name()+" "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
 				ExternalPlay.postDamage(invoker,mob,this,damage);
 				if(Dice.rollPercentage()<mob.charStats().getStrength())
 				{

@@ -116,7 +116,7 @@ public class Spell_Cloudkill extends Spell
 						if(damage<0) damage=0;
 						if(target.location()==mob.location())
 						{
-							target.location().show(target,null,Affect.MSG_OK_ACTION,"The gas "+ExternalPlay.hitWord(-1,damage)+" <S-NAME>. <S-NAME> collapse(s)!");
+							target.location().show(target,null,Affect.MSG_OK_ACTION,"The gas "+ExternalPlay.standardHitWord(-1,damage)+" <S-NAME>. <S-NAME> collapse(s)!");
 							this.maliciousAffect(mob,target,2,-1);
 							ExternalPlay.postDamage(mob,target,this,damage);
 						}

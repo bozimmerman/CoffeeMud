@@ -33,4 +33,14 @@ public class Wolf extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10);
 		mob.baseEnvStats().setWeight(65+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("sharp teeth");
+			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
 }

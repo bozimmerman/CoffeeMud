@@ -34,4 +34,14 @@ public class Bat extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 5);
 		mob.baseEnvStats().setWeight(10+weightModifier);
 	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("some bat fangs");
+			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
 }

@@ -6,8 +6,7 @@
 
 ! Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, it will list the posts for a given Journal.  
 
-More WeaponTypes, with text file (Resource)? descriptions.  These should also be
-assignable to MOBs at build time, or to GENMOBs via a new tag.
+! hit and miss strings in the Weapon.  Natural Weapons can also be retreived from MOBs, or from Races by default.
 
 From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
 (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and

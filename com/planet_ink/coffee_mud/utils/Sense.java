@@ -148,7 +148,7 @@ public class Sense
 
 	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{
-		if(mob.amDead())
+		if(mob.amDead()||(mob.curState()==null)||(mob.curState().getHitPoints()<0))
 		{
 			if(!quiet)
 				mob.tell("You are DEAD!");

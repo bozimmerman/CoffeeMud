@@ -23,10 +23,15 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.postDamage(attacker,target,weapon,damage);
 	}
-	public String hitWord(int weaponType, int damageAmount)
+	public String standardHitWord(int weaponType, int damageAmount)
 	{
-		return processor.theFight.hitWord(weaponType,damageAmount);
+		return processor.theFight.standardHitWord(weaponType,damageAmount);
 	}
+	public String standardMissString(int weaponType, String weaponName, boolean useExtendedMissString)
+	{
+		return processor.theFight.standardMissString(weaponType,weaponName,useExtendedMissString);
+	}
+
 	public void standIfNecessary(MOB mob)
 	{
 		processor.movement.standIfNecessary(mob);

@@ -63,4 +63,6 @@ public class Dwarf extends StdRace
 		
 		wearOutfit(mob,s1,s2,p1);
 	}
+	public Weapon myNaturalWeapon()
+	{ return funHumanoidWeapon();	}
 }
