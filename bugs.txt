@@ -1,6 +1,5 @@
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
 fix genrace naming for chillins
-add grantAbilities important to programmer's guide
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
 importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 This leads me to a a suggestion for CoffeeMud, a greater logging system, i was thinking another subfolder for logs, one log for the server log

@@ -1454,8 +1454,7 @@ to understand one of them fully is to understand them all.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/time.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="DIG3"><FONT size=5><STRONG><FONT color=red>Digression 3: Tick 
-Tock:</FONT></STRONG></FONT></a></P>
+<P align=left><a name=DIG3><FONT size=5><STRONG><FONT color=red>Digression 3: Tick Tock:</FONT></STRONG></FONT></A></P>
 <P align=left><FONT size=4>Our last 
 digression will cover the ability of the mobs, items, exits, abilities, spell 
 effects, behaviors, and other objects to perform tasks on a regular, timed, 
@@ -1526,7 +1525,8 @@ using the following:</FONT></P><pre>
 <P align=left></P>
 <P align=left>&nbsp;</P>
 <P align=left><FONT size=5><STRONG><IMG src="images/clown.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="BEHAVS"><FONT size=5><STRONG><FONT color=blue>Behaviors:</FONT></STRONG></FONT></a></P>
+<P align=left><a name=BEHAVS><FONT 
+size=5><STRONG><FONT color=blue>Behaviors:</FONT></STRONG></FONT></A></P>
 <P align=left><FONT size=4>A Behavior is 
 defined as a property of an item, mob, exit, or room which takes proactive (as 
 opposed to REactive) steps on behalf of its host.&nbsp; Examples of Behaviors 
@@ -1696,8 +1696,9 @@ passing. </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/cloak.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="CLASSES"><FONT color=purple size=5><STRONG>Character 
-Classes:</STRONG></FONT></a></P>
+<P align=left><a name=CLASSES><FONT 
+color=purple size=5><STRONG>Character 
+Classes:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>A Character 
 Class, in CoffeeMud, is the carreer being followed by the player.&nbsp;&nbsp; 
 Armor and weapon choices, skill and spell access, as well as score advancements 
@@ -1899,8 +1900,44 @@ describes any special bonuses received due to being this class. </FONT></P><pre>
 </PRE>
 <P align=left><FONT size=4>The outfit 
 method should return a Vector of any Class-Specific Item object equipment they 
-may need. Clothing and so forth is actually covered by Races. </FONT></P>
-public boolean okMessage(Environmental myHost, CMMsg msg)
+may need. Clothing and so forth is actually covered by Races. </FONT></P><pre>public void grantAbilities(MOB mob, boolean isBorrowedClass)
+{
+	super.grantAbilities(mob,isBorrowedClass);
+	if(mob.isMonster())
+	{
+		Vector V=CMAble.getUpToLevelListings(ID(),
+			mob.charStats().getClassLevel(ID()),
+			false,
+			false);
+		for(Enumeration a=V.elements();a.hasMoreElements();)
+		{
+			Ability A=CMClass.getAbility((String)a.nextElement());
+			if((A!=null)
+			&amp;&amp;((A.classificationCode()&amp;Ability.ALL_CODES)!=Ability.COMMON_SKILL)
+			&amp;&amp;(!CMAble.getDefaultGain(ID(),true,A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+		}
+	}
+}
+</PRE>
+<P align=left><FONT size=4>This 
+important method is called whenever a player gains a level in this class, or 
+when an npc mob is being "outfitted" with this class via one of the following 
+Behaviors: CombatAbilities, Fighterness, Druidness, Bardness, Clericness, 
+Thiefness, Mageness. </FONT>
+<P align=left><FONT size=4>The "grantAbilities" method has the important job of 
+making sure that players receive their autogained skills or any other options 
+skills when they level.&nbsp; The StdCharClass version of grantAbilities (called 
+by super.grantAbilities(...);) takes care of any autogained skills up to the 
+player or mobs current level in the class.&nbsp; Each char class which extends 
+this, however, needs to take care of any skills or abilities for npc mobs which 
+are not automatically gained.&nbsp; This is to make up for the fact that npc 
+mobs will not be lining up at your guildmasters to spend their trains on skills 
+they merely qualify for.&nbsp; In the sample code above, we give the mobs every 
+skill the class qualifies for up to the mobs level in the class, except for any 
+common skills.&nbsp; Those would still need to be given by hand to each 
+mob.</FONT><FONT size=4>
+<P></FONT></P><PRE>public boolean okMessage(Environmental myHost, CMMsg msg)
 {
 	if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
 	MOB myChar=(MOB)myHost;
@@ -1926,12 +1963,12 @@ public boolean okMessage(Environmental myHost, CMMsg msg)
 <P align=left><FONT size=4>And lastly, 
 just as I'm sure you were wondering how useful those three Digressions above 
 would really be, we see them in active use. Some classes contain methods such as 
-these to enforce some of the benefits for the class. 
-In the okMessage method, whic we discussed in the first Digression, 
-we see messages messages containing the type of damage taken by the player
-being intercepted.  TYP_DAMAGE messages always have their damage amounts 
-stored in the .value() method of a message, so it is these values which 
-are modified, based on the type of damage taken.</FONT></P>
+these to enforce some of the benefits for the class. In the okMessage method, 
+whic we discussed in the first Digression, we see messages messages containing 
+the type of damage taken by the player being intercepted. TYP_DAMAGE messages 
+always have their damage amounts stored in the .value() method of a message, so 
+it is these values which are modified, based on the type of damage 
+taken.</FONT></P>
 <P align=left><FONT size=4>And not 
 least, although we won't go into it in detail here, there are two other methods 
 which may be of use for the advanced Character Class programmer. They are the 
@@ -1953,7 +1990,8 @@ information. </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/dragon.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="RACES"><FONT color=green size=5><STRONG>Races:</STRONG></FONT></a></P>
+<P align=left><a name=RACES><FONT 
+color=green size=5><STRONG>Races:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>A Race, in 
 CoffeeMud, contributes very little to functionality, but quite a bit to the role 
 playing and other "soft" aspects of the game..&nbsp;&nbsp; For this reason, 
@@ -2212,7 +2250,8 @@ this creature whenever the dead corpse is Butchered.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
 <P align=left><STRONG><IMG src="images/chomper.jpg" > 
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="EXITS"><FONT color=navy size=5><STRONG>Exits:</STRONG></FONT></a></P>
+<P align=left><a name=EXITS><FONT 
+color=navy size=5><STRONG>Exits:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>Exits are the 
 connecting points between two rooms, and tend to be rather simple.&nbsp; If two 
 rooms, A &amp; B,&nbsp;are connected to each other, there are always two exits 
@@ -2278,7 +2317,8 @@ door is opened, or they gain some sort of Behavior (such as Emoter).</P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/scenery.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="ROOMS"><FONT color=red size=5><STRONG>Locales:</STRONG></FONT></a></P>
+<P align=left><a name=ROOMS><FONT 
+color=red size=5><STRONG>Locales:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>Locales are 
 the stuff rooms are made of, and so they implement the interface 
 Room.&nbsp;&nbsp; There are actually three different types of locales: the 
@@ -2364,7 +2404,8 @@ message handling&nbsp;as described in the digressions above.</P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/area.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="AREAS"><FONT color=gray size=5><STRONG>Areas:</STRONG></FONT></a></P>
+<P align=left><a name=AREAS><FONT 
+color=gray size=5><STRONG>Areas:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>The Area 
 objects, which represent areas in the game, are the most difficult to advise 
 about regarding programming.&nbsp; This is because only one has ever been 
@@ -2489,7 +2530,8 @@ Areas.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><STRONG><FONT size=5><IMG src="images/house.jpg" > </FONT><FONT size=3>&nbsp;</FONT></STRONG></P>
-<P align=left><a name="PROPS"><FONT color=olive size=5><STRONG>Properties:</STRONG></FONT></a></P>
+<P align=left><a name=PROPS><FONT 
+color=olive size=5><STRONG>Properties:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>Properties 
 are the simplest of the objects which implement the Ability interface, and are 
 defined as effects which can be permanently tacked-on to items, mobs, and other 
@@ -2632,9 +2674,8 @@ two methods above then combine to produce our desired results, an Astral
 Spirit.</FONT></P>
 <P><FONT size=4></FONT>&nbsp;</P></FONT>
 <P align=left><STRONG>&nbsp;</STRONG></FONT><FONT size=3>&nbsp;<IMG src="images/monk.jpg" ></FONT></P>
-<P align=left><a name="SKILLS"><FONT style="BACKGROUND-COLOR: #000000" 
-color=aqua size=5><STRONG>Introduction 
-to Skill Abilities:</STRONG></FONT></a></P>
+<P align=left><a name=SKILLS><FONT 
+style="BACKGROUND-COLOR: #000000" color=aqua size=5><STRONG>Introduction to Skill Abilities:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>Abilities are 
 easily the most complicated and varied of all the objects in CoffeeMud.&nbsp; 
 They encompass everything from invoked skills and spell, like TRIP or MAGIC 
@@ -3051,9 +3092,8 @@ will now be affected by this ability, and will have to stay on the ground for a
 few ticks while the source mob pounds on him or her.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P></FONT>
 <P align=left><STRONG><IMG src="images/fireball.jpg" >&nbsp;</STRONG><FONT size=3>&nbsp;</FONT></P>
-<P align=left><a name="SPELLS"><FONT style="BACKGROUND-COLOR: black" 
-color=yellow size=5><STRONG>Spells, 
-Prayers, and Chants:</STRONG></FONT></a></P>
+<P align=left><a name=SPELLS><FONT 
+style="BACKGROUND-COLOR: black" color=yellow size=5><STRONG>Spells, Prayers, and Chants:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>Spells, 
 Prayers, and Chants are all special forms of Abilities.&nbsp; For this reason, 
 it is required that you go back and read the previous section on Skill Abilities 
@@ -3296,7 +3336,8 @@ is set.</FONT></FONT></P></FONT></FONT>
 <P align=left>&nbsp;</P>
 <P align=left></FONT><IMG src="images/elvis.jpg" > </P>
 <P></P>
-<P align=left><a name="SONGS"><FONT color=lime size=5><STRONG>Songs:</STRONG></FONT></a></P>
+<P align=left><a name=SONGS><FONT 
+color=lime size=5><STRONG>Songs:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Song.</FONT></P>
 <P align=left></P>
@@ -3312,8 +3353,9 @@ Song.</FONT></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG><IMG src="images/fun.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT> </P>
 <P></P>
-<P align=left><a name="COMMON"><FONT color=maroon size=5><STRONG>Common 
-Skills:</STRONG></FONT></a></P>
+<P align=left><a name=COMMON><FONT 
+color=maroon size=5><STRONG>Common 
+Skills:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Common Skill.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
@@ -3327,19 +3369,23 @@ Common Skill.</FONT></P>
 <P align=left></P></EM></FONT>
 <P></P>
 <P><IMG src="images/prayer.jpg" ></P>
-<P align=left><a name="POISON"><FONT color=maroon size=5><STRONG>Poisons:</STRONG></FONT></a></P>
+<P align=left><a name=POISON><FONT 
+color=maroon size=5><STRONG>Poisons:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Poison.</FONT></P><FONT size=4>
 <P><IMG src="images/disease.jpg" ></P>
-<P align=left><a name="DISEASE"><FONT color=maroon size=5><STRONG>Diseases:</STRONG></FONT></a></P>
+<P align=left><a name=DISEASE><FONT 
+color=maroon size=5><STRONG>Diseases:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Disease.</FONT></P><FONT size=4>
 <P><IMG src="images/traps.jpg" ></P>
-<P align=left><a name="TRAPS"><FONT color=maroon size=5><STRONG>Traps:</STRONG></FONT></a></P>
+<P align=left><a name=TRAPS><FONT 
+color=maroon size=5><STRONG>Traps:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Trap.</FONT></P><FONT size=4>
 <P><IMG src="images/language.jpg" ></P>
-<P align=left><a name="LANGS"><FONT color=maroon size=5><STRONG>Languages:</STRONG></FONT></a></P>
+<P align=left><a name=LANGS><FONT 
+color=maroon size=5><STRONG>Languages:</STRONG></FONT></A></P>
 <P align=left><FONT size=4>How to code a 
 Language.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P></FONT></FONT></FONT>
