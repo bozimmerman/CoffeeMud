@@ -104,7 +104,7 @@ public class CommonSkill extends StdAbility
 		{
 			Ability A=I.fetchEffect(i);
 			if((A!=null)
-			&&(A.classificationCode()!=A.PROPERTY))
+			&&(A.classificationCode()!=Ability.PROPERTY))
 				return true;
 		}
 		return false;

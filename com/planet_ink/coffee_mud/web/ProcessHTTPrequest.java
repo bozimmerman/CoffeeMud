@@ -102,8 +102,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		if(GF==null) return null;
 		switch(GF.state)
 		{
-		case GF.STATE_OK:
-		case GF.STATE_IS_DIRECTORY:
+		case GrabbedFile.STATE_OK:
+		case GrabbedFile.STATE_IS_DIRECTORY:
 			return GF.file;
 		default:
 			return null;

@@ -125,8 +125,8 @@ public class Smelting extends CraftingSkill
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					String metal1=((String)V.elementAt(this.RCP_METALONE)).toLowerCase();
-					String metal2=((String)V.elementAt(this.RCP_METALTWO)).toLowerCase();
+					String metal1=((String)V.elementAt(RCP_METALONE)).toLowerCase();
+					String metal2=((String)V.elementAt(RCP_METALTWO)).toLowerCase();
 					if(level<=mob.envStats().level())
 						buf.append(Util.padRight(item,20)+" "+Util.padRight(metal1,20)+" "+metal2+"\n\r");
 				}
@@ -206,7 +206,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null,0);
 		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null,0);
-		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)CoffeeUtensils.makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";

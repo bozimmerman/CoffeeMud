@@ -236,7 +236,7 @@ public class Shipwright extends CraftingSkill
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={EnvResource.MATERIAL_WOODEN};
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"wood",pm,
 												0,null,null,
@@ -254,7 +254,7 @@ public class Shipwright extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;

@@ -247,7 +247,7 @@ public class ClanCrafting extends CraftingSkill
 		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
-		String reqskill=(String)foundRecipe.elementAt(this.RCP_REQUIREDSKILL);
+		String reqskill=(String)foundRecipe.elementAt(RCP_REQUIREDSKILL);
 		if(reqskill.trim().length()>0)
 		{
 			Ability A=CMClass.findAbility(reqskill.trim());
@@ -273,8 +273,8 @@ public class ClanCrafting extends CraftingSkill
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+		completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{

@@ -298,7 +298,7 @@ public class LeatherWorking extends CraftingSkill
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={EnvResource.MATERIAL_LEATHER};
 			int[] pm1={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"leather",pm,
 												(multiplier==3)?1:0,
@@ -317,7 +317,7 @@ public class LeatherWorking extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
