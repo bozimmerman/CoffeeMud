@@ -1932,7 +1932,26 @@ public class StdMOB implements MOB
 					location().delInhabitant(this);
 					((Room)msg.target()).addInhabitant(this);
 					((Room)msg.target()).showOthers(mob,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
+
 					setLocation(((Room)msg.target()));
+					if((riding()!=null)&&(location()!=CoffeeUtensils.roomLocation(riding())))
+					{
+						int rb=riding().rideBasis();
+						if((rb!=Rideable.RIDEABLE_SIT)
+						&&(rb!=Rideable.RIDEABLE_SLEEP)
+						&&(rb!=Rideable.RIDEABLE_TABLE)
+						&&(rb!=Rideable.RIDEABLE_ENTERIN)
+						&&(rb!=Rideable.RIDEABLE_LADDER))
+						{
+							if(riding() instanceof Item)
+								location().bringItemHere((Item)riding(),Item.REFUSE_PLAYER_DROP);
+							else
+							if(riding() instanceof MOB)
+								location().bringMobHere((MOB)riding(),true);
+						}
+						else
+							setRiding(null);
+					}
 					recoverEnvStats();
 					recoverCharStats();
 					recoverMaxState();

@@ -11,6 +11,7 @@ Chant_FurCoat	8	FUR	Mustard$
 Chant_WaterWalking	9	Yerba Mate$			
 Chant_EnhanceBody	10	DATES	Peppermint$		
 Chant_CheetahBurst	11	FISH	Rosemary$	Mustard$	Chamomile$
+Chant_AcidWard	11	MILK	Lemon Grass$	Anise$	
 Chant_Treemind	12	Anise$			
 Chant_BreatheWater	12	PEARL	Valerian$		
 Chant_LightningWard	13	MUSHROOMS	Marjoram$	Damiana$	

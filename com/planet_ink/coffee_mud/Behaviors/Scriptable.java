@@ -484,7 +484,7 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
-		StringBuffer buf=Resources.getFileResource(filename);
+		StringBuffer buf=Resources.getFile(filename);
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{
 			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"'");
@@ -516,7 +516,7 @@ public class Scriptable extends StdBehavior
 		filename=filename.trim();
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
-		StringBuffer buf=Resources.getFileResource(filename);
+		StringBuffer buf=Resources.getFile(filename);
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{
 			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"'");
@@ -553,14 +553,14 @@ public class Scriptable extends StdBehavior
 			try{
 				Vector V=null;
 				if(mob) 
-					V=loadMobsFromFile(null,Util.getCleanBit(thisName,2));
+					V=loadMobsFromFile(null,Util.getCleanBit(thisName,1));
 				else 
-					V=loadItemsFromFile(null,Util.getCleanBit(thisName,2));
+					V=loadItemsFromFile(null,Util.getCleanBit(thisName,1));
 				if(V!=null)
 				{
-					areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,2),true);
+					areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,1),true);
 					if(areaThing==null)
-						areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,2),false);
+						areaThing=EnglishParser.fetchEnvironmental(V,Util.getPastBit(thisName,1),false);
 				}
 			}
 			catch(Exception e){}
@@ -3335,7 +3335,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 41: // mpoloadroom
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(11).trim());
 				if(lastKnownLocation!=null)
 				{
 					Item I=null;

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
 
 public class Taxidermy extends CraftingSkill
 {
@@ -46,9 +47,73 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
+	protected Vector loadRecipes()
+	{
+		Vector V=(Vector)Resources.getResource("TAXIDERMY POSES");
+		if(V==null)
+		{
+			V=new Vector();
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"taxidermy.txt");
+			Vector strV=Resources.getFileLineVector(str);
+			Vector V2=null;
+			boolean header=true;
+			for(int v=0;v<strV.size();v++)
+			{
+				String s=(String)strV.elementAt(v);
+				if(header)
+				{
+					if((V2!=null)&&(V2.size()>0))
+						V.addElement(V2);
+					V2=new Vector();
+				}
+				if(s.length()==0)
+					header=true;
+				else 
+				{
+					V2.addElement(s);
+					header=false;
+				}
+			}
+			if((V2!=null)&&(V2.size()>0))
+				V.addElement(V2);
+			if(V.size()==0)
+				Log.errOut("Taxidermy","Poses not found!");
+			Resources.submitResource("TAXIDERMY POSES",V);
+		}
+		return V;
+	}
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		Vector POSES=loadRecipes();
+		String pose=null;
+		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		{
+			StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
+			for(int p=0;p<POSES.size();p++)
+			{
+				Vector PP=(Vector)POSES.elementAt(p);
+				if(PP.size()>1) str.append(((String)PP.firstElement())+"\n");
+			}
+			mob.tell(str.toString());
+			return true;
+		}
+		else
+		if(commands.size()>0)
+		{
+			for(int p=0;p<POSES.size();p++)
+			{
+				Vector PP=(Vector)POSES.elementAt(p);
+				if((PP.size()>1)&&(((String)PP.firstElement()).equalsIgnoreCase((String)commands.firstElement())))
+				{
+					commands.removeElementAt(0);
+					pose=(String)PP.elementAt(Dice.roll(1,PP.size()-1,0));
+					break;
+				}
+			}
+		}
+		
 		verb="stuffing";
 		String str=Util.combine(commands,0);
 		Item I=mob.location().fetchItem(null,str);
@@ -99,7 +164,17 @@ public class Taxidermy extends CraftingSkill
 		String desc=I.rawSecretIdentity().substring(x+1);
 		I.setMaterial(data[0][FOUND_CODE]);
 		found.setName("the stuffed body of "+name);
-		found.setDisplayText("the stuffed body of "+name+" stands here");
+		CharStats C=(I instanceof DeadBody)?((DeadBody)I).charStats():null;
+		if((pose==null)||(C==null))
+			found.setDisplayText("the stuffed body of "+name+" stands here");
+		else
+		{
+			pose=Util.replaceAll(pose,"<S-NAME>",found.name());
+			pose=Util.replaceAll(pose,"<S-HIS-HER>",C.hisher());
+			pose=Util.replaceAll(pose,"<S-HIM-HER>",C.himher());
+			pose=Util.replaceAll(pose,"<S-HIM-HERSELF>",C.himher()+"self");
+			found.setDisplayText(pose);
+		}
 		found.setDescription(desc);
 		found.setSecretIdentity("This is the work of "+mob.Name()+".");
 		found.recoverEnvStats();

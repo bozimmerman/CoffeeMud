@@ -13,7 +13,6 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	public Environmental newInstance(){	return new Skill_MarkDisguise();}
 	private static final String[] triggerStrings = {"MARKDISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
-
 	public MOB mark=null;
 
 	public MOB getMark(MOB mob)
@@ -41,8 +40,10 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			mob.tell("You remove your disguise.");
 			return true;
 		}
-
 		MOB target=getMark(mob);
+		if(Util.combine(commands,0).equalsIgnoreCase("!"))
+			target=mark;
+
 		if(target==null)
 		{
 			mob.tell("You need to have marked someone before you can disguise yourself as him or her.");
@@ -56,9 +57,14 @@ public class Skill_MarkDisguise extends Skill_Disguise
 
 		if(getMarkTicks(mob)<15)
 		{
-			mob.tell("You'll need to observe your mark a little longer (15 ticks) before you can get the disguise right.");
-			return false;
+			if(target==getMark(mob))
+			{
+				mob.tell("You'll need to observe your mark a little longer (15 ticks) before you can get the disguise right.");
+				return false;
+			}
 		}
+		
+		mark=target;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

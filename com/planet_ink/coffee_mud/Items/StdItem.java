@@ -569,25 +569,28 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob,Item.HELD))
+			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
-				if(alreadyWearing!=null)
+				if(!canWear(mob,Item.HELD))
 				{
-					if((!CommonMsgs.remove(mob,alreadyWearing,false))
-					||(!canWear(mob,Item.HELD)))
+					Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
+					if(alreadyWearing!=null)
 					{
-						mob.tell("Your hands are full.");
+						if((!CommonMsgs.remove(mob,alreadyWearing,false))
+						||(!canWear(mob,Item.HELD)))
+						{
+							mob.tell("Your hands are full.");
+							return false;
+						}
+					}
+					else
+					{
+						mob.tell("You need hands to hold things.");
 						return false;
 					}
 				}
-				else
-				{
-					mob.tell("You need hands to hold things.");
-					return false;
-				}
+				return true;
 			}
-			return true;
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{

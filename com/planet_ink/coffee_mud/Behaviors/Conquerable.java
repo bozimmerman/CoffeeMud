@@ -474,8 +474,24 @@ public class Conquerable extends Arrest
 			changeControlPoints(msg.source().getClanID(),-msg.target().envStats().level());
 		}
 
-
-
+		if((holdingClan.length()>0)
+		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		&&(!CommonStrings.isDisabled("CONQUEST"))
+		&&(!msg.source().isMonster())
+		&&(msg.value()>0))
+		{
+			Clan C=Clans.getClan(holdingClan);
+			if(C.getTaxes()!=0)
+			{
+				int value=(int)Math.round(Util.mul(msg.value(),C.getTaxes()));
+				if(value>0)
+				{
+					msg.setValue(msg.value()-value);
+					
+				}
+			}
+		}
+		
 		return super.okMessage(myHost,msg);
 	}
 

@@ -32,13 +32,13 @@ Holy
 <S-NAME> is in a holy stance.
 
 Silly
-<S-NAME> is scratching his butt.
+<S-NAME> is scratching <S-HIS-HER> butt.
 <S-NAME> is doing the best headstand you`ve ever seen!
-<S-NAME> is lying on his back waiting for a tummy scratching.
+<S-NAME> is lying on <S-HIS-HER> back waiting for a tummy scratching.
 <S-NAME> is giving you a thumbs up and a cheesy grin.
 <S-NAME> seems to be deliberately ignoring you.
-<S-NAME> is here with his face smooshed to the floor.
-<S-NAME> wants you to pull his finger.
+<S-NAME> is here with <S-HIS-HER> face smooshed to the floor.
+<S-NAME> wants you to pull <S-HIS-HER> finger.
 <S-NAME> is in a kung-fu stance.
 <S-NAME> is in a silly pose.
 
@@ -46,8 +46,8 @@ Confused
 <S-NAME> is talking to your foot.
 <S-NAME> seems very confused.
 <S-NAME> is looking at you cross-eyed.
-<S-NAME> is scratching his head.
-<S-NAME> has a confused expression on his face.
+<S-NAME> is scratching <S-HIS-HER> head.
+<S-NAME> has a confused expression on <S-HIS-HER> face.
 
 Sexy
 <S-NAME> is winking at you suggestively.
@@ -69,9 +69,9 @@ Quiet
 <S-NAME> is standing in a corner, unobtrusively.
 
 Bashful
-<S-NAME> is hiding his face from you.
-<S-NAME> is cowing in the corner, hiding his face.
-<S-NAME> is trying to cover his nakedness.
+<S-NAME> is hiding <S-HIS-HER> face from you.
+<S-NAME> is cowing in the corner, hiding <S-HIS-HER> face.
+<S-NAME> is trying to cover <S-HIS-HER> nakedness.
 <S-NAME> doesn't appear to want you to look at him.
 <S-NAME> doesn't appear to want you to talk to him.
 

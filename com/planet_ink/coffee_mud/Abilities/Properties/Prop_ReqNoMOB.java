@@ -36,12 +36,25 @@ public class Prop_ReqNoMOB extends Property
 			else
 			{
 				msg.source().getGroupMembers(H);
-				for(Iterator e=H.iterator();e.hasNext();)
-					((MOB)e.next()).getRideBuddies(H);
+				int hsize=0;
+				while(hsize!=H.size())
+				{
+					hsize=H.size();
+					HashSet H2=(HashSet)H.clone();
+					for(Iterator e=H2.iterator();e.hasNext();)
+					{
+						Object O=e.next();
+						if(O instanceof MOB)
+							((MOB)O).getRideBuddies(H);
+					}
+				}
 			}
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(passesMuster((MOB)e.next()))
+			{
+				Object O=e.next();
+				if((!(O instanceof MOB))||(passesMuster((MOB)O)))
 					return super.okMessage(myHost,msg);
+			}
 			msg.source().tell("You are not allowed in there.");
 			return false;
 		}
