@@ -78,6 +78,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.baseState().setMovement(30);
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(0);
+				newMOB.addNonUninvokableAffect(CMClass.getAbility("Spell_CauseStink"));
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();
