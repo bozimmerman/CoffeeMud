@@ -169,11 +169,15 @@ public class Hunting extends CommonSkill
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)))
 		{
 			found=(MOB)makeResource(resourceType);
-			foundShortName=found.name();
-			int x=0;
-			if((x=foundShortName.lastIndexOf(" "))>=0)
-				foundShortName=foundShortName.substring(x).trim().toLowerCase();
-			found.setLocation(null);
+			foundShortName="nothing";
+			if(found!=null)
+			{
+				foundShortName=found.name();
+				int x=0;
+				if((x=foundShortName.lastIndexOf(" "))>=0)
+					foundShortName=foundShortName.substring(x).trim().toLowerCase();
+				found.setLocation(null);
+			}
 		}
 		int duration=10+(mob.envStats().level()/4);
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");

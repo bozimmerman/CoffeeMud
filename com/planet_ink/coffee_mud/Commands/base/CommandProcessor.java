@@ -296,7 +296,7 @@ public class CommandProcessor
 					movement.mount(mob,commands);
 					break;
 				case CommandSet.NOFOLLOW:
-					grouping.nofollow(mob,true,false);
+					grouping.togglenofollow(mob);
 					break;
 				case CommandSet.NORTH:
 					movement.standAndGo(mob,Directions.NORTH);

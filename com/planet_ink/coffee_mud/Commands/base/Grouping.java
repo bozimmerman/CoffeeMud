@@ -146,15 +146,50 @@ public class Grouping
 			return;
 		}
 		String whomToFollow=Util.combine(commands,1);
+		if(whomToFollow.equalsIgnoreCase("self"))
+		{
+			nofollow(mob,true,false);
+			return;
+		}
 		MOB target=mob.location().fetchInhabitant(whomToFollow);
+		if(target==mob)
+		{
+			nofollow(mob,true,false);
+			return;
+		}
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("I don't see them here.");
 			return;
 		}
+		if((target.getBitmap()&MOB.ATT_NOFOLLOW)>0)
+		{
+			mob.tell(target.name()+" is not accepting followers.");
+			return;
+		}
 		processFollow(mob,target,false);
 	}
 
+	public void togglenofollow(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_NOFOLLOW)==0)
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_NOFOLLOW);
+			for(int i=0;i<mob.numFollowers();i++)
+			{
+				MOB follower=mob.fetchFollower(i);
+				if((follower!=null)&&(follower.amFollowing()!=null)&&(follower.amFollowing()==mob))
+					nofollow(follower,false,false);
+			}
+			mob.tell("You are no longer accepting followers.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_NOFOLLOW);
+			mob.tell("You are now accepting followers.");
+		}
+	}
+	
 	public void order(MOB mob, Vector commands)
 		throws Exception
 	{

@@ -8,7 +8,7 @@ import java.util.*;
 public class StdWand extends StdItem implements Wand
 {
 	public static final String[] words={"ZAP","ZAP","ZAP","ZOT","ZIT","ZEK","ZOM","ZUP","ZET","ZYT","ZVP","ZOP"};
-	private String secretWord=words[Dice.roll(1,words.length,0)-1];
+	protected String secretWord=words[Dice.roll(1,words.length,0)-1];
 
 	public StdWand()
 	{
@@ -60,6 +60,12 @@ public class StdWand extends StdItem implements Wand
 		miscText="";
 		if(theSpell!=null)
 			miscText=theSpell.ID();
+		secretWord=words[miscText.hashCode()%words.length];
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord=words[miscText.hashCode()%words.length];
 	}
 
 	public Ability getSpell()

@@ -18,12 +18,24 @@ public class Wand_Advancement extends StdWand
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=20000;
 		recoverEnvStats();
+		secretWord="LEVEL UP, LEVEL ALL UP";
 	}
 
 	public Environmental newInstance()
 	{
 		return new Wand_Advancement();
 	}
+	public void setSpell(Ability theSpell)
+	{
+		super.setSpell(theSpell);
+		secretWord="LEVEL UP, LEVEL ALL UP";
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord="LEVEL UP, LEVEL ALL UP";
+	}
+	
 
 	public void affect(Affect affect)
 	{

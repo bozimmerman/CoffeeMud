@@ -1067,11 +1067,12 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rGender: '"+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.GENDER))+"'.");
-		String newType=mob.session().choose("Enter a new gender (M/F)\n\r:","MF","");
+		String newType=mob.session().choose("Enter a new gender (M/F/N)\n\r:","MFN","");
 		int newValue=-1;
 		if(newType.length()>0)
-			newValue=("MF").indexOf(newType.toUpperCase());
+			newValue=("MFN").indexOf(newType.trim().toUpperCase());
 		if(newValue>=0)
+		{
 			switch(newValue)
 			{
 			case 0:
@@ -1080,7 +1081,11 @@ public class Generic
 			case 1:
 				E.baseCharStats().setStat(CharStats.GENDER,(int)'F');
 				break;
+			case 2:
+				E.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+				break;
 			}
+		}
 		else
 			mob.tell("(no change)");
 	}
@@ -1591,13 +1596,13 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 
 	public void modifyGenFood(MOB mob, Food me)
@@ -1621,13 +1626,13 @@ public class Generic
 			genReadable(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 	public void modifyGenDrink(MOB mob, Drink me)
 		throws IOException
@@ -1652,13 +1657,13 @@ public class Generic
 			genAffects(mob,me);
 			genDisposition(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 
 	public void modifyGenWallpaper(MOB mob, Item me)
@@ -1673,13 +1678,13 @@ public class Generic
 			genDescription(mob,me);
 			genReadable(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 
 	public void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.interfaces.Map me)
@@ -1705,13 +1710,13 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 
 	public void modifyGenContainer(MOB mob, Container me)
@@ -1742,13 +1747,13 @@ public class Generic
 			if(me instanceof Rideable)
 				genRideable(mob,(Rideable)me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 
 	public void modifyGenWeapon(MOB mob, Weapon me)
@@ -1784,13 +1789,13 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 	public void modifyGenArmor(MOB mob, Armor me)
 		throws IOException
@@ -1821,13 +1826,13 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 	public void modifyGenExit(MOB mob, Exit me)
 		throws IOException
@@ -1855,13 +1860,13 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
+			me.recoverEnvStats();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 				ok=false;
 			}
 		}
-		mob.recoverEnvStats();
 	}
 	public void modifyGenMOB(MOB mob, MOB me)
 		throws IOException
@@ -1900,6 +1905,10 @@ public class Generic
 			if(me instanceof Rideable)
 				genRideable(mob,(Rideable)me);
 			ok=true;
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverEnvStats();
+			me.resetToMaxState();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
@@ -1907,10 +1916,6 @@ public class Generic
 			}
 		}
 
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		mob.recoverMaxState();
-		mob.resetToMaxState();
 		mob.tell("\n\rNow don't forget to equip him with stuff before saving!\n\r");
 	}
 	public void modifyGenShopkeeper(MOB mob, ShopKeeper me)
@@ -1949,6 +1954,10 @@ public class Generic
 			genDisposition(mob,me);
 			genSensesMask(mob,me);
 			ok=true;
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverEnvStats();
+			me.resetToMaxState();
 			if(me.text().length()>=maxLength)
 			{
 				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
@@ -1956,9 +1965,6 @@ public class Generic
 			}
 		}
 
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-		mob.recoverEnvStats();
 		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
 	}
 }

@@ -32,6 +32,22 @@ public class Chant_AnimalSpy extends Chant
 		return new Chant_AnimalSpy();
 	}
 	
+	public boolean tick(int tickID)
+	{
+		if(!super.tick(tickID))
+			return false;
+		if((tickID==Host.MOB_TICK)
+		   &&(affected==spy))
+		{
+			if(spy.amDead()
+			   ||(spy.amFollowing()!=invoker)
+			   ||(spy.location()==null)
+			   ||(!spy.location().isInhabitant(spy)))
+				unInvoke();
+		}
+		return true;
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -41,7 +57,9 @@ public class Chant_AnimalSpy extends Chant
 		{
 			if(invoker!=null)
 			{
-				invoker.delAffect(this);
+				Ability A=invoker.fetchAffect(this.ID());
+				if(A!=null)
+					invoker.delAffect(A);
 				invoker.tell("Your connection with '"+spy.name()+"' fades.");
 			}
 		}
@@ -146,7 +164,8 @@ public class Chant_AnimalSpy extends Chant
 				spy=target;
 				beneficialAffect(mob,spy,0);
 				Ability A=spy.fetchAffect(ID());
-				mob.addNonUninvokableAffect(A);
+				mob.addNonUninvokableAffect((Ability)A.copyOf());
+				A.setAffectedOne(spy);
 			}
 
 		}

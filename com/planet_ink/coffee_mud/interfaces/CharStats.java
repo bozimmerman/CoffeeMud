@@ -92,6 +92,7 @@ public interface CharStats extends Cloneable
 	// create a new one of these
 	public CharStats cloneCharStats();
 	
+	public String genderName();
 	public String himher();
 	public String hisher();
 	public String heshe();

@@ -20,12 +20,24 @@ public class Wand_Fire extends StdWand
 		baseEnvStats().setLevel(12);
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
+		secretWord="BLAZE, BURN";
 	}
 
 	public Environmental newInstance()
 	{
 		return new Wand_Fire();
 	}
+	public void setSpell(Ability theSpell)
+	{
+		super.setSpell(theSpell);
+		secretWord="BLAZE, BURN";
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord="BLAZE, BURN";
+	}
+	
 
 	public void affect(Affect affect)
 	{

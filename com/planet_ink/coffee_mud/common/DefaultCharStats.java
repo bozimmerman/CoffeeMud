@@ -77,6 +77,15 @@ public class DefaultCharStats implements Cloneable, CharStats
 		return newOne;
 	}
 
+	public String genderName()
+	{
+		switch(getStat(GENDER))
+		{
+		case 'M': return "male";
+		case 'F': return "female";
+		default: return "neuter";
+		}
+	}
 	public String himher()
 	{
 		switch(getStat(GENDER))

@@ -7,8 +7,6 @@ import java.util.*;
 
 public class Spell_SummonEnemy extends Spell
 {
-	MOB theMonster=null;
-	
 	public Spell_SummonEnemy()
 	{
 		super();
@@ -44,16 +42,12 @@ public class Spell_SummonEnemy extends Spell
 	
 	public void unInvoke()
 	{
+		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
-			if(theMonster!=null)
-			{
-				MOB monster=theMonster;
-				theMonster=null;
-				monster.destroy();
-			}
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
 	}
-
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -71,9 +65,8 @@ public class Spell_SummonEnemy extends Spell
 				MOB target = determineMonster(mob, mob.envStats().level());
 				if(target!=null)
 				{
-					theMonster=target;
 					beneficialAffect(mob,target,0);
-					theMonster.setVictim(mob);
+					target.setVictim(mob);
 				}
 				else
 					mob.tell("Your equal could not be summoned.");

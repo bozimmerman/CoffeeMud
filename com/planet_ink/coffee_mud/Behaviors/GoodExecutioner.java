@@ -35,7 +35,7 @@ public class GoodExecutioner  extends StdBehavior
 		{
 			String reason="EVIL";
 			if(source.baseCharStats().getMyClass().name().equalsIgnoreCase("Thief"))
-				reason="a THIEF";
+				reason="A THIEF";
 			boolean yep=Aggressive.startFight(observer,source,true);
 			if(yep)	ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
 		}

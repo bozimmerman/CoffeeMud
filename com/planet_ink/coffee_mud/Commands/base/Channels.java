@@ -90,6 +90,12 @@ public class Channels
 			return;
 		}
 
+		for(int i=0;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.indexOf(" ")>=0)
+				commands.setElementAt("\""+s+"\"",i);
+		}
 		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'";
 		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"You"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,mob.name()+str);
 		if(mob.location().okAffect(msg))

@@ -18,11 +18,22 @@ public class Wand_Nourishment extends StdWand
 		baseGoldValue=200;
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
+		secretWord="SHAZAM";
 	}
 
 	public Environmental newInstance()
 	{
 		return new Wand_Nourishment();
+	}
+	public void setSpell(Ability theSpell)
+	{
+		super.setSpell(theSpell);
+		secretWord="SHAZAM";
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord="SHAZAM";
 	}
 
 	public void affect(Affect affect)

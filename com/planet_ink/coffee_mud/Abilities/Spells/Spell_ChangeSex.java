@@ -99,7 +99,7 @@ public class Spell_ChangeSex extends Spell
 					success=beneficialAffect(mob,target,0);
 					target.recoverCharStats();
 					target.recoverEnvStats();
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) "+((target.charStats().getStat(CharStats.GENDER)=='M')?"male":"female")+"!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) "+target.charStats().genderName()+"!");
 				}
 			}
 		}

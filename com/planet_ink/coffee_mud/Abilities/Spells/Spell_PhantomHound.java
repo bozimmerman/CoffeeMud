@@ -84,6 +84,14 @@ public class Spell_PhantomHound extends Spell
 		return super.tick(tickID);
 	}
 	
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)

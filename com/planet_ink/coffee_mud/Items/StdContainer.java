@@ -281,9 +281,25 @@ public class StdContainer extends StdItem implements Container
 					if(this.isOpen)
 					{
 						buf.append(name()+" contains:\n\r");
+						Vector newItems=new Vector();
+						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
+						{
+							GenLiquidResource l=new GenLiquidResource();
+							int myResource=((Drink)this).liquidType();
+							l.setMaterial(myResource);
+							((Drink)l).setLiquidType(myResource);
+							l.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
+							l.baseEnvStats().setWeight(1);
+							String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
+							l.setName("some "+name);
+							l.setDisplayText("some "+name+" sits here.");
+							l.setDescription("");
+							l.recoverEnvStats();
+							newItems.addElement(l);
+						}
+							
 						if(mob.isMine(this))
 						{
-							Vector newItems=new Vector();
 							for(int i=0;i<mob.inventorySize();i++)
 							{
 								Item item=mob.fetchInventory(i);
@@ -295,7 +311,6 @@ public class StdContainer extends StdItem implements Container
 						else
 						{
 							Room room=mob.location();
-							Vector newItems=new Vector();
 							if(room!=null)
 							for(int i=0;i<room.numItems();i++)
 							{

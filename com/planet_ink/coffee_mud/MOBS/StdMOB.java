@@ -646,7 +646,7 @@ public class StdMOB implements MOB
 		return (Weapon)CMClass.getWeapon("Natural");
 	}
 
-	public String displayText()
+	public String displayText(MOB viewer)
 	{
 		if((displayText.length()==0)
 		   ||(envStats().replacementName()!=null)
@@ -667,7 +667,10 @@ public class StdMOB implements MOB
 			if(riding()!=null)
 			{
 				sendBack.append(" "+riding().stateString()+" ");
-				sendBack.append(riding().name());
+				if(riding()==viewer)
+					sendBack.append("YOU");
+				else
+					sendBack.append(riding().name());
 			}
 			else
 			if((this instanceof Rideable)
@@ -680,26 +683,38 @@ public class StdMOB implements MOB
 				{
 					MOB rider=me.fetchRider(r);
 					if(rider!=null)
+					{
 						if(r>0)
 						{
 							sendBack.append(", ");
 							if(r==me.numRiders()-1)
 								sendBack.append("and ");
 						}
-						sendBack.append(rider.name());
+						if(rider==viewer)
+							sendBack.append("you");
+						else
+							sendBack.append(rider.name());
+					}
 					
 				}
 			}
 			if((isInCombat())&&(Sense.canMove(this))&&(!Sense.isSleeping(this)))
 			{
 				sendBack.append(" fighting ");
-				sendBack.append(getVictim().name());
+				if(getVictim()==viewer)
+					sendBack.append("YOU");
+				else
+					sendBack.append(getVictim().name());
 			}
 			sendBack.append(".");
 			return sendBack.toString();
 		}
 		else
 			return displayText;
+	}
+	public String displayText()
+	{
+		return displayText(null);
 	}
 
 	public String rawDisplayText()

@@ -96,7 +96,9 @@ public class Foraging extends CommonSkill
 		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
 		{
 			found=(Item)makeResource(resourceType);
-			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			foundShortName="nothing";
+			if(found!=null)
+				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;

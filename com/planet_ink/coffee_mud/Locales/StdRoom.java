@@ -578,7 +578,7 @@ public class StdRoom
 
 				Say.append("^M");
 				if(mob2.displayText().length()>0)
-					Say.append(mob2.displayText());
+					Say.append(mob2.displayText(mob));
 				else
 					Say.append(mob2.name());
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");

@@ -95,6 +95,12 @@ public class SocialProcessor
 			else
 				target=null;
 		}
+		for(int i=1;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.indexOf(" ")>=0)
+				commands.setElementAt("\""+s+"\"",i);
+		}
 		String combinedCommands=Util.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
@@ -147,6 +153,12 @@ public class SocialProcessor
 		{
 			mob.tell("That person doesn't appear to be online.");
 			return;
+		}
+		for(int i=1;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.indexOf(" ")>=0)
+				commands.setElementAt("\""+s+"\"",i);
 		}
 		String combinedCommands=Util.combine(commands,1);
 		if(combinedCommands.equals(""))

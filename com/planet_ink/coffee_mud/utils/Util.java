@@ -201,6 +201,9 @@ public class Util
 	}
 	
 	public static Vector parse(String str)
+	{	return parse(str,-1);	}
+	
+	public static Vector parse(String str, int upTo)
 	{
 		Vector commands=new Vector();
 		str=str.trim();
@@ -235,7 +238,16 @@ public class Util
 				str="";
 			}
 			if(!CMD.equals(""))
+			{
 				commands.addElement(CMD);
+				if((upTo>=0)&&(commands.size()>=upTo))
+				{
+					if(str.length()>0)
+						commands.addElement(str);
+					break;
+				}
+					
+			}
 		}
 		return commands;
 	}

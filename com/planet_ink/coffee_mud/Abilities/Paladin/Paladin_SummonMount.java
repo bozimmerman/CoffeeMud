@@ -37,6 +37,14 @@ public class Paladin_SummonMount extends StdAbility
 		return Ability.SKILL;
 	}
 
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -45,6 +53,7 @@ public class Paladin_SummonMount extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
+				||(mob.amDead())
 				||(mob.location()==null)
 				||(invoker==null)
 				||(invoker.location()==null)

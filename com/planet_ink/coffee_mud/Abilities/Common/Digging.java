@@ -104,7 +104,9 @@ public class Digging extends CommonSkill
 		   ||(resourceType==EnvResource.RESOURCE_PEARL)))
 		{
 			found=(Item)makeResource(resourceType);
-			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			foundShortName="nothing";
+			if(found!=null)
+				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=60-mob.envStats().level();
 		if(duration<25) duration=25;

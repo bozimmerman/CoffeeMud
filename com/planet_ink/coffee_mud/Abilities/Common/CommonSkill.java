@@ -276,9 +276,13 @@ public class CommonSkill extends StdAbility
 				I=CMClass.getItem("GenFoodResource");
 				break;
 			}
+			case EnvResource.MATERIAL_LIQUID:
+			{
+				I=CMClass.getItem("GenLiquidResource");
+				break;
+			}
 			case EnvResource.MATERIAL_CLOTH:
 			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_LIQUID:
 			case EnvResource.MATERIAL_WOODEN:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
@@ -301,11 +305,16 @@ public class CommonSkill extends StdAbility
 			if(I!=null)
 			{
 				I.setMaterial(myResource);
+				if(I instanceof Drink)
+					((Drink)I).setLiquidType(myResource);
 				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
 				I.baseEnvStats().setWeight(1);
-				I.setName("a pound of "+name);
+				if(I instanceof Drink)
+					I.setName("some "+name);
+				else
+					I.setName("a pound of "+name);
 				I.setDisplayText("some "+name+" sits here.");
-				I.setDescription("Looks like "+I.name()+".");
+				I.setDescription("");
 				I.recoverEnvStats();
 				return I;
 			}

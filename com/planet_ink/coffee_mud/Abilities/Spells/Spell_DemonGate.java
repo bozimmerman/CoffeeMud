@@ -7,7 +7,6 @@ import java.util.*;
 
 public class Spell_DemonGate extends Spell
 {
-	MOB myMonster=null;
 	MOB myTarget=null;
 	public Spell_DemonGate()
 	{
@@ -61,18 +60,12 @@ public class Spell_DemonGate extends Spell
 	
 	public void unInvoke()
 	{
+		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(canBeUninvoked)
-		{
-			if((myMonster!=null)&&(invoker!=null))
-			{
-				MOB targ=myMonster;
-				myMonster=null;
-				targ.destroy();
-			}
-		}
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
 	}
-
+	
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -97,7 +90,7 @@ public class Spell_DemonGate extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				myMonster = determineMonster(mob, mob.envStats().level());
+				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(Dice.rollPercentage()<25)
 					myMonster.setVictim(mob);
 				else

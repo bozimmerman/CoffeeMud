@@ -107,7 +107,9 @@ public class Mining extends CommonSkill
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 		{
 			found=(Item)makeResource(resourceType);
-			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
+			foundShortName="nothing";
+			if(found!=null)
+				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=50-mob.envStats().level();
 		if(duration<15) duration=15;

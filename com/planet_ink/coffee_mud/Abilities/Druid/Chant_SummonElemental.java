@@ -44,6 +44,7 @@ public class Chant_SummonElemental extends Chant
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
+				||(mob.amDead())
 				||(mob.location()!=invoker.location())))
 				{
 					mob.delAffect(this);

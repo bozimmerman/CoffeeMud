@@ -17,6 +17,7 @@ public class WandArchon extends StdWand
 		baseGoldValue=20000;
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
+		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 
 	public Environmental newInstance()
@@ -24,6 +25,17 @@ public class WandArchon extends StdWand
 		return new WandArchon();
 	}
 
+	public void setSpell(Ability theSpell)
+	{
+		super.setSpell(theSpell);
+		secretWord="REFRESH, LEVEL UP, BURN!!";
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord="REFRESH, LEVEL UP, BURN!!";
+	}
+	
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   String message,

@@ -54,6 +54,12 @@ public class GenStaff extends GenWeapon implements Wand
 		readableText="";
 		if(theSpell!=null)
 			readableText=theSpell.ID();
+		secretWord=StdWand.words[readableText.hashCode()%StdWand.words.length];
+	}
+	public void setReadableText(String text)
+	{
+		super.setReadableText(text);
+		secretWord=StdWand.words[readableText.hashCode()%StdWand.words.length];
 	}
 
 	public String secretIdentity()

@@ -82,7 +82,7 @@ public class Chant_Treeform extends Chant
 				Item item=CMClass.getItem("GenResource");
 				item.setName(mob.name());
 				item.setDescription(mob.description());
-				item.setDisplayText(mob.displayText());
+				item.setDisplayText(mob.rawDisplayText());
 				item.setMaterial(EnvResource.RESOURCE_WOOD);
 				item.setGettable(false);
 				item.envStats().setWeight(2000);

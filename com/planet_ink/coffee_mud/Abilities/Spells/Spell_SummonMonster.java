@@ -38,6 +38,14 @@ public class Spell_SummonMonster extends Spell
 	}
 
 
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -54,6 +62,7 @@ public class Spell_SummonMonster extends Spell
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				ExternalPlay.follow(target,mob,true);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

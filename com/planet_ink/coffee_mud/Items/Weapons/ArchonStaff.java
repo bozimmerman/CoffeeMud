@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class ArchonStaff extends Staff implements Wand
 {
-	private String secretWord="REFRESH, BURN!!";
+	private String secretWord="REFRESH, LEVEL UP, BURN!!";
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 
 	public ArchonStaff()
@@ -37,6 +37,16 @@ public class ArchonStaff extends Staff implements Wand
 	public Environmental newInstance()
 	{
 		return new ArchonStaff();
+	}
+	public void setSpell(Ability theSpell)
+	{
+		super.setSpell(theSpell);
+		secretWord="REFRESH, LEVEL UP, BURN!!";
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 
 	public void waveIfAble(MOB mob,

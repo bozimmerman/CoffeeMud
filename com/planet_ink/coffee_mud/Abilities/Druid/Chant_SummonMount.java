@@ -30,6 +30,14 @@ public class Chant_SummonMount extends Chant
 		return new Chant_SummonMount();
 	}
 	
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -38,6 +46,7 @@ public class Chant_SummonMount extends Chant
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
+				||(mob.amDead())
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
 					mob.delAffect(this);

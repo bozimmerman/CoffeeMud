@@ -40,6 +40,14 @@ public class Spell_SummonFlyer extends Spell
 		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -49,6 +57,7 @@ public class Spell_SummonFlyer extends Spell
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.location()==null)
+				||(mob.amDead())
 				||(invoker==null)
 				||(invoker.location()==null)
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))

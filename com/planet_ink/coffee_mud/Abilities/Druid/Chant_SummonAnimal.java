@@ -36,6 +36,14 @@ public class Chant_SummonAnimal extends Chant
 		return new Chant_SummonAnimal();
 	}
 
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked)&&(mob!=null))
+			mob.destroy();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -84,7 +92,10 @@ public class Chant_SummonAnimal extends Chant
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false);
 				if(target.location()==mob.location())
+				{
 					ExternalPlay.follow(target,mob,true);
+					beneficialAffect(mob,target,0);
+				}
 				else
 					target.destroy();
 				invoker=mob;

@@ -19,6 +19,7 @@ public interface MOB
 	public static final int ATT_AUTOMELEE=64;
 	public static final int ATT_PLAYERKILL=128;
 	public static final int ATT_BRIEF=256;
+	public static final int ATT_NOFOLLOW=512;
 	
 	/** When the USER last logged on */
 	public Calendar lastDateTime();
@@ -37,6 +38,7 @@ public interface MOB
 	public CharStats charStats();
 	public void recoverCharStats();
 	public void setBaseCharStats(CharStats newBaseCharStats);
+	public String displayText(MOB viewer);
 	public String rawDisplayText();
 	public int maxCarry();
 	public String healthText();
