@@ -547,7 +547,7 @@ public class StdAbility implements Ability, Cloneable
 			Ability newOne=(Ability)this.copyOf();
 
 			if(tickAdjustmentFromStandard<=0)
-				tickAdjustmentFromStandard=(mob.envStats().level()*3)+30;
+				tickAdjustmentFromStandard=(adjustedLevel(mob)*3)+30;
 
 			newOne.startTickDown(target,tickAdjustmentFromStandard);
 		}
