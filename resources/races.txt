@@ -1,10 +1,10 @@
 ^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.^N
 
-^YElf*:^? Quick and agile, slightly shorter and more slender than a human.  They may be ^Bany class^? except Paladin.
-^YHalf Elf*:^? A child of human and elvish parents, they, like humans, may be ^Bany class^?.
-^YGnome*:^? Curious and quick-witted, resembling a small dwarf. They may be ^BClerics^?, ^BFighers^? or ^BThieves^?.
-^YHalfling*:^? A very short fur-footed folk.  They may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
-^YDwarf*:^? Short and stocky, they may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
-^YHuman:^? No racial bonuses/penalties, ^B2 bonus training points^? at first level.  They may be ^Bany class^?.
+^YElf*      :^? Quick and agile, slightly shorter and more slender than a human.  They may be ^Bany class^? except Paladin.
+^YHalf Elf* :^? A child of human and elvish parents, they, like humans, may be ^Bany class^?.
+^YGnome*    :^? Curious and quick-witted, resembling a small dwarf. They may be ^BClerics^?, ^BFighers^? or ^BThieves^?.
+^YHalfling* :^? A very short fur-footed folk.  They may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
+^YDwarf*    :^? Short and stocky, they may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
+^YHuman     :^? No racial bonuses/penalties, ^B2 bonus training points^? at first level.  They may be ^Bany class^?.
 
 ^p* - ^BInfravision^?: this race can see the heat of other creatures in the dark.^N
