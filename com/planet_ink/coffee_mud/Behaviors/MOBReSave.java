@@ -32,17 +32,17 @@ public class MOBReSave extends ActiveTicker
 		&&(!noRecurse)
 		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		&&(((MOB)ticking).getStartRoom()!=null)
-		&&(CMMap.getExtendedRoomID(((MOB)ticking).getStartRoom()).length()>0))
+		&&(((MOB)ticking).getStartRoom().roomID().length()>0))
 		{
 			noRecurse=true;
 			MOB mob=(MOB)ticking;
 			synchronized(roomsReset)
 			{
-				if(!roomsReset.contains(CMMap.getExtendedRoomID(mob.getStartRoom())))
+				if(!roomsReset.contains(mob.getStartRoom().roomID()))
 				{
 					if(mob.location()!=mob.getStartRoom())
 						mob.getStartRoom().bringMobHere(mob,false);
-					roomsReset.add(CMMap.getExtendedRoomID(mob.getStartRoom().roomID()));
+					roomsReset.add(mob.getStartRoom().roomID());
 					CoffeeUtensils.resetRoom(mob.getStartRoom());
 					CMClass.DBEngine().DBUpdateMOBs(mob.getStartRoom());
 				}
