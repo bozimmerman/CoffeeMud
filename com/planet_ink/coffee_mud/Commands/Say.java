@@ -10,6 +10,23 @@ public class Say extends StdCommand
 
 	private String[] access={"SAY","ASK","`","SA"};
 	public String[] getAccessWords(){return access;}
+	
+	private static final String[] impossibleTargets={
+		"HERE",
+		"THERE",
+		"IS",
+		"JUST",
+		"A",
+		"AN",
+		"THE",
+		"SOME",
+		"SITS",
+		"RESTS",
+		"LEFT",
+		"HAS",
+		"BEEN"
+	};
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -27,14 +44,20 @@ public class Say extends StdCommand
 		Environmental target=null;
 		if(commands.size()>2)
 		{
-			String possibleTarget=(String)commands.elementAt(1);
-			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
-			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
-			   target=null;
-			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
-				commands.removeElementAt(1);
-			else
-				target=null;
+			String possibleTarget=((String)commands.elementAt(1)).toUpperCase();
+			for(int i=0;i<impossibleTargets.length;i++)
+				if(impossibleTargets[i].startsWith(possibleTarget))
+				{ possibleTarget=""; break;}
+			if(possibleTarget.length()>0)
+			{
+				target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
+				if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+				   target=null;
+				if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
+					commands.removeElementAt(1);
+				else
+					target=null;
+			}
 		}
 		for(int i=1;i<commands.size();i++)
 		{

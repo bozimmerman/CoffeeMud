@@ -26,7 +26,7 @@ public class Prop_SparringRoom extends Property
 			MOB target=msg.source();
 			Room deathRoom=target.location();
 			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
-			Hashtable beneficiaries=new Hashtable();
+			HashSet beneficiaries=new HashSet();
 			if((source!=null)&&(source.charStats()!=null))
 			{
 				CharClass C=source.charStats().getCurrentClass();

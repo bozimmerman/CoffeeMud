@@ -1,14 +1,10 @@
-return "^c" + mob.name() + "^c is in perfect health^N"; doesn't end in period
-error logging: For example:/18/2004 9:02 PM Error Room Couldn't set exit for unknown room 'BM#2' And make it: 3/18/2004 9:02 PM Error Room Couldn't set North exit for 'Avan#17'
-For Artisan, can we make the experience less spammy?  Maybe just give total experience earned at the end of the skill attempt instead of showing 1 exp per tick?
-We could use a way to show the last 5 or 10 messages sent on the channels.  It's difficult to keep track of conversation (you can easily miss something) during combat.
-
-My Skeletons are Leveling... I'm a Necromancer!!!
-Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, ?Autosneak
-Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
-Test: Improved Shield Defence, Body Toss, Mounted Charge, Far Shot, Counter Attack
-Test: Gouge, AutoBash, Weapon Catch, Body Shield
-Default statistics page is not right
+?Test: Prop_RideZapper, Prop_RideAdjuster, Prop_RideResister
+?Test: High Marks, Improved Distraction, Improved Peek, Improved Steal
+?Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
+?Test: Improved Shield Defence, Body Toss, Mounted Charge, Far Shot, Counter Attack
+?Test: Gouge, AutoBash, Weapon Catch, Body Shield
+?absorption doesn't make the skill temporary....it's there for good.
+ca geas melancholy kill cityguard
 
 Fighters:
 Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  
@@ -60,7 +56,6 @@ Delver:
 7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
 time to re-balance the classes:
-ca geas melancholy kill cityguard
 ability to wish for body parts, ability to wish for lower level items (making level lower)
 mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 

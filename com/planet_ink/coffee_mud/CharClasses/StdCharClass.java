@@ -570,13 +570,13 @@ public class StdCharClass implements CharClass, Cloneable
 			return true;
 		return false;
 	}
-	public Hashtable dispenseExperience(MOB killer, MOB killed)
+	public HashSet dispenseExperience(MOB killer, MOB killed)
 	{
-		if((killer==null)||(killed==null)) return new Hashtable();
+		if((killer==null)||(killed==null)) return new HashSet();
 		Room deathRoom=killed.location();
 		if(deathRoom==null) deathRoom=killer.location();
 
-		Hashtable beneficiaries=new Hashtable();
+		HashSet beneficiaries=new HashSet();
 		HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
 
 		int totalLevels=0;
@@ -587,18 +587,18 @@ public class StdCharClass implements CharClass, Cloneable
 			{
 				MOB mob=deathRoom.fetchInhabitant(m);
 				if((isValidBeneficiary(killer,killed,mob,followers))
-				&&(beneficiaries.get(mob)==null))
+				&&(!beneficiaries.contains(mob)))
 				{
-					beneficiaries.put(mob,mob);
+					beneficiaries.add(mob);
 					totalLevels+=mob.envStats().level();
 					expAmount+=25;
 				}
 			}
 
 		if(beneficiaries.size()>0)
-			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+			for(Iterator i=beneficiaries.iterator();i.hasNext();)
 			{
-				MOB mob=(MOB)e.nextElement();
+				MOB mob=(MOB)i.next();
 				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
 				MUDFight.postExperience(mob,killed,"",myAmount,false);

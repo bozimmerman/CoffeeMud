@@ -316,7 +316,7 @@ public class MUDFight
 		if(target==null) return;
 		Room deathRoom=target.location();
 
-		Hashtable beneficiaries=new Hashtable();
+		HashSet beneficiaries=new HashSet();
 		if((source!=null)&&(source.charStats()!=null))
 		{
 			CharClass C=source.charStats().getCurrentClass();
@@ -332,9 +332,9 @@ public class MUDFight
 		int deadMoney=target.getMoney();
 		int myAmountOfDeadMoney=0;
 		Vector goldLooters=new Vector();
-		for(Enumeration e=beneficiaries.keys();e.hasMoreElements();)
+		for(Iterator e=beneficiaries.iterator();e.hasNext();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=(MOB)e.next();
 			if(((Util.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
 			&&(!goldLooters.contains(M)))
 			&&(M.location()==deathRoom)

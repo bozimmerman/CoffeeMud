@@ -34,6 +34,7 @@ public class Thief_Autosneak extends ThiefSkill
 		return true;
 	}
 
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -51,7 +52,8 @@ public class Thief_Autosneak extends ThiefSkill
 			MOB mob=(MOB)affected;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if((mob.location().getRoomInDir(d)==msg.target())
-				&&((mob.location().getReverseExit(d)==msg.tool())||(mob.location().getExitInDir(d)==msg.tool())))
+				||(mob.location().getReverseExit(d)==msg.tool())
+				||(mob.location().getExitInDir(d)==msg.tool()))
 				{ dir=d; break;}
 			if(dir>=0)
 			{
@@ -63,9 +65,12 @@ public class Thief_Autosneak extends ThiefSkill
 					if(A.invoke(mob,Util.parse(Directions.getDirectionName(dir)),null,false))
 					{
 						int[] usage=A.usageCost(mob);
-						if(usage[A.USAGE_HITPOINTS]>0) mob.curState().adjHitPoints(usage[A.USAGE_HITPOINTS]/2,mob.maxState());
-						if(usage[A.USAGE_MANA]>0) mob.curState().adjMana(usage[A.USAGE_MANA]/2,mob.maxState());
-						if(usage[A.USAGE_MOVEMENT]>0) mob.curState().adjMovement(usage[A.USAGE_MOVEMENT]/2,mob.maxState());
+						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+							mob.curState().adjHitPoints(usage[USAGE_HITPOINTSINDEX]/2,mob.maxState());
+						if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+							mob.curState().adjMana(usage[USAGE_MANAINDEX]/2,mob.maxState());
+						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+							mob.curState().adjMovement(usage[USAGE_MOVEMENTINDEX]/2,mob.maxState());
 					}
 					if(Dice.rollPercentage()<10)
 						helpProfficiency(mob);

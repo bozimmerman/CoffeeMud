@@ -225,9 +225,9 @@ public class Necromancer extends Cleric
 	}
 
 	protected boolean isValidBeneficiary(MOB killer,
-									   MOB killed,
-									   MOB mob,
-									   Hashtable followers)
+									     MOB killed,
+									     MOB mob,
+									     Hashtable followers)
 	{
 		if((mob!=null)
 		&&(!mob.amDead())

@@ -112,7 +112,7 @@ public class Thief_Bind extends ThiefSkill
 		{
 			if(auto) maxRange=10;
 			String str=auto?"<T-NAME> become(s) bound by "+ropeName+".":"<S-NAME> bind(s) <T-NAME> with "+ropeName+".";
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
+			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MASK_MALICIOUS,auto?"":str,str,str);
 			if((target.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				target.location().send(mob,msg);

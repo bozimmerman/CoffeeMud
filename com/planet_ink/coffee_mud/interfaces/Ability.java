@@ -129,6 +129,9 @@ public interface Ability  extends Environmental
 	public final static int USAGE_MANA=1;
 	public final static int USAGE_MOVEMENT=2;
 	public final static int USAGE_HITPOINTS=4;
+	public final static int USAGE_MANAINDEX=0;
+	public final static int USAGE_MOVEMENTINDEX=1;
+	public final static int USAGE_HITPOINTSINDEX=2;
 	public int usageType();
 
 	// a borrowed ability is one derived from some other source
