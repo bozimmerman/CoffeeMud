@@ -1,6 +1,5 @@
 abyss/portal change
 illegal influence crimes broken
-RE: Springs. Druids have the chant summon water, which brings forth a spring. Clerics have create water, which fills a waterskin.
 When you fill a buffalo skin with the blood of a killed creature, the blood remains even though empty.
 If tagturf only applies to thieves, why does everyone have to see the tagging? Is there a way to make it HIDDEN, to where thieves have to look to see if a room is tagged?
 Patrolling rideables don't carry the ridden
@@ -16,4 +15,5 @@ ability to deposit a container and its contents.
 we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
 for the trader class, we need tar & feather, whip (improve common skils), torture, salvetrading skill, executions (stoning, drawn & quarter, beheading)
 Execution skill for Arrest
+prop to give each mob a unique death message
 document real estate, space ship selling, genairlock
