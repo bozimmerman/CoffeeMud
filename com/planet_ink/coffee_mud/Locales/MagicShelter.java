@@ -12,6 +12,7 @@ public class MagicShelter extends StdRoom
 	public MagicShelter()
 	{
 		super();
+		name="the shelter";
 		displayText="Magic Shelter";
 		description="You are in a domain of complete void and peace.";
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);

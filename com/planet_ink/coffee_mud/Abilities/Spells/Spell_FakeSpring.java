@@ -40,7 +40,7 @@ public class Spell_FakeSpring extends Spell
 		if(littleSpring==null)
 			return;
 		super.unInvoke();
-		Item spring=littleSpring; // protects against uninvoke loops!
+		Item spring=(Item)littleSpring; // protects against uninvoke loops!
 		littleSpring=null;
 		spring.destroyThis();
 		SpringLocation.recoverRoomStats();
@@ -97,10 +97,10 @@ public class Spell_FakeSpring extends Spell
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
 				W.baseEnvStats().setWeight(newItem.baseEnvStats().weight());
-				W.setGettable(false);
+				((Item)W).setGettable(false);
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
-				mob.location().addItem(W);
+				mob.location().addItem((Item)W);
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=W;

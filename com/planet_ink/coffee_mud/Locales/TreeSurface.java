@@ -10,6 +10,7 @@ public class TreeSurface extends ClimbableSurface
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="the tree";
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;

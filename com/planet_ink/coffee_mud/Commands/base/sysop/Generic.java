@@ -741,7 +741,7 @@ public class Generic
 		if(E instanceof Food)
 			modifyGenFood(mob,(Food)E);
 		else
-		if(E instanceof Drink)
+		if((E instanceof Drink)&&(E instanceof Item))
 			modifyGenDrink(mob,(Drink)E);
 		else
 		if(E instanceof Weapon)
@@ -1580,15 +1580,15 @@ public class Generic
 			genName(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
-			genSecretIdentity(mob,me);
-			genValue(mob,me);
+			genSecretIdentity(mob,(Item)me);
+			genValue(mob,(Item)me);
 			genWeight(mob,me);
 			genRejuv(mob,me);
 			genThirstQuenched(mob,me);
-			genMaterialCode(mob,me);
+			genMaterialCode(mob,(Item)me);
 			genDrinkHeld(mob,me);
-			genGettable(mob,me);
-			genReadable(mob,me);
+			genGettable(mob,(Item)me);
+			genReadable(mob,(Item)me);
 			genAffects(mob,me);
 			genDisposition(mob,me);
 			ok=true;

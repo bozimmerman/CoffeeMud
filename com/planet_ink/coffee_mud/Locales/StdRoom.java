@@ -9,7 +9,7 @@ public class StdRoom
 	implements Room
 {
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	protected String name="room";
+	protected String name="the room";
 	protected String displayText="Standard Room";
 	protected String miscText="";
 	protected String description="";

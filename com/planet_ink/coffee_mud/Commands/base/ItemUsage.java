@@ -309,19 +309,25 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		if(commands.size()<2)
+		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			mob.tell("From what should I fill the "+(String)commands.elementAt(0));
+			mob.tell("From what should I fill the "+(String)commands.elementAt(0)+"?");
 			return;
 		}
-		String thingToFillFrom=(String)commands.elementAt(commands.size()-1);
-		Environmental fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom);
-		if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
+		Environmental fillFromThis=null;
+		if((commands.size()==1)&&(mob.location() instanceof Drink))
+			fillFromThis=mob.location();
+		else
 		{
-			mob.tell("I don't see a "+thingToFillFrom+" here.");
-			return;
+			String thingToFillFrom=(String)commands.elementAt(commands.size()-1);
+			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom);
+			if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
+			{
+				mob.tell("I don't see a "+thingToFillFrom+" here.");
+				return;
+			}
+			commands.removeElementAt(commands.size()-1);
 		}
-		commands.removeElementAt(commands.size()-1);
 
 		String thingToFill=Util.combine(commands,0);
 		boolean doneSomething=false;
@@ -530,19 +536,24 @@ public class ItemUsage
 
 	public void drink(MOB mob, Vector commands)
 	{
-		if(commands.size()<2)
+		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
 			mob.tell("Drink what?");
 			return;
 		}
 		commands.removeElementAt(0);
-
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
-		if((thisThang==null)
-		||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
+		Environmental thisThang=null;
+		if((commands.size()==0)&&(mob.location() instanceof Drink))
+			thisThang=mob.location();
+		else
 		{
-			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
-			return;
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
+			if((thisThang==null)
+			||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
+			{
+				mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
+				return;
+			}
 		}
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink from <T-NAMESELF>.");
 		if(mob.location().okAffect(newMsg))

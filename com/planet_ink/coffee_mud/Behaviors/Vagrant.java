@@ -43,20 +43,19 @@ public class Vagrant extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{
 			if(Dice.rollPercentage()>50)
 			{
 				ExternalPlay.standIfNecessary(mob);
-				wakeForTicks=10;
+				wakeForTicks=Dice.roll(1,30,0);
 			}
 			else
 			{
 				mob.location().show(mob,mob.location(),Affect.MSG_SLEEP,"<S-NAME> curl(s) on the ground and go(es) to sleep.");
 				if(Sense.isSleeping(mob))
-					sleepForTicks=10;
+					sleepForTicks=Dice.roll(1,10,0);
 			}
 		}
 		else

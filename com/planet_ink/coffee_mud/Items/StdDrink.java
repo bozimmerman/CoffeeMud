@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class StdDrink extends StdContainer implements Drink
+public class StdDrink extends StdContainer implements Drink,Item
 {
 
 	protected int amountOfThirstQuenched=250;
@@ -33,6 +33,7 @@ public class StdDrink extends StdContainer implements Drink
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
+	public int liquidType(){return Drink.LIQUID_WATER;}
 
 	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
@@ -68,7 +69,6 @@ public class StdDrink extends StdContainer implements Drink
 							mob.tell(name()+" is empty.");
 							return false;
 						}
-							
 						return true;
 					}
 					else
@@ -87,6 +87,11 @@ public class StdDrink extends StdContainer implements Drink
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							Drink thePuddle=(Drink)affect.tool();
+							if(thePuddle.liquidType()==Drink.LIQUID_SALT_WATER)
+							{
+								mob.tell("You don't want to be drinking saltwater.");
+								return false;
+							}
 							if(!thePuddle.containsDrink())
 							{
 								mob.tell(thePuddle.name()+" is empty.");

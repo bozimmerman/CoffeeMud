@@ -9,6 +9,7 @@ public class Mountains extends StdRoom
 	public Mountains()
 	{
 		super();
+		name="the mountain";
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;

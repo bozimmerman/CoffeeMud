@@ -29,6 +29,7 @@ public class GenPotion extends GenWater implements Potion
 		return new GenPotion();
 	}
 	public boolean isGeneric(){return true;}
+	public int liquidType(){return Drink.LIQUID_OTHERDRINKABLE;}
 
 	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public void setDrunk(Potion me, boolean isTrue)

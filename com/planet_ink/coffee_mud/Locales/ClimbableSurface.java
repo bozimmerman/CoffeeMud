@@ -11,6 +11,7 @@ public class ClimbableSurface extends StdRoom
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="the surface";
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
 		domainCondition=Room.CONDITION_NORMAL;

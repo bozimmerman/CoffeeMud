@@ -28,6 +28,7 @@ public class StdPotion extends StdDrink implements Potion
 		return new StdPotion();
 	}
 
+	public int liquidType(){return Drink.LIQUID_OTHERDRINKABLE;}
 	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public int value()
 	{

@@ -168,21 +168,27 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR");
-			MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
 			StringBuffer head=new StringBuffer("");
 			head.append("[");
 			head.append(Util.padRight("Race",8)+" ");
-			head.append(Util.padRight("Class",8)+" ");
+			head.append(Util.padRight("Class",10)+" ");
 			head.append(Util.padRight("Lvl",4));
+			head.append(Util.padRight("Last",18)+" ");
 			head.append("] Character name\n\r");
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
-				newMOB.setName(username);
-				newMOB.charStats().setMyClass((CharClass)CMClass.getCharClass(DBConnections.getRes(R,"CMCLAS")));
-				newMOB.charStats().setMyRace((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
-				newMOB.envStats().setLevel(Util.s_int(DBConnections.getRes(R,"CMLEVL")));
-				head.append(ExternalPlay.showWho(newMOB,true));
+				String cclass=((CharClass)CMClass.getCharClass(DBConnections.getRes(R,"CMCLAS"))).name();
+				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
+				int lvl=(Util.s_int(DBConnections.getRes(R,"CMLEVL")));
+				String lastCall=DBConnections.getRes(R,"CMDATE");
+				head.append("[");
+				head.append(Util.padRight(race,8)+" ");
+				head.append(Util.padRight(cclass,10)+" ");
+				head.append(Util.padRight(Integer.toString(lvl),4));
+				head.append(Util.padRight((new IQCalendar().string2Date(lastCall)).d2String(),18)+" ");
+				head.append("] "+Util.padRight(username,15));
+				head.append("\n\r");
 			}
 			mob.tell(head.toString());
 			DBConnector.DBDone(D);

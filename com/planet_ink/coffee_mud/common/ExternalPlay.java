@@ -179,11 +179,6 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateFollowers(mob);
 	}
-	public static StringBuffer showWho(MOB who, boolean shortForm)
-	{
-		if(player!=null) return player.showWho(who,shortForm);
-		return new StringBuffer();
-	}
 	public static boolean login(MOB mob)
 		throws IOException
 	{
