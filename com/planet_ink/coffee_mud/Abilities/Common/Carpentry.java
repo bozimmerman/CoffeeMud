@@ -35,7 +35,7 @@ public class Carpentry extends CommonSkill
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
-		//CMAble.addCharAbilityMapping("All",1,ID(),false);
+		CMAble.addCharAbilityMapping("All",1,ID(),false);
 	}
 	
 	public Environmental newInstance()
@@ -130,7 +130,7 @@ public class Carpentry extends CommonSkill
 						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
 				}
 			}
-			mob.tell(str.toString());
+			mob.tell(buf.toString());
 			return true;
 		}
 		if(str.equalsIgnoreCase("mend"))
@@ -214,12 +214,14 @@ public class Carpentry extends CommonSkill
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
+			int woodDestroyed=woodRequired;
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
 				Item I=mob.location().fetchItem(i);
 				if((I instanceof EnvResource)
 				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				&&(I.container()==null)
+				&&((--woodDestroyed)>=0)
 				&&(I.material()==firstWood.material()))
 					I.destroyThis();
 			}
@@ -229,16 +231,16 @@ public class Carpentry extends CommonSkill
 				mob.tell("There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			startStr="You start carving "+building.name()+".";
-			displayText="You are carving "+building.name();
-			verb="carving "+building.name();
-			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-(mob.envStats().level()*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase());
+			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(new String("aeiou").indexOf(itemName.charAt(0))>=0)
 				itemName="an "+itemName;
 			else
 				itemName="a "+itemName;
 			building.setName(itemName);
+			startStr="You start carving "+building.name()+".";
+			displayText="You are carving "+building.name();
+			verb="carving "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName);
 			building.baseEnvStats().setWeight(woodRequired);
@@ -251,7 +253,7 @@ public class Carpentry extends CommonSkill
 			key=null;
 			if(building instanceof Container)
 			{
-				((Container)building).setCapacity(capacity);
+				((Container)building).setCapacity(capacity+woodRequired);
 				if(misctype.equalsIgnoreCase("LID"))
 					((Container)building).setLidsNLocks(true,false,false,false);
 				else
@@ -261,6 +263,11 @@ public class Carpentry extends CommonSkill
 					((Container)building).setKeyName(new Double(Math.random()).toString());
 					key=CMClass.getItem("GenKey");
 					((Key)key).setKey(((Container)building).keyName());
+					key.setName("a key");
+					key.setDisplayText("a small key sits here");
+					key.setDescription("looks like a key to "+building.name());
+					key.recoverEnvStats();
+					key.text();
 				}
 			}
 			if(building instanceof Rideable)
@@ -291,29 +298,35 @@ public class Carpentry extends CommonSkill
 			{
 				((Armor)building).baseEnvStats().setArmor(armordmg);
 				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=0;wo<Item.wornLocation.length;wo++)
+				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
 					String WO=Item.wornLocation[wo];
 					if(misctype.equalsIgnoreCase(WO))
 					{
-						((Armor)building).setRawProperLocationBitmap(wo);
+						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
 					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
 					||(misctype.toUpperCase().endsWith("||"+WO)))
 					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|wo);
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
 					else
 					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 					||(misctype.toUpperCase().endsWith("&&"+WO)))
 					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|wo);
+						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}
+			}
+			if(building instanceof Light)
+			{
+				((Light)building).setDuration(capacity);
+				if(building instanceof Container)
+					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();
 			building.text();
@@ -321,7 +334,7 @@ public class Carpentry extends CommonSkill
 		}
 		
 		
-		messedUp=profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(0,auto);
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okAffect(msg))

@@ -44,8 +44,20 @@ public class CommonSkill extends StdAbility
 
 	public String replacePercent(String thisStr, String withThis)
 	{
-		int x=thisStr.indexOf("%");
-		if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		if(withThis.length()==0)
+		{
+			int x=thisStr.indexOf("% ");
+			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			x=thisStr.indexOf(" %");
+			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
+			x=thisStr.indexOf("%");
+			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		}
+		else
+		{
+			int x=thisStr.indexOf("%");
+			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		}
 		return thisStr;
 	}
 	
@@ -272,7 +284,7 @@ public class CommonSkill extends StdAbility
 				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
 				I.baseEnvStats().setWeight(1);
 				I.setName("a pound of "+name);
-				I.setDisplayText("some "+name+" sit here.");
+				I.setDisplayText("some "+name+" sits here.");
 				I.setDescription("Looks like "+I.name()+".");
 				I.recoverEnvStats();
 				return I;

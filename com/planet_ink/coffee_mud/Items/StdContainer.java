@@ -71,7 +71,7 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(capacity>0)
 					{
-						if((envStats().weight()+newitem.envStats().weight())>capacity)
+						if((recursiveWeight(this)+newitem.envStats().weight())>capacity)
 						{
 							mob.tell(name()+" is full.");
 							return false;
@@ -105,7 +105,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((this.recursiveRoomWeight(mob,newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+						if((recursiveWeight(newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 						{
 							mob.tell(newitem.name()+" is too heavy.");
 							return false;
@@ -120,7 +120,7 @@ public class StdContainer extends StdItem implements Container
 					}
 				}
 				else
-				if((this.recursiveRoomWeight(mob,this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((recursiveWeight(this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;
@@ -259,6 +259,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					Item newitem=(Item)affect.tool();
 					newitem.setContainer(this);
+					mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_DROP:
@@ -340,15 +341,26 @@ public class StdContainer extends StdItem implements Container
 		}
 		super.affect(affect);
 	}
-	protected int recursiveRoomWeight(MOB mob, Item thisContainer)
+	protected int recursiveWeight(Item thisContainer)
 	{
 		int weight=thisContainer.envStats().weight();
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item thisItem=mob.location().fetchItem(i);
-			if((thisItem!=null)&&(thisItem.container()==thisContainer))
-				weight+=recursiveRoomWeight(mob,thisItem);
-		}
+		if(owner()==null) return weight;
+		if(owner() instanceof MOB)
+			for(int i=0;i<((MOB)owner()).inventorySize();i++)
+			{
+				Item thisItem=((MOB)owner()).fetchInventory(i);
+				if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					weight+=recursiveWeight(thisItem);
+			}
+		else
+		if(owner() instanceof Room)
+			for(int i=0;i<((Room)owner()).numItems();i++)
+			{
+				Item thisItem=((Room)owner()).fetchItem(i);
+				if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					weight+=recursiveWeight(thisItem);
+			}
+				
 		return weight;
 	}
 

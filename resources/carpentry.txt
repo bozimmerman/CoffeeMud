@@ -1,4 +1,4 @@
-Torch	15	15	10	10	GenLightSource		0	
+Torch	15	15	5	10	GenLightSource		50	
 Small % Table	1	15	30	15	GenRideable	TABLE	20	
 Small % Stool	1	15	10	3	GenChair	CHAIR	1	
 Small % Chair	1	15	15	5	GenChair	CHAIR	1	
