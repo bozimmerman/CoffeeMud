@@ -17,6 +17,12 @@ public class Prop_Tattoo extends Property
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
 			tattos=Util.parseSemicolons(A.text().toUpperCase());
+		else
+		{
+			A=mob.fetchAffect("Prop_Tattoo");
+			if(A!=null)
+				tattos=Util.parseSemicolons(A.text().toUpperCase());
+		}
 		return tattos;
 	}
 			

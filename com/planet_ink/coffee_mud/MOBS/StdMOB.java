@@ -83,6 +83,7 @@ public class StdMOB implements MOB
 
 	protected int minuteCounter=0;
 	private int movesSinceTick=0;
+	
 
 	// the core state values
 	public CharState curState=new DefaultCharState();
@@ -470,7 +471,8 @@ public class StdMOB implements MOB
 
 		// will ensure no duplicate ticks, this obj, this id
 		ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
-		tick(this,Host.MOB_TICK); // slap on the butt
+		if(tickStatus==Tickable.STATUS_NOT)
+			tick(this,Host.MOB_TICK); // slap on the butt
 		for(int a=0;a<numAbilities();a++)
 		{
 			Ability A=fetchAbility(a);

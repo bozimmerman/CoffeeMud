@@ -121,7 +121,6 @@ public class DBConnection
 	{
 		if((!inUse)&&(ready()))
 		{
-		
 			lastError=null;
 		
 			try
