@@ -9,7 +9,10 @@ public class Prop_Hidden extends Property
 {
 	public String ID() { return "Prop_Hidden"; }
 	public String name(){ return "Persistant Hiddenness";}
-	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	protected int canAffectCode(){return Ability.CAN_MOBS
+										 |Ability.CAN_ITEMS
+										 |Ability.CAN_EXITS
+										 |Ability.CAN_AREAS;}
 	private int ticksSinceLoss=100;
 	public Environmental newInstance(){	return new Prop_Hidden();}
 
@@ -53,8 +56,21 @@ public class Prop_Hidden extends Property
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
-		if(ticksSinceLoss>30)
+		if(affected instanceof MOB)
+		{
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+			if(ticksSinceLoss>30)
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		}
+		else
+		if(affected instanceof Item)
+		{
+			if((((Item)affected).owner()!=null)
+			&&(((Item)affected).owner() instanceof Room))
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		}
+		else
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+			
 	}
 }

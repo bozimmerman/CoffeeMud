@@ -768,7 +768,8 @@ destroying all the items in a room.
 <IMG src="images/kiss.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 ><STRONG><FONT 
-color=red><FONT>Digression 1: With Great Affection</FONT>:</FONT></STRONG></FONT></P>
+color=red>Digression 1: With 
+Great Affection:</FONT></STRONG></FONT></P>
 <P align=left><FONT size=4>CoffeeMud&nbsp;is essentially a distributed message passing 
 and handling system, where the actions and events that occur in the system are 
 represented as messages (Affects) which are then previewed, modified, cancelled, and/or reacted to by 
@@ -786,7 +787,7 @@ FullMsg.&nbsp;</FONT></P>
 <P align=left><FONT size=4>Messages are created at the moment that the event 
 needs to occur.&nbsp; This moment can be triggered by the player entering a 
 command into their telnet client and pressing Enter.&nbsp; It can also by 
-triggered by the mindless algorithms with animate the mobs.&nbsp; Either way, 
+triggered by the mindless algorithms which animate the mobs.&nbsp; Either way, 
 when the moment has come, a message is created, and it looks like this:</FONT></P>
 <pre>	
 FullMsg msg=new FullMsg(mob,targetMOB,this,
@@ -892,14 +893,12 @@ gives some new meaning to the message.&nbsp; These bits are as follows:</P>
       consumption.</TD></TR>
   <TR>
     <TD WIDTH="15%">32768</TD>
-    <TD WIDTH="35%">ACT_EARS,<BR>AFF_HEARD</TD>
-    <TD WIDTH="50%">Message includes auditory 
-    information.</TD></TR>
+    <TD WIDTH="35%">ACT_SOUND,<BR>AFF_SOUNDEDAT<BR></TD>
+    <TD WIDTH="50%">Message includes auditory information.</TD></TR>
   <TR>
     <TD WIDTH="15%">65536</TD>
-    <TD WIDTH="35%">ACT_SOUND,<BR>AFF_SOUNDEDAT<BR></TD>
-    <TD WIDTH="50%">Message includes misc. sounds, or 
-      sounds which may be a side-affect of the primary event.</TD></TR>
+    <TD WIDTH="35%">MASK_HURT</TD>
+    <TD WIDTH="50%">*Special* Damage message.</TD></TR>
   <TR>
     <TD WIDTH="15%">131072</TD>
     <TD WIDTH="35%">MASK_MAGIC</TD>
@@ -914,10 +913,6 @@ gives some new meaning to the message.&nbsp; These bits are as follows:</P>
     <TD WIDTH="35%">MASK_CHANNEL</TD>
     <TD WIDTH="50%">Message is&nbsp;part of 
       public&nbsp;channel conversation.</TD></TR>
-  <TR>
-    <TD WIDTH="15%">512+1024</TD>
-    <TD WIDTH="35%">MASK_HURT</TD>
-    <TD WIDTH="50%">*Special* Damage message.</TD></TR>
 </TABLE></P>
 </FONT>
 <P align=left><FONT size=4>The above 
@@ -925,10 +920,10 @@ masks can be quite confusing.&nbsp; It is best to examine the several MSG_
 equates in the Affect interface to see how they are properly or improperly 
 used.&nbsp; Remember a MSG_ equate is a completely constructed Code, complete 
 with the appropriate Major and Minor aspects.</FONT></P>
-<P align=left><FONT size=4>The Minor Code&nbsp;represents the more specific 
-activity being performed, and is a simple integer ranging from&nbsp;0 (NO 
-EFFECT) to 1023.&nbsp; The exception to this is&nbsp;any message with the 
-MASK_HURT bits set.&nbsp; In that case, the bits from 0-511 represent the amount 
+<P align=left><FONT size=4>The Minor Code&nbsp;represents the more specific activity 
+being performed, and is a simple integer ranging from&nbsp;0 (NO EFFECT) 
+to 1023.&nbsp; The exception to this is&nbsp;any message with the MASK_HURT 
+bits set.&nbsp; In that case, the 16 bits from 0-65535 represent the amount 
 of damage being taken.&nbsp;&nbsp;Another exception is the CHANNEL&nbsp;Mask, 
 where the&nbsp;lower bits represent the CHANNEL number being chatted on.&nbsp; 
 In all other cases, however, the Minor Code is a unique&nbsp;integer 
@@ -938,9 +933,133 @@ the prefix TYP_.&nbsp; These types cover every sort of major event which occurs
 in the CoffeeMud engine, including getting items, casting spells, entering or 
 leaving rooms, etc, etc..</FONT></P>
 <pre>	
-		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,null);
+FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 </pre>
-<P align=left><FONT size=4>The abo</FONT>&nbsp;</P>
+<P align=left><FONT size=4>The FullMsg class has many 
+different constructors to make message construction quick and painless.&nbsp; 
+The above is an example where only a single Code and a single message text are 
+provided.&nbsp; In constructors where only one Code or message text field are 
+provided, it is assumed that the code and message texts will be the same for 
+source, target (if any) and others.</FONT></P>
+<P align=left><FONT color=red size=4>Message 
+Previewing</FONT></P>
+<P align=left><FONT color=black><FONT size=4>     
+ Once a Message has been constructed, it is time to actually put 
+the message out into the system.&nbsp; There is a standard form for the sending 
+of almost all messages.&nbsp; If the source of the message is a MOB called 
+"SourceMOB", this standard form looks like this:</FONT></FONT></P>
+<pre>	
+FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+if(SourceMOB.location().okAffect(msg))
+	SourceMOB.location().send(SourceMOB,msg);
+</pre>
+<P align=left><FONT size=4>The 
+location() field on a MOB refers to the Room in which the mob is. Room's are 
+always the top level at which messages are previewed, and then sent.&nbsp; The 
+first line (where the message is constructed) has already been examined.&nbsp; 
+The second line, in which the Room method "okAffect" is called, is&nbsp;the 
+Preview step.&nbsp; In this step, the message is evaluated 
+before it actually happens.&nbsp;  The third line, where the Room "send" method is called, 
+is the Execution step.  </FONT></P>
+<P align=left><FONT size=4>In the 
+Preview step, the Room object will examine the message to see if there is 
+anything which it might&nbsp;not like, wish to modify, or wish to flag about the 
+Message it has been handed.&nbsp; If the Room object does not like the Message, 
+it will return false.&nbsp; Returning false from "okAffect" is always an order 
+to cancel, and not Execute the Message.&nbsp; Under any other circumstances, 
+true may be returned to allow the Message to go forward.&nbsp; The Room will 
+also make calls to the "okAffect" methods on every other MOB in the room, Exit 
+from the Room, Item in the room, spell effects which may be on the Room, and 
+Behaviors of the Room.&nbsp; The MOB who receives the "okAffect" call will, in 
+turn, pass the Message to the "okAffect" methods in every Item the&nbsp;MOB is 
+carrying or wearing, every spell affect on the MOB, and every Behavior of the 
+MOB.&nbsp; Items wills also make "okAffect" calls on their spell affects.&nbsp; 
+Any of these calls may modify or flag the Message they receive.&nbsp; Any of 
+these calls may also return false.&nbsp; If any object which previews a Message 
+returns false, the Room okAffect method will also return false, ordering the 
+Message to be totally canceled.&nbsp; For this reason, okAffect methods are 
+careful about returning true unless they have a really good reason not 
+to.</FONT></P>
+<P align=left><FONT size=4>Inside the "okAffect" methods of every Item, MOB, 
+Behavior, Ability (spell effect), Exit, and Room, the Messages may (as we 
+mentioned) be examined and modified, flagged, or cancelled.&nbsp; As we have 
+already covered how Messages are cancelled (by returning false).&nbsp; Let us 
+turn now to the manner in which Messages are modified or flagged.</FONT></P>
+<P align=left><FONT color=#ff0000 size=4>Message Flagging and 
+Modification</FONT></P>
+<P align=left><FONT size=4>Message modification is 
+very rare.&nbsp; When it happens though, it is done by calling the 
+"modify" method on the Affect (FullMsg) object.&nbsp; This method allows the source, target, 
+and all other fields to be updated.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Message flagging is somewhat less rare.&nbsp; 
+Messages may be flagged when a combat strike is successful, or when a saving 
+throw is made against a spell affect, or for any other reason the Message 
+constructing code may wish.&nbsp; A Message defaults to unflagged, but is 
+flagged when the method "tagModified(true);" is called on the Affect (FullMsg) 
+object.&nbsp; Flagging has no other affect other than to let the code which 
+constructed the Messsage know that something significant with relation to the 
+Message has occurred.&nbsp; </FONT></P>
+<P align=left><FONT size=4>To prevent confusion, a couple of important points 
+need to be made about Flagging and Message modification.&nbsp; The first is that 
+modifying a Message with the "modify" method does NOT flag the Message.&nbsp; 
+The second is that calling the "tagModified" method flags the Message, but does 
+not modify it in any way other than to flag it.</FONT></P>
+<P align=left><FONT color=#ff0000 size=4>Message Execution</FONT></P>
+<P align=left><FONT color=black size=4>Once the "okAffect" method on a Room 
+object has returned true, and any code which may need to check or handle 
+modifications to the Message have executed, the Message is sent.&nbsp;&nbsp; The 
+proper way to send a Message is through the Room objects, by calling one of the 
+following Messages: Room.send(MOB SourceMOB, Affect msg) 
+or&nbsp;Room.sendOthers(MOB SourceMOB, Affect msg).&nbsp; The first method 
+handles a standard Execution, while the second allows every relevant object 
+except the SourceMOB to handle Execution.&nbsp; The first method should always 
+be called unless there are good reasons not to.&nbsp; </FONT></P>
+<P align=left><FONT color=black size=4>The "send" method will then begin calling other methods in 
+other objects.&nbsp; These other methods are called the 
+"affect" methods, and are usually of the form "public void affect(Affect 
+msg);".&nbsp; These methods are responsible for Executing the contents of the 
+message.&nbsp; The Room method will make "affect" method calls on itself, 
+and on every Exit, Item, MOB, spell affects (Ability object), and Behavior 
+associated with that Room.&nbsp; As in the "okAffect" case, the MOBs 
+will in turn call the "affect()" methods on their own Items and spell 
+effects.&nbsp; Items will then call the&nbsp;"affect" methods on their own spell effects.&nbsp; 
+</FONT></P>
+<P align=left><FONT size=4>Of course, not every object called handles Execution 
+for every Message sent.&nbsp; Most of the time, a given object will be ignoring 
+the Message altogether.&nbsp; However, each object knows precisely which 
+Messages are important for it, and watch carefully for them in both their 
+"okAffect" and "affect" methods.&nbsp; In general, every Message which is 
+previewed in an objects "okAffect" method is handled in the "affect"&nbsp; 
+method of the same object, though this is by no means always true.&nbsp; In 
+general, the following object types handle the following types of 
+Messages:</FONT></P>
+<P align=left><FONT size=4>MOBs - Any Message which has the mob instance as a 
+target is both Previewed and Executed.&nbsp; Any Message which has the mob as a 
+source is typically Previewed, and (lacking a target) may also be 
+Executed.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Items - Any Message which has the item instance as a 
+target.</FONT></P>
+<P align=left><FONT size=4>Exits - Any Message which has the exit instance as a 
+target or tool.</FONT></P>
+<P align=left><FONT size=4>Rooms - Any 
+Message which has the room instance as a target.</FONT></P>
+<P align=left><FONT size=4>Ability (spell affects) - Any Message pertaining to 
+the MOB or Item which is affected by the spell or&nbsp;skill.</FONT></P>
+<P align=left><FONT size=4>Behavior - Any Message pertaining to the object 
+instance which has this behavior.</FONT></P>
+<P align=left><FONT color=#ff0000 size=4>Message Trailers</FONT></P>
+<P align=left><FONT color=black size=4>The final subject we will discuss in the area 
+of Messages and Message handling regards another rare technique called Message 
+Trailer adding.&nbsp; Message Trailers are simply Affects (FullMsg objects) 
+which have been added to a FullMsg instance using the "addTrailerMsg(Affect 
+msg)" method.&nbsp; The Message passed to this method is constructed in the 
+usual way.&nbsp; </FONT><FONT color=black size=4>This&nbsp;method 
+may be properly 
+called&nbsp;at any point during the Preview or Execution stage of Message 
+handling, by any Previewing or Executing object.&nbsp; When it is performed 
+is not important, because any Messages added using this method are not Previewed 
+or Executed until after the Room object has completely finished sending 
+the host Message to all interested objects.&nbsp; </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -955,8 +1074,202 @@ leaving rooms, etc, etc..</FONT></P>
 <IMG src="images/temple.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 ><STRONG><FONT 
-color=red><FONT>Digression 2: The State of Things</FONT>:</FONT></STRONG></FONT></P>
-<P align=left><FONT size=4>Understanding states thingys.</FONT></P>
+color=red>Digression 2: The 
+State of Things:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>CoffeeMud 
+provides for several state objects to describe a set of properties for those 
+objects.&nbsp; These state objects may be modified in a heiarchical way by 
+certain other objects which have a relationship with them.&nbsp; The state 
+object modifications are stacked on each other.&nbsp; Confused?&nbsp; Well, keep reading!</FONT></P>
+<P align=left><FONT size=4>Each instance of the several&nbsp;Environmental 
+objects (MOBs, Items, Exits, Rooms) have a state object called their 
+Environmental Stats.&nbsp; This state object implements the EnvStats interface, 
+and is typically an instance of the DefaultEnvStats class.&nbsp; Access to this 
+state object is available through each Environmental objects "baseEnvStats()" 
+and "envStats()" method calls.&nbsp; </FONT></P>
+<P align=left><FONT size=4>The fields available through the EnvStats state 
+object include the following:</FONT></P>
+<TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
+  
+  <TR>
+    <TD WIDTH="25%"><STRONG>Field name</STRONG> </TD>
+    <TD WIDTH="25%"><STRONG>Relevant objects</STRONG></TD>
+    <TD WIDTH="50%"><STRONG>Meaning</STRONG></TD></TR>
+  <TR>
+    <TD >level</TD>
+    <TD >Item, MOB, Exit</TD>
+    <TD >Experience level (see Archon's Guide)</TD></TR>
+  <TR>
+    <TD >ability</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Magical level (see Archon's Guide)  </TD></TR>
+  <TR>
+    <TD >rejuv</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Rejuvination rate (see Archon's Guide)  </TD></TR>
+  <TR>
+    <TD >weight</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Weight of the object  </TD></TR>
+  <TR>
+    <TD >height</TD>
+    <TD >Armor, MOB </TD>
+    <TD >  Size of the object  </TD></TR>
+  <TR>
+    <TD >armor</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Protection level (see Archon's Guide)  </TD></TR>
+  <TR>
+    <TD >damage</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Damaging ability  </TD></TR>
+  <TR>
+    <TD >speed</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Attack speed  </TD></TR>
+  <TR>
+    <TD >attackAdjustment</TD>
+    <TD >Item, MOB </TD>
+    <TD >  Attack level  </TD></TR>
+  <TR>
+    <TD >replacementName</TD>
+    <TD >Item, MOB, Exit </TD>
+    <TD >  New displayable name of the object  </TD></TR>
+  <TR>
+    <TD >sensesMask</TD>
+    <TD >Item, MOB, Exit, Room&nbsp; </TD>
+    <TD >  Bit mask of relevant sensory abilities.  </TD></TR>
+  <TR>
+    <TD >disposition</TD>
+    <TD >Item, MOB, Exit, Room&nbsp; </TD>
+    <TD >  Bit mask of relevant disposition state  </TD></TR>
+</TABLE>
+<P align=left><FONT size=4>Although most of these fields 
+are better described in the Archon's Guide, there are two whose nature may not 
+be readily apparant: the sensesMask and the disposition.&nbsp; These two 
+integers are bitmaps.&nbsp; The value of each bit is assigned to equates in the 
+EnvStats interface.&nbsp; The equates of the significant bits for sensesMask all 
+begin with "CAN_", while the equates of the significant bits for disposition all 
+begin with "IS_".</FONT>     
+          
+           
+         
+</P>
+<P align=left><FONT size=4>Now, as mentioned previously, all Environmental 
+objects have two methods for accessing their EnvStats. One is "baseEnvStats" and 
+the other is "envStats".&nbsp; The difference between these two methods is 
+significant.&nbsp; </FONT><FONT size=4>The EnvStats state object returned by the 
+"baseEnvStats" method refers to the permanent, unmodified, "base" state of the 
+Environmental object.&nbsp; The "envStats" method, however, returns the 
+modified, less permanent, "current" state of the Environmental 
+object.&nbsp;&nbsp; The EnvStats object returned by the "envStats" method is 
+always derived from the "baseEnvStats" values, after all relevant modifications 
+have been made to it.&nbsp; How the current state object goes from its base 
+values to its current values is our next topic.</FONT></P>
+<P align=left><FONT size=4>We must now introduce&nbsp;two other methods 
+significant to this topic.&nbsp; One is the "recoverEnvStats()" method, while 
+the other is the "affectEnvStats(Environmental affected, EnvStats 
+affectableStats)" method.&nbsp; The "recoverEnvStats" method is the method call, 
+which is located on&nbsp;every Environmental (Item, MOB, Exit, etc) object, is 
+what turns the base EnvStats values into the current EnvStats values.&nbsp; This 
+method call works by copying the base values into the current values.&nbsp; 
+Next, the method allows certain other object instances to have an opportunity to 
+affect these current values.&nbsp; Only after all opportunities to affect the 
+current values of that Environmental objects state object have been exhausted, 
+does the method return.</FONT></P>
+<P align=left><FONT size=4>The way in 
+which&nbsp;the current&nbsp;EnvStats state object is modified by the "recoverEnvStats" method 
+call is by internal calls to the "affectEnvStats" methods on other relevant 
+objects.&nbsp; These methods will then have the opportunity to change the 
+values in the current state object however they wish.&nbsp; The relevant objects 
+which may change the state of an Environmental are as follows:</FONT></P>
+<P align=left><FONT size=4>MOBs - Room 
+object being occupied, something being Ridden, the MOBs Character Class object, 
+the MOBs Race object, the Items in the MOBs inventory, and finally the 
+Ability objects which are affecting the MOB (spell effects).</FONT></P>
+<P align=left><FONT size=4>Items, Exits, Areas&nbsp;- Ability objects which are 
+affecting&nbsp;it (spell effects).</FONT></P>
+<P align=left><FONT size=4>Rooms - Area object which this room is a part of, 
+Ability objects which are affecting it (spell effects), Items in the Room, and 
+MOBs in the Room.</FONT></P>
+<P align=left><FONT size=4>Here is an example:</FONT></P>
+<P align=left><FONT size=4>Gunker the Thief wears Full Plate Armor (Item), and 
+has the Shield spell cast on him.&nbsp; His base Armor rating is 100.&nbsp; When 
+he puts on the Plate Armor, the "recoverEnvStats" method is called on Gunker's 
+MOB object.&nbsp; That method in turn calls the "affectEnvStats" method on the 
+Plate Armor and the Shield spell affect.&nbsp; Both of those methods improve the 
+Armor rating on Gunker's MOB object's current EnvStats by some number.&nbsp; 
+Thus, Gunker becomes harder to hit in combat.&nbsp; Also, when Gunker picked up 
+the Plate armor, the weight of the armor was added to Gunker's overall carried 
+weight by increasing the weight value in&nbsp;Gunker</FONT><FONT 
+size=4>'s&nbsp;current EnvStats object.</FONT></P>
+<P align=left><FONT size=4>       
+              
+             
+  I know, this is probably still confusing.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Confusing or not, however, we still have to consider 
+two other state objects, both of which are only available from the MOB 
+object.&nbsp; One of which is the CharStats object, and the other of which is 
+the CharState object.</FONT></P>
+<P align=left><FONT size=4>The 
+CharStats object is most closely analogous to the EnvStats object.&nbsp; For 
+instance, it has "baseCharStats" and "charStats" method calls from a MOB object, 
+as well as a "recoverCharStats" method call.&nbsp; All of these work similarly 
+to the ones described above for EnvStats.&nbsp; The fields on a CharStats object 
+are somewhat more straight forward however.&nbsp; Most of the fields of a 
+CharStats object 
+are referenced using the "getStat" and "setStat" methods on a CharStats object.&nbsp; 
+Both of these methods require a parameter which corresponds 
+to the specific stat being set or read.&nbsp; These stat parameters are 
+defined as equates within the CharStat interface, and include:&nbsp;</FONT><FONT size=3>STRENGTH, INTELLIGENCE, DEXTERITY, 
+CONSTITUTION, CHARISMA, WISDOM, GENDER, SAVE_PARALYSIS, SAVE_FIRE, SAVE_COLD, 
+SAVE_WATER, SAVE_GAS, SAVE_MIND, SAVE_GENERAL, SAVE_JUSTICE,&nbsp; SAVE_ACID, 
+SAVE_ELECTRIC, SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and &nbsp;SAVE_DISEASE. 
+</FONT><FONT size=4>In addition to these equates defined and read&nbsp;through 
+the "getStat" and "setStat" methods, there is also the Race object available 
+through "getMyRace" and "setMyRace" methods, as well as the Class levels 
+entries.</FONT></P>
+<P align=left><FONT size=4>Like the EnvStats above, those object listed as able 
+to modify the EnvStats current state object are the same objects which are able 
+to modify the CharStats current state object.&nbsp; Rereading the section on 
+EnvStats will make clear how the CharStats objects are modified in the same 
+heiarchical and stacked manner.</FONT></P>
+<P align=left><FONT size=4>The last state object to consider is the CharState 
+object on MOBs.&nbsp; The CharState object represents those fields which are 
+constantly in flux: Hit Points, Mana, Movement, Hunger, and Thirst.</FONT></P>
+<P align=left><FONT size=4>Unlike EnvStats and CharStats, there are three 
+CharState objects to consider for MOBs: the base CharState 
+object&nbsp;(available through "baseStats" and "setBaseState" methods), the 
+adjusted base&nbsp;CharState (or max state) object available through the 
+"maxStats" method and modified through the "recoverMaxState" method, and lastly 
+the current CharState object available through the "curStats()" and refreshed 
+using the "resetToMaxState" object.</FONT></P>
+<P align=left><FONT size=4>The relationship between the above objects is as 
+follows: The base CharState object represents the maximum values for the state 
+variables before modification by magical armor or spells.&nbsp; The adjusted 
+base CharState object (Max State) represents the maximum values for the state 
+variables after modification by magical armor or spells.&nbsp; The current 
+CharState object (curState) represents the current hit points, mana points, etc 
+available to the MOB.</FONT></P>
+<P align=left><FONT size=4>In the case of the CharState objects, adjustment by 
+relevant objects is done through the "recoverMaxState" method.&nbsp; This method 
+allows the same objects who modify the EnvStats and CharStats above to modify 
+the maximum CharState values as well.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Once again, to understand one of them fully is to 
+understand them all.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/time.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 ><STRONG><FONT 
+color=red>Digression 3: Tick Tock:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>      
+              
+              
+  Our last digression will cover the ability of 
+the mobs, spells, behaviors, and other objects to perform tasks on 
+a regular, timed, basis.&nbsp;</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -967,11 +1280,12 @@ color=red><FONT>Digression 2: The State of Things</FONT>:</FONT></STRONG></FONT>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
+<P align=left>&nbsp;</P>
 <P align=left><FONT size=5><STRONG>
 <IMG src="images/clown.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 ><STRONG><FONT 
-color=blue><FONT>Behaviors</FONT>:</FONT></STRONG></FONT></P>
+color=blue>Behaviors:</FONT></STRONG></FONT></P>
 <P align=left><FONT size=4>How to code a Behavior.</FONT></P>
 <P align=left></P>
 <P align=left></P>

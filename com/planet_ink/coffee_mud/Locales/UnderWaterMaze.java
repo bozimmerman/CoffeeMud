@@ -10,7 +10,7 @@ public class UnderWaterMaze extends StdMaze
 	public UnderWaterMaze()
 	{
 		super();
-		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_BREATHE);
+		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();

@@ -895,15 +895,19 @@ public class StdArea implements Area
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
-		affectableStats.setDisposition(affectableStats.disposition()|envStats().disposition());
+		if(envStats().sensesMask()>0)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
+		int disposition=envStats().disposition()
+			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if((affected instanceof Room)&&((((Room)affected).domainType()&Room.INDOORS)==0))
 		{
 			if((weatherType((Room)affected)==Area.WEATHER_BLIZZARD)
 			   ||(weatherType((Room)affected)==Area.WEATHER_DUSTSTORM)
 			   ||(timeCode==Area.TIME_NIGHT))
-					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
+				disposition=disposition|EnvStats.IS_DARK;
 		}
+		if(disposition>0)
+			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

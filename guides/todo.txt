@@ -17,8 +17,9 @@ eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
 can sit at tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
+Areas having a property called 'Hidden' that makes it not show on the web page or area listing.
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
-skill available all for help.
+skill available all for help?????????????????????
 Leprecy: take more physical damage in combat. 
 Heart Disease: All actions take 2* movement. 
 Lung Disease: Movement is recovered at 1/2 rate. 

@@ -75,13 +75,13 @@ public class Amputation extends StdAbility
 		if((missingLimbList&AMPUTATE_BOTHLEGS)==AMPUTATE_BOTHLEGS)
 		{
 			if((missingLimbList&AMPUTATE_ARMSNLEGS)==AMPUTATE_ARMSNLEGS)
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setDisposition(affectableStats.disposition()|affectableStats.IS_SITTING);
 		}
 		if((missingLimbList&AMPUTATE_BOTHEYES)==AMPUTATE_BOTHEYES)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 		if((missingLimbList&AMPUTATE_BOTHEARS)==AMPUTATE_BOTHEARS)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)

@@ -22,7 +22,7 @@ public class Prayer_Blindness extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
 	public void unInvoke()

@@ -23,7 +23,7 @@ public class Spell_LightSensitivity extends Spell
 		if(Sense.isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 		else
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
 

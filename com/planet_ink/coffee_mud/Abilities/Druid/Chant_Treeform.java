@@ -97,11 +97,11 @@ public class Chant_Treeform extends Chant
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setReplacementName("a tree that reminds you of "+affected.name());
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_TASTE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 	}
 
 

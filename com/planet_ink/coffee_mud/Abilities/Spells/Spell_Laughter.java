@@ -22,7 +22,7 @@ public class Spell_Laughter extends Spell
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 	}
 
 	public boolean tick(int tickID)

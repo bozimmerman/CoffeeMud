@@ -24,7 +24,7 @@ public class Skill_Dirt extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
 
 	public boolean okAffect(Affect affect)

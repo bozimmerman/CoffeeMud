@@ -708,7 +708,11 @@ public class Scoring
 
 			Vector areasVec=new Vector();
 			for(int a=0;a<CMMap.numAreas();a++)
-				areasVec.addElement((CMMap.getArea(a)).name());
+			{
+				Area A=CMMap.getArea(a);
+				if(!Sense.isHidden(A))
+					areasVec.addElement(A.name());
+			}
 			Collections.sort((List)areasVec);
 			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
 			int col=0;
@@ -726,8 +730,6 @@ public class Scoring
 			Resources.submitResource("areasList",msg);
 			areasList=msg;
 		}
-
-
 
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(areasList.toString());

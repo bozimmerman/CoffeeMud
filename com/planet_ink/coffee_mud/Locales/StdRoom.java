@@ -553,7 +553,7 @@ public class StdRoom
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition()
-			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHTSOURCE|EnvStats.IS_SLEEPING)));
+			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHTSOURCE|EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}

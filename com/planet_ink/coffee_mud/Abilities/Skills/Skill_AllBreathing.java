@@ -26,6 +26,6 @@ public class Skill_AllBreathing extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		if(!Sense.canBreathe(mob))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 	}
 }

@@ -29,14 +29,14 @@ public class Prop_WizInvis extends Property
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 		if(!Sense.canBreathe(affected))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 		if(Sense.isSleeping(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SLEEPING);
 		if(Sense.isSitting(affected))

@@ -42,7 +42,7 @@ public class Song_Silence extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 	}
 }

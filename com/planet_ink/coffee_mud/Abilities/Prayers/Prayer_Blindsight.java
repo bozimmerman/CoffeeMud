@@ -35,7 +35,7 @@ public class Prayer_Blindsight extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 		if(!Sense.canSee(affected))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_SEE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

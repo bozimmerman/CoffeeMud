@@ -98,12 +98,12 @@ public class Chant_Treemorph extends Chant
 		if(affected instanceof MOB)
 		{
 			//affectableStats.setReplacementName("a tree of "+affected.name());
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_TASTE);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 		}
 	}
 

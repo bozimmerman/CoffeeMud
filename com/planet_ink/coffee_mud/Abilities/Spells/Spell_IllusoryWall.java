@@ -21,7 +21,7 @@ public class Spell_IllusoryWall extends Spell
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 	}
 
 

@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.interfaces;
 public interface EnvStats extends Cloneable
 {
 	// sensemask stuff
-	public final static int CAN_SEE=1;
+	public final static int CAN_NOT_SEE=1;
 	public final static int CAN_SEE_HIDDEN=2;
 	public final static int CAN_SEE_INVISIBLE=4;
 	public final static int CAN_SEE_EVIL=8;
@@ -12,19 +12,19 @@ public interface EnvStats extends Cloneable
 	public final static int CAN_SEE_BONUS=64;
 	public final static int CAN_SEE_DARK=128;
 	public final static int CAN_SEE_INFRARED=256;
-	public final static int CAN_HEAR=512;
-	public final static int CAN_MOVE=1024;
-	public final static int CAN_SMELL=2048;
-	public final static int CAN_TASTE=4096;
-	public final static int CAN_SPEAK=8192;
-	public final static int CAN_BREATHE=16384;
+	public final static int CAN_NOT_HEAR=512;
+	public final static int CAN_NOT_MOVE=1024;
+	public final static int CAN_NOT_SMELL=2048;
+	public final static int CAN_NOT_TASTE=4096;
+	public final static int CAN_NOT_SPEAK=8192;
+	public final static int CAN_NOT_BREATHE=16384;
 	public final static int CAN_SEE_VICTIM=32768;
 	public final static int CAN_SEE_METAL=65536;
 
 	public final static long ALLMASK=Integer.MAX_VALUE;
 	
 	// dispositions
-	public final static int IS_SEEN=1;
+	public final static int IS_NOT_SEEN=1;
 	public final static int IS_HIDDEN=2;
 	public final static int IS_INVISIBLE=4;
 	public final static int IS_EVIL=8;

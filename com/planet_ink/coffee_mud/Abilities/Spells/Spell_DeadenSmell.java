@@ -17,7 +17,7 @@ public class Spell_DeadenSmell extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
 	}
 
 

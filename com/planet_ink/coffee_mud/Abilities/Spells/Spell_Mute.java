@@ -19,7 +19,7 @@ public class Spell_Mute extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 	}
 
 

@@ -7,7 +7,7 @@ public class Sense
 {
 
 	public static boolean canSee(Environmental E)
-	{ return (!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_SEE)==0); }
+	{ return (!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
 	public static boolean canSeeHidden(Environmental E)
 	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
 	public static boolean canSeeInvisible(Environmental E)
@@ -27,22 +27,22 @@ public class Sense
 	public static boolean canSeeInfrared(Environmental E)
 	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)==EnvStats.CAN_SEE_INFRARED); }
 	public static boolean canHear(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_HEAR)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_HEAR)==0); }
 	public static boolean canMove(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_MOVE)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_MOVE)==0); }
 	public static boolean canSmell(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SMELL)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_SMELL)==0); }
 	public static boolean canTaste(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_TASTE)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_TASTE)==0); }
 	public static boolean canSpeak(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SPEAK)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_SPEAK)==0); }
 	public static boolean canBreathe(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_BREATHE)==0); }
+	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
 	public static boolean canSeeMetal(Environmental E)
 	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
 
 	public static boolean isSeen(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_SEEN)==0) || isSleeping(E); }
+	{ return ((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E); }
 	public static boolean isHidden(Environmental E)
 	{
 		boolean isInHide=((E.envStats().disposition()&EnvStats.IS_HIDDEN)==EnvStats.IS_HIDDEN);

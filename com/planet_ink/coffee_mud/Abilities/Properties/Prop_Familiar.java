@@ -113,17 +113,17 @@ public class Prop_Familiar extends Property
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 				break;
 		case TURTLE: 
-				if(((affectableStats.sensesMask()&EnvStats.CAN_BREATHE)>0)
+				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)>0)
 				&&(affected instanceof MOB)
 				&&(((MOB)affected).location()!=null)
 				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
+					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 				break;
 		case CAT:
 				break;
 		case BAT:
-				if(((affectableStats.sensesMask()&EnvStats.CAN_SEE)>0)&&(affected instanceof MOB))
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_HEAR);
+				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_SEE)>0)&&(affected instanceof MOB))
+					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_SEE);
 				break;
 		case RAT:
 				break;

@@ -34,11 +34,11 @@ public class Prop_ClosedDayNight extends Property
 			if((closed())
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
 			{
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 			}
 		}
 		else

@@ -22,7 +22,7 @@ public class Chant_HoldAnimal extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 	}
 
 

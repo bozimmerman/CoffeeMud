@@ -33,8 +33,8 @@ public class Chant_WaterBreathing extends Chant
 		MOB mob=(MOB)affected;
 		if((mob.location()!=null)
 		&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-			if((mob.envStats().sensesMask()&EnvStats.CAN_BREATHE)==EnvStats.CAN_BREATHE)
-				affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
+			if((mob.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
+				affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

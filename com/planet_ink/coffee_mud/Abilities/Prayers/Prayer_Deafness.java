@@ -22,7 +22,7 @@ public class Prayer_Deafness extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
 	public void unInvoke()
