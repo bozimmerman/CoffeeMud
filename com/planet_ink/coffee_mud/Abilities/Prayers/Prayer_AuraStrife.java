@@ -25,6 +25,8 @@ public class Prayer_AuraStrife extends Prayer
 			int levels=invoker().charStats().getClassLevel("Templar");
 			if(levels<0) levels=invoker().envStats().level();
 			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-(levels/5));
+			if(affectableStats.getStat(CharStats.CHARISMA)<=0)
+				affectableStats.setStat(CharStats.CHARISMA,1);
 		}
 	}
 

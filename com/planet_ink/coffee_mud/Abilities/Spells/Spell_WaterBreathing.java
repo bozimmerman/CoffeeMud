@@ -25,7 +25,7 @@ public class Spell_WaterBreathing extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> gill(s) disappear.");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> ability to breathe underwater fades.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -55,7 +55,7 @@ public class Spell_WaterBreathing extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
+				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> attains an aquatic aura!");
 				beneficialAffect(mob,target,0);
 			}
 		}

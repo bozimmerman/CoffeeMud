@@ -9,8 +9,8 @@ import java.util.*;
 public class Chant_BreatheWater extends Chant
 {
 	public String ID() { return "Chant_BreatheWater"; }
-	public String name(){ return "Breathe Water";}
-	public String displayText(){return "(Breathe Water)";}
+	public String name(){ return "Fish Gills";}
+	public String displayText(){return "(Fish Gills)";}
 	public int quality(){return Ability.OK_SELF;}
 	public Environmental newInstance(){	return new Chant_BreatheWater();}
 
@@ -22,9 +22,16 @@ public class Chant_BreatheWater extends Chant
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your ability to breathe underwater fades.");
+			mob.tell("Your fish gills disappear.");
 	}
 
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
+			affectableStats.alterBodypart(Race.BODY_GILL,2);
+		super.affectCharStats(affected,affectableStats);
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -58,7 +65,7 @@ public class Chant_BreatheWater extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> attain(s) an aquatic aura!");
+				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) a pair of gills!");
 				beneficialAffect(mob,target,0);
 			}
 		}

@@ -11,8 +11,8 @@ public class Chant_EelShock extends Chant
 	public String name(){return "Eel Shock";}
 	public String displayText(){return "(Stunned)";}
 	public int quality(){return MALICIOUS;}
-   public int maxRange() {return 3;}
-   public int minRange() {return 0;}
+	public int maxRange() {return 3;}
+	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_EelShock();}
 
@@ -66,30 +66,30 @@ public class Chant_EelShock extends Chant
 			return false;
 		}
 
-      Room location = mob.location();
-      boolean roomWet = false;
+		Room location = mob.location();
+		boolean roomWet = false;
       
-      if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER || 
-         location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
-         location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
-         location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
-         location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
-      {
-         roomWet = true;
-      }
+		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER || 
+		   location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
+		   location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
+		{
+		   roomWet = true;
+		}
       
-      Area currentArea = location.getArea();
-      if(currentArea.weatherType(location) == Area.WEATHER_RAIN || 
-         currentArea.weatherType(location) == Area.WEATHER_THUNDERSTORM)
-      {
-         roomWet = true;
-      }
+		Area currentArea = location.getArea();
+		if(currentArea.weatherType(location) == Area.WEATHER_RAIN || 
+		   currentArea.weatherType(location) == Area.WEATHER_THUNDERSTORM)
+		{
+		   roomWet = true;
+		}
       
-      if(!roomWet)
-      {
-			mob.tell("It's too dry to invoke this chant.");
-			return false;
-      }
+		if(!roomWet)
+		{
+				mob.tell("It's too dry to invoke this chant.");
+				return false;
+		}
       
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -115,7 +115,8 @@ public class Chant_EelShock extends Chant
 				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
-               maliciousAffect(mob,target,3,-1);
+					if(!msg.wasModified())
+						maliciousAffect(mob,target,3,-1);
 				}
 			}
 		}

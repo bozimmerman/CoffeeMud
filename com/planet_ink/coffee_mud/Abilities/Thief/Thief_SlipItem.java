@@ -93,9 +93,11 @@ public class Thief_SlipItem extends ThiefSkill
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
-			int hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+			int hisCode=Affect.MSG_THIEF_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
+			else
+				hisCode=hisCode|((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))

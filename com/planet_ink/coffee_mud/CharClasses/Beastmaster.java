@@ -53,6 +53,7 @@ public class Beastmaster extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_EelShock",true);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_Hunger",true);
 

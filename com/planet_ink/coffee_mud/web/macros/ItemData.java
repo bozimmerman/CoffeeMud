@@ -124,6 +124,7 @@ public class ItemData extends StdWebMacro
 			{
 				int wclass=Util.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
 				int reach=Util.s_int(httpReq.getRequestParameter("MINRANGE"));
+System.out.println("BLAH/"+I.name()+"/"+level+"/"+material+"/"+weight+"/"+hands+"/"+wclass+"/"+reach+"/"+0);				
 				vals=SaucerSupport.timsItemAdjustments(I,
 													   level,
 													   material,
@@ -145,6 +146,7 @@ public class ItemData extends StdWebMacro
 						else
 							break;
 				}
+System.out.println("BLAH/"+I.name()+"/"+level+"/"+material+"/"+weight+"/"+hands+"/"+0+"/"+0+"/"+worndata);				
 				vals=SaucerSupport.timsItemAdjustments(I,
 													   level,
 													   material,
@@ -158,6 +160,7 @@ public class ItemData extends StdWebMacro
 			{
 				String key=(String)e.nextElement();
 				String val=(String)vals.get(key);
+System.out.println("BLAH2/"+I.name()+"/"+key+"/"+val);
 				httpReq.addRequestParameters(key,val);
 			}
 		}

@@ -1216,7 +1216,8 @@ public class SaucerSupport
 		return mob.location()!=oldRoom;
 	}
 	
-	public static Hashtable timsItemAdjustments(Item I, 
+	
+	  public static Hashtable timsItemAdjustments(Item I, 
 												int level,
 												int material,
 												int weight,
@@ -1393,29 +1394,37 @@ public class SaucerSupport
 			double pts=0.0;
 			if(level<0) level=0;
 			int materialCode=material&EnvResource.MATERIAL_MASK;
-			for(int i=0;i<14;i++)
+			int[] useArray=null;
+			switch(materialCode)
 			{
-				int lvl=-1;
-				switch(materialCode)
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_ENERGY:
+				useArray=metalPoints;
+				break;
+			case EnvResource.MATERIAL_PLASTIC:
+			case EnvResource.MATERIAL_LEATHER:
+			case EnvResource.MATERIAL_GLASS:
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_WOODEN:
+				useArray=leatherPoints;
+				break;
+			default:
+				useArray=clothPoints;
+				break;
+			}
+			if(level>=useArray[useArray.length-1])
+				pts=new Integer(useArray.length-2).doubleValue();
+			else
+			for(int i=0;i<useArray.length;i++)
+			{
+				int lvl=useArray[i];
+				if(lvl>level)
 				{
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_MITHRIL:
-				case EnvResource.MATERIAL_PRECIOUS:
-				case EnvResource.MATERIAL_ENERGY:
-					lvl=metalPoints[i];
-					break;
-				case EnvResource.MATERIAL_PLASTIC:
-				case EnvResource.MATERIAL_LEATHER:
-				case EnvResource.MATERIAL_GLASS:
-				case EnvResource.MATERIAL_ROCK:
-				case EnvResource.MATERIAL_WOODEN:
-					lvl=leatherPoints[i];
-					break;
-				default:
-					lvl=clothPoints[i];
+					pts=new Integer(i-1).doubleValue();
 					break;
 				}
-				if(lvl>level){pts=new Integer(i-1).doubleValue();break;}
 			}
 				   
 			double totalpts=0.0;
