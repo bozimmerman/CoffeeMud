@@ -1,4 +1,7 @@
 Have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad. (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
+! Mirror Image still doing it -- from the start!
+! The elder druid attempts to horribly curse his, but nothing happens. HIS WHAT!!?
+! Handle multiple items in a room! (#) them!
 
 
 

@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
+import java.util.*;
 
-public class Language
+public interface Language extends Ability
 {
+	public void interpreTell(Affect affect);
 }

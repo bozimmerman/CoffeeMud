@@ -39,6 +39,7 @@ public interface ExternalCommand
 	public void score(MOB mob);
 	public StringBuffer showWho(MOB who, boolean shortForm);
 	public String standardMobCondition(MOB mob);
+	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
 	
 	
 	// misc

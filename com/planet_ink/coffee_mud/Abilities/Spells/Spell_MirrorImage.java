@@ -111,7 +111,7 @@ public class Spell_MirrorImage extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-
+		numberOfImages=0;
 		super.unInvoke();
 
 		mob.tell("Your mirror images fade away.");
@@ -139,7 +139,7 @@ public class Spell_MirrorImage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			numberOfImages = 2 + (randomizer.nextInt() % (int)(Math.round(Util.div(mob.envStats().level(),2.0))));
+			numberOfImages = Dice.roll(1,(int)(Math.round(Util.div(mob.envStats().level(),3.0))),2);
 			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A spell forms around":"<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.");
 			if(mob.location().okAffect(msg))
 			{

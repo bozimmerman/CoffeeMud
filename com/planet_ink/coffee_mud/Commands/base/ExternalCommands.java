@@ -42,7 +42,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.theFight.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
 	}
-
+	public StringBuffer niceLister(MOB mob, Vector items, boolean useName)
+	{
+		return processor.scoring.niceLister(mob,items,useName);
+	}
 	public void standIfNecessary(MOB mob)
 	{
 		processor.movement.standIfNecessary(mob);

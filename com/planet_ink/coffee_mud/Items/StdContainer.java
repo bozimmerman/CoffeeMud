@@ -284,23 +284,27 @@ public class StdContainer extends StdItem implements Container
 						buf.append(name()+" contains:\n\r");
 						if(mob.isMine(this))
 						{
+							Vector newItems=new Vector();
 							for(int i=0;i<mob.inventorySize();i++)
 							{
 								Item item=mob.fetchInventory(i);
 								if((item!=null)&&(item.location()==this))
-									buf.append(item.name()+"\n\r");
+									newItems.addElement(item);
 							}
+							buf.append(ExternalPlay.niceLister(mob,newItems,true));
 						}
 						else
 						{
 							Room room=mob.location();
+							Vector newItems=new Vector();
 							if(room!=null)
 							for(int i=0;i<room.numItems();i++)
 							{
 								Item item=room.fetchItem(i);
 								if((item!=null)&&(item.location()==this))
-									buf.append(item.name()+"\n\r");
+									newItems.addElement(item);
 							}
+							buf.append(ExternalPlay.niceLister(mob,newItems,true));
 						}
 					}
 					else

@@ -455,28 +455,23 @@ public class StdRoom
 			Say.append("^L" + description()+"^N\n\r\n\r");
 		}
 		
+		Vector viewItems=new Vector();
 		for(int c=0;c<numItems();c++)
 		{
 			Item item=fetchItem(c);
 			if((item!=null)&&(item.location()==null))
-				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
-				{
-					Say.append("     ");
-					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-						Say.append("^H("+CMClass.className(item)+")^N ");
-
-					Say.append("^I");
-					if(item.displayText().length()>0)
-						Say.append(item.displayText());
-					else
-						Say.append(item.name());
-					Say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
-				}
+				viewItems.addElement(item);
 		}
+		Say.append(ExternalPlay.niceLister(mob,viewItems,false));
+		
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)&&(mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
+			if((mob2!=null)
+			   &&(mob2!=mob)
+			   &&((Sense.canBeSeenBy(mob2,mob)))
+			   &&((mob2.displayText().length()>0)
+				  ||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
 			{
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					Say.append("^H("+CMClass.className(mob2)+")^N ");

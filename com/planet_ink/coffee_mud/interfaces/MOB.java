@@ -10,6 +10,14 @@ public interface MOB
 	extends Environmental 
 {
 	
+	public static final int ATT_AUTOGOLD=1;
+	public static final int ATT_AUTOLOOT=2;
+	public static final int ATT_AUTOEXITS=4;
+	public static final int ATT_AUTOASSIST=8;
+	public static final int ATT_ANSI=16;
+	public static final int ATT_SYSOPMSGS=32;
+	public static final int ATT_AUTOMELEE=64;
+	
 	/** When the USER last logged on */
 	public Calendar lastDateTime();
 	/** User PASSWORD */
@@ -20,14 +28,6 @@ public interface MOB
 	public int getChannelMask();
 	public int getBitmap();
 	public void setBitmap(int bitmap);
-	
-	public static final int ATT_AUTOGOLD=1;
-	public static final int ATT_AUTOLOOT=2;
-	public static final int ATT_AUTOEXITS=4;
-	public static final int ATT_AUTOASSIST=8;
-	public static final int ATT_ANSI=16;
-	public static final int ATT_SYSOPMSGS=32;
-	public static final int ATT_AUTOMELEE=64;
 	
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
@@ -44,11 +44,13 @@ public interface MOB
 	public void raiseFromDead();
 	public void kill();
 	public boolean isInCombat();
+	public void bringToLife(Room newLocation);
+	public void destroy();
+	
+	/** combat stuff */
 	public MOB getVictim();
 	public void setVictim(MOB mob);
 	public void makePeace();
-	public void bringToLife(Room newLocation);
-	public void destroy();
 	public void setAtRange(int newRange);
 	public int rangeToTarget();
 	
@@ -64,6 +66,8 @@ public interface MOB
 	public void setSession(Session newSession);
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
+	public Language speaking();
+	public void setSpeaking(Language lang);
 	
 	/** Whether a sessiob object is attached to this MOB */
 	public boolean isMonster();

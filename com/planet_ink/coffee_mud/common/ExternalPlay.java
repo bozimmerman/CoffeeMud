@@ -45,7 +45,11 @@ public class ExternalPlay
 		if(player!=null) return player.standardMobCondition(mob);
 		return "";
 	}
-
+	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
+	{
+		if(player!=null) return player.niceLister(mob,items,useName);
+		return new StringBuffer("");
+	}
 	public static boolean remove(MOB mob, Item item)
 	{
 		if(player!=null) return player.remove(mob,item);

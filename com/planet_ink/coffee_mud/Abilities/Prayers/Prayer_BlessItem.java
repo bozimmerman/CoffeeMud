@@ -91,6 +91,7 @@ public class Prayer_BlessItem extends Prayer
 		
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands);
+		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

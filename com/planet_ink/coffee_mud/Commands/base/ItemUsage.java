@@ -661,7 +661,6 @@ public class ItemUsage
 		}while(allFlag);
 	}
 
-
 	public void push(MOB mob, String whatToOpen, CommandSet commandSet)
 	{
 

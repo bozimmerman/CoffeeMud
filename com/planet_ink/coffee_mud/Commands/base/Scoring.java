@@ -10,28 +10,31 @@ public class Scoring
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		boolean foundButUnseen=false;
+		boolean foundAndSeen=false;
+		Vector viewItems=new Vector();
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);
 			if((thisItem!=null)
 			&&(thisItem.location()==null)
 			&&(thisItem.amWearingAt(Item.INVENTORY)))
-	  	   {
+			{
+				viewItems.addElement(thisItem);
 				if(Sense.canBeSeenBy(thisItem,seer))
-					msg.append(thisItem.name()+Sense.colorCodes(thisItem,mob)+"\n\r");
-				else
-					foundButUnseen=true;
+					foundAndSeen=true;
 			}
 		}
-		if(foundButUnseen)
+		if((viewItems.size()>0)&&(!foundAndSeen))
 			msg.append("(nothing you can see right now)");
 		else
-		if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
-			msg.append("(some ^ygold^? coins you can't see)");
-		else
-		if(mob.getMoney()>0)
-			msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
+		{
+			msg.append(niceLister(seer,viewItems,true));
+			if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
+				msg.append("(some ^ygold^? coins you can't see)");
+			else
+			if(mob.getMoney()>0)
+				msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
+		}
 		return msg;
 	}
 	public void inventory(MOB mob)
@@ -44,6 +47,58 @@ public class Scoring
 			mob.session().unfilteredPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 	}
 
+	public StringBuffer niceLister(MOB mob, Vector items, boolean useName)
+	{
+		StringBuffer say=new StringBuffer("");
+		while(items.size()>0)
+		{
+			Item item=(Item)items.elementAt(0);
+			String str=(useName)?item.name():item.displayText();
+			int reps=0;
+			items.removeElement(item);
+			int here=0;
+			while(here<items.size())
+			{
+				Item item2=(Item)items.elementAt(here);
+				if(item2==null)
+					break;
+				else
+				{
+					String str2=(useName)?item2.name():item2.displayText();
+					if(str2.length()==0)
+						items.removeElement(item2);
+					else
+					if(str.equals(str2))
+					{
+						reps++;
+						items.removeElement(item2);
+					}
+					else
+						here++;
+				}
+			}
+			if((Sense.canBeSeenBy(item,mob))
+			&&(((item.displayText().length()>0)||useName||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))))
+			{
+				if(reps==0)	say.append("      ");
+				else
+				if(reps>0)	say.append(" ("+Util.padLeft(""+(reps+1),2)+") ");
+				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+					say.append("^H("+CMClass.className(item)+")^N ");
+				say.append("^I");
+				if(useName)
+					say.append(item.name());
+				else
+				if(item.displayText().length()>0)
+					say.append(item.displayText());
+				else
+					say.append(item.name());
+				say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
+			}
+		}
+		return say;
+	}
+	
 	public void score(MOB mob)
 	{
 		TheFight theFight=new TheFight();
