@@ -261,19 +261,17 @@ public class Generic
 		return msg;
 	}
 	
-	public static String unpackRoomFromXML(String buf, boolean andRooms)
+	public static String unpackRoomFromXML(String buf, boolean andContent)
 	{
 		Vector xml=XMLManager.parseAllXML(buf);
 		if(xml==null) return unpackErr("Room","null 'xml'");
 		Vector roomData=XMLManager.getRealContentsFromPieces(xml,"AROOM");
 		if(roomData==null) return unpackErr("Room","null 'roomData'");
-		return unpackRoomFromXML(roomData,andRooms);
+		return unpackRoomFromXML(roomData,andContent);
 	}
 	
-	public static String unpackRoomFromXML(Vector xml, boolean andRooms)
+	public static String unpackRoomFromXML(Vector xml, boolean andContent)
 	{
-		String doorProblems="";
-		
 		Area myArea=CMMap.getArea(XMLManager.getValFromPieces(xml,"RAREA"));
 		if(myArea==null) return unpackErr("Room","null 'myArea'");
 		String roomClass=XMLManager.getValFromPieces(xml,"RCLAS");
@@ -288,6 +286,8 @@ public class Generic
 		newRoom.setDisplayText(XMLManager.getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(XMLManager.getValFromPieces(xml,"RDESC"));
 		newRoom.setMiscText(XMLManager.getValFromPieces(xml,"RTEXT"));
+		
+		// now EXITS!
 		Vector xV=XMLManager.getRealContentsFromPieces(xml,"ROOMEXITS");
 		if(xV==null) return unpackErr("Room","null 'xV'");
 		for(int x=0;x<xV.size();x++)
@@ -298,31 +298,58 @@ public class Generic
 			int dir=XMLManager.getIntFromPieces(xblk.contents,"XDIRE");
 			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS))
 				return unpackErr("Room","Unknown direction: "+dir);
-			
-			//Vector xxV=XMLManager.getRealContentsFromPieces(xml,"XDOOR");
-			
-			
-		}
-		return doorProblems;
-	}
-/*
-				buf.append("<REXIT>");
-				buf.append(XMLManager.convertXMLtoTag("XDIRE",e));
-				if(door==null)
-					buf.append("<XDOOR />");
-				else
-					buf.append(XMLManager.convertXMLtoTag("XDOOR",door.ID()));
-				if(exit==null)
-					buf.append("<XEXIT />");
+			String doorID=XMLManager.getValFromPieces(xblk.contents,"XDOOR");
+			Vector xxV=XMLManager.getContentsFromPieces(xblk.contents,"XEXIT");
+			if(xxV==null) return unpackErr("Room","null 'xxV'");
+			Exit exit=CMClass.getExit("GenExit");
+			if(xxV.size()>0)
+			{
+				exit=CMClass.getExit(XMLManager.getValFromPieces(xxV,"EXID"));
+				if(xxV==null) return unpackErr("Room","null 'exit'");
+				exit.setMiscText(XMLManager.getValFromPieces(xxV,"EXDAT"));
+				newRoom.exits()[dir]=exit;
+			}
+			if(doorID.length()>0)
+			{
+				Room link=CMMap.getRoom(doorID);
+				if(link!=null)
+					newRoom.doors()[dir]=link;
 				else
 				{
-					buf.append("<EXIT>");
-					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
-					buf.append(XMLManager.convertXMLtoTag("EXDAT",exit.text()));
-					buf.append("</EXIT>");
+					newRoom.exits()[dir]=exit; // get will get the fake one too!
+					exit.setExitParams(exit.doorName(),exit.closeWord()+"/"+doorID,exit.openWord(),exit.closedText());
 				}
-				buf.append("</REXIT>");
- */	
+			}
+		}
+		
+		// find any mis-linked exits and fix them!
+		for(int m=0;m<CMMap.map.size();m++)
+		{
+			boolean changed=false;
+			Room room=(Room)CMMap.map.elementAt(m);
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Exit exit=room.exits()[d];
+				if((exit!=null)&&(exit.closeWord().endsWith("/"+newRoom.ID())))
+				{
+					int x=exit.closeWord().lastIndexOf("/");
+					exit.setExitParams(exit.doorName(),exit.closeWord().substring(0,x),exit.openWord(),exit.closedText());
+					room.doors()[d]=newRoom;
+					changed=true;
+				}
+			}
+			if(changed) ExternalPlay.DBUpdateExits(room);
+		}
+		ExternalPlay.DBUpdateRoom(newRoom);
+		ExternalPlay.DBUpdateExits(newRoom);
+		if(andContent)
+		{
+			Vector xC=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
+			if(xC==null) return unpackErr("Room","null 'xC'");
+			
+		}
+		return "";
+	}
 	public static String unpackAreaFromXML(String buf, boolean andRooms)
 	{
 		Vector xml=XMLManager.parseAllXML(buf);
@@ -429,10 +456,10 @@ public class Generic
 					buf.append("<XEXIT />");
 				else
 				{
-					buf.append("<EXIT>");
+					buf.append("<XEXIT>");
 					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
 					buf.append(XMLManager.convertXMLtoTag("EXDAT",exit.text()));
-					buf.append("</EXIT>");
+					buf.append("</XEXIT>");
 				}
 				buf.append("</REXIT>");
 			}
