@@ -254,7 +254,7 @@ public class CMAble
 		if((level>=0)
 		&&(student.charStats().getClassLevel(C)>=level))
 			return true;
-		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
+		level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
 		if((level>=0)&&(student.envStats().level()>=level))
 			return true;
 		return false;
