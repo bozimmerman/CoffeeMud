@@ -302,6 +302,9 @@ public class CMSecurity
 	public static boolean isDisabled(String key)
 	{ return (disVars.size()>0)&&disVars.contains(key);}
 	
+	public static boolean isSaveFlag(String key)
+	{ return (saveFlags.size()>0)&&saveFlags.contains(key);}
+	
 	public static void setDebugVars(String vars)
 	{
 		Vector V=Util.parseCommas(vars.toUpperCase(),true);
@@ -325,9 +328,25 @@ public class CMSecurity
 		if((var!=null)&&(!delete))
 			disVars.add(var);
 	}
+	public static void setSaveFlags(String flags)
+	{
+		Vector V=Util.parseCommas(flags.toUpperCase(),true);
+		saveFlags.clear();
+		for(int v=0;v<V.size();v++)
+		    saveFlags.add(V.elementAt(v));
+	}
+	public static void setSaveFlag(String flag, boolean delete)
+	{
+		if((flag!=null)&&(delete)&&(saveFlags.size()>0))
+		    saveFlags.remove(flag);
+		else
+		if((flag!=null)&&(!delete))
+		    saveFlags.add(flag);
+	}
 	
 	private static HashSet disVars=new HashSet();
 	private static HashSet dbgVars=new HashSet();
+	private static HashSet saveFlags=new HashSet();
 
 	public static long getStartTime(){return startTime;}
 	

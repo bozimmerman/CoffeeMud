@@ -188,7 +188,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
 						mobs.addElement(M);
 				}
-				CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
+				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+					CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
 			}
 		}
 	}
@@ -326,7 +327,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 			lastNumItems=R.numItems();
-			if(updateItems)
+			if((!CMSecurity.isSaveFlag("NOPROPERTYITEMS"))
+			&&(updateItems))
 				CMClass.DBEngine().DBUpdateItems(R);
 			return lastNumItems;
 		}

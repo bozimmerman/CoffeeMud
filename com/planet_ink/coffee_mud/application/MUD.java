@@ -499,7 +499,8 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut("MUD","New Connections are now closed");
 		if(S!=null)S.println("Done.");
 		
-		if(saveThread!=null)
+		if((!CMSecurity.isSaveFlag("NOPLAYERS"))
+		&&(saveThread!=null))
 		{
 			if(S!=null)S.print("Saving players...");
 			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
@@ -539,7 +540,107 @@ public class MUD extends Thread implements MudHost
 		utiliThread=null;
 		if(S!=null)S.println("Utility thread stopped");
 		Log.sysOut("MUD","Utility/Save Threads stopped.");
-
+		
+		if(CMSecurity.isSaveFlag("ROOMMOBS")
+		||CMSecurity.isSaveFlag("ROOMITEMS")
+		||CMSecurity.isSaveFlag("ROOMSHOPS"))
+		{
+			if(S!=null)S.print("Saving room data...");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
+			int roomCounter=0;
+			for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+			{
+			    Area A=(Area)e.nextElement();
+			    A.toggleMobility(false);
+			}
+			if(CMSecurity.isSaveFlag("ROOMSHOPS")&&(!CMSecurity.isSaveFlag("ROOMMOBS")))
+			{
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+				    Room R=(Room)e.nextElement();
+				    for(int m=0;m<R.numInhabitants();m++)
+				    {
+				        MOB M=R.fetchInhabitant(m);
+				        if((M instanceof ShopKeeper)
+				        &&(M.isEligibleMonster())
+				        &&(M.getStartRoom()!=R)
+				        &&(M.getStartRoom()!=null))
+				            M.getStartRoom().bringMobHere(M,false);
+				    }
+				}
+			}
+			else
+			if(CMSecurity.isSaveFlag("ROOMMOBS"))
+			{
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+				    Room R=(Room)e.nextElement();
+				    if(R.roomID().length()==0)
+				    for(int m=0;m<R.numInhabitants();m++)
+				    {
+				        MOB M=R.fetchInhabitant(m);
+				        if((M!=null)
+				        &&(M.isEligibleMonster())
+				        &&(M.getStartRoom()!=R)
+				        &&(M.getStartRoom()!=null)
+				        &&(M.getStartRoom().roomID().length()>0))
+				            M.getStartRoom().bringMobHere(M,false);
+				    }
+				}
+			}
+            Vector shopmobs=new Vector();
+			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+			{
+			    if(((++roomCounter)%200)==0)
+			    {
+			        if(S!=null) S.print(".");
+					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
+			    }
+			    Room R=(Room)e.nextElement();
+			    if(R.roomID().length()>0)
+			    {
+			        if(CMSecurity.isSaveFlag("ROOMMOBS"))
+			        {
+			            for(int m=0;m<R.numInhabitants();m++)
+			            {
+			                MOB M=R.fetchInhabitant(m);
+			                if((M!=null)&&(M.isEligibleMonster()))
+			                    M.setStartRoom(R);
+			            }
+			            CMClass.DBEngine().DBUpdateMOBs(R);
+			        }
+			        else
+			        if(CMSecurity.isSaveFlag("ROOMSHOPS"))
+			        {
+			            shopmobs.clear();
+			            for(int m=0;m<R.numInhabitants();m++)
+			            {
+			                MOB M=R.fetchInhabitant(m);
+			                if((M!=null)
+			                &&(M.isEligibleMonster())
+			                &&(M instanceof ShopKeeper)
+			                &&(M.getStartRoom()==R))
+			                    shopmobs.addElement(M);
+			            }
+			            if(shopmobs.size()>0)
+				            CMClass.DBEngine().DBUpdateTheseMOBs(R,shopmobs);
+			        }
+			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
+			        {
+			            for(int i=R.numItems()-1;i>=0;i--)
+			            {
+			                Item I=R.fetchItem(i);
+			                if((I!=null)&&(I.dispossessionTime()!=0))
+			                    I.destroy();
+			            }
+			            CMClass.DBEngine().DBUpdateItems(R);
+			        }
+			    }
+			}
+			if(S!=null)S.println("done");
+			Log.sysOut("MUD","Map data saved.");
+		    
+		}
 
 		if(imserver!=null)
 		{

@@ -152,7 +152,8 @@ public class Prop_AreaForSale extends Property implements LandTitle
 					&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
 						mobs.addElement(M);
 				}
-				CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
+				if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
+					CMClass.DBEngine().DBUpdateTheseMOBs(R,mobs);
 			}
 			lastMobSave=System.currentTimeMillis();
 		}

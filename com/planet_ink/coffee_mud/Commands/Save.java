@@ -28,6 +28,17 @@ public class Save extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if((commands.size()==1)&&CMSecurity.isSaveFlag("NOPLAYERS"))
+		{
+		    if(!mob.isMonster())
+		    {
+				CMClass.DBEngine().DBUpdateMOB(mob);
+				CMClass.DBEngine().DBUpdateFollowers(mob);
+				mob.tell("Your player record has been updated.");
+		    }
+		    return false;
+		}
+		
 		String commandType="";
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		if(commands.size()>1)
@@ -158,7 +169,8 @@ public class Save extends StdCommand
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")
 												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")
-												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS");}
+												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")
+												 ||CMSecurity.isSaveFlag("NOPLAYERS");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -328,6 +328,7 @@ public class CommonStrings extends Scriptable
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));
 		CMSecurity.setDebugVars(page.getStr("DEBUG"));
+		CMSecurity.setSaveFlags(page.getStr("SAVE"));
 		
 	}
 
