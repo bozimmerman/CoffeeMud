@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.Vector;
 
-public interface Affect
+public interface Affect extends Cloneable
 {
 	public int targetMajor();
 	public int targetMinor();
@@ -21,6 +21,9 @@ public interface Affect
 	public Environmental target();
 	public Environmental tool();
 	public MOB source();
+	
+	public Affect copyOf();
+			
 
 	public boolean amITarget(Environmental thisOne);
 	public boolean amISource(MOB thisOne);
@@ -28,6 +31,7 @@ public interface Affect
 	public boolean wasModified();
 	public void tagModified(boolean newStatus);
 
+	public void setTarget(Environmental target);
 	public void modify(MOB source,
 						Environmental target,
 						Environmental tool,

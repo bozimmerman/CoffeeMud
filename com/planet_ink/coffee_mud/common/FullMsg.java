@@ -68,6 +68,10 @@ public class FullMsg implements Affect
 		othersMsg=othersMessage;
 	}
 
+	public Affect copyOf()
+	{
+		return new FullMsg(source(),target(),tool(),sourceCode(),sourceMessage(),targetCode(),targetMessage(),othersCode(),othersMessage());
+	}
 
 	public boolean wasModified()
 	{
@@ -127,6 +131,8 @@ public class FullMsg implements Affect
 	{
 		return myAgent;
 	}
+	public void setTarget(Environmental target)
+	{	myTarget=target;}
 	public Environmental target()
 	{
 		return myTarget;
