@@ -251,30 +251,42 @@ public class Util
 		}
 		return commands;
 	}
-	
-	public static String padRight(String thisStr, int thisMuch)
+
+	public static int lengthMinusColors(String thisStr)
 	{
-		if(thisStr.length()>thisMuch)
-			return thisStr.substring(0,thisMuch);
-		return thisStr+SPACES.substring(0,thisMuch-thisStr.length());
+		int size=0;
+		for(int i=0;i<thisStr.length();i++)
+		{
+			if(thisStr.charAt(i)=='^')
+				i++;
+			else
+				size++;
+		}
+		return size;
 	}
 	public static String padLeft(String thisStr, int thisMuch)
 	{
 		if(thisStr.length()>thisMuch)
 			return thisStr.substring(0,thisMuch);
-		return SPACES.substring(0,thisMuch-thisStr.length())+thisStr;
+		return SPACES.substring(0,thisMuch-lengthMinusColors(thisStr))+thisStr;
+	}
+	public static String padRight(String thisStr, int thisMuch)
+	{
+		if(thisStr.length()>thisMuch)
+			return thisStr.substring(0,thisMuch);
+		return thisStr+SPACES.substring(0,thisMuch-lengthMinusColors(thisStr));
 	}
 	public static String padRightPreserve(String thisStr, int thisMuch)
 	{
 		if(thisStr.length()>=thisMuch)
 			return thisStr;
-		return thisStr+SPACES.substring(0,thisMuch-thisStr.length());
+		return thisStr+SPACES.substring(0,thisMuch-lengthMinusColors(thisStr));
 	}
 	public static String padLeftPreserve(String thisStr, int thisMuch)
 	{
 		if(thisStr.length()>=thisMuch)
 			return thisStr;
-		return SPACES.substring(0,thisMuch-thisStr.length())+thisStr;
+		return SPACES.substring(0,thisMuch-lengthMinusColors(thisStr))+thisStr;
 	}
 	
 	public static double div(double a, double b)

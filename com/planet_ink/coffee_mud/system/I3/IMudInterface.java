@@ -16,6 +16,77 @@ public class IMudInterface implements ImudServices, Serializable
 	public String[][] channels={{"diku_chat","CHAT","0"},
 								{"diku_immortals","GOSSIP","32"},
 								{"diku_code","GREET","0"}};
+	
+	private final static int I3MAX_ANSI=49;
+
+	String[][] i3ansi_conversion=
+	{
+		/*
+		 * Conversion Format Below:
+		 *
+		 * { "<MUD TRANSLATION>", "PINKFISH", "ANSI TRANSLATION" }
+		 *
+		 * Foreground Standard Colors
+		 */
+		{ "^K", "%^BLACK%^",   "\033[0;0;30m" }, // Black
+		{ "^R", "%^RED%^",     "\033[0;0;31m" }, // Dark Red
+		{ "^G", "%^GREEN%^",   "\033[0;0;32m" }, // Dark Green
+		{ "^Y", "%^ORANGE%^",  "\033[0;0;33m" }, // Orange/Brown
+		{ "^B", "%^BLUE%^",    "\033[0;0;34m" }, // Dark Blue
+		{ "^P", "%^MAGENTA%^", "\033[0;0;35m" }, // Purple/Magenta
+		{ "^C", "%^CYAN%^",    "\033[0;0;36m" }, // Cyan
+		{ "^W", "%^WHITE%^",   "\033[0;0;37m" }, // Grey
+
+		/* Background colors */
+		{ "", "%^B_BLACK%^",   "\033[40m" }, // Black
+		{ "", "%^B_RED%^",     "\033[41m" }, // Red
+		{ "", "%^B_GREEN%^",   "\033[42m" }, // Green
+		{ "", "%^B_ORANGE%^",  "\033[43m" }, // Orange
+		{ "", "%^B_YELLOW%^",  "\033[43m" }, // Yellow, which may as well be orange since ANSI doesn't do that
+		{ "", "%^B_BLUE%^",    "\033[44m" }, // Blue
+		{ "", "%^B_MAGENTA%^", "\033[45m" }, // Purple/Magenta
+		{ "", "%^B_CYAN%^",    "\033[46m" }, // Cyan
+		{ "", "%^B_WHITE%^",   "\033[47m" }, // White
+
+		/* Text Affects */
+		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
+		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
+		{ "&L", "%^BOLD%^",      "\033[1m" }, // Bolden Text(Brightens it)
+		{ "^^", "%^EBOLD%^",	 "\033[0m" }, // Assumed to be a reset tag to stop bold
+		{ "^_", "%^UNDERLINE%^", "\033[4m" }, // Underline Text
+		{ "^*", "%^FLASH%^",     "\033[5m" }, // Blink Text
+		{ "^/", "%^ITALIC%^",    "\033[6m" }, // Italic Text
+		{ "", "%^REVERSE%^",   "\033[7m" }, // Reverse Background and Foreground Colors
+
+		/* Foreground extended colors */
+		{ "^k", "%^BLACK%^%^BOLD%^",   "\033[0;1;30m" }, // Dark Grey
+		{ "^r", "%^RED%^%^BOLD%^",     "\033[0;1;31m" }, // Red
+		{ "^g", "%^GREEN%^%^BOLD%^",   "\033[0;1;32m" }, // Green
+		{ "^y", "%^YELLOW%^",          "\033[0;1;33m" }, // Yellow
+		{ "^b", "%^BLUE%^%^BOLD%^",    "\033[0;1;34m" }, // Blue
+		{ "^p", "%^MAGENTA%^%^BOLD%^", "\033[0;1;35m" }, // Pink
+		{ "^c", "%^CYAN%^%^BOLD%^",    "\033[0;1;36m" }, // Light Blue
+		{ "^w", "%^WHITE%^%^BOLD%^",   "\033[0;1;37m" }, // White
+
+		/* Blinking foreground standard color */
+		{ "^K^*", "%^BLACK%^%^FLASH%^",           "\033[0;5;30m" }, // Black
+		{ "^R^*", "%^RED%^%^FLASH%^",             "\033[0;5;31m" }, // Dark Red
+		{ "^G^*", "%^GREEN%^%^FLASH%^",           "\033[0;5;32m" }, // Dark Green
+		{ "^Y^*", "%^ORANGE%^%^FLASH%^",          "\033[0;5;33m" }, // Orange/Brown
+		{ "^B^*", "%^BLUE%^%^FLASH%^",            "\033[0;5;34m" }, // Dark Blue
+		{ "^P^*", "%^MAGENTA%^%^FLASH%^",         "\033[0;5;35m" }, // Magenta/Purple
+		{ "^C^*", "%^CYAN%^%^FLASH%^",            "\033[0;5;36m" }, // Cyan
+		{ "^W^*", "%^WHITE%^%^FLASH%^",           "\033[0;5;37m" }, // Grey
+		{ "^k^*", "%^BLACK%^%^BOLD%^%^FLASH%^",   "\033[1;5;30m" }, // Dark Grey
+		{ "^r^*", "%^RED%^%^BOLD%^%^FLASH%^",     "\033[1;5;31m" }, // Red
+		{ "^g^*", "%^GREEN%^%^BOLD%^%^FLASH%^",   "\033[1;5;32m" }, // Green
+		{ "^y^*", "%^YELLOW%^%^FLASH%^",          "\033[1;5;33m" }, // Yellow
+		{ "^b^*", "%^BLUE%^%^BOLD%^%^FLASH%^",    "\033[1;5;34m" }, // Blue
+		{ "^p^*", "%^MAGENTA%^%^BOLD%^%^FLASH%^", "\033[1;5;35m" }, // Pink
+		{ "^c^*", "%^CYAN%^%^BOLD%^%^FLASH%^",    "\033[1;5;36m" }, // Light Blue
+		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
+	};
+
 														
 	
 	public IMudInterface (String Name, String Version, int Port, String[][] Channels)
@@ -40,6 +111,37 @@ public class IMudInterface implements ImudServices, Serializable
 		return null;
 	}
 	
+	public String fixColors(String str)
+	{
+		StringBuffer buf=new StringBuffer(str);
+		int startedAt=-1;
+		for(int i=0;i<buf.length();i++)
+		{
+			if(buf.charAt(i)=='%')
+			{
+				if(startedAt<0)
+					startedAt=i;
+				else
+				if(((i+1)<buf.length())&&(buf.charAt(i+1)=='^'))
+				{
+					String found=null;
+					String code=buf.substring(startedAt,i+2);
+					for(int x=0;x<i3ansi_conversion.length;x++)
+					{
+						if(code.equals(i3ansi_conversion[x][1]))
+						{found=i3ansi_conversion[x][0]; break;}
+					}
+					if(found!=null)
+					{
+						buf.replace(startedAt,i+2,found);
+						i=startedAt+1;
+					}
+					startedAt=-1;
+				}
+			}
+		}
+		return buf.toString();
+	}
 	
 	public String replaceAll(String str, String thisStr, String withThisStr)
 	{
@@ -106,12 +208,12 @@ public class IMudInterface implements ImudServices, Serializable
 				int lvl=getLocalLevel(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
-					String str=mob.name()+" "+channelName+"(S) '"+ck.message+"'";
+					String str=mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
 				else
 				{
-					String msgs=socialFix(ck.message);
+					String msgs=socialFix(fixColors(ck.message));
 					String str="("+channelName+") "+msgs+"";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
@@ -148,10 +250,9 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.LOCATE_REPLY:
 			{
 				LocateReplyPacket lk=(LocateReplyPacket)packet;
-				Log.errOut("IMudInterface","Received Locate Reply Packet: "+lk.target_name+"/"+lk.sender_mud+"/"+lk.located_visible_name);
 				MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
-					smob.tell(lk.located_visible_name+"@"+lk.located_mud_name+" ("+lk.idle_time+"): "+lk.status);
+					smob.tell(fixColors(lk.located_visible_name)+"@"+fixColors(lk.located_mud_name)+" ("+lk.idle_time+"): "+fixColors(lk.status));
 			}
 			break;
 		case Packet.WHO_REPLY:
@@ -160,7 +261,7 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
 				{
-					StringBuffer buf=new StringBuffer("\n\rwhois@"+wk.sender_mud+":\n\r");
+					StringBuffer buf=new StringBuffer("\n\rwhois@"+fixColors(wk.sender_mud)+":\n\r");
 					Vector V=wk.who;
 					if(V.size()==0)
 						buf.append("Nobody!");
@@ -168,13 +269,12 @@ public class IMudInterface implements ImudServices, Serializable
 					for(int v=0;v<V.size();v++)
 					{
 						Vector V2=(Vector)V.elementAt(v);
-						String nom = (String)V2.elementAt(0);
+						String nom = fixColors((String)V2.elementAt(0));
 						int idle = ((Integer)V2.elementAt(1)).intValue();
-						String xtra = (String)V2.elementAt(2);
+						String xtra = fixColors((String)V2.elementAt(2));
 						buf.append("["+Util.padRight(nom,20)+"] "+xtra+"("+idle+")\n\r");
 					}
-					String str=replaceAll(buf.toString(),"%ESET%","");
-					smob.session().unfilteredPrintln(str);
+					smob.session().unfilteredPrintln(buf.toString());
 					break;
 				}
 			}
@@ -217,7 +317,7 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
-					ExternalPlay.quickSay(mob,smob,tk.message,true,true);
+					ExternalPlay.quickSay(mob,smob,fixColors(tk.message),true,true);
 					break;
 				}
 			}
