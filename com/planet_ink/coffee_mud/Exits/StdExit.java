@@ -454,6 +454,7 @@ public class StdExit implements Exit
 				else
 					a++;
 			}
+			return true;
 		}
 	}
 	public boolean isOpen(){return isOpen;}
