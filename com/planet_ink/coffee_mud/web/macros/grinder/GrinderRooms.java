@@ -46,51 +46,9 @@ public class GrinderRooms
 		if(desc==null)desc="";
 		R.setDescription(desc);
 		
-		while(R.numBehaviors()>0)
-			R.delBehavior(R.fetchBehavior(0));
-		if(httpReq.getRequestParameters().containsKey("BEHAV1"))
-		{
-			int num=1;
-			String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
-			while((behav!=null)&&(theparm!=null))
-			{
-				if(behav.length()>0)
-				{
-					Behavior B=CMClass.getBehavior(behav);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown behavior '"+behav+"'.";
-					B.setParms(theparm);
-					R.addBehavior(B);
-					B.startBehavior(R);
-				}
-				num++;
-				behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-				theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
-			}
-		}
-		while(R.numAffects()>0)
-			R.delAffect(R.fetchAffect(0));
-		if(httpReq.getRequestParameters().containsKey("AFFECT1"))
-		{
-			int num=1;
-			String aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
-			while((aff!=null)&&(theparm!=null))
-			{
-				if(aff.length()>0)
-				{
-					Ability B=CMClass.getAbility(aff);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown Affect '"+aff+"'.";
-					B.setMiscText(theparm);
-					R.addNonUninvokableAffect(B);
-				}
-				num++;
-				aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-				theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
-			}
-		}
+		String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
+		if(err.length()>0) return err;
+		
 		if(redoAllMyDamnRooms)
 		{
 			for(int r=0;r<CMMap.numRooms();r++)

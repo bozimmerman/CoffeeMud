@@ -20,6 +20,57 @@ public class GrinderAreas
 		}
 		return AreaList.toString();
 	}
+	
+	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		while(E.numBehaviors()>0)
+			E.delBehavior(E.fetchBehavior(0));
+		if(httpReq.getRequestParameters().containsKey("BEHAV1"))
+		{
+			int num=1;
+			String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
+			String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+			while((behav!=null)&&(theparm!=null))
+			{
+				if(behav.length()>0)
+				{
+					Behavior B=CMClass.getBehavior(behav);
+					if(theparm==null) theparm="";
+					if(B==null) return "Unknown behavior '"+behav+"'.";
+					B.setParms(theparm);
+					E.addBehavior(B);
+					B.startBehavior(E);
+				}
+				num++;
+				behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
+				theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+			}
+		}
+		while(E.numAffects()>0)
+			E.delAffect(E.fetchAffect(0));
+		if(httpReq.getRequestParameters().containsKey("AFFECT1"))
+		{
+			int num=1;
+			String aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
+			String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+			while((aff!=null)&&(theparm!=null))
+			{
+				if(aff.length()>0)
+				{
+					Ability B=CMClass.getAbility(aff);
+					if(theparm==null) theparm="";
+					if(B==null) return "Unknown Affect '"+aff+"'.";
+					B.setMiscText(theparm);
+					E.addNonUninvokableAffect(B);
+				}
+				num++;
+				aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
+				theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+			}
+		}
+		return "";
+	}
+	
 	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		String last=(String)httpReq.getRequestParameters().get("AREA");
@@ -99,52 +150,9 @@ public class GrinderAreas
 		if(desc==null)desc="";
 		A.setDescription(desc);
 		
-		while(A.numBehaviors()>0)
-			A.delBehavior(A.fetchBehavior(0));
-		if(httpReq.getRequestParameters().containsKey("BEHAV1"))
-		{
-			int num=1;
-			String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
-			while((behav!=null)&&(theparm!=null))
-			{
-				if(behav.length()>0)
-				{
-					Behavior B=CMClass.getBehavior(behav);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown behavior '"+behav+"'.";
-					B.setParms(theparm);
-					A.addBehavior(B);
-					B.startBehavior(A);
-				}
-				num++;
-				behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-				theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
-			}
-		}
-		while(A.numAffects()>0)
-			A.delAffect(A.fetchAffect(0));
-		if(httpReq.getRequestParameters().containsKey("AFFECT1"))
-		{
-			int num=1;
-			String aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
-			while((aff!=null)&&(theparm!=null))
-			{
-				if(aff.length()>0)
-				{
-					Ability B=CMClass.getAbility(aff);
-					if(theparm==null) theparm="";
-					if(B==null) return "Unknown Affect '"+aff+"'.";
-					B.setMiscText(theparm);
-					A.addNonUninvokableAffect(B);
-					
-				}
-				num++;
-				aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-				theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
-			}
-		}
+		String err=GrinderAreas.doAffectsNBehavs(A,httpReq,parms);
+		if(err.length()>0) return err;
+		
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 		{
 			for(int r=0;r<allMyDamnRooms.size();r++)

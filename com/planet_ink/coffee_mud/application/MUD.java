@@ -213,8 +213,6 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
-
-		
 		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
 		offlineReason=new String("Booting: connecting to database");
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
@@ -301,7 +299,6 @@ public class MUD extends Thread implements Host
 		int q_len = 6;
 		Socket sock=null;
 		serverIsRunning = false;
-
 
 		if (!isOK)	return;
 		if ((page == null) || (!page.loaded))
