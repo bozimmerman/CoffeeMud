@@ -117,7 +117,7 @@ public class Scoring
 		while(items.size()>0)
 		{
 			Item item=(Item)items.elementAt(0);
-			String str=(useName)?item.name():item.displayText();
+			String str=(useName||(item.displayText().length()==0))?item.name():item.displayText();
 			int reps=0;
 			items.removeElement(item);
 			int here=0;
@@ -128,7 +128,7 @@ public class Scoring
 					break;
 				else
 				{
-					String str2=(useName)?item2.name():item2.displayText();
+					String str2=(useName||(item2.displayText().length()==0))?item2.name():item2.displayText();
 					if(str2.length()==0)
 						items.removeElement(item2);
 					else

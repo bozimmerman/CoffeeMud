@@ -518,14 +518,28 @@ public class Generic
 		ExternalPlay.DBUpdateMOBs(newRoom);
 		return "";
 	}
-	public static String unpackAreaFromXML(String buf, boolean andRooms)
+	
+	public static String fillAreasVectorFromXML(String buf, Vector areas)
 	{
 		Vector xml=XMLManager.parseAllXML(buf);
-		if(xml==null) return unpackErr("Area","null 'xml'");
-		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREA");
-		if(aV==null) return unpackErr("Area","null 'aV'");
+		if(xml==null) return unpackErr("Areas","null 'xml'");
+		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREAS");
+		if(aV==null) return unpackErr("Areas","null 'aV'");
+		for(int r=0;r<aV.size();r++)
+		{
+			XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)aV.elementAt(r);
+			if((!ablk.tag.equalsIgnoreCase("AREA"))||(ablk.contents==null))
+				return unpackErr("Areas","??"+ablk.tag);
+			areas.addElement(ablk.contents);
+		}
+		return "";
+	}
+	
+	public static String unpackAreaFromXML(Vector aV, Session S, boolean andRooms)
+	{
 		String areaClass=XMLManager.getValFromPieces(aV,"ACLAS");
 		String areaName=XMLManager.getValFromPieces(aV,"ANAME");
+		
 		if(CMMap.getArea(areaName)!=null) return "Area Exists: "+areaName;
 		if(CMClass.getAreaType(areaClass)==null) return unpackErr("Area","No class: "+areaClass);
 		Area newArea=ExternalPlay.DBCreateArea(areaName,areaClass);
@@ -546,14 +560,23 @@ public class Generic
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)rV.elementAt(r);
 				if((!ablk.tag.equalsIgnoreCase("AROOM"))||(ablk.contents==null))
 					return unpackErr("Area","??"+ablk.tag);
+				if(S!=null) S.rawPrint(".");
 				String err=unpackRoomFromXML(ablk.contents,true);
 				if(err.length()>0) return err;
 			}
 		}
 		return "";
 	}
+	public static String unpackAreaFromXML(String buf, Session S, boolean andRooms)
+	{
+		Vector xml=XMLManager.parseAllXML(buf);
+		if(xml==null) return unpackErr("Area","null 'xml'");
+		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREA");
+		if(aV==null) return unpackErr("Area","null 'aV'");
+		return unpackAreaFromXML(aV,S,andRooms);
+	}
 
-	public static StringBuffer getAreaXML(Area area, boolean andRooms)
+	public static StringBuffer getAreaXML(Area area, Session S, boolean andRooms)
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
@@ -578,14 +601,264 @@ public class Generic
 				for(int r=0;r<rooms.size();r++)
 				{
 					Room room=(Room)rooms.elementAt(r);
+					if(S!=null) S.rawPrint(".");
 					if((room!=null)&&(room.ID()!=null)&&(room.ID().length()>0))
-						buf.append(getRoomXML(room,true));
+						buf.append(getRoomXML(room,true)+"\n\r");
 				}
 				buf.append("</AROOMS>");
 			}
 		}
 		buf.append("</AREA>");
 		area.toggleMobility(mobile);
+		return buf;
+	}
+
+	public static StringBuffer logTextDiff(String e1, String e2)
+	{
+		int start=0;
+		int end=e1.length()-1;
+		int end2=e2.length()-1;
+		boolean stopStart=false;
+		boolean stopEnd=false;
+		while((!stopStart)||(!stopEnd))
+		{
+			if(!stopStart)
+			{
+				if((start>=end)
+				 ||(start>=end2)
+				 ||(e1.charAt(start)!=e2.charAt(start)))
+					stopStart=true;
+				else
+					start++;
+			}
+				
+			if(!stopEnd)
+			{
+				if((end<=start)
+				||(end2<=start)
+				||(e1.charAt(end)!=e2.charAt(end2)))
+					stopEnd=true;
+				else
+				{
+					end--;
+					end2--;
+				}
+			}
+		}
+		return new StringBuffer("*1>"+e1.substring(start,end)+"\n\r*2>"+e2.substring(start,end2));
+	}
+	
+	public static void logDiff(Environmental E1, Environmental E2)
+	{
+		StringBuffer str=new StringBuffer("Unmatched - "+E1.name()+"\n\r");
+		if(E1 instanceof MOB)
+		{
+			MOB mob=(MOB)E1;
+			MOB dup=(MOB)E2;
+			if(!CMClass.className(mob).equals(CMClass.className(dup)))
+			   str.append(CMClass.className(mob)+"!="+CMClass.className(dup)+"\n\r");
+			if(mob.baseEnvStats().level()!=dup.baseEnvStats().level())
+			   str.append("Level- "+mob.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
+			if(mob.baseEnvStats().ability()!=dup.baseEnvStats().ability())
+			   str.append("Ability- "+mob.baseEnvStats().ability()+"!="+dup.baseEnvStats().ability()+"\n\r");
+			if(!mob.text().equals(dup.text()))
+				str.append(logTextDiff(mob.text(),dup.text()));
+		}
+		else
+		if(E1 instanceof Item)
+		{
+			Item item=(Item)E1;
+			Item dup=(Item)E2;
+			if(!CMClass.className(item).equals(CMClass.className(dup)))
+			   str.append(CMClass.className(item)+"!="+CMClass.className(dup)+"\n\r");
+			if(item.baseEnvStats().level()!=dup.baseEnvStats().level())
+			   str.append("Level- "+item.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
+			if(item.baseEnvStats().ability()!=dup.baseEnvStats().ability())
+			   str.append("Ability- "+item.baseEnvStats().ability()+"!="+dup.baseEnvStats().ability()+"\n\r");
+			if(item.usesRemaining()!=dup.usesRemaining())
+			   str.append("Uses- "+item.usesRemaining()+"!="+dup.usesRemaining()+"\n\r");
+			if(!item.text().equals(dup.text()))
+				str.append(logTextDiff(item.text(),dup.text()));
+		}
+		//Log.sysOut("Generic",str.toString());
+	}
+	
+	public static StringBuffer getRoomMobs(Room room, Hashtable found)
+	{
+		StringBuffer buf=new StringBuffer("");
+		if(room==null) return buf;
+		boolean mobile=room.getArea().getMobility();
+		room.getArea().toggleMobility(false);
+		ExternalPlay.resetRoom(room);
+		Vector mobs=new Vector();
+		for(int i=0;i<room.numInhabitants();i++)
+			mobs.addElement(room.fetchInhabitant(i));
+		room.getArea().toggleMobility(mobile);
+		for(int i=0;i<mobs.size();i++)
+		{
+			MOB mob=(MOB)mobs.elementAt(i);
+			if(mob.isEligibleMonster())
+			{
+				Vector dups=(Vector)found.get(mob.name()+mob.displayText());
+				if(dups==null)
+				{
+					dups=new Vector();
+					found.put(mob.name()+mob.displayText(),dups);
+					dups.addElement(mob);
+				}
+				else
+				{
+					boolean matched=false;
+					for(int v=0;v<dups.size();v++)
+					{
+						MOB dup=(MOB)dups.elementAt(v);
+						int oldHeight=mob.baseEnvStats().height();
+						int oldWeight=mob.baseEnvStats().weight();
+						int oldGender=mob.baseCharStats().getStat(CharStats.GENDER);
+						dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
+						dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+						dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
+						if(CMClass.className(mob).equals(CMClass.className(dup))
+						&&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
+						&&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
+						&&(mob.text().equals(dup.text())))
+							matched=true;
+						dup.baseEnvStats().setHeight(oldHeight);
+						dup.baseEnvStats().setWeight(oldWeight);
+						dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
+						if(matched) break;
+					}
+					if(!matched)
+					{
+						for(int v=0;v<dups.size();v++)
+						{
+							MOB dup=(MOB)dups.elementAt(v);
+							int oldHeight=mob.baseEnvStats().height();
+							int oldWeight=mob.baseEnvStats().weight();
+							int oldGender=mob.baseCharStats().getStat(CharStats.GENDER);
+							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
+							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+							dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
+							logDiff(mob,dup);
+							dup.baseEnvStats().setHeight(oldHeight);
+							dup.baseEnvStats().setWeight(oldWeight);
+							dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
+						}
+						dups.addElement(mob);
+					}
+					else
+						continue;
+				}
+				buf.append("<MOB>");
+				buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
+				buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+				buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+				buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+				buf.append("</MOB>\n\r");
+			}
+		}
+		return buf;
+	}
+
+	public static StringBuffer getUniqueItemXML(Item item, int type, Hashtable found)
+	{
+		StringBuffer buf=new StringBuffer("");
+		switch(type)
+		{
+		case 1: if(!(item instanceof Weapon)) return buf;
+		case 2: if(!(item instanceof Armor)) return buf;
+		}
+		if(item.displayText().length()>0)
+		{
+			Vector dups=(Vector)found.get(item.name()+item.displayText());
+			if(dups==null)
+			{
+				dups=new Vector();
+				found.put(item.name()+item.displayText(),dups);
+				dups.addElement(item);
+			}
+			else
+			{
+				for(int v=0;v<dups.size();v++)
+				{
+					Item dup=(Item)dups.elementAt(v);
+					int oldHeight=item.baseEnvStats().height();
+					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
+					if(CMClass.className(item).equals(CMClass.className(dup))
+					&&(item.baseEnvStats().level()==dup.baseEnvStats().level())
+					&&(item.usesRemaining()==dup.usesRemaining())
+					&&(item.baseEnvStats().ability()==dup.baseEnvStats().ability())
+					&&(item.text().equals(dup.text())))
+					{
+						item.baseEnvStats().setHeight(oldHeight);
+						return buf;
+					}
+					item.baseEnvStats().setHeight(oldHeight);
+				}
+				for(int v=0;v<dups.size();v++)
+				{
+					Item dup=(Item)dups.elementAt(v);
+					int oldHeight=item.baseEnvStats().height();
+					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
+					logDiff(item,dup);
+					item.baseEnvStats().setHeight(oldHeight);
+				}
+				dups.addElement(item);
+			}
+			buf.append("<ITEM>");
+			buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
+			buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
+			buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
+			buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+			buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
+			buf.append("</ITEM>\n\r");
+		}
+		return buf;
+	}
+	
+	public static StringBuffer getRoomItems(Room room, 
+											Hashtable found, 
+											int type) // 0=item, 1=weapon, 2=armor
+	{
+		StringBuffer buf=new StringBuffer("");
+		if(room==null) return buf;
+		boolean mobile=room.getArea().getMobility();
+		room.getArea().toggleMobility(false);
+		ExternalPlay.resetRoom(room);
+		Vector items=new Vector();
+		for(int i=0;i<room.numItems();i++)
+			items.addElement(room.fetchItem(i));
+		Vector mobs=new Vector();
+		for(int i=0;i<room.numInhabitants();i++)
+			mobs.addElement(room.fetchInhabitant(i));
+		room.getArea().toggleMobility(mobile);
+		for(int i=0;i<items.size();i++)
+		{
+			Item item=(Item)items.elementAt(i);
+			buf.append(getUniqueItemXML(item,type,found));
+		}
+		for(int m=0;m<mobs.size();m++)
+		{
+			MOB M=(MOB)mobs.elementAt(m);
+			if((M!=null)&&(M.isEligibleMonster()))
+			{
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item item=M.fetchInventory(i);
+					buf.append(getUniqueItemXML(item,type,found));
+				}
+				if(M instanceof ShopKeeper)
+				{
+					Vector V=((ShopKeeper)M).getUniqueStoreInventory();
+					for(int v=0;v<V.size();v++)
+					{
+						Environmental E=(Environmental)V.elementAt(v);
+						if(E instanceof Item)
+							buf.append(getUniqueItemXML((Item)E,type,found));
+					}
+				}
+			}
+		}
 		return buf;
 	}
 	
@@ -754,7 +1027,6 @@ public class Generic
 			Log.errOut("Generic","null XML returned on "+E.ID()+" parse. Load aborted.");
 			return;
 		}
-
 
 		if(E instanceof Room)
 			setExtraEnvProperties(E,V);

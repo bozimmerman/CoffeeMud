@@ -245,8 +245,8 @@ public class RoomLoader
 					itemLocs=new Hashtable();
 					stuff.put("LOCSFOR"+roomID,itemLocs);
 				}
-				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
+				String itemNum=DBConnections.getRes(R,"CMITNM");
 				Item newItem=(Item)CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("Room","Couldn't find item '"+itemID+"'");

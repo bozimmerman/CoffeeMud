@@ -36,12 +36,22 @@ public class Prayer_RemoveCurse extends Prayer
 			{
 				mob.location().send(mob,msg);
 				Item I=Prayer_Bless.getSomething(target,true);
+				Item lastI=null;
 				while(I!=null)
 				{
-					FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
-					target.location().send(target,msg2);
+					if(lastI==I)
+					{
+						FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+						target.location().send(target,msg2);
+					}
+					else
+					{
+						I.setRemovable(true);
+						I.setDroppable(true);
+					}
 					Prayer_Bless.endIt(I,2);
 					I.recoverEnvStats();
+					lastI=I;
 					I=Prayer_Bless.getSomething(target,true);
 				}
 				Prayer_Bless.endIt(target,2);

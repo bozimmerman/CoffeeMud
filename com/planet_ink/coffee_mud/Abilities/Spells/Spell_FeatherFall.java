@@ -20,6 +20,38 @@ public class Spell_FeatherFall extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
+	
+	public int mobWeight(MOB mob)
+	{
+		int weight=mob.baseEnvStats().weight();
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)&&(!I.amWearingAt(Item.FLOATING_NEARBY)))
+				weight+=I.envStats().weight();
+		}
+		return weight;
+	}
+	
+	public boolean okAffect(Affect msg)
+	{
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Item)
+		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
+		{
+			MOB mob=msg.source();
+			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(msg.source())))&&(!msg.source().isMine(msg.target())))
+			{
+				mob.tell(name()+" is too heavy.");
+				return false;
+			}
+		}
+		return super.okAffect(msg);
+	}
 
 	public void unInvoke()
 	{
