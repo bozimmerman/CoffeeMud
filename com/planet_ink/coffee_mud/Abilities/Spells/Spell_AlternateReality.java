@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Spell_AlternateReality extends Spell
 {
-	public String ID() { return "Spell_Delude"; }
+	public String ID() { return "Spell_AlternateReality"; }
 	public String name(){return "Alternate Reality";}
 	public String displayText(){return "(Alternate Reality spell)";}
 	public int quality(){ return MALICIOUS;}

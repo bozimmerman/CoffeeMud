@@ -8,7 +8,7 @@ import java.util.*;
 public class Spell_EndlessRoad extends Spell
 {
 	public String ID() { return "Spell_EndlessRoad"; }
-	public String name(){return "Endless ROad";}
+	public String name(){return "Endless Road";}
 	public String displayText(){return "(Endless Road)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}

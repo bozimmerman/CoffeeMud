@@ -23,7 +23,7 @@ public class Abjurer extends SpecialistMage
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_SongWard",25,true);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_ResistBludgeoning",25,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Counterspell",25,true);
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_ResistPeircing",25,true);
+			CMAble.addCharAbilityMapping(ID(),15,"Spell_ResistPiercing",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ChantWard",25,true);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_ResistSlashing",25,true);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_PrayerWard",25,true);
