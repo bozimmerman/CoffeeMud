@@ -80,8 +80,6 @@ public class ShopKeepers
 		{
 			Environmental thisThang=null;
 			thisThang=mob.fetchCarried(null,thisName);
-			if(thisThang==null)
-				thisThang=mob.fetchFollower(thisName);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
@@ -136,8 +134,6 @@ public class ShopKeepers
 		{
 			Environmental thisThang=null;
 			thisThang=mob.fetchInventory(thisName);
-			if(thisThang==null)
-				thisThang=mob.fetchFollower(thisName);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)

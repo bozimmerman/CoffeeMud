@@ -64,7 +64,6 @@ public class Skill_Haggle extends StdAbility
 				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
 				return false;
 			}
-			commands.removeElementAt(commands.size()-1);
 		}
 		else
 		if(commands.size()<2)

@@ -1,5 +1,84 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 
-public class Thief_RunningFight
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Thief_RunningFight extends ThiefSkill
 {
+	public String ID() { return "Thief_RunningFight"; }
+	public String name(){ return "Running Fight";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	public Environmental newInstance(){	return new Thief_RunningFight();}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	private MOB lastOpponent=null;
+	
+	public void affect(Environmental myHost, Affect affect)
+	{
+		if((affected!=null)&&(affected instanceof MOB)&&(lastOpponent!=null))
+		{
+			MOB mob=(MOB)affected;
+			if((mob.location()!=null)&&(mob.location().isInhabitant(lastOpponent)))
+			{
+				mob.setVictim(lastOpponent);
+				lastOpponent.setVictim(mob);
+				lastOpponent=null;
+			}
+		}
+		super.affect(myHost,affect);
+	}
+	
+	public boolean okAffect(Environmental myHost, Affect affect)
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+			return super.okAffect(myHost,affect);
+
+		MOB mob=(MOB)affected;
+		if(affect.amISource(mob)
+		&&(affect.targetMinor()==Affect.TYP_LEAVE)
+		&&(mob.isInCombat())
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof Room)
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Exit)
+		&&(profficiencyCheck(0,false)))
+		{
+			MOB M=mob.getVictim();
+			if((M==null)||(M.getVictim()!=mob))
+			{
+				mob.tell(M,null,null,"<S-NAME> is not fighting you!");
+				return false;
+			}
+			int dir=-1;
+			for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+			{
+				if(mob.location().getRoomInDir(i)!=null)
+				{
+					if((mob.location().getRoomInDir(i)!=null)
+					&&(mob.location().getReverseExit(i)==affect.tool()))
+					{
+						dir=i; break;
+					}
+				}
+			}
+			if(dir<0) return super.okAffect(myHost,affect);
+			mob.makePeace();
+			if(ExternalPlay.move(M,dir,false,false))
+			{
+				M.setVictim(mob);
+				lastOpponent=M;
+			}
+			else
+			{
+				M.setVictim(mob);
+				mob.setVictim(M);
+			}
+		}
+		return super.okAffect(myHost,affect);
+	}
 }

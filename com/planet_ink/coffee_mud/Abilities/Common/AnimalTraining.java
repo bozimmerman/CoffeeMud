@@ -213,7 +213,6 @@ public class AnimalTraining extends CommonSkill
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		taming=M;
 		messedUp=!profficiencyCheck(-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;

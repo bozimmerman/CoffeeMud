@@ -71,6 +71,7 @@ public class Mobs
 			}
 			doneSomething=true;
 			deadMOB.destroy();
+			mob.location().showHappens(Affect.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
 			Log.sysOut("Mobs",mob.ID()+" destroyed mob "+deadMOB.ID()+".");
 			deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;

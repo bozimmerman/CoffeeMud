@@ -783,9 +783,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
 						return false;
 					}
-					FullMsg msg=new FullMsg(affect.source(),affect.tool(),Affect.MSG_DROP,null);
-					if(!mob.location().okAffect(mob,msg))
-						return false;
+					if((affect.tool() instanceof Item)&&(affect.source().isMine(affect.tool())))
+					{
+						FullMsg msg=new FullMsg(affect.source(),affect.tool(),Affect.MSG_DROP,null);
+						if(!mob.location().okAffect(mob,msg))
+							return false;
+					}
 					return true;
 				}
 				ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying those.",true,false);
@@ -962,7 +965,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(affect.tool() instanceof MOB)
 					{
 						((MOB)affect.tool()).setFollowing(null);
-						((MOB)affect.tool()).destroy();
+						if((((MOB)affect.tool()).baseEnvStats().rejuv()>0)
+						&&(((MOB)affect.tool()).baseEnvStats().rejuv()<Integer.MAX_VALUE)
+						&&(((MOB)affect.tool()).getStartRoom()!=null))
+						{
+							DeadBody body=((MOB)affect.tool()).killMeDead();
+							body.destroyThis();
+						}
+						else
+							((MOB)affect.tool()).destroy();
 					}
 					else
 					if(affect.tool() instanceof Ability)
