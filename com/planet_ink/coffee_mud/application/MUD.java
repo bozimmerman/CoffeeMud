@@ -305,7 +305,7 @@ public class MUD extends Thread implements MudHost
 		try
 		{
 			saveThread=new SaveThread();
-			if(!page.getBoolean("SAVETHREAD"))
+			if(Util.parseCommas(page.getStr("DISABLE").toUpperCase(),true).contains("SAVETHREAD"))
 				Log.sysOut("MUD","** SAVE THREAD NOT STARTED.");
 			else
 				saveThread.start();
