@@ -160,7 +160,8 @@ public class StdCharClass implements CharClass, Cloneable
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+			if((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass")))
 			{
 				if(!quiet)
 					mob.tell("You should be happy to be a "+name()+"!");

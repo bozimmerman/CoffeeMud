@@ -550,7 +550,7 @@ public class FrontLogin extends StdCommand
 					mob.baseCharStats().getMyRace().reRoll(mob,mob.baseCharStats());
 					mob.recoverCharStats();
 					Vector V=classQualifies(mob,theme);
-					if(V.size()>1)
+					if(V.size()>0)
 					{
 						StringBuffer classes=new StringBuffer("");
 						listOfClasses = new StringBuffer("");

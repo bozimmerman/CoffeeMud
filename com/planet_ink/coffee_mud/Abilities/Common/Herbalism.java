@@ -35,6 +35,7 @@ public class Herbalism extends CraftingSkill
 	String oldName="";
 	private Ability theSpell=null;
 	private boolean messedUp=false;
+	private static final Hashtable usage=new Hashtable();
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -116,6 +117,7 @@ public class Herbalism extends CraftingSkill
 		{
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			buf.append(Util.padRight("Chant",20)+" "+Util.padRight("Level",5)+" Ingredients\n\r");
+			boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -134,6 +136,15 @@ public class Herbalism extends CraftingSkill
 							String s=((String)V.elementAt(i)).toLowerCase();
 							if(s.trim().length()==0) continue;
 							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
+							if(fillUsage)
+							{
+							    Integer I=(Integer)usage.get(s.toUpperCase().trim());
+							    if(I==null) 
+							        I=new Integer(0);
+							    else
+								    usage.remove(s.toUpperCase().trim());
+							    usage.put(s.toUpperCase().trim(),new Integer(I.intValue()+1));
+							}
 							buf.append(s+" ");
 						}
 						buf.append("\n\r");
@@ -141,6 +152,13 @@ public class Herbalism extends CraftingSkill
 				}
 			}
 			commonTell(mob,buf.toString());
+			/*
+			for(Enumeration e=usage.keys();e.hasMoreElements();)
+			{
+			    String key=(String)e.nextElement();
+			    Integer I=(Integer)usage.get(key);
+			    mob.tell(key+"="+I.intValue());
+			}*/
 			return true;
 		}
 		else

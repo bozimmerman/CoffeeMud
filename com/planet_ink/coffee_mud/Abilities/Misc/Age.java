@@ -54,6 +54,7 @@ public class Age extends StdAbility
 	private boolean norecurse=false;
 	private Race myRace=null;
 	private double divisor=0.0;
+	private long lastSoiling=0;
 
 	public final static String happyBabyEmoter="min=1 max=500 chance=10;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
@@ -343,6 +344,41 @@ public class Age extends StdAbility
 				else
 				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}
 			}
+		}
+		if(((System.currentTimeMillis()-lastSoiling)>(IQCalendar.MILI_MINUTE/2))&&(Dice.rollPercentage()<10))
+		{
+		    if(lastSoiling==0)
+			    lastSoiling=System.currentTimeMillis();
+		    else
+		    {
+			    lastSoiling=System.currentTimeMillis();
+			    boolean soil=(affected instanceof CagedAnimal);
+			    MOB mob=null;
+			    if(affected instanceof MOB)
+			    {
+			        mob=(MOB)affected;
+				    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
+					if(divisor==0.0)
+					    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+					long l=Util.s_long(text());
+					if((l>0)&&(l<Integer.MAX_VALUE))
+					{
+						int ellapsed=(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
+						if(ellapsed>=myRace.getAgingChart()[2])
+						    soil=true;
+					}
+			    }
+			    if(invoker()!=null)
+			        mob=invoker();
+			    else
+			    if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
+			        mob=(MOB)((Item)affected).owner();
+			    if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
+			    {
+			        Ability A=CMClass.getAbility("Soiled");
+			        if(A!=null) A.invoke(mob,affected,true,0);
+			    }
+		    }
 		}
 		doThang();
 	}
