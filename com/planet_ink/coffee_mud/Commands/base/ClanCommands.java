@@ -87,6 +87,7 @@ public class ClanCommands
 	public static boolean clanapply(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
+		if(mob.isMonster()) return false;
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)
 		{
