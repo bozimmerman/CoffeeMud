@@ -72,6 +72,7 @@ public class Server {
 	{
 		try{
 		thread.shutdown();
+		started=false;
 		thread.interrupt();
 		}catch(Exception e){}
 	}

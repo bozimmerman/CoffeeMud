@@ -239,6 +239,7 @@ public class ServerThread extends Thread {
 
 	public void shutdown()
 	{
+		running=false;
 	}
 	
     protected synchronized ServerObject[] getObjects() {

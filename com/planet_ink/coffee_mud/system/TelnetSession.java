@@ -260,7 +260,6 @@ public class TelnetSession extends Thread implements Session
 			out.print("\n\r");
 		print(Source,Target,msg);
 		needPrompt=true;
-
 	}
 
 	public void print(String msg,
@@ -315,6 +314,7 @@ public class TelnetSession extends Thread implements Session
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,true)+"\n\r");
 		out.flush();
+		needPrompt=true;
 	}
 
 	public void unfilteredPrint(String msg)
@@ -326,6 +326,7 @@ public class TelnetSession extends Thread implements Session
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,true));
 		out.flush();
+		needPrompt=true;
 	}
 
 	public void colorOnlyPrintln(String msg)
@@ -337,6 +338,7 @@ public class TelnetSession extends Thread implements Session
 		if((out==null)||(msg==null)) return;
 		out.print(colorOnlyFilter(msg)+"\n\r");
 		out.flush();
+		needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
@@ -348,6 +350,7 @@ public class TelnetSession extends Thread implements Session
 		if((out==null)||(msg==null)) return;
 		out.print(colorOnlyFilter(msg));
 		out.flush();
+		needPrompt=true;
 	}
 
 	public void stdPrintln(String msg)
@@ -390,6 +393,11 @@ public class TelnetSession extends Thread implements Session
 			out.print("\n\r");
 		out.print(filter(Source,Target,msg,false)+"\n\r");
 		out.flush();
+		needPrompt=true;
+	}
+	
+	public void setPromptFlag()
+	{
 		needPrompt=true;
 	}
 

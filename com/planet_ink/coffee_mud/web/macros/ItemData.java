@@ -86,7 +86,8 @@ public class ItemData extends StdWebMacro
 							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE"};
+							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
+							  "ISKEY"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -569,6 +570,9 @@ public class ItemData extends StdWebMacro
 						old="checked";
 					str.append(old);
 					break;
+				case 65: // is key
+					if(I instanceof Key) return "true";
+					else return "false";
 				}
 				if(firstTime)
 					reqs.put(okparms[o],old.equals("checked")?"on":old);

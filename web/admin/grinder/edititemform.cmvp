@@ -484,21 +484,29 @@
 			    </TD>
 			</TR>
 		@else@
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Is Readable:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX ONCLICK="ReShow();" NAME=ISREADABLE @ItemData?ISREADABLE@></TD>
-			</TR>
-			@if?CheckReqParm?ISREADABLE=on@
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
-			</TR>
+			@if?ItemData?ISKEY@
+				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Key Code:</B></FONT></TD>
+				<TD WIDTH=450 COLSPAN=2>
+				<INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+				<INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@">
+				</TD>
+			@else@
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Is Readable:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX ONCLICK="ReShow();" NAME=ISREADABLE @ItemData?ISREADABLE@></TD>
+				</TR>
+				@if?CheckReqParm?ISREADABLE=on@
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
+				</TR>
+				@endif@
+				<TR>
+					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code:</B></FONT></TD>
+				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
+				    </TD>
+				</TR>
 			@endif@
-			<TR>
-				<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code:</B></FONT></TD>
-			    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
-			    </TD>
-			</TR>
 		@endif@
 	@endif@
 	@if?ItemData?ISCOIN@

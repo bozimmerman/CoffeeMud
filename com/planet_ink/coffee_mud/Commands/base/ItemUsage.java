@@ -26,21 +26,23 @@ public class ItemUsage
 
 	public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode)
 	{
+		Vector V=new Vector();
 		if(commands.size()==1)
-			return null;
+			return V;
 
 		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
 		boolean allFlag=false;
 		String preWord="";
-		if(commands.size()>2)
+		if(possibleContainerID.equalsIgnoreCase("all")) allFlag=true;
+		if((commands.size()>2)&&(!allFlag))
 			preWord=(String)commands.elementAt(commands.size()-2);
+		
 		if(preWord.equalsIgnoreCase("all")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID;}
 		else
 		if(possibleContainerID.toUpperCase().startsWith("ALL.")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(4);}
 		else
 		if(possibleContainerID.toUpperCase().endsWith(".ALL")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(0,possibleContainerID.length()-4);}
 		
-		Vector V=new Vector();
 		int addendum=1;
 		String addendumStr="";
 		do
