@@ -2039,7 +2039,20 @@ public class CoffeeMaker
 		case 12: I.setDroppable(Util.s_bool(val)); break;
 		case 13: I.setRemovable(Util.s_bool(val)); break;
 		case 14: I.setMaterial(Util.s_int(val)); break;
-		case 15: setExtraEnvProperties(I,XMLManager.parseAllXML(val)); break;
+		case 15: {
+					 while(I.numEffects()>0)
+					 {
+						 Ability A=I.fetchEffect(0);
+						 if(A!=null){ A.unInvoke(); I.delEffect(A);}
+					 }
+					 while(I.numBehaviors()>0)
+					 {
+						 Behavior B=I.fetchBehavior(0);
+						 if(B!=null) I.delBehavior(B);
+					 }
+					 setExtraEnvProperties(I,XMLManager.parseAllXML(val)); 
+					 break;
+				 }
 		case 16: I.baseEnvStats().setDisposition(Util.s_int(val)); break;
 		case 17: I.baseEnvStats().setWeight(Util.s_int(val)); break;
 		case 18: I.baseEnvStats().setArmor(Util.s_int(val)); break;
@@ -2130,14 +2143,27 @@ public class CoffeeMaker
 		case 12: M.baseEnvStats().setDamage(Util.s_int(val)); break;
 		case 13: M.baseEnvStats().setAttackAdjustment(Util.s_int(val)); break;
 		case 14: M.baseEnvStats().setSpeed(Util.s_double(val)); break;
-		case 15: setExtraEnvProperties(M,XMLManager.parseAllXML(val)); break;
+		case 15: {
+					 while(M.numEffects()>0)
+					 {
+						 Ability A=M.fetchEffect(0);
+						 if(A!=null){ A.unInvoke(); M.delEffect(A);}
+					 }
+					 while(M.numBehaviors()>0)
+					 {
+						 Behavior B=M.fetchBehavior(0);
+						 if(B!=null) M.delBehavior(B);
+					 }
+					 setExtraEnvProperties(M,XMLManager.parseAllXML(val)); 
+					 break;
+				 }
 		case 16:
 			{
 				String extras=getExtraEnvPropertiesStr(M);
 				while(M.numLearnedAbilities()>0)
 				{
 					Ability A=M.fetchAbility(0);
-					if(A!=null)	M.delAbility(A);
+					if(A!=null) M.delAbility(A);
 				}
 				setExtraEnvProperties(M,XMLManager.parseAllXML(extras));
 				setGenMobAbilities(M,XMLManager.parseAllXML(val));

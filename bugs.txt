@@ -1,40 +1,29 @@
 add half races to pregnancy
 add ability to save area, save area items, etc..
 Prod and harass Bo to add an EAT_PROG to scriptable
-recalling while falling - you still are 'falling' after
-Reverse Gravity causes things to fly up into oblivion when indoors
-Permanency doesn`t seem as permanent as we wanted it. I cast it last night or the night before and Big mouth isn`t appearing when I log on now....
-elf with con 16/17 cant train up to 17.
-clan resources gathering items don't work without someone in the room.
-(Missing your nose, right nose)
+?Reverse Gravity causes things to fly up into oblivion when indoors
+?clan resources gathering items don't work without someone in the room.
+?(Missing your nose, right nose)
 i don`t have alchemy but there should be a chemical to make items glow.
 cleric prayer create water should always fill a container, not create a spring
 add a GOOD/EVIL/NEUTRAL flag to the where command
 Pregnancy Code Suggestion, What about throwing up or getting sick (in morning) from 1 month to 3 monthes, nothing happens there.. thought that would be kinda cool, and maybe you catch yawning more often? Just suggestions, I have the free time to research!
-lower regain mana/hp/move rates for higher levels a bit.
-there needs to be a jewel mend. Some jewelry takes damage, and cannot be repaired.
-spreading a disease through contagion should not be an aggressive act. A nymph attacked me because I yawned.
-FREEFLEE does not pick a direction for you if none is specified when you pass the check. it will if you FAIL, but not if you pass.
 need a room-reset message for rooms to get so behaviors (conquerable) can respond.
 i tried creating a banned.ini file in the same dir as coffeemud.ini and listed the following: > *fingolfin* > *finrod* > *finwe*
-archons should not need sleep
 can not add to banned list throuhg web site
-AFFECTS list for invisibility to undead lists it as INIVISIBILITY TO UNDEAD
-A GHOUL HAS AN ODOR RESEMBLING THAT OF A SKUNKS! Skunk should be singular.
-YOU DOES NOT APPEAR TO BE AFFECTED BY ANYTHING THAT CAN BE REVOKED when I try to revoke on myself and there is no spell on me. poor grammar.
-Modify Cartwheel to where it uses all of your attacks to get out of range. If you have 5 attacks, it puts you at range 5. That way you can get other actions like flying kick off. What do you think?
 make it so rideables can enter rooms of sufficient size, and water vehicles can always go to other water rooms, even if indoors
-Characters get tired too quickly. could you increase by factor of 1.5?
-The more invincible! you get the more exclamation marks you should get! Say every 100-200 points of AC you get another.
-How about being able to plant cotton? Cotton is a plant after all.
-greater invis. isnt targeting items
-`...apply to the thief...` should be `...apply to cleric...`
-Animate Spectre failure message reports it as the ANIMATE GHASE spell, not SPECTRE.
-on the pick locks help, it should read The thief attemps to pick the lock on a door.
-Animate Spectre returns THIS BODY IS TOO WEAK TO CREATE A GHAST FROM if the body is too low of level. It should say SPECTRE.
-I cannot ride a canoe from a watersurface to an indoorwatersurface room.
+?greater invis. isnt targeting items
 do tims readable with pages - genbook - auto paging 24 lines - read book shows all with pauses, read 1 book.
-code something to examine all items and make sure they aren't overboard.
+
+10.) Now that experience is passed in a message, I presume it's possible 
+to intercept it and modify now? Would it then be possible to create a 
+prop for mobs and items like prop_ModExp that accepts a +/- percentage? 
+For Mobs, I'm envisioning shopkeepers that can be set at -100% so they 
+fight and act normal - and players can kill them if they want, but they 
+do not award experience. Or even a quest only area where the mobs award 
+more experience than thier level would suggest.
+    For items, they could modify all experience gained when worn.
+    
 code something to coffeemudify all the beds 
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! 

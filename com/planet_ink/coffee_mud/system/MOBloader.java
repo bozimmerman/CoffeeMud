@@ -787,8 +787,9 @@ public class MOBloader
 		{
 			Ability thisAffect=mob.fetchEffect(a);
 			if((thisAffect!=null)
-			&&(!H.contains(thisAffect.ID()))
-			&&(!thisAffect.isBorrowed(mob)))
+			&&(!thisAffect.isBorrowed(mob))
+			&&((!H.contains(thisAffect.ID()))
+			   ||((!thisAffect.canBeUninvoked())&&(!thisAffect.isAutoInvoked()))))
 			{
 				String
 				str="INSERT INTO CMCHAB ("

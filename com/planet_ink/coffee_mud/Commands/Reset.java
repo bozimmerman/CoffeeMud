@@ -710,12 +710,26 @@ public class Reset extends StdCommand
 			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
+
+	public boolean fixRejuvItem(Item I)
+	{
+		Ability A=I.fetchEffect("ItemRejuv");
+		if(A!=null)
+		{
+			A=I.fetchEffect("ItemRejuv");
+			if(!A.isBorrowed(I))
+				return false;
+			A.setBorrowed(I,true);
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean itemFix(Item I)
 	{
 		if((I instanceof Weapon)||(I instanceof Armor))
 		{
-			int lvl=I.envStats().level();
+			int lvl=I.baseEnvStats().level();
 			Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
 			if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
 			if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
@@ -728,20 +742,207 @@ public class Reset extends StdCommand
 			if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
 			if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul=-1;}
 			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
-			LVLS[0]=timsBaseLevel(I,ADJ);
-			LVLS[1]=levelsFromAbility(I);
-			LVLS[2]=levelsFromCaster(I,CAST);
-			LVLS[3]=levelsFromAdjuster(I,ADJ);
 			int TLVL=totalLevels(LVLS);
-			if(TLVL<=0) return false;
-			
+			if(lvl<0)
+			{
+				if(TLVL<=0)
+					lvl=1;
+				else
+					lvl=TLVL;
+				I.baseEnvStats().setLevel(lvl);
+				I.recoverEnvStats();
+				fixRejuvItem(I);
+				return true;
+			}
+			if(TLVL<=0) return fixRejuvItem(I);
+			if(TLVL<=(lvl+25)) return fixRejuvItem(I);
+			int FTLVL=TLVL;
+			int lastLvl=-1;
+			Vector illegalNums=new Vector();
+			Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+			while((TLVL>(lvl+15))&&(illegalNums.size()<4))
+			{
+				lastLvl=TLVL;
+				int highIndex=-1;
+				for(int i=0;i<LVLS.length;i++)
+					if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
+					&&(!illegalNums.contains(new Integer(i))))
+						highIndex=i;
+				if(highIndex<0) break;
+				switch(highIndex)
+				{
+				case 0:
+					if(I instanceof Weapon)
+					{
+						String s=(ADJ!=null)?ADJ.text():"";
+						int oldAtt=I.baseEnvStats().attackAdjustment();
+						int oldDam=I.baseEnvStats().damage();
+						toneDownWeapon((Weapon)I,ADJ);
+						if((I.baseEnvStats().attackAdjustment()==oldAtt)
+						&&(I.baseEnvStats().attackAdjustment()==oldAtt)
+						&&((ADJ==null)||(ADJ.text().equals(s))))
+							illegalNums.addElement(new Integer(0));
+					}
+					else
+					{
+						String s=(ADJ!=null)?ADJ.text():"";
+						int oldArm=I.baseEnvStats().armor();
+						toneDownArmor((Armor)I,ADJ);
+						if((I.baseEnvStats().armor()==oldArm)
+						&&((ADJ==null)||(ADJ.text().equals(s))))
+							illegalNums.addElement(new Integer(0));
+					}
+					break;
+				case 1:
+					if(I.baseEnvStats().ability()>0)
+						I.baseEnvStats().setAbility(I.baseEnvStats().ability()-1);
+					else
+						illegalNums.addElement(new Integer(1));
+					break;
+				case 2:
+					illegalNums.addElement(new Integer(2));
+					// nothing I can do!;
+					break;
+				case 3:
+					if(ADJ==null)
+						illegalNums.addElement(new Integer(3));
+					else
+					{
+						String oldTxt=ADJ.text();
+						toneDownAdjuster(I,ADJ);
+						if(ADJ.text().equals(oldTxt))
+							illegalNums.addElement(new Integer(3));
+					}
+					break;
+				}
+				LVLS=getItemLevels(I,ADJ,RES,CAST);
+				TLVL=totalLevels(LVLS);
+			}
+			Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+			fixRejuvItem(I);
+			return true;
 		}
-		return false;
+		return fixRejuvItem(I);
+	}
+	
+	public void toneDownWeapon(Weapon W, Ability ADJ)
+	{
+		boolean fixdam=true;
+		boolean fixatt=true;
+		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("DAMAGE+")>=0))
+		{
+			int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
+			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			if(a2<0) a2=ADJ.text().length();
+			int num=Util.s_int(ADJ.text().substring(a+7,a2));
+			if(num>W.baseEnvStats().damage())
+			{
+				fixdam=false;
+				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(num/2)+ADJ.text().substring(a2));
+			}
+		}
+		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
+		{
+			int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
+			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			if(a2<0) a2=ADJ.text().length();
+			int num=Util.s_int(ADJ.text().substring(a+7,a2));
+			if(num>W.baseEnvStats().attackAdjustment())
+			{
+				fixatt=false;
+				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(num/2)+ADJ.text().substring(a2));
+			}
+		}
+		if(fixdam&&(W.baseEnvStats().damage()>=2))
+			W.baseEnvStats().setDamage(W.baseEnvStats().damage()/2);
+		if(fixatt&&(W.baseEnvStats().attackAdjustment()>=2))
+			W.baseEnvStats().setAttackAdjustment(W.baseEnvStats().attackAdjustment()/2);
+		W.recoverEnvStats();
+	}
+	public void toneDownArmor(Armor A, Ability ADJ)
+	{
+		boolean fixit=true;
+		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ARMOR-")>=0))
+		{
+			int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
+			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			if(a2<0) a2=ADJ.text().length();
+			int num=Util.s_int(ADJ.text().substring(a+6,a2));
+			if(num>A.baseEnvStats().armor())
+			{
+				fixit=false;
+				ADJ.setMiscText(ADJ.text().substring(0,a+6)+(num/2)+ADJ.text().substring(a2));
+			}
+		}
+		if(fixit&&(A.baseEnvStats().armor()>=2))
+		{
+			A.baseEnvStats().setArmor(A.baseEnvStats().armor()/2);
+			A.recoverEnvStats();
+		}
+	}
+	
+	public void toneDownAdjuster(Item I, Ability ADJ)
+	{
+		String s=ADJ.text();
+		int plusminus=s.indexOf("+");
+		int minus=s.indexOf("-");
+		if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+			plusminus=minus;
+		while(plusminus>=0)
+		{
+			int spaceafter=s.indexOf(" ",plusminus+1);
+			if(spaceafter<0) spaceafter=s.length();
+			if(spaceafter>plusminus)
+			{
+				String number=s.substring(plusminus+1,spaceafter).trim();
+				if(Util.isNumber(number))
+				{
+					int num=Util.s_int(number);
+					int spacebefore=s.lastIndexOf(" ",plusminus);
+					if(spacebefore<0) spacebefore=0;
+					if(spacebefore<plusminus)
+					{
+						boolean proceed=true;
+						String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
+						if(wd.startsWith("DIS")) 
+							proceed=false;
+						else
+						if(wd.startsWith("SEN")) 
+							proceed=false;
+						else
+						if(wd.startsWith("ARM")&&(I instanceof Armor))
+							proceed=false;
+						else
+						if(wd.startsWith("ATT")&&(I instanceof Weapon))
+						   proceed=false;
+						else
+						if(wd.startsWith("DAM")&&(I instanceof Weapon))
+						   proceed=false;
+						else
+						if(wd.startsWith("ARM")&&(s.charAt(plusminus)=='+'))
+							proceed=false;
+						else
+						if((!wd.startsWith("ARM"))&&(s.charAt(plusminus)=='-'))
+							proceed=false;
+						if(proceed)
+						{
+							if((num!=1)&&(num!=-1))
+								s=s.substring(0,plusminus+1)+(num/2)+s.substring(spaceafter);
+						}
+					}
+				}
+			}
+			minus=s.indexOf("-",plusminus+1);
+			plusminus=s.indexOf("+",plusminus+1);
+			if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
+				plusminus=minus;
+		}
+		ADJ.setMiscText(s);
 	}
 	
 	public int[] getItemLevels(Item I, Ability ADJ, Ability RES, Ability CAST)
 	{
-		int[] LVLS=new int[5];
+		int[] LVLS=new int[4];
 		LVLS[0]=timsBaseLevel(I,ADJ);
 		LVLS[1]=levelsFromAbility(I);
 		LVLS[2]=levelsFromCaster(I,CAST);

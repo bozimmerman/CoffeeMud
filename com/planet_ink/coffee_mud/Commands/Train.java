@@ -156,7 +156,10 @@ public class Train extends StdCommand
 		int curStat=-1;
 		if(abilityCode<100)
 		{
-			curStat=mob.baseCharStats().getStat(abilityCode);
+			CharStats copyStats=mob.baseCharStats().cloneCharStats();
+			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
+			mob.charStats().getCurrentClass().affectCharStats(mob,copyStats);
+			curStat=copyStats.getStat(abilityCode);
 			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
 			{
@@ -170,6 +173,7 @@ public class Train extends StdCommand
 				mob.tell("You can only train with someone whose score is higher than yours.");
 				return false;
 			}
+			curStat=mob.baseCharStats().getStat(abilityCode);
 		}
 
 		FullMsg msg=new FullMsg(teacher,mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");

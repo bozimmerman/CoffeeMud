@@ -650,7 +650,8 @@ public class StdContainer extends StdItem implements Container
 			for(int i=0;i<((Room)own).numItems();i++)
 			{
 				Item I=((Room)own).fetchItem(i);
-				if((I.container()==container)
+				if((I!=null)
+				&&(I.container()==container)
 				&&(!V.contains(I)))
 				{
 					V.addElement(I);

@@ -51,6 +51,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		ability.myProperLocation=room;
 		if(item.fetchEffect(ability.ID())==null)
 			item.addEffect(ability);
+		ability.setBorrowed(item,true);
 		loadContent(ability,item,room);
 		CMClass.ThreadEngine().startTickDown(ability,MudHost.TICK_ROOM_ITEM_REJUV,item.envStats().rejuv());
 	}

@@ -298,7 +298,7 @@ public class Util
 		}
 		catch (Exception ex)
 		{
-			Log.errOut("MUD", "Error occur during decompression.  Buffer was: "+new String(b));
+			Log.errOut("MUD", "Error occur during decompression.");
 			return "";
 		}
 	}

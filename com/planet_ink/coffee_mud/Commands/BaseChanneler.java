@@ -57,7 +57,7 @@ public class BaseChanneler extends StdCommand
 
 				if(channelName.equalsIgnoreCase("CLANTALK")
 				&&((!mob.getClanID().equals("ALL"))||(M.getClanID().length()==0))
-				&&(!M.getClanID().equalsIgnoreCase(mob.getClanID())))
+				&&((!M.getClanID().equalsIgnoreCase(mob.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
 					continue;
 
 				if((!ses.killFlag())

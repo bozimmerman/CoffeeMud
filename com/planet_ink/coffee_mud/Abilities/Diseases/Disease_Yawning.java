@@ -8,7 +8,7 @@ import java.util.*;
 public class Disease_Yawning extends Disease
 {
 	public String ID() { return "Disease_Yawning"; }
-	public String name(){ return "Contageous Yawning";}
+	public String name(){ return "Yawning";}
 	public String displayText(){ return "(Yawning)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

@@ -183,8 +183,11 @@ public class Emoter extends ActiveTicker
 
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
-			if((ticking instanceof MOB)&&(canFreelyBehaveNormal(ticking)))
-				emoter=(MOB)ticking;
+			if(ticking instanceof MOB)
+			{
+				if(canFreelyBehaveNormal(ticking))
+					emoter=(MOB)ticking;
+			}
 			else
 			{
 				emoter=CMClass.getMOB("StdMOB");

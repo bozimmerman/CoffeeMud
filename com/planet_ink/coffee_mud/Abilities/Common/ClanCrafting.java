@@ -309,7 +309,7 @@ public class ClanCrafting extends CommonSkill
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{
-			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name()).toLowerCase();
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name());
 			if(misctype.length()>0)
 				building.setReadableText(misctype);
 		}
