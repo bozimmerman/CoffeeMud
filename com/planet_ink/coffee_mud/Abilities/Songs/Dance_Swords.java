@@ -14,7 +14,7 @@ public class Dance_Swords extends Dance
 	public Environmental newInstance(){	return new Dance_Swords();}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected String danceOf(){return name()+" Dance";}
-	protected boolean skipStandardDanceInvoke(){return false;}
+	protected boolean skipStandardDanceInvoke(){return true;}
 	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -43,15 +43,16 @@ public class Dance_Swords extends Dance
 
 	public void unInvoke()
 	{
-		if((affected!=null)
-		&&(affected instanceof Item)
-		&&(((Item)affected).owner()!=null)
-		&&(((Item)affected).owner() instanceof Room))
-		{
-			((Room)((Item)affected).owner()).showHappens(Affect.MSG_OK_ACTION,affected.name()+" vanishes!");
-			((Item)affected).destroyThis();
-		}
+		Environmental E=affected;
 		super.unInvoke();
+		if((E!=null)
+		&&(E instanceof Item)
+		&&(((Item)E).owner()!=null)
+		&&(((Item)E).owner() instanceof Room))
+		{
+			((Room)((Item)E).owner()).showHappens(Affect.MSG_OK_ACTION,E.name()+" vanishes!");
+			((Item)E).destroyThis();
+		}
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -73,15 +74,19 @@ public class Dance_Swords extends Dance
 			{
 				Item I=M.location().fetchItem(i);
 				if((I!=null)
-				   &&(I instanceof Weapon)
-				   &&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD))
+				&&(I instanceof Weapon)
+				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD)
+				&&(I.fetchAffect(ID())==null))
 				{
 					sword=(Weapon)I;
 					break;
 				}
 			}
-			if(sword==null) 
-				return true;
+			if(sword==null) return true;
+			Dance newOne=(Dance)this.copyOf();
+			newOne.referenceDance=this;
+			newOne.invokerManaCost=-1;
+			newOne.startTickDown(invoker(),sword,99999);
 			return true;
 		}
 		else
@@ -170,7 +175,7 @@ public class Dance_Swords extends Dance
 				MOB follower=mob;
 
 				// malicious dances must not affect the invoker!
-				int affectType=Affect.MASK_MAGIC|Affect.MSG_DELICATE_HANDS_ACT;
+				int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
 				if(auto) affectType=affectType|Affect.MASK_GENERAL;
 
 				if((Sense.canBeSeenBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))

@@ -42,6 +42,9 @@ public class Dance_Cotillon extends Dance
 			else
 			if((whichLast==oldLast)&&(V==oldLast))
 				((Dance_Cotillon)referenceDance).whichLast=null;
+			else
+			if(whichLast==null)
+				((Dance_Cotillon)referenceDance).whichLast=V;
 		}
 		return true;
 	}

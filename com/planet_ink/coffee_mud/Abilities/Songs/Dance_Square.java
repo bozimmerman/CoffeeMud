@@ -12,23 +12,23 @@ public class Dance_Square extends Dance
 	public String name(){ return "Square";}
 	public int quality(){ return INDIFFERENT;}
 	public Environmental newInstance(){	return new Dance_Square();}
-	protected boolean skipStandardDanceTick(){return true;}
+	protected boolean skipStandardDanceInvoke(){return true;}
 	protected String danceOf(){return name()+" Dance";}
 	
 	public void affect(Environmental myHost, Affect msg)
 	{
 		if(msg.amISource(invoker())
-		   &&(affected!=invoker())
-		   &&(msg.sourceMinor()==Affect.TYP_SPEAK)
-		   &&(msg.sourceMessage()!=null)
-		   &&(msg.sourceMessage().length()>0))
+		&&(affected!=invoker())
+		&&(msg.sourceMinor()==Affect.TYP_SPEAK)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().length()>0))
 		{
 			int start=msg.sourceMessage().indexOf("'");
 			int end=msg.sourceMessage().lastIndexOf("'");
 			if((start>0)&&(end>start))
 			{
 				String cmd=msg.sourceMessage().substring(start+1,end);
-				MOB M=(MOB)invoker();
+				MOB M=(MOB)affected;
 				try{
 					if(Sense.canBeHeardBy(invoker(),M)
 					&&Sense.canBeSeenBy(invoker(),M)
@@ -46,9 +46,6 @@ public class Dance_Square extends Dance
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(skipStandardDanceInvoke())
-			return true;
 
 		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
 			return false;
@@ -77,7 +74,7 @@ public class Dance_Square extends Dance
 					MOB follower=(MOB)mob.location().fetchInhabitant(i);
 
 					// malicious dances must not affect the invoker!
-					int affectType=Affect.MASK_MAGIC|Affect.MSG_DELICATE_HANDS_ACT;
+					int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
 					if((!friends.contains(follower))&&(follower!=mob))
 						affectType=affectType|Affect.MASK_MALICIOUS;
 					if(auto) affectType=affectType|Affect.MASK_GENERAL;

@@ -164,12 +164,13 @@ public class Bard extends StdCharClass
 		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
+			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
+			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+affect.tool().name()+"!");
 					return false;
 				}
 			}

@@ -37,7 +37,7 @@ public class Dance extends StdAbility
 	}
 
 	protected int affectType(boolean auto){
-		int affectType=Affect.MASK_MAGIC|Affect.MSG_DELICATE_HANDS_ACT;
+		int affectType=Affect.MASK_MAGIC|Affect.MSG_CAST_SOMANTIC_SPELL;
 		if(quality()==Ability.MALICIOUS)
 			affectType=affectType|Affect.MASK_MALICIOUS;
 		if(auto) affectType=affectType|Affect.MASK_GENERAL;
@@ -129,7 +129,7 @@ public class Dance extends StdAbility
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious dances must not affect the invoker!
-					int affectType=Affect.MASK_MAGIC|Affect.MSG_DELICATE_HANDS_ACT;
+					int affectType=Affect.MSG_CAST_SOMANTIC_SPELL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|Affect.MASK_MALICIOUS;
 					if(auto) affectType=affectType|Affect.MASK_GENERAL;
