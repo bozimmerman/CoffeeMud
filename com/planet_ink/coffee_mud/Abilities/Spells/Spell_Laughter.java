@@ -112,7 +112,7 @@ public class Spell_Laughter extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> tell(s) <T-NAMESELF> a magical joke.");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);

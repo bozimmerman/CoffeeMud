@@ -130,7 +130,7 @@ public class Spell_Sleep extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,3,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND);
+					success=maliciousAffect(mob,target,3,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0));
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");

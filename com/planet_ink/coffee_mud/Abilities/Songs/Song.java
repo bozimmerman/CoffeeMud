@@ -132,7 +132,7 @@ public class Song extends StdAbility
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack)&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
 						{
 							follower.location().send(follower,msg2);

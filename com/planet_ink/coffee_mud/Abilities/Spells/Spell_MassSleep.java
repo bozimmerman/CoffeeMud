@@ -122,7 +122,7 @@ public class Spell_MassSleep extends Spell
 						mob.location().send(mob,msg);
 						if(!msg.wasModified())
 						{
-							success=maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND);
+							success=maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0));
 							if((success)
 							&&(!Sense.isSleeping(target))
 							&&(target.fetchAffect(ID())==null)

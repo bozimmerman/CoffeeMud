@@ -68,7 +68,7 @@ public class Prayer_Anger extends Prayer
 							}
 							tries++;
 						}
-						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 						if((target!=null)&&(mob.location().okAffect(amsg)))
 						{
 							inhab.tell("You feel angry.");

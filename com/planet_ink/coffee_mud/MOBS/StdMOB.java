@@ -447,6 +447,7 @@ public class StdMOB implements MOB
 		if(amDead()) return false;
 		if(mob.isMonster()) return true;
 		if(isMonster()) return true;
+		if(mob==this) return true;
 		if((getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		return true;

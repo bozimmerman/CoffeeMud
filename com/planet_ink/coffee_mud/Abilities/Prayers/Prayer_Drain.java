@@ -55,7 +55,7 @@ public class Prayer_Drain extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD,null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),null);
 			FullMsg msg2=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> reach(es) at <T-NAMESELF>, praying!");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

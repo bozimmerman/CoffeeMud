@@ -54,10 +54,8 @@ public class Prayer_Nullification extends Prayer
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)))
 						{
 							foundSomethingAtLeast=true;
-							if((A.invoker()!=null)
-							&&((A.invoker()==mob)
-							||(A.invoker().envStats().level()<mob.envStats().level())))
-									revokeThis=A;
+							if((A.invoker()!=null)&&((A.invoker().envStats().level()<mob.envStats().level())))
+								revokeThis=A;
 						}
 					}
 

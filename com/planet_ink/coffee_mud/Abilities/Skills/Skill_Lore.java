@@ -17,7 +17,7 @@ public class Skill_Lore extends StdAbility
 		// bring up their affected list.
 		displayText="";
 
-		quality=Ability.MALICIOUS;
+		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(1);
 
