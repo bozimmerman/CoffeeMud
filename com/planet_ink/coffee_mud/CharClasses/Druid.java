@@ -1,5 +1,75 @@
 package com.planet_ink.coffee_mud.CharClasses;
 
-public class Druid
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+
+public class Druid extends StdCharClass
 {
+	private static boolean abilitiesLoaded=false;
+	
+	public Druid()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		maxHitPointsPerLevel=25;
+		maxStat[CharStats.CONSTITUTION]=25;
+		bonusPracLevel=2;
+		manaMultiplier=15;
+		attackAttribute=CharStats.CONSTITUTION;
+		bonusAttackLevel=1;
+		damageBonusPerLevel=0;
+		name=myID;
+		if(!abilitiesLoaded)
+		{
+			abilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_ShapeShift",true);
+		}
+	}
+
+	public boolean playerSelectable()
+	{
+		return true;
+	}
+
+	public boolean qualifiesForThisClass(MOB mob)
+	{
+		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+			return false;
+		return true;
+	}
+
+
+	public boolean okAffect(MOB myChar, Affect affect)
+	{
+		if(!super.okAffect(myChar, affect))
+			return false;
+
+		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Weapon)
+		&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
+		{
+			if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+			{
+				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void outfit(MOB mob)
+	{
+	}
 }
