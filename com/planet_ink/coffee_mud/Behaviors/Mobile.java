@@ -31,7 +31,8 @@ public class Mobile extends ActiveTicker
 				if(((Rideable)ticking).numRiders()>0)
 					return;
 			MOB mob=(MOB)ticking;
-			if((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+			if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+			||(!Sense.canTaste(mob)))
 			   return;
 			
 			Room thisRoom=mob.location();

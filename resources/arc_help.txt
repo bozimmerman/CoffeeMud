@@ -1,9 +1,9 @@
 ^HArchon help^N
 ^HCommands^N
-create destroy link modify
-list unlink save sysmsgs
+create copy destroy modify
+link unlink save sysmsgs
 take unloadhelp dumpfile
-reset order ticktock
+reset order ticktock list
 ^HModules^N  
 import export xml
 

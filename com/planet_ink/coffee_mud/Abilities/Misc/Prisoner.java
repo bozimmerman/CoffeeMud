@@ -20,20 +20,20 @@ public class Prisoner extends StdAbility
 		if(affect.sourceMinor()==affect.TYP_RECALL)
 		{
 			if((affect.source()!=null)&&(affect.source().location()!=null))
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
+				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but a geis prevents <S-HIM-HER>.");
 			return false;
 		}
 		else
 		if(affect.sourceMinor()==Affect.TYP_FLEE)
 		{
-			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape, but fails.");
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to flee, but a geis prevents <S-HIM-HER>.");
 			return false;
 		}
 		else
 		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 		   &&(affect.targetMinor()==Affect.TYP_LEAVE))
 		{
-			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape, but the magic fizzles.");
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
 			return false;
 		}
 		return super.okAffect(affect);

@@ -24,7 +24,8 @@ public class VeryAggressive extends Aggressive
 			if(((Rideable)ticking).numRiders()>0)
 				return;
 		
-		if((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
+		||(!Sense.canTaste(mob)))
 		   return;
 
 		// let's not do this 100%

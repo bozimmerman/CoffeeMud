@@ -162,6 +162,12 @@ public class CommandProcessor
 				case CommandSet.COMMANDS:
 					scoring.commands(mob,commandSet);
 					break;
+				case CommandSet.COPY:
+					if(mob.isASysOp(mob.location()))
+						createEdit.copy(mob,commands);
+					else
+						mob.tell("You lack the power of creation.\n\r");
+					break;
 				case CommandSet.CRAWL:
 					movement.crawl(mob,commands);
 					break;
