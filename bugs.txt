@@ -1,4 +1,3 @@
-retest the resource hunting chants
 Ability to buy space ship areas, and add them to shopkeepers
 do new security system
 mutable body parts, with ability to grant powers
