@@ -30,8 +30,8 @@ public class Spell_ObscureSelf extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 	private final static String[][] stuff={
 		{"<S-NAME>","<T-NAME>","someone"},
-		{"<S-HIS-HER>","<T-HIS-HER>","him or her"},
-		{"<S-HIM-HER>","<T-HIS-HER>","his or her"},
+		{"<S-HIS-HER>","<T-HIS-HER>","his or her"},
+		{"<S-HIM-HER>","<T-HIM-HER>","him or her"},
 		{"<S-NAMESELF>","<T-NAMESELF>","someone"},
 		{"<S-HE-SHE>","<T-HE-SHE>","he or she"},
 		{"<S-YOUPOSS>","<T-YOUPOSS>","someone's"},

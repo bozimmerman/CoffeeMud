@@ -445,10 +445,10 @@ public final class IMC2Driver extends Thread {
     }
 
     /* printkeys: print key-value pairs, escaping values */
-    final String printkeys(PACKET data) {
+    final String printkeys(PACKET data) 
+	{
         String buf;
         String temp;
-        int len = 0;
         int i;
 
         buf = "";
@@ -1123,16 +1123,12 @@ public final class IMC2Driver extends Thread {
     final void imc_recv_who_reply(imc_char_data d, String text)
     {
         text = Util.replaceAll(text, "\\n\\r", "\n\r");
-        String lines[] = explodeNicely(text, "\\n\\r");
-
         send_to_player(d.name, "\n\r"+text+"^.^?");
     }
 
     final void imc_recv_whois_reply(imc_char_data d, String to, String text)
     {
         text = Util.replaceAll(text, "\\n\\r", "\n\r");
-        String lines[] = explodeNicely(text, "\\n\\r");
-
 		send_to_player(d.name, "\n\r"+to+": "+text+"^.^?");
     }
 	
@@ -1274,7 +1270,6 @@ public final class IMC2Driver extends Thread {
     final public void exec_commands(PACKET p) {
         if (p == null)
             return;
-        String cmd = p.type;
         imc_char_data d = new imc_char_data();
 
         d.name = p.i.to;
@@ -1364,8 +1359,8 @@ public final class IMC2Driver extends Thread {
             return false;
         }
 
-        String c = st.nextToken();
-        String hubName = st.nextToken();
+        st.nextToken();
+        st.nextToken();
         String pwd = st.nextToken();
 
         if (pwd.equals(this_imcmud.serverpw))

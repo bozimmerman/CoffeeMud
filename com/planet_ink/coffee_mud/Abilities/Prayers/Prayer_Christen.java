@@ -81,7 +81,6 @@ public class Prayer_Christen extends Prayer
 			{
 				mob.location().send(mob,msg);
 				String oldName=target.Name();
-				String oldDisplay=target.displayText();
 				target.setName(name);
 				target.setDisplayText(name+" is here.");
 				String txt=((CagedAnimal)target).cageText();

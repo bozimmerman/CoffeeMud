@@ -1,4 +1,5 @@
 ot	PATPAT <T-NAME>	You patpat <T-NAMESELF>, trying to comfort <T-HIM-HER>.	<S-NAME> patpats <T-NAME>.  <T-NAME> is NOT comforted.	<S-NAME> patpats you.	They must not need your comforting.
+oo	ROFLMAO <T-NAME>	You roll on the floor laughing your ass off at <T-HIS-HER> joke!	<S-NAME> rolls on the floor laughing <S-HIS-HER> ass of at <T-YOUPOSS> joke!	<S-NAME> rolls on the floor laughing <S-HIS-HER> ass off at you!	You can roll on the floor, but they aren`t around to laugh at.
 mo	SMILE	You smile happily.	<S-NAME> smiles happily.		
 mo	BONK	***BONK!!!***	<S-NAME> bonk(s) <S-HIM-HERSELF> on the head for being such a moron.		
 mo	TWEAK	Tweak who?			

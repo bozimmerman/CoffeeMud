@@ -150,61 +150,52 @@ public class RoomLoader
 				currentRecordPos=R.getRow();
 				String roomID=DBConnections.getRes(R,"CMROID");
 				int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
-				if(roomID.endsWith(")")
-				&&(roomID.indexOf("#(")>0)
-				&&(direction>255))
+				thisRoom=(Room)hash.get(roomID);
+				if(thisRoom==null)
+					Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
+				else
 				{
-					thisRoom=(Room)hash.get(roomID.substring(0,roomID.indexOf("#(")));
-					if(thisRoom==null)
-						Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
+					String exitID=DBConnections.getRes(R,"CMEXID");
+					String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
+					String nextRoomID=DBConnections.getRes(R,"CMNRID");
+					newRoom=(Room)hash.get(nextRoomID);
+					Exit newExit=CMClass.getExit(exitID);
+					if((newExit==null)&&(newRoom==null))
+						Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
 					else
-					if(!(thisRoom instanceof GridLocale))
-						Log.errOut("Room","Not GridLocale, tried "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
+					if((direction>255)&&(!(thisRoom instanceof GridLocale)))
+						Log.errOut("Room","Not GridLocale, tried "+direction+" exit for room '"+roomID+"'");
 					else
+					if(direction>255)
 					{
-						String nextRoomID=DBConnections.getRes(R,"CMNRID");
-						if(nextRoomID.endsWith(")")
-						&&(nextRoomID.indexOf("#(")>0))
-							newRoom=(Room)hash.get(nextRoomID.substring(0,nextRoomID.indexOf("#(")));
-						else
-							newRoom=(Room)hash.get(nextRoomID);
-						if(newRoom==null)
-							Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type inner, direction: "+direction);
-						else
+						Vector CEs=Util.parseSemicolons(exitMiscText.trim(),true);
+						for(int ces=0;ces<CEs.size();ces++)
 						{
+							Vector SCE=Util.parse(((String)CEs.elementAt(ces)).trim());
 							CMMap.CrossExit CE=new CMMap.CrossExit();
-							int len=thisRoom.roomID().length()+2;
-							int comma=roomID.indexOf(',',len);
-							if(comma>0)
+							if(SCE.size()<3) continue;
+							CE.x=Util.s_int((String)SCE.elementAt(0));
+							CE.y=Util.s_int((String)SCE.elementAt(1));
+							int codeddir=Util.s_int((String)SCE.elementAt(2));
+							if(SCE.size()>=4)
+								CE.destRoomID=newRoom.roomID()+(String)SCE.elementAt(3);
+							else
+								CE.destRoomID=newRoom.roomID();
+							CE.out=(codeddir&256)==256;
+							CE.dir=codeddir&255;
+							((GridLocale)thisRoom).addOuterExit(CE);
+							if((!CE.out)&&(!(newRoom instanceof GridLocale)))
 							{
-								CE.x=Util.s_int(roomID.substring(len,comma));
-								CE.y=Util.s_int(roomID.substring(comma+1,roomID.length()-1));
-								CE.destRoomID=nextRoomID;
-								CE.out=(direction&256)==256;
-								CE.dir=direction%255;
-								((GridLocale)thisRoom).addOuterExit(CE);
+								newRoom.rawDoors()[CE.dir]=thisRoom;
+								newRoom.rawExits()[CE.dir]=CMClass.getExit("Open");
 							}
 						}
 					}
-				}
-				else
-				{
-					thisRoom=(Room)hash.get(roomID);
-					if(thisRoom==null)
-						Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
 					else
 					{
-						String exitID=DBConnections.getRes(R,"CMEXID");
-						String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
-						String nextRoomID=DBConnections.getRes(R,"CMNRID");
-						newRoom=(Room)hash.get(nextRoomID);
-						Exit newExit=CMClass.getExit(exitID);
-						if((newExit==null)&&(newRoom==null))
-							Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
-						else
 						if(newExit!=null)
 							newExit.setMiscText(exitMiscText);
-						
+								
 						thisRoom.rawDoors()[direction]=newRoom;
 						thisRoom.rawExits()[direction]=newExit;
 					}
@@ -557,6 +548,7 @@ public class RoomLoader
 	public static void DBUpdateExits(Room room)
 	{
 		if(room.roomID().length()==0) return;
+		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
@@ -588,13 +580,30 @@ public class RoomLoader
 		{
 			Vector exits=((GridLocale)room).outerExits();
 			HashSet done=new HashSet();
+			int ordinal=0;
 			for(int v=0;v<exits.size();v++)
 			{
 				CMMap.CrossExit CE=(CMMap.CrossExit)exits.elementAt(v);
-				int dir=CE.dir|(CE.out?256:512);
-				if(!done.contains(room.roomID()+"#("+CE.x+","+CE.y+")-"+dir))
+				Room R=CMMap.getRoom(CE.destRoomID);
+				if(R.getGridParent()!=null) R=R.getGridParent();
+				if((R.roomID().length()>0)&&(!done.contains(R.roomID())))
 				{
-					done.add(room.roomID()+"#("+CE.x+","+CE.y+")-"+dir);
+					done.add(R.roomID());
+					HashSet oldStrs=new HashSet();
+					for(int v2=0;v2<exits.size();v2++)
+					{
+						CMMap.CrossExit CE2=(CMMap.CrossExit)exits.elementAt(v2);
+						if((CE2.destRoomID.equals(R.roomID())
+						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
+						{
+							String str=CE2.x+" "+CE2.y+" "+((CE2.out?256:512)|CE2.dir)+" "+CE2.destRoomID.substring(R.roomID().length())+";";
+							if(!oldStrs.contains(str))
+								oldStrs.add(str);
+						}
+					}
+					StringBuffer exitStr=new StringBuffer("");
+					for(Iterator a=oldStrs.iterator();a.hasNext();)
+						exitStr.append((String)a.next());
 					DBConnector.update(
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
@@ -603,11 +612,11 @@ public class RoomLoader
 					+"CMEXTX, "
 					+"CMNRID"
 					+") values ("
-					+"'"+room.roomID()+"#("+CE.x+","+CE.y+")',"
-					+dir+","
-					+"'',"
-					+"'',"
-					+"'"+CE.destRoomID+"')");
+					+"'"+room.roomID()+"',"
+					+(256+(++ordinal))+","
+					+"'Open',"
+					+"'"+exitStr.toString()+"',"
+					+"'"+R.roomID()+"')");
 				}
 				
 			}
@@ -750,24 +759,6 @@ public class RoomLoader
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
 		
-		if(room instanceof GridLocale)
-		{
-			Vector V=((GridLocale)room).outerExits();
-			for(int d=0;d<V.size();d++)
-			{
-				CMMap.CrossExit CE=(CMMap.CrossExit)V.elementAt(d);
-				DBConnector.update(
-				"UPDATE CMROEX SET "
-				+"CMROID='"+room.roomID()+"#("+CE.x+","+CE.y+")' "
-				+"WHERE CMROID='"+oldID+"#("+CE.x+","+CE.y+")'");
-				
-				DBConnector.update(
-				"UPDATE CMROEX SET "
-				+"CMNRID='"+room.roomID()+"#("+CE.x+","+CE.y+")' "
-				+"WHERE CMNRID='"+oldID+"#("+CE.x+","+CE.y+")'");
-			}
-		}
-
 		DBConnector.update(
 		"UPDATE CMROEX SET "
 		+"CMNRID='"+room.roomID()+"' "

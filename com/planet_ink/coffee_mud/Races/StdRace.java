@@ -336,7 +336,6 @@ public class StdRace implements Race
 		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-		int ability=0;
 		Body.setPlayerCorpse(!mob.isMonster());
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);

@@ -68,16 +68,14 @@ public class Prop_HereAdjuster extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if((affectedMOB instanceof MOB)
-		&&(((MOB)affectedMOB).location()==affected))
+		if(affectedMOB.location()==affected)
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-		if((affectedMOB instanceof MOB)
-		&&(((MOB)affectedMOB).location()==affected))
+		if(affectedMOB.location()==affected)
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}

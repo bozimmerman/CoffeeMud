@@ -76,8 +76,8 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 
 	public Vector outerExits(){return (Vector)gridexits.clone();}
-	public void addOuterExit(CMMap.CrossExit x){gridexits.remove(x);}
-	public void delOuterExit(CMMap.CrossExit x){gridexits.addElement(x);}
+	public void addOuterExit(CMMap.CrossExit x){gridexits.addElement(x);}
+	public void delOuterExit(CMMap.CrossExit x){gridexits.remove(x);}
 	
 	public Room getAltRoomFrom(Room loc, int direction)
 	{
@@ -193,7 +193,13 @@ public class StdGrid extends StdRoom implements GridLocale
 				&&(subMap[EX.x][EX.y]==room))
 				{
 					Room R=CMMap.getRoom(EX.destRoomID);
-					if(R!=null) return R;
+					if(R!=null)
+					{
+						if(R.getGridParent()!=null)
+							return R.getGridParent();
+						else
+							return R;
+					}
 				}
 			}catch(Exception e){}
 		}
@@ -220,7 +226,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(o==null) o=(Exit)CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
-		if(loc.rawDoors()[dirCode]!=null)
+		if(loc.rawDoors()[opCode]!=null)
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
 				return;

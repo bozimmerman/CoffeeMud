@@ -933,7 +933,7 @@ public class MOBloader
 			if(R!=null)
 			while(R.next())
 			{
-				String username=DBConnector.getRes(R,"CMUSERID");
+				//String username=DBConnector.getRes(R,"CMUSERID");
 				int btmp=Util.s_int(DBConnector.getRes(R,"CMBTMP"));
 				String temail=DBConnector.getRes(R,"CMEMAL");
 				R.close();

@@ -259,7 +259,6 @@ public class SaveThread extends Thread
 		//  timeLeft is in millis
 		String from="AutoPurgeWarning";
 		String to=mob.Name();
-		long date=System.currentTimeMillis();
 		String subj=CommonStrings.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft>(1000*60*60*24*2)) 

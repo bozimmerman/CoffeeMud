@@ -50,7 +50,6 @@ public class Cobbling extends CraftingSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
-			MOB mob=(MOB)affected;
 			if(building==null)
 			{
 				messedUp=true;

@@ -73,7 +73,6 @@ public class Archon_Multiwatch extends ArchonSkill
 		super.executeMsg(host,msg);
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 		{
-			Room R=msg.source().location();
 			if(!DATA.containsKey(msg.source()))
 				DATA.put(msg.source(),new int[DATA_TOTAL]);
 			int[] data=(int[])DATA.get(msg.source());

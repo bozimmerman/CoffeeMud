@@ -90,8 +90,6 @@ public class Who extends StdCommand
 				CMClass.I3Interface().i3who(mob,mobName.substring(1));
 			return false;
 		}
-		boolean returnOnly=(mob==null);
-		
 		HashSet friends=null;
 		if((mobName!=null)
 		&&(mob!=null)

@@ -154,7 +154,6 @@ public class FrontLogin extends StdCommand
 
 	public void showTheNews(MOB mob)
 	{
-		StringBuffer buf=new StringBuffer("");
 		if(mob.session()!=null)
 			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
 		if((mob.session()==null)

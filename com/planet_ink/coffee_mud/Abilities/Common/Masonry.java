@@ -629,7 +629,6 @@ public class Masonry extends CraftingSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		int foundWood=0;
 		int[][] idata=null;
 		if(doingCode==BUILD_PORTCULIS)
 		{

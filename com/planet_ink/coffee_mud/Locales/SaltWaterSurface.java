@@ -86,7 +86,7 @@ public class SaltWaterSurface extends WaterSurface
 		if((room.roomID().length()==0)
 		&&((room instanceof UnderSaltWaterGrid)||(room instanceof UnderSaltWaterThinGrid)))
 		{
-			((UnderSaltWaterGrid)room).clearGrid(null);
+			((GridLocale)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;

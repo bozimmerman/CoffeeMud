@@ -177,9 +177,48 @@ public class Destroy extends BaseItemParser
 				errorOut(mob);
 				return;
 			}
-			mob.location().rawDoors()[direction]=null;
-			mob.location().rawExits()[direction]=null;
-			CMClass.DBEngine().DBUpdateExits(mob.location());
+			Room unRoom=mob.location().rawDoors()[direction];
+			if(unRoom.getGridParent()!=null) unRoom=unRoom.getGridParent();
+			if((mob.location().getGridParent()!=null)
+			&&(!(mob.location() instanceof GridLocale)))
+			{
+				GridLocale GL=mob.location().getGridParent();
+				Vector outer=GL.outerExits();
+				int myX=GL.getChildX(mob.location());
+				int myY=GL.getChildY(mob.location());
+				for(int v=0;v<outer.size();v++)
+				{
+					CMMap.CrossExit CE=(CMMap.CrossExit)outer.elementAt(v);
+					if((CE.out)
+					&&(CE.x==myX)
+					&&(CE.y==myY)
+					&&(CE.dir==direction))
+					   GL.delOuterExit(CE);
+				}
+				CMClass.DBEngine().DBUpdateExits(GL);
+				mob.location().rawDoors()[direction]=null;
+				mob.location().rawExits()[direction]=null;
+			}
+			else
+			{
+				mob.location().rawDoors()[direction]=null;
+				mob.location().rawExits()[direction]=null;
+				CMClass.DBEngine().DBUpdateExits(mob.location());
+			}
+			if(unRoom instanceof GridLocale)
+			{
+				GridLocale GL=(GridLocale)unRoom;
+				Vector outer=GL.outerExits();
+				for(int v=0;v<outer.size();v++)
+				{
+					CMMap.CrossExit CE=(CMMap.CrossExit)outer.elementAt(v);
+					if((!CE.out)
+					&&(CE.dir==direction)
+					&&(CE.destRoomID.equalsIgnoreCase(CMMap.getExtendedRoomID(mob.location()))))
+					   GL.delOuterExit(CE);
+				}
+				CMClass.DBEngine().DBUpdateExits(GL);
+			}
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().roomID()+".");

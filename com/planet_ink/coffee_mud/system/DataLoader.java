@@ -151,7 +151,6 @@ public class DataLoader
 				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 			{
-				String playerID2=DBConnections.getRes(R,"CMPLID");
 				String section2=DBConnections.getRes(R,"CMSECT");
 				if(section2.equalsIgnoreCase(section))
 					rows++;

@@ -49,7 +49,8 @@ public class WaterCurrents extends ActiveTicker
 	}
 	public void applyCurrents(Room R, Vector mobsDone)
 	{
-		if(R.numInhabitants()==0) return;
+		if((R==null)||(R.numInhabitants()==0))
+			return;
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB M=R.fetchInhabitant(m);

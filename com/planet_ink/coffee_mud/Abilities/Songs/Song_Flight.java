@@ -65,8 +65,7 @@ public class Song_Flight extends Song
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Song newOne=(Song)this.copyOf();
-
+				
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 

@@ -494,5 +494,10 @@ public class CMMap
 		public int dir;
 		public String destRoomID="";
 		public boolean out=false;
+		public static CrossExit make(int xx, int xy, int xdir, String xdestRoomID, boolean xout)
+		{   CrossExit EX=new CrossExit();
+			EX.x=xx;EX.y=xy;EX.dir=xdir;EX.destRoomID=xdestRoomID;EX.out=xout;
+			return EX;
+		}
 	}
 }

@@ -46,8 +46,6 @@ public class Play_Reveille extends Play
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Play newOne=(Play)this.copyOf();
-
 				Hashtable h=new Hashtable();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{ MOB M=mob.location().fetchInhabitant(i); h.put(M,M);}
