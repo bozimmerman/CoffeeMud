@@ -55,8 +55,6 @@ Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, 
 blacksmith TRASHCAN. A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
 sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
 
-
-
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
