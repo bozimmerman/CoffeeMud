@@ -368,6 +368,20 @@ public class Masonry extends CraftingSkill
 						{
 							if(dir<0)
 							{
+								Room R2=room.rawDoors()[Directions.DOWN];
+								if(((room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+								   &&(R2!=null)
+								   &&((R2.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)||(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+								{
+									if(R2.rawDoors()[Directions.UP]==room)
+									{
+										R2.rawDoors()[Directions.UP]=null;
+										R2.rawExits()[Directions.UP]=null;
+									}
+									CoffeeUtensils.obliterateRoom(R2);
+									room.rawDoors()[Directions.DOWN]=null;
+									room.rawExits()[Directions.DOWN]=null;
+								}
 								Room R=CMClass.getLocale("Plains");
 								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
@@ -408,13 +422,13 @@ public class Masonry extends CraftingSkill
 								R.startItemRejuv();
 								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 								{
-									Room R2=(Room)r.nextElement();
-									for(int d=0;d<R2.rawDoors().length;d++)
-										if(R2.rawDoors()[d]==room)
+									Room R3=(Room)r.nextElement();
+									for(int d=0;d<R3.rawDoors().length;d++)
+										if(R3.rawDoors()[d]==room)
 										{
-											R2.rawDoors()[d]=R;
-											if(R2 instanceof GridLocale)
-												((GridLocale)R2).buildGrid();
+											R3.rawDoors()[d]=R;
+											if(R3 instanceof GridLocale)
+												((GridLocale)R3).buildGrid();
 										}
 								}
 								R.getArea().clearMap();
@@ -659,7 +673,26 @@ public class Masonry extends CraftingSkill
 		case BUILD_DEMOLISH:
 		default:
 			if(dir<0)
-				verb="demolishing the roof";
+			{
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						verb="demolishing the pool";
+				else
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				{
+					commonTell(mob,null,null,"You must demolish a pool from above.");
+					return false;
+				}
+				else
+				if((mob.location().domainType()&Room.INDOORS)==0)
+				{
+					commonTell(mob,null,null,"There is nothing to demolish here!");
+					return false;
+				}
+				else
+					verb="demolishing the roof";
+			}
 			else
 				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;

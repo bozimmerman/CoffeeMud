@@ -624,7 +624,26 @@ public class Construction extends CraftingSkill
 		case BUILD_DEMOLISH:
 		default:
 			if(dir<0)
-				verb="demolishing the roof";
+			{
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						verb="demolishing the pool";
+				else
+				if((mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				{
+					commonTell(mob,null,null,"You must demolish a pool from above.");
+					return false;
+				}
+				else
+				if((mob.location().domainType()&Room.INDOORS)==0)
+				{
+					commonTell(mob,null,null,"There is nothing to demolish here!");
+					return false;
+				}
+				else
+					verb="demolishing the roof";
+			}
 			else
 				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;

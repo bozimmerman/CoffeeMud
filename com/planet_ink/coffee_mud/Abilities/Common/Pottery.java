@@ -171,7 +171,7 @@ public class Pottery extends CraftingSkill
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-		int[] pm={EnvResource.RESOURCE_CLAY};
+		int[] pm={EnvResource.RESOURCE_CLAY,EnvResource.RESOURCE_CHINA};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"clay",pm,
 											0,null,null,

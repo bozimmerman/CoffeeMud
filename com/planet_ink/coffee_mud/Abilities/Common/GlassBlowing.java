@@ -159,7 +159,7 @@ public class GlassBlowing extends CraftingSkill
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
-		int[] pm={EnvResource.RESOURCE_SAND};
+		int[] pm={EnvResource.RESOURCE_SAND,EnvResource.RESOURCE_CRYSTAL,EnvResource.RESOURCE_GLASS};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"sand",pm,
 											0,null,null,
@@ -190,7 +190,12 @@ public class GlassBlowing extends CraftingSkill
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
-		building.setMaterial(EnvResource.RESOURCE_GLASS);
+		
+		if(data[0][FOUND_CODE]==EnvResource.RESOURCE_SAND)
+			building.setMaterial(EnvResource.RESOURCE_GLASS);
+		else
+			building.setMaterial(data[0][FOUND_CODE]);
+		
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
