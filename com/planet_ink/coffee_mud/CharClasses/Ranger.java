@@ -80,7 +80,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_WaterBreathing",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",false);
