@@ -1,10 +1,14 @@
 ^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.^N
 
-^YElf*      :^? Quick and agile, slightly shorter and more slender than a human.  They may be ^Bany class^? except Paladin.
-^YHalf Elf* :^? A child of human and elvish parents, they, like humans, may be ^Bany class^?.
-^YGnome*    :^? Curious and quick-witted, resembling a small dwarf. They may be ^BClerics^?, ^BFighers^? or ^BThieves^?.
-^YHalfling* :^? A very short fur-footed folk.  They may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
-^YDwarf*    :^? Short and stocky, they may be ^BClerics^?, ^BFighters^? or ^BThieves^?.
-^YHuman     :^? No racial bonuses/penalties, ^B2 bonus training points^? at first level.  They may be ^Bany class^?.
+^YDwarf   :^? Dwarves are shorter than humans, but much stockier, and enjoy sporting beards (including the women).  They receive one bonus Constitution point, but lose one Charisma point.  They also have Infravision, or the ability to see other creatures in the dark.  Dwarves may be Clerics, Fighters, or Thieves.
 
-^p* - ^BInfravision^?: this race can see the heat of other creatures in the dark.^N
+^YElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.  They receive one bonus Dexterity point, but lose one Constitution point. Elves have Infravision, and may be Clerics, Fighers, Rangers, Mages, or Thieves.
+
+^YGnome   :^? Gnomes are curious and quick-witted folk, resembling small dwarves.  They receive one bonus Intelligence point, but lose one Wisdom point due to their carelessness.  They also have Infravision, and may be Clerics, Fighers, or Thieves.
+
+^YHalf Elf:^? Half Elves are a mixture of humans and elves.  They have Infravision, and may be Bards, Clerics, Fighters, Mages, Rangers, and Thieves.
+
+^YHalfling:^? Halflings are a very short fur-footed folk.  They receive one bonus Dexterity point, but lose one point of Strength.  They have Infravision, and may be Clerics, Fighters, or Thieves.
+
+^YHuman   :^? Just like you and me!  They receive 2 bonus training points at first level, and may be Bards, Clerics, Fighters, Mages, Paladins, Rangers, and Thieves.
+
