@@ -74,9 +74,9 @@ public class Chant_Crossbreed extends Chant
 			&&((mate.charStats().getStat(CharStats.AGE)==0)
 			        ||((mate.charStats().ageCategory()>Race.AGE_CHILD)
 			                &&(mate.charStats().ageCategory()<Race.AGE_OLD)))
-			&&(myChar.charStats().getStat(CharStats.AGE)==0)
+			&&((myChar.charStats().getStat(CharStats.AGE)==0)
 			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD)))
+			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				MOB female=myChar;
 				MOB male=mate;

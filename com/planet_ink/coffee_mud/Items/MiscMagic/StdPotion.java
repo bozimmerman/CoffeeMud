@@ -97,7 +97,7 @@ public class StdPotion extends StdDrink implements Potion
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)
+				if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
 				{
 					A=(Ability)A.copyOf();
 					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));

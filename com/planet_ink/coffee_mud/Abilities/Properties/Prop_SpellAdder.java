@@ -70,7 +70,7 @@ public class Prop_SpellAdder extends Property
 			}
 
 			Ability A=CMClass.getAbility(thisOne);
-			if(A!=null)
+			if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);

@@ -56,12 +56,20 @@ public class Poison extends StdAbility
 		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
 		{
 			MOB targetMOB=(MOB)target;
-			if(targetMOB.location().show(targetMOB,null,CMMsg.MASK_GENERAL|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
+			if(POISON_START_TARGETONLY().length()>0)
+			    targetMOB.tell(POISON_START_TARGETONLY());
+			if((POISON_START_TARGETONLY().length()>0)
+			||targetMOB.location().show(targetMOB,null,CMMsg.MASK_GENERAL|CMMsg.MASK_MALICIOUS|CMMsg.TYP_POISON,POISON_START()))
 			{
-				maliciousAffect(poisoner,target,
-								(affected instanceof Item)?affected.envStats().level():0,
-								POISON_TICKS(),-1);
-				return true;
+			    if(POISON_AFFECTTARGET())
+			    {
+					maliciousAffect(poisoner,target,
+									(affected instanceof Item)?affected.envStats().level():0,
+									POISON_TICKS(),-1);
+					return true;
+			    }
+			    else
+			        return false;
 			}
 		}
 		return false;
@@ -181,14 +189,16 @@ public class Poison extends StdAbility
 				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
+					{
 					    if(POISON_START_TARGETONLY().length()>0)
 							((MOB)target).tell(POISON_START_TARGETONLY());
 					    else
 							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
-					if(POISON_AFFECTTARGET())
-					    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
-					else
-					    success=true;
+						if(POISON_AFFECTTARGET())
+						    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
+						else
+						    success=true;
+					}
 				}
 				else
 					success=false;

@@ -50,6 +50,8 @@ public class Ingredients extends BagOfEndlessness
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		I.setContainer(this);
+		if(I instanceof Food)
+		    ((Food)I).setDecayTime(0);
 		if(owner() instanceof Room)
 			((Room)owner()).addItem(I);
 		else

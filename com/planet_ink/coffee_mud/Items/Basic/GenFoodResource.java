@@ -60,18 +60,20 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    switch(newValue&EnvResource.MATERIAL_MASK)
 		    {
 		    case EnvResource.MATERIAL_FLESH:
-		    {
+			    {
 		        decayTime=System.currentTimeMillis()+(
 		            	   MudHost.TICK_TIME
 		        		  *CommonStrings.SYSTEMI_TICKSPERMUDDAY);
 		    	break;
-		    }
+			    }
 		    case EnvResource.MATERIAL_VEGETATION:
+			    {
 		        decayTime=System.currentTimeMillis()+(
 		                MudHost.TICK_TIME
 				        *CommonStrings.SYSTEMI_TICKSPERMUDDAY
 				        *DefaultTimeClock.globalClock.getDaysInWeek());
-		    break;
+			    break;
+			    }
 		    }
 		    switch(newValue)
 		    {

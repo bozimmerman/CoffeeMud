@@ -26,24 +26,28 @@ public class Prop_PracticeDummy extends Property
 	public String ID() { return "Prop_PracticeDummy"; }
 	public String name(){ return "Practice Dummy";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected boolean unkillable=true;
 
 	public String accountForYourself()
 	{ return "Undefeatable";	}
+	
+	public void setMiscText(String newMiscText)
+	{
+	    super.setMiscText(newMiscText);
+	    unkillable=newMiscText.toUpperCase().indexOf("KILL")<0;
+	}
 
 	public void affectCharState(MOB mob, CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
-		if(text().toUpperCase().indexOf("KILL")<0)
-		{
+		if(unkillable)
 			affectableMaxState.setHitPoints(99999);
-			mob.curState().setHitPoints(99999);
-		}
 	}
 
 	public void affectEnvStats(Environmental E, EnvStats affectableStats)
 	{
 		super.affectEnvStats(E,affectableStats);
-		if(text().toUpperCase().indexOf("KILL")<0)
+		if(unkillable)
 			affectableStats.setArmor(100);
 	}
 
@@ -52,12 +56,10 @@ public class Prop_PracticeDummy extends Property
 	{
 		if(!super.okMessage(myHost,msg)) 
 		    return false;
-		if((affected!=null)
-		&&(affected instanceof MOB)
+		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-			&&(text().toUpperCase().indexOf("KILL")<0))
+			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(unkillable))
 			{
 			    msg.source().tell("You are not allowed to die.");
 			    return false;
@@ -65,6 +67,8 @@ public class Prop_PracticeDummy extends Property
 			else
 			if(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			{
+				if(unkillable)
+					msg.source().curState().setHitPoints(99999);
 				((MOB)affected).makePeace();
 				Room room=((MOB)affected).location();
 				if(room!=null)

@@ -192,7 +192,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)
+				if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
 				{
 					A=(Ability)A.copyOf();
 					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));

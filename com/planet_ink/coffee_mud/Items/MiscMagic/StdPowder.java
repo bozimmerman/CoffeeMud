@@ -99,7 +99,7 @@ public class StdPowder extends StdItem implements MagicDust {
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=CMClass.getAbility(thisOne);
-				if(A!=null)
+				if((A!=null)&&(!CMAble.classOnly("Archon",A.ID())))
 				{
 					A=(Ability)A.copyOf();
 					theSpells.addElement(A);

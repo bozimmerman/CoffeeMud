@@ -211,9 +211,9 @@ public class StdRace implements Race
 			&&((msg.source().charStats().getStat(CharStats.AGE)==0)
 			        ||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
 			                &&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))
-			&&(myChar.charStats().getStat(CharStats.AGE)==0)
+			&&((myChar.charStats().getStat(CharStats.AGE)==0)
 			        ||((myChar.charStats().ageCategory()>Race.AGE_CHILD)
-			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD)))
+			                &&(myChar.charStats().ageCategory()<Race.AGE_OLD))))
 			{
 				Ability A=CMClass.getAbility("Pregnancy");
 				if((A!=null)
