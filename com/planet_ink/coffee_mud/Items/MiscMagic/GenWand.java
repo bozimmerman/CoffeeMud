@@ -39,12 +39,13 @@ public class GenWand extends GenItem implements Wand
 		readableText="";
 		if(theSpell!=null)
 			readableText=theSpell.ID();
-		secretWord=StdWand.words[readableText.hashCode()%StdWand.words.length];
+		secretWord=StdWand.getWandWord(readableText);
 	}
+	
 	public void setReadableText(String text)
 	{
 		super.setReadableText(text);
-		secretWord=StdWand.words[readableText.hashCode()%StdWand.words.length];
+		secretWord=StdWand.getWandWord(readableText);
 	}
 
 	public Ability getSpell()

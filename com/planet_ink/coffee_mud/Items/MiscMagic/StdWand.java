@@ -55,17 +55,24 @@ public class StdWand extends StdItem implements Wand
 		else 
 			return super.value();
 	}
+	public static String getWandWord(String from)
+	{
+		int hash=from.hashCode();
+		if(hash<0) hash=hash*-1;
+		return words[hash%words.length];
+	}
+	
 	public void setSpell(Ability theSpell)
 	{
 		miscText="";
 		if(theSpell!=null)
 			miscText=theSpell.ID();
-		secretWord=words[miscText.hashCode()%words.length];
+		secretWord=StdWand.getWandWord(miscText);
 	}
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord=words[miscText.hashCode()%words.length];
+		secretWord=StdWand.getWandWord(newText);
 	}
 
 	public Ability getSpell()

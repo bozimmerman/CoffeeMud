@@ -49,12 +49,12 @@ public class Staff extends StdWeapon implements Wand
 		miscText="";
 		if(theSpell!=null)
 			miscText=theSpell.ID();
-		secretWord=StdWand.words[miscText.hashCode()%StdWand.words.length];
+		secretWord=StdWand.getWandWord(miscText);
 	}
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord=StdWand.words[miscText.hashCode()%StdWand.words.length];
+		secretWord=StdWand.getWandWord(newText);
 	}
 
 	public Ability getSpell()
