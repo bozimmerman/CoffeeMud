@@ -43,11 +43,19 @@ public interface Session
 	
 	public String prompt(String Message, String Default)
 		throws IOException;
+	public String prompt(String Message, String Default, long maxTime)
+		throws IOException;
 	public String prompt(String Message)
+		throws IOException;
+	public String prompt(String Message, long maxTime)
 		throws IOException;
 	public boolean confirm(String Message, String Default)
 	throws IOException;
+	public boolean confirm(String Message, String Default, long maxTime)
+	throws IOException;
 	public String choose(String Message, String Choices, String Default)
+	throws IOException;
+	public String choose(String Message, String Choices, String Default, long maxTime)
 	throws IOException;
 	
 	public void startBeingSnoopedBy(Session S);

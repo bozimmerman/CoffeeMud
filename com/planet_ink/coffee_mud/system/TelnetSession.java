@@ -296,19 +296,39 @@ public class TelnetSession extends Thread implements Session
 		needPrompt=truefalse;
 	}
 
+	public String prompt(String Message, String Default, long maxTime)
+		throws IOException
+	{
+		String Msg=prompt(Message,maxTime).trim();
+		if(Msg.equals("")) return Default;
+		else return Msg;
+	}
+
 	public String prompt(String Message, String Default)
 		throws IOException
 	{
-		String Msg=prompt(Message).trim();
+		String Msg=prompt(Message,-1).trim();
 		if(Msg.equals("")) return Default;
 		else return Msg;
+	}
+
+	public String prompt(String Message, long maxTime)
+		throws IOException
+	{
+		print(Message);
+		String input=blockingIn(maxTime);
+		if(input==null) return "";
+		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
+			return input.substring(0,input.length()-1);
+		else
+			return input;
 	}
 
 	public String prompt(String Message)
 		throws IOException
 	{
 		print(Message);
-		String input=blockingIn();
+		String input=blockingIn(-1);
 		if(input==null) return "";
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
 			return input.substring(0,input.length()-1);
@@ -1053,12 +1073,14 @@ public class TelnetSession extends Thread implements Session
 		}
 	}
 
-	public String blockingIn()
+	public String blockingIn(long maxTime)
 		throws IOException
 	{
 		if((in==null)||(out==null)) return "";
 		input=new StringBuffer("");
-		while(!killFlag)
+		long start=System.currentTimeMillis();
+		while((!killFlag)
+		&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
 		{
 			try
 			{
@@ -1075,9 +1097,18 @@ public class TelnetSession extends Thread implements Session
 			{
 			}
 		}
+		if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
+			throw new java.io.InterruptedIOException("Timed Out.");
+		
 		String inStr=preFilter(input);
 		input=new StringBuffer("");
 		return inStr;
+	}
+	
+	public String blockingIn()
+		throws IOException
+	{
+		return blockingIn(-1);
 	}
 
 	public String readlineContinue()
@@ -1109,10 +1140,18 @@ public class TelnetSession extends Thread implements Session
 		return inStr;
 	}
 
+	public boolean confirm(String Message, String Default, long maxTime)
+	throws IOException
+	{
+		String YN=choose(Message,"YN",Default,maxTime);
+		if(YN.equals("Y"))
+			return true;
+		return false;
+	}
 	public boolean confirm(String Message, String Default)
 	throws IOException
 	{
-		String YN=choose(Message,"YN",Default);
+		String YN=choose(Message,"YN",Default,-1);
 		if(YN.equals("Y"))
 			return true;
 		return false;
@@ -1120,12 +1159,16 @@ public class TelnetSession extends Thread implements Session
 
 	public String choose(String Message, String Choices, String Default)
 	throws IOException
+	{ return choose(Message,Choices,Default,-1);}
+	
+	public String choose(String Message, String Choices, String Default, long maxTime)
+	throws IOException
 	{
 		String YN="";
 		while((YN.equals(""))||(Choices.indexOf(YN)<0)&&(!killFlag))
 		{
 			print(Message);
-			YN=blockingIn();
+			YN=blockingIn(maxTime);
 			if(YN==null){ return Default.toUpperCase(); }
 			YN=YN.trim().toUpperCase();
 			if(YN.equals("")){ return Default.toUpperCase(); }

@@ -59,7 +59,7 @@ public class Chant_StoneFriend extends Chant
 		if((msg.amISource(mob))
 		&&(!mob.isMonster())
 		&&(msg.target() instanceof Room)
-		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
+		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 		&&(mob.amFollowing()!=null)
 		&&(((Room)msg.target()).isInhabitant(mob.amFollowing())))
 		{

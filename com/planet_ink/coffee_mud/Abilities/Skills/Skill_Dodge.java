@@ -34,17 +34,16 @@ public class Skill_Dodge extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(msg.amITarget(mob)
-		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(msg.source().rangeToTarget()==0)
-		   &&(msg.tool()!=null)
-		   &&(!doneThisRound)
-		   &&(msg.tool() instanceof Weapon)
-		   &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
-		   &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(msg.source().rangeToTarget()==0)
+		&&((msg.tool()==null)
+			||((msg.tool() instanceof Weapon)
+			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
+			  &&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN))))
 		{
 			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
-			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
+			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-93,false))
 			&&(msg.source().getVictim()==mob)
 			&&(mob.location().okMessage(mob,msg2)))
 			{

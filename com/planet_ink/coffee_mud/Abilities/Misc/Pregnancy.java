@@ -291,7 +291,7 @@ public class Pregnancy extends StdAbility
 								try{
 									while(name.indexOf(" ")>=0)
 									{
-										String n=mob.session().prompt("What would you like to name your "+sondat+"? ","").trim().toLowerCase();
+										String n=mob.session().prompt("What would you like to name your "+sondat+"? ","",60000).trim().toLowerCase();
 										if(n.indexOf(" ")>=0)
 											mob.tell("Spaces are not allowed in names! Please enter another one.");
 										else
@@ -300,7 +300,7 @@ public class Pregnancy extends StdAbility
 											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n)))
 												mob.tell("That name is already taken.  Please enter a different one.");
 											else
-											if(mob.session().confirm("If the name '"+Util.capitalize(n)+"' correct (y/N)?","N"))
+											if(mob.session().confirm("If the name '"+Util.capitalize(n)+"' correct (y/N)?","N",60000))
 												name=Util.capitalize(n);
 											else
 												name=" ";

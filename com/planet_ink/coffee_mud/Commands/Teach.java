@@ -51,6 +51,8 @@ public class Teach extends StdCommand
 			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
 			return false;
 		}
+		if((student.session()!=null)&&(!student.session().confirm(mob.Name()+" wants to teach you "+myAbility.name()+".  Is this Ok (y/N)?","N")))
+			return false;
 		FullMsg msg=new FullMsg(mob,student,null,CMMsg.MSG_SPEAK,null);
 		if(!mob.location().okMessage(mob,msg))
 			return false;

@@ -250,7 +250,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             }
         }
         catch( Exception e ) {
-            try { Thread.sleep(attempts * 10); }
+            try { Thread.sleep(attempts * 100); }
             catch( InterruptedException ignore )
 			{
 				if(shutdown)
@@ -367,7 +367,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     data = null;
                     str = null;
                     connected = false;
-                    try { Thread.sleep(120); }
+                    try { Thread.sleep(1200); }
 					catch (InterruptedException ee)
 					{
 						if(shutdown)
