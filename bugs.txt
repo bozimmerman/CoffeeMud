@@ -1,1 +1,3 @@
-book of laws can be crafted
+need page instructions for law book
+minimum elapsed time between room moves.. put in ini
+

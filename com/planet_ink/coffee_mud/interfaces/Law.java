@@ -16,6 +16,19 @@ public interface Law
 	public static final int ACTION_JAIL4=9;
 	public static final int ACTION_EXECUTE=10;
 	public static final int ACTION_HIGHEST=10;
+	public static final String[] ACTION_DESCS={
+		"WARNING",
+		"THREAT",
+		"PAROLE1",
+		"PAROLE2",
+		"PAROLE3",
+		"PAROLE4",
+		"JAIL1",
+		"JAIL2",
+		"JAIL3",
+		"JAIL4",
+		"DEATH",
+	};
 
 	public static final int STATE_SEEKING=0;
 	public static final int STATE_ARRESTING=1;
@@ -88,7 +101,7 @@ public interface Law
 		"RESISTMSG=Resisting arrest eh?  Well, have it your way.\n"+
 		"PROTECTED=+INT 3\n"+
 		"ARRESTMOBS=true\n"+
-		"TRESPASSERS=\n"+
+		"TRESPASSERS=-Race +Undead\n"+
 		"PAROLE1TIME=40\n"+
 		"PAROLE2TIME=80\n"+
 		"PAROLE3TIME=160\n"+

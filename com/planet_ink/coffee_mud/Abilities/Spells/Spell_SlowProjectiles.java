@@ -33,15 +33,7 @@ public class Spell_SlowProjectiles extends Spell
 			else
 				affect.source().location().show(affect.source(),null,Affect.MSG_OK_VISUAL,"The shot from "+affect.tool().name()+" flies slowly by.");
 			int damage=(affect.targetCode()-Affect.MASK_HURT)/2;
-			affect.modify(affect.source(),
-						  affect.target(),
-						  affect.tool(),
-						  affect.sourceCode(),
-						  affect.sourceMessage(),
-						  Affect.MASK_HURT+damage,
-						  affect.targetMessage(),
-						  affect.othersCode(),
-						  affect.othersMessage());
+			SaucerSupport.adjustDamageMessage(affect,damage*-1);
 		}
 		return super.okAffect(myHost,affect);
 	}

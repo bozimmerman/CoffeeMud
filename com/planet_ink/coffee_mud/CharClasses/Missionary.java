@@ -227,10 +227,8 @@ public class Missionary extends Cleric
 			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_ELECTRIC))
 			{
-				int recovery=affect.targetCode()-Affect.MASK_HURT;
-				recovery=recovery-myChar.charStats().getClassLevel(this);
-				if(recovery<0) recovery=1;
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),Affect.MASK_HURT+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				int recovery=myChar.charStats().getClassLevel(this);
+				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
 			}
 			else
 			if((affect.amITarget(myChar))
@@ -238,9 +236,7 @@ public class Missionary extends Cleric
 			&&(affect.sourceMinor()==Affect.TYP_ACID))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;
-				recovery=recovery*2;
-				if(recovery>1000) recovery=1000;
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),Affect.MASK_HURT+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				SaucerSupport.adjustDamageMessage(affect,recovery);
 			}
 		}
 		return true;

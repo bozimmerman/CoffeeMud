@@ -43,7 +43,7 @@ public class Fighter_Roll extends StdAbility
 			doneThisRound=true;
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			regain=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-regain,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			SaucerSupport.adjustDamageMessage(affect,regain*-1);
 		}
 		return true;
 	}

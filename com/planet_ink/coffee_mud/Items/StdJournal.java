@@ -110,7 +110,7 @@ public class StdJournal extends StdItem
 					}
 					catch(IOException e)
 					{
-						Log.errOut("JournalItem",e);
+						Log.errOut("JournalItem",e.getMessage());
 					}
 				}
 				else
@@ -168,7 +168,7 @@ public class StdJournal extends StdItem
 			}
 			catch(IOException e)
 			{
-				Log.errOut("JournalItem",e);
+				Log.errOut("JournalItem",e.getMessage());
 			}
 			return;
 		}

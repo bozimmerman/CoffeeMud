@@ -26,7 +26,7 @@ public class Skeleton extends Undead
 			&&(!mob.amDead()))
 			{
 				int recovery=(int)Math.round(Util.div((msg.targetCode()-Affect.MASK_HURT),2.0));
-				msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode()-recovery,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+				SaucerSupport.adjustDamageMessage(msg,recovery*-1);
 			}
 		}
 		return super.okAffect(myHost,msg);

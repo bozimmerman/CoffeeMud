@@ -39,10 +39,7 @@ public class Fighter_Stonebody extends StdAbility
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),2.0));
-			if(regain>(affect.targetCode()-Affect.MASK_HURT))
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),Affect.MASK_HURT,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
-			else
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-regain,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			SaucerSupport.adjustDamageMessage(affect,regain*-1);
 		}
 		return true;
 	}

@@ -93,7 +93,7 @@ public class Spell_WeaknessCold extends Spell
 		   &&(affect.sourceMinor()==Affect.TYP_COLD))
 		{
 			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.5));
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			SaucerSupport.adjustDamageMessage(affect,recovery);
 		}
 		return true;
 	}

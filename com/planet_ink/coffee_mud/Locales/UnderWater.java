@@ -171,16 +171,8 @@ public class UnderWater extends StdRoom implements Drink
 			{
 				int damage=affect.targetCode()-Affect.MASK_HURT;
 				damage=damage/3;
-				if(damage<0) damage=0;
-				affect.modify(affect.source(),
-							  affect.target(),
-							  affect.tool(),
-							  affect.sourceCode(),
-							  affect.sourceMessage(),
-							  Affect.MASK_HURT+damage,
-							  affect.targetMessage(),
-							  affect.othersCode(),
-							  affect.othersMessage());
+				damage=damage*2;
+				SaucerSupport.adjustDamageMessage(affect,damage*-1);
 			}
 		}
 		else

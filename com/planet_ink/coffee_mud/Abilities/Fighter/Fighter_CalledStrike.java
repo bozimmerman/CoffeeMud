@@ -68,13 +68,7 @@ public class Fighter_CalledStrike extends StdAbility
 			if(hurtAmount>=(target.baseState().getHitPoints()/hpReq))
 			{
 				hurtAmount=(target.baseState().getHitPoints()/hpReq);
-				msg.modify(msg.source(),msg.target(),msg.tool(),
-						   msg.sourceCode(),
-						   msg.sourceMessage(),
-						   Affect.MASK_HURT+hurtAmount,
-						   msg.targetMessage(),
-						   msg.othersCode(),
-						   msg.othersMessage());
+				SaucerSupport.adjustDamageMessage(msg,hurtAmount);
 				amputate();
 			}
 			else

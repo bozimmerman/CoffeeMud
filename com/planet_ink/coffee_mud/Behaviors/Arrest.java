@@ -271,6 +271,8 @@ public class Arrest extends StdBehavior
 			if(basicLaw.length()>0) basicCrimes.put("TRESPASSING",getInternalBits(basicLaw));
 			
 			abilityCrimes.clear();
+			otherCrimes.clear();
+			otherBits.clear();
 			for(Enumeration e=laws.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
@@ -304,7 +306,12 @@ public class Arrest extends StdBehavior
 			{
 				ByteArrayOutputStream out=new ByteArrayOutputStream();
 				try{ theLaws.store(out,"");}catch(IOException e){}
-				return out.toString();
+				String s=Util.replaceAll(out.toString(),"\n\r","~");
+				s=Util.replaceAll(s,"\r\n","~");
+				s=Util.replaceAll(s,"\n","~");
+				s=Util.replaceAll(s,"\r","~");
+				s=Util.replaceAll(s,"'","`");
+				return s;
 			}
 			return "";
 		}
@@ -517,12 +524,28 @@ public class Arrest extends StdBehavior
 					{ 
 						data=(Vector)data.firstElement();
 						if((data!=null)&&(data.size()>0))
-							lawprops.load(new ByteArrayInputStream(((String)data.elementAt(3)).getBytes()));
+						{
+							String s=Util.replaceAll((String)data.elementAt(3),"~","\n");
+							s=Util.replaceAll(s,"`","'");
+							lawprops.load(new ByteArrayInputStream(s.getBytes()));
+						}
 						else
 						{
-							lawprops.load(new ByteArrayInputStream(Law.defaultLaw.getBytes()));
-							ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",Law.defaultLaw);
+							String s=Law.defaultLaw;
+							lawprops.load(new ByteArrayInputStream(s.getBytes()));
+							s=Util.replaceAll(s,"\n","~");
+							s=Util.replaceAll(s,"'","`");
+							ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
 						}
+					}
+					else
+					{
+						String s=Law.defaultLaw;
+						lawprops.load(new ByteArrayInputStream(s.getBytes()));
+						s=Util.replaceAll(s,"\n","~");
+						s=Util.replaceAll(s,"\r","~");
+						s=Util.replaceAll(s,"'","`");
+						ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
 					}
 				}
 				if(lawprops.isEmpty())
@@ -539,7 +562,10 @@ public class Arrest extends StdBehavior
 			}
 			loadAttempt=true;
 			laws=new Laws(lawprops,modifiableNames,modifiableLaw);
-			Resources.submitResource("LEGAL-"+lawName,laws);
+			if(lawName.equalsIgnoreCase("custom")&&(what!=null))
+				Resources.submitResource("LEGAL-"+what.name(),laws);
+			else
+				Resources.submitResource("LEGAL-"+lawName,laws);
 		}
 		return laws;
 	}

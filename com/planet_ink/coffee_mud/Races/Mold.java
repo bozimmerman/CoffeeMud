@@ -117,14 +117,7 @@ public class Mold extends StdRace
 					}
 					break;
 				case Affect.TYP_COLD:
-					{
-						dmg=dmg*2;
-						if(dmg>1024) dmg=1000;
-						affect.modify(affect.source(),affect.target(),affect.tool(),
-									  affect.sourceCode(),affect.sourceMessage(),
-									  Affect.MASK_HURT+dmg,affect.targetMessage(),
-									  affect.othersCode(),affect.othersMessage());
-					}
+					SaucerSupport.adjustDamageMessage(affect,dmg);
 					break;
 				}
 			}

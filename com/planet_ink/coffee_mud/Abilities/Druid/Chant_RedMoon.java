@@ -38,11 +38,8 @@ public class Chant_RedMoon extends Chant
 		{
 			MOB mob=(MOB)affect.target();
 			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
-			if(Sense.isGood(mob))
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
-			else
-			if(Sense.isEvil(mob))
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			if(Sense.isEvil(mob)) recovery=recovery*-1;
+			SaucerSupport.adjustDamageMessage(affect,recovery);
 		}
 		return true;
 	}

@@ -567,11 +567,8 @@ public class Play_Symphony extends Play
 		if((msg.sourceMinor()==toDoVal)
 		&&(msg.target()==affected))
 		{
-			int dmg=msg.targetCode()-Affect.MASK_HURT;
-			dmg=dmg-(invokerLevel()/5);
-			if(dmg<0) dmg=0;
-			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),
-					   Affect.MASK_HURT+dmg,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+			int dmg=(invokerLevel()/5);
+			SaucerSupport.adjustDamageMessage(msg,dmg*-1);
 			break;
 		}
 		case CODE_UPDAMAGEPER3:
@@ -582,14 +579,12 @@ public class Play_Symphony extends Play
 		&&(msg.target().fetchAffect(ID())==null)
 		&&(msg.target().fetchAffect(ID()).invoker()!=invoker()))
 		{
-			int dmg=msg.targetCode()-Affect.MASK_HURT;
+			int dmg=0;
 			if(toDoCode==CODE_UPDAMAGEPER3)
 				dmg=dmg+(invokerLevel()/3);
 			else
 				dmg=dmg+(invokerLevel()/5);
-			if(dmg>1023) dmg=1023;
-			msg.modify(msg.source(),msg.target(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),
-					   Affect.MASK_HURT+dmg,msg.targetMessage(),msg.othersCode(),msg.othersMessage());
+			SaucerSupport.adjustDamageMessage(msg,dmg);
 			break;
 		}
 		default:

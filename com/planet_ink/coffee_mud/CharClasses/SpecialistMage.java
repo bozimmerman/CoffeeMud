@@ -89,7 +89,7 @@ public class SpecialistMage extends Mage
 			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
 				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
 			}
 		}
 		else
@@ -102,13 +102,13 @@ public class SpecialistMage extends Mage
 			&&(myChar.charStats().getClassLevel(this)>=5))
 			{
 				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
 			}
 			else
 			if(domain==opposed())
 			{
 				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
-				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+				SaucerSupport.adjustDamageMessage(affect,recovery*-1);
 			}
 		}
 		
