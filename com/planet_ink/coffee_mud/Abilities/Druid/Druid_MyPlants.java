@@ -47,7 +47,7 @@ public class Druid_MyPlants extends StdAbility
 		{
 			Item I=R.fetchItem(i);
 			if((I!=null)
-			&&(I.secretIdentity().equals(mob.name()))
+			&&(I.rawSecretIdentity().equals(mob.name()))
 			&&(I.myOwner()!=null)
 			&&(I.myOwner() instanceof Room))
 			{
@@ -98,16 +98,18 @@ public class Druid_MyPlants extends StdAbility
 				for(int v=0;v<V.size();v++)
 				{
 					Room R=CMMap.getRoom(v);
-					int i=0;
-					Item I=null;
 					if(R!=null)
-					while((I=myPlant(R,mob,i))!=null)
 					{
-						yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
-						yourPlants.append(Util.padRight(I.name(),20)+" ");
-						yourPlants.append(Util.padRight(R.displayText(),40));
-						yourPlants.append("\n\r");
-						i++;
+						int i=0;
+						Item I=myPlant(R,mob,0);
+						while(I!=null)
+						{
+							yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
+							yourPlants.append(Util.padRight(I.name(),20)+" ");
+							yourPlants.append(Util.padRight(R.displayText(),40));
+							yourPlants.append("\n\r");
+							I=myPlant(R,mob,++i);
+						}
 					}
 				}
 				if(V.size()==0)
