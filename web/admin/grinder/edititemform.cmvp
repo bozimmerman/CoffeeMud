@@ -37,6 +37,14 @@
 		}
 		function ChangedLevel()
 		{
+			@if?ItemData?ISARMOR@
+				if(!confirm('Have you already chosen material, level, and worn locations?'))
+					return;
+			@endif@
+			@if?ItemData?ISWEAPON@
+				if(!confirm('Have you already chosen material, level, weapon class, and weight?'))
+					return;
+			@endif@
 			document.AREAEDIT.CHANGEDLEVEL.value="true";
 			ReShow();
 		}
@@ -153,7 +161,12 @@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Class Level:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LEVEL SIZE=5 VALUE="@ItemData?LEVEL@">
-		<INPUT TYPE=BUTTON ONCLICK="ChangedLevel();" NAME=BUTTCHANGEDLEVEL VALUE="ReScore">
+	    @if?ItemData?ISARMOR@
+			<INPUT TYPE=BUTTON ONCLICK="ChangedLevel();" NAME=BUTTCHANGEDLEVEL VALUE="ReScore">
+		@endif@
+	    @if?ItemData?ISWEAPON@
+			<INPUT TYPE=BUTTON ONCLICK="ChangedLevel();" NAME=BUTTCHANGEDLEVEL VALUE="ReScore">
+		@endif@
 	    </TD>
 	</TR>
 	@if?!ItemData?ISCOIN@
