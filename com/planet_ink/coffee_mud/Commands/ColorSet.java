@@ -52,7 +52,7 @@ public class ColorSet extends StdCommand
 						   {"Doors","d"},
 						   {"Items","I"},
 						   {"MOBs","M"},
-						   {"Channel Foreground","q"}
+						   {"Channel Foreground","Q"}
 		};
 		String[][] theColors={{"White","w"},
 							  {"Green","g"},
@@ -65,7 +65,7 @@ public class ColorSet extends StdCommand
 							  {"Dark Green","G"},
 							  {"Dark Blue","B"},
 							  {"Dark Red","R"},
-							  {"Dark Yellow","Y"},
+							  {"Brown","Y"},
 							  {"Dark Cyan","C"},
 							  {"Dark Purple","P"}};
 		String numToChange="!";
