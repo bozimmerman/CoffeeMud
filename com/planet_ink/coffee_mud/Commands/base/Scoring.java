@@ -192,7 +192,7 @@ public class Scoring
 		msg.append("\n\r^HSpells:^? "+getQualifiedAbilities(mob,Ability.SPELL)+"\n\r");
 		msg.append("\n\r^HPrayers:^? "+getQualifiedAbilities(mob,Ability.PRAYER)+"\n\r");
 		msg.append("\n\r^HSongs:^? "+getQualifiedAbilities(mob,Ability.SONG)+"\n\r");
-		msg.append("\n\r^Languages:^? "+getQualifiedAbilities(mob,Ability.LANGUAGE)+"\n\r");
+		msg.append("\n\r^HLanguages:^? "+getQualifiedAbilities(mob,Ability.LANGUAGE)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -216,7 +216,7 @@ public class Scoring
 	public void languages(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^Languages known:^? "+getAbilities(mob,Ability.LANGUAGE)+"\n\r");
+		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.LANGUAGE)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}

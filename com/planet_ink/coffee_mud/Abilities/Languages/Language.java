@@ -139,7 +139,7 @@ public class Language extends StdAbility
 			if(msg!=null)
 			{
 				String smsg=getMsgFromAffect(affect.sourceMessage());
-				int numToMess=(int)Math.round(Util.mul(numChars(smsg),100-profficiency()));
+				int numToMess=(int)Math.round(Util.mul(numChars(msg),Util.div(100-profficiency(),100)));
 				if(numToMess>0)
 					smsg=messChars(smsg,numToMess);
 				StringBuffer newStr=new StringBuffer("");
@@ -226,14 +226,14 @@ public class Language extends StdAbility
 			String msg=this.getMsgFromAffect(affect.sourceMessage());
 			if(msg!=null)
 			{
-				int numToMess=(int)Math.round(Util.mul(numChars(msg),100-profficiency()));
+				int numToMess=(int)Math.round(Util.mul(numChars(msg),Util.div(100-profficiency(),100)));
 				if(numToMess>0)
 					msg=messChars(msg,numToMess);
 				if(affect.amITarget(null)&&(affect.targetMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+"(translated from "+ID()+")"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+ID()+")"));
 				else
 				if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+"(translated from "+ID()+")"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
 			}
 		}
 	}
