@@ -69,10 +69,10 @@ public class Prayer extends StdAbility
 
 		if(holyQuality!=Prayer.HOLY_NEUTRAL)
 		{
-			if((holyQuality==Prayer.HOLY_EVIL)&&(mob.getAlignment()>650))
+			if(holyQuality==Prayer.HOLY_EVIL)
 				mob.setAlignment(mob.getAlignment()-(envStats().level()*10));
 			else
-			if((holyQuality==Prayer.HOLY_GOOD)&&(mob.getAlignment()<350))
+			if(holyQuality==Prayer.HOLY_GOOD)
 				mob.setAlignment(mob.getAlignment()+(envStats().level()*10));
 			if(mob.getAlignment()>1000)
 				mob.setAlignment(1000);
