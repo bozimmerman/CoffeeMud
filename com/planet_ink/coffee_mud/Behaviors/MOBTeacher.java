@@ -9,6 +9,9 @@ public class MOBTeacher extends CombatAbilities
 {
 	public String ID(){return "MOBTeacher";}
 	private MOB myMOB=null;
+	private boolean teachEverything=true;
+	private boolean noCommon=false;
+	
 	public Behavior newInstance()
 	{
 		return new MOBTeacher();
@@ -26,7 +29,8 @@ public class MOBTeacher extends CombatAbilities
 		for(int i=0;i<mob.baseCharStats().numClasses();i++)
 		{
 			CharClass C1=mob.baseCharStats().getMyClass(i);
-			if((C1!=null)&&(mob.baseCharStats().getClassLevel(C1)>0))
+			if((C1!=null)
+			&&(mob.baseCharStats().getClassLevel(C1)>0))
 				mob.baseCharStats().setClassLevel(C1,1);
 		}
 		mob.baseCharStats().setCurrentClass(C);
@@ -41,15 +45,16 @@ public class MOBTeacher extends CombatAbilities
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>0)))
-			   ||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
+			if((((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>0)))
+				||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
+			&&((!noCommon)||((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)))
 				addAbility(mob,A,pct,myAbles);
 		}
 	}
 
 	public void addAbility(MOB mob, Ability A, int pct, Hashtable myAbles)
 	{
-		if(Dice.rollPercentage()<pct)
+		if(Dice.rollPercentage()<=pct)
 		{
 			Ability A2=(Ability)myAbles.get(A.ID());
 			if(A2==null)
@@ -78,37 +83,64 @@ public class MOBTeacher extends CombatAbilities
 		}
 		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
-		Vector V=Util.parse(getParms());
-
+		
 		int pct=100;
-
+		Vector V=null;
 		A=(Ability)CMClass.getAbility(getParms());
 		if(A!=null)
+		{
 			addAbility(myMOB,A,pct,myAbles);
+			teachEverything=false;
+		}
 		else
+			V=Util.parse(getParms());
+
+		if(V!=null)
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			String s=(String)V.elementAt(v);
+			if(s.equalsIgnoreCase("NOCOMMON"))
+			{
+				noCommon=true;
+				V.removeElementAt(v);
+			}
+		}
+		
+		if(V!=null)
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
-
+			if(s.equalsIgnoreCase("NOCOMMON"))
+			{
+				noCommon=true;
+				continue;
+			}
+			else
 			if(s.endsWith("%"))
 			{
 				pct=Util.s_int(s.substring(0,s.length()-1));
 				continue;
 			}
+			
 			A=(Ability)CMClass.getAbility(s);
 			CharClass C=CMClass.getCharClass(s);
 			if(C!=null)
 			{
+				teachEverything=false;
 				setTheCharClass(myMOB,C);
 				classAbles(myMOB,myAbles,pct);
 				myMOB.recoverCharStats();
 			}
 			else
 			if(A!=null)
+			{
 				addAbility(myMOB,A,pct,myAbles);
+				teachEverything=false;
+			}
 		}
 		myMOB.recoverCharStats();
-		if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
+		if((myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
+		&&(teachEverything))
 			classAbles(myMOB,myAbles,pct);
 		int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
 		if(lvl<1) lvl=1;
@@ -125,6 +157,8 @@ public class MOBTeacher extends CombatAbilities
 	{
 		super.setParms(newParms);
 		if(myMOB==null) return;
+		teachEverything=true;
+		noCommon=false;
 		ensureCharClass();
 	}
 

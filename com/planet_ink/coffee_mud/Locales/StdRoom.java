@@ -900,7 +900,7 @@ public class StdRoom
 			if(exit!=null)
 				Say=exit.viewableText(mob, room);
 			else
-			if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+			if((room!=null)&&(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				Say.append(room.roomID()+" via NULL");
 			if(Say.length()>0)
 				mob.tell("^D" + Util.padRight(Dir,5)+":^.^N ^d"+Say+"^.^N");

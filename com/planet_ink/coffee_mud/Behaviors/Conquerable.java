@@ -173,7 +173,8 @@ public class Conquerable extends Arrest
 	{
 		if(holdingClan.length()==0)
 			return;
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		||(CommonStrings.isDisabled("CONQUEST")))
 			return;
 
 		for(int v=0;v<clanItems.size();v++)
@@ -694,7 +695,8 @@ public class Conquerable extends Arrest
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		&&(myArea!=null)
-		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals("")))
+		&&(!CommonStrings.isDisabled("CONQUEST")))
 		{
 			CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			StringBuffer data=new StringBuffer("");

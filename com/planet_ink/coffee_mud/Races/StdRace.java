@@ -82,29 +82,33 @@ public class StdRace implements Race
 
 		MOB myChar=(MOB)myHost;
 		if((msg.amITarget(myChar))
-		&&(fertile())
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Social"))
 		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
 		&&(msg.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>"))
-		&&(Dice.rollPercentage()<10)
-		&&((ID().equals("Human"))
-		   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
-		   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
-		&&(msg.source().charStats().getMyRace().fertile())
-		&&(myChar.location()==msg.source().location())
-		&&(myChar.numWearingHere(Item.ON_LEGS)>0)
-		&&(msg.source().numWearingHere(Item.ON_LEGS)>0)
-		&&(myChar.numWearingHere(Item.ON_WAIST)>0)
-		&&(msg.source().numWearingHere(Item.ON_WAIST)>0))
-		{
-			Ability A=CMClass.getAbility("Pregnancy");
-			if((A!=null)
-			&&(myChar.fetchAbility(A.ID())==null)
-			&&(myChar.fetchEffect(A.ID())==null))
-				A.invoke(msg.source(),myChar,true);
+		&&(myChar.location()==msg.source().location()))
+	   {
+			msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
+			myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
+			if((Dice.rollPercentage()<10)
+			&&(fertile())
+			&&(myChar.numWearingHere(Item.ON_LEGS)>0)
+			&&(msg.source().numWearingHere(Item.ON_LEGS)>0)
+			&&(myChar.numWearingHere(Item.ON_WAIST)>0)
+			&&(msg.source().numWearingHere(Item.ON_WAIST)>0)
+			&&((ID().equals("Human"))
+			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
+			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))
+			&&(msg.source().charStats().getMyRace().fertile()))
+			{
+				Ability A=CMClass.getAbility("Pregnancy");
+				if((A!=null)
+				&&(myChar.fetchAbility(A.ID())==null)
+				&&(myChar.fetchEffect(A.ID())==null))
+					A.invoke(msg.source(),myChar,true);
+			}
 		}
 	}
 	public String arriveStr()

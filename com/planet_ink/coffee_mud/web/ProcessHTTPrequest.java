@@ -366,7 +366,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				break;
 			}
 			else
-			if(s.charAt(x)=='?')
+			if((s.charAt(x)=='?')&&(Character.isLetterOrDigit(s.charAt(x-1))))
 				extend=true;
 			else
 			if(((x-i)>webServer.longestMacro)&&(!extend))
@@ -382,7 +382,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if(s.charAt(i)=='@')
 			{
 				String foundMacro=parseFoundMacro(s,i,true);
-				if(foundMacro!=null)
+				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.equalsIgnoreCase("loop"))
 					   backsToFind++;
@@ -436,7 +436,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if(s.charAt(i)=='@')
 			{
 				String foundMacro=parseFoundMacro(s,i,true);
-				if(foundMacro!=null)
+				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.startsWith("if?"))
 					   endifsToFind++;
@@ -512,7 +512,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if(s.charAt(i)=='@')
 			{
 				String foundMacro=parseFoundMacro(s,i,true);
-				if(foundMacro!=null)
+				if((foundMacro!=null)&&(foundMacro.length()>0))
 				{
 					if(foundMacro.startsWith("if?"))
 					   endifsToFind++;
@@ -549,7 +549,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				if(s.charAt(i)=='@')
 				{
 					String foundMacro=parseFoundMacro(s,i,false);
-					if(foundMacro!=null)
+					if((foundMacro!=null)&&(foundMacro.length()>0))
 					{
 						if(foundMacro.startsWith("if?"))
 						{
