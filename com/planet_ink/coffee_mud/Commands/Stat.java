@@ -65,7 +65,7 @@ public class Stat extends BaseAbleLister
 					 +Util.padRight("CONs",5)
 					 +Util.padRight("HIGH",5)
 					 +Util.padRight("ONLN",5)
-					 +Util.padRight("HRs.",5)
+					 +Util.padRight("AVGM.",5)
 					 +Util.padRight("NEWB",5)
 					 +Util.padRight("DTHs",5)
 					 +Util.padRight("PKDs",5)
@@ -113,7 +113,7 @@ public class Stat extends BaseAbleLister
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
-			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60*60));
+			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60));
 			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
 			table.append(Util.padRight(new IQCalendar(curTime+1).d2DString()+" - "+new IQCalendar(lastCur-1).d2DString(),25)
