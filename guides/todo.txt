@@ -49,6 +49,11 @@
 ! HuntableAnimals that produce pieces of raw meat in inventory when killed.  
 ! Hunt ability for rangers to find them.
 
+BUG! I was able to put the leggings I was wearing into a container!  They are LOST!
+
+QUAL should only list what you DON'T have -- it's too long.
+Also, give everyone fire building.
+
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
 
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana 

@@ -95,10 +95,10 @@ public class Thief_Snatch extends StdAbility
 			{
 				mob.location().send(mob.getVictim(),msg);
 				mob.location().show(mob,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
-				if(hisWeapon.myOwner()==mob.location())
+				if(mob.location().isContent(hisWeapon))
 				{
 					ExternalPlay.get(mob,null,hisWeapon,true);
-					if(hisWeapon.myOwner()==mob)
+					if(mob.isMine(hisWeapon))
 					{
 						msg=new FullMsg(mob,hisWeapon,null,Affect.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
 						if(mob.location().okAffect(msg))

@@ -1,79 +1,87 @@
-,Cooking Utensil ,RESULT,Item 1,,Item 2,,Item 3,,Item 4,,,Complex.,Value,Weight,Nourishment,Quench,Other effects
-BASIC FOOD ITEMS THAT CAN BE GATHERED,,MEAT,,,,,,,,,,1,4,1,200,,
-,,STEAK,BEEF,,,,,,,,,5,6,1,250,,
-,,PORK CHOPS,CHOPS,,,,,,,,,7,8,1,250,,
-,,,ROAST,,,,,,,,,8,10,1,250,,
-,,,RIBS,,,,,,,,,10,12,1,300,,
-,,FISH FILLET,FISH,,,,,,,,,1,5,1,200,,
-,,,FISH STEAK,,,,,,,,,5,8,1,250,,
-,,,FISH FILLET,,,,,,,,,7,10,1,250,,
-,,,SHRIMP,,,,,,,,,8,20,1,250,,
-,,,LOBSTER,,,,,,,,,10,40,1,250,,
-,,,MUTTON,,,,,,,,,5,8,1,200,,
-,,LAMB CHOPS,MUTTON,,,,,,,,,7,10,1,250,,
-,,WARM MILK,MILK,,,,,,,,,1,2,1,,100,
-,,EGGS,,,,,,,,,,1,2,1,50,,
-,,POULTRY,,,,,,,,,,1,3,1,200,,
-,,WHEAT,,,,,,,,,,1,1,1,10,
-,,HOPS,,,,,,,,,,2,2,1,5,
-,,CORN,,,,,,,,,,1,1,1,100,
-,,RICE,,,,,,,,,,1,1,1,100,
-,,CARROTS,,,,,,,,,,1,1,1,100,
-,,TOMATOES,,,,,,,,,,1,1,1,100,
-,,SQUASH,,,,,,,,,,1,1,1,100,
-,,PEPPERS,,,,,,,,,,1,1,1,50,
-,,GREENS,,,,,,,,,,1,1,1,50,
-,,FRUIT,,,,,,,,,,1,2,1,100,
-,,APPLES,,,,,,,,,,1,2,1,100,
-,,BERRIES,,,,,,,,,,1,2,1,100,5
-,,ORANGES,,,,,,,,,,1,2,1,100,10
-,,LEMONS,,,,,,,,,,1,2,1,50,10
-,,COCOA,,,,,,,,,,2,4,1,5,
-,,GRAPES,,,,,,,,,,1,3,1,50,10
-,,OLIVES,,,,,,,,,,1,1,1,10,
-,,POTATOES,,,,,,,,,,1,2,1,100,
-,,COFFEE BEANS,,,,,,,,,,1,2,1,10,
-,,CACTUS,,,,,,,,,,2,2,1,50,20
-,,DATES,,,,,,,,,,2,2,1,50,
-,,SEAWEED,,,,,,,,,,4,1,1,5,
-,BOWL,DOUGH,WHEAT,1,WATER,1,,,,,1,3,2,1,50,
-,PAN,BEEF POT PIE,DOUGH,2,MEAT,1,,,,,1,4,20,1,300,
-,PAN,CHICKEN POT PIE,DOUGH,2,POULTRY,1,,,,,1,4,20,1,300,
-,PAN,TART,DOUGH,2,BERRIES,1,,,,,1,4,25,1,250,
-,PAN,APPLE PIE,DOUGH,2,APPLES,1,,,,,1,4,25,1,250,
-,PAN,LEMON MERINGE PIE,DOUGH,2,LEMONS,1,CREAM,2,,,1,6,30,1,300,
-,PAN,COOKIES,DOUGH,2,COCOA,2,,,,,1,5,30,1,100,
-,PAN,POTATO BREAD,DOUGH,2,POTATO,1,,,,,1,4,3,1,80,
-,PAN,WHEAT BREAD,DOUGH,2,WHEAT,1,,,,,1,4,3,1,100,
-,PAN,BREAD,DOUGH,2,DOUGH,,,,,,0,2,3,1,50
-,PAN,CORN BREAD,DOUGH,2,CORN,1,,,,,1,4,3,1,80
-,PAN,FOCACIA,BREAD,2,OLIVES,1,CHEESE,4,,,1,8,15,1,150
-,PLATE,SANDWICH,BREAD,2,(ANY 3 other items),,,,,,2,4,10,1,250
-,PLATE,WHEAT SANDWICH,WHEAT BREAD,2,(Any 3 foods),,,,,,2,4,10,1,280
-,PLATE,POTATO SANDWICH,POTATO BREAD,2,(Any 3 foods),,,,,,2,4,10,1,280
-,PLATE,BLT,BREAD,2,MEAT,1,GREENS,1,TOMATO,1,1,5,10,1,300
-,PAN,PIZZA,DOUGH,2,TOMATO,1,CHEESE,4,MEAT,1,2,10,15,1,300
-,PAN,TOAST,BREAD,2,,,,,,,0,2,4,1,80
-,PASTA MAKER,PASTA,DOUGH,2,,,,,,,2,4,4,1,100
-,PAN,CHICKEN FETTICINI,PASTA,4,POULTRY,1,,,,,1,4,20,1,300
-,PAN,SPAGHETTI,PASTA,4,TOMATO,1,,,,,1,6,12,1,300
-,PAN,MEATBALL SPAGHETTI,PASTA,4,TOMATO,1,MEAT,1,,,1,7,20,1,350
-,BOWL,SALAD,GREENS,1,TOMATO,1,,,,,0,2,8,1,150
-,BOWL,CEASAR SALAD,GREENS,1,TOMATO,1,EGG,1,,,1,4,10,1,200
-,BOWL,COBB SALAD,GREENS,1,POULTRY,1,OLIVE,1,,,1,4,15,1,200
-,PAN,BAKED SQUASH,SQUASH,1,,,,,,,1,2,3,1,120,,
-,PAN,COOKED CARROTS,CARROTS,1,,,,,,,1,2,3,1,120,,5% chance of see invisible
-,PAN,BAKED POTATO,POTATO,1,,,,,,,1,2,4,1,150,,
-,PAN,STUFFED PEPPERS,PEPPERS,1,STEAK,5,,,,,2,8,30,1,300,,
-,PLATE,DOLMAS,RICE,1,GRAPES,1,,,,,4,6,30,1,200,,
-,PLATE,SUSHI,FISH,1,SEAWEED,4,,,,,5,10,50,1,250,,1% chance of Poison
-,POT,FRENCH FRIES,POTATO,1,,,,,,,3,4,10,1,100,,
-,POT,TAMALES,CORN,1,MEAT,1,,,,,4,6,20,1,300,,
-,SKEWER,STEAK KABOBS,STEAK,5,PEPPERS,1,,,,,2,8,20,1,300,,
-,SKEWER,ROAST DUCK,POULTRY,1,,,,,,,7,8,50,1,300,,
-,PAN,FISH N CHIPS,FISH,1,POTATO,1,,,,,2,4,15,1,300,,
-,POT,CREAM,MILK,,MILK,,,,,,,4,8,1,20,20,
-,CHEESECLOTH,CHEESE,MILK,,MILK,,,,,,,4,12,1,100,,
-,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,
+% steak	FOOD	MEAT
+% steak	FOOD	BEEF
+% steak	FOOD	PORK
+fried %	FOOD	POULTRY
+lamb chops	FOOD	MUTTON
+% fillet	FOOD	FISH
+		WHEAT
+corn on the cob	FOOD	CORN
+fried rice	FOOD	RICE
+roasted carrots	FOOD	CARROTS
+fried tomatos	FOOD	TOMATOES
+baked peppers	FOOD	PEPPERS
+baked greens	FOOD	GREENS
+fruit preserves	FOOD	FRUIT
+baked apples	FOOD	APPLES
+berry preserves	FOOD	BERRIES
+orange preserves	FOOD	ORANGES											
+lemon preserves	FOOD	LEMONS											
+grape jelly	FOOD	GRAPES											
+cooked olives	FOOD	OLIVES											
+baked potato	FOOD	POTATOES											
+cactus preserves	FOOD	CACTUS											
+baked dates	FOOD	DATES											
+fried eggs	FOOD	EGGS											
+		HOPS											
+		COFFEEBEANS											
+chocolate	FOOD	COCOA	1	MILK	1								
+% stew	FOOD	MEAT	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+beef stew	FOOD	BEEF	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+pork stew	FOOD	PORK	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+% stew	FOOD	POULTRY	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+lamb stew	FOOD	MUTTON	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+gumbo	FOOD	FISH	1	WATER	1	GREENS	1								
+pasta	FOOD	WHEAT	1	WATER	1	EGGS	1								
+dough	FOOD	WHEAT	1	WATER	1										
+creamed corn	FOOD	CORN	1	WATER	1										
+rice soup	FOOD	RICE	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+carrot soup	FOOD	CARROTS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+tomato soup	FOOD	TOMATOES	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+pepper soup	FOOD	PEPPERS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+vegetable soup	FOOD	GREENS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
+fruit juice	DRINK	FRUIT	1	WATER	1										
+apple juice	DRINK	APPLES	1	WATER	1										
+berry juice	DRINK	BERRIES	1	WATER	1										
+orange juice	DRINK	ORANGES	1	WATER	1										
+lemonade	DRINK	LEMONS	1	WATER	1										
+grape juice	DRINK	GRAPES	1	WATER	1										
+olive juice	DRINK	OLIVES	1	WATER	1										
+mashed potatos	FOOD	POTATOES	1	WATER	1
+cactus juice	DRINK	CACTUS	1	WATER	1
+prune juice	DRINK	DATES	1	WATER	1
+hard-boiled eggs	FOOD	EGGS	1	WATER	1
+mush	FOOD	HOPS	2	WATER	1
+coffee	DRINK	COFFEEBEANS	1	WATER	1
+cocoa	DRINK	COCOA	1	WATER	1
+hot chocolate	DRINK	COCOA	1	MILK	1
+cheese	FOOD	MILK	5		
+butter	FOOD	MILK	3		
+cream	FOOD	MILK	2		
+% pot poe	FOOD	MEAT	2	Dough	1
+% pot poe	FOOD	BEEF	2	Dough	1
+% pot poe	FOOD	PORK	2	Dough	1
+% pot poe	FOOD	POULTRY	2	Dough	1
+% pot poe	FOOD	MUTTON	2	Dough	1
+% pot poe	FOOD	FISH	2	Dough	1		
+tart	FOOD	BERRIES	2	Dough	1		
+apple pie	FOOD	APPLES	2	Dough	1		
+lemon meringe pie	FOOD	LEMONS	2	Dough	1	Cream	1
+lemon cookies	FOOD	LEMONS	1	Dough	1		
+cookie	FOOD	COCOA	1	Dough	2		
+potato bread	FOOD	POTATOES	1	Dough	2		
+wheat bread	FOOD	WHEAT	1	Dough	2		
+bread	FOOD	Dough	1				
+corn bread	FOOD	CORN	2	Dough	1		
+focacia	FOOD	Bread	1	OLIVES	1	Cheese	1
+pizza	FOOD	Dough	2	TOMATOE	1	Cheese	1
+caesar salad	FOOD	GREENS	2	EGGS	1	OLIVES	-1
+stuffed peppers	FOOD	PEPPERS	1	Cheese 	-1		
+dolmas	FOOD	RICE	2	GRAPES	1		
+sushi	FOOD	FISH	1	SEAWEED	1		
+tamales	FOOD	CORN	1	MEAT	-1	BEEF	-1								
+cheese enchiladas	FOOD	CORN	1	Cheese											
+kabobs	FOOD	PEPPERS	1	MEAT	-1	FISH	-1	BEEF	-1	POULTRY	-1	PORK	-1	MUTTON	-1
+fish n chips	FOOD	FISH	1	POTATO	1										
+% fetticini	FOOD	FISH	1	Pasta	2										
+spaghetti	FOOD	Pasta	2	TOMATOES	1										
+spaghetti n % meatballs	FOOD	Pasta	2	TOMATOE	1	BEEF	1								
