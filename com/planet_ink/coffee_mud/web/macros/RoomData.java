@@ -487,22 +487,30 @@ public class RoomData extends StdWebMacro
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
 				{
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
 				{
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
 				{
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
-				for(Enumeration i=CMClass.items();i.hasMoreElements();)
+				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
 				{
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)

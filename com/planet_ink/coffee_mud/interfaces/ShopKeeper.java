@@ -25,13 +25,15 @@ public interface ShopKeeper extends Environmental
 	public final static int DEAL_LUMBERER=20;
 	public final static int DEAL_METALSMITH=21;
 	public final static int DEAL_STONEYARDER=22;
+	public final static int DEAL_CLANBANKER=23;
 	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
 		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
 		"CASTER","JEWELLERY","POTIONS","BANKER","LAND",
 		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
-	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS"};
+	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
+		"CLAN BANKER"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);

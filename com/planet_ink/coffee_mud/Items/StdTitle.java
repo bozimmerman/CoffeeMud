@@ -225,7 +225,6 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}
-
 			if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
 			&&(msg.source().getClanID().length()>0))
 				A.setLandOwner(msg.source().getClanID());

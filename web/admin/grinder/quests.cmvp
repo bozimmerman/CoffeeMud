@@ -78,7 +78,7 @@
 		Running (@QuestData?REMAINING@ mins remaining)
 	@else@
 		@if?QuestData?WAITING@
-			Running (@QuestData?WAITLEFT@ ticks left)
+			Waiting (@QuestData?WAITLEFT@ ticks left)
 		@else@
 			Loaded
 		@endif@

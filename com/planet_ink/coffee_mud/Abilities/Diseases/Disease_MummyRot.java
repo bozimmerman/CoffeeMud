@@ -10,7 +10,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public String ID() { return "Disease_MummyRot"; }
 	public String name(){ return "Mummy Rot";}
 	public String displayText(){ return "(Mummy Rot)";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}

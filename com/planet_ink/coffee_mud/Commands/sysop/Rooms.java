@@ -49,6 +49,12 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		if(!mob.isASysOp(mob.location()))
+		{
+			mob.tell("Sorry Charlie! Not your room!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()<4)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r");
@@ -121,6 +127,12 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		if(!mob.isASysOp(mob.location()))
+		{
+			mob.tell("Sorry Charlie! Not your room!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 
 		Room thisRoom=null;
 		String RoomID=(String)commands.elementAt(1);
@@ -157,6 +169,14 @@ public class Rooms
 		if(mob.location()==null) return;
 		if(mob.location().getArea()==null) return;
 		Area myArea=mob.location().getArea();
+		
+		if((!mob.isASysOp(null))
+		&&(!myArea.amISubOp(mob.Name())))
+		{
+			mob.tell("Sorry Charlie! Not your area!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 
 		String oldName=myArea.Name();
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
@@ -337,6 +357,12 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		if(!mob.isASysOp(mob.location()))
+		{
+			mob.tell("Sorry Charlie! Not your room!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
@@ -384,7 +410,7 @@ public class Rooms
 			String checkID=Reset.getOpenRoomID(restStr);
 			if(A==null)
 			{
-				if(!mob.isMonster())
+				if((!mob.isMonster())||(!mob.isASysOp(null)))
 				{
 					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
@@ -620,6 +646,12 @@ public class Rooms
 		}
 		if(deadRoom!=null)
 		{
+			if(!mob.isASysOp(deadRoom))
+			{
+				mob.tell("Sorry Charlie! Not your room!");
+				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				return;
+			}
 			if(mob.location()==deadRoom)
 			{
 				mob.tell("You dip! You have to leave this room first!");
@@ -693,6 +725,14 @@ public class Rooms
 		{
 			mob.tell("There is no such area as '"+areaName+"'");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+			return;
+		}
+		Area A=CMMap.getArea(areaName);
+		if((!mob.isASysOp(null))
+		&&(!A.amISubOp(mob.Name())))
+		{
+			mob.tell("Sorry Charlie! Not your area!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.system.*;
 
-public class GoodyBag extends BagOfEndlessness
+public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 {
 	public String ID(){	return "GoodyBag";}
 	boolean alreadyFilled=false;

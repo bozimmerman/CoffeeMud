@@ -18,7 +18,7 @@ import java.util.*;
   * </ul>
   * @author=Jeremy Vyska
   */
-public interface Clan extends Cloneable
+public interface Clan extends Cloneable, Tickable
 {
 
 	public static final int POS_APPLICANT=0;
@@ -28,9 +28,9 @@ public interface Clan extends Cloneable
 	public static final int POS_LEADER=8;
 	public static final int POS_BOSS=16;
 
-	public static final int STATUS_ACTIVE=0;
-	public static final int STATUS_PENDING=1;
-	public static final int STATUS_FADING=2;
+	public static final int CLANSTATUS_ACTIVE=0;
+	public static final int CLANSTATUS_PENDING=1;
+	public static final int CLANSTATUS_FADING=2;
 
 	public static final int TYPE_CLAN=1;
 
@@ -40,7 +40,6 @@ public interface Clan extends Cloneable
 	public static final int SETTING_RESTRICT_ALIGNMENT=8;
 	public static final int SETTING_RESTRICT_GENDER=16;
 
-	public int getAlign();
 	public int getSize();
 
 	public String getName();

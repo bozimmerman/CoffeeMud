@@ -268,13 +268,33 @@ public class MobData extends StdWebMacro
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.className(m.nextElement()));
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(i.nextElement()));
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMeA.addElement(CMClass.className(I));
+				}
 				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(i.nextElement()));
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMeA.addElement(CMClass.className(I));
+				}
 				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(i.nextElement()));
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMeA.addElement(CMClass.className(I));
+				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-					sortMeA.addElement(CMClass.className(i.nextElement()));
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMeA.addElement(CMClass.className(I));
+				}
 				Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 				for(int r=0;r<sortedA.length;r++)
 				{
@@ -560,9 +580,23 @@ public class MobData extends StdWebMacro
 			case 22: // shopkeeper type
 				if((firstTime)&&(M instanceof ShopKeeper))
 					old=""+((ShopKeeper)M).whatIsSold();
+				if(M instanceof Banker)
+				{
+					int r=ShopKeeper.DEAL_BANKER;
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(r==Util.s_int(old))
+						str.append(" SELECTED");
+					str.append(">"+ShopKeeper.SOLDCODES[r]);
+					r=ShopKeeper.DEAL_CLANBANKER;
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(r==Util.s_int(old))
+						str.append(" SELECTED");
+					str.append(">"+ShopKeeper.SOLDCODES[r]);
+				}
+				else
 				for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
 				{
-					if((M instanceof Banker)||(r!=ShopKeeper.DEAL_BANKER))
+					if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==Util.s_int(old))
@@ -698,24 +732,32 @@ public class MobData extends StdWebMacro
 				mposs=new StringBuffer("");
 				Vector sortMe=new Vector();
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
-				{
+				{   
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-				{
+				{   
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-				{
+				{   
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-				{
+				{   
 					Item I=(Item)i.nextElement();
-					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
 				}
 				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)

@@ -32,12 +32,17 @@ public class ExternalSystems implements ExternalSystem
 		return ServiceEngine.deleteTick(E,tickID);
 	}
 
-	public void DBClanFill(String clan, Vector members, Vector roles)
-	{ MOBloader.DBClanFill(clan,members,roles);}
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
-	public void DBUpdateClan(String name, String clan, int role)
+	public void DBUpdateClanMembership(String name, String clan, int role)
 	{ MOBloader.DBUpdateClan(name,clan,role);}
+	public void DBUpdateClan(Clan C)
+	{ ClanLoader.DBUpdate(C);}
+	public void DBDeleteClan(Clan C)
+	{ ClanLoader.DBDelete(C);}
+	public void DBCreateClan(Clan C)
+	{ ClanLoader.DBCreate(C);}
+	
 	public void DBUpdateEmail(MOB mob)
 	{ MOBloader.DBUpdateEmail(mob);}
 	

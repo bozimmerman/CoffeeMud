@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Wand_Advancement extends StdWand
+public class Wand_Advancement extends StdWand implements ArchonOnly
 {
 	public String ID(){	return "Wand_Advancement";}
 	public Wand_Advancement()

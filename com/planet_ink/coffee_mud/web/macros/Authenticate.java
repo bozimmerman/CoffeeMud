@@ -27,6 +27,7 @@ public class Authenticate extends StdWebMacro
 		}
 	}
 
+	
 	public static MOB getMOB(String last)
 	{
 		if(!ExternalPlay.getSystemStarted())

@@ -1780,9 +1780,21 @@ public class Generic
 		StringBuffer buf=new StringBuffer("");
 		StringBuffer codes=new StringBuffer("");
 		String codeStr="0123456789ABCDEFGHIJKLMNOP";
+		if(E instanceof Banker)
+		{
+			int r=ShopKeeper.DEAL_BANKER;
+			char c=codeStr.charAt(r);
+			codes.append(c);
+			buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+			r=ShopKeeper.DEAL_CLANBANKER;
+			c=codeStr.charAt(r);
+			codes.append(c);
+			buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
+		}
+		else
 		for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
 		{
-			if((E instanceof Banker)||(r!=ShopKeeper.DEAL_BANKER))
+			if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
 			{
 				char c=codeStr.charAt(r);
 				codes.append(c);

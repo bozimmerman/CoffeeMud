@@ -227,6 +227,12 @@ public class Scoring
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");
+		if((mob.getClanID()!=null)&&(mob.getClanID().length()>0)&&(Clans.getClan(mob.getClanID())!=null))
+		{
+			String role=Clans.getRoleName(mob.getClanRole(),true,false);
+			role=Util.startWithAorAn(role);
+			msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^? Clan.\n\r");
+		}
 		msg.append("\n\rYour stats are: \n\r^!"+mob.charStats().getStats(mob.charStats().getCurrentClass().maxStat())+"^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
@@ -409,7 +415,12 @@ public class Scoring
 		}
 
 		if(msg.length()==0)
-			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+		{
+			if(qual.length()>0)
+				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+			else
+				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+		}
 		else
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());

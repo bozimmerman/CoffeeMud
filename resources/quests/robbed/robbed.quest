@@ -1,9 +1,9 @@
 #set the quest name
 set name robbed
 
-# this one runs every 240-360 mins
+# this one runs every 240-480 mins
 set wait 3600
-set interval 1800
+set interval 3600
 
 set area Midgaard
 # inform the quest that it occurs in Midgaard

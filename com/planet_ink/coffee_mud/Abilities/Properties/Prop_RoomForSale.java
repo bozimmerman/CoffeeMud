@@ -164,7 +164,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			if(!confirmedUser)
 			{
 				confirmedUser=true;
-				if(!ExternalPlay.DBUserSearch(null,landOwner()))
+				if((!ExternalPlay.DBUserSearch(null,landOwner()))
+				&&(Clans.getClan(landOwner())==null))
 				{
 					T.setLandOwner("");
 					updateLot(R,T);
@@ -175,7 +176,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			int x=R.description().indexOf(theStr);
 			if(x>=0)
 			{
-				R.setDescription(R.description().substring(0,x)+R.description().substring(x+1));
+				R.setDescription(R.description().substring(0,x));
 				ExternalPlay.DBUpdateRoom(R);
 			}
 

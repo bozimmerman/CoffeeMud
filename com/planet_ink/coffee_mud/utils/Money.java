@@ -143,6 +143,7 @@ public class Money
 
 	public static Item giveMoney(MOB banker, MOB customer, int value)
 	{
+		if(banker==null) banker=customer;
 		Container changeBag=(Container)CMClass.getItem("GenContainer");
 		changeBag.setCapacity(0);
 		changeBag.baseEnvStats().setWeight(1);

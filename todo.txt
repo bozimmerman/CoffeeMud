@@ -1,9 +1,8 @@
 Archons Guide updates
-	Finish documenting behaviors/affects for items, mobs, etc. 
+	Finish documenting behaviors/affects for mobs, etc. 
 	shopkeepers/bankers should mention change bags
-	tools of the archons trade: goodybags, ingredients, wandarchon, archonstaff
 	money system explanation?
-	How to use Grids/Mazes (goto and so forth)
+	explain the clan system under stdclanmaster/genclanmaster
 	How to create Homes
 	How to create Inns
 	How to create Deities (and sample ones)

@@ -10,7 +10,7 @@ public class Disease_Carrier extends Disease
 	public String ID() { return "Disease_Carrier"; }
 	public String name(){ return "Carrier of Disease";}
 	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
+	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}

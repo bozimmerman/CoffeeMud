@@ -297,10 +297,17 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOB(mob);
 	}
-	public static void DBClanFill(String clan, Vector members, Vector roles)
-	{  if(sysPlayer!=null) sysPlayer.DBClanFill(clan,members,roles);}
-	public static void DBUpdateClan(String name, String clan, int role)
-	{  if(sysPlayer!=null) sysPlayer.DBUpdateClan(name,clan,role);}
+	
+	public static void DBClanFill(String clan, Vector members, Vector roles, Vector dates)
+	{  if(sysPlayer!=null) sysPlayer.DBClanFill(clan,members,roles,dates);}
+	public static void DBUpdateClanMembership(String name, String clan, int role)
+	{  if(sysPlayer!=null) sysPlayer.DBUpdateClanMembership(name,clan,role);}
+	public static void DBUpdateClan(Clan C)
+	{  if(sysPlayer!=null) sysPlayer.DBUpdateClan(C);}
+	public static void DBDeleteClan(Clan C)
+	{  if(sysPlayer!=null) sysPlayer.DBDeleteClan(C);}
+	public static void DBCreateClan(Clan C)
+	{  if(sysPlayer!=null) sysPlayer.DBCreateClan(C);}
 	public static void DBUpdateEmail(MOB mob)
 	{  if(sysPlayer!=null) sysPlayer.DBUpdateEmail(mob);}
 	

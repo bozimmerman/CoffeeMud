@@ -196,6 +196,11 @@ public class MOBloader
 			mob.baseCharStats().getMyRace().startRacing(mob,true);
 		}
 
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		
 		if(CMMap.getPlayer(mob.Name())==null)
 			CMMap.addPlayer(mob);
 	}
@@ -402,12 +407,7 @@ public class MOBloader
 		}
 	}
 
-	public static void DBClanFill(String clan, Vector members, Vector roles)
-	{
-		Vector dateJunk=new Vector();
-		DBClanFill(clan,members,roles,dateJunk);
-	}
-
+	
 	public static void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{
 		DBConnection D=null;

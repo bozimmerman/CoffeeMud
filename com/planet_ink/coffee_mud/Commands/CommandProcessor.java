@@ -196,23 +196,14 @@ public class CommandProcessor
 		case CommandSet.CLANASSIGN:
 			ClanCommands.clanassign(mob,commands);
 			break;
-		case CommandSet.CLANBALANCE:
-			ClanCommands.clanBalance(mob,commands);
-			break;
 		case CommandSet.CLANCREATE:
 			ClanCommands.clanCreate(mob,commands);
-			break;
-		case CommandSet.CLANDEPOSIT:
-			ClanCommands.clanDeposit(mob,commands);
 			break;
 		case CommandSet.CLANDETAILS:
 			ClanCommands.clandetails(mob,commands);
 			break;
-		case CommandSet.CLANDONATE:
-			ClanCommands.clanDonate(mob,commands);
-			break;
 		case CommandSet.CLANDONATESET:
-			ClanCommands.clanDonate(mob,commands);
+			ClanCommands.clandonateset(mob,commands);
 			break;
 		case CommandSet.CLANEXILE:
 			ClanCommands.clanexile(mob,commands);
@@ -223,14 +214,14 @@ public class CommandProcessor
 		case CommandSet.CLANLIST:
 			ClanCommands.clanlist(mob,commands);
 			break;
+		case CommandSet.CLANPREMISE:
+			ClanCommands.clanpremise(mob,commands);
+			break;
 		case CommandSet.CLANREJECT:
 			ClanCommands.clanreject(mob,commands);
 			break;
 		case CommandSet.CLANRESIGN:
 			ClanCommands.clanresign(mob,commands);
-			break;
-		case CommandSet.CLANWITHDRAW:
-			ClanCommands.clanWithdraw(mob,commands);
 			break;
 		case CommandSet.CONSIDER:
 			SocialProcessor.consider(mob,commands);

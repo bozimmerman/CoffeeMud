@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 
-public class ArchonStaff extends Staff implements Wand
+public class ArchonStaff extends Staff implements Wand, ArchonOnly
 {
 	public String ID(){	return "ArchonStaff";}
 	private String secretWord="REFRESH, LEVEL UP, BURN!!";

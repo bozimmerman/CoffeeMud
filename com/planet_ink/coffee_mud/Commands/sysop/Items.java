@@ -162,9 +162,8 @@ public class Items
 			return;
 		}
 
-		if(((newItem.ID().toUpperCase().indexOf("ARCHON")>=0)
-			||(newItem.Name().toUpperCase().indexOf("ARCHON")>=0))
-		   &&(!mob.isASysOp(null)))
+		if((newItem instanceof ArchonOnly)
+		&&(!mob.isASysOp(null)))
 		{
 			mob.tell("NO!");
 			return;

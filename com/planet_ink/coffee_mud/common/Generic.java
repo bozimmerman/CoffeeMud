@@ -1318,6 +1318,22 @@ public class Generic
 				E.delBehavior(behav);
 		}
 
+		if(E instanceof MOB)
+		{
+			MOB mob=(MOB)E;
+			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
+			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
+			{
+				Race R=CMClass.getRace(raceID);
+				if(R!=null)
+				{
+					mob.baseCharStats().setMyRace(R);
+					R.startRacing(mob,false);
+				}
+			}
+		}
+		
 		setEnvProperties(E,buf);
 
 		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
@@ -1398,18 +1414,6 @@ public class Generic
 			MOB mob=(MOB)E;
 			mob.setAlignment(XMLManager.getIntFromPieces(buf,"ALIG"));
 			mob.setMoney(XMLManager.getIntFromPieces(buf,"MONEY"));
-			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
-
-			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
-			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
-			{
-				Race R=CMClass.getRace(raceID);
-				if(R!=null)
-				{
-					mob.baseCharStats().setMyRace(R);
-					R.startRacing(mob,true);
-				}
-			}
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
 

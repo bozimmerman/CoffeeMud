@@ -43,8 +43,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return new StdBanker();
 	}
 
-	public int whatIsSold(){return ShopKeeper.DEAL_BANKER;}
-	public void setWhatIsSold(int newSellCode){whatISell=ShopKeeper.DEAL_BANKER;}
+	public int whatIsSold(){return whatISell;}
+	public void setWhatIsSold(int newSellCode){
+		if(newSellCode!=ShopKeeper.DEAL_CLANBANKER)
+			whatISell=ShopKeeper.DEAL_BANKER;
+		else
+			whatISell=ShopKeeper.DEAL_CLANBANKER;
+	}
 	public String prejudiceFactors(){return "";}
 	public void setPrejudiceFactors(String factors){}
 
@@ -249,7 +254,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected int getBalance(MOB mob)
 	{
-		Item old=findDepositInventory(mob.Name(),""+Integer.MAX_VALUE);
+		Item old=null;
+		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+			old=findDepositInventory(mob.getClanID(),""+Integer.MAX_VALUE);
+		else
+			old=findDepositInventory(mob.Name(),""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
 			return ((Coins)old).numberOfCoins();
 		return 0;
@@ -257,7 +266,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected int minBalance(MOB mob)
 	{
-		Vector V=getDepositedItems(mob.Name());
+		Vector V=null;
+		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+			V=getDepositedItems(mob.getClanID());
+		else
+			V=getDepositedItems(mob.Name());
 		int min=0;
 		for(int v=0;v<V.size();v++)
 		{
@@ -289,24 +302,42 @@ public class StdBanker extends StdShopKeeper implements Banker
 						Coins older=(Coins)affect.tool();
 						Coins item=(Coins)CMClass.getItem("StdCoins");
 						int newNum=older.numberOfCoins();
-						Item old=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
+						Item old=null;
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							old=findDepositInventory(affect.source().getClanID(),""+Integer.MAX_VALUE);
+						else
+							old=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
 						item.setNumberOfCoins(newNum);
 						if(old!=null)
-							delDepositInventory(affect.source().Name(),old);
-						addDepositInventory(affect.source().Name(),item);
+						{
+							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+								delDepositInventory(affect.source().getClanID(),old);
+							else
+								delDepositInventory(affect.source().Name(),old);
+						}
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							addDepositInventory(affect.source().getClanID(),item);
+						else
+							addDepositInventory(affect.source().Name(),item);
 						if(affect.targetMinor()==Affect.TYP_GIVE)
 						{
 							setMoney(getMoney()-((Coins)affect.tool()).numberOfCoins());
 							if(getMoney()<0) setMoney(0);
 							recoverEnvStats();
 						}
-					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						    ExternalPlay.quickSay(this,mob,"Ok, Clan "+mob.getClanID()+" now has a balance of "+getBalance(affect.source())+" gold coins.",true,false);
+						else
+						    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
 					}
 					else
 					{
-						addDepositInventory(affect.source().Name(),(Item)affect.tool());
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							addDepositInventory(affect.source().getClanID(),(Item)affect.tool());
+						else
+							addDepositInventory(affect.source().Name(),(Item)affect.tool());
 					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",true,false);
 						((Item)affect.tool()).destroy();
 					}
@@ -317,23 +348,41 @@ public class StdBanker extends StdShopKeeper implements Banker
 					Item old=(Item)affect.tool();
 					if(old instanceof Coins)
 					{
-						Item item=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
+						Item item=null;
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							item=findDepositInventory(affect.source().getClanID(),""+Integer.MAX_VALUE);
+						else
+							item=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
 						if((item!=null)&&(item instanceof Coins))
 						{
 							Coins coins=(Coins)item;
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
-							delDepositInventory(affect.source().Name(),item);
+							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+								delDepositInventory(affect.source().getClanID(),item);
+							else
+								delDepositInventory(affect.source().Name(),item);
 							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,affect.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
-								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",true,false);
+								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+									ExternalPlay.quickSay(this,mob,"I have closed the account for Clan "+mob.getClanID()+". Thanks for your business.",true,false);
+								else
+									ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",true,false);
 								return;
 							}
 							else
 							{
-								addDepositInventory(affect.source().Name(),item);
-							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+								{
+									addDepositInventory(affect.source().getClanID(),item);
+								    ExternalPlay.quickSay(this,mob,"Ok, Clan "+affect.source().getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								}
+								else
+								{
+									addDepositInventory(affect.source().Name(),item);
+								    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								}
 							}
 						}
 						else
@@ -341,7 +390,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						delDepositInventory(affect.source().Name(),old);
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							delDepositInventory(affect.source().getClanID(),old);
+						else
+							delDepositInventory(affect.source().Name(),old);
 					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
@@ -363,7 +415,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case Affect.TYP_LIST:
 			{
 				super.affect(myHost,affect);
-				Vector V=getDepositedItems(mob.Name());
+				Vector V=null;
+				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					V=getDepositedItems(mob.getClanID());
+				else
+					V=getDepositedItems(mob.Name());
 				StringBuffer msg=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
 				msg.append(c+c+"^.^N\n\r");
@@ -393,7 +449,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 				else
 					msg.append("\n\r\n\r");
 				if(coins!=null)
-					msg.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
+				{
+					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						msg.append("Clan "+mob.getClanID()+" has a balance of ^H"+coins.numberOfCoins()+"^? gold coins.");
+					else
+						msg.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
+				}
 				if(coinInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(coinInterest),100.0);
@@ -434,6 +495,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(affect.tool()==null) return false;
 					if(affect.tool() instanceof Coins)
 						return true;
+					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
+					&&((affect.source().getClanID().length()==0)
+					  ||(Clans.getClan(affect.source().getClanID())==null)))
+					{
+						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						return false;
+					}
 					if(!(affect.tool() instanceof Item))
 					{
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
@@ -443,20 +511,40 @@ public class StdBanker extends StdShopKeeper implements Banker
 					int minbalance=minBalance(mob)+(((Item)affect.tool()).value()/2);
 					if(balance<minbalance)
 					{
-						ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
+						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							ExternalPlay.quickSay(this,mob,"Clan "+affect.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
+						else
+							ExternalPlay.quickSay(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
 						return false;
 					}
 				}
 				return true;
 			case Affect.TYP_WITHDRAW:
 				{
+					String thename=affect.source().Name();
+					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					{
+						thename=affect.source().getClanID();
+						if((affect.source().getClanID().length()==0)
+						  ||(Clans.getClan(affect.source().getClanID())==null))
+						{
+							ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+							return false;
+						}
+						if((affect.source().getClanRole()!=Clans.POS_BOSS)
+						&&(affect.source().getClanRole()!=Clans.POS_TREASURER))
+						{
+							ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+							return false;
+						}
+					}
 					if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
 					{
 						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
 					if((!(affect.tool() instanceof Coins))
-					&&(findDepositInventory(affect.source().Name(),affect.tool().Name())==null))
+					&&(findDepositInventory(thename,affect.tool().Name())==null))
 					{
 						ExternalPlay.quickSay(this,mob,"You want WHAT?",true,false);
 						return false;
@@ -467,7 +555,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						if(((Coins)affect.tool()).numberOfCoins()>balance)
 						{
-							ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
+							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+								ExternalPlay.quickSay(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
+							else
+								ExternalPlay.quickSay(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;
@@ -490,9 +581,30 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okAffect(myHost,affect);
 			case Affect.TYP_LIST:
 			{
-				if(numberDeposited(affect.source().Name())==0)
+				String thename=affect.source().Name();
+				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 				{
-					StringBuffer msg=new StringBuffer("You don't have an account with us, I'm afraid.");
+					thename=affect.source().getClanID();
+					if((affect.source().getClanID().length()==0)
+					  ||(Clans.getClan(affect.source().getClanID())==null))
+					{
+						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
+						return false;
+					}
+					if((affect.source().getClanRole()!=Clans.POS_BOSS)
+					&&(affect.source().getClanRole()!=Clans.POS_TREASURER))
+					{
+						ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
+						return false;
+					}
+				}
+				if(numberDeposited(thename)==0)
+				{
+					StringBuffer msg=new StringBuffer("");
+					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						msg.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
+					else
+						msg.append("You don't have an account with us, I'm afraid.");
 					if(coinInterest!=0.0)
 					{
 						double cci=Util.mul(Math.abs(coinInterest),100.0);

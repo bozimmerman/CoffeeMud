@@ -22,6 +22,7 @@ public interface Host
 	public static final int EXIT_BEHAVIOR_TICK=11;
 	public final static int SPELL_AFFECT=12;
 	public final static int QUEST_TICK=13;
+	public final static int CLAN_TICK=14;
 	
 	public final static int MAX_TICK_CLIENTS=32;
 	

@@ -314,13 +314,15 @@ public class Channels
 		FullMsg msg=null;
 		if(systemMsg)
 		{
-		  String str="["+channelName+"] '"+message+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
+			String str="["+channelName+"] '"+message+"'^?^.";
+			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
+				str=" "+str;
+			msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		else
 		{
-		  String str=" "+channelName+"(S) '"+message+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
+			String str=" "+channelName+"(S) '"+message+"'^?^.";
+			msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		if((mob==talker)||(mob.location().okAffect(mob,msg)))
 		{

@@ -164,6 +164,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Precious stones and jewellery";
 		case DEAL_BANKER:
 			return "My services as a Banker";
+		case DEAL_CLANBANKER:
+			return "My services as a Banker to Clans";
 		case DEAL_LANDSELLER:
 			return "Real estate";
 		case DEAL_CLANDSELLER:
@@ -491,6 +493,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							return false;
 						}
 					}
+					if((affect.tool() instanceof LandTitle)
+					&&(whatISell==ShopKeeper.DEAL_CLANDSELLER))
+					{
+						if(mob.getClanID().length()==0)
+						{
+							ExternalPlay.quickSay(this,mob,"I only sell land to clans.",true,false);
+							return false;
+						}
+					}
 					if(affect.tool() instanceof MOB)
 					{
 						if(affect.source().numFollowers()>=affect.source().maxFollowers())
@@ -809,7 +820,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
 					{
-						if(whatISell!=DEAL_BANKER)
+						if((whatISell!=DEAL_BANKER)
+						&&(whatISell!=DEAL_CLANBANKER))
 							ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
@@ -943,7 +955,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	private Vector addRealEstate(Vector V,MOB mob)
 	{
-		if(((whatISell==DEAL_LANDSELLER)||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
+		if(((whatISell==DEAL_LANDSELLER)
+			||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
 		&&(getStartRoom()!=null)
 		&&(getStartRoom().getArea()!=null))
 		{

@@ -56,7 +56,7 @@ public class Language extends StdAbility
 	}
 	protected String translate(String word)
 	{
-		if(translationHash().contains(word.toUpperCase()))
+		if(translationHash().containsKey(word.toUpperCase()))
 			return fixCase(word,(String)translationHash().get(word.toUpperCase()));
 		if(translationVector().size()>0)
 		{

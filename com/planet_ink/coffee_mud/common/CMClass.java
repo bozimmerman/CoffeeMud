@@ -18,7 +18,6 @@ public class CMClass extends ClassLoader
 	private static Vector exits=new Vector();
 	private static Vector items=new Vector();
 	private static Vector behaviors=new Vector();
-	private static Vector clantypes=new Vector();
 	private static Vector weapons=new Vector();
 	private static Vector armor=new Vector();
 	private static Vector miscMagic=new Vector();
@@ -53,7 +52,6 @@ public class CMClass extends ClassLoader
 	public static Enumeration locales(){return locales.elements();}
 	public static Enumeration exits(){return exits.elements();}
 	public static Enumeration behaviors(){return behaviors.elements();}
-	public static Enumeration clanTypes(){return clantypes.elements();}
 	public static Enumeration items(){return items.elements();}
 	public static Enumeration weapons(){return weapons.elements();}
 	public static Enumeration armor(){return armor.elements();}
@@ -100,7 +98,6 @@ public class CMClass extends ClassLoader
 		if(exits.contains(O)){ exits.removeElement(O); return true;}
 		if(items.contains(O)){ items.removeElement(O); return true;}
 		if(behaviors.contains(O)){ behaviors.removeElement(O); return true;}
-		if(clantypes.contains(O)){ clantypes.removeElement(O); return true;}
 		if(weapons.contains(O)){ weapons.removeElement(O); return true;}
 		if(armor.contains(O)){ armor.removeElement(O); return true;}
 		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
@@ -131,7 +128,7 @@ public class CMClass extends ClassLoader
 		case 5: set=exits; break;
 		case 6: set=items; break;
 		case 7: set=behaviors; break;
-		case 8: set=clantypes; break;
+		case 8: break;
 		case 9: set=weapons; break;
 		case 10: set=armor; break;
 		case 11: set=miscMagic; break;
@@ -151,7 +148,7 @@ public class CMClass extends ClassLoader
 		case 5: exits=new Vector(new TreeSet(exits)); break;
 		case 6: items=new Vector(new TreeSet(items)); break;
 		case 7: behaviors=new Vector(new TreeSet(behaviors)); break;
-		case 8: clantypes=new Vector(new TreeSet(clantypes)); break;
+		case 8: break;
 		case 9: weapons=new Vector(new TreeSet(weapons)); break;
 		case 10: armor=new Vector(new TreeSet(armor)); break;
 		case 11: miscMagic=new Vector(new TreeSet(miscMagic)); break;
@@ -170,7 +167,6 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=getGlobal(exits,calledThis);
 		if(thisItem==null) thisItem=getGlobal(items,calledThis);
 		if(thisItem==null) thisItem=getGlobal(behaviors,calledThis);
-		if(thisItem==null) thisItem=getGlobal(clantypes,calledThis);
 		if(thisItem==null) thisItem=getGlobal(weapons,calledThis);
 		if(thisItem==null) thisItem=getGlobal(armor,calledThis);
 		if(thisItem==null) thisItem=getGlobal(miscMagic,calledThis);
@@ -246,13 +242,6 @@ public class CMClass extends ClassLoader
 		if(B!=null) 
 			B=B.newInstance();
 		return B;
-	}
-	public static Clan getClan(String calledThis)
-	{
-		Clan C=(Clan)getGlobal(clantypes,calledThis);
-		if(C!=null) 
-			C=C.newInstance();
-		return C;
 	}
 	public static Room getLocale(String calledThis)
 	{
@@ -491,8 +480,6 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 		
-		clantypes=loadVectorListToObj(prefix+"Clans"+File.separatorChar,page.getStr("CLANTYPES"),"com.planet_ink.coffee_mud.interfaces.Clan");
-		
 		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		if(cmds.size()>1)
 		{
@@ -554,7 +541,6 @@ public class CMClass extends ClassLoader
 		weapons=new Vector();
 		armor=new Vector();
 		miscMagic=new Vector();
-		clantypes=new Vector();
 		areaTypes=new Vector();
 	}
 

@@ -17,8 +17,8 @@ import com.planet_ink.coffee_mud.web.*;
 
 public class MUD extends Thread implements Host
 {
-	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)8.9;
+	public static final float HOST_VERSION_MAJOR=(float)4.0;
+	public static final float HOST_VERSION_MINOR=(float)0.0;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -202,6 +202,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,0);
 		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,1);
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_CLANCOST,page.getStr("CLANCOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST,page.getStr("SKILLPRACCOST"));
@@ -560,7 +561,9 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","All users saved.");
 		if(S!=null)S.println("Database connections closed.");
 
+		offlineReason="Shutting down...Clearing socials, clans, channels";
 		Socials.clearAllSocials();
+		Clans.shutdownClans();
 		Channels.unloadChannels();
 
 		Help.unloadHelpFile(null);

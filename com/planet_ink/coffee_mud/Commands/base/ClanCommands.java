@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class ClanCommands
 {
 	private ClanCommands(){}
+	
 	public static boolean clanaccept(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
@@ -35,6 +36,7 @@ public class ClanCommands
 						mob.tell("There are no applicants to your "+C.typeName()+".");
 						return false;
 					}
+					qual=Util.capitalize(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q)).equalsIgnoreCase(qual))
@@ -44,34 +46,22 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M= CMMap.getPlayer(Util.capitalize(qual));
+						MOB M= Clans.getMOB(qual);
 						if(M==null)
 						{
-							M=CMClass.getMOB("StdMOB");
-							M.setName(qual);
-							if(ExternalPlay.DBUserSearch(null,qual))
-							{
-								ExternalPlay.DBReadMOB(M);
-								ExternalPlay.DBReadFollowers(M,false);
-								clanAnnounce(mob,"New Member: "+mob.Name());
-								ExternalPlay.DBUpdateClan(qual, mob.getClanID(), Clan.POS_MEMBER);
-								mob.tell(M.Name()+" has been accepted into to "+C.typeName()+" '"+C.ID()+"'.");
-								addClanHomeSpell(M);
-								return false;
-							}
-							else
-							{
-								mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
-								return false;
-							}
+							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
+							return false;
 						}
 						else
 						{
-							clanAnnounce(mob,"New Member: "+mob.Name());
-							ExternalPlay.DBUpdateClan(qual, mob.getClanID(), Clan.POS_MEMBER);
+							clanAnnounce(mob,"New Member of "+C.name()+": "+M.Name());
+							M.setClanID(mob.getClanID());
+							M.setClanRole(Clan.POS_MEMBER);
+							ExternalPlay.DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
 							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
 							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
 							addClanHomeSpell(M);
+							ExternalPlay.DBUpdateMOB(M);
 							return false;
 						}
 					}
@@ -108,7 +98,9 @@ public class ClanCommands
 					if((SaucerSupport.zapperCheck(C.getAcceptanceSettings(),mob))
 					&&(SaucerSupport.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob)))
 					{
-						ExternalPlay.DBUpdateClan(mob.Name(), C.ID(), Clan.POS_APPLICANT);
+						ExternalPlay.DBUpdateClanMembership(mob.Name(), C.ID(), Clan.POS_APPLICANT);
+						mob.setClanID(C.ID());
+						mob.setClanRole(Clan.POS_APPLICANT);
 						Vector msgVector=new Vector();
 						msgVector.addElement(new String("CLANTALK"));
 						msgVector.addElement(new String("New Applicant: "+mob.Name()));
@@ -139,12 +131,16 @@ public class ClanCommands
 
 	public static boolean clanassign(MOB mob, Vector commands)
 	{
+		if(commands.size()<3)
+		{
+			mob.tell("You must specify the members name, and a new role.");
+			return false;
+		}
 		String qual=((String)commands.elementAt(1)).toUpperCase();
-		String pos=((String)commands.elementAt(2)).toUpperCase();
+		String pos=Util.combine(commands,2).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		Clan C=null;
 		boolean found=false;
-		int newPos;
 		if(qual.length()>0)
 		{
 			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
@@ -167,6 +163,13 @@ public class ClanCommands
 						mob.tell("There are no members in your "+C.typeName()+"");
 						return false;
 					}
+					int newPos=getRoleFromName(pos);
+					if((newPos==0)&&(!pos.equalsIgnoreCase("Applicant")))
+					{
+						mob.tell("'"+pos+"' is not a valid role.");
+						return false;
+					}
+					qual=Util.capitalize(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q)).equalsIgnoreCase(qual))
@@ -176,28 +179,19 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=CMMap.getPlayer(Util.capitalize(qual));
+						MOB M=Clans.getMOB(qual);
 						if(M==null)
 						{
-							M=CMClass.getMOB("StdMOB");
-							M.setName(qual);
-							if(ExternalPlay.DBReadUserOnly(M))
-							{
-								newPos=changeRole(M,C,pos);
-								mob.tell(M.Name()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
-								return false;
-							}
-							else
-							{
-								mob.tell(qual+" was not found.  Could not change "+C.typeName()+" role.");
-								return false;
-							}
+							mob.tell(qual+" was not found.  Could not change "+C.typeName()+" role.");
+							return false;
 						}
 						else
 						{
-							newPos=changeRole(M,C,pos);
-							mob.tell(M.Name()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
-							M.tell("You have been assigned to be a"+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
+							clanAnnounce(mob,M.Name()+" changed from "+Clans.getRoleName(M.getClanRole(),true,false)+" to "+Clans.getRoleName(newPos,true,false));
+							M.setClanRole(newPos);
+							ExternalPlay.DBUpdateClanMembership(M.Name(), C.ID(), newPos);
+							mob.tell(M.Name()+" has been assigned to be "+Util.startWithAorAn(Clans.getRoleName(newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell("You have been assigned to be "+Util.startWithAorAn(Clans.getRoleName(newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
 							return false;
 						}
 					}
@@ -220,7 +214,7 @@ public class ClanCommands
 		return false;
 	}
 
-	private static int changeRole(MOB mob, Clan clan, String position)
+	private static int getRoleFromName(String position)
 	{
 		int newPos=0;
 		if(position.equalsIgnoreCase("BOSS"))
@@ -244,17 +238,15 @@ public class ClanCommands
 		}
 		else
 		{
-			mob.tell("Unknown role '"+position+"'");
 			return 0;
 		}
-		clanAnnounce(mob,mob.Name()+" changed from "+Clans.getRoleName(mob.getClanRole(),true,false)+" to "+Clans.getRoleName(newPos,true,false));
-		ExternalPlay.DBUpdateClan(mob.Name(), clan.ID(), newPos);
 		return newPos;
 	}
 
 	public static boolean clandetails(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
+		if(qual.length()==0) qual=mob.getClanID();
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)
 		{
@@ -318,34 +310,22 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=CMMap.getPlayer(Util.capitalize(qual));
+						MOB M=Clans.getMOB(qual);
 						if(M==null)
 						{
-							M=CMClass.getMOB("StdMOB");
-							M.setName(qual);
-							if(ExternalPlay.DBUserSearch(null,qual))
-							{
-								ExternalPlay.DBReadMOB(M);
-								ExternalPlay.DBReadFollowers(M,false);
-								clanAnnounce(mob,"Member exiled: "+mob.Name());
-								ExternalPlay.DBUpdateClan(qual, "", 0);
-								mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
-								delClanHomeSpell(M);
-								return false;
-							}
-							else
-							{
-								mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
-								return false;
-							}
+							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
+							return false;
 						}
 						else
 						{
-							clanAnnounce(mob,"Member exiled: "+mob.Name());
-							ExternalPlay.DBUpdateClan(qual, "", 0);
+							clanAnnounce(mob,"Member exiled from "+C.name()+": "+M.Name());
+							ExternalPlay.DBUpdateClanMembership(qual, "", 0);
+							M.setClanID("");
+							M.setClanRole(0);
 							mob.tell(M.Name()+" has been exiled from Clan '"+C.ID()+"'.");
 							M.tell("You have been exiled from Clan '"+C.ID()+"'.");
 							delClanHomeSpell(M);
+							ExternalPlay.DBUpdateMOB(M);
 							return false;
 						}
 					}
@@ -386,7 +366,7 @@ public class ClanCommands
 				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 				return false;
 			}
-			if(C.getStatus()>Clan.STATUS_ACTIVE)
+			if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 			{
 				mob.tell("You cannot set a home.  Your clan does not have enough members to be considered active.");
 				return false;
@@ -409,8 +389,8 @@ public class ClanCommands
 					{
 						C.setRecall(R.roomID());
 						C.update();
-						mob.tell("Your clan home is now set to "+R.name()+".");
-						clanAnnounce(mob, "Your clan donation is now set to "+R.name()+".");
+						mob.tell("Your clan home is now set to "+R.displayText()+".");
+						clanAnnounce(mob, "Your clan home is now set to "+R.displayText()+".");
 					}
 					else
 					{
@@ -446,7 +426,7 @@ public class ClanCommands
 				mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 				return false;
 			}
-			if(C.getStatus()>Clan.STATUS_ACTIVE)
+			if(C.getStatus()>Clan.CLANSTATUS_ACTIVE)
 			{
 				mob.tell("You cannot set a donation room.  Your clan does not have enough members to be considered active.");
 				return false;
@@ -469,8 +449,8 @@ public class ClanCommands
 					{
 						C.setDonation(R.roomID());
 						C.update();
-						mob.tell("Your clan donation is now set to "+R.name()+".");
-						clanAnnounce(mob, "Your clan donation is now set to "+R.name()+".");
+						mob.tell("Your clan donation is now set to "+R.displayText()+".");
+						clanAnnounce(mob, "Your clan donation is now set to "+R.displayText()+".");
 					}
 					else
 					{
@@ -490,43 +470,33 @@ public class ClanCommands
 
 	public static boolean clanlist(MOB mob,Vector commands)
 	{
-		ClanMaster master=null;
-		Room R=mob.location();
-		for(int i=0;i<R.numInhabitants();i++)
+		StringBuffer head=new StringBuffer("");
+		head.append("^x[");
+		head.append(Util.padRight("Clan Name",24)+" | ");
+		head.append(Util.padRight("Status",8)+" | ");
+		head.append(Util.padRight("Clan Members",12));
+		head.append("]^.^? \n\r");
+		StringBuffer msg=new StringBuffer("");
+		for(int c=0;c<Clans.size();c++)
 		{
-			if(R.fetchInhabitant(i) instanceof ClanMaster)
+			Clan thisClan=Clans.elementAt(c);
+			msg.append(" ");
+			msg.append(Util.padRight(thisClan.ID(),24)+"   ");
+			String status="Active";
+			switch(thisClan.getStatus())
 			{
-				master=(ClanMaster)R.fetchInhabitant(i);
+			case Clan.CLANSTATUS_FADING:
+				status="Inactive";
+				break;
+			case Clan.CLANSTATUS_PENDING:
+				status="Pending";
 				break;
 			}
+			msg.append(Util.padRight(status,8)+"   ");
+			msg.append(Util.padRight(new Integer(thisClan.getSize()).toString(),12));
+			msg.append("\n\r");
 		}
-		if(master==null)
-		{
-			StringBuffer head=new StringBuffer("");
-			head.append("[");
-			head.append(Util.padRight("Clan Name",24)+" | ");
-			head.append(Util.padRight("Clan Members",12)+" | ");
-			head.append(Util.padRight("Alignment",16));
-			head.append("] \n\r");
-			StringBuffer msg=new StringBuffer("");
-			for(int c=0;c<Clans.size();c++)
-			{
-				Clan thisClan=Clans.elementAt(c);
-				if(thisClan.getStatus()>Clan.STATUS_ACTIVE)
-					continue;
-				msg.append(" ");
-				msg.append(Util.padRight(thisClan.ID(),24)+"   ");
-				msg.append(Util.padRight(new Integer(thisClan.getSize()).toString(),12)+"   ");
-				msg.append(Util.padRight(CommonStrings.alignmentStr(thisClan.getAlign()),16));
-				msg.append("\n\r");
-			}
-			mob.tell(head.toString()+msg.toString());
-			return false;
-		}
-		FullMsg newMsg=new FullMsg(mob,master,null,Affect.MSG_LIST,null);
-		if(!mob.location().okAffect(mob,newMsg))
-			return false;
-		mob.location().send(mob,newMsg);
+		mob.tell(head.toString()+msg.toString());
 		return false;
 	}
 
@@ -559,6 +529,7 @@ public class ClanCommands
 					  mob.tell("There are no applicants to your "+C.typeName()+".");
 					  return false;
 					}
+					qual=Util.capitalize(qual);
 					for(int q=0;q<apps.size();q++)
 					{
 						if(((String)apps.elementAt(q)).equalsIgnoreCase(qual))
@@ -568,26 +539,17 @@ public class ClanCommands
 					}
 					if(found)
 					{
-						MOB M=CMMap.getPlayer(Util.capitalize(qual));
+						MOB M=Clans.getMOB(qual);
 						if(M==null)
 						{
-							M=CMClass.getMOB("StdMOB");
-							M.setName(qual);
-							if(ExternalPlay.DBReadUserOnly(M))
-							{
-								ExternalPlay.DBUpdateClan(qual, "", 0);
-								mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
-								return false;
-							}
-							else
-							{
-								mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
-								return false;
-							}
+							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
+							return false;
 						}
 						else
 						{
-							ExternalPlay.DBUpdateClan(qual, "", 0);
+							M.setClanID("");
+							M.setClanRole(0);
+							ExternalPlay.DBUpdateClanMembership(M.Name(), "", 0);
 							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
 							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.ID()+"'.");
 							return false;
@@ -616,19 +578,25 @@ public class ClanCommands
 	public static boolean clanresign(MOB mob, Vector commands)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		if((mob.getClanID()==null)
+		||(mob.getClanID().equalsIgnoreCase(""))
+		||(Clans.getClan(mob.getClanID())==null))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
 		else
+		if(!mob.isMonster())
 		{
+			Clan C=Clans.getClan(mob.getClanID());
 			try
 			{
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
-					clanAnnounce(mob,new String("Member resigned: "+mob.Name()));
-					ExternalPlay.DBUpdateClan(mob.Name(), "", 0);
+					clanAnnounce(mob,new String("Member resigned from "+C.name()+": "+mob.Name()));
+					ExternalPlay.DBUpdateClanMembership(mob.Name(), "", 0);
+					mob.setClanID("");
+					mob.setClanRole(0);
 					delClanHomeSpell(mob);
 				}
 				else
@@ -644,263 +612,48 @@ public class ClanCommands
 		return false;
 	}
 
-	public static boolean clanDeposit(MOB mob, Vector commands)
+	public static boolean clanpremise(MOB mob, Vector commands)
 	{
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		StringBuffer msg=new StringBuffer("");
+		if((mob.getClanID()==null)
+		||(mob.getClanID().equalsIgnoreCase(""))
+		||(Clans.getClan(mob.getClanID())==null))
 		{
-			mob.tell("You aren't a member of a clan.");
-			return false;
+			msg.append("You aren't even a member of a clan.");
 		}
-		Clan C=Clans.getClan(mob.getClanID());
-		if(C==null)
+		else
+		if(mob.getClanRole()!=Clans.POS_BOSS)
 		{
-			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-			return false;
+			msg.append("Only the boss can do that.");
 		}
-		if(C.getStatus()>Clan.STATUS_ACTIVE)
+		else
+		if(!mob.isMonster())
 		{
-			mob.tell("You cannot access your account.  Your clan does not have enough members to be considered active.");
-			return false;
-		}
-		Banker banker=null;
-		Room R=mob.location();
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(R.fetchInhabitant(i) instanceof Banker)
+			Clan C=Clans.getClan(mob.getClanID());
+			try
 			{
-				banker=(Banker)R.fetchInhabitant(i);
-				break;
-			}
-		}
-		if(banker==null)
-		{
-			mob.tell("There is no banker here to help you.");
-			return false;
-		}
-		if(commands.size()<2)
-		{
-			ExternalPlay.quickSay((MOB)banker,mob,"Pardon, but clandeposit how much?",true,false);
-			return false;
-		}
-
-		String likeThis=Util.combine(commands,1);
-		if(!(Util.s_int(likeThis)>0))
-		{
-			ExternalPlay.quickSay((MOB)banker,mob,"I am sorry, but bank policy does not allow us to store items for clans, only funds.",true,false);
-			return false;
-		}
-		Item thisThang=SocialProcessor.possibleGold(mob,likeThis);
-		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
-		{
-			mob.tell("You don't seem to be carrying that.");
-			return false;
-		}
-
-		Coins older=(Coins)thisThang;
-		Coins item=(Coins)CMClass.getItem("StdCoins");
-		int newNum=older.numberOfCoins();
-		Item old=banker.findDepositInventory(mob.getClanID(),""+Integer.MAX_VALUE);
-		if((old!=null)&&(old instanceof Coins))
-			newNum+=((Coins)old).numberOfCoins();
-		item.setNumberOfCoins(newNum);
-		if(old!=null)
-			banker.delDepositInventory(mob.getClanID(),old);
-		banker.addDepositInventory(mob.getClanID(),item);
-		ExternalPlay.quickSay((MOB)banker,mob,"Thank you for your business!",true,false);
-		return false;
-	}
-
-	public static boolean clanWithdraw(MOB mob, Vector commands)
-	{
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-		{
-			mob.tell("You aren't even a member of a clan.");
-			return false;
-		}
-		if(!((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_TREASURER)))
-		{
-			mob.tell("\n\rHuh?\n\r");
-			return false;
-		}
-		Banker banker=null;
-		Room R=mob.location();
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(R.fetchInhabitant(i) instanceof Banker)
-			{
-				banker=(Banker)R.fetchInhabitant(i);
-				break;
-			}
-		}
-		if(banker==null)
-		{
-			mob.tell("There is no banker here to help you.");
-			return false;
-		}
-		String str=(String)commands.firstElement();
-		if(((String)commands.lastElement()).equalsIgnoreCase("coins"))
-		{
-			if((!str.equalsIgnoreCase("all"))
-			&&(Util.s_int((String)commands.firstElement())<=0))
-			{
-				mob.tell("Withdraw how much?");
-				return false;
-			}
-
-			commands.removeElement(commands.lastElement());
-		}
-		if(((String)commands.lastElement()).equalsIgnoreCase("gold"))
-		{
-			if((!str.equalsIgnoreCase("all"))
-			&&(Util.s_int((String)commands.firstElement())<=0))
-			{
-				mob.tell("Withdraw how much?");
-				return false;
-			}
-			commands.removeElement(commands.lastElement());
-		}
-
-		String likeThis=Util.combine(commands,1);
-		if(!(Util.s_int(likeThis)>0))
-		{
-			ExternalPlay.quickSay((MOB)banker,mob,"I am sorry, but bank policy does not allow us to store items for clans, only funds.",true,false);
-			return false;
-		}
-		Item thisThang=((Banker)banker).findDepositInventory(mob.getClanID(),likeThis);
-		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
-		{
-			ExternalPlay.quickSay((MOB)banker,mob,"We don't seem to be carrying that.",true,false);
-			return false;
-		}
-
-		Item old=thisThang;
-		if(old instanceof Coins)
-		{
-			Item item=((Banker)banker).findDepositInventory(mob.getClanID(),""+Integer.MAX_VALUE);
-			if((item!=null)&&(item instanceof Coins))
-			{
-				Coins coins=(Coins)item;
-				coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
-				coins.recoverEnvStats();
-				((Banker)banker).delDepositInventory(mob.getClanID(),item);
-				com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,((MOB)banker),((Coins)old).numberOfCoins());
-				if(coins.numberOfCoins()<=0)
+				String premise=mob.session().prompt("Describe your Clan's Premise\n\r: ","");
+				if(premise.length()>0)
 				{
-					ExternalPlay.quickSay((MOB)banker,mob,"I have closed your Clan's account. Thanks for your business.",true,false);
-					return false;
+					C.setPremise(premise);
+					C.update();
 				}
 				else
 				{
-					((Banker)banker).addDepositInventory(mob.getClanID(),item);
-					ExternalPlay.quickSay((MOB)banker,mob,"Ok, your Clan's new balance is "+getBalance((MOB)banker,mob.getClanID())+" gold coins.",true,false);
+					return false;
 				}
 			}
-			else
-			    ExternalPlay.quickSay((MOB)banker,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
-		}
-		return false;
-	}
-
-	public static boolean clanBalance(MOB mob, Vector commands)
-	{
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-		{
-			mob.tell("You aren't even a member of a clan.");
-			return false;
-		}
-		if(!((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_TREASURER)))
-		{
-			mob.tell("\n\rHuh?\n\r");
-			return false;
-		}
-		Banker banker=null;
-		Room R=mob.location();
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(R.fetchInhabitant(i) instanceof Banker)
+			catch(java.io.IOException e)
 			{
-				banker=(Banker)R.fetchInhabitant(i);
-				break;
 			}
 		}
-		if(banker==null)
-		{
-			mob.tell("There is no banker here to help you.");
-			return false;
-		}
-		ExternalPlay.quickSay((MOB)banker,mob,"Your Clan's balance is "+getBalance((MOB)banker,mob.getClanID())+" gold coins.",true,false);
-		return false;
-	}
-
-	protected static int getBalance(MOB banker, String clanName)
-	{
-		Banker reallyBanker=(Banker)banker;
-		Item old=reallyBanker.findDepositInventory(clanName,""+Integer.MAX_VALUE);
-		if((old!=null)&&(old instanceof Coins))
-			return ((Coins)old).numberOfCoins();
-		return 0;
-	}
-
-	public static boolean clanDonate(MOB mob, Vector commands)
-	{
-		String likeThis=Util.combine(commands,1);
-		Item I=null;
-		Room donateRoom=null;
-		I=mob.fetchInventory(likeThis);
-		if(I==null)
-		{
-			mob.tell("You don't seem to have "+likeThis+" to donate.");
-			return false;
-		}
-		Clan C=null;
-		C=Clans.getClan(mob.getClanID());
-		if(C==null)
-		{
-			mob.tell("There is no longer a clan called "+mob.getClanID()+".");
-			return false;
-		}
-		if(C.getStatus()>Clan.STATUS_ACTIVE)
-		{
-			mob.tell("You cannot donate items.  Your clan does not have enough members to be considered active.");
-			return false;
-		}
-		donateRoom=CMMap.getRoom(C.getDonation());
-		if(donateRoom==null)
-		{
-			mob.tell("You clan does not have a donation room.  Ask your clan boss for more information.");
-			return false;
-		}
-		else
-		{
-			donateRoom.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
-			donateRoom.recoverRoomStats();
-		}
-		if(mob!=null)
-		{
-			mob.recoverCharStats();
-			mob.recoverEnvStats();
-			mob.recoverMaxState();
-		}
+		mob.tell(msg.toString());
 		return false;
 	}
 
 	public static void clanCreate(MOB mob, Vector commands)
 	{
-		ClanMaster master=null;
 		Room R=mob.location();
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			if(R.fetchInhabitant(i) instanceof ClanMaster)
-			{
-				master=(ClanMaster)R.fetchInhabitant(i);
-				break;
-			}
-		}
-		if(master==null)
-		{
-			mob.tell("There is no clan master here to help you.");
-			return;
-		}
 		String qual=Util.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
 		if(qual.length()>0)
@@ -914,12 +667,43 @@ public class ClanCommands
 
 				}
 				else
+				if(!mob.isMonster())
 				{
-					FullMsg newMsg=new FullMsg(mob,master,null,(Affect.MSK_HAGGLE|Affect.TYP_GENERAL),null);
-					if(!mob.location().okAffect(mob,newMsg))
-						return;
-					mob.location().send(mob,newMsg);
-					return;
+					int cost=CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANCOST);
+					if(cost>0)
+					{
+						if(Money.totalMoney(mob)<cost)
+						{
+							mob.tell("It costs "+cost+" gold to create a clan.  You don't have it.");
+							return;
+						}
+						Money.subtractMoney(null,mob,cost);
+					}
+					mob.tell("There is no Clan by that name.");
+					try
+					{
+						String check=mob.session().prompt("Do you want to found a new clan (y/N)?","N");
+						if(check.equalsIgnoreCase("Y"))
+						{
+							String doubleCheck=mob.session().prompt("Re-enter the name of your new Clan exactly how you want it:","");
+							if(doubleCheck.length()<1)
+								return;
+							String lastCheck=mob.session().prompt("Is '"+doubleCheck+"' correct (y/N)?", "N");
+							if(lastCheck.equalsIgnoreCase("Y"))
+							{
+								Clan newClan=Clans.getClanType(Clan.TYPE_CLAN);
+								newClan.setName(doubleCheck);
+								newClan.setStatus(Clan.CLANSTATUS_PENDING);
+								Clans.createClan(newClan);
+								ExternalPlay.DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
+								addClanHomeSpell(mob);
+								clanAnnounce(mob, "Your new clan is online and can now accept applicants.");
+							}
+						}
+					}
+					catch(java.io.IOException e)
+					{
+					}
 				}
 			}
 			else
@@ -946,12 +730,15 @@ public class ClanCommands
 	{
 		M.addAbility(CMClass.findAbility("Spell_ClanHome"));
 		(M.fetchAbility("Spell_ClanHome")).setProfficiency(50);
+		M.addAbility(CMClass.findAbility("Spell_ClanDonate"));
+		(M.fetchAbility("Spell_ClanDonate")).setProfficiency(100);
 		ExternalPlay.DBUpdateMOB(M);
 	}
 
 	public static void delClanHomeSpell(MOB mob)
 	{
 		mob.delAbility(mob.fetchAbility("Spell_ClanHome"));
+		mob.delAbility(mob.fetchAbility("Spell_ClanDonate"));
 		ExternalPlay.DBUpdateMOB(mob);
 	}
 }

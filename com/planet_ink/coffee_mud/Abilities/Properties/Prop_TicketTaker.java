@@ -60,6 +60,7 @@ public class Prop_TicketTaker extends Property
 				{
 				case Affect.TYP_MOUNT:
 				case Affect.TYP_SIT:
+				case Affect.TYP_ENTER:
 				case Affect.TYP_SLEEP:
 					if(mob.getMoney()>=cost())
 					{
@@ -86,6 +87,7 @@ public class Prop_TicketTaker extends Property
 				{
 				case Affect.TYP_MOUNT:
 				case Affect.TYP_SIT:
+				case Affect.TYP_ENTER:
 				case Affect.TYP_SLEEP:
 					if(mob.getMoney()<cost())
 					{

@@ -37,7 +37,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_COMMONPRACCOST=11;
 	public static final int SYSTEMI_LANGPRACCOST=12;
 	public static final int SYSTEMI_SKILLPRACCOST=13;
-	public static final int NUMI_SYSTEM=14;
+	public static final int SYSTEMI_CLANCOST=14;
+	public static final int NUMI_SYSTEM=15;
 	  
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;

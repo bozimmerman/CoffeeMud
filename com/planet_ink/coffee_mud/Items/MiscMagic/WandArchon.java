@@ -3,7 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
-public class WandArchon extends StdWand
+public class WandArchon extends StdWand implements ArchonOnly
 {
 	public String ID(){	return "WandArchon";}
 	public WandArchon()

@@ -172,8 +172,7 @@ public class Spell_Wish extends Spell
 				}
 				else
 				if((foundThang instanceof Item)
-				   &&((foundThang.ID().toUpperCase().indexOf("ARCHON")<0))
-				   &&((foundThang.name().toUpperCase().indexOf("ARCHON")<0)))
+				   &&(!(foundThang instanceof ArchonOnly)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
 					newItem.setContainer(null);
