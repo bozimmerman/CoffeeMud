@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -46,7 +47,7 @@ public class Thief_Panhandling extends ThiefSkill
 			&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 				unInvoke();
 			else
-			if(!Sense.isSitting(mob))
+			if((Sense.isStanding(mob))||(Sense.isSleeping(mob)))
 				unInvoke();
 			else
 			if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))

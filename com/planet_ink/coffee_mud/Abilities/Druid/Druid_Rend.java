@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -63,7 +64,7 @@ public class Druid_Rend extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!Sense.isSitting(target))&&(!Sense.isSleeping(target)))
+		if(Sense.isStanding(target))
 		{
 			mob.tell("You can only rend someone who is on the ground!");
 			return false;

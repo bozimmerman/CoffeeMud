@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -115,7 +116,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				&&(Sense.aliveAwakeMobile(mob,true))
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
-				&&(!Sense.isSitting(mob))
+				&&(Sense.isStanding(mob))
 				&&(profficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{

@@ -542,10 +542,11 @@ public class StdRideable extends StdContainer implements Rideable
 		&&(msg.target()!=this)
 		&&(msg.tool()!=this)
 		&&((!CoffeeUtensils.reachableItem(msg.source(),msg.target()))
-		|| (!CoffeeUtensils.reachableItem(msg.source(),msg.tool()))
-		|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target())))))
+			|| (!CoffeeUtensils.reachableItem(msg.source(),msg.tool()))
+			|| ((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(msg.target()!=this)&&(!amRiding((MOB)msg.target()))))
+		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(Sense.isStanding(msg.source())))))
 		{
-
+		    // some of the above applies to genrideable items only
 			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
 			return false;
 		}

@@ -610,7 +610,7 @@ public class StdDeity extends StdMOB implements Deity
 					yup=Sense.isSitting(msg.source());
 					break;
 				case TRIGGER_STANDING:
-					yup=(!Sense.isSitting(msg.source()))&&(!Sense.isSleeping(msg.source()));
+					yup=(Sense.isStanding(msg.source()));
 					break;
 				case TRIGGER_SLEEPING:
 					yup=Sense.isSleeping(msg.source());

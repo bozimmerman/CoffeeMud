@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -48,7 +49,7 @@ public class Thief_Squatting extends ThiefSkill
 				unInvoke();
 			}
 			else
-			if((!Sense.isSitting(mob))||(mob.location()!=room))
+			if((Sense.isStanding(mob))||(mob.location()!=room))
 			{
 				failed=true;
 				unInvoke();

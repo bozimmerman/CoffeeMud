@@ -54,7 +54,7 @@ public class Spell_ReadMagic extends Spell
 			mob.delEffect(thisNewOne);
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) and gazes over <T-NAMESELF>, but nothing more happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens.");
 
 		// return whether it worked
 		return success;

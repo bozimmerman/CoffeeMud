@@ -2491,7 +2491,7 @@ public class Arrest extends StdBehavior
 							W.setArrestingOfficer(myArea,null);
 						}
 						else
-						if(!Sense.isSitting(W.criminal())&&(!Sense.isSleeping(W.criminal())))
+						if(Sense.isStanding(W.criminal()))
 						{
 							if(!W.arrestingOfficer().isInCombat())
 								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -40,8 +41,7 @@ public class Fighter_Heroism extends StdAbility
 
 		MOB mob=(MOB)affected;
 
-		if((!Sense.isSitting(mob))
-		&&(!Sense.isSleeping(mob))
+		if((Sense.isStanding(mob))
 		&&(mob.isInCombat())
 		&&(Dice.rollPercentage()==1)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))

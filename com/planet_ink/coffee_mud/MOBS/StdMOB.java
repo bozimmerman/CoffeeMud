@@ -2606,7 +2606,7 @@ public class StdMOB implements MOB
 							if((!amDead())
 							&&(curState().getHitPoints()>0)
 							&&(isInCombat())
-							&&((s==0)||(!Sense.isSitting(this))))
+							&&((s==0)||(Sense.isStanding(this))))
 							{
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
 									weapon=this.fetchWieldedItem();

@@ -143,7 +143,7 @@ public class Paladin_SummonMount extends StdAbility
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for <S-HIS-HER> loyal steed, but is not answered.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) for <S-HIS-HER> loyal steed, but <S-IS-ARE> not answered.");
 
 		// return whether it worked
 		return success;

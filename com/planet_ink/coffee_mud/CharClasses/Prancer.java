@@ -204,7 +204,7 @@ public class Prancer extends StdCharClass
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			if((!Sense.isSleeping(affected))&&(!Sense.isSitting(affected)))
+			if(Sense.isStanding((MOB)affected))
 			{
 				MOB mob=(MOB)affected;
 				int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);

@@ -182,7 +182,7 @@ public class Skill_HandCuff extends StdAbility
 		    mob.tell(target.name()+" has no warrants out here.");
 		    return false;
 		}
-		if(((!Sense.isSleeping(target))&&(!Sense.isSitting(target)))&&(!auto))
+		if((Sense.isStanding(target))&&(!auto))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
 			return false;

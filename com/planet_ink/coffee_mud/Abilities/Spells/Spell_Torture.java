@@ -68,7 +68,7 @@ public class Spell_Torture extends Spell
     	case 11:
 			if(mob.getLiegeID().length()>0)
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-				"<S-NAME> admits that "+mob.getLiegeID()+" is <S-HIS-HER> leige.");
+				"<S-NAME> admits that "+mob.getLiegeID()+" is <S-HIS-HER> liege.");
 			else
 	            roll=Dice.roll(1,10,0);
 			break;

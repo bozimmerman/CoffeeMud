@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,7 +31,7 @@ public class Stand extends StdCommand
 	{
 		boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
 
-		if((!Sense.isSitting(mob))&&(!Sense.isSleeping(mob)))
+		if(Sense.isStanding(mob))
 		{
 			if(!ifnecessary)
 				mob.tell(getScr("Movement","standerr1"));

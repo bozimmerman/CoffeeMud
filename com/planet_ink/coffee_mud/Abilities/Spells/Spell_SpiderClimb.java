@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -34,7 +35,7 @@ public class Spell_SpiderClimb extends Spell
 	{
 		if(affected instanceof MOB)
 		{
-		    if((!Sense.isSitting(affected))&&(!Sense.isSleeping(affected)))
+		    if(Sense.isStanding((MOB)affected))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 		}
 	}

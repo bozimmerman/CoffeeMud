@@ -95,7 +95,6 @@ public class Foraging extends CommonSkill
 		super.unInvoke();
 	}
 
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="foraging";

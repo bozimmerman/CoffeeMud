@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -87,7 +88,7 @@ public class Chant_ExplosiveDecompression extends Chant
 								MUDFight.postDamage(mob,M,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");
 							}
 							if((M.charStats().getBodyPart(Race.BODY_FOOT)>0)
-							&&(!Sense.isFlying(M))&&(!Sense.isSitting(M))&&(!Sense.isSleeping(M)))
+							&&(!Sense.isFlying(M))&&(Sense.isStanding(M)))
 								mob.location().show(M,null,CMMsg.MASK_GENERAL|CMMsg.TYP_SIT,"<S-NAME> <S-IS-ARE> blown off <S-HIS-HER> feet!");
 						}
 					}
