@@ -175,8 +175,9 @@ public class Arrest extends StdBehavior
 		{
 			MOB M=R.fetchInhabitant(i);
 			if(M.isMonster()
-			   &&(M.getAlignment()>350)
-			   &&(M.charStats().getStat(CharStats.INTELLIGENCE)>3))
+			   &&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
+			   &&(Dice.rollPercentage()<=(M.getAlignment()/10))
+			   )
 				return M;
 		}
 		return null;
@@ -589,8 +590,14 @@ public class Arrest extends StdBehavior
 							{
 								if(!W.arrestingOfficer.isInCombat())
 									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTMSG"),false,false);
+								
 								Ability A=CMClass.getAbility("Fighter_Whomp");
-								if(A!=null)	A.invoke(officer,W.criminal,true);
+								if(A!=null){
+									int curPoints=W.criminal.curState().getHitPoints();
+									double pct=Util.div(curPoints,W.criminal.maxState().getHitPoints());
+									A.setProfficiency((int)(100-Math.round(Util.mul(pct,50))));
+									A.invoke(officer,W.criminal,(curPoints<25));
+								}
 							}
 							if(Sense.isSitting(W.criminal)||(Sense.isSleeping(W.criminal)))
 							{
