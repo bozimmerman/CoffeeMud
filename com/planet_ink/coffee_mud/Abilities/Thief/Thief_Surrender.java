@@ -31,7 +31,7 @@ public class Thief_Surrender extends ThiefSkill
 		}
 		if((!mob.isInCombat())||(theList.size()==0))
 		{
-			mob.tell("There's noone to surrender to!");
+			mob.tell("There's no one to surrender to!");
 			return false;
 		}
 

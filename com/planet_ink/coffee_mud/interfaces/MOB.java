@@ -60,8 +60,8 @@ public interface MOB
 	/** When the USER last logged off */
 	public long lastDateTime();
 	public long lastUpdated();
-	public void setUpdated();
 	public void setLastDateTime(long C);
+	public void setUpdated(long time);
 	/** User PASSWORD */
 	public String password();
 	/** update USER information */

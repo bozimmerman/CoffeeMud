@@ -89,7 +89,7 @@
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>SubOps:</B></FONT></TD>
     <TD WIDTH=500 COLSPAN=2>
 	<SELECT NAME=SUBOPS MULTIPLE>
-	<OPTION VALUE="">Noone (Archons only)
+	<OPTION VALUE="">None (Archons only)
 	@AreaData?SUBOPS@
 	</SELECT>
 	</TD>

@@ -40,7 +40,7 @@ public class Skill_Warrants extends StdAbility
 				if(B!=null) B.modifyBehavior(mob,V);
 				if(V.size()==0)
 				{
-					mob.tell("Noone is wanted for anything here.");
+					mob.tell("No one is wanted for anything here.");
 					return false;
 				}
 				StringBuffer buf=new StringBuffer("");

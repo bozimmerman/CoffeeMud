@@ -41,8 +41,9 @@ public class Mobs
 			ExternalPlay.destroyUser(deadMOB);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
+			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
+			return true;
 		}
-		Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 		return true;
 	}
 	public static boolean destroy(MOB mob, Vector commands)

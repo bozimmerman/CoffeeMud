@@ -29,6 +29,32 @@ public interface CharStats extends Cloneable
 	
 	public final static int NUM_STATS=22;
 	
+	public static final String[] TRAITS=
+	{
+		"STRENGTH",
+		"INTELLIGENCE",
+		"DEXTERITY",
+		"CONSTITUTION",
+		"CHARISMA",
+		"WISDOM",
+		"GENDER",
+		"PARALYSIS SAVE",
+		"SAVE VS FIRE",
+		"SAVE VS COLD",
+		"SAVE VS WATER",
+		"SAVE VS GAS",
+		"SAVE VS MIND",
+		"GENERAL SAVE",
+		"JUSTICE SAVE",
+		"SAVE VS ACID",
+		"SAVE VS ELECTRICITY",
+		"SAVE VS POISON",
+		"SAVE VS UNDEAD",
+		"SAVE VS MAGIC",
+		"SAVE VS DISEASE",
+		"SAVE VS TRAPS"
+	};
+	
 	public int getStat(int statNum);
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);
@@ -81,31 +107,6 @@ public interface CharStats extends Cloneable
 									    Affect.TYP_CAST_SPELL,
 										Affect.TYP_DISEASE,
 										-1};
-	
-	public static final String[] TRAITS=
-	{
-		"STRENGTH",
-		"INTELLIGENCE",
-		"DEXTERITY",
-		"CONSTITUTION",
-		"CHARISMA",
-		"WISDOM",
-		"GENDER",
-		"PARALYSIS SAVE",
-		"SAVE VS FIRE",
-		"SAVE VS COLD",
-		"SAVE VS WATER",
-		"SAVE VS GAS",
-		"SAVE VS MIND",
-		"GENERAL SAVE",
-		"JUSTICE SAVE",
-		"SAVE VS ACID",
-		"SAVE VS ELECTRICITY",
-		"SAVE VS POISON",
-		"SAVE VS UNDEAD",
-		"SAVE VS MAGIC",
-		"SAVE VS TRAPS"
-	};
 	
 	// create a new one of these
 	public CharStats cloneCharStats();

@@ -26,12 +26,35 @@ public class AbilityNext extends StdWebMacro
 			parms.put("DOMAIN",domainType);
 		
 		String lastID="";
+		String playerName=(String)httpReq.getRequestParameters().get("PLAYER");
+		if((playerName!=null)&&(playerName.length()>0))
+		{
+			MOB M=CMMap.getPlayer(playerName);
+			if((M==null)&&(ExternalPlay.DBUserSearch(null,playerName)))
+			{
+				M=CMClass.getMOB("StdMOB");
+				M.setName(playerName);
+				ExternalPlay.DBReadMOB(M);
+				ExternalPlay.DBReadFollowers(M,false);
+			}
+			else
+			if(M==null)
+				playerName=null;
+		}
+
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_CODES;
 			String className=(String)httpReq.getRequestParameters().get("CLASS");
+			
+			if((playerName!=null)&&(playerName.length()>0)&&(CMMap.getPlayer(playerName)!=null))
+			{
+				MOB M=CMMap.getPlayer(playerName);
+				okToShow=M.fetchAbility(A.ID())!=null;
+			}
+			else
 			if((className!=null)&&(className.length()>0))
 			{
 				int level=CMAble.getQualifyingLevel(className,A.ID());

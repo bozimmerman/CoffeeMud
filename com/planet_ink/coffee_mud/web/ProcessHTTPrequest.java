@@ -67,8 +67,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public boolean virtualPage;
 	
 	private Vector theCache=new Vector();
-
-
+	
+	private Hashtable objects=null;
 
 	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page, boolean a_isAdminServer)
 	{
@@ -197,6 +197,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 
 	}
+	
+	public Hashtable getRequestObjects()
+	{
+		if(objects==null) objects=new Hashtable();
+		return objects;
+	}
+	
 	public void resetRequestEncodedParameters()
 	{
 		StringBuffer buf=new StringBuffer("");

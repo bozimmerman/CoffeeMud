@@ -270,7 +270,7 @@ public class SysOpSkills
 			}
 			if(M==null)
 			{
-				mob.tell("Noone is online called '"+name+"'!");
+				mob.tell("No one is online called '"+name+"'!");
 				return;
 			}
 			if(M.getStartRoom()==M.location())

@@ -180,16 +180,10 @@ public class FrontDoor
 				else
 				{
 					ExternalPlay.DBReadMOB(mob);
-					mob.setUserInfo(mob.Name(),password);
-					if(mob.baseCharStats()!=null)
-					{
-						mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
-						mob.baseCharStats().getMyRace().startRacing(mob,true);
-					}
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
-					ExternalPlay.DBReadFollowers(mob);
+					ExternalPlay.DBReadFollowers(mob,true);
 				}
 				ExternalPlay.DBUpdateIP(mob);
 			}

@@ -353,9 +353,9 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.listUsers(mob,sortBy);
 	}
-	public static void DBReadFollowers(MOB mob)
+	public static void DBReadFollowers(MOB mob, boolean bringToLife)
 	{
-		if(sysPlayer!=null) sysPlayer.DBReadFollowers(mob);
+		if(sysPlayer!=null) sysPlayer.DBReadFollowers(mob,bringToLife);
 	}
 	public static void DBDeleteMOB(MOB mob)
 	{

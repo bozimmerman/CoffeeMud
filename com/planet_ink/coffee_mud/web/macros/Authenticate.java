@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class Authenticate extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	public boolean isAdminMacro()	{return true;}
+	public boolean isAdminMacro()	{return false;}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -17,7 +17,13 @@ public class Authenticate extends StdWebMacro
 			return Encrypt(getLogin(httpReq))+"-"+Encrypt(getPassword(httpReq));
 		else
 		{
-			if(authenticated(httpReq,getLogin(httpReq),getPassword(httpReq)))
+			String login=getLogin(httpReq);
+			if((parms!=null)&&(parms.containsKey("SETPLAYER")))
+			{
+				httpReq.getRequestParameters().remove("PLAYER");
+				httpReq.getRequestParameters().put("PLAYER",login);
+			}
+			if(authenticated(httpReq,login,getPassword(httpReq)))
 				return "true";
 			else
 				return "false";

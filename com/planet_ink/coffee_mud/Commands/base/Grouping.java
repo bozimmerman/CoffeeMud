@@ -390,7 +390,7 @@ public class Grouping
 				eligible=true;
 			}
 		}
-		if(!eligible) mob.tell("Noone appears to be eligible to receive any of your gold.");
+		if(!eligible) mob.tell("No one appears to be eligible to receive any of your gold.");
 	}
 
 	public static void dress(MOB mob, Vector commands)

@@ -32,7 +32,7 @@ public interface ExternalSystem
 	public void DBUpdateEmail(MOB mob);
 	public void listUsers(MOB mob, int sortBy);
 	public Vector userList();
-	public void DBReadFollowers(MOB mob);
+	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);
 	public Area DBCreateArea(String areaName, String areaType);

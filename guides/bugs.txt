@@ -1,1 +1,4 @@
 GAES still isn't done
+something rideable when sleeping on it.
+bench travels with archon goto, and probably spells, when sitting on the bench
+

@@ -179,6 +179,11 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(mob.baseCharStats()!=null)
+		{
+			mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
+			mob.baseCharStats().getMyRace().startRacing(mob,true);
+		}
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
@@ -365,7 +370,7 @@ public class MOBloader
 		}
 	}
 
-	public static void DBReadFollowers(MOB mob)
+	public static void DBReadFollowers(MOB mob, boolean bringToLife)
 	{
 		Room location=mob.location();
 		if(location==null)
@@ -403,7 +408,8 @@ public class MOBloader
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.setFollowing(mob);
-					newMOB.bringToLife(mob.location(),true);
+					if(bringToLife)
+						newMOB.bringToLife(mob.location(),true);
 					mob.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				}
 			}

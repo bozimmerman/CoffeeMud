@@ -412,7 +412,7 @@ public class MUD extends Thread implements Host
 						PrintWriter out = new PrintWriter(sock.getOutputStream());
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
-						out.println("\n\rYou are unwelcome.  Noone likes you here. Go away.\n\r\n\r");
+						out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 						out.flush();
 						out.close();
 						sock = null;

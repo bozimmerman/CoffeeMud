@@ -1,11 +1,65 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>System Resources</title>
+	<script language=JavaScript>
+	<!--
+		function Sort(action)
+		{
+			document.RESOURCES.SORTBY.value=action;
+			document.RESOURCES.action='/grinder/players.cmvp';
+			document.RESOURCES.submit();
+		}
+		function Player(action)
+		{
+			var strFeatures="top=100,left=75,resizeable=no,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER="+action,"Player",strFeatures, false);
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3><FONT COLOR=YELLOW>CoffeeMud File Resources Management</FONT></h3><P>
+<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>Players</H2></FONT></TD></TR>
+	<TD WIDTH=30%><B><a href="javascript:Sort('NAME')"><FONT COLOR=YELLOW>Name</FONT></a></B></TD>
+	<TD WIDTH=10%><B><a href="javascript:Sort('RACE')"><FONT COLOR=YELLOW>Race</FONT></a></B></TD>
+	<TD WIDTH=10%><B><a href="javascript:Sort('CHARCLASS')"><FONT COLOR=YELLOW>Class</FONT></a></B></TD>
+	<TD WIDTH=5%><B><a href="javascript:Sort('LEVEL')"><FONT COLOR=YELLOW>Level</FONT></a></B></TD>
+	<TD WIDTH=10%><B><a href="javascript:Sort('HOURS')"><FONT COLOR=YELLOW>Hours</FONT></a></B></TD>
+	<TD WIDTH=35%><B><a href="javascript:Sort('LASTDATETIMEMILLIS')"><FONT COLOR=YELLOW>Last Date/Time</FONT></a></B></TD>
+	@ResourceMgr?RESET@
+	@loop@
+	<TR>
+	@PlayerNext@
+	<TD><a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?RACE@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?CHARCLASS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?LEVEL@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?HOURS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@PlayerData?LASTDATETIME@</FONT></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</CENTER>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@

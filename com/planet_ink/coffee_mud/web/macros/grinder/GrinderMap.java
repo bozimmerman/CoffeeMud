@@ -436,7 +436,7 @@ public class GrinderMap
 								int depth)
     {
         if(room==null) return;
-        if(depth>1000) return;
+        if(depth>500) return;
         GrinderRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
         if(anythingAt!=null)
         {

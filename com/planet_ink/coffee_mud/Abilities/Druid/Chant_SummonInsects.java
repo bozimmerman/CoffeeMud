@@ -69,7 +69,7 @@ public class Chant_SummonInsects extends Chant
 		{
 			if(h==null)
 			{
-				mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding noone to sting, they flutter away.^?");
+				mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appear.  Finding no one to sting, they flutter away.^?");
 				return false;
 			}
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))

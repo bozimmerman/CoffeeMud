@@ -43,7 +43,7 @@ public class ResourceMgr extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			String key=(String)httpReq.getRequestParameters().get("DELETE");
+			String key=(String)httpReq.getRequestParameters().get("RESOURCE");
 			if((key!=null)&&(Resources.getResource(key)!=null))
 			{
 				Resources.removeResource(key);

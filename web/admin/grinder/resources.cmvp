@@ -1,23 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
 	<title>System Resources</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
 </head>
-
-<body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud File Resources Management</h3><P>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3><FONT COLOR=YELLOW>CoffeeMud File Resources Management</FONT></h3><P>
 <FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<CENTER><FONT COLOR=RED><B>@ResourceMgr?DELETE@</B></FONT></CENTER>
 	<BR>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Resources</H2></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>Resources</H2></FONT></TD></TR>
 	@ResourceMgr?RESET@
 	@loop@
 	<TR>
-	@ResourceMgr?NEXT@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
+	@ResourceMgr?NEXT@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><FONT COLOR=WHITE><B>@ResourceMgr@</B></FONT></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><FONT COLOR=WHITE><B>@ResourceMgr@</B></FONT></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><FONT COLOR=WHITE><B>@ResourceMgr@</B></FONT></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><FONT COLOR=WHITE><B>@ResourceMgr@</B></FONT></TD>
 	</TR>
 	@back@
 	</TABLE>
@@ -25,11 +39,13 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=50% ALIGN=CENTER>
-	<a href="admin/grinder/loggedin.cmvp">Back to previous menu</a>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 	<TD WIDTH=50% ALIGN=CENTER>
-	<INPUT TYPE=SUBMIT NAME="Delete selected" VALUE="Delete selected">
+	<INPUT TYPE=BUTTON NAME=DELGO VALUE="Delete selected" ONCLICK="Clicked('/grinder/resources.cmvp');">
 	</TD>
 	</TABLE>
 </BODY>
 </HTML>
+@endif@
+@endif@

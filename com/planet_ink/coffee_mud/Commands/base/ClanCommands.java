@@ -44,12 +44,13 @@ public class ClanCommands
 						{
 							M=CMClass.getMOB("StdMOB");
 							M.setName(qual);
-							if(ExternalPlay.DBReadUserOnly(M))
+							if(ExternalPlay.DBUserSearch(null,qual))
 							{
+								ExternalPlay.DBReadMOB(M);
+								ExternalPlay.DBReadFollowers(M,false);
 								clanAnnounce(mob,"New Member: "+mob.Name());
 								ExternalPlay.DBUpdateClan(qual, mob.getClanID(), Clan.POS_MEMBER);
 								mob.tell(M.Name()+" has been accepted into to "+C.typeName()+" '"+C.ID()+"'.");
-								ExternalPlay.DBReadMOB(M);
 								addClanHomeSpell(M);
 								return false;
 							}
@@ -307,12 +308,13 @@ public class ClanCommands
 						{
 							M=CMClass.getMOB("StdMOB");
 							M.setName(qual);
-							if(ExternalPlay.DBReadUserOnly(M))
+							if(ExternalPlay.DBUserSearch(null,qual))
 							{
+								ExternalPlay.DBReadMOB(M);
+								ExternalPlay.DBReadFollowers(M,false);
 								clanAnnounce(mob,"Member exiled: "+mob.Name());
 								ExternalPlay.DBUpdateClan(qual, "", 0);
 								mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
-								ExternalPlay.DBReadMOB(M);
 								delClanHomeSpell(M);
 								return false;
 							}

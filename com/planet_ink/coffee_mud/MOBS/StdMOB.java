@@ -284,7 +284,7 @@ public class StdMOB implements MOB
 	}
 
 	public long lastUpdated(){return lastUpdated;}
-	public void setUpdated(){lastUpdated=System.currentTimeMillis();}
+	public void setUpdated(long time){lastUpdated=time;}
 	public long lastDateTime(){return LastDateTime;}
 	public void setLastDateTime(long C){ LastDateTime=C;}
 	public void setUserInfo(String newUsername,
@@ -570,12 +570,15 @@ public class StdMOB implements MOB
 			damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
 		else
 			damageAmount = new Integer(Dice.roll(1, envStats().damage(), (charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
-        if(!Sense.canBeSeenBy(target,this)) damageAmount *=.5;
-        if(Sense.isSleeping(target)) damageAmount *=1.5;
-		else
-        if(Sense.isSitting(target)) damageAmount *=1.2;
-		if(curState().getHunger() < 1) damageAmount *= .8;
-		if(curState().getThirst() < 1) damageAmount *= .9;
+		if(target!=null)
+		{
+			if(!Sense.canBeSeenBy(target,this)) damageAmount *=.5;
+			if(Sense.isSleeping(target)) damageAmount *=1.5;
+			else
+			if(Sense.isSitting(target)) damageAmount *=1.2;
+			if(curState().getHunger() < 1) damageAmount *= .8;
+			if(curState().getThirst() < 1) damageAmount *= .9;
+		}
 		if(damageAmount<1.0) damageAmount=1.0;
 		return (int)Math.round(damageAmount);
 	}
