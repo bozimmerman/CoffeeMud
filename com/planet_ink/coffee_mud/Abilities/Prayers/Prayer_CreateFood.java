@@ -24,7 +24,7 @@ public class Prayer_CreateFood extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for food.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for food.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -35,7 +35,7 @@ public class Prayer_CreateFood extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) to <S-HIS-HER> god for food, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for food, but there is no answer.");
 
 		// return whether it worked
 		return success;
