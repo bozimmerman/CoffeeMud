@@ -17,6 +17,7 @@ public class ItemMender extends StdBehavior
 	}
 	private int cost(Item item)
 	{
+		int total=100;
 		int cost=((100-item.usesRemaining())*2)+item.envStats().level();
 		if(Sense.isABonusItems(item))
 			cost+=100+(item.envStats().level()*2);
@@ -35,23 +36,24 @@ public class ItemMender extends StdBehavior
 		&&(affect.amITarget(observer))
 		&&(affect.targetMinor()==Affect.TYP_GIVE)
 		&&(!source.isASysOp(source.location()))
-		&&(affect.tool()!=null))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Item))
 		{
-			if(!(affect.tool() instanceof Armor))
+			Item tool=(Item)affect.tool();
+			if(!tool.subjectToWearAndTear())
 			{
-				ExternalPlay.quickSay(observer,source,"I'm sorry, I can only mend armor right now.",true,false);
+				ExternalPlay.quickSay(observer,source,"I'm sorry, I can't work on these.",true,false);
 				return false;
 			}
 			else
-			if(((Armor)affect.tool()).usesRemaining()>100)
+			if(tool.usesRemaining()>100)
 			{
-				ExternalPlay.quickSay(observer,source,"Take this thing away from me.  It's scary.",true,false);
+				ExternalPlay.quickSay(observer,source,"Take this thing away from me.  It's so perfect, it's scary.",true,false);
 				return false;
 			}
-			else
-			if(source.getMoney()<cost((Armor)affect.tool()))
+			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Armor)affect.tool())+" gold coins to fix that.",true,false);
+				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Armor)affect.tool())+" gold coins to repair that.",true,false);
 				return false;
 			}
 			return true;

@@ -19,6 +19,49 @@ public class Movement
 		}
 	}
 
+	public void crawl(MOB mob, Vector commands)
+	{
+		boolean tagged=false;
+		if((commands.size()>2)&&(((String)commands.elementAt(2)).equals(""+mob)))
+		{
+		   tagged=true;
+		   commands.removeElementAt(2);
+		}
+		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
+		if(direction>=0)
+		{
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,null);
+			if(Sense.isSitting(mob)||(mob.location().okAffect(msg)))
+			{
+				if(!Sense.isSitting(mob))
+					mob.location().send(mob,msg);
+				if((mob.isMonster())||(tagged))
+					move(mob,direction,false);
+				else
+				{
+					commands.addElement(""+mob);
+					mob.session().enque(2,commands);
+				}
+			}
+		}
+		else
+		{
+			mob.tell("Crawl which way?  Try north, south, east, west, up, or down.");
+			return;
+		}
+	}
+
+	public void standAndGo(MOB mob, int directionCode)
+	{
+		standIfNecessary(mob);
+		if(Sense.isSitting(mob))
+		{
+			mob.tell("You need to stand up first.");
+			return;
+		}
+		move(mob,directionCode,false);
+	}
+
 	public boolean move(MOB mob, int directionCode, boolean flee)
 	{
 		if(directionCode<0) return false;

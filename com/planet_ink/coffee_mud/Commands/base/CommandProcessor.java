@@ -127,6 +127,9 @@ public class CommandProcessor
 				case CommandSet.COMMANDS:
 					scoring.commands(mob,commandSet);
 					break;
+				case CommandSet.CRAWL:
+					movement.crawl(mob,commands);
+					break;
 				case CommandSet.CREATE:
 					if(mob.isASysOp(mob.location()))
 						createEdit.create(mob,commands);
@@ -149,7 +152,7 @@ public class CommandProcessor
 					socialProcessor.dismount(mob,commands);
 					break;
 				case CommandSet.DOWN:
-					movement.move(mob,Directions.DOWN,false);
+					movement.standAndGo(mob,Directions.DOWN);
 					break;
 				case CommandSet.DRINK:
 					itemUsage.drink(mob,commands);
@@ -164,7 +167,7 @@ public class CommandProcessor
 						mob.tell("Huh?\n\r");
 					break;
 				case CommandSet.EAST:
-					movement.move(mob,Directions.EAST,false);
+					movement.standAndGo(mob,Directions.EAST);
 					break;
 				case CommandSet.EAT:
 					itemUsage.eat(mob,commands);
@@ -277,7 +280,7 @@ public class CommandProcessor
 					grouping.nofollow(mob,true,false);
 					break;
 				case CommandSet.NORTH:
-					movement.move(mob,Directions.NORTH,false);
+					movement.standAndGo(mob,Directions.NORTH);
 					break;
 				case CommandSet.NOCHANNEL:
 					channels.nochannel(mob,commands);
@@ -390,7 +393,7 @@ public class CommandProcessor
 					scoring.songs(mob);
 					break;
 				case CommandSet.SOUTH:
-					movement.move(mob,Directions.SOUTH,false);
+					movement.standAndGo(mob,Directions.SOUTH);
 					break;
 				case CommandSet.SPELLS:
 					scoring.spells(mob);
@@ -437,7 +440,7 @@ public class CommandProcessor
 						mob.tell("Only the Archons may unload the help files...\n\r");
 					break;
 				case CommandSet.UP:
-					movement.move(mob,Directions.UP,false);
+					movement.standAndGo(mob,Directions.UP);
 					break;
 				case CommandSet.VALUE:
 					socialProcessor.value(mob,commands);
@@ -458,7 +461,7 @@ public class CommandProcessor
 					basicSenses.weather(mob,commands);
 					break;
 				case CommandSet.WEST:
-					movement.move(mob,Directions.WEST,false);
+					movement.standAndGo(mob,Directions.WEST);
 					break;
 				case CommandSet.WHOIS:
 					grouping.who(mob,Util.combine(commands,1));

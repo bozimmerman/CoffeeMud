@@ -12,8 +12,7 @@
 ! banks! (Well, the moneychanger behavior is good enough).
 ! exp from sac/des also based on level of the body.  Set body levels based on char level.
 ! Serve and Rebuke commands.  Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
-
-Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting. 
+! Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
 
 Crawl command, is_crawling, and crawling requirements for exits
 

@@ -45,7 +45,7 @@ public class StdArmor extends StdItem implements Armor
 	{
 		if(newUses==Integer.MAX_VALUE)
 			newUses=100;
-		myUses=newUses;
+		super.setUsesRemaining(newUses);
 	}
 	
 	private String armorHealth()
@@ -115,8 +115,8 @@ public class StdArmor extends StdItem implements Armor
 		// lets do some damage!
 		if((affect.amITarget(this))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(subjectToWearAndTear())
 		&&(usesRemaining()<100)
-		&&(usesRemaining()>=0)
 		&&(Sense.canBeSeenBy(this,affect.source())))
 			affect.source().tell(armorHealth());
 		else
@@ -124,6 +124,7 @@ public class StdArmor extends StdItem implements Armor
 		&&(myOwner()!=null)
 		&&(myOwner() instanceof MOB)
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
+		&&(subjectToWearAndTear())
 		&&(affect.amITarget(myOwner())))
 		{
 			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
@@ -331,6 +332,12 @@ public class StdArmor extends StdItem implements Armor
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
 		else 
 			return super.value();
+	}
+	public boolean subjectToWearAndTear()
+	{
+		if((usesRemaining()<=100)&&(usesRemaining()>=0))
+			return true;
+		return false;
 	}
 
 	public String secretIdentity()

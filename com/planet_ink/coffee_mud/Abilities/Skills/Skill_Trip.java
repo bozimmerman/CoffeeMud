@@ -100,6 +100,12 @@ public class Skill_Trip extends StdAbility
 			return false;
 		}
 
+		if(target.riding()!=null)
+		{
+			mob.tell(target.name()+" is riding "+mob.riding()+" and can't be tripped!");
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

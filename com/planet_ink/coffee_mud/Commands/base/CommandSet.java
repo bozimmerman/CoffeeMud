@@ -127,7 +127,8 @@ public class CommandSet extends Hashtable
 	public static final int MOUNT=115;
 	public static final int DISMOUNT=116;
 	public static final int SERVE=117;
-	public static final int REBUKE=118;									 
+	public static final int REBUKE=118;
+	public static final int CRAWL=119;
 
 	public CommandSet()
 	{
@@ -158,6 +159,8 @@ public class CommandSet extends Hashtable
 			put("COMP",new Integer(COMPARE));
 		put("CONSIDER",new Integer(CONSIDER));
 			put("CON",new Integer(CONSIDER));
+		put("CRAWL",new Integer(CRAWL));
+			put("CR",new Integer(CRAWL));
 		put("CREATE",new Integer(CREATE));
 		put("CREDITS",new Integer(CREDITS));
 		put("DESTROY",new Integer(DESTROY));

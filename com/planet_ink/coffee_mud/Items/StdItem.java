@@ -114,6 +114,7 @@ public class StdItem implements Item
 	{
 		return new StdItem();
 	}
+	public boolean subjectToWearAndTear(){return false;}
 	private void cloneFix(Item E)
 	{
 		destroyed=false;

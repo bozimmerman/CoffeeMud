@@ -865,7 +865,13 @@ public class StdMOB implements MOB
 
 			if(Util.bset(srcMajor,Affect.ACT_MOVE))
 			{
-				if(((Sense.isSleeping(this))||(Sense.isSitting(this)))
+				boolean sitting=Sense.isSitting(this);
+				if((sitting)
+				&&((affect.sourceMinor()==Affect.TYP_LEAVE)
+				||(affect.sourceMinor()==Affect.TYP_ENTER)))
+					sitting=false;
+				   
+				if(((Sense.isSleeping(this))||(sitting))
 				&&(affect.sourceMinor()!=Affect.TYP_STAND)
 				&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
 				{

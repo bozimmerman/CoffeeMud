@@ -1,6 +1,6 @@
 ^HMOVEMENT^N                            ^HCOMMUNICATION^?
 north south east west up down       gossip chat gratz greet
-exits recall ride                   answer quote say tell channels
+exits recall ride crawl             answer quote say tell channels
 sleep wake rest stand               quiet emote socials yell ask
 
 ^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?

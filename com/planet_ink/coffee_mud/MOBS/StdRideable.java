@@ -142,11 +142,18 @@ public class StdRideable extends StdMOB implements Rideable
 						affect.source().tell("You cannot ride "+name()+" that way.");
 						return false;
 					}
+					if(Sense.isSitting(affect.source()))
+					{
+						affect.source().tell("You cannot crawl while riding "+name()+".");
+						return false;
+					}
 				}
 			}
 			break;
 		case Affect.TYP_BUY:
 		case Affect.TYP_SELL:
+		case Affect.TYP_SIT:
+		case Affect.TYP_SLEEP:
 			if(amRiding(affect.source()))
 			{
 				affect.source().tell("You cannot do that while riding "+name()+".");

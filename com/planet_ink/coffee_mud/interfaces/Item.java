@@ -22,6 +22,7 @@ public interface Item extends Environmental
 	public void setSecretIdentity(String newIdentity);
 	
 	public boolean isAContainer();
+	public boolean subjectToWearAndTear();
 	
 	/** If it applies, the number of uses remaining
 	 * for this object */

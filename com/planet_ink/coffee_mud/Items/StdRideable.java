@@ -169,6 +169,11 @@ public class StdRideable extends StdContainer implements Rideable
 						affect.source().tell("You cannot ride "+name()+" that way.");
 						return false;
 					}
+					if(Sense.isSitting(affect.source()))
+					{
+						affect.source().tell("You cannot crawl while riding "+name()+".");
+						return false;
+					}
 				}
 			}
 			break;
