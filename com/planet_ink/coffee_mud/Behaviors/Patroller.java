@@ -90,8 +90,7 @@ public class Patroller extends ActiveTicker
 				thisRoom=(Room)((Item)ticking).owner();
 			if(thisRoom instanceof GridLocale)
 			{
-				Vector V=((GridLocale)thisRoom).getAllRooms();
-				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+				Room R=((GridLocale)thisRoom).getRandomChild();
 				if(R!=null) 
 				{
 					if(ticking instanceof Item)

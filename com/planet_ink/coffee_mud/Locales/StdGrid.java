@@ -125,6 +125,12 @@ public class StdGrid extends StdRoom implements GridLocale
 		return null;
 	}
 
+	public Room getRandomChild()
+	{
+		Vector V=getAllRooms();
+		if(V.size()==0) return null;
+		return (Room)V.elementAt(Dice.roll(1,V.size(),-1));
+	}
 	public Vector getAllRooms()
 	{
 		Vector V=new Vector();
@@ -275,7 +281,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	public void buildGrid()
 	{
-		clearGrid();
+		clearGrid(null);
 		try
 		{
 			subMap=new Room[xsize][ysize];
@@ -298,7 +304,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		catch(Exception e)
 		{
-			clearGrid();
+			clearGrid(null);
 		}
 	}
 	public boolean isMyChild(Room loc)
@@ -314,7 +320,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		return false;
 	}
 
-	public void clearGrid()
+	public void clearGrid(Room backHere)
 	{
 		try
 		{
@@ -329,19 +335,31 @@ public class StdGrid extends StdRoom implements GridLocale
 						{
 							MOB M=room.fetchInhabitant(0);
 							if(M!=null)
-							if((M.getStartRoom()==null)
-							||(M.getStartRoom()==room)
-							||(M.getStartRoom().ID().length()==0))
-								M.destroy();
-							else
-								M.getStartRoom().bringMobHere(M,false);
+							{
+								if(backHere!=null)
+									backHere.bringMobHere(M,false);
+								else
+								if((M.getStartRoom()==null)
+								||(M.getStartRoom()==room)
+								||(M.getStartRoom().ID().length()==0))
+									M.destroy();
+								else
+									M.getStartRoom().bringMobHere(M,false);
+							}
 						}
 						while(room.numItems()>0)
 						{
 							Item I=room.fetchItem(0);
-							if(I!=null) I.destroy();
+							if(I!=null)
+							{
+								if(backHere!=null)
+									backHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+								else
+									I.destroy();
+							}
 						}
 					}
+					room.clearSky();
 					CMMap.delRoom(room);
 					room.setGridParent(null);
 				}

@@ -190,9 +190,9 @@ public class GrinderExits
 		R.clearSky();
 		R2.clearSky();
 		if(R instanceof GridLocale)
-			((GridLocale)R).clearGrid();
+			((GridLocale)R).clearGrid(null);
 		if(R2 instanceof GridLocale)
-			((GridLocale)R2).clearGrid();
+			((GridLocale)R2).clearGrid(null);
 		
 		if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
 		if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;

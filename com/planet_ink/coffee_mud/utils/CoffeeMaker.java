@@ -3011,7 +3011,7 @@ public class CoffeeMaker
 			Room newRoom=(Room)room.copyOf();
 			newRoom.clearSky();
 			if(newRoom instanceof GridLocale)
-				((GridLocale)newRoom).clearGrid();
+				((GridLocale)newRoom).clearGrid(null);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				newRoom.rawDoors()[d]=null;
 			newRoom.setRoomID(CMMap.getOpenRoomID(newName));

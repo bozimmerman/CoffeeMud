@@ -137,7 +137,7 @@ public class StdMaze extends StdGrid
 
 	public void buildGrid()
 	{
-		clearGrid();
+		clearGrid(null);
 		try
 		{
 			subMap=new Room[xsize][ysize];
@@ -156,7 +156,7 @@ public class StdMaze extends StdGrid
 		}
 		catch(Exception e)
 		{
-			clearGrid();
+			clearGrid(null);
 		}
 	}
 }

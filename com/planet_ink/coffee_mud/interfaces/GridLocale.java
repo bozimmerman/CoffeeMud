@@ -21,11 +21,12 @@ public interface GridLocale extends Room
 {
 	public Room getAltRoomFrom(Room loc, int direction);
 	public void buildGrid();
-	public void clearGrid();
+	public void clearGrid(Room bringBackHere);
 	public String getChildLocaleID();
 	public boolean isMyChild(Room loc);
 	public String getChildCode(Room loc);
 	public Room getChild(String childCode);
+	public Room getRandomChild();
 	public int getChildX(Room loc);
 	public int getChildY(Room loc);
 	public Vector getAllRooms();

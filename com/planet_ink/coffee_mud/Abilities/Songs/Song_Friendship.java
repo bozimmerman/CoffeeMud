@@ -74,6 +74,16 @@ public class Song_Friendship extends Song
 		return super.okMessage(myHost,msg);
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			unInvoke();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

@@ -101,7 +101,7 @@ public class EndlessSky extends StdGrid
 
 	public void buildGrid()
 	{
-		clearGrid();
+		clearGrid(null);
 		try
 		{
 			Exit ox=CMClass.getExit("Open");
@@ -138,7 +138,7 @@ public class EndlessSky extends StdGrid
 		}
 		catch(Exception e)
 		{
-			clearGrid();
+			clearGrid(null);
 		}
 	}
 }

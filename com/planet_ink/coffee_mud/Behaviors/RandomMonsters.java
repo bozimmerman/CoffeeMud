@@ -243,14 +243,8 @@ public class RandomMonsters extends ActiveTicker
 					{
 						if(ticking instanceof GridLocale)
 						{
-							Vector map=((GridLocale)ticking).getAllRooms();
-							if(map.size()==0)
-								M.bringToLife(((Room)ticking),true);
-							else
-							{
-								Room room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
-								M.bringToLife(room,true);
-							}
+							Room room=((GridLocale)ticking).getRandomChild();
+							M.bringToLife(room,true);
 						}
 						else
 							M.bringToLife(((Room)ticking),true);
@@ -283,11 +277,7 @@ public class RandomMonsters extends ActiveTicker
 								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
 						}
 						if((room!=null)&&(room instanceof GridLocale))
-						{
-							Vector map=((GridLocale)room).getAllRooms();
-							if(map.size()>0)
-								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
-						}
+							room=((GridLocale)room).getRandomChild();
 						if(room!=null)
 							M.bringToLife(room,true);
 						else

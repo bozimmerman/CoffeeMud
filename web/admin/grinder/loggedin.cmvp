@@ -77,31 +77,31 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckReqParm?SYSOP=true&AUTH_LOADUNLOAD=true&AUTH_LISTADMIN=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
+@if?CheckAuthCode?SYSOP=true&AUTH_LOADUNLOAD=true&AUTH_LISTADMIN=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
-	@if?CheckReqParm?AUTH_LOADUNLOAD=true@
+	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
+	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_JOURNALS=true@
+	@if?CheckAuthCode?AUTH_JOURNALS=true@
 	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_CMDQUESTS=true@
+	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
 	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_BAN=true@
+	@if?CheckAuthCode?AUTH_BAN=true@
 	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?SYSOP=true&AUTH_LISTADMIN=true@
+	@if?CheckAuthCode?SYSOP=true&AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
@@ -109,17 +109,17 @@
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>Server Log</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?SYSOP=true@
+	@if?CheckAuthCode?SYSOP=true@
 	<A href="javascript:Clicked('control.cmvp')"><FONT COLOR=WHITE>Control Panel</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?AUTH_STAT=true@
+	@if?CheckAuthCode?AUTH_STAT=true@
 	<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
 	@endif@
 </TD></TR>
 </TABLE>
 @endif@
-@if?CheckReqParm?ANYMODAREAS=true@
+@if?CheckAuthCode?ANYMODAREAS=true@
 	<P>
 	<TABLE WIDTH=200 BORDER=1>
 	<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas available:</B></FONT></TD></TR>
@@ -134,7 +134,7 @@
 	</SCRIPT>
 	</TD></TR>
 	<TR><TD ALIGN=CENTER>
-	@if?CheckReqParm?SYSOP=true&ALLMODAREAS=true@
+	@if?CheckAuthCode?SYSOP=true&ALLMODAREAS=true@
 	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
 	</TD><TD ALIGN=CENTER>

@@ -66,10 +66,10 @@ public class SaltWaterSurface extends WaterSurface
 					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
 					if((xo==null)||(xo.hasADoor())) xo=o;
 					thatSea.rawExits()[Directions.getOpDirectionCode(d)]=xo;
-					((GridLocale)thatSea).clearGrid();
+					((GridLocale)thatSea).clearGrid(null);
 				}
 			}
-			sea.clearGrid();
+			sea.clearGrid(null);
 			CMMap.addRoom(sea);
 		}
 	}
@@ -82,7 +82,7 @@ public class SaltWaterSurface extends WaterSurface
 		if(room==null) return;
 		if((room.roomID().length()==0)&&(room instanceof UnderSaltWaterGrid))
 		{
-			((UnderSaltWaterGrid)room).clearGrid();
+			((UnderSaltWaterGrid)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;

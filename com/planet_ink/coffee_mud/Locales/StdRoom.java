@@ -272,10 +272,10 @@ public class StdRoom
 					xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
 					if((xo==null)||(xo.hasADoor())) xo=o;
 					thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
-					((GridLocale)thatSky).clearGrid();
+					((GridLocale)thatSky).clearGrid(null);
 				}
 			}
-			sky.clearGrid();
+			sky.clearGrid(null);
 			CMMap.addRoom(sky);
 		}
 	}
@@ -287,7 +287,7 @@ public class StdRoom
 		if(room==null) return;
 		if((room.roomID().length()==0)&&(room instanceof EndlessSky))
 		{
-			((EndlessSky)room).clearGrid();
+			((EndlessSky)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;
@@ -1118,7 +1118,7 @@ public class StdRoom
 		while(numItems()>0)
 			delItem(fetchItem(0));
 		if(this instanceof GridLocale)
-			((GridLocale)this).clearGrid();
+			((GridLocale)this).clearGrid(null);
 		clearSky();
 		CMClass.ThreadEngine().deleteTick(this,-1);
 	}

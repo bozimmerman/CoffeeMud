@@ -47,6 +47,16 @@ public class Prayer_Sermon extends Prayer
 		return charmer;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			unInvoke();
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

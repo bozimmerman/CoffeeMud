@@ -578,7 +578,7 @@ public class CoffeeUtensils
 		clearTheRoom(deadRoom);
 		deadRoom.destroyRoom();
 		if(deadRoom instanceof GridLocale)
-			((GridLocale)deadRoom).clearGrid();
+			((GridLocale)deadRoom).clearGrid(null);
 		CMClass.DBEngine().DBDeleteRoom(deadRoom);
 	}
 

@@ -66,24 +66,24 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=20% ALIGN=CENTER>
-	@if?CheckReqParm?AUTH_CMDPLAYERS=true@
+	@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
 		<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
 	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
 	@if?PlayerOnline?=true@ 
-		@if?CheckReqParm?AUTH_BOOT=true@
+		@if?CheckAuthCode?AUTH_BOOT=true@
 			<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Player" ONCLICK="Boot();">
 		@endif@ 
 	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
-	@if?CheckReqParm?AUTH_BAN=true@
+	@if?CheckAuthCode?AUTH_BAN=true@
 		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Player" ONCLICK="Ban();">
 	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
-	@if?CheckReqParm?AUTH_BAN=true@
+	@if?CheckAuthCode?AUTH_BAN=true@
 		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
 	@endif@
 	</TD>

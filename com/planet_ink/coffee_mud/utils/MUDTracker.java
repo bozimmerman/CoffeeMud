@@ -244,8 +244,7 @@ public class MUDTracker extends Scriptable
 
 		if(oldRoom instanceof GridLocale)
 		{
-			Vector V=((GridLocale)oldRoom).getAllRooms();
-			Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+			Room R=((GridLocale)oldRoom).getRandomChild();
 			if(R!=null) R.bringMobHere(mob,true);
 			oldRoom=mob.location();
 		}

@@ -75,30 +75,6 @@ public class Authenticate extends StdWebMacro
 		&&(mob.Name().trim().length()>0)
 		&&(!bannedName(mob.Name())))
 		{
-			boolean subOp=false;
-			boolean sysop=CMSecurity.isASysOp(mob);
-			String AREA=httpReq.getRequestParameter("AREA");
-			Room R=null;
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-			{
-				Area A=(Area)a.nextElement();
-				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
-					if(A.amISubOp(mob.Name()))
-					{ 
-						if((R==null)&&(A.getProperMap().hasMoreElements()))
-							R=(Room)A.getProperMap().nextElement();
-						subOp=true; 
-						break;
-					}
-			}
-			httpReq.addRequestParameters("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS")))
-														   ||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
-			httpReq.addRequestParameters("ALLMODAREAS",""+(CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
-			httpReq.addRequestParameters("SYSOP",""+sysop);
-			httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
-			Vector V=CMSecurity.getSecurityCodes(mob,R);
-			for(int v=0;v<V.size();v++)
-				httpReq.addRequestParameters("AUTH_"+((String)V.elementAt(v)),"true");
 			return true;
 		}
 		return false;

@@ -102,7 +102,7 @@ public class GrinderRooms
 			String y=httpReq.getRequestParameter("YGRID");
 			if(y==null)y="";
 			((GridLocale)R).setYSize(Util.s_int(y));
-			((GridLocale)R).clearGrid();
+			((GridLocale)R).clearGrid(null);
 		}
 
 		String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
@@ -309,7 +309,7 @@ public class GrinderRooms
 	{
 		R.clearSky();
 		if(R instanceof GridLocale)
-			((GridLocale)R).clearGrid();
+			((GridLocale)R).clearGrid(null);
 		Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
 		R.rawDoors()[dir]=newRoom;
 		if(R.rawExits()[dir]==null)

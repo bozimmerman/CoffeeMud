@@ -692,3 +692,6 @@ mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles o
 oo	GOOSE	Who would you like to goose?			
 mo	PALE SELF	You feel the blood draining from your face.			
 ss	LAUGH <T-NAME>	You laugh at <T-NAMESELF> mercilessly.	<S-NAME> laughs at <T-NAMESELF> mercilessly.	<S-NAME> laughs at you mercilessly.	You can't find the butt of your joke.
+mo	LEAN SELF	You try to lean on yourself. How will that work?	<S-NAME> tries to lean on <S-HIM-HERSELF> and fails miserably.		
+mo	LEAN	You look around for something to lean on.	<S-NAME> looks around for something to lean on.		
+mo	LEAN <T-NAME>	You lean on <T-HIM-HER>.	<S-NAME> leans on <T-NAME>.	<S-NAME> leans on you.	You can`t lean on something when it`s not here.

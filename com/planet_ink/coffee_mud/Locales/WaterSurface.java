@@ -69,10 +69,10 @@ public class WaterSurface extends StdRoom implements Drink
 					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
 					if((xo==null)||(xo.hasADoor())) xo=o;
 					thatSea.rawExits()[Directions.getOpDirectionCode(d)]=xo;
-					((GridLocale)thatSea).clearGrid();
+					((GridLocale)thatSea).clearGrid(null);
 				}
 			}
-			sea.clearGrid();
+			sea.clearGrid(null);
 			CMMap.addRoom(sea);
 		}
 	}
@@ -85,7 +85,7 @@ public class WaterSurface extends StdRoom implements Drink
 		if(room==null) return;
 		if((room.roomID().length()==0)&&(room instanceof UnderWaterGrid))
 		{
-			((UnderWaterGrid)room).clearGrid();
+			((UnderWaterGrid)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;

@@ -106,7 +106,7 @@ public class UnderWaterGrid extends StdGrid
 
 	public void buildGrid()
 	{
-		clearGrid();
+		clearGrid(null);
 		try
 		{
 			subMap=new Room[xsize][ysize];
@@ -143,7 +143,7 @@ public class UnderWaterGrid extends StdGrid
 		}
 		catch(Exception e)
 		{
-			clearGrid();
+			clearGrid(null);
 		}
 	}
 }

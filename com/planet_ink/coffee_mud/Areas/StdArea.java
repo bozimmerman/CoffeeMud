@@ -680,7 +680,7 @@ public class StdArea implements Area
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
 				if(R instanceof GridLocale)
-					num+=((GridLocale)R).getAllRooms().size();
+					num+=((GridLocale)R).xSize()*((GridLocale)R).ySize();
 				else
 					num++;
 		}

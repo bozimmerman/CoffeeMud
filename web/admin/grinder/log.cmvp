@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckReqParm?SYSOP=true&AUTH_LISTADMIN=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?!CheckAuthCode?SYSOP=true&AUTH_LISTADMIN=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
 	<title>System Log File</title>

@@ -49,6 +49,16 @@ public class Chant_CharmAnimal extends Chant
 	}
 
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			unInvoke();
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

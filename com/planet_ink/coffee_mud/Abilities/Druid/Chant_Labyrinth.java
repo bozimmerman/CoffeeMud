@@ -40,26 +40,7 @@ public class Chant_Labyrinth extends Chant
 			return;
 		Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
-		{
-			Vector V=((GridLocale)room).getAllRooms();
-			for(int v=0;v<V.size();v++)
-			{
-				Room R=(Room)V.elementAt(v);
-				while(R.numInhabitants()>0)
-				{
-					MOB M=R.fetchInhabitant(0);
-					if(M!=null)	oldRoom.bringMobHere(M,false);
-				}
-				while(R.numItems()>0)
-				{
-					Item I=R.fetchItem(0);
-					if(I!=null) oldRoom.bringItemHere(I,-1);
-				}
-			}
-			room.clearSky();
-			((GridLocale)room).clearGrid();
-			CMMap.delRoom(room);
-		}
+			((GridLocale)room).clearGrid(oldRoom);
 		super.unInvoke();
 	}
 
@@ -120,7 +101,6 @@ public class Chant_Labyrinth extends Chant
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,newRoom,0);
-				Vector V=((GridLocale)newRoom).getAllRooms();
 				Vector everyone=new Vector();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
@@ -128,12 +108,11 @@ public class Chant_Labyrinth extends Chant
 					everyone.addElement(follower);
 				}
 
-				if(V.size()>0)
 				for(int m=0;m<everyone.size();m++)
 				{
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
-					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+					Room newerRoom=((GridLocale)newRoom).getRandomChild();
 					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of thin air.");
 					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into the labyrinth.");
 					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))

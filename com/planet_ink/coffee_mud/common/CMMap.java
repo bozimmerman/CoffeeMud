@@ -186,7 +186,7 @@ public class CMMap
 	public static void delRoom(Room oneToDel)
 	{
 		if(oneToDel instanceof GridLocale)
-			((GridLocale)oneToDel).clearGrid();
+			((GridLocale)oneToDel).clearGrid(null);
 		roomsList.remove(oneToDel);
 		theWorldChanged();
 	}
@@ -233,7 +233,7 @@ public class CMMap
 	public static void replaceRoom(Room newOne, Room oldOne)
 	{
 		if(oldOne instanceof GridLocale)
-		  ((GridLocale)oldOne).clearGrid();
+		  ((GridLocale)oldOne).clearGrid(null);
 		roomsList.remove(oldOne);
 		roomsList.addElement(newOne);
 		theWorldChanged();

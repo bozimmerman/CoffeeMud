@@ -172,7 +172,7 @@ public class BaseGenerics extends StdCommand
 		{
 			((GridLocale)R).setXSize(((GridLocale)oldR).xSize());
 			((GridLocale)R).setYSize(((GridLocale)oldR).ySize());
-			((GridLocale)R).clearGrid();
+			((GridLocale)R).clearGrid(null);
 		}
 		Vector allmobs=new Vector();
 		int skip=0;
