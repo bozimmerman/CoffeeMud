@@ -590,7 +590,8 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToOpen));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,(getScr("Movement","sopens"))+CommonStrings.msp("dooropen.wav",10));
+		String openWord=((openThis==null)||(!(openThis instanceof Exit)))?getScr("Movement","sopenword"):((Exit)openThis).openWord();
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,(getScr("Movement","sopens",openWord))+CommonStrings.msp("dooropen.wav",10));
 		if(openThis instanceof Exit)
 		{
 			boolean open=((Exit)openThis).isOpen();
@@ -676,7 +677,8 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToClose));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses")+CommonStrings.msp("dooropen.wav",10));
+		String closeWord=((closeThis==null)||(!(closeThis instanceof Exit)))?getScr("Movement","scloseword"):((Exit)closeThis).closeWord();
+		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses",closeWord)+CommonStrings.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
 		{
 			boolean open=((Exit)closeThis).isOpen();

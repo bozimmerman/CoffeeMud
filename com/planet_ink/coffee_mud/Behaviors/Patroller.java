@@ -138,7 +138,7 @@ public class Patroller extends ActiveTicker
 					FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
 					if(mob.location().okAffect(mob,msg))
 					{
-						msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> open(s) <T-NAMESELF>.");
+						msg=new FullMsg(mob,E,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+E.openWord()+"(s) <T-NAMESELF>.");
 						ExternalPlay.roomAffectFully(msg,thisRoom,direction);
 					}
 				}

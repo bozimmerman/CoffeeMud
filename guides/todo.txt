@@ -1,6 +1,12 @@
 Programming.html update
+	Updates to Locales, Mobs, Items for misc. methods.
 Installation.html update
+	Upgrade guide
 Archons Guide updates
+	Archon commands review
+	How to use Grids/Mazes (goto and so forth)
+	How to create Homes
+	
 
 //****** next version ********************************************************
 Fighter secret skill IMPROVED DISARM if they don't have anything in the wield position, it will cause them to drop what is in the held position.

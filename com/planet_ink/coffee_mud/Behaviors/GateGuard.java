@@ -163,13 +163,13 @@ public class GateGuard extends StdBehavior
 				}
 				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
 				{
-					FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> open(s) <T-NAME>.");
+					FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> "+e.openWord()+"(s) <T-NAME>.");
 					if(mob.location().okAffect(mob,msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
 				if((numPlayers==0)&&(e.isOpen()))
 				{
-					FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
+					FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> "+e.closeWord()+"(s) <T-NAME>.");
 					if(mob.location().okAffect(mob,msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}

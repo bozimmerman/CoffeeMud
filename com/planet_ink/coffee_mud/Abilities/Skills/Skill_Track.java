@@ -83,7 +83,7 @@ public class Skill_Track extends StdAbility
 							if(oldRoom.okAffect(mob,msg))
 							{
 								reclose=true;
-								msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> open(s) <T-NAMESELF>.");
+								msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
 								ExternalPlay.roomAffectFully(msg,oldRoom,nextDirection);
 							}
 						}
@@ -104,7 +104,7 @@ public class Skill_Track extends StdAbility
 									FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
 									if(nextRoom.okAffect(mob,msg))
 									{
-										msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> close(s) <T-NAMESELF>.");
+										msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
 										ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
 									}
 									if((opExit.hasALock())&&(relock))

@@ -342,13 +342,13 @@ public class BribeGateGuard extends StdBehavior
 			}
 			if((e.isOpen())&&(paidPlayers.isEmpty()))
 			{
-				FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
+				FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> "+e.closeWord()+"(s) <T-NAME>.");
 				if(mob.location().okAffect(mob,msg))
 					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 			}
 			if((!e.isOpen())&&(!paidPlayers.isEmpty()))
 			{
-				FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> open(s) <T-NAME>.");
+				FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> "+e.openWord()+"(s) <T-NAME>.");
 				for(int i=0;i<paidPlayers.size();i++)
 				{
 					ExternalPlay.quickSay(mob,(MOB)paidPlayers.elementAt(i),"I still have that "+getBalance((MOB)paidPlayers.elementAt(i))+" from before if you're heading through",true,false);

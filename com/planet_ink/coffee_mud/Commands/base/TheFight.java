@@ -652,24 +652,27 @@ public class TheFight
 			{
 				Container sheath=(Container)sheaths.elementAt(i);
 				if((item1!=null)
-				   &&(sheath.canContain(item1)))
+				&&(!items.contains(item1))
+				&&(sheath.canContain(item1)))
 				{
 					items.addElement(item1);
 					containers.addElement(sheath);
 				}
 				else
 				if((item2!=null)
-				   &&(sheath.canContain(item2)))
+				&&(!items.contains(item2))
+				&&(sheath.canContain(item2)))
 				{
 					items.addElement(item2);
 					containers.addElement(sheath);
 				}
 			}
-			if((item2!=null)&&(!items.contains(item2)))
+			if(item2!=null)
 			for(int i=0;i<sheaths.size();i++)
 			{
 				Container sheath=(Container)sheaths.elementAt(i);
-				if(sheath.canContain(item2))
+				if((sheath.canContain(item2))
+				&&(!items.contains(item2)))
 				{
 					items.addElement(item2);
 					containers.addElement(sheath);
@@ -694,7 +697,7 @@ public class TheFight
 				   ||(putThis.amWearingAt(Item.HELD)))
 				   &&(putThis instanceof Weapon))
 				{
-					if(Sense.canBeSeenBy(putThis,mob))
+					if(Sense.canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))
 					{
 						items.addElement(putThis);
 						if((container!=null)&&(container.canContain(putThis)))

@@ -386,6 +386,7 @@ public class Amputation extends StdAbility
 		limb.setName("a "+gone);
 		limb.setDisplayText("a bloody "+gone+" is sitting here.");
 		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+		limb.setMaterial(EnvResource.RESOURCE_MEAT);
 		limb.baseEnvStats().setLevel(1);
 		limb.baseEnvStats().setWeight(5);
 		limb.recoverEnvStats();

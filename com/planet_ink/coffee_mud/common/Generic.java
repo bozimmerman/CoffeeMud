@@ -1381,6 +1381,8 @@ public class Generic
 		}
 		if(E instanceof DeadBody)
 		{
+			if(((DeadBody)E).charStats()==null)
+				((DeadBody)E).setCharStats(new DefaultCharStats());
 			try{
 				((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 			} catch(Exception e){}
