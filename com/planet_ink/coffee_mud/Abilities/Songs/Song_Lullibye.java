@@ -9,7 +9,7 @@ import java.util.*;
 public class Song_Lullibye extends Song
 {
 	public String ID() { return "Song_Lullibye"; }
-	public String name(){ return "Lullibye";}
+	public String name(){ return "Lullaby";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Lullibye();	}
 
