@@ -331,12 +331,12 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isInCombat())
 		{
-			commonEmote(mob,"<S-NAME> is in combat!");
+			commonEmote(mob,"<S-NAME> <S-IS-ARE> in combat!");
 			return false;
 		}
 		if(!Sense.canBeSeenBy(mob.location(),mob))
 		{
-			commonTell(mob,"You can't see to do that!");
+			commonTell(mob,"<S-NAME> can't see to do that!");
 			return false;
 		}
 		for(int a=mob.numAffects()-1;a>=0;a--)
@@ -368,7 +368,7 @@ public class CommonSkill extends StdAbility
 
 		if(mob.curState().getMana()<manaConsumed)
 		{
-			commonTell(mob,"You don't have enough mana to do that.");
+			commonTell(mob,"<S-NAME> don't have enough mana to do that.");
 			return false;
 		}
 		activityRoom=mob.location();

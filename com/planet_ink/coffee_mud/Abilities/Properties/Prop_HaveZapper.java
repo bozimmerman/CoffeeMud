@@ -14,7 +14,7 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+		return "Ownership restricted as follows: "+ExternalPlay.zapperDesc(miscText);
 	}
 
 
