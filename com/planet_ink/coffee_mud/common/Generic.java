@@ -1674,12 +1674,26 @@ public class Generic
 		}
 	}
 
+	public static Hashtable GENITEMCODESHASH=new Hashtable();
 	public static String[] GENITEMCODES={"CLASS","USES","LEVEL","ABILITY","NAME",
 									 "DISPLAY","DESCRIPTION","SECRET","PROPERWORN",
 									 "WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
 									 "ISREMOVABLE","MATERIAL","AFFBEHAV",
 									 "DISPOSITION","WEIGHT","ARMOR",
 									 "DAMAGE","ATTACK","READABLETEXT"};
+	public static int getGenItemCodeNum(String code)
+	{
+		if(GENITEMCODESHASH.size()==0)
+		{
+			for(int i=0;i<GENITEMCODES.length;i++)
+				GENITEMCODESHASH.put(GENITEMCODES[i],new Integer(i));
+		}
+		if(GENITEMCODESHASH.containsKey(code.toUpperCase()))
+			return ((Integer)GENITEMCODESHASH.get(code.toUpperCase())).intValue();
+		for(int i=0;i<GENITEMCODES.length;i++)
+			if(code.toUpperCase().startsWith(GENITEMCODES[i])) return i;
+		return -1;
+	}
 	public static String getGenItemStat(Item I, String code){
 		switch(getGenItemCodeNum(code))
 		{
@@ -1736,16 +1750,26 @@ public class Generic
 		case 21: I.setReadableText(val); break;
 		}
 	}
-	public static int getGenItemCodeNum(String code){
-		for(int i=0;i<GENITEMCODES.length;i++)
-			if(code.equalsIgnoreCase(GENITEMCODES[i])) return i;
-		return -1;
-	}
-	public static String[] GENMOBCODES={"CLASS","RACE","LEVEL","ABILITY","NAME",
+	public static Hashtable GENMOBCODESHASH=new Hashtable();
+	public static final String[] GENMOBCODES={"CLASS","RACE","LEVEL","ABILITY","NAME",
 									 "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
 									 "DISPOSITION","SENSES","ARMOR",
 									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
 									 "ABLES","INVENTORY"};
+	
+	public static int getGenMobCodeNum(String code)
+	{
+		if(GENMOBCODESHASH.size()==0)
+		{
+			for(int i=0;i<GENMOBCODES.length;i++)
+				GENMOBCODESHASH.put(GENMOBCODES[i],new Integer(i));
+		}
+		if(GENMOBCODESHASH.containsKey(code.toUpperCase()))
+			return ((Integer)GENMOBCODESHASH.get(code.toUpperCase())).intValue();
+		for(int i=0;i<GENMOBCODES.length;i++)
+			if(code.toUpperCase().startsWith(GENMOBCODES[i])) return i;
+		return -1;
+	}
 	public static String getGenMobStat(MOB M, String code){
 		switch(getGenMobCodeNum(code))
 		{
@@ -1832,10 +1856,5 @@ public class Generic
 			}
 			break;
 		}
-	}
-	public static int getGenMobCodeNum(String code){
-		for(int i=0;i<GENMOBCODES.length;i++)
-			if(code.equalsIgnoreCase(GENMOBCODES[i])) return i;
-		return -1;
 	}
 }
