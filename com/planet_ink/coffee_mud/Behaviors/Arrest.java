@@ -85,6 +85,27 @@ public class Arrest extends StdBehavior
 				return true;
 			}
 			else
+			if((O!=null)&&(O instanceof Vector))
+			{
+				Vector V=(Vector)O;
+				for(int i=0;i<warrants.size();i++)
+				{
+					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					if(isStillACrime(W))
+					{
+						Vector V2=new Vector();
+						V2.addElement(W.criminal.name());
+						if(W.victim==null) V2.addElement("");
+						else V2.addElement(W.victim.name());
+						if(W.witness==null) V2.addElement("");
+						else V2.addElement(W.witness.name());
+						V2.addElement(fixCharge(W));
+						V.addElement(V2);
+					}
+				}
+			}
+			else
+			if(O==null)
 			{
 				if((mob.isMonster())
 				&&(mob.location()!=null)

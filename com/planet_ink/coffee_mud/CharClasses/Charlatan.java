@@ -93,7 +93,7 @@ public class Charlatan extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.";}
+	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Gains a random non-class skill or spell every other level!";}
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
@@ -159,6 +159,39 @@ public class Charlatan extends StdCharClass
 		}
 		
 		return super.okAffect(myChar,affect);
+	}
+	
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	{
+		super.grantAbilities(mob,isBorrowedClass);
+		
+		// if he already has one, don't give another!
+		if(!mob.isMonster())
+		{
+			int classLevel=mob.baseCharStats().getClassLevel(this);
+			if(classLevel<2) return;
+			if((classLevel%2)!=0) return;
+			
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				Ability A=mob.fetchAbility(a);
+				if((CMAble.getQualifyingLevel(ID(),A.ID())<0)
+				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)))
+					return;
+			}
+			// now only give one, for current level, respecting alignment!
+			Vector choices=new Vector();
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			{
+				Ability A=(Ability)a.nextElement();
+				if((CMAble.getQualifyingLevel(ID(),A.ID())<0)
+				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)))
+					choices.addElement(A);
+			}
+			if(choices.size()==0) return;
+			Ability A=(Ability)choices.elementAt(Dice.roll(1,choices.size(),-1));
+			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
+		}
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
