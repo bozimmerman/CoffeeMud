@@ -6,6 +6,9 @@ import java.io.*;
 import java.util.*;
 
 
+// bos favorite import areas command.  saved here for his convenience
+//import noprompt c:\home\archives\areas\daycare.are  c:\home\archives\areas\canyon.are c:\home\archives\areas\grave.are c:\home\archives\areas\air.are c:\home\archives\areas\midgaard.are c:\home\archives\areas\ofcol2.are c:\home\archives\areas\plains.are c:\home\archives\areas\sewer.are c:\home\archives\areas\thalos.are c:\home\archives\areas\wyvern.are c:\home\archives\areas\drow.are c:\home\archives\areas\hood.are c:\home\archives\areas\haon.are c:\home\archives\areas\dream.are c:\home\archives\areas\mobfact.are c:\home\archives\areas\newthalos.are c:\home\archives\areas\redferne.are  c:\home\archives\areas\shire.are c:\home\archives\areas\trollden.are  c:\home\archives\areas\school.are c:\home\archives\areas\dwarven.are c:\home\archives\areas\gnome.are c:\home\archives\areas\midennir.are c:\home\archives\areas\moria.are c:\home\archives\areas\ofcol.are c:\home\archives\areas\eastern.are c:\home\archives\areas\smurf.are c:\home\archives\areas\immort.are 
+
 public class Import
 {
 	Rooms myRooms=new Rooms();
@@ -2199,18 +2202,6 @@ public class Import
 
 	public void areimport(MOB mob, Vector commands)
 	{
-		Vector areaData=new Vector();
-		Vector roomData=new Vector();
-		Vector mobData=new Vector();
-		Vector resetData=new Vector();
-		Vector objectData=new Vector();
-		Vector mobProgData=new Vector();
-		Vector objProgData=new Vector();
-		Vector shopData=new Vector();
-		Vector specialData=new Vector();
-		Vector newRooms=new Vector();
-		Vector reLinkTable=null;
-
 		boolean prompt=true;
 
 		commands.removeElementAt(0);
@@ -2232,18 +2223,35 @@ public class Import
 			commands.removeElementAt(0);
 			prompt=false;
 		}
+
+		
+		for(int areaFile=0;areaFile<commands.size();areaFile++)
+		{
+		Vector areaData=new Vector();
+		Vector roomData=new Vector();
+		Vector mobData=new Vector();
+		Vector resetData=new Vector();
+		Vector objectData=new Vector();
+		Vector mobProgData=new Vector();
+		Vector objProgData=new Vector();
+		Vector shopData=new Vector();
+		Vector specialData=new Vector();
+		Vector newRooms=new Vector();
+		Vector reLinkTable=null;
+		
+		String areaFileName=(String)commands.elementAt(areaFile);
 		// read in the .are file
-		StringBuffer buf=Resources.getFile(Util.combine(commands,0));
+		StringBuffer buf=Resources.getFile(areaFileName);
 		if((buf==null)||((buf!=null)&&(buf.length()==0)))
 		{
-			mob.tell("File not found at: '"+Util.combine(commands,0)+"'!");
+			mob.tell("File not found at: '"+areaFileName+"'!");
 			return;
 		}
 
 		Vector V=Resources.getFileLineVector(buf);
 
 		// sort the data into general blocks, and identify area
-		mob.tell("Sorting data...");
+		mob.tell("\n\rSorting data from file '"+areaFileName+"'...");
 		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData);
 		if((roomData.size()==0)||(areaData.size()==0))
 		{
@@ -3053,7 +3061,7 @@ public class Import
 				myRooms.clearDebriAndRestart(saveRoom,0);
 				saveRoom.recoverRoomStats();
 			}
-			mob.session().print("\n\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).ID());
+			mob.session().println("\n\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).ID()+"\n\r");
 
 		}
 		catch(Exception e)
@@ -3062,7 +3070,7 @@ public class Import
 			mob.tell(e.getMessage());
 			return;
 		}
-		return;
+		}
 	}
 }
 

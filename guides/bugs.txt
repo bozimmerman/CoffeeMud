@@ -1,9 +1,4 @@
 Have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad. (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
-! fireball only affects one enemy at a time -- yes, and it should
-change import so that we get some default journals, along with the parchments!
-change import so we get some arrows that dont exist yet!
-! fix import of ranged weapons to HAVE a range and ammo requirements!
-! at max/min range to genweapon definitions, dammit!
 
 
 
