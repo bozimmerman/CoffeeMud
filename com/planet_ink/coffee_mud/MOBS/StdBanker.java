@@ -540,7 +540,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 
-						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)>=0)
+						if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANWITHDRAW)<0)
 						{
 							ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 							return false;
@@ -600,7 +600,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
 						return false;
 					}
-					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)>=0)
+					if(C.allowedToDoThis(msg.source(),Clan.FUNC_CLANDEPOSITLIST)<0)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, you aren't authorized by your clan to do that.",true,false);
 						return false;

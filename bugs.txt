@@ -1,0 +1,8 @@
+guildmasters should be able to LIST their funds.
+do something about journal dates.. i like the dual date idea
+
+
+GenCharClasses -- zappercheck on quals 
+Some solution for variable eq on mobs -- use rejuv! 
+code something to coffeemudify all the beds 
+parse out all the commands into classes, so that access can be class based, and time req can be determined 

@@ -221,7 +221,7 @@ public class StdJournal extends StdItem
 							   +((shortFormat)?"":""
 							   +Util.padRight(from,10)+" "
 							   +Util.padRight(to,10)+" ")
-							   +Util.padRight(((!date.equals(compdate))?"N/A":IQCalendar.d2String(Util.s_long(date))),19)+" "
+							   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
 							   +Util.padRight(subject,25+(shortFormat?22:0))+"\n\r");
 				}
 			}
@@ -247,7 +247,7 @@ public class StdJournal extends StdItem
 				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
-						   +"\n\rDATE: "+((!date.equals(compdate))?"N/A":IQCalendar.d2String(Util.s_long(date)))
+						   +"\n\rDATE: "+IQCalendar.d2String(Util.s_long(date))
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}
