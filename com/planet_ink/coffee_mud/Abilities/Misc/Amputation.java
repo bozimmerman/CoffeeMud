@@ -348,7 +348,7 @@ public class Amputation extends StdAbility
 					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" falls off!^?");
 			}
 		}
-		Item limb=CMClass.getItem("GenItem");
+		Item limb=CMClass.getItem("GenLimb");
 		limb.setName("a "+gone);
 		limb.setDisplayText("a bloody "+gone+" is sitting here.");
 		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");

@@ -1,8 +1,9 @@
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
 we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
+Execution skill for Arrest
 for the trader class, we need tar & feather, whip (improve common skils), torture, salvetrading skill, executions (stoning, drawn & quarter, beheading)
 ability to deposit a container and its contents.
-Execution skill for Arrest
+prop_practicedummy should have an autocalming affect parms -- makes no sense -- is already autocalming!
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 Install ship battery
 document real estate, space ship selling, genairlock
