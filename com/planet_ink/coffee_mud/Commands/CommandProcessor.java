@@ -668,9 +668,9 @@ public class CommandProcessor
 			SysOpSkills.transferCmd(mob,commands);
 			break;
 		case CommandSet.TYPO:
-			if(Util.combine(commands,1).length()>0)
+			if((Util.combine(commands,1).length()>0)&&(mob.location()!=null))
 			{
-				ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS",Util.combine(commands,1),-1);
+				ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS","("+mob.location().roomID()+") "+Util.combine(commands,1),-1);
 				mob.tell("Thank you for your assistance!");
 			}
 			else

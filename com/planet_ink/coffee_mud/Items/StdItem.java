@@ -417,7 +417,7 @@ public class StdItem implements Item
 	{
 		if((secretIdentity!=null)&&(secretIdentity.length()>0))
 			return secretIdentity+"\n\rLevel: "+envStats().level()+tackOns();
-		return description+"\n\rLevel: "+envStats().level()+tackOns();
+		return description()+"\n\rLevel: "+envStats().level()+tackOns();
 	}
 
 	public void setSecretIdentity(String newIdentity)

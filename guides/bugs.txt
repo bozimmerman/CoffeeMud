@@ -1,1 +1,5 @@
 GAES still isn't done
+You study a crooked stick very closely.
+[B@ff7feb
+Level: 0
+Say the magic word :'ZUP' to the target.

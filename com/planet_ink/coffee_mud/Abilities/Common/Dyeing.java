@@ -109,7 +109,7 @@ public class Dyeing extends CommonSkill
 			return false;
 		}
 		writing=Util.combine(commands,0).toLowerCase();
-		if(" white green blue red yellow cyan purple ".indexOf(writing)<0)
+		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
 		{
 			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple.");
 			return false;
