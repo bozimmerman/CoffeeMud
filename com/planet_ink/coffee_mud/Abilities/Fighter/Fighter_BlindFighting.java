@@ -19,12 +19,12 @@ public class Fighter_BlindFighting extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 
-		baseEnvStats().setLevel(8);
+		baseEnvStats().setLevel(10);
 		quality=Ability.BENEFICIAL_SELF;
 
-		addQualifyingClass("Fighter",8);
-		addQualifyingClass("Paladin",baseEnvStats().level()+2);
-		addQualifyingClass("Ranger",baseEnvStats().level()+2);
+		addQualifyingClass("Fighter",10);
+		addQualifyingClass("Paladin",12);
+		addQualifyingClass("Ranger",12);
 		recoverEnvStats();
 	}
 

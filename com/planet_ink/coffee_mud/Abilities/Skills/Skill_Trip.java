@@ -26,9 +26,9 @@ public class Skill_Trip extends StdAbility
 
 		baseEnvStats().setLevel(13);
 
-		addQualifyingClass("Fighter",13);
-		addQualifyingClass("Ranger",13);
-		addQualifyingClass("Paladin",13);
+		addQualifyingClass("Fighter",14);
+		addQualifyingClass("Ranger",17);
+		addQualifyingClass("Paladin",17);
 		addQualifyingClass("Thief",13);
 		addQualifyingClass("Bard",9);
 		recoverEnvStats();

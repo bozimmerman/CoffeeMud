@@ -21,9 +21,9 @@ public class Fighter_Roll extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
-		baseEnvStats().setLevel(10);
+		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Fighter",10);
+		addQualifyingClass("Fighter",16);
 		recoverEnvStats();
 	}
 

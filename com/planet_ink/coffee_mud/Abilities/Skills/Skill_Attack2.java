@@ -21,13 +21,13 @@ public class Skill_Attack2 extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 
-		baseEnvStats().setLevel(6);
+		baseEnvStats().setLevel(8);
 
-		addQualifyingClass("Fighter",6);
-		addQualifyingClass("Ranger",6);
-		addQualifyingClass("Paladin",6);
+		addQualifyingClass("Fighter",8);
+		addQualifyingClass("Ranger",9);
+		addQualifyingClass("Paladin",9);
 		addQualifyingClass("Thief",17);
-		addQualifyingClass("Bard",11);
+		addQualifyingClass("Bard",17);
 		recoverEnvStats();
 	}
 

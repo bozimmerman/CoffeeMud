@@ -22,8 +22,8 @@ public class Fighter_Whomp extends StdAbility
 
 		quality=Ability.MALICIOUS;
 
-		baseEnvStats().setLevel(16);
-		addQualifyingClass("Fighter",16);
+		baseEnvStats().setLevel(17);
+		addQualifyingClass("Fighter",17);
 		recoverEnvStats();
 	}
 

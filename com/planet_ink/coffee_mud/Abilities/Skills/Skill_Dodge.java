@@ -19,12 +19,12 @@ public class Skill_Dodge extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
-		baseEnvStats().setLevel(2);
+		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Fighter",2);
+		addQualifyingClass("Fighter",7);
 		addQualifyingClass("Thief",6);
-		addQualifyingClass("Ranger",2);
-		addQualifyingClass("Paladin",2);
+		addQualifyingClass("Ranger",7);
+		addQualifyingClass("Paladin",7);
 		addQualifyingClass("Bard",7);
 		recoverEnvStats();
 	}

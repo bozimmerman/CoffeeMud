@@ -24,9 +24,9 @@ public class Skill_Dirt extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
-		baseEnvStats().setLevel(11);
+		baseEnvStats().setLevel(6);
 
-		addQualifyingClass("Fighter",11);
+		addQualifyingClass("Fighter",6);
 		addQualifyingClass("Ranger",11);
 		addQualifyingClass("Paladin",11);
 		addQualifyingClass("Thief",22);

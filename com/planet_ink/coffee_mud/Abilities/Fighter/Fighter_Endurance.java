@@ -19,9 +19,9 @@ public class Fighter_Endurance extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.OK_SELF;
 
-		baseEnvStats().setLevel(18);
+		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Fighter",18);
+		addQualifyingClass("Fighter",19);
 		recoverEnvStats();
 	}
 

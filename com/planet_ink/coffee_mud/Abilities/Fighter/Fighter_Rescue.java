@@ -21,11 +21,11 @@ public class Fighter_Rescue extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
-		baseEnvStats().setLevel(7);
+		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Fighter",7);
-		addQualifyingClass("Paladin",baseEnvStats().level()+2);
-		addQualifyingClass("Ranger",baseEnvStats().level()+2);
+		addQualifyingClass("Fighter",5);
+		addQualifyingClass("Paladin",2);
+		addQualifyingClass("Ranger",2);
 		recoverEnvStats();
 	}
 

@@ -23,12 +23,12 @@ public class Skill_Disarm extends StdAbility
 
 		quality=Ability.MALICIOUS;
 
-		baseEnvStats().setLevel(9);
+		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Fighter",9);
-		addQualifyingClass("Ranger",9);
-		addQualifyingClass("Paladin",9);
-		addQualifyingClass("Thief",9);
+		addQualifyingClass("Fighter",11);
+		addQualifyingClass("Ranger",8);
+		addQualifyingClass("Paladin",8);
+		addQualifyingClass("Thief",11);
 		recoverEnvStats();
 	}
 

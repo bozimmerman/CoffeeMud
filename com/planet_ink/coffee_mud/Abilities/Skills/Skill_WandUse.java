@@ -29,7 +29,7 @@ public class Skill_WandUse extends StdAbility
 		addQualifyingClass("Thief",3);
 		addQualifyingClass("Bard",3);
 		addQualifyingClass("Ranger",5);
-		addQualifyingClass("Fighter",6);
+		addQualifyingClass("Fighter",13);
 		addQualifyingClass("Paladin",7);
 		recoverEnvStats();
 	}
