@@ -427,6 +427,7 @@ public class StdExit implements Exit
 			return false;
 		}
 		else
+		if(tickID==Host.EXIT_BEHAVIOR_TICK)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
@@ -434,7 +435,10 @@ public class StdExit implements Exit
 				if(B!=null)
 					B.tick(this,tickID);
 			}
-
+			return true;
+		}
+		else
+		{
 			int a=0;
 			while(a<numAffects())
 			{
@@ -450,7 +454,6 @@ public class StdExit implements Exit
 				else
 					a++;
 			}
-			return true;
 		}
 	}
 	public boolean isOpen(){return isOpen;}
@@ -574,12 +577,19 @@ public class StdExit implements Exit
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
 		}
+		// first one! so start ticking...
+		if(behaviors.size()==0)
+			ExternalPlay.startTickDown(this,Host.EXIT_BEHAVIOR_TICK,1);
+		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)
 	{
 		behaviors.removeElement(to);
+		if(behaviors.size()==0)
+			ExternalPlay.deleteTick(this,Host.EXIT_BEHAVIOR_TICK);
 	}
+	
 	public int numBehaviors()
 	{
 		return behaviors.size();

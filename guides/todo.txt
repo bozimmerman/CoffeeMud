@@ -1,3 +1,4 @@
+Add no-cache headers
 ability to save riding status in the database.
 Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.
 Should Greater Globe require Globe in order to gain?  YES.

@@ -18,8 +18,7 @@ public interface Host
 	public static final int ROOM_BEHAVIOR_TICK=8;
 	public static final int AREA_TICK=9;
 	public final static int ROOM_ITEM_REJUV=10;
-
-
+	public static final int EXIT_BEHAVIOR_TICK=11;
 	public final static int SPELL_AFFECT=12;
 	
 	public final static int MAX_TICK_CLIENTS=32;

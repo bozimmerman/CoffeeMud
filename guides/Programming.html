@@ -43,9 +43,11 @@ the topic of text display be covered.  Throughout the system you will see text
 being sent to the user.  Since a mud is a text producing engine, this should be
 no great suprise.  However, within that text you will often see different kinds 
 of codes and tags which affect the output.  For instance, consider the following lines:</P>
-<PRE>	msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; incant(s) and reach(es) for &lt;T-NAMESELF&gt;.");
+<PRE>	msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");
 	
-	mob.location().show(mob,null,Affect.MSG_OK_ACTION,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
+	mob.location().show(mob,null,Affect.MSG_OK_ACTION,&lt;	BR&gt;      
+	
+					"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
 </PRE>
 <P align=left><FONT size=4>Focusing only on the text for a moment, you will notice a that tags are
 used to designate a player name, or the name of the target of a spell.  You will also notice that (s)
@@ -933,7 +935,8 @@ the prefix TYP_.&nbsp; These types cover every sort of major event which occurs
 in the CoffeeMud engine, including getting items, casting spells, entering or 
 leaving rooms, etc, etc..</FONT></P>
 <pre>	
-FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,&lt;	
+ BR&gt; "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 </pre>
 <P align=left><FONT size=4>The FullMsg class has many 
 different constructors to make message construction quick and painless.&nbsp; 
@@ -949,7 +952,8 @@ the message out into the system.&nbsp; There is a standard form for the sending
 of almost all messages.&nbsp; If the source of the message is a MOB called 
 "SourceMOB", this standard form looks like this:</FONT></FONT></P>
 <pre>	
-FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
+FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,&lt;	
+ BR&gt; "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 if(SourceMOB.location().okAffect(msg))
 	SourceMOB.location().send(SourceMOB,msg);
 </pre>
@@ -1047,6 +1051,30 @@ Message which has the room instance as a target.</FONT></P>
 the MOB or Item which is affected by the spell or&nbsp;skill.</FONT></P>
 <P align=left><FONT size=4>Behavior - Any Message pertaining to the object 
 instance which has this behavior.</FONT></P>
+<P align=left><FONT size=4>Now that 
+you are completely confused, it will make you at least a bit happier to know 
+that Room objects have several short-cut methods for creating, previewing, and 
+executing messages.&nbsp; They include the following:<BR>         
+              
+          
+</FONT>	<BR>void 
+show(MOB source,Environmental target,int allCode,String allMessage);<BR>void 
+showHappens(int allCode, String allMessage);<BR>void showOthers(MOB 
+source,Environmental target,int allCode,String allMessage);<BR>void 
+showSource(MOB source,Environmental target,int allCode,String 
+allMessage);<BR></P>
+<P align=left><FONT size=4>The first method, most commonly used, constructs a
+message with the given source and target (no tool), and with the given Code
+and text message applying to source, target, and others.  The second method
+will do the same, but will also construct a MOB object to act as the source,
+for those instances where a source MOB is not readily available.  The third
+method behaves like the first, but does not allow the source MOB to preview
+or execute the message, while the fourth ONLY allows the source MOB to preview
+and execute the message.</FONT></P>
+<P align=left><FONT size=4>All four of those methods will construct a FullMsg
+object, give the Message to the Room object for previewing ("okAffect"), and
+then, if the Message is not cancelled, will call the Room "send" method for
+execution.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Trailers</FONT></P>
 <P align=left><FONT color=black size=4>The final subject we will discuss in the area 
 of Messages and Message handling regards another rare technique called Message 
@@ -1229,7 +1257,7 @@ SAVE_ELECTRIC, SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and &nbsp;SAVE_DISEASE.
 the "getStat" and "setStat" methods, there is also the Race object available 
 through "getMyRace" and "setMyRace" methods, as well as the Class levels 
 entries.</FONT></P>
-<P align=left><FONT size=4>Like the EnvStats above, those object listed as able 
+<P align=left><FONT size=4>Like the EnvStats above, those objects listed as able 
 to modify the EnvStats current state object are the same objects which are able 
 to modify the CharStats current state object.&nbsp; Rereading the section on 
 EnvStats will make clear how the CharStats objects are modified in the same 
@@ -1274,11 +1302,62 @@ effects, behaviors,
               
   and other objects to perform tasks on a 
 regular, timed, basis.&nbsp;The tasks to be performed are always located within 
-an method called "</FONT><FONT size=3>public boolean tick(int tickID)</FONT><FONT size=4>".&nbsp; 
-All Environmental objects&nbsp;define this method, and Behavior objects have 
-something similar.</FONT></P>
-<P align=left>&nbsp;</P>
-<P align=left></P>
+an method called "</FONT><FONT size=3>public boolean tick(int tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
+objects&nbsp;define this method, and Behavior objects have&nbsp;a similar method 
+called "<FONT size=3>public&nbsp;void tick(Environmental ticking, int 
+tickID)</FONT><FONT size=4>"</FONT> 
+         
+ .</FONT></P>
+<P align=left><FONT size=4>These 
+methods are called on a regular, timed basis whenever the object instance in 
+question has been properly set up to do so, and at the 
+frequency defined.&nbsp; The "tickID" parameter describes what sort of regular regular event 
+is occurring.&nbsp; These events are defined as equates in the Host interface, and 
+include IDs such as MOB_TICK, AREA_TICK, EXIT_REOPEN and others.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Before we get into the methods by which an object 
+instance are properly set up for regular calls to its "tick" method, it may be 
+worthwhile to discuss which regular ticks are setup by the system by 
+default.&nbsp; These tick events cover the most commonly used objects under the 
+most common circumstances, and so may be just the events you already 
+needed!&nbsp; They include:</FONT></P>
+<P align=left><FONT size=4>MOBs - All MOBs have their "tick" method called once 
+per Host.TICK_TIME (4 seconds), with the "tickID" defined by 
+Host.MOB_TICK.&nbsp;&nbsp;&nbsp; MOBs will, in turn, call the "tick" methods on 
+their own Behaviors, and Ability objects affecting them.&nbsp; If any of the 
+individual objects returns "false" from it's own tick method, then the object 
+will cease to receive any further tick method calls.</FONT></P>
+<P align=left><FONT size=4>Exits, Items, Rooms - Whenever a Behavior is added to 
+any of these objects, they will begin to have their tick methods called once per 
+Host.TICK_TIME (4 seconds), with the tickID defined by Host.ITEM_BEHAVIOR_TICK, 
+EXIT_BEHAVIOR_TICK, or ROOM_BEHAVIOR TICK.&nbsp; Deletion of the last behavior 
+will stop this tick event.</FONT></P>
+<P align=left><FONT size=4>Areas - All Area objects have their tick methods 
+called once per Host.TICK_TIME, with the tickID defined by 
+Host.AREA_TICK.</FONT></P>
+<P align=left><FONT size=4>Ability - Whenever an Ability object is added as an 
+affect (using the addAffect() Environmental method) to a non-MOB object by using 
+the proper Ability invoke procedure (see below), then the Ability object itself 
+will gain it's own regular calls to its tick method.&nbsp; The tickID for this 
+call is also Host.MOB_TICK, so as to make consistant the tickID for all spell 
+and similar effects.</FONT></P>
+<P align=left><FONT size=4>To sum up, MOBs have regular tick calls which they 
+use to perform their own periodic tasks, as well as to allow their Behavior and 
+spell effects to perform tasks.&nbsp; The other objects have circumstantial 
+ticks in certain instances.</FONT></P>
+<P align=left><FONT size=4>Now, to add a new periodic call to the "tick" method 
+on an Environmental object, one needs only to make a method call like 
+this:</FONT></P>
+<pre>	
+	ExternalPlay.startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
+</pre>
+<P align=left><FONT size=4>The second parameter is the tickID which will be used
+when the "tick" method on the "theEnvObject" object is called.  The third parameter
+is the number of Host.TICK_TIME (4 second) intervals between each call.  
+Stopping these tick calls can be done by simply returning "false" from the tick
+method itself, or manually using the following:</FONT></P>
+<pre>	
+	ExternalPlay.deleteTick(theEnvObject,Host.MY_TICK_ID);
+</pre>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
