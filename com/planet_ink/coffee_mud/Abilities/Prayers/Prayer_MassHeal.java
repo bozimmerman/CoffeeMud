@@ -32,10 +32,11 @@ public class Prayer_MassHeal extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		for(int i=0;i<mob.location().numInhabitants();i++)
+		Hashtable h=ExternalPlay.properTargets(this,mob);
+		if(h==null) return false;
+		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{
-			MOB target=mob.location().fetchInhabitant(i);
-
+			MOB target=(MOB)e.nextElement();
 			if(success)
 			{
 				// it worked, so build a copy of this ability,

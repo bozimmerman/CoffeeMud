@@ -21,7 +21,7 @@ public class StdClosedDoorway extends StdExit
 		isLocked=false;
 		doorDefaultsClosed=true;
 		doorDefaultsLocked=false;
-		openDelayTicks=15;
+		openDelayTicks=45;
 	}
 	public Environmental newInstance()
 	{

@@ -64,14 +64,8 @@ public class Fighter_WeaponBreak extends StdAbility
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		boolean success=profficiencyCheck((-levelDiff)+(-(mob.getVictim().charStats().getDexterity()*2)),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
-		if((!success)||(hisWeapon.envStats().ability()>0)||(Sense.isABonusItems(hisWeapon)))
-		{
-			String str=auto?"":"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!";
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-		else
+		if((success)&&(hisWeapon!=null)&&(hisWeapon.envStats().ability()==0)&&(!Sense.isABonusItems(hisWeapon))
+		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.remove();
@@ -82,6 +76,13 @@ public class Fighter_WeaponBreak extends StdAbility
 				hisWeapon.destroyThis();
 				mob.location().recoverRoomStats();
 			}
+		}
+		else
+		{
+			String str=auto?"":"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!";
+			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MSG_NOISYMOVEMENT,str);
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
 		}
 		return success;
 	}

@@ -66,9 +66,9 @@ public class Skill_Disarm extends StdAbility
 		else 
 			levelDiff=0;
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(auto||(ExternalPlay.isHit(mob,mob.getVictim())));
-		if(success)
+		Item hisWeapon=mob.getVictim().fetchWieldedItem();
+		if((success)&&(hisWeapon!=null)&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			Item hisWeapon=mob.getVictim().fetchWieldedItem();
 			mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
 			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
 			if(mob.location().okAffect(msg))

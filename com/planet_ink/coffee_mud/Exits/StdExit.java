@@ -30,7 +30,7 @@ public class StdExit implements Exit
 	protected boolean levelRestricted=false;
 	protected boolean classRestricted=false;
 	protected boolean alignmentRestricted=false;
-	protected int openDelayTicks=4;
+	protected int openDelayTicks=45;
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();

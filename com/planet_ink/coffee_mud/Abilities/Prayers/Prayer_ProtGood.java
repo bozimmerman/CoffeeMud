@@ -34,8 +34,9 @@ public class Prayer_ProtGood extends Prayer
 
 		if(mob.getAlignment()>650)
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-HIS-HER> protective aura "+ExternalPlay.hitWord(-1,mob.envStats().level())+" <S-NAME>!");
-			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
+			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-HIS-HER> protective aura "+ExternalPlay.hitWord(-1,damage)+" <S-NAME>!");
+			ExternalPlay.postDamage(invoker,mob,this,damage);
 		}
 		return super.tick(tickID);
 	}

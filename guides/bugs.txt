@@ -1,31 +1,34 @@
-can't eat sesame seed
-Look for "about the body" importables
-a safe pet can be attacked if already in combat?!  Or cant attack at all..
-ignore follower pets for no-mob areas?
+X can't eat sesame seed
+X Look for "about the body" importables
+! a safe pet can be attacked if already in combat?!  Or cant attack at all..
+! ignore follower pets for no-mob areas?
 "open the ground" south of midgaard
-be able to open doors while in battle! 
-And they should stay open longer!
+! be able to open doors while in battle, for fleeing
+! And they should stay open longer!
 Track -- make it smarter
-Are we able to cast spells on the invisible? Malicious?  Benevolent?
+! Are we able to cast spells on the invisible? Malicious?  Benevolent?
 Under guildmaster should take you to sewer
-consider consider, it is inaccurate
+! consider consider, it is inaccurate
 edged, hammer, dagger import bug
-dark horseman -- don't hide WHILE in combat?
+? dark horseman -- don't hide WHILE in combat?
 where IS there dirt?
 Look for inside-outside Locales
-Flying across water surface doesn't put out a torch
-Train stat should only take base score into account!
-Wands for a fighter.  As early as other classes?
-Train hit points, Train mana, Train move, Train practices, Train trains (10 prac=train)
-Protection good/evil too damaging when mismatched
-Plague should be contageous
-Choke can't kill you?!
-Meditation for Mage should be like Endurance for Fighter
+! Flying across water surface doesn't put out a torch
+! Train stat should only take base score into account!
+! Wands for a fighter.  As early as other classes?
+Train hit points, Train mana, Train move, Train practices, Train gain (10 prac=train)
+! Protection good/evil too damaging when mismatched
+! Plague should be contageous
+! Choke can't kill you?!
 Fix the Grinder for Tim.
 You can't buy field plate in New Thalos.
 Lore skill for Bards.. allows an identify for them.
-No disarm for melded weapons, weaponbreak, heat metal, or grease drops
-Max limit for text on the EQ command!
+! No disarm for melded weapons, weaponbreak, heat metal, or grease drops
+! Max limit for text on the EQ command!
+the bar S. of midgaard has a sky
+! while thedragon was fighting the knigt templar, the knight healed thedragon....(mass heal?)
+X charm may be too powerful. It brings my 8 cha up to 25. bard is only lvl 8
+X if your charisma is over 18, you can buy things at a significantly lower price. Selling them is also at this lower price.
 
 
 

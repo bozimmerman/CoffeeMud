@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Prop_SafePet extends Property
 {
+	boolean disabled=false;
+	
 	public Prop_SafePet()
 	{
 		super();
@@ -24,13 +26,16 @@ public class Prop_SafePet extends Property
 
 	public boolean okAffect(Affect affect)
 	{
-		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)))
+		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
 			affect.source().tell("Ah, leave "+affected.name()+" alone.");
 			if(affected instanceof MOB)
 				((MOB)affected).makePeace();
 			return false;
 		}
+		else
+		if((affected!=null)&&(affected instanceof MOB)&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))&&(affect.amISource((MOB)affected)))
+			disabled=true;
 		return super.okAffect(affect);
 	}
 }

@@ -320,7 +320,7 @@ public class StdCharClass implements CharClass
 	public boolean canAdvance(MOB mob, int abilityCode)
 	{
 		if((abilityCode<0)||(abilityCode>5)) return false;
-		if(mob.charStats().getCurStat(abilityCode)>=getMaxStat(abilityCode)) return false;
+		if(mob.baseCharStats().getCurStat(abilityCode)>=getMaxStat(abilityCode)) return false;
 		return true;
 	}
 

@@ -80,7 +80,7 @@ public class LightSource extends StdItem implements Light
 			  ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			&&(this.lit)
 			&&(!this.burnedOut)
-			&&(mob.isMine(this)))
+			&&((mob.isMine(this))&&((!Sense.isFlying(mob))||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))))
 			{
 				mob.tell("The water makes "+name()+" go out.");
 				tick(Host.LIGHT_FLICKERS);

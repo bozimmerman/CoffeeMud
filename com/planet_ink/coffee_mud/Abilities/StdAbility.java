@@ -142,7 +142,7 @@ public class StdAbility implements Ability, Cloneable
 		if(target!=null) 
 			targetName=target.name();
 		
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
+		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -184,7 +184,7 @@ public class StdAbility implements Ability, Cloneable
 				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName);
 		}
 		if(target!=null) targetName=target.name();
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
+		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell("You don't see that here.");

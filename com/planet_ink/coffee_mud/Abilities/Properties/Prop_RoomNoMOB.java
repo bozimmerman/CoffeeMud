@@ -28,7 +28,7 @@ public class Prop_RoomNoMOB extends Property
 		   &&(affect.amITarget(affected))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
-			if(affect.source().isMonster())
+			if((affect.source().isMonster())&&(affect.source().amFollowing()==null))
 				return false;
 		}
 		return super.okAffect(affect);

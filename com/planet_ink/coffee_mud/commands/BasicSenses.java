@@ -189,13 +189,13 @@ public class BasicSenses
 
 		int curStat=mob.baseCharStats().getCurStat(abilityCode);
 
-		if(!mob.charStats().getMyClass().canAdvance(mob,abilityCode))
+		if(!mob.baseCharStats().getMyClass().canAdvance(mob,abilityCode))
 		{
 			mob.tell("You cannot train that any further.");
 			return;
 		}
 
-		int teachStat=mob.charStats().getCurStat(abilityCode);
+		int teachStat=mob.baseCharStats().getCurStat(abilityCode);
 		if(curStat>teachStat)
 		{
 			mob.tell("You can only train with someone whose score is higher than yours.");

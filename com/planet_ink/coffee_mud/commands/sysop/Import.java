@@ -1687,7 +1687,7 @@ public class Import
 				I.setRawProperLocationBitmap(Item.ON_ARMS|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,9))
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,10))
+			if(Util.isSet(wearFlag,10)) // about the body
 				I.setRawProperLocationBitmap(Item.ON_NECK|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,11))
 				I.setRawProperLocationBitmap(Item.ON_WAIST|I.rawProperLocationBitmap());

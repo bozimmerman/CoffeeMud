@@ -81,7 +81,8 @@ public class Spell_Grease extends Spell
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = (Item) mob.fetchWieldedItem();
-								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*5)))
+								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*5))
+								&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
                                 {
 									msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 									if(mob.location().okAffect(msg))
@@ -101,7 +102,8 @@ public class Spell_Grease extends Spell
 								{
 									mob.envStats().setDisposition(mob.envStats().disposition() | Sense.IS_SITTING);
 									mob.location().send(mob,msg);
-									if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*4)))
+									if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*4))
+									&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 									{
 										msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 										if(mob.location().okAffect(msg))

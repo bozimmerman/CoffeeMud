@@ -726,6 +726,11 @@ public class StdMOB implements MOB
 			case Affect.TYP_READSOMETHING:
 				if(mob.isInCombat())
 				{
+					// the door-for-fleeing exception!
+					if((affect.sourceMinor()==Affect.TYP_OPEN)
+					   &&(affect.target()!=null)
+					   &&(affect.target() instanceof Exit))
+						break;
 					tell("Not while you are fighting!");
 					return false;
 				}
@@ -1138,7 +1143,7 @@ public class StdMOB implements MOB
 					if(!Sense.canBreathe(this))
 					{
 						this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
-						curState().adjHitPoints(-(int)Math.round(Math.random()*6.0),maxState());
+						ExternalPlay.doDamage(this,this,-(int)Math.round(Math.random()*6.0));
 					}
 					if(isInCombat())
 					{

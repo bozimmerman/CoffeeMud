@@ -27,7 +27,7 @@ public class GenExit extends StdExit
 		doorDefaultsClosed=false;
 		doorDefaultsLocked=false;
 
-		openDelayTicks=15;
+		openDelayTicks=45;
 	}
 
 	public Environmental newInstance()

@@ -281,7 +281,11 @@ public class Scoring
 				if((thisItem.location()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					if(Sense.canBeSeenBy(thisItem,seer))
-						msg.append(header+thisItem.name()+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+					{
+						String name=thisItem.name();
+						if(name.length()>20) name=name.substring(0,17)+"...";
+						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+					}
 					else
 						foundButUnseen=true;
 				}

@@ -500,8 +500,8 @@ public class SocialProcessor
 			return;
 		}
 
-		int realDiff=relativeLevelDiff(target,mob);
-		//target.envStats().level()-mob.envStats().level();
+		int realDiff=//relativeLevelDiff(target,mob);
+			target.envStats().level()-mob.envStats().level();
 
 		int levelDiff=Math.abs(realDiff);
 		if(levelDiff<2)
