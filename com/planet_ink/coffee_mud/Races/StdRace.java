@@ -174,6 +174,7 @@ public class StdRace implements Race
 	public void level(MOB mob)
 	{
 	}
+	public void tick(MOB myChar, int tickID){}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		if(!verifyOnly)

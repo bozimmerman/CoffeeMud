@@ -18,7 +18,8 @@ public class Spell_Fear extends Spell
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
 		if(h==null)
 		{
-			mob.tell("There doesn't appear to be anyone here worth scaring.");
+			if(!auto)
+				mob.tell("There doesn't appear to be anyone here worth scaring.");
 			return false;
 		}
 
@@ -43,7 +44,8 @@ public class Spell_Fear extends Spell
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
+				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.envStats().level()/2)>target.envStats().level()))
+				&&((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2)))))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

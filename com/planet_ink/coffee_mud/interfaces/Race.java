@@ -25,6 +25,16 @@ public interface Race extends Cloneable
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState);
 
 
+	/**
+	 * this method allows any environmental object
+	 * to behave according to a timed response.  by
+	 * default, it will never be called unless the
+	 * object uses the ServiceEngine to setup service.
+	 * The tickID allows granularity with the type
+	 * of service being requested.
+	 */
+	public void tick(MOB myChar, int tickID);
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

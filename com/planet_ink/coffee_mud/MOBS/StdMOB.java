@@ -1806,6 +1806,7 @@ public class StdMOB implements MOB
 			}
 			
 			charStats().getCurrentClass().tick(this,tickID);
+			charStats().getMyRace().tick(this,tickID);
 		}
 		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;

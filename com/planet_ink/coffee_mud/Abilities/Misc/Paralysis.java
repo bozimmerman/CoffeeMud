@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Paralysis extends StdAbility
 {
-	public String ID() { return "Paralyze"; }
-	public String name(){ return "Paralyze";}
+	public String ID() { return "Paralysis"; }
+	public String name(){ return "Paralysis";}
 	public String displayText(){ return "(Paralyzed)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

@@ -86,7 +86,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from the undead.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from the undead.":"^S<S-NAME> "+prayWord(mob)+" for protection from the undead.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -94,7 +94,7 @@ public class Prayer_ProtUndead extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> call(s) upon the protection of <S-HIS-HER> god, but there is no answer.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for protection, but there is no answer.");
 
 
 		// return whether it worked

@@ -45,16 +45,8 @@ public class Prayer_AnimateDead extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		mob.curState().setMana(0);
-
 
 		boolean success=profficiencyCheck(0,auto);
 
@@ -72,11 +64,14 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.setBaseCharStats(body.charStats());
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,3);
-				newMOB.baseEnvStats().setAttackAdjustment(50);
-				newMOB.baseEnvStats().setDamage(30);
+				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
+				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.setAlignment(0);
-				newMOB.baseState().setHitPoints(50);
+				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
 				newMOB.baseState().setMovement(30);
+				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
