@@ -295,6 +295,26 @@ public class RoomData extends StdWebMacro
 			str.append(desc);
 		}
 		
+		if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
+		{
+			String size=(String)httpReq.getRequestParameters().get("XGRID");
+			if((size==null)||(size.length()==0))
+				size=((GridLocale)R).xSize()+"";
+			str.append(size);
+		}
+		if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
+		{
+			String size=(String)httpReq.getRequestParameters().get("YGRID");
+			if((size==null)||(size.length()==0))
+				size=((GridLocale)R).ySize()+"";
+			str.append(size);
+		}
+		if(parms.containsKey("ISGRID"))
+		{
+			if(R instanceof GridLocale)
+				return "true";
+			return "false";
+		}
 		if(parms.containsKey("MOBLIST"))
 		{
 			Vector classes=new Vector();

@@ -78,6 +78,17 @@ public class GrinderRooms
 		String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
 		if(desc==null)desc="";
 		R.setDescription(desc);
+
+		if(R instanceof GridLocale)
+		{
+			String x=(String)httpReq.getRequestParameters().get("XGRID");
+			if(x==null)x="";
+			((GridLocale)R).setXSize(Util.s_int(x));
+			String y=(String)httpReq.getRequestParameters().get("YGRID");
+			if(y==null)y="";
+			((GridLocale)R).setYSize(Util.s_int(y));
+			((GridLocale)R).clearGrid();
+		}
 		
 		String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
 		if(err.length()>0) return err;

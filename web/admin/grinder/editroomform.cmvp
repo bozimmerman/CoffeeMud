@@ -122,6 +122,16 @@
     <TEXTAREA NAME=DESCRIPTION ROWS=5 COLS=60>@RoomData?DESCRIPTION@</TEXTAREA>
     </TD>
 </TR>
+@if?RoomData?ISGRID@
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Grid Sizes:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+    X:<INPUT TYPE=TEXT NAME=XGRID SIZE=5 MAXLENGTH=2 VALUE="@RoomData?XGRID@">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    Y:<INPUT TYPE=TEXT NAME=YGRID SIZE=5 MAXLENGTH=2 VALUE="@RoomData?YGRID@">
+    </TD>
+</TR>
+@endif@
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
 	<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
