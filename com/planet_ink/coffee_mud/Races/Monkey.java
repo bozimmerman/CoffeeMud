@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Monkey extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Monkey()
 	{
 		super();
@@ -67,5 +68,26 @@ public class Monkey extends StdRace
 			return "^g" + mob.name() + "^g has some misplaced hairs.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+	
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" fingers",EnvResource.RESOURCE_HIDE));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

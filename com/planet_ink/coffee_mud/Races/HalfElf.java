@@ -7,6 +7,7 @@ import java.util.*;
 
 public class HalfElf extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public HalfElf()
 	{
 		super();
@@ -95,5 +96,17 @@ public class HalfElf extends StdRace
 			return "^g" + mob.name() + "^g has a few small bruises.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

@@ -120,6 +120,8 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_IRONWOOD=MATERIAL_WOODEN|84;
 	public final static int RESOURCE_SILK=MATERIAL_CLOTH|85;
 	public final static int RESOURCE_COCOA=MATERIAL_VEGETATION|86;
+	public final static int RESOURCE_BLOOD=MATERIAL_LIQUID|87;
+	public final static int RESOURCE_BONE=MATERIAL_ROCK|88;
 	
 	public final static int RESOURCE_MASK=255;
 	
@@ -135,7 +137,7 @@ public interface EnvResource extends Item
 	"FEATHERS", "COTTON", "HEMP","WATER","SALT WATER","GLASS","PAPER",
 	"CLAY","DIAMOND","CHINA","CRYSTAL","GEM", "PEARL", "PLATINUM","MILK",
 	"EGGS","HOPS","COFFEEBEANS","COFFEE","OPAL","TOPAZ","AMETHYST","GARNET",
-	"AMBER","AQUAMARINE","CRYSOBERYL","IRONWOOD","SILK","COCOA"
+	"AMBER","AQUAMARINE","CRYSOBERYL","IRONWOOD","SILK","COCOA","BLOOD","BONE"
 	};
 	public final static int[][] RESOURCE_DATA={
 	{RESOURCE_NOTHING,0,0}, 
@@ -223,6 +225,8 @@ public interface EnvResource extends Item
 	{RESOURCE_CRYSOBERYL,50,2}, 
 	{RESOURCE_IRONWOOD,25,5}, 
 	{RESOURCE_SILK,200,5},
-	{RESOURCE_COCOA,4,5}
+	{RESOURCE_COCOA,4,5},
+	{RESOURCE_BLOOD,1,100},
+	{RESOURCE_BONE,1,100}
 	};
 }

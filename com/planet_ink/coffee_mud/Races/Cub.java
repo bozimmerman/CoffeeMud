@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Cub extends Bear
 {
+	protected static Vector resources=new Vector();
 	public Cub()
 	{
 		super();
@@ -39,5 +40,25 @@ public class Cub extends Bear
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" paws",EnvResource.RESOURCE_HIDE));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class WereRat extends GiantRat
 {
+	protected static Vector resources=new Vector();
 	public WereRat()
 	{
 		super();
@@ -26,5 +27,17 @@ public class WereRat extends GiantRat
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Minotaur extends Cow
 {
+	protected static Vector resources=new Vector();
 	public Minotaur()
 	{
 		super();
@@ -32,4 +33,16 @@ public class Minotaur extends Cow
 		return naturalWeapon;
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats){}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
+	}
 }

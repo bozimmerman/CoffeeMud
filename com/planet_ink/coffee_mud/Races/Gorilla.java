@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Gorilla extends Monkey
 {
+	protected static Vector resources=new Vector();
 	public Gorilla()
 	{
 		super();
@@ -26,5 +27,17 @@ public class Gorilla extends Monkey
 		affectableStats.setStat(CharStats.STRENGTH,18);
 		affectableStats.setStat(CharStats.DEXTERITY,16);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

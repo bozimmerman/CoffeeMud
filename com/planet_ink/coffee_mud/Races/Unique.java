@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Unique extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Unique()
 	{
 		super();
@@ -58,5 +59,17 @@ public class Unique extends StdRace
 			return "^g" + mob.name() + "^g is no longer amused, though still unconcerned.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect condition.^N";
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

@@ -212,7 +212,7 @@ public class Scoring
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SKILLS"))||(qual.equalsIgnoreCase("SKILL")))
 			msg.append("\n\r^HGeneral Skills:^? "+getQualifiedAbilities(mob,Ability.SKILL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("COMMON SKILLS"))||(qual.equalsIgnoreCase("COMMON")))
-			msg.append("\n\r^Common Skills:^? "+getQualifiedAbilities(mob,Ability.COMMON_SKILL,-1)+"\n\r");
+			msg.append("\n\r^HCommon Skills:^? "+getQualifiedAbilities(mob,Ability.COMMON_SKILL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("THIEVES"))||(qual.equalsIgnoreCase("THIEF"))||(qual.equalsIgnoreCase("THIEF SKILLS")))
 			msg.append("\n\r^HThief Skills:^? "+getQualifiedAbilities(mob,Ability.THIEF_SKILL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SPELLS"))||(qual.equalsIgnoreCase("SPELL"))||(qual.equalsIgnoreCase("MAGE")))

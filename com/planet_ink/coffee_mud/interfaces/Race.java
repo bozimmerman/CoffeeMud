@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
-
+import java.util.Vector;
 public interface Race
 {
 	public String ID();
@@ -13,6 +13,7 @@ public interface Race
 	public String healthText(MOB mob);
 	public DeadBody getCorpse(MOB mob, Room room);
 	public void confirmGear(MOB mob);
+	public Vector myResources();
 	
 	public String arriveStr();
 	public String leaveStr();

@@ -41,6 +41,25 @@ public class StdRace implements Race
 	{
 
 	}
+	
+	protected Item makeResource(String name, int type)
+	{
+		Item I=null;
+		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+			I=CMClass.getItem("GenFoodResource");
+		else
+		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			I=CMClass.getItem("GenLiquidResource");
+		else
+			I=CMClass.getItem("GenResource");
+		I.setName(name);
+		I.setDisplayText(name+" has been left here.");
+		I.setDescription("It looks like "+name);
+		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
+		I.baseEnvStats().setWeight(1);
+		I.recoverEnvStats();
+		return I;
+	}
 
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
@@ -202,6 +221,7 @@ public class StdRace implements Race
 		}
 		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),0)-1);
 	}
+	public Vector myResources(){return getRawResources();}
 	public void setHeightWeight(EnvStats stats, char gender)
 	{
 		int weightModifier=0;

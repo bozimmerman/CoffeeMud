@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Chimp extends Monkey
 {
+	protected static Vector resources=new Vector();
 	public Chimp()
 	{
 		super();
@@ -26,6 +27,26 @@ public class Chimp extends Monkey
 		affectableStats.setStat(CharStats.STRENGTH,15);
 		affectableStats.setStat(CharStats.DEXTERITY,15);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" toes",EnvResource.RESOURCE_HIDE));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }
 

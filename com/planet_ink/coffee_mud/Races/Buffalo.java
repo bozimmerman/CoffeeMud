@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Buffalo extends Cow
 {
+	protected static Vector resources=new Vector();
 	public Buffalo()
 	{
 		super();
@@ -29,5 +30,25 @@ public class Buffalo extends Cow
 			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 		}
 		return naturalWeapon;
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				for(int i=0;i<10;i++)
+				resources.addElement(makeResource
+				("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				for(int i=0;i<5;i++)
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

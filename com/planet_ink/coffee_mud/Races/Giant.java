@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Giant extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Giant()
 	{
 		super();
@@ -84,5 +85,17 @@ public class Giant extends StdRace
 			return "^g" + mob.name() + "^g has a few small(?) bruises.^N";
 		else
 			return "^c" + mob.name() + "^c is in towering health^N";
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

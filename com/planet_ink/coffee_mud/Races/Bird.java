@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Bird extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Bird()
 	{
 		super();
@@ -86,5 +87,25 @@ public class Bird extends StdRace
 			return "^g" + mob.name() + "^g has a some ruffled features.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Bear extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Bear()
 	{
 		super();
@@ -72,5 +73,44 @@ public class Bear extends StdRace
 			return "^g" + mob.name() + "^g has some misplaced hairs.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+	/////////////////////////////////////
+	//RESOURCE_MEAT=MATERIAL_FLESH     //
+	//RESOURCE_BEEF=MATERIAL_FLESH     //
+	//RESOURCE_PORK=MATERIAL_FLESH     //
+	//RESOURCE_POULTRY=MATERIAL_FLESH  //
+	//RESOURCE_MUTTON=MATERIAL_FLESH   //
+	//RESOURCE_FISH=MATERIAL_FLESH     //
+	/////////////////////////////////////
+	//RESOURCE_BLOOD=MATERIAL_LIQUID   //
+	//RESOURCE_BONE=MATERIAL_ROCK      //
+	/////////////////////////////////////
+	//RESOURCE_SCALES=MATERIAL_LEATHER //
+	//RESOURCE_FUR=MATERIAL_CLOTH      //
+	//RESOURCE_LEATHER=MATERIAL_LEATHER//
+	//RESOURCE_HIDE=MATERIAL_CLOTH     //
+	//RESOURCE_WOOL=MATERIAL_CLOTH     //
+	//RESOURCE_FEATHERS=MATERIAL_CLOTH //
+	/////////////////////////////////////
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" claws",EnvResource.RESOURCE_BONE));
+				for(int i=0;i<5;i++)
+				resources.addElement(makeResource
+				("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

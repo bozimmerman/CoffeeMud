@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Naga extends Python
 {
+	protected static Vector resources=new Vector();
 	public Naga()
 	{
 		super();
@@ -26,5 +27,17 @@ public class Naga extends Python
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

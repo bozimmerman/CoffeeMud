@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Bat extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Bat()
 	{
 		super();
@@ -80,5 +81,21 @@ public class Bat extends StdRace
 			return "^g" + mob.name() + "^g has a few small scratches.^N";
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("some bat hair",EnvResource.RESOURCE_FUR));
+				resources.addElement(makeResource
+					("a pair of bat wings",EnvResource.RESOURCE_HIDE));
+				resources.addElement(makeResource
+					("some bat blood",EnvResource.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
 	}
 }

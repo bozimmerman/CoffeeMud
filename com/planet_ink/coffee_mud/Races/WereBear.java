@@ -7,6 +7,7 @@ import java.util.*;
 
 public class WereBear extends Bear
 {
+	protected static Vector resources=new Vector();
 	public WereBear()
 	{
 		super();
@@ -23,4 +24,16 @@ public class WereBear extends Bear
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
+	}
 }

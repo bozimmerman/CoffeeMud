@@ -1,8 +1,10 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
+import java.util.Vector;
 
 public class Rat extends Rodent
 {
+	protected static Vector resources=new Vector();
 	public Rat()
 	{
 		super();
@@ -20,5 +22,17 @@ public class Rat extends Rodent
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,4);
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Calf extends Cow
 {
+	protected static Vector resources=new Vector();
 	public Calf()
 	{
 		super();
@@ -19,5 +20,17 @@ public class Calf extends Cow
 		// pounds
 		lightestWeight=150;
 		weightVariance=100;
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

@@ -11,6 +11,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int amountOfThirstQuenched=250;
 	protected int amountOfLiquidHeld=2000;
 	protected int amountOfLiquidRemaining=2000;
+	protected boolean disappearsAfterDrinking=false;
 
 	public StdDrink()
 	{
@@ -132,7 +133,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 				else
 				if(full)
 					mob.tell("You have drunk all you can.");
-				else
+				if(disappearsAfterDrinking)
+					destroyThis();
 				break;
 			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))

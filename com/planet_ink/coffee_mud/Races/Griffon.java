@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Griffon extends GreatBird
 {
+	protected static Vector resources=new Vector();
 	public Griffon()
 	{
 		super();
@@ -22,4 +23,16 @@ public class Griffon extends GreatBird
 		forbiddenWornBits=Item.HELD|Item.WIELD;
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	{}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
+	}
 }

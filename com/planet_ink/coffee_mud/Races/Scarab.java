@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Scarab extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public Scarab()
 	{
 		super();
@@ -48,5 +49,17 @@ public class Scarab extends StdRace
 			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
 		}
 		return naturalWeapon;
+	}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
 	}
 }

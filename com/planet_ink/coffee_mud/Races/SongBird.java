@@ -7,6 +7,7 @@ import java.util.*;
 
 public class SongBird extends StdRace
 {
+	protected static Vector resources=new Vector();
 	public SongBird()
 	{
 		super();
@@ -79,5 +80,16 @@ public class SongBird extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
-
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
+	}
 }

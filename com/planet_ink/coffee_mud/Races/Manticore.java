@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Manticore extends GreatCat
 {
+	protected static Vector resources=new Vector();
 	public Manticore()
 	{
 		super();
@@ -24,4 +25,16 @@ public class Manticore extends GreatCat
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	{}
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					("ape fur",EnvResource.RESOURCE_FUR));
+			}
+		}
+		return resources;
+	}
 }
