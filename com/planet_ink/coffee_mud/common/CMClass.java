@@ -23,11 +23,13 @@ public class CMClass extends ClassLoader
 	private static Vector clanItems=new Vector();
 	private static Vector areaTypes=new Vector();
 	private static Vector commands=new Vector();
+	private static Hashtable webMacros=new Hashtable();
+	public static int longestWebMacro=-1;
 	private static Hashtable CommandWords=new Hashtable();
 	private static final String[] names={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
-		"MISCTECH"
+		"MISCTECH","WEBMACROS"
 		};
 	private static final String[] ancestors={
 		"com.planet_ink.coffee_mud.interfaces.Race",
@@ -45,7 +47,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.interfaces.Area",
 		"com.planet_ink.coffee_mud.interfaces.Command",
 		"com.planet_ink.coffee_mud.interfaces.ClanItem",
-		"com.planet_ink.coffee_mud.interfaces.Electronics"
+		"com.planet_ink.coffee_mud.interfaces.Electronics",
+		"com.planet_ink.coffee_mud.interfaces.WebMacro"
 		};
 
 	public static Enumeration races(){return races.elements();}
@@ -65,6 +68,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration areaTypes(){return areaTypes.elements();}
 	public static Enumeration commands(){return commands.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
+	public static Enumeration webmacros(){return new Vector(webMacros.entrySet()).elements();}
 	public static Ability randomAbility(){ return (Ability)abilities.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));}
 
 	private static DatabaseEngine dbEngine=null;
@@ -175,6 +179,11 @@ public class CMClass extends ClassLoader
 	{
 		return (Command)getGlobal(commands,word);
 	}
+	
+	public static WebMacro getWebMacro(String macroName)
+	{
+		return (WebMacro)webMacros.get(macroName);
+	}
 
 	public static Command findCommandByTrigger(String word,
 											   boolean exactOnly)
@@ -215,6 +224,12 @@ public class CMClass extends ClassLoader
 			commands.removeElement(O);
 			return true;
 		}
+		if(webMacros.contains(O))
+			for(Enumeration e=webMacros.keys();e.hasMoreElements();)
+			{ 
+				String key=(String)e.nextElement();
+				if(webMacros.get(key)==O) webMacros.remove(key);
+			}
 		return false;
 	}
 
@@ -249,6 +264,7 @@ public class CMClass extends ClassLoader
 		case 13: set=commands; break;
 		case 14: set=clanItems; break;
 		case 15: set=miscTech; break;
+		case 16: set=webMacros; break;
 		}
 		if(set==null) return false;
 
@@ -268,7 +284,17 @@ public class CMClass extends ClassLoader
 		case 10: armor=new Vector(new TreeSet(armor)); break;
 		case 11: miscMagic=new Vector(new TreeSet(miscMagic)); break;
 		case 12: areaTypes=new Vector(new TreeSet(areaTypes)); break;
-		case 13: commands=new Vector(new TreeSet(commands)); break;
+		case 13: commands=new Vector(new TreeSet(commands)); 
+				for(int c=0;c<commands.size();c++)
+				{
+					Command C=(Command)commands.elementAt(c);
+					String[] wordList=C.getAccessWords();
+					if(wordList!=null)
+						for(int w=0;w<wordList.length;w++)
+							if(!CommandWords.containsKey(wordList[w].trim().toUpperCase()))
+								CommandWords.put(wordList[w].trim().toUpperCase(),C);
+				}
+				break;
 		case 14: clanItems=new Vector(new TreeSet(clanItems)); break;
 		case 15: miscTech=new Vector(new TreeSet(miscTech)); break;
 		}
@@ -476,6 +502,15 @@ public class CMClass extends ClassLoader
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
 
+		webMacros=CMClass.loadHashListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "%DEFAULT%","com.planet_ink.coffee_mud.interfaces.WebMacro");
+		Log.sysOut("MUD","WebMacros loaded  : "+webMacros.size());
+		for(Enumeration e=webMacros.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if(key.length()>longestWebMacro) 
+				longestWebMacro=key.length();
+		}
+		
 		races=loadVectorListToObj(prefix+"Races"+File.separatorChar,page.getStr("RACES"),"com.planet_ink.coffee_mud.interfaces.Race");
 		Log.sysOut("MUD","Races loaded      : "+races.size());
 		if(races.size()==0) return false;
@@ -636,6 +671,7 @@ public class CMClass extends ClassLoader
 			Race R=(Race)races.elementAt(r);
 			R.copyOf();
 		}
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: reading genRaces");
 		Vector genRaces=CMClass.DBEngine().DBReadRaces();
 		if(genRaces.size()>0)
 		{
@@ -653,6 +689,7 @@ public class CMClass extends ClassLoader
 			if(loaded>0)
 				Log.sysOut("MUD","GenRaces loaded   : "+loaded);
 		}
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
 		Vector genClasses=CMClass.DBEngine().DBReadClasses();
 		if(genClasses.size()>0)
 		{
@@ -744,6 +781,7 @@ public class CMClass extends ClassLoader
 		areaTypes=new Vector();
 		clanItems=new Vector();
 		commands=new Vector();
+		webMacros=new Hashtable();
 		CommandWords=new Hashtable();
 	}
 
@@ -889,9 +927,9 @@ public class CMClass extends ClassLoader
 							if(toThis instanceof Hashtable)
 							{
 								Hashtable H=(Hashtable)toThis;
-								if(H.containsKey(itemName.trim()))
-									H.remove(itemName.trim());
-								H.put(itemName.trim(),O);
+								if(H.containsKey(itemName.trim().toUpperCase()))
+									H.remove(itemName.trim().toUpperCase());
+								H.put(itemName.trim().toUpperCase(),O);
 							}
 							else
 							if(toThis instanceof Vector)

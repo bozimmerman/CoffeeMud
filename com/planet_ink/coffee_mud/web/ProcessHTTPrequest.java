@@ -380,7 +380,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if((s.charAt(x)=='?')&&(Character.isLetterOrDigit(s.charAt(x-1))))
 				extend=true;
 			else
-			if(((x-i)>webServer.longestMacro)&&(!extend))
+			if(((x-i)>CMClass.longestWebMacro)&&(!extend))
 				break;
 		}
 		return foundMacro;
@@ -493,7 +493,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		if(foundMacro.length()==0)
 			return "";
-		WebMacro W=(WebMacro)webServer.webMacros.get(foundMacro.toUpperCase());
+		WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
 		if(W!=null)
 		{
 			String q=null;
@@ -547,9 +547,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	//  I'm probably gonna replace it soon
 	public byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
-		if((webServer.webMacros==null)
-		   ||(webServer.webMacros.size()==0))
-			return data;
 		StringBuffer s = new StringBuffer(new String(data));
 		String redirectTo = null;
 

@@ -183,8 +183,6 @@ public class MUD extends Thread implements MudHost
 			webServerThread.start();
 			adminServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin");
 			adminServerThread.start();
-			if(!HTTPserver.loadWebMacros())
-				Log.errOut("MUD","Unable to loadWebMacros");
 			CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,(adminServerThread!=null)?adminServerThread:(webServerThread!=null)?webServerThread:null,null,true));
 		}
 		else
@@ -666,7 +664,6 @@ public class MUD extends Thread implements MudHost
 		}
 		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
-		HTTPserver.unloadWebMacros();
 		Scripts.clear();
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 

@@ -1,3 +1,4 @@
+test command reloading, due to commandword dealy
 don't let a pending login login again!
 save a player after modify, always!
 bodies set to disappear after death don't do so.

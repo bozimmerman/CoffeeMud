@@ -12,7 +12,6 @@ public class HTTPserver extends Thread
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
 	public static final float HOST_VERSION_MINOR=(float)0.3;
-	public static Hashtable webMacros=null;
 	public static INI webCommon=null;
 
 	// this gets sent in HTTP response
@@ -25,7 +24,6 @@ public class HTTPserver extends Thread
 
 
 	public ServerSocket servsock=null;
-	public static int longestMacro=0;
 
 	private MudHost mud;
 	private String partialName;
@@ -326,27 +324,4 @@ public class HTTPserver extends Thread
 	{
 		return page.getStr("PORT");
 	}
-
-	public static boolean loadWebMacros()
-	{
-		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
-		Vector webMacrosV=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "%DEFAULT%","com.planet_ink.coffee_mud.interfaces.WebMacro");
-		Log.sysOut("WEB","WebMacros loaded  : "+webMacrosV.size());
-		if(webMacrosV.size()==0) return false;
-		webMacros=new Hashtable();
-		for(int w=0;w<webMacrosV.size();w++)
-		{
-			WebMacro W=(WebMacro)webMacrosV.elementAt(w);
-			if(W.ID().length()>longestMacro)
-				longestMacro=W.ID().length();
-			webMacros.put(W.ID().toUpperCase(),W);
-		}
-		return true;
-	}
-
-	public static void unloadWebMacros()
-	{
-		webMacros=new Hashtable();
-	}
-
 }
