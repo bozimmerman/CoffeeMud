@@ -70,6 +70,7 @@ public class Corpse extends GenContainer implements DeadBody
 		if((msg.amITarget(this)||(msg.tool()==this))
         &&(msg.targetMinor()==CMMsg.TYP_GET)
         &&((envStats().ability()>10)||(Sense.isABonusItems(this)))
+		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()==0)
         &&(rawSecretIdentity().indexOf("/")>=0))
         {
             if(((MOB)msg.source()).isASysOp((Room)myHost))
