@@ -1,1 +1,2 @@
 GAES still isn't done
+can attack while wielding a non-weapon (minstrel)

@@ -62,7 +62,13 @@ public class Chant_LoveMoon extends Chant
 					MOB M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 					try{
 					if(Dice.rollPercentage()==1)
+					{
+						Item I=mob.fetchWornItem(Item.ON_WAIST);
+						if(I!=null)	ExternalPlay.remove(mob,I,false);
+						I=mob.fetchWornItem(Item.ON_LEGS);
+						if(I!=null)	ExternalPlay.remove(mob,I,false);
 						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
+					}
 					else
 					if(Dice.rollPercentage()>10)
 						switch(Dice.roll(1,5,0))

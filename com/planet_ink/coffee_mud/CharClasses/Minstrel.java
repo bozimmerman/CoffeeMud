@@ -41,92 +41,91 @@ public class Minstrel extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
-CMAble.addCharAbilityMapping(ID(),1,"Play_Tempo",true);
-CMAble.addCharAbilityMapping(ID(),1,"Play_Break",100,true);
-CMAble.addCharAbilityMapping(ID(),1,"Play_Woods",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Play_Tempo",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Play_Break",100,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Play_Woods",false);
 			
 			CMAble.addCharAbilityMapping(ID(),2,"Skill_Dirt",true);
-CMAble.addCharAbilityMapping(ID(),2,"Play_Flutes",false);
-CMAble.addCharAbilityMapping(ID(),2,"Play_Rhythm",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Play_Flutes",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Play_Rhythm",true);
 			
-CMAble.addCharAbilityMapping(ID(),3,"Play_Drums",false);
-CMAble.addCharAbilityMapping(ID(),3,"Play_March",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Play_Drums",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Play_March",true);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Ranger_FindWater",false);
-CMAble.addCharAbilityMapping(ID(),4,"Play_Harps",false);
-CMAble.addCharAbilityMapping(ID(),4,"Play_Background",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Play_Harps",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Play_Background",true);
 			
-CMAble.addCharAbilityMapping(ID(),5,"Skill_Tune",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Wands",false);
-CMAble.addCharAbilityMapping(ID(),5,"Play_Cymbals",false);
-CMAble.addCharAbilityMapping(ID(),5,"Play_Melody",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_TuneInstrument",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Play_Cymbals",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Play_Melody",true);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_TrophyCount",false);
-CMAble.addCharAbilityMapping(ID(),6,"Play_Guitars",false);
-CMAble.addCharAbilityMapping(ID(),6,"Play_LoveSong",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Play_Guitars",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Play_LoveSong",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Song_Armor",false);
 			
-CMAble.addCharAbilityMapping(ID(),7,"Play_Clarinets",false);
-CMAble.addCharAbilityMapping(ID(),7,"Play_Carol",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Play_Clarinets",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Play_Carol",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Song_Armor",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
-CMAble.addCharAbilityMapping(ID(),8,"Play_Violins",false);
-CMAble.addCharAbilityMapping(ID(),8,"Play_Blues",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Play_Violins",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Play_Blues",true);
 			
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Song_Serenity",false);
-CMAble.addCharAbilityMapping(ID(),9,"Play_Oboes",false);
-CMAble.addCharAbilityMapping(ID(),9,"Play_Ballad",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Play_Oboes",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Play_Ballad",true);
 			
-CMAble.addCharAbilityMapping(ID(),10,"Skill_InstrumentBash",true);
-CMAble.addCharAbilityMapping(ID(),10,"Play_Horns",false);
-CMAble.addCharAbilityMapping(ID(),10,"Play_Retreat",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Skill_InstrumentBash",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Play_Horns",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Play_Retreat",true);
 			
-CMAble.addCharAbilityMapping(ID(),11,"Play_Charge",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Play_Charge",true);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Listen",true);
-CMAble.addCharAbilityMapping(ID(),12,"Play_Xylophones",false);
-CMAble.addCharAbilityMapping(ID(),12,"Play_Reveille",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Play_Xylophones",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Play_Reveille",true);
 			
-CMAble.addCharAbilityMapping(ID(),13,"Play_Symphony",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Play_Symphony",true);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Parry",false);
-CMAble.addCharAbilityMapping(ID(),14,"Play_Trumpets",false);
-CMAble.addCharAbilityMapping(ID(),14,"Play_Dirge",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Play_Trumpets",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Play_Dirge",true);
 			
-CMAble.addCharAbilityMapping(ID(),15,"Skill_LendLevel",true);
-CMAble.addCharAbilityMapping(ID(),15,"Play_Ditty",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Play_Ditty",true);
 			
-CMAble.addCharAbilityMapping(ID(),16,"Play_Pianos",false);
-CMAble.addCharAbilityMapping(ID(),16,"Play_Solo",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Play_Pianos",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Play_Solo",true);
 			
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Song_Quickness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_EscapeBonds",true);
-CMAble.addCharAbilityMapping(ID(),18,"Play_Harmonicas",false);
-CMAble.addCharAbilityMapping(ID(),18,"Play_Lullabies",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Play_Harmonicas",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Play_Lullabies",true);
 			
 			CMAble.addCharAbilityMapping(ID(),19,"Song_Thanks",false);
 			
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_Feint",true);
-CMAble.addCharAbilityMapping(ID(),20,"Play_Tubas",false);
-CMAble.addCharAbilityMapping(ID(),20,"Play_Accompaniment",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Play_Tubas",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Play_Accompaniment",true);
 			
-CMAble.addCharAbilityMapping(ID(),21,"Play_Spiritual",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Play_Spiritual",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Paladin_Defend",false);
-CMAble.addCharAbilityMapping(ID(),22,"Play_Organs",false);
-CMAble.addCharAbilityMapping(ID(),22,"Play_Tribal",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Play_Organs",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Play_Tribal",false);
 			
-CMAble.addCharAbilityMapping(ID(),23,"Play_Harmony",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Play_Harmony",true);
 
-CMAble.addCharAbilityMapping(ID(),24,"Play_Trombones",false);
-CMAble.addCharAbilityMapping(ID(),24,"Play_Mystical",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Play_Trombones",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Play_Mystical",false);
 
-CMAble.addCharAbilityMapping(ID(),25,"Play_Battlehymn",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Play_Battlehymn",true);
 
-CMAble.addCharAbilityMapping(ID(),30,"Skill_Conduct",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Skill_Conduct",true);
 		}
 	}
 

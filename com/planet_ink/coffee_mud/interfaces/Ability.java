@@ -71,7 +71,7 @@ public interface Ability  extends Environmental
 	public static final int FLAG_BURNING=256;
 	public static final int FLAG_HOLY=512;
 	public static final int FLAG_UNHOLY=1024;
-	//public static final int FLAG_=2048;
+	public static final int FLAG_PARALYZING=2048;
 	//public static final int FLAG_=4096;
 	//public static final int FLAG_=16384;
 	//public static final int FLAG_=32768;

@@ -12,7 +12,7 @@ public class Play_Blues extends Play
 	public String name(){ return "Blues";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Play_Blues();}
-	
+	protected String songOf(){return "the "+name();}
 	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -55,7 +55,7 @@ public class Play_Blues extends Play
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((invoker().charStats().getStat(CharStats.CHARISMA)/4)+(invoker().envStats().level()/2)));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((invoker().charStats().getStat(CharStats.CHARISMA)/4)+(invokerLevel()/2)));
 	}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{

@@ -59,7 +59,7 @@ public class Searching extends CommonSkill
 		if(profficiencyCheck(0,auto))
 			success=true;
 		int duration=3;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) searching.");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
