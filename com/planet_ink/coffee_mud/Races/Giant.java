@@ -46,4 +46,40 @@ public class Giant extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public String standardMobCondition(MOB mob)
+	{
+		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+
+		if(pct<.10)
+			return "^r" + mob.name() + "^r is almost fallen!^N";
+		else
+		if(pct<.20)
+			return "^r" + mob.name() + "^r is covered in blood.^N";
+		else
+		if(pct<.30)
+			return "^r" + mob.name() + "^r is bleeding badly from lots of large wounds.^N";
+		else
+		if(pct<.40)
+			return "^y" + mob.name() + "^y has enormous bloody wounds and gashes.^N";
+		else
+		if(pct<.50)
+			return "^y" + mob.name() + "^y has some huge wounds and gashes.^N";
+		else
+		if(pct<.60)
+			return "^p" + mob.name() + "^p has a few huge bloody wounds.^N";
+		else
+		if(pct<.70)
+			return "^p" + mob.name() + "^p has huge cuts and is heavily bruised.^N";
+		else
+		if(pct<.80)
+			return "^g" + mob.name() + "^g has some large cuts and huge bruises.^N";
+		else
+		if(pct<.90)
+			return "^g" + mob.name() + "^g has large bruises and scratches.^N";
+		else
+		if(pct<.99)
+			return "^g" + mob.name() + "^g has a few small(?) bruises.^N";
+		else
+			return "^c" + mob.name() + "^c is in towering health^N";
+	}
 }

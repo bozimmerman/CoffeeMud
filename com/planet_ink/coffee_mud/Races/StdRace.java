@@ -90,12 +90,17 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 	
+	public String healthText(MOB mob)
+	{
+		return ExternalPlay.standardMobCondition(mob);
+	}
+	
 	public Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
 		{
 			naturalWeaponChoices=new Vector();
-			for(int i=1;i<7;i++)
+			for(int i=1;i<11;i++)
 			{
 				naturalWeapon=CMClass.getWeapon("StdWeapon");
 				switch(i)
@@ -116,6 +121,22 @@ public class StdRace implements Race
 					break;
 					case 6:
 					naturalWeapon.setName("a backhand");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+					case 7:
+					naturalWeapon.setName("a strong jab");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+					case 8:
+					naturalWeapon.setName("a stinging punch");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+					case 9:
+					naturalWeapon.setName("a knee");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+					case 10:
+					naturalWeapon.setName("a head butt");
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}

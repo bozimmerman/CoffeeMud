@@ -9,6 +9,7 @@ public interface Race
 	public void setWeight(MOB mob);
 	public void outfit(MOB mob);
 	public Weapon myNaturalWeapon();
+	public String healthText(MOB mob);
 	
 	public String arriveStr();
 	public String leaveStr();

@@ -59,7 +59,7 @@ public class TheFight
 			postAttack(mob,target,mob.fetchWieldedItem());
 	}
 
-	public String mobCondition(MOB mob)
+	public String standardMobCondition(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

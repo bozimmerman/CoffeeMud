@@ -64,9 +64,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.theFight.properTargets(A,caster);
 	}
-	public String mobCondition(MOB mob)
+	public String standardMobCondition(MOB mob)
 	{
-		return processor.theFight.mobCondition(mob);
+		return processor.theFight.standardMobCondition(mob);
 	}
 	public void move(MOB mob, int directionCode, boolean flee)
 	{

@@ -24,7 +24,7 @@ public class StdArea implements Area
 	protected boolean stopTicking=false;
 	private static final int WEATHER_TICK_DOWN=75; // 75 = 5 minutes * 60 seconds / 4
 	protected int weatherTicker=WEATHER_TICK_DOWN;
-	protected int windDirection=Directions.NORTH;
+	protected static int windDirection=Directions.NORTH;
 
 	public StdArea()
 	{
@@ -252,6 +252,12 @@ public class StdArea implements Area
 			}
 			if((--weatherTicker)<=0)
 			{
+				
+				if(Dice.rollPercentage()==1)
+				{
+					
+				}
+				
 				weatherTicker=WEATHER_TICK_DOWN;
 				int changeChance=50;
 				switch(currentWeather)
@@ -409,8 +415,11 @@ public class StdArea implements Area
 						break;
 					}
 					int newWeather=nextWeather;
-					if(Dice.rollPercentage()<chanceToRain)
-						nextWeather=Area.WEATHER_RAIN;
+					if(Dice.rollPercentage()<chanceForClouds)
+						nextWeather=Area.WEATHER_CLOUDY;
+					else
+					if(Dice.rollPercentage()<chanceForWind)
+						nextWeather=Area.WEATHER_WINDY;
 					else
 					if(Dice.rollPercentage()<chanceToSnow)
 						nextWeather=Area.WEATHER_SNOW;
@@ -418,11 +427,8 @@ public class StdArea implements Area
 					if(Dice.rollPercentage()<chanceToHail)
 						nextWeather=Area.WEATHER_HAIL;
 					else
-					if(Dice.rollPercentage()<chanceForClouds)
-						nextWeather=Area.WEATHER_CLOUDY;
-					else
-					if(Dice.rollPercentage()<chanceForWind)
-						nextWeather=Area.WEATHER_WINDY;
+					if(Dice.rollPercentage()<chanceToRain)
+						nextWeather=Area.WEATHER_RAIN;
 					else
 					if(Dice.rollPercentage()<chanceForStorm)
 						nextWeather=Area.WEATHER_THUNDERSTORM;

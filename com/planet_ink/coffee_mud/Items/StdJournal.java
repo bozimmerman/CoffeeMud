@@ -23,7 +23,6 @@ public class StdJournal extends StdItem
 	}
 	public boolean okAffect(Affect affect)
 	{
-		MOB mob=affect.source();
 		if(affect.amITarget(this))
 		switch(affect.targetMinor())
 		{
@@ -187,7 +186,6 @@ public class StdJournal extends StdItem
 		{
 			Vector entry=(Vector)journal.elementAt(which);
 			String from=(String)entry.elementAt(1);
-			String date=(String)entry.elementAt(2);
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);

@@ -30,6 +30,12 @@ public class ExternalPlay
 		if(player!=null) return player.standardMissString(weaponType,weaponName,useExtendedMissString);
 		return "";
 	}
+	public static String standardMobCondition(MOB mob)
+	{
+		if(player!=null) return player.standardMobCondition(mob);
+		return "";
+	}
+
 	public static boolean wear(MOB mob, Item item)
 	{
 		if(player!=null) return player.wear(mob,item);
@@ -70,11 +76,6 @@ public class ExternalPlay
 	{
 		if(player!=null) return player.properTargets(A,caster);
 		return new Hashtable();
-	}
-	public static String mobCondition(MOB mob)
-	{
-		if(player!=null) return player.mobCondition(mob);
-		return "";
 	}
 	public static void move(MOB mob, int directionCode, boolean flee)
 	{

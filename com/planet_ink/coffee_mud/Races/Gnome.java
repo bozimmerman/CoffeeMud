@@ -64,4 +64,40 @@ public class Gnome extends StdRace
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
+	public String standardMobCondition(MOB mob)
+	{
+		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+
+		if(pct<.10)
+			return "^r" + mob.name() + "^r is curiously close to death.^N";
+		else
+		if(pct<.20)
+			return "^r" + mob.name() + "^r is covered in excessive bloody wounds.^N";
+		else
+		if(pct<.30)
+			return "^r" + mob.name() + "^r is bleeding badly from a plethora of small wounds.^N";
+		else
+		if(pct<.40)
+			return "^y" + mob.name() + "^y has numerous bloody wounds and unexpected gashes.^N";
+		else
+		if(pct<.50)
+			return "^y" + mob.name() + "^y has some alarming wounds and small gashes.^N";
+		else
+		if(pct<.60)
+			return "^p" + mob.name() + "^p has some small unwanted bloody wounds.^N";
+		else
+		if(pct<.70)
+			return "^p" + mob.name() + "^p is cut and bruised in strange places.^N";
+		else
+		if(pct<.80)
+			return "^g" + mob.name() + "^g has some small cuts and bruises.^N";
+		else
+		if(pct<.90)
+			return "^g" + mob.name() + "^g has a few bruises and interesting scratches.^N";
+		else
+		if(pct<.99)
+			return "^g" + mob.name() + "^g has a few small curious bruises.^N";
+		else
+			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
 }

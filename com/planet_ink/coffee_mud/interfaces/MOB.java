@@ -36,6 +36,7 @@ public interface MOB
 	public void setBaseCharStats(CharStats newBaseCharStats);
 	public String rawDisplayText();
 	public int maxCarry();
+	public String healthText();
 
 	/** Whether this MOB is dead.*/
 	public boolean amDead();
