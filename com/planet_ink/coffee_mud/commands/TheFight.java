@@ -387,7 +387,7 @@ public class TheFight
 						new ItemUsage().get(source,Body,(Item)items.elementAt(i),false);
 		}
 		else
-		if(target.curState().getHitPoints()<target.getWimpHitPoint())
+		if((target.curState().getHitPoints()<target.getWimpHitPoint())&&(target.isInCombat()))
 			ExternalPlay.flee(target,"");
 	}
 

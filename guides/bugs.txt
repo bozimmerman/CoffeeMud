@@ -1,25 +1,25 @@
 X can't eat sesame seed -- not supposed to, its a KEY!
 X Look for "about the body" importables -- nah, too much work
-! a safe pet can be attacked if already in combat?!  Or cant attack at all..
-! ignore follower pets for no-mob areas?
-! "open the ground" south of midgaard
-! be able to open doors while in battle, for fleeing
-! And they should stay open longer!
-! Track -- make it smarter
-! Are we able to cast spells on the invisible? Malicious?  Benevolent?
+c a safe pet can be attacked if already in combat?!  Or cant attack at all..
+c ignore follower pets for no-mob areas?
+c "open the ground" south of midgaard
+c be able to open doors while in battle, for fleeing
+c And they should stay open longer!
+c Track -- make it smarter
+c Are we able to cast spells on the invisible? Malicious?  Benevolent?
 ! Under guildmaster should take you to sewer -- Import bug!  Do a room "checkup" before and room link "restore" after import to reattach to olde rooms.
-! consider consider, it is inaccurate
+c consider consider, it is inaccurate
 ! edged, hammer, dagger import bug
 ! dark horseman -- don't hide WHILE in combat?  They sneak when fleeing -- thats ok.
 X where IS there dirt? -- Where there ought to be.
 X Look for inside-outside Locales --- (done, looks ok on spot check)
-! Flying across water surface doesn't put out a torch
-! Train stat should only take base score into account!
-! Wands for a fighter.  As early as other classes?
-! Train hit points, Train mana, Train move, Train practices, Train gain (10 prac=train)
-! Protection good/evil too damaging when mismatched
-! Plague should be contageous
-! Choke can't kill you?!
+c Flying across water surface doesn't put out a torch
+c Train stat should only take base score into account!
+c Wands for a fighter.  As early as other classes?
+c Train hit points, Train mana, Train move, Train practices, Train gain (10 prac=train)
+c Protection good/evil too damaging when mismatched
+c Plague should be contageous
+c Choke can't kill you?!
 ? Fix the Grinder for Tim.
 c You can't buy field plate in New Thalos.
 ! No disarm for melded weapons, weaponbreak, heat metal, or grease drops
@@ -27,7 +27,7 @@ c You can't buy field plate in New Thalos.
 X The bar S. of midgaard has a sky -- area file SAYS it does.
 ! while thedragon was fighting the knigt templar, the knight healed thedragon....(mass heal?)
 X charm may be too powerful. It brings my 8 cha up to 25. bard is only lvl 8.  4 points too much?!
-! if your charisma is over 18, you can buy things at a significantly lower price. Selling them is also at this lower price.
+c if your charisma is over 18, you can buy things at a significantly lower price. Selling them is also at this lower price.
 ! Lower the starting stats for newbies to avg 11 from avg 12.
-! when you drink a potion of true.. chat for sparkling...
+c when you drink a potion of true.. chat for sparkling...
   

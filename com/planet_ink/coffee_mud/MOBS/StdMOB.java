@@ -1143,7 +1143,7 @@ public class StdMOB implements MOB
 					if(!Sense.canBreathe(this))
 					{
 						this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
-						ExternalPlay.doDamage(this,this,-(int)Math.round(Math.random()*6.0));
+						ExternalPlay.doDamage(this,this,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)));
 					}
 					if(isInCombat())
 					{
