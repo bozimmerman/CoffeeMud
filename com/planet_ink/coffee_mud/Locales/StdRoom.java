@@ -133,7 +133,7 @@ public class StdRoom
 	{
 		skyedYet=true;
 		if((room.doors()[Directions.UP]==null)
-		&&((room.domainType()&128)==Room.OUTDOORS)
+		&&((room.domainType()&Room.INDOORS)==0)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(!(room instanceof EndlessSky))
 		&&(!(room instanceof InTheAir)))
