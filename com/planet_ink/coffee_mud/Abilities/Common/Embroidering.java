@@ -26,6 +26,7 @@ public class Embroidering extends CommonSkill
 	public String name(){ return "Embroidering";}
 	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected String supportedResourceString(){return "CLOTH";}
 
 	private Item found=null;
 	private String writing="";

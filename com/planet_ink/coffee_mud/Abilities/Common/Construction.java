@@ -27,6 +27,7 @@ public class Construction extends CraftingSkill
 	public String name(){ return "Construction";}
 	private static final String[] triggerStrings = {"CONSTRUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected String supportedResourceString(){return "WOODEN";}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_DOOR=1;

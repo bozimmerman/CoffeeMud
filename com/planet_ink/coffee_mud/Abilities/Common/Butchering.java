@@ -27,6 +27,7 @@ public class Butchering extends CommonSkill
 	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
 	public String[] triggerStrings(){return triggerStrings;}
 
+	protected String supportedResourceString(){return "FLESH|LEATHER|BLOOD|BONE|MILK|EGGS";}
 	private DeadBody body=null;
 	private boolean failed=false;
 	public Butchering()
@@ -87,6 +88,15 @@ public class Butchering extends CommonSkill
 	{
 		body=null;
 		Item I=null;
+		
+		if((!auto)
+		&&(commands.size()>0)
+		&&(((String)commands.firstElement()).equalsIgnoreCase("bundle")))
+		{
+		    return super.bundle(mob,commands);
+		}
+		
+		
 		if((mob.isMonster()
 		&&(!Sense.isAnimalIntelligence(mob)))
 		&&(commands.size()==0))

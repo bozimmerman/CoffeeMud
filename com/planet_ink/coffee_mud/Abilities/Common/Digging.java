@@ -28,6 +28,7 @@ public class Digging extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 	protected boolean allowedWhileMounted(){return false;}
+	protected String supportedResourceString(){return "GLASS|PRECIOUS|SAND|STONE";}
 
 	private Item found=null;
 	private String foundShortName="";

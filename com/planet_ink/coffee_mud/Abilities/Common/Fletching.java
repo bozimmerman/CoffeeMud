@@ -29,6 +29,7 @@ public class Fletching extends CraftingSkill
 	public String name(){ return "Fletching";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected String supportedResourceString(){return "WOODEN";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

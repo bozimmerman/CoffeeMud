@@ -28,6 +28,7 @@ public class Drilling extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 	protected boolean allowedWhileMounted(){return false;}
+	protected String supportedResourceString(){return "LIQUID";}
 
 	private Item found=null;
 	private Drink container=null;

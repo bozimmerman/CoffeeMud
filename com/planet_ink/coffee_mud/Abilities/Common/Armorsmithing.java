@@ -29,6 +29,7 @@ public class Armorsmithing extends CraftingSkill
 	public String name(){ return "Armorsmithing";}
 	private static final String[] triggerStrings = {"ARMORSMITH","ARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected String supportedResourceString(){return "METAL|MITHRIL";}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;

@@ -27,6 +27,7 @@ public class Herbology extends CommonSkill
 	public String name(){ return "Herbology";}
 	private static final String[] triggerStrings = {"HERBOLOGY"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected String supportedResourceString(){return "HERBS";}
 
 	private Item found=null;
 	private boolean messedUp=false;

@@ -28,6 +28,7 @@ public class Farming extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return FLAG_GATHERING;}
 	protected boolean allowedWhileMounted(){return false;}
+	protected String supportedResourceString(){return "VEGETATION|COTTON|HEMP|WOODEN";}
 
 	private Item found=null;
 	private Room room=null;
