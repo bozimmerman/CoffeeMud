@@ -109,6 +109,15 @@ public class ShopKeepers
 			return;
 		}
 
+		int maxToDo=Integer.MAX_VALUE;
+		int numDone=0;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToDo=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -129,7 +138,7 @@ public class ShopKeepers
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
-		}while(allFlag);
+		}while((allFlag)&&((++numDone)<maxToDo));
 	}
 
 
@@ -142,6 +151,16 @@ public class ShopKeepers
 			mob.tell("Value what?");
 			return;
 		}
+		
+		int maxToDo=Integer.MAX_VALUE;
+		int numDone=0;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToDo=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -162,7 +181,7 @@ public class ShopKeepers
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
-		}while(allFlag);
+		}while((allFlag)&&((++numDone)<maxToDo));
 	}
 
 	public static void view(MOB mob, Vector commands)
@@ -174,6 +193,16 @@ public class ShopKeepers
 			mob.tell("View what merchandise?");
 			return;
 		}
+		
+		int maxToDo=Integer.MAX_VALUE;
+		int numDone=0;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToDo=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -198,7 +227,7 @@ public class ShopKeepers
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
-		}while(allFlag);
+		}while((allFlag)&&((++numDone)<maxToDo));
 	}
 
 	public static void buy(MOB mob, Vector commands)
@@ -210,6 +239,16 @@ public class ShopKeepers
 			mob.tell("Buy what?");
 			return;
 		}
+		
+		int maxToDo=Integer.MAX_VALUE;
+		int numDone=0;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToDo=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -235,7 +274,7 @@ public class ShopKeepers
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
-		}while(allFlag);
+		}while((allFlag)&&((++numDone)<maxToDo));
 	}
 
 

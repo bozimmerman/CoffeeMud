@@ -47,7 +47,9 @@
 @endif@
 <P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
 <BR>
-<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>@if?!CheckReqParm?QUEST=@ @QuestData?SCRIPT@ @else@
+@if?!CheckReqParm?QUEST=@<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>@QuestData?SCRIPT@</TEXTAREA>
+@else@
+<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>
 set name MyQuest
 #   Set the quest name
 
@@ -77,8 +79,8 @@ set name MyQuest
 #give behavior Scriptable "LOAD=quests/robbed/thief.script"
 #   load the above behavior into the last mob 
 #   (in this case, the thief)
-@endif@
 </TEXTAREA>
+@endif@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR><TD ALIGN=CENTER WIDTH=50%>

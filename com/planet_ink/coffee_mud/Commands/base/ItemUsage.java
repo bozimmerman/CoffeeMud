@@ -10,7 +10,7 @@ public class ItemUsage
 {
 	private ItemUsage(){}
 
-	public static Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	public static int numPossibleGold(String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
 			itemID=itemID.substring(0,itemID.length()-6);
@@ -19,6 +19,13 @@ public class ItemUsage
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
 		int gold=Util.s_int(itemID);
+		return gold;
+	}
+	
+	
+	public static Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	{
+		int gold=numPossibleGold(itemID);
 		if(gold>0)
 		{
 			for(int i=0;i<room.numItems();i++)
@@ -74,6 +81,14 @@ public class ItemUsage
 		if((commands.size()>3)&&(!allFlag))
 			preWord=(String)commands.elementAt(commands.size()-2);
 
+		int maxContained=Integer.MAX_VALUE;
+		if(Util.s_int(preWord)>0)
+		{
+			maxContained=Util.s_int(preWord);
+			commands.setElementAt("all",commands.size()-2);
+			preWord="all";
+		}
+		
 		if(preWord.equalsIgnoreCase("all")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID;}
 		else
 		if(possibleContainerID.toUpperCase().startsWith("ALL.")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(4);}
@@ -102,7 +117,7 @@ public class ItemUsage
 			if(thisThang==null) return V;
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxContained));
 		return V;
 	}
 
@@ -202,10 +217,10 @@ public class ItemUsage
 	{ return get(mob,container,getThis,quiet,"get");}
 
 	public static boolean get(MOB mob,
-					   Item container,
-					   Item getThis,
-					   boolean quiet,
-					   String getWord)
+							  Item container,
+							  Item getThis,
+							  boolean quiet,
+							  String getWord)
 	{
 		String theWhat="<T-NAME>";
 		Environmental target=getThis;
@@ -270,6 +285,16 @@ public class ItemUsage
 			containerName=(String)commands.lastElement();
 		Vector containers=possibleContainers(mob,commands,Item.WORN_REQ_ANY);
 		int c=0;
+		
+		int maxToGet=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0)
+		&&(numPossibleGold(Util.combine(commands,0))==0))
+		{
+			maxToGet=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String whatToGet=Util.combine(commands,0);
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
@@ -302,7 +327,7 @@ public class ItemUsage
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
 			}
-			while(allFlag);
+			while((allFlag)&&(addendum<=maxToGet));
 
 			for(int i=0;i<V.size();i++)
 			{
@@ -358,6 +383,17 @@ public class ItemUsage
 		commands.removeElementAt(0);
 
 		Item container=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+		
+		
+		int maxToDrop=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0)
+		&&(numPossibleGold(Util.combine(commands,0))==0))
+		{
+			maxToDrop=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		whatToDrop=Util.combine(commands,0);
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -397,7 +433,7 @@ public class ItemUsage
 				V.addElement(dropThis);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxToDrop));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
@@ -453,6 +489,15 @@ public class ItemUsage
 			return;
 		}
 
+		int maxToPut=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0)
+		&&(numPossibleGold(Util.combine(commands,0))==0))
+		{
+			maxToPut=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thingToPut=Util.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -473,7 +518,7 @@ public class ItemUsage
 				V.addElement(putThis);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxToPut));
 
 		if((container!=null)&&(V.contains(container)))
 			V.remove(container);
@@ -520,6 +565,15 @@ public class ItemUsage
 			commands.removeElementAt(commands.size()-1);
 		}
 
+		int maxToFill=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0)
+		&&(numPossibleGold(Util.combine(commands,0))==0))
+		{
+			maxToFill=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thingToFill=Util.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -536,7 +590,7 @@ public class ItemUsage
 				V.addElement(fillThis);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(maxToFill<addendum));
 		if(V.size()==0)
 			mob.tell("I don't see '"+thingToFill+"' here.");
 		else
@@ -622,6 +676,16 @@ public class ItemUsage
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();
+		
+		int maxToItem=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToItem=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
+		
 		String name=Util.combine(commands,0);
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
@@ -650,7 +714,7 @@ public class ItemUsage
 			if(item==null) return V;
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxToItem));
 		return V;
 	}
 

@@ -174,8 +174,8 @@ public class Social implements Environmental
 	public void affect(Environmental myHost, Affect affect){}
 	public boolean okAffect(Environmental myHost, Affect affect){	return true;}
 	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
-	public int maxRange(){return -1;}
-	public int minRange(){return -1;}
+	public int maxRange(){return Integer.MAX_VALUE;}
+	public int minRange(){return 0;}
 
 	public void addAffect(Ability to){}
 	public void addNonUninvokableAffect(Ability to){}

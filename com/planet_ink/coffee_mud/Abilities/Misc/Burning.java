@@ -35,6 +35,7 @@ public class Burning extends StdAbility
 						{
 							Item I=room.fetchItem(i);
 							if(I.name().equals(affected.name())
+							&&(I!=affected)
 							&&(I instanceof EnvResource)
 							&&(I.material()==((Item)affected).material()))
 							{

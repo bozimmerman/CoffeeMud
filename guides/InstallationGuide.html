@@ -163,10 +163,15 @@ the section on "The CoffeeMud Database" for more information.<BR><BR><EM>DBUSER,
 DBPASS <BR></EM>This specifies the name and password which may or may not be 
 required to log into your ODBC service, or database.&nbsp; Not required for 
 fakedb, and thus blank by default.</P>
-<P align=left><EM>DBCONNECTIONS<BR></EM>This &nbsp;is the number of independent 
-connections to make to the database through your JDBC/ODBC driver.&nbsp; 1 or 2 
-is plenty.&nbsp; CoffeeMud is not&nbsp;especially database 
-intensive.<P>
+<P align=left><EM>DBCONNECTIONS<BR></EM>This &nbsp;is the number of independent connections to 
+make to the database through your JDBC/ODBC driver.&nbsp; 1 or 2 is 
+plenty.&nbsp; CoffeeMud is not&nbsp;especially database intensive.
+<P align=left><EM>* In Addition to the above, you will find other numerous flags 
+and settings which allow you to better customize your CoffeeMud.&nbsp; Make sure 
+you look through your coffeemud.ini file for more information on these.</EM>      
+             
+      
+<P>
 <IMG src="images/db.jpg">
 <P><STRONG><FONT size=5>The CoffeeMud Database:</FONT></STRONG></P>
 <P align=left>CoffeeMud requires a database for 
@@ -318,8 +323,11 @@ saved at.</P>
 <P align=left><EM>GOTO<BR></EM>Allows the Archon to zap him 
 or herself directly to the room or mob of his or her choice.&nbsp; The argument is a 
 valid Room ID, room name, mob name, or area name.</P>
-<P align=left><EM>SNOOP<BR></EM>This command 
-can let you watch other players as they wander your world.</P>
+<P><EM>TRANSFER<BR></EM>Allows the Archon to zap&nbsp;someone directly to the 
+room or mob of his or her choice.&nbsp; The argument is either ALL or the name 
+of the target, and a valid Room ID, room name, mob name, or area name.</P>
+<P align=left><EM>SNOOP<BR></EM>This command can let you 
+watch other players as they wander your world.</P>
 <P align=left><EM>WHERE<BR></EM>Allows the Archon to who all is online, and
 where they are on the map.  An argument may be given to specify a specific mob name.</P>
 <P align=left><EM>EXPORT<BR></EM>If you need a backup to 

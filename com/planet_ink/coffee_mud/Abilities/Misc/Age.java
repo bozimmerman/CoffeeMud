@@ -74,7 +74,7 @@ public class Age extends StdAbility
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
 					Age A=(Age)babe.fetchAffect(ID());
-					if(A!=null) A.setMiscText(""+System.currentTimeMillis());
+					if(A!=null) A.setMiscText(text());
 					babe.text();
 					babe.bringToLife(R,true);
 					babe.setFollowing(following);

@@ -388,6 +388,14 @@ public class SocialProcessor
 		if((commands.size()>0)&&(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
+		int maxToGive=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToGive=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		String thingToGive=Util.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
@@ -425,7 +433,7 @@ public class SocialProcessor
 				V.addElement(giveThis);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxToGive));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");

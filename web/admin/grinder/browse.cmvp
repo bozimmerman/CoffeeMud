@@ -18,6 +18,14 @@
 			document.BROWSE.PATH.value=document.BROWSE.PATH.value+named+"/";
 			document.BROWSE.submit();
 		}
+		function CreateDir(named)
+		{
+			var named=prompt('Enter new directory name:','');
+			if(named=='') return;
+			document.BROWSE.FUNCTION.value="NEWDIR";
+			document.BROWSE.PATH.value=document.BROWSE.PATH.value+named+"/";
+			document.BROWSE.submit();
+		}
 		function NewFile(action)
 		{
 			OpenFile(action);
@@ -42,6 +50,10 @@
 <FORM NAME=BROWSE TARGET=_top METHOD=POST ACTION="browse.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+@if?CheckReqParm?FUNCTION=NEWDIR@<FONT COLOR=RED>@FileMgr?CREATEDIR@</FONT><BR>@endif@
+<a href="javascript:CreateDir();"><FONT COLOR=YELLOW>*create new dir*</FONT></a><P>
+<BR><BR>
 <a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
 @FileNext?RESET@
 @loop@

@@ -127,6 +127,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonRain",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SensePregnancy",0,"",false,true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
@@ -139,6 +140,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonElemental",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SenseAge",0,"",false,true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);

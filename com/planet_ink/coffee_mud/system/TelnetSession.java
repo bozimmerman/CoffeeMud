@@ -25,6 +25,9 @@ public class TelnetSession extends Thread implements Session
 	private Vector previousCmd=new Vector();
 	private String lastColorStr="";
 	private String[] clookup=null;
+	private String lastStr=null;
+	private int spamStack=0;
+	private long lastOutput=0;
 
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
@@ -196,227 +199,98 @@ public class TelnetSession extends Thread implements Session
 		killFlag=true;
 	}
 
-	public void rawPrintln(String msg)
+	public synchronized void onlyPrint(String msg)
 	{
+		if((out==null)||(msg==null)) return;
+		
 		if(snoops.size()>0)
 			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).rawPrintln(msg);
-
-		if(out==null)return;
-		if(!needPrompt)
-			out.print("\n\r");
-		if(msg==null)return;
-		out.print(msg+"\n\r");
-		out.flush();
-		needPrompt=true;
-	}
-
-	public void rawPrint(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).rawPrint(msg);
-
-		if(out==null)return;
-		if(!needPrompt)
-			out.print("\n\r");
-		if(msg==null)return;
+				((Session)snoops.elementAt(s)).onlyPrint(msg);
+		
+		lastOutput=System.currentTimeMillis();
+		
+		if(msg.endsWith("\n\r")
+		&&(msg.equals(lastStr))
+		&&(msg.length()>2)
+		&&(msg.indexOf("\n")==(msg.length()-2)))
+		{ spamStack++; return; }
+		else
+		if(spamStack>0)
+		{
+			if(spamStack>1)
+				lastStr=lastStr.substring(0,lastStr.length()-2)+"("+spamStack+")"+lastStr.substring(lastStr.length()-2);
+			out.print(lastStr);
+			out.flush();
+		}
+		
+		spamStack=0;
+		if(msg.startsWith("\n\r")&&(msg.length()>2))
+			lastStr=msg.substring(2);
+		else
+			lastStr=msg;
 		out.print(msg);
 		out.flush();
-		needPrompt=true;
+	}
+	
+	public void rawPrint(String msg)
+	{ if(msg==null)return; 
+	  onlyPrint((needPrompt?"":"\n\r")+msg);
+	  needPrompt=true;
 	}
 
 	public void print(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).print(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,null,msg,false));
-		out.flush();
-	}
-
+	{ onlyPrint(filter(mob,mob,null,msg,false)); }
+	
+	public void rawPrintln(String msg)
+	{ if(msg==null)return; rawPrint(msg+"\n\r");}
 
 	public void stdPrint(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrint(msg);
+	{ rawPrint(filter(mob,mob,null,msg,false)); }
 
-		if((out==null)||(msg==null)) return;
+	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
+	{ onlyPrint((filter(src,trg,tol,msg,false)));}
 
-		if(!needPrompt)
-			out.print("\n\r");
-		print(msg);
-		needPrompt=true;
-	}
-
-
-	public void print(Environmental Source,
-					  Environmental Target,
-					  Environmental Tool,
-					  String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).print(Source,Target,Tool,msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(Source,Target,Tool,msg,false));
-		out.flush();
-	}
-
-	public void stdPrint(Environmental Source,
-						 Environmental Target,
-						 Environmental Tool,
-						 String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrint(Source,Target,Tool,msg);
-
-		if((out==null)||(msg==null)) return;
-		if(!needPrompt)
-			out.print("\n\r");
-		print(Source,Target,Tool,msg);
-		needPrompt=true;
-	}
-
-	public void print(String msg,
-					  int Length,
-					  String msgEnd)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).print(msg,Length,msgEnd);
-
-		if((out==null)||(msg==null)) return;
-		while(msg.length()<Length)
-			msg=msg+" ";
-		msg=msg+msgEnd;
-		out.print(filter(mob,mob,null,msg, false));
-		out.flush();
-	}
-
-	public void stdPrint(String msg,
-						 int Length,
-						 String msgEnd)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrint(msg,Length,msgEnd);
-
-		if((out==null)||(msg==null)) return;
-		if(!needPrompt)
-			out.print("\n\r");
-		print(msg,Length,msgEnd);
-		needPrompt=true;
-
-	}
+	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
+	{ rawPrint(filter(src,trg,trg,msg,false)); }
 
 	public void println(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).println(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,null,msg,false)+"\n\r");
-		out.flush();
-	}
+	{ if(msg==null)return; print(msg+"\n\r");}
 
 	public void unfilteredPrintln(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).unfilteredPrintln(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,null,msg,true)+"\n\r");
-		out.flush();
-		needPrompt=true;
+	{ if(msg==null)return; 
+	  onlyPrint(filter(mob,mob,null,msg,true)+"\n\r");
+	  needPrompt=true;
 	}
 
 	public void unfilteredPrint(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).unfilteredPrint(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,null,msg,true));
-		out.flush();
-		needPrompt=true;
+	{ onlyPrint(filter(mob,mob,null,msg,true));
+	  needPrompt=true;
 	}
 
 	public void colorOnlyPrintln(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).colorOnlyPrintln(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(colorOnlyFilter(msg)+"\n\r");
-		out.flush();
-		needPrompt=true;
+	{ if(msg==null)return; 
+	  onlyPrint(colorOnlyFilter(msg)+"\n\r");
+	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).colorOnlyPrint(msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(colorOnlyFilter(msg));
-		out.flush();
-		needPrompt=true;
+	{ onlyPrint(colorOnlyFilter(msg));
+	  needPrompt=true;
 	}
 
 	public void stdPrintln(String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrintln(msg);
-
-		if((out==null)||(msg==null)) return;
-		if(!needPrompt)
-			out.print("\n\r");
-		out.print(filter(mob,mob,null,msg,false)+"\n\r");
-		out.flush();
-		needPrompt=true;
+	{ if(msg==null)return; 
+	  rawPrint(filter(mob,mob,null,msg,false)+"\n\r"); 
 	}
 
-	public void println(Environmental Source,
-						Environmental Target,
-						Environmental Tool,
-						String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).println(Source,Target,Tool,msg);
-
-		if((out==null)||(msg==null)) return;
-		out.print(filter(Source,Target,Tool,msg,false)+"\n\r");
-		out.flush();
+	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
+	{ if(msg==null)return; 
+	  onlyPrint(filter(src,trg,tol,msg,false)+"\n\r");
 	}
 
-	public void stdPrintln(Environmental Source,
-						   Environmental Target,
-						   Environmental Tool,
-						   String msg)
-	{
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrintln(Source,Target,Tool,msg);
-
-		if((out==null)||(msg==null)) return;
-		if(!needPrompt)
-			out.print("\n\r");
-		out.print(filter(Source,Target,Tool,msg,false)+"\n\r");
-		out.flush();
-		needPrompt=true;
+	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
+	{ if(msg==null)return; 
+	  rawPrint(filter(src,trg,tol,msg,false)+"\n\r"); 
 	}
 
 	public void setPromptFlag(boolean truefalse)
@@ -527,7 +401,8 @@ public class TelnetSession extends Thread implements Session
 	public String colorOnlyFilter(String msg)
 	{
 		if(mob==null) return msg;
-
+		if(msg==null) return null;
+		
 		if(msg.length()==0) return msg;
 
 		StringBuffer buf=new StringBuffer(msg);
@@ -576,7 +451,8 @@ public class TelnetSession extends Thread implements Session
 						 boolean wrapOnly)
 	{
 		if(mob==null) return msg;
-
+		if(msg==null) return null;
+		
 		if(msg.length()==0) return msg;
 		boolean doSagain=false;
 		StringBuffer buf=new StringBuffer(msg);
@@ -1385,6 +1261,9 @@ public class TelnetSession extends Thread implements Session
 							enque(0,Util.parse(input));
 						}
 						if(mob==null) break;
+						
+						if((spamStack>0)&&((lastOutput-System.currentTimeMillis())>100))
+							onlyPrint("");
 						
 						if((!afkFlag())&&(getIdleMillis()>=600000))
 							setAfkFlag(true);

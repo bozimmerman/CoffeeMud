@@ -17,6 +17,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	private static final String[] triggerStrings = {"TRACKANIMAL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
+	public long flags(){return Ability.FLAG_TRACKING;}
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
@@ -60,11 +61,16 @@ public class Ranger_TrackAnimal extends StdAbility
 				{
 					Room nextRoom=mob.location().getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
-						ExternalPlay.move(mob,nextDirection,false,false);
+					{
+						int dir=nextDirection;
+						nextDirection=-2;
+						ExternalPlay.move(mob,dir,false,false);
+					}
 					else
 						unInvoke();
 				}
-				nextDirection=-2;
+				else
+					nextDirection=-2;
 			}
 
 		}
@@ -111,14 +117,16 @@ public class Ranger_TrackAnimal extends StdAbility
 			return false;
 		}
 
-		Ability oldTrack=mob.fetchAffect("Ranger_Track");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Skill_Track");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Ranger_TrackAnimal");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Thief_Assassinate");
-		if(oldTrack!=null)
+		boolean stoppedTracking=false;
+		for(int a=mob.numAffects()-1;a>=0;a--)
+		{
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_TRACKING)))
+			{ stoppedTracking=true; A.unInvoke();}
+		}
+		if(stoppedTracking)
 		{
 			mob.tell("You stop tracking.");
-			oldTrack.unInvoke();
 			if(commands.size()==0) return true;
 		}
 

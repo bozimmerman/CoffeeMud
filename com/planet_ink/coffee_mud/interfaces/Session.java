@@ -6,6 +6,8 @@ public interface Session
 	public static final String defaultPrompt="^N<^c%hhp %mm %vmv^N>";
 	public String[] clookup();
 	
+	public void onlyPrint(String msg);
+	
 	public void rawPrintln(String msg);
 	public void rawPrint(String msg);
 	
@@ -14,9 +16,6 @@ public interface Session
 						 Environmental Target,
 						 Environmental Tool,
 						 String msg);
-	public void stdPrint(String msg,
-						 int Length,
-						 String msgEnd);
 	public void stdPrintln(String msg);
 	public void stdPrintln(Environmental Source,
 						   Environmental Target,
@@ -28,9 +27,6 @@ public interface Session
 					  Environmental Target,
 					  Environmental Tool,
 					  String msg);
-	public void print(String msg,
-					  int Length,
-					  String msgEnd);
 	public void println(String msg);
 	public void println(Environmental Source,
 						Environmental Target,

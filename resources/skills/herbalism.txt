@@ -25,8 +25,11 @@ Chant_Hibernation	18	BERRIES	Gentian$	Rosemary$
 Chant_Chlorophyll	18	SEAWEED	Cloves$	Chamomile$	
 Chant_Bloodhound	19	POULTRY	Mint$	Mustard$	
 Chant_Shapelessness	21	MILK	Cloves$	Anise$	
-Chant_SpellWard	21	GRAPES	Angelica$	Thyme$	Yerba Mate$
+Chant_Fertility	20	GRAPES	Thyme$	Anise$	Rosemary$
+Chant_SpellWard	21	LEMONS	Angelica$	Thyme$	Yerba Mate$
 Chant_NeutralizePoison	22	SAND	Peppermint$		
 Chant_Barkskin	23	HICKORY	Sage$	Sarsaparilla$	Mustard$
 Chant_UnicornsHealth	24	CORN	Lemon Grass$	Mint$	Peppermint$
 Chant_Dragonsight	25	CARROTS	Thyme$	Marjoram$	Sarsaparilla$
+Chant_Yearning	25	LIQUOR	Cloves$	Peppermint$	Yerba Mate$
+Chant_SpeedBirth	25	POULTRY	Lemon Grass$	Anise$	Angelica$

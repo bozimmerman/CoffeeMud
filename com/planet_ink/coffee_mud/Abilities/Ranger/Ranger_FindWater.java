@@ -18,6 +18,7 @@ public class Ranger_FindWater extends StdAbility
 	private static final String[] triggerStrings = {"FINDWATER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
+	public long flags(){return Ability.FLAG_TRACKING;}
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
@@ -67,11 +68,16 @@ public class Ranger_FindWater extends StdAbility
 				{
 					Room nextRoom=mob.location().getRoomInDir(nextDirection);
 					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
-						ExternalPlay.move(mob,nextDirection,false,false);
+					{
+						int dir=nextDirection;
+						nextDirection=-2;
+						ExternalPlay.move(mob,dir,false,false);
+					}
 					else
 						unInvoke();
 				}
-				nextDirection=-2;
+				else
+					nextDirection=-2;
 			}
 
 		}
@@ -206,10 +212,17 @@ public class Ranger_FindWater extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		boolean stoppedTracking=false;
+		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
-			mob.tell("You are already trying to find water.");
-			return false;
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_TRACKING)))
+			{ stoppedTracking=true; A.unInvoke();}
+		}
+		if(stoppedTracking)
+		{
+			mob.tell("You stop tracking.");
+			if(commands.size()==0) return true;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -101,6 +101,8 @@ public class Prayer_Bless extends Prayer
 					A.unInvoke();
 				if((A instanceof Prayer_UnholyWord)&&(level>1))
 					A.unInvoke();
+				if((A instanceof Prayer_SunCurse)&&(level>1))
+					A.unInvoke();
 			}
 		}
 	}
@@ -116,6 +118,8 @@ public class Prayer_Bless extends Prayer
 		if(item.fetchAffect("Prayer_CurseItem")!=null)
 			return true;
 		if(item.fetchAffect("Prayer_UnholyWord")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_SunCurse")!=null)
 			return true;
 		if(!item.isRemovable())
 			return true;

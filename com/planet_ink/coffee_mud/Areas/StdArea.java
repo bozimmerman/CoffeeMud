@@ -185,6 +185,26 @@ public class StdArea implements Area
 		}
 	}
 
+	public boolean canSeeTheSun(Room room)
+	{
+		if(((timeCode!=Area.TIME_DAY)&&(timeCode!=Area.TIME_DAWN))
+		||((room.domainType()&Room.INDOORS)>0))
+			return false;
+		switch(weatherType(room))
+		{
+		case Area.WEATHER_BLIZZARD:
+		case Area.WEATHER_HAIL:
+		case Area.WEATHER_SLEET:
+		case Area.WEATHER_SNOW:
+		case Area.WEATHER_RAIN:
+		case Area.WEATHER_THUNDERSTORM:
+		case Area.WEATHER_CLOUDY:
+		case Area.WEATHER_DUSTSTORM:
+			return false;
+		default:
+			return true;
+		}
+	}
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");

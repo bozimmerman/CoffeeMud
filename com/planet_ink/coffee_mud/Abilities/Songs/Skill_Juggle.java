@@ -329,6 +329,14 @@ public class Skill_Juggle extends StdAbility
 			return false;
 		}
 		
+		int maxToJuggle=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0))
+		{
+			maxToJuggle=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
@@ -356,7 +364,7 @@ public class Skill_Juggle extends StdAbility
 				V.addElement(juggleThis);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
+		while((allFlag)&&(addendum<=maxToJuggle));
 
 		if(V.size()==0)
 		{

@@ -17,6 +17,7 @@ public class Thief_Assassinate extends ThiefSkill
 	private static final String[] triggerStrings = {"ASSASSINATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Assassinate();}
+	public long flags(){return Ability.FLAG_TRACKING;}
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
@@ -92,20 +93,31 @@ public class Thief_Assassinate extends ThiefSkill
 							Ability A=mob.fetchAbility("Thief_Sneak");
 							if(A!=null)
 							{
+								int dir=nextDirection;
+								nextDirection=-2;
 								Vector V=new Vector();
-								V.addElement(Directions.getDirectionName(nextDirection));
+								V.addElement(Directions.getDirectionName(dir));
 								A.invoke(mob,V,null,false);
 							}
 							else
-								ExternalPlay.move(mob,nextDirection,false,false);
+							{
+								int dir=nextDirection;
+								nextDirection=-2;
+								ExternalPlay.move(mob,dir,false,false);
+							}
 						}
 						else
-							ExternalPlay.move(mob,nextDirection,false,false);
+						{
+							int dir=nextDirection;
+							nextDirection=-2;
+							ExternalPlay.move(mob,dir,false,false);
+						}
 					}
 					else
 						unInvoke();
 				}
-				nextDirection=-2;
+				else
+					nextDirection=-2;
 			}
 
 		}
@@ -138,14 +150,16 @@ public class Thief_Assassinate extends ThiefSkill
 			return false;
 		}
 
-		Ability oldTrack=mob.fetchAffect("Ranger_Track");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Skill_Track");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Ranger_TrackAnimal");
-		if(oldTrack==null) oldTrack=mob.fetchAffect("Thief_Assassinate");
-		if(oldTrack!=null)
+		boolean stoppedTracking=false;
+		for(int a=mob.numAffects()-1;a>=0;a--)
+		{
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_TRACKING)))
+			{ stoppedTracking=true; A.unInvoke();}
+		}
+		if(stoppedTracking)
 		{
 			mob.tell("You stop tracking.");
-			oldTrack.unInvoke();
 			if(commands.size()==0) return true;
 		}
 
