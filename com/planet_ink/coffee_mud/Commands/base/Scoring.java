@@ -198,14 +198,11 @@ public class Scoring
 	public void skills(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if(getAbilities(mob,Ability.THIEF_SKILL,-1).length()<10)
-			msg.append("\n\r^HYour skills:^? "+getAbilities(mob,Ability.SKILL,-1)+"\n\r");
-		else
-		{
-			msg.append("\n\r^HGeneral skills:^? "+getAbilities(mob,Ability.SKILL,-1)+"\n\r");
-			msg.append("\n\r^HThief skills:^? "+getAbilities(mob,Ability.THIEF_SKILL,-1)+"\n\r");
-		}
-
+		Vector V=new Vector();
+		V.addElement(new Integer(Ability.THIEF_SKILL));
+		V.addElement(new Integer(Ability.SKILL));
+		V.addElement(new Integer(Ability.COMMON_SKILL));
+		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -216,6 +213,8 @@ public class Scoring
 		String qual=Util.combine(commands,1);
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SKILLS"))||(qual.equalsIgnoreCase("SKILL")))
 			msg.append("\n\r^HGeneral Skills:^? "+getQualifiedAbilities(mob,Ability.SKILL,-1)+"\n\r");
+		if((qual.length()==0)||(qual.equalsIgnoreCase("COMMON SKILLS"))||(qual.equalsIgnoreCase("COMMON")))
+			msg.append("\n\r^Common Skills:^? "+getQualifiedAbilities(mob,Ability.COMMON_SKILL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("THIEVES"))||(qual.equalsIgnoreCase("THIEF"))||(qual.equalsIgnoreCase("THIEF SKILLS")))
 			msg.append("\n\r^HThief Skills:^? "+getQualifiedAbilities(mob,Ability.THIEF_SKILL,-1)+"\n\r");
 		if((qual.length()==0)||(qual.equalsIgnoreCase("SPELLS"))||(qual.equalsIgnoreCase("SPELL"))||(qual.equalsIgnoreCase("MAGE")))
@@ -229,7 +228,7 @@ public class Scoring
 		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
 			msg.append("\n\r^HLanguages:^? "+getQualifiedAbilities(mob,Ability.LANGUAGE,-1)+"\n\r");
 		if(msg.length()==0)
-			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
+			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln("^BYou now qualify for the following:^?"+msg.toString());
@@ -315,22 +314,28 @@ public class Scoring
 
 	public StringBuffer getAbilities(MOB able, int ofType, int ofDomain)
 	{
-		int highestLevel=0;
-		int lowestLevel=able.envStats().level()+1;
-		StringBuffer msg=new StringBuffer("");
+		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
 		if(ofDomain>=0)
 		{
 			mask=Ability.ALL_CODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
+		V.addElement(new Integer(ofType));
+		return getAbilities(able,V,mask);
+	}
+	public StringBuffer getAbilities(MOB able, Vector ofTypes, int mask)
+	{
+		int highestLevel=0;
+		int lowestLevel=able.envStats().level()+1;
+		StringBuffer msg=new StringBuffer("");
 		for(int a=0;a<able.numAbilities();a++)
 		{
 			Ability thisAbility=able.fetchAbility(a);
 			if((thisAbility!=null)
 			&&(thisAbility.envStats().level()>highestLevel)
 			&&(thisAbility.envStats().level()<lowestLevel)
-			&&((thisAbility.classificationCode()&mask)==ofType))
+			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				highestLevel=thisAbility.envStats().level();
 		}
 		for(int l=0;l<=highestLevel;l++)
@@ -342,7 +347,7 @@ public class Scoring
 				Ability thisAbility=able.fetchAbility(a);
 				if((thisAbility!=null)
 				&&(thisAbility.envStats().level()==l)
-				&&((thisAbility.classificationCode()&mask)==ofType))
+				&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if(thisLine.length()==0)
 						thisLine.append("\n\rLevel ^B"+l+"^?:\n\r");
@@ -365,15 +370,22 @@ public class Scoring
 
 	public StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain)
 	{
-		int highestLevel=0;
-		int lowestLevel=able.envStats().level()+1;
-		StringBuffer msg=new StringBuffer("");
+		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
 		if(ofDomain>=0)
 		{
 			mask=Ability.ALL_CODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
+		V.addElement(new Integer(ofType));
+		return getAbilities(able,V,mask);
+	}
+	
+	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask)
+	{
+		int highestLevel=0;
+		int lowestLevel=able.envStats().level()+1;
+		StringBuffer msg=new StringBuffer("");
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
@@ -381,7 +393,7 @@ public class Scoring
 			if((thisAbility.qualifiesByLevel(able))
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
-			&&((thisAbility.classificationCode()&mask)==ofType))
+			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				highestLevel=level;
 		}
 		int col=0;
@@ -393,7 +405,7 @@ public class Scoring
 				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
 				if((thisAbility.qualifiesByLevel(able))
 				   &&(thisAbility.qualifyingLevel(able)==l)
-				   &&((thisAbility.classificationCode()&mask)==ofType))
+				   &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if((++col)>3)
 					{
