@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.XMLManager;
+import com.planet_ink.coffee_mud.utils.Util;
 import java.util.*;
 
 public class DefaultPlayerStats implements PlayerStats
@@ -46,6 +47,10 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		HashSet h=new HashSet();
 		if((str==null)||(str.length()==0)) return h;
+		str=Util.replaceAll(str,"<FRIENDS>","");
+		str=Util.replaceAll(str,"<IGNORED>","");
+		str=Util.replaceAll(str,"</FRIENDS>","");
+		str=Util.replaceAll(str,"</IGNORED>","");
 		int x=str.indexOf(";");
 		while(x>=0)
 		{
@@ -79,7 +84,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 	public void setFriendsIgnoreStr(String str)
 	{
-		friends=getHashFrom(XMLManager.returnXMLBlock(str,"FRIENDS"));
-		ignored=getHashFrom(XMLManager.returnXMLBlock(str,"IGNORED"));
+		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
+		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
 	}
 }

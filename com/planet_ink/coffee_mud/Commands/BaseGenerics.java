@@ -4641,6 +4641,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genTattoos(mob,me,++showNumber,showFlag);
 			genEducations(mob,me,++showNumber,showFlag);
+			genEmail(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

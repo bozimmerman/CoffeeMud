@@ -513,7 +513,7 @@ public class IQCalendar extends GregorianCalendar
 	 * International time hh:mm am/pm timezone
 	 * non-international time hh:mm timezone
 	 * 
-  	 * <br><br><b>Usage:</b> Zd2InternationalDate()+"."
+  	 * <br><br><b>Usage:</b> d2InternationalDate()+"."
 	 * @param NA
 	 * @return String International date format
 	 */
@@ -596,76 +596,6 @@ public class IQCalendar extends GregorianCalendar
 	}
 
 	
-	public static String d2mysqlString(long time)
-	{
-		return new IQCalendar(time).d2mysqlString();
-	}
-		
-	public String d2mysqlString()
-	{
-		String MINUTE=Integer.toString(this.get(IQCalendar.MINUTE)).trim();
-		if(MINUTE.length()==1)
-			MINUTE="0"+MINUTE;
-		String AMPM="AM";
-		if(this.get(IQCalendar.AM_PM)==IQCalendar.PM)
-			AMPM="PM";
-		int Hour=this.get(IQCalendar.HOUR);
-		if(Hour==0) Hour=12;
-		String Year=Integer.toString(this.get(IQCalendar.YEAR));
-		if(Year.length()<4)
-		{
-			if(Year.length()<2)
-				Year=("0"+Year);
-			if(Year.length()<2)
-				Year=("0"+Year);
-			int Yr=Util.s_int(Year);
-			if(Yr<50)Year="20"+Year;
-			else Year="19"+Year;
-		}
-		String Month=Integer.toString(this.get(IQCalendar.MONTH)+1);
-		if(Month.length()<2)
-			Month="0"+Month;
-		String Date=Integer.toString(this.get(IQCalendar.DATE));
-		if(Date.length()<2)
-			Date="0"+Date;
-		
-		
-		return Year+"-"+Month+"-"+Date+" "+Hour+":"+MINUTE+":00 "+AMPM;
-	}
-	
-	/**
-	 * Converts a given date into a string of form:
-	 * MM/DD/YYYY HH:MM AP
-	 * 
-  	 * <br><br><b>Usage:</b> d2String()
-	 * @param sqlType	What type of SQL to send
-	 * @return String Formatted date/time
-	 */
-	public String d2DBString(String sqlType)
-	{
-		// ===== Create our variables
-		String strReturn = "";
-		
-		//WebIQ.GetINIInfo().DBTYPE.equals("MSSQL")
-		// ===== what is the database type
-		if (sqlType.trim().equalsIgnoreCase("MSSQL"))
-		{
-			// ===== return something SQL server friendly
-			strReturn = "'" + d2String() + "'";
-		}
-		else 
-		if (sqlType.trim().equalsIgnoreCase("SQL"))
-		{
-			// ===== return something Oracle friendly
-			strReturn = "TO_DATE('" +
-					   d2String() + 
-					   "','MM/DD/YYYY HH:MI AM')";
-		}
-	
-		// ===== return it
-		return strReturn;
-	}
-
 	/**
 	 * Converts a given date into a string of form:
 	 * MM/DD/YYYY HH:MM AP
