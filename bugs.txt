@@ -1,7 +1,5 @@
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 !expand prop retainable to add monthly costs.
-!GenPerfume A GenItem that can accept an Emoter Behavior as a parameter (so that I can code 
-!recipes of perfumes into a common skill (Apothecary).)  Worn on all locations, when worn, 
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 racial affects
 Install ship battery
