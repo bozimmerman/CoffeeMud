@@ -284,7 +284,7 @@ public class TheFight
 			DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
 			Body.baseEnvStats().setWeight(target.envStats().weight());
 			if(!target.isMonster())
-				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*4);
+				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 			deathRoom.addItem(Body);
 			Body.recoverEnvStats();
 			
