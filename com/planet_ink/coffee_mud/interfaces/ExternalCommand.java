@@ -50,5 +50,6 @@ public interface ExternalCommand
 	// ability helpers
 	public Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater);
 	public int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater);
+	public boolean zapperCheck(String text, MOB mob);
 	
 }

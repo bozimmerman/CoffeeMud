@@ -15,11 +15,18 @@ public class DoorwayGuardian extends StdBehavior
 
 	public Exit getParmExit(MOB monster)
 	{
-		if(getParms().length()==0) return null;
-		int dir=Directions.getGoodDirectionCode(getParms());
-		if(dir<0) return null;
+		if(monster==null) return null;
 		if(monster.location()==null) return null;
-		return monster.location().getExitInDir(dir);
+		if(getParms().length()==0) return null;
+		Vector V=Util.parse(getParms());
+		for(int v=0;v<V.size();v++)
+		{
+			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));
+			if(dir<0) return null;
+			if(monster.location().getExitInDir(dir)!=null)
+				return monster.location().getExitInDir(dir);
+		}
+		return null;
 	}
 	
 	
@@ -36,7 +43,8 @@ public class DoorwayGuardian extends StdBehavior
 		if(affect.target()==null) return true;
 		if(!Sense.canBeSeenBy(affect.source(),oking))
 			return true;
-		if(mob.location()==monster.location())
+		if((mob.location()==monster.location())
+		&&(!ExternalPlay.zapperCheck(getParms(),mob)))
 		{
 			if(affect.target() instanceof Exit)
 			{

@@ -10,7 +10,6 @@ public class Prop_WearZapper extends Property
 	public String ID() { return "Prop_WearZapper"; }
 	public String name(){ return "Restrictions to wielding/wearing/holding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Prop_HaveZapper WA=new Prop_HaveZapper();
 	public Environmental newInstance(){	Prop_WearZapper BOB=new Prop_WearZapper();	BOB.setMiscText(text()); return BOB;}
 
 	public boolean okAffect(Affect affect)
@@ -30,21 +29,21 @@ public class Prop_WearZapper extends Property
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_HOLD:
-			if((!WA.isOk(this,mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case Affect.TYP_WEAR:
-			if((!WA.isOk(this,mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case Affect.TYP_WIELD:
-			if((!WA.isOk(this,mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;

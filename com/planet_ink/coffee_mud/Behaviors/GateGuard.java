@@ -54,6 +54,21 @@ public class GateGuard extends StdBehavior
 		return key;
 	}
 	
+	private int numValidPlayers(Room room)
+	{
+		if(room==null) return 0;
+		int num=0;
+		for(int i=0;i<room.numInhabitants();i++)
+		{
+			MOB M=room.fetchInhabitant(i);
+			if((M!=null)
+			&&(!M.isMonster())
+			&&(ExternalPlay.zapperCheck(getParms(),M)))
+				num++;
+		}
+		return num;
+	}
+	
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -67,7 +82,7 @@ public class GateGuard extends StdBehavior
 			int dir=findGate(mob);
 			if(dir<0) return;
 			Exit e=mob.location().getExitInDir(dir);
-			int numPlayers=mob.location().numPCInhabitants();
+			int numPlayers=numValidPlayers(mob.location());
 			if((mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))

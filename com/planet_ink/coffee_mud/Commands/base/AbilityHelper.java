@@ -10,6 +10,75 @@ public class AbilityHelper
 	protected final static int TRACK_ATTEMPTS=25;
 	protected final static int TRACK_DEPTH=500;
 	
+	public static boolean zapperCheck(String text, MOB mob)
+	{
+		if(mob==null) return true;
+		if(mob.charStats()==null) return true;
+		if(text.trim().length()==0) return true;
+		
+		String mobClass=mob.charStats().getCurrentClass().name().toUpperCase().substring(0,3);
+		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
+		String mobRace=mob.charStats().getMyRace().name().toUpperCase().substring(0,3);
+		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
+		text=text.toUpperCase();
+		// do class first
+		int x=text.indexOf("-CLAS");
+		if(x>=0)
+		{
+			if(text.indexOf("+"+mobClass)<x)
+				return false;
+		}
+		else
+		{
+			if(text.indexOf("-"+mobClass)>=0)
+				return false;
+		}
+
+		// now base class
+		x=text.indexOf("-BASECLAS");
+		if(x>=0)
+		{
+			if(text.indexOf("+"+mobBaseClass)<x)
+				return false;
+		}
+		else
+		{
+			if(text.indexOf("-"+mobBaseClass)>=0)
+				return false;
+		}
+
+		// now race
+		x=text.indexOf("-RACE");
+		if(x>=0)
+		{
+			if(text.indexOf("+"+mobRace)<x)
+				return false;
+		}
+		else
+		{
+			if(text.indexOf("-"+mobRace)>=0)
+				return false;
+
+		}
+
+		// and now alignments
+		x=text.indexOf("-ALIG");
+		if(x>=0)
+		{
+
+			if(text.indexOf("+"+mobAlign)<x)
+				return false;
+		}
+		else
+		{
+			if(text.indexOf("-"+mobAlign)>=0)
+				return false;
+
+		}
+
+		return true;
+	}
+
 	public static boolean findTheRoom(Room location, 
 									  Room destRoom, 
 									  int tryCode, 

@@ -240,8 +240,12 @@ public class Arrest extends StdBehavior
 			String display=mob.location().displayText().toUpperCase().trim();
 			for(int v=0;v<V.size();v++)
 			{
-				if(CoffeeUtensils.containsString(display,((String)V.elementAt(v)).toUpperCase()))
-				{ aCrime=true;break;}
+				String str=((String)V.elementAt(v)).toUpperCase();
+				if(str.startsWith("!")&&(CoffeeUtensils.containsString(display,str.substring(1))))
+					return;
+				else
+				if(CoffeeUtensils.containsString(display,str))
+				{ aCrime=true; break;}
 			}
 			if(!aCrime) return;
 		}
