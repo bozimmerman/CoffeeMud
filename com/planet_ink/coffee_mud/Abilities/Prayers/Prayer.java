@@ -90,36 +90,15 @@ public class Prayer extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if((!auto)&&(holyQuality!=Prayer.HOLY_NEUTRAL))
-		{
-			if(holyQuality==Prayer.HOLY_EVIL)
-				mob.setAlignment(mob.getAlignment()-(envStats().level()*10));
-			else
-			if(holyQuality==Prayer.HOLY_GOOD)
-				mob.setAlignment(mob.getAlignment()+(envStats().level()*10));
-			else
-			if(holyQuality==Prayer.HOLY_NEUTRAL)
-			{
-				if(mob.getAlignment()<500)
-					mob.setAlignment(mob.getAlignment()+(envStats().level()*5));
-				else
-				if(mob.getAlignment()>500)
-					mob.setAlignment(mob.getAlignment()-(envStats().level()*5));
-			}
-			if(mob.getAlignment()>1000)
-				mob.setAlignment(1000);
-			if(mob.getAlignment()<0)
-				mob.setAlignment(0);
-		}
 		if((appropriateToMyAlignment(mob.getAlignment()))||(auto))
 			return true;
 		
-		if((holyQuality()==Prayer.HOLY_NEUTRAL)&&(Dice.rollPercentage()<50))
+		if((holyQuality()==Prayer.HOLY_NEUTRAL)&&(Dice.rollPercentage()<35))
 			return true;
 		else
-		if(Dice.rollPercentage()<25)
+		if(Dice.rollPercentage()<20)
 			return true;
-		if(this.holyQuality()==Prayer.HOLY_EVIL)
+		if(holyQuality()==Prayer.HOLY_EVIL)
 			mob.tell("The evil nature of "+name()+" disrupts your prayer.");
 		else
 		if(holyQuality()==Prayer.HOLY_GOOD)
