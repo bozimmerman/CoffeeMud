@@ -30,7 +30,7 @@ public class Poison_Caffeine extends Poison {
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 	    super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() + 0.5);
+		affectableStats.setSpeed(affectableStats.speed() + 0.25);
 	    int oldDisposition=affectableStats.disposition();
 	    oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
 	    affectableStats.setDisposition(oldDisposition);

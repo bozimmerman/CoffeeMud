@@ -1194,6 +1194,13 @@ public class TelnetSession extends Thread implements Session
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}
 
+	private static final int WIZINV=  EnvStats.IS_INVISIBLE
+									 |EnvStats.IS_NOT_SEEN
+									 |EnvStats.IS_HIDDEN
+									 |EnvStats.IS_SNEAKING
+									 |EnvStats.IS_FLYING
+									 |EnvStats.IS_CLIMBING
+									 |EnvStats.IS_SWIMMING;
 	public void showPrompt()
 	{
 		if(mob()==null) return;
@@ -1242,6 +1249,21 @@ public class TelnetSession extends Thread implements Session
 							  if((mob().isInCombat())&&(victim!=null)&&(Sense.canBeSeenBy(victim,mob)))
 								  buf.append(victim.charStats().getMyRace().healthText(victim)+"\n\r");
 							  c++; break; }
+				case 'I': {   if(Util.bset(mob().envStats().disposition(),WIZINV))
+								  buf.append("WizInv");
+							  else
+							  if(!Sense.isSeen(mob()))
+								  buf.append("Undetectable");
+							  else
+							  if(Sense.isInvisible(mob())&&Sense.isHidden(mob()))
+								  buf.append("Hidden/Invisible");
+							  else
+							  if(Sense.isInvisible(mob()))
+								  buf.append("Invisible");
+							  else
+							  if(Sense.isHidden(mob()))
+								  buf.append("Hidden");
+							  c++; break;}
 				case 'B': { buf.append("\n\r"); c++; break;}
 				case 'd': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))

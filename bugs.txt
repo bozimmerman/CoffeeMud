@@ -1,16 +1,11 @@
 I noticed when I cast mute on spell casting mobs they can still incant and cast spells and use wands with key words.
 purge pdat player dat when player deleted
-Could we get a %I option that is either '' or 'WizInvis'?  I forget constantly if I'm invis or not.
-ITEMS=%DEFAULT%;C\:\\CoffeeMudbeta\\osqueta\\Items\\
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
-the thief guildmaster says he doesn`t know STEAL
-no description for `help (a poison)
 If you don`t name your kid fast enough.. you give birth to nothing... no kid in your inventory.. etc... REALLY sucks if you`ve been waiting 9 mud monthes
 if a race can not wear items in a given location, then it should not be illegal for them to not wear them there....
 the fountains made from sculpting have a Quench of 0, meaning that they can`t hold water.
 A little thing, but it would come in handy - importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 fairie-demons didn't have wings, but had wingedflight
-arcanist takes away qualified skills
 
 
 SMTP Server
