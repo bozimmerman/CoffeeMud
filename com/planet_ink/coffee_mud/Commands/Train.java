@@ -254,6 +254,8 @@ public class Train extends StdCommand
 			mob.setTrains(mob.getTrains()-1);
 			mob.baseCharStats().getCurrentClass().endCharacter(mob);
 			mob.baseCharStats().setCurrentClass(theClass);
+			if((!mob.isMonster())&&(mob.soulMate()==null))
+				CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
 			mob.recoverCharStats();
 			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
 			break;

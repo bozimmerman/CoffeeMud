@@ -197,6 +197,29 @@ public class Util
 		return s;
 	}
 	
+	public static long[] toLongArray(Vector V)
+	{
+		if((V==null)||(V.size()==0)){
+			long[] s=new long[0];
+			return s;
+		}
+		long[] s=new long[V.size()];
+		for(int v=0;v<V.size();v++)
+			s[v]=Util.s_long(V.elementAt(v).toString());
+		return s;
+	}
+	public static int[] toIntArray(Vector V)
+	{
+		if((V==null)||(V.size()==0)){
+			int[] s=new int[0];
+			return s;
+		}
+		int[] s=new int[V.size()];
+		for(int v=0;v<V.size();v++)
+			s[v]=Util.s_int(V.elementAt(v).toString());
+		return s;
+	}
+	
 	public static String[] toStringArray(HashSet V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -211,6 +234,18 @@ public class Util
 	}
 	
 	public static String toStringList(String[] V)
+	{
+		if((V==null)||(V.length==0)){
+			return "";
+		}
+		StringBuffer s=new StringBuffer("");
+		for(int v=0;v<V.length;v++)
+			s.append(", "+V[v]);
+		if(s.length()==0) return "";
+		return s.toString().substring(2);
+	}
+	
+	public static String toStringList(long[] V)
 	{
 		if((V==null)||(V.length==0)){
 			return "";

@@ -210,7 +210,6 @@ public class FrontLogin extends StdCommand
 					CMClass.DBEngine().DBUpdateEmail(mob);
 				}
 
-				boolean swapMade=false;
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=(Session)Sessions.elementAt(s);
@@ -218,7 +217,6 @@ public class FrontLogin extends StdCommand
 					{
 						if((thisSession.mob().Name().equals(mob.Name())))
 						{
-							swapMade=true;
 							Room oldRoom=thisSession.mob().location();
 							if(oldRoom!=null)
 							while(oldRoom.isInhabitant(thisSession.mob()))
@@ -238,6 +236,7 @@ public class FrontLogin extends StdCommand
 				{
 					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.Name()));
 					mob=oldMOB.session().mob();
+					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
 						oldMOB.setSession(null);
@@ -262,6 +261,7 @@ public class FrontLogin extends StdCommand
 				else
 				{
 					CMClass.DBEngine().DBReadMOB(mob);
+					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
@@ -571,6 +571,8 @@ public class FrontLogin extends StdCommand
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
 				CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been created.",true);
+				CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
+				CoffeeTables.bump(mob,CoffeeTables.STAT_NEWPLAYERS);
 				return true;
 			}
 			return false;

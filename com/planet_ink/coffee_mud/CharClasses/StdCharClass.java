@@ -483,7 +483,11 @@ public class StdCharClass implements CharClass, Cloneable
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(!mob.isMonster())
+		{
 			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
+			if(mob.soulMate()==null)
+				CoffeeTables.bump(mob,CoffeeTables.STAT_LEVELSGAINED);
+		}
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;

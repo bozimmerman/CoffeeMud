@@ -366,6 +366,8 @@ public class Pregnancy extends StdAbility
 							B.setParms(Age.happyBabyEmoter);
 							I.addBehavior(B);
 							I.text();
+							if((!mob.isMonster())&&(mob.soulMate()==null))
+								CoffeeTables.bump(mob,CoffeeTables.STAT_BIRTHS);
 						}
 						else
 							mob.tell("You are in labor!!");

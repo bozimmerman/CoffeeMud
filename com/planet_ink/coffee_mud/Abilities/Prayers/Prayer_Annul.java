@@ -29,6 +29,7 @@ public class Prayer_Annul extends Prayer
 			return false;
 		}
 
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -38,6 +39,8 @@ public class Prayer_Annul extends Prayer
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> annul(s) the marriage between <T-NAMESELF> and "+target.getLiegeID()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
+				if((!target.isMonster())&&(target.soulMate()==null))
+					CoffeeTables.bump(target,CoffeeTables.STAT_DIVORCES);
 				mob.location().send(mob,msg);
 				MOB M=CMMap.getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");

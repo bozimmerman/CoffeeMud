@@ -38,6 +38,8 @@ public class Prayer_Divorce extends Prayer
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> divorce(s) <T-NAMESELF> from "+target.getLiegeID()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
+				if((!target.isMonster())&&(target.soulMate()==null))
+					CoffeeTables.bump(target,CoffeeTables.STAT_DIVORCES);
 				mob.location().send(mob,msg);
 				String maleName=target.Name();
 				String femaleName=target.getLiegeID();

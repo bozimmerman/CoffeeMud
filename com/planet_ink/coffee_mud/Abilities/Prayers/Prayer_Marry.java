@@ -71,6 +71,7 @@ public class Prayer_Marry extends Prayer
 			mob.tell(wife.name()+" must be a player to marry.");
 			return false;
 		}
+		CoffeeTables.bump(husband,CoffeeTables.STAT_BIRTHS);
 		Item I=husband.fetchWornItem("wedding band");
 		if(I==null)
 		{

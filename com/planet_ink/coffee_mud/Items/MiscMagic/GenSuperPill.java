@@ -108,7 +108,11 @@ public class GenSuperPill extends GenPill
 			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
 		val=Util.getParmStr(readableText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
+		{
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
+			if((!mob.isMonster())&&(mob.soulMate()==null))
+				CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
+		}
 		if(Util.getParmPlus(readableText,"lev")!=0)
 			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+Util.getParmPlus(readableText,"lev"));
 		val=Util.getParmStr(readableText,"rac","").toUpperCase();

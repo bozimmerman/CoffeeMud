@@ -55,4 +55,8 @@ public interface DatabaseEngine
 	public Vector DBReadClasses();
 	public void DBDeleteClass(String classID);
 	public void DBCreateClass(String classID,String data);
+	public Object DBReadStat(long startTime);
+	public void DBDeleteStat(long startTime);
+	public void DBCreateStat(long startTime,long endTime,String data);
+	public void DBUpdateStat(long startTime, String data);
 }

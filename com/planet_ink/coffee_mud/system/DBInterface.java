@@ -165,6 +165,14 @@ public class DBInterface implements DatabaseEngine
 	{ DataLoader.DBDeleteClass(classID);}
 	public void DBCreateClass(String classID,String data)
 	{ DataLoader.DBCreateClass(classID,data);}
+	public Object DBReadStat(long startTime)
+	{ return StatLoader.DBRead(startTime);}
+	public void DBDeleteStat(long startTime)
+	{ StatLoader.DBDelete(startTime);}
+	public void DBCreateStat(long startTime,long endTime,String data)
+	{ StatLoader.DBCreate(startTime,endTime,data);}
+	public void DBUpdateStat(long startTime, String data)
+	{ StatLoader.DBUpdate(startTime,data);}
 	
 	public String errorStatus(){return DBConnector.errorStatus().toString();}
 	public void resetconnections(){DBConnector.reconnect();}

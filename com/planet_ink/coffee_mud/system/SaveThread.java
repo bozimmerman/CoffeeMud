@@ -195,6 +195,8 @@ public class SaveThread extends Thread
 					{
 						itemSweep();
 						autoPurge();
+						CoffeeTables.bump(null,CoffeeTables.STAT_SPECIAL_NUMONLINE);
+						CoffeeTables.update();
 						lastStop=System.currentTimeMillis();
 						milliTotal+=(lastStop-lastStart);
 						tickTotal++;

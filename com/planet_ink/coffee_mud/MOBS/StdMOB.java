@@ -1806,10 +1806,16 @@ public class StdMOB implements MOB
 				if(!amDead)
 				{
 					if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+					{
 						MUDFight.justDie((MOB)msg.tool(),this);
+						if((!isMonster())&&(soulMate()==null)&&(msg.tool()!=this)&&(!((MOB)msg.tool()).isMonster()))
+							CoffeeTables.bump(this,CoffeeTables.STAT_PKDEATHS);
+					}
 					else
 						MUDFight.justDie(null,this);
 					tell(this,msg.target(),msg.tool(),msg.sourceMessage());
+					if((!isMonster())&&(soulMate()==null))
+						CoffeeTables.bump(this,CoffeeTables.STAT_DEATHS);
 				}
 				break;
 			case CMMsg.TYP_REBUKE:
@@ -2260,6 +2266,8 @@ public class StdMOB implements MOB
 				if((!isMonster())&&(((++minuteCounter)*MudHost.TICK_TIME)>60000))
 				{
 					minuteCounter=0;
+					if(soulMate()==null)
+						CoffeeTables.bump(this,CoffeeTables.STAT_HOURSONLINE);
 					setAgeHours(AgeHours+1);
 					if((AgeHours>60000)&&(!isASysOp(location())))
 					{

@@ -64,6 +64,8 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 							{
 								mob.charStats().setCurrentClass(thisC);
 								mob.tell("You are now a "+thisC.name()+".");
+								if((!mob.isMonster())&&(mob.soulMate()==null))
+									CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
 								mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
 							}
 						}

@@ -659,6 +659,7 @@ public class MOBloader
 	{
 		if(mob.Name().length()==0) return;
 		CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been deleted.",true);
+		CoffeeTables.bump(mob,CoffeeTables.STAT_PURGES);
 		DBConnector.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		while(mob.inventorySize()>0)
 		{

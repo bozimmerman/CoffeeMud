@@ -53,6 +53,8 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.baseCharStats().setStat(CharStats.DEXTERITY,25);
 						mob.baseCharStats().setStat(CharStats.CHARISMA,25);
 						mob.baseCharStats().setCurrentClass(newClass);
+						if((!mob.isMonster())&&(mob.soulMate()==null))
+							CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
 						mob.recoverCharStats();
 						while(mob.baseEnvStats().level()<=100)
 						{
