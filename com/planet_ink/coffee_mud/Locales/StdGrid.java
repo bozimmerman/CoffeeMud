@@ -118,7 +118,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		return alts[opDirection];
 	}
 
-	public Room[][] getBuiltGrid()
+	private Room[][] getBuiltGrid()
 	{
 		if(subMap==null) buildGrid();
 		if(subMap!=null) return (Room[][])subMap.clone();
