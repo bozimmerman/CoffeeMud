@@ -622,6 +622,11 @@ public class StdItem implements Item
 			if(this instanceof Drink)
 				return true;
 			break;
+		case Affect.TYP_WRITE:
+			if((this.isReadable())||(this instanceof Scroll))
+				return true;
+			mob.tell("You can't write on "+name()+".");
+			return false;
 		default:
 			break;
 		}
@@ -733,6 +738,10 @@ public class StdItem implements Item
 			}
 			remove();
 			setLocation(null);
+			break;
+		case Affect.TYP_WRITE:
+			if(this.isReadable())
+				setReadableText(affect.targetMessage());
 			break;
 		default:
 			break;

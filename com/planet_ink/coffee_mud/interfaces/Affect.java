@@ -118,7 +118,7 @@ public interface Affect
 	public static final int TYP_STAND=36;
 	public static final int TYP_FLEE=37;
 	public static final int TYP_NOFOLLOW=38;
-	//public static final int TYP_CAST_ATTACK_SOMANTIC_SPELL=39;
+	public static final int TYP_WRITE=39;
 	public static final int TYP_FIRE=40;
 	public static final int TYP_COLD=41;
 	public static final int TYP_WATER=42;
@@ -196,5 +196,6 @@ public interface Affect
 	public static final int MSG_HANDS=ACT_HANDS|TYP_HANDS;
 	public static final int MSG_FOLLOW=ACT_GENERAL|TYP_FOLLOW;
 	public static final int MSG_NOFOLLOW=ACT_GENERAL|TYP_NOFOLLOW;
+	public static final int MSG_WRITE=ACT_HANDS|TYP_WRITE;
 }
 

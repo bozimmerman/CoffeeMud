@@ -21,7 +21,7 @@ public class StdArea implements Area
 	protected Vector subOps=new Vector();
 	
 	protected boolean stopTicking=false;
-	private static final int WEATHER_TICK_DOWN=450; // 450 = 30 minutes * 60 seconds / 4
+	private static final int WEATHER_TICK_DOWN=75; // 75 = 5 minutes * 60 seconds / 4
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected int windDirection=Directions.NORTH;
 
