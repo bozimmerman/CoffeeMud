@@ -12,10 +12,10 @@ public class Apothecary extends Cooking
 	public String name(){ return "Apothecary";}
 	private static final String[] triggerStrings = {"APOTHECARY","MIX"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected static String cookWordShort(){return "mix";};
-	protected static String cookWord(){return "mixing";};
+	public String cookWordShort(){return "mix";};
+	public String cookWord(){return "mixing";};
 	public Environmental newInstance(){	return new Apothecary();}
-	protected static boolean honorHerbs(){return false;}
+	public boolean honorHerbs(){return false;}
 
 	
 	protected synchronized Vector loadRecipes()

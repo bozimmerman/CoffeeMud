@@ -36,14 +36,14 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-CMAble.addCharAbilityMapping(ID(),1,"Herbage",0,false);
+			CMAble.addCharAbilityMapping(ID(),1,"Herbology",0,false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPlants",false);
-CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",false);
@@ -79,7 +79,7 @@ CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
 			
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_AnimalFriendship",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_FeelHeat",false);
-CMAble.addCharAbilityMapping(ID(),10,"Chant_GrowClub",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_GrowClub",false);
 			
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_WindGust",false);

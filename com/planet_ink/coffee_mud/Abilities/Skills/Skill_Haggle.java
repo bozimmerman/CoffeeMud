@@ -58,7 +58,9 @@ public class Skill_Haggle extends StdAbility
 				mob.addAffect(this);
 				mob.recoverCharStats();
 				try{
+					commands.insertElementAt(Util.capitalize(cmd),0);
 					ExternalPlay.doCommand(mob,commands);
+					commands.addElement(shopkeeper.name());
 				}catch(Exception e){Log.errOut("Skill_Haggle",e);}
 				mob.delAffect(this);
 				mob.recoverCharStats();

@@ -12,10 +12,10 @@ public class Distilling extends Cooking
 	public String name(){ return "Distilling";}
 	private static final String[] triggerStrings = {"DISTILLING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected static String cookWordShort(){return "distill";};
-	protected static String cookWord(){return "distilling";};
+	public String cookWordShort(){return "distill";};
+	public String cookWord(){return "distilling";};
 	public Environmental newInstance(){	return new Distilling();}
-	protected static boolean honorHerbs(){return false;}
+	public boolean honorHerbs(){return false;}
 	private static boolean myMapped=false;
 
 	public Distilling()

@@ -11,9 +11,9 @@ public class Cooking extends CommonSkill
 	public String name(){ return "Cooking";}
 	private static final String[] triggerStrings = {"COOK","COOKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected static String cookWordShort(){return "cook";};
-	protected static String cookWord(){return "cooking";};
-	protected static boolean honorHerbs(){return true;}
+	public String cookWordShort(){return "cook";};
+	public String cookWord(){return "cooking";};
+	public boolean honorHerbs(){return true;}
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
@@ -572,7 +572,7 @@ public class Cooking extends CommonSkill
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
 		}
 		else
-		if((foodType.equalsIgnoreCase("DRINK"))&&(cooking instanceof Drink))
+		if(foodType.equalsIgnoreCase("DRINK"))
 		{
 			finalDish=CMClass.getItem("GenLiquidResource");
 			finalDish.setMiscText(cooking.text());
@@ -616,9 +616,9 @@ public class Cooking extends CommonSkill
 					A.setMiscText(parms);
 				}
 			}
+			finalDish.recoverEnvStats();
+			finalDish.text();
 		}
-		finalDish.recoverEnvStats();
-		finalDish.text();
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
