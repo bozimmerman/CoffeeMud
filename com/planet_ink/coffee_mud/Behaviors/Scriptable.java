@@ -2346,7 +2346,7 @@ public class Scriptable extends StdBehavior
 			val=new Integer(Util.s_int(num)*amount).toString();
 		}
 		else
-		if(val.startsWith("-"))
+		if(val.startsWith("/"))
 		{
 			// divide /XXX form
 			val=val.substring(1);
@@ -2783,7 +2783,6 @@ public class Scriptable extends StdBehavior
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
-					s=s.substring(s.indexOf(m)+m.length()).trim();
 					try
 					{
 						Vector V=Util.parse(s);

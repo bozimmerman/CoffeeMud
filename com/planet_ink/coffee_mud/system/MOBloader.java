@@ -354,15 +354,27 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
-				String cclass=((CharClass)CMClass.getCharClass(DBConnections.getRes(R,"CMCLAS"))).name();
+				String cclass=DBConnections.getRes(R,"CMCLAS");
+				int x=cclass.lastIndexOf(";");
+				if((x>0)&&(x<cclass.length()-2))
+					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-				int lvl=Util.s_int(DBConnections.getRes(R,"CMLEVL"));
+				String lvl=DBConnections.getRes(R,"CMLEVL");
+				x=lvl.indexOf(";");
+				int level=0;
+				while(x>=0)
+				{
+					level+=Util.s_int(lvl.substring(0,x));
+					lvl=lvl.substring(x+1);
+					x=lvl.indexOf(";");
+				}
+				if(lvl.length()>0) level+=Util.s_int(lvl);
 				int exp=Util.s_int(DBConnections.getRes(R,"CMEXPE"));
 				int exlv=Util.s_int(DBConnections.getRes(R,"CMEXLV"));
 				head.append("[");
 				head.append(Util.padRight(race,8)+" ");
 				head.append(Util.padRight(cclass,10)+" ");
-				head.append(Util.padRight(Integer.toString(lvl),4)+" ");
+				head.append(Util.padRight(Integer.toString(level),4)+" ");
 				head.append(Util.padRight(exp+"/"+exlv,17));
 				head.append("] "+Util.padRight(username,15));
 				head.append("\n\r");

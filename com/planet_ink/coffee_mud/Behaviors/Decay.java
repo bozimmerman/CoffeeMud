@@ -21,6 +21,22 @@ public class Decay extends ActiveTicker
 		return new Decay();
 	}
 
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		tickDown=getParmVal(parms,"remain",tickDown);
+	}
+
+	public String getParms()
+	{
+		String s=getParms();
+		int x=s.toUpperCase().indexOf("REMAIN=");
+		if(x<0) return "remain="+tickDown+" "+s;
+		int y=s.indexOf(" ",x+1);
+		if(y<0) y=s.length();
+		return ("remain="+tickDown+" "+s.substring(0,x)+s.substring(y).trim()).trim();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

@@ -25,6 +25,8 @@ WIZINFO type channel (shows logins, logoffs, creates, etc..)
 jewelmaking should allow you to add jewels to any item
 smokable stuff, mouth position pipes, smokable resources, etc.
 parse out all the commands into classes, so that access can be class based, and time req can be determined
+could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)? How much work is this?
+BOOKS! paper with multiple pages to post on. Add to the papermaking skill. Also add Poster, Banner, and Screen.
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

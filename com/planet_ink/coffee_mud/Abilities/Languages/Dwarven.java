@@ -18,6 +18,7 @@ public class Dwarven extends Language
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Dwarven();}
+	
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)
