@@ -657,14 +657,21 @@ public class Intermud implements Runnable, Persistent, Serializable {
         muds = list;
     }
 
-    private String getMudNameFor(String mud) {
+    private String getMudNameFor(String mud) 
+	{
         Enumeration list = muds.getMuds().keys();
-
         mud = mud.toLowerCase().replace('.', ' ');
         while( list.hasMoreElements() ) {
             String str = (String)list.nextElement();
 
             if( mud.equalsIgnoreCase(str) ) {
+                return str;
+            }
+        }
+        list = muds.getMuds().keys();
+        while( list.hasMoreElements() ) {
+            String str = (String)list.nextElement();
+            if( CoffeeUtensils.containsString(str,mud) ) {
                 return str;
             }
         }

@@ -285,8 +285,9 @@ public class Carpentry extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-3;
+			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
+			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
+			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -354,13 +355,14 @@ public class Carpentry extends CommonSkill
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
+				double hardBonus=0.0;
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
 					String WO=Item.wornLocation[wo].toUpperCase();
 					if(misctype.equalsIgnoreCase(WO))
 					{
+						hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
@@ -368,6 +370,8 @@ public class Carpentry extends CommonSkill
 					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
 					||(misctype.toUpperCase().endsWith("||"+WO)))
 					{
+						if(hardBonus==0.0)
+							hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
@@ -375,10 +379,13 @@ public class Carpentry extends CommonSkill
 					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 					||(misctype.toUpperCase().endsWith("&&"+WO)))
 					{
+						hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}
+				int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
+				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 			}
 			if(building instanceof Light)
 			{

@@ -91,7 +91,29 @@ public interface Item extends Environmental, Rider
 		ON_WAIST,
 		ON_LEGS,
 		ON_FEET,
-		FLOATING_NEARBY};
+		FLOATING_NEARBY
+	};
+	
+	public static final double[] wornWeights={
+		1.0, //ON_HEAD
+		0.0, //ON_EYES
+		0.0, //ON_EARS
+		0.5, //ON_NECK
+		1.0, //ABOUT_BODY
+		3.0, //ON_TORSO
+		1.0, //ON_ARMS
+		0.5, //ON_LEFT_WRIST
+		0.5, //ON_RIGHT_WRIST
+		0.5, //ON_HANDS
+		0.0, //ON_LEFT_FINGER
+		0.0, //ON_RIGHT_FINGER
+		1.0, //WIELD
+		1.0, //HELD
+		0.5, //ON_WAIST
+		2.0, //ON_LEGS
+		0.5, //ON_FEET
+		0.0 //FLOATING_NEARBY
+	};
 	
 	public static final String[] wornLocation={
 		"inventory",

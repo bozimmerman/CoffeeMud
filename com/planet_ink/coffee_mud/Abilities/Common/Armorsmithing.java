@@ -323,26 +323,28 @@ public class Armorsmithing extends CommonSkill
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();
 			verb="smithing "+building.name();
-			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
+			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
+				double hardBonus=0.0;
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
 					String WO=Item.wornLocation[wo].toUpperCase();
 					if(misctype.equalsIgnoreCase(WO))
 					{
+						hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
@@ -350,6 +352,8 @@ public class Armorsmithing extends CommonSkill
 					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
 					||(misctype.toUpperCase().endsWith("||"+WO)))
 					{
+						if(hardBonus==0.0)
+							hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(false);
 					}
@@ -357,10 +361,13 @@ public class Armorsmithing extends CommonSkill
 					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 					||(misctype.toUpperCase().endsWith("&&"+WO)))
 					{
+						hardBonus+=Item.wornWeights[wo];
 						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}
+				int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
+				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 			}
 			if(building instanceof Container)
 				if(capacity>0)

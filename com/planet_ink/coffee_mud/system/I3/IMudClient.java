@@ -18,6 +18,7 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify a mud name.");
 			return;
 		}
+		mudName=Intermud.translateName(mudName);
 		if(!Intermud.isUp(mudName))
 		{
 			mob.tell(mudName+" is not available.");
@@ -52,14 +53,15 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify an InterMud 3 channel name.");
 			return;
 		}
-		if(!Intermud.isUp(Intermud.translateName(mudName)))
+		mudName=Intermud.translateName(mudName);
+		if(!Intermud.isUp(mudName))
 		{
 			mob.tell(mudName+" is not available.");
 			return;
 		}
 		ChannelWhoRequest ck=new ChannelWhoRequest();
 		ck.sender_name=mob.Name();
-		ck.target_mud=Intermud.translateName(mudName);
+		ck.target_mud=mudName;
 		ck.channel=channel;
 		try{
 		ck.send();
@@ -156,7 +158,8 @@ public class IMudClient implements I3Interface
 			mob.tell("You must enter a message!");
 			return;
 		}
-		if(!Intermud.isUp(Intermud.translateName(mudName)))
+		mudName=Intermud.translateName(mudName);
+		if(!Intermud.isUp(mudName))
 		{
 			mob.tell(mudName+" is not available.");
 			return;
@@ -165,7 +168,7 @@ public class IMudClient implements I3Interface
 		TellPacket tk=new TellPacket();
 		tk.sender_name=mob.Name();
 		tk.sender_visible_name=mob.Name();
-		tk.target_mud=Intermud.translateName(mudName);
+		tk.target_mud=mudName;
 		tk.target_name=tellName;
 		tk.message=message;
 		try{
