@@ -138,7 +138,7 @@ public class Shaman extends Cleric
 		return true;
 	}
 
-	public boolean tick(MOB myChar, int tickID)
+	public boolean tick(Tickable myChar, int tickID)
 	{
 		if(tickID==MudHost.TICK_MOB)
 		{

@@ -82,7 +82,7 @@ public class Prayer_UnholyArmament extends Prayer
 			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
 			I.baseEnvStats().setDamage(Util.s_int((String)H.get("DAMAGE")));
 			I.baseEnvStats().setAttackAdjustment(Util.s_int((String)H.get("ATTACK")));
-			I.setBaseValue(Util.s_int((String)H.get("VALUE")));
+			I.setBaseValue(0);
 		}
 		else
 		{
@@ -97,7 +97,7 @@ public class Prayer_UnholyArmament extends Prayer
 			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
 			I.baseEnvStats().setArmor(Util.s_int((String)H.get("ARMOR")));
 			I.baseEnvStats().setWeight(Util.s_int((String)H.get("WEIGHT")));
-			I.setBaseValue(Util.s_int((String)H.get("VALUE")));
+			I.setBaseValue(0);
 			if(pos==Item.ON_TORSO)
 			{
 				I.setName("an unholy breast plate");

@@ -37,10 +37,11 @@ public class Lich extends Skeleton
 		return resources;
 	}
 
-	public boolean tick(MOB myChar, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==MudHost.TICK_MOB)
-		&&(Dice.rollPercentage()<10))
+		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		MOB myChar=(MOB)ticking;
+		if((tickID==MudHost.TICK_MOB)&&(Dice.rollPercentage()<10))
 		{
 			Ability A=CMClass.getAbility("Spell_Fear");
 			if(A!=null)

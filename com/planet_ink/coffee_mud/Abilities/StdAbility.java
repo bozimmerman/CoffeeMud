@@ -715,8 +715,8 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*4)+25;
 
-				if(target!=null)
-					tickAdjustmentFromStandard-=(target.envStats().level()*2);
+				if((target!=null)&&(asLevel<=0)&&(mob!=null))
+					tickAdjustmentFromStandard=(int)Math.round(Util.mul(tickAdjustmentFromStandard,Util.div(mob.envStats().level(),target.envStats().level())));
 
 				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
 					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);

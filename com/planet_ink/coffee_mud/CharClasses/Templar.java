@@ -136,8 +136,10 @@ public class Templar extends Cleric
 		return true;
 	}
 
-	public boolean tick(MOB myChar, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
+		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		MOB myChar=(MOB)ticking;
 		if((tickID==MudHost.TICK_MOB)&&((--tickDown)<=0))
 		{
 			tickDown=5;

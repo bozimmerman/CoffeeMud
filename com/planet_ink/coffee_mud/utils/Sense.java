@@ -674,7 +674,7 @@ public class Sense
 			else
 			if(((Item)E).owner() instanceof Room)
 				return ((!((Item)E).amDestroyed())
-						&&((!reqInhabitation)||(((MOB)E).location().isInhabitant((MOB)E))));
+						&&((!reqInhabitation)||(((Room)((Item)E).owner()).isContent((Item)E))));
 			else
 				return false;
 		}

@@ -1067,6 +1067,7 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				String found=null;
+				boolean validFunc=false;
 				Vector scripts=getScripts();
 				for(int v=0;v<scripts.size();v++)
 				{
@@ -1078,6 +1079,7 @@ public class Scriptable extends StdBehavior
 						String fnamed=Util.getCleanBit(trigger,1);
 						if(fnamed.equalsIgnoreCase(arg1))
 						{
+							validFunc=true;
 							found=
 							execute(scripted,
 									source,
@@ -1087,11 +1089,12 @@ public class Scriptable extends StdBehavior
 									secondaryItem,
 									script2,
 									varify(source,target,monster,primaryItem,secondaryItem,msg,arg2));
+							if(found==null) found="";
 							break;
 						}
 					}
 				}
-				if(found==null)
+				if(!validFunc)
 					scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
 				else
 					returnable=!(found.trim().length()==0);
@@ -2318,6 +2321,7 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
 				String found=null;
+				boolean validFunc=false;
 				Vector scripts=getScripts();
 				for(int v=0;v<scripts.size();v++)
 				{
@@ -2329,6 +2333,7 @@ public class Scriptable extends StdBehavior
 						String fnamed=Util.getCleanBit(trigger,1);
 						if(fnamed.equalsIgnoreCase(arg1))
 						{
+							validFunc=true;
 							found=
 							execute(scripted,
 									source,
@@ -2338,11 +2343,12 @@ public class Scriptable extends StdBehavior
 									secondaryItem,
 									script2,
 									varify(source,target,monster,primaryItem,secondaryItem,msg,arg2));
+							if(found==null) found="";
 							break;
 						}
 					}
 				}
-				if(found==null)
+				if(!validFunc)
 					scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
 				else
 					results.append(found);
@@ -3418,20 +3424,21 @@ public class Scriptable extends StdBehavior
 				if(!foundendif)
 				{
 					scriptableError(scripted,"IF","Syntax"," Without ENDIF!");
-					return "";
+					return null;
 				}
 				if(V.size()>1)
 				{
 					//source.tell("Starting "+conditionStr);
 					//for(int v=0;v<V.size();v++)
 					//	source.tell("Statement "+((String)V.elementAt(v)));
-					execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg);
+					String response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg);
+					if(response!=null) return response;
 					//source.tell("Stopping "+conditionStr);
 				}
 				break;
 			}
 			case 50: // break;
-				return "";
+				return null;
 			case 1: // mpasound
 			{
 				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(8).trim());
@@ -3832,7 +3839,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
-			case 48: // mpreturn
+			case 48: // return
 				return varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 			case 7: // mpechoat
 			{
@@ -4482,7 +4489,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 		}
-		return "";
+		return null;
 	}
 
 	private static final Vector empty=new Vector();

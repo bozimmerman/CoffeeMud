@@ -1,6 +1,6 @@
-13 ) Loki       MUDCHAT needs to be able to accept a symbol (&&) to do multiple actions on the same probability chance. For example, if someone does the KISS social on the MOB, a mob might have --9!slap $t &&How dare you!--
+fix stdability benevolent duration
 grid link problem -- total replacement of a grid room, west first, then south, with a foreign room.
-knucklebones still needs some work -- noticed, for instance, that second round calculations are never right
+knucklebones just needs a system for ties and its ready
 Keno: A card with 10 x 8 squares, you choose up to 10 (20 in non video keno) numbers and then 20 balls are drawn each with a non repeating number between 1 and 80. The number of matches are then looked up on a table and multiplied by your bet. The odds are a hypergeometric distribution. Terminology: http://www.gamingtoday.com/Glossary/keno.cfm Sample Payoff: http://casinopassion.s5.com/keno.html
 item generation behavior?
 property tax, with ability to auction AND foreclose

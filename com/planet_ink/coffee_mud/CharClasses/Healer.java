@@ -134,8 +134,10 @@ public class Healer extends Cleric
 		return true;
 	}
 
-	public boolean tick(MOB myChar, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
+		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
+		MOB myChar=(MOB)ticking;
 		if((tickID==MudHost.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
 		{
 			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return true;
