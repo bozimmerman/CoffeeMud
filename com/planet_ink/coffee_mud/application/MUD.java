@@ -432,11 +432,13 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Host will now reject new connections.");
 		S.println("Host will now reject new connections.");
 
+		offlineReason=new String("Shutting down...Save Thread");
 		saveThread.shutdown();
 		saveThread.interrupt();
 		saveThread=null;
 		S.println("Save thread stopped.");
 
+		offlineReason=new String("Shutting down...IMServer");
 		if(imserver!=null)
 		{
 			imserver.shutdown();
