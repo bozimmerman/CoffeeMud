@@ -163,6 +163,14 @@ public class CommandSet extends Hashtable
 	public static final int BAN=150;
 	public static final int AUTOGUARD=151;
 	public static final int THROW=152;
+	public static final int CLANACCEPT=153;
+	public static final int CLANAPPLY=154;
+	public static final int CLANDETAILS=155;
+	public static final int CLANEXILE=156;
+	public static final int CLANHOMESET=157;
+	public static final int CLANLIST=158;
+	public static final int CLANREJECT=159;
+	public static final int CLANRESIGN=160;
 
 	private CommandSet()
 	{
@@ -199,7 +207,14 @@ public class CommandSet extends Hashtable
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
-		put("GENCHAR",new Integer(GENCHAR));
+		put("CLANACCEPT",new Integer(CLANACCEPT));
+		put("CLANAPPLY",new Integer(CLANAPPLY));
+		put("CLANDETAILS",new Integer(CLANDETAILS));
+		put("CLANEXILE",new Integer(CLANEXILE));
+		put("CLANHOMESET",new Integer(CLANHOMESET));
+		put("CLANLIST",new Integer(CLANLIST));
+		put("CLANREJECT",new Integer(CLANREJECT));
+		put("CLANRESIGN",new Integer(CLANRESIGN));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
@@ -251,6 +266,7 @@ public class CommandSet extends Hashtable
 		put("GET",new Integer(GET));
 			put("G",new Integer(GET));
 		put("GIVE",new Integer(GIVE));
+		put("GENCHAR",new Integer(GENCHAR));
 		put("GO",new Integer(GO));
 			put("RUN",new Integer(GO));
 			put("WALK",new Integer(GO));

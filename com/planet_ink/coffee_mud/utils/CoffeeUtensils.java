@@ -21,6 +21,9 @@ public class CoffeeUtensils
 			else
 			if(e instanceof Behavior)
 				return ((Behavior)e).ID();
+			else
+			if(e instanceof Clan)
+				return ((Clan)e).ID();
 		return "";
 	}
 

@@ -14,7 +14,6 @@ public class Channels
 	private static Vector channelNames=new Vector();
 	private static Vector channelLevels=new Vector();
 	private static Vector ichannelList=new Vector();
-
 	
 	public static void unloadChannels()
 	{
@@ -78,7 +77,7 @@ public class Channels
 			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
 			return;
 		}
-		String head="\n\rListening on "+channel+":\n\r";
+		String head=new String("\n\rListening on "+channel+":\n\r");
 		StringBuffer buf=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
@@ -208,13 +207,25 @@ public class Channels
 			ichannelList.addElement(ichan);
 			cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
 			cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
-		}
+		} 
+		channelNames.addElement(new String("CLANTALK"));
+		channelLevels.addElement(new Integer(0));
+		ichannelList.addElement("");
+		cmdSet.put(new String("CLANTALK"),new Integer(CommandSet.CHANNEL));
+		cmdSet.put("NO"+(new String("CLANTALK")),new Integer(CommandSet.NOCHANNEL));
+		numChannelsLoaded++;    
 		return numChannelsLoaded;
 	}
 
 	public static void channel(MOB mob, Vector commands)
 	{
+	  channel(mob, commands, false);
+	}
+
+	public static void channel(MOB mob, Vector commands, boolean systemMsg)
+	{
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
+		FullMsg msg=null;
 		commands.removeElementAt(0);
 
 
@@ -246,13 +257,30 @@ public class Channels
 			mob.tell("This channel is not yet available to you.");
 			return;
 		}
-		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		if((mob.getClanID().equalsIgnoreCase(""))&&(channelName.equalsIgnoreCase("CLANTALK")))
+		{
+		  mob.tell("You can't talk to your clan - you don't have one.");
+		  return;
+		}
+		if(systemMsg)
+		{
+		  String str="["+channelName+"] '"+Util.combine(commands,0)+"'^?^.";
+		  msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		}
+		else
+		{
+		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
+		  msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
+		}
 		if(mob.location().okAffect(msg))
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session ses=(Session)Sessions.elementAt(s);
+				
+				if(channelName.equalsIgnoreCase("CLANTALK")
+				&&(!ses.mob().getClanID().equalsIgnoreCase(mob.getClanID())))
+					continue;
 				if((!ses.killFlag())&&(ses.mob()!=null)
 				&&(!ses.mob().amDead())
 				&&(ses.mob().location()!=null)

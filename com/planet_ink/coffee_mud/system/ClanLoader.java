@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.utils.*;
   */
 public class ClanLoader
 {
-
 	private static int currentRecordPos=1;
 	private static int recordCount=0;
 

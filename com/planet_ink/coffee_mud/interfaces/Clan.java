@@ -18,7 +18,7 @@ import java.util.*;
   * </ul>
   * @author=Jeremy Vyska
   */
-public interface Clan 
+public interface Clan extends Cloneable
 {
 
 	public static final int POS_APPLICANT=0;
@@ -36,66 +36,41 @@ public interface Clan
 	public static final int SETTING_RESTRICT_ALIGNMENT=8;
 	public static final int SETTING_RESTRICT_GENDER=16;
 
-  /** Check if MOB is a member or not */
-  public boolean isMember(MOB mob);
-  /** Adds MOB.  True to be returned if success */
-  public boolean addMember(MOB newMember);
-  /** Adds MOB with a starting position.  True is success */
-  public boolean addMember(MOB newMember, int newPos);
-  /** Validate MOB based on Clan settings */
-  public int okMember(MOB newMember);
-  /** Removes MOB.  True to be returned if success */
-  public boolean removeMember(MOB dropMember);
-  public MOB fetchMember(int x);
-  /** Replaces PlaceHolder MOB with actual.
-    * The problem was, to have almost anything work correctly
-    * while players are offline, we have to have MOBs that just
-    * take up space with the same name.  This function swaps out
-    * the fake mob with the player's mob.
-    */
-  public void loginMember(MOB login);
+	public int getAlign();
+	public int getSize();
 
-  public void setPosition(MOB member, int newPos);
-  public void setPosition(MOB member, int newPos, boolean quiet);
-  public int getPosition(MOB member);
-  public void stripPositions(MOB member);
-  /** Calculates average alignment of this Clan */
-  public int getAlign();
-  public int getSize();
+	public String getName();
+	public String ID();
+	public void setName(String newName);
+	public int getType();
+	public String typeName();
 
-  public String getName();
-  public String ID();
-  public void setName(String newName);
+	/** Retrieves this Clan's basic story. 
+	  * This is to make the Clan's more RP based and so we can
+	  * provide up-to-date information on Clans on the web server.
+	  */
+	public String getPremise();
+	/** Sets this Clan's basic story.  See {@link getPremise} for more info. */
+	public void setPremise(String newPremise);
 
-  /** Retrieves this Clan's basic story. 
-    * This is to make the Clan's more RP based and so we can
-    * provide up-to-date information on Clans on the web server.
-    */
-  public String getPremise();
-  /** Sets this Clan's basic story.  See {@link getPremise} for more info. */
-  public void setPremise(String newPremise);
-  public int getTypeBitmap();
-  public void setTypeBitmap(int newVal);
+	public String getAcceptanceSettings();
+	public void setAcceptanceSettings(String newSettings);
 
-  /**
-    * Retrieves this Clan's settings bitmap.  This will hold options that
-    * Clan Leaders can configure for their Clan.
-    */
-  public int getSettingsBitmap();
-  public void setSettingsBitmap(int newVal);
+	public String getPolitics();
+	public void setPolitics(String politics);
 
-  /** Retrieves this Clans's Recall room.
-    * This is so we can let people teleport to their clan home.
-    */
-  public Room fetchRecall();
-  public void setRecall(Room newRecall);
+	public String getRecall();
+	public void setRecall(String newRecall);
 
-  /**
-    * Retrieves this Clans's Recall room.
-    * This is so we can let Clanned users donate gear to their clan
-    */
-  public Room fetchDonationRoom();
-  public void setDonationRoom(Room newDonation);
+	public String getDonation();
+	public void setDonation(String newDonation);
   
-  public void update();
+	public Vector getMemberList();
+	public Vector getMemberList(int PosFilter);
+
+	public void update();
+	
+	/** return a new instance of the object*/
+	public Clan newInstance();
+	public Clan copyOf();
 }

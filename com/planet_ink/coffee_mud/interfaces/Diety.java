@@ -6,6 +6,11 @@ public interface Diety extends MOB
 	public void setClericRequirements(String reqs);
 	public String getWorshipRequirements();
 	public void setWorshipRequirements(String reqs);
+	public String getClericRitual();
+	public void setClericRitual(String ritual);
+	public String getWorshipRitual();
+	public void setWorshipRitual(String ritual);
+	
 	/** Manipulation of blessing objects, which includes spells, traits, skills, etc.*/
 	public void addBlessing(Ability to);
 	public void delBlessing(Ability to);

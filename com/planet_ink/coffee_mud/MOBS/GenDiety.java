@@ -10,7 +10,7 @@ public class GenDiety extends StdDiety
 	{
 		super();
 		Username="a generic diety";
-		setDescription("He looks like a run of the mill diety.");
+		setDescription("He is a run-of-the-mill diety.");
 		setDisplayText("A generic diety stands here.");
 
 		recoverMaxState();

@@ -8,13 +8,15 @@ public class StdDiety extends StdMOB implements Diety
 	protected int xpwrath=100;
 	protected String clericReqs="";
 	protected String worshipReqs="";
+	protected String clericRitual="";
+	protected String worshipRitual="";
 	protected Vector blessings=new Vector();
 	
 	public StdDiety()
 	{
 		super();
 		Username="a Mighty Diety";
-		setDescription("He looks benevolent enough..");
+		setDescription("He is Mighty.");
 		setDisplayText("A Mighty Diety stands here!");
 		baseEnvStats().setWeight(700);
 		recoverEnvStats();
@@ -28,6 +30,14 @@ public class StdDiety extends StdMOB implements Diety
 	public void setClericRequirements(String reqs){clericReqs=reqs;}
 	public String getWorshipRequirements(){return worshipReqs;}
 	public void setWorshipRequirements(String reqs){worshipReqs=reqs;}
+	public String getClericRitual(){
+		if(clericRitual.length()==0) return "SAY Bless me "+name();
+		return clericRitual;}
+	public void setClericRitual(String ritual){clericRitual=ritual;}
+	public String getWorshipRitual(){
+		if(worshipRitual.length()==0) return "SAY Bless me "+name();
+		return worshipRitual;}
+	public void setWorshipRitual(String ritual){worshipRitual=ritual;}
 	
 	public void destroy()
 	{

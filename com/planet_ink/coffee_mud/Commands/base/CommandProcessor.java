@@ -139,11 +139,29 @@ public class CommandProcessor
 				case CommandSet.CHANWHO:
 					Channels.channelWho(mob,Util.combine(commands,1));
 					break;
-				case CommandSet.GENCHAR:
-					if(mob.isASysOp(mob.location()))
-						SysOpSkills.chargen(mob,commands);
-					else
-						mob.tell("Sorry, you don't have that power!");
+				case CommandSet.CLANACCEPT:
+					ClanCommands.clanaccept(mob,commands);
+					break;
+				case CommandSet.CLANAPPLY:
+					ClanCommands.clanapply(mob,commands);
+					break;
+				case CommandSet.CLANDETAILS:
+					ClanCommands.clandetails(mob,commands);
+					break;
+				case CommandSet.CLANEXILE:
+					ClanCommands.clanexile(mob,commands);
+					break;
+				case CommandSet.CLANHOMESET:
+					ClanCommands.clanhomeset(mob,commands);
+					break;
+				case CommandSet.CLANLIST:
+					ClanCommands.clanlist(mob,commands);
+					break;
+				case CommandSet.CLANREJECT:
+					ClanCommands.clanreject(mob,commands);
+					break;
+				case CommandSet.CLANRESIGN:
+					ClanCommands.clanresign(mob,commands);
 					break;
 				case CommandSet.CONSIDER:
 					SocialProcessor.consider(mob,commands);
@@ -252,6 +270,12 @@ public class CommandProcessor
 					break;
 				case CommandSet.GAIN:
 					AbilityEvoker.gain(mob,commands);
+					break;
+				case CommandSet.GENCHAR:
+					if(mob.isASysOp(mob.location()))
+						SysOpSkills.chargen(mob,commands);
+					else
+						mob.tell("Sorry, you don't have that power!");
 					break;
 				case CommandSet.GET:
 					ItemUsage.get(mob,commands);

@@ -18,6 +18,7 @@ public class CMClass extends ClassLoader
 	public static Vector exits=new Vector();
 	public static Vector items=new Vector();
 	public static Vector behaviors=new Vector();
+	public static Vector clantypes=new Vector();
 	public static Vector weapons=new Vector();
 	public static Vector armor=new Vector();
 	public static Vector miscMagic=new Vector();
@@ -125,6 +126,13 @@ public class CMClass extends ClassLoader
 		if(B!=null) 
 			B=B.newInstance();
 		return B;
+	}
+	public static Clan getClan(String calledThis)
+	{
+		Clan C=(Clan)getGlobal(clantypes,calledThis);
+		if(C!=null) 
+			C=C.newInstance();
+		return C;
 	}
 	public static Room getLocale(String calledThis)
 	{
@@ -331,6 +339,8 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 		
+		clantypes=loadVectorListToObj(prefix+"Clans"+File.separatorChar,page.getStr("CLANTYPES"),"com.planet_ink.coffee_mud.interfaces.Clan");
+		
 		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		if(cmds.size()>1)
 		{
@@ -381,6 +391,7 @@ public class CMClass extends ClassLoader
 		weapons=new Vector();
 		armor=new Vector();
 		miscMagic=new Vector();
+		clantypes=new Vector();
 		areaTypes=new Vector();
 	}
 
