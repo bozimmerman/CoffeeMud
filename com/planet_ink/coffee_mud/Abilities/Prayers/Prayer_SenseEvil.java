@@ -5,14 +5,14 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_DetectEvil extends Prayer
+public class Prayer_SenseEvil extends Prayer
 {
-	public Prayer_DetectEvil()
+	public Prayer_SenseEvil()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Evil";
-		displayText="(Detect Evil)";
+		name="Sense Evil";
+		displayText="(Sense Evil)";
 
 		baseEnvStats().setLevel(2);
 
@@ -21,7 +21,7 @@ public class Prayer_DetectEvil extends Prayer
 
 	public Environmental newInstance()
 	{
-		return new Prayer_DetectEvil();
+		return new Prayer_SenseEvil();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

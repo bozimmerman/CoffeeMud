@@ -600,8 +600,25 @@ public class SocialProcessor
 			return;
 		}
 		commands.removeElementAt(0);
-
-		Environmental recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0));
+		Environmental recipient=null;
+		Vector possRecipients=new Vector();
+		for(int m=0;m<mob.location().numInhabitants();m++)
+		{
+			MOB M=mob.location().fetchInhabitant(m);
+			if((M!=null)&&(M instanceof Rideable))
+				possRecipients.addElement(M);
+		}
+		for(int i=0;i<mob.location().numItems();i++)
+		{
+			Item I=mob.location().fetchItem(i);
+			if((I!=null)&&(I instanceof Rideable))
+				possRecipients.addElement(I);
+		}
+		recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
+		if(recipient==null)
+			recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
+		if(recipient==null)
+			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0));
 		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
 		{
 			mob.tell("I don't see "+Util.combine(commands,0)+" here.");

@@ -5,13 +5,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_DetectLife extends Prayer
+public class Prayer_SenseLife extends Prayer
 {
-	public Prayer_DetectLife()
+	public Prayer_SenseLife()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Life";
+		name="Sense Life";
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();
@@ -19,7 +19,7 @@ public class Prayer_DetectLife extends Prayer
 
 	public Environmental newInstance()
 	{
-		return new Prayer_DetectLife();
+		return new Prayer_SenseLife();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

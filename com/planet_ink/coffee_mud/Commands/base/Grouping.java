@@ -193,6 +193,12 @@ public class Grouping
 			return;
 		}
 		commands.removeElementAt(0);
+		Integer commandCodeObj=(Integer)(new CommandSet()).get((String)commands.elementAt(0));
+		if((commandCodeObj!=null)&&(commandCodeObj.intValue()==CommandSet.ORDER))
+		{
+			mob.tell("You cannot order someone to follow.");
+			return;
+		}
 		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.");
 		if(mob.location().okAffect(msg))
 		{

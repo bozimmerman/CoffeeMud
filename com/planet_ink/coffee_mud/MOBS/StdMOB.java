@@ -748,8 +748,8 @@ public class StdMOB implements MOB
 								atRange=maxRange(affect.tool());
 						}
 						else
-								recoverEnvStats();
-						atRange=maxRange(affect.tool());
+							atRange=maxRange(affect.tool());
+						recoverEnvStats();
 					}
 				}
 			}
@@ -901,11 +901,15 @@ public class StdMOB implements MOB
 			{
 				String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
 				affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
+				atRange--;
+				if(victim!=null)
+				{
+					victim.setAtRange(atRange);
+					victim.recoverEnvStats();
+				}
+				recoverEnvStats();
 				if(location().okAffect(affect))
 					return true;
-				atRange--;
-				if(victim!=null){ victim.setAtRange(atRange); victim.recoverEnvStats();}
-				recoverEnvStats();
 				location().send(this,affect);
 				return false;
 			}
@@ -984,6 +988,9 @@ public class StdMOB implements MOB
 					setVictim((MOB)affect.source());
 			}
 
+			if((rangeToTarget()>0)&&(!isInCombat()))
+				atRange=-1;
+			
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_CLOSE:

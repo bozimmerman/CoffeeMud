@@ -27,7 +27,7 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_DetectLife",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Cleric_Turn",true);
@@ -35,8 +35,8 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_DetectEvil",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_DetectGood",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtectionEvil",true);

@@ -64,7 +64,7 @@ public class Troll extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is near to heartness death!^N";
+			return "^r" + mob.name() + "^r is near to heartless death!^N";
 		else
 		if(pct<.20)
 			return "^r" + mob.name() + "^r is covered in torn slabs of flesh.^N";

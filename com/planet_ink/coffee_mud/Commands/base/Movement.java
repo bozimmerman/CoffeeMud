@@ -48,7 +48,7 @@ public class Movement
 		if(mob.riding()!=null)
 		{
 			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName);
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flee(s) with ":"ride(s)")+mob.riding().name()+" "+directionName);
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flee(s) with ":"ride(s) ")+mob.riding().name()+" "+directionName);
 		}
 		else
 		{
@@ -88,72 +88,89 @@ public class Movement
 				return false;
 			}
 		}
+		else
+		if(!mob.riding().okAffect(enterMsg))
+			return false;
 
 		if(exit!=null) exit.affect(enterMsg);
 		mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
-
+		
 		mob.setLocation((Room)enterMsg.target());
 		((Room)enterMsg.target()).addInhabitant(mob);
 		((Room)enterMsg.target()).send(mob,enterMsg);
 
 		if(opExit!=null) opExit.affect(leaveMsg);
-		ExternalPlay.look(mob,null,true);
 		
+		boolean moveRiders=false;
 		if(mob.riding()!=null)
 		{
-			boolean moveRiders=false;
-			if((mob.riding() instanceof Item)
-			   &&(((Room)leaveMsg.target()).isContent((Item)mob.riding())))
+			Rideable riding=mob.riding();
+			if((riding instanceof Item)
+			   &&(((Room)leaveMsg.target()).isContent((Item)riding)))
 			{
-				((Room)leaveMsg.target()).delItem((Item)mob.riding());
-				((Room)enterMsg.target()).addItem((Item)mob.riding());
+				((Room)leaveMsg.target()).delItem((Item)riding);
+				((Room)enterMsg.target()).addItem((Item)riding);
 				moveRiders=true;
 			}
 			else
-			if((mob.riding() instanceof MOB)
-			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)mob.riding())))
+			if((riding instanceof MOB)
+			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
 			{
 				moveRiders=true;
-				((MOB)mob.riding()).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
-				move(((MOB)mob.riding()),directionCode,false);
+				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+				move(((MOB)riding),directionCode,false);
 			}
-			if(moveRiders)
-				for(int r=0;r<mob.riding().numRiders();r++)
+		}
+		
+		ExternalPlay.look(mob,null,true);
+
+		if((mob.riding()!=null)&&(moveRiders))
+		{
+			Rideable riding=mob.riding();
+			for(int r=0;r<riding.numRiders();r++)
+			{
+				MOB rMOB=riding.fetchRider(r);
+				if((rMOB!=null)&&(rMOB!=mob))
 				{
-					MOB rMOB=mob.riding().fetchRider(r);
-					if((rMOB!=null)
-					&&(rMOB!=mob)
-					&&(mob.riding().amRiding(rMOB))
+					if((riding.amRiding(rMOB))
 					&&((rMOB.location()==thisRoom)||(rMOB.location()==destRoom)))
 					{
 						if(rMOB.location()==thisRoom)
 						{
-							rMOB.tell("You ride "+mob.riding().name()+" "+Directions.getDirectionName(directionCode)+".");
-							move(rMOB,directionCode,false);
+							rMOB.tell("You ride "+riding.name()+" "+Directions.getDirectionName(directionCode)+".");
+							if(!move(rMOB,directionCode,flee))
+							{
+								rMOB.tell("You fall off "+riding.name()+"!");
+								rMOB.setRiding(null);
+							}
 						}
 					}
 					else
-						rMOB.setFollowing(null);
+						rMOB.setRiding(null);
 				}
+			}
 		}
-
+		
 		if(!flee)
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if((follower!=null)
-			&&(follower.amFollowing()==mob)
-			&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
+			if(follower!=null)
 			{
-				if(follower.location()==thisRoom)
+				if((follower.amFollowing()==mob)
+				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
-					follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
-					move(follower,directionCode,false);
+					if(follower.location()==thisRoom)
+					{
+						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
+						if(!move(follower,directionCode,false))
+							follower.setFollowing(null);
+					}
 				}
+				else
+					follower.setFollowing(null);
 			}
-			else
-				follower.setFollowing(null);
 		}
 		return true;
 	}
@@ -197,7 +214,7 @@ public class Movement
 			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
 			if(lostExperience<10) lostExperience=10;
 		}
-		if(((directionCode>=0)&&(move(mob,directionCode,true)))||(direction.equals("NOWHERE")))
+		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true))))
 		{
 			mob.makePeace();
 			mob.setExperience(mob.getExperience()-lostExperience);

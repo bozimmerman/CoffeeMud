@@ -1,10 +1,2 @@
 The guildmaster teaches you 'Dwarven'.  The guildmaster says 'But you already know 'Dwarven'.' to you.
-Missed attack (player killing) sets range, and does not reset it on failure! Hurts friendly interactions.
-Backstab allows enemies to attack first! Fix it!
-
-
-
-
-
-
-
+can ride a horse indoors

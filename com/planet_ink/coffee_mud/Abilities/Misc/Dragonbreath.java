@@ -52,9 +52,9 @@ public class Dragonbreath extends StdAbility
 				break;
 		case 'l':
 				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
-				autoPhrase="A blast of lightening bursts erupt!";
+				autoPhrase="A blast of lightning bursts erupt!";
 				stuffWord="bolt";
-				castPhrase="<S-NAME> shoot(s) numerous bursts of lightening from <S-HIS-HER> mouth!";
+				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!";
 				WeaponType=Weapon.TYPE_BURSTING;
 				break;
 		case 'c':

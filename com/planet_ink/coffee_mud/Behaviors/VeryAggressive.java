@@ -22,6 +22,11 @@ public class VeryAggressive extends Aggressive
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
+		
+		// ridden things dont wander!
+		if(ticking instanceof Rideable)
+			if(((Rideable)ticking).numRiders()>0)
+				return;
 
 		// let's not do this 100%
 		if(Dice.rollPercentage()>15) return;

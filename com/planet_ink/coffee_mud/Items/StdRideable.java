@@ -124,12 +124,7 @@ public class StdRideable extends StdContainer implements Rideable
 				Room targetRoom=(Room)affect.target();
 				if((sourceRoom!=null)&&(!affect.amITarget(sourceRoom)))
 				{
-					if((targetRoom.domainType()&Room.INDOORS)>0)
-					{
-						affect.source().tell("You cannot ride "+name()+" that way.");
-						return false;
-					}
-					boolean ok=true;
+					boolean ok=!((targetRoom.domainType()&Room.INDOORS)>0);
 					switch(rideBasis)
 					{
 					case Rideable.RIDEABLE_LAND:

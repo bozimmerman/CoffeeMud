@@ -554,7 +554,7 @@ public class StdArea implements Area
 				}
 				else
 				if(currentWeather==Area.WEATHER_THUNDERSTORM)
-					say="A bolt of lightening streaks across the sky.";
+					say="A bolt of lightning streaks across the sky.";
 				if(say!=null)
 				{
 					Vector myMap=this.getMyMap();

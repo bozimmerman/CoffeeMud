@@ -19,7 +19,7 @@ public interface ExternalCommand
 	public boolean remove(MOB mob, Item item);
 	public void standIfNecessary(MOB mob);
 	public void look(MOB mob, Vector commands, boolean quiet);
-	public void move(MOB mob, int directionCode, boolean flee);
+	public boolean move(MOB mob, int directionCode, boolean flee);
 	public void flee(MOB mob, String direction);
 	public StringBuffer getEquipment(MOB seer, MOB mob);
 	public void doCommand(MOB mob, Vector commands)

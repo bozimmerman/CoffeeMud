@@ -34,6 +34,12 @@ public class MobileGoodGuardian extends Mobile
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
+		
+		// ridden things dont wander!
+		if(ticking instanceof Rideable)
+			if(((Rideable)ticking).numRiders()>0)
+				return;
+		
 		Room thisRoom=mob.location();
 		GoodGuardian.keepPeace(mob);
 		int dirCode=-1;

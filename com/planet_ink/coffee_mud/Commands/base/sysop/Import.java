@@ -1084,7 +1084,7 @@ public class Import
 			if(circleFormat)
 				M.setMoney(Util.s_int(Util.getBit(codeStr4,3)));
 			else
-				M.setMoney((10*M.baseEnvStats().level())+10);
+				M.setMoney((2*M.baseEnvStats().level())+10);
 			M.baseEnvStats().setWeight(50);
 
 			switch(positionCode)

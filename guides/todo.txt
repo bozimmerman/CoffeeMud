@@ -23,6 +23,8 @@ Serve and Rebuke commands.  Any character may take on a leige, but Clerics may o
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
 vassels, providing incentive to assist the vassel.
 
+target commmand to switch among targets fighting you
+
 Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
 will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
 If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject 
@@ -75,6 +77,8 @@ Priests of specific Gods: bonuses to like spells, lose others
 Knights Order: special sword as part of outfit?
 Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
+Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
+
 
 Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
 derivatives of the standard Interfaces.

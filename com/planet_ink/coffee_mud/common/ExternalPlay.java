@@ -96,9 +96,10 @@ public class ExternalPlay
 		if(player!=null) return player.properTargets(A,caster);
 		return new Hashtable();
 	}
-	public static void move(MOB mob, int directionCode, boolean flee)
+	public static boolean move(MOB mob, int directionCode, boolean flee)
 	{
-		if(player!=null) player.move(mob,directionCode,flee);
+		if(player!=null) return player.move(mob,directionCode,flee);
+		return false;
 	}
 	public static void flee(MOB mob, String direction)
 	{

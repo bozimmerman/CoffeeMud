@@ -12,11 +12,11 @@ public class Spell_ChainLightening extends Spell
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Chain Lightening";
+		name="Chain Lightning";
 
 		// what the affected mob sees when they
 		// bring up their affected list.
-		displayText="(Chain Lightening)";
+		displayText="(Chain Lightning)";
 
 
 		quality=Ability.MALICIOUS;
@@ -58,7 +58,7 @@ public class Spell_ChainLightening extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"A thunderous crack of lightening erupts!":"<S-NAME> invoke(s) a thunderous crack of lightening.");
+			mob.location().show(mob,null,affectType,auto?"A thunderous crack of lightning erupts!":"<S-NAME> invoke(s) a thunderous crack of lightning.");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

@@ -25,6 +25,11 @@ public class Mobile extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
+			// ridden things dont wander!
+			if(ticking instanceof Rideable)
+				if(((Rideable)ticking).numRiders()>0)
+					return;
+			
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
 
