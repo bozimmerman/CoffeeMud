@@ -35,7 +35,7 @@ public class BaseItemParser extends StdCommand
 			if(mob.getMoney()>=gold)
 			{
 				mob.setMoney(mob.getMoney()-gold);
-				Item C=(Item)CMClass.getItem("StdCoins");
+				Item C=CMClass.getItem("StdCoins");
 				C.baseEnvStats().setAbility(gold);
 				C.recoverEnvStats();
 				mob.addInventory(C);

@@ -42,7 +42,7 @@ public class Transfer extends At
 		{
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
-				MOB M=(MOB)curRoom.fetchInhabitant(i);
+				MOB M=curRoom.fetchInhabitant(i);
 				if(M!=null)
 					V.addElement(M);
 			}

@@ -74,7 +74,7 @@ public class Auction extends Channel
 			if((commands.size()>2)
 			&&((Util.s_int((String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
 			{
-				V.addElement((String)commands.lastElement());
+				V.addElement(commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
 			else

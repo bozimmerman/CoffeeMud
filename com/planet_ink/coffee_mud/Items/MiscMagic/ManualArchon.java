@@ -51,7 +51,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 				{
 					mob.tell("The manual glows softly, enveloping you in its magical energy.");
 					Session session=mob.session();
-					CharClass newClass=(CharClass)CMClass.getCharClass("Archon");
+					CharClass newClass=CMClass.getCharClass("Archon");
 					if((session!=null)&&(newClass!=null))
 					{
 						mob.setSession(null);

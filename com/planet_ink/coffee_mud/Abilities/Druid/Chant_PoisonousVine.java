@@ -33,7 +33,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
@@ -69,7 +69,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.baseEnvStats().setDamage(6+(5*(level/5)));
 		newMOB.baseEnvStats().setAttackAdjustment(10);
 		newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

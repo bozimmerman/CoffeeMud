@@ -75,9 +75,9 @@ public class DefaultTimeClock implements TimeClock
 		timeDesc.append("\n\rIt is ");
 		if(getDaysInWeek()>0)
 		{
-			long x=((long)getYear())*((long)getMonthsInYear())*((long)getDaysInMonth());
+			long x=((long)getYear())*((long)getMonthsInYear())*getDaysInMonth();
 			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
-			x=x+((long)getDayOfMonth());
+			x=x+getDayOfMonth();
 			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
 		}
 		timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));

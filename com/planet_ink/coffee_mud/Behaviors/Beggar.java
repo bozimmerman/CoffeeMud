@@ -63,13 +63,13 @@ public class Beggar extends StdBehavior
 					CommonMsgs.say(mob,mob2,"A little something for a vet please?",false,false);
 					break;
 				case 2:
-					CommonMsgs.say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)==(int)'M')?"mister?":"madam?"),false,false);
+					CommonMsgs.say(mob,mob2,"Spare a gold piece "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister?":"madam?"),false,false);
 					break;
 				case 3:
 					CommonMsgs.say(mob,mob2,"Spare some change?",false,false);
 					break;
 				case 4:
-					CommonMsgs.say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)==(int)'M')?"mister":"madam")+", a little something for an old "+((mob.charStats().getStat(CharStats.GENDER)==(int)'M')?"man":"woman")+" down on "+mob.charStats().hisher()+" luck?",false,false);
+					CommonMsgs.say(mob,mob2,"Please "+((mob2.charStats().getStat(CharStats.GENDER)=='M')?"mister":"madam")+", a little something for an old "+((mob.charStats().getStat(CharStats.GENDER)=='M')?"man":"woman")+" down on "+mob.charStats().hisher()+" luck?",false,false);
 					break;
 				case 5:
 					CommonMsgs.say(mob,mob2,"Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?",false,false);

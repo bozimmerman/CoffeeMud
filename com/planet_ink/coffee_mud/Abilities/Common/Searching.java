@@ -55,10 +55,10 @@ public class Searching extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectEnvStats(Environmental affectedEnv, EnvStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		if((success)&&(affected instanceof MOB)&&(((MOB)affected).location()==searchRoom))
+		super.affectEnvStats(affectedEnv,affectableStats);
+		if((success)&&(affectedEnv instanceof MOB)&&(((MOB)affectedEnv).location()==searchRoom))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
 

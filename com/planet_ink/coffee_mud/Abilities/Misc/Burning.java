@@ -30,7 +30,6 @@ public class Burning extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
-	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickDown<2)&&(affected!=null))
@@ -182,7 +181,7 @@ public class Burning extends StdAbility
 
 		if((affected!=null)
 		&&(affected instanceof Item)
-		&&(msg.amITarget((Item)affected))
+		&&(msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
 			if((msg.tool()==null)||(!(msg.tool() instanceof Item)))

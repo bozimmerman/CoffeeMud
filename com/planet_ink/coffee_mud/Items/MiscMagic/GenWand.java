@@ -23,7 +23,6 @@ import java.util.*;
 public class GenWand extends StdWand
 {
 	public String ID(){	return "GenWand";}
-	private String secretWord=StdWand.words[Dice.roll(1,StdWand.words.length,0)-1];
 	protected String readableText="";
 	
 	public GenWand()

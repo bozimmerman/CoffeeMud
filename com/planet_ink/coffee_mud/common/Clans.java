@@ -226,14 +226,14 @@ public class Clans implements Clan, Tickable
 	public long getLastRelationChange(String id)
 	{
 		long i[]=(long[])relations.get(id.toUpperCase());
-		if(i!=null) return (long)i[1];
+		if(i!=null) return i[1];
 		return 0;
 	}
 	public void setClanRelations(String id, int rel, long time)
 	{
 		relations.remove(id.toUpperCase());
 		long[] i=new long[2];
-		i[0]=(long)rel;
+		i[0]=rel;
 		i[1]=time;
 		relations.put(id.toUpperCase(),i);
 	}
@@ -255,7 +255,6 @@ public class Clans implements Clan, Tickable
 		if((government<0)||(government>=Clan.ROL_DESCS.length))
 			government=0;
 		String[] roles=Clan.ROL_DESCS[government];
-		Character c;
 		roleName.append(roles[getRoleOrder(role)].toLowerCase());
 		if(titleCase)
 		{
@@ -369,7 +368,7 @@ public class Clans implements Clan, Tickable
 	public static void addClan(Clan C)
 	{
 		if(!CMSecurity.isDisabled("CLANTICKS"))
-			CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+			CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)
@@ -456,7 +455,7 @@ public class Clans implements Clan, Tickable
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append("^xClan Controlled Areas:^.^N \n\r");
-			Collections.sort((List)control);
+			Collections.sort(control);
 			int col=0;
 			for(int i=0;i<control.size();i++)
 			{
@@ -475,7 +474,6 @@ public class Clans implements Clan, Tickable
 	private String crewList(int posType)
 	{
 		StringBuffer list=new StringBuffer("");
-		MOB m;
 		DVector Members = getMemberList(posType);
 		if(Members.size()>1)
 		{
@@ -797,7 +795,7 @@ public class Clans implements Clan, Tickable
 		{
 			int posFilter=((Integer)roles.elementAt(s)).intValue();
 			if((posFilter==PosFilter)||(PosFilter<0))
-				filteredMembers.addElement((String)members.elementAt(s),roles.elementAt(s),lastDates.elementAt(s));
+				filteredMembers.addElement(members.elementAt(s),roles.elementAt(s),lastDates.elementAt(s));
 		}
 		return filteredMembers;
 	}
@@ -973,7 +971,7 @@ public class Clans implements Clan, Tickable
 					int numVotes=getNumVoters(CV.function);
 					int quorum=50;
 					if(data.size()>1) quorum=Util.s_int((String)data.lastElement());
-					quorum=(int)Math.round(Util.mul(Util.div((int)quorum,100.0),numVotes));
+					quorum=(int)Math.round(Util.mul(Util.div(quorum,100.0),numVotes));
 					if(quorum<2) quorum=2;
 					if(numVotes==1) quorum=1;
 					long endsOn=CV.voteStarted+duration;

@@ -35,7 +35,6 @@ public class Archon_Banish extends ArchonSkill
 	public int maxRange(){return 1;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	private Room prison=null;
-	private boolean customPrison = false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

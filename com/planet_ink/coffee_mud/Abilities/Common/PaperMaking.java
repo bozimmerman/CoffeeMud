@@ -36,7 +36,7 @@ public class PaperMaking extends CraftingSkill
 	private static final int RCP_VALUE=4;
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_WOODTYPE=6;
-	private static final int RCP_CAPACITY=7;
+	//private static final int RCP_CAPACITY=7;
 	private static final int RCP_SPELL=9;
 
 	private Item building=null;

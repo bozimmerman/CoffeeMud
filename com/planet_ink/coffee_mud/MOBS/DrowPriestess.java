@@ -39,7 +39,7 @@ public class DrowPriestess extends DrowElf
 		setDescription("a Drow priestess");
 		setDisplayText("A Drow priestess wants to see you dead.");
 
-		Weapon w=(Weapon)CMClass.getWeapon("Mace");
+		Weapon w=CMClass.getWeapon("Mace");
 		if(w!=null)
 		{
 			w.wearAt(Item.WIELD);
@@ -51,7 +51,7 @@ public class DrowPriestess extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
-		baseCharStats.setStat(CharStats.GENDER,(int)'F');
+		baseCharStats.setStat(CharStats.GENDER,'F');
 
 		setWimpHitPoint(1);
 
@@ -202,9 +202,9 @@ public class DrowPriestess extends DrowElf
 	    Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
+            prayer = fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
             while((prayer==null)||(this.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-				prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
+				prayer = fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
         }
         else
         {

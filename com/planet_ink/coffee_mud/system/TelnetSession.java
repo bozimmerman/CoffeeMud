@@ -43,7 +43,6 @@ public class TelnetSession extends Thread implements Session
 	private String lastStr=null;
 	private int spamStack=0;
 	private long lastOutput=0;
-	private int restlessCommands=0;
 	private Vector snoops=new Vector();
 	private final static String[] maskErrMsgs={
 			"reset by peer",
@@ -68,7 +67,7 @@ public class TelnetSession extends Thread implements Session
 	public long lastKeystroke=0;
 
 	private int termID = 0;	//1 = ANSI, 2 = SOUND/MUSIC
-	public int currentColor=(int)'N';
+	public int currentColor='N';
 	public int lastColor=-1;
 	private static int sessionCounter=0;
 	public TelnetSession(Socket s, String introTextStr)
@@ -344,12 +343,10 @@ public class TelnetSession extends Thread implements Session
 
 	public int getColor(char c)
 	{
-		int i;
-
 		// warning do not nest!
 		if (c == '?') return lastColor;
-		if (((int)c)>255) return -1;
-		return (int)c;
+		if (c>255) return -1;
+		return c;
 	}
 
 	public String[] clookup(){
@@ -374,14 +371,14 @@ public class TelnetSession extends Thread implements Session
 				{
 					String sub=changes.substring(0,x);
 					changes=changes.substring(x+1);
-					clookup[(int)sub.charAt(0)]=sub.substring(1);
+					clookup[sub.charAt(0)]=sub.substring(1);
 					x=changes.indexOf("#");
 				}
 				for(int i=0;i<clookup.length;i++)
 				{
 					String s=clookup[i];
 					if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
-						clookup[i]=clookup[(int)s.charAt(1)];
+						clookup[i]=clookup[s.charAt(1)];
 				}
 			}
 		}
@@ -393,7 +390,7 @@ public class TelnetSession extends Thread implements Session
 		if((c<='9')&&(c>='0'))
 		{
 			if((termID&2)==2)
-				return CommonStrings.getVar(CommonStrings.SYSTEM_ESC0+(((int)c)-((int)'0')));
+				return CommonStrings.getVar(CommonStrings.SYSTEM_ESC0+(c-('0')));
 			else
 				return "";
 		}
@@ -459,8 +456,8 @@ public class TelnetSession extends Thread implements Session
 			}
 		}
 
-		if ((currentColor != ((int)'N'))&&(((termID&1)==1)))
-			buf.append(makeEscape((int)'N'));
+		if ((currentColor != ('N'))&&(((termID&1)==1)))
+			buf.append(makeEscape('N'));
 
 		return buf.toString();
 
@@ -886,7 +883,7 @@ public class TelnetSession extends Thread implements Session
 			long tries=5;
 			while((!killFlag)&&((--tries)>0))
 			{
-				MOB newMob=(MOB)CMClass.getMOB("StdMOB");
+				MOB newMob=CMClass.getMOB("StdMOB");
 				newMob.setSession(this);
 				mob=newMob;
 				status=Session.STATUS_LOGIN;

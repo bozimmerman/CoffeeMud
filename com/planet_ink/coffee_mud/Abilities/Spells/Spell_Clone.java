@@ -113,7 +113,7 @@ public class Spell_Clone extends Spell
 		MOB newMOB=(MOB)caster.copyOf();
 		for(int i=0;i<newMOB.inventorySize();i++)
 		{
-			Item I=(Item)newMOB.fetchInventory(i);
+			Item I=newMOB.fetchInventory(i);
 			while(I.numEffects()>0)
 				I.delEffect(I.fetchEffect(0));
 			I.baseEnvStats().setAbility(0);

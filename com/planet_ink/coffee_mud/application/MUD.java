@@ -90,58 +90,6 @@ public class MUD extends Thread implements MudHost
 	}
 
 
-    // returns "(unknown/not set)" if property not set
-    private static String getCheckedProp(Properties sysprop,String id)
-    {
-        try
-        {
-            String s = (String)sysprop.get(id);
-            return (s == null)?"(unknown/not set)":s;
-        }
-        catch (SecurityException e)
-        {
-            return "(security exception: " + e.getMessage() + ")";
-        }
-    }
-
-    private static void logSystemCfg()
-    {
-        // GET SYSTEM PROPERTIES
-        ///////////////////////////////////
-        Properties sysprop = null;
-        try
-        {
-            sysprop = System.getProperties();
-        }
-        catch (SecurityException e)
-        {
-            System.err.println("Security exception - cannot get system properties: " + e.getMessage());
-            return;
-        }
-
-        // PRINT SYSTEM PROPERTIES
-        ///////////////////////////////////
-        Log.sysOut("User",getCheckedProp(sysprop,"user.name"));
-        Log.sysOut("OS",getCheckedProp(sysprop,"os.name")
-                    + " " + getCheckedProp(sysprop,"os.version")
-                    + "/" + getCheckedProp(sysprop,"os.arch")
-                    + " (" + getCheckedProp(sysprop,"sun.cpu.endian") + " endian)");
-
-        Log.sysOut("Java", "version " + getCheckedProp(sysprop,"java.version"));
-        Log.sysOut("Java", getCheckedProp(sysprop,"java.runtime.name"));
-        Log.sysOut("Java", getCheckedProp(sysprop,"java.vendor") );
-
-        Log.sysOut("Java VM", getCheckedProp(sysprop,"java.vm.name")
-                            + " " + getCheckedProp(sysprop,"java.vm.version"));
-        Log.sysOut("Java VM", getCheckedProp(sysprop,"java.vm.vendor") );
-
-        // It's easier to use Locale.getDefault() and TimeZone.getDefault() than
-        //  system properties user.region, user.timezone and user.language
-        Log.sysOut("Locale", Locale.getDefault().getDisplayName());
-        Log.sysOut("Timezone", TimeZone.getDefault().getDisplayName(true,TimeZone.LONG) );
-    }
-
-
 	private static boolean initHost(Thread t, INI page)
 	{
 
@@ -475,7 +423,7 @@ public class MUD extends Thread implements MudHost
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
 						if(proceed==2)
-							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in "+((int)Math.round(LastConnectionDelay/60000))+" minutes, and not before.\n\r\n\r");
+							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in "+(Math.round(LastConnectionDelay/60000))+" minutes, and not before.\n\r\n\r");
 						else
 							out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 						out.flush();
@@ -757,7 +705,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
 			{
-				((Thread)tArray[i]).interrupt();
+				tArray[i].interrupt();
 				try{Thread.sleep(500);}catch(Exception e){}
 				killed++;
 			}
@@ -786,7 +734,7 @@ public class MUD extends Thread implements MudHost
 		return port;
 	}
 
-	public static void main(String a[]) throws IOException
+	public static void main(String a[])
 	{
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);

@@ -38,7 +38,7 @@ public class Chant_AntTrain extends Chant
 		if(invoker==null)
 			return;
 
-		MOB mob=(MOB)invoker;
+		MOB mob=invoker;
 		Item item=(Item)affected;
 		super.unInvoke();
 

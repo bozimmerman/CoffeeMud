@@ -46,7 +46,7 @@ public class Spell_RogueLimb extends Spell
 			||(rogueLimb.getVictim()!=affected)
 			||(!Sense.aliveAwakeMobile(rogueLimb,true))
 			||(!Sense.aliveAwakeMobile((MOB)affected,true))
-			||(!Sense.isInTheGame((MOB)affected,false))
+			||(!Sense.isInTheGame(affected,false))
 			||(!Sense.isInTheGame(rogueLimb,false)))
 				unInvoke();
 		}
@@ -120,7 +120,7 @@ public class Spell_RogueLimb extends Spell
 					if(limbs.size()==0)
 						limb="body part";
 					else
-						limb=((String)Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
+						limb=(Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(target.name()+"'s "+limb);
 					rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");

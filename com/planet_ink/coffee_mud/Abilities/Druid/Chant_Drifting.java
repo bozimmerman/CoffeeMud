@@ -69,7 +69,7 @@ public class Chant_Drifting extends Chant
 			return false;
 		if((affected instanceof MOB)
 		&&(tickID==MudHost.TICK_MOB)
-		&&(!Sense.isFalling((MOB)affected))
+		&&(!Sense.isFalling(affected))
 		&&(((MOB)affected).riding()==null)
 		&&(((MOB)affected).location()!=null)
 		&&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
@@ -137,7 +137,7 @@ public class Chant_Drifting extends Chant
 				if(msg.value()<=0)
 				{
 					success=beneficialAffect(mob,target,asLevel,0);
-					((MOB)target).location().show((MOB)target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) drifting up!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) drifting up!");
 				}
 			}
 		}

@@ -528,7 +528,7 @@ public class Modify extends BaseGenerics
 					boolean doIt=false;
 					for(int d=0;d<R.rawDoors().length;d++)
 					{
-						Room R2=(Room)R.rawDoors()[d];
+						Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.getArea()==myArea))
 						{ doIt=true; break;}
 					}
@@ -789,7 +789,7 @@ public class Modify extends BaseGenerics
 			restStr=Util.combine(commands,4);
 
 
-		MOB modMOB=(MOB)mob.location().fetchInhabitant(mobID);
+		MOB modMOB=mob.location().fetchInhabitant(mobID);
 		if(modMOB==null)
 		{
 			mob.tell("I don't see '"+mobID+" here.\n\r");

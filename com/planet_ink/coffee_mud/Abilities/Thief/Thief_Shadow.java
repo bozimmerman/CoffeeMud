@@ -47,7 +47,7 @@ public class Thief_Shadow extends ThiefSkill
 	public boolean stillAShadower()
 	{
 		if(invoker==null) return false;
-		MOB mob=(MOB)invoker;
+		MOB mob=invoker;
 		if(mob.amDead()) return false;
 		if(mob.isInCombat()) return false;
 		if(mob.location()==null) return false;
@@ -69,7 +69,7 @@ public class Thief_Shadow extends ThiefSkill
 	{
 		if(!stillAShadower()) return false;
 		if(!stillAShadowee()) return false;
-		MOB mob=(MOB)invoker;
+		MOB mob=invoker;
 		if(Sense.canBeSeenBy(mob,shadowing)) return false;
 		if(!Sense.canBeSeenBy(shadowing,mob)) return false;
 		if(mob.location()!=shadowing.location()) return false;
@@ -102,7 +102,7 @@ public class Thief_Shadow extends ThiefSkill
 			if((dir>=0)&&(msg.source().location()!=lastRoom))
 			{
 				String directionWent=Directions.getDirectionName(dir);
-				MOB mob=(MOB)invoker;
+				MOB mob=invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())
 					mob.enqueCommand(Util.parse(directionWent),0);
@@ -153,7 +153,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				invoker.delEffect(this);
 				setAffectedOne(shadowing);
-				((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
+				invoker.tell("You are no longer shadowing "+shadowing.name()+".");
 			}
 			shadowing=null;
 		}

@@ -34,8 +34,6 @@ public class IMudInterface implements ImudServices, Serializable
 								{"diku_immortals","GOSSIP",""},
 								{"diku_code","GREET",""}};
 
-	private final static int I3MAX_ANSI=49;
-
 	String[][] i3ansi_conversion=
 	{
 		/*
@@ -119,7 +117,7 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session ses=(Session)Sessions.elementAt(s);
+			Session ses=Sessions.elementAt(s);
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
 			&&(ses.mob().Name().equalsIgnoreCase(mobName))
@@ -230,7 +228,7 @@ public class IMudInterface implements ImudServices, Serializable
 				ChannelSet.channelQueUp(channelInt,msg);
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session ses=(Session)Sessions.elementAt(s);
+					Session ses=Sessions.elementAt(s);
 					if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
 					&&(ses.mob().okMessage(ses.mob(),msg)))
 						ses.mob().executeMsg(ses.mob(),msg);
@@ -339,7 +337,7 @@ public class IMudInterface implements ImudServices, Serializable
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session ses=(Session)Sessions.elementAt(s);
+					Session ses=Sessions.elementAt(s);
 					if(ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
 						whoV.addElement(ses.mob().name());
 				}
@@ -359,7 +357,7 @@ public class IMudInterface implements ImudServices, Serializable
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session ses=(Session)Sessions.elementAt(s);
+					Session ses=Sessions.elementAt(s);
 					MOB smob=ses.mob();
 					if((smob!=null)&&(smob.soulMate()!=null))
 						smob=smob.soulMate();

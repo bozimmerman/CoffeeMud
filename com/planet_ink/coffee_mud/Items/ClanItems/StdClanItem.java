@@ -178,7 +178,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				Item alreadyHasOne=null;
 				for(int i=0;i<targetMOB.inventorySize();i++)
 				{
-					Item I=(Item)targetMOB.fetchInventory(i);
+					Item I=targetMOB.fetchInventory(i);
 					if((I!=null)&&(I instanceof ClanItem))
 					{ alreadyHasOne=I; break;}
 				}
@@ -236,14 +236,14 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(((ClanItem)myHost).clanID().length()>0)
 		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
-			MOB M=(MOB)msg.source();
+			MOB M=msg.source();
 			if((M.getClanID().length()>0)
 			&&(!M.getClanID().equals(((ClanItem)myHost).clanID())))
 			{
 				Clan C=Clans.getClan(M.getClanID());
 
 				if(M.location()!=null)
-					M.location().show(M,(Item)myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
+					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
 				if(C!=null)
 				{
 					Vector recipes=loadRecipes();

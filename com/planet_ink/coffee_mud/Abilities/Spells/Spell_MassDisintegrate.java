@@ -75,9 +75,9 @@ public class Spell_MassDisintegrate extends Spell
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
-						if(((MOB)target).curState().getHitPoints()>0)
-							MUDFight.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));
-						if(!((MOB)target).amDead())
+						if(target.curState().getHitPoints()>0)
+							MUDFight.postDamage(mob,target,this,target.curState().getHitPoints()*10,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));
+						if(!target.amDead())
 							return false;
 					}
 				}

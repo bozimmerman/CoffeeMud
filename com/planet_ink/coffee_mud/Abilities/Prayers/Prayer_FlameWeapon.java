@@ -55,7 +55,7 @@ public class Prayer_FlameWeapon extends Prayer
 		&&(!((MOB)msg.target()).amDead()))
 		{
 			notAgain=true;
-			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			FullMsg msg2=new FullMsg(msg.source(),msg.target(),affected,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
@@ -63,8 +63,8 @@ public class Prayer_FlameWeapon extends Prayer
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
-					FullMsg msg3=new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					FullMsg msg3=new FullMsg(msg.source(),msg.target(),null,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 					msg3.setValue(flameDamage);
 					msg.addTrailerMsg(msg3);
 				}

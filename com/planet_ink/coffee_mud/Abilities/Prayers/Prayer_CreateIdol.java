@@ -57,7 +57,7 @@ public class Prayer_CreateIdol extends Prayer
 		super.affectCharState(aff,affectableState);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
-			aff.curState().setFatigue(CharState.FATIGUED_MILLIS+(long)10);
+			aff.curState().setFatigue(CharState.FATIGUED_MILLIS+10);
 			affectableState.setMovement(20);
 		}
 	}
@@ -121,7 +121,7 @@ public class Prayer_CreateIdol extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=(Item)CMClass.getStdItem("GenItem");
+				Item newItem=CMClass.getStdItem("GenItem");
 				newItem.setBaseValue(1);
 				String name=Util.startWithAorAn(EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);

@@ -56,7 +56,7 @@ public class LocaleData extends StdEspressoCommand {
       Vector sortMe = new Vector();
       for (Enumeration l = CMClass.locales(); l.hasMoreElements(); )
         sortMe.addElement(CMClass.className(l.nextElement()));
-      sorted = (Object[]) (new TreeSet(sortMe)).toArray();
+      sorted = (new TreeSet(sortMe)).toArray();
       Resources.submitResource("ESPRESSO-LOCALES", sorted);
     }
     return new Vector(Arrays.asList(sorted));

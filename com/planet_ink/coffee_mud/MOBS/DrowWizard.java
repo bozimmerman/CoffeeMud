@@ -40,7 +40,7 @@ public class DrowWizard extends DrowElf
 		setDescription("a Drow wizard");
 		setDisplayText("A Drow wizard turns your blood cold.");
 
-		Weapon mainWeapon = (Weapon)CMClass.getWeapon("Quarterstaff");
+		Weapon mainWeapon = CMClass.getWeapon("Quarterstaff");
 		if(mainWeapon!=null)
 		{
 			mainWeapon.wearAt(Item.WIELD);
@@ -52,7 +52,7 @@ public class DrowWizard extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
-		baseCharStats.setStat(CharStats.GENDER,(int)'M');
+		baseCharStats.setStat(CharStats.GENDER,'M');
 
 		setWimpHitPoint(1);
 
@@ -202,9 +202,9 @@ public class DrowWizard extends DrowElf
         Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
+            prayer = fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
             while((prayer==null)||(this.baseEnvStats().level() < CMAble.lowestQualifyingLevel(prayer.ID())))
-	            prayer = (Ability) this.fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
+	            prayer = fetchAbility(Dice.roll(1,numLearnedAbilities(),-1));
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");

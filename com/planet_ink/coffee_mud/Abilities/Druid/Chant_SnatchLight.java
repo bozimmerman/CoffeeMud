@@ -34,7 +34,7 @@ public class Chant_SnatchLight extends Chant
 		if((invoker!=null)
 		&&Sense.isInTheGame(invoker,false)
 		&&(invoker.fetchEffect(ID())!=null))
-		   return ((MOB)invoker).location();
+		   return invoker.location();
 		return null;
 	}
 
@@ -61,13 +61,11 @@ public class Chant_SnatchLight extends Chant
 		{
 			MOB mob=invoker;
 			Room R=mob.location();
-			boolean didSomething=false;
 			if((R!=null)&&(R.fetchEffect(ID())==null))
 			{
 				Ability A=(Ability)copyOf();
 				A.setBorrowed(R,true);
 				R.addEffect(A);
-				didSomething=true;
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
@@ -77,7 +75,6 @@ public class Chant_SnatchLight extends Chant
 					Ability A=(Ability)copyOf();
 					A.setBorrowed(M,true);
 					M.addEffect(A);
-					didSomething=true;
 				}
 				if(M!=null)
 				for(int i=0;i<M.inventorySize();i++)
@@ -88,7 +85,6 @@ public class Chant_SnatchLight extends Chant
 						Ability A=(Ability)copyOf();
 						A.setBorrowed(I,true);
 						I.addEffect(A);
-						didSomething=true;
 					}
 				}
 			}
@@ -100,7 +96,6 @@ public class Chant_SnatchLight extends Chant
 					Ability A=(Ability)copyOf();
 					A.setBorrowed(I,true);
 					I.addEffect(A);
-					didSomething=true;
 				}
 			}
 			R.recoverRoomStats();

@@ -70,7 +70,7 @@ public class Drowness extends StdBehavior
 
     public void addFemaleNaturalAbilities(MOB mob)
     {
-		Weapon mainWeapon = (Weapon)CMClass.getWeapon("Mace");
+		Weapon mainWeapon = CMClass.getWeapon("Mace");
 		mainWeapon.wearAt(Item.WIELD);
 		mob.addInventory(mainWeapon);
 
@@ -153,7 +153,7 @@ public class Drowness extends StdBehavior
 
     public void addMaleNaturalAbilities(MOB mob)
     {
-        Armor chainMail = (Armor)CMClass.getArmor("DrowChainMailArmor");
+        Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
         chainMail.wearAt(Item.ON_TORSO);
         mob.addInventory(chainMail);
 
@@ -165,8 +165,8 @@ public class Drowness extends StdBehavior
         switch(weaponry)
         {
             case 1:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowSword");
 		        mainWeapon.wearAt(Item.WIELD);
 		        secondWeapon.wearAt(Item.HELD);
 		        mob.addInventory(mainWeapon);
@@ -174,7 +174,7 @@ public class Drowness extends StdBehavior
 		        mob.baseEnvStats().setSpeed(2.0);
                 break;
             case 2:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
 //		        Shield secondWeapon = new Shield();
 		        mainWeapon.wearAt(Item.WIELD);
 //		        secondWeapon.wear(Item.SHIELD);
@@ -183,8 +183,8 @@ public class Drowness extends StdBehavior
 		        mob.baseEnvStats().setSpeed(1.0);
                 break;
             case 3:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowDagger");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowDagger");
 		        mainWeapon.wearAt(Item.WIELD);
 		        secondWeapon.wearAt(Item.HELD);
 		        mob.addInventory(mainWeapon);
@@ -192,8 +192,8 @@ public class Drowness extends StdBehavior
 		        mob.baseEnvStats().setSpeed(2.0);
                 break;
             case 4:
-		        mainWeapon = (Weapon)CMClass.getWeapon("Scimitar");
-		        secondWeapon = (Weapon)CMClass.getWeapon("Scimitar");
+		        mainWeapon = CMClass.getWeapon("Scimitar");
+		        secondWeapon = CMClass.getWeapon("Scimitar");
 		        mainWeapon.wearAt(Item.WIELD);
 		        secondWeapon.wearAt(Item.HELD);
 		        mob.addInventory(mainWeapon);
@@ -201,8 +201,8 @@ public class Drowness extends StdBehavior
 		        mob.baseEnvStats().setSpeed(2.0);
                 break;
             default:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowSword");
 		        mainWeapon.wearAt(Item.WIELD);
 		        secondWeapon.wearAt(Item.HELD);
 		        mob.addInventory(mainWeapon);

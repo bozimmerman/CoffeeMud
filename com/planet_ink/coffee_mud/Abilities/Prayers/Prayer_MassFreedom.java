@@ -29,7 +29,7 @@ public class Prayer_MassFreedom extends Prayer
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		FullMsg msg=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
@@ -65,7 +65,6 @@ public class Prayer_MassFreedom extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		boolean nothingDone=true;
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
@@ -88,7 +87,6 @@ public class Prayer_MassFreedom extends Prayer
 						// what happened.
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							((Ability)offensiveAffects.elementAt(a)).unInvoke();
-						nothingDone=false;
 						if((!Sense.stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}

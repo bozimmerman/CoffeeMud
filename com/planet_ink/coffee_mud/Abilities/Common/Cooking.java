@@ -218,15 +218,13 @@ public class Cooking extends CraftingSkill
 					if(amount<0) amount=amount*-1;
 					if(ingredient.equalsIgnoreCase("water"))
 						amount=amount*10;
-					boolean found=false;
 					for(int i=0;i<contents.length;i++)
 					{
-						String ingredient2=((String)contents[i]).toUpperCase();
+						String ingredient2=contents[i].toUpperCase();
 						int amount2=amounts[i];
 						if((ingredient2.startsWith(ingredient+"/"))
 						||(ingredient2.endsWith("/"+ingredient)))
 						{
-							found=true;
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
 							if(amounts[i]==0) RanOutOfSomething=true;
@@ -253,7 +251,7 @@ public class Cooking extends CraftingSkill
 			codedList.addElement(new Integer(amountMade));
 			for(int i=0;i<contents.length;i++)
 			{
-				String ingredient2=(String)contents[i];
+				String ingredient2=contents[i];
 				int amount2=amounts[i];
 				if((amount2>0)
 				&&((!honorHerbs())||(!ingredient2.toUpperCase().startsWith("HERBS/")))

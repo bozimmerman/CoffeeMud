@@ -36,7 +36,7 @@ public class Prayer_RockFlesh extends Prayer
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=(Ability)target.fetchEffect(a);
+			Ability A=target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())
 			   &&((A.ID().equalsIgnoreCase("Spell_FleshStone"))
 				  ||(A.ID().equalsIgnoreCase("Prayer_FleshRock"))))

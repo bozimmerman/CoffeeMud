@@ -44,10 +44,10 @@ public class Play_Ballad extends Play
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>"))
 			&&(myChar.charStats().getStat(CharStats.GENDER)!=mate.charStats().getStat(CharStats.GENDER))
-			&&((mate.charStats().getStat(CharStats.GENDER)==((int)'M'))
-			   ||(mate.charStats().getStat(CharStats.GENDER)==((int)'F')))
-			&&((myChar.charStats().getStat(CharStats.GENDER)==((int)'M'))
-			   ||(myChar.charStats().getStat(CharStats.GENDER)==((int)'F')))
+			&&((mate.charStats().getStat(CharStats.GENDER)==('M'))
+			   ||(mate.charStats().getStat(CharStats.GENDER)==('F')))
+			&&((myChar.charStats().getStat(CharStats.GENDER)==('M'))
+			   ||(myChar.charStats().getStat(CharStats.GENDER)==('F')))
 			&&((myChar.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals(ID())))
@@ -59,7 +59,7 @@ public class Play_Ballad extends Play
 			{
 				MOB female=myChar;
 				MOB male=mate;
-				if((mate.charStats().getStat(CharStats.GENDER)==((int)'F')))
+				if((mate.charStats().getStat(CharStats.GENDER)==('F')))
 				{
 					female=mate;
 					male=myChar;

@@ -49,7 +49,7 @@ public class ResetWhole extends StdBehavior
 		super.tick(ticking,tickID);
 		if(lastAccess<0) return true;
 
-		long time=(long)1800000;
+		long time=1800000;
 		try
 		{
 			time=Long.parseLong(getParms());

@@ -116,10 +116,10 @@ public class Prayer_BoneMoon extends Prayer
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The Bone Moon rises over <S-NAME>.");
 				level=1;
-				if(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
+				if(CoffeeUtensils.doesOwnThisProperty(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMClass.DBEngine().DBUpdateRoom((Room)target);
+					CMClass.DBEngine().DBUpdateRoom(target);
 				}
 				else
 					beneficialAffect(mob,target,asLevel,0);

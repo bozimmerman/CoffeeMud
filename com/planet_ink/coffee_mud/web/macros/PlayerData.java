@@ -229,9 +229,9 @@ public class PlayerData extends StdWebMacro
 					if(parms.containsKey(stat))
 					{
 						if(i>CharStats.NUM_BASE_STATS)
-							str.append(M.charStats().getSave(i)+", ");
+							str.append(C.getSave(i)+", ");
 						else
-							str.append(M.charStats().getStat(i)+", ");
+							str.append(C.getStat(i)+", ");
 					}
 				}
 			}

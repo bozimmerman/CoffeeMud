@@ -38,7 +38,7 @@ public class Areas extends StdCommand
 				else
 					areasVec.addElement("("+A.name()+")");
 		}
-		Collections.sort((java.util.List)areasVec);
+		Collections.sort(areasVec);
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)

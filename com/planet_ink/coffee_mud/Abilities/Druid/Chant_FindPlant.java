@@ -123,7 +123,7 @@ public class Chant_FindPlant extends Chant
 	public String itsHere(MOB mob, Room R)
 	{
 		if(R==null) return "";
-		Room room=(Room)R;
+		Room room=R;
 		if(room.myResource()==whatImLookingFor)
 			return "There seems to be "+lookingFor+" around here.\n\r";
 		return "";

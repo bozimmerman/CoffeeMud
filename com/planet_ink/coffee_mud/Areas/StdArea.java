@@ -589,8 +589,8 @@ public class StdArea implements Area
 		}
 		else
 		{
-			Collections.sort((List)levelRanges);
-			Collections.sort((List)alignRanges);
+			Collections.sort(levelRanges);
+			Collections.sort(alignRanges);
 			statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(Util.div(levelRanges.size(),2.0))))).intValue();
 			statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(Util.div(alignRanges.size(),2.0))))).intValue();
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));

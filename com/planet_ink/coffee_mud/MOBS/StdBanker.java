@@ -175,10 +175,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(!h.contains((String)V2.elementAt(DATA_USERID)))
+			if(!h.contains(V2.elementAt(DATA_USERID)))
 			{
-				h.add((String)V2.elementAt(DATA_USERID));
-				mine.addElement((String)V2.elementAt(DATA_USERID));
+				h.add(V2.elementAt(DATA_USERID));
+				mine.addElement(V2.elementAt(DATA_USERID));
 			}
 		}
 		return mine;
@@ -239,7 +239,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))
 				{
-					L=new Long(System.currentTimeMillis()+new Long(((long)location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*((long)5)).intValue());
+					L=new Long(System.currentTimeMillis()+new Long((location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*5).intValue());
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);

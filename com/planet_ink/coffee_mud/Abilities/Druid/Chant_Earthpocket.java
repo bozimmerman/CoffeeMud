@@ -167,7 +167,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
 				pocket.recoverEnvStats();
 				target.location().addItem(pocket);
-				beneficialAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5);
+				beneficialAffect(mob,target,asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");
 			}
 		}

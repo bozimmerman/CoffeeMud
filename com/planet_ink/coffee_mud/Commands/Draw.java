@@ -146,7 +146,7 @@ public class Draw extends Get
 			{
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.fetchInventory((Item)container,whatToGet+addendumStr);
+				   getThis=mob.fetchInventory(container,whatToGet+addendumStr);
 				if(getThis==null) break;
 				if(getThis instanceof Weapon)
 					V.addElement(getThis);
@@ -159,7 +159,7 @@ public class Draw extends Get
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
-				if(get(mob,container,(Item)getThis,quiet,"draw",false))
+				if(get(mob,container,getThis,quiet,"draw",false))
 				{
 					if(getThis.container()==null)
 					{

@@ -239,9 +239,7 @@ public final class IMC2Driver extends Thread {
 
     /* connect to hub */
     final boolean imc_connect_to() {
-        int desc;
         String buf;
-        int r;
 
         if (imc_active == IA_NONE) {
             tracef(0, "IMC is not active");
@@ -450,7 +448,6 @@ public final class IMC2Driver extends Thread {
     final String printkeys(PACKET data) 
 	{
         String buf;
-        String temp;
         int i;
 
         buf = "";
@@ -621,8 +618,6 @@ public final class IMC2Driver extends Thread {
 
     final IMC_CHANNEL imc_findchannel( String name )
     {
-        IMC_CHANNEL c;
-
         if(channels.get(name)!=null)
             return (IMC_CHANNEL) channels.get(name);
         return null;
@@ -633,7 +628,6 @@ public final class IMC2Driver extends Thread {
     final String imc_mudof(String fullname )
     {
        String buf;
-       String where;
 
        int pos = fullname.indexOf("@");
        if(pos > -1)
@@ -658,7 +652,6 @@ public final class IMC2Driver extends Thread {
     final String imc_playerof(String fullname )
     {
        String buf;
-       String where;
 
        int pos = fullname.indexOf("@");
        if(pos > -1)
@@ -851,7 +844,7 @@ public final class IMC2Driver extends Thread {
                     java.lang.reflect.Method funcs[] = cl.getMethods();
                     if (funcs.length > 1) {
                         for (int k = 0; k < funcs.length; k++) {
-                            String m_name = (String) funcs[k].getName();
+                            String m_name = funcs[k].getName();
                             if (m_name.equals(fun)) {
                                 try {
                                     funcs[k].invoke(o, new Object[] {param});
@@ -1021,7 +1014,7 @@ public final class IMC2Driver extends Thread {
 	{
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session ses=(Session)Sessions.elementAt(s);
+			Session ses=Sessions.elementAt(s);
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
 			&&(ses.mob().Name().equalsIgnoreCase(mobName))
@@ -1082,7 +1075,7 @@ public final class IMC2Driver extends Thread {
 		ChannelSet.channelQueUp(channelInt,msg);
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session ses=(Session)Sessions.elementAt(s);
+			Session ses=Sessions.elementAt(s);
 			if((ChannelSet.mayReadThisChannel(mob,false,ses,channelInt))
 			&&(ses.mob().okMessage(ses.mob(),msg)))
 				ses.mob().executeMsg(ses.mob(),msg);

@@ -123,11 +123,9 @@ public class DBConnector
 	 * @return String	The value of the field being returned
 	 */
 	public static String getRes(ResultSet Results, String Field)
-	throws SQLException
 	{ return DBConnections.getRes(Results,Field);}
 
 	public static String getResQuietly(ResultSet Results, String Field)
-	throws SQLException
 	{ return DBConnections.getResQuietly(Results, Field);}
 
 	/** 
@@ -185,7 +183,6 @@ public class DBConnector
 	 * @return NA
 	 */
 	public static void enQueueError(String SQLString, String SQLError, String count)
-		throws IOException
 	{ DBs.enQueueError(SQLString, SQLError,count);}
 	
 	

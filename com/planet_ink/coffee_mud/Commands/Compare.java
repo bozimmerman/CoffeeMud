@@ -76,7 +76,7 @@ public class Compare extends StdCommand
 			Item possible=null;
 			for(int i=0;i<mob.inventorySize();i++)
 			{
-				Item I=(Item)mob.fetchInventory(i);
+				Item I=mob.fetchInventory(i);
 				if((I!=null)
 				&&(I!=compareThis)
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))

@@ -44,7 +44,7 @@ public class Dance_Salsa extends Dance
 			&&(M!=mob)
 			&&(Sense.canBeSeenBy(M,mob))
 			&&(M.charStats().getStat(CharStats.GENDER)!=mob.charStats().getStat(CharStats.GENDER))
-			&&(M.charStats().getStat(CharStats.GENDER)!=(int)'N')
+			&&(M.charStats().getStat(CharStats.GENDER)!='N')
 			&&(M.charStats().getSave(CharStats.CHARISMA)>14))
 				choices.addElement(M);
 		}

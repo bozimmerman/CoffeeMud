@@ -79,7 +79,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
 			return M;
 		}
-		XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)XMLManager.getPieceFromPieces(buf,"MOBITEM");
+		XMLManager.XMLpiece iblk=XMLManager.getPieceFromPieces(buf,"MOBITEM");
 		if((iblk==null)||(iblk.contents==null))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");

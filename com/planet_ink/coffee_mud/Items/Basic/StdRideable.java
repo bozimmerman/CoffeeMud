@@ -433,13 +433,10 @@ public class StdRideable extends StdContainer implements Rideable
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Room))
 			{
-				Room sourceRoom=(Room)msg.source().location();
+				Room sourceRoom=msg.source().location();
 				Room targetRoom=(Room)msg.target();
-				Exit E=null;
 				if((sourceRoom!=null)&&(!msg.amITarget(sourceRoom)))
 				{
-					if((msg.tool()!=null)&&(msg.tool() instanceof Exit))
-					   E=(Exit)msg.tool();
 					boolean ok=((targetRoom.domainType()&Room.INDOORS)==0)
 								||(targetRoom.maxRange()>4);
 					switch(rideBasis)

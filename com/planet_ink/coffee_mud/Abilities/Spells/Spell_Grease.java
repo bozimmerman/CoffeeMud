@@ -73,7 +73,7 @@ public class Spell_Grease extends Spell
 							        mob.location().send(mob,msg2);
 						        return false;
                             case FUMBLE_WEAPON:
-                                weapon = (Item) mob.fetchWieldedItem();
+                                weapon = mob.fetchWieldedItem();
 								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
                                 {
@@ -84,7 +84,7 @@ public class Spell_Grease extends Spell
                                 }
 						        return false;
                             case BOTH:
-                                weapon = (Item) mob.fetchWieldedItem();
+                                weapon = mob.fetchWieldedItem();
                                 if(weapon != null)
 						            msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
                                 else

@@ -93,7 +93,7 @@ public class Chant_LocatePlants extends Chant
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(R==null) return msg.toString();
-		Room room=(Room)R;
+		Room room=R;
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_HILLS)

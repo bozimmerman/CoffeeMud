@@ -50,7 +50,7 @@ public class Tell extends StdCommand
 				mob.tell("No telling.");
 			else
 			{
-				int num=Util.s_int((String)Util.combine(commands,1));
+				int num=Util.s_int(Util.combine(commands,1));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
 					mob.tell((String)V.elementAt(i));
@@ -62,7 +62,7 @@ public class Tell extends StdCommand
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)Sessions.elementAt(s);
+			Session thisSession=Sessions.elementAt(s);
 			if((thisSession.mob()!=null)
 			   &&(!thisSession.killFlag())
 			   &&((thisSession.mob().name().equalsIgnoreCase(targetName))
@@ -75,7 +75,7 @@ public class Tell extends StdCommand
 		if(target==null)
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)Sessions.elementAt(s);
+			Session thisSession=Sessions.elementAt(s);
 			if((thisSession.mob()!=null)
 			   &&(!thisSession.killFlag())
 			   &&((EnglishParser.containsString(thisSession.mob().name(),targetName))

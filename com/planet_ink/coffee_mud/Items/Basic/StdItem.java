@@ -116,7 +116,7 @@ public class StdItem implements Item
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
-			if(B!=null)	addBehavior((Behavior)B.copyOf());
+			if(B!=null)	addBehavior(B.copyOf());
 		}
 
 		for(int a=0;a<E.numEffects();a++)

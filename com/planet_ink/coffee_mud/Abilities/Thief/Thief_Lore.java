@@ -47,7 +47,7 @@ public class Thief_Lore extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String identity=((Item)target).secretIdentity();
+				String identity=target.secretIdentity();
 				mob.tell(identity);
 
 			}

@@ -42,7 +42,7 @@ public class ListSessions extends StdCommand
 		Vector broken=new Vector();
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)Sessions.elementAt(s);
+			Session thisSession=Sessions.elementAt(s);
 			String[] set=new String[5];
 			set[0]=(thisSession.killFlag()?"^H":"")+Util.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
 			if (thisSession.mob() != null)

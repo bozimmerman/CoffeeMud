@@ -24,8 +24,6 @@ public class Prop_Transporter extends Property
 	public String ID() { return "Prop_Transporter"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	private Hashtable zapList=new Hashtable();
-	private Room room=null;
 	int transCode=-1;
 
 	public String accountForYourself()

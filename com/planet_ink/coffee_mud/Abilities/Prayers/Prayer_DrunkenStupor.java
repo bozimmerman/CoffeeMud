@@ -48,14 +48,14 @@ public class Prayer_DrunkenStupor extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(((MOB)affected).envStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-Math.round(((MOB)affected).envStats().level()));
 	}
 
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
+		affectableStats.setStat(CharStats.DEXTERITY,Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

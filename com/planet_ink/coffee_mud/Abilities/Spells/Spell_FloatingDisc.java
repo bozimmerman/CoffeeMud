@@ -38,7 +38,7 @@ public class Spell_FloatingDisc extends Spell
 		if(invoker==null)
 			return;
 
-		MOB mob=(MOB)invoker;
+		MOB mob=invoker;
 		Item item=(Item)affected;
 		super.unInvoke();
 

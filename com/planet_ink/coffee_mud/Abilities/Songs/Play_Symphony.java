@@ -637,12 +637,12 @@ public class Play_Symphony extends Play
 				lvl=lvl/2;
 			else
 				lvl=lvl/5;
-			switch((int)toDoString.charAt(0))
+			switch(toDoString.charAt(0))
 			{
-			case (int)'A':
+			case 'A':
 				stats.setAttackAdjustment(stats.armor()+lvl);
 				break;
-			case (int)'D':
+			case 'D':
 				stats.setArmor(stats.armor()-lvl);
 				break;
 			}

@@ -35,8 +35,6 @@ public class Necromancer extends Cleric
 	protected boolean disableClericSpellGrant(){return true;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
 
-	private int tickDown=0;
-
 	public Necromancer()
 	{
 		maxStatAdj[CharStats.WISDOM]=4;
@@ -162,7 +160,7 @@ public class Necromancer extends Cleric
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
 		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 		{
-			Race newRace=(Race)CMClass.getRace("Lich");
+			Race newRace=CMClass.getRace("Lich");
 			if(newRace!=null)
 			{
 				myChar.tell("You are being transformed into a "+newRace.name()+"!!");
@@ -193,7 +191,7 @@ public class Necromancer extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

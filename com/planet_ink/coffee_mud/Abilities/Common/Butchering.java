@@ -28,7 +28,6 @@ public class Butchering extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private DeadBody body=null;
-	private String foundShortName="";
 	private boolean failed=false;
 	public Butchering()
 	{

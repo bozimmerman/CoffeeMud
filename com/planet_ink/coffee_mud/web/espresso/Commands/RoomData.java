@@ -254,7 +254,7 @@ public Object run(Vector param, EspressoServer server)
         if(last==null) return null;
         if(last.length()==0) return null;
 
-        Room R=(Room)CMMap.getRoom(last);
+        Room R=CMMap.getRoom(last);
         if(R==null)
         {
           return null;
@@ -349,31 +349,28 @@ public Object run(Vector param, EspressoServer server)
         if(safelyGetStr(param,2).equalsIgnoreCase("ITEMLIST"))
         {
                 Vector classes=new Vector();
-                Vector itemlist=null;
                 if(param.size()>3)
                 {
-                        itemlist=items;
-                        for(int i=3;i<param.size();i++)
+                    for(int i=3;i<param.size();i++)
+                    {
+                        String MATCHING=(String)param.elementAt(i);
+                        if(MATCHING==null)
+                                break;
+                        else
                         {
-                                String MATCHING=(String)param.elementAt(i);
-                                if(MATCHING==null)
-                                        break;
-                                else
-                                {
-                                        Item I2=getItemFromAnywhere(R,MATCHING);
-                                        if(I2!=null)
-                                                classes.addElement(I2);
-                                }
+                                Item I2=getItemFromAnywhere(R,MATCHING);
+                                if(I2!=null)
+                                        classes.addElement(I2);
                         }
+                    }
                 }
                 else
                 {
-                        for(int m=0;m<R.numItems();m++)
-                        {
-                                Item I2=R.fetchItem(m);
-                                classes.addElement(I2);
-                        }
-                        //itemlist=contributeItems(classes);
+                    for(int m=0;m<R.numItems();m++)
+                    {
+                            Item I2=R.fetchItem(m);
+                            classes.addElement(I2);
+                    }
                 }
                 Vector response=new Vector();
                 for(int i=0;i<classes.size();i++)

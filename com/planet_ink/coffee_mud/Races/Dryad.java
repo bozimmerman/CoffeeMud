@@ -67,7 +67,7 @@ public class Dryad extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+5);
 		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+5);
-		affectableStats.setStat(CharStats.GENDER,(int)'F');
+		affectableStats.setStat(CharStats.GENDER,'F');
 	}
 	public Vector outfit()
 	{

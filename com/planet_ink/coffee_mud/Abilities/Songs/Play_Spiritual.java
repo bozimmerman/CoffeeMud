@@ -37,7 +37,7 @@ public class Play_Spiritual extends Play
 		if(R!=null)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB mob=(MOB)R.fetchInhabitant(m);
+			MOB mob=R.fetchInhabitant(m);
 			if(mob!=null)
 			for(int i=0;i<mob.numEffects();i++)
 			{

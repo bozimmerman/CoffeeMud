@@ -23,7 +23,6 @@ import com.planet_ink.coffee_mud.utils.*;
 public class ArchonStaff extends Staff implements Wand, ArchonOnly
 {
 	public String ID(){	return "ArchonStaff";}
-	private String secretWord="REFRESH, LEVEL UP, BURN!!";
 	private static Wand theWand=(Wand)CMClass.getMiscMagic("StdWand");
 
 	public ArchonStaff()
@@ -56,12 +55,10 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 
 	public void waveIfAble(MOB mob,
@@ -170,7 +167,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead()))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
+			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new ArchonStaff(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_FIRE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);

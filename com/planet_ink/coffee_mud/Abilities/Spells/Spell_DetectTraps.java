@@ -67,7 +67,7 @@ public class Spell_DetectTraps extends Spell
 		}
 		else
 		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
-			msg.append(trapCheck((Item)E));
+			msg.append(trapCheck(E));
 		else
 		if((E instanceof Exit)&&(Sense.canBeSeenBy(E,mob)))
 		{
@@ -102,7 +102,7 @@ public class Spell_DetectTraps extends Spell
 				{
 					Environmental E2=(Environmental)V.elementAt(v);
 					if(E2 instanceof Item)
-						if(trapCheck((Item)E2).length()>0)
+						if(trapCheck(E2).length()>0)
 							return E.name()+" has something trapped in stock.";
 				}
 			}

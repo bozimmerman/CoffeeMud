@@ -49,15 +49,6 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
-	private boolean isAirRoom(Room R)
-	{
-		if(R==null) return false;
-		if((R.domainType()==Room.DOMAIN_INDOORS_AIR)
-		||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
-			return true;
-		return false;
-	}
-
 	private boolean canSinkFrom(Room fromHere, int direction)
 	{
 		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))

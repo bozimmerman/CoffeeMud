@@ -74,7 +74,7 @@ public class Prayer_AnimateGhast extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
+				MOB newMOB=CMClass.getMOB("GenUndead");
 				newMOB.setName("a ghast");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghast is here");

@@ -91,8 +91,8 @@ public class Skill_Mimicry extends BardSkill
 		lastMsg=null;
 		if(((affected instanceof MOB)&&(!Sense.aliveAwakeMobile((MOB)affected,true))))
 			return true;
-		msg=(CMMsg)msg.copyOf();
-		MOB sMOB=(MOB)msg.source();
+		msg=msg.copyOf();
+		MOB sMOB=msg.source();
 		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(affected instanceof MOB)
@@ -117,7 +117,7 @@ public class Skill_Mimicry extends BardSkill
 		{
 			MOB target=null;
 			if((msg.target()!=null)&&(msg.target() instanceof MOB))
-				target=(MOB)msg.source();
+				target=msg.source();
 			if(affected instanceof MOB)
 				msg.modify((MOB)affected,target,msg.tool(),
 						   msg.sourceCode(),msg.sourceMessage(),

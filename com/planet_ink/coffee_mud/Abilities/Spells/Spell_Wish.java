@@ -512,7 +512,7 @@ public class Spell_Wish extends Spell
 
 			}
 			if((target instanceof MOB)
-			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!=(int)'M')
+			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!='M')
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" TURN INTO ")>=0)
 			||(myWish.indexOf(" CHANGE")>=0)
@@ -734,7 +734,7 @@ public class Spell_Wish extends Spell
 			}
 
 			if((target instanceof MOB)
-			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!=(int)'F')
+			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!='F')
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" TURN INTO ")>=0)
 			||(myWish.indexOf(" CHANGE")>=0)

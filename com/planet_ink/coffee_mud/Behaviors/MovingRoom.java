@@ -36,14 +36,12 @@ public class MovingRoom extends ActiveTicker
     private int nextStop = 0;
     private int currentStatus = 1;
     private boolean isReversed = false;
-	private String savedStringInside = "";
-    private String savedStringOutside = "";
 
-	private static final int CODE0_TRAVELDIRECTION=0;
-	private static final int CODE0_DOORSDIRECTION=1;
-	private static final int CODE0_INSIDEARRIVEMSG=2;
+	//private static final int CODE0_TRAVELDIRECTION=0;
+	//private static final int CODE0_DOORSDIRECTION=1;
+	//private static final int CODE0_INSIDEARRIVEMSG=2;
 	private static final int CODE0_INSIDEDEPARTMSG=3;
-	private static final int CODE0_OUTSIDEARRIVEMSG=4;
+	//private static final int CODE0_OUTSIDEARRIVEMSG=4;
 	private static final int CODE0_OUTSIDEDEPARTMSG=5;
 
 	private static final int CODE1_NORMALINSIDEOPEN=0;

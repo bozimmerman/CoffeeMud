@@ -116,7 +116,7 @@ public class Spell_Mirage extends Spell
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
-					newRoom=((Room)mob.location()).getArea().getRandomProperRoom();
+					newRoom=mob.location().getArea().getRandomProperRoom();
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
 					{
 						A.setMiscText(CMMap.getExtendedRoomID(newRoom));

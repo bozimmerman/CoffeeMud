@@ -508,24 +508,14 @@ public class Intermud implements Runnable, Persistent, Serializable
                     }
                 }
                 else if( type.equals("who-req") ) {
-                    try {
-                        WhoPacket p = new WhoPacket(data);
+                    WhoPacket p = new WhoPacket(data);
 
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","9-"+e.getMessage());
-                    }
+                    intermud.receive(p);
 				}
                 else if( type.equals("who-reply") ) {
-                    try {
-                        WhoPacket p = new WhoPacket(data);
+                    WhoPacket p = new WhoPacket(data);
 
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","10-"+e.getMessage());
-                    }
+                    intermud.receive(p);
                 }
                 else if( type.equals("error") ) {
                     error(data);

@@ -60,7 +60,7 @@ public class StdClanSpecialItem extends StdClanItem
 		if((ciType()==ClanItem.CI_SPECIALTAXER)
 		&&(B!=null)
 		&&(owner() instanceof MOB))
-			return B.okMessage((MOB)owner(),msg);
+			return B.okMessage(owner(),msg);
 		else
 			return true;
 	}
@@ -101,7 +101,7 @@ public class StdClanSpecialItem extends StdClanItem
 				{
 					if((B==null)||(!B.ID().equals("TaxCollector")))
 						B=CMClass.getBehavior("TaxCollector");
-					if(B!=null) B.tick((MOB)owner(),MudHost.TICK_MOB);
+					if(B!=null) B.tick(owner(),MudHost.TICK_MOB);
 					break;
 				}
 			}

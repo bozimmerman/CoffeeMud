@@ -61,7 +61,7 @@ public class StdLasso extends StdWeapon
 			unWear();
 			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,null));
 			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,null));
-			msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_GENERAL,null));
+			msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),this,CMMsg.MASK_GENERAL|CMMsg.TYP_GENERAL,null));
 		}
 		else
 		if((msg.tool()==this)

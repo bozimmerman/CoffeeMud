@@ -37,7 +37,7 @@ public class JournalInfo extends StdWebMacro
 		}
 		if(parms.containsKey("COUNT"))
 			return ""+info.size();
-		String lastlast=(String)httpReq.getRequestParameter("JOURNALMESSAGE");
+		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int num=0;
 		if(lastlast!=null) num=Util.s_int(lastlast);
 		if((num<0)||(num>=info.size()))	return " @break@";

@@ -33,7 +33,6 @@ public class EspressoServer
   public INI page = null;
   public static final float HOST_VERSION_MAJOR = (float) 1.0;
   public static final float HOST_VERSION_MINOR = (float) 0.0;
-  private MudHost mud;
   private static EspressoServer server;
   private int Port;
   public ServerSocket servsock = null;
@@ -43,7 +42,6 @@ public class EspressoServer
 
   public EspressoServer(MudHost a_mud, int a_port) {
     super("EspressoServer");
-    mud = a_mud;
     Port = a_port;
     server = this;
   }
@@ -159,7 +157,6 @@ public class EspressoServer
 
   public static MOB getMOB(String auth)
   {
-    Authenticate authCmd = new Authenticate();
     return Authenticate.getMOB(Authenticate.getLogin(auth));
   }
 }

@@ -143,7 +143,7 @@ public class Druid_PackCall extends StdAbility
 				while((mob.totalFollowers()<mob.maxFollowers())&&(levelsRemaining>0))
 				{
 					MOB victim=mob.getVictim();
-					MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+					MOB newMOB=CMClass.getMOB("GenMOB");
 					int MOBRaceCode=D.myRaceCode;
 					if(D.raceName==null) D.setRaceName(mob);
 					int level=1;

@@ -25,7 +25,6 @@ public class Prop_RideEnabler extends Property
 	public String ID() { return "Prop_RideEnabler"; }
 	public String name(){ return "Granting skills when ridden";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	private Item myItem=null;
 	private Vector lastRiders=new Vector();
 	boolean processing=false;
 	protected Vector spellV=null;
@@ -88,20 +87,13 @@ public class Prop_RideEnabler extends Property
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
-				Vector V2=new Vector();
 				if(t.length()>0)
 				{
 					x=t.indexOf("/");
 					if(x<0)
-					{
-						V2=Util.parse(t);
 						A.setMiscText("");
-					}
 					else
-					{
-						V2=Util.parse(t.substring(0,x));
 						A.setMiscText(t.substring(x+1));
-					}
 				}
 				A.setProfficiency(proff);
 				newMOB.addAbility(A);

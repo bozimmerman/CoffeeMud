@@ -72,7 +72,7 @@ public class CoffeeFilter
 					case 'r':
 						{
 						buf.setCharAt(i,(char)13);
-						if((i>=buf.length()-2)||((i<buf.length()-2)&&(((int)buf.charAt(i+2))!=10)))
+						if((i>=buf.length()-2)||((i<buf.length()-2)&&((buf.charAt(i+2))!=10)))
 							buf.setCharAt(i+1,(char)10);
 						else
 						if(i<buf.length()-2)
@@ -130,8 +130,8 @@ public class CoffeeFilter
 					break;
 				case (char)13:
 					{
-						if(((loop<buf.length()-1)&&(((int)buf.charAt(loop+1))!=10))
-						&&((loop>0)&&(((int)buf.charAt(loop-1))!=10)))
+						if(((loop<buf.length()-1)&&((buf.charAt(loop+1))!=10))
+						&&((loop>0)&&((buf.charAt(loop-1))!=10)))
 							buf.insert(loop+1,(char)10);
 						len=loop+78;
 						lastSpace=loop;
@@ -192,7 +192,7 @@ public class CoffeeFilter
 						{
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));
 							buf.deleteCharAt(loop+1);
-							if(((int)buf.charAt(loop))==13)
+							if((buf.charAt(loop))==13)
 								buf.setCharAt(loop+1,(char)10);
 							else
 								buf.deleteCharAt(loop+1);
@@ -254,7 +254,7 @@ public class CoffeeFilter
 						case 'r':
 							{
 							buf.setCharAt(loop,(char)13);
-							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&(((int)buf.charAt(loop+2))!=10)))
+							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&((buf.charAt(loop+2))!=10)))
 								buf.setCharAt(loop+1,(char)10);
 							else
 							if(loop<buf.length()-2)
@@ -478,7 +478,7 @@ public class CoffeeFilter
 									loop-=1;
 								}
 								else
-								if((colorID<((int)'0'))||(colorID>((int)'9')))
+								if((colorID<('0'))||(colorID>('9')))
 								{
 									loop+=csl-1;	// already processed 1 char
 									len+=csl;		// does not count for any length
@@ -505,8 +505,8 @@ public class CoffeeFilter
 			&&(lastSp>=0)
 			&&(loop>=0)
 			&&(loop<buf.length())
-			&&(((int)buf.charAt(loop))!=13)
-			&&(((int)buf.charAt(loop))!=10))
+			&&(buf.charAt(loop)!=13)
+			&&(buf.charAt(loop)!=10))
 			{
 				if(buf.charAt(lastSp+1)==' ')
 				{
@@ -525,8 +525,8 @@ public class CoffeeFilter
 
 		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((S!=null)&&(S.currentColor() != ((int)'N'))&&((S.getTermID()&1)==1))
-			buf.append(S.makeEscape((int)'N'));
+		if ((S!=null)&&(S.currentColor() != ('N'))&&((S.getTermID()&1)==1))
+			buf.append(S.makeEscape('N'));
 
 		/* fabulous debug code
 		for(int i=0;i<buf.length();i+=25)

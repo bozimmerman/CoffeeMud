@@ -48,9 +48,9 @@ public class Spell_Claireaudience extends Spell
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(invoker!=null)
-		&&(((MOB)invoker).location()!=((MOB)affected).location())
+		&&(invoker.location()!=((MOB)affected).location())
 		&&(msg.othersMessage()!=null))
-			((MOB)invoker).executeMsg(invoker,msg);
+			invoker.executeMsg(invoker,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

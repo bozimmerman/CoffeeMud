@@ -52,11 +52,11 @@ public class Poison_Alcohol extends Poison
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(drunkness+((MOB)affected).envStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-Math.round(drunkness+((MOB)affected).envStats().level()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-drunkness));
+		affectableStats.setStat(CharStats.DEXTERITY,Math.round(affectableStats.getStat(CharStats.DEXTERITY)-drunkness));
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}

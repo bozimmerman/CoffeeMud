@@ -104,7 +104,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
-			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 		return true;
 	}
 }

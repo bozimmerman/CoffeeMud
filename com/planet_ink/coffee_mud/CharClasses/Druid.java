@@ -316,7 +316,7 @@ public class Druid extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");
+			Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

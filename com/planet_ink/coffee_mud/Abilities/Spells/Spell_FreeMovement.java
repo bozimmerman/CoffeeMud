@@ -63,7 +63,7 @@ public class Spell_FreeMovement extends Spell
 			}
 			else
 			{
-				MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+				MOB newMOB=CMClass.getMOB("StdMOB");
 				FullMsg msg2=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 				newMOB.recoverEnvStats();
 				try

@@ -49,7 +49,7 @@ public class Spell_Scry extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(invoker!=null)
 		&&(msg.target()!=null)
-		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
+		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
 			msg.target().executeMsg(msg.target(),newAffect);
@@ -58,10 +58,10 @@ public class Spell_Scry extends Spell
 		if((affected instanceof MOB)
 		&&(invoker!=null)
 		&&(msg.source() != invoker)
-		&&(((MOB)invoker).location()!=((MOB)affected).location())
+		&&(invoker.location()!=((MOB)affected).location())
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null))
-			((MOB)invoker).executeMsg(invoker,msg);
+			invoker.executeMsg(invoker,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

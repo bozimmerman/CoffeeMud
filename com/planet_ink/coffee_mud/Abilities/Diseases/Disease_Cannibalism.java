@@ -84,7 +84,7 @@ public class Disease_Cannibalism extends Disease
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-         MOB source=(MOB)msg.source();
+         MOB source=msg.source();
          if(source == null)
             return false;
 			MOB mob=(MOB)affected;

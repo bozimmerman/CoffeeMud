@@ -46,7 +46,7 @@ public class Link extends StdCommand
 
 		Room thisRoom=null;
 		String RoomID=(String)commands.elementAt(1);
-		thisRoom=(Room)CMMap.getRoom(RoomID);
+		thisRoom=CMMap.getRoom(RoomID);
 		if(thisRoom==null)
 		{
 			mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");

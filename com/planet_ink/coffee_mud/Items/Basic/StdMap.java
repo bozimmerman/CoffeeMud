@@ -123,7 +123,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	    for(int x=0;x<grid.length;x++)
 			for(int y=0;y<grid[0].length;y++)
 			{
-			    MapRoom room=(MapRoom)grid[x][y];
+			    MapRoom room=grid[x][y];
 				if(room!=null)
 				{
 					if(
@@ -577,7 +577,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 						if(map.length>25)
 							for(int l=0;l<map.length/26;l++)
 								letsec+='Z';
-						letsec=letsec.substring(0,letsec.length()-1)+((char)((((int)'A')+map.length%26)-1));
+						letsec=letsec.substring(0,letsec.length()-1)+((char)((('A')+map.length%26)-1));
 						if(name().length()>0)
 							mob.session().rawPrintln("("+sec+") Use 'READ SEC MAPNAME' to read sections A0 through "+letsec+(map[0].length-1)+" (A-"+letsec+", 0-"+(map[0].length-1)+").");
 					}

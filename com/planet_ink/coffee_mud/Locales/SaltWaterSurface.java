@@ -42,7 +42,7 @@ public class SaltWaterSurface extends WaterSurface
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
-			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
+			Exit o=CMClass.getExit("StdOpenDoorway");
 			GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
 			sea.setArea(getArea());
 			sea.setRoomID("");

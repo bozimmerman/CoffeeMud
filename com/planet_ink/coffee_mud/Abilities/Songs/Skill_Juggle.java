@@ -282,7 +282,7 @@ public class Skill_Juggle extends BardSkill
 							mob.giveItem(I);
 							if((mob.isMine(I))&&(CommonMsgs.drop(mob,I,true,false)))
 							{
-								Weapon w=(Weapon)CMClass.getWeapon("StdWeapon");
+								Weapon w=CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());
 								w.setDisplayText(I.displayText());
 								w.setDescription(I.description());

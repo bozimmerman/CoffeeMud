@@ -124,7 +124,7 @@ public class Spell_DemonGate extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
+		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(43);
 		newMOB.baseEnvStats().setLevel(level+10);
@@ -136,7 +136,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Demon"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

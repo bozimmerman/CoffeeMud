@@ -42,7 +42,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		Vector V=new Vector();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
-			MOB M=(MOB)room.fetchInhabitant(m);
+			MOB M=room.fetchInhabitant(m);
 			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(hostArea,M,new Integer(Law.MOD_ISELLIGOFFICER))))
 				V.addElement(M);
 		}

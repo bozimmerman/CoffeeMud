@@ -44,7 +44,7 @@ public class Spell_ConjureNexus extends Spell
 		if(tickID==MudHost.TICK_MOB)
 		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB mob=(MOB)R.fetchInhabitant(m);
+			MOB mob=R.fetchInhabitant(m);
 			if(mob!=null)
 			{
 				int oldHP=mob.curState().getHitPoints();

@@ -54,7 +54,7 @@ public class Thief_Kamikaze extends ThiefSkill
 							Room R=(Room)I.owner();
 							for(int i2=0;i2<R.numInhabitants();i2++)
 							{
-								MOB M=(MOB)R.fetchInhabitant(i2);
+								MOB M=R.fetchInhabitant(i2);
 								if(M!=null)
 									T.spring(M);
 							}
@@ -117,7 +117,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int amountRequired=(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
+		int amountRequired=(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
 
 		if(mob.getMoney()<amountRequired)
 		{
@@ -165,7 +165,7 @@ public class Thief_Kamikaze extends ThiefSkill
 				target.setMoney(target.getMoney()+amountRequired);
 				target.recoverEnvStats();
 				beneficialAffect(mob,target,asLevel,2);
-				((Trap)bombFound).activateBomb();
+				bombFound.activateBomb();
 				commands=new Vector();
 				commands.addElement("GO");
 				commands.addElement(s);

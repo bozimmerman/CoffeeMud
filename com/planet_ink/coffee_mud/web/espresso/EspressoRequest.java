@@ -30,7 +30,6 @@ import com.planet_ink.coffee_mud.exceptions.*;
 public class EspressoRequest extends Thread {
   private Socket sock;
   private static int instanceCnt = 0;
-  private EspressoServer server;
   private String command;
   private Vector param;
   public EspressoRequest(Socket a_sock, EspressoServer a_server) {
@@ -41,7 +40,6 @@ public class EspressoRequest extends Thread {
     //  and short enough to use in log
     super( "HTTPrq-"+a_server.getPartialName()+ instanceCnt++ );
     sock = a_sock;
-    server = a_server;
     if(sock!=null)
       this.start();
   }
@@ -71,7 +69,6 @@ public class EspressoRequest extends Thread {
 
   public Object processRequest()
   {
-    Object response;
     if((command!=null) && (param!=null))
       return EspressoServer.runCommand(command,param);
     return null;

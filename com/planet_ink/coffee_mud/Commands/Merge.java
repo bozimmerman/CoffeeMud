@@ -177,13 +177,9 @@ public class Merge extends StdCommand
 			mob.tell("No can do.");
 			return false;
 		}
-		boolean prompt=true;
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
-		{
 			commands.removeElementAt(0);
-			prompt=false;
-		}
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{

@@ -25,7 +25,6 @@ public class Prop_NoDamage extends Property
 	public String ID() { return "Prop_NoDamage"; }
 	public String name(){ return "No Damage";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	private boolean lastLevelChangers=true;
 
 	public String accountForYourself()
 	{ return "Harmless";	}

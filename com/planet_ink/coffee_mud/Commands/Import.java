@@ -596,10 +596,10 @@ public class Import extends StdCommand
 				}
 				else
 				if(Character.isUpperCase(s.charAt(z)))
-					num=num|(1<<((int)s.charAt(z))-((int)'A'));
+					num=num|(1<<(s.charAt(z))-('A'));
 				else
 				if(Character.isLowerCase(s.charAt(z)))
-					num=num|(1<<(26+(((int)s.charAt(z))-((int)'a'))));
+					num=num|(1<<(26+((s.charAt(z))-('a'))));
 
 			if(otherStyle)
 				return num;
@@ -1595,42 +1595,42 @@ public class Import extends StdCommand
 			val1=11;
 		switch(val1)
 		{
-		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED);
+		case 0: I.setWeaponClassification(Weapon.CLASS_RANGED);
 				if(name.toUpperCase().indexOf("BOW")>=0)
 				{
-					((Weapon)I).setAmmoCapacity(20);
-					((Weapon)I).setAmmoRemaining(20);
-					((Weapon)I).setAmmunitionType("arrows");
-					((Weapon)I).setRanges(1,3);
-					((Weapon)I).setRawLogicalAnd(true);
+					I.setAmmoCapacity(20);
+					I.setAmmoRemaining(20);
+					I.setAmmunitionType("arrows");
+					I.setRanges(1,3);
+					I.setRawLogicalAnd(true);
 				}
 				break;
-		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
-		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;
-		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM);
-				((Weapon)I).setRanges(0,1);
-				((Weapon)I).setRawLogicalAnd(true);
+		case 1: I.setWeaponClassification(Weapon.CLASS_SWORD); break;
+		case 2: I.setWeaponClassification(Weapon.CLASS_EDGED); break;
+		case 3: I.setWeaponClassification(Weapon.CLASS_POLEARM);
+				I.setRanges(0,1);
+				I.setRawLogicalAnd(true);
 				break;
-		case 4: ((Weapon)I).setWeaponClassification(Weapon.CLASS_BLUNT); break;
-		case 5: ((Weapon)I).setWeaponClassification(Weapon.CLASS_AXE); break;
-		case 6: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED);
-				((Weapon)I).setRanges(0,1);
+		case 4: I.setWeaponClassification(Weapon.CLASS_BLUNT); break;
+		case 5: I.setWeaponClassification(Weapon.CLASS_AXE); break;
+		case 6: I.setWeaponClassification(Weapon.CLASS_FLAILED);
+				I.setRanges(0,1);
 				break;
-		case 7: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED);
-				((Weapon)I).setRanges(0,1);
+		case 7: I.setWeaponClassification(Weapon.CLASS_FLAILED);
+				I.setRanges(0,1);
 				break;
-		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM);
-				((Weapon)I).setRanges(0,1);
-				((Weapon)I).setRawLogicalAnd(true);
+		case 8: I.setWeaponClassification(Weapon.CLASS_POLEARM);
+				I.setRanges(0,1);
+				I.setRawLogicalAnd(true);
 				break;
-		case 9: ((Weapon)I).setWeaponClassification(Weapon.CLASS_DAGGER); break;
-		case 10: ((Weapon)I).setWeaponClassification(Weapon.CLASS_STAFF); break;
-		case 11: ((Weapon)I).setWeaponClassification(Weapon.CLASS_HAMMER); break;
+		case 9: I.setWeaponClassification(Weapon.CLASS_DAGGER); break;
+		case 10: I.setWeaponClassification(Weapon.CLASS_STAFF); break;
+		case 11: I.setWeaponClassification(Weapon.CLASS_HAMMER); break;
 		}
 		if(val2>=1)
-			((Weapon)I).baseEnvStats().setDamage(val2*val3);
+			I.baseEnvStats().setDamage(val2*val3);
 		else
-			((Weapon)I).baseEnvStats().setDamage(val3);
+			I.baseEnvStats().setDamage(val3);
 		if((str4.trim().length()>0)&&((Character.isLetter(str4.trim().charAt(0)))||(str4.trim().startsWith("'"))))
 		{
 			str4=str4.toUpperCase().trim();
@@ -1687,12 +1687,12 @@ public class Import extends StdCommand
 		case 7:
 		case 8:
 		case 27:
-				((Weapon)I).setWeaponType(Weapon.TYPE_BASHING); break;
+				I.setWeaponType(Weapon.TYPE_BASHING); break;
 		case 29:
 		case 55:
 		case 56:
 		case 57:
-				((Weapon)I).setWeaponType(Weapon.TYPE_BURNING); break;
+				I.setWeaponType(Weapon.TYPE_BURNING); break;
 		case 22:
 		case 5:
 		case 10:
@@ -1703,18 +1703,18 @@ public class Import extends StdCommand
 		case 16:
 		case 17:
 		case 24:
-				((Weapon)I).setWeaponType(Weapon.TYPE_NATURAL); break;
+				I.setWeaponType(Weapon.TYPE_NATURAL); break;
 		case 2:
 		case 11:
-				((Weapon)I).setWeaponType(Weapon.TYPE_PIERCING); break;
+				I.setWeaponType(Weapon.TYPE_PIERCING); break;
 		case 25:
 		case 21:
 		case 4:
 		case 3:
 		case 1:
-				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING); break;
+				I.setWeaponType(Weapon.TYPE_SLASHING); break;
 
-		default: ((Weapon)I).setWeaponType(Weapon.TYPE_BURSTING); break;
+		default: I.setWeaponType(Weapon.TYPE_BURSTING); break;
 		}
 	}
 
@@ -2149,11 +2149,11 @@ public class Import extends StdCommand
 				break;
 			}
 
-			M.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			M.baseCharStats().setStat(CharStats.GENDER,'M');
 			switch(sexCode)
 			{
-			case 2: M.baseCharStats().setStat(CharStats.GENDER,(int)'F'); break;
-			case 3: M.baseCharStats().setStat(CharStats.GENDER,(int)'N'); break;
+			case 2: M.baseCharStats().setStat(CharStats.GENDER,'F'); break;
+			case 3: M.baseCharStats().setStat(CharStats.GENDER,'N'); break;
 			}
 
 			if(circleFormat)
@@ -2904,9 +2904,9 @@ public class Import extends StdCommand
 			case 8: I=CMClass.getStdItem("GenItem");
 					break;
 			case 9: if(objectName.toUpperCase().indexOf("SHIELD")>=0)
-						I=(Item)CMClass.getArmor("GenShield");
+						I=CMClass.getArmor("GenShield");
 					else
-						I=(Item)CMClass.getArmor("GenArmor");
+						I=CMClass.getArmor("GenArmor");
 					I.baseEnvStats().setArmor((int)Math.round(Util.div((val1+val2+val3+val4+1),4.0)+1));
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
@@ -2914,15 +2914,15 @@ public class Import extends StdCommand
 					I.baseEnvStats().setLevel(val1);
 					((Potion)I).setSpellList(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
 					 break;
-			case 11: I=(Item)CMClass.getArmor("GenArmor");
+			case 11: I=CMClass.getArmor("GenArmor");
 					 I.baseEnvStats().setArmor(0);
 					 adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					 break;
-			case 12: I=(Item)CMClass.getStdItem("GenItem");
+			case 12: I=CMClass.getStdItem("GenItem");
 					 if(hasReadableContent(objectName))
 						I=CMClass.getStdItem("GenReadable");
 					 break;
-			case 13: I=(Item)CMClass.getStdItem("GenItem");
+			case 13: I=CMClass.getStdItem("GenItem");
 					 if(hasReadableContent(objectName))
 						I=CMClass.getStdItem("GenReadable");
 					 break;
@@ -3129,7 +3129,7 @@ public class Import extends StdCommand
 					long wear=I.rawProperLocationBitmap();
 					boolean bool=I.rawLogicalAnd();
 					boolean gettable=Sense.isGettable(I);
-					I=(Item)CMClass.getArmor("GenArmor");
+					I=CMClass.getArmor("GenArmor");
 					I.setRawProperLocationBitmap(wear);
 					I.setRawLogicalAnd(bool);
 					I.baseEnvStats().setArmor(0);
@@ -3901,7 +3901,7 @@ public class Import extends StdCommand
 						fn="";
 						break;
 					default:
-						fn+=(char)buf.charAt(c);
+						fn+=buf.charAt(c);
 						c++;
 						break;
 					}
@@ -4480,8 +4480,8 @@ public class Import extends StdCommand
 				&&(((String)roomV.elementAt(0)).trim().equals("~"))
 				&&(((String)roomV.elementAt(1)).trim().equals("~")))
 				{
-					String s=eatLineSquiggle(roomV);
-					s=eatLineSquiggle(roomV);
+					eatLineSquiggle(roomV);
+					eatLineSquiggle(roomV);
 					R.setDisplayText("Emptiness...");
 					R.setDescription("");
 				}

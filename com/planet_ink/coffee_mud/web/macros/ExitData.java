@@ -108,7 +108,7 @@ public class ExitData extends StdWebMacro
 						Vector sortMe=new Vector();
 						for(Enumeration e=CMClass.exits();e.hasMoreElements();)
 							sortMe.addElement(CMClass.className(e.nextElement()));
-						sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-EXITS",sorted);
 					}
 					for(int r=0;r<sorted.length;r++)

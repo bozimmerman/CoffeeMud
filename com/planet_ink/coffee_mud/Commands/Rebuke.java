@@ -37,10 +37,10 @@ public class Rebuke extends StdCommand
 		MOB target=mob.location().fetchInhabitant(str);
 		if((target==null)&&(mob.getWorshipCharID().length()>0)
 		&&(EnglishParser.containsString(mob.getWorshipCharID(),str)))
-			target=(MOB)CMMap.getDeity(str);
+			target=CMMap.getDeity(str);
 		if((target==null)&&(mob.getLiegeID().length()>0)
 		&&(EnglishParser.containsString(mob.getLiegeID(),str)))
-			target=(MOB)CMMap.getLoadPlayer(mob.getLiegeID());
+			target=CMMap.getLoadPlayer(mob.getLiegeID());
 		
 		if(target==null)
 		{

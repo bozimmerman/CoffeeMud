@@ -27,7 +27,8 @@ public class WhoPacket extends Packet {
         type = Packet.WHO_REQUEST;
 	}
 	
-    public WhoPacket(Vector v) throws InvalidPacketException {
+    public WhoPacket(Vector v)
+    {
         super(v);
         if( v.size() == 6 ) {
             type = Packet.WHO_REQUEST;

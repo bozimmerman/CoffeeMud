@@ -308,7 +308,7 @@ public class CraftingSkill extends CommonSkill
 		&&(recipes.size()>0))
 		{
 			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
-			commands.addElement((String)randomRecipe.firstElement());
+			commands.addElement(randomRecipe.firstElement());
 		}
 	}
 

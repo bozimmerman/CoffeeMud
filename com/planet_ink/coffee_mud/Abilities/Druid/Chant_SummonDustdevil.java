@@ -189,7 +189,7 @@ public class Chant_SummonDustdevil extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=3;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
@@ -209,7 +209,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.baseEnvStats().setDamage(1);
 		newMOB.baseEnvStats().setAttackAdjustment(0);
 		newMOB.baseEnvStats().setArmor(100);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

@@ -35,8 +35,6 @@ public class Doomsayer extends Cleric
 	protected boolean disableClericSpellGrant(){return true;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
 
-	private int tickDown=0;
-
 	public Doomsayer()
 	{
 		maxStatAdj[CharStats.STRENGTH]=4;
@@ -185,7 +183,7 @@ public class Doomsayer extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

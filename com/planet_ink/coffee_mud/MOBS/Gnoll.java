@@ -34,12 +34,12 @@ public class Gnoll extends StdMOB
 		baseEnvStats.setWeight(300);
 		setWimpHitPoint(0);
 
-		Weapon h=(Weapon)CMClass.getWeapon("MorningStar");
+		Weapon h=CMClass.getWeapon("MorningStar");
 		Random randomizer = new Random(System.currentTimeMillis());
 		int percentage = randomizer.nextInt() % 100;
 		if((percentage & 1) == 0)
 		{
-		   h = (Weapon) CMClass.getWeapon("Longsword");
+		   h = CMClass.getWeapon("Longsword");
 		}
 		if(h!=null)
 		{

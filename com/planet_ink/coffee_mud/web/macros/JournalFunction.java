@@ -57,7 +57,7 @@ public class JournalFunction extends StdWebMacro
 			httpReq.getRequestObjects().remove("JOURNAL: "+last);
 			return "Post submitted.";
 		}
-		String lastlast=(String)httpReq.getRequestParameter("JOURNALMESSAGE");
+		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int num=0;
 		if(lastlast!=null) num=Util.s_int(lastlast);
 		if((num<0)||(num>=info.size()))

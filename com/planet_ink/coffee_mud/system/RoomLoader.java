@@ -85,7 +85,7 @@ public class RoomLoader
 				currentRecordPos=R.getRow();
 				String roomID=DBConnections.getRes(R,"CMROID");
 				String localeID=DBConnections.getRes(R,"CMLOID");
-				Room newRoom=(Room)CMClass.getLocale(localeID);
+				Room newRoom=CMClass.getLocale(localeID);
 				if(newRoom==null)
 					Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
 				else
@@ -352,7 +352,7 @@ public class RoomLoader
 				}
 				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
-				Item newItem=(Item)CMClass.getItem(itemID);
+				Item newItem=CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("Room","Couldn't find item '"+itemID+"'");
 				else
@@ -415,7 +415,7 @@ public class RoomLoader
 					stuff.put("RIDESFOR"+roomID,mobRides);
 				}
 
-				MOB newMOB=(MOB)CMClass.getMOB(MOBID);
+				MOB newMOB=CMClass.getMOB(MOBID);
 				if(newMOB==null)
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else

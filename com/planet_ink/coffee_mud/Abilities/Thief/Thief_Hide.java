@@ -89,7 +89,7 @@ public class Thief_Hide extends ThiefSkill
 					if((msg.target()!=null)
 					&&((msg.target() instanceof Exit)
 						||((msg.target() instanceof Item)
-						   &&(!msg.source().isMine((Item)msg.target())))))
+						   &&(!msg.source().isMine(msg.target())))))
 					{
 						unInvoke();
 						mob.recoverEnvStats();

@@ -57,7 +57,6 @@ public class Pregnancy extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
-	private boolean labor=false;
 	private int ticksInLabor=0;
 
 
@@ -318,14 +317,12 @@ public class Pregnancy extends StdAbility
 					long end=Util.s_long(text().substring(x+1,y));
 					long days=((end-System.currentTimeMillis())/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days
 					monthsRemaining=days/30; // down to months
-					labor=false;
 					if(days<7) // BIRTH!
 					{
 						if(Sense.isSleeping(mob))
 							mob.enqueCommand(Util.parse("WAKE"),0);
 						if((Dice.rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
-						labor=true;
 						ticksInLabor++;
 						if(ticksInLabor>=45)
 						{
@@ -376,7 +373,7 @@ public class Pregnancy extends StdAbility
 							babe.baseCharStats().setStat(CharStats.CHARISMA,10);
 							babe.baseCharStats().setStat(CharStats.CONSTITUTION,6);
 							babe.baseCharStats().setStat(CharStats.DEXTERITY,2);
-							babe.baseCharStats().setStat(CharStats.GENDER,(int)gender);
+							babe.baseCharStats().setStat(CharStats.GENDER,gender);
 							babe.baseCharStats().setStat(CharStats.INTELLIGENCE,2);
 							babe.baseCharStats().setStat(CharStats.STRENGTH,1);
 							babe.baseCharStats().setStat(CharStats.WISDOM,1);

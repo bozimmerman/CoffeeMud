@@ -29,7 +29,6 @@ public class Herbology extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private Item found=null;
-	private String writing="";
 	private boolean messedUp=false;
 	private static final String[] herbList={"angelica","mustard","anise",
 											"myrrh","cassia","peppermint",

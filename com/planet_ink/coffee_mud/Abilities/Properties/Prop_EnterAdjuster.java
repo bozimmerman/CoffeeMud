@@ -38,7 +38,7 @@ public class Prop_EnterAdjuster extends Property
 			String thisOne=names.substring(0,del);
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
@@ -50,7 +50,7 @@ public class Prop_EnterAdjuster extends Property
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
@@ -85,7 +85,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+Util.getParmPlus(readableText,"dex"));
 		String val=Util.getParmStr(readableText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
-			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
+			mob.baseCharStats().setStat(CharStats.GENDER,val.charAt(0));
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+Util.getParmPlus(readableText,"int"));
 		val=Util.getParmStr(readableText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null)&&(!val.equalsIgnoreCase("Archon")))

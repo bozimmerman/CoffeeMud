@@ -74,7 +74,7 @@ public class Archon extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");
+			Weapon w=CMClass.getWeapon("ArchonStaff");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

@@ -1703,7 +1703,7 @@ public class CoffeeMaker
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			mob.baseCharStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
@@ -1810,7 +1810,7 @@ public class CoffeeMaker
 			if(((DeadBody)E).charStats()==null)
 				((DeadBody)E).setCharStats(new DefaultCharStats());
 			try{
-				((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+				((DeadBody)E).charStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 				((DeadBody)E).setPlayerCorpse(XMLManager.getBoolFromPieces(buf,"MPLAYR"));
 				String mobName=XMLManager.getValFromPieces(buf,"MDNAME");
 				if(mobName.length()>0)
@@ -2106,7 +2106,7 @@ public class CoffeeMaker
 			mob.baseCharStats().setMyRace(CMClass.getRace(XMLManager.getValFromPieces(mblk.contents,"RACE")));
 			mob.baseCharStats().setStat(CharStats.DEXTERITY,XMLManager.getIntFromPieces(mblk.contents,"DEX"));
 			mob.baseCharStats().setStat(CharStats.CONSTITUTION,XMLManager.getIntFromPieces(mblk.contents,"CON"));
-			mob.baseCharStats().setStat(CharStats.GENDER,(int)XMLManager.getValFromPieces(mblk.contents,"GEND").charAt(0));
+			mob.baseCharStats().setStat(CharStats.GENDER,XMLManager.getValFromPieces(mblk.contents,"GEND").charAt(0));
 			mob.baseCharStats().setStat(CharStats.WISDOM,XMLManager.getIntFromPieces(mblk.contents,"WIS"));
 			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,XMLManager.getIntFromPieces(mblk.contents,"INT"));
 			mob.baseCharStats().setStat(CharStats.CHARISMA,XMLManager.getIntFromPieces(mblk.contents,"CHA"));
@@ -2664,12 +2664,12 @@ public class CoffeeMaker
 			while(del>=0)
 			{
 				String thisOne=names.substring(0,del);
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(";");
 			}
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null) theSpells.addElement(A);
 			for(int v=0;v<theSpells.size();v++)
 			{

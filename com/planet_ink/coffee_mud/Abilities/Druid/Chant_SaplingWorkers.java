@@ -140,7 +140,7 @@ public class Chant_SaplingWorkers extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0)-6;
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
@@ -192,7 +192,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());

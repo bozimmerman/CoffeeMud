@@ -28,11 +28,10 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 	public String name(){ return "Summon Ivy";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	private boolean processing=false;
 
 	public static Item buildIvy(MOB mob, Room room)
 	{
-		Item newItem=(Item)CMClass.getItem("GenItem");
+		Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(EnvResource.RESOURCE_GREENS);
 		switch(Dice.roll(1,5,0))
 		{

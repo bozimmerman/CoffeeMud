@@ -39,7 +39,7 @@ public class Paladin_Goodness extends Paladin
 		tickTock=!tickTock;
 		if(tickTock)
 		{
-			MOB mob=(MOB)invoker;
+			MOB mob=invoker;
 			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
 				MOB target=mob.location().fetchInhabitant(m);

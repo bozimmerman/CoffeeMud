@@ -88,11 +88,25 @@ public class ClanAssign extends BaseClanner
 						{
 							if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 							{
+							    int oldPos=M.getClanRole();
 								int max=Clan.ROL_MAX[C.getGovernment()][getIntFromRole(newPos)];
 								Vector olds=new Vector();
 								for(int i=0;i<apps.size();i++)
 									if(((Integer)apps.elementAt(i,2)).intValue()==newPos)
 										olds.addElement(apps.elementAt(i,1));
+								if(Clans.getRoleOrder(oldPos)==Clan.POSORDER.length-1)
+								{
+								    int numOlds=0;
+									for(int i=0;i<apps.size();i++)
+									    if(!M.Name().equalsIgnoreCase((String)apps.elementAt(i,1)))
+											if(((Integer)apps.elementAt(i,2)).intValue()==oldPos)
+												numOlds++;
+									if(numOlds==0)
+									{
+									    mob.tell(M.Name()+" is the last "+Clans.getRoleName(C.getGovernment(),oldPos,true,false)+" and must be replaced before being reassigned.");
+									    return false;
+									}
+								}
 								if((olds.size()>0)&&(max<Integer.MAX_VALUE))
 								{
 									if(max==1)

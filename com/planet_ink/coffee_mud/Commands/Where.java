@@ -54,7 +54,7 @@ public class Where extends StdCommand
 			{
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session thisSession=(Session)Sessions.elementAt(s);
+					Session thisSession=Sessions.elementAt(s);
 					if(thisSession.mob() != null)
 					{
 						lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");

@@ -45,7 +45,7 @@ public class SocialTbl extends StdWebMacro
 				socialVec.addElement(name);
 		}
 
-		Collections.sort((List)socialVec);
+		Collections.sort(socialVec);
 		StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;

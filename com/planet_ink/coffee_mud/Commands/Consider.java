@@ -29,14 +29,14 @@ public class Consider extends StdCommand
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
-		int mob2Armor=(int)mob2.adjustedArmor();
-		int mob1Armor=(int)mob1.adjustedArmor();
-		int mob2Attack=(int)mob2.adjustedAttackBonus(mob1);
-		int mob1Attack=(int)mob1.adjustedAttackBonus(mob2);
-		int mob2Dmg=(int)mob2.envStats().damage();
-		int mob1Dmg=(int)mob1.envStats().damage();
-		int mob2Hp=(int)mob2.baseState().getHitPoints();
-		int mob1Hp=(int)mob1.baseState().getHitPoints();
+		int mob2Armor=mob2.adjustedArmor();
+		int mob1Armor=mob1.adjustedArmor();
+		int mob2Attack=mob2.adjustedAttackBonus(mob1);
+		int mob1Attack=mob1.adjustedAttackBonus(mob2);
+		int mob2Dmg=mob2.envStats().damage();
+		int mob1Dmg=mob1.envStats().damage();
+		int mob2Hp=mob2.baseState().getHitPoints();
+		int mob1Hp=mob1.baseState().getHitPoints();
 
 
 		double mob2HitRound=(((Util.div(Dice.normalizeBy5((mob2Attack+mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);

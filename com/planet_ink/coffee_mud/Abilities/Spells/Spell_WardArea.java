@@ -37,7 +37,7 @@ public class Spell_WardArea extends Spell implements Trap
 	{
 		if(invoker()!=null) return invoker();
 		if(text().length()>0)
-			invoker=(MOB)CMMap.getPlayer(text());
+			invoker=CMMap.getPlayer(text());
 		return invoker();
 	}
 

@@ -43,7 +43,7 @@ public class AreaTbl extends StdWebMacro
 				areasVec.addElement(A.name());
 		}
 
-		Collections.sort((List)areasVec);
+		Collections.sort(areasVec);
 		StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;

@@ -291,11 +291,11 @@ public class Reset extends StdCommand
 			else
 			if(s.toUpperCase().startsWith("AREA"))
 				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
-					rooms.addElement(((Room)e.nextElement()));
+					rooms.addElement(e.nextElement());
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-					rooms.addElement(((Room)e.nextElement()));
+					rooms.addElement(e.nextElement());
 			else
 			{
 				mob.tell("Try ROOM, AREA, or WORLD.");
@@ -377,7 +377,7 @@ public class Reset extends StdCommand
 					boolean didSomething=false;
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=(MOB)R.fetchInhabitant(i);
+						MOB M=R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
 						&&(M.baseEnvStats().armor()==((100-(M.baseEnvStats().level()*7)))))
@@ -416,7 +416,7 @@ public class Reset extends StdCommand
 					boolean didSomething=false;
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=(MOB)R.fetchInhabitant(i);
+						MOB M=R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
 						&&(M.getMoney()>(M.baseEnvStats().level()+1)))
@@ -871,11 +871,10 @@ public class Reset extends StdCommand
 			Ability RES=I.fetchEffect("Prop_WearResister");
 			if(RES==null) RES=I.fetchEffect("Prop_HaveResister");
 			Ability CAST=I.fetchEffect("Prop_WearSpellCast");
-			int castMul=1;
 			if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast");
 			if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast2");
 			if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
-			if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul=-1;}
+			if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); /*castMul=-1;*/}
 			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
 			int TLVL=totalLevels(LVLS);
 			if(lvl<0)
@@ -892,12 +891,10 @@ public class Reset extends StdCommand
 			if(TLVL<=0) return fixRejuvItem(I);
 			if(TLVL<=(lvl+25)) return fixRejuvItem(I);
 			int FTLVL=TLVL;
-			int lastLvl=-1;
 			Vector illegalNums=new Vector();
 			Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 			while((TLVL>(lvl+15))&&(illegalNums.size()<4))
 			{
-				lastLvl=TLVL;
 				int highIndex=-1;
 				for(int i=0;i<LVLS.length;i++)
 					if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
@@ -1175,12 +1172,12 @@ public class Reset extends StdCommand
 			while(del>=0)
 			{
 				String thisOne=names.substring(0,del);
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(";");
 			}
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null) theSpells.addElement(A);
 			for(int v=0;v<theSpells.size();v++)
 			{

@@ -42,7 +42,7 @@ public class Save extends StdCommand
 			}
 			for(int s=0;s<Sessions.size();s++)
 			{
-				Session session=(Session)Sessions.elementAt(s);
+				Session session=Sessions.elementAt(s);
 				MOB M=session.mob();
 				if(M!=null)
 				{

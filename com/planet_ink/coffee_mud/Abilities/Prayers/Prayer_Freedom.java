@@ -30,7 +30,7 @@ public class Prayer_Freedom extends Prayer
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		FullMsg msg=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);

@@ -105,7 +105,7 @@ public class Prayer_Rockskin extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
-				HitsRemaining=5+(int)Math.round(adjustedLevel(mob,asLevel)/2);
+				HitsRemaining=5+Math.round(adjustedLevel(mob,asLevel)/2);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

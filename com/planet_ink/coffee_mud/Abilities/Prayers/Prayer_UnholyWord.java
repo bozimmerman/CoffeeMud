@@ -73,7 +73,6 @@ public class Prayer_UnholyWord extends Prayer
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
-		String missStr="<S-NAME> speak(s) the unholy word of"+ofDiety(mob)+", but nothing happens.";
 
 		Room room=mob.location();
 		if(room!=null)
@@ -124,7 +123,6 @@ public class Prayer_UnholyWord extends Prayer
 					maliciousFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
 				else
 					beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
-				missStr=null;
 				return false;
 			}
 		}

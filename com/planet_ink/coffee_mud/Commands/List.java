@@ -37,7 +37,7 @@ public class List extends StdCommand
 		for(Enumeration r=these;r.hasMoreElements();)
 		{
 			Room thisThang=(Room)r.nextElement();
-			String thisOne=(String)thisThang.roomID();
+			String thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 				lines.append(Util.padRightPreserve(thisOne,30)+": "+thisThang.displayText()+"\n\r");
 		}
@@ -55,7 +55,7 @@ public class List extends StdCommand
 		for(Enumeration r=these;r.hasMoreElements();)
 		{
 			Room thisThang=(Room)r.nextElement();
-			String thisOne=(String)thisThang.roomID();
+			String thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 				lines.append(Util.padRightPreserve(thisOne,30)+": "+thisThang.ID()+"\n\r");
 		}
@@ -657,7 +657,7 @@ public class List extends StdCommand
 		Vector V=new Vector();
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			String[] cmd=SECURITY_LISTMAP[i];
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
@@ -671,7 +671,7 @@ public class List extends StdCommand
 		s=s.toUpperCase().trim();
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			String[] cmd=SECURITY_LISTMAP[i];
 			if(cmd[0].startsWith(s))
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
@@ -685,7 +685,7 @@ public class List extends StdCommand
 	{
 		for(int i=0;i<SECURITY_LISTMAP.length;i++)
 		{
-			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			String[] cmd=SECURITY_LISTMAP[i];
 			for(int c=1;c<cmd.length;c++)
 				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))

@@ -23,7 +23,6 @@ import java.util.*;
 
 public class Fighter_CriticalShot extends StdAbility
 {
-	private int oldDamage=0;
 	public String ID() { return "Fighter_CriticalShot"; }
 	public String name(){ return "Critical Shot";}
 	public String displayText(){ return "";}

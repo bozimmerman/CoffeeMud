@@ -89,7 +89,7 @@ public class AreaData extends StdWebMacro
 				if(B.canImprove(E))
 					sortMeB.addElement(CMClass.className(B));
 			}
-			sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
+			sortedB=(new TreeSet(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
 			{
 				String cnam=(String)sortedB[r];
@@ -251,7 +251,7 @@ public class AreaData extends StdWebMacro
 						Vector sortMeA=new Vector();
 						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
 							sortMeA.addElement(CMClass.className(a.nextElement()));
-						sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+						sortedA=(new TreeSet(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
 					for(int r=0;r<sortedA.length;r++)

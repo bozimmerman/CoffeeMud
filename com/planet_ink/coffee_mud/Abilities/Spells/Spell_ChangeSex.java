@@ -36,7 +36,7 @@ public class Spell_ChangeSex extends Spell
 		char gender='M';
 		if(affectableStats.getStat(CharStats.GENDER)!='F')
 			gender='F';
-		affectableStats.setStat(CharStats.GENDER,(int)gender);
+		affectableStats.setStat(CharStats.GENDER,gender);
 	}
 
 

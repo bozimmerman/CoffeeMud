@@ -124,21 +124,21 @@ public class Spell_SummonSteed extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
+		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setWeight(500);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		if(level<4)
 		{
 			newMOB.setName("a pony");
 			newMOB.setDisplayText("a very pretty pony stands here");
 			newMOB.setDescription("She looks loyal, and oh so pretty.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
 			ride.setRiderCapacity(1);
 		}
 		else

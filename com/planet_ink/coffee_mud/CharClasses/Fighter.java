@@ -172,7 +172,7 @@ public class Fighter extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

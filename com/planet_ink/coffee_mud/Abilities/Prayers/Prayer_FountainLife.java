@@ -68,7 +68,7 @@ public class Prayer_FountainLife extends Prayer
 				mob.location().send(mob,msg);
 				String itemID = "LifeFountain";
 
-				Item newItem=(Item)CMClass.getMiscMagic(itemID);
+				Item newItem=CMClass.getMiscMagic(itemID);
 
 				if(newItem==null)
 				{

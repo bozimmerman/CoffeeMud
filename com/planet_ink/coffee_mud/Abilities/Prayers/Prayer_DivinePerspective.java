@@ -53,7 +53,7 @@ public class Prayer_DivinePerspective extends Prayer
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(invoker!=null)
 		&&(msg.target()!=null)
-		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
+		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			noRecurse=true;
 			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
@@ -63,12 +63,12 @@ public class Prayer_DivinePerspective extends Prayer
 		if((affected instanceof MOB)
 		&&(invoker!=null)
 		&&(msg.source() != invoker)
-		&&(((MOB)invoker).location()!=((MOB)affected).location())
+		&&(invoker.location()!=((MOB)affected).location())
 		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 		&&(msg.othersMessage()!=null))
 		{
 			noRecurse=true;
-			((MOB)invoker).executeMsg(invoker,msg);
+			invoker.executeMsg(invoker,msg);
 		}
 		noRecurse=false;
 	}

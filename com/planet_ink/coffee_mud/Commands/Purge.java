@@ -46,7 +46,7 @@ public class Purge extends BaseItemParser
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
-		MOB deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
+		MOB deadMOB=mob.location().fetchInhabitant(mobID);
 		boolean doneSomething=false;
 		while(deadMOB!=null)
 		{
@@ -60,7 +60,7 @@ public class Purge extends BaseItemParser
 			doneSomething=true;
 			deadMOB.killMeDead(false);
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
-			deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
+			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
 		if(!doneSomething)

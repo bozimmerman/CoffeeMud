@@ -50,7 +50,7 @@ public class Fighter_CounterAttack extends StdAbility
 		{
 			if(msg.tool().ID().equals("Skill_Parry"))
 			{
-				FullMsg msg2=new FullMsg(mob,(MOB)msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!");
+				FullMsg msg2=new FullMsg(mob,msg.target(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> position(s) <S-HIM-HERSELF> for a counterattack!");
 				msg.addTrailerMsg(msg2);
 			}
 			else

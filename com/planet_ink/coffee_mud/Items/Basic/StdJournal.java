@@ -102,7 +102,6 @@ public class StdJournal extends StdItem
 						repeat=false;
 						try
 						{
-							boolean reply=false;
 							String prompt="R)eply ";
 							String cmds="R";
 							if((CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0)

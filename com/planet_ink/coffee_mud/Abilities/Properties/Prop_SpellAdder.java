@@ -25,7 +25,6 @@ public class Prop_SpellAdder extends Property
 	public String ID() { return "Prop_SpellAdder"; }
 	public String name(){ return "Casting spells on oneself";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	private Item myItem=null;
 	private Environmental lastMOB=null;
 	boolean processing=false;
 
@@ -70,7 +69,7 @@ public class Prop_SpellAdder extends Property
 				}
 			}
 
-			Ability A=(Ability)CMClass.getAbility(thisOne);
+			Ability A=CMClass.getAbility(thisOne);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
@@ -90,7 +89,7 @@ public class Prop_SpellAdder extends Property
 				names=names.substring(0,x).trim();
 			}
 		}
-		Ability A=(Ability)CMClass.getAbility(names);
+		Ability A=CMClass.getAbility(names);
 		if(A!=null)
 		{
 			A=(Ability)A.copyOf();

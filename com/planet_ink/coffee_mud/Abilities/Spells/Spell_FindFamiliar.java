@@ -70,11 +70,11 @@ public class Spell_FindFamiliar extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.baseEnvStats().setAbility(7);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		int choice=Dice.roll(1,9,-1);
 		switch(choice)
 		{
@@ -82,63 +82,63 @@ public class Spell_FindFamiliar extends Spell
 			newMOB.setName("a dog");
 			newMOB.setDisplayText("a dog is sniffing around here");
 			newMOB.setDescription("She looks like a nice loyal companion.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 			break;
 		case 1:
 			newMOB.setName("a turtle");
 			newMOB.setDisplayText("a turtle is crawling around here");
 			newMOB.setDescription("Not very fast, but pretty cute.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Turtle"));
 			break;
 		case 2:
 			newMOB.setName("a cat");
 			newMOB.setDisplayText("a cat is prowling around here");
 			newMOB.setDescription("She looks busy ignoring you.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Cat"));
 			break;
 		case 3:
 			newMOB.setName("a bat");
 			newMOB.setDisplayText("a bat is flying around here");
 			newMOB.setDescription("The darn thing just won`t stay still!");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Bat"));
 			break;
 		case 4:
 			newMOB.setName("a rat");
 			newMOB.setDisplayText("a rat scurries nearby");
 			newMOB.setDescription("Such a cute, furry little guy!");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rodent"));
 			break;
 		case 5:
 			newMOB.setName("a snake");
 			newMOB.setDisplayText("a snake is slithering around");
 			newMOB.setDescription("..red on yellow..., how did that go again?");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Snake"));
 			break;
 		case 6:
 			newMOB.setName("an owl");
 			newMOB.setDisplayText("an owl is flying around here");
 			newMOB.setDescription("He looks wise beyond his years.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Owl"));
 			break;
 		case 7:
 			newMOB.setName("a rabbit");
 			newMOB.setDisplayText("a cute little rabbit is watching you");
 			newMOB.setDescription("Don`t blink, or she may twitch her nose.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'F');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
 			break;
 		case 8:
 			newMOB.setName("a raven");
 			newMOB.setDisplayText("a raven is pearched nearby");
 			newMOB.setDescription("You think he`s watching you.");
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;
 		}

@@ -98,7 +98,7 @@ public class Chant_SummonRockGolem extends Chant
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
 		newMOB.setName("an golem of stone");
 		newMOB.setDisplayText("an stone golem lumbers around here.");

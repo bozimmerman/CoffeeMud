@@ -531,7 +531,7 @@ public class Socials
 		Vector sortableList=new Vector();
 		for(Enumeration e=uniqueList.elements(); e.hasMoreElements();)
 			sortableList.addElement(e.nextElement());
-		Collections.sort((List)sortableList);
+		Collections.sort(sortableList);
 		int col=0;
 		for(int i=0;i<sortableList.size();i++)
 		{

@@ -125,7 +125,7 @@ public class Chant_BrownMold extends Chant
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=20;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setAbility(25);
@@ -145,7 +145,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseEnvStats().setDamage(25);
 		newMOB.baseEnvStats().setAttackAdjustment(60);
 		newMOB.baseEnvStats().setArmor(0);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

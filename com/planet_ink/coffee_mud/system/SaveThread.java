@@ -145,8 +145,8 @@ public class SaveThread extends Thread
 
 			if((start>=0)&&(finish<levels.length)&&(start<=finish))
 			{
-				long realVal=System.currentTimeMillis()-((long)(val*1000*60*60*24));
-				purgePoint=realVal-((long)(prepurge*1000*60*60*24));
+				long realVal=System.currentTimeMillis()-(val*1000*60*60*24);
+				purgePoint=realVal-(prepurge*1000*60*60*24);
 				for(int s=start;s<=finish;s++) 
 				{
 					if(levels[s]==0) levels[s]=realVal;

@@ -101,8 +101,8 @@ public class Social implements Environmental
 					&&(mob.charStats().getStat(CharStats.CHARISMA)>=16)
 					&&(mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
 					&&(Dice.rollPercentage()==1)
-					&&(mob.charStats().getStat(CharStats.GENDER)!=((int)'N'))
-					&&(tmob.charStats().getStat(CharStats.GENDER)!=((int)'N'))
+					&&(mob.charStats().getStat(CharStats.GENDER)!=('N'))
+					&&(tmob.charStats().getStat(CharStats.GENDER)!=('N'))
 					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");

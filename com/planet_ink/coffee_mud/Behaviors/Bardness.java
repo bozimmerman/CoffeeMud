@@ -23,7 +23,6 @@ import java.util.*;
 public class Bardness extends CombatAbilities
 {
 	public String ID(){return "Bardness";}
-	private int tickDown=0;
 
 
 	public void startBehavior(Environmental forMe)

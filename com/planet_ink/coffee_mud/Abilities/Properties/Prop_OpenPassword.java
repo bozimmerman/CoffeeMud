@@ -40,7 +40,7 @@ public class Prop_OpenPassword extends Property
 			if((start>0)&&(end>start))
 			{
 				String str=msg.sourceMessage().substring(start+1,end).trim();
-				MOB mob=(MOB)msg.source();
+				MOB mob=msg.source();
 				if(str.equalsIgnoreCase(text())
 				&&(text().length()>0)
 				&&(mob.location()!=null))

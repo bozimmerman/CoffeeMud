@@ -145,7 +145,7 @@ public class Spell_Phantasm extends Spell
 	}
 	public MOB determineMonster(MOB caster, Race R, int level)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenMob");
+		MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.baseEnvStats().setAbility(11);
 		CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
@@ -164,7 +164,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setName("a ferocious "+R.name().toLowerCase());
 		newMOB.setDisplayText("a ferocious "+R.name().toLowerCase()+" is stalking around here");

@@ -75,10 +75,10 @@ public class ColorSet extends StdCommand
 			for(int i=0;i<theSet.length;i++)
 			{
 				buf.append("\n\r^H"+Util.padLeft(""+(i+1),2)+"^N) "+Util.padRight(theSet[i][0],20)+": ");
-				String what=clookup[(int)theSet[i][1].charAt(0)];
+				String what=clookup[theSet[i][1].charAt(0)];
 				if(what!=null)
 				for(int ii=0;ii<theColors.length;ii++)
-					if(what.equals(clookup[(int)theColors[ii][1].charAt(0)]))
+					if(what.equals(clookup[theColors[ii][1].charAt(0)]))
 						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
 				buf.append("^N");
 			}
@@ -93,10 +93,10 @@ public class ColorSet extends StdCommand
 				num--;
 				buf=new StringBuffer("");
 				buf.append("\n\r^c"+Util.padLeft(""+(num+1),2)+"^N)"+Util.padRight(theSet[num][0],20)+":");
-				String what=clookup[(int)theSet[num][1].charAt(0)];
+				String what=clookup[theSet[num][1].charAt(0)];
 				if(what!=null)
 				for(int ii=0;ii<theColors.length;ii++)
-					if(what.equals(clookup[(int)theColors[ii][1].charAt(0)]))
+					if(what.equals(clookup[theColors[ii][1].charAt(0)]))
 						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
 				buf.append("^N\n\rAvailable Colors:");
 				for(int ii=0;ii<theColors.length;ii++)
@@ -115,15 +115,15 @@ public class ColorSet extends StdCommand
 						mob.tell("That is not a valid color!");
 					else
 					{
-						clookup[(int)theSet[num][1].charAt(0)]=clookup[(int)theColors[colorNum][1].charAt(0)];
+						clookup[theSet[num][1].charAt(0)]=clookup[theColors[colorNum][1].charAt(0)];
 						String newChanges="";
 						String[] common=CommonStrings.standardColorLookups();
 						for(int i=0;i<theSet.length;i++)
 						{
 							char c=theSet[i][1].charAt(0);
-							if(!clookup[(int)c].equals(common[(int)c]))
+							if(!clookup[c].equals(common[c]))
 								for(int ii=0;ii<theColors.length;ii++)
-									if(common[(int)theColors[ii][1].charAt(0)].equals(clookup[(int)c]))
+									if(common[theColors[ii][1].charAt(0)].equals(clookup[c]))
 									{
 										newChanges+=c+"^"+theColors[ii][1]+"#";
 										break;

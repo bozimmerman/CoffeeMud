@@ -177,7 +177,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
-		if(o==null) o=(Exit)CMClass.getExit("Open");
+		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
 	}
@@ -224,7 +224,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
-		if(o==null) o=(Exit)CMClass.getExit("Open");
+		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
 		if(loc.rawDoors()[opCode]!=null)
@@ -235,7 +235,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				return;
 			loc.rawDoors()[opCode]=null;
 		}
-		if(ao==null) ao=(Exit)CMClass.getExit("Open");
+		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
 		loc.rawExits()[opCode]=ao;
 	}
@@ -370,7 +370,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				linkTo=linkTo.getGridParent();
 			if((linkTo!=null)&&(linkFrom.rawDoors()[EX.dir]!=linkTo))
 			{
-				if(ox==null) ox=(Exit)CMClass.getExit("Open");
+				if(ox==null) ox=CMClass.getExit("Open");
 				linkFrom.rawDoors()[EX.dir]=linkTo;
 				linkFrom.rawExits()[EX.dir]=ox;
 			}
@@ -404,7 +404,6 @@ public class StdGrid extends StdRoom implements GridLocale
 		clearGrid(null);
 		try
 		{
-			Room R=null;
 			subMap=new Room[xsize][ysize];
 			Exit ox=CMClass.getExit("Open");
 			for(int x=0;x<subMap.length;x++)
@@ -570,7 +569,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		for(int a=0;a<numEffects();a++)
 			gc.addEffect((Ability)fetchEffect(a).copyOf());
 		for(int b=0;b<numBehaviors();b++)
-			gc.addBehavior((Behavior)fetchBehavior(b).copyOf());
+			gc.addBehavior(fetchBehavior(b).copyOf());
 		return gc;
 	}
 

@@ -295,7 +295,7 @@ public class Sense
 		if(seen==null) return true;
 
 		if((seer!=null)
-		&&(Util.bset(((MOB)seer).getBitmap(),MOB.ATT_SYSOPMSGS)))
+		&&(Util.bset(seer.getBitmap(),MOB.ATT_SYSOPMSGS)))
 			return true;
 
 		if(!canSee(seer)) return false;
@@ -315,10 +315,9 @@ public class Sense
 
 		if((seer!=null)&&(!(seen instanceof Room)))
 		{
-			MOB mob=(MOB)seer;
-			if(mob.location()!=null)
+			if(seer.location()!=null)
 			{
-				if(isInDark(mob.location()))
+				if(isInDark(seer.location()))
 				{
 					if((isGlowing(seen))||(isLightSource(seer)))
 						return true;
@@ -326,7 +325,7 @@ public class Sense
 						return true;
 					if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB))
 					   return true;
-					if((canSeeVictims(seer))&&(mob.getVictim()==seen))
+					if((canSeeVictims(seer))&&(seer.getVictim()==seen))
 						return true;
 					return false;
 				}
@@ -361,7 +360,7 @@ public class Sense
 		if((!Sense.isGolem(seen))
 		&&(Sense.canSeeInfrared(seer))
 		&&(seen instanceof MOB)
-		&&(isInDark(((MOB)seer).location())))
+		&&(isInDark(seer.location())))
 			Say.append(" (^rheat aura^?)");
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
 			Say.append(" (^wmagical aura^?)");
@@ -501,8 +500,8 @@ public class Sense
 			for(int v=0;v<V.size();v++)
 			{
 				Item I=(Item)V.elementAt(v);
-				totalWeight+=(long)I.baseEnvStats().weight();
-				totalFloatilla+=totalWeight*(long)EnvResource.RESOURCE_DATA[I.material()&EnvResource.RESOURCE_MASK][4];
+				totalWeight+=I.baseEnvStats().weight();
+				totalFloatilla+=totalWeight*EnvResource.RESOURCE_DATA[I.material()&EnvResource.RESOURCE_MASK][4];
 			}
 			if(E instanceof Container)
 			{
@@ -670,7 +669,7 @@ public class Sense
 		if(E instanceof Item)
 		{
 			if(((Item)E).owner() instanceof MOB)
-				return isInTheGame((MOB)((Item)E).owner(),reqInhabitation);
+				return isInTheGame(((Item)E).owner(),reqInhabitation);
 			else
 			if(((Item)E).owner() instanceof Room)
 				return ((!((Item)E).amDestroyed())

@@ -37,7 +37,7 @@ public class Prop_ScrapExplode extends Property {
 	       &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
 		{
 			Item item=(Item)affect.target();
-			MOB mob = (MOB)affect.source();
+			MOB mob = affect.source();
 			Room room = mob.location();
 			int damage = 3 * item.envStats().weight();
 			if (mob != null)

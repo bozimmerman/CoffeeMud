@@ -98,7 +98,7 @@ public class Dance extends StdAbility
 		if(mob==null) return;
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=(Ability)mob.fetchEffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)
 			&&(A instanceof Dance)
 			&&((!notMe)||(!A.ID().equals(ID())))

@@ -30,7 +30,6 @@ public class Spell_Polymorph extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	private Race newRace=null;
-	private EnvStats oldStats=null;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -96,11 +95,9 @@ public class Spell_Polymorph extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=null;
-					oldStats=null;
 					while((newRace==null)||(newRace.ID().equals("StdRace"))||(newRace.availability()==Race.AVAILABLE_NONE))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
-					oldStats=target.baseEnvStats().cloneStats();
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
 					target.confirmWearability();

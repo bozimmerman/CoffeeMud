@@ -66,7 +66,7 @@ public class Chant_SummonPlants extends Chant
 
 	public static Item buildPlant(MOB mob, Room room)
 	{
-		Item newItem=(Item)CMClass.getItem("GenItem");
+		Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(EnvResource.RESOURCE_GREENS);
 		switch(Dice.roll(1,5,0))
 		{

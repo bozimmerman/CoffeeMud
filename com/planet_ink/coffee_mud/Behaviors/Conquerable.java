@@ -33,7 +33,6 @@ public class Conquerable extends Arrest
 	private DVector clanControlPoints=new DVector(2);
 	private DVector assaults=new DVector(2);
 	private Vector noMultiFollows=new Vector();
-	private int attitudePoints=-1;
 	private int totalControlPoints=-1;
 	private Area myArea=null;
 	private String journalName="";
@@ -59,7 +58,7 @@ public class Conquerable extends Arrest
 		&&(hostObj instanceof Area))
 		{
 
-			getLaws((Area)hostObj,false);
+			getLaws(hostObj,false);
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -219,7 +218,7 @@ public class Conquerable extends Arrest
 				Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=(MOB)R.fetchInhabitant(i);
+					MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(M.isMonster())&&(M.getStartRoom()!=null)
 					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
 					&&(M.getClanID().equals(holdingClan)))
@@ -281,7 +280,7 @@ public class Conquerable extends Arrest
 				Vector xml=XMLManager.parseAllXML(data);
 				if(xml!=null)
 				{
-					savedHoldingClan=(String)XMLManager.getValFromPieces(xml,"CLANID");
+					savedHoldingClan=XMLManager.getValFromPieces(xml,"CLANID");
 					holdingClan=savedHoldingClan;
 					Vector allData=XMLManager.getRealContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
@@ -291,8 +290,8 @@ public class Conquerable extends Arrest
 						if((iblk.tag.equalsIgnoreCase("ACITEM"))&&(iblk.contents!=null))
 						{
 							Vector roomData=iblk.contents;
-							String roomID=(String)XMLManager.getValFromPieces(roomData,"ROOMID");
-							String MOBname=(String)XMLManager.getValFromPieces(roomData,"MOB");
+							String roomID=XMLManager.getValFromPieces(roomData,"ROOMID");
+							String MOBname=XMLManager.getValFromPieces(roomData,"MOB");
 							Room R=CMMap.getRoom(roomID);
 							if((R!=null)&&(A.inMetroArea(R.getArea())))
 							{
@@ -501,7 +500,7 @@ public class Conquerable extends Arrest
 				if(value>0)
 				{
 					msg.setValue(msg.value()-value);
-					C.setExp(C.getExp()+((long)value));
+					C.setExp(C.getExp()+value);
 					C.update();
 				}
 			}
@@ -532,7 +531,7 @@ public class Conquerable extends Arrest
 				Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
 				{
-					MOB M=(MOB)R.fetchInhabitant(i);
+					MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(M.isMonster())&&(M.getStartRoom()!=null)
 					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
 					&&(!Sense.isAnimalIntelligence(M))
@@ -782,7 +781,6 @@ public class Conquerable extends Arrest
 				savedHoldingClan="";
 				holdingClan="";
 				clanControlPoints=new DVector(2);
-				attitudePoints=-1;
 				data.append("</ACITEMS>");
 				CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}

@@ -234,7 +234,7 @@ public class Masonry extends CraftingSkill
 								if((title!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
 								{
 									LandTitle A2=(LandTitle)title.newInstance();
-									A2.setLandPrice(((LandTitle)title).landPrice());
+									A2.setLandPrice(title.landPrice());
 									R2.addNonUninvokableEffect((Ability)A2);
 									break;
 								}

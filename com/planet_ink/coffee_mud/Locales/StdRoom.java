@@ -132,7 +132,7 @@ public class StdRoom
 		}
 		for(int i=0;i<E.numEffects();i++)
 		{
-			Ability A=(Ability)E.fetchEffect(i);
+			Ability A=E.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
@@ -140,7 +140,7 @@ public class StdRoom
 		{
 			Behavior B=E.fetchBehavior(i);
 			if(B!=null)
-				addBehavior((Behavior)B.copyOf());
+				addBehavior(B.copyOf());
 		}
 	}
 	public Environmental copyOf()
@@ -223,7 +223,7 @@ public class StdRoom
 	}
 	public Area getArea()
 	{
-		if(myArea==null) return (Area)CMClass.getAreaType("StdArea");
+		if(myArea==null) return CMClass.getAreaType("StdArea");
 		return myArea;
 	}
 	public void setArea(Area newArea)
@@ -245,7 +245,7 @@ public class StdRoom
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 		&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE)>0))
 		{
-			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
+			Exit o=CMClass.getExit("StdOpenDoorway");
 			EndlessThinSky sky=new EndlessThinSky();
 			sky.setArea(getArea());
 			sky.setRoomID("");
@@ -359,7 +359,7 @@ public class StdRoom
 
 		if(msg.amITarget(this))
 		{
-			MOB mob=(MOB)msg.source();
+			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LEAVE:
@@ -442,7 +442,7 @@ public class StdRoom
 
 		if(msg.amITarget(this))
 		{
-			MOB mob=(MOB)msg.source();
+			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LEAVE:
@@ -1223,8 +1223,8 @@ public class StdRoom
 	}
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		Item item=(Item)EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
-		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public void addItem(Item item)

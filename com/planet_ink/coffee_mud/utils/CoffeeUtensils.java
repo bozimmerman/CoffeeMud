@@ -544,7 +544,7 @@ public class CoffeeUtensils
 					changes=true;
 					if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
 					{
-						Exit GE=(Exit)R.rawExits()[dir];
+						Exit GE=R.rawExits()[dir];
 						GE.setTemporaryDoorLink(deadRoom.roomID());
 					}
 				}
@@ -611,12 +611,12 @@ public class CoffeeUtensils
 	{
 		if(CMMap.getPlayer(deadMOB.Name())!=null)
 		{
-		   deadMOB=(MOB)CMMap.getPlayer(deadMOB.Name());
+		   deadMOB=CMMap.getPlayer(deadMOB.Name());
 		   CMMap.delPlayer(deadMOB);
 		}
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session S=(Session)Sessions.elementAt(s);
+			Session S=Sessions.elementAt(s);
 			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
 			   deadMOB=S.mob();
 		}

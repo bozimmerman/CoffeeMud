@@ -49,7 +49,7 @@ public class WhoIs extends Who
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)Sessions.elementAt(s);
+			Session thisSession=Sessions.elementAt(s);
 			MOB mob2=thisSession.mob();
 			if((mob2!=null)
 			&&(!thisSession.killFlag())

@@ -74,7 +74,7 @@ public class StdPill extends StdFood implements Pill
 			String thisOne=names.substring(0,del);
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
@@ -87,7 +87,7 @@ public class StdPill extends StdFood implements Pill
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();

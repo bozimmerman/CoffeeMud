@@ -28,11 +28,11 @@ public class CharGen extends StdCommand
 
 	private MOB levelMOBup(int level, CharClass C)
 	{
-		MOB mob=(MOB)CMClass.getMOB("StdMOB");
+		MOB mob=CMClass.getMOB("StdMOB");
 		mob.setAlignment(500);
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
-		mob.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		mob.baseCharStats().setStat(CharStats.GENDER,'M');
 		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
 		mob.baseCharStats().setStat(CharStats.WISDOM,11);
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,10);
@@ -141,13 +141,13 @@ public class CharGen extends StdCommand
 
 	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries)
 	{
-		MOB avgMob=(MOB)levelMOBup(level,C);
+		MOB avgMob=levelMOBup(level,C);
 		int tries=0;
 		for(;tries<numTries;tries++)
 		{
 			if((tries % 20)==0)
 				mob.session().print(".");
-			MOB mob2=(MOB)levelMOBup(level,C);
+			MOB mob2=levelMOBup(level,C);
 			addHimIn(avgMob,mob2);
 		}
 		averageout(avgMob,tries);

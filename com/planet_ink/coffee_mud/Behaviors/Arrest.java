@@ -179,7 +179,7 @@ public class Arrest extends StdBehavior
 		public String getMessage(int which)
 		{
 			if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
-			   return (String)messages[which];
+			   return messages[which];
 			return "";
 		}
 		public String paroleMessages(int which)
@@ -401,7 +401,7 @@ public class Arrest extends StdBehavior
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=getLaws((Area)hostObj,false);
+			Law laws=getLaws(hostObj,false);
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -539,7 +539,7 @@ public class Arrest extends StdBehavior
 							&&(EnglishParser.containsString(W.criminal().name(),name)))
 							{
 								didSomething=true;
-								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+(long)10);
+								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
 								V.addElement(W);
 							}
 						}

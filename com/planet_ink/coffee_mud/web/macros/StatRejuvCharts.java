@@ -30,13 +30,6 @@ public class StatRejuvCharts extends StdWebMacro
 		return s;
 	}
 	
-	private double doubleVal(ExternalHTTPRequests httpReq, String tag, double def)
-	{
-		String s=getReq(httpReq,tag);
-		if(s.length()==0) return def;
-		return Util.s_double(s);
-	}
-	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		StringBuffer buf=new StringBuffer("");

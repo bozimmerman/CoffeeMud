@@ -74,7 +74,7 @@ public class Chant_AnimalSpy extends Chant
 			if((msg.amISource(spy))
 			&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
 			&&(msg.target()!=null)
-			&&((((MOB)invoker).location()!=spy.location())||(!(msg.target() instanceof Room))))
+			&&((invoker.location()!=spy.location())||(!(msg.target() instanceof Room))))
 			{
 				disable=true;
 				FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
@@ -82,14 +82,14 @@ public class Chant_AnimalSpy extends Chant
 			}
 			else
 			if((!msg.amISource(invoker))
-			&&(((MOB)invoker).location()!=spy.location())
+			&&(invoker.location()!=spy.location())
 			&&(msg.source().location()==spy.location())
 			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null)
 			&&(!disable))
 			{
 				disable=true;
-				((MOB)invoker).executeMsg(invoker,msg);
+				invoker.executeMsg(invoker,msg);
 			}
 			else
 			if(msg.amISource(invoker)

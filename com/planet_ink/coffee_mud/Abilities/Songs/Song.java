@@ -91,7 +91,7 @@ public class Song extends StdAbility
 		if(mob==null) return;
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
-			Ability A=(Ability)mob.fetchEffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)
 			&&(A instanceof Song)
 			&&((!notMe)||(!A.ID().equals(ID())))

@@ -102,7 +102,7 @@ public class StdExit implements Exit
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)
-				addBehavior((Behavior)B.copyOf());
+				addBehavior(B.copyOf());
 		}
 	}
 	public Environmental copyOf()

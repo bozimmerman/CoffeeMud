@@ -46,7 +46,7 @@ public class Destroy extends BaseItemParser
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(mobID.toUpperCase().startsWith("ALL.")){ allFlag=true; mobID="ALL "+mobID.substring(4);}
 		if(mobID.toUpperCase().endsWith(".ALL")){ allFlag=true; mobID="ALL "+mobID.substring(0,mobID.length()-4);}
-		MOB deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
+		MOB deadMOB=mob.location().fetchInhabitant(mobID);
 		boolean doneSomething=false;
 		while(deadMOB!=null)
 		{
@@ -61,7 +61,7 @@ public class Destroy extends BaseItemParser
 			deadMOB.destroy();
 			mob.location().showHappens(CMMsg.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
 			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
-			deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
+			deadMOB=mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
 		if(!doneSomething)
@@ -84,7 +84,7 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 
-		MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
+		MOB deadMOB=CMClass.getMOB("StdMOB");
 		boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,Util.combine(commands,2));
 
 		if(!found)
@@ -303,8 +303,8 @@ public class Destroy extends BaseItemParser
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
 		Item deadItem=null;
-		if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
+		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 		while(deadItem!=null)
 		{
 			deadItem.destroy();
@@ -409,7 +409,7 @@ public class Destroy extends BaseItemParser
 			Room room=(Room)e.nextElement();
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=(MOB)room.fetchInhabitant(i);
+				MOB M=room.fetchInhabitant(i);
 				if(M.baseCharStats().getMyRace()==R)
 				{
 					mob.tell("A MOB called '"+M.Name()+" in "+room.roomID()+" is this race, and must first be deleted.");
@@ -839,7 +839,9 @@ public class Destroy extends BaseItemParser
 		else
 		{
 			String allWord=Util.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
+			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
+			if(thang==null)
+			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);

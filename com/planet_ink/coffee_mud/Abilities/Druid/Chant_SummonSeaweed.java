@@ -32,7 +32,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 
 	public static Item buildSeaweed(MOB mob, Room room)
 	{
-		Item newItem=(Item)CMClass.getItem("GenItem");
+		Item newItem=CMClass.getItem("GenItem");
 		newItem.setMaterial(EnvResource.RESOURCE_SEAWEED);
 		switch(Dice.roll(1,5,0))
 		{

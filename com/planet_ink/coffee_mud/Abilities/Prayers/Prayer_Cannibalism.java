@@ -122,7 +122,7 @@ public class Prayer_Cannibalism extends Prayer
 				}
 				if(F!=null)
 				{
-					CommonMsgs.get(M,null,(Item)F,false);
+					CommonMsgs.get(M,null,F,false);
 					if(M.isMine(F))
 					{
 						M.doCommand(Util.parse("EAT "+F.Name()));

@@ -110,7 +110,7 @@ public class MOBTeacher extends CombatAbilities
 
 		int pct=100;
 		Vector V=null;
-		A=(Ability)CMClass.getAbility(getParms());
+		A=CMClass.getAbility(getParms());
 		if(A!=null)
 		{
 			addAbility(myMOB,A,pct,myAbles);
@@ -146,7 +146,7 @@ public class MOBTeacher extends CombatAbilities
 				continue;
 			}
 
-			A=(Ability)CMClass.getAbility(s);
+			A=CMClass.getAbility(s);
 			CharClass C=CMClass.getCharClass(s);
 			if((C!=null)&&(!C.ID().equals("StdCharClass")))
 			{

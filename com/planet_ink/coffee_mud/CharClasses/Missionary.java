@@ -205,7 +205,7 @@ public class Missionary extends Cleric
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
+			Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;

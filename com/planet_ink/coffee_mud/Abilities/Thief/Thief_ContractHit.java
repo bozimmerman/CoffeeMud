@@ -71,7 +71,7 @@ public class Thief_ContractHit extends ThiefSkill
 				if(C==null) C=mob.charStats().getCurrentClass();
 				for(int i=0;i<num;i++)
 				{
-					MOB M=(MOB)CMClass.getMOB("Assassin");
+					MOB M=CMClass.getMOB("Assassin");
 					M.baseEnvStats().setLevel(level);
 					M.recoverEnvStats();
 					M.baseEnvStats().setArmor(C.getLevelArmor(M));

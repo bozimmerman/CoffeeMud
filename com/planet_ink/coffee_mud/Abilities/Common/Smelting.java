@@ -32,9 +32,9 @@ public class Smelting extends CraftingSkill
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
-	private static final int RCP_WOOD_ALWAYSONEONE=3;
-	private static final int RCP_VALUE_DONTMATTER=4;
-	private static final int RCP_CLASSTYPE=5;
+	//private static final int RCP_WOOD_ALWAYSONEONE=3;
+	//private static final int RCP_VALUE_DONTMATTER=4;
+	//private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_METALONE=6;
 	private static final int RCP_METALTWO=7;
 

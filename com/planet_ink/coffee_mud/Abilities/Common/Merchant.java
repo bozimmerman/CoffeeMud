@@ -171,14 +171,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(I2!=null) N=(Integer)stockValues.get(""+I2);
 		return (N!=null)?N.intValue():I.baseGoldValue();
 	}
-	private boolean inBaseInventory(Environmental thisThang)
-	{
-		Vector V=getUniqueStoreInventory();
-		for(int x=0;x<V.size();x++)
-			if(thisThang.sameAs((Item)baseInventory.elementAt(x)))
-				return true;
-		return false;
-	}
 	public Vector getUniqueStoreInventory()
 	{
 		Vector V=new Vector();
@@ -230,7 +222,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public void addStoreInventory(Environmental thisThang, int number)
 	{
 		if(thisThang instanceof Item)
-			addStoreInventory(thisThang,number,stockPrice((Item)thisThang));
+			addStoreInventory(thisThang,number,stockPrice(thisThang));
 		else
 			addStoreInventory(thisThang,number,1);
 	}
@@ -304,7 +296,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		Environmental item=EnglishParser.fetchEnvironmental(V,name,true);
 		if(item==null) item=EnglishParser.fetchEnvironmental(V,name,false);
 		if(item==null) return null;
-		return (Environmental)item;
+		return item;
 	}
 	public Environmental removeStock(String name, MOB mob)
 	{
@@ -500,7 +492,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		int[] val=new int[3];
 		if((product==null)||(!(product instanceof Item)))
 			return val;
-		val[0]=stockPrice((Item)product);
+		val[0]=stockPrice(product);
 		if((mob==null)||(mob==affected)) return val;
 
 		// the price is 200% at 0 charisma, and 100% at 30

@@ -115,8 +115,8 @@ public class StdRace implements Race
 		if((msg.amITarget(myChar))
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equals("Social"))
-		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
-		&&(msg.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
+		&&(myChar.charStats().getStat(CharStats.GENDER)==('F'))
+		&&(msg.source().charStats().getStat(CharStats.GENDER)==('M'))
 		&&(msg.tool().Name().equals("MATE <T-NAME>")
 			||msg.tool().Name().equals("SEX <T-NAME>"))
 		&&(myChar.location()==msg.source().location()))
@@ -185,7 +185,7 @@ public class StdRace implements Race
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
-			naturalWeapon=(Weapon)CMClass.getWeapon("Natural");
+			naturalWeapon=CMClass.getWeapon("Natural");
 		return naturalWeapon;
 	}
 
@@ -248,7 +248,7 @@ public class StdRace implements Race
 		if(naturalWeaponChoices.size()>0)
 			return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
 		else
-			return (Weapon)CMClass.getWeapon("Natural");
+			return CMClass.getWeapon("Natural");
 	}
 	public Vector myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)
@@ -391,7 +391,7 @@ public class StdRace implements Race
 		}
 		if(mob.getMoney()>0)
 		{
-			Item C=(Item)CMClass.getItem("StdCoins");
+			Item C=CMClass.getItem("StdCoins");
 			C.baseEnvStats().setAbility(mob.getMoney());
 			C.recoverEnvStats();
 			C.setContainer(Body);

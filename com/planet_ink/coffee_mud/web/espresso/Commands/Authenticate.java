@@ -128,25 +128,18 @@ public class Authenticate
     return false;
   }
 
-  public static boolean authenticated(Vector param) {
-    String login = (String) param.elementAt(1);
-    String password = (String) param.elementAt(2);
-    MOB mob = getMOB(login);
-    if (mob == null) {
-      return false;
-    }
-    boolean subOp = false;
-    for (Enumeration a = CMMap.areas(); a.hasMoreElements(); ) {
-      Area A = (Area) a.nextElement();
-      if (A.amISubOp(mob.Name())) {
-        subOp = true;
-        break;
-      }
-    }
-    return (mob.playerStats() != null)
-        && (mob.playerStats().password().equalsIgnoreCase(password))
-        && (mob.Name().trim().length() > 0)
-        && (!bannedName(mob.Name()));
+  public static boolean authenticated(Vector param) 
+  {
+	String login = (String) param.elementAt(1);
+	String password = (String) param.elementAt(2);
+	MOB mob = getMOB(login);
+	if (mob == null) {
+	  return false;
+	}
+	return (mob.playerStats() != null)
+	    && (mob.playerStats().password().equalsIgnoreCase(password))
+	    && (mob.Name().trim().length() > 0)
+	    && (!bannedName(mob.Name()));
   }
 
   private static char ABCeq(char C) {

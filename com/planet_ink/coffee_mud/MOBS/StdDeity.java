@@ -929,7 +929,7 @@ public class StdDeity extends StdMOB implements Deity
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)V.elementAt(1));
-						DT.parm2=(String)Util.combine(V,2);
+						DT.parm2=Util.combine(V,2);
 					}
 					else
 					if(cmd.equals("BURNVALUE"))
@@ -940,7 +940,7 @@ public class StdDeity extends StdMOB implements Deity
 							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
-						DT.parm1=""+Util.s_int((String)Util.combine(V,1));
+						DT.parm1=""+Util.s_int(Util.combine(V,1));
 					}
 					else
 					if((cmd.equals("BURNMATERIAL"))||(cmd.equals("BURN")))
@@ -981,7 +981,7 @@ public class StdDeity extends StdMOB implements Deity
 							break;
 						}
 						DT.parm1=(String)V.elementAt(1);
-						DT.parm2=(String)Util.combine(V,2);
+						DT.parm2=Util.combine(V,2);
 						boolean found=false;
 						for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 						{

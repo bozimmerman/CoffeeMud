@@ -37,7 +37,7 @@ public class Prayer_Nullification extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			MOB target=(MOB)mob.location().fetchInhabitant(i);
+			MOB target=mob.location().fetchInhabitant(i);
 			if((target!=null)&&(success))
 			{
 				// it worked, so build a copy of this ability,
@@ -52,7 +52,7 @@ public class Prayer_Nullification extends Prayer
 					boolean foundSomethingAtLeast=false;
 					for(int a=0;a<target.numEffects();a++)
 					{
-						Ability A=(Ability)target.fetchEffect(a);
+						Ability A=target.fetchEffect(a);
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 						&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)

@@ -144,7 +144,7 @@ public class Chant_Den extends Chant
 
 				newRoom.rawExits()[Directions.getOpDirectionCode(d)]=E;
 				newRoom.getArea().fillInAreaRoom(newRoom);
-				beneficialAffect(mob,mob.location(),asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
+				beneficialAffect(mob,mob.location(),asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 			}
 		}
 		else

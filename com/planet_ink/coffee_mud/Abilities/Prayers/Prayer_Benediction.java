@@ -36,7 +36,7 @@ public class Prayer_Benediction extends Prayer
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null)return;
 
-		MOB mob=(MOB)affected;
+		MOB mob=affected;
 		int pts=adjustedLevel(invoker(),0)/5;
 		CharStats chk=new DefaultCharStats(0);
 		chk.setCurrentClass(mob.charStats().getCurrentClass());

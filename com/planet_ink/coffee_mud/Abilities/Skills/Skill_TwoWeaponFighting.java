@@ -32,7 +32,6 @@ public class Skill_TwoWeaponFighting extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	private boolean middleOfTheFight=false;
 	private Weapon lastWeapon=null;
 	private Weapon lastPrimary=null;
 

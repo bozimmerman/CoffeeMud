@@ -36,7 +36,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 			description="It looks dead.";
 		else
 			description+="\n\rIt also looks dead.";
-		MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
+		MOB newMOB=CMClass.getMOB("GenUndead");
 		newMOB.setName("a skeleton");
 		newMOB.setDescription(description);
 		newMOB.setDisplayText("a skeleton is here");

@@ -66,7 +66,7 @@ public class Chant_WarningWinds extends Chant
 				{
 					for(int i=0;i<R.numInhabitants();i++)
 					{
-						MOB M=(MOB)R.fetchInhabitant(i);
+						MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=affected))
 						{
 							if(M.isInCombat())

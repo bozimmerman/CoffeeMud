@@ -222,7 +222,7 @@ public class Spell_Meld extends Spell
 					}
 
 
-					Armor gc=(Armor)CMClass.getArmor("GenArmor");
+					Armor gc=CMClass.getArmor("GenArmor");
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
@@ -249,7 +249,7 @@ public class Spell_Meld extends Spell
 				else
 				if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 				{
-					Weapon gc=(Weapon)CMClass.getWeapon("GenWeapon");
+					Weapon gc=CMClass.getWeapon("GenWeapon");
 					gc.setName(newName);
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);

@@ -67,7 +67,7 @@ public class Prop_WeakBridge extends Property
 			Room room=(Room)affected;
 			for(int i=0;i<room.numInhabitants();i++)
 			{
-				MOB M=(MOB)room.fetchInhabitant(i);
+				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=mob)&&(!Sense.isInFlight(M)))
 					weight+=M.envStats().weight();
 			}

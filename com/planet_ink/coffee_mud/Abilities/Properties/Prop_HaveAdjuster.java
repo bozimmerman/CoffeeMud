@@ -57,7 +57,7 @@ public class Prop_HaveAdjuster extends Property
 		String val=Util.getParmStr(newText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
-			adjCharStats.setStat(CharStats.GENDER,(int)val.charAt(0));
+			adjCharStats.setStat(CharStats.GENDER,val.charAt(0));
 			gotSex=true;
 		}
 
@@ -149,7 +149,7 @@ public class Prop_HaveAdjuster extends Property
 		affectedStats.setStat(CharStats.CONSTITUTION,affectedStats.getStat(CharStats.CONSTITUTION)+adjCharStats.getStat(CharStats.CONSTITUTION));
 		affectedStats.setStat(CharStats.DEXTERITY,affectedStats.getStat(CharStats.DEXTERITY)+adjCharStats.getStat(CharStats.DEXTERITY));
 		if(gotSex)
-			affectedStats.setStat(CharStats.GENDER,(int)adjCharStats.getStat(CharStats.GENDER));
+			affectedStats.setStat(CharStats.GENDER,adjCharStats.getStat(CharStats.GENDER));
 		affectedStats.setStat(CharStats.INTELLIGENCE,affectedStats.getStat(CharStats.INTELLIGENCE)+adjCharStats.getStat(CharStats.INTELLIGENCE));
 		if(gotClass)
 			affectedStats.setCurrentClass(adjCharStats.getCurrentClass());

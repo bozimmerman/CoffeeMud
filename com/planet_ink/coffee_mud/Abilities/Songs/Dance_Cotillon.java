@@ -33,10 +33,10 @@ public class Dance_Cotillon extends Dance
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((affected==invoker())&&(((MOB)invoker()).isInCombat()))
+		if((affected==invoker())&&((invoker()).isInCombat()))
 		{
 			if(whichLast==null)
-				whichLast=(MOB)invoker();
+				whichLast=invoker();
 			else
 			{
 				MOB M=(MOB)affected;

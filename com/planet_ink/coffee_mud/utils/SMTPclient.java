@@ -114,7 +114,7 @@ public class SMTPclient
 		try{
 			if((mx!=null)&&(mx.size()>0))
 			for(NamingEnumeration e=mx.getAll();e.hasMore();)
-				addys.addElement((String)e.next());
+				addys.addElement(e.next());
 		}
 		catch(javax.naming.NamingException ne)
 		{
@@ -272,7 +272,6 @@ public class SMTPclient
     public synchronized String getListMembers( String list)
                          throws IOException, ProtocolException {
 
-        String returnString;
         String sendString;
 
         InetAddress local;

@@ -95,7 +95,7 @@ public class Skill_RegionalAwareness extends StdAbility
 					for(int i2=0;(i2<diameter)&&(parentR==null);i2++)
 						for(int i3=0;(i3<diameter)&&(parentR==null);i3++)
 						{
-							Room R2=(Room)rmap[i2][i3];
+							Room R2=rmap[i2][i3];
 							if(R2!=null)
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								if((R2.getRoomInDir(d)==R)

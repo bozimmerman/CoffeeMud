@@ -26,8 +26,6 @@ public class Log
 	private static PrintWriter debugOutWriter=null;
 	/**	reroutable logging channel */
 	private static PrintWriter systemOutWriter=null;
-	/** always to System.out */
-	private static PrintWriter systemOut=null;
 	/**	always to "webiq.log" */
 	private static PrintWriter fileOutWriter=null;
 	/**	system messages status */

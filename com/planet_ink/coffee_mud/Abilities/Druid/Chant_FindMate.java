@@ -128,8 +128,8 @@ public class Chant_FindMate extends Chant
 		if((mate==null)||(forMe==null)) return false;
 		if(mate.charStats().getStat(CharStats.GENDER)==forMe.charStats().getStat(CharStats.GENDER))
 			return false;
-		if((mate.charStats().getStat(CharStats.GENDER)!=(int)'M')
-		&&(mate.charStats().getStat(CharStats.GENDER)!=(int)'F'))
+		if((mate.charStats().getStat(CharStats.GENDER)!='M')
+		&&(mate.charStats().getStat(CharStats.GENDER)!='F'))
 			return false;
 		String materace=mate.charStats().getMyRace().ID();
 		String merace=mate.charStats().getMyRace().ID();
@@ -147,8 +147,8 @@ public class Chant_FindMate extends Chant
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if((target.charStats().getStat(CharStats.GENDER)!=(int)'M')
-		&&(target.charStats().getStat(CharStats.GENDER)!=(int)'F'))
+		if((target.charStats().getStat(CharStats.GENDER)!='M')
+		&&(target.charStats().getStat(CharStats.GENDER)!='F'))
 		{
 			mob.tell(target.name()+" is incapable of mating!");
 			return false;

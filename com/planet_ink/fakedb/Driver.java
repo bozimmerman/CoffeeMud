@@ -27,7 +27,7 @@ public class Driver implements java.sql.Driver
       }
    }
 
-   public Driver() throws java.sql.SQLException
+   public Driver()
    {
    }
 

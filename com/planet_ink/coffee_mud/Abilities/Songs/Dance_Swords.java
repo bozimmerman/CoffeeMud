@@ -121,7 +121,7 @@ public class Dance_Swords extends Dance
 				if((!isHit)||(!(affected instanceof Weapon)))
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					MUDFight.postDamage(invoker(),invoker().getVictim(),(Item)affected,
+					MUDFight.postDamage(invoker(),invoker().getVictim(),affected,
 											Dice.roll(1,affected.envStats().damage(),5),
 											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");

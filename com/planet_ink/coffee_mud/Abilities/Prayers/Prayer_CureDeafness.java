@@ -30,7 +30,7 @@ public class Prayer_CureDeafness extends Prayer
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numEffects();a++)

@@ -680,6 +680,8 @@ public class Scriptable extends StdBehavior
 						return null;
 			case 'r':
 			case 'R': return getRandomMOB(monster,null,lastKnownLocation);
+			case 'w': return primaryItem!=null?primaryItem.owner():null;
+			case 'W': return secondaryItem!=null?secondaryItem.owner():null;
 			case 'x':
 			case 'X':
 				if(lastKnownLocation!=null)
@@ -803,6 +805,12 @@ public class Scriptable extends StdBehavior
 				if(secondaryItem!=null)
 					middle=secondaryItem.name();
 				break;
+			case 'w': 
+			    middle=primaryItem!=null?primaryItem.owner().Name():middle;
+			    break;
+			case 'W': 
+			    middle=secondaryItem!=null?secondaryItem.owner().Name():middle;
+			    break;
 			case 'l':
 				if(lastKnownLocation!=null)
 				{
@@ -1217,17 +1225,28 @@ public class Scriptable extends StdBehavior
 					scriptableError(scripted,"HAS","Syntax",evaluable);
 					return returnable;
 				}
+				Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
 				else
 				if(E instanceof MOB)
-					returnable=(((MOB)E).fetchInventory(arg2)!=null);
+				{
+				    if(E2!=null)
+						returnable=((MOB)E).isMine(E2);
+			        else
+						returnable=(((MOB)E).fetchInventory(arg2)!=null);
+				}
 				else
 				if(E instanceof Item)
 					returnable=EnglishParser.containsString(E.name(),arg2);
 				else
 				if(E instanceof Room)
-					returnable=(((Room)E).fetchItem(null,arg2)!=null);
+				{
+				    if(E2 instanceof Item)
+						returnable=((Room)E).isContent((Item)E2);
+			        else
+			            returnable=(((Room)E).fetchItem(null,arg2)!=null);
+				}
 				else
 					returnable=false;
 				break;
@@ -2575,7 +2594,7 @@ public class Scriptable extends StdBehavior
 				else
 				if(E instanceof Item)
 				{
-					choices.addElement((Item)E);
+					choices.addElement(E);
 					if(E instanceof Container)
 						choices=((Container)E).getContents();
 				}

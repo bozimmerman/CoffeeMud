@@ -39,7 +39,6 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
 	protected int maxStatAdj[]={0,0,0,0,0,0};
-	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}

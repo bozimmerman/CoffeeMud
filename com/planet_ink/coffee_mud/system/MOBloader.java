@@ -43,7 +43,7 @@ public class MOBloader
 				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
 				stats.setStat(CharStats.STRENGTH,Util.s_int(DBConnections.getRes(R,"CMSTRE")));
-				stats.setMyRace((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
+				stats.setMyRace(CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
 				stats.setStat(CharStats.DEXTERITY,Util.s_int(DBConnections.getRes(R,"CMDEXT")));
 				stats.setStat(CharStats.CONSTITUTION,Util.s_int(DBConnections.getRes(R,"CMCONS")));
 				stats.setStat(CharStats.GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
@@ -137,7 +137,7 @@ public class MOBloader
 			{
 				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
-				Item newItem=(Item)CMClass.getItem(itemID);
+				Item newItem=CMClass.getItem(itemID);
 				if(newItem==null)
 					Log.errOut("MOB","Couldn't find item '"+itemID+"'");
 				else
@@ -194,7 +194,7 @@ public class MOBloader
 				int profficiency=(int)DBConnections.getLongRes(R,"CMABPF");
 				if(profficiency==Integer.MIN_VALUE)
 				{
-					Behavior newBehavior=(Behavior)CMClass.getBehavior(abilityID);
+					Behavior newBehavior=CMClass.getBehavior(abilityID);
 					if(newBehavior==null)
 						Log.errOut("MOB","Couldn't find behavior '"+abilityID+"'");
 					else
@@ -205,7 +205,7 @@ public class MOBloader
 				}
 				else
 				{
-					Ability newAbility=(Ability)CMClass.getAbility(abilityID);
+					Ability newAbility=CMClass.getAbility(abilityID);
 					if(newAbility==null)
 						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 					else
@@ -336,7 +336,7 @@ public class MOBloader
 					if(lvl.length()>0) level+=Util.s_int(lvl);
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
-					MOB M=(MOB)CMMap.getPlayer((String)thisUser.firstElement());
+					MOB M=CMMap.getPlayer((String)thisUser.firstElement());
 					if((M!=null)&&(M.lastTickedDateTime()>0))
 						thisUser.addElement(""+M.lastTickedDateTime());
 					else
@@ -382,7 +382,7 @@ public class MOBloader
 					int x=cclass.lastIndexOf(";");
 					if((x>0)&&(x<cclass.length()-2))
 						cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
-					String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
+					String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
 					String lvl=DBConnections.getRes(R,"CMLEVL");
 					x=lvl.indexOf(";");
 					int level=0;
@@ -442,7 +442,7 @@ public class MOBloader
 			while(R.next())
 			{
 				String MOBID=DBConnections.getRes(R,"CMFOID");
-				MOB newMOB=(MOB)CMClass.getMOB(MOBID);
+				MOB newMOB=CMClass.getMOB(MOBID);
 				if(newMOB==null)
 					Log.errOut("MOB","Couldn't find MOB '"+MOBID+"'");
 				else
@@ -508,7 +508,7 @@ public class MOBloader
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
-				MOB M=(MOB)CMMap.getPlayer(username);
+				MOB M=CMMap.getPlayer(username);
 				if((M!=null)&&(M.lastTickedDateTime()>0))
 					lastDates.addElement(new Long(M.lastTickedDateTime()));
 				else

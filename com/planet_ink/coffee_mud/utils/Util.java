@@ -26,7 +26,6 @@ public class Util
 	private static byte[] encodeBuffer = new byte[65536];
 	private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private static Inflater decompresser = new Inflater();
-	private static String hex="0123456789ABCDEF";
 	
 	public static String toByteList(byte[] bytes)
 	{
@@ -52,7 +51,7 @@ public class Util
 	public static long absDiff(long x, long y)
 	{
 		long d=x-y;
-		if(d<0) return d*(long)-1;
+		if(d<0) return d*-1;
 		return d;
 	}
 	
@@ -189,7 +188,7 @@ public class Util
 			else
 				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
 		}
-		return (double)0.0;
+		return 0.0;
 	}
 	
 	public static String getParmStr(String text, String key, String defaultVal)
@@ -773,7 +772,7 @@ public class Util
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 		{
-			String s=(String)(String)commands.elementAt(commandIndex);
+			String s=(String)commands.elementAt(commandIndex);
 			if(s.indexOf(" ")>=0) s="\""+s+"\"";
 			Combined.append(s+" ");
 		}
@@ -786,7 +785,7 @@ public class Util
 		if(commands!=null)
 		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 		{
-			String s=(String)(String)commands.elementAt(commandIndex);
+			String s=(String)commands.elementAt(commandIndex);
 			if(s.indexOf(" ")>=0) s="\""+s+"\"";
 			Combined.append(s+" ");
 		}

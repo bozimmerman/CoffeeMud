@@ -70,7 +70,7 @@ public class Chant_SummonPool extends Chant
 				mob.location().send(mob,msg);
 				String itemID = "Spring";
 
-				Item newItem=(Item)CMClass.getItem(itemID);
+				Item newItem=CMClass.getItem(itemID);
 				if(newItem==null)
 				{
 					mob.tell("There's no such thing as a '"+itemID+"'.\n\r");

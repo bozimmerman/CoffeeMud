@@ -59,6 +59,7 @@ public class Skill_Dodge extends StdAbility
 			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-93,false))
 			&&(msg.source().getVictim()==mob)
+		    &&(!doneThisRound)
 			&&(mob.location().okMessage(mob,msg2)))
 			{
 				doneThisRound=true;

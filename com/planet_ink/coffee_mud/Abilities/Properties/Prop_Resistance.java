@@ -39,8 +39,10 @@ public class Prop_Resistance extends Property
 	}
 	public void affectCharStats(MOB affected, CharStats affectedStats)
 	{
-		super.affectCharStats(affected,affectedStats);
-		affectedStats.setStat(CharStats.SAVE_MAGIC,affectedStats.getStat(CharStats.SAVE_MAGIC)+adjCharStats.getStat(CharStats.SAVE_MAGIC));
+
+	    super.affectCharStats(affected,affectedStats);
+	    ensureStarted();
+	    affectedStats.setStat(CharStats.SAVE_MAGIC,affectedStats.getStat(CharStats.SAVE_MAGIC)+adjCharStats.getStat(CharStats.SAVE_MAGIC));
 		affectedStats.setStat(CharStats.SAVE_TRAPS,affectedStats.getStat(CharStats.SAVE_TRAPS)+adjCharStats.getStat(CharStats.SAVE_TRAPS));
 		affectedStats.setStat(CharStats.SAVE_GAS,affectedStats.getStat(CharStats.SAVE_GAS)+adjCharStats.getStat(CharStats.SAVE_GAS));
 		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)+adjCharStats.getStat(CharStats.SAVE_FIRE));
@@ -64,6 +66,7 @@ public class Prop_Resistance extends Property
 
 		if((msg.amITarget(mob))&&(msg.value()<=0)&&(mob.location()!=null))
 		{
+		    ensureStarted();
 			if(!Prop_HaveResister.isOk(msg,this,mob))
 				return false;
 			Prop_HaveResister.resistAffect(msg,mob,this);

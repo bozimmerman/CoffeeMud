@@ -83,7 +83,7 @@ public class Get extends BaseItemParser
 					if(((Coins)I).numberOfCoins()<=gold)
 						return I;
 					((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()-gold);
-					Item C=(Item)CMClass.getItem("StdCoins");
+					Item C=CMClass.getItem("StdCoins");
 					C.baseEnvStats().setAbility(gold);
 					C.recoverEnvStats();
 					room.addItem(C);
@@ -159,13 +159,13 @@ public class Get extends BaseItemParser
 			{
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				else
 				{
 					if(!allFlag)
 						getThis=possibleRoomGold(mob,mob.location(),container,whatToGet);
 					if(getThis==null)
-						getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
@@ -180,7 +180,7 @@ public class Get extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				if(!get(mob,container,(Item)getThis,quiet,"get",true))
+				if(!get(mob,container,getThis,quiet,"get",true))
 					if(getThis instanceof Coins)
 						((Coins)getThis).putCoinsBack();
 				doneSomething=true;

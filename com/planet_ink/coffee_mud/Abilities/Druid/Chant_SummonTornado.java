@@ -92,7 +92,7 @@ public class Chant_SummonTornado extends Chant
 				HashSet H=properTargets(mob,givenTarget,true);
 				if(H!=null)
 				for(Iterator e=H.iterator();e.hasNext();)
-					stuff.addElement((MOB)e.next());
+					stuff.addElement(e.next());
 				Vector availableRooms=new Vector();
 				availableRooms.addElement(mob.location());
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

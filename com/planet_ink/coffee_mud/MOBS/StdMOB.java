@@ -240,7 +240,7 @@ public class StdMOB implements MOB
 		}
 		for(int i=0;i<E.numEffects();i++)
 		{
-			Ability A=(Ability)E.fetchEffect(i);
+			Ability A=E.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
@@ -248,7 +248,7 @@ public class StdMOB implements MOB
 		{
 			Behavior B=E.fetchBehavior(i);
 			if(B!=null)
-				behaviors.addElement((Behavior)B.copyOf());
+				behaviors.addElement(B.copyOf());
 		}
 	}
 	public Environmental copyOf()
@@ -852,7 +852,7 @@ public class StdMOB implements MOB
 	{
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
 			return charStats().getMyRace().myNaturalWeapon();
-		return (Weapon)CMClass.getWeapon("Natural");
+		return CMClass.getWeapon("Natural");
 	}
 
 	public String displayText(MOB viewer)
@@ -1173,14 +1173,14 @@ public class StdMOB implements MOB
 
 		for(int i=0;i<numAllEffects();i++)
 		{
-			Ability aff=(Ability)fetchEffect(i);
+			Ability aff=fetchEffect(i);
 			if((aff!=null)&&(!aff.okMessage(this,msg)))
 				return false;
 		}
 
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item I=(Item)fetchInventory(i);
+			Item I=fetchInventory(i);
 			if((I!=null)&&(!I.okMessage(this,msg)))
 				return false;
 		}
@@ -1699,10 +1699,9 @@ public class StdMOB implements MOB
 				if((msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)&&(msg.value()<=0))
 				{
 					int chanceToFail=Integer.MIN_VALUE;
-					int saveCode=-1;
 					for(int c=0;c<CharStats.affectTypeMap.length;c++)
 						if(msg.targetMinor()==CharStats.affectTypeMap[c])
-						{	saveCode=c; chanceToFail=charStats().getSave(c); break;}
+						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{
 						chanceToFail+=(envStats().level()-msg.source().envStats().level());
@@ -2077,7 +2076,7 @@ public class StdMOB implements MOB
 				&&(!amDead))
 				{
 					if((!isInCombat())
-					&&(location().isInhabitant((MOB)msg.source()))
+					&&(location().isInhabitant(msg.source()))
 					&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 						||(!(msg.tool() instanceof DiseaseAffect))))
 					{
@@ -2254,14 +2253,14 @@ public class StdMOB implements MOB
 
 		for(int i=0;i<inventorySize();i++)
 		{
-			Item I=(Item)fetchInventory(i);
+			Item I=fetchInventory(i);
 			if(I!=null)
 				I.executeMsg(this,msg);
 		}
 
 		for(int i=0;i<numAllEffects();i++)
 		{
-			Ability A=(Ability)fetchEffect(i);
+			Ability A=fetchEffect(i);
 			if(A!=null)
 				A.executeMsg(this,msg);
 		}
@@ -2274,7 +2273,7 @@ public class StdMOB implements MOB
 		int newLastTickedDateTime=0;
 		for(int i=0;i<location().numInhabitants();i++)
 		{
-			MOB M=(MOB)location().fetchInhabitant(i);
+			MOB M=location().fetchInhabitant(i);
 			if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,location(),"CMDMOBS")))
 			{ newLastTickedDateTime=-1; break;}
 		}
@@ -2762,26 +2761,26 @@ public class StdMOB implements MOB
 	}
 	public Item fetchInventory(String itemName)
 	{
-		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
-		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
+		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchInventory(Item goodLocation, String itemName)
 	{
-		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
-		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
+		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchCarried(Item goodLocation, String itemName)
 	{
-		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
-		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public Item fetchWornItem(String itemName)
 	{
-		Item item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
-		if(item==null) item=(Item)EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
+		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
 		return item;
 	}
 	public void addFollower(MOB follower, int order)

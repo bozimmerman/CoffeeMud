@@ -138,7 +138,7 @@ public class Chant_PlantMaze extends Chant
 				Vector everyone=new Vector();
 				for(int m=0;m<oldRoom.numInhabitants();m++)
 				{
-					MOB follower=(MOB)oldRoom.fetchInhabitant(m);
+					MOB follower=oldRoom.fetchInhabitant(m);
 					everyone.addElement(follower);
 				}
 

@@ -54,7 +54,7 @@ public class Spell_DestroyObject extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanish(es) into thin air!");
-				((Item)target).destroy();
+				target.destroy();
 				mob.location().recoverRoomStats();
 			}
 

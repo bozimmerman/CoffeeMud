@@ -70,7 +70,7 @@ public class UtiliThread extends Thread
 			Room R=(Room)r.nextElement();
 			for(int m=0;m<R.numInhabitants();m++)
 			{
-				MOB mob=(MOB)R.fetchInhabitant(m);
+				MOB mob=R.fetchInhabitant(m);
 				if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=CMClass.ThreadEngine().isTicking(mob,MudHost.TICK_MOB);
@@ -236,7 +236,7 @@ public class UtiliThread extends Thread
 			try{Thread.sleep(2000);}catch(Exception e){}
 		}
 		
-		try{Thread.sleep(MudHost.TICK_TIME*(long)2);}catch(Exception e){started=false;}
+		try{Thread.sleep(MudHost.TICK_TIME*2);}catch(Exception e){started=false;}
 		
 		while(started)
 		{

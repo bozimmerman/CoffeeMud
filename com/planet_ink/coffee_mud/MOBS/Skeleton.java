@@ -32,7 +32,7 @@ public class Skeleton extends Undead
 		setMoney(0);
 		baseEnvStats.setWeight(30);
 
-		Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
+		Weapon sword=CMClass.getWeapon("Longsword");
 		if(sword!=null)
 		{
 			sword.wearAt(Item.WIELD);

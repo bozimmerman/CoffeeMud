@@ -43,7 +43,7 @@ public class Farming extends CommonSkill
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			MOB mob=(MOB)invoker();
+			MOB mob=invoker();
 			if(tickUp==6)
 			{
 				if(found==null)

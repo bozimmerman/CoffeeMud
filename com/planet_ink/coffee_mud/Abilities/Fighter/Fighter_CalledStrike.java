@@ -46,7 +46,7 @@ public class Fighter_CalledStrike extends StdAbility
 
 	protected boolean amputate()
 	{
-		MOB mob=(MOB)target;
+		MOB mob=target;
 		if(mob==null) return false;
 		Amputation A=(Amputation)mob.fetchEffect("Amputation");
 		boolean newOne=false;
@@ -151,12 +151,7 @@ public class Fighter_CalledStrike extends StdAbility
 		}
 
 		Amputation A=(Amputation)target.fetchEffect("Amputation");
-		boolean newOne=false;
-		if(A==null)
-		{
-			A=new Amputation();
-			newOne=true;
-		}
+		if(A==null)	A=new Amputation();
 
 		Vector remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)

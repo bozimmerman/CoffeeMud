@@ -103,7 +103,7 @@ public class Who extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)Sessions.elementAt(s);
+			Session thisSession=Sessions.elementAt(s);
 			MOB mob2=thisSession.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();

@@ -175,11 +175,11 @@ public class JournalLoader
 						subject=subject.substring(4);
 						entry.setElementAt(subject,4);
 						long last=Util.s_long((String)entry.elementAt(2));
-						if(c=='D') last=last+((long)(1000*60*60*24));
+						if(c=='D') last=last+(1000*60*60*24);
 						else
-						if(c=='M') last=last+((long)(1000*60*60*24*30));
+						if(c=='M') last=last+(1000*60*60*24*30);
 						else
-						if(c=='Y') last=last+((long)(1000*60*60*24*365));
+						if(c=='Y') last=last+(1000*60*60*24*365);
 						entry.setElementAt(""+last,6);
 					}
 					

@@ -38,7 +38,7 @@ public class Fighter_Shrug extends StdAbility
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.amITarget((MOB)affected))
+		&&(msg.amITarget(affected))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(!msg.amISource((MOB)affected))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))

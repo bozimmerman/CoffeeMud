@@ -33,7 +33,7 @@ public class Orc extends StdMOB
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		Weapon d=(Weapon)CMClass.getWeapon("Dagger");
+		Weapon d=CMClass.getWeapon("Dagger");
 		if(d!=null)
 		{
 			d.wearAt(Item.WIELD);

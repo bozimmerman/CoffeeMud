@@ -34,7 +34,6 @@ public class FieryRoom extends ActiveTicker
     private String newDesc="";
     private int directDamage=10;
     private int eqChance=0;
-    private boolean noStop=false;
     private boolean noNpc=false;
     private boolean notStart=false;
 
@@ -50,7 +49,6 @@ public class FieryRoom extends ActiveTicker
         newDisplay=Util.getParmStr(newParms,"Title","A Charred Ruin");
         newDesc=Util.getParmStr(newParms,"Description","Whatever was once here is now nothing more than ash.");
         directDamage=Util.getParmInt(newParms,"damage",10);
-        if(newParms.toUpperCase().indexOf("NOSTOP")>0) noStop = true;
         if(newParms.toUpperCase().indexOf("NONPC")>0) noNpc = true;
         if(newParms.toUpperCase().indexOf("NOTSTART")>0) notStart = true;
         eqChance=Util.getParmInt(newParms,"eqchance",0);

@@ -120,7 +120,6 @@ public class MUDTracker extends Scriptable
 		if(location==theTrail.elementAt(0))
 			return 999;
 
-		Room nextRoom=null;
 		int bestDirection=-1;
 		int trailLength=Integer.MAX_VALUE;
 		for(int dirs=0;dirs<Directions.NUM_DIRECTIONS;dirs++)
@@ -144,7 +143,6 @@ public class MUDTracker extends Scriptable
 					{
 						bestDirection=dirs;
 						trailLength=trail;
-						nextRoom=thisRoom;
 						break;
 					}
 				}

@@ -70,7 +70,7 @@ public class Chant_PlantBed extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=(Item)CMClass.getItem("GenBed");
+				Item newItem=CMClass.getItem("GenBed");
 				Rideable newRide=(Rideable)newItem;
 				newItem.setName("a plant bed");
 				newItem.setDisplayText("A enormously comfortable pea-pod looks ready to sleep in.");

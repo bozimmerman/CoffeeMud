@@ -37,7 +37,7 @@ public class Spell_DispelMagic extends Spell
 		boolean foundSomethingAtLeast=false;
 		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=(Ability)target.fetchEffect(a);
+			Ability A=target.fetchEffect(a);
 			if((A!=null)&&(A.canBeUninvoked())
 			&&(((A.classificationCode()&Ability.SPELL)>0)||((A.classificationCode()&Ability.CHANT)>0)))
 			{

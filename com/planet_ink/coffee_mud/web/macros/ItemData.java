@@ -209,7 +209,6 @@ public class ItemData extends StdWebMacro
 			if(parms.containsKey(okparms[o]))
 			{
 				String old=httpReq.getRequestParameter(okparms[o]);
-				String oldold=old;
 				if(old==null) old="";
 				switch(o)
 				{
@@ -225,7 +224,7 @@ public class ItemData extends StdWebMacro
 						{
 							Vector sortMe=new Vector();
 							CMClass.addAllItemClassNames(sortMe,true,false);
-							sorted=(Object[])(new TreeSet(sortMe)).toArray();
+							sorted=(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
 						}
 						for(int r=0;r<sorted.length;r++)
@@ -648,7 +647,6 @@ public class ItemData extends StdWebMacro
 					else
 					{
 						old=httpReq.getRequestParameter("ISTWOHANDED");
-						oldold=old;
 						if(old==null) old="";
 						if(old.equals(""))
 							old="checked";

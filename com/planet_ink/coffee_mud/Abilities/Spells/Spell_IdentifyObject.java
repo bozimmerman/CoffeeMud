@@ -43,7 +43,7 @@ public class Spell_IdentifyObject extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String identity=((Item)target).secretIdentity();
+				String identity=target.secretIdentity();
 				if(mob.isMonster())
 					CommonMsgs.say(mob,null,identity,false,false);
 				else

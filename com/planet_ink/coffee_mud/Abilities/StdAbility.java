@@ -489,7 +489,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		return canBeUninvoked;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectEnvStats(Environmental affectedEnv, EnvStats affectableStats)
 	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

@@ -60,7 +60,7 @@ public class ChanWho extends StdCommand
 		StringBuffer buf=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
-			Session ses=(Session)Sessions.elementAt(s);
+			Session ses=Sessions.elementAt(s);
 			if(ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
 				buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
 		}

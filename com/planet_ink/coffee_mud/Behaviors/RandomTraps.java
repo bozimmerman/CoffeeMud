@@ -192,13 +192,13 @@ public class RandomTraps extends ActiveTicker
 		{
 			Vector map=((GridLocale)R).getAllRooms();
 			if(map.size()==0)
-				elligible.addElement(((Room)R));
+				elligible.addElement(R);
 			else
 			for(Enumeration m=((GridLocale)R).getAllRooms().elements();m.hasMoreElements();)
 				elligible.addElement(m.nextElement());
 		}
 		else
-			elligible.addElement(((Room)R));
+			elligible.addElement(R);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -158,7 +158,7 @@ public class Foraging extends CommonSkill
 								total+=Util.s_int(s.substring(0,x).trim());
 								if(choice<=total)
 								{
-									found.setSecretIdentity((String)s.substring(x+1).trim());
+									found.setSecretIdentity(s.substring(x+1).trim());
 									break;
 								}
 							}

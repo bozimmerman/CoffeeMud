@@ -37,7 +37,7 @@ public class Prayer_AnimateGhost extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
+		MOB newMOB=CMClass.getMOB("GenUndead");
 		newMOB.setName((mob==null)?"a poltergeist":"a ghost");
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(newMOB.Name()+" is here");

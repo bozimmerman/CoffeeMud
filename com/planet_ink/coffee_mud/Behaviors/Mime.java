@@ -96,8 +96,8 @@ public class Mime extends ActiveTicker
 		||(CMSecurity.isDisabled("EMOTERS"))
 		||(!canAct(ticking,tickID)))
 			return true;
-		msg=(CMMsg)msg.copyOf();
-		MOB sMOB=(MOB)msg.source();
+		msg=msg.copyOf();
+		MOB sMOB=msg.source();
 		if(msg.sourceMinor()==CMMsg.TYP_EMOTE)
 		{
 			if(ticking instanceof MOB)
@@ -122,7 +122,7 @@ public class Mime extends ActiveTicker
 		{
 			MOB target=null;
 			if((msg.target()!=null)&&(msg.target() instanceof MOB))
-				target=(MOB)msg.source();
+				target=msg.source();
 			if(ticking instanceof MOB)
 				msg.modify((MOB)ticking,target,msg.tool(),
 						   msg.sourceCode(),msg.sourceMessage(),

@@ -694,7 +694,7 @@ public class CMClass extends ClassLoader
 			int loaded=0;
 			for(int r=0;r<genRaces.size();r++)
 			{
-				Race GR=((Race)getRace("GenRace").copyOf());
+				Race GR=getRace("GenRace").copyOf();
 				GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
 				if(!GR.ID().equals("GenRace"))
 				{
@@ -712,7 +712,7 @@ public class CMClass extends ClassLoader
 			int loaded=0;
 			for(int r=0;r<genClasses.size();r++)
 			{
-				CharClass CR=((CharClass)CMClass.getCharClass("GenCharClass").copyOf());
+				CharClass CR=(CMClass.getCharClass("GenCharClass").copyOf());
 				CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
 				if(!CR.ID().equals("GenCharClass"))
 				{
@@ -923,7 +923,7 @@ public class CMClass extends ClassLoader
 								if (!checkClass(C,ancestorCl))
 									O=null;
 								else
-									O=(Object)C.newInstance();
+									O=C.newInstance();
 							}
 							catch(Exception e)
 							{
@@ -936,7 +936,7 @@ public class CMClass extends ClassLoader
 							if (!checkClass(C,ancestorCl))
 								O=null;
 							else
-								O=(Object)C.newInstance();
+								O=C.newInstance();
 						}
 						if(O!=null)
 						{

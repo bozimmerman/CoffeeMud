@@ -88,11 +88,11 @@ public class Dragon extends StdMOB
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
 		{
-			baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			baseCharStats().setStat(CharStats.GENDER,'F');
 		}
 		else
 		{
-			baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			baseCharStats().setStat(CharStats.GENDER,'M');
 		}
 		// ===== set the basics
 		setName(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon");
@@ -100,8 +100,8 @@ public class Dragon extends StdMOB
 		setDisplayText(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon watches you intently.");
 
 		// ===== arm him
-		Weapon ClawOne=(Weapon)CMClass.getWeapon("DragonClaw");
-		Weapon ClawTwo=(Weapon)CMClass.getWeapon("DragonClaw");
+		Weapon ClawOne=CMClass.getWeapon("DragonClaw");
+		Weapon ClawTwo=CMClass.getWeapon("DragonClaw");
 		if(ClawOne!=null)
 		{
 			ClawOne.wearAt(Item.WIELD);

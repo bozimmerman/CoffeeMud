@@ -127,7 +127,7 @@ public class INIModify extends StdWebMacro
 				if(httpReq.isRequestParameter(thisKey)
 				&&(ipage.containsKey(thisKey))
 				&&(!modified.contains(thisKey))
-				&&(!httpReq.getRequestParameter(thisKey).equals((String)ipage.getStr(thisKey))))
+				&&(!httpReq.getRequestParameter(thisKey).equals(ipage.getStr(thisKey))))
 				{
 					modified.add(thisKey);
 					Log.sysOut("INIModify","Key '"+thisKey+"' modified.");

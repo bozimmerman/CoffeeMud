@@ -152,7 +152,7 @@ public class CoffeeTables
 			highestOnline=XMLManager.getIntFromPieces(all,"HIGH");
 			numberOnlineTotal=XMLManager.getIntFromPieces(all,"NUMONLINE");
 			numberOnlineCounter=XMLManager.getIntFromPieces(all,"NUMCOUNT");
-			XMLManager.XMLpiece X=(XMLManager.XMLpiece)XMLManager.getPieceFromPieces(all,"STATS");
+			XMLManager.XMLpiece X=XMLManager.getPieceFromPieces(all,"STATS");
 			if((X==null)||(X.contents==null)||(X.contents.size()==0)||(!X.tag.equals("STATS")))
 				return;
 			stats.clear();

@@ -71,7 +71,7 @@ public class Split extends StdCommand
 		{
 			MOB recipient=(MOB)e.next();
 			mob.setMoney(mob.getMoney()-gold);
-			Item C=(Item)CMClass.getItem("StdCoins");
+			Item C=CMClass.getItem("StdCoins");
 			C.baseEnvStats().setAbility(gold);
 			C.recoverEnvStats();
 			mob.addInventory(C);

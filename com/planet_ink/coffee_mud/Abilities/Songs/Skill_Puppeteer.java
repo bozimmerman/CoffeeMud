@@ -85,7 +85,7 @@ public class Skill_Puppeteer extends BardSkill
 				if(!isHit)
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					MUDFight.postDamage(invoker(),invoker().getVictim(),(Item)affected,
+					MUDFight.postDamage(invoker(),invoker().getVictim(),affected,
 											Dice.roll(1,affected.envStats().level(),1),
 											CMMsg.MASK_GENERAL|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");

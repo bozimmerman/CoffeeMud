@@ -78,7 +78,7 @@ public class Spell_FakeSpring extends Spell
 				mob.location().send(mob,msg);
 				String itemID = "Spring";
 
-				Item newItem=(Item)CMClass.getItem(itemID);
+				Item newItem=CMClass.getItem(itemID);
 
 				if(newItem==null)
 				{

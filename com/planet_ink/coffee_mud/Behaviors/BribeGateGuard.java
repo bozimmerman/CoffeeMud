@@ -22,7 +22,6 @@ import java.util.*;
 */
 public class BribeGateGuard extends StdBehavior
 {
-	private Hashtable partials = new Hashtable();
 	protected Exit e;
 	protected int dir = -1;
 	int tickTock = 0;
@@ -510,7 +509,7 @@ public class BribeGateGuard extends StdBehavior
 		e = mob.location().getExitInDir(dir);
 		if (!e.isOpen()) {
 		  for (int j = 0; j < mob.location().numPCInhabitants(); j++) {
-		    MOB M = (MOB)mob.location().fetchPCInhabitant(j);
+		    MOB M = mob.location().fetchPCInhabitant(j);
 		    if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
 		      Boolean B = (Boolean) toldAlready.get(M.Name());
 		      if (!B.booleanValue())

@@ -107,7 +107,7 @@ public class ProcessSMTPrequest extends Thread
 					if(c<0)	throw new IOException("reset by peer");
 					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
 					{	s=input.substring(0,input.length()-1); break;}
-					input.append((char)c);
+					input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
 						replyData=("552 String exceeds size limit. You are very bad!"+cr).getBytes();

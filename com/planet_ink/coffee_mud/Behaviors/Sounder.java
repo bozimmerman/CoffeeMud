@@ -33,7 +33,6 @@ public class Sounder extends StdBehavior
 	protected static int ROOM_MASK=32768;
 	private CMMsg lastMsg=null;
 	private boolean oncePerRound1=false;
-	private boolean oncePerRound2=false;
 
 	public Sounder()
 	{
@@ -306,7 +305,7 @@ public class Sounder extends StdBehavior
 		{
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
-			emoter.charStats().setStat(CharStats.GENDER,(int)'N');
+			emoter.charStats().setStat(CharStats.GENDER,'N');
 			for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -318,7 +317,7 @@ public class Sounder extends StdBehavior
 		{
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
-			emoter.charStats().setStat(CharStats.GENDER,(int)'N');
+			emoter.charStats().setStat(CharStats.GENDER,'N');
 			emoteHere((Room)ticking,emoter,emote);
 		}
 		else
@@ -338,7 +337,7 @@ public class Sounder extends StdBehavior
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				emoter.setName(ticking.name());
-				emoter.charStats().setStat(CharStats.GENDER,(int)'N');
+				emoter.charStats().setStat(CharStats.GENDER,'N');
 				emoteHere(R,emoter,emote);
 			}
 		}
@@ -362,7 +361,6 @@ public class Sounder extends StdBehavior
 			}
 		}
 		oncePerRound1=false;
-		oncePerRound2=false;
 		return true;
 	}
 
@@ -428,7 +426,7 @@ public class Sounder extends StdBehavior
 		&&(room!=null)
 		&&((!(E instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
 								||(lookFor==CMMsg.TYP_DAMAGE)
-								||(canFreelyBehaveNormal((MOB)E))))
+								||(canFreelyBehaveNormal(E))))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
 			&&(!Util.bset(triggers[v],TICK_MASK)))

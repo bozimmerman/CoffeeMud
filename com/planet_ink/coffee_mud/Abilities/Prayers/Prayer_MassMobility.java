@@ -44,7 +44,7 @@ public class Prayer_MassMobility extends Prayer
 		&&(!mob.amDead()))
 		{
 			Ability A=(Ability)msg.tool();
-			MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+			MOB newMOB=CMClass.getMOB("StdMOB");
 			FullMsg msg2=new FullMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
 			newMOB.recoverEnvStats();
 			try

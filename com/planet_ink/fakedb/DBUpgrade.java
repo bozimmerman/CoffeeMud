@@ -211,7 +211,7 @@ public class DBUpgrade
 			{ same=false; break;}
 			for(int v=0;v<V1.size();v++)
 			{
-				if(!((String)V1.elementAt(v)).equals((String)V2.elementAt(v)))
+				if(!((String)V1.elementAt(v)).equals(V2.elementAt(v)))
 				{ same=false; break;}
 			}
 			if(!same) break;
@@ -227,7 +227,7 @@ public class DBUpgrade
 			{ same=false; break;}
 			for(int v=0;v<V1.size();v++)
 			{
-				if(!((String)V1.elementAt(v)).equals((String)V2.elementAt(v)))
+				if(!((String)V1.elementAt(v)).equals(V2.elementAt(v)))
 				{ same=false; break;}
 			}
 			if(!same) break;

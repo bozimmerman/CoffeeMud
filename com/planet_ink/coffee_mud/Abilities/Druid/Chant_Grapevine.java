@@ -39,9 +39,9 @@ public class Chant_Grapevine extends Chant
 		&&(((Room)((Item)affected).owner()).isContent((Item)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(invoker!=null)
-		&&(((MOB)invoker).location()!=((Room)((Item)affected).owner()))
+		&&(invoker.location()!=((Room)((Item)affected).owner()))
 		&&(msg.othersMessage()!=null))
-			((MOB)invoker).executeMsg(invoker,msg);
+			invoker.executeMsg(invoker,msg);
 	}
 
 	public void unInvoke()

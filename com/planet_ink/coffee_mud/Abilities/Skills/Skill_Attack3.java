@@ -31,7 +31,6 @@ public class Skill_Attack3 extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private boolean active=true;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

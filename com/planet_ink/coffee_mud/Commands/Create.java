@@ -135,7 +135,7 @@ public class Create extends BaseGenerics
 				dest=M;
 			}
 		}
-		Item newItem=(Item)CMClass.getItem(itemID);
+		Item newItem=CMClass.getItem(itemID);
 
 		if(newItem==null)
 		{
@@ -197,7 +197,7 @@ public class Create extends BaseGenerics
 
 		Room thisRoom=null;
 		String Locale=(String)commands.elementAt(3);
-		thisRoom=(Room)CMClass.getLocale(Locale);
+		thisRoom=CMClass.getLocale(Locale);
 		if(thisRoom==null)
 		{
 			mob.tell("You have failed to specify a valid room type '"+Locale+"'.\n\rThe format is CREATE ROOM [DIRECTION] [NEW [ROOM TYPE] / LINK [ROOM ID]) \n\r");
@@ -242,7 +242,7 @@ public class Create extends BaseGenerics
 		}
 
 		String mobID=((String)commands.elementAt(2));
-		MOB newMOB=(MOB)CMClass.getMOB(mobID);
+		MOB newMOB=CMClass.getMOB(mobID);
 
 		if(newMOB==null)
 		{

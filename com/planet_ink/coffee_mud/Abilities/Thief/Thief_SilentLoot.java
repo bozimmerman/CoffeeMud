@@ -30,7 +30,6 @@ public class Thief_SilentLoot extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTLOOT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private Item item=null;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

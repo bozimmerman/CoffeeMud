@@ -174,7 +174,7 @@ public class Follower extends ActiveTicker
 			{
 				MOB mob=(MOB)ticking;
 				Room thisRoom=mob.location();
-				Room otherRoom=(Room)thisRoom.getRoomInDir(direction);
+				Room otherRoom=thisRoom.getRoomInDir(direction);
 
 				if(otherRoom!=null)
 				{

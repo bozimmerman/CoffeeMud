@@ -74,7 +74,7 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		if(invoker==null)
 		{
-			invoker=(MOB)CMClass.getMOB("StdMOB");
+			invoker=CMClass.getMOB("StdMOB");
 			invoker.setLocation(CMClass.getLocale("StdRoom"));
 			invoker.baseEnvStats().setLevel(affected.envStats().level());
 			invoker.envStats().setLevel(affected.envStats().level());
@@ -274,7 +274,7 @@ public class StdTrap extends StdAbility implements Trap
 						Room R=(Room)I.owner();
 						for(int i=0;i<R.numInhabitants();i++)
 						{
-							MOB M=(MOB)R.fetchInhabitant(i);
+							MOB M=R.fetchInhabitant(i);
 							if(M!=null)
 								spring(M);
 						}

@@ -218,7 +218,7 @@ public class Chant_HowlersMoon extends Chant
 
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenMob");
+		MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.baseEnvStats().setAbility(0);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.setAlignment(500);
@@ -226,7 +226,7 @@ public class Chant_HowlersMoon extends Chant
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Wolf"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));

@@ -62,7 +62,7 @@ public class Prayer_MassCureDisease extends Prayer
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 					{
-						MOB target=(MOB)R.fetchInhabitant(m);
+						MOB target=R.fetchInhabitant(m);
 						if(target!=null)
 						{
 							Vector offensiveAffects=returnOffensiveAffects(target);

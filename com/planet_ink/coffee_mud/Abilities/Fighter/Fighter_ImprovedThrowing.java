@@ -32,7 +32,6 @@ public class Fighter_ImprovedThrowing extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private boolean activated=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -60,12 +59,7 @@ public class Fighter_ImprovedThrowing extends StdAbility
 			if((myWeapon!=null)
 			&&(myWeapon instanceof Weapon)
 			&&(((Weapon)myWeapon).weaponClassification()==Weapon.CLASS_THROWN))
-			{
-				activated=true;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
-			}
-			else
-				activated=false;
 		}
 	}
 

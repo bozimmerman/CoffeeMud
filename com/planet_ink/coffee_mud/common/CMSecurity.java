@@ -315,7 +315,7 @@ public class CMSecurity
 		Vector V=Util.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
 		for(int v=0;v<V.size();v++)
-			disVars.add((String)V.elementAt(v));
+			disVars.add(V.elementAt(v));
 	}
 	public static void setDisableVar(String var, boolean delete)
 	{

@@ -24,7 +24,6 @@ public class GenBoat extends GenRideable
 {
 	public String ID(){	return "GenBoat";}
 
-	private String readableText = "";
 	public GenBoat()
 	{
 		super();

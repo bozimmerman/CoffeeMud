@@ -84,7 +84,7 @@ public class Dance_Square extends Dance
 
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
-					MOB follower=(MOB)mob.location().fetchInhabitant(i);
+					MOB follower=mob.location().fetchInhabitant(i);
 
 					// malicious dances must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;

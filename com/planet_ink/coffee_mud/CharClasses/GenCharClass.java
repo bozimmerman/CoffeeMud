@@ -522,7 +522,7 @@ public class GenCharClass extends StdCharClass
 	public boolean sameAs(CharClass E)
 	{
 		if(!(E instanceof GenCharClass)) return false;
-		if(((CharClass)E).classParms().equals(classParms()))
+		if(E.classParms().equals(classParms()))
 			return true;
 		return false;
 	}

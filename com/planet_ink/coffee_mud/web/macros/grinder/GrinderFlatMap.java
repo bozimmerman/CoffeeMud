@@ -450,7 +450,7 @@ public class GrinderFlatMap
 
     protected String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
 	{
-	    GrinderDir dir=(GrinderDir)room.doors[d];
+	    GrinderDir dir=room.doors[d];
 	    String dirLetter=""+Directions.getDirectionName(d).toUpperCase().charAt(0);
 		GrinderRoom roomPointer=null;
 	    if((dir==null)||((dir!=null)&&(dir.room.length()==0)))
@@ -528,7 +528,7 @@ public class GrinderFlatMap
         {
             String roomID=null;
             if(room.doors[d]!=null)
-                roomID=((GrinderDir)room.doors[d]).room;
+                roomID=room.doors[d].room;
 
             if((roomID!=null)
 			&&(roomID.length()>0)

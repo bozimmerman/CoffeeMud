@@ -586,7 +586,7 @@ public class GrinderMap extends GrinderFlatMap
 		{
 			String roomID = null;
 			if (room.doors[d] != null)
-				roomID = ( (GrinderDir) room.doors[d]).room;
+				roomID = room.doors[d].room;
 			  
 			if ( (roomID != null)
 			&& (roomID.length() > 0)

@@ -66,7 +66,7 @@ public class Skill_Revoke extends StdAbility
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++)
 		{
-			Ability A=(Ability)target.fetchEffect(a);
+			Ability A=target.fetchEffect(a);
 			if((A!=null)
 			&&(A.invoker()==mob)
 			&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)

@@ -147,7 +147,7 @@ public class Chant_SummonSapling extends Chant
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();
-		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
@@ -170,7 +170,7 @@ public class Chant_SummonSapling extends Chant
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);

@@ -98,7 +98,7 @@ public class StdPowder extends StdItem implements MagicDust {
 			String thisOne=names.substring(0,del);
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
@@ -110,7 +110,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();

@@ -35,7 +35,7 @@ public class Assassin extends GenMob
 			R.startRacing(this,false);
 		}
 		baseCharStats().setStat(CharStats.DEXTERITY,18);
-		baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		baseCharStats().setStat(CharStats.GENDER,'M');
 		baseCharStats().setStat(CharStats.WISDOM,18);
 		baseEnvStats().setSensesMask(baseEnvStats().disposition()|EnvStats.CAN_SEE_DARK);
 
@@ -75,7 +75,7 @@ public class Assassin extends GenMob
 			addInventory(I);
 			I.wearIfPossible(this);
 		}
-		Weapon d=(Weapon)CMClass.getWeapon("Dagger");
+		Weapon d=CMClass.getWeapon("Dagger");
 		if(d!=null)
 		{
 			d.wearAt(Item.HELD);

@@ -141,7 +141,7 @@ public class Chant_SummonMount extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 
-		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
+		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
@@ -149,7 +149,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.setAlignment(500);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));

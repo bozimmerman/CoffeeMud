@@ -394,7 +394,7 @@ public class GenRace extends StdRace
 		Vector wblk=XMLManager.getRealContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
-			naturalWeapon=(Weapon)CMClass.getWeapon(XMLManager.getValFromPieces(wblk,"ICLASS"));
+			naturalWeapon=CMClass.getWeapon(XMLManager.getValFromPieces(wblk,"ICLASS"));
 			String idat=XMLManager.getValFromPieces(wblk,"IDATA");
 			if((idat!=null)&&(naturalWeapon!=null))
 			{

@@ -118,7 +118,7 @@ public class UnderWaterGrid extends StdGrid
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
 				{
-					Room newRoom=(Room)getGridRoom(x,y);
+					Room newRoom=getGridRoom(x,y);
 					if(newRoom!=null)
 					{
 						subMap[x][y]=newRoom;

@@ -46,7 +46,7 @@ public class GTell extends StdCommand
 				mob.tell("No telling.");
 			else
 			{
-				int num=Util.s_int((String)Util.combine(commands,2));
+				int num=Util.s_int(Util.combine(commands,2));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
 					mob.tell((String)V.elementAt(i));

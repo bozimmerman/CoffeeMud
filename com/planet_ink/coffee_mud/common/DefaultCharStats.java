@@ -37,7 +37,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	{
 		for(int i=0;i<NUM_BASE_STATS;i++)
 			stats[i]=10;
-		stats[GENDER]=(int)'M';
+		stats[GENDER]='M';
 	}
 	public DefaultCharStats(int def)
 	{

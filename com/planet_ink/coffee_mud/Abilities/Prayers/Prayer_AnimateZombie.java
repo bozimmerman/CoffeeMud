@@ -74,7 +74,7 @@ public class Prayer_AnimateZombie extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
+				MOB newMOB=CMClass.getMOB("GenUndead");
 				newMOB.setName("a zombie");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a zombie is here");

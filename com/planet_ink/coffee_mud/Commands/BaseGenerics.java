@@ -401,7 +401,6 @@ public class BaseGenerics extends StdCommand
 	}
 
 	public static void genBurnout(MOB mob, Light E, int showNumber, int showFlag)
-		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Is destroyed after burnout: '"+E.destroyedWhenBurnedOut()+"'.");
@@ -595,7 +594,6 @@ public class BaseGenerics extends StdCommand
 	}
 
 	public static void genReadable1(MOB mob, Item E, int showNumber, int showFlag)
-		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
@@ -696,7 +694,7 @@ public class BaseGenerics extends StdCommand
 						else
 						if(E instanceof Wand)
 						{
-							Ability chosenOne=chosenOne=(Ability)CMClass.getAbility(newName);
+							Ability chosenOne=chosenOne=CMClass.getAbility(newName);
 							if(chosenOne!=null)
 								ok=true;
 							else
@@ -711,7 +709,7 @@ public class BaseGenerics extends StdCommand
 							while(x>=0)
 							{
 								String spellName=newName.substring(0,x).trim();
-								Ability chosenOne=chosenOne=(Ability)CMClass.getAbility(spellName);
+								Ability chosenOne=chosenOne=CMClass.getAbility(spellName);
 								if(chosenOne!=null)
 									ok=true;
 								else
@@ -1593,7 +1591,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Minimum/Maximum Ranges: "+((int)Math.round(E.minRange()))+"/"+((int)Math.round(E.maxRange()))+".");
+		mob.tell(showNumber+". Minimum/Maximum Ranges: "+Math.round(E.minRange())+"/"+Math.round(E.maxRange())+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
 		String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
@@ -1783,13 +1781,13 @@ public class BaseGenerics extends StdCommand
 			switch(newValue)
 			{
 			case 0:
-				E.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+				E.baseCharStats().setStat(CharStats.GENDER,'M');
 				break;
 			case 1:
-				E.baseCharStats().setStat(CharStats.GENDER,(int)'F');
+				E.baseCharStats().setStat(CharStats.GENDER,'F');
 				break;
 			case 2:
-				E.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+				E.baseCharStats().setStat(CharStats.GENDER,'N');
 				break;
 			}
 		}
@@ -2062,7 +2060,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		PlayerStats P=((MOB)E).playerStats();
+		PlayerStats P=E.playerStats();
 		if(P==null) return;
 		String behave="NO";
 		while(behave.length()>0)
@@ -2141,7 +2139,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Behavior)CMClass.getBehavior(behave);
+						chosenOne=CMClass.getBehavior(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -2223,7 +2221,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Ability)CMClass.getAbility(behave);
+						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							String parms=chosenOne.text();
@@ -2538,7 +2536,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Ability)CMClass.getAbility(behave);
+						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=(E.fetchAbility(chosenOne.ID())!=null);
@@ -2653,7 +2651,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Ability)CMClass.getAbility(behave);
+						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -2721,7 +2719,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Ability)CMClass.getAbility(behave);
+						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -2789,7 +2787,7 @@ public class BaseGenerics extends StdCommand
 					}
 					else
 					{
-						chosenOne=(Ability)CMClass.getAbility(behave);
+						chosenOne=CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -2908,7 +2906,6 @@ public class BaseGenerics extends StdCommand
 				mob.tell("1: Able to worn on any ONE of these locations:");
 			else
 				mob.tell("1: Must be worn on ALL of these locations:");
-			int maxCode=1;
 			for(int l=0;l<20;l++)
 			{
 				long wornCode=1<<l;
@@ -2916,7 +2913,6 @@ public class BaseGenerics extends StdCommand
 				{
 					String header=(l+2)+": ("+Sense.wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
 					mob.tell(header);
-					maxCode=l+2;
 				}
 			}
 			codeVal=Util.s_int(mob.session().prompt("Select an option number above to TOGGLE\n\r:"));

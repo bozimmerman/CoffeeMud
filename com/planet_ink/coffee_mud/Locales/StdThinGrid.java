@@ -136,7 +136,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		boolean foundOne=false;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Room R2=(Room)R.rawDoors()[d];
+			Room R2=R.rawDoors()[d];
 			if(R2!=null)
 			{
 				foundOne=true;
@@ -182,7 +182,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				for(int a=0;a<numEffects();a++)
 					R.addEffect((Ability)fetchEffect(a).copyOf());
 				for(int b=0;b<numBehaviors();b++)
-					R.addBehavior((Behavior)fetchBehavior(b).copyOf());
+					R.addBehavior(fetchBehavior(b).copyOf());
 				if(watcher==null)
 					watcher=new ThinGridChildWatch();
 				R.addNonUninvokableEffect(watcher);
@@ -271,7 +271,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			linkTo=linkTo.getGridParent();
 		if((linkTo!=null)&&(linkFrom.rawDoors()[EX.dir]!=linkTo))
 		{
-			if(ox==null) ox=(Exit)CMClass.getExit("Open");
+			if(ox==null) ox=CMClass.getExit("Open");
 			linkFrom.rawDoors()[EX.dir]=linkTo;
 			linkFrom.rawExits()[EX.dir]=ox;
 		}
@@ -417,7 +417,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
-		if(o==null) o=(Exit)CMClass.getExit("Open");
+		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
 	}
@@ -435,7 +435,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				return;
 			room.rawDoors()[dirCode]=null;
 		}
-		if(o==null) o=(Exit)CMClass.getExit("Open");
+		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
 		if(loc.rawDoors()[opCode]!=null)
@@ -446,7 +446,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				return;
 			loc.rawDoors()[opCode]=null;
 		}
-		if(ao==null) ao=(Exit)CMClass.getExit("Open");
+		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
 		loc.rawExits()[opCode]=ao;
 	}
@@ -679,11 +679,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public Environmental newInstance(){ return this;}
 		private static final String[] CODES={};
 		public String[] getStatCodes(){return CODES;}
-		private int getCodeNum(String code){return -1;}
 		public String getStat(String code){ return "";}
 		public void setStat(String code, String val){}
 		public boolean sameAs(Environmental E){ return (E instanceof ThinGridChildWatch);}
-		private void cloneFix(Ability E){}
 		public Environmental copyOf(){ return this;}
 		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 		public void setMiscText(String newMiscText){}

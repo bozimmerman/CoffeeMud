@@ -269,7 +269,6 @@ public class CMAble
 										   Ability A)
 	{
 		if(student==null) return -1;
-		int theLevel=-1;
 		int greatestDiff=-1;
 		CharClass theClass=null;
 		for(int c=student.charStats().numClasses()-1;c>=0;c--)
@@ -282,7 +281,6 @@ public class CMAble
 			&&((classLevel-level)>greatestDiff))
 			{
 				greatestDiff=classLevel-level;
-				theLevel=level;
 				theClass=C;
 			}
 		}
@@ -291,10 +289,7 @@ public class CMAble
 		if((level>=0)
 		&&(classLevel>=level)
 		&&((classLevel-level)>greatestDiff))
-		{
 			greatestDiff=classLevel-level;
-			theLevel=level;
-		}
 		if(theClass==null) 
 			return student.charStats().getClassLevel(student.charStats().getCurrentClass());
 		else

@@ -96,7 +96,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				Vector mobs=new Vector();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=(MOB)R.fetchInhabitant(m);
+					MOB M=R.fetchInhabitant(m);
 					if((M!=null)
 					&&(M.isEligibleMonster())
 					&&(M.getStartRoom()==R)

@@ -50,7 +50,7 @@ public class Prayer_NeutralizeLand extends Prayer
 				boolean foundSomethingAtLeast=false;
 				for(int a=0;a<target.numEffects();a++)
 				{
-					Ability A=(Ability)target.fetchEffect(a);
+					Ability A=target.fetchEffect(a);
 					if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 					&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 					   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)

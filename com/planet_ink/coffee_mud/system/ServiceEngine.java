@@ -417,7 +417,7 @@ public class ServiceEngine implements ThreadEngine
 		if((group<0)||(client<0)||(group>=tickGroup.size())) return "";
 		Tick almostTock=(Tick)tickGroup.elementAt(group);
 		if(client>=almostTock.numTickers()) return "";
-		TockClient C=(TockClient)almostTock.fetchTicker(client);
+		TockClient C=almostTock.fetchTicker(client);
 		if(C==null) return "";
 
 		if(which.toLowerCase().startsWith("tickername"))

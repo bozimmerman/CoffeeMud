@@ -53,7 +53,7 @@ public class Shambler extends StdRace
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.GENDER,(int)'N');
+		affectableStats.setStat(CharStats.GENDER,'N');
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+100);
 		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+100);

@@ -50,7 +50,7 @@ public class Chant extends StdAbility
 	public void helpProfficiency(MOB mob)
 	{
 
-		Ability A=(Ability)mob.fetchAbility(this.ID());
+		Ability A=mob.fetchAbility(this.ID());
 		if(A==null) return;
 		if(A.appropriateToMyAlignment(mob.getAlignment()))
 		{

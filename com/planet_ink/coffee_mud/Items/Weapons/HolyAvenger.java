@@ -87,15 +87,15 @@ public class HolyAvenger extends TwoHandedSword
 		&&(!((MOB)msg.target()).amDead())
 		&&(((MOB)msg.target()).getAlignment()<350))
 		{
-			FullMsg msg2=new FullMsg(msg.source(),(MOB)msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
+			FullMsg msg2=new FullMsg(msg.source(),msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))
 			{
 				msg.source().location().send(msg.source(), msg2);
 				int damage=Dice.roll(1,15,0);
 				if(msg.value()>0)
 					damage=damage/2;
-				msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
-				FullMsg msg3=new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
+				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),CMMsg.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
+				FullMsg msg3=new FullMsg(msg.source(),msg.target(),null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_DAMAGE,CMMsg.NO_EFFECT,null);
 				msg3.setValue(damage);
 				msg.addTrailerMsg(msg3);
 			}

@@ -232,12 +232,12 @@ public class TimsItemTable extends StdWebMacro
 			while(del>=0)
 			{
 				String thisOne=names.substring(0,del);
-				Ability A=(Ability)CMClass.getAbility(thisOne);
+				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
 				del=names.indexOf(";");
 			}
-			Ability A=(Ability)CMClass.getAbility(names);
+			Ability A=CMClass.getAbility(names);
 			if(A!=null) theSpells.addElement(A);
 			for(int v=0;v<theSpells.size();v++)
 			{

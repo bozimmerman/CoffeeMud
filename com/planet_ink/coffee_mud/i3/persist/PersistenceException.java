@@ -78,7 +78,7 @@ public class PersistenceException extends Exception
      * @return the full chain of exceptions leading to this one
      */
     public Enumeration getExceptionChain() {
-        return (Enumeration)(new PersistenceExceptionEnumeration(this));
+        return new PersistenceExceptionEnumeration(this);
     }
 }
 
@@ -94,7 +94,6 @@ final class PersistenceExceptionEnumeration implements Enumeration {
   }
 
   public boolean hasMoreElements() {
-    Exception e;
 
     if( exception == null ) return false;
     return true;

@@ -39,7 +39,7 @@ public class Play_Break extends Play
 		boolean foundOne=false;
 		for(int a=0;a<mob.numEffects();a++)
 		{
-			Ability A=(Ability)mob.fetchEffect(a);
+			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Play))
 				foundOne=true;
 		}

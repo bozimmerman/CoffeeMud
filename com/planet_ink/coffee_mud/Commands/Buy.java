@@ -70,7 +70,6 @@ public class Buy extends StdCommand
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
-		String addendumStr="";
 		do
 		{
 			Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(whatName,mob);
@@ -79,7 +78,6 @@ public class Buy extends StdCommand
 				V.addElement(itemToDo);
 			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
 				break;
-			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToDo));
 		String forName="";

@@ -67,7 +67,7 @@ public class Spell_FoolsGold extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item gold=(Item)CMClass.getItem("GenItem");
+				Item gold=CMClass.getItem("GenItem");
 				switch(amount)
 				{
 				case 1:

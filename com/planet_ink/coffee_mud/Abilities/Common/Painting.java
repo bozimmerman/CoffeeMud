@@ -29,16 +29,6 @@ public class Painting extends CommonSkill
 	private static final String[] triggerStrings = {"PAINT","PAINTING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_LEVEL=1;
-	private static final int RCP_TICKS=2;
-	private static final int RCP_WOOD=3;
-	private static final int RCP_VALUE=4;
-	private static final int RCP_CLASSTYPE=5;
-	private static final int RCP_MISCTYPE=6;
-	private static final int RCP_CAPACITY=7;
-	private static final int RCP_CONTAINMASK=8;
-
 	private Item building=null;
 	private boolean messedUp=false;
 

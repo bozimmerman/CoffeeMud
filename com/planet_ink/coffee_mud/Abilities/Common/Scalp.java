@@ -29,7 +29,6 @@ public class Scalp extends CommonSkill
 	public static Vector lastSoManyScalps=new Vector();
 
 	private DeadBody body=null;
-	private String foundShortName="";
 	private boolean failed=false;
 	public Scalp()
 	{

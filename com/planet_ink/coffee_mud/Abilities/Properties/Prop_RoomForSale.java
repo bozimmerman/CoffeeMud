@@ -94,7 +94,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			{
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=(MOB)R.fetchInhabitant(m);
+					MOB M=R.fetchInhabitant(m);
 					if((M!=null)
 					&&(M.isEligibleMonster())
 					&&(M.getStartRoom()==R)

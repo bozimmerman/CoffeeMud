@@ -209,7 +209,7 @@ public class Spell_Spellbinding extends Spell
 
 		for(int v=0;v<V.size();v++)
 			for(int v2=0;v2<V.size();v2++)
-				if((v!=v2)&&(((String)V.elementAt(v,1)).equals((String)V.elementAt(v2,1))))
+				if((v!=v2)&&(((String)V.elementAt(v,1)).equals(V.elementAt(v2,1))))
 				{
 					mob.tell("The same spell can not be bound to the same trigger more than once.");
 					return false;

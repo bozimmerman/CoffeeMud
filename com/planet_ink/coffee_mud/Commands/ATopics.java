@@ -43,7 +43,7 @@ public class ATopics extends StdCommand
 						reverseList.addElement(ptop);
 			}
 
-			Collections.sort((java.util.List)reverseList);
+			Collections.sort(reverseList);
 			topicBuffer=new StringBuffer("Help topics: \n\r\n\r");
 			topicBuffer.append(CMLister.fourColumns(reverseList));
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));

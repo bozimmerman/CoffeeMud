@@ -36,8 +36,8 @@ public class Shipwright extends CraftingSkill
 	private static final int RCP_VALUE=4;
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
-	private static final int RCP_CAPACITY=7;
-	private static final int RCP_ARMORDMG=8;
+	//private static final int RCP_CAPACITY=7;
+	//private static final int RCP_ARMORDMG=8;
 	private static final int RCP_SPELL=9;
 
 

@@ -38,7 +38,7 @@ public class Chant_VineMass extends Chant_SummonVine
 		int limit=(caster.envStats().level()/4);
 		for(int i=0;i<limit;i++)
 		{
-			newMOB=(MOB)CMClass.getMOB("GenMOB");
+			newMOB=CMClass.getMOB("GenMOB");
 			int level=adjustedLevel(caster,0);
 			if(level<1) level=1;
 			newMOB.baseEnvStats().setLevel(level);
@@ -58,7 +58,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.baseEnvStats().setDamage(6+(5*(level/5)));
 			newMOB.baseEnvStats().setAttackAdjustment(10);
 			newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
-			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+			newMOB.baseCharStats().setStat(CharStats.GENDER,'N');
 			newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 			newMOB.setMiscText(newMOB.text());
 			newMOB.recoverCharStats();

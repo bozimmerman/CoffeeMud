@@ -80,7 +80,7 @@ public class Chant_SummonSeed extends Chant
 				mob.location().send(mob,msg);
 				for(int i=2;i<(2+(adjustedLevel(mob,asLevel)/4));i++)
 				{
-					Item newItem=(Item)CMClass.getStdItem("GenResource");
+					Item newItem=CMClass.getStdItem("GenResource");
 					String name=foundShortName.toLowerCase();
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);

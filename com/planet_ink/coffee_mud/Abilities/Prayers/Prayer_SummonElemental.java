@@ -100,7 +100,7 @@ public class Prayer_SummonElemental extends Prayer
 
 	public MOB determineMonster(MOB caster, int level)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
+		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
 		newMOB.baseEnvStats().setAbility(13);
 		newMOB.baseEnvStats().setLevel(level/2);
@@ -114,7 +114,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
 		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
-		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
+		newMOB.baseCharStats().setStat(CharStats.GENDER,'M');
 		int type=-1;
 		for(int i=0;i<types.length;i++)
 			if(text().toUpperCase().indexOf(types[i])>=0)

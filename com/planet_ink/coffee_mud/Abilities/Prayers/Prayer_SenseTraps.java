@@ -112,7 +112,7 @@ public class Prayer_SenseTraps extends Prayer
 				{
 					Environmental E2=(Environmental)V.elementAt(v);
 					if(E2 instanceof Item)
-						if(trapCheck((Item)E2).length()>0)
+						if(trapCheck(E2).length()>0)
 							return E.name()+" has something trapped in stock.\n";
 				}
 			}

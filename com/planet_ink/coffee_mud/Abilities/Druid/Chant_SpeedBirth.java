@@ -38,7 +38,6 @@ public class Chant_SpeedBirth extends Chant
 		long start=0;
 		long end=0;
 		long days=0;
-		long months=0;
 		long remain=0;
 		String rest=null;
 		if(A!=null)
@@ -53,7 +52,6 @@ public class Chant_SpeedBirth extends Chant
 					end=Util.s_long(A.text().substring(x+1,y));
 					remain=end-System.currentTimeMillis();
 					days=(remain/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
-					months=days/30;
 					rest=A.text().substring(y);
 				}
 				else

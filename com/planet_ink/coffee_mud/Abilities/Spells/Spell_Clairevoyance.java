@@ -50,7 +50,7 @@ public class Spell_Clairevoyance extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
 		&&(invoker!=null)
 		&&(msg.target()!=null)
-		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
+		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
 		{
 			FullMsg newAffect=new FullMsg(invoker,msg.target(),CMMsg.TYP_EXAMINESOMETHING,null);
 			msg.target().executeMsg(msg.target(),newAffect);

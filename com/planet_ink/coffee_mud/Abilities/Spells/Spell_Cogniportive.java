@@ -111,9 +111,6 @@ public class Spell_Cogniportive extends Spell
 		{
 			if(text().length()==0)
 				setMiscText(establishHome(mob,me));
-			Environmental target=null;
-			if((mob.location()!=null))
-				target=afftarget;
 			Room home=CMMap.getRoom(text());
 			if((home==null)||(!Sense.canAccess(mob,home)))
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");

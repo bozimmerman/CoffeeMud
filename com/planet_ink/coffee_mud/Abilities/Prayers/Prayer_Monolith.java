@@ -40,7 +40,6 @@ public class Prayer_Monolith extends Prayer
 	private int wallType=0;
 	private int amountRemaining=0;
 	private Item theWall=null;
-	private String deathNotice="";
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -66,7 +65,6 @@ public class Prayer_Monolith extends Prayer
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)
 					{
-						deathNotice="The monolith of ice shatters!!!";
 						for(int i=0;i<room.numInhabitants();i++)
 						{
 							MOB M=room.fetchInhabitant(i);
@@ -77,6 +75,7 @@ public class Prayer_Monolith extends Prayer
 							&&(!M.amDead()))
 								MUDFight.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),CMMsg.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
+					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
 						((Item)affected).destroy();
 					}
 					return false;
@@ -127,7 +126,7 @@ public class Prayer_Monolith extends Prayer
 						amountRemaining-=mob.envStats().damage();
 						if(amountRemaining<0)
 						{
-							deathNotice="The monolith of stone is destroyed!";
+						    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of stone is destroyed!");
 							((Item)affected).destroy();
 						}
 					}

@@ -50,7 +50,7 @@ public class DrowWarrior extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
-		baseCharStats.setStat(CharStats.GENDER,(int)'M');
+		baseCharStats.setStat(CharStats.GENDER,'M');
 
 		setWimpHitPoint(1);
 
@@ -75,7 +75,7 @@ public class DrowWarrior extends DrowElf
 
     public void equipDrow()
     {
-        Armor chainMail = (Armor)CMClass.getArmor("DrowChainMailArmor");
+        Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
 		if(chainMail!=null)
 		{
 			chainMail.wearAt(Item.ON_TORSO);
@@ -89,27 +89,27 @@ public class DrowWarrior extends DrowElf
         switch(weaponry)
         {
             case 1:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             case 2:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(1.0);
                 break;
             case 3:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowDagger");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowDagger");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             case 4:
-		        mainWeapon = (Weapon)CMClass.getWeapon("Scimitar");
-		        secondWeapon = (Weapon)CMClass.getWeapon("Scimitar");
+		        mainWeapon = CMClass.getWeapon("Scimitar");
+		        secondWeapon = CMClass.getWeapon("Scimitar");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             default:
-		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
-		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        mainWeapon = CMClass.getWeapon("DrowSword");
+		        secondWeapon = CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(2.0);
                 break;
         }

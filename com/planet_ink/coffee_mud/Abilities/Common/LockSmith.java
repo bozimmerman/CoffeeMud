@@ -57,15 +57,15 @@ public class LockSmith extends CraftingSkill
 	public Item getBuilding(Environmental target)
 	{
 		String keyName=""+Math.random();
-		Item building=CMClass.getItem("GenKey");
+		Item newbuilding=CMClass.getItem("GenKey");
 		if((workingOn instanceof Exit)
 		&&((Exit)workingOn).hasALock())
 			keyName=((Exit)workingOn).keyName();
 		if((workingOn instanceof Container)
 		&&((Container)workingOn).hasALock())
 			keyName=((Container)workingOn).keyName();
-		((Key)building).setKey(keyName);
-		return building;
+		((Key)newbuilding).setKey(keyName);
+		return newbuilding;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -107,10 +107,10 @@ public class LockSmith extends CraftingSkill
 							   &&(exit2.isGeneric())
 							   &&(room2!=null))
 							{
-								((Exit)exit2).baseEnvStats().setLevel(mob.envStats().level());
-								((Exit)exit2).setDoorsNLocks(true,false,true,true,true,true);
+								exit2.baseEnvStats().setLevel(mob.envStats().level());
+								exit2.setDoorsNLocks(true,false,true,true,true,true);
 								if(building instanceof Key)
-									((Exit)exit2).setKeyName(((Key)building).getKey());
+									exit2.setKeyName(((Key)building).getKey());
 								CMClass.DBEngine().DBUpdateExits(room2);
 							}
 						}
@@ -169,7 +169,6 @@ public class LockSmith extends CraftingSkill
 			commonTell(mob,"You don't see a '"+recipeName+"' here.");
 			return false;
 		}
-		String keyName=""+Math.random();
 		if(workingOn instanceof Exit)
 		{
 			if(!((Exit)workingOn).hasADoor())
@@ -183,10 +182,7 @@ public class LockSmith extends CraftingSkill
 				return false;
 			}
 			if(((Exit)workingOn).hasALock())
-			{
-				keyName=((Exit)workingOn).keyName();
 				keyFlag=true;
-			}
 			else
 				woodRequired=5;
 
@@ -212,10 +208,7 @@ public class LockSmith extends CraftingSkill
 				return false;
 			}
 			if(((Container)workingOn).hasALock())
-			{
-				keyName=((Container)workingOn).keyName();
 				keyFlag=true;
-			}
 			else
 				woodRequired=3;
 		}

@@ -47,8 +47,6 @@ public class DBConnections
 	private boolean errorQueingEnabled=false;
 	/** the database connnections */
 	private Vector Connections;
-	/** last time queued errors were tried */
-	private IQCalendar lastTriedQueued=IQCalendar.getIQInstance();
 	/** set this to true once, cuz it makes it all go away. **/
 	private boolean YOU_ARE_DONE=false;
 	
@@ -347,7 +345,6 @@ public class DBConnections
 	 * @return String	The value of the field being returned
 	 */
 	public static String getRes(ResultSet Results, String Field)
-	throws SQLException
 	{
 		try
 		{
@@ -425,7 +422,6 @@ public class DBConnections
 	}
 	
 	public static String getResQuietly(ResultSet Results, String Field)
-	throws SQLException
 	{
 		try
 		{

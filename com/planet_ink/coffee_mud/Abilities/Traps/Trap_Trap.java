@@ -27,7 +27,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 
-	protected static MOB benefactor=(MOB)CMClass.getMOB("StdMOB");
+	protected static MOB benefactor=CMClass.getMOB("StdMOB");
 	protected boolean sprung=false;
 	protected Room myPit=null;
 	protected Room myPitUp=null;
@@ -38,7 +38,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		super();
 		if(benefactor==null)
-			benefactor=(MOB)CMClass.getMOB("StdMOB");
+			benefactor=CMClass.getMOB("StdMOB");
 	}
 
 	public void activateBomb(){}

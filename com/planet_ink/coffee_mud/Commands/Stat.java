@@ -130,7 +130,7 @@ public class Stat extends BaseAbleLister
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
-			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/((long)(1000*60));
+			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/(1000*60);
 			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
 			table.append(Util.padRight(new IQCalendar(curTime+1).d2DString()+" - "+new IQCalendar(lastCur-1).d2DString(),25)
@@ -226,7 +226,7 @@ public class Stat extends BaseAbleLister
 				}
 			}
 		}
-		String MOBname=(String)Util.combine(commands,0);
+		String MOBname=Util.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 			target=mob.location().fetchInhabitant(MOBname);

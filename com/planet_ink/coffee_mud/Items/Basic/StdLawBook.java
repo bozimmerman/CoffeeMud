@@ -502,7 +502,7 @@ public class StdLawBook extends StdItem
 				s=mob.session().prompt("\n\rEnter a skill name to make illegal: ","");
 				if(s.length()>0)
 				{
-					Ability AB=(Ability)CMClass.findAbility(s);
+					Ability AB=CMClass.findAbility(s);
 					if(AB==null)
 						mob.tell("That skill name is unknown.");
 					else
@@ -611,7 +611,7 @@ public class StdLawBook extends StdItem
 				s=mob.session().prompt("\n\rEnter a skill name to make an illegal influence: ","");
 				if(s.length()>0)
 				{
-					Ability AB=(Ability)CMClass.findAbility(s);
+					Ability AB=CMClass.findAbility(s);
 					if(AB==null)
 						mob.tell("That skill name is unknown.");
 					else
@@ -997,7 +997,7 @@ public class StdLawBook extends StdItem
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
-				MOB M=(MOB)R.fetchInhabitant(i);
+				MOB M=R.fetchInhabitant(i);
 				if(M!=null)
 				{
 					Room R2=M.getStartRoom();

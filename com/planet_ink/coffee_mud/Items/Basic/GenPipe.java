@@ -23,7 +23,6 @@ import java.util.*;
 public class GenPipe extends GenCigar
 {
 	public String ID(){	return "GenPipe";}
-	private String readableText = "";
 	public GenPipe()
 	{
 		super();

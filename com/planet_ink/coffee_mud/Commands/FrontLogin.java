@@ -221,7 +221,7 @@ public class FrontLogin extends StdCommand
 				
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session thisSession=(Session)Sessions.elementAt(s);
+					Session thisSession=Sessions.elementAt(s);
 					if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
 					{
 						if((thisSession.mob().Name().equals(mob.Name())))
@@ -246,7 +246,7 @@ public class FrontLogin extends StdCommand
 				MOB oldMOB=mob;
 				if(CMMap.getPlayer(oldMOB.Name())!=null)
 				{
-					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.Name()));
+					oldMOB.session().setMob(CMMap.getPlayer(oldMOB.Name()));
 					mob=oldMOB.session().mob();
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
@@ -401,7 +401,7 @@ public class FrontLogin extends StdCommand
 								if((R.name().equalsIgnoreCase(raceStr))
 								&&(R.availability()==Race.AVAILABLE_ALL))
 								{
-									newRace=(Race)R;
+									newRace=R;
 									break;
 								}
 							}
@@ -412,7 +412,7 @@ public class FrontLogin extends StdCommand
 								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
 								&&(R.availability()==Race.AVAILABLE_ALL))
 								{
-									newRace=(Race)R;
+									newRace=R;
 									break;
 								}
 							}
@@ -431,7 +431,7 @@ public class FrontLogin extends StdCommand
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
 
-				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
+				mob.baseCharStats().setStat(CharStats.GENDER,Gender.toUpperCase().charAt(0));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
 
 				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"stats.txt").toString());
@@ -538,9 +538,9 @@ public class FrontLogin extends StdCommand
 				mob.baseState().setMovement(100);
 				mob.baseState().setMana(100);
 
-				Item r=(Item)CMClass.getItem("Ration");
-				Item w=(Item)CMClass.getItem("Waterskin");
-				Item t=(Item)CMClass.getItem("Torch");
+				Item r=CMClass.getItem("Ration");
+				Item w=CMClass.getItem("Waterskin");
+				Item t=CMClass.getItem("Torch");
 				mob.addInventory(r);
 				mob.addInventory(w);
 				mob.addInventory(t);

@@ -58,9 +58,9 @@ public class DrowElf extends StdMOB
 		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 
 		if(gender == MALE)
-			baseCharStats().setStat(CharStats.GENDER,(int)'M');
+			baseCharStats().setStat(CharStats.GENDER,'M');
 		else
-			baseCharStats().setStat(CharStats.GENDER,(int)'F');
+			baseCharStats().setStat(CharStats.GENDER,'F');
 
 		baseCharStats().setStat(CharStats.STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + Math.abs(randomizer.nextInt() % 6));

@@ -38,7 +38,7 @@ public class Harpy extends GreatBird
 
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{ affectableStats.setStat(CharStats.GENDER,(int)'F');}
+	{ affectableStats.setStat(CharStats.GENDER,'F');}
 
 	public Vector myResources()
 	{

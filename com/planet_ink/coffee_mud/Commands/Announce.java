@@ -64,7 +64,7 @@ public class Announce extends StdCommand
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
-						sendAnnounce((String)Util.combine(commands,2),S);
+						sendAnnounce(Util.combine(commands,2),S);
 				}
 			}
 			else

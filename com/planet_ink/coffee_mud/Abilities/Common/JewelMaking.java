@@ -36,7 +36,7 @@ public class JewelMaking extends CraftingSkill
 	private static final int RCP_VALUE=4;
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
-	private static final int RCP_CAPACITY=7;
+	//private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_EXTRAREQ=9;
 	private static final int RCP_SPELL=10;
@@ -309,7 +309,7 @@ public class JewelMaking extends CraftingSkill
 			if(building==null) return false;
 			if(!canWhat(mob,building,"refit",false))
 				return false;
-			if(((Item)building).envStats().height()==0)
+			if(building.envStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;

@@ -162,7 +162,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			Ability A=E.fetchEffect(a);
 			if(A!=null)
-				affects.addElement((Ability)A.copyOf());
+				affects.addElement(A.copyOf());
 		}
 		setTimeObj(new DefaultTimeClock());
 	}

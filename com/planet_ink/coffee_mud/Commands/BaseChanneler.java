@@ -92,7 +92,7 @@ public class BaseChanneler extends StdCommand
 			ChannelSet.channelQueUp(channelInt,msg);
 			for(int s=0;s<Sessions.size();s++)
 			{
-				Session ses=(Session)Sessions.elementAt(s);
+				Session ses=Sessions.elementAt(s);
 				channelTo(ses,areareq,channelInt,msg,mob);
 			}
 		}

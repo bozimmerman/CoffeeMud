@@ -35,7 +35,6 @@ public class As extends StdCommand
 			mob.tell("As whom do what?");
 			return false;
 		}
-		boolean here=false;
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),"AS"))||(mob.isMonster()))

@@ -64,7 +64,7 @@ public class Chant_ChargeMetal extends Chant
 		if((!msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_ELECTRIC))
 		{
-			((MOB)affected).location().show((MOB)mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
+			((MOB)affected).location().show(mob,null,I,CMMsg.MSG_OK_VISUAL,"<O-NAME> attracts a charge to <S-NAME>!");
 			msg.modify(msg.source(),
 					   mob,
 					   msg.tool(),

@@ -364,7 +364,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	{
 		String foundMacro=null;
 		boolean extend=false;
-		boolean didadeed=false;
 		for(int x=i+1;x<s.length();x++)
 		{
 			if((s.charAt(x)=='@')
@@ -372,7 +371,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			&&(x<(s.length()-1))
 			&&(s.charAt(x+1)=='@'))
 			{
-				didadeed=true;
 				if(!lookOnly)
 					s.deleteCharAt(x);
 				while((x<s.length())&&(s.charAt(x)=='@'))

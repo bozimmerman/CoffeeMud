@@ -301,64 +301,64 @@ public class CommonStrings extends Scriptable
 		{
 			clookup=new String[256];
 			// N B H - normal bold highlight underline flash italic
-			clookup[(int)'N']="^w\033[0m";
-			clookup[(int)'!']="\033[1m";
-			clookup[(int)'H']="^c";
-			clookup[(int)'_']="\033[4m";
-			clookup[(int)'*']="\033[5m";
-			clookup[(int)'/']="\033[6m";
+			clookup['N']="^w\033[0m";
+			clookup['!']="\033[1m";
+			clookup['H']="^c";
+			clookup['_']="\033[4m";
+			clookup['*']="\033[5m";
+			clookup['/']="\033[6m";
 			// reset
-			clookup[(int)'.']="\033[0m";
-			clookup[(int)'^']="^";
+			clookup['.']="\033[0m";
+			clookup['^']="^";
 			// F S - fight spell
-			clookup[(int)'F']="^r";
-			clookup[(int)'S']="^y";
+			clookup['F']="^r";
+			clookup['S']="^y";
 			// E T Q - emote talk channeltalk channelfore
-			clookup[(int)'E']="^p";
-			clookup[(int)'T']="^b";
-			clookup[(int)'t']="^C";
-			clookup[(int)'Q']="\033[0;36;44m";
-			clookup[(int)'q']="^c";
+			clookup['E']="^p";
+			clookup['T']="^b";
+			clookup['t']="^C";
+			clookup['Q']="\033[0;36;44m";
+			clookup['q']="^c";
 			
 			
 			// X Y Z - important messages
-			clookup[(int)'x']="\033[1;36;44m";
-			clookup[(int)'X']="\033[1;33;44m";
-			clookup[(int)'Z']="\033[1;33;41m";
+			clookup['x']="\033[1;36;44m";
+			clookup['X']="\033[1;33;44m";
+			clookup['Z']="\033[1;33;41m";
 			//  R L D d - roomtitle roomdesc(look) Direction door
-			clookup[(int)'O']="^c";
-			clookup[(int)'L']="^w";
-			clookup[(int)'D']="\033[1;36;44m";
-			clookup[(int)'d']="^b";
+			clookup['O']="^c";
+			clookup['L']="^w";
+			clookup['D']="\033[1;36;44m";
+			clookup['d']="^b";
 			// I M - item, mob
-			clookup[(int)'I']="^g";
-			clookup[(int)'M']="^p";
+			clookup['I']="^g";
+			clookup['M']="^p";
 
 			// h m v - prompt colors - deprecated!!
-			clookup[(int)'h']="^c";
-			clookup[(int)'m']="^c";
-			clookup[(int)'v']="^c";
+			clookup['h']="^c";
+			clookup['m']="^c";
+			clookup['v']="^c";
 
 			// fixed system colors, 1= bright, 0=dark
-			clookup[(int)'w']="\033[1;37m";
-			clookup[(int)'g']="\033[1;32m";
-			clookup[(int)'b']="\033[1;34m";
-			clookup[(int)'r']="\033[1;31m";
-			clookup[(int)'y']="\033[1;33m";
-			clookup[(int)'c']="\033[1;36m";
-			clookup[(int)'p']="\033[1;35m";
-			clookup[(int)'W']="\033[0;37m";
-			clookup[(int)'G']="\033[0;32m";
-			clookup[(int)'B']="\033[0;34m";
-			clookup[(int)'R']="\033[0;31m";
-			clookup[(int)'Y']="\033[0;33m";
-			clookup[(int)'C']="\033[0;36m";
-			clookup[(int)'P']="\033[0;35m";
+			clookup['w']="\033[1;37m";
+			clookup['g']="\033[1;32m";
+			clookup['b']="\033[1;34m";
+			clookup['r']="\033[1;31m";
+			clookup['y']="\033[1;33m";
+			clookup['c']="\033[1;36m";
+			clookup['p']="\033[1;35m";
+			clookup['W']="\033[0;37m";
+			clookup['G']="\033[0;32m";
+			clookup['B']="\033[0;34m";
+			clookup['R']="\033[0;31m";
+			clookup['Y']="\033[0;33m";
+			clookup['C']="\033[0;36m";
+			clookup['P']="\033[0;35m";
 			for(int i=0;i<clookup.length;i++)
 			{
 				String s=clookup[i];
 				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
-					clookup[i]=clookup[(int)s.charAt(1)];
+					clookup[i]=clookup[s.charAt(1)];
 			}
 		}
 		return clookup;

@@ -109,13 +109,13 @@ public class Prayer_Haunted extends Prayer
 				level=14;
 				numDone=0;
 				numMax=mob.envStats().level()/8;
-				if(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
+				if(CoffeeUtensils.doesOwnThisProperty(mob,target))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
-					CMClass.DBEngine().DBUpdateRoom((Room)target);
+					CMClass.DBEngine().DBUpdateRoom(target);
 				}
 				else
-					beneficialAffect(mob,target,asLevel,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
+					beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
 			}
 		}
 		else

@@ -87,7 +87,7 @@ public class DumpFile extends StdCommand
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
-				Session thisSession=(Session)Sessions.elementAt(s);
+				Session thisSession=Sessions.elementAt(s);
 
 				if (thisSession==null) continue;
 				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;

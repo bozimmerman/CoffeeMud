@@ -28,7 +28,6 @@ public class Prayer_Faithless extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 100;}
-	private String godName="";
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

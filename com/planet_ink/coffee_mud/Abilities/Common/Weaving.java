@@ -42,7 +42,6 @@ public class Weaving extends CraftingSkill
 	private static final int RCP_SPELL=10;
 
 	private Item building=null;
-	private Item key=null;
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
@@ -219,7 +218,7 @@ public class Weaving extends CraftingSkill
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(((Item)building).envStats().height()==0)
+			if(building.envStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -235,7 +234,6 @@ public class Weaving extends CraftingSkill
 		{
 			building=null;
 			mending=false;
-			key=null;
 			messedUp=false;
 			int amount=-1;
 			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))

@@ -40,7 +40,6 @@ public class Prop_SparringRoom extends Property
 			MOB target=msg.source();
 			Room deathRoom=target.location();
 			deathRoom.show(source,source,CMMsg.MSG_OK_VISUAL,msg.sourceMessage());
-			HashSet beneficiaries=new HashSet();
 			if((source!=null)&&(source.charStats()!=null))
 			{
 				CharClass C=source.charStats().getCurrentClass();
@@ -50,7 +49,7 @@ public class Prop_SparringRoom extends Property
 				   &&(source.amFollowing().charStats()!=null))
 					C=source.amFollowing().charStats().getCurrentClass();
 
-				beneficiaries=C.dispenseExperience(source,target);
+				C.dispenseExperience(source,target);
 			}
 			target.makePeace();
 			target.setRiding(null);

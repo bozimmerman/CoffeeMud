@@ -626,9 +626,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
-					if((msg.targetMinor()==CMMsg.TYP_SELL)&&(((long)yourValue)>budgetRemaining))
+					if((msg.targetMinor()==CMMsg.TYP_SELL)&&(yourValue>budgetRemaining))
 					{
-						if(((long)yourValue)>budgetMax)
+						if(yourValue>budgetMax)
 							CommonMsgs.say(this,mob,"That's way out of my price range! Try AUCTIONing it.",true,false);
 						else
 							CommonMsgs.say(this,mob,"Sorry, I can't afford that right now.  Try back later.",true,false);
@@ -1259,7 +1259,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			Hashtable titles=new Hashtable();
 			if((whatISell==DEAL_CSHIPSELLER)||(whatISell==DEAL_SHIPSELLER))
 			{
-				Area myArea=(Area)getStartRoom().getArea();
+				Area myArea=getStartRoom().getArea();
 				for(Enumeration r=CMMap.areas();r.hasMoreElements();)
 				{
 					Area A=(Area)r.nextElement();

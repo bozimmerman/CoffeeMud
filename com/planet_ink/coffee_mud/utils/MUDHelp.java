@@ -67,7 +67,7 @@ public class MUDHelp
 				|| (rHelpFile.getProperty(thisTag)== null) )
 					reverseList.addElement(ptop);
 		}
-		Collections.sort((List)reverseList);
+		Collections.sort(reverseList);
 		return reverseList;
 	}
 	
@@ -131,6 +131,7 @@ public class MUDHelp
 			}
 			name=name.replace('_',' ');
 			Vector helpedPreviously=new Vector();
+System.out.println(tag+"/"+name);
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();

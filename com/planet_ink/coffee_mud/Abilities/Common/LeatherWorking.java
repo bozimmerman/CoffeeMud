@@ -231,7 +231,7 @@ public class LeatherWorking extends CraftingSkill
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(((Item)building).envStats().height()==0)
+			if(building.envStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;

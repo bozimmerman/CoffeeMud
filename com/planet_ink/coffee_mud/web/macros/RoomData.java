@@ -275,7 +275,7 @@ public class RoomData extends StdWebMacro
 				Vector sortMe=new Vector();
 				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
 					sortMe.addElement(CMClass.className(l.nextElement()));
-				sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				sorted=(new TreeSet(sortMe)).toArray();
 				Resources.submitResource("MUDGRINDER-LOCALES",sorted);
 			}
 			for(int r=0;r<sorted.length;r++)
@@ -478,7 +478,7 @@ public class RoomData extends StdWebMacro
 				ilist=new StringBuffer("");
 				Vector sortMe=new Vector();
 				CMClass.addAllItemClassNames(sortMe,true,true);
-				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)
 					ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 				Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);

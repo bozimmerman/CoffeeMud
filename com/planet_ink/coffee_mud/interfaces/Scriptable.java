@@ -25,7 +25,7 @@ public abstract class Scriptable
 		ResourceBundle scripts=Scripts.load(which);
 		if(scripts==null) return "";
 		if(scripts.getString(num)!=null)
-			return (String)scripts.getString(num);
+			return scripts.getString(num);
 		return "";
 	}
 	public static String getScr(String which, String num, String replaceX)

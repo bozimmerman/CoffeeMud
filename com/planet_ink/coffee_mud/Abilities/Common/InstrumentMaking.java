@@ -215,28 +215,28 @@ public class InstrumentMaking extends CraftingSkill
 		}
 		else
 		{
-			((Item)building).setRawProperLocationBitmap(0);
+			building.setRawProperLocationBitmap(0);
 			for(int wo=1;wo<Item.wornLocation.length;wo++)
 			{
 				String WO=Item.wornLocation[wo].toUpperCase();
 				if(misctype.equalsIgnoreCase(WO))
 				{
-					((Item)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
-					((Item)building).setRawLogicalAnd(false);
+					building.setRawProperLocationBitmap(Util.pow(2,wo-1));
+					building.setRawLogicalAnd(false);
 				}
 				else
 				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
 				||(misctype.toUpperCase().endsWith("||"+WO)))
 				{
-					((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-					((Item)building).setRawLogicalAnd(false);
+					building.setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					building.setRawLogicalAnd(false);
 				}
 				else
 				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
 				||(misctype.toUpperCase().endsWith("&&"+WO)))
 				{
-					((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-					((Item)building).setRawLogicalAnd(true);
+					building.setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					building.setRawLogicalAnd(true);
 				}
 			}
 		}

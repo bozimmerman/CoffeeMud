@@ -91,7 +91,7 @@ public class Chant_Nectar extends Chant
 			{
 			case CMMsg.TYP_DRINK:
 				{
-					MOB M=(MOB)msg.source();
+					MOB M=msg.source();
 					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
 					MUDFight.postHealing(M,M,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,hp,null);
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
@@ -139,7 +139,7 @@ public class Chant_Nectar extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=(Item)CMClass.getItem("Spring");
+				Item newItem=CMClass.getItem("Spring");
 				newItem.setName("an enormous flower");
 				newItem.setDisplayText("an enormous flower is dripping with nectar");
 				newItem.setDescription("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!");

@@ -43,7 +43,7 @@ public class Channels extends StdCommand
 				}
 				String channelName=names[x];
 				String onoff="";
-				if(Util.isSet((int)pstats.getChannelMask(),x))
+				if(Util.isSet(pstats.getChannelMask(),x))
 					onoff=" (OFF)";
 				buf.append(Util.padRight(channelName+onoff,24));
 			}

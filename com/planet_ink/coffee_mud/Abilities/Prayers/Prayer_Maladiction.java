@@ -77,7 +77,7 @@ public class Prayer_Maladiction extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
-					maliciousAffect(mob,target,asLevel,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY),-1);
+					maliciousAffect(mob,target,asLevel,CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY),-1);
 			}
 		}
 		else

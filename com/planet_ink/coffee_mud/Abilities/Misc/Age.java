@@ -60,12 +60,12 @@ public class Age extends StdAbility
 		norecurse=true;
 
 		long day=60000; // one minute
-		day*=(long)60; // one hour
-		day*=(long)24; // on day
-		long ellapsed=(System.currentTimeMillis()-(long)l);
+		day*=60; // one hour
+		day*=24; // on day
+		long ellapsed=(System.currentTimeMillis()-l);
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
-			if(ellapsed>(long)(30*day))
+			if(ellapsed>(30*day))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if(R!=null)
@@ -135,7 +135,7 @@ public class Age extends StdAbility
 			if((((MOB)affected).getLiegeID().length()==0)&&(!((MOB)affected).amFollowing().getLiegeID().equals(affected.Name())))
 				((MOB)affected).setLiegeID(((MOB)affected).amFollowing().Name());
 			((MOB)affected).setBitmap(Util.unsetb(((MOB)affected).getBitmap(),MOB.ATT_AUTOASSIST));
-			if((ellapsed>(long)(60*day))
+			if((ellapsed>(60*day))
 			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
@@ -172,7 +172,7 @@ public class Age extends StdAbility
 				}
 			}
 			else
-			if((ellapsed>(long)(90*day))
+			if((ellapsed>(90*day))
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
 			&&(((MOB)affected).charStats().getStat(CharStats.INTELLIGENCE)>1))
 			{
@@ -222,7 +222,7 @@ public class Age extends StdAbility
 					newMan.baseCharStats().setMyLevels(";1");
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
 					for(int i=0;i<babe.inventorySize();i++)
-						newMan.giveItem((Item)babe.fetchInventory(i));
+						newMan.giveItem(babe.fetchInventory(i));
 					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getMyRace().outfit());
 					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)

@@ -35,7 +35,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	}
 
 	// these should be checked after pmap prelim check.
-	private static String[] universalStarters={
+	protected static String[] universalStarters={
 		"go ",
 		"go and ",
 		"i want you to ",
@@ -46,7 +46,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		"to ",
 	    "you are ordered to "};
 
-	private static String[] responseStarters={
+	protected static String[] responseStarters={
 		"try at the",
 		"its at the",
 		"it`s at the",
@@ -77,7 +77,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		"shes",
 		"its",
 	};
-	private static String[] universalRejections={
+	protected static String[] universalRejections={
 		"dunno",
 		"nope",
 		"not",
@@ -100,7 +100,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	//%k skill command word
 	//%r room name
 	// * match anything
-	private static String[][] pmap={
+	protected static String[][] pmap={
 		// below is killing
 		{"kill %m","mobfind %m;kill %m"},
 		{"find and kill %m","mobfind %m;kill %m"},
@@ -215,7 +215,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		Hashtable map=new Hashtable();
 		for(int p=0;p<pmap.length;p++)
 		{
-			Vector chk=Util.parse((String)pmap[p][0]);
+			Vector chk=Util.parse(pmap[p][0]);
 			int ci=0,ri=0;
 			boolean reject=false;
 			while((!reject)&&(ci<chk.size())&&(ri<req.size()))
@@ -954,7 +954,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
-			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
+			if(thisAbility.triggerStrings()[i].equalsIgnoreCase(thisWord))
 				return true;
 		}
 		return false;
@@ -964,7 +964,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
-			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
+			if(thisAbility.triggerStrings()[i].equalsIgnoreCase(thisWord))
 			{
 				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
 					return true;
@@ -1343,7 +1343,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		{
 			for(int i=0;i<list.length;i++)
 			{
-				Environmental thisThang=(Environmental)list[i];
+				Environmental thisThang=list[i];
 				if(thisThang!=null)
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					||thisThang.Name().equalsIgnoreCase(srchStr)
@@ -1358,7 +1358,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(int i=0;i<list.length;i++)
 			{
-				Environmental thisThang=(Environmental)list[i];
+				Environmental thisThang=list[i];
 				if(thisThang!=null)
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0)))
@@ -1368,7 +1368,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(int i=0;i<list.length;i++)
 			{
-				Environmental thisThang=(Environmental)list[i];
+				Environmental thisThang=list[i];
 				if((thisThang!=null)&&(thisThang.displayText().length()>0))
 					if(containsString(thisThang.displayText(),srchStr))
 						if((--myOccurrance)<=0)

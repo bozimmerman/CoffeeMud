@@ -49,7 +49,7 @@ public class Draconian extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+5);
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+5);
 		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)+5);
-                affectableStats.setStat(CharStats.GENDER,(int)'N');
+                affectableStats.setStat(CharStats.GENDER,'N');
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

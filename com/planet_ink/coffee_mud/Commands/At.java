@@ -46,7 +46,7 @@ public class At extends StdCommand
 			{
 				for(int s=0;s<Sessions.size();s++)
 				{
-					Session thisSession=(Session)Sessions.elementAt(s);
+					Session thisSession=Sessions.elementAt(s);
 					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
 					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
@@ -58,7 +58,7 @@ public class At extends StdCommand
 				if(room==null)
 					for(int s=0;s<Sessions.size();s++)
 					{
-						Session thisSession=(Session)Sessions.elementAt(s);
+						Session thisSession=Sessions.elementAt(s);
 						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
 						&&(EnglishParser.containsString(thisSession.mob().name(),cmd.toString())))
@@ -94,7 +94,7 @@ public class At extends StdCommand
 						{
 							int tries=0;
 							while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
-								room=(Room)A.getRandomProperRoom();
+								room=A.getRandomProperRoom();
 							break;
 						}
 					}

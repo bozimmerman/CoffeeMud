@@ -390,7 +390,7 @@ public class MobData extends StdWebMacro
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.className(m.nextElement()));
 				CMClass.addAllItemClassNames(sortMeA,true,true);
-				Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+				Object[] sortedA=(new TreeSet(sortMeA)).toArray();
 				for(int r=0;r<sortedA.length;r++)
 				{
 					String cnam=(String)sortedA[r];
@@ -509,7 +509,7 @@ public class MobData extends StdWebMacro
 						Vector sortMe=new Vector();
 						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 							sortMe.addElement(CMClass.className(m.nextElement()));
-						sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-MOBS",sorted);
 					}
 					for(int r=0;r<sorted.length;r++)
@@ -878,7 +878,7 @@ public class MobData extends StdWebMacro
 				mposs=new StringBuffer("");
 				Vector sortMe=new Vector();
 				CMClass.addAllItemClassNames(sortMe,true,true);
-				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)
 					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 				Resources.submitResource("MUDGRINDER-POSS",mposs);
