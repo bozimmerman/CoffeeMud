@@ -36,7 +36,8 @@ public class Jester extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_BellyRoll",true);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
@@ -52,6 +53,7 @@ CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Babble",false);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_Mimicry",true);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_EscapeBonds",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_MinorTrap",false);
@@ -64,12 +66,14 @@ CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Song_Rage",false);
 			
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Peek",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_FireBreathing",false);
 			
 			CMAble.addCharAbilityMapping(ID(),10,"Skill_Joke",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Song_Distraction",false);
 			
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Bind",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Song_Lightness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_SlowFall",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Song_Seeing",false);
@@ -104,6 +108,7 @@ CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Song_Quickness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Song_SingleMindedness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Cartwheel",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",false);

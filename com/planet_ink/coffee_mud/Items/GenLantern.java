@@ -17,7 +17,7 @@ public class GenLantern extends GenLightSource
 		description="";
 
 		baseEnvStats().setWeight(5);
-		setDuration(200);
+		setDuration(400);
 		destroyedWhenBurnedOut=false;
 		goesOutInTheRain=false;
 		baseGoldValue=60;

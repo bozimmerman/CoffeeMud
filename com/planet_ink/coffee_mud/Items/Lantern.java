@@ -18,7 +18,7 @@ public class Lantern extends LightSource
 
 		baseEnvStats().setWeight(5);
 		setMaterial(EnvResource.RESOURCE_STEEL);
-		durationTicks=200;
+		durationTicks=400;
 		this.destroyedWhenBurnedOut=false;
 		this.goesOutInTheRain=false;
 		baseGoldValue=60;
