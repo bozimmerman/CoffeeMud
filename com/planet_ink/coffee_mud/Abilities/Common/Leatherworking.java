@@ -162,7 +162,7 @@ public class LeatherWorking extends CommonSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)
 			{
 				mob.tell("That's not made of any sort of leather.  You don't know how to mend it.");
 				return false;
