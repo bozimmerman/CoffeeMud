@@ -30,8 +30,55 @@ public class GenSuperPill extends GenPill
 
 	public String secretIdentity()
 	{
-		String id=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells(this));
-		return id;
+		String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells(this));
+		String id=readableText;
+		int x=id.toUpperCase().indexOf("ARM");
+		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
+			if(id.charAt(x)=='-')
+			{
+				ID.setCharAt(x,'+');
+				id=ID.toString();
+				break;
+			}
+			else
+			if(id.charAt(x)=='+')
+			{
+				ID.setCharAt(x,'-');
+				id=ID.toString();
+				break;
+			}
+			else
+			if(Character.isDigit(id.charAt(x)))
+				break;
+		x=id.toUpperCase().indexOf("DIS");
+		if(x>=0)
+		{
+			long val=Util.getParmPlus(id,"dis");
+			int y=id.indexOf(""+val,x);
+			if((val!=0)&&(y>x))
+			{
+				StringBuffer middle=new StringBuffer("");
+				for(int num=0;num<EnvStats.dispositionsVerb.length;num++)
+					if(Util.bset(val,Util.pow(2,num)))
+						middle.append(EnvStats.dispositionsVerb[num]+" ");
+				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+			}
+		}
+		x=id.toUpperCase().indexOf("SEN");
+		if(x>=0)
+		{
+			long val=Util.getParmPlus(id,"sen");
+			int y=id.indexOf(""+val,x);
+			if((val!=0)&&(y>x))
+			{
+				StringBuffer middle=new StringBuffer("");
+				for(int num=0;num<EnvStats.sensesVerb.length;num++)
+					if(Util.bset(val,Util.pow(2,num)))
+						middle.append(EnvStats.sensesVerb[num]+" ");
+				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+			}
+		}
+		return tx+"\n("+id+")\n";
 	}
 
 	public void EATME(MOB mob)

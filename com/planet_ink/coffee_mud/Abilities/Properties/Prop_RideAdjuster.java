@@ -22,26 +22,7 @@ public class Prop_RideAdjuster extends Property
 
 	public String accountForYourself()
 	{
-		String id="Affects on the mounted: "+text();
-		int x=id.toUpperCase().indexOf("ARM");
-		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
-			if(id.charAt(x)=='-')
-			{
-				ID.setCharAt(x,'+');
-				id=ID.toString();
-				break;
-			}
-			else
-			if(id.charAt(x)=='+')
-			{
-				ID.setCharAt(x,'-');
-				id=ID.toString();
-				break;
-			}
-			else
-			if(Character.isDigit(id.charAt(x)))
-				break;
-		return id;
+		return Prop_HaveAdjuster.fixAccoutings("Affects on the mounted: "+text());
 	}
 
 	public void setMiscText(String newText)

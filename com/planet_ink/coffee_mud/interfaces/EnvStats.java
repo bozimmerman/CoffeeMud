@@ -130,6 +130,23 @@ public interface EnvStats extends Cloneable
 											 "Can not breathe",
 											 "Can detect victims",
 											 "Can detect metal"};
+	public static final String[] sensesVerb={"Causes Blindness",
+											 "Allows see hidden",
+											 "Allows see invisible",
+											 "Allows see evil",
+											 "Allows see good",
+											 "Allows detect sneakers",
+											 "Allows see magic",
+											 "Allows darkvision",
+											 "Allows infravision",
+											 "Causes Deafness",
+											 "Causes Paralyzation",
+											 "Deadens smell",
+											 "Disallows eating",
+											 "Causes Mutemess",
+											 "Causes choking",
+											 "Allows detect victims",
+											 "Allows detect metal"};
 	
 	public static final String[] dispositionsNames={"ISSEEN",
 													"ISHIDDEN",
@@ -166,5 +183,23 @@ public interface EnvStats extends Cloneable
 													"Is climbing",
 													"Is falling",
 													"Is a light source",
-													"Is bound"};
+													"Is binding"};
+	public static final String[] dispositionsVerb= {"Causes Nondetectability",
+													"Causes hide",
+													"Causes invisibility",
+													"Creates Evil aura",
+													"Creates Good aura",
+													"Causes sneaking",
+													"Creates magical aura",
+													"Creates dark aura",
+													"Creates golem aura",
+													"Causes sleeping",
+													"Causes sitting",
+													"Allows flying",
+													"Causes swimming",
+													"Causes glowing aura",
+													"Allows climbing",
+													"Causes falling",
+													"Causes a light source",
+													"Causes binding"};
 }

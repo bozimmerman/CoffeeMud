@@ -167,9 +167,8 @@ public class Prop_HaveAdjuster extends Property
 		super.affectCharState(affectedMOB,affectedState);
 	}
 
-	public String accountForYourself()
+	public static String fixAccoutings(String id)
 	{
-		String id="Affects the owner: "+text();
 		int x=id.toUpperCase().indexOf("ARM");
 		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
 			if(id.charAt(x)=='-')
@@ -188,7 +187,39 @@ public class Prop_HaveAdjuster extends Property
 			else
 			if(Character.isDigit(id.charAt(x)))
 				break;
-
+		x=id.toUpperCase().indexOf("DIS");
+		if(x>=0)
+		{
+			long val=Util.getParmPlus(id,"dis");
+			int y=id.indexOf(""+val,x);
+			if((val!=0)&&(y>x))
+			{
+				StringBuffer middle=new StringBuffer("");
+				for(int num=0;num<EnvStats.dispositionsVerb.length;num++)
+					if(Util.bset(val,Util.pow(2,num)))
+						middle.append(EnvStats.dispositionsVerb[num]+" ");
+				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+			}
+		}
+		x=id.toUpperCase().indexOf("SEN");
+		if(x>=0)
+		{
+			long val=Util.getParmPlus(id,"sen");
+			int y=id.indexOf(""+val,x);
+			if((val!=0)&&(y>x))
+			{
+				StringBuffer middle=new StringBuffer("");
+				for(int num=0;num<EnvStats.sensesVerb.length;num++)
+					if(Util.bset(val,Util.pow(2,num)))
+						middle.append(EnvStats.sensesVerb[num]+" ");
+				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
+			}
+		}
 		return id;
+	}
+	
+	public String accountForYourself()
+	{
+		return fixAccoutings("Affects the owner: "+text());
 	}
 }
