@@ -65,20 +65,15 @@ public class Spell_BurningHands extends Spell
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
-				{
-					invoker=mob;
-					mob.location().send(mob,msg2);
-					int damage = 0;
-					int maxDie =  mob.envStats().level();
-					if (maxDie > 10)
-						maxDie = 10;
-					damage += Dice.roll(1,maxDie*2,3);
-					if(!msg2.wasModified())
-						damage = (int)Math.round(Util.div(damage,2.0));
-					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming hands <DAMAGE> <T-NAME>!");
-				}
+				invoker=mob;
+				mob.location().send(mob,msg2);
+				int damage = 0;
+				int maxDie =  mob.envStats().level();
+				damage += Dice.roll(1,maxDie*5,3);
+				if((msg2.wasModified())||(msg.wasModified()))
+					damage = (int)Math.round(Util.div(damage,2.0));
+				if(target.location()==mob.location())
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming hands <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

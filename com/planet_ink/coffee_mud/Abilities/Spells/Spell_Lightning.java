@@ -66,20 +66,14 @@ public class Spell_Lightning extends Spell
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);
+				mob.location().send(mob,msg2);
+				int maxDie =  (int)Math.round(new Integer(mob.envStats().level()).doubleValue()/3.0);
+				int damage = Dice.roll(maxDie,10,maxDie);
 				if((!msg.wasModified())&&(!msg2.wasModified()))
-				{
-					mob.location().send(mob,msg2);
-					int damage = 0;
-					int maxDie =  (int)Math.round(new Integer(mob.envStats().level()).doubleValue()/2.0);
-					if (maxDie > 12)
-						maxDie = 12;
-					damage += Dice.roll(maxDie,4,mob.envStats().level());
-					if((!msg.wasModified())&&(!msg2.wasModified()))
-						damage = (int)Math.round(Util.div(damage,2.0));
+					damage = (int)Math.round(Util.div(damage,2.0));
 
-					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The bolt <DAMAGE> <T-NAME>!");
-				}
+				if(target.location()==mob.location())
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The bolt <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

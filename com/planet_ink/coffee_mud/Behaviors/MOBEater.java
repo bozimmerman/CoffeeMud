@@ -102,7 +102,7 @@ public class MOBEater extends ActiveTicker
 		{
 			MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
-			if (TastyMorsel.envStats().weight()<1000)
+			if (TastyMorsel.envStats().weight()<(mob.envStats().weight()/2))
 			{
 				// ===== if it is less than three so roll for it
 				// ===== check the result

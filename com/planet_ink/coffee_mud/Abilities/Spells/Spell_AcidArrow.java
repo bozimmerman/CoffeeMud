@@ -72,22 +72,14 @@ public class Spell_AcidArrow extends Spell
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
-				{
-					mob.location().send(mob,msg2);
-					invoker=mob;
-                    int numDice = 0;
-                    if (mob.envStats().level() > 13)
-                        numDice = 13;
-                    else
-                        numDice = (int)Math.round(new Integer(mob.envStats().level()).doubleValue()/2.0);
-
-					int damage = Dice.roll(numDice, 4, 5);
-					if(msg2.wasModified())
-						damage = (int)Math.round(Util.div(damage,2.0));
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The acidic blast <DAMAGE> <T-NAME>!");
-					maliciousAffect(mob,target,3,-1);
-				}
+				mob.location().send(mob,msg2);
+				invoker=mob;
+                int numDice = mob.envStats().level();
+				int damage = Dice.roll(numDice, 4, 5);
+				if((msg2.wasModified())||(msg.wasModified()))
+					damage = (int)Math.round(Util.div(damage,2.0));
+				ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The acidic blast <DAMAGE> <T-NAME>!");
+				maliciousAffect(mob,target,3,-1);
 			}
 		}
 		else

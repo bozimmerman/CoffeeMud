@@ -35,8 +35,8 @@ public class Skill_Distract extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()/2);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
+		affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/2));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
 	}
 
 	public int classificationCode()
@@ -111,15 +111,15 @@ public class Skill_Distract extends StdAbility
 		boolean success=profficiencyCheck(-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				maliciousAffect(mob,target,4,-1);
+				beneficialAffect(mob,target,4);
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it.");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to distract <T-NAMESELF>, but flub(s) it.");
 		return success;
 	}
 }

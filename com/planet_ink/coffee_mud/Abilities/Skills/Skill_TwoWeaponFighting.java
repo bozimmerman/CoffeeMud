@@ -8,7 +8,6 @@ import java.util.*;
 public class Skill_TwoWeaponFighting extends StdAbility
 {
 	private boolean middleOfTheFight=false;
-	private boolean everyOther=false;
 	private Weapon lastWeapon=null;
 	public Skill_TwoWeaponFighting()
 	{
@@ -63,65 +62,49 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(mob.rangeToTarget()>=0)
+			
+			if(middleOfTheFight)
 			{
-				Weapon weapon=getSecondWeapon((MOB)affected);
-				if((weapon!=null)
-				   &&(mob.rangeToTarget()>=0)
-				   &&(mob.rangeToTarget()>=weapon.minRange())
-				   &&(mob.rangeToTarget()<=weapon.maxRange()))
-				{
-					affectableStats.setSpeed(affectableStats.speed()/2.0);
-					if(middleOfTheFight)
-					{
-						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
-						Item weapon1=mob.fetchWieldedItem();
-						if(weapon1!=null)
-							affectableStats.setDamage(affectableStats.damage()-weapon1.envStats().damage()+weapon.envStats().damage());
-					}
-				}
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
+				Item w=mob.fetchWieldedItem();
+				if((w!=null)&&(lastWeapon!=null))
+					affectableStats.setDamage(affectableStats.damage()-w.envStats().damage()+lastWeapon.envStats().damage());
 			}
 		}
 	}
-	public void affect(Affect affect)
+	
+	public boolean tick(int tickID)
 	{
-		super.affect(affect);
-
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		if((affect.amISource(mob))
-		&&(!middleOfTheFight)
-		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-		&&(profficiencyCheck(0,false))
-		&&(mob.isInCombat())
-		&&(!mob.amDead())
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&(((Weapon)affect.tool()).amWearingAt(Item.WIELD)||(((Item)affect.tool()).amWearingAt(Item.INVENTORY)))
-		&&(affect.target() instanceof MOB)
-		&&(mob.envStats().level()>=envStats().level()))
+		if((tickID==Host.MOB_TICK)&&(affected instanceof MOB))
 		{
-			Weapon weapon=getSecondWeapon(mob);
-			if((weapon!=null)
-			   &&(mob.rangeToTarget()>=0)
-			   &&(mob.rangeToTarget()>=weapon.minRange())
-			   &&(mob.rangeToTarget()<=weapon.maxRange()))
+			MOB mob=(MOB)affected;
+			if(mob.isInCombat())
 			{
-				if(mob.fetchAffect(mob.numAffects()-1)!=this)
+				Item weapon=getSecondWeapon(mob);
+				if((weapon!=null) // try to wield anything!
+				&&(mob.rangeToTarget()>=0)
+				&&(mob.rangeToTarget()>=weapon.minRange())
+				&&(mob.rangeToTarget()<=weapon.maxRange())
+				&&((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
+				&&(Sense.aliveAwakeMobile(mob,true))
+				&&(!mob.amDead())
+				&&(mob.curState().getHitPoints()>0)
+				&&(!Sense.isSitting(mob)))
 				{
-					mob.delAffect(this);
-					mob.addAffect(this);
+					if(mob.fetchAffect(mob.numAffects()-1)!=this)
+					{
+						mob.delAffect(this);
+						mob.addAffect(this);
+					}
+					middleOfTheFight=true;
+					mob.recoverEnvStats();
+					ExternalPlay.postAttack(mob,mob.getVictim(),weapon);
+					middleOfTheFight=false;
+					mob.recoverEnvStats();
+					helpProfficiency(mob);
 				}
-				middleOfTheFight=true;
-				mob.recoverEnvStats();
-				ExternalPlay.postAttack(mob,(MOB)affect.target(),weapon);
-				middleOfTheFight=false;
-				mob.recoverEnvStats();
-				helpProfficiency(mob);
 			}
 		}
+		return super.tick(tickID);
 	}
 }

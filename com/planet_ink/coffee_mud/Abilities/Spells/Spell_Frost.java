@@ -64,22 +64,17 @@ public class Spell_Frost extends Spell
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
-				{
-					invoker=mob;
+				invoker=mob;
 
-					int damage = 0;
-					int maxDie =  mob.envStats().level();
-					if (maxDie > 15)
-						maxDie = 15;
-					damage += Dice.roll(maxDie,3,3);
-					mob.location().send(mob,msg2);
-					if(!msg2.wasModified())
-						damage = (int)Math.round(Util.div(damage,2.0));
+				int damage = 0;
+				int maxDie =  mob.envStats().level();
+				damage += Dice.roll(maxDie,3,15);
+				mob.location().send(mob,msg2);
+				if((msg2.wasModified())||(msg.wasModified()))
+					damage = (int)Math.round(Util.div(damage,2.0));
 
-					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,"The frost <DAMAGE> <T-NAME>!");
-				}
+				if(target.location()==mob.location())
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,"The frost <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

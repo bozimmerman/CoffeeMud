@@ -52,7 +52,10 @@ public class Spell_AcidFog extends Spell
 				unInvoke();
 			else
 			if((!vic.amDead())&&(vic.location()!=null))
-				ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level()*2,Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+			{
+				int damage=(int)Math.round(Util.div(vic.envStats().level(),2));
+				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
+			}
 		}
 		return super.tick(tickID);
 	}
