@@ -70,8 +70,17 @@ public class Trap_Ignition extends StdTrap
 					B.setProfficiency(trapLevel()/5);
 					B.invoke(invoker(),affected,true);
 				}
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
+				if(affected instanceof Item)
+				{
+					if(target.isMine(affected))
+					{
+						target.location().show(target,affected,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) the burning <T-NAME>!");
+						if(target.isMine(affected))
+							target.location().bringItemHere((Item)affected,Item.REFUSE_PLAYER_DROP);
+					}
+					if(canBeUninvoked())
+						disable();
+				}
 			}
 		}
 	}

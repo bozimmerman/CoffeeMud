@@ -691,6 +691,7 @@ public class StdCharClass implements CharClass, Cloneable
 			{
 				MOB mob=deathRoom.fetchInhabitant(m);
 				if((isValidBeneficiary(killer,killed,mob,followers))
+				&&(killer!=killed)
 				&&(!beneficiaries.contains(mob)))
 				{
 					beneficiaries.add(mob);

@@ -482,6 +482,45 @@ public class StdItem implements Item
 		return ""+(dispossessionTime()-System.currentTimeMillis());
 	}
 
+	
+	private boolean canWearComplete(MOB mob)
+	{
+		if(!canWear(mob,0))
+		{
+			long cantWearAt=whereCantWear(mob);
+			Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
+			if(alreadyWearing!=null)
+			{
+				if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
+				{
+					if((!CommonMsgs.remove(mob,alreadyWearing,false))
+					||(!canWear(mob,0)))
+					{
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						return false;
+					}
+				}
+				else
+				{
+					if(cantWearAt==Item.HELD)
+						mob.tell("You are already holding "+alreadyWearing.name()+".");
+					else
+					if(cantWearAt==Item.WIELD)
+						mob.tell("You are already wielding "+alreadyWearing.name()+".");
+					else
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+					return false;
+				}
+			}
+			else
+			{
+				mob.tell("You don't have anywhere you can wear that.");
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
 		if(!thisItem.amWearingAt(Item.INVENTORY))
@@ -563,9 +602,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_HOLD:
-			if(!alreadyWornMsg(msg.source(),this))
-				return false;
-			if(!fitsOn(Item.HELD))
+			if((!fitsOn(Item.HELD))||(properWornBitmap==0))
 			{
 				StringBuffer str=new StringBuffer("You can't hold "+name()+".");
 				if(fitsOn(Item.WIELD))
@@ -576,6 +613,8 @@ public class StdItem implements Item
 				mob.tell(str.toString());
 				return false;
 			}
+			if(!alreadyWornMsg(msg.source(),this))
+				return false;
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
@@ -603,6 +642,8 @@ public class StdItem implements Item
 				}
 				return true;
 			}
+			else
+				return canWearComplete(mob);
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
@@ -616,42 +657,9 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob,0))
-			{
-				long cantWearAt=whereCantWear(mob);
-				Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
-				if(alreadyWearing!=null)
-				{
-					if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
-					{
-						if((!CommonMsgs.remove(mob,alreadyWearing,false))
-						||(!canWear(mob,0)))
-						{
-							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
-							return false;
-						}
-					}
-					else
-					{
-						if(cantWearAt==Item.HELD)
-							mob.tell("You are already holding "+alreadyWearing.name()+".");
-						else
-						if(cantWearAt==Item.WIELD)
-							mob.tell("You are already wielding "+alreadyWearing.name()+".");
-						else
-							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
-						return false;
-					}
-				}
-				else
-				{
-					mob.tell("You don't have anywhere you can wear that.");
-					return false;
-				}
-			}
-			return true;
+			return canWearComplete(mob);
 		case CMMsg.TYP_WIELD:
-			if(!fitsOn(Item.WIELD))
+			if((!fitsOn(Item.WIELD))||(properWornBitmap==0))
 			{
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
@@ -663,24 +671,27 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(!canWear(mob,Item.WIELD))
+			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
-				if(alreadyWearing!=null)
+				if(!canWear(mob,Item.WIELD))
 				{
-					if(!CommonMsgs.remove(mob,alreadyWearing,false))
+					Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
+					if(alreadyWearing!=null)
 					{
-						mob.tell("You are already wielding "+alreadyWearing.name()+".");
+						if(!CommonMsgs.remove(mob,alreadyWearing,false))
+						{
+							mob.tell("You are already wielding "+alreadyWearing.name()+".");
+							return false;
+						}
+					}
+					else
+					{
+						mob.tell("You need hands to wield things.");
 						return false;
 					}
 				}
-				else
-				{
-					mob.tell("You need hands to wield things.");
-					return false;
-				}
 			}
-			return true;
+			return canWearComplete(mob);
 		case CMMsg.TYP_GET:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{

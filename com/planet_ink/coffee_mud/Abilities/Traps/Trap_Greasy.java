@@ -62,10 +62,10 @@ public class Trap_Greasy extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap! "+Util.capitalize(affected.name())+" ignites!"))
+			if(target.location().show(target,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISE,Util.capitalize(affected.name())+" is covered in grease!"))
 			{
 				super.spring(target);
-				target.location().show(target,this,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) the greasy <T-NAME>!");
+				target.location().show(target,affected,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) the greasy <T-NAME>!");
 				if(((--times)<=0)&&(canBeUninvoked())&&(affected instanceof Item))
 					disable();
 				else

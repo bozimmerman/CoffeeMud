@@ -47,7 +47,7 @@ public class Spell_Clone extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), feeling his body split in two.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), feeling <S-HIS-HER> body split in two.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -88,7 +88,7 @@ public class Spell_Clone extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to clone himself, but fails.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to clone <S-HIM-HERSELF>, but fails.");
 
 		// return whether it worked
 		return success;

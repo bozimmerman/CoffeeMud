@@ -407,6 +407,7 @@ public class List extends StdCommand
 		head.append("] Character name\n\r");
 		Vector allUsers=CMClass.DBEngine().getUserList();
 		Vector oldSet=allUsers;
+		int showBy=sortBy;
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=6))
 		{
 			if(oldSet==allUsers) allUsers=new Vector();
@@ -454,7 +455,7 @@ public class List extends StdCommand
 			head.append(Util.padRight((String)U.elementAt(3),4)+" ");
 			long age=Math.round(Util.div(Util.s_long((String)U.elementAt(4)),60.0));
 			head.append(Util.padRight(""+age,5)+" ");
-			if(sortBy!=6)
+			if(showBy!=6)
 				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
 			else
 				head.append(Util.padRight((String)U.elementAt(6),23)+" ");

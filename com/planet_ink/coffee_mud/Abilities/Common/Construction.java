@@ -591,7 +591,7 @@ public class Construction extends CraftingSkill
 											0,null,null,
 											false,
 											0);
-		if(data==null) return false;
+		if(idata==null) return false;
 		woodRequired=idata[0][FOUND_AMT];
 
 		boolean canBuild=CoffeeUtensils.doesOwnThisProperty(mob,mob.location());
