@@ -25,6 +25,27 @@ public class Prop_MOBEmoter extends Property
 	public String ID(){return "Prop_MOBEmoter";}
 	
 	Behavior emoter=null;
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{ 
+	    super.executeMsg(myHost,msg);
+		if(emoter==null) 
+		{
+			emoter=CMClass.getBehavior("Emoter");
+			emoter.setParms(text());
+		}
+		emoter.executeMsg(myHost,msg);
+	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{ 
+	    if(!super.okMessage(myHost,msg))
+	        return false;
+		if(emoter==null) 
+		{
+			emoter=CMClass.getBehavior("Emoter");
+			emoter.setParms(text());
+		}
+		return emoter.okMessage(myHost,msg);
+	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

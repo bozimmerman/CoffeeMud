@@ -236,6 +236,36 @@ public class ChannelSet
 		return Util.toStringArray(channelNames);
 	}
 	
+	public static Vector clearInvalidSnoopers(Session mySession, int channelCode)
+	{
+	    Vector invalid=null;
+	    if(mySession!=null)
+	    {
+		    Session S=null;
+		    for(int s=0;s<Sessions.size();s++)
+		    {
+		        S=Sessions.elementAt(s);
+		        if((S!=mySession)
+		        &&(S.mob()!=null)
+		        &&(mySession.amBeingSnoopedBy(S))
+		        &&(!ChannelSet.mayReadThisChannel(S.mob(),channelCode)))
+		        {
+		            if(invalid==null) invalid=new Vector();
+		            invalid.add(S);
+		            mySession.stopBeingSnoopedBy(S);
+		        }
+		    }
+	    }
+	    return invalid;	    
+	}
+	
+	public static void restoreInvalidSnoopers(Session mySession, Vector invalid)
+	{
+	    if((mySession==null)||(invalid==null)) return;
+		for(int s=0;s<invalid.size();s++)
+		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
+	}
+	
 	public static int loadChannels(String list, String ilist, String imc2list)
 	{
 		while(list.length()>0)
