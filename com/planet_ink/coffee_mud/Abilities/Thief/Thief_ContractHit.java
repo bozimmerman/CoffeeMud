@@ -24,7 +24,8 @@ public class Thief_ContractHit extends ThiefSkill
 	public void affect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
-			if(msg.amISource((MOB)affected)&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			if(msg.amISource((MOB)affected)
+			&&(msg.sourceMinor()==Affect.TYP_DEATH))
 			{
 				done=true;
 				unInvoke();
@@ -46,6 +47,7 @@ public class Thief_ContractHit extends ThiefSkill
 			&&(mob.location()!=null)
 			&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
+				
 				hitting=true;
 				int num=Dice.roll(1,3,3);
 				int level=mob.envStats().level();
@@ -88,15 +90,20 @@ public class Thief_ContractHit extends ThiefSkill
 				for(int i=0;i<hitmen.size();i++)
 				{
 					MOB M=(MOB)hitmen.elementAt(i);
-					if((!M.amDead())&&(M.location()!=null)&&(Sense.aliveAwakeMobile(M,true)))
+					if((!M.amDead())
+					   &&(M.location()!=null)
+					   &&(M.location().isInhabitant(M))
+					   &&(Sense.aliveAwakeMobile(M,true)))
 					{
 						anyLeft=true;
-						
-						if(((M.getVictim()!=mob)||(!M.location().isInhabitant(mob)))
+						M.isInCombat();
+						if((((M.getVictim()!=mob))
+							||(!M.location().isInhabitant(mob)))
 						&&(M.fetchAffect("Thief_Assassinate")==null))
 						{
 							M.setVictim(null);
 							Ability A=M.fetchAbility("Thief_Assassinate");
+							A.setProfficiency(100);
 							A.invoke(M,mob,false);
 						}
 					}
@@ -111,13 +118,14 @@ public class Thief_ContractHit extends ThiefSkill
 	public void unInvoke()
 	{
 		MOB M=invoker();
+		MOB M2=(MOB)affected;
 		super.unInvoke();
-		if(done)
+		if((M!=null)&&(M2!=null)&&(((done)||(M2.amDead()))))
 		{
-			if(M.location()!=null)
+			if((M!=null)&&(M.location()!=null))
 			{
-				if(M.location().show(M,null,Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to <S-NAME>."))
-					M.tell("'It is done.'");
+				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to <S-NAME>.");
+				M.tell("'It is done.'");
 			}
 		}
 		for(int i=0;i<hitmen.size();i++)
@@ -153,7 +161,7 @@ public class Thief_ContractHit extends ThiefSkill
 			target=(MOB)V.elementAt(Dice.roll(1,V.size(),-1));
 		if(target==null)
 		{
-			mob.tell("You've never heard of '"+target.name()+"'.");
+			mob.tell("You've never heard of '"+Util.combine(commands,0)+"'.");
 			return false;
 		}
 		if(target==mob)

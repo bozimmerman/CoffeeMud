@@ -20,7 +20,7 @@ public class Healer extends ActiveTicker
 			healingVector.addElement(CMClass.getAbility("Prayer_CureBlindness"));
 			healingVector.addElement(CMClass.getAbility("Prayer_CureDisease"));
 			healingVector.addElement(CMClass.getAbility("Prayer_CureLight"));
-			healingVector.addElement(CMClass.getAbility("Prayer_CureSerious"));
+			healingVector.addElement(CMClass.getAbility("Prayer_RemoveCurse"));
 			healingVector.addElement(CMClass.getAbility("Prayer_Bless"));
 			healingVector.addElement(CMClass.getAbility("Prayer_Sanctuary"));
 		}
@@ -49,7 +49,7 @@ public class Healer extends ActiveTicker
 			while(((target==null)||(target==mob)||(target.isMonster()))&&((++x)<10))
 				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 
-			Ability tryThisOne=(Ability)healingVector.elementAt(Dice.roll(1,healingVector.size(),0)-1);
+			Ability tryThisOne=(Ability)healingVector.elementAt(Dice.roll(1,healingVector.size(),-1));
 			Ability thisOne=mob.fetchAbility(tryThisOne.ID());
 			if(thisOne==null)
 			{

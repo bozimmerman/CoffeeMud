@@ -26,7 +26,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		if(room.numInhabitants()==0) return empty;
 		if(B==null) return empty;
 		Vector V=new Vector();
-		for(int m=0;m>room.numInhabitants();m++)
+		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB M=(MOB)room.fetchInhabitant(m);
 			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(M,null)))
@@ -40,10 +40,11 @@ public class Thief_SenseLaw extends ThiefSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
 				Behavior B=mob.location().getArea().fetchBehavior("Arrest");
-				if(B==null) return super.tick(ticking,tickID);
+				if(B==null)
+					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");
 				Vector V=getLawMen(mob.location(),B);
 				for(int l=0;l<V.size();l++)
@@ -80,5 +81,12 @@ public class Thief_SenseLaw extends ThiefSkill
 			}
 		}
 		return super.tick(ticking,tickID);
+	}
+	
+	public boolean autoInvocation(MOB mob)
+	{
+		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+			return false;
+		return super.autoInvocation(mob);
 	}
 }

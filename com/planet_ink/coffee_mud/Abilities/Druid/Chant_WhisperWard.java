@@ -27,6 +27,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	{beneficialAffect(mob,E,0); return (Trap)E.fetchAffect(ID());}
 
 	public boolean disabled(){return false;}
+	public boolean sprung(){return false;}
 	public void disable(){unInvoke();}
 	public void spring(MOB M)
 	{

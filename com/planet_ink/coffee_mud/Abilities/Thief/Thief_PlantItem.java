@@ -26,7 +26,7 @@ public class Thief_PlantItem extends ThiefSkill
 		MOB target=mob.location().fetchInhabitant((String)commands.lastElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+target.name()+"' here.");
+			mob.tell("You don't see '"+(String)commands.lastElement()+"' here.");
 			return false;
 		}
 		if(target==mob)

@@ -27,6 +27,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{maliciousAffect(mob,E,0,-1); return (Trap)E.fetchAffect(ID());}
 
+	public boolean sprung(){return false;}
 	public void spring(MOB mob)
 	{
 		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))

@@ -79,7 +79,10 @@ public class Thief_DetectTraps extends ThiefSkill
 			else
 			{
 				if(theTrap.disabled())
-					mob.tell(unlockThis.name()+" is trapped, but the trap looks safely sprung.");
+					mob.tell(unlockThis.name()+" is trapped, but the trap looks disabled for the moment.");
+				else
+				if(theTrap.sprung())
+					mob.tell(unlockThis.name()+" is trapped, and the trap looks sprung.");
 				else
 					mob.tell(unlockThis.name()+" definitely looks trapped.");
 			}

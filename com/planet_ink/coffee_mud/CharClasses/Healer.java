@@ -103,7 +103,7 @@ public class Healer extends Cleric
 	{
 		if((tickID==Host.MOB_TICK)&&(myChar.charStats().getClassLevel(this)>=30))
 		{
-			if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return;
+			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return;
 			
 			Hashtable followers=myChar.getGroupMembers(new Hashtable());
 			if(myChar.location()!=null)
@@ -114,7 +114,7 @@ public class Healer extends Cleric
 					&&((M.getVictim()==null)||(followers.get(M.getVictim())==null)))
 						followers.put(M,M);
 				}
-			if((--fiveDown)<=0)
+			if((fiveDown)<=0)
 			{
 				fiveDown=5;
 				Ability A=CMClass.getAbility("Prayer_CureLight");
@@ -122,7 +122,7 @@ public class Healer extends Cleric
 				for(Enumeration e=followers.elements();e.hasMoreElements();)
 					A.invoke(myChar,((MOB)e.nextElement()),true);
 			}
-			if((--tenDown)<=0)
+			if((tenDown)<=0)
 			{
 				tenDown=10;
 				Ability A=CMClass.getAbility("Prayer_RemovePoison");
@@ -130,7 +130,7 @@ public class Healer extends Cleric
 				for(Enumeration e=followers.elements();e.hasMoreElements();)
 					A.invoke(myChar,((MOB)e.nextElement()),true);
 			}
-			if((--twentyDown)<=0)
+			if((twentyDown)<=0)
 			{
 				twentyDown=10;
 				Ability A=CMClass.getAbility("Prayer_CureDisease");

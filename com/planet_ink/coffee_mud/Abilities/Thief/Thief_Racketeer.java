@@ -9,10 +9,11 @@ public class Thief_Racketeer extends ThiefSkill
 {
 	public String ID() { return "Thief_Racketeer"; }
 	public String name(){ return "Racketeer";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	private static final String[] triggerStrings = {"RACKETTEER"};
+	private static final String[] triggerStrings = {"RACKETEER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Racketeer();}
 	public Vector mobs=new Vector();
@@ -59,7 +60,7 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 
 		int amount=Dice.roll(profficiency(),100,0);
-		boolean success=profficiencyCheck(-(levelDiff*5),auto);
+		boolean success=profficiencyCheck(-(levelDiff),auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> extract(s) "+amount+" gold of protection money from <T-NAME>.");

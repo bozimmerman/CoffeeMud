@@ -28,6 +28,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{beneficialAffect(mob,E,0);return (Trap)E.fetchAffect(ID());}
 
+	public boolean sprung(){return sprung;}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(sprung) return super.okAffect(myHost,affect);

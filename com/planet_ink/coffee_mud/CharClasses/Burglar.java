@@ -71,7 +71,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",false);
 			
-			CMAble.addCharAbilityMapping(ID(),16,"Thief_SafeCracking",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Thief_Safecracking",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_SilentLoot",false);
 

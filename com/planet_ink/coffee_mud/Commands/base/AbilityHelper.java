@@ -348,7 +348,8 @@ public class AbilityHelper
 					if(!fromHere(V,'+',v+1,mobClass)) return false;
 					break;
 				case 1: // -baseclass
-					if(!fromHere(V,'+',v+1,mobBaseClass)) return false;
+					if((!fromHere(V,'+',v+1,mobBaseClass))
+					&&(!fromHere(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
 					if(!fromHere(V,'+',v+1,mobRace)) return false;

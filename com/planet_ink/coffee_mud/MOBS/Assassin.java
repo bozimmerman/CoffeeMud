@@ -51,7 +51,7 @@ public class Assassin extends GenMob
 		if(I!=null)
 		{
 			addInventory(I);
-			I.wearIfPossible(this);
+			I.wearAt(Item.WIELD);
 		}
 		I=CMClass.getArmor("LeatherArmor");
 		if(I!=null)
@@ -59,6 +59,13 @@ public class Assassin extends GenMob
 			addInventory(I);
 			I.wearIfPossible(this);
 		}
+		Weapon d=(Weapon)CMClass.getWeapon("Dagger");
+		if(d!=null)
+		{
+			d.wearAt(Item.HELD);
+			addInventory(d);
+		}
+
 
 		recoverMaxState();
 		resetToMaxState();

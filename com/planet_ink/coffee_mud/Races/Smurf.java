@@ -68,7 +68,7 @@ public class Smurf extends StdRace
 				naturalWeaponChoices.addElement(naturalWeapon);
 			}
 		}
-		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),0)-1);
+		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

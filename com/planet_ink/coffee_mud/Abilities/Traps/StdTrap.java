@@ -29,10 +29,15 @@ public class StdTrap extends StdAbility implements Trap
 	protected boolean sprung=false;
 	protected int reset=60; // 5 minute reset is standard
 	
+	protected boolean disabled=false;
+	
 	public boolean disabled(){
-		return sprung||(affected==null)||(affected.fetchAffect(ID())==null);
+		return (sprung&&disabled)
+			   ||(affected==null)
+			   ||(affected.fetchAffect(ID())==null);
 	}
 	public void disable(){ 
+		disabled=true;
 		sprung=true;
 		if(!canBeUninvoked())
 		{
@@ -171,15 +176,19 @@ public class StdTrap extends StdAbility implements Trap
 			if((--tickDown)<=0)
 			{
 				sprung=false;
+				disabled=false;
 				return false;
 			}
 		}
 		return true;
 	}
 	
+	public boolean sprung(){return sprung&&(!disabled());}
+	
 	public void spring(MOB target)
 	{
 		sprung=true;
+		disabled=false;
 		tickDown=getReset();
 		ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
 	}

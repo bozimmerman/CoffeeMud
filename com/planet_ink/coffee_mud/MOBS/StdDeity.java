@@ -547,6 +547,7 @@ public class StdDeity extends StdMOB implements Deity
 		putHere.clear();
 		trigger=trigger.toUpperCase().trim();
 		int previousConnector=CONNECT_AND;
+		if(!trigger.equals("-"))
 		while(trigger.length()>0)
 		{
 			int div1=trigger.indexOf("&");

@@ -194,7 +194,7 @@ public class StdAbility implements Ability, Cloneable
 			return null;
 		}
 
-		if(target.fetchAffect(this.ID())!=null)
+		if((target.fetchAffect(this.ID())!=null)&&(!isAutoInvoked()))
 		{
 			if(!quiet)
 			{

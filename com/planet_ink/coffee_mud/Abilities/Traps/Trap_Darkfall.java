@@ -16,17 +16,7 @@ public class Trap_Darkfall extends StdTrap
 	public Environmental newInstance(){	return new Trap_Darkfall();}
 	
 	public int baseRejuvTime(int level){return 20;}
-	private boolean disabled=false;
 	
-	public boolean disabled(){
-		return (sprung&&disabled)
-			   ||(affected==null)
-			   ||(affected.fetchAffect(ID())==null);
-	}
-	public void disable(){ 
-		disabled=true;
-		super.disable();
-	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -14,6 +14,7 @@ public class Trap_BearTrap extends StdTrap
 	protected int trapLevel(){return 16;}
 	public String requiresToSet(){return "30 pounds of metal";}
 	public Environmental newInstance(){	return new Trap_BearTrap();}
+	public int baseRejuvTime(int level){ return 35;}
 	
 	private int amountRemaining=250;
 	private MOB trapped=null;
@@ -50,7 +51,8 @@ public class Trap_BearTrap extends StdTrap
 		&&(msg.amISource(trapped))
 		&&(trapped.location()!=null))
 		{
-			if(((msg.targetMinor()==Affect.TYP_LEAVE)&&(msg.amITarget(affected)))
+			if((((msg.targetMinor()==Affect.TYP_LEAVE)||(msg.targetMinor()==Affect.TYP_FLEE))
+				&&(msg.amITarget(affected)))
 			||(msg.sourceMinor()==Affect.TYP_ADVANCE)
 			||(msg.sourceMinor()==Affect.TYP_RETREAT))
 			{

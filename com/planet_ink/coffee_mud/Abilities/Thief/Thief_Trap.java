@@ -36,21 +36,21 @@ public class Thief_Trap extends ThiefSkill
 		{
 			Exit E=CMClass.getExit("StdExit");
 			Item I=CMClass.getItem("StdItem");
-			StringBuffer buf=new StringBuffer(Util.padRight("Trap Name",20)+" "+Util.padRight("Affects",20)+" Requires\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Trap Name",15)+" "+Util.padRight("Affects",17)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(Util.padRight(T.name(),20)+" ");
+				buf.append(Util.padRight(T.name(),15)+" ");
 				if(T.canAffect(mob.location()))
-					buf.append(Util.padRight("Rooms",20)+" ");
+					buf.append(Util.padRight("Rooms",17)+" ");
 				else
 				if(T.canAffect(E))
-					buf.append(Util.padRight("Exits, Containers",20)+" ");
+					buf.append(Util.padRight("Exits, Containers",17)+" ");
 				else
 				if(T.canAffect(I))
-					buf.append(Util.padRight("Items",20)+" ");
+					buf.append(Util.padRight("Items",17)+" ");
 				else
-					buf.append(Util.padRight("Unknown",20)+" ");
+					buf.append(Util.padRight("Unknown",17)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());

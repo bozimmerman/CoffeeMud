@@ -14,7 +14,7 @@ public class Trap_RoomPit extends StdTrap
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_RoomPit();}
-	public Vector pit=null;
+	protected Vector pit=null;
 	
 	public void unInvoke()
 	{
@@ -23,7 +23,7 @@ public class Trap_RoomPit extends StdTrap
 		&&(pit.size()>1))
 		{
 			Room R1=(Room)pit.firstElement();
-			Room R2=(Room)pit.firstElement();
+			Room R2=(Room)pit.lastElement();
 			while(R1.numInhabitants()>0)
 			{
 				MOB M=R1.fetchInhabitant(0);

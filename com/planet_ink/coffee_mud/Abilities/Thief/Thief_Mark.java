@@ -84,7 +84,7 @@ public class Thief_Mark extends ThiefSkill
 			mob.tell("Who would you like to mark?");
 			return false;
 		}
-		MOB target=super.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target==mob)
 		{

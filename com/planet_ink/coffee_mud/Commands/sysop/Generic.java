@@ -2567,6 +2567,8 @@ public class Generic
 				genDeity1(mob,(Deity)me,++showNumber,showFlag);
 				genDeity2(mob,(Deity)me,++showNumber,showFlag);
 				genDeity3(mob,(Deity)me,++showNumber,showFlag);
+				genDeity4(mob,(Deity)me,++showNumber,showFlag);
+				genDeity5(mob,(Deity)me,++showNumber,showFlag);
 			}
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

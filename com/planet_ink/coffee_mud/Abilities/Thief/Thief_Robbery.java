@@ -9,6 +9,7 @@ public class Thief_Robbery extends ThiefSkill
 {
 	public String ID() { return "Thief_Robbery"; }
 	public String name(){ return "Robbery";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
@@ -19,10 +20,12 @@ public class Thief_Robbery extends ThiefSkill
 
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if((msg.amITarget(affected))&&(mobs.contains(msg.source())))
+		if((msg.amITarget(affected))
+		   &&(mobs.contains(msg.source())))
 		{
 			if((msg.targetMinor()==Affect.TYP_BUY)
 			   ||(msg.targetMinor()==Affect.TYP_SELL)
+			   ||(msg.targetMinor()==Affect.TYP_LIST)
 			   ||(msg.targetMinor()==Affect.TYP_VALUE)
 			   ||(msg.targetMinor()==Affect.TYP_VIEW))
 			{
@@ -75,12 +78,12 @@ public class Thief_Robbery extends ThiefSkill
 				stolen=null;
 		}
 
-		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*20);
+		int discoverChance=(mob.charStats().getStat(CharStats.CHARISMA)-target.charStats().getStat(CharStats.WISDOM))*5;
 		if(!Sense.canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
+		boolean success=profficiencyCheck(-(levelDiff),auto);
 
 		if(!success)
 		{
@@ -122,13 +125,9 @@ public class Thief_Robbery extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				Thief_Robbery A=(Thief_Robbery)target.fetchAffect(ID());
-				if(A==null)
-				{
-					mobs.clear();
-					mobs.addElement(mob);
-					beneficialAffect(mob,target,0);
-				}
-				else
+				if(A==null)	beneficialAffect(mob,target,0);
+				A=(Thief_Robbery)target.fetchAffect(ID());
+				if(A!=null)
 					A.mobs.addElement(mob);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
 				{
@@ -139,9 +138,13 @@ public class Thief_Robbery extends ThiefSkill
 				{
 					Vector products=shop.removeSellableProduct(stolen.name(),mob);
 					stolen=(Environmental)products.firstElement();
-					msg=new FullMsg(mob,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
-					if(mob.location().okAffect(mob,msg))
-						mob.location().send(mob,msg);
+					if(stolen instanceof Item)
+					{
+						mob.location().addItemRefuse((Item)stolen,Item.REFUSE_PLAYER_DROP);
+						msg=new FullMsg(mob,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
+						if(mob.location().okAffect(mob,msg))
+							mob.location().send(mob,msg);
+					}
 				}
 			}
 		}

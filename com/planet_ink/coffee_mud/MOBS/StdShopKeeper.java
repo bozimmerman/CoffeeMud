@@ -753,7 +753,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					return false;
 				}
 				else
-					return true;
+					return super.okAffect(myHost,affect);
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
 			{
@@ -793,7 +793,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(!mob.location().okAffect(mob,msg))
 							return false;
 					}
-					return true;
+					return super.okAffect(myHost,affect);
 				}
 				ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying those.",true,false);
 				return false;
@@ -853,13 +853,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 						}
 					}
-					return true;
+					return super.okAffect(myHost,affect);
 				}
 				ExternalPlay.quickSay(this,mob,"I don't have that in stock.  Ask for my LIST.",true,false);
 				return false;
 			}
 			case Affect.TYP_LIST:
-				return true;
+				return super.okAffect(myHost,affect);
 			default:
 				break;
 			}

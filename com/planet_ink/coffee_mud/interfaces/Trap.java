@@ -10,6 +10,7 @@ public interface Trap extends Ability
 	public boolean disabled();
 	public void disable();
 	public void spring(MOB target);
+	public boolean sprung();
 	public void setReset(int reset);
 	public int getReset();
 	

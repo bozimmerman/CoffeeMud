@@ -228,7 +228,6 @@ public class CommandSet extends Hashtable
 		put("COMPARE",new Integer(COMPARE));
 			put("COMP",new Integer(COMPARE));
 		put("CONSIDER",new Integer(CONSIDER));
-			put("CON",new Integer(CONSIDER));
 			put("CO",new Integer(CONSIDER));
 		put("COPY",new Integer(COPY));
 		put("CRAWL",new Integer(CRAWL));

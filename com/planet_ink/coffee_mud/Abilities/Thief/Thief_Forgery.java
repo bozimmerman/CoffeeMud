@@ -31,7 +31,9 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		commands.removeElement(commands.lastElement());
 
-		if((target==null)||(!target.isGeneric())||((target!=null)&&(!target.isReadable())))
+		if((target==null)
+		   ||(!target.isGeneric())
+		   ||((!(target instanceof Scroll))&&(!target.isReadable())))
 		{
 			mob.tell("You can't forge anything on that.");
 			return false;
@@ -60,7 +62,7 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			Ability A=CMClass.getAbility(forgeWhat);
+			Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 			{
 				mob.tell("You can't forge '"+A.name()+"'.");

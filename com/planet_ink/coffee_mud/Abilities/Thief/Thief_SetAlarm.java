@@ -20,6 +20,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public Room room1=null;
 	public Room room2=null;
 
+	public boolean sprung(){return sprung;}
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}
 	public void setReset(int Reset){}

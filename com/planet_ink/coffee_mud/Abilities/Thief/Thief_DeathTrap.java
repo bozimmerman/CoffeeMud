@@ -20,6 +20,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}
+	public boolean sprung(){return false;}
 	
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
