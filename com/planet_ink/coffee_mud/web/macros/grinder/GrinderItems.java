@@ -435,6 +435,7 @@ public class GrinderItems
 		{
 			ExternalPlay.DBUpdateItems(R);
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
+			R.startItemRejuv();
 		}
 		else
 		{
@@ -450,7 +451,6 @@ public class GrinderItems
 			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 		}
-		R.startItemRejuv();
 		return "";
 	}
 }

@@ -59,6 +59,15 @@ public class FileMgr extends StdWebMacro
 					return "File `"+last+"` updated.";
 				}
 				else
+				if(parms.containsKey("CREATEDIR"))
+				{
+					if(F.exists())
+						return "File exists! Directory not created!";
+					if(!F.mkdir())
+						return "Error creating directory!";
+					return "Created directory.";
+				}
+				else
 				if(parms.containsKey("APPEND"))
 				{
 					FileWriter FW=new FileWriter(F,true);

@@ -21,5 +21,4 @@ public interface ExternalHTTPRequests
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
 	public Hashtable getRequestObjects();
-	public Vector cache();
 }

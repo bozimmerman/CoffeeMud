@@ -304,40 +304,38 @@ public class MobData extends StdWebMacro
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
 
-		Room R=null;
-		for(int i=0;i<httpReq.cache().size();i++)
-		{
-			Object O=httpReq.cache().elementAt(i);
-			if((O instanceof Room)&&(((Room)O).ID().equals(last)))
-				R=(Room)O;
-		}
+		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
 			ExternalPlay.resetRoom(R);
-			httpReq.cache().addElement(R);
+			httpReq.getRequestObjects().put(last,R);
 		}
 
-		MOB M=null;
-		if(mobCode.equals("NEW"))
-			M=CMClass.getMOB("GenMob");
-		else
-			M=RoomData.getMOBFromCode(R,mobCode);
-
-		if((M==null)||(!M.isEligibleMonster()))
+		MOB M=(MOB)httpReq.getRequestObjects().get(mobCode);
+		if(M==null)
 		{
-			StringBuffer str=new StringBuffer("No MOB?!");
-			str.append(" Got: "+mobCode);
-			str.append(", Includes: ");
-			for(int m=0;m<R.numInhabitants();m++)
+			if(mobCode.equals("NEW"))
+				M=CMClass.getMOB("GenMob");
+			else
+				M=RoomData.getMOBFromCode(R,mobCode);
+			if((M==null)||(!M.isEligibleMonster()))
 			{
-				MOB M2=R.fetchInhabitant(m);
-				if((M2!=null)&&(M2.isEligibleMonster()))
-				   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+				StringBuffer str=new StringBuffer("No MOB?!");
+				str.append(" Got: "+mobCode);
+				str.append(", Includes: ");
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M2=R.fetchInhabitant(m);
+					if((M2!=null)&&(M2.isEligibleMonster()))
+					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+				}
+				return str.toString();
 			}
-			return str.toString();
+			else
+				httpReq.getRequestObjects().put(mobCode,M);
 		}
 
 		// important generic<->non generic swap!

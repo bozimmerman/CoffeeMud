@@ -22,50 +22,64 @@ public class ItemData extends StdWebMacro
 
 		String mobNum=httpReq.getRequestParameter("MOB");
 
-		Room R=null;
-		for(int i=0;i<httpReq.cache().size();i++)
-		{
-			Object O=httpReq.cache().elementAt(i);
-			if((O instanceof Room)&&(((Room)O).roomID().equals(last)))
-				R=(Room)O;
-		}
+		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
 			ExternalPlay.resetRoom(R);
-			httpReq.cache().addElement(R);
+			httpReq.getRequestObjects().put(last,R);
 		}
 
 		Item I=null;
 		MOB M=null;
 		if((mobNum!=null)&&(mobNum.length()>0))
 		{
-			M=RoomData.getMOBFromCode(R,mobNum);
+			M=(MOB)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum);
 			if(M==null)
 			{
-				StringBuffer str=new StringBuffer("No MOB?!");
-				str.append(" Got: "+mobNum);
-				str.append(", Includes: ");
-				for(int m=0;m<R.numInhabitants();m++)
+				M=RoomData.getMOBFromCode(R,mobNum);
+				if(M==null)
 				{
-					MOB M2=R.fetchInhabitant(m);
-					if((M2!=null)&&(M2.isEligibleMonster()))
-					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					StringBuffer str=new StringBuffer("No MOB?!");
+					str.append(" Got: "+mobNum);
+					str.append(", Includes: ");
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M2=R.fetchInhabitant(m);
+						if((M2!=null)&&(M2.isEligibleMonster()))
+						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					}
+					return str.toString();
 				}
-				return str.toString();
+				else
+					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum,M);
 			}
-			if(itemCode.equals("NEW"))
-				I=CMClass.getItem("GenItem");
-			else
-				I=RoomData.getItemFromCode(M,itemCode);
+			I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+mobNum+"/"+itemCode);
+			if(I==null)
+			{
+				if(itemCode.equals("NEW"))
+					I=CMClass.getItem("GenItem");
+				else
+					I=RoomData.getItemFromCode(M,itemCode);
+				if(I!=null)
+					httpReq.getRequestObjects().put(R.roomID()+"/"+mobNum+"/"+itemCode,I);
+			}
 		}
 		else
-		if(itemCode.equals("NEW"))
-			I=CMClass.getItem("GenItem");
-		else
-			I=RoomData.getItemFromCode(R,itemCode);
+		{
+			I=(Item)httpReq.getRequestObjects().get(R.roomID()+"/"+itemCode);
+			if(I==null)
+			{
+				if(itemCode.equals("NEW"))
+					I=CMClass.getItem("GenItem");
+				else
+					I=RoomData.getItemFromCode(R,itemCode);
+				if(I!=null)
+					httpReq.getRequestObjects().put(R.roomID()+"/"+itemCode,I);
+			}
+		}
 
 		if(I==null)
 		{

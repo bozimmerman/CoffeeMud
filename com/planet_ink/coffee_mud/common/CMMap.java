@@ -104,14 +104,14 @@ public class CMMap
 					R=null;
 			}
 		}
-		if(R==null)
+		if(R!=null) return R;
 		for (Enumeration i=rooms(); i.hasMoreElements();)
 		{
 			R = (Room)i.nextElement();
 			if (R.roomID().equalsIgnoreCase(calledThis))
 				return R;
 		}
-		return R;
+		return null;
 	}
 	public static Enumeration rooms() {
 		return roomsList.elements();

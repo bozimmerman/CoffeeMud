@@ -253,21 +253,16 @@ public class RoomData extends StdWebMacro
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
 
-		Room R=null;
-		for(int i=0;i<httpReq.cache().size();i++)
-		{
-			Object O=httpReq.cache().elementAt(i);
-			if((O instanceof Room)&&(((Room)O).roomID().equals(last)))
-				R=(Room)O;
-		}
+		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
 			R=CMMap.getRoom(last);
 			if(R==null)
 				return "No Room?!";
 			ExternalPlay.resetRoom(R);
-			httpReq.cache().addElement(R);
+			httpReq.getRequestObjects().put(last,R);
 		}
+		
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("NAME"))
 		{

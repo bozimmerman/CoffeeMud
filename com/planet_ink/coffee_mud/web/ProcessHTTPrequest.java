@@ -63,8 +63,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public boolean virtualPage;
 	
-	private Vector theCache=new Vector();
-	
 	private Hashtable objects=null;
 
 	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page, boolean a_isAdminServer)
@@ -96,8 +94,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return page.getStr(lookFor.toUpperCase());
 	}
 	
-	public Vector cache(){return theCache;}
-
 	private boolean process(String inLine) throws Exception
 	{
 		virtualPage = false;

@@ -35,7 +35,13 @@ public class ExitData extends StdWebMacro
 
 		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
-		Room R=CMMap.getRoom(last);
+		Room R=(Room)httpReq.getRequestObjects().get(last);
+		if(R==null)
+		{
+			R=CMMap.getRoom(last);
+			if(R==null)	return "No Room?!";
+			httpReq.getRequestObjects().put(last,R);
+		}
 		if(R==null) return "@break@";
 
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
