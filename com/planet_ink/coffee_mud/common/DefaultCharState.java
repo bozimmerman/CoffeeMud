@@ -156,7 +156,7 @@ public class DefaultCharState implements Cloneable, CharState
 
 		double lvl=new Integer(mob.envStats().level()).doubleValue();
 		double lvlby1p5=Util.div(lvl,1.5);
-		double lvlby2=Util.div(lvl,2.0);
+		//double lvlby2=Util.div(lvl,2.0);
 		double lvlby3=Util.div(lvl,3.0);
 
 		double hpGain=(con>1.0)?((con/25.0)*lvlby3)+(con/4.5)+2.0:1.0;

@@ -220,7 +220,6 @@ public class Falling extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		MOB mob=msg.source();
 		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)

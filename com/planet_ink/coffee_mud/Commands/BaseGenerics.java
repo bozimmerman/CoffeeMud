@@ -2715,7 +2715,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". "+FieldDisp+": '"+MUDZapper.zapperDesc(E.getStat(Field))+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
-		while(!newName.equals("?"))
+		while(newName.equals("?"))
 		{
 			newName=mob.session().prompt("Enter a new mask (?)\n\r:","");
 			if(newName.equals("?"))
@@ -2739,7 +2739,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="?";
 		boolean setChanged=false;
-		while(!newName.equals("?"))
+		while(newName.equals("?"))
 		{
 			newName=mob.session().prompt("Enter a weapon class to add/remove (?)\n\r:","");
 			if(newName.equals("?"))
@@ -3831,20 +3831,20 @@ public class BaseGenerics extends StdCommand
 			genInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
 			genInt(mob,me,++showNumber,showFlag,"Mana/Level","LVLMANA");
 			genInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
-			//genAttackAttribute(mob,me,++showNumber,showFlag,"ATTATT");
+			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
 			genInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");
 			genInt(mob,me,++showNumber,showFlag,"Trains/1stLvl","FSTTRAN");
 			genInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
 			genInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
-			//genArmorCode(mob,me,++showNumber,showFlag,"ARMOR");
+			genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
 			genText(mob,me,++showNumber,showFlag,"Limitations","STRLMT");
 			genText(mob,me,++showNumber,showFlag,"Bonuses","STRBON");
-			//genQualifications(mob,me,++showNumber,showFlag,"QUAL");
+			genQualifications(mob,me,++showNumber,showFlag,"Qualifications","QUAL");
 			genEStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
 			genAState(mob,me,++showNumber,showFlag);
-			//genWeaponRestr(mob,me,++showNumber,showFlag,"NUMWEP","GETWEP");
+			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassAbilities(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}

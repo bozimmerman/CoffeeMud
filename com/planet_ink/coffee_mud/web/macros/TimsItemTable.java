@@ -141,7 +141,6 @@ public class TimsItemTable extends StdWebMacro
 										  Ability CAST,
 										  int castMul)
 	{
-		Hashtable vals=null;
 		int level=0;
 		Item savedI=(Item)I.copyOf();
 		savedI.recoverEnvStats();
@@ -181,7 +180,6 @@ public class TimsItemTable extends StdWebMacro
 			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
 			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
 			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
-			double pts=0.0;
 			int materialCode=savedI.material()&EnvResource.MATERIAL_MASK;
 			int[] useArray=null;
 			switch(materialCode)

@@ -963,12 +963,12 @@ border=1>
       portal", or "the wooden gate".</TD></TR>
   <TR>
     <TD><EM>Description</EM> </TD>
-    <TD>what one sees when this exit is LOOKed at with 
-      the LOOK command</TD></TR>
+    <TD>what one sees when this exit is LOOKed at with the 
+      LOOK command</TD></TR>
   <TR>
     <TD><EM>Display Text</EM></TD>
-    <TD>what one sees when the EXITS command is issued 
-      and the way is OPEN.</TD></TR>
+    <TD>what one sees when the EXITS command is issued and 
+      the way is OPEN.</TD></TR>
   <TR>
     <TD><EM>Level</EM></TD>
     <TD>The Level of the door can determine how difficult 
@@ -2030,15 +2030,13 @@ throws.<BR>"Prop_HaveSpellCast" gives a spell effect to the
 owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from 
 specified targeted spells.<BR>"Prop_ItemTransporter" makes 
 an item that transports things.<BR>"Prop_ItemTransReceiver" 
-makes an item receives transported things.<BR>"Prop_ModExperience" modifies 
-experience gained when holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the item a permanent piece of 
-garbage.<BR>"Prop_OpenPassword" gives a container a secret 
-opening word.<BR>"Prop_RideAdjuster" modifies the mounted 
-persons stats.<BR>"Prop_RideResister" modifies the mounted 
-persons saving throws.<BR>"Prop_RideSpellCast" gives a 
-spell effect to the mounter.<BR>"Prop_RideZapper" restricts 
-mounting.<BR>"Prop_RoomView" makes an item that gives you a 
-view of something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
+makes an item receives transported things.<BR>"Prop_ModExperience" modifies experience gained when 
+holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the 
+item a permanent piece of garbage.<BR>"Prop_OpenPassword" 
+gives a container a secret opening word.<BR>"Prop_RideAdjuster" modifies the mounted persons stats.<BR>"Prop_RideResister" modifies the mounted persons saving 
+throws.<BR>"Prop_RideSpellCast" gives a spell effect to the 
+mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
+something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
 reflects magic.<BR>"Prop_TattooAdder" makes an item that 
 grants one a tattoo.<BR>"Prop_TicketTaker" makes a rideable 
 that requires money to board.<BR>"Prop_Trashcan" makes a 
@@ -2842,9 +2840,8 @@ cast.<BR>"Prop_Retainable" changes its price to
 shopkeepers.<BR>"Prop_RideAdjuster" adjusts stats when 
 ridden.<BR>"Prop_RideResister" adjusts saves when 
 ridden.<BR>"Prop_RideSpellCast" gives spell-affects when 
-ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell 
-reflecting.<BR>"Prop_ModExperience" modified experience gained from killing 
-him.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
+ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell reflecting.<BR>"Prop_ModExperience" modified experience gained from 
+killing him.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
 from low level weapons.<BR>"Regeneration" regenerates hit 
 points during combat.<BR>"Skill_AllBreathing" makes them a 
 fish.<BR>"Skill_Resistance" gives resistances that you 
@@ -3017,8 +3014,9 @@ Adjustments</EM></TD>
       race when it is Butchered.&nbsp; </TD></TR>
   <TR>
     <TD><EM>Outfit</EM></TD>
-    <TD>list of items automatically equipped and word when the 
-    OUTFIT command is used, or a player of this race is created.&nbsp; </TD></TR>
+    <TD>list of items automatically equipped and word 
+      when the OUTFIT command is used, or a player of this race is 
+      created.&nbsp; </TD></TR>
   <TR>
     <TD><EM>Natural Weapon</EM></TD>
     <TD>the weapon used by this race when it is 
@@ -3038,6 +3036,135 @@ Adjustments</EM></TD>
       learned because of the races culture.&nbsp; the profficiency given is the 
       default profficiency which players/mobs of this race start out 
   with.</TD></TR></TABLE></P>
+<P><STRONG><FONT color=blue size=5>Creating Classes</FONT></STRONG></P>
+<P>Creating customized player or mob classes can be fun and 
+exciting! These classes can be used as skill templates for mobs created using 
+the Fighterness (or similar) behaviors, or as genuine player classes for your 
+game.&nbsp; Either way, here is how it is done:</P>
+<P><STRONG>CREATE&nbsp;CLASS 
+Boxer</STRONG></P>
+<P>And it would be done.&nbsp; Whenever creating or 
+modifying a new class, the Archon is presented with a menu of selections and 
+options available to customize the class.&nbsp; Here is a description of those 
+options:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Name</EM></TD>
+    <TD>the displayable name of the class.</TD></TR>
+  <TR>
+    <TD><EM>Base Class</EM></TD>
+    <TD>the category into which the class fits.&nbsp; 
+      Make this the same as your ID usually.</TD></TR>
+  <TR>
+    <TD><EM>Player 
+Selectable</EM></TD>
+    <TD>whether or not players may choose this 
+      class.&nbsp; Remember that, if you are using a subclass system, make the 
+      base class name the same as the ID to define a top-level (or base class), 
+      and set the base class for your subclasses to this as well.&nbsp; Either 
+      way, this would need to be true for players to have access.</TD></TR>
+  <TR>
+    <TD><EM>Minimum HP</EM></TD>
+    <TD>minimum hit points gained by this class per 
+      level, adjusted by the mobs charisma.</TD></TR>
+  <TR>
+    <TD><EM>Maximum HP</EM></TD>
+    <TD>maximum hit points gained by this class per 
+      level, adjusted by the mobs charisma.</TD></TR>
+  <TR>
+    <TD><EM>Practices/Level</EM></TD>
+    <TD>the number of practice points gained by this 
+      class per level.</TD></TR>
+  <TR>
+    <TD><EM>Mana/Level</EM></TD>
+    <TD>the amount of mana, multiplied by a formula based 
+      on the mobs intelligence, gained per level.</TD></TR>
+  <TR>
+    <TD><EM>Attack/Level</EM></TD>
+    <TD>the number of attack points, modified by a 
+      formula based on the mobs attack attribute, gained per level.</TD></TR>
+  <TR>
+    <TD><EM>Attack Attribute</EM></TD>
+    <TD>the primary attribute used with the above to 
+      determine the number of attack points gained per level.</TD></TR>
+  <TR>
+    <TD><EM>Practices/1st 
+    Level</EM></TD>
+    <TD>the number of practice points received by this 
+      class at first level.</TD></TR>
+  <TR>
+    <TD><EM>Trains/1st Level</EM></TD>
+    <TD>the number of training sessions received by this 
+      class at first level.</TD></TR>
+  <TR>
+    <TD><EM>Level/Dmg Pt</EM></TD>
+    <TD>the number of levels between gains of 1 point of 
+      base damage.</TD></TR>
+  <TR>
+    <TD><EM>Movement/Level</EM></TD>
+    <TD>the number of movement points, modified by a 
+      formula based on the mobs strength, gained per level.</TD></TR>
+  <TR>
+    <TD><EM>Armor Restr.</EM></TD>
+    <TD>the type of armor restrictions for using skills 
+      in this class, if any.</TD></TR>
+  <TR>
+    <TD><EM>Limitations</EM></TD>
+    <TD>This is an open text field. Mention any special 
+      limitations of the class.</TD></TR>
+  <TR>
+    <TD><EM>Bonuses</EM></TD>
+    <TD>This is an open text field. Mention any special 
+      bonuses to being this class.</TD></TR>
+  <TR>
+    <TD><EM>Qualifications</EM></TD>
+    <TD>This is a mask to determine which players qualify 
+      for it. List any racial, or stat requirements to becomming this class. Use 
+      ? for more information on the mask.</TD></TR>
+  <TR>
+    <TD><EM>EStat 
+Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to attack, 
+      defense, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>CharStat 
+    Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to strength, 
+      saving throws, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>CharStat 
+Settings</EM></TD>
+    <TD>hard settings for strength, saving throws, and 
+      other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>State 
+Adjustments</EM></TD>
+    <TD>adjustments, positive or negative, to hit points, 
+      mana, and other stats.&nbsp; Use ? for a list.</TD></TR>
+  <TR>
+    <TD><EM>Weapon Restr.</EM></TD>
+    <TD>This is a list of the weapon classes which 
+      players of this class will fumble using.</TD></TR>
+  <TR>
+    <TD><EM>Outfit</EM></TD>
+    <TD>This is a list of any equipment outfitted to 
+      players who join this class.</TD></TR>
+  <TR>
+    <TD><EM>Class Abilities</EM></TD>
+    <TD>a list of abilities available to 
+      those who become this class.&nbsp; the profficiency given is the default 
+      profficiency which players/mobs of this class start out with. Also listed 
+      here is the class level at which the skill becomes available, whether it 
+      is automatically gained (true), or merely qualified for (false), whether 
+      it is a secret skill or not, and any miscellaneous parameters for this 
+      skill.</TD></TR></TABLE></P>
 <P><BR><BR><STRONG><FONT color=royalblue size=5>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</FONT></STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 

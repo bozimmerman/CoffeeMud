@@ -779,7 +779,7 @@ public class Reset extends StdCommand
 						int oldDam=I.baseEnvStats().damage();
 						toneDownWeapon((Weapon)I,ADJ);
 						if((I.baseEnvStats().attackAdjustment()==oldAtt)
-						&&(I.baseEnvStats().attackAdjustment()==oldAtt)
+						&&(I.baseEnvStats().damage()==oldDam)
 						&&((ADJ==null)||(ADJ.text().equals(s))))
 							illegalNums.addElement(new Integer(0));
 					}

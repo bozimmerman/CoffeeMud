@@ -455,12 +455,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					str=new StringBuffer("\n\r^N");
 				else
 					str.append("\n\r\n\r");
-				if(coins!=null)
+				int balance=getBalance(mob);
+				if(balance>0)
 				{
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+getBalance(mob)+"^? gold coins.");
+						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+balance+"^? gold coins.");
 					else
-						str.append("Your balance with us is ^H"+getBalance(mob)+"^? gold coins.");
+						str.append("Your balance with us is ^H"+balance+"^? gold coins.");
 				}
 				if(coinInterest!=0.0)
 				{
