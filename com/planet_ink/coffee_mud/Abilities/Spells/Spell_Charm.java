@@ -89,6 +89,7 @@ public class Spell_Charm extends Spell
 		{
 			mob.tell("Your free-will returns.");
 			ExternalPlay.follow(mob,null,false);
+			ExternalPlay.standIfNecessary(mob);
 		}
 	}
 

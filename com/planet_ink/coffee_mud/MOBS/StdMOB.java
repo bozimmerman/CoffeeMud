@@ -965,6 +965,12 @@ public class StdMOB implements MOB
 					tell("You can't move!");
 					return false;
 				}
+				if(envStats().weight()>mob.maxCarry())
+				{
+					tell("You are too encumbered, drop something!");
+					return false;
+				}
+
 			}
 
 			switch(affect.sourceMinor())
@@ -1115,7 +1121,8 @@ public class StdMOB implements MOB
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
 				if((affect.amISource(this))
-				&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL)))
+				&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+				&&((affect.tool()==null)||(!(affect.tool() instanceof Ability))||(!((Ability)affect.tool()).isNowAnAutoEffect())))
 				{
 					mob.tell("You like yourself too much.");
 					if(victim==this) victim=null;
@@ -1616,7 +1623,7 @@ public class StdMOB implements MOB
 								}
 							
 							if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
-								curState().adjMovement(-1,maxState());
+								curState().adjMovement(-2,maxState());
 						}
 					}
 					if(!isMonster())

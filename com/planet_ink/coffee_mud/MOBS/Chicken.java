@@ -24,7 +24,7 @@ public class Chicken extends StdMOB
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(90);
-		baseCharStats().setMyRace(CMClass.getRace("Bird"));
+		baseCharStats().setMyRace(CMClass.getRace("Chicken"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));

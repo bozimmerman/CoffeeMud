@@ -730,7 +730,7 @@ public class Generic
 		mob.tell("\n\rRejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
 		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
 		int newLevel=Util.s_int(rlevel);
-		if((newLevel>0)||(rlevel.trim()=="0"))
+		if((newLevel>0)||(rlevel.trim().equals("0")))
 		{
 			E.baseEnvStats().setRejuv(newLevel);
 			if(E.baseEnvStats().rejuv()==0)

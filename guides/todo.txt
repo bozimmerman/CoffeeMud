@@ -9,8 +9,6 @@ title command
 
 more spells/ideas at http://www.turf.org/helps/
 
-nowho to mask a name off the who list
-
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check
@@ -33,52 +31,17 @@ Wizard: must memorize spells from book.  Profficiency check at memorize time (un
 
 Move time to its own class.
 
+We need more diseases. Leprecy: take more physical damage in combat. Heart Disease: All actions take 2* movement. Lung Disease: Movement is recovered at 1/2 rate. Infection: Hitpoints are recovered at 1/2 rate. Flu: Mana is recovered at 1/2 rate.
+
+add currents to water. Scratch that, you can simulate currents by the teleport behavior, and a good emoter.
+
+an ability to tell how many HP a MOB has
+
+an ability to resist TRIP, another to resist DISARM, another to resist WHOMP
+
+
+
 Resources with special Properties.  Meat that makes you sick.  Bread that heals, etc.
-
-Socials:
-accuse     applaud    beg        bleed      blush      bounce     bow 
-brb        burp       cackle     chuckle    clap       comb       comfort 
-cough      cringe     cry        cuddle     curse      curtsey    dance 
-daydream   drool      embrace    fart       flip       flirt      fondle 
-french     frown      fume       gasp       giggle     glare      greet 
-grin       groan      grope      grovel     growl      hiccup     hop 
-hug        insult     kiss       laugh      lick       love       massage 
-moan       nibble     nod        nudge      nuzzle     pat        peer 
-point      poke       ponder     pout       pray       puke       punch 
-purr       roll       ruffle     scream     shake      shiver     shrug 
-sigh       sing       slap       smile      smirk      snap       snarl 
-sneeze     snicker    sniff      snore      snuggle    spank      spit 
-squeeze    stare      steam      stroke     strut      sulk       tackle 
-tango      taunt      thank      think      tickle     twiddle    wave 
-whine      whistle    wiggle     wink       worship    yawn       yodel 
-
-zerbert yodel yawn wink wiggle whorship 
-whoosh whistle whine whap wedgie wave 
-twitch twiddle tip tickle think thank 
-taunt tap tango tackle swear sulk 
-strut stroke stone steam stare squeeze 
-spit spank soothe song snuggle snowball 
-snore snoogie sniff snicker sneeze snarl 
-snap smirk smile slap sigh shrug 
-shiver shake seduce scream scratch salute 
-ruffle roll rofl purr punch puke 
-pthbt psyche pout ponder poke point 
-peer pat panic nuzzle nudge noogie 
-nod nibble n0g mosh moo moan 
-massage mache love limbo light lick 
-laugh lag knock kiss innocent inflate 
-hypnotize hug hop honk holdup hmm 
-hiccup growl grovel grope groan grin 
-greet goose glare giggle giddy gender 
-gasp frown fondle flirt flip flame 
-fibrillate fart fakereport eyebrow explode embrace 
-duck drool dollar doh daydream dance 
-curtsey cuddle cry cringe cough comfort 
-comb clap chuckle cheer challenge cannonball 
-cackle bwahn burp bsplit bslap breakdown 
-bow bounce bonk boggle blush blink 
-bleed bleat bkiss bite bitch beg 
-beer beckon bark bang agree afk 
 
 'Prompt <%*>' where the %* are the various variables you may set yourself.
 

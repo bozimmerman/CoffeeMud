@@ -108,7 +108,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.ACT_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
 			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

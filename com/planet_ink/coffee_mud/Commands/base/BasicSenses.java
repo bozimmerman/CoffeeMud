@@ -44,6 +44,7 @@ public class BasicSenses
 						name=Directions.getDirectionName(dirCode);
 				}
 				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.MSG_EXAMINESOMETHING,textMsg+name);
+				
 				if(mob.location().okAffect(msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0))
@@ -332,6 +333,37 @@ public class BasicSenses
 		}
 	}
 
+	public void brief(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_BRIEF)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_BRIEF);
+			mob.tell("Brief room descriptions are now off.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_BRIEF);
+			mob.tell("Brief room descriptions are now on.");
+		}
+	}
+
+	public void ansi(MOB mob)
+	{
+		if(!mob.isMonster())
+		{
+			if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+			{
+				mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+				mob.tell("ANSI colour disabled.\n\r");
+			}
+			else
+			{
+				mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+				mob.tell("^BANSI^N ^Hcolour^N enabled.\n\r");
+			}
+		}
+	}
+	
 	public void weather(MOB mob, Vector commands)
 	{
 		Room room=mob.location();

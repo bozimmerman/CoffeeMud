@@ -18,6 +18,7 @@ public interface MOB
 	public static final int ATT_SYSOPMSGS=32;
 	public static final int ATT_AUTOMELEE=64;
 	public static final int ATT_PLAYERKILL=128;
+	public static final int ATT_BRIEF=256;
 	
 	/** When the USER last logged on */
 	public Calendar lastDateTime();

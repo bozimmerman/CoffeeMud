@@ -64,6 +64,11 @@ public class Spell_FeatherFall extends Spell
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) target=mob;
 		if(target==null) return false;
+		if(mob.fetchAffect(this.ID())!=null)
+		{
+			mob.tell("You are already light as a feather.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

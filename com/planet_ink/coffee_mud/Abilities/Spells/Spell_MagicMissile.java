@@ -65,7 +65,7 @@ public class Spell_MagicMissile extends Spell
 					if(!msg.wasModified())
 					{
 						int damage = 0;
-						damage += Dice.roll(1,10,1);
+						damage += Dice.roll(1,11,11/numMissiles);
 						if(target.location()==mob.location())
 							ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,((i==0)?"The missile ":"Another missile ")+"<DAMAGE> <T-NAME>!");
 					}

@@ -74,7 +74,7 @@ public class Skill_Swim extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_DELICATE_HANDS_ACT,null);
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

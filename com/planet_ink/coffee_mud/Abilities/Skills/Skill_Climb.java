@@ -51,17 +51,11 @@ public class Skill_Climb extends StdAbility
 			mob.tell("Climb where?");
 			return false;
 		}
-		if((dirCode!=Directions.UP)&&(dirCode!=Directions.DOWN))
-		{
-			mob.tell("You can only climb up or down!");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_DELICATE_HANDS_ACT,null);
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

@@ -44,9 +44,9 @@ public class DefaultCharState implements Cloneable, CharState
 			return false;
 		}
 		if(Hunger>0) ticksHungry=0;
-		if(Hunger>1000)
+		if(Hunger>max.getHunger())
 		{
-			Hunger=1000;
+			Hunger=max.getHunger();
 			return false;
 		}
 		return true;
@@ -62,9 +62,9 @@ public class DefaultCharState implements Cloneable, CharState
 			return false;
 		}
 		if(Thirst>0) ticksThirsty=0;
-		if(Thirst>500)
+		if(Thirst>max.getThirst())
 		{
-			Thirst=500;
+			Thirst=max.getThirst();
 			return false;
 		}
 		return true;
@@ -122,7 +122,7 @@ public class DefaultCharState implements Cloneable, CharState
 		{
 			adjHitPoints((int)Math.round(con*.17)+1,maxState);
 			adjMana((int)Math.round((man*.17)+lvlby2),maxState);
-			adjMovement((int)Math.round(str*.8),maxState);
+			adjMovement((int)Math.round((str*.8)+0.5),maxState);
 			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
 			{
 				adjHitPoints((int)Math.round(con*.5)+1,maxState);
@@ -135,7 +135,7 @@ public class DefaultCharState implements Cloneable, CharState
 		{
 			adjHitPoints((int)Math.round(con*.8)+1,maxState);
 			adjMana((int)Math.round((man*.8)+lvlby4),maxState);
-			adjMovement((int)Math.round(str*.4),maxState);
+			adjMovement((int)Math.round((str*.4)+0.5),maxState);
 			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
 			{
 				adjHitPoints((int)Math.round(con*.3),maxState);
@@ -146,23 +146,23 @@ public class DefaultCharState implements Cloneable, CharState
 		else
 		if(Sense.isFlying(mob))
 		{
-			adjHitPoints((int)Math.round(con*.1)+1,maxState);
+			adjHitPoints((int)Math.round((con*.1)+0.5),maxState);
 			adjMana((int)Math.round(man*.2)+lvlby4,maxState);
-			adjMovement((int)Math.round(str*.4),maxState);
+			adjMovement((int)Math.round((str*.4)+0.5),maxState);
 		}
 		else
 		if(Sense.isSwimming(mob))
 		{
-			adjHitPoints((int)Math.round(con*.05)+1,maxState);
+			adjHitPoints((int)Math.round((con*.05)+0.5),maxState);
 			adjMana((int)Math.round(man*.1)+lvlby4,maxState);
-			adjMovement((int)Math.round(str*.1)+1,maxState);
+			adjMovement((int)Math.round((str*.1)+0.5),maxState);
 		}
 		else
 		if((!mob.isInCombat())&&(!Sense.isClimbing(mob)))
 		{
 			adjHitPoints((int)Math.round((con*.05)+.05),maxState);
 			adjMana((int)Math.round(man*.1)+lvlby4,maxState);
-			adjMovement((int)Math.round(str*.05)+1,maxState);
+			adjMovement((int)Math.round((str*.05)+0.5),maxState);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class DefaultCharState implements Cloneable, CharState
 		if((!mob.isMonster())&&(mob.location()!=null))
 		{
 			if(expendMovement)
-				adjMovement(-mob.location().thirstPerRound(mob),maxState);
+				adjMovement(-mob.location().pointsPerMove(mob),maxState);
 			if(!Sense.isSleeping(mob))
 			{
 				adjThirst(-mob.location().thirstPerRound(mob),maxState);

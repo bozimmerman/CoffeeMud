@@ -48,6 +48,16 @@ public class Thief_Sneak extends ThiefSkill
 			mob.tell("Sneak where?");
 			return false;
 		}
+		
+		Hashtable H=mob.getGroupMembers(new Hashtable());
+		int highestLevel=0;
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB M=mob.location().fetchInhabitant(i);
+			if(((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
+				highestLevel=mob.envStats().level();
+		}
+		int levelDiff=mob.envStats().level()-highestLevel;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -57,7 +67,7 @@ public class Thief_Sneak extends ThiefSkill
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(0,auto);
+			success=profficiencyCheck(levelDiff*10,auto);
 
 			if(success)
 				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SNEAKING);

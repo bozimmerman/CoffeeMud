@@ -61,7 +61,7 @@ public class Spell_Refit extends Spell
 				else
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> begin(s) to magically resize itself!");
-					target.envStats().setHeight(0);
+					target.baseEnvStats().setHeight(0);
 				}
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();

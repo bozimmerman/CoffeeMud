@@ -85,10 +85,20 @@ public class Thief_Hide extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
+		
+		Hashtable H=mob.getGroupMembers(new Hashtable());
+		int highestLevel=0;
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB M=mob.location().fetchInhabitant(i);
+			if(((M!=mob)&&(!H.contains(M)))&&(highestLevel<M.envStats().level()))
+				highestLevel=mob.envStats().level();
+		}
+		int levelDiff=mob.envStats().level()-highestLevel;
 
 		String str="You creep into a shadow and remain completely still.";
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(levelDiff*10,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");

@@ -43,7 +43,7 @@ public class Thief_Surrender extends ThiefSkill
 			MOB vic=mob.location().fetchInhabitant(i);
 			if((vic!=null)&&(vic!=mob)&&(vic.isInCombat())&&(vic.getVictim()==mob))
 			{
-				gold+=vic.envStats().level()*10;
+				gold+=vic.envStats().level()*100;
 				theList.addElement(vic);
 			}
 		}
@@ -81,7 +81,7 @@ public class Thief_Surrender extends ThiefSkill
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
-					vic.setMoney(vic.getMoney()+(10*vic.envStats().level()));
+					vic.setMoney(vic.getMoney()+gold);
 					vic.makePeace();
 				}
 			}

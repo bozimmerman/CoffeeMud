@@ -118,7 +118,7 @@ public class Thief_Distract extends ThiefSkill
 		boolean success=profficiencyCheck(-levelDiff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

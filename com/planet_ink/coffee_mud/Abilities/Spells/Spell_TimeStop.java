@@ -153,7 +153,7 @@ public class Spell_TimeStop extends Spell
 						ExternalPlay.suspendTicking(mob2,-1);
 					}
 				}
-				beneficialAffect(mob,room,7);
+				beneficialAffect(mob,room,3);
 				//beneficialAffect(mob,mob,0);
 			}
 		}

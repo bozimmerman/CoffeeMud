@@ -63,7 +63,7 @@ public class Thief_Pick extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,unlockThis,null,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_DELICATE_HANDS_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
+			FullMsg msg=new FullMsg(mob,unlockThis,null,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
 			if(mob.location().okAffect(msg))
 			{
 				msg=new FullMsg(mob,unlockThis,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");

@@ -62,19 +62,35 @@ public class Prop_TattooAdder extends Property
 		   &&(affect.amITarget(affected)||(affect.tool()==affected))
 		   &&(text().length()>0))
 		{
+			String tattooName=text();
+			boolean tattooMinus=tattooName.startsWith("-");
+			if(tattooMinus)
+				tattooName=tattooName.substring(1);
+			
 			Ability A=affect.source().fetchAbility("Prop_Tattoo");
 			if(A==null)
 			{
 				A=CMClass.getAbility("Prop_Tattoo");
 				affect.source().addAbility(A);
 			}
-			if(A.text().indexOf(";"+text().toUpperCase()+";")>=0)
-				affect.source().tell("You already have the "+text()+" tattoo.");
+			int x=A.text().indexOf(";"+tattooName.toUpperCase()+";");
+			if(x>=0)
+			{
+				if(tattooMinus)
+				{
+					affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
+					A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
+				}
+				else
+					affect.source().tell("You already have the "+tattooName+" tattoo.");
+			}
 			else
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+text()+" tattoo.");
-			if(A.text().length()==0)
-				A.setMiscText(";");
-			A.setMiscText(A.text()+text().toUpperCase()+";");
+			{
+				affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+				if(A.text().length()==0)
+					A.setMiscText(";");
+				A.setMiscText(A.text()+tattooName.toUpperCase()+";");
+			}
 		}
 		super.affect(affect);
 	}

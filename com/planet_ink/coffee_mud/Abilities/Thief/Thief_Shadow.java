@@ -16,7 +16,7 @@ public class Thief_Shadow extends ThiefSkill
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Shadow";
 		miscText="";
-		displayText="check";
+		displayText="(shadowing)";
 
 		canTargetCode=Ability.CAN_MOBS;
 		canAffectCode=Ability.CAN_MOBS;
@@ -46,6 +46,15 @@ public class Thief_Shadow extends ThiefSkill
 		if(!Sense.aliveAwakeMobile(mob,true)) return false;
 		return true;
 	}
+	
+	public String displayText()
+	{
+		if(shadowing!=null)
+			return "(shadowing "+shadowing.name()+")";
+		return super.displayText();
+	}
+	
+	
 	public boolean stillAShadowee()
 	{
 		if(shadowing==null) return false;
@@ -211,7 +220,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,null,auto?Affect.MSG_OK_VISUAL:Affect.MSG_DELICATE_HANDS_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,null,auto?Affect.MSG_OK_VISUAL:Affect.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -29,22 +29,52 @@ public class MOBTeacher extends CombatAbilities
 	private void ensureCharClass()
 	{
 		myMOB.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
-		if(getParms().toUpperCase().indexOf("MAG")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
-		if(getParms().toUpperCase().indexOf("THI")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
-		if(getParms().toUpperCase().indexOf("FIG")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
-		if(getParms().toUpperCase().indexOf("CLE")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
-		if(getParms().toUpperCase().indexOf("RAN")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
-		if(getParms().toUpperCase().indexOf("PAL")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
-		if(getParms().toUpperCase().indexOf("BAR")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
-		if(getParms().toUpperCase().indexOf("DRU")>=0)
-			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
+		Ability A=(Ability)CMClass.findAbility(getParms());
+		if(A!=null)
+		{
+			if(myMOB.fetchAbility(A.ID())==null)
+			{
+				A=(Ability)A.copyOf();
+				A.setBorrowed(myMOB,true);
+				A.setProfficiency(100);
+				myMOB.addAbility(A);
+			}
+		}
+		else
+		{
+			if(getParms().toUpperCase().indexOf("MAG")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
+			if(getParms().toUpperCase().indexOf("THI")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
+			if(getParms().toUpperCase().indexOf("FIG")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+			if(getParms().toUpperCase().indexOf("CLE")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
+			if(getParms().toUpperCase().indexOf("RAN")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
+			if(getParms().toUpperCase().indexOf("PAL")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
+			if(getParms().toUpperCase().indexOf("BAR")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
+			if(getParms().toUpperCase().indexOf("DRU")>=0)
+				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
+			
+			for(int i=0;i<CMClass.abilities.size();i++)
+			{
+				A=(Ability)CMClass.abilities.elementAt(i);
+				if(myMOB.fetchAbility(A.ID())==null)
+					if((A.qualifiesByLevel(myMOB))
+					   ||((myMOB.charStats().getMyClass().ID().equals("StdCharClass"))
+					   &&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+					{
+						A=(Ability)A.copyOf();
+						A.setBorrowed(myMOB,true);
+						A.setProfficiency(100);
+						myMOB.addAbility(A);
+					}
+			}
+		}
+		
 		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
 		myMOB.recoverCharStats();
@@ -56,24 +86,6 @@ public class MOBTeacher extends CombatAbilities
 		if(myMOB==null) return;
 		MOB monster=myMOB;
 		ensureCharClass();
-		while(monster.numAbilities()>0)
-		{
-			Ability A=monster.fetchAbility(0);
-			if(A!=null)
-				monster.delAbility(A);
-		}
-		for(int i=0;i<CMClass.abilities.size();i++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(i);
-			if(monster.fetchAbility(A.ID())==null)
-				if((A.qualifiesByLevel(monster))||(monster.charStats().getMyClass().ID().equals("StdCharClass")))
-				{
-					A=(Ability)A.copyOf();
-					A.setBorrowed(monster,true);
-					A.setProfficiency(100);
-					monster.addAbility(A);
-				}
-		}
 	}
 
 	public void affect(Environmental affecting, Affect affect)
@@ -123,13 +135,16 @@ public class MOBTeacher extends CombatAbilities
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
 					return;
 				}
+				ensureCharClass();
+				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
+				monster.baseCharStats().setStat(CharStats.WISDOM,18);
+				
 				myAbility=monster.fetchAbility(myAbility.ID());
 				if(myAbility==null)
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
-				ensureCharClass();
 				if(giveABonus)
 				{
 					monster.baseCharStats().setStat(CharStats.INTELLIGENCE,25);
@@ -161,7 +176,6 @@ public class MOBTeacher extends CombatAbilities
 					return;
 				myAbility.teach(monster,mob);
 				monster.location().send(monster,msg);
-				monster.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
 				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
 				monster.baseCharStats().setStat(CharStats.WISDOM,18);
 				monster.recoverCharStats();

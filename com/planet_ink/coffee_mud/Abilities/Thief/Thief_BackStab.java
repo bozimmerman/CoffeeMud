@@ -35,6 +35,14 @@ public class Thief_BackStab extends ThiefSkill
 	{
 		return new Thief_BackStab();
 	}
+	
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		int factor=(int)Math.round(Util.div(adjustedLevel((MOB)affected),2.0))+2;
+		affectableStats.setDamage(affectableStats.damage()*factor);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -75,8 +83,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		int factor=(int)Math.round(Util.div(adjustedLevel(mob),4.0))+2;
-		FullMsg msg=new FullMsg(mob,target,null,(auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
+		FullMsg msg=new FullMsg(mob,target,null,(auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
@@ -84,10 +91,11 @@ public class Thief_BackStab extends ThiefSkill
 				mob.location().show(target,mob,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> spot(s) <T-NAME>!");
 			else
 			{
-				mob.envStats().setDamage(mob.envStats().damage()*factor);
-				mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+100);
+				mob.addAffect(this);
+				mob.recoverEnvStats();
 			}
 			ExternalPlay.postAttack(mob,target,weapon);
+			mob.delAffect(this);
 			mob.recoverEnvStats();
 		}
 		else

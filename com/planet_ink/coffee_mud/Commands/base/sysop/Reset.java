@@ -182,8 +182,11 @@ public class Reset
 	public void resetRoom(Room room)
 	{
 		if(room==null) return;
+		boolean mobile=room.getMobility();
+		room.toggleMobility(false);
 		new Rooms().clearTheRoom(room);
 		ExternalPlay.DBReadContent(room);
+		room.toggleMobility(mobile);
 	}
 	public void resetArea(Area area)
 	{

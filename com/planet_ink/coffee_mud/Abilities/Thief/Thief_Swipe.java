@@ -90,12 +90,12 @@ public class Thief_Swipe extends ThiefSkill
 					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
 
 			String hisStr=str;
-			int hisCode=Affect.MSG_NOISYMOVEMENT;
+			int hisCode=Affect.MSG_DELICATE_HANDS_ACT;
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 				hisCode=hisCode | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

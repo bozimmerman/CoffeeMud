@@ -42,7 +42,7 @@ public class CommandProcessor
 		String firstWord=((String)commands.elementAt(0)).toUpperCase();
 
 		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
-		if(commandCodeObj==null)
+		if((commandCodeObj==null)&&(firstWord.length()>0))
 		{
 			Command C=CMClass.findExtraCommand(firstWord);
 			if((C!=null)&&(!C.execute(mob,commands)))
@@ -53,6 +53,7 @@ public class CommandProcessor
 				if(key.toUpperCase().startsWith(firstWord))
 				{
 					commandCodeObj=(Integer)commandSet.get(key);
+					commands.setElementAt(key.toLowerCase(),0);
 					break;
 				}
 			}
@@ -68,11 +69,7 @@ public class CommandProcessor
 					scoring.affected(mob);
 					break;
 				case CommandSet.ANSI:
-					if(!mob.isMonster())
-					{
-						mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
-						mob.tell("^BANSI^N ^Hcolour^N enabled.\n\r");
-					}
+					basicSenses.ansi(mob);
 					break;
 				case CommandSet.ARCHELP:
 					if(mob.isASysOp(mob.location()))
@@ -104,11 +101,8 @@ public class CommandProcessor
 				case CommandSet.AUTOLOOT:
 					theFight.autoloot(mob);
 					break;
-				case CommandSet.PUSH:
-					itemUsage.push(mob,Util.combine(commands,1),commandSet);
-					break;
-				case CommandSet.PULL:
-					itemUsage.pull(mob,Util.combine(commands,1));
+				case CommandSet.BRIEF:
+					basicSenses.brief(mob);
 					break;
 				case CommandSet.BUG:
 					ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.name(),"ALL","BUG",Util.combine(commands,1),-1);
@@ -295,14 +289,6 @@ public class CommandProcessor
 				case CommandSet.MOUNT:
 					movement.mount(mob,commands);
 					break;
-				case CommandSet.NOANSI:
-					if(!mob.isMonster())
-					{
-						if((mob.getBitmap()&MOB.ATT_ANSI)>0)
-							mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
-						mob.tell("ANSI colour disabled.\n\r");
-					}
-					break;
 				case CommandSet.NOFOLLOW:
 					grouping.nofollow(mob,true,false);
 					break;
@@ -342,6 +328,12 @@ public class CommandProcessor
 				case CommandSet.PREVIOUS_CMD:
 					if(!mob.isMonster())
 						doCommand(mob,Util.copyVector(mob.session().previousCMD()));
+					break;
+				case CommandSet.PULL:
+					itemUsage.pull(mob,Util.combine(commands,1));
+					break;
+				case CommandSet.PUSH:
+					itemUsage.push(mob,Util.combine(commands,1),commandSet);
 					break;
 				case CommandSet.PUT:
 					itemUsage.put(mob,commands);

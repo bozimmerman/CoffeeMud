@@ -102,7 +102,7 @@ public class Thief extends StdCharClass
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if(affect.sourceMinor()==Affect.TYP_DELICATE_HANDS_ACT)
+			if((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
 			{
 				for(int i=0;i<myChar.inventorySize();i++)
 				{

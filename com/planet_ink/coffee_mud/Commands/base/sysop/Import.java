@@ -465,7 +465,8 @@ public class Import
 						   Vector mobProgData,
 						   Vector objProgData,
 						   Vector shopData,
-						   Vector specialData)
+						   Vector specialData,
+						   Vector socialData)
 	{
 		Vector helpsToEat=new Vector();
 
@@ -538,6 +539,12 @@ public class Import
 					useThisOne=specialData;
 				}
 				else
+				if(s.startsWith("SOCIALS"))
+				{
+					wasUsingThisOne=null;
+					useThisOne=socialData;
+				}
+				else
 				if((Util.s_int(s)>0)&&(wasUsingThisOne!=null))
 				{
 					Vector V=new Vector();
@@ -549,6 +556,9 @@ public class Import
 				{
 					okString=false;
 				}
+				else
+				if((s.equals("")||s.equals("~"))&&(useThisOne==socialData))
+					okString=true;
 				else
 				{
 					//useThisOne=null;
@@ -2350,9 +2360,17 @@ public class Import
 		}
 		
 		// continue pre-processing
-		for(int areaFile=0;areaFile<commands.size();areaFile++)
+		for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 		{
-
+			String areaFileName=(String)commands.elementAt(areaFile);
+			File F=new File(areaFileName);
+			File[] FF=F.listFiles();
+			if((FF!=null)&&(FF.length>0))
+			{
+				for(int f=0;f<FF.length;f++)
+					commands.addElement(FF[f].getAbsolutePath());
+				commands.removeElementAt(areaFile);
+			}
 		}
 		
 		Vector mobData=new Vector();
@@ -2368,6 +2386,7 @@ public class Import
 		Vector shopData=new Vector();
 		Vector specialData=new Vector();
 		Vector newRooms=new Vector();
+		Vector socialData=new Vector();
 		Vector reLinkTable=null;
 		
 		String areaFileName=(String)commands.elementAt(areaFile);
@@ -2447,10 +2466,16 @@ public class Import
 
 		// sort the data into general blocks, and identify area
 		mob.tell("\n\rSorting data from file '"+areaFileName+"'...");
-		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData);
+		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData);
+		if(socialData.size()>0)
+		{
+			
+		}
+		
 		if((roomData.size()==0)||(areaData.size()==0))
 		{
-			mob.tell("Missing data! It is very unlikely this is an .are file.");
+			if(socialData.size()<10)
+				mob.tell("Missing data! It is very unlikely this is an .are file.");
 			return;
 		}
 		String areaName=getAreaName(areaData);

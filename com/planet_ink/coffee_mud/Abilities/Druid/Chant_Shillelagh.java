@@ -34,7 +34,7 @@ public class Chant_Shillelagh extends Chant
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		if(affected instanceof Item)
-			affectableStats.setAbility(affectableStats.ability()+5);
+			affectableStats.setAbility(affectableStats.ability()+4);
 	}
 
 
@@ -44,11 +44,10 @@ public class Chant_Shillelagh extends Chant
 		// undo the affects of this spell
 		if(canBeUninvoked)
 		{
-			if((affected==null)||(!(affected instanceof MOB)))
-			{
-				if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-					((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
-			}
+			if(((affected!=null)&&(affected instanceof Item))
+			&&((((Item)affected).owner()!=null)
+			&&(((Item)affected).owner() instanceof MOB)))
+				((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
 		}
 		super.unInvoke();
 	}

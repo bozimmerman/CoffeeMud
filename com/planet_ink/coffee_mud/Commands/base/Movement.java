@@ -176,7 +176,7 @@ public class Movement
 		else
 		{
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
-			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(mob),mob.maxState())))
+			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState())))
 			{
 				mob.tell("You are too tired.");
 				return false;
@@ -196,10 +196,7 @@ public class Movement
 			}
 			if((riding instanceof Item)
 			   &&(((Room)leaveMsg.target()).isContent((Item)riding)))
-			{
-				((Room)leaveMsg.target()).delItem((Item)riding);
-				((Room)enterMsg.target()).addItem((Item)riding);
-			}
+				((Room)enterMsg.target()).bringItemHere((Item)riding);
 			else
 			if((riding instanceof MOB)
 			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))

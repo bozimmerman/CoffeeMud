@@ -26,6 +26,7 @@ public class StdRoom
 	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
 	protected int domainCondition=Room.CONDITION_NORMAL;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
+	protected boolean mobility=true;
 	
 	// base move points and thirst points per round
 	protected int baseMove=2;
@@ -243,6 +244,8 @@ public class StdRoom
 		return myResource;
 	}
 			
+	public void toggleMobility(boolean onoff){mobility=onoff;}
+	public boolean getMobility(){return mobility;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -255,12 +258,12 @@ public class StdRoom
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_LEAVE:
-				if(!Sense.canMove(this))
+				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				break;
 			case Affect.TYP_FLEE:
 			case Affect.TYP_ENTER:
-				if(!Sense.canMove(this))
+				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				if((!skyedYet)&&(!mob.isMonster()))
 					giveASky(this);
@@ -342,7 +345,7 @@ public class StdRoom
 				break;
 			}
 			case Affect.TYP_EXAMINESOMETHING:
-				look(mob);
+				look(mob,affect.sourceMessage()==null);
 				break;
 			case Affect.TYP_READSOMETHING:
 				if(Sense.canBeSeenBy(this,mob))
@@ -518,7 +521,7 @@ public class StdRoom
 		getArea().affectCharState(affectedMob,affectableMaxState);
 	}
 	
-	private void look(MOB mob)
+	private void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
@@ -531,7 +534,8 @@ public class StdRoom
 		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
 		{
 			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
-			Say.append("^L" + description()+"^N\n\r\n\r");
+			if((!careAboutBrief)||((mob.getBitmap()&MOB.ATT_BRIEF)==0))
+				Say.append("^L" + description()+"^N\n\r\n\r");
 		}
 		
 		Vector viewItems=new Vector();
@@ -581,21 +585,58 @@ public class StdRoom
 		mob.setLocation(this);
 
 		if((andFollowers)&&(oldRoom!=null))
-		for(int f=0;f<mob.numFollowers();f++)
 		{
-			MOB fol=mob.fetchFollower(f);
-			if(fol!=null)
+			for(int f=0;f<mob.numFollowers();f++)
 			{
-				if(fol.location()==oldRoom)
-					oldRoom.delInhabitant(fol);
-				addInhabitant(fol);
-				fol.setLocation(this);
+				MOB fol=mob.fetchFollower(f);
+				if((fol!=null)&&(fol.location()==oldRoom))
+					bringMobHere(fol,true);
+			}
+			if(mob.riding()!=null)
+			{
+				if(mob.riding() instanceof MOB)
+					bringMobHere((MOB)mob.riding(),andFollowers);
+				else
+				if(mob.riding() instanceof Item)
+					bringItemHere((Item)mob.riding());
 			}
 		}
 		oldRoom.recoverRoomStats();
 		recoverRoomStats();
 	}
 
+	public void bringItemHere(Item item)
+	{
+		if(item==null) return;
+
+		if(item.owner()==null) return;
+		Environmental o=item.owner();
+		
+		Vector V=new Vector();
+		if(item instanceof Container)
+			V=((Container)item).getContents();
+		if(o instanceof MOB)((MOB)o).delInventory(item);
+		if(o instanceof Room) ((Room)o).delItem(item);
+		addItem(item);
+		for(int v=0;v<V.size();v++)
+		{
+			Item i2=(Item)V.elementAt(v);
+			if(o instanceof MOB) ((MOB)o).delInventory(i2);
+			if(o instanceof Room) ((Room)o).delItem(i2);
+			addItem(i2);
+		}
+		item.setContainer(null);
+		if(o instanceof Room)
+			((Room)o).recoverRoomStats();
+		else
+		if(o instanceof MOB)
+		{
+			((MOB)o).recoverCharStats();
+			((MOB)o).recoverEnvStats();
+			((MOB)o).recoverMaxState();
+		}
+		recoverRoomStats();
+	}
 	public Exit getReverseExit(int direction)
 	{
 		if(direction>=Directions.NUM_DIRECTIONS)

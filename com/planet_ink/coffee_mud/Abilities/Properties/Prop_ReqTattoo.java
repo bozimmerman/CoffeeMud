@@ -43,7 +43,7 @@ public class Prop_ReqTattoo extends Property
 					   ||((y>0)&&(text().charAt(y-1)!='+'))))
 				 ||((y>0)&&(text().charAt(y-1)=='-')))
 				{
-					affect.source().tell("You are not good enough to go that way.");
+					affect.source().tell("You have not been granted authorization to go that way.");
 					return false;
 				}
 			}

@@ -90,6 +90,11 @@ public class Spell_PolymorphSelf extends Spell
 			mob.tell("You can't turn yourself into a '"+race+"'!");
 			return false;
 		}
+		if(mob.fetchAffect(this.ID())!=null)
+		{
+			mob.tell("You are already polymorphed.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
