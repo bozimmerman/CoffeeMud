@@ -19,15 +19,20 @@ public class Prop_PracticeDummy extends Property
 	public void affectCharState(MOB mob, CharState affectableMaxState)
 	{
 		super.affectCharState(mob,affectableMaxState);
-		affectableMaxState.setHitPoints(99999);
-		mob.curState().setHitPoints(99999);
+		if(text().toUpperCase().indexOf("KILL")<0)
+		{
+			affectableMaxState.setHitPoints(99999);
+			mob.curState().setHitPoints(99999);
+		}
 	}
 
 	public void affectEnvStats(Environmental E, EnvStats affectableStats)
 	{
 		super.affectEnvStats(E,affectableStats);
-		affectableStats.setArmor(100);
+		if(text().toUpperCase().indexOf("KILL")<0)
+			affectableStats.setArmor(100);
 	}
+	
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

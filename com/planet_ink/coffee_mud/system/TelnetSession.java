@@ -31,6 +31,15 @@ public class TelnetSession extends Thread implements Session
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
 	private final static String hexStr="0123456789ABCDEF";
+	private final static String[] maskErrMsgs={
+			"reset by peer",
+			"socket closed",
+			"connection abort",
+			"connection reset",
+			"jvm_recv",
+			"timed out",
+			"stream closed"
+	};
 
 	private boolean lastWasCR=false;
 
@@ -1222,6 +1231,16 @@ public class TelnetSession extends Thread implements Session
 	{
 		return termID;
 	}
+	
+	private boolean isMaskedErrMsg(String str)
+	{
+		if(str==null) return false;
+		str=str.toLowerCase();
+		for(int i=0;i<maskErrMsgs.length;i++)
+			if(str.indexOf(maskErrMsgs[i])>=0)
+				return true;
+		return false;
+	}
 
 	public String getAddress()
 	{
@@ -1325,33 +1344,13 @@ public class TelnetSession extends Thread implements Session
 		}
 		catch(SocketException e)
 		{
-			if(e.getMessage()==null)
+			if(!isMaskedErrMsg(e.getMessage()))
 				errorOut(e);
-			else
-			if((e.getMessage().indexOf("reset by peer")<0)
-			&&(e.getMessage().indexOf("socket closed")<0)
-			&&(e.getMessage().indexOf("connection abort")<0)
-			&&(e.getMessage().indexOf("JVM_recv")<0)
-			&&(e.getMessage().indexOf("timed out")<0)
-			&&(e.getMessage().indexOf("tream closed")<0))
-			{
-				errorOut(e);
-			}
 		}
 		catch(Exception t)
 		{
-			if(t.getMessage()==null)
+			if(!isMaskedErrMsg(t.getMessage()))
 				errorOut(t);
-			else
-			if((t.getMessage().indexOf("reset by peer")<0)
-			 &&(t.getMessage().indexOf("socket closed")<0)
-			 &&(t.getMessage().indexOf("timed out")<0)
-			 &&(t.getMessage().indexOf("connection abort")<0)
-			 &&(t.getMessage().indexOf("JVM_recv")<0)
-			 &&(t.getMessage().indexOf("tream closed")<0))
-			{
-				errorOut(t);
-			}
 		}
 		status=Session.STATUS_LOGOUT3;
 
