@@ -68,7 +68,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		int oldDirCode=-1;
 		if(loc==null) return null;
 
-		Room[][] subMap=getBuiltGrid();
+		getBuiltGrid();
 
 		Room oldLoc=loc;
 		if(loc.roomID().length()==0) // might be a child of an adjacent grid!

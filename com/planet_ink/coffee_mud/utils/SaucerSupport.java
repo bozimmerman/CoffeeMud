@@ -1192,4 +1192,269 @@ public class SaucerSupport
 		}
 		return mob.location()!=oldRoom;
 	}
+	
+	public static Hashtable timsItemAdjustments(Item I, 
+												int level,
+												int material,
+												int weight,
+												int hands,
+												int wclass,
+												int reach,
+												long worndata)
+	{
+		Hashtable vals=new Hashtable();
+		int materialvalue=EnvResource.RESOURCE_DATA[material&EnvResource.RESOURCE_MASK][1];
+		if(I instanceof Weapon)
+		{
+			int baseattack=0;
+			int basereach=0;
+			int maxreach=0;
+			int basematerial=EnvResource.MATERIAL_WOODEN;
+			if(wclass==Weapon.CLASS_FLAILED) baseattack=-5;
+			if(wclass==Weapon.CLASS_POLEARM){ basereach=1; basematerial=EnvResource.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_RANGED){ basereach=1; maxreach=5;}
+			if(wclass==Weapon.CLASS_THROWN){ basereach=1; maxreach=5;}
+			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=EnvResource.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=EnvResource.MATERIAL_METAL;}
+			if(wclass==Weapon.CLASS_SWORD){ basematerial=EnvResource.MATERIAL_METAL;}
+			if(weight==0) weight=10;
+			if(basereach>maxreach) maxreach=basereach;
+			if(reach<basereach)
+			{ 
+				reach=basereach;
+				vals.put("MINRANGE",""+basereach);
+				vals.put("MAXRANGE",""+maxreach);
+			}
+			else
+			if(reach>basereach)
+				basereach=reach;
+			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*((hands+1)/2);
+			int cost=2*((weight*materialvalue)+((5*damage)+baseattack+(reach*10))*damage)/(hands+1);
+				
+			if(basematerial==EnvResource.MATERIAL_METAL)
+			{
+				switch(material&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_MITHRIL:
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_ENERGY:
+					break;
+				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_PLASTIC:
+					damage-=4;
+					baseattack-=0;
+					break;
+				case EnvResource.MATERIAL_PRECIOUS:
+					damage-=4;
+					baseattack-=10;
+					break;
+				case EnvResource.MATERIAL_LEATHER:
+					damage-=6;
+					baseattack-=10;
+					break;
+				case EnvResource.MATERIAL_ROCK:
+					damage-=2;
+					baseattack-=10;
+					break;
+				case EnvResource.MATERIAL_GLASS:
+					damage-=4;
+					baseattack-=20;
+					break;
+				default:
+					damage-=8;
+					baseattack-=30;
+					break;
+				}
+				switch(material)
+				{
+				case EnvResource.RESOURCE_BALSA:
+				case EnvResource.RESOURCE_LIMESTONE:
+				case EnvResource.RESOURCE_FLINT:
+					baseattack-=10;
+					damage-=2;
+					break;
+				case EnvResource.RESOURCE_CLAY:
+					baseattack-=20;
+					damage-=4;
+					break;
+				case EnvResource.RESOURCE_BONE:
+					baseattack+=20;
+					damage+=4;
+					break;
+				case EnvResource.RESOURCE_GRANITE:
+				case EnvResource.RESOURCE_OBSIDIAN:
+				case EnvResource.RESOURCE_IRONWOOD:
+					baseattack+=10;
+					damage+=2;
+					break;
+				case EnvResource.RESOURCE_SAND:
+				case EnvResource.RESOURCE_COAL:
+					baseattack-=40;
+					damage-=8;
+					break;
+				}
+			}
+			if(basematerial==EnvResource.MATERIAL_WOODEN)
+			{
+				switch(material&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_ENERGY:
+					break;
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_MITHRIL:
+					damage+=2;
+					baseattack-=0;
+					break;
+				case EnvResource.MATERIAL_PRECIOUS:
+					damage+=2;
+					baseattack-=10;
+					break;
+				case EnvResource.MATERIAL_LEATHER:
+				case EnvResource.MATERIAL_PLASTIC:
+					damage-=2;
+					baseattack-=0;
+					break;
+				case EnvResource.MATERIAL_ROCK:
+					damage+=2;
+					baseattack-=10;
+					break;
+				case EnvResource.MATERIAL_GLASS:
+					damage-=2;
+					baseattack-=10;
+					break;
+				default:
+					damage-=6;
+					baseattack-=30;
+					break;
+				}
+				switch(material)
+				{
+				case EnvResource.RESOURCE_LIMESTONE:
+				case EnvResource.RESOURCE_FLINT:
+					baseattack-=10;
+					damage-=2;
+					break;
+				case EnvResource.RESOURCE_CLAY:
+					baseattack-=20;
+					damage-=4;
+					break;
+				case EnvResource.RESOURCE_BONE:
+					baseattack+=20;
+					damage+=4;
+					break;
+				case EnvResource.RESOURCE_GRANITE:
+				case EnvResource.RESOURCE_OBSIDIAN:
+					baseattack+=10;
+					damage+=2;
+					break;
+				case EnvResource.RESOURCE_SAND:
+				case EnvResource.RESOURCE_COAL:
+					baseattack-=40;
+					damage-=8;
+					break;
+				}
+			}
+			if(damage<=0) damage=1;
+			
+			vals.put("DAMAGE",""+damage);
+			vals.put("ATTACK",""+baseattack);
+			vals.put("VALUE",""+cost);
+		}
+		else
+		if(I instanceof Armor)
+		{
+			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,50,60,70,80,90};
+			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,47};
+			double pts=0.0;
+			if(level<0) level=0;
+			int materialCode=material&EnvResource.MATERIAL_MASK;
+			for(int i=0;i<14;i++)
+			{
+				int lvl=-1;
+				switch(materialCode)
+				{
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_MITHRIL:
+				case EnvResource.MATERIAL_PRECIOUS:
+				case EnvResource.MATERIAL_ENERGY:
+					lvl=metalPoints[i];
+					break;
+				case EnvResource.MATERIAL_PLASTIC:
+				case EnvResource.MATERIAL_LEATHER:
+				case EnvResource.MATERIAL_GLASS:
+				case EnvResource.MATERIAL_ROCK:
+				case EnvResource.MATERIAL_WOODEN:
+					lvl=leatherPoints[i];
+					break;
+				default:
+					lvl=clothPoints[i];
+					break;
+				}
+				if(lvl>level){pts=new Integer(i-1).doubleValue();break;}
+			}
+				   
+			double totalpts=0.0;
+			double weightpts=0.0;
+			for(int i=0;i<Item.wornWeights.length-1;i++)
+			{
+				if(Util.isSet(worndata,i))
+				{
+					totalpts+=(pts*Item.wornWeights[i+1]);
+					switch(materialCode)
+					{
+					case EnvResource.MATERIAL_METAL:
+					case EnvResource.MATERIAL_MITHRIL:
+					case EnvResource.MATERIAL_PRECIOUS:
+						weightpts+=Item.wornHeavyPts[i+1][2];
+						break;
+					case EnvResource.MATERIAL_LEATHER:
+					case EnvResource.MATERIAL_GLASS:
+					case EnvResource.MATERIAL_PLASTIC:
+					case EnvResource.MATERIAL_ROCK:
+					case EnvResource.MATERIAL_WOODEN:
+						weightpts+=Item.wornHeavyPts[i+1][1];
+						break;
+					case EnvResource.MATERIAL_ENERGY:
+						break;
+					default:
+						weightpts+=Item.wornHeavyPts[i+1][0];
+						break;
+					}
+					if(hands==1) break;
+				}
+			}
+			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue()) 
+									 * ( weightpts / 2));
+			int armor=(int)Math.round(totalpts);
+			switch(material)
+			{
+				case EnvResource.RESOURCE_BALSA:
+				case EnvResource.RESOURCE_LIMESTONE:
+				case EnvResource.RESOURCE_FLINT:
+					armor-=1;
+					break;
+				case EnvResource.RESOURCE_CLAY:
+					armor-=2;
+					break;
+				case EnvResource.RESOURCE_BONE:
+					armor+=2;
+					break;
+				case EnvResource.RESOURCE_GRANITE:
+				case EnvResource.RESOURCE_OBSIDIAN:
+				case EnvResource.RESOURCE_IRONWOOD:
+					armor+=1;
+					break;
+				case EnvResource.RESOURCE_SAND:
+				case EnvResource.RESOURCE_COAL:
+					armor-=4;
+					break;
+			}
+			vals.put("ARMOR",""+armor);
+			vals.put("VALUE",""+cost);
+			vals.put("WEIGHT",""+(int)Math.round(weightpts));
+		}
+		return vals;
+	}
 }
