@@ -33,7 +33,7 @@ public class Thief_Trap extends ThiefSkill
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=new Trap_Trap().fetchMyTrap(unlockThis);
+		Trap theTrap=CMClass.fetchMyTrap(unlockThis);
 		if(theTrap!=null)
 		{
 			if(theTrap.sprung())
@@ -45,7 +45,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 		}
 
-		theTrap=new Trap_Trap().getATrap(unlockThis);
+		theTrap=CMClass.getATrap(unlockThis);
 		if(theTrap==null)
 		{
 			mob.tell(auto?"":"You don't know how to lay a trap on "+unlockThis.name()+".");

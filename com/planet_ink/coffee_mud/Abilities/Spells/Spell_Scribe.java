@@ -46,7 +46,10 @@ public class Spell_Scribe extends Spell
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A instanceof Spell)&&(CMAble.qualifiesByLevel(mob,A))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
+			if((A!=null)
+			&&(A instanceof Spell)
+			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}
 		if(scrollThis==null)
@@ -54,8 +57,9 @@ public class Spell_Scribe extends Spell
 			mob.tell("You don't know how to scribe '"+spellName+"'.");
 			return false;
 		}
-
-		if(scroll.numSpells()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this)))
+		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
+		if(numSpells<0) numSpells=0;
+		if(scroll.numSpells()>numSpells)
 		{
 			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
 			return false;
@@ -73,7 +77,7 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		mob.curState().setMana(0);
-		int experienceToLose=10;
+		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 

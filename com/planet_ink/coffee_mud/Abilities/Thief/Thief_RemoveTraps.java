@@ -35,7 +35,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=new Trap_Trap().fetchMyTrap(unlockThis);
+		Trap theTrap=CMClass.fetchMyTrap(unlockThis);
 		Trap opTrap=null;
 		if(unlockThis instanceof Exit)
 		{
@@ -44,7 +44,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);
 				if(exit!=null)
-					opTrap=new Trap_Trap().fetchMyTrap(exit);
+					opTrap=CMClass.fetchMyTrap(exit);
 			}
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");

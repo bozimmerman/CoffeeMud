@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Thief_Caltrops extends ThiefSkill
+public class Thief_Caltrops extends ThiefSkill implements Trap
 {
 	public String ID() { return "Thief_Caltrops"; }
 	public String name(){ return "Caltrops";}
@@ -16,7 +16,27 @@ public class Thief_Caltrops extends ThiefSkill
 	private static final String[] triggerStrings = {"CALTROPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Caltrops();}
+	private boolean sprung=false;
 
+	public boolean sprung()
+	{
+		return sprung;
+	}
+	public void setSprung(boolean isSprung)
+	{
+		sprung=isSprung;
+		if(sprung==true)
+			unInvoke();
+	}
+	public void setReset(int Reset){}
+	public int getReset(){return 0;}
+
+	public void spring(MOB mob)
+	{
+		ExternalPlay.postDamage(invoker(),mob,null,Dice.roll(1,5,0),Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+		// does not set sprung flag -- as this trap never goes out of use
+	}
+	
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(affected==null) return super.okAffect(myHost,msg);
@@ -25,12 +45,13 @@ public class Thief_Caltrops extends ThiefSkill
 		Room room=(Room)affected;
 		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
 		&&(!msg.amISource(invoker()))
+		&&(!sprung())
 		&&((msg.sourceMinor()==Affect.TYP_ENTER)
 			||(msg.sourceMinor()==Affect.TYP_LEAVE)
 			||(msg.sourceMinor()==Affect.TYP_FLEE)
 			||(msg.sourceMinor()==Affect.TYP_ADVANCE)
 			||(msg.sourceMinor()==Affect.TYP_RETREAT)))
-				ExternalPlay.postDamage(invoker(),msg.source(),null,Dice.roll(1,5,0),Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+				spring(msg.source());
 		return true;
 	}
 	

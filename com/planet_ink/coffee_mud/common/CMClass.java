@@ -597,5 +597,96 @@ public class CMClass extends ClassLoader
 		return (ancestorCl.isAssignableFrom(cl)) ;
 	}
 
+	public static Trap getATrap(Environmental unlockThis)
+	{
+		Trap theTrap=null;
+		int roll=(int)Math.round(Math.random()*100.0);
+		if(unlockThis instanceof Exit)
+		{
+			if(((Exit)unlockThis).hasADoor())
+			{
+				if(((Exit)unlockThis).hasALock())
+				{
+					if(roll<20)
+						theTrap=(Trap)getAbility("Trap_Open");
+					else
+					if(roll<80)
+						theTrap=(Trap)getAbility("Trap_Unlock");
+					else
+						theTrap=(Trap)getAbility("Trap_Enter");
+				}
+				else
+				{
+					if(roll<50)
+						theTrap=(Trap)getAbility("Trap_Open");
+					else
+						theTrap=(Trap)getAbility("Trap_Enter");
+				}
+			}
+			else
+				theTrap=(Trap)getAbility("Trap_Enter");
+		}
+		else
+		if(unlockThis instanceof Container)
+		{
+			if(((Container)unlockThis).hasALid())
+			{
+				if(((Container)unlockThis).hasALock())
+				{
+					if(roll<20)
+						theTrap=(Trap)getAbility("Trap_Open");
+					else
+					if(roll<80)
+						theTrap=(Trap)getAbility("Trap_Unlock");
+					else
+						theTrap=(Trap)getAbility("Trap_Get");
+				}
+				else
+				{
+					if(roll<50)
+						theTrap=(Trap)getAbility("Trap_Open");
+					else
+						theTrap=(Trap)getAbility("Trap_Get");
+				}
+			}
+			else
+				theTrap=(Trap)getAbility("Trap_Get");
+		}
+		else
+		if(unlockThis instanceof Item)
+			theTrap=(Trap)CMClass.getAbility("Trap_Get");
+		return theTrap;
+	}
+
+	public static Trap fetchMyTrap(Environmental myThang)
+	{
+		if(myThang==null) return null;
+		for(int a=0;a<myThang.numAffects();a++)
+		{
+			Ability A=myThang.fetchAffect(a);
+			if((A!=null)&&(A instanceof  Trap))
+				return (Trap)A;
+		}
+		return null;
+	}
+
+	public static void setTrapped(Environmental myThang, boolean isTrapped)
+	{
+		Trap t=getATrap(myThang);
+		t.setReset(50);
+		setTrapped(myThang,t,isTrapped);
+	}
+	public static void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
+	{
+		for(int a=0;a<myThang.numAffects();a++)
+		{
+			Ability A=myThang.fetchAffect(a);
+			if((A!=null)&&(A instanceof Trap))
+				A.unInvoke();
+		}
+
+		if((isTrapped)&&(myThang.fetchAffect(theTrap.ID())==null))
+			myThang.addAffect(theTrap);
+	}
 
 }

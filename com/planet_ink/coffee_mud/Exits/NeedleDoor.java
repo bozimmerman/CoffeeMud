@@ -9,8 +9,7 @@ public class NeedleDoor extends StdClosedDoorway
 	{
 		super();
 		Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
-		if(t!=null)
-			t.setTrapped(this,t,true);
+		if(t!=null) CMClass.setTrapped(this,t,true);
 	}
 	public Environmental newInstance()
 	{

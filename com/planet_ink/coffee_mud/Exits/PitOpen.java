@@ -9,8 +9,7 @@ public class PitOpen extends StdOpenDoorway
 	{
 		super();
 		Trap t=(Trap)CMClass.getAbility("Trap_EnterPit");
-		if(t!=null)
-			t.setTrapped(this,t,true);
+		if(t!=null) CMClass.setTrapped(this,t,true);
 	}
 	public Environmental newInstance()
 	{

@@ -9,7 +9,7 @@ public class TrappedLockedDoor extends StdLockedDoorway
 	{
 		super();
 		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
-		if(t!=null) t.setTrapped(this,true);
+		if(t!=null) CMClass.setTrapped(this,t,true);
 	}
 	public Environmental newInstance()
 	{

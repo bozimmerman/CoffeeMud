@@ -9,7 +9,8 @@ public class TrappedChest extends LargeChest
 	public TrappedChest()
 	{
 		super();
-		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(this,true);
+		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
+		if(t!=null) CMClass.setTrapped(this,t,true);
 		material=EnvResource.RESOURCE_OAK;
 		isLocked=false;
 	}

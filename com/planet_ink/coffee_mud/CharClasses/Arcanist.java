@@ -69,7 +69,7 @@ public class Arcanist extends Thief
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 
-CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Bash",false);
 			
 CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",true);
@@ -97,7 +97,7 @@ CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",true);
 		
 CMAble.addCharAbilityMapping(ID(),25,"Spell_SpellStoring",true);
 			
-CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
+CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantItem",true);
 		}
 	}
 	
@@ -179,8 +179,11 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantedItem",true);
 				}
 			}
 			else
-			if((msg.tool().ID().equals("Spell_Scribe"))
-			||(msg.tool().ID().equals("Spell_EnchantWand")))
+			if(msg.tool().ID().equals("Spell_Scribe")
+			||msg.tool().ID().equals("Spell_EnchantWand")
+			||msg.tool().ID().equals("Spell_EnchantItem")
+			||msg.tool().ID().equals("Spell_SpellStoring")
+			||msg.tool().ID().equals("Spell_WardArea"))
 			{
 				Ability A=mob.fetchAbility(msg.tool().text());
 				if((A!=null)&&(A.isBorrowed(mob)))
