@@ -162,14 +162,8 @@ public class StdArea implements Area
 	{
 		StringBuffer timeDesc=new StringBuffer("");
 		
-		if(Sense.canSee(mob))
-		switch(timeCode)
-		{
-		case Area.TIME_DAWN: timeDesc.append("It is dawn "); break;
-		case Area.TIME_DAY: timeDesc.append("It is daytime "); break;
-		case Area.TIME_DUSK: timeDesc.append("It is dusk "); break;
-		case Area.TIME_NIGHT: timeDesc.append("It is nighttime "); break;
-		}
+		if((Sense.canSee(mob))&&(timeCode>=0))
+			timeDesc.append(TOD_DESC[timeCode]);
 		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(Area.A_FULL_DAY-1)+")");
 		timeDesc.append("\n\rIt is the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of the "+getMonth()+numAppendage(getMonth()));
@@ -191,18 +185,9 @@ public class StdArea implements Area
 			case Area.WEATHER_DUSTSTORM:
 				timeDesc.append("\n\rThe dust obscures the moon."); break;
 			default:
-				switch(getMoonPhase())
-				{
-				case 0: timeDesc.append("\n\rThere is a new moon in the sky."); break;
-				case 1: timeDesc.append("\n\rThe moon is in the waxing crescent phase."); break;
-				case 2: timeDesc.append("\n\rThe moon is in its first quarter."); break;
-				case 3: timeDesc.append("\n\rThe moon is in the waxing gibbous phase (almost full)."); break;
-				case 4: timeDesc.append("\n\rThere is a full moon in the sky."); break;
-				case 5: timeDesc.append("\n\rThe moon is in the waning gibbous phase (no longer full)."); break;
-				case 6: timeDesc.append("\n\rThe moon is in its last quarter."); break;
-				case 7: timeDesc.append("\n\rThe moon is in the waning crescent phase."); break;
-				default: timeDesc.append("\n\rThere is a BLUE MOON! Oh my GOD! Run away!!!!!"); break;
-				}
+				if(getMoonPhase()>=0)
+					timeDesc.append("\n\r"+MOON_PHASES[getMoonPhase()]);
+				break;
 			}
 		}
 		return timeDesc.toString();

@@ -30,7 +30,7 @@ public class BehaviorData extends StdWebMacro
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);
 				return strstr;
-}
+			}
 		}
 		return "";
 	}

@@ -1,11 +1,19 @@
 <HTML>
 <HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
+<TITLE>@AreaName@</TITLE>
 </HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<BODY BGCOLOR=#000000 TEXT=#FFFFFF>
+<H3>@AreaName@ (@AreaData?todcode@)</H3>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Season</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AreaData?season@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Weather</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AreaData?weather@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Moon</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AreaData?moon@</FONT></TD></TR>
+</TABLE>
+<BR><PRE>
+@AreaData?help@
+</PRE>
 </BODY>
 </HTML>

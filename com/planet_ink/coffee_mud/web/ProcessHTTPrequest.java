@@ -57,6 +57,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private String status = S_500;
 	private String statusExtra = "...";
 	HTTPserver webServer;
+	private final static String hex="0123456789ABCDEF";
 	
 	public boolean virtualPage;
 
@@ -88,7 +89,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		String lookFor = new String (mimePrefix + a_extension);
 		return page.getStr(lookFor.toUpperCase());
 	}
-
 
 	private boolean process(String inLine) throws Exception
 	{
@@ -132,7 +132,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				request = new String("/");
 			}
-
+			
+			request=hexFix(request);
 			int p = request.indexOf("?");
 			if (p == -1)
 			{
@@ -542,6 +543,22 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)	{}
 	}
 	
+	private String hexFix(String request)
+	{
+		StringBuffer str=new StringBuffer(request);
+		for(int i=0;i<str.length()-2;i++)
+		{
+			if(str.charAt(i)=='%')
+			{
+				int cd1=hex.indexOf(str.charAt(i+1));
+				int cd2=hex.indexOf(str.charAt(i+2));
+				if((cd1>=0)&&(cd2>=0))
+					str.replace(i,i+3,""+((char)((cd1*16)+cd2)));
+			}
+		}
+		return str.toString();
+	}
+
 	public String getHTTPclientIP()
 	{
 		if (sock != null)

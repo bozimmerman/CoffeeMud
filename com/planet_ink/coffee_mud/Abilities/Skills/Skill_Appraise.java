@@ -12,7 +12,7 @@ public class Skill_Appraise extends StdAbility
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Apraise";
+		name="Appraise";
 		displayText="";
 		miscText="";
 

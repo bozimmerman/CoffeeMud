@@ -21,6 +21,20 @@ public interface Area extends Environmental
 	public final static String[] WEATHER_DESCS=
 	{ "CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"};
 	
+	public final static String[] MOON_PHASES={
+		"There is a new moon in the sky.",
+		"The moon is in the waxing crescent phase.",
+		"The moon is in its first quarter.",
+		"The moon is in the waxing gibbous phase (almost full).",
+		"There is a full moon in the sky.",
+		"The moon is in the waning gibbous phase (no longer full).",
+		"The moon is in its last quarter.",
+		"The moon is in the waning crescent phase.",
+		"There is a BLUE MOON! Oh my GOD! Run away!!!!!"
+	};
+	public final static String[] TOD_DESC={
+		"It is dawn ","It is daytime ","It is dusk ","It is nighttime "
+	};
 	
 	public final static int CLIMASK_NORMAL=0;
 	public final static int CLIMASK_WET=1;
