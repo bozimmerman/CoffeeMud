@@ -49,6 +49,69 @@ public class JournalLoader
 		return ct;
 	}
 	
+	public static long DBReadNewJournalDate(String Journal, String name)
+	{
+		Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
+		if(TABLE==null)
+		{
+			TABLE=new Hashtable();
+			Resources.submitResource("JOURNALDATECACHE",TABLE);
+		}
+		synchronized(TABLE)
+		{
+			Hashtable H=(Hashtable)TABLE.get(Journal);
+			if(H!=null)
+			{
+				Long l=(Long)H.get(name);
+				Long l2=(Long)H.get("ALL");
+				if((l!=null)&&(l2==null)) return l.longValue();
+				if((l2!=null)&&(l==null)) return l2.longValue();
+				if((l!=null)&&(l2!=null)) return l.longValue()>l2.longValue()?l.longValue():l2.longValue();
+				return 0;
+			}
+			else
+			{
+				Vector V=DBRead(Journal);
+				H=new Hashtable();
+				TABLE.put(Journal,H);
+				if(V==null) return 0;
+				if(V.size()==0) return 0;
+				for(int v=0;v<V.size();v++)
+				{
+					Vector V2=(Vector)V.elementAt(v);
+					String to=(String)V2.elementAt(3);
+					String compdate=(String)V2.elementAt(6);
+					if(to.equalsIgnoreCase("all"))
+					{
+						Long l2=(Long)H.get("ALL");
+						if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+						{
+							if(H.containsKey("ALL")) H.remove("ALL");
+							H.put("ALL",new Long(Util.s_long(compdate)));
+						}
+					}
+					else
+					{
+						Long l2=(Long)H.get(to);
+						if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+						{
+							if(H.containsKey(to)) H.remove(to);
+							H.put(to,new Long(Util.s_long(compdate)));
+						}
+						String from=(String)V2.elementAt(1);
+						l2=(Long)H.get(from); // from
+						if((l2==null)||(l2.longValue()<Util.s_long(compdate)))
+						{
+							if(H.containsKey(from)) H.remove(from);
+							H.put(from,new Long(Util.s_long(compdate)));
+						}
+					}
+				}
+				return DBReadNewJournalDate(Journal,name);
+			}
+		}
+	}
+	
 	public static synchronized Vector DBRead(String Journal)
 	{
 		Vector journal=new Vector();
@@ -264,6 +327,36 @@ public class JournalLoader
 		}
 	}
 	
+	public static void updateJournalDateCacheIfNecessary(Hashtable H, 
+														 String to, 
+														 String from,
+														 long date)
+	{
+		if(to.equalsIgnoreCase("all"))
+		{
+			Long l2=(Long)H.get("ALL");
+			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
+			{
+				if(H.containsKey("ALL")) H.remove("ALL");
+				H.put("ALL",new Long(System.currentTimeMillis()));
+			}
+		}
+		else
+		{
+			Long l2=(Long)H.get(to);
+			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
+			{
+				if(H.containsKey(to)) H.remove(to);
+				H.put(to,new Long(System.currentTimeMillis()));
+			}
+			l2=(Long)H.get(from);
+			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
+			{
+				if(H.containsKey(from)) H.remove(from);
+				H.put(from,new Long(System.currentTimeMillis()));
+			}
+		}
+	}
 	
 	public static synchronized void DBWrite(String Journal, 
 											String from, 
@@ -286,6 +379,19 @@ public class JournalLoader
 			String oldmsg=(String)entry.elementAt(5);
 			message=oldmsg+"%0D---------------------------------------------%0DReply from: "+from+"%0D"+message;
 			DBConnector.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
+			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
+			if(TABLE!=null)
+			{
+				synchronized(TABLE)
+				{
+					Hashtable H=(Hashtable)TABLE.get(Journal);
+					if(H!=null)
+						updateJournalDateCacheIfNecessary(H,
+														  (String)entry.elementAt(3),
+														  (String)entry.elementAt(1),
+														  System.currentTimeMillis());
+				}
+			}
 		}
 		else
 		{
@@ -306,6 +412,16 @@ public class JournalLoader
 			+"','"+to
 			+"','"+subject
 			+"','"+message+"');");
+			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
+			if(TABLE!=null)
+			{
+				synchronized(TABLE)
+				{
+					Hashtable H=(Hashtable)TABLE.get(Journal);
+					if(H!=null)
+						updateJournalDateCacheIfNecessary(H,to,from,System.currentTimeMillis());
+				}
+			}
 		}
 	}
 }

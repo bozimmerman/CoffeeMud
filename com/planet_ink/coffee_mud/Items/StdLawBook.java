@@ -327,7 +327,7 @@ public class StdLawBook extends StdItem
 							s2.append(" "+lastOle);
 						}
 					}
-					String restLoca=Util.combine(allloca1,0).trim();
+					String restLoca=Util.combineWithQuotes(allloca1,0).trim();
 					restLoca=mob.session().prompt("Enter any other location masks ("+restLoca+"): ",restLoca);
 					oldLaw[Law.BIT_CRIMELOCS]=(s2.toString()+" "+restLoca).trim();
 					break;
@@ -383,7 +383,7 @@ public class StdLawBook extends StdItem
 			str.append(Util.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
-				String crime=Util.combine((Vector)theLaw.otherCrimes().elementAt(x),0);
+				String crime=Util.combineWithQuotes((Vector)theLaw.otherCrimes().elementAt(x),0);
 				String[] set=(String[])theLaw.otherBits().elementAt(x);
 				str.append(Util.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
@@ -403,7 +403,7 @@ public class StdLawBook extends StdItem
 					String[] newValue=modifyLaw(A,B,theLaw,mob,null);
 					if(newValue!=null)
 					{
-						StringBuffer s2=new StringBuffer("");
+						StringBuffer s2=new StringBuffer(s+";");
 						for(int i=0;i<newValue.length;i++)
 						{
 							s2.append(newValue[i]);
@@ -418,47 +418,41 @@ public class StdLawBook extends StdItem
 			else
 			{
 				int x=Util.s_int(s);
-				String crimeName="";
 				if((x>0)&&(x<=theLaw.otherCrimes().size()))
 				{
-					crimeName="CRIME"+x;
-					String crimeWords=Util.combine((Vector)theLaw.otherCrimes().elementAt(x-1),0);
 					String[] crimeSet=(String[])theLaw.otherBits().elementAt(x-1);
 					String[] oldLaw=crimeSet;
 					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
 					if(newValue!=oldLaw)
 					{
-						if(newValue!=null)
-						{
-							StringBuffer s2=new StringBuffer("");
-							for(int i=0;i<newValue.length;i++)
-							{
-								s2.append(newValue[i]);
-								if(i<(newValue.length-1))
-									s2.append(";");
-							}
-							changeTheLaw(A,B,mob,theLaw,crimeName,crimeWords+";"+s2.toString());
-							mob.tell("Changed.");
-						}
+						if(newValue!=null) 
+							theLaw.otherBits().setElementAt(newValue,x-1);
 						else
 						{
-							for(int i=x;i<theLaw.otherCrimes().size();i++)
-							{
-								StringBuffer s2=new StringBuffer("");
-								crimeName="CRIME"+i;
-								crimeWords=Util.combine((Vector)theLaw.otherCrimes().elementAt(i),0);
-								newValue=(String[])theLaw.otherBits().elementAt(i);
-								for(int v=0;v<newValue.length;v++)
-								{
-									s2.append(newValue[v]);
-									if(v<(newValue.length-1))
-										s2.append(";");
-								}
-								changeTheLaw(A,B,mob,theLaw,crimeName,crimeWords+";"+s2.toString());
-							}
-							changeTheLaw(A,B,mob,theLaw,"CRIME"+(theLaw.otherCrimes().size()),"");
-							mob.tell("Changed.");
+							theLaw.otherCrimes().removeElementAt(x-1);
+							theLaw.otherBits().removeElementAt(x-1);
 						}
+						String[] newBits=new String[theLaw.otherBits().size()];
+						for(int c=0;c<theLaw.otherCrimes().size();c++)
+						{
+							String crimeWords=Util.combineWithQuotes((Vector)theLaw.otherCrimes().elementAt(c),0);
+							String[] thisLaw=(String[])theLaw.otherBits().elementAt(c);
+							StringBuffer s2=new StringBuffer("");
+							for(int i=0;i<thisLaw.length;i++)
+							{
+								s2.append(thisLaw[i]);
+								if(i<(thisLaw.length-1))
+									s2.append(";");
+							}
+							newBits[c]=crimeWords+";"+s2.toString();
+						}
+						for(int c=0;c<newBits.length;c++)
+							changeTheLaw(A,B,mob,theLaw,"CRIME"+(c+1),newBits[c]);
+						changeTheLaw(A,B,mob,theLaw,"CRIME"+(newBits.length+1),"");
+						if(newValue!=null)
+							mob.tell("Changed.");
+						else
+							mob.tell("Deleted.");
 					}
 				}
 				else

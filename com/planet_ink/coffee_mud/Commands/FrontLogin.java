@@ -255,7 +255,7 @@ public class FrontLogin extends StdCommand
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
 					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+					mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 					for(int f=0;f<mob.numFollowers();f++)
 					{
 						MOB follower=mob.fetchFollower(f);
@@ -267,7 +267,7 @@ public class FrontLogin extends StdCommand
 							follower.setLocation(mob.location());
 							follower.bringToLife(mob.location(),false);
 							follower.setFollowing(mob);
-							follower.location().showOthers(follower,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+							follower.location().showOthers(follower,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 						}
 					}
 				}
@@ -277,7 +277,7 @@ public class FrontLogin extends StdCommand
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+					mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 					CMClass.DBEngine().DBReadFollowers(mob,true);
 				}
 				if((mob.session()!=null)&&(mob.playerStats()!=null))
@@ -576,7 +576,7 @@ public class FrontLogin extends StdCommand
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 				mob.bringToLife(mob.getStartRoom(),true);
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 				CMClass.DBEngine().DBCreateCharacter(mob);
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);

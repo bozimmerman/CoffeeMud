@@ -767,6 +767,32 @@ public class Util
 		return Combined.toString().trim();
 	}
 	
+	public static String combineWithQuotes(Vector commands, int startAt, int endAt)
+	{
+		StringBuffer Combined=new StringBuffer("");
+		if(commands!=null)
+		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+		{
+			String s=(String)(String)commands.elementAt(commandIndex);
+			if(s.indexOf(" ")>=0) s="\""+s+"\"";
+			Combined.append(s+" ");
+		}
+		return Combined.toString().trim();
+	}
+	
+	public static String combineWithQuotes(Vector commands, int startAt)
+	{
+		StringBuffer Combined=new StringBuffer("");
+		if(commands!=null)
+		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+		{
+			String s=(String)(String)commands.elementAt(commandIndex);
+			if(s.indexOf(" ")>=0) s="\""+s+"\"";
+			Combined.append(s+" ");
+		}
+		return Combined.toString().trim();
+	}
+	
 	public static String combine(Vector commands, int startAt)
 	{
 		StringBuffer Combined=new StringBuffer("");

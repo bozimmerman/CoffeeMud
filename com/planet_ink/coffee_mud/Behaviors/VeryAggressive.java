@@ -90,9 +90,9 @@ public class VeryAggressive extends Aggressive
 						&&((!inhab.isMonster())||(mobKiller))
 						&&(Sense.canSenseMoving(inhab,mob))
 						&&(MUDZapper.zapperCheck(zapStr,inhab))
-						&&((zapStr.length()==0)
-						   ||((inhab.envStats().level()<(mob.envStats().level()+15))
-							  &&(inhab.envStats().level()>(mob.envStats().level()-15)))))
+						&&((zapStr.length()>0)
+						||((inhab.envStats().level()<(mob.envStats().level()+15))
+						   &&(inhab.envStats().level()>(mob.envStats().level()-15)))))
 						{
 							dirCode=d;
 							break;

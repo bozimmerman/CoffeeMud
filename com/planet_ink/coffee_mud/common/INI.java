@@ -74,7 +74,7 @@ public class INI extends Properties
 		{
 			String s=((String)page.elementAt(p)).trim();
 			if(s.startsWith("#")||s.startsWith("!")) continue;
-			if(s.endsWith("\\"))
+			if((s.endsWith("\\"))&&(!s.endsWith("\\\\")))
 			{
 				s=s.substring(0,s.length()-1)+((String)page.elementAt(p+1)).trim();
 				page.removeElementAt(p+1);

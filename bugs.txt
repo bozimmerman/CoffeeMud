@@ -1,16 +1,15 @@
-add alerts to journals, and expiration
-add damage for every hit -- like amputation, but healing removes the detriments.
-bug When adding new laws to page 10 (and possibly other pages) the parser erroneously places info one field short of where it should be....for example, I was trying to make it a crime to say SHIT. It put the name as warning, the flags as Swearing in Public (should have been the name), it put the Flags in the location mask field, and the justification in the Sentence field. All in all, messed up.'
-VeryAggressive(-MOB -SYSOP -TATTOOS +NORFENKILLER) still attacks mobs that have the NORFENKILLER tattoo.
-some way to attach email systems to channels!! make the wiz email system channel based!
+?VeryAggressive(-MOB -SYSOP -TATTOOS +NORFENKILLER) still attacks mobs that have the NORFENKILLER tattoo.
 if oracles gain levels while not active/awake then they don't get their non-class skill.
-overview grid type thingy -- thin grid
+Can't type: gain paladin's goodness had to type gain goodness
+Second bug. I believe Axlen had this one before.. Plinia (daughter) become a follower mob. But there's two of her. What's up with this? Anyway.. following that. I managed to get one of her arrested. The cityguard took'er into Hero territory at the top of the rainbow bridge. Not good.
+decaying tattoo
 map command.  its moronic, but there you go.
+add damage for every hit -- like amputation, but healing removes the detriments.
+some way to attach email systems to channels!! make the wiz email system channel based!
+overview grid type thingy -- thin grid
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
-Can't type: gain paladin's goodness had to type gain goodness
 An archon should ALWAYS be able to see a subop when wizinv.
-Second bug. I believe Axlen had this one before.. Plinia (daughter) become a follower mob. But there's two of her. What's up with this? Anyway.. following that. I managed to get one of her arrested. The cityguard took'er into Hero territory at the top of the rainbow bridge. Not good.
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

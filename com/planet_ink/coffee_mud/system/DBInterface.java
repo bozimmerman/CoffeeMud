@@ -92,6 +92,9 @@ public class DBInterface implements DatabaseEngine
 	public int DBCountJournal(String Journal, String from, String to)
 	{ return JournalLoader.DBCount(Journal,from,to);}
 	
+	public long DBReadNewJournalDate(String Journal, String name)
+	{ return JournalLoader.DBReadNewJournalDate(Journal, name);}
+	
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which)
 	{JournalLoader.DBWrite(Journal,from,to,subject,message,which);}
 	

@@ -35,6 +35,8 @@ public class StdJournal extends StdItem
 		recoverEnvStats();
 	}
 
+	protected MOB lastReadTo=null;
+	protected long lastDateRead=-1;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -193,6 +195,37 @@ public class StdJournal extends StdItem
 				Log.errOut("JournalItem",e.getMessage());
 			}
 			return;
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(owner instanceof Room)
+		&&(msg.source().playerStats()!=null)
+		&&(MUDZapper.zapperCheck(getReadReq(),msg.source())))
+		{
+			long lastDate=CMClass.DBEngine().DBReadNewJournalDate(Name(),msg.source().Name());
+			if((lastDate>msg.source().playerStats().lastDateTime())
+			&&((lastDate!=lastDateRead)||(msg.source()!=lastReadTo)))
+			{
+				lastReadTo=msg.source();
+				lastDateRead=lastDate;
+				msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(msg.target() instanceof Room)
+		&&(msg.source()==owner)
+		&&(msg.source().playerStats()!=null)
+		&&(MUDZapper.zapperCheck(getReadReq(),msg.source())))
+		{
+			long lastDate=CMClass.DBEngine().DBReadNewJournalDate(Name(),msg.source().Name());
+			if((lastDate>msg.source().playerStats().lastDateTime())
+			&&((lastDate!=lastDateRead)||(msg.source()!=lastReadTo)))
+			{
+				lastReadTo=msg.source();
+				lastDateRead=lastDate;
+				msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			}
 		}
 		super.executeMsg(myHost,msg);
 	}

@@ -69,6 +69,7 @@ public interface DatabaseEngine
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
 	public void DBDeleteJournal(String oldkey);
+	public long DBReadNewJournalDate(String Journal, String name);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);
