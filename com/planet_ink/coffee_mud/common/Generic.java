@@ -518,7 +518,7 @@ public class Generic
 				for(int r=0;r<rooms.size();r++)
 				{
 					Room room=(Room)rooms.elementAt(r);
-					if((room!=null)&&(room.ID()!=null))
+					if((room!=null)&&(room.ID()!=null)&&(room.ID().length()>0))
 						buf.append(getRoomXML(room,true));
 				}
 				buf.append("</AROOMS>");
