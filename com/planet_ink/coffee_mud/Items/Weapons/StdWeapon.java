@@ -74,7 +74,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 	public String classifictionDescription()
 	{
-		switch(weaponType)
+		switch(weaponClassification)
 		{
 		case CLASS_AXE:
 			return "AXE";

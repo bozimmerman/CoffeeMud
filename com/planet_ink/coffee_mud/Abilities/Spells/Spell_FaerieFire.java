@@ -42,13 +42,10 @@ public class Spell_FaerieFire extends Spell
 
 	public void unInvoke()
 	{
-		// undo the affects of this spell
-		if(affected==null)
+		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		if(!(affected instanceof Room))
-			return;
-		Room room=(Room)affected;
-		room.show(invoker, null, Affect.MSG_OK_VISUAL, "The faerie fire around you fades.");
+		MOB mob=(MOB)affected;
+		mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
 		super.unInvoke();
 	}
 
@@ -89,7 +86,7 @@ public class Spell_FaerieFire extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),0);
+				maliciousAffect(mob,target,0,-1);
 			}
 		}
 		else
