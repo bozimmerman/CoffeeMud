@@ -1,4 +1,6 @@
 a piece of paper	5	40	1	1	GenReadable	WOOD	0	
+a leaflet	5	40	1	1	GenReadable	WOOD	0	
+a flyer	5	40	1	1	GenReadable	WOOD	0	
 a sheet of vellum	10	30	1	1	GenReadable	LEATHER	0	
 a sheet of parchment	5	10	1	1	GenReadable	HIDE	0	
 a canvas	5	20	10	5	GenReadable	COTTON	0	

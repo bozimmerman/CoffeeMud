@@ -1,3 +1,11 @@
 Property to put mobs to sleep at night
 Property to close up shops and send shopkeepers home, or to sleep, or unseen, and to make sure they don't respond.
 check ban list on grinder logins.
+the skills gain system is inverted. Now instead of costing a train or a practice, it gives them back to you, as well as the skill. The subclassing system works fine (costs trains).
+ I am getting failure messages on Disarm instead of she's not holding a weapon messages
+you ages a bit
+you can advance your painting skill by typing an invalid texture type. IE, I type Paint list, and it advances my painting skill to 33%, and tells me I don't see a LIST to paint on.
+I am a half elf with 100% in elvish, but I get 50% gibberish...
+I just tried to lay a pit trap (I have a 0% skill), and i became better at it, and the ?failure? message was YOU OPEN HIS SOFLTY GLOWING EYES.
+re-doing feralness, when remaining hp there, adds even more!
+the DEITIES command should accept a parameter of a god's name, so that you can just view that god.

@@ -11,6 +11,8 @@ Archons Guide updates
 	
 
 //****** next version ********************************************************
+when it is raining/snowing/etc it should emote that effect at least once per minute. I didn't even realize it was raining until it stopped
+putting a change bag into a changebag should combine your notes.
 GenRaces
 GenCharClasses
 racial abilities (abilities tied to the race)

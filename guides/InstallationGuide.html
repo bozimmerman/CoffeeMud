@@ -144,24 +144,30 @@ directory and enter the following:</P>
 <P>Now, if you are upgrading to a version with an updated database schema and 
 you are NOT using fakedb, but are using Access, SQL Server, MySQL, or some other 
 database, follow these instructions:</P>
-<P><STRONG>1.</STRONG> To back to the beginning of this section and follow steps 
-1 through 5 from the <EM>unchanged database schema</EM> process.</P>
-<P><STRONG>2. </STRONG>Following the instructions provided by your database 
+<P><STRONG>1.</STRONG> Go into the CoffeeMud directory for your olde version and 
+copy the entire "data" directory to somewhere else on your hard drive.&nbsp; 
+Remember where you put it!&nbsp; Even though you aren't using FakeBD, you will 
+still need to copy FakeDB's&nbsp;schema for use with the upgrade 
+application.</P>
+<P><STRONG>2.</STRONG> To back to the beginning of this section and follow steps 
+1 through 5 from the <EM>unchanged database schema</EM> 
+process.</P>
+<P><STRONG>3. </STRONG>Following the instructions provided by your database 
 system, create a brand NEW database for the new version of 
 CoffeeMud.&nbsp;&nbsp;You will need to use the appropriate database schema 
 provided in the new version of CoffeeMud to do this.&nbsp; If you have forgotten 
 what this means, consult the section of this document dealing with the CoffeeMud 
 Database.&nbsp; Make sure you preserve your olde CoffeeMud database from the 
 olde version!</P>
-<P><STRONG>3. </STRONG>From the command line, go into your CoffeeMud directory 
+<P><STRONG>4. </STRONG>From the command line, go into your CoffeeMud directory 
 and enter the following from the command line:</P>
 <P><STRONG>java com.planet_ink.fakedb.DBUpgrade</STRONG></P>
-<P><STRONG>4. </STRONG>Follow the instructions for this little program.</P>
-<P><STRONG>5. </STRONG>Now open up your coffeemud.ini file and make any changes 
+<P><STRONG>5. </STRONG>Follow the instructions for this little program.</P>
+<P><STRONG>6. </STRONG>Now open up your coffeemud.ini file and make any changes 
 necessary to point CoffeeMud to the database for the new version.&nbsp; This may 
 require creating a new ODBC data source, or just modifying the DBSERVICE line, 
 depending on your database type.</P>
-<P><STRONG>6. </STRONG>Smile, you are done.</P>
+<P><STRONG>7. </STRONG>Smile, you are done.</P>
 <P>&nbsp;</P>
 <P>
 <IMG src="images/settings.jpg"> </P>
