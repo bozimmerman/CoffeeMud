@@ -101,6 +101,12 @@ public class CommandProcessor
 				case CommandSet.AUTOLOOT:
 					theFight.autoloot(mob);
 					break;
+				case CommandSet.BEACON:
+					if(mob.isASysOp(mob.location()))
+						sysopSkills.beacon(mob);
+					else
+						mob.tell("You are not powerful enough to do that.\n\r");
+					break;
 				case CommandSet.BRIEF:
 					basicSenses.brief(mob);
 					break;

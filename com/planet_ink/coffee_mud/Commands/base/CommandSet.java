@@ -110,7 +110,7 @@ public class CommandSet extends Hashtable
 	public static final int RESET=98;
 	public static final int CHANNELS=99;
 	public static final int ANSI=100;
-	//public static final int NOANSI=101;
+	public static final int BEACON=101;
 	public static final int UNLOADHELP=102;
 	public static final int ARCHELP=103;
 	public static final int ARCTOPICS=104;
@@ -161,6 +161,7 @@ public class CommandSet extends Hashtable
 		put("AUTOEXITS",new Integer(AUTOEXITS));
 		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
+		put("BEACON",new Integer(BEACON));
 		put("BRIEF",new Integer(BRIEF));
 		put("PUSH",new Integer(PUSH));
 		put("PULL",new Integer(PULL));

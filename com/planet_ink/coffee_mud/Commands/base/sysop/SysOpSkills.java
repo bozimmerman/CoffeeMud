@@ -26,6 +26,18 @@ public class SysOpSkills
 		}
 		return null;
 	}
+
+	public void beacon(MOB mob)
+	{
+		if(mob.getStartRoom()==mob.location())
+			mob.tell("This is already your beacon.");
+		else
+		{
+			mob.setStartRoom(mob.location());
+			mob.tell("You have modified your beacon.");
+		}
+	}
+	
 	private MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=(MOB)CMClass.getMOB("StdMOB");

@@ -260,7 +260,9 @@ public class Movement
 					{
 						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 						if(!move(follower,directionCode,false))
-							follower.setFollowing(null);
+						{
+							//follower.setFollowing(null);
+						}
 					}
 				}
 				else

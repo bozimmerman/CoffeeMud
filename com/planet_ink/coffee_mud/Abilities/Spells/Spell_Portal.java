@@ -100,10 +100,12 @@ public class Spell_Portal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> evoke(s) a blinding, swirling portal here.");
-			if(mob.location().okAffect(msg))
+			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> evoke(s) a blinding, swirling portal here.");
+			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType,"A blinding, swirling portal appears here.");
+			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
+				newRoom.send(mob,msg2);
 				Exit e=CMClass.getExit("GenExit");
 				e.setDescription("A swirling portal to somewhere");
 				e.setDisplayText("A swirling portal to somewhere");
@@ -117,7 +119,6 @@ public class Spell_Portal extends Spell
 				oldRoom=mob.location();
 				beneficialAffect(mob,e,5);
 			}
-
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to evoke a portal, but fizzle(s) the spell.");

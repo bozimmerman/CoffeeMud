@@ -35,7 +35,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked)
-			PlantsLocation.show(invoker,null,Affect.MSG_OK_VISUAL,littlePlants.name()+" wither away.");
+			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
 		if(canBeUninvoked)
 		{

@@ -1,17 +1,3 @@
-1  ) Brick      btw, in Ofcol, a citizen was attacking MrFlowers. When I
-tried to attack the citizen, no spelling would let me target him, it was as
-if he wasn't there.
-2  ) MrFlowers  too easy to lose follower...
 3  ) MrFlowers  silent fighting stops is NO GOOD.
-6  ) MrFlowers  gas destroys leather
-8  ) MrFlowers  a pretty fern wither away
-9  ) MrFlowers  encumbered can't WAKE UP?!
 10 ) Zac        horses don't lose riders, riders dont lose horses...
-11 ) Zac        list losers command (to show users who qualify for a
-knock-off)
 12 ) Zac        ability to save rideable status as a GenProperty.
-13 ) Zac        need anchor command
-14 ) Zac        portal doesn't care what destination room thinks of it.
-15 ) Zac        astral guardian did not fight!
-18 ) Zac        obliterateroom should remove itself from all mobs start room.
-19 ) Zac        add lasttickamoutnt to ticking things
