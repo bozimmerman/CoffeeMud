@@ -142,17 +142,6 @@ public class Dragon extends StdMOB
 
 		// ===== if the dragon is an adult or larger add the swallow whole
 		Stomach=null;
-		if (baseEnvStats().level()>=ADULT)
-		{
-			Stomach = CMClass.getLocale("StdRoom");
-			if(Stomach!=null)
-			{
-				Stomach.setName("Dragon Stomach");
-				Stomach.setArea(location().getArea());
-				Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
-			}
-		}
-
 		// ===== Recover from birth.
 		recoverMaxState();
 		resetToMaxState();
@@ -238,6 +227,18 @@ public class Dragon extends StdMOB
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
+			if((Stomach==null)
+			&&(location()!=null)
+			&&(baseEnvStats().level()>=ADULT))
+			{
+				Stomach = CMClass.getLocale("StdRoom");
+				if(Stomach!=null)
+				{
+					Stomach.setName("Dragon Stomach");
+					Stomach.setArea(location().getArea());
+					Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+				}
+			}
 			if((baseEnvStats().level()!=this.birthAge)
 			||(baseEnvStats().ability()!=this.birthColor))
 				setupDragon((int)Math.floor(Util.div(baseEnvStats().level(),8))+1,baseEnvStats().ability());

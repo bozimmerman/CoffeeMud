@@ -46,7 +46,7 @@ public class Song_Thanks extends Song
 		if(mob==invoker) return true;
 		if(invoker==null) return true;
 		if(mob.location()!=invoker.location()) return true;
-		if(!mob.isMonster()) return true;
+		//if(!mob.isMonster()) return true;
 		if((Dice.rollPercentage()<5)
 		   &&(Sense.canMove(mob))
 		   &&(Sense.canBeSeenBy(invoker,mob))
