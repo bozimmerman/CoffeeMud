@@ -86,6 +86,47 @@ public class Mobs
 		return true;
 	}
 
+	public static void modifyPlayer(MOB mob, Vector commands)
+		throws IOException
+	{
+
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY USER [PLAYER NAME]\n\r");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+
+		String mobID=Util.combine(commands,2);
+		MOB M=CMMap.getPlayer(mobID);
+		if(M==null)
+			for(Enumeration p=CMMap.players();p.hasMoreElements();)
+			{
+				MOB mob2=(MOB)p.nextElement();
+				if(mob2.Name().equalsIgnoreCase(mobID))
+				{ M=mob2; break;}
+			}
+		MOB TM=CMClass.getMOB("StdMOB");
+		if((M==null)&&(ExternalPlay.DBUserSearch(TM,mobID)))
+		{
+			M=CMClass.getMOB("StdMOB");
+			M.setName(TM.Name());
+			ExternalPlay.DBReadMOB(M);
+			ExternalPlay.DBReadFollowers(M,false);
+			if(M.playerStats()!=null)
+				M.playerStats().setUpdated(M.playerStats().lastDateTime());
+			M.recoverEnvStats();
+			M.recoverCharStats();
+		}
+		if(M==null)
+		{
+			mob.tell("There is no such player as '"+mobID+"'!");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		Generic.modifyPlayer(mob,M);
+		Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+	}
 	public static void modify(MOB mob, Vector commands)
 		throws IOException
 	{

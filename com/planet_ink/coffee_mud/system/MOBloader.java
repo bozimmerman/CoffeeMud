@@ -81,6 +81,7 @@ public class MOBloader
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
 				pstats.setFriendsIgnoreStr(DBConnections.getRes(R,"CMPFIL"));
+				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
 				found=true;
 			}
 			DBConnector.DBDone(D);
@@ -574,6 +575,7 @@ public class MOBloader
 			+", CMCLRO="+mob.getClanRole()
 			+", CMEMAL='"+pstats.getEmail()+"'"
 			+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
+			+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
 			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);

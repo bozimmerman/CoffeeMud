@@ -318,7 +318,13 @@ public class CreateEdit
 		if(commandType.equals("MOB"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			Mobs.modify(mob,commands);
+			Mobs.modifyPlayer(mob,commands);
+		}
+		else
+		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			Mobs.modifyPlayer(mob,commands);
 		}
 		else
 		if(commandType.equals("QUEST"))
@@ -456,7 +462,7 @@ public class CreateEdit
 				edit(mob,commands);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, SOCIAL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, EXIT, QUEST, MOB, USER, SOCIAL, or ROOM.");
 		}
 	}
 

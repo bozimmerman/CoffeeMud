@@ -47,6 +47,8 @@ CMLSIP string NULL
 CMCLAN string NULL
 CMCLRO integer NULL
 CMEMAL string NULL
+CMPFIL string NULL
+CMSAVE string NULL
 
 CMCHFO
 CMUSERID string KEY

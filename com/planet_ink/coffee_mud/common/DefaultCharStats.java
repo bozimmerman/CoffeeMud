@@ -125,6 +125,23 @@ public class DefaultCharStats implements Cloneable, CharStats
 			return "level "+levelStr+" "+displayClassName();
 	}
 
+	public String getSavesStr()
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
+			str.append(stats[x]+";");
+		return str.toString();
+	}
+	public void setSaves(String str)
+	{
+		Vector V=Util.parseSemicolons(str);
+		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
+		{
+			int vnum=x-CharStats.NUM_SAVE_START;
+			if((vnum<V.size())&&(vnum>=0))
+				stats[x]=Util.s_int((String)V.elementAt(vnum));
+		}
+	}
 	public void setRaceName(String newRaceName){raceName=newRaceName;}
 	public String raceName(){
 		if(raceName!=null) return raceName;

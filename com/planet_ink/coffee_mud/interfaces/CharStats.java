@@ -11,6 +11,8 @@ public interface CharStats extends Cloneable
 	
 	public static final int GENDER=6;
 	
+	
+	public static final int NUM_SAVE_START=7;
 	public static final int SAVE_PARALYSIS=7;
 	public static final int SAVE_FIRE=8;
 	public static final int SAVE_COLD=9;
@@ -54,6 +56,34 @@ public interface CharStats extends Cloneable
 		"SAVE VS DISEASE",
 		"SAVE VS TRAPS"
 	};
+	
+	public static final String[] TRAITABBR1=
+	{
+		"S",
+		"I",
+		"D",
+		"C",
+		"CH",
+		"W",
+		"G",
+		"vPY",
+		"vF",
+		"vC",
+		"vW",
+		"vG",
+		"vMI",
+		"V",
+		"vJ",
+		"vA",
+		"vE",
+		"vP",
+		"vU",
+		"vM",
+		"vD",
+		"vT"
+	};
+	public String getSavesStr();
+	public void setSaves(String str);
 	
 	public int getStat(int statNum);
 	public int getStat(String abilityName);

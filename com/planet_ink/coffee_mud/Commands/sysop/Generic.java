@@ -668,6 +668,37 @@ public class Generic
 		}
 	}
 
+	public static void genCharStats(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			StringBuffer buf=new StringBuffer(showNumber+". Stats: ");
+			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+				buf.append(CharStats.TRAITABBR1[i]+":"+E.baseCharStats().getStat(i)+" ");
+			mob.tell(buf.toString());
+			return;
+		}
+		String c="Q";
+		while(!c.equals("\n"))
+		{
+			for(int i=0;i<CharStats.TRAITS.length;i++)
+				if(i!=CharStats.GENDER)
+					mob.session().println("    "+(char)((int)('A')+i)+") "+Util.padRight(CharStats.TRAITS[i],20)+":"+((E.baseCharStats().getStat(i))));
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDEFGHIJKLMNOPQRSTUVWXYZ\n","\n").toUpperCase();
+			if((c.charAt(0)>='A')&&(c.charAt(0)<='Z'))
+			{
+				int num=(int)c.charAt(0)-'A';
+				String newVal=mob.session().prompt("Enter new value for "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
+				if((Util.s_int(newVal)>0)&&(num!=CharStats.GENDER))
+					E.baseCharStats().setStat(num,Util.s_int(newVal));
+				else
+					mob.tell("(no change)");
+			}
+		}
+	}
+
 	public static void genSensesMask(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2612,8 +2643,6 @@ public class Generic
 	{
 		if(mob.isMonster())
 			return;
-		if(me.isMonster())
-			return;
 		boolean ok=false;
 		int showFlag=-1;
 		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
@@ -2633,6 +2662,7 @@ public class Generic
 			genLevel(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
 			genCharClass(mob,me,++showNumber,showFlag);
+			genCharStats(mob,me,++showNumber,showFlag);
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
