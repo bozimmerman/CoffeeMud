@@ -61,13 +61,13 @@ public class Fighter_Spring extends StdAbility
 				ExternalPlay.postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					new FullMsg(mob,victim,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
+					new FullMsg(mob,target,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
 					if(mob.location().okAffect(msg))
 					{
 						mob.location().send(mob,msg);
 						if(mob.rangeToTarget()<mob.location().maxRange())
 						{
-							msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,null);
+							msg=new FullMsg(mob,target,this,Affect.MSG_RETREAT,null);
 							if(mob.location().okAffect(msg))
 								mob.location().send(mob,msg);
 						}

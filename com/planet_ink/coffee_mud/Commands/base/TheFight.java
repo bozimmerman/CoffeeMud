@@ -673,17 +673,27 @@ public class TheFight
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,
-									Affect.MSG_NOISYMOVEMENT,
+									Affect.MASK_HURT+damageInt,
 									"^F"+weapon.hitString(damageInt)+"^?");
 			msg.tagModified(true);
 			// why was there no okaffect here?
 			Room room=source.location();
 			if((room!=null)&&(room.okAffect(msg)))
 			{
+				if((msg.targetCode()&Affect.MASK_HURT)==Affect.MASK_HURT)
+				{
+					String newMsg="^F"+weapon.hitString(msg.targetCode()-Affect.MASK_HURT)+"^?";
+					msg.modify(msg.source(),
+							   msg.target(),
+							   msg.tool(),
+							   msg.sourceCode(),
+							   newMsg,
+							   msg.targetCode(),
+							   newMsg,
+							   msg.othersCode(),
+							   newMsg);
+				}
 				room.send(source,msg);
-				msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageInt,Affect.NO_EFFECT,null);
-				if(room.okAffect(msg))
-					room.send(source,msg);
 			}
 		}
 		else

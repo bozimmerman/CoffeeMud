@@ -386,6 +386,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 					msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
 				}
+				if(bankChain().length()>0)
+					msg.append("\n\rI am a banker for "+bankChain()+".");
 				ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
 				return;
 			}
@@ -483,6 +485,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
 						msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
 					}
+					if(bankChain().length()>0)
+						msg.append("\n\rI am a banker for "+bankChain()+".");
 					ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
 					return false;
 				}

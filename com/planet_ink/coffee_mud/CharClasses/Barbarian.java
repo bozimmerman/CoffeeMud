@@ -66,7 +66,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Endurance",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Fighter_StoneBody",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Stonebody",true);
 			CMAble.addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
 		}
 	}
