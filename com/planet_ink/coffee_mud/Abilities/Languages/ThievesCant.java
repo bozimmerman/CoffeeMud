@@ -7,19 +7,19 @@ import java.util.*;
 
 public class ThievesCant extends Language
 {
+	public String ID() { return "ThievesCant"; }
+	public String name(){ return "Thieves Cant";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public ThievesCant()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Thieves Cant";
-		CMAble.addCharAbilityMapping("Thief",1,ID(),true);
-		CMAble.addCharAbilityMapping("Bard",10,ID(),false);
+		if(!mapped){mapped=true;
+				CMAble.addCharAbilityMapping("Thief",1,ID(),true);
+				CMAble.addCharAbilityMapping("Bard",10,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new ThievesCant();
-	}
+	public Environmental newInstance(){	return new ThievesCant();}
+	
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)

@@ -7,36 +7,24 @@ import java.util.*;
 
 public class Language extends StdAbility
 {
+	public String ID() { return "Language"; }
+	public String name(){ return "Languages";}
+	public String displayText(){ return "";}
+	private static final String[] triggerStrings = {"SPEAK"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int quality(){return Ability.OK_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	protected int trainsRequired(){return 0;}
+	protected int practicesRequired(){return 1;}
+	public int classificationCode(){return Ability.LANGUAGE;}
+	public Environmental newInstance(){	return new Language();}
+
 	protected boolean spoken=false;
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
-
-	public Language()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Languages";
-		displayText="";
-		miscText="";
-		triggerStrings.addElement("SPEAK");
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		trainsRequired=0;
-		practicesRequired=1;
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-	}
-
-	public int classificationCode()
-	{
-		return Ability.LANGUAGE;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Language();
-	}
-
 	public boolean beingSpoken(){return spoken;}
 	public void setBeingSpoken(boolean beingSpoken){spoken=beingSpoken;}
 	public Hashtable translationHash(){ return new Hashtable(); }

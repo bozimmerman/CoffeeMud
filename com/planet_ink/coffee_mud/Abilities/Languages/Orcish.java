@@ -7,18 +7,17 @@ import java.util.*;
 
 public class Orcish extends Language
 {
+	public String ID() { return "Orcish"; }
+	public String name(){ return "Orcish";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public Orcish()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Orcish";
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new Orcish();
-	}
+	public Environmental newInstance(){	return new Orcish();}
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)

@@ -7,18 +7,17 @@ import java.util.*;
 
 public class Elvish extends Language
 {
+	public String ID() { return "Elvish"; }
+	public String name(){ return "Elvish";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public Elvish()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Elvish";
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new Elvish();
-	}
+	public Environmental newInstance(){	return new Elvish();}
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)

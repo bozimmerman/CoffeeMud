@@ -7,18 +7,17 @@ import java.util.*;
 
 public class Gnomish extends Language
 {
+	public String ID() { return "Gnomish"; }
+	public String name(){ return "Gnomish";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public Gnomish()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Gnomish";
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new Gnomish();
-	}
+	public Environmental newInstance(){	return new Gnomish();}
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)

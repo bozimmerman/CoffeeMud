@@ -7,21 +7,21 @@ import java.util.*;
 
 public class Common extends Language
 {
+	public String ID() { return "Common"; }
+	public String name(){ return "Common";}
+	public boolean isAutoInvoked(){return false;}
+	public boolean canBeUninvoked(){return canBeUninvoked;}
+	private static boolean mapped=false;
 	public Common()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Common";
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		CMAble.addCharAbilityMapping("All",1,ID(),100,true);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),100,true);}
 		profficiency=100;
 	}
-	public Environmental newInstance()
-	{
-		return new Common();
-	}
+	public Environmental newInstance(){	return new Common();}
 	public int profficiency(){return 100;}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		for(int a=0;a<mob.numAffects();a++)

@@ -7,18 +7,17 @@ import java.util.*;
 
 public class Dwarven extends Language
 {
+	public String ID() { return "Dwarven"; }
+	public String name(){ return "Dwarven";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public Dwarven()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dwarven";
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new Dwarven();
-	}
+	public Environmental newInstance(){	return new Dwarven();}
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)

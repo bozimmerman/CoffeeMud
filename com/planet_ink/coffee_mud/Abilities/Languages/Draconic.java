@@ -7,18 +7,18 @@ import java.util.*;
 
 public class Draconic extends Language
 {
+	public String ID() { return "Draconic"; }
+	public String name(){ return "Draconic";}
 	public static Vector wordLists=null;	
+	private static boolean mapped=false;
 	public Draconic()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Draconic";
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()
-	{
-		return new Draconic();
-	}
+	public Environmental newInstance(){	return new Draconic();}
+	
 	public Vector translationVector()
 	{ 
 		if(wordLists==null)
