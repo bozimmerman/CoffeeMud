@@ -1,1 +1,2 @@
 GAES still isn't done
+sort for the player list should be meaningful

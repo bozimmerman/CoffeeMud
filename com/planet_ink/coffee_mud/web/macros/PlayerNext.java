@@ -46,6 +46,15 @@ public class PlayerNext extends StdWebMacro
 						M=Authenticate.getMOB((String)unV.elementAt(i));
 						if(M==null) return " @break@";
 						String val=PlayerData.getBasic(M,code);
+						if((Util.isNumber(val)&&Util.isNumber(loweStr)))
+						{
+							if(Util.s_int(val)<Util.s_int(loweStr))
+							{
+								loweStr=val;
+								lowestM=M;
+							}
+						}
+						else
 						if(val.compareTo(loweStr)<0)
 						{
 							loweStr=val;

@@ -15,7 +15,8 @@ public class Play_Instrument extends Play
 	
 	protected void inpersistantAffect(MOB mob)
 	{
-		if(getSpell()!=null)
+		if((getSpell()!=null)
+		&&((mob!=invoker())||(getSpell().quality()!=MALICIOUS)))
 		{
 			Vector chcommands=new Vector();
 			chcommands.addElement(mob.name());
