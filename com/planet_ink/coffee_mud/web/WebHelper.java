@@ -145,11 +145,10 @@ public class WebHelper
 					s.append("(");
 					s.append(m.charStats().getMyRace().name());
 					s.append(" ");
-					if (m.charStats().getMyClass()!= null && m.charStats().getMyClass().name()!=null
-						&& m.charStats().getMyClass().name().length() > 0
-						&& !m.charStats().getMyClass().name().equals("MOB"))
+					if ( m.charStats().getCurrentClass().name().length() > 0
+						&& !m.charStats().getCurrentClass().name().equals("MOB"))
 					{
-						s.append(m.charStats().getMyClass().name());
+						s.append(m.charStats().getCurrentClass().name());
 						
 						s.append(", level ");
 						s.append(m.envStats().level());

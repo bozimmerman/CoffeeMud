@@ -48,7 +48,8 @@ public class DrowWizard extends DrowElf
 		baseCharStats().setStat(CharStats.DEXTERITY,15 + Dice.roll(1,6,0));
 		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
 		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
-		baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
+		baseCharStats().setCurrentClass("Mage");
+		baseCharStats().setClassLevel("Mage",baseEnvStats().level());
         baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

@@ -19,9 +19,10 @@ public class Thiefness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getMyClass().ID().equals("Thief"))
+		if(!mob.baseCharStats().getCurrentClass().ID().equals("Thief"))
 		{
-			mob.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
+			mob.baseCharStats().setCurrentClass("Thief");
+			mob.baseCharStats().setClassLevel("Thief",mob.envStats().level());
 			mob.recoverCharStats();
 		}
 		// now equip character...
@@ -76,7 +77,7 @@ public class Thiefness extends CombatAbilities
 				V.addElement(victim.name());
 				if(A!=null)
 				{
-					A.setProfficiency(Dice.roll(1,50,(mob.baseEnvStats().level()-A.qualifyingLevel(mob))*15));
+					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 					A.invoke(mob,V,null,false);
 				}
 			}

@@ -28,11 +28,13 @@ public class GoodGuardian extends StdBehavior
 				for(int b=0;b<inhab.numBehaviors();b++)
 				{
 					Behavior B=inhab.fetchBehavior(b);
-					if((B!=null)&&(B instanceof Aggressive))
+					if((B!=null)
+					&&((B instanceof Aggressive)
+						||(B.ID().toUpperCase().indexOf("AGGRESSIVE")>=0)))
 						return inhab;
 				}
 				if((inhab.getAlignment()<350)
-				||(inhab.charStats().getMyClass().ID().equalsIgnoreCase("Thief")))
+				||(inhab.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")))
 				{
 					victim=inhab;
 					break;

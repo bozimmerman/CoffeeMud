@@ -9,6 +9,7 @@ public class Fighter extends StdCharClass
 {
 	public String ID(){return "Fighter";}
 	public String name(){return "Fighter";}
+	public String baseClass(){return ID();}
 	private static boolean abilitiesLoaded=false;
 	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}

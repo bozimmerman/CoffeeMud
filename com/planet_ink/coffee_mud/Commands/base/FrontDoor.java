@@ -13,7 +13,9 @@ public class FrontDoor
 		for(int c=0;c<CMClass.charClasses.size();c++)
 		{
 			CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-			if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+			if((thisClass.playerSelectable())
+			   &&(thisClass.baseClass().equals(thisClass.ID()))
+			   &&thisClass.qualifiesForThisClass(mob))
 				them.addElement(thisClass);
 		}
 		return them;
@@ -131,11 +133,10 @@ public class FrontDoor
 					ExternalPlay.DBReadMOB(mob);
 					mob.setUserInfo(mob.ID(),password);
 					if(mob.baseCharStats()!=null)
-						if(mob.baseCharStats().getMyClass()!=null)
-						{
-							mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
-							mob.baseCharStats().getMyRace().startRacing(mob,true);
-						}
+					{
+						mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
+						mob.baseCharStats().getMyRace().startRacing(mob,true);
+					}
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 				}
@@ -305,7 +306,9 @@ public class FrontDoor
 						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+							if((thisClass.playerSelectable())
+							   &&(thisClass.baseClass().equals(thisClass.ID()))
+							   &&thisClass.qualifiesForThisClass(mob))
 								if(thisClass.name().equalsIgnoreCase(ClassStr))
 								{
 									newClass=thisClass;
@@ -316,7 +319,9 @@ public class FrontDoor
 						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+							if((thisClass.playerSelectable())
+							   &&(thisClass.baseClass().equals(thisClass.ID()))
+							   &&thisClass.qualifiesForThisClass(mob))
 								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 								{
 									newClass=thisClass;
@@ -325,6 +330,7 @@ public class FrontDoor
 						}
 						if((newClass!=null)
 						&&(newClass.playerSelectable())
+						&&(newClass.baseClass().equals(newClass.ID()))
 						&&(newClass.qualifiesForThisClass(mob)))
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
@@ -336,8 +342,8 @@ public class FrontDoor
 							newClass=null;
 					}
 				}
-				mob.baseCharStats().setMyClass(newClass);
-
+				mob.baseCharStats().setCurrentClass(newClass.ID());
+				mob.baseCharStats().setClassLevel(newClass.ID(),1);
 				mob.baseEnvStats().setLevel(1);
 				mob.baseEnvStats().setSensesMask(0);
 
@@ -363,8 +369,8 @@ public class FrontDoor
 				mob.recoverMaxState();
 				mob.resetToMaxState();
 
-				mob.baseCharStats().getMyClass().startCharacter(mob,false,false);
-				mob.baseCharStats().getMyClass().outfit(mob);
+				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
+				mob.baseCharStats().getCurrentClass().outfit(mob);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
 

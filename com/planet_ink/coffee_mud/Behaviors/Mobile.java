@@ -98,7 +98,7 @@ public class Mobile extends ActiveTicker
 					Vector V=new Vector();
 					V.add(Directions.getDirectionName(direction));
 					if(A.profficiency()<100)
-						A.setProfficiency(Dice.roll(1,50,(mob.baseEnvStats().level()-A.qualifyingLevel(mob))*15));
+						A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 					A.invoke(mob,V,null,false);
 				}
 				else

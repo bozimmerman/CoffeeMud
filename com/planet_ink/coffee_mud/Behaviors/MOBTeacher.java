@@ -21,9 +21,15 @@ public class MOBTeacher extends CombatAbilities
 		setParms(parms);
 	}
 
+	private void setTheCharClass(MOB mob, String classID)
+	{
+		mob.baseCharStats().setCurrentClass(classID);
+		mob.baseCharStats().setClassLevel(classID,mob.envStats().level());
+	}
+	
 	private void ensureCharClass()
 	{
-		myMOB.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
+		setTheCharClass(myMOB,"StdCharClass");
 		myMOB.recoverCharStats();
 		Ability A=null;
 		
@@ -44,21 +50,21 @@ public class MOBTeacher extends CombatAbilities
 		else
 		{
 			if(getParms().toUpperCase().indexOf("MAG")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
+				setTheCharClass(myMOB,"Mage");
 			if(getParms().toUpperCase().indexOf("THI")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
+				setTheCharClass(myMOB,"Thief");
 			if(getParms().toUpperCase().indexOf("FIG")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+				setTheCharClass(myMOB,"Fighter");
 			if(getParms().toUpperCase().indexOf("CLE")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
+				setTheCharClass(myMOB,"Cleric");
 			if(getParms().toUpperCase().indexOf("RAN")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
+				setTheCharClass(myMOB,"Ranger");
 			if(getParms().toUpperCase().indexOf("PAL")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
-			if(getParms().toUpperCase().indexOf("BAR")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
+				setTheCharClass(myMOB,"Paladin");
+			if(getParms().toUpperCase().indexOf("BARD")>=0)
+				setTheCharClass(myMOB,"Bard");
 			if(getParms().toUpperCase().indexOf("DRU")>=0)
-				myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
+				setTheCharClass(myMOB,"Druid");
 			
 			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
@@ -69,8 +75,8 @@ public class MOBTeacher extends CombatAbilities
 				Ability A2=myMOB.fetchAbility(A.ID());
 				if(A2==null)
 				{
-					if((A.qualifiesByLevel(myMOB))
-					||((myMOB.charStats().getMyClass().ID().equals("StdCharClass"))&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+					if((CMAble.qualifiesByLevel(myMOB,A))
+					||((myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
 					{
 						A=(Ability)A.copyOf();
 						A.setBorrowed(myMOB,true);
@@ -143,7 +149,7 @@ public class MOBTeacher extends CombatAbilities
 					s=s.substring(3).trim();
 				if(s.startsWith("\"")) s=s.substring(1).trim();
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
-				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats().getMyClass().ID());
+				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats());
 				if(myAbility==null)
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
@@ -163,8 +169,8 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				if((!myAbility.qualifiesByLevel(monster))
-				&&(!monster.baseCharStats().getMyClass().ID().equals("StdCharClass")))
+				if((!CMAble.qualifiesByLevel(monster,myAbility))
+				&&(!monster.baseCharStats().getCurrentClass().ID().equals("StdCharClass")))
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know '"+myAbility.name()+"'.",true,false);
 					return;

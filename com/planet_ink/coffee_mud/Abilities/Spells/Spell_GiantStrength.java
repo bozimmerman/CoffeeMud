@@ -19,25 +19,22 @@ public class Spell_GiantStrength extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		int increase = 4;
-		if (affectableStats.getMyClass().ID().equals("Fighter"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
 			increase = 8;
 		else
-		if (affectableStats.getMyClass().ID().equals("Ranger"))
-			increase = 8;
-		else
-		if (affectableStats.getMyClass().ID().equals("Paladin"))
-			increase = 8;
-		else
-		if (affectableStats.getMyClass().ID().equals("Mage"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
 			increase = 5;
 		else
-		if (affectableStats.getMyClass().ID().equals("Thief"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
 			increase = 7;
 		else
-		if (affectableStats.getMyClass().ID().equals("Bard"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
 			increase = 7;
 		else
-		if (affectableStats.getMyClass().ID().equals("Cleric"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
+			increase = 6;
+		else
+		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 6;
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH) + increase);
 		if(affectableStats.getStat(CharStats.STRENGTH)>25)affectableStats.setStat(CharStats.STRENGTH,25);

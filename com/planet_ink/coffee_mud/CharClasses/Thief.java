@@ -9,6 +9,7 @@ public class Thief extends StdCharClass
 {
 	public String ID(){return "Thief";}
 	public String name(){return "Thief";}
+	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusManaLevel(){return 12;}

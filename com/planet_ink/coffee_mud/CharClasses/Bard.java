@@ -9,6 +9,7 @@ public class Bard extends StdCharClass
 {
 	public String ID(){return "Bard";}
 	public String name(){return "Bard";}
+	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusManaLevel(){return 8;}

@@ -17,6 +17,7 @@ public class Property implements Ability, Cloneable
 	protected int canTargetCode(){return 0;}
 	public int usesRemaining(){return 0;}
 	public void setUsesRemaining(int newUses){}
+	public int adjustedLevel(MOB mob){return -1;}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}
@@ -40,8 +41,6 @@ public class Property implements Ability, Cloneable
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
-	public boolean qualifiesByLevel(MOB student){return false;}
-	public int qualifyingLevel(MOB student){return -1;}
 	public void startTickDown(Environmental affected, int tickTime){}
 
 	public int profficiency(){return 0;}

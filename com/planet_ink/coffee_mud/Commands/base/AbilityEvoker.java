@@ -134,7 +134,7 @@ public class AbilityEvoker
 			mob.tell("You don't know how to do that.");
 			return;
 		}
-		if(evokableAbility.qualifyingLevel(mob)>mob.envStats().level())
+		if(!CMAble.qualifiesByLevel(mob,evokableAbility))
 		{
 			mob.tell("You are not high enough level to do that.");
 			return;
@@ -162,7 +162,7 @@ public class AbilityEvoker
 
 
 		String abilityName=Util.combine(commands,0);
-		Ability realAbility=CMClass.findAbility(abilityName,student.charStats().getMyClass().ID());
+		Ability realAbility=CMClass.findAbility(abilityName,student.charStats());
 		Ability myAbility=null;
 		if(realAbility!=null) 
 			myAbility=mob.fetchAbility(realAbility.ID());

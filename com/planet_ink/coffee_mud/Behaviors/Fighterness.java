@@ -18,9 +18,10 @@ public class Fighterness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getMyClass().ID().equals("Fighter"))
+		if(!mob.baseCharStats().getCurrentClass().ID().equals("Fighter"))
 		{
-			mob.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+			mob.baseCharStats().setCurrentClass("Fighter");
+			mob.baseCharStats().setClassLevel("Fighter",mob.envStats().level());
 			mob.recoverCharStats();
 		}
 		// now equip character...

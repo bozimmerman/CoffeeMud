@@ -32,7 +32,7 @@ public class Spell_EnchantArmor extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.charStats().getMyClass().loseExperience(mob,50);
+		mob.charStats().getCurrentClass().loseExperience(mob,50);
 		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);

@@ -321,7 +321,7 @@ public class Movement
 		{
 			mob.makePeace();
 			mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
-			mob.charStats().getMyClass().loseExperience(mob,lostExperience);
+			mob.charStats().getCurrentClass().loseExperience(mob,lostExperience);
 		}
 	}
 

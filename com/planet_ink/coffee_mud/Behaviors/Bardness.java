@@ -19,9 +19,10 @@ public class Bardness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getMyClass().ID().equals("Bard"))
+		if(!mob.baseCharStats().getCurrentClass().ID().equals("Bard"))
 		{
-			mob.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
+			mob.baseCharStats().setCurrentClass("Bard");
+			mob.baseCharStats().setClassLevel("Bard",mob.envStats().level());
 			mob.recoverCharStats();
 		}
 		// now equip character...

@@ -38,8 +38,16 @@ public interface CharStats extends Cloneable
 	public int getSave(int which);
 	
 	// physical and static properties
-	public CharClass getMyClass();
-	public void setMyClass(CharClass newVal);
+	public int numClasses();
+	public CharClass getMyClass(int i);
+	public CharClass getCurrentClass();
+	public void setMyClasses(String classes);
+	public void setMyLevels(String levels);
+	public String getMyClassesStr();
+	public String getMyLevelsStr();
+	public void setCurrentClass(String classID);
+	public int getClassLevel(String classID);
+	public void setClassLevel(String classID, int level);
 	public Race getMyRace();
 	public void setMyRace(Race newVal);
 	

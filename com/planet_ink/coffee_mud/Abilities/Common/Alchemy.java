@@ -104,7 +104,7 @@ public class Alchemy extends CommonSkill
 	
 	private int spellLevel(MOB mob, String spell)
 	{
-		int lvl=CMAble.getQualifyingLevel(mob.charStats().getMyClass().ID(),spell);
+		int lvl=CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),spell);
 		if(lvl<0) return lvl;
 		switch(lvl)
 		{
@@ -146,6 +146,7 @@ public class Alchemy extends CommonSkill
 					String spell=(String)V.elementAt(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
+					&&(spellLevel(mob,spell)>=0)
 					&&(mob.envStats().level()>=spellLevel(mob,spell)))
 					{
 						buf.append(Util.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
@@ -227,8 +228,8 @@ public class Alchemy extends CommonSkill
 			{
 				requiresFire=false;
 				fire=null;
-				experienceToLose+=theSpell.qualifyingLevel(mob)*10;
-				experienceToLose-=(mob.envStats().level()*5);
+				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*10;
+				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
 			}
 			else
 			{
@@ -248,8 +249,8 @@ public class Alchemy extends CommonSkill
 					commonTell(mob,"A fire will need to be built first.");
 					return false;
 				}
-				experienceToLose+=theSpell.qualifyingLevel(mob)*15;
-				experienceToLose-=(mob.envStats().level()*5);
+				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*15;
+				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
 			}
 			int resourceType=-1;
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
@@ -292,7 +293,7 @@ public class Alchemy extends CommonSkill
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 		
-			mob.charStats().getMyClass().loseExperience(mob,experienceToLose);
+			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroyThis();
@@ -304,7 +305,7 @@ public class Alchemy extends CommonSkill
 			building.recoverEnvStats();
 			building.text();			
 			
-			int completion=theSpell.qualifyingLevel(mob)*5;
+			int completion=CMAble.qualifyingLevel(mob,theSpell)*5;
 			if(completion<10) completion=10;
 			messedUp=!profficiencyCheck(0,auto);
 			FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,null);

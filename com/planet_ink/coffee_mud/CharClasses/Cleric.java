@@ -9,6 +9,7 @@ public class Cleric extends StdCharClass
 {
 	public String ID(){return "Cleric";}
 	public String name(){return "Cleric";}
+	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusManaLevel(){return 15;}

@@ -4,6 +4,7 @@ public interface CharClass
 {
 	public String ID();
 	public String name();
+	public String baseClass();
 	public boolean playerSelectable();
 	public boolean qualifiesForThisClass(MOB mob);
 

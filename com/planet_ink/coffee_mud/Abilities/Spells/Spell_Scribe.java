@@ -46,7 +46,7 @@ public class Spell_Scribe extends Spell
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A instanceof Spell)&&(A.qualifiesByLevel(mob))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
+			if((A!=null)&&(A instanceof Spell)&&(CMAble.qualifiesByLevel(mob,A))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}
 		if(scrollThis==null)
@@ -55,7 +55,7 @@ public class Spell_Scribe extends Spell
 			return false;
 		}
 
-		if(scroll.numSpells()>(mob.envStats().level()-this.qualifyingLevel(mob)))
+		if(scroll.numSpells()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this)))
 		{
 			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
 			return false;
@@ -73,7 +73,7 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		mob.curState().setMana(0);
-		mob.charStats().getMyClass().loseExperience(mob,100);
+		mob.charStats().getCurrentClass().loseExperience(mob,100);
 
 		boolean success=profficiencyCheck(0,auto);
 

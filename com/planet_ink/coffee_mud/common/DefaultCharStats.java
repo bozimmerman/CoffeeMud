@@ -1,12 +1,15 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.Util;
+import java.util.*;
+
 public class DefaultCharStats implements Cloneable, CharStats
 {
 
 	// competency characteristics
 	protected int[] stats=new int[NUM_STATS];
-	protected CharClass MyClass=null;
+	protected Vector MyClasses=null;
+	protected Vector MyLevels=null;
 	protected Race MyRace=null;
 	
 	public DefaultCharStats()
@@ -16,19 +19,154 @@ public class DefaultCharStats implements Cloneable, CharStats
 		stats[GENDER]=(int)'M';
 	}
 
-	public CharClass getMyClass()
+	public void setMyClasses(String classes)
 	{
-		if(MyClass==null)
-			MyClass=CMClass.getCharClass("StdCharClass");
-		return MyClass;
+		int x=classes.indexOf(";");
+		MyClasses=new Vector();
+		while(x>=0)
+		{
+			String theClass=classes.substring(0,x).trim();
+			classes=classes.substring(x+1);
+			if(theClass.length()>0)
+				MyClasses.addElement(CMClass.getCharClass(theClass));
+			x=classes.indexOf(";");
+		}
+		if(classes.trim().length()>0)
+			MyClasses.addElement(CMClass.getCharClass(classes.trim()));
+	}
+	public void setMyLevels(String levels)
+	{
+		int x=levels.indexOf(";");
+		MyLevels=new Vector();
+		while(x>=0)
+		{
+			String theLevel=levels.substring(0,x).trim();
+			levels=levels.substring(x+1);
+			if(theLevel.length()>0)
+				MyLevels.addElement(new Integer(Util.s_int(theLevel)));
+			x=levels.indexOf(";");
+		}
+		if(levels.trim().length()>0)
+			MyLevels.addElement(new Integer(Util.s_int(levels)));
+	}
+	public String getMyClassesStr()
+	{
+		if(MyClasses==null)	return "";
+		String classStr="";
+		for(int i=0;i<MyClasses.size();i++)
+			classStr+=";"+((CharClass)MyClasses.elementAt(i)).ID();
+		if(classStr.length()>0)
+			classStr=classStr.substring(1);
+		return classStr;
+	}
+	public String getMyLevelsStr()
+	{
+		if(MyLevels==null) return "";
+		String levelStr="";
+		for(int i=0;i<MyLevels.size();i++)
+			levelStr+=";"+((Integer)MyLevels.elementAt(i)).intValue();
+		if(levelStr.length()>0)
+			levelStr=levelStr.substring(1);
+		return levelStr;
+	}
+	public int numClasses()
+	{
+		if(MyClasses==null) return 0;
+		return MyClasses.size();
+	}
+	public CharClass getMyClass(int i)
+	{
+		if(MyClasses==null) return CMClass.getCharClass("StdCharClass");
+		if((i<0)||(i>=MyClasses.size())) return CMClass.getCharClass("StdCharClass");
+		return (CharClass)MyClasses.elementAt(i);
+	}
+	public int getClassLevel(String classID)
+	{
+		if(MyClasses==null) return -1;
+		if(MyClasses.size()!=MyLevels.size())
+			return -1;
+		for(int i=0;i<numClasses();i++)
+			if(getMyClass(i).ID().equalsIgnoreCase(classID))
+			   return ((Integer)MyLevels.elementAt(i)).intValue();
+		return -1;
+	}
+	
+	public void setClassLevel(String classID, int level)
+	{
+		if(MyClasses.size()==MyLevels.size())
+		{
+			if(getClassLevel(classID)<0)
+			{
+				setCurrentClass(classID);
+				if(getClassLevel(classID)>=0)
+					setClassLevel(classID,level);
+			}
+			else
+			for(int i=0;i<numClasses();i++)
+			{
+				CharClass C=getMyClass(i);
+				if(C.ID().equals(classID))
+				{
+					Integer I=(Integer)MyLevels.elementAt(i);
+					if(I!=null)
+					{
+						MyLevels.setElementAt(new Integer(level),i);
+						return;
+					}
+				}
+			}
+			
+		}
+	}
+	public void setCurrentClass(String classID)
+	{
+		if(MyClasses==null) MyClasses=new Vector();
+		if(MyLevels==null) MyLevels=new Vector();
+		
+		if((!classID.equalsIgnoreCase("StdCharClass"))
+		&&(numClasses()==1)
+		&&(((CharClass)getMyClass(0)).ID().equals("StdCharClass")))
+		{
+			MyClasses.clear();
+			MyLevels.clear();
+		}
+		
+		if(getClassLevel(classID)<0)
+		{
+			MyClasses.addElement(CMClass.getCharClass(classID));
+			MyLevels.addElement(new Integer(0));
+		}
+		else
+		if(MyClasses.size()==MyLevels.size())
+			for(int i=0;i<numClasses();i++)
+			{
+				CharClass C=getMyClass(i);
+				if(C.ID().equals(classID))
+				{
+					Integer I=(Integer)MyLevels.elementAt(i);
+					if(I!=null)
+					{
+						MyLevels.removeElement(I);
+						MyClasses.removeElement(C);
+						MyClasses.addElement(C);
+						MyLevels.addElement(I);
+						return;
+					}
+				}
+			}
+	}
+	public CharClass getCurrentClass()
+	{
+		if((MyClasses==null)||(MyClasses.size()==0))
+			setCurrentClass("StdCharClass");
+		return (CharClass)MyClasses.lastElement();
 	}
 	public Race getMyRace()
 	{
-		if(MyRace==null)
+		if(MyRace==null) 
 			MyRace=CMClass.getRace("StdRace");
 		return MyRace;
 	}
-	public void setMyClass(CharClass newVal){MyClass=newVal;}
 	public void setMyRace(Race newVal){MyRace=newVal;}
 	public int getSave(int which)
 	{
@@ -69,11 +207,11 @@ public class DefaultCharStats implements Cloneable, CharStats
 	// create a new one of these
 	public CharStats cloneCharStats()
 	{
-		CharStats newOne=new DefaultCharStats();
-		newOne.setMyClass(MyClass);
-		newOne.setMyRace(MyRace);
-		for(int s=0;s<stats.length;s++)
-			newOne.setStat(s,stats[s]);
+		DefaultCharStats newOne=new DefaultCharStats();
+		newOne.MyClasses=(Vector)MyClasses.clone();
+		newOne.MyRace=MyRace;
+		newOne.MyLevels=(Vector)MyLevels.clone();
+		newOne.stats=(int[])stats.clone();
 		return newOne;
 	}
 

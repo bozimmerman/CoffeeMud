@@ -244,7 +244,7 @@ public class BasicSenses
 		if(abilityCode<100)
 		{
 			curStat=mob.baseCharStats().getStat(abilityCode);
-			if(!mob.baseCharStats().getMyClass().canAdvance(mob,abilityCode))
+			if(!mob.baseCharStats().getCurrentClass().canAdvance(mob,abilityCode))
 			{
 				mob.tell("You cannot train that any further.");
 				return;
@@ -338,7 +338,7 @@ public class BasicSenses
 	{
 		if(mob==null) return;
 		if(mob.charStats()==null) return;
-		CharClass C=mob.charStats().getMyClass();
+		CharClass C=mob.charStats().getCurrentClass();
 		Race R=mob.charStats().getMyRace();
 		if(C!=null) C.outfit(mob);
 		if(R!=null) R.outfit(mob);

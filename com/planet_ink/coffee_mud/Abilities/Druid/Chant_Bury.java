@@ -52,7 +52,7 @@ public class Chant_Bury extends Chant
 				mob.location().send(mob,msg);
 				target.destroyThis();
 				if((mob.getAlignment()>=350)&&(mob.getAlignment()<=650))
-					mob.charStats().getMyClass().gainExperience(mob,null,null,10);
+					mob.charStats().getCurrentClass().gainExperience(mob,null,null,10);
 				mob.location().recoverRoomStats();
 			}
 		}

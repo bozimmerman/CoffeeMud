@@ -22,8 +22,8 @@ public class Mageness extends CombatAbilities
 			while((addThis==null)&&((++tries)<10))
 			{
 				addThis=(Ability)CMClass.abilities.elementAt(Dice.roll(1,CMClass.abilities.size(),0)-1);
-				if((addThis.qualifyingLevel(mob)<0)
-				||(addThis.qualifyingLevel(mob)>=mob.baseEnvStats().level())
+				if((CMAble.qualifyingLevel(mob,addThis)<0)
+				||(!CMAble.qualifiesByLevel(mob,addThis))
 				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyAlignment(mob.getAlignment())))
 				||(mob.fetchAbility(addThis.ID())!=null)
 				||((addThis.quality()!=Ability.MALICIOUS)
@@ -46,9 +46,10 @@ public class Mageness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getMyClass().ID().equals("Mage"))
+		if(!mob.baseCharStats().getCurrentClass().ID().equals("Mage"))
 		{
-			mob.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
+			mob.baseCharStats().setCurrentClass("Mage");
+			mob.baseCharStats().setClassLevel("Mage",mob.envStats().level());
 			mob.recoverCharStats();
 		}
 		// now equip character...

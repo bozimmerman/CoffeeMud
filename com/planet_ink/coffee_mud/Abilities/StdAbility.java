@@ -76,16 +76,6 @@ public class StdAbility implements Ability, Cloneable
 		if(profficiency>100) profficiency=100;
 	}
 
-	public boolean qualifiesByLevel(MOB student)
-	{
-		int level=qualifyingLevel(student);
-		if(level<0) return false;
-		if(student.envStats().level()>=level)
-			return true;
-		else
-			return false;
-	}
-
 	public void startTickDown(Environmental affected, int tickTime)
 	{
 		if(affected instanceof MOB)
@@ -108,24 +98,14 @@ public class StdAbility implements Ability, Cloneable
 		tickDown=tickTime;
 	}
 
-	protected int adjustedLevel(MOB caster)
+	public int adjustedLevel(MOB caster)
 	{
 		if(caster==null) return 1;
-		int adjLevel=caster.envStats().level()+(CMAble.lowestQualifyingLevel(ID())-qualifyingLevel(caster));
+		int adjLevel=1+(CMAble.qualifyingClassLevel(caster,this)-CMAble.qualifyingLevel(caster,this));
 		if(adjLevel<1) return 1;
 		return adjLevel;
 	}
 	
-	public int qualifyingLevel(MOB student)
-	{
-		if(student==null) return -1;
-
-		if(student.charStats().getMyClass()==null)
-			return -1;
-
-		return CMAble.getQualifyingLevel(student.charStats().getMyClass().ID(),ID());
-	}
-
 	public boolean canAffect(Environmental E)
 	{
 		if((E==null)&&(canAffectCode()==0)) return true;
@@ -419,7 +399,7 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 
 			int manaConsumed=50;
-			int diff=mob.envStats().level()-qualifyingLevel(mob);
+			int diff=adjustedLevel(mob)-1;
 			if(diff>0)
 			switch(diff)
 			{
@@ -544,7 +524,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			if(mob.envStats().level()>=qualifyingLevel(mob))
+			if(CMAble.qualifiesByLevel(mob,this))
 			{
 				Ability thisAbility=mob.fetchAffect(this.ID());
 				if(thisAbility!=null)
@@ -619,14 +599,14 @@ public class StdAbility implements Ability, Cloneable
 			student.tell("You do not have enough training points.");
 			return false;
 		}
-		int qLevel=qualifyingLevel(student);
+		int qLevel=CMAble.qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
 			teacher.tell(student.name()+" is not the right class to learn '"+name()+"'.");
 			student.tell("You are not the right class to learn '"+name()+"'.");
 			return false;
 		}
-		if((qLevel>student.envStats().level()))
+		if(!CMAble.qualifiesByLevel(student,this))
 		{
 			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
 			student.tell("You are not high enough level to learn '"+name()+"'.");
@@ -677,14 +657,14 @@ public class StdAbility implements Ability, Cloneable
 
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
-		if((yourAbility==null)||(yourAbility.qualifyingLevel(student)<0))
+		if((yourAbility==null)||(CMAble.qualifyingLevel(student,yourAbility)<0))
 		{
 			teacher.tell(student.name()+" has not learned '"+name()+"' yet.");
 			student.tell("You havn't learned '"+name()+"' yet.");
 			return false;
 		}
 
-		if(yourAbility.qualifyingLevel(student)>student.envStats().level())
+		if(!CMAble.qualifiesByLevel(student,yourAbility))
 		{
 			teacher.tell(student.name()+" is not high enough level to practice '"+name()+"'.");
 			student.tell("You are not high enough level to practice '"+name()+"'.");

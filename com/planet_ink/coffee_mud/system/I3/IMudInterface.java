@@ -359,15 +359,22 @@ public class IMudInterface implements ImudServices, Serializable
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
-					if((!ses.killFlag())&&(ses.mob()!=null)
-					&&(!ses.mob().amDead())
-					&&(ses.mob().location()!=null)
-					&&(Sense.isSeen(ses.mob())))
+					MOB smob=ses.mob();
+					if((!ses.killFlag())&&(smob!=null)
+					&&(!smob.amDead())
+					&&(smob.location()!=null)
+					&&(Sense.isSeen(smob)))
 					{
 						Vector whoV2=new Vector();
-						whoV2.addElement(ses.mob().name());
+						whoV2.addElement(smob.name());
 						whoV2.addElement(new Integer(0));
-						whoV2.addElement(ses.mob().charStats().getMyClass().name()+" "+ses.mob().envStats().level());
+						int classLevel=smob.charStats().getClassLevel(smob.charStats().getCurrentClass().ID());
+						String levelStr=smob.charStats().getCurrentClass().name()+" ";
+						if(classLevel>=(smob.envStats().level()-1))
+							levelStr+=smob.envStats().level();
+						else
+							levelStr+=classLevel+"/"+smob.envStats().level();
+						whoV2.addElement(levelStr);
 						whoV.addElement(whoV2);
 					}
 				}

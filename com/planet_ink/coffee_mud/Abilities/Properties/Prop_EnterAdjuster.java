@@ -147,7 +147,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+getVal(readableText,"int"));
 		val=getStr(readableText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
-			mob.baseCharStats().setMyClass(CMClass.getCharClass(val));
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val).ID());
 		val=getStr(readableText,"rac").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
@@ -168,7 +168,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.setQuestPoint(mob.getQuestPoint()+getVal(readableText,"ques"));
 		mob.setMoney(mob.getMoney()+getVal(readableText,"coin"));
 		int exp=getVal(readableText,"expe");
-		if(exp>0) mob.charStats().getMyClass().gainExperience(mob,null,mob.getLeigeID(),exp);
+		if(exp>0) mob.charStats().getCurrentClass().gainExperience(mob,null,mob.getLeigeID(),exp);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

@@ -31,7 +31,7 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.charStats().getMyClass().loseExperience(mob,100);
+		mob.charStats().getCurrentClass().loseExperience(mob,100);
 		mob.curState().setMana(0);
 		
 		boolean success=profficiencyCheck(0,auto);

@@ -9,6 +9,7 @@ public class Ranger extends StdCharClass
 {
 	public String ID(){return "Ranger";}
 	public String name(){return "Ranger";}
+	public String baseClass(){return "Fighter";}
 	public int getMaxHitPointsLevel(){return 22;}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusManaLevel(){return 10;}

@@ -9,6 +9,7 @@ public class Paladin extends StdCharClass
 {
 	public String ID(){return "Paladin";}
 	public String name(){return "Paladin";}
+	public String baseClass(){return "Fighter";}
 	public int getMaxHitPointsLevel(){return 22;}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusManaLevel(){return 10;}

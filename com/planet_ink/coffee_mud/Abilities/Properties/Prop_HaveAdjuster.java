@@ -134,7 +134,7 @@ public class Prop_HaveAdjuster extends Property
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 		{
 			gotClass=true;
-			adjCharStats.setMyClass(CMClass.getCharClass(val));
+			adjCharStats.setCurrentClass(CMClass.getCharClass(val).ID());
 		}
 		val=getStr(newText,"rac").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
@@ -275,7 +275,7 @@ public class Prop_HaveAdjuster extends Property
 			affectedStats.setStat(CharStats.GENDER,(int)adjCharStats.getStat(CharStats.GENDER));
 		affectedStats.setStat(CharStats.INTELLIGENCE,affectedStats.getStat(CharStats.INTELLIGENCE)+adjCharStats.getStat(CharStats.INTELLIGENCE));
 		if(gotClass)
-			affectedStats.setMyClass(adjCharStats.getMyClass());
+			affectedStats.setCurrentClass(adjCharStats.getCurrentClass().ID());
 		if(gotRace)
 			affectedStats.setMyRace(adjCharStats.getMyRace());
 		affectedStats.setStat(CharStats.STRENGTH,affectedStats.getStat(CharStats.STRENGTH)+adjCharStats.getStat(CharStats.STRENGTH));

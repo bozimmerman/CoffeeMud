@@ -106,7 +106,69 @@ public class CMAble
 		}
 		return -1;
 	}
+
 	
+	public static int qualifyingLevel(MOB student, Ability A)
+	{
+		if(student==null) return -1;
+		int theLevel=-1;
+		int greatestDiff=-1;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
+			int classLevel=student.charStats().getClassLevel(C.ID());
+			if((level>=0)&&(classLevel>=level)&&((level-classLevel)>greatestDiff))
+			{
+				greatestDiff=level-classLevel;
+				theLevel=level;
+			}
+		}
+		if(theLevel<0) 
+			return CMAble.getQualifyingLevel(student.charStats().getCurrentClass().ID(),A.ID());
+		else
+			return theLevel;
+	}
+
+	public static int qualifyingClassLevel(MOB student, Ability A)
+	{
+		if(student==null) return -1;
+		int theLevel=-1;
+		int greatestDiff=-1;
+		CharClass theClass=null;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
+			int classLevel=student.charStats().getClassLevel(C.ID());
+			if((level>=0)&&(classLevel>=level)&&((level-classLevel)>greatestDiff))
+			{
+				greatestDiff=level-classLevel;
+				theLevel=level;
+				theClass=C;
+			}
+		}
+		if(theClass==null) 
+			return student.charStats().getClassLevel(student.charStats().getCurrentClass().ID());
+		else
+			return student.charStats().getClassLevel(theClass.ID());
+	}
+
+	
+	public static boolean qualifiesByLevel(MOB student, Ability A)
+	{
+		if(student==null) return false;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
+			if((level>=0)
+			&&(student.charStats().getClassLevel(C.ID())>=level))
+				return true;
+		}
+		return false;
+	}
+
 	public static boolean getDefaultGain(String charClass, 
 										 String ability)
 	{

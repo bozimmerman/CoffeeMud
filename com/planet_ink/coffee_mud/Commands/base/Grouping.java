@@ -45,8 +45,8 @@ public class Grouping
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
 			head.append(Util.padRight("Race",8)+" ");
-			head.append(Util.padRight("Class",8)+" ");
-			head.append(Util.padRight("Lvl",4));
+			head.append(Util.padRight("Class",12)+" ");
+			head.append(Util.padRight("Lvl",5));
 			head.append("] Character name^N^.\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
@@ -80,8 +80,8 @@ public class Grouping
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
 			head.append(Util.padRight("Race",8)+" ");
-			head.append(Util.padRight("Class",8)+" ");
-			head.append(Util.padRight("Lvl",4));
+			head.append(Util.padRight("Class",12)+" ");
+			head.append(Util.padRight("Lvl",5));
 			head.append("] Character name^N^.\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
@@ -104,8 +104,14 @@ public class Grouping
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		msg.append(Util.padRight(who.charStats().getMyRace().name(),8)+" ");
-		msg.append(Util.padRight(who.charStats().getMyClass().name(),8)+" ");
-		msg.append(Util.padRight(Integer.toString(who.envStats().level()),4));
+		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass().ID());
+		String levelStr=null;
+		if(classLevel>=(who.envStats().level()-1))
+			levelStr=""+who.envStats().level();
+		else
+			levelStr=classLevel+"/"+who.envStats().level();
+		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),12)+" ");
+		msg.append(Util.padRight(levelStr,5));
 		msg.append("] "+Util.padRight(who.name(),15));
 		if(!shortForm)
 		{

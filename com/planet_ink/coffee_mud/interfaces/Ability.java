@@ -113,9 +113,7 @@ public interface Ability  extends Environmental
 	public void teach(MOB teacher, MOB student);
 	public void practice(MOB teacher, MOB student);
 	public String requirements();
-	public boolean qualifiesByLevel(MOB student);
-	public int qualifyingLevel(MOB student);
-	
+
 	public boolean canTarget(Environmental E);
 	public boolean canAffect(Environmental E);
 
@@ -127,6 +125,7 @@ public interface Ability  extends Environmental
 	// For clerics, usually, whether this ability is
 	// appropriate for the mob using it
 	public boolean appropriateToMyAlignment(int alignment);
+	public int adjustedLevel(MOB mob);
 
 	// intelligently add this ability as an affect upon a target,
 	// and start a new clock (if necessary), setting the timer

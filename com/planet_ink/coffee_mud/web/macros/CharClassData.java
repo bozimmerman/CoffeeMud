@@ -32,6 +32,10 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(C.playerSelectable()+", ");
+				
+				if(parms.containsKey("BASECLASS"))
+					str.append(C.baseClass()+", ");
+				
 				if(parms.containsKey("MAXSTATS"))
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						str.append(CharStats.TRAITS[i]+"("+C.maxStat()[i]+"), ");

@@ -42,7 +42,7 @@ public class Prayer_Sacrifice extends Prayer
 				mob.location().send(mob,msg);
 				target.destroyThis();
 				if(mob.getAlignment()>=500)
-					mob.charStats().getMyClass().gainExperience(mob,null,null,5);
+					mob.charStats().getCurrentClass().gainExperience(mob,null,null,5);
 				mob.location().recoverRoomStats();
 			}
 		}

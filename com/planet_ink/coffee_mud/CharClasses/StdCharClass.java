@@ -9,6 +9,7 @@ public class StdCharClass implements CharClass
 {
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
+	public String baseClass(){return ID();}
 	public int getMinHitPointsLevel(){return 2;}
 	public int getMaxHitPointsLevel(){return 12;}
 	public int getBonusPracLevel(){return 0;}
@@ -56,18 +57,23 @@ public class StdCharClass implements CharClass
 		return maxStat;
 	}
 
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	{
+		for(int a=0;a<CMClass.abilities.size();a++)
+		{
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
+			&&(CMAble.getDefaultGain(ID(),A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+		}
+	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
 		if(!verifyOnly)
 		{
 			mob.setPractices(mob.getPractices()+getPracsFirstLevel());
 			mob.setTrains(mob.getTrains()+getTrainsFirstLevel());
-			for(int a=0;a<CMClass.abilities.size();a++)
-			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
-			}
+			grantAbilities(mob,isBorrowedClass);
 		}
 	}
 
@@ -129,8 +135,8 @@ public class StdCharClass implements CharClass
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
-				if((sire.charStats()!=null)&&(sire.charStats().getMyClass()!=null))
-					sire.charStats().getMyClass().gainExperience(sire,null," from "+mob.name(),sireShare);
+				if(sire.charStats()!=null)
+					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare);
 			}
 		}
 
@@ -159,7 +165,7 @@ public class StdCharClass implements CharClass
 		int trainGain=0;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
-		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+"^N.\n\r");
+		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getCurrentClass().name()+"^N.\n\r");
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -191,7 +197,7 @@ public class StdCharClass implements CharClass
 
 		StringBuffer theNews=new StringBuffer("");
 
-		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".^N\n\r");
+		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getCurrentClass().name()+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
@@ -241,7 +247,8 @@ public class StdCharClass implements CharClass
 		mob.baseCharStats().setStat(CharStats.DEXTERITY,11);
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
-		mob.baseCharStats().setMyClass(this);
+		mob.baseCharStats().setCurrentClass(ID());
+		mob.baseCharStats().setClassLevel(ID(),1);
 		mob.baseEnvStats().setArmor(50);
 		mob.baseEnvStats().setLevel(1);
 		mob.baseEnvStats().setSensesMask(0);
@@ -256,7 +263,7 @@ public class StdCharClass implements CharClass
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		mob.baseCharStats().getMyClass().startCharacter(mob,true,false);
+		mob.baseCharStats().getCurrentClass().startCharacter(mob,true,false);
 
 		for(int lvl=1;lvl<level;lvl++)
 		{
@@ -283,7 +290,7 @@ public class StdCharClass implements CharClass
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
-			mob.charStats().getMyClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
+			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
@@ -330,12 +337,14 @@ public class StdCharClass implements CharClass
 
 		mob.tell(theNews.toString());
 		
+		grantAbilities(mob,false);
+		
 		// check for autoinvoking abilities
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&(A.qualifyingLevel(mob)<=mob.envStats().level()))
+			&&(CMAble.qualifiesByLevel(mob,A)))
 				A.autoInvocation(mob);
 		}
 		
@@ -397,7 +406,6 @@ public class StdCharClass implements CharClass
 			MOB mob=deathRoom.fetchInhabitant(m);
 			if((mob!=null)
 			&&(!mob.amDead())
-			&&(mob.charStats().getMyClass()!=null)
 			&&(beneficiaries.get(mob)==null))
 			{
 				if((mob.getVictim()==killed)
@@ -417,7 +425,7 @@ public class StdCharClass implements CharClass
 				MOB mob=(MOB)e.nextElement();
 				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
-				mob.charStats().getMyClass().gainExperience(mob,killed,"",myAmount);
+				mob.charStats().getCurrentClass().gainExperience(mob,killed,"",myAmount);
 			}
 		}
 		return beneficiaries;

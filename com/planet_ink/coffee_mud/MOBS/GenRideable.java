@@ -38,8 +38,8 @@ public class GenRideable extends StdRideable
 		recoverEnvStats();
 		recoverCharStats();
 		baseState().setHitPoints((10*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
-		baseState().setMana(baseCharStats().getMyClass().getLevelMana(this));
-		baseState().setMovement(baseCharStats().getMyClass().getLevelMove(this));
+		baseState().setMana(baseCharStats().getCurrentClass().getLevelMana(this));
+		baseState().setMovement(baseCharStats().getCurrentClass().getLevelMove(this));
 		recoverMaxState();
 		resetToMaxState();
 		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));

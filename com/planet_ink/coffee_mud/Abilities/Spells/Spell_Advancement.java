@@ -23,6 +23,13 @@ public class Spell_Advancement extends Spell
 		affectableStats.setLevel(affectableStats.level() + 1);
 	}
 
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		CharClass C=affectableStats.getCurrentClass();
+		affectableStats.setClassLevel(C.ID(),affectableStats.getClassLevel(C.ID())+1);
+	}
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -34,8 +41,6 @@ public class Spell_Advancement extends Spell
 		if(canBeUninvoked)
 			mob.tell("Your temporary advancement has receeded.");
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

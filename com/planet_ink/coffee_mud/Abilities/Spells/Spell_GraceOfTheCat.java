@@ -19,19 +19,17 @@ public class Spell_GraceOfTheCat extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		int increase = 4;
-		if (affectableStats.getMyClass().ID().equals("Thief"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
 			increase = 8;
-		if (affectableStats.getMyClass().ID().equals("Bard"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
 			increase = 8;
-		if (affectableStats.getMyClass().ID().equals("Paladin"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
 			increase = 6;
-		if (affectableStats.getMyClass().ID().equals("Ranger"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
 			increase = 6;
-		if (affectableStats.getMyClass().ID().equals("Fighter"))
-			increase = 6;
-		if (affectableStats.getMyClass().ID().equals("Mage"))
-			increase = 6;
-		if (affectableStats.getMyClass().ID().equals("Cleric"))
+		if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
+			increase = 4;
+		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 4;
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY) + increase);
 		if(affectableStats.getStat(CharStats.DEXTERITY)>25)affectableStats.setStat(CharStats.DEXTERITY,25);

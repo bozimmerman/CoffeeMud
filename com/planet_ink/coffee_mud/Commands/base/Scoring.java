@@ -164,14 +164,39 @@ public class Scoring
 
 		StringBuffer msg=new StringBuffer("");
 
-		msg.append("You are ^H"+mob.name()+"^? the level ^!"+mob.envStats().level()+" "+mob.charStats().getMyClass().name()+"^?.\n\r");
+		String levelStr=null;
+		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass().ID());
+		if(classLevel>=(mob.envStats().level()-1))
+			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
+		else
+			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
+		msg.append("You are ^H"+mob.name()+"^? the "+levelStr+"^?.\n\r");
+		if(classLevel<(mob.envStats().level()-1))
+		{
+			msg.append("You also have levels in: ");
+			StringBuffer classList=new StringBuffer("");
+			for(int c=0;c<mob.charStats().numClasses()-1;c++)
+			{
+				CharClass C=mob.charStats().getMyClass(c);
+				if(C!=mob.charStats().getCurrentClass())
+				{
+					if(classList.length()>0)
+						if(c==mob.charStats().numClasses()-3)
+							classList.append(", and");
+						else
+							classList.append(",");
+					classList.append(C.name()+" ("+mob.charStats().getClassLevel(C.ID())+") ");
+				}
+			}
+			msg.append(classList.toString()+".\n\r");
+		}
 		msg.append("You are a ^!"+mob.charStats().genderName()+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getLeigeID().length()>0)
 			msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");
-		msg.append("\n\rYour stats are: \n\r^!"+mob.charStats().getStats(mob.charStats().getMyClass().maxStat())+"^?\n\r");
+		msg.append("\n\rYour stats are: \n\r^!"+mob.charStats().getStats(mob.charStats().getCurrentClass().maxStat())+"^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? movement.\n\r");
@@ -373,7 +398,7 @@ public class Scoring
 		for(int a=0;a<able.numAbilities();a++)
 		{
 			Ability thisAbility=able.fetchAbility(a);
-			int level=thisAbility.qualifyingLevel(able);
+			int level=CMAble.qualifyingLevel(able,thisAbility);
 			if(level<0) level=able.envStats().level();
 			if((thisAbility!=null)
 			&&(level>highestLevel)
@@ -388,7 +413,7 @@ public class Scoring
 			for(int a=0;a<able.numAbilities();a++)
 			{
 				Ability thisAbility=able.fetchAbility(a);
-				int level=thisAbility.qualifyingLevel(able);
+				int level=CMAble.qualifyingLevel(able,thisAbility);
 				if(level<0) level=able.envStats().level();
 				if((thisAbility!=null)
 				&&(level==l)
@@ -429,15 +454,14 @@ public class Scoring
 	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask, String prefix)
 	{
 		int highestLevel=0;
-		int lowestLevel=able.envStats().level()+1;
 		StringBuffer msg=new StringBuffer("");
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-			int level=thisAbility.qualifyingLevel(able);
-			if((thisAbility.qualifiesByLevel(able))
+			int level=CMAble.qualifyingLevel(able,thisAbility);
+			if((CMAble.qualifiesByLevel(able,thisAbility))
 			&&(level>highestLevel)
-			&&(level<lowestLevel)
+			&&(level<(CMAble.qualifyingClassLevel(able,thisAbility)+1))
 			&&(able.fetchAbility(thisAbility.ID())==null)
 			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				highestLevel=level;
@@ -449,8 +473,8 @@ public class Scoring
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-				if((thisAbility.qualifiesByLevel(able))
-				   &&(thisAbility.qualifyingLevel(able)==l)
+				if((CMAble.qualifiesByLevel(able,thisAbility))
+				   &&(CMAble.qualifyingLevel(able,thisAbility)==l)
 				   &&(able.fetchAbility(thisAbility.ID())==null)
 				   &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{

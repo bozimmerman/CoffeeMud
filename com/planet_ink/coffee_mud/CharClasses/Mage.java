@@ -9,6 +9,7 @@ public class Mage extends StdCharClass
 {
 	public String ID(){return "Mage";}
 	public String name(){return "Mage";}
+	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 4;}
 	public int getBonusManaLevel(){return 20;}
@@ -275,60 +276,58 @@ public class Mage extends StdCharClass
 		return true;
 	}
 
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		super.startCharacter(mob, isBorrowedClass, verifyOnly);
-
-		if(!verifyOnly)
+		super.grantAbilities(mob,isBorrowedClass);
+		int numTotal=0;
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			int numTotal=0;
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((CMAble.qualifyingLevel(mob,A)>0)
+			&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(ID()))
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+				numTotal++;
+		}
+		Hashtable given=new Hashtable();
+		int level=mob.charStats().getClassLevel(ID());
+		int numSpells=3;
+		if(level<8)
+			numSpells=3;
+		else
+		if(level<19)
+			numSpells=2;
+		else
+			numSpells=1;
+		int numLevel=0;
+		while(numLevel<numSpells)
+		{
+			int randSpell=(int)Math.round(Math.random()*numTotal);
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((A.qualifyingLevel(mob)>0)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-					numTotal++;
-			}
-			Hashtable given=new Hashtable();
-			for(int level=2;level<26;level++)
-			{
-				int numSpells=3;
-				if(level<8)
-					numSpells=3;
-				else
-				if(level<19)
-					numSpells=2;
-				else
-					numSpells=1;
-				int numLevel=0;
-				while(numLevel<numSpells)
+				if((CMAble.qualifyingLevel(mob,A)>0)
+				&&(CMAble.qualifyingLevel(mob,A)==mob.charStats().getClassLevel(ID()))
+				&&(!CMAble.getDefaultGain(ID(),A.ID()))
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
-					int randSpell=(int)Math.round(Math.random()*numTotal);
-					for(int a=0;a<CMClass.abilities.size();a++)
+					if(randSpell==0)
 					{
-						Ability A=(Ability)CMClass.abilities.elementAt(a);
-						if((A.qualifyingLevel(mob)>0)
-						&&(!CMAble.getDefaultGain(ID(),A.ID()))
-						&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+						if((CMAble.qualifyingLevel(mob,A)==level)
+						&&(given.get(A.ID())==null))
 						{
-							if(randSpell==0)
-							{
-								if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
-								{
-									giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
-									given.put(A.ID(),A);
-									numLevel++;
-								}
-								break;
-							}
-							else
-								randSpell--;
+							giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+							given.put(A.ID(),A);
+							numLevel++;
 						}
+						break;
 					}
+					else
+						randSpell--;
 				}
 			}
 		}
 	}
-
+	
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");

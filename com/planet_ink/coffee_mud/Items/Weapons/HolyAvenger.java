@@ -49,7 +49,7 @@ public class HolyAvenger extends TwoHandedSword
 		case Affect.TYP_WEAR:
 		case Affect.TYP_WIELD:
 		case Affect.TYP_GET:
-			if((!affect.source().charStats().getMyClass().ID().equals("Paladin"))
+			if((!affect.source().charStats().getCurrentClass().ID().equals("Paladin"))
 			||(affect.source().getAlignment()<650))
 			{
 				remove();

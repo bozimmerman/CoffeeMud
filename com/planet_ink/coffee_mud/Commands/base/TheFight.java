@@ -202,14 +202,14 @@ public class TheFight
 		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
 		
 		Hashtable beneficiaries=new Hashtable();
-		if((target.charStats()!=null)&&(target.charStats().getMyClass()!=null)&&(source!=null))
-			beneficiaries=target.charStats().getMyClass().dispenseExperience(source,target);
+		if((target.charStats()!=null)&&(source!=null))
+			beneficiaries=target.charStats().getCurrentClass().dispenseExperience(source,target);
 		
 		if(target.soulMate()==null)
 		{
 			int expLost=100*target.envStats().level();
 			target.tell("^F^*You lose "+expLost+" experience points.^?^.");
-			target.charStats().getMyClass().loseExperience(target,expLost);
+			target.charStats().getCurrentClass().loseExperience(target,expLost);
 		}
 		
 		int deadMoney=target.getMoney();

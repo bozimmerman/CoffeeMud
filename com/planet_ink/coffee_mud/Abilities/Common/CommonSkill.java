@@ -356,7 +356,7 @@ public class CommonSkill extends StdAbility
 			return false;
 
 		int manaConsumed=25;
-		int diff=mob.envStats().level()-qualifyingLevel(mob);
+		int diff=mob.envStats().level()-CMAble.qualifyingLevel(mob,this);
 		if(diff>0)
 		switch(diff)
 		{

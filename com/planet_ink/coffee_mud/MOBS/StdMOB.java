@@ -234,10 +234,8 @@ public class StdMOB implements MOB
 		if(riding()!=null) riding().affectEnvStats(this,envStats);
 		if(charStats!=null)
 		{
-			if(charStats().getMyClass()!=null)
-				charStats().getMyClass().affectEnvStats(this,envStats);
-			if(charStats().getMyRace()!=null)
-				charStats().getMyRace().affectEnvStats(this,envStats);
+			charStats().getCurrentClass().affectEnvStats(this,envStats);
+			charStats().getMyRace().affectEnvStats(this,envStats);
 		}
 		for(int i=0;i<inventorySize();i++)
 		{
@@ -301,10 +299,8 @@ public class StdMOB implements MOB
 		}
 		if(location()!=null)
 			location().affectCharStats(this,charStats);
-		if(charStats.getMyClass()!=null)
-			charStats.getMyClass().affectCharStats(this,charStats);
-		if(charStats.getMyRace()!=null)
-			charStats.getMyRace().affectCharStats(this,charStats);
+		charStats.getCurrentClass().affectCharStats(this,charStats);
+		charStats.getMyRace().affectCharStats(this,charStats);
 	}
 	public void setBaseCharStats(CharStats newBaseCharStats)
 	{
@@ -824,12 +820,10 @@ public class StdMOB implements MOB
 		
 		if(charStats!=null)
 		{
-			if(charStats().getMyClass()!=null)
-				if(!charStats().getMyClass().okAffect(this,affect))
-					return false;
-			if(charStats().getMyRace()!=null)
-				if(!charStats().getMyRace().okAffect(this, affect))
-					return false;
+			if(!charStats().getCurrentClass().okAffect(this,affect))
+				return false;
+			if(!charStats().getMyRace().okAffect(this, affect))
+				return false;
 		}
 
 		for(int i=0;i<numAffects();i++)
@@ -1277,10 +1271,8 @@ public class StdMOB implements MOB
 		
 		if(charStats!=null)
 		{
-			if(charStats().getMyClass()!=null)
-				charStats().getMyClass().affect(this,affect);
-			if(charStats().getMyRace()!=null)
-				charStats().getMyRace().affect(this,affect);
+			charStats().getCurrentClass().affect(this,affect);
+			charStats().getMyRace().affect(this,affect);
 		}
 
 		for(int b=0;b<numBehaviors();b++)
@@ -1325,7 +1317,15 @@ public class StdMOB implements MOB
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
-						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
+					{
+						String levelStr=null;
+						int classLevel=charStats().getClassLevel(charStats().getCurrentClass().ID());
+						if(classLevel>=(envStats().level()-1))
+							levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
+						else
+							levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();
+						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a "+levelStr+".\n\r");
+					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
@@ -1467,7 +1467,15 @@ public class StdMOB implements MOB
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
-					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
+				{
+					String levelStr=null;
+					int classLevel=charStats().getClassLevel(charStats().getCurrentClass().ID());
+					if(classLevel>=(envStats().level()-1))
+						levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
+					else
+						levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();
+					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a "+levelStr+".\n\r");
+				}
 				if(envStats().height()>0)
 					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 				myDescription.append(healthText()+"\n\r\n\r");
@@ -1689,8 +1697,7 @@ public class StdMOB implements MOB
 	public boolean isASysOp(Room of)
 	{
 		if(baseCharStats()==null) return false;
-		if(baseCharStats().getMyClass()==null) return false;
-		if(this.baseCharStats().getMyClass().ID().equals("Archon"))
+		if(baseCharStats().getClassLevel("Archon")>=0)
 			return true;
 		if(of==null) return false;
 		if(of.getArea()==null) return false;

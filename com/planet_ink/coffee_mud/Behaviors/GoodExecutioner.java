@@ -26,12 +26,11 @@ public class GoodExecutioner  extends StdBehavior
 		MOB observer=(MOB)affecting;
 		// base 90% chance not to be executed
 		if(((source.getAlignment()<350)&&(source.isMonster()))
-		||((source.baseCharStats().getMyClass()!=null)
-		   &&(source.baseCharStats().getMyClass().name().equalsIgnoreCase("Thief"))
+		||((source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 		   &&(source.isMonster())))
 		{
 			String reason="EVIL";
-			if(source.baseCharStats().getMyClass().name().equalsIgnoreCase("Thief"))
+			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 				reason="A THIEF";
 			boolean yep=Aggressive.startFight(observer,source,true);
 			if(yep)	ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);

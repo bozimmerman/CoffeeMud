@@ -48,7 +48,8 @@ public class DrowPriestess extends DrowElf
 		baseCharStats().setStat(CharStats.DEXTERITY,15 + Dice.roll(1,6,0));
 		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
 		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
-		baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
+		baseCharStats().setCurrentClass("Cleric");
+		baseCharStats().setClassLevel("Cleric",baseEnvStats().level());
         baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

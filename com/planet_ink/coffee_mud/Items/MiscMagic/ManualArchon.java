@@ -54,15 +54,14 @@ public class ManualArchon extends StdItem implements MiscMagic
 						mob.baseCharStats().setStat(CharStats.CHARISMA,25);
 						mob.recoverCharStats();
 						while(mob.envStats().level()<=30)
-							mob.charStats().getMyClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
-
-						mob.baseCharStats().setMyClass(newClass);
+							mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
+						mob.baseCharStats().setCurrentClass(newClass.ID());
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
 						mob.resetToMaxState();
-						mob.charStats().getMyClass().startCharacter(mob,true,false);
-						mob.charStats().getMyClass().outfit(mob);
+						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
+						mob.charStats().getCurrentClass().outfit(mob);
 						mob.setSession(session);
 						ExternalPlay.DBUpdateMOB(mob);
 					}

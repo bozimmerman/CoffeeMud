@@ -32,7 +32,7 @@ public class Aggressive extends StdBehavior
 				Ability A=monster.fetchAbility("Thief_BackStab");
 				if(A!=null)
 				{
-					A.setProfficiency(Dice.roll(1,50,(mob.baseEnvStats().level()-A.qualifyingLevel(mob))*15));
+					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 					A.invoke(monster,mob,false);
 				}
 			}

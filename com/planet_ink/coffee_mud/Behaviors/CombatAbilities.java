@@ -23,13 +23,13 @@ public class CombatAbilities extends StdBehavior
 			if(A!=null)
 				oldAbilities.addElement(A);
 		}
-		mob.charStats().getMyClass().startCharacter(mob,true,false);
+		mob.charStats().getCurrentClass().startCharacter(mob,true,false);
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability newOne=mob.fetchAbility(a);
 			if((newOne!=null)
 			&&(!oldAbilities.contains(newOne))
-			&&(newOne.qualifyingLevel(mob)>mob.baseEnvStats().level()))
+			&&(!CMAble.qualifiesByLevel(mob,newOne)))
 			{
 				mob.delAbility(newOne);
 				mob.delAffect(mob.fetchAffect(newOne.ID()));

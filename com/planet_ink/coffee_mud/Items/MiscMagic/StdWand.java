@@ -29,10 +29,10 @@ public class StdWand extends StdItem implements Wand
 	public boolean useTheWand(Ability A, MOB mob)
 	{
 		int manaRequired=5;
-		int q=A.qualifyingLevel(mob);
+		int q=CMAble.qualifyingLevel(mob,A);
 		if(q>0)
 		{
-			if(q<mob.envStats().level())
+			if(q<CMAble.qualifyingClassLevel(mob,A))
 				manaRequired=0;
 			else
 				manaRequired=5;

@@ -9,6 +9,7 @@ public class Druid extends StdCharClass
 {
 	public String ID(){return "Druid";}
 	public String name(){return "Druid";}
+	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 25;}
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusManaLevel(){return 15;}

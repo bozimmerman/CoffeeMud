@@ -19,9 +19,10 @@ public class Druidness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getMyClass().ID().equals("Druid"))
+		if(!mob.baseCharStats().getCurrentClass().ID().equals("Druid"))
 		{
-			mob.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
+			mob.baseCharStats().setCurrentClass("Druid");
+			mob.baseCharStats().setClassLevel("Druid",mob.envStats().level());
 			mob.recoverCharStats();
 		}
 		// now equip character...

@@ -53,7 +53,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 							{
 								CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
 								if(thisC==null) thisC=C;
-								if((lastC!=null)&&(thisC==mob.charStats().getMyClass()))
+								if((lastC!=null)&&(thisC==mob.charStats().getCurrentClass()))
 								{
 									thisC=C;
 									break;
@@ -62,7 +62,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 							}
 							if((thisC!=null)&&(!(thisC.ID().equals("Archon"))))
 							{
-								mob.charStats().setMyClass(thisC);
+								mob.charStats().setCurrentClass(thisC.ID());
 								mob.tell("You are now a "+thisC.name()+".");
 								mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
 							}

@@ -201,12 +201,17 @@ public class CMClass extends ClassLoader
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
-	public static Ability findAbility(String calledThis, String charClassName)
+	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
 		Vector ables=new Vector();
-		for(int a=0;a<abilities.size();a++)
-			if(CMAble.getQualifyingLevel(charClassName,((Ability)abilities.elementAt(a)).ID())>=0)
-				ables.addElement(abilities.elementAt(a));
+		for(int c=0;c<charStats.numClasses();c++)
+		{
+			CharClass C=charStats.getMyClass(c);
+			for(int a=0;a<abilities.size();a++)
+				if(CMAble.getQualifyingLevel(C.ID(),((Ability)abilities.elementAt(a)).ID())>=0)
+					if(!ables.contains(abilities.elementAt(a)))
+						ables.addElement(abilities.elementAt(a));
+		}
 		Ability A=(Ability)CoffeeUtensils.fetchEnvironmental(ables,calledThis,true);
 		if(A==null)
 			A=(Ability)CoffeeUtensils.fetchEnvironmental(ables,calledThis,false);

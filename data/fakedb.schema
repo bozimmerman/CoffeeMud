@@ -17,7 +17,7 @@ CMWISD integer NULL
 CMINTE integer NULL
 CMCHAR integer NULL
 CMHITP integer NULL
-CMLEVL integer NULL
+CMLEVL string NULL
 CMMANA integer NULL
 CMMOVE integer NULL
 CMDESC string NULL
