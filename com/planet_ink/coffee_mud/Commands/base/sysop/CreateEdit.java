@@ -169,14 +169,14 @@ public class CreateEdit
 					ExternalPlay.DBUpdateFollowers(session.mob());
 				}
 			}
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");
 		}
 		else
 		if(commandType.equals("ITEMS"))
 		{
 			rooms.clearDebriAndRestart(mob.location(),1);
 			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		if(commandType.equals("ROOM"))
@@ -190,7 +190,7 @@ public class CreateEdit
 		{
 			rooms.clearDebriAndRestart(mob.location(),2);
 			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		{

@@ -48,7 +48,7 @@ public class Spell_Darkness extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.show(invoker, null, Affect.MSG_OK_VISUAL, "The darkness starts to fade.");
+		room.showHappens(Affect.MSG_OK_VISUAL, "The darkness starts to fade.");
 		super.unInvoke();
 	}
 
@@ -93,6 +93,7 @@ public class Spell_Darkness extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

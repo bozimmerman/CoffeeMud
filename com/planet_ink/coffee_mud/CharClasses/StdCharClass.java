@@ -205,7 +205,7 @@ public class StdCharClass implements CharClass
 
 		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".^N\n\r");
 
-		int newHitPointGain=minHitPointsPerLevel+(int)Math.floor(Math.random()*(maxHitPointsPerLevel-minHitPointsPerLevel))+minHitPointsPerLevel;
+		int newHitPointGain=minHitPointsPerLevel+(int)Math.floor(Math.random()*(maxHitPointsPerLevel-minHitPointsPerLevel));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
 		if(newHitPointGain<=0) newHitPointGain=1;
 		newHitPointGain=newHitPointGain*adjuster;
@@ -214,7 +214,7 @@ public class StdCharClass implements CharClass
 		theNews.append("^BYou have gained ^H"+newHitPointGain+"^B hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*12);
+		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*6);
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -246,12 +246,12 @@ public class StdCharClass implements CharClass
 		mob.setAlignment(500);
 		mob.baseEnvStats().setLevel(1);
 		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
-		mob.baseCharStats().setStat(CharStats.STRENGTH,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.WISDOM,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.CHARISMA,(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
+		mob.baseCharStats().setStat(CharStats.WISDOM,10);
+		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,10);
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,11);
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
+		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
 		mob.baseCharStats().setMyClass(this);
 		mob.baseEnvStats().setArmor(50);
 		mob.baseEnvStats().setLevel(1);
@@ -384,7 +384,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMove(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*12)));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*6)));
 	}
 
 	public boolean canAdvance(MOB mob, int abilityCode)

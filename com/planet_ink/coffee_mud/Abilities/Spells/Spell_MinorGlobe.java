@@ -65,6 +65,7 @@ public class Spell_MinorGlobe extends Spell
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&(((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 			||((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 		&&(!mob.amDead())
 		&&(affect.tool().envStats().level()<=8)

@@ -904,8 +904,8 @@ public class Import
 			Behavior behavior=CMClass.getBehavior("Mobile");
 			if(Util.isSet(actFlag,5))
 				behavior=CMClass.getBehavior("MobileAggressive");
-			if(!Util.isSet(actFlag,6))
-				behavior.setParms("WANDER");
+			//if(!Util.isSet(actFlag,6))
+			//	behavior.setParms("WANDER");
 			if(!Util.isSet(actFlag,1))
 				M.addBehavior(behavior);
 			if(Util.isSet(actFlag,2))

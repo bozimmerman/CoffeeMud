@@ -33,12 +33,12 @@ public class SysOpSkills
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.GENDER,(int)'M');
-		mob.baseCharStats().setStat(CharStats.STRENGTH,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.WISDOM,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setStat(CharStats.CHARISMA,(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
+		mob.baseCharStats().setStat(CharStats.WISDOM,11);
+		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,10);
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,11);
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
+		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
 		mob.baseCharStats().setMyClass(C);
 		mob.baseEnvStats().setArmor(50);
 		mob.baseEnvStats().setLevel(1);

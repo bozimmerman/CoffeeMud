@@ -25,6 +25,7 @@ public class StdRoom
 	protected Vector inhabitants=new Vector();
 	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
 	protected int domainCondition=Room.CONDITION_NORMAL;
+	static protected MOB everywhereMOB=null;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 	
 	// base move points and thirst points per round
@@ -697,6 +698,12 @@ public class StdRoom
 		reallySend(source,msg);
 	}
 
+	public void showHappens(int allCode, String allMessage)
+	{
+		if(everywhereMOB==null) everywhereMOB=CMClass.getMOB("StdMOB");
+		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
+		send(everywhereMOB,msg);
+	}
 	public void show(MOB source,
 					 Environmental target,
 					 int allCode,

@@ -34,7 +34,7 @@ public class Chant_SummonWater extends Chant
 			return;
 		if(littleSpring==null)
 			return;
-		SpringLocation.show(invoker,null,Affect.MSG_OK_VISUAL,"The little spring dries up.");
+		SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
 		Item spring=littleSpring; // protects against uninvoke loops!
 		littleSpring=null;
@@ -78,7 +78,7 @@ public class Chant_SummonWater extends Chant
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,0);

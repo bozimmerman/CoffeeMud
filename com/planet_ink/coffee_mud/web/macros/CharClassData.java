@@ -54,7 +54,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("MANA"))
 					str.append("100 plus ((Intelligence/18)*"+C.getBonusManaLevel()+") per level after first, ");
 				if(parms.containsKey("MOVEMENT"))
-					str.append("100 plus ((Strength/9)*12) per level after first, ");
+					str.append("100 plus ((Strength/9)*6) per level after first, ");
 				StringBuffer preReqName=new StringBuffer(CharStats.TRAITS[C.getAttackAttribute()].toLowerCase());
 				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))

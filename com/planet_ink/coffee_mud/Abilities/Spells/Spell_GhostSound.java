@@ -48,46 +48,46 @@ public class Spell_GhostSound extends Spell
 		&&(affected instanceof Room))
 		switch(Dice.roll(1,14,0))
 		{
-		case 1:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 1:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear something coming up behind you.");
 				break;
-		case 2:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 2:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear somebody screaming in the distance.");
 				break;
-		case 3:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 3:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear the snarl of a large ferocious beast.");
 				break;
-		case 4:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 4:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear complete silence.");
 				break;
-		case 5:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 5:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"CLANK! Someone just dropped their sword.");
 				break;
-		case 6:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 6:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear a bird singing.");
 				break;
-		case 7:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 7:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear a cat dying.");
 				break;
-		case 8:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 8:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear some people talking.");
 				break;
-		case 9:	((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 9:	((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear singing.");
 				break;
-		case 10:((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 10:((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear a cow mooing.");
 				break;
-		case 11:((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 11:((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear your shadow.");
 				break;
-		case 12:((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 12:((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear someone trying to sneak by you.");
 				break;
-		case 13:((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 13:((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear an annoying beeping sound.");
 				break;
-		case 14:((Room)affected).show(invoker,null,Affect.MSG_NOISE,
+		case 14:((Room)affected).showHappens(Affect.MSG_NOISE,
 				"You hear your heart beating in your chest.");
 				break;
 		}

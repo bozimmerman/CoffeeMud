@@ -89,7 +89,7 @@ public class Spell_WallOfDarkness extends Spell
 		&&(theWall.owner() instanceof Room)
 		&&(((Room)theWall.owner()).isContent(theWall)))
 		{
-			((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The wall of darkness fades.");
+			((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of darkness fades.");
 			Item wall=theWall;
 			theWall=null;
 			wall.destroyThis();

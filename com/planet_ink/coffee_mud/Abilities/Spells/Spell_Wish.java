@@ -189,7 +189,7 @@ public class Spell_Wish extends Spell
 					newItem.setContainer(null);
 					newItem.wearAt(0);
 					mob.location().addItemRefuse(newItem);
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+					mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
 					Log.sysOut("Wish",mob.ID()+" wished for item "+newItem.ID()+".");
 				}

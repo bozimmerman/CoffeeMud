@@ -49,7 +49,7 @@ public class Spell_Silence extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.show(invoker, null, Affect.MSG_OK_ACTION, "The sounds here begin to return.");
+		room.showHappens(Affect.MSG_OK_ACTION, "The sounds here begin to return.");
 		super.unInvoke();
 	}
 

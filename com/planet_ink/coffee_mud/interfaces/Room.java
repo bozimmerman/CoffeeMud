@@ -66,6 +66,7 @@ public interface Room extends Environmental
 					 Environmental target,
 					 int allCode,
 					 String allMessage);
+	public void showHappens(int allCode, String allMessage);
 	public void showOthers(MOB source,
 						   Environmental target,
 						   int allCode,

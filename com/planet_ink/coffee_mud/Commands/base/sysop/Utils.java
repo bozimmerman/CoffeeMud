@@ -58,7 +58,7 @@ public class Utils
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+			mob.location().show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 			Log.sysOut("Mobs",mob.ID()+" created mob "+newMOB.ID()+".");
 		}
 		else
@@ -68,7 +68,7 @@ public class Utils
 			newItem.setContainer(null);
 			newItem.wearAt(0);
 			mob.location().addItem(newItem);
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 			mob.location().recoverRoomStats();
 			Log.sysOut("Items",mob.ID()+" created item "+newItem.ID()+".");
 		}

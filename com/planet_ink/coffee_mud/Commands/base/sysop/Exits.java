@@ -60,7 +60,7 @@ public class Exits
 		mob.location().rawExits()[direction]=thisExit;
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
 		ExternalPlay.DBUpdateExits(mob.location());
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
@@ -181,7 +181,7 @@ public class Exits
 		ExternalPlay.DBUpdateExits(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 		Log.sysOut("Exits",mob.location().ID()+" exits destroyed by "+mob.ID()+".");
 	}
 }

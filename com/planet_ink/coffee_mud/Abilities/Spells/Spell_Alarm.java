@@ -60,7 +60,7 @@ public class Spell_Alarm extends Spell
 
 		if(affect.amITarget(affected))
 		{
-			myRoomContainer.show(invoker,null,Affect.MSG_NOISE,"A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM "+affected.name().toUpperCase()+"!!!");
+			myRoomContainer.showHappens(Affect.MSG_NOISE,"A HORRENDOUS ALARM GOES OFF, WHICH SEEMS TO BE COMING FROM "+affected.name().toUpperCase()+"!!!");
 			invoker.tell("The alarm on your "+affected.name()+" has gone off.");
 			unInvoke();
 		}

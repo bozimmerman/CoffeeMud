@@ -41,13 +41,13 @@ public class Spell_Portal extends Spell
 	{
 		if(newRoom!=null)
 		{
-			newRoom.show(invoker,null,Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+			newRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
 			newRoom.rawDoors()[Directions.GATE]=null;
 			newRoom.rawExits()[Directions.GATE]=null;
 		}
 		if(oldRoom!=null)
 		{
-			oldRoom.showOthers(invoker,null,Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+			oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
 			oldRoom.rawDoors()[Directions.GATE]=null;
 			oldRoom.rawExits()[Directions.GATE]=null;
 		}

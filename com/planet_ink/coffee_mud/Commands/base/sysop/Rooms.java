@@ -91,7 +91,7 @@ public class Rooms
 
 		exitifyNewPortal(mob,thisRoom,direction);
 
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
 		Log.sysOut("Rooms",mob.ID()+" created room "+thisRoom.ID()+".");
 	}
 
@@ -129,7 +129,7 @@ public class Rooms
 
 		exitifyNewPortal(mob,thisRoom,direction);
 
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
 		Log.sysOut("Rooms",mob.ID()+" linked to room "+thisRoom.ID()+".");
 	}
 
@@ -293,7 +293,7 @@ public class Rooms
 		}
 		else
 			myArea.setName(oldName);
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		ExternalPlay.DBUpdateArea(myArea);
 	}
 	public void modify(MOB mob, Vector commands)
@@ -314,7 +314,7 @@ public class Rooms
 			new Generic().genBehaviors(mob,mob.location());
 			new Generic().genAffects(mob,mob.location());
 			ExternalPlay.DBUpdateRoom(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 			return;
 		}
 		if(commands.size()<3) { flunkCmd1(mob); return;}
@@ -371,7 +371,7 @@ public class Rooms
 							}
 						}
 					}
-					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"This entire area twitches.\n\r");
+					mob.location().showHappens(Affect.MSG_OK_ACTION,"This entire area twitches.\n\r");
 				}
 				else
 				{
@@ -383,7 +383,7 @@ public class Rooms
 			{
 				mob.location().setArea(A);
 				ExternalPlay.DBUpdateRoom(mob.location());
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"This area twitches.\n\r");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
 		}
 		else
@@ -392,7 +392,7 @@ public class Rooms
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDisplayText(restStr);
 			ExternalPlay.DBUpdateRoom(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
 		if(command.equalsIgnoreCase("DESCRIPTION"))
@@ -400,7 +400,7 @@ public class Rooms
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDescription(restStr);
 			ExternalPlay.DBUpdateRoom(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
 		if(command.equalsIgnoreCase("AFFECTS"))
@@ -408,7 +408,7 @@ public class Rooms
 			new Generic().genAffects(mob,mob.location());
 			mob.location().recoverEnvStats();
 			ExternalPlay.DBUpdateRoom(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
 		if(command.equalsIgnoreCase("BEHAVIORS"))
@@ -416,7 +416,7 @@ public class Rooms
 			new Generic().genBehaviors(mob,mob.location());
 			mob.location().recoverEnvStats();
 			ExternalPlay.DBUpdateRoom(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
 		else
 		{
@@ -556,7 +556,7 @@ public class Rooms
 			mob.location().rawDoors()[direction]=null;
 			mob.location().rawExits()[direction]=null;
 			ExternalPlay.DBUpdateExits(mob.location());
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 			Log.sysOut("Rooms",mob.ID()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().ID()+".");
 		}
 	}
@@ -628,7 +628,7 @@ public class Rooms
 		obliterateArea(areaName);
 		if(confirmed)
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
 			Log.sysOut("Rooms",mob.ID()+" destroyed area "+areaName+".");
 		}
 	}

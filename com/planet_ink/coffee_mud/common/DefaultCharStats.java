@@ -99,8 +99,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public void reRoll()
 	{
-		double avg=0.0;
-		while((Math.floor(avg)!=AVG_VALUE)||(avg==0.0))
+		int avg=0;
+		while((avg!=MAX_STATS)||(avg==0))
 		{
 			setStat(STRENGTH,3+(int)Math.floor(Math.random()*16.0));
 			setStat(INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));
@@ -108,7 +108,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 			setStat(WISDOM,3+(int)Math.floor(Math.random()*16.0));
 			setStat(CONSTITUTION,3+(int)Math.floor(Math.random()*16.0));
 			setStat(CHARISMA,3+(int)Math.floor(Math.random()*16.0));
-			avg=Util.div((getStat(STRENGTH)+getStat(INTELLIGENCE)+getStat(DEXTERITY)+getStat(WISDOM)+getStat(CONSTITUTION)+getStat(CHARISMA)),6.0);
+			avg=(getStat(STRENGTH)+getStat(INTELLIGENCE)+getStat(DEXTERITY)+getStat(WISDOM)+getStat(CONSTITUTION)+getStat(CHARISMA));
 		}
 	}
 	public StringBuffer getStats(int maxStat[])

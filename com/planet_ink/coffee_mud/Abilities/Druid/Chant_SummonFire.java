@@ -34,7 +34,7 @@ public class Chant_SummonFire extends Chant
 			return;
 		if(littleFire==null)
 			return;
-		FireLocation.show(invoker,null,Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
+		FireLocation.showHappens(Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
 		super.unInvoke();
 		Item fire=littleFire; // protects against uninvoke loops!
 		littleFire=null;
@@ -79,7 +79,7 @@ public class Chant_SummonFire extends Chant
 				I.addNonUninvokableAffect(B);
 
 				mob.location().addItem(I);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, a little magical campfire begins burning here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, a little magical campfire begins burning here.");
 				FireLocation=mob.location();
 				littleFire=I;
 				beneficialAffect(mob,I,0);

@@ -34,7 +34,7 @@ public class Spell_MagicMouth extends Spell
 
 	public void doMyThing()
 	{
-		myRoomContainer.show(invoker,null,Affect.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
+		myRoomContainer.showHappens(Affect.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
 		unInvoke();
 		return;
 	}

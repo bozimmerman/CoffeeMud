@@ -42,7 +42,7 @@ public class ROMPatrolman extends StdBehavior
 		{
 			Room room=(Room)V.elementAt(r);
 			if((room!=observer.location())&&(room.numPCInhabitants()>0))
-				room.show(observer,null,Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
+				room.showHappens(Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
 		}
  
 		Item weapon=observer.fetchWieldedItem();

@@ -134,7 +134,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");
 		if(mob.envStats().level()>15)
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The room fills with gas!");
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"The room fills with gas!");
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
 				MOB target=mob.location().fetchInhabitant(i);

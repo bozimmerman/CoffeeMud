@@ -1,7 +1,24 @@
-Golem (and other stuff in old thalos)
-(held)              : a two-handed sword
-(held)              : a two-handed sword
-(wield)             : a two-handed sword
-(wield)             : a two-handed sword
-
-cook fido meat doesn't work
+12/1/2002 12:06 AM  Error MrFlowers    studded leather is too good, +6, +12
+12/1/2002 12:10 AM  Error MrFlowers    dr for drink
+12/1/2002 12:17 AM  Error MrFlowers    door to underdark can be a pit!
+11/30/2002 1:22 PM  Error Stile        At A dark bend in the forest (SE of the city) there is a South: You see the dark path. but you can`t go south.
+11/30/2002 1:22 PM  Error MrFlowers    goodberry putting MY berries on the ground
+11/30/2002 1:23 PM  Error MrFlowers    items dropped at pit area are not disappearing!
+11/30/2002 1:23 PM  Error MrFlowers    do the $ thing
+11/30/2002 1:29 PM  Error MrFlowers    fireball and chain lightning
+java.lang.NullPointerException
+	at com.planet_ink.coffee_mud.system.MOBloader.vassals(MOBloader.java:253)
+	at com.planet_ink.coffee_mud.system.ExternalSystems.vassals(ExternalSystems.java:15)
+	at com.planet_ink.coffee_mud.common.ExternalPlay.vassals(ExternalPlay.java:288)
+	at com.planet_ink.coffee_mud.Commands.base.SocialProcessor.vassals(SocialProcessor.java:35)
+	at com.planet_ink.coffee_mud.Commands.base.CommandProcessor.doCommand(CommandProcessor.java:468)
+	at com.planet_ink.coffee_mud.Commands.base.ExternalCommands.doCommand(ExternalCommands.java:104)
+	at com.planet_ink.coffee_mud.common.ExternalPlay.doCommand(ExternalPlay.java:112)
+	at com.planet_ink.coffee_mud.system.TelnetSession.run(TelnetSession.java:1002)
+11/29/2002 5:41 PM  Error Stile        while around the smurfs, I saw this: Min=10, max=50 , chance=25, You hear a smurfy
+11/28/2002 11:53 PM Error Stile        Wine Cellar There are floorboards that you have to open, when you open, the down direction is not an option. Is this on purpose?
+11/28/2002 3:05 PM  Error ReScout      a garter snake tried to poison me... garter snakes are not poisonous. Why not make it a rattle snake?
+ItemMender not working!
+put coins as possible gold
+look at retire as leaving behind unclosed sessions
+Can't be given things while riding a horse

@@ -295,7 +295,7 @@ public class SysopSocials
 			}
 			Log.sysOut("SysopSocials",mob.ID()+" modified social "+soc2.Social_name+".");
 		}
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 	}
 
 	public void destroy(MOB mob, Vector commands)
@@ -333,10 +333,10 @@ public class SysopSocials
 				socials.soc.remove(soc2.Social_name);
 				socials.socialsList=null;
 				socials.save();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
 			}
 			else
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 			Log.sysOut("SysopSocials",mob.ID()+" destroyed social "+soc2.Social_name+".");
 		}
 

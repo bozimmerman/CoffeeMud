@@ -28,7 +28,8 @@ public interface CharStats extends Cloneable
 	
 	public final static int NUM_STATS=21;
 	
-	public final static double AVG_VALUE=10.0;
+	public final static int MAX_STATS=60;
+	
 	public int getStat(int statNum);
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);

@@ -104,7 +104,7 @@ public class Spell_FakeSpring extends Spell
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=W;
 				beneficialAffect(mob,W,0);

@@ -48,7 +48,7 @@ public class Spell_Mirage extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.show(invoker, null, Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
+		room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
 
@@ -106,7 +106,7 @@ public class Spell_Mirage extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The appearance of this place changes...");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");
 				beneficialAffect(mob,mob.location(),0);
 			}
 		}

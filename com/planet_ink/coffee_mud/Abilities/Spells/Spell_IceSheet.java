@@ -47,7 +47,7 @@ public class Spell_IceSheet extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.show(invoker, null, Affect.MSG_OK_VISUAL, "The ice sheet melts.");
+		room.showHappens(Affect.MSG_OK_VISUAL, "The ice sheet melts.");
 		super.unInvoke();
 	}
 

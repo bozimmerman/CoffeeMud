@@ -151,7 +151,7 @@ public class Movement
 		}
 		else
 		if(exit==null)
-			thisRoom.show(mob,null,Affect.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
+			thisRoom.showHappens(Affect.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
 		else
 		if((exit!=null)&&(!exit.okAffect(enterMsg)))
 			return false;

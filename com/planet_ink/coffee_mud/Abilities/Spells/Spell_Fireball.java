@@ -22,7 +22,7 @@ public class Spell_Fireball extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=1;
-		maxRange=3;
+		maxRange=5;
 
 		baseEnvStats().setLevel(7);
 
@@ -63,7 +63,7 @@ public class Spell_Fireball extends Spell
 				mob.location().send(mob,msg2);
 				invoker=mob;
                 int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0));
-				int damage = Dice.roll(numDice, 6, 10);
+				int damage = Dice.roll(numDice, 10, 10);
 				if((!msg.wasModified())||(msg2.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");

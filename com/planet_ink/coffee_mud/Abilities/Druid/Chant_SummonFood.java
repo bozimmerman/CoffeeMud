@@ -61,7 +61,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem);
 				}
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Some berries quickly begin to grow here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Some berries quickly begin to grow here.");
 				mob.location().recoverEnvStats();
 			}
 		}
