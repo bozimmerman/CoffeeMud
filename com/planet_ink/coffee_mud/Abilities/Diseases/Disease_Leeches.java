@@ -38,6 +38,8 @@ public class Disease_Leeches extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> <S-HAS-HAVE> leeches covering <S-HIM-HER>!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> cringe(s) from the leeches.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
+	protected int hp=Integer.MAX_VALUE;
+	protected String thename="";
 
 	public static Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -88,6 +90,13 @@ public class Disease_Leeches extends Disease
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		if(affected==null) return;
-		affectableState.setHitPoints(affected.curState().getHitPoints());
+		if(!affected.Name().equals(thename))
+		{
+		    hp=Integer.MAX_VALUE;
+		    thename=affected.Name();
+		}
+		if(affected.curState().getHitPoints()<hp) 
+		    hp=affected.curState().getHitPoints();
+		affectableState.setHitPoints(hp);
 	}
 }

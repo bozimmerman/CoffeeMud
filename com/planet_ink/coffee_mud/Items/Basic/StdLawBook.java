@@ -487,23 +487,35 @@ public class StdLawBook extends StdItem
 			else
 			if(s.equalsIgnoreCase("A"))
 			{
-				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal: ","");
+				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal (?)\n\r: ","");
+				if(s.equals("?"))
+				    mob.tell("Valid resources: "+Util.toStringList(EnvResource.RESOURCE_DESCS));
+				else
 				if(s.length()>0)
 				{
 				    s=s.toUpperCase();
-					String[] newValue=modifyLaw(A,B,theLaw,mob,null);
-					if(newValue!=null)
-					{
-						StringBuffer s2=new StringBuffer(s+";");
-						for(int i=0;i<newValue.length;i++)
+				    boolean resource=false;
+				    for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+				    {
+				        if(EnvResource.RESOURCE_DESCS[i].equals(s))
+				            resource=true;
+				    }
+				    if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
+				    {
+						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+						if(newValue!=null)
 						{
-							s2.append(newValue[i]);
-							if(i<(newValue.length-1))
-								s2.append(";");
+							StringBuffer s2=new StringBuffer(s+";");
+							for(int i=0;i<newValue.length;i++)
+							{
+								s2.append(newValue[i]);
+								if(i<(newValue.length-1))
+									s2.append(";");
+							}
+							changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
+							mob.tell("Added.");
 						}
-						changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
-						mob.tell("Added.");
-					}
+				    }
 				}
 			}
 			else
