@@ -9,7 +9,7 @@ public class Prayer_ProtEvil extends Prayer
 {
 	public String ID() { return "Prayer_ProtEvil"; }
 	public String name(){ return "Protection Evil";}
-	public String displayText(){ return "(Protection from evil)";}
+	public String displayText(){ return "(Protection from Evil)";}
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
