@@ -36,7 +36,7 @@ public class Grouping
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
 			&&(mob2.envStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
-				msg.append(showWho(mob2,true));
+				msg.append(showWhoShort(mob2));
 		}
 		if((mobName!=null)&&(msg.length()==0))
 			msg.append("That person doesn't appear to be online.\n\r");
@@ -71,7 +71,7 @@ public class Grouping
 			&&(!thisSession.killFlag())
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
 			&&(mob2.envStats().level()>0))
-				msg.append(showWho(mob2,true));
+				msg.append(showWhoShort(mob2));
 		}
 		if((mobName!=null)&&(msg.length()==0))
 			msg.append("That person doesn't appear to be online.\n\r");
@@ -99,7 +99,28 @@ public class Grouping
 		}
 	}
 	
-	public StringBuffer showWho(MOB who, boolean shortForm)
+	public StringBuffer showWhoLong(MOB who)
+	{
+		
+		StringBuffer msg=new StringBuffer("");
+		msg.append("[");
+		msg.append(Util.padRight(who.charStats().getMyRace().name(),7)+" ");
+		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass());
+		String levelStr=null;
+		if(classLevel>=who.envStats().level())
+			levelStr=""+who.envStats().level();
+		else
+			levelStr=classLevel+"/"+who.envStats().level();
+		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),7)+" ");
+		msg.append(Util.padRight(levelStr,5));
+		msg.append("] "+Util.padRight(who.name(),14));
+		msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
+		msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
+		msg.append(Util.padRightPreserve("mv("+Util.padRightPreserve(""+who.curState().getMovement(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
+		msg.append("\n\r");
+		return msg;
+	}
+	public StringBuffer showWhoShort(MOB who)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
@@ -113,12 +134,6 @@ public class Grouping
 		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),12)+" ");
 		msg.append(Util.padRight(levelStr,7));
 		msg.append("] "+Util.padRight(who.name(),15));
-		if(!shortForm)
-		{
-			msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
-			msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
-			msg.append(Util.padRightPreserve("mv("+Util.padRightPreserve(""+who.curState().getMovement(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
-		}
 		msg.append("\n\r");
 		return msg;
 	}
@@ -132,7 +147,7 @@ public class Grouping
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB follower=(MOB)e.nextElement();
-			msg.append(showWho(follower,false));
+			msg.append(showWhoLong(follower));
 		}
 		mob.tell(msg.toString());
 	}
