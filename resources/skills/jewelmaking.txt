@@ -1,10 +1,12 @@
 % Ring	1	20	1	50	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	PRECIOUS
 % Band	1	20	1	50	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	
+% Eye Glasses	1	20	1	20	GenArmor	EYES	0	0	
 % Wedding Band	1	20	1	150	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	
 % Earrings	1	20	1	20	GenArmor	EARS	0	0	PRECIOUS
 % Necklace	1	30	2	200	GenArmor	NECK	0	0	PRECIOUS
 % Bracelet	1	20	2	50	GenArmor	LEFT WRIST||RIGHT WRIST	0	0	PRECIOUS
 % Engagement Ring	1	50	1	150	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	PRECIOUS
 % Choker	1	20	2	50	GenArmor	NECK	0	0	
-% Crown	5	100	10	1500	GenArmor	HEAD	0	0	
-% Tierra	5	80	10	2000	GenArmor	HEAD	0	0	
+% Crown	5	100	10	150	GenArmor	HEAD	0	0	
+% Tierra	5	80	10	200	GenArmor	HEAD	0	0	
+% Monocle	5	20	1	20	GenArmor	EYES	0	0	

@@ -28,6 +28,47 @@ public class Spell_DetectMagic extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> eyes cease to sparkle.");
 	}
 
+	public void affect(Environmental myHost, Affect affect)
+	{
+		super.affect(myHost,affect);
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(affect.target()!=null)
+		&&(affect.amISource((MOB)affected))
+		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
+		{
+			String msg2=null;
+			for(int a=0;a<affect.target().numAffects();a++)
+			{
+				Ability A=affect.target().fetchAffect(a);
+				if((A!=null)
+				&&(!A.isAutoInvoked())
+				&&(A.displayText().length()>0)
+				&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
+				{
+					if(msg2==null)
+						msg2=affect.target().name()+" is affected by: "+A.name();
+					else
+						msg2+=" "+affect.target().name();
+				}
+			}
+			if((msg2==null)&&(Sense.isABonusItems(affect.target())))
+				msg2=affect.target()+" is enchanted";
+			if(msg2!=null)
+			{
+				FullMsg msg3=new FullMsg(affect.source(),affect.target(),this,
+										affect.MSG_OK_VISUAL,msg2+".",
+										affect.NO_EFFECT,null,
+										affect.NO_EFFECT,null);
+			
+				affect.addTrailerMsg(msg3);
+			}
+		}
+	}
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

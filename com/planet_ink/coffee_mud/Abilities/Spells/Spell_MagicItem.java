@@ -70,14 +70,15 @@ public class Spell_MagicItem extends Spell
 
 		if(!auto)mob.curState().setMana(0);
 
-		int experienceToLose=1000+(100*CMAble.lowestQualifyingLevel(wandThis.ID()));
-		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
-		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
+		int experienceToLose=1000;
 
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
+			experienceToLose+=(100*CMAble.lowestQualifyingLevel(wandThis.ID()));
+			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
+			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			setMiscText(wandThis.ID());
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly.^?");
 			if(mob.location().okAffect(mob,msg))
@@ -118,7 +119,11 @@ public class Spell_MagicItem extends Spell
 
 		}
 		else
+		{
+			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
+			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly, and looking very frustrated.");
+		}
 
 
 		// return whether it worked
