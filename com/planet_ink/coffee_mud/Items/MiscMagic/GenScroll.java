@@ -21,6 +21,7 @@ public class GenScroll extends GenItem implements Scroll
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
+		material=Item.PAPER;
 	}
 
 	public Environmental newInstance()

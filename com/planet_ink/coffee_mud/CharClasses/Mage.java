@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.common.*;
 public class Mage extends StdCharClass
 {
 	private static boolean abilitiesLoaded=false;
-	
 	public Mage()
 	{
 		super();
@@ -301,7 +300,9 @@ public class Mage extends StdCharClass
 					 ||(I.amWearingAt(Item.ON_ARMS))
 					 ||(I.amWearingAt(Item.ON_WAIST))
 					 ||(I.amWearingAt(Item.ON_HEAD)))
-						if((I instanceof Armor)&&(((Armor)I).material()!=Armor.CLOTH))
+						if((I instanceof Armor)
+						&&(I.material()!=Armor.CLOTH)
+						&&(I.material()!=Armor.PAPER))
 							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*4)
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");

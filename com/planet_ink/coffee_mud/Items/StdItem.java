@@ -973,24 +973,4 @@ public class StdItem implements Item
 
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
-	
-	public String materialDescription()
-	{
-		switch(material)
-		{
-		case CLOTH:
-			return "CLOTH";
-		case METAL:
-			return "METAL";
-		case LEATHER:
-			return "LEATHER";
-		case MITHRIL:
-			return "MITRIL";
-		case WOODEN:
-			return "WOODEN";
-		case GLASS:
-			return "GLASS";
-		}
-		return "";
-	}
 }

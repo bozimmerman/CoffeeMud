@@ -17,7 +17,6 @@ public class ItemMender extends StdBehavior
 	}
 	private int cost(Item item)
 	{
-		int total=100;
 		int cost=((100-item.usesRemaining())*2)+item.envStats().level();
 		if(Sense.isABonusItems(item))
 			cost+=100+(item.envStats().level()*2);

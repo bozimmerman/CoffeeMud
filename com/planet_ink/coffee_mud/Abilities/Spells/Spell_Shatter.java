@@ -81,14 +81,18 @@ public class Spell_Shatter extends Spell
 						damage=(int)Math.round(Util.div(damage,2.0));
 					switch(target.material())
 					{
+					case Item.PAPER:
 					case Item.CLOTH:
+					case Item.VEGETATION:
 					case Item.LEATHER:
+					case Item.FLESH:
 						damage=(int)Math.round(Util.div(damage,3.0));
 						break;
 					case Item.WOODEN:
 						damage=(int)Math.round(Util.div(damage,1.5));
 						break;
 					case Item.GLASS:
+					case Item.ROCK:
 						damage=(int)Math.round(Util.mul(damage,2.0));
 						break;
 					}
@@ -102,7 +106,6 @@ public class Spell_Shatter extends Spell
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						else													  
 							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
-						Environmental owner=target.myOwner();
 						target.remove();
 						target.destroyThis();
 						mob.location().recoverRoomStats();

@@ -50,25 +50,15 @@ public class Spell_Meld extends Spell
 			return true;
 		return false;
 	}
-	public int heiarchy(int materialCode)
-	{
-		switch(materialCode)
-		{
-		case Armor.CLOTH:
-			return 0;
-		case Armor.LEATHER:
-			return 1;
-		case Armor.WOODEN:
-			return 2;
-		case Armor.METAL:
-			return 3;
-		case Armor.MITHRIL:
-			return 4;
-		default:
-			return 5;
-		}
-	}
-
+	int[] heiarchy={Item.FLESH,
+					Item.PAPER,
+					Item.CLOTH,
+					Item.LEATHER,
+					Item.VEGETATION,
+					Item.WOODEN,
+					Item.METAL,
+					Item.ROCK,
+					Item.MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -185,7 +175,7 @@ public class Spell_Meld extends Spell
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
 					int material=((Armor)itemOne).material();
-					if(heiarchy(material)<heiarchy(((Armor)itemTwo).material()))
+					if(heiarchy[material]<heiarchy[((Armor)itemTwo).material()])
 						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();

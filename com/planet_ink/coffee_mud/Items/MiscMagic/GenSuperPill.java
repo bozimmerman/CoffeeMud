@@ -18,6 +18,7 @@ public class GenSuperPill extends GenPill
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
+		material=Item.VEGETATION;
 	}
 
 	public Environmental newInstance()

@@ -1855,7 +1855,7 @@ public class Import
 				I.setMaterial(Item.GLASS);
 			else
 			if(objectDescription.equalsIgnoreCase("clay"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(Item.ROCK);
 			else
 			if(objectDescription.equalsIgnoreCase("china"))
 				I.setMaterial(Item.GLASS);
@@ -1870,12 +1870,13 @@ public class Import
 				I.setMaterial(Item.GLASS);
 			else
 			if(objectDescription.equalsIgnoreCase("paper"))
-				I.setMaterial(Item.CLOTH);
+				I.setMaterial(Item.PAPER);
 			else
 				materialchange=false;
 
 			// correction for certain rings
-			if((I.material()==Item.CLOTH)&&(I.canBeWornAt(Armor.ON_LEFT_FINGER)))
+			if(((I.material()==Item.CLOTH)||(I.material()==Item.PAPER))
+			   &&(I.canBeWornAt(Armor.ON_LEFT_FINGER)))
 			{
 				I.setMaterial(Item.METAL);
 				materialchange=true;

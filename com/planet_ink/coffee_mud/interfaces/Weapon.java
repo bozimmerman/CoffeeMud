@@ -10,6 +10,15 @@ public interface Weapon extends Item
 	public final static int TYPE_BURNING=4;
 	public final static int TYPE_BURSTING=5;
 	public final static int TYPE_SHOOT=6;
+	public final static String[] typeDescription={
+	"NATURAL",
+	"SLASHING",
+	"PIERCING",
+	"BASHING",
+	"BURNING",
+	"BURSTING",
+	"SHOOTING"};
+
 
 	// weapon classifications
 	public final static int CLASS_AXE=0;
@@ -24,6 +33,20 @@ public interface Weapon extends Item
 	public final static int CLASS_DAGGER=9;
 	public final static int CLASS_STAFF=10;
 	public final static int CLASS_THROWN=11;
+	public final static String[] classifictionDescription={
+	"AXE",
+	"BLUNT",
+	"EDGED",
+	"FLAILED",
+	"HAMMER",
+	"KARATE",
+	"POLEARM",
+	"RANGED",
+	"SWORD",
+	"DAGGER",
+	"STAFF",
+	"THROWN"};
+	
 	
 	public int weaponType();
 	public int weaponClassification();
@@ -39,8 +62,6 @@ public interface Weapon extends Item
 	public void setAmmoCapacity(int amount);
 	
 
-	public String typeDescription();
-	public String classifictionDescription();
 	public String hitString(int damageAmount);
 	public String missString();
 }

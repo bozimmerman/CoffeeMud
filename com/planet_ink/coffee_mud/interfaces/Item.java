@@ -10,6 +10,23 @@ public interface Item extends Environmental
 	public final static int MITHRIL=3;
 	public final static int WOODEN=4;
 	public final static int GLASS=5;
+	public final static int VEGETATION=6;
+	public final static int FLESH=7;
+	public final static int PAPER=8;
+	public final static int ROCK=9;
+	
+	public final static String[] materialDescription={
+	"CLOTH",
+	"LEATHER",
+	"METAL",
+	"MITHRIL",
+	"WOODEN",
+	"GLASS",
+	"VEGETATION",
+	"FLESH",
+	"PAPER",
+	"ROCK"};
+	
 	
 	/** Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
@@ -75,6 +92,25 @@ public interface Item extends Environmental
 	public static final long ON_WAIST=8192;
 	public static final long ON_LEGS=16384;
 	
+	public static final String[] wornLocation={
+		"inventory",
+		"head",
+		"neck",
+		"torso",
+		"arms",
+		"hands",
+		"left wrist",
+		"right wrist",
+		"left finger",
+		"right finger",
+		"feet",
+		"held",
+		"wield",
+		"floating nearby",
+		"waist",
+		"legs",
+		"body"};
+	
 	/** If being worn, this code will show WHERE*/
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above
 	public boolean canBeWornAt(long wornCode);
@@ -89,7 +125,6 @@ public interface Item extends Environmental
 	public boolean rawLogicalAnd();
 	public void setRawLogicalAnd(boolean newAnd);
 	public boolean compareProperLocations(Item toThis);
-	public String materialDescription();
 	
 	public Environmental myOwner();
 	public void setOwner(Environmental E);

@@ -20,6 +20,7 @@ public class GenPotion extends GenWater implements Potion
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
+		material=Item.GLASS;
 	}
 
 

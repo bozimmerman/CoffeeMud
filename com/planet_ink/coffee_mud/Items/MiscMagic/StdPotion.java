@@ -19,6 +19,7 @@ public class StdPotion extends StdDrink implements Potion
 		description="An empty flask with strange residue.";
 		secretIdentity="What was once a powerful potion.";
 		baseGoldValue=200;
+		material=Item.GLASS;
 		recoverEnvStats();
 	}
 

@@ -947,7 +947,7 @@ public class Generic
 	void genWeaponType(MOB mob, Weapon E)
 		throws IOException
 	{
-		mob.tell("\n\rWeapon Attack Type: '"+E.typeDescription()+"'.");
+		mob.tell("\n\rWeapon Attack Type: '"+Weapon.typeDescription[E.weaponType()]+"'.");
 		boolean q=false;
 		String sel="NSPBFMR";
 		while(!q)
@@ -955,12 +955,8 @@ public class Generic
 			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
 			if(newType.equals("?"))
 			{
-				Weapon temp=(Weapon)E.newInstance();
 				for(int i=0;i<sel.length();i++)
-				{
-					temp.setWeaponType(i);
-					mob.tell(sel.charAt(i)+") "+temp.typeDescription());
-				}
+					mob.tell(sel.charAt(i)+") "+Weapon.typeDescription[i]);
 				q=false;
 			}
 			else
@@ -980,20 +976,16 @@ public class Generic
 	void genMaterialCode(MOB mob, Item E)
 		throws IOException
 	{
-		mob.tell("\n\rMaterial Type: '"+E.materialDescription()+"'.");
+		mob.tell("\n\rMaterial Type: '"+Item.materialDescription[E.material()]+"'.");
 		boolean q=false;
-		String sel="CLMIWG";
+		String sel="CLMIWGVFPR";
 		while(!q)
 		{
 			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
 			if(newType.equals("?"))
 			{
-				Item item=(Item)E.newInstance();
 				for(int i=0;i<sel.length();i++)
-				{
-					item.setMaterial(i);
-					mob.tell(sel.charAt(i)+") "+item.materialDescription());
-				}
+					mob.tell(sel.charAt(i)+") "+Item.materialDescription[i]);
 				q=false;
 			}
 			else
@@ -1060,7 +1052,7 @@ public class Generic
 	void genWeaponClassification(MOB mob, Weapon E)
 		throws IOException
 	{
-		mob.tell("\n\rWeapon Classification: '"+E.classifictionDescription()+"'.");
+		mob.tell("\n\rWeapon Classification: '"+Weapon.classifictionDescription[E.weaponClassification()]+"'.");
 		boolean q=false;
 		String sel=("ABEFHKPRSDTN");
 		while(!q)
@@ -1068,12 +1060,8 @@ public class Generic
 			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
 			if(newType.equals("?"))
 			{
-				Weapon temp=(Weapon)E.newInstance();
 				for(int i=0;i<sel.length();i++)
-				{
-					temp.setWeaponClassification(i);
-					mob.tell(sel.charAt(i)+") "+temp.classifictionDescription());
-				}
+					mob.tell(sel.charAt(i)+") "+Weapon.classifictionDescription[i]);
 				q=false;
 			}
 			else

@@ -277,45 +277,8 @@ public class Sense
 
 	}
 
-
 	public static String wornLocation(long wornCode)
 	{
-		switch((int)wornCode)
-		{
-		case (int)Item.INVENTORY:
-			return "inventory";
-		case (int)Item.ON_HEAD:
-			return "head";
-		case (int)Item.ON_NECK:
-			return "neck";
-		case (int)Item.ON_TORSO:
-			return "torso";
-		case (int)Item.ON_ARMS:
-			return "arms";
-		case (int)Item.ON_HANDS:
-			return "hands";
-		case (int)Item.ON_LEFT_WRIST:
-			return "right wrist";
-		case (int)Item.ON_RIGHT_WRIST:
-			return "left wrist";
-		case (int)Item.ON_LEFT_FINGER:
-			return "left finger";
-		case (int)Item.ON_RIGHT_FINGER:
-			return "right finger";
-		case (int)Item.ON_FEET:
-			return "feet";
-		case (int)Item.HELD:
-			return "held";
-		case (int)Item.WIELD:
-			return "wield";
-		case (int)Item.FLOATING_NEARBY:
-			return "floating nearby";
-		case (int)Item.ON_WAIST:
-			return "waist";
-		case (int)Item.ON_LEGS:
-			return "legs";
-		default:
-			return "body";
-		}
+		return Item.wornLocation[(int)Math.round(Math.sqrt(wornCode))];
 	}
 }

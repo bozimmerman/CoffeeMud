@@ -21,6 +21,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		displayText="a scroll is rolled up here.";
 		description="A rolled up parchment marked with mystical symbols.";
 		secretIdentity="";
+		material=Item.PAPER;
 		baseGoldValue=200;
 		recoverEnvStats();
 	}

@@ -71,8 +71,11 @@ public class StdArmor extends StdItem implements Armor
 		{
 			switch(material())
 			{
-			case Item.CLOTH: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case Item.CLOTH: 
+			case Item.PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case Item.ROCK:
 			case Item.GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
+			case Item.FLESH:
 			case Item.LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
 			case Item.METAL:
 			case Item.MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
@@ -85,8 +88,11 @@ public class StdArmor extends StdItem implements Armor
 		{
 			switch(material())
 			{
+			case Item.PAPER: 
 			case Item.CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+			case Item.ROCK:
 			case Item.GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+			case Item.FLESH:
 			case Item.LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
 			case Item.METAL:
 			case Item.MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
@@ -98,8 +104,11 @@ public class StdArmor extends StdItem implements Armor
 		{
 			switch(material())
 			{
+			case Item.PAPER: 
 			case Item.CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
+			case Item.ROCK:
 			case Item.GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
+			case Item.FLESH:
 			case Item.LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
 			case Item.METAL:
 			case Item.MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
@@ -135,6 +144,7 @@ public class StdArmor extends StdItem implements Armor
 				switch(material())
 				{
 				case Item.CLOTH:
+				case Item.PAPER:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -203,6 +213,7 @@ public class StdArmor extends StdItem implements Armor
 						setUsesRemaining(usesRemaining()-1);
 					break;
 				case Item.METAL:
+				case Item.ROCK:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -254,6 +265,9 @@ public class StdArmor extends StdItem implements Armor
 			if((affect.targetMinor()==Affect.TYP_ACID)&&(!affect.wasModified()))
 			{
 				if((material()==Item.METAL)
+				||(material()==Item.ROCK)
+				||(material()==Item.VEGETATION)
+				||(material()==Item.FLESH)
 				||((material()==Item.MITHRIL)&&(Dice.rollPercentage()<25))
 				||(material()==Item.WOODEN)&&(Dice.rollPercentage()<50))
 					setUsesRemaining(usesRemaining()-5);
@@ -262,6 +276,7 @@ public class StdArmor extends StdItem implements Armor
 			if((affect.targetMinor()==Affect.TYP_FIRE)&&(!affect.wasModified()))
 			{
 				if((material()==Item.CLOTH)
+				||(material()==Item.PAPER)
 				||((material()==Item.WOODEN)&&(Dice.rollPercentage()<15))
 				||(material()==Item.LEATHER)&&(Dice.rollPercentage()<50))
 					setUsesRemaining(usesRemaining()-10);
@@ -270,6 +285,9 @@ public class StdArmor extends StdItem implements Armor
 			if((affect.targetMinor()==Affect.TYP_WATER)&&(!affect.wasModified()))
 			{
 				if(material()==Item.METAL)
+					setUsesRemaining(usesRemaining()-1);
+				else
+				if(material()==Item.PAPER)
 					setUsesRemaining(usesRemaining()-1);
 			}
 			
@@ -320,23 +338,27 @@ public class StdArmor extends StdItem implements Armor
 			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+2);
 			break;
 		case Item.CLOTH: 
+		case Item.PAPER:
 			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)-2);
 			break;
 		case Item.GLASS: 
+		case Item.ROCK: 
+		case Item.VEGETATION: 
+		case Item.FLESH:
 			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_ACID)+2);
 			break;
 		}
 	}
 	public int value()
 	{
-		if(usesRemaining()<100)
+		if(usesRemaining()<1000)
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
 		else 
 			return super.value();
 	}
 	public boolean subjectToWearAndTear()
 	{
-		if((usesRemaining()<=100)&&(usesRemaining()>=0))
+		if((usesRemaining()<=1000)&&(usesRemaining()>=0))
 			return true;
 		return false;
 	}

@@ -22,6 +22,7 @@ public class StdPill extends StdFood implements Pill
 		secretIdentity="Surely this is a potent pill!";
 		baseGoldValue=200;
 		recoverEnvStats();
+		material=Item.VEGETATION;
 	}
 
 	public Environmental newInstance()

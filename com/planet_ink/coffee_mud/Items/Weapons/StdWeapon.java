@@ -169,60 +169,6 @@ public class StdWeapon extends StdItem implements Weapon
 		return true;
 	}
 	
-	public String typeDescription()
-	{
-		switch(weaponType)
-		{
-		case TYPE_NATURAL:
-			return "NATURAL";
-		case TYPE_SLASHING:
-			return "SLASHING";
-		case TYPE_PIERCING:
-			return "PIERCING";
-		case TYPE_BASHING:
-			return "BASHING";
-		case TYPE_SHOOT:
-			return "SHOOTING";
-		case TYPE_BURSTING:
-			return "BURSTING";
-		case TYPE_BURNING:
-			return "BURNING";
-		}
-		return "";
-	}
-
-	public String classifictionDescription()
-	{
-		switch(weaponClassification)
-		{
-		case CLASS_AXE:
-			return "AXE";
-		case CLASS_BLUNT:
-			return "BLUNT";
-		case CLASS_EDGED:
-			return "EDGED";
-		case CLASS_FLAILED:
-			return "FLAILED";
-		case CLASS_HAMMER:
-			return "HAMMER";
-		case CLASS_NATURAL:
-			return "KARATE";
-		case CLASS_POLEARM:
-			return "POLEARM";
-		case CLASS_RANGED:
-			return "RANGED";
-		case CLASS_SWORD:
-			return "SWORD";
-		case CLASS_DAGGER:
-			return "DAGGER";
-		case CLASS_STAFF:
-			return "STAFF";
-		case CLASS_THROWN:
-			return "THROWN";
-		}
-		return "";
-	}
-	
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
@@ -319,7 +265,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public void setAmmoCapacity(int amount){setCapacity(amount);}
 	public int value()
 	{
-		if((subjectToWearAndTear())&&(usesRemaining()<100))
+		if((subjectToWearAndTear())&&(usesRemaining()<1000))
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
 		else 
 			return super.value();
@@ -328,7 +274,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		return((!requiresAmmunition())
 			&&(!(this instanceof Wand))
-			&&(usesRemaining()<=100)
+			&&(usesRemaining()<=1000)
 			&&(usesRemaining()>=0));
 	}
 	
