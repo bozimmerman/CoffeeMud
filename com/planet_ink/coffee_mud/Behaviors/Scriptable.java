@@ -1127,13 +1127,7 @@ public class Scriptable extends StdBehavior
 				}
 				else
 				if((E!=null)&&(E instanceof MOB))
-				{
-					Ability A=((MOB)E).fetchAbility("Prop_Tattoo");
-					if(A!=null)
-						returnable=A.text().indexOf(";"+arg2.toUpperCase()+";")>=0;
-					else
-						returnable=false;
-				}
+					returnable=(((MOB)E).fetchTattoo(arg2)!=null);
 				else
 					returnable=false;
 				break;
@@ -3296,25 +3290,14 @@ public class Scriptable extends StdBehavior
 					MOB themob=(MOB)newTarget;
 					boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)	tattooName=tattooName.substring(1);
-
-					Ability A=themob.fetchAbility("Prop_Tattoo");
-					if(A==null)
-					{
-						A=CMClass.getAbility("Prop_Tattoo");
-						A.setBorrowed(themob,false);
-						themob.addAbility(A);
-					}
-					int x=A.text().indexOf(";"+tattooName.toUpperCase()+";");
-					if(x>=0)
+					if(themob.fetchTattoo(tattooName)!=null)
 					{
 						if(tattooMinus)
-							A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
+							themob.delTattoo(tattooName);
 					}
 					else
-					{
-						if(A.text().length()==0) A.setMiscText(";");
-						A.setMiscText(A.text()+tattooName.toUpperCase()+";");
-					}
+					if(!tattooMinus)
+						themob.addTattoo(tattooName);
 				}
 				break;
 			}

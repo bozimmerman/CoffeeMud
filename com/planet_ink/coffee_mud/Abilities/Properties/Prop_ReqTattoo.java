@@ -20,7 +20,9 @@ public class Prop_ReqTattoo extends Property
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		int x=text().toUpperCase().indexOf("ALL");
-		Vector V=Prop_Tattoo.getTattoos(mob);
+		Vector V=new Vector();
+		for(int m=0;m<mob.numTattoos();m++)
+			V.addElement(mob.fetchTattoo(m));
 		if(V.size()==0) V.addElement("NONE");
 		for(int v=0;v<V.size();v++)
 		{

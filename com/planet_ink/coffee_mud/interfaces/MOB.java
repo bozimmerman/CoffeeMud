@@ -216,4 +216,19 @@ public interface MOB
 	public Ability fetchAbility(int index);
 	public Ability findAbility(String name);
 	public Ability fetchAbility(String ID);
+	
+	/** Manipulation of the education list */
+	public void addEducation(String of);
+	public void delEducation(String of);
+	public int numEducations();
+	public String fetchEducation(int x);
+	public String fetchEducation(String of);
+	
+	/** Manipulation of the tatoo list */
+	public void addTattoo(String of);
+	public void delTattoo(String of);
+	public int numTattoos();
+	public String fetchTattoo(int x);
+	public String fetchTattoo(String of);
+		
 }

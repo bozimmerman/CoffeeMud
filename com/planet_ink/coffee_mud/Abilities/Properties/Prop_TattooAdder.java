@@ -63,27 +63,21 @@ public class Prop_TattooAdder extends Property
 			if(tattooMinus)
 				tattooName=tattooName.substring(1);
 
-			Ability A=msg.source().fetchAbility("Prop_Tattoo");
-			if(A==null)
-			{
-				A=CMClass.getAbility("Prop_Tattoo");
-				msg.source().addAbility(A);
-			}
-			int x=A.text().indexOf(";"+tattooName.toUpperCase()+";");
-			if(x>=0)
+			if(msg.source().fetchTattoo(tattooName)!=null)
 			{
 				if(tattooMinus)
 				{
 					msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
-					A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
+					msg.source().delTattoo(tattooName);
 				}
 			}
 			else
 			{
-				msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
-				if(A.text().length()==0)
-					A.setMiscText(";");
-				A.setMiscText(A.text()+tattooName.toUpperCase()+";");
+				if(!tattooMinus)
+				{
+					msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+					msg.source().addTattoo(tattooName);
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);

@@ -26,6 +26,17 @@ public class Prop_Tattoo extends Property
 		return tattos;
 	}
 
+	public void setMiscText(String text)
+	{
+		if(affected instanceof MOB)
+		{
+			MOB M=(MOB)affected;
+			Vector V=Util.parseSemicolons(text,true);
+			for(int v=0;v<V.size();v++)
+				M.addTattoo((String)V.elementAt(v));
+		}
+		borrowed=true;
+	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

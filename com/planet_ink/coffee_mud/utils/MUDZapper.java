@@ -153,18 +153,9 @@ public class MUDZapper
 
 	public static boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
-		Ability A=mob.fetchEffect("Prop_Tattoo");
-		if(A==null) return false;
-		String txt=A.text().toUpperCase();
-		int x=txt.indexOf(";");
-		if(x>=0)
-		{
-			String t=txt.substring(0,x).trim();
-			txt=txt.substring(x+1).trim();
-			if((t.length()>0)&&(fromHere(V,plusMinus,fromHere,t)))
+		for(int v=0;v<mob.numTattoos();v++)
+			if(fromHere(V,plusMinus,fromHere,(String)mob.fetchTattoo(v)))
 				return true;
-			x=txt.indexOf(";");
-		}
 		return false;
 	}
 

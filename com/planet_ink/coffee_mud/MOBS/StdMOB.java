@@ -44,7 +44,14 @@ public class StdMOB implements MOB
 	/* instantiated affects on this user*/
 	protected Vector affects=new Vector();
 
+	/* instatiated behaviors on this creature */
 	protected Vector behaviors=new Vector();
+	
+	/* list of tattoos*/
+	protected Vector tattoos=new Vector();
+	
+	/* list of educations*/
+	protected Vector educations=new Vector();
 
 	protected DVector commandQue=new DVector(2);
 
@@ -2768,6 +2775,51 @@ public class StdMOB implements MOB
 		}
 		return null;
 	}
+	
+	
+	/** Manipulation of the education list */
+	public void addEducation(String of)
+	{ 
+		if(educations==null) educations=new Vector();
+		if(fetchEducation(of)==null) educations.addElement(of);
+	}
+	public void delEducation(String of)
+	{ 
+		of=fetchEducation(of); 
+		if(of!=null) educations.removeElement(of);
+	}
+	public int numEducations(){return (educations==null)?0:educations.size();}
+	public String fetchEducation(int x){try{return (String)educations.elementAt(x);}catch(Exception e){} return null;}
+	public String fetchEducation(String of){
+		try{
+			for(int i=0;i<numEducations();i++)
+				if(fetchEducation(i).equalsIgnoreCase(of)) return fetchEducation(i);
+		}catch(Exception e){}
+		return null;
+	}
+	
+	/** Manipulation of the tatoo list */
+	public void addTattoo(String of)
+	{ 
+		if(tattoos==null) tattoos=new Vector();
+		if((fetchTattoo(of)==null)&&(of!=null)) 
+			tattoos.addElement(of.toUpperCase());
+	}
+	public void delTattoo(String of)
+	{ 
+		of=fetchTattoo(of); 
+		if(of!=null) tattoos.removeElement(of);
+	}
+	public int numTattoos(){return (tattoos==null)?0:tattoos.size();}
+	public String fetchTattoo(int x){try{return (String)tattoos.elementAt(x);}catch(Exception e){} return null;}
+	public String fetchTattoo(String of){
+		try{
+			for(int i=0;i<numTattoos();i++)
+				if(fetchTattoo(i).equalsIgnoreCase(of)) return fetchTattoo(i);
+		}catch(Exception e){}
+		return null;
+	}
+	
 	public int freeWearPositions(long wornCode)
 	{
 		int x=getWearPositions(wornCode);
