@@ -83,4 +83,10 @@ public class Ranger_Enemy1 extends StdAbility
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
 		}
 	}
+	public boolean autoInvocation(MOB mob)
+	{
+		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+			return false;
+		return super.autoInvocation(mob);
+	}
 }
