@@ -33,15 +33,18 @@ public class Quit extends StdCommand
 			mob.tell("Huh?");
 			return;
 		}
+		MOB mate=mob.soulMate();
+		if(mate.soulMate()!=null) 
+		    dispossess(mate);
+		
 		Session s=mob.session();
-		s.setMob(mob.soulMate());
-		mob.soulMate().setSession(s);
+		s.setMob(mate);
+		mate.setSession(s);
 		mob.setSession(null);
-		mob.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
-		CommonMsgs.look(mob.soulMate(),true);
+		mate.tell("^HYour spirit has returned to your body...\n\r\n\r^N");
+		CommonMsgs.look(mate,true);
 		mob.setSoulMate(null);
 	}
-
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

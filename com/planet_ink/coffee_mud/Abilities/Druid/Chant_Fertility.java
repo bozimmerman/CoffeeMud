@@ -110,6 +110,20 @@ public class Chant_Fertility extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				Ability A=target.fetchEffect("Chant_StrikeBarren");
+				if(A!=null)
+				{
+				    if(A.invoker()==null) 
+				        A.unInvoke();
+				    else
+				    if(A.invoker().envStats().level()<adjustedLevel(mob,asLevel))
+				        A.unInvoke();
+				    else
+				    {
+				        mob.tell("The magical barrenness upon "+target.name()+" is too powerful.");
+				        return false;
+				    }
+				}
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) extremely fertile!");
 				beneficialAffect(mob,target,asLevel,(Integer.MAX_VALUE/2));
 			}

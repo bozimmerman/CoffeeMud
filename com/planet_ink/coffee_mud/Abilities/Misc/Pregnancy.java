@@ -476,10 +476,12 @@ public class Pregnancy extends StdAbility
 			{
 				end=start;
 				start-=millisperbirthperiod;
-				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> imgregnate(s) <T-NAMESELF>.");
 			}
-			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-			target.addNonUninvokableEffect(this);
+			if(mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
+			{
+				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
+				target.addNonUninvokableEffect(this);
+			}
 		}
 		else
 		if(!auto)

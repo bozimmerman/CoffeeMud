@@ -192,16 +192,16 @@ public final class IMC2Driver extends Thread {
 
 	public void shutdown()
 	{
+	    shutdown=true;
 		try{
 		if(c_thread!=null)
 			c_thread.shutdown();
 		}catch(Exception e){}
 		try{
 		if(c_thread2!=null)
-			c_thread2.interrupt();
+			c_thread2.shutdown();
 		}catch(Exception e){}
 		try{
-		    shutdown=true;
 			this.interrupt();
 		}catch(Exception e){}
 		
@@ -1411,6 +1411,7 @@ public final class IMC2Driver extends Thread {
             ||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0))
 				Log.errOut("IMC2Driver", "read: "+e.getMessage());
             if((e.getMessage()!=null)
+            &&(!shutdown)
 			&&(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0))
 			{
 				imc_active = IA_NONE;
@@ -1585,7 +1586,6 @@ public final class IMC2Driver extends Thread {
                     sleep(100);
                 }
                 catch (Exception e) {}
-
             }
             isShutdown=true;
         }

@@ -74,6 +74,7 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_SenseMetal",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_StrikeBarren",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);

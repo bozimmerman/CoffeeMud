@@ -164,13 +164,13 @@ public class Spell_WizardLock extends Spell
 						CMClass.DBEngine().DBUpdateExits(R);
 					}
 					else
-						beneficialAffect(mob,target,asLevel,0);
+						beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 				else
 				if(target instanceof Container)
 				{
-					beneficialAffect(mob,target,asLevel,0);
+					beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
 					Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");

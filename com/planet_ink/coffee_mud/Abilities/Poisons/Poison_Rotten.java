@@ -32,7 +32,7 @@ public class Poison_Rotten extends Poison
 	protected int POISON_DELAY(){return 5;}
 	protected boolean POISON_AFFECTTARGET()
 	{
-	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH))
+	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
 		    return false;
 	    else
 	        return true;

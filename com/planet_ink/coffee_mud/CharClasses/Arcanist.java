@@ -67,6 +67,7 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Erase",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",25,true);
+			CMAble.addCharAbilityMapping(ID(),3,"Spell_EnchantArrows",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
@@ -88,6 +89,7 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Spell_RechargeWand",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Spell_RepairingAura",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Lore",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",true);
