@@ -582,7 +582,7 @@ public class Masonry extends CraftingSkill
 			 							0,null,null,
 			 							false,
 			 							0);
-			if(data==null) return false;
+			if(idata==null) return false;
 			woodRequired=idata[0][FOUND_AMT];
 		}
 		else
@@ -593,7 +593,7 @@ public class Masonry extends CraftingSkill
 										0,null,null,
 										false,
 										0);
-			if(data==null) return false;
+			if(idata==null) return false;
 			woodRequired=idata[0][FOUND_AMT];
 		}
 

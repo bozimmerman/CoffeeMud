@@ -26,7 +26,6 @@ public class MOBTeacher extends CombatAbilities
 
 	private void setTheCharClass(MOB mob, CharClass C)
 	{
-System.out.print(mob.name()+"+"+C.ID()+"=");
 		if((mob.baseCharStats().numClasses()==1)
 		&&(mob.baseCharStats().getMyClass(0).ID().equals("StdCharClass"))
 		&&(!C.ID().equals("StdCharClass")))
