@@ -14,7 +14,6 @@ public class Paladin extends StdAbility
 	public int quality(){return Ability.OK_OTHERS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Vector paladinsGroup=null;
