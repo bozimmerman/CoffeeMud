@@ -33,22 +33,85 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",0,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Herbology",0,false);
-			CMAble.addCharAbilityMapping(ID(),1,"Foraging",50,true);
-
-			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFungus",true);
+
+CMAble.addCharAbilityMapping(ID(),2,"Chant_Tether",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 			
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_BrownMold",true);
+CMAble.addCharAbilityMapping(ID(),3,"Chant_CaveFishing",false);
+CMAble.addCharAbilityMapping(ID(),3,"Chant_Darkvision",false);
+
+CMAble.addCharAbilityMapping(ID(),4,"Chant_BoulderBash",false);
+CMAble.addCharAbilityMapping(ID(),4,"Chant_SenseMetal",false);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
+			
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);
+CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
+			
+CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",false);
+
+CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
+CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
+
+CMAble.addCharAbilityMapping(ID(),9,"Chant_RockFeet",false);
+CMAble.addCharAbilityMapping(ID(),9,"Chant_EarthPocket",false);
+
+CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
+CMAble.addCharAbilityMapping(ID(),10,"Chant_GolemForm",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_Brittle",false);
+
+CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
+
+CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
+CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
+
+CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
+CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
+
+CMAble.addCharAbilityMapping(ID(),14,"Chant_StoneWalking",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
+
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);
+CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",false);
+
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
+
+CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
+
+CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
+CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
+
+CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
+CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
+
+CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
+
+CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",false);
+
+CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
+CMAble.addCharAbilityMapping(ID(),22,"Chant_NaturesCurse",false);
+
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOres",false);
+CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
+			
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGems",false);
+CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
+			
+CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",false); // make contageous
+			
+CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		}
 	}
 
@@ -100,7 +163,7 @@ public class Delver extends StdCharClass
 	}
 
 	public String weaponLimitations(){return "To avoid fumbling, must be metal or rock weapons.";}
-	public String armorLimitations(){return "Must wear metal chant failure.";}
+	public String armorLimitations(){return "Must wear metal armors to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "";}
 
