@@ -31,7 +31,7 @@ public class Commands extends StdCommand
 					&&(arc||(!C.arcCommand())))
 					{
 						if(++col>3){ commandList.append("\n\r"); col=0;}
-						commandList.append(Util.padRight(access[0],24));
+						commandList.append(Util.padRight(access[0],19));
 					}
 				}
 				commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");

@@ -1255,7 +1255,6 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_OPEN:
 				case CMMsg.TYP_CLOSE:
-				case CMMsg.TYP_DROP:
 				case CMMsg.TYP_THROW:
 					if(getWearPositions(Item.ON_ARMS)==0)
 					{
