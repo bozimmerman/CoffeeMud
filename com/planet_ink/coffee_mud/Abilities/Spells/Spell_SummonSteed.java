@@ -44,7 +44,10 @@ public class Spell_SummonSteed extends Spell
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				if(((MOB)affected).amFollowing()==null)
+				{
+					((MOB)affected).delAffect(this);
 					((MOB)affected).destroy();
+				}
 			}
 		}
 		return super.tick(tickID);

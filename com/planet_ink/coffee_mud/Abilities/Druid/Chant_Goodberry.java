@@ -57,35 +57,37 @@ public class Chant_Goodberry extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> begin to glow!");
-				for(int i=0;i<numAffected;i++)
+				for(int i=0;i<mob.inventorySize();i++)
 				{
-					Pill newItem=(Pill)CMClass.getItem("GenPill");
-					newItem.setName(target.name());
-					newItem.setDisplayText(target.displayText());
-					newItem.setDescription(target.description());
-					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
-					newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
-					newItem.setSpellList(";Prayer_CureLight;");
-					newItem.recoverEnvStats();
-					newItem.setMiscText(newItem.text());
-					Item location=target.location();
-					target.destroyThis();
-					if(owner instanceof MOB)
+					Item newTarget=mob.fetchInventory(i);
+					if((newTarget!=null)
+					&&(newTarget instanceof Food)
+					&&(!(newTarget instanceof Pill))
+					&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
+					&&(newTarget.location()==target.location())
+					&&(newTarget.name().equals(target.name())))
 					{
-						((MOB)owner).addInventory(newItem);
+						Pill newItem=(Pill)CMClass.getItem("GenPill");
+						newItem.setName(newTarget.name());
+						newItem.setDisplayText(newTarget.displayText());
+						newItem.setDescription(newTarget.description());
+						newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
+						newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
+						newItem.setSpellList(";Prayer_CureLight;");
+						newItem.recoverEnvStats();
+						newItem.setMiscText(newItem.text());
+						Item location=newTarget.location();
+						newTarget.destroyThis();
+						if(owner instanceof MOB)
+							((MOB)owner).addInventory(newItem);
+						else
+						if(owner instanceof Room)
+							((Room)owner).addItem(newItem);
 						newItem.setLocation(location);
-						target=((MOB)owner).fetchCarried(location,newItem.name());
+						if((--numAffected)==0)
+							break;
+						i=-1;
 					}
-					else
-					if(owner instanceof Room)
-					{
-						((Room)owner).addItem(newItem);
-						newItem.setLocation(location);
-						target=((Room)owner).fetchItem(location,newItem.name());
-					}
-					if(target==null) break;
-					if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
-						break;
 				}
 			}
 		}

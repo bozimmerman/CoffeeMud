@@ -26,7 +26,7 @@ public class Chant_Earthquake extends Chant
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
-		minRange=1;
+		maxRange=3;
 	}
 
 	public Environmental newInstance()

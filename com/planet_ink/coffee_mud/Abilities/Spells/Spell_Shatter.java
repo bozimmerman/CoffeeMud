@@ -106,7 +106,7 @@ public class Spell_Shatter extends Spell
 					else
 					{
 						target.setUsesRemaining(100);
-						if(mobTarget!=null)
+						if(mobTarget==null)
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						else													  
 							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");

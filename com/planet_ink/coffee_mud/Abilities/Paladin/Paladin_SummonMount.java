@@ -43,7 +43,10 @@ public class Paladin_SummonMount extends StdAbility
 				if(((((MOB)affected).amFollowing()==null)
 				||(((MOB)affected).location()!=invoker.location()))
 				&&(invoker.riding()!=affected))
+				{
+					((MOB)affected).delAffect(this);
 					((MOB)affected).destroy();
+				}
 			}
 		}
 		return super.tick(tickID);

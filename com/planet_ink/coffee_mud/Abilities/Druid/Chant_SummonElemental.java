@@ -42,7 +42,10 @@ public class Chant_SummonElemental extends Chant
 				if(((((MOB)affected).amFollowing()==null)
 				||(((MOB)affected).location()!=invoker.location()))
 				&&(invoker.riding()!=affected))
+				{
+					((MOB)affected).delAffect(this);
 					((MOB)affected).destroy();
+				}
 			}
 		}
 		return super.tick(tickID);
@@ -107,7 +110,7 @@ public class Chant_SummonElemental extends Chant
 			break;
 		}
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
-		newMOB.addAbility(CMClass.getAbility("CombatAbilities"));
+		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.setMiscText(newMOB.text());
