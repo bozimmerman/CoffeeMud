@@ -15,7 +15,7 @@ public class Monkey extends StdRace
 	protected int lightestWeight(){return 50;}
 	protected int weightVariance(){return 60;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.HELD-Item.WIELD-Item.ON_EARS-Item.ON_EYES;}
-	public String racialCatagory(){return "Primate";}
+	public String racialCategory(){return "Primate";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

@@ -15,7 +15,7 @@ public class Fish extends StdRace
 	protected int lightestWeight(){return 5;}
 	protected int weightVariance(){return 15;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
-	public String racialCatagory(){return "Amphibian";}
+	public String racialCategory(){return "Amphibian";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

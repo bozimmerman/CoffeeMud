@@ -15,7 +15,7 @@ public class Dwarf extends StdRace
 	protected int lightestWeight(){return 150;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Dwarf";}
+	public String racialCategory(){return "Dwarf";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}

@@ -15,7 +15,7 @@ public class GiantRat extends Rat
 	protected int lightestWeight(){return 25;}
 	protected int weightVariance(){return 10;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
-	public String racialCatagory(){return "Rodent";}
+	public String racialCategory(){return "Rodent";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

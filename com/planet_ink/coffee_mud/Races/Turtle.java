@@ -15,7 +15,7 @@ public class Turtle extends StdRace
 	protected int lightestWeight(){return 30;}
 	protected int weightVariance(){return 20;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
-	public String racialCatagory(){return "Reptile";}
+	public String racialCategory(){return "Reptile";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

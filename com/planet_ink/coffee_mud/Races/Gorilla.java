@@ -14,7 +14,7 @@ public class Gorilla extends Monkey
 	protected int heightVariance(){return 12;}
 	protected int lightestWeight(){return 220;}
 	protected int weightVariance(){return 80;}
-	public String racialCatagory(){return "Primate";}
+	public String racialCategory(){return "Primate";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

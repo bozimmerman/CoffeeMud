@@ -713,9 +713,6 @@ public class StdArea implements Area
 							if(I.amWearingAt(Item.ON_FEET))
 								coveredPlaces=coveredPlaces|Item.ON_FEET;
 							else
-							if(I.amWearingAt(Item.ON_HEAD))
-								coveredPlaces=coveredPlaces|Item.ON_HEAD;
-							else
 							if(I.amWearingAt(Item.ABOUT_BODY))
 								coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
 							else
@@ -725,7 +722,7 @@ public class StdArea implements Area
 							if(I.amWearingAt(Item.ON_LEGS))
 								coveredPlaces=coveredPlaces|Item.ON_LEGS;
 						}
-						if(coveredPlaces!=(Item.ON_FEET|Item.ON_HEAD|Item.ON_TORSO|Item.ON_LEGS))
+						if(coveredPlaces!=(Item.ON_FEET|Item.ON_TORSO|Item.ON_LEGS))
 						{
 							if(Dice.rollPercentage()<coldChance)
 							{

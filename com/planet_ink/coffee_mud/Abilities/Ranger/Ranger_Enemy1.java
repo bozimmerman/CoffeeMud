@@ -30,8 +30,8 @@ public class Ranger_Enemy1 extends StdAbility
 			for(int r=0;r<CMClass.races.size();r++)
 			{
 				Race R=(Race)CMClass.races.elementAt(r);
-				if(!choices.contains(R.racialCatagory()))
-					choices.addElement(R.racialCatagory());
+				if(!choices.contains(R.racialCategory()))
+					choices.addElement(R.racialCategory());
 			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
@@ -49,7 +49,7 @@ public class Ranger_Enemy1 extends StdAbility
 			}
 			choices.remove("Unique");
 			choices.remove("Unknown");
-			choices.remove(mob.charStats().getMyRace().racialCatagory());
+			choices.remove(mob.charStats().getMyRace().racialCategory());
 			miscText=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));
 			for(int a=0;a<mob.numAbilities();a++)
 			{
@@ -74,7 +74,7 @@ public class Ranger_Enemy1 extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		MOB victim=mob.getVictim();
-		if((victim!=null)&&(victim.charStats().getMyRace().racialCatagory().equals(text())))
+		if((victim!=null)&&(victim.charStats().getMyRace().racialCategory().equals(text())))
 		{
 			int level=1+CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
 			double damBonus=Util.mul(Util.div(profficiency(),100.0),level);

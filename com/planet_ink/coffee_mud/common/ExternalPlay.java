@@ -275,9 +275,9 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.userList();
 		return new Vector();
 	}
-	public static void listUsers(MOB mob)
+	public static void listUsers(MOB mob, int sortBy)
 	{
-		if(sysPlayer!=null) sysPlayer.listUsers(mob);
+		if(sysPlayer!=null) sysPlayer.listUsers(mob,sortBy);
 	}
 	public static void DBReadFollowers(MOB mob)
 	{

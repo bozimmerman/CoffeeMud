@@ -17,7 +17,7 @@ public class StdRace implements Race
 	protected int lightestWeight(){return 60;}
 	protected int weightVariance(){return 10;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Unknown";}
+	public String racialCategory(){return "Unknown";}
 	
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;

@@ -6,7 +6,7 @@ public class DireRat extends GiantRat
 	public String ID(){	return "DireRat"; }
 	public String name(){ return "Dire Rat"; }
 	protected static Vector resources=new Vector();
-	public String racialCatagory(){return "Rodent";}
+	public String racialCategory(){return "Rodent";}
 	
 	public Vector myResources()
 	{

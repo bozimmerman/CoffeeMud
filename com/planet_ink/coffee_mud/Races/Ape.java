@@ -15,7 +15,7 @@ public class Ape extends Monkey
 	protected int lightestWeight(){return 150;}
 	protected int weightVariance(){return 80;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Primate";}
+	public String racialCategory(){return "Primate";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

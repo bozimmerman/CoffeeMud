@@ -353,7 +353,9 @@ public class Arrest extends StdBehavior
 							   getBit(info,BIT_SENTENCE));
 		}
 		
-		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		   &&(affect.target()!=null)
+		   &&((affect.tool()==null)||(affect.source().isMine(affect.tool())))
 		   &&(affect.target()!=affect.source()))
 		{
 			String info=(String)laws.get("ASSAULT");

@@ -5,7 +5,7 @@ public class DireWolf extends GiantWolf
 {
 	public String ID(){	return "DireWolf"; }
 	public String name(){ return "Dire Wolf"; }
-	public String racialCatagory(){return "Canine";}
+	public String racialCategory(){return "Canine";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

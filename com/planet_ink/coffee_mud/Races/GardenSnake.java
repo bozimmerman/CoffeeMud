@@ -7,7 +7,7 @@ public class GardenSnake extends Snake
 	public String ID(){	return "GardenSnake"; }
 	public String name(){ return "Garden Snake"; }
 	protected static Vector resources=new Vector();
-	public String racialCatagory(){return "Serpent";}
+	public String racialCategory(){return "Serpent";}
 	public Vector myResources()
 	{
 		synchronized(resources)

@@ -15,7 +15,7 @@ public class Bull extends Buffalo
 	protected int lightestWeight(){return 350;}
 	protected int weightVariance(){return 100;}
 	protected static Vector resources=new Vector();
-	public String racialCatagory(){return "Bovine";}
+	public String racialCategory(){return "Bovine";}
 	
 	public Weapon myNaturalWeapon()
 	{

@@ -15,7 +15,7 @@ public class HalfElf extends StdRace
 	protected int lightestWeight(){return 90;}
 	protected int weightVariance(){return 90;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Elf";}
+	public String racialCategory(){return "Elf";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}

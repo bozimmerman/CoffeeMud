@@ -15,7 +15,7 @@ public class Kobold extends StdRace
 	protected int lightestWeight(){return 50;}
 	protected int weightVariance(){return 50;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Reptile";}
+	public String racialCategory(){return "Reptile";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

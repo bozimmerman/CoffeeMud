@@ -15,7 +15,7 @@ public class GreatCat extends StdRace
 	protected int lightestWeight(){return 100;}
 	protected int weightVariance(){return 60;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
-	public String racialCatagory(){return "Feline";}
+	public String racialCategory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

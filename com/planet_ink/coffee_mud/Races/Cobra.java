@@ -10,7 +10,7 @@ public class Cobra extends Snake
 	protected int heightVariance(){return 3;}
 	protected int lightestWeight(){return 15;}
 	protected int weightVariance(){return 20;}
-	public String racialCatagory(){return "Serpent";}
+	public String racialCategory(){return "Serpent";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

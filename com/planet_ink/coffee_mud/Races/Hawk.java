@@ -6,7 +6,7 @@ public class Hawk extends GreatBird
 {
 	public String ID(){	return "Hawk"; }
 	public String name(){ return "Hawk"; }
-	public String racialCatagory(){return "Avian";}
+	public String racialCategory(){return "Avian";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

@@ -15,7 +15,7 @@ public class Pig extends StdRace
 	protected int lightestWeight(){return 100;}
 	protected int weightVariance(){return 60;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
-	public String racialCatagory(){return "Porcine";}
+	public String racialCategory(){return "Porcine";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

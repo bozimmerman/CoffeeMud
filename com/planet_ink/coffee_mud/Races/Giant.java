@@ -15,7 +15,7 @@ public class Giant extends StdRace
 	protected int lightestWeight(){return 300;}
 	protected int weightVariance(){return 200;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Giant-kin";}
+	public String racialCategory(){return "Giant-kin";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

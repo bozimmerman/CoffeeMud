@@ -11,7 +11,7 @@ public class Kitten extends Cat
 	protected int lightestWeight(){return 7;}
 	protected int weightVariance(){return 10;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_EARS-Item.ON_EYES;}
-	public String racialCatagory(){return "Feline";}
+	public String racialCategory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

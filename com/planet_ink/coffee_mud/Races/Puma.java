@@ -5,7 +5,7 @@ public class Puma extends GreatCat
 {
 	public String ID(){	return "Puma"; }
 	public String name(){ return "Puma"; }
-	public String racialCatagory(){return "Feline";}
+	public String racialCategory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

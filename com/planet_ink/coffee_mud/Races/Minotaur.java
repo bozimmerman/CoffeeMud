@@ -15,7 +15,7 @@ public class Minotaur extends Cow
 	protected int lightestWeight(){return 450;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return Item.ON_HEAD;}
-	public String racialCatagory(){return "Bovine";}
+	public String racialCategory(){return "Bovine";}
 	
 	protected static Vector resources=new Vector();
 	public Weapon myNaturalWeapon()

@@ -202,7 +202,7 @@ public class MOBloader
 		return V;
 	}
 	
-	public static void listUsers(MOB mob)
+	public static void listUsers(MOB mob, int sortBy)
 	{
 		DBConnection D=null;
 		try
@@ -214,25 +214,69 @@ public class MOBloader
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",10)+" ");
 			head.append(Util.padRight("Lvl",4)+" ");
+			head.append(Util.padRight("Hours",5)+" ");
 			head.append(Util.padRight("Last",18));
 			head.append("] Character name\n\r");
+			Vector allUsers=new Vector();
 			if(R!=null)
 			while(R.next())
 			{
-				String username=DBConnections.getRes(R,"CMUSERID");
-				String cclass=DBConnections.getRes(R,"CMCLAS");
-				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-				int lvl=(Util.s_int(DBConnections.getRes(R,"CMLEVL")));
-				String lastCall=DBConnections.getRes(R,"CMDATE");
+				Vector thisUser=new Vector();
+				try{
+					thisUser.addElement(DBConnections.getRes(R,"CMUSERID"));
+					String cclass=DBConnections.getRes(R,"CMCLAS");
+					int x=cclass.lastIndexOf(";");
+					if((x>0)&&(x<cclass.length()-2))
+						cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
+					thisUser.addElement(cclass);
+					thisUser.addElement(((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name());
+					String lvl=DBConnections.getRes(R,"CMLEVL");
+					x=lvl.indexOf(";");
+					int level=0;
+					while(x>=0)
+					{
+						level+=Util.s_int(lvl.substring(0,x));
+						lvl=lvl.substring(x+1);
+						x=lvl.indexOf(";");
+					}
+					if(lvl.length()>0) level+=Util.s_int(lvl);
+					thisUser.addElement(new Integer(level).toString());
+					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
+					thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
+					allUsers.addElement(thisUser);
+				}
+				catch(Exception e){Log.errOut("MOBloader",e);}
+			}
+			Vector oldSet=allUsers;
+			while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=5))
+			{
+				if(oldSet==allUsers) allUsers=new Vector();
+				
+				Vector selected=(Vector)oldSet.firstElement();
+				for(int u=1;u<oldSet.size();u++)
+				{
+					Vector V=(Vector)oldSet.elementAt(u);
+					if(((String)selected.elementAt(sortBy)).compareTo(((String)V.elementAt(sortBy)))>0)
+					   selected=V;
+				}
+				if(selected!=null)
+				{
+					oldSet.removeElement(selected);
+					allUsers.addElement(selected);
+				}
+			}
+				
+			for(int u=0;u<allUsers.size();u++)
+			{
+				Vector U=(Vector)allUsers.elementAt(u);
+				
 				head.append("[");
-				head.append(Util.padRight(race,8)+" ");
-				int x=cclass.lastIndexOf(";");
-				if((x>0)&&(x<cclass.length()-2))
-					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
-				head.append(Util.padRight(cclass,10)+" ");
-				head.append(Util.padRight(Integer.toString(lvl),4)+" ");
-				head.append(Util.padRight((new IQCalendar().string2Date(lastCall)).d2String(),18));
-				head.append("] "+Util.padRight(username,15));
+				head.append(Util.padRight((String)U.elementAt(2),8)+" ");
+				head.append(Util.padRight((String)U.elementAt(1),10)+" ");
+				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+				head.append(Util.padRight((String)U.elementAt(4),5)+" ");
+				head.append(Util.padRight((new IQCalendar().string2Date((String)U.elementAt(5))).d2String(),18));
+				head.append("] "+Util.padRight((String)U.elementAt(0),15));
 				head.append("\n\r");
 			}
 			mob.tell(head.toString());

@@ -15,7 +15,7 @@ public class GiantSpider extends StdRace
 	protected int lightestWeight(){return 180;}
 	protected int weightVariance(){return 40;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
-	public String racialCatagory(){return "Arachnid";}
+	public String racialCategory(){return "Arachnid";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

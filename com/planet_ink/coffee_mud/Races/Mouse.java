@@ -5,7 +5,7 @@ public class Mouse extends Rodent
 {
 	public String ID(){	return "Mouse"; }
 	public String name(){ return "Mouse"; }
-	public String racialCatagory(){return "Rodent";}
+	public String racialCategory(){return "Rodent";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

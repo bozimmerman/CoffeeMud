@@ -14,7 +14,7 @@ public class Calf extends Cow
 	protected int heightVariance(){return 6;}
 	protected int lightestWeight(){return 150;}
 	protected int weightVariance(){return 100;}
-	public String racialCatagory(){return "Bovine";}
+	public String racialCategory(){return "Bovine";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

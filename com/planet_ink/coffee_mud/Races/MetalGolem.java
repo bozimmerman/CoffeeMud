@@ -15,7 +15,7 @@ public class MetalGolem extends StdRace
 	protected int lightestWeight(){return 400;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Metal Golem";}
+	public String racialCategory(){return "Metal Golem";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

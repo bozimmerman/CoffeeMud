@@ -10,7 +10,7 @@ public class Sasquatch extends Gorilla
 	public String ID(){	return "Sasquatch"; }
 	public String name(){ return "Sasquatch"; }
 	protected long forbiddenWornBits(){return 0;}
-	public String racialCatagory(){return "Primate";}
+	public String racialCategory(){return "Primate";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
