@@ -626,7 +626,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel())));
+		return 100+(int)Math.round(Util.mul(mob.baseEnvStats().level()-1,Util.mul(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0),getBonusManaLevel())));
 	}
 
 	public int getLevelAttack(MOB mob)
@@ -655,8 +655,8 @@ public class StdCharClass implements CharClass, Cloneable
 		int move=100;
 		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
-		for(int i=1;i<mob.baseEnvStats().level();i++)
-			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)*getMovementMultiplier()));
+		if(mob.baseEnvStats().level()>1)
+			move+=((int)Math.round(Util.mul(mob.baseEnvStats().level()-1,Util.mul(Util.mul(lvlMul,Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),18.0)),getMovementMultiplier()))));
 		return move;
 	}
 

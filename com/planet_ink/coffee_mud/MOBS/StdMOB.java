@@ -2217,7 +2217,7 @@ public class StdMOB implements MOB
 			for(int i=0;i<rivals.size();i++)
 			{
 				Vector V=(Vector)rivals.elementAt(i);
-				if(((Item)V.firstElement()).rawWornCode()==0)
+				if((V.size()==1)||(((Item)V.firstElement()).rawWornCode()==0))
 				{
 					for(int r=0;r<V.size();r++)
 					{

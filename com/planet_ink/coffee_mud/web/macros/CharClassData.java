@@ -8,6 +8,8 @@ import com.planet_ink.coffee_mud.utils.*;
 public class CharClassData extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	
+	
 	// parameters include help, playable, max stats, pracs, trains, hitpoints,
 	// mana, movement, attack, weapons, armor, limits, bonuses,
 	// prime, quals, startingeq
@@ -53,12 +55,37 @@ public class CharClassData extends StdWebMacro
 					str.append(C.getTrainsFirstLevel()+" plus 1 per level after first, ");
 				if(parms.containsKey("DAMAGE"))
 					str.append("An extra point of damage per "+C.getLevelsPerBonusDamage()+" level(s), ");
+				
 				if(parms.containsKey("HITPOINTS"))
 					str.append("20 at first, plus (((Constitution/18)*Random("+C.getMinHitPointsLevel()+" to "+C.getMaxHitPointsLevel()+")) per level thereafter, ");
 				if(parms.containsKey("MANA"))
 					str.append("100 plus ((Intelligence/18)*"+C.getBonusManaLevel()+") per level after first, ");
 				if(parms.containsKey("MOVEMENT"))
 					str.append("100 plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
+				
+				if(parms.containsKey("AVGHITPOINTS"))
+				{
+					int ah=C.getMinHitPointsLevel()+((C.getMaxHitPointsLevel()-C.getMinHitPointsLevel())/2);
+					str.append("("+avgMath(10,ah,10,20)+"/"+avgMath(18,ah,10,20)+"/"+avgMath(25,ah,10,20)+") ");
+					str.append("("+avgMath(10,ah,50,20)+"/"+avgMath(18,ah,50,20)+"/"+avgMath(25,ah,50,20)+") ");
+					str.append("("+avgMath(10,ah,90,20)+"/"+avgMath(18,ah,90,20)+"/"+avgMath(25,ah,90,20)+") ");
+				}
+					
+				if(parms.containsKey("AVGMANA"))
+				{
+					int ah=C.getBonusManaLevel();
+					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(25,ah,10,100)+") ");
+					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(25,ah,50,100)+") ");
+					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(25,ah,90,100)+") ");
+				}
+				if(parms.containsKey("AVGMOVEMENT"))
+				{
+					int ah=C.getMovementMultiplier();
+					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(25,ah,10,100)+") ");
+					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(25,ah,50,100)+") ");
+					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(25,ah,90,100)+") ");
+				}
+				
 				StringBuffer preReqName=new StringBuffer(CharStats.TRAITS[C.getAttackAttribute()].toLowerCase());
 				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))
@@ -216,4 +243,10 @@ public class CharClassData extends StdWebMacro
 		str.append("<BR>Rule#8: Avg Cross class skill/level: "+Util.div(Math.round(100.0*Util.div(totalCrossClassSkills,30)),(long)100));
 		return str.toString();
 	}
+	
+	public int avgMath(int stat, int avg, int lvl, int add)
+	{
+		return add+(int)Math.round(Util.mul(Util.div(stat,18),avg)*lvl);
+	}
+	
 }

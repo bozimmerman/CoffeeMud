@@ -4970,7 +4970,7 @@ public class Import extends StdCommand
 								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.DEAL_WEAPONS)
 								{
 									Item arrows=CMClass.getStdItem("GenAmmunition");
-									arrows.setSecretIdentity("arrows");
+									((Ammunition)arrows).setAmmunitionType("arrows");
 									arrows.setName("a pack of 20 arrows");
 									arrows.setUsesRemaining(20);
 									arrows.setBaseValue(50);

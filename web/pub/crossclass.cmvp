@@ -7,11 +7,42 @@
 </head>
 
 <body>
-<h3>Cross Class Skill Information</h3><P>
+<h3>Cross Class Information</h3><P>
+<a href="#STAT">Stats Chart</a><P>
+<a href="#CROSS">Skills Chart</a><P>
+<a href="#BAL">Balance Chart</a><P>
+<BR><FONT COLOR=BLACK>
+<a name=STAT>Chart Key</a>: Under each stat TYPE are three groups () () ().  The first group is a 10th level
+character, the second group is a 50th level char, and the last group is a 90th level char.  
+Within each group are three stats (x/x/x).  The first stat is the character with an attribute
+score of 10, the second stat is an attribute score of 18, and the last stat is an attribute score
+of 25.<P><BR></FONT>
+<TABLE WIDTH=100%>
+<TR><TD>CLASS</TD><TD>HP</TD><TD>MANA</TD><TD>MV</TD></TR>
+@BaseCharClassNext?RESET@
+@loop@
+@BaseCharClassNext@
+	@CharClassNext?RESET@
+	@loop@
+		@CharClassNext@
+		<TR>
+		<TD><FONT COLOR=RED>@CharClassName@</FONT></TD>
+		<TD><FONT SIZE=-1 COLOR=GREEN>@CharClassData?AVGHITPOINTS@</FONT></TD>
+		<TD><FONT SIZE=-1 COLOR=BLUE>@CharClassData?AVGMANA@</FONT></TD>
+		<TD><FONT SIZE=-1 COLOR=PURPLE>@CharClassData?AVGMOVEMENT@</FONT></TD>
+		</TR>
+		<P>
+	@back@
+	<TR><TD COLSPAN=4><HR></TD></TR>
+@back@
+</TABLE>
+<P><BR>
+<a name=CROSS>Cross Class Skills Chart</a><P>
 	@CrossBaseClassAbilities@
 <P>
 <BR>
 <BR>
+<a name=BAL>Cross Class Balance Chart</a><P>
 @BaseCharClassNext?RESET@
 @loop@
 @BaseCharClassNext@
