@@ -1,8 +1,10 @@
+When you fill a buffalo skin with the blood of a killed creature, the blood remains even though empty.
+construct list says i need 50 wood to make a fence, but construct fence XX returns you need 100
+If tagturf only applies to thieves, why does everyone have to see the tagging? Is there a way to make it HIDDEN, to where thieves have to look to see if a room is tagged?
 Patrolling rideables don't carry the ridden
 look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
 The deviations is calculating based on a single attack -- again, that's my guess.  I'll check deviations and fix it for the next build if that's the case.
 some sort of answer to scan (exits)
-the dance/song bug is still there, valor, armor, etc...
 ?The mobs in Narnia are crawling around instead of walking.
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
 spraypaint is the command, which doesn't seem to want to unload/reload.

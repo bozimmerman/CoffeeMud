@@ -93,7 +93,7 @@ public class Song extends StdAbility
 		{
 			Ability A=(Ability)mob.fetchEffect(a);
 			if((A!=null)
-			&&(A instanceof Dance)
+			&&(A instanceof Song)
 			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
