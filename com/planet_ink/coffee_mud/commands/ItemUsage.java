@@ -529,7 +529,7 @@ public class ItemUsage
 		commands.removeElementAt(0);
 
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
-		if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
+		if((thisThang==null)||(thisThang!=null))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 			return;
@@ -549,7 +549,7 @@ public class ItemUsage
 		commands.removeElementAt(0);
 
 		Item thisItem=mob.fetchInventory(Util.combine(commands,0));
-		if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+		if((thisItem==null)||(thisItem!=null))
 		{
 			mob.tell("You don't seem to be carrying that.");
 			return;

@@ -45,6 +45,9 @@ public class Archon_WizInvis extends ArchonSkill
 			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_SLEEPING);
 		if(Sense.isSitting(affected))
 			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_SITTING);
+		affectableStats.setDisposition(affectableStats.disposition()|Sense.CAN_SEE_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|Sense.CAN_SEE_DARK);
+		affectableStats.setDisposition(affectableStats.disposition()|Sense.CAN_SEE_INVISIBLE);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -48,8 +48,8 @@ public class MUD extends Thread implements Host
 		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 
-		Log.sysOut("MUD","CoffeeMud v1.2.1");
-		Log.sysOut("MUD","(C) 2000-2001 Bo Zimmerman");
+		Log.sysOut("MUD","CoffeeMud v1.2");
+		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		Log.sysOut("MUD","Starting...\n\r");
 		String DBerrors=DBConnector.errorStatus().toString();

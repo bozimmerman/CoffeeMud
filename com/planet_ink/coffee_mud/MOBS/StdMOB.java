@@ -643,9 +643,11 @@ public class StdMOB implements MOB
 				{
 					if(!Sense.aliveAwakeMobile(this,false))
 						return false;
-					if(!Sense.canBeSeenBy(affect.target(),this))
+					if((!Sense.canBeSeenBy(affect.target(),this))
+					&&(!isMine(affect.target()))
+					&&(!(affect.target() instanceof Item)))
 					{
-						mob.tell("2You don't see '"+affect.target().name()+"' here.");
+						mob.tell("You don't see '"+affect.target().name()+"' here.");
 						return false;
 					}
 					if(!Sense.canTaste(this))
@@ -658,10 +660,9 @@ public class StdMOB implements MOB
 			if(Util.bset(srcMajor,Affect.ACT_HANDS))
 			{
 				if((!Sense.canBeSeenBy(affect.target(),this))
-				&&((!Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
-				   ||(!isInCombat())||(affect.target()!=victim)))
+				&&(!(((isInCombat())&&(affect.target()==victim)))))
 				{
-					mob.tell("1You don't see '"+affect.target().name()+"' here.");
+					mob.tell("You don't see '"+affect.target().name()+"' here.");
 					return false;
 				}
 				if(!Sense.aliveAwakeMobile(this,false))
