@@ -797,7 +797,8 @@ public class Import
 					  Vector mobProgData,
 					  Vector specialData,
 					  Vector shopData,
-					  Hashtable doneMOBS)
+					  Hashtable doneMOBS,
+					  String areaFileName)
 	{
 		if(OfThisID.startsWith("#"))
 		{
@@ -1307,27 +1308,39 @@ public class Import
 					s=eatLineSquiggle(objV);
 					if(!s.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
 					{
+						s=Util.replaceAll(s,"'","\\`");
 						scriptStuff+=s.substring(1).trim()+";";
 						s=nextLine(objV);
 						while(s.indexOf("~")<0)
 						{
+							s=Util.replaceAll(s,"'","\\`");
 							scriptStuff+=s.trim()+";";
 							eatLine(objV);
 							s=nextLine(objV);
 						}
-						scriptStuff+=eatLineSquiggle(objV).trim()+"~";
+						s=eatLineSquiggle(objV).trim();
+						s=Util.replaceAll(s,"'","\\`");
+						scriptStuff+=s+"~";
 					}
+				}
+				else
+				if(s.startsWith("X "))
+				{
+					String codeLine=eatLineSquiggle(objV);
+					Behavior B=M.fetchBehavior("Sounder");
+					if(B==null)
+					{
+						B=CMClass.getBehavior("Sounder");
+						if(B!=null) M.addBehavior(B);
+					}
+					if(B.getParms().length()==0)
+						B.setParms(codeLine.substring(1).trim());
+					else
+						B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
 				}
 				else
 					eatNextLine(objV);
 			}
-			if(scriptStuff.length()>0)
-			{
-				Behavior S=CMClass.getBehavior("Scriptable");
-				S.setParms(scriptStuff);
-				M.addBehavior(S);
-			}
-
 			for(int mp=0;mp<mobProgData.size();mp++)
 			{
 				String s=(String)mobProgData.elementAt(mp);
@@ -1368,7 +1381,48 @@ public class Import
 					{
 					}
 					else
-						returnAnError(mob,"Unknown MobPrg: "+mobprg);
+					{
+						try{
+							File F2=new File(areaFileName);
+							if((F2.exists())&&(!F2.isDirectory()))
+							{
+								int x=F2.getAbsolutePath().lastIndexOf(File.separatorChar);
+								String path=F2.getAbsolutePath().substring(0,x)+File.separatorChar+mobprg;
+								StringBuffer buf=Resources.getFile(path);
+								if((buf==null)||(buf.length()==0))
+									returnAnError(mob,"Unknown MobPrg: "+mobprg);
+								else
+								{
+									Vector V=Resources.getFileLineVector(buf);
+									while(V.size()>0)
+									{
+										s=nextLine(V);
+										if(s.startsWith(">"))
+										{
+											s=eatLineSquiggle(V).substring(1).trim();
+											s=Util.replaceAll(s,"'","\\`");
+											scriptStuff+=s+";";
+											s=nextLine(V);
+											while(s.indexOf("~")<0)
+											{
+												s=Util.replaceAll(s.trim(),"'","\\`");
+												scriptStuff+=s+";";
+												eatLine(V);
+												s=nextLine(V);
+											}
+											s=eatLineSquiggle(V).trim();
+											s=Util.replaceAll(s,"'","\\`");
+											scriptStuff+=s+"~";
+										}
+										else
+											eatLine(V);
+									}
+								}
+							}
+						}catch(Exception e){
+							returnAnError(mob,"Unknown MobPrg: "+mobprg);
+						}
+					}
 				}
 				else
 				if((s.startsWith("#M"))||(s.startsWith("S")))
@@ -1377,6 +1431,12 @@ public class Import
 				else
 				if(s.trim().length()>0)
 					returnAnError(mob,"MobPrg line: "+s);
+			}
+			if(scriptStuff.length()>0)
+			{
+				Behavior S=CMClass.getBehavior("Scriptable");
+				S.setParms(scriptStuff);
+				M.addBehavior(S);
 			}
 
 			for(int mp=0;mp<specialData.size();mp++)
@@ -2068,9 +2128,10 @@ public class Import
 			// now all those funny tags
 			while(objV.size()>0)
 			{
-				String codeLine=eatNextLine(objV).trim().toUpperCase();
+				String codeLine=nextLine(objV).trim().toUpperCase();
 				if(codeLine.equals("E"))
 				{
+					eatNextLine(objV);
 					if((CMClass.getItem(I.ID())!=null)
 					&&(I.description().equals(CMClass.getItem(I.ID()).description())))
 					   I.setDescription("");
@@ -2085,12 +2146,29 @@ public class Import
 				else
 				if(codeLine.equals("L"))
 				{
+					eatNextLine(objV);
 					// need to figure this one out.
 					eatLine(objV);
 				}
 				else
+				if(codeLine.startsWith("X "))
+				{
+					codeLine=eatLineSquiggle(objV);
+					Behavior B=I.fetchBehavior("Sounder");
+					if(B==null)
+					{
+						B=CMClass.getBehavior("Sounder");
+						if(B!=null) I.addBehavior(B);
+					}
+					if(B.getParms().length()==0)
+						B.setParms(codeLine.substring(1).trim());
+					else
+						B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
+				}
+				else
 				if(codeLine.equals("A"))
 				{
+					eatNextLine(objV);
 					String codesLine=eatNextLine(objV);
 					if(Util.numBits(codesLine)!=2)
 						returnAnError(mob,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
@@ -2188,6 +2266,7 @@ public class Import
 				else
 				if(codeLine.equals("F"))
 				{
+					eatNextLine(objV);
 					String codesLine=eatNextLine(objV);
 					if(Util.numBits(codesLine)!=4)
 						returnAnError(mob,"Malformed 'F' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
@@ -2344,9 +2423,13 @@ public class Import
 				else
 				if((codeLine.startsWith("#"))||(codeLine.length()==0))
 				{
+					eatNextLine(objV);
 				}
 				else
+				{
+					eatNextLine(objV);
 					returnAnError(mob,"Unknown code for item "+objectID+", "+I.Name()+": "+codeLine+", area="+areaName);
+				}
 			}
 			if(adjuster.text().length()>0)
 				I.addNonUninvokableAffect(adjuster);
@@ -3346,7 +3429,7 @@ public class Import
 						returnAnError(mob,"Reset error (no room) on line: "+s+", area="+areaName);
 					else
 					{
-						M=getMOB("#"+mobID,R,mob,Util.copyVector(mobData),Util.copyVector(mobProgData),Util.copyVector(specialData),Util.copyVector(shopData),doneMOBS);
+						M=getMOB("#"+mobID,R,mob,Util.copyVector(mobData),Util.copyVector(mobProgData),Util.copyVector(specialData),Util.copyVector(shopData),doneMOBS,areaFileName);
 						if(M==null)
 							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
 						else

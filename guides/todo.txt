@@ -1,5 +1,6 @@
 Archons Guide updates
-	Finish documenting behaviors/affects for items, mobs, etc. Don't forget Emoter & Sounder!
+	Finish documenting behaviors/affects for items, mobs, etc. 
+	Don't forget Emoter & Sounder!
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns
@@ -10,7 +11,6 @@ Programming.html update
 	Updates misc. methods. Items
 	
 //****** next version ********************************************************
-putting a change bag into a changebag should combine your notes.
 GenRaces
 GenCharClasses
 racial abilities (abilities tied to the race)
@@ -19,6 +19,7 @@ Some solution for variable eq on mobs
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
+putting a change bag into a changebag should combine your notes.
 SMTP capability
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 Arrest idea: banned substances (get, drop, eq, etc), and harder sentence for parole.
@@ -41,7 +42,6 @@ a behavior that watches the weather... in foul or cold weather, items of certain
 readables that can load text from a text file
 ability to have random formulaic weapons, armor.
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
-
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

@@ -2998,11 +2998,20 @@ public class Scriptable extends StdBehavior
 
 	protected Vector getScripts()
 	{
-		Vector scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms());
+		Vector scripts=null;
+		if(getParms().length()>30)
+			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms().hashCode());
+		else
+			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms());
 		if(scripts==null)
 		{
-			scripts=parseScripts(getParms());
-			Resources.submitResource("PARSED SCRIPTS: "+getParms(),scripts);
+			String script=getParms();
+			script=Util.replaceAll(script,"\\`","'");
+			scripts=parseScripts(script);
+			if(getParms().length()>30)
+				Resources.submitResource("PARSED SCRIPTS: "+getParms().hashCode(),scripts);
+			else
+				Resources.submitResource("PARSED SCRIPTS: "+getParms(),scripts);
 		}
 		return scripts;
 	}

@@ -1,4 +1,1 @@
 damn upgrade tool won't go to access
-affecting a room with a deeppit broke
-reset on trap_enterpit
-
