@@ -87,6 +87,7 @@ public class GenStaff extends GenWeapon implements Wand
 					waveIfAble(mob,affect.tool(),affect.targetMessage(),this);
 			}
 			else
+			if(affect.sourceMinor()==Affect.TYP_SPEAK)
 				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
 			break;
 		default:
