@@ -608,7 +608,9 @@ public class SysOpSkills
 						if((CoffeeUtensils.containsString(A.name(),cmd.toString()))
 						&&(A.mapSize()>0))
 						{
-							room=(Room)A.getRandomRoom();
+							int tries=0;
+							while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
+								room=(Room)A.getRandomRoom();
 							break;
 						}
 					}

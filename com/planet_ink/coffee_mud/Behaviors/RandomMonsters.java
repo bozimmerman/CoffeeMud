@@ -14,20 +14,81 @@ public class RandomMonsters extends ActiveTicker
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
 	protected String filename="";
+	protected Vector restrictedLocales=null;
 	
 	public void setParms(String newParms)
 	{
 		int x=newParms.indexOf(";");
 		String oldParms=newParms;
+		restrictedLocales=null;
 		if(x>=0)
 		{
-			filename=newParms.substring(x+1).trim();
 			oldParms=newParms.substring(0,x).trim();
+			filename=newParms.substring(x+1).trim();
+			x=filename.indexOf(";");
+			if(x>=0)
+			{
+				String extraParms=filename.substring(x+1).trim();
+				filename=filename.substring(0,x);
+				Vector V=Util.parse(extraParms);
+				for(int v=0;v<V.size();v++)
+				{
+					String s=(String)V.elementAt(v);
+					if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
+					{
+						if(restrictedLocales==null)
+							restrictedLocales=new Vector();
+						if(s.equalsIgnoreCase("+ALL"))
+							restrictedLocales.clear();
+						else
+						if(s.equalsIgnoreCase("-ALL"))
+						{
+							restrictedLocales.clear();
+							for(int i=0;i<Room.indoorDomainDescs.length;i++)
+								restrictedLocales.addElement(new Integer(Room.INDOORS+i));
+							for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+								restrictedLocales.addElement(new Integer(i));
+						}
+						else
+						{
+							char c=s.charAt(0);
+							s=s.substring(1).toUpperCase().trim();
+							int code=-1;
+							for(int i=0;i<Room.indoorDomainDescs.length;i++)
+								if(Room.indoorDomainDescs[i].startsWith(s))
+									code=Room.INDOORS+i;
+							if(code>=0)
+							{
+								if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+									restrictedLocales.removeElement(new Integer(code));
+								else
+								if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+									restrictedLocales.addElement(new Integer(code));
+							}
+							code=-1;
+							for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+								if(Room.outdoorDomainDescs[i].startsWith(s))
+									code=i;
+							if(code>=0)
+							{
+								if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+									restrictedLocales.removeElement(new Integer(code));
+								else
+								if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+									restrictedLocales.addElement(new Integer(code));
+							}
+
+						}
+					}
+				}
+			}
 		}
 		super.setParms(oldParms);
 		minMonsters=getParmVal(oldParms,"minmonsters",1);
 		maxMonsters=getParmVal(oldParms,"maxmonsters",1);
 		parms=newParms;
+		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
+			restrictedLocales=null;
 	}
 	
 	public RandomMonsters()
@@ -37,6 +98,13 @@ public class RandomMonsters extends ActiveTicker
 	public Behavior newInstance()
 	{
 		return new RandomMonsters();
+	}
+
+	public boolean okRoomForMe(Room newRoom)
+	{
+		if(newRoom==null) return false;
+		if(restrictedLocales==null) return true;
+		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -85,9 +153,11 @@ public class RandomMonsters extends ActiveTicker
 				}
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
-			int num=minMonsters;
-			if(num>=minMonsters) num=maintained.size()+1;
-			while(maintained.size()<minMonsters)
+			int diff=((maxMonsters-minMonsters)/2);
+			int mean=diff+minMonsters;
+			if(mean>maxMonsters) mean=maxMonsters;
+			if(mean<minMonsters) mean=minMonsters;
+			while(maintained.size()<mean)
 			{
 				MOB M=(MOB)monsters.elementAt(Dice.roll(1,monsters.size(),-1));
 				if(M!=null)
@@ -117,7 +187,26 @@ public class RandomMonsters extends ActiveTicker
 					else
 					if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
 					{
-						Room room=((Area)ticking).getRandomRoom();
+						Room room=null;
+						if(restrictedLocales==null)
+							room=((Area)ticking).getRandomRoom();
+						else
+						{
+							Vector map=new Vector();
+							for(Enumeration e=((Area)ticking).getMap();e.hasMoreElements();)
+							{
+								Room R=(Room)e.nextElement();
+								if(okRoomForMe(R)) map.addElement(R);
+							}
+							if(map.size()>0)
+								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
+						}
+						if((room!=null)&&(room instanceof GridLocale))
+						{
+							Vector map=((GridLocale)room).getAllRooms();
+							if(map.size()>0)
+								room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
+						}
 						if(room!=null)
 							M.bringToLife(room,true);
 						else

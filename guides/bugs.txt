@@ -1,7 +1,3 @@
-GAES still isn't done
-add locale params (like in mobile) to randommonsters
-help jeremy with unticked mobs and dead tick groups.
-UNTICK command to remove ticking objects (dead mobs, for instance)
 
 
 
