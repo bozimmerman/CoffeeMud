@@ -3289,12 +3289,26 @@ public class Scriptable extends StdBehavior
 			case 13: // mpunaffect
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String which=Util.getPastBit(s,1);
 				if(newTarget!=null)
-				for(int a=newTarget.numEffects()-1;a>=0;a--)
+				if(which.equalsIgnoreCase("all")||(which.length()==0))
 				{
-					Ability A=newTarget.fetchEffect(a);
+					for(int a=newTarget.numEffects()-1;a>=0;a--)
+					{
+						Ability A=newTarget.fetchEffect(a);
+						if(A!=null)
+							A.unInvoke();
+					}
+				}
+				else
+				{
+					Ability A=newTarget.fetchEffect(which);
 					if(A!=null)
+					{
 						A.unInvoke();
+						if(newTarget.fetchEffect(which)==A)
+							newTarget.delEffect(A);
+					}
 				}
 				break;
 			}
@@ -3737,13 +3751,22 @@ public class Scriptable extends StdBehavior
 			{
 				if(lastKnownLocation!=null)
 				{
-					Environmental E=getArgumentItem(s.substring(7).trim(),source,monster,target,primaryItem,secondaryItem,msg);
+					String s2=s.substring(7).trim();
+					Environmental E=null;
+					if(s2.equalsIgnoreCase("self"))
+						E=scripted;
+					else
+						E=getArgumentItem(s2,source,monster,target,primaryItem,secondaryItem,msg);
 					if(E!=null)
 					{
 						if(E instanceof MOB)
 						{
 							if(!((MOB)E).isMonster())
+							{
+								if(((MOB)E).getStartRoom()!=null)
+									((MOB)E).getStartRoom().bringMobHere((MOB)E,false);
 								((MOB)E).session().setKillFlag(true);
+							}
 							else
 								((MOB)E).destroy();
 						}
@@ -3974,6 +3997,11 @@ public class Scriptable extends StdBehavior
 					}
 					
 					CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
+					if(caged!=null)
+					{
+						((Item)caged).baseEnvStats().setAbility(1);
+						((Item)caged).recoverEnvStats();
+					}
 					if((caged!=null)&&caged.cageMe((MOB)E)&&(lastKnownLocation!=null))
 					{
 						if(arg2.length()>0) ((Item)caged).setName(arg2);

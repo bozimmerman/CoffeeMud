@@ -171,25 +171,30 @@ public class Skill_Track extends StdAbility
 			return false;
 
 		String mobName=Util.combine(commands,0);
-		if(givenTarget==null)
-		if(mobName.length()==0)
+		if((givenTarget==null)
+		&&(mobName.length()==0))
 		{
 			mob.tell("Track whom?");
 			return false;
 		}
 
 		if(givenTarget==null)
-		if(thisRoom.fetchInhabitant(mobName)!=null)
+			givenTarget=CMMap.getRoom(mobName);
+		
+		if(givenTarget==null)
+			givenTarget=CMMap.getArea(mobName);
+
+		if((givenTarget==null)
+		&&(thisRoom.fetchInhabitant(mobName)!=null))
 		{
 			mob.tell("Try 'look'.");
 			return false;
 		}
 
-		boolean success=profficiencyCheck(mob,0,auto);
-		if(givenTarget==null)
-			givenTarget=CMMap.getRoom(mobName);
-
 		Vector rooms=new Vector();
+		if(givenTarget instanceof Area)
+			rooms.addElement(((Area)givenTarget).getRandomRoom());
+		else
 		if(givenTarget instanceof Room)
 			rooms.addElement(givenTarget);
 		else
@@ -217,8 +222,9 @@ public class Skill_Track extends StdAbility
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
-
-
+		
+		boolean success=profficiencyCheck(mob,0,auto);
+		
 		if(rooms.size()>0)
 		{
 			theTrail=null;

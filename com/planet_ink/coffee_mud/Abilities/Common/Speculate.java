@@ -32,7 +32,7 @@ public class Speculate extends CommonSkill
 			{
 				if(success==false)
 				{
-					StringBuffer str=new StringBuffer("Your speculation attempt failed.\n\r");
+					StringBuffer str=new StringBuffer("Your speculate attempt failed.\n\r");
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
