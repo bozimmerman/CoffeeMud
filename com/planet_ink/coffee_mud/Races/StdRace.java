@@ -35,6 +35,9 @@ public class StdRace implements Race
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unknown";}
 	public boolean isGeneric(){return false;}
+	public boolean classless(){return false;}
+	public boolean leveless(){return false;}
+	public boolean expless(){return false;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

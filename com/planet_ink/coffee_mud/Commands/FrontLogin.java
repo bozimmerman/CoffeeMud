@@ -540,21 +540,28 @@ public class FrontLogin extends StdCommand
 											  +Util.padRight("TOTAL POINTS",15)+": "
 											  +CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)*6));
 
-						if(!CMSecurity.isDisabled("CLASSES"))
+						if(!CMSecurity.isDisabled("CLASSES")
+						&&!mob.baseCharStats().getMyRace().classless())
 							mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
 						if(!mob.session().confirm("^!Would you like to re-roll (y/N)?^N","N"))
 							mayCont=false;
 					}
 				}
-				if(!CMSecurity.isDisabled("CLASSES"))
+				if(!CMSecurity.isDisabled("CLASSES")
+				&&!mob.baseCharStats().getMyRace().classless())
 					mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 
 				CharClass newClass=null;
 				Vector qualClasses=classQualifies(mob,theme);
-				if(CMSecurity.isDisabled("CLASSES"))
+				if(CMSecurity.isDisabled("CLASSES")
+				||mob.baseCharStats().getMyRace().classless())
 				{
-				    newClass=CMClass.getCharClass("PlayerClass");
+				    if((qualClasses.size()==1)
+				    &&mob.baseCharStats().getMyRace().classless())
+				        newClass=(CharClass)qualClasses.firstElement();
+				    if(newClass==null)
+					    newClass=CMClass.getCharClass("PlayerClass");
 					if(newClass==null)
 					    newClass=CMClass.getCharClass("StdCharClass");
 				}

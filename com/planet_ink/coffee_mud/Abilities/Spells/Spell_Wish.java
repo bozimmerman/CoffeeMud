@@ -361,6 +361,8 @@ public class Spell_Wish extends Spell
 					//int hp=((MOB)target).curState().getHitPoints();
 					MUDFight.postDeath(mob,(MOB)target,null);
 					if((!CMSecurity.isDisabled("EXPERIENCE"))
+					&&!mob.charStats().getCurrentClass().expless()
+					&&!mob.charStats().getMyRace().expless()
 					&&(mob.getExperience()>exp))
 					{
 						baseLoss=mob.getExperience()-exp;

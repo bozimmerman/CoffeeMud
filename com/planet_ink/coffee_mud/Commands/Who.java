@@ -39,14 +39,30 @@ public class Who extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		if(!CMSecurity.isDisabled("RACES"))
-			msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
+		{
+		    if(who.charStats().getCurrentClass().raceless())
+				msg.append(Util.padRight(" ",12)+" ");
+		    else
+				msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
+		}
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(" ");
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled("CLASSES"))
-			msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
+		{
+		    if(who.charStats().getMyRace().classless())
+				msg.append(Util.padRight(" ",12)+" ");
+		    else
+				msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
+		}
 		if(!CMSecurity.isDisabled("LEVELS"))
-			msg.append(Util.padRight(levelStr,7));
+		{
+		    if(who.charStats().getMyRace().leveless()
+		    ||who.charStats().getMyRace().leveless())
+				msg.append(Util.padRight(" ",12)+" ");
+		    else
+				msg.append(Util.padRight(levelStr,7));
+		}
 		String name=null;
 		if(Util.bset(who.envStats().disposition(),EnvStats.IS_CLOAKED))
 			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";

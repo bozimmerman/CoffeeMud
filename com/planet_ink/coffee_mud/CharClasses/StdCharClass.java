@@ -47,6 +47,9 @@ public class StdCharClass implements CharClass, Cloneable
 	protected int requiredArmorSourceMinor(){return -1;}
 	protected String armorFailMessage(){return "<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!";}
 	private static boolean commonMapped=false;
+	public boolean raceless(){return false;}
+	public boolean leveless(){return false;}
+	public boolean expless(){return false;}
 	
 	public StdCharClass()
 	{

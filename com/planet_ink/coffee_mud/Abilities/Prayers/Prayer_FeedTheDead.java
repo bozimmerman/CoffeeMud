@@ -41,7 +41,10 @@ public class Prayer_FeedTheDead extends Prayer
 				return false;
 			}
 			amount=Util.s_int((String)commands.lastElement());
-			if((amount<=0)||((amount>mob.getExperience())&&(!CMSecurity.isDisabled("EXPERIENCE"))))
+			if((amount<=0)||((amount>mob.getExperience())
+			&&(!CMSecurity.isDisabled("EXPERIENCE"))
+			&&!mob.charStats().getCurrentClass().expless()
+			&&!mob.charStats().getMyRace().expless()))
 			{
 				mob.tell("You cannot feed "+amount+" experience.");
 				return false;

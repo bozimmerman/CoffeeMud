@@ -53,6 +53,11 @@ public class GenRace extends StdRace
 	public String racialCategory(){return racialCategory;}
 	public boolean isGeneric(){return true;}
 
+	protected int disableFlags=0;
+	public boolean classless(){return (disableFlags&1)==1;}
+	public boolean leveless(){return (disableFlags&2)==2;}
+	public boolean expless(){return (disableFlags&4)==4;}
+	
 	//                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}

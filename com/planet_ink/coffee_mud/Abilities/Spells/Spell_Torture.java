@@ -108,7 +108,9 @@ public class Spell_Torture extends Spell
 			}
 	        break;
         case 14:
-			if(!CMSecurity.isDisabled("EXPERIENCE"))
+			if(!CMSecurity.isDisabled("EXPERIENCE")
+			&&!mob.charStats().getCurrentClass().expless()
+			&&!mob.charStats().getMyRace().expless())
 				mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 				"<S-NAME> mutters that <S-HE-SHE> scored "+mob.getExperience()+" experience points.");
 	        break;

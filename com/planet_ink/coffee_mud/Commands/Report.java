@@ -37,6 +37,8 @@ public class Report extends BaseAbleLister
 							   +" mana, "+mob.curState().getMovement()
 							   +"/"+mob.maxState().getMovement()+" move");
 			if((!CMSecurity.isDisabled("EXPERIENCE"))
+			&&!mob.charStats().getCurrentClass().expless()
+			&&!mob.charStats().getMyRace().expless()
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
 			buf.append(".\"");

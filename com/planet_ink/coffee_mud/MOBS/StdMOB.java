@@ -1972,7 +1972,9 @@ public class StdMOB implements MOB
 				CommonMsgs.flee(this,"");
 				break;
 			case CMMsg.TYP_EXPCHANGE:
-			    if(!CMSecurity.isDisabled("EXPERIENCE"))
+			    if(!CMSecurity.isDisabled("EXPERIENCE")
+				&&!charStats().getCurrentClass().expless()
+				&&!charStats().getMyRace().expless())
 				{
 					MOB victim=null;
 					if(msg.target() instanceof MOB)
@@ -2033,21 +2035,33 @@ public class StdMOB implements MOB
 					if(!isMonster())
 					{
 						String levelStr=null;
-						if((!CMSecurity.isDisabled("CLASSES"))&&(!CMSecurity.isDisabled("LEVELS")))
+						if((!CMSecurity.isDisabled("CLASSES"))
+						&&(!charStats().getMyRace().classless())
+						&&(!charStats().getCurrentClass().leveless())
+						&&(!charStats().getMyRace().leveless())
+						&&(!CMSecurity.isDisabled("LEVELS")))
 							levelStr=charStats().displayClassLevel(this,false);
 						else
-						if(CMSecurity.isDisabled("CLASSES"))
+						if((!CMSecurity.isDisabled("LEVELS"))
+						&&(!charStats().getCurrentClass().leveless())
+						&&(!charStats().getMyRace().leveless()))
 						    levelStr=charStats().displayClassLevelOnly(this);
 						else
+						if((!CMSecurity.isDisabled("CLASSES"))
+						&&(!charStats().getMyRace().classless()))
 						    levelStr=charStats().displayClassName();
 						myDescription.append(name()+" the ");
-						if(!CMSecurity.isDisabled("RACES"))
+						if((!CMSecurity.isDisabled("RACES"))
+						&&(!charStats.getCurrentClass().raceless()))
 						{
 							if(charStats.getStat(CharStats.AGE)>0)
 							    myDescription.append(charStats.ageName().toLowerCase()+" ");
 							myDescription.append(charStats().raceName());
 						}
-						myDescription.append(" is a "+levelStr+".\n\r");
+						if(levelStr!=null)
+							myDescription.append(" is a "+levelStr+".\n\r");
+						else
+						    myDescription.append("is here.\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -2219,12 +2233,20 @@ public class StdMOB implements MOB
 					if(!isMonster())
 					{
 						String levelStr=null;
-						if((!CMSecurity.isDisabled("CLASSES"))&&(!CMSecurity.isDisabled("LEVELS")))
+						if((!CMSecurity.isDisabled("CLASSES"))
+						&&(!charStats.getMyRace().classless())
+						&&(!charStats.getMyRace().leveless())
+						&&(!charStats.getCurrentClass().leveless())
+						&&(!CMSecurity.isDisabled("LEVELS")))
 							levelStr=charStats().displayClassLevel(this,false);
 						else
-						if(CMSecurity.isDisabled("CLASSES"))
+						if((!CMSecurity.isDisabled("LEVELS"))
+						&&(!charStats.getMyRace().leveless())
+						&&(!charStats.getCurrentClass().leveless()))
 						    levelStr=charStats().displayClassLevelOnly(this);
 						else
+						if((!CMSecurity.isDisabled("CLASSES"))
+						&&(!charStats.getMyRace().classless()))
 						    levelStr=charStats().displayClassName();
 						myDescription.append(name()+" the ");
 						if(!CMSecurity.isDisabled("RACES"))
@@ -2233,7 +2255,10 @@ public class StdMOB implements MOB
 							    myDescription.append(charStats.ageName().toLowerCase()+" ");
 							myDescription.append(charStats().raceName());
 						}
-						myDescription.append(" is a "+levelStr+".\n\r");
+						if(levelStr!=null)
+							myDescription.append(" is a "+levelStr+".\n\r");
+						else
+						    myDescription.append("is here.\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");

@@ -49,6 +49,7 @@ public class GenCharClass extends StdCharClass
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
 	protected CharState adjState=null;
+	protected int disableFlags=0;
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
 	
 	public boolean isGeneric(){return true;}
@@ -66,6 +67,10 @@ public class GenCharClass extends StdCharClass
 	public String otherLimitations(){return otherLimitations;}
 	public String otherBonuses(){return otherBonuses;}
 	public int availabilityCode(){return selectability;}
+	
+	public boolean raceless(){return (disableFlags&1)==1;}
+	public boolean leveless(){return (disableFlags&2)==2;}
+	public boolean expless(){return (disableFlags&4)==4;}
 	
 	public String weaponLimitations()
 	{

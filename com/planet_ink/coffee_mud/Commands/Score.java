@@ -34,7 +34,11 @@ public class Score extends Affect
 		StringBuffer msg=new StringBuffer("");
 
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-		if((!CMSecurity.isDisabled("CLASSES"))&&(!CMSecurity.isDisabled("LEVELS")))
+		if((!CMSecurity.isDisabled("CLASSES"))
+		&&(!mob.charStats().getMyRace().classless())
+		&&(!CMSecurity.isDisabled("LEVELS"))
+		&&(!mob.charStats().getMyRace().leveless())
+		&&(!mob.charStats().getCurrentClass().leveless()))
 		{
 			String levelStr=null;
 			if(classLevel>=mob.envStats().level())
@@ -44,7 +48,9 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		}
 		else
-		if(CMSecurity.isDisabled("CLASSES"))
+		if((!CMSecurity.isDisabled("LEVELS"))
+		&&(!mob.charStats().getCurrentClass().leveless())
+		&&(!mob.charStats().getMyRace().leveless()))
 		{
 			String levelStr=null;
 			if(classLevel>=mob.envStats().level())
@@ -54,7 +60,11 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^?^H"+levelStr+"^?.\n\r");
 		}
 		else
+		if((!CMSecurity.isDisabled("CLASSES"))
+		&&(!mob.charStats().getMyRace().classless()))
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+mob.charStats().getCurrentClass().name()+"^?.\n\r");
+		else
+			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 		    
 		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.getVar(CommonStrings.SYSTEM_IMAGEURL)+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 		if((!CMSecurity.isDisabled("CLASSES"))
@@ -86,7 +96,8 @@ public class Score extends Affect
 		if(mob.baseCharStats().getStat(CharStats.AGE)>0)
 		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.AGE)+"^? year old ");
 		msg.append("^!"+genderName);
-		if(!CMSecurity.isDisabled("RACES"))
+		if((!CMSecurity.isDisabled("RACES"))
+		&&(!mob.charStats().getCurrentClass().raceless()))
 			msg.append(" "+mob.charStats().getMyRace().name() + "^?");
 		else
 			msg.append("^?");
@@ -120,7 +131,9 @@ public class Score extends Affect
 			msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseWeight()+" pounds.\n\r");
 		msg.append("You have ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
-		if(!CMSecurity.isDisabled("EXPERIENCE"))
+		if(!CMSecurity.isDisabled("EXPERIENCE")
+		&&!mob.charStats().getCurrentClass().expless()
+		&&!mob.charStats().getMyRace().expless())
 			msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
 		&&(mob.baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
