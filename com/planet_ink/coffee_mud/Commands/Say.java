@@ -115,6 +115,7 @@ public class Say extends StdCommand
 			mob.tell("You don't see '"+whom+"' here to speak to.");
 			return false;
 		}
+		combinedCommands=CommonStrings.applyFilter(combinedCommands,CommonStrings.SYSTEM_SAYFILTER);
 
 		FullMsg msg=null;
 		if(target==null)

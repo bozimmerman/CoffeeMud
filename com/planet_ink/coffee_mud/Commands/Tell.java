@@ -97,6 +97,7 @@ public class Tell extends StdCommand
 			mob.tell("Tell them what?");
 			return false;
 		}
+		combinedCommands=CommonStrings.applyFilter(combinedCommands,CommonStrings.SYSTEM_SAYFILTER);
 		if(target==null)
 		{
 			if(targetName.indexOf("@")>=0)

@@ -116,10 +116,14 @@ public class WaterSurface extends StdRoom implements Drink
 		if(((msg.targetMinor()==CMMsg.TYP_LEAVE)
 			||(msg.targetMinor()==CMMsg.TYP_ENTER)
 			||(msg.targetMinor()==CMMsg.TYP_FLEE))
-		   &&(msg.amITarget(room))
-		   &&(!Sense.isFalling(msg.source()))
-		   &&(!Sense.isInFlight(msg.source()))
-		   &&(!Sense.isWaterWorthy(msg.source())))
+		&&(msg.amITarget(room))
+		&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
+		&&((msg.targetMinor()==CMMsg.TYP_ENTER)
+		   ||(!(msg.tool() instanceof Ability))
+		   ||(!Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		&&(!Sense.isFalling(msg.source()))
+		&&(!Sense.isInFlight(msg.source()))
+		&&(!Sense.isWaterWorthy(msg.source())))
 		{
 			MOB mob=msg.source();
 			boolean hasBoat=false;

@@ -212,14 +212,16 @@ public class IMudInterface implements ImudServices, Serializable
 					return;
 				int channelInt=ChannelSet.getChannelInt(channelName);
 				if(channelInt<0) return;
+				ck.message=fixColors(CommonStrings.applyFilter(ck.message,CommonStrings.SYSTEM_CHANNELFILTER));
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
-					String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
+					String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^?^.";
 					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
-					String msgs=socialFixIn(fixColors(ck.message));
+					String msgs=socialFixIn(ck.message);
+					msgs=CommonStrings.applyFilter(msgs,CommonStrings.SYSTEM_EMOTEFILTER);
 					String str="^Q^q["+channelName+"] "+msgs+"^?^.";
 					msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
@@ -387,7 +389,8 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{
-					CommonMsgs.say(mob,smob,fixColors(tk.message),true,true);
+					tk.message=fixColors(CommonStrings.applyFilter(tk.message,CommonStrings.SYSTEM_SAYFILTER));
+					CommonMsgs.say(mob,smob,tk.message,true,true);
 					break;
 				}
 			}

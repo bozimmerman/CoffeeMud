@@ -52,7 +52,9 @@ public class BaseChanneler extends StdCommand
 	{
 		int channelInt=ChannelSet.getChannelInt(channelName);
 		if(channelInt<0) return;
-
+		
+		message=CommonStrings.applyFilter(message,CommonStrings.SYSTEM_CHANNELFILTER);
+		
 		String mask=ChannelSet.getChannelMask(channelInt);
 		channelName=ChannelSet.getChannelName(channelInt);
 
@@ -76,6 +78,7 @@ public class BaseChanneler extends StdCommand
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else
 			{
+				msgstr=CommonStrings.applyFilter(msgstr,CommonStrings.SYSTEM_EMOTEFILTER);
 				String str="["+channelName+"] "+mob.name()+" "+msgstr+"^?^.";
 				msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^q"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q"+str);
 			}

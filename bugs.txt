@@ -1,5 +1,3 @@
-there is still the recall bug at New Thalos#9789. If you attempt to recall from this room, it tells you that you need to swim or ride a boat that way.
-Now on to Pixies... I have managed to make the pixies glow using the  IS_GLOWING, but they dont actually give off any light. I have tried  isLit as in the light interface command, I have tried  IS_LIGHTSOURCE, but no go there either.. any ideas?
 I think adding censoring abilities -- masks and filters and so forth, would probably handle the other crudeness situations that people are expressing concern about.  Another INI setting perhaps?
 genmob, Dispostions, Evil/Good Aura don't do anything.  GenPortal - Ride Type is an option to change, but one cannot change it
 an ahelp file for COLORLIST which shows the names of colors in their respective colors, and the command to color something that particular color.

@@ -58,7 +58,10 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_BUDGET=32;
 	public static final int SYSTEM_DEVALUERATE=33;
 	public static final int SYSTEM_INVRESETRATE=34;
-	public static final int NUM_SYSTEM=35;
+	public static final int SYSTEM_EMOTEFILTER=35;
+	public static final int SYSTEM_SAYFILTER=36;
+	public static final int SYSTEM_CHANNELFILTER=37;
+	public static final int NUM_SYSTEM=38;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -102,6 +105,9 @@ public class CommonStrings extends Scriptable
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
 	private static Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
+	private static Vector sayFilter=new Vector();
+	private static Vector channelFilter=new Vector();
+	private static Vector emoteFilter=new Vector();
 	
 	public static int pkillLevelDiff=26;
 
@@ -207,6 +213,12 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
 		setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
 		setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
+		setVar(SYSTEM_EMOTEFILTER,page.getStr("EMOTEFILTER"));
+		emoteFilter=Util.parse((page.getStr("EMOTEFILTER")).toUpperCase());
+		setVar(SYSTEM_SAYFILTER,page.getStr("SAYFILTER"));
+		sayFilter=Util.parse((page.getStr("SAYFILTER")).toUpperCase());
+		setVar(SYSTEM_CHANNELFILTER,page.getStr("CHANNELFILTER"));
+		channelFilter=Util.parse((page.getStr("CHANNELFILTER")).toUpperCase());
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else
@@ -679,6 +691,52 @@ public class CommonStrings extends Scriptable
 
 	public static String msp(String soundName, int priority)
 	{ return msp(soundName,50,Dice.roll(1,50,priority));}
+	
+	public static String applyFilter(String msg, int whichFilter)
+	{
+		Vector filter=null;
+		switch(whichFilter)
+		{
+		case SYSTEM_EMOTEFILTER: filter=emoteFilter; break;
+		case SYSTEM_SAYFILTER: filter=sayFilter; break;
+		case SYSTEM_CHANNELFILTER: filter=channelFilter; break;
+		}
+		if((filter==null)||(filter.size()==0)) 
+			return msg;
+		
+		int fdex=0;
+		int len=0;
+		StringBuffer newMsg=null;
+		String upp=msg.toUpperCase();
+		for(int f=0;f<filter.size();f++)
+		{
+			fdex=upp.indexOf((String)filter.elementAt(f));
+			while(fdex>=0)
+			{
+				len=fdex+((String)filter.elementAt(f)).length();
+				if(((fdex==0)
+					||(Character.isWhitespace(upp.charAt(fdex-1)))
+					||((fdex>1)&&(upp.charAt(fdex-2)=='^')))
+				&&((len==upp.length())
+					||(!Character.isLetter(upp.charAt(len)))))
+				{
+					
+					for(;fdex<len;fdex++)
+						if(!Character.isWhitespace(msg.charAt(fdex)))
+						{
+							if(newMsg==null) newMsg=new StringBuffer(msg);
+							newMsg.setCharAt(fdex,'*');
+							upp=newMsg.toString().toUpperCase();
+						}
+					fdex=upp.indexOf((String)filter.elementAt(f));
+				}
+				else
+					fdex=-1;
+			}
+		}
+		if(newMsg!=null) return newMsg.toString();
+		return msg;
+	}
 
 	public static String[] armorStrs={
 	"vulnerable",

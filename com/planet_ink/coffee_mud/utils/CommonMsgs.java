@@ -180,6 +180,7 @@ public class CommonMsgs
 						   boolean tellFlag)
 	{
 		Room location=mob.location();
+		text=CommonStrings.applyFilter(text,CommonStrings.SYSTEM_SAYFILTER);
 		if(target!=null)
 			location=target.location();
 		if(location==null) return;
