@@ -266,6 +266,7 @@ public class CommonSkill extends StdAbility
 			case EnvResource.MATERIAL_LIQUID:
 			case EnvResource.MATERIAL_WOODEN:
 			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_PRECIOUS:
 			{
 				I=CMClass.getItem("GenResource");
 				break;

@@ -304,6 +304,7 @@ public class Cooking extends CommonSkill
 		case EnvResource.MATERIAL_METAL:
 		case EnvResource.MATERIAL_MITHRIL:
 		case EnvResource.MATERIAL_ROCK:
+		case EnvResource.MATERIAL_PRECIOUS:
 			break;
 		default:
 			mob.tell(target.name()+" is not suitable to cook in.");

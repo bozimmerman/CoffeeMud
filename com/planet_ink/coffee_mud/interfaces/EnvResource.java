@@ -15,6 +15,7 @@ public interface EnvResource extends Item
 	public final static int MATERIAL_PAPER=9<<8;
 	public final static int MATERIAL_ROCK=10<<8;
 	public final static int MATERIAL_LIQUID=11<<8;
+	public final static int MATERIAL_PRECIOUS=12<<8;
 
 	public final static int MATERIAL_MASK=255<<8;
 	
@@ -31,7 +32,8 @@ public interface EnvResource extends Item
 	"FLESH",
 	"PAPER",
 	"ROCK",
-	"LIQUID"};
+	"LIQUID",
+	"PRECIOUS"};
 	
 	public final static int RESOURCE_NOTHING=MATERIAL_UNKNOWN|0;
 	public final static int RESOURCE_MEAT=MATERIAL_FLESH|1;
@@ -65,7 +67,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_OBSIDIAN=MATERIAL_ROCK|29;
 	public final static int RESOURCE_MARBLE=MATERIAL_ROCK|30;
 	public final static int RESOURCE_SAND=MATERIAL_ROCK|31;
-	public final static int RESOURCE_JADE=MATERIAL_ROCK|32;
+	public final static int RESOURCE_JADE=MATERIAL_PRECIOUS|32;
 	public final static int RESOURCE_IRON=MATERIAL_METAL|33;
 	public final static int RESOURCE_LEAD=MATERIAL_METAL|34;
 	public final static int RESOURCE_BRONZE=MATERIAL_METAL|35;
@@ -100,22 +102,22 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_PAPER=MATERIAL_PAPER|64;
 	public final static int RESOURCE_CLAY=MATERIAL_GLASS|65;
 	public final static int RESOURCE_CHINA=MATERIAL_GLASS|66;
-	public final static int RESOURCE_DIAMOND=MATERIAL_ROCK|67;
+	public final static int RESOURCE_DIAMOND=MATERIAL_PRECIOUS|67;
 	public final static int RESOURCE_CRYSTAL=MATERIAL_GLASS|68;
-	public final static int RESOURCE_GEM=MATERIAL_ROCK|69;
-	public final static int RESOURCE_PEARL=MATERIAL_ROCK|70;
+	public final static int RESOURCE_GEM=MATERIAL_PRECIOUS|69;
+	public final static int RESOURCE_PEARL=MATERIAL_PRECIOUS|70;
 	public final static int RESOURCE_PLATINUM=MATERIAL_METAL|71;
 	public final static int RESOURCE_MILK=MATERIAL_LIQUID|72;
 	public final static int RESOURCE_EGGS=MATERIAL_FLESH|73;
 	public final static int RESOURCE_HOPS=MATERIAL_VEGETATION|74;
 	public final static int RESOURCE_COFFEEBEANS=MATERIAL_VEGETATION|75;
 	public final static int RESOURCE_COFFEE=MATERIAL_LIQUID|76;
-	public final static int RESOURCE_OPAL=MATERIAL_ROCK|77;
+	public final static int RESOURCE_OPAL=MATERIAL_PRECIOUS|77;
 	public final static int RESOURCE_TOPAZ=MATERIAL_ROCK|78;
-	public final static int RESOURCE_AMETHYST=MATERIAL_ROCK|79;
-	public final static int RESOURCE_GARNET=MATERIAL_ROCK|80;
+	public final static int RESOURCE_AMETHYST=MATERIAL_PRECIOUS|79;
+	public final static int RESOURCE_GARNET=MATERIAL_PRECIOUS|80;
 	public final static int RESOURCE_AMBER=MATERIAL_ROCK|81;
-	public final static int RESOURCE_AQUAMARINE=MATERIAL_ROCK|82;
+	public final static int RESOURCE_AQUAMARINE=MATERIAL_PRECIOUS|82;
 	public final static int RESOURCE_CRYSOBERYL=MATERIAL_ROCK|83;
 	public final static int RESOURCE_IRONWOOD=MATERIAL_WOODEN|84;
 	public final static int RESOURCE_SILK=MATERIAL_CLOTH|85;

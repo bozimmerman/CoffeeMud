@@ -99,6 +99,8 @@ public class Spell_Shatter extends Spell
 					case EnvResource.MATERIAL_ROCK:
 						damage=(int)Math.round(Util.mul(damage,2.0));
 						break;
+					case EnvResource.MATERIAL_PRECIOUS:
+						break;
 					}
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(target.usesRemaining()>0)

@@ -1,11 +1,14 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+% Chessboard	1	80	30	250	GenItem		0	
+% Cup	1	20	10	0	GenWater		5	
+% Mug	1	20	10	0	GenWater		5	
+% Plate	1	20	10	0	GenContainer		5	
+% Lamp	1	30	25	50	GenLantern		0	
+% Bowl	1	20	10	0	GenWater		5	
+% Box	1	30	80	0	GenContainer		25	
+% Table	6	30	250	20	GenRideable	TABLE	150	
+% Stool	6	30	50	6	GenChair	CHAIR	1	
+% Chair	6	30	80	10	GenChair	CHAIR	1	
+% Bench	6	40	180	15	GenChair	CHAIR	4	10
+% Bed	6	50	350	20	GenBed	BED	2	
+% Statue	12	120	450	100	GenItem	STATUE	0	
+% Pillar	3	30	50	25	GenRideable	TABLE	20	

@@ -142,6 +142,7 @@ public class Druid extends StdCharClass
 						case EnvResource.MATERIAL_LEATHER:
 						case EnvResource.MATERIAL_FLESH:
 						case EnvResource.MATERIAL_ROCK:
+						case EnvResource.MATERIAL_PRECIOUS:
 						case EnvResource.MATERIAL_PAPER:
 							break;
 						default:

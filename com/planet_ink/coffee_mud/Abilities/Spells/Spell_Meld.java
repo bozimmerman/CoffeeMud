@@ -58,7 +58,8 @@ public class Spell_Meld extends Spell
 					EnvResource.MATERIAL_WOODEN,
 					EnvResource.MATERIAL_METAL,
 					EnvResource.MATERIAL_ROCK,
-					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
+					EnvResource.MATERIAL_PRECIOUS,
+					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
