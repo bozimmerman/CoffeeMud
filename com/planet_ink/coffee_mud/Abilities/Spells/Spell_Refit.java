@@ -39,7 +39,7 @@ public class Spell_Refit extends Spell
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-		if(target instanceof Armor)
+		if(!(target instanceof Armor))
 		{	mob.tell(target.name()+" cannot be refitted."); return false;}
 
 		if(!super.invoke(mob,commands, givenTarget, auto))

@@ -242,6 +242,7 @@ public class SysOpSkills
 			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
+		
 		commands.removeElementAt(0);
 		boolean chariot=false;
 		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
@@ -251,8 +252,12 @@ public class SysOpSkills
 		}
 		Room curRoom=mob.location();
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
-
-		room = findRoom(cmd.toString());
+		
+		int dirCode=Directions.getGoodDirectionCode(cmd.toString());
+		if(dirCode>=0)
+			room=mob.location().rawDoors()[dirCode];
+		if(room==null)
+			room = findRoom(cmd.toString());
 		if(room==null)
 		{
 			if((cmd.charAt(0)=='#')&&(curRoom!=null))

@@ -186,6 +186,7 @@ public class Prop_HaveAdjuster extends Property
 		affectableStats.setSensesMask(affectableStats.sensesMask()|baseEnvStats.sensesMask());
 		affectableStats.setSpeed(affectableStats.speed()+baseEnvStats.speed());
 		affectableStats.setWeight(affectableStats.weight()+baseEnvStats.weight());
+		affectableStats.setHeight(affectableStats.height()+baseEnvStats.height());
 	}
 
 	public static void addMe(MOB lastMOB, CharState adjCharState, Ability me)

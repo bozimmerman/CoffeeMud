@@ -160,7 +160,6 @@ public class CommandSet extends Hashtable
 		put("BUG",new Integer(BUG));
 		put("BUY",new Integer(BUY));
 		put("CLOSE",new Integer(CLOSE));
-			put("C",new Integer(CLOSE));
 			put("CL",new Integer(CLOSE));
 			put("CLO",new Integer(CLOSE));
 		put("CHANNELS",new Integer(CHANNELS));

@@ -606,7 +606,20 @@ public class Spell_Wish extends Spell
 				CharClass C=CMClass.getCharClass((String)wishV.lastElement());
 				if((C!=null)&&(!C.name().equals("Archon")))
 				{
+					CharClass oldC=mob.baseCharStats().getMyClass();
 					mob.baseCharStats().getMyClass().unLevel(mob);
+					StringBuffer str=new StringBuffer("");
+					for(int trait=0;trait<6;trait++)
+					{
+						int oldVal=mob.baseCharStats().getStat(trait);
+						int amountToLose=oldC.getMaxStat(trait)-18;
+						if(amountToLose>0)
+						{
+							mob.baseCharStats().setStat(trait,oldVal-amountToLose);
+							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.TRAITS[trait].toLowerCase()+".");
+						}														
+					}
+					mob.tell(str.toString()+"\n\r");
 					((MOB)target).baseCharStats().setMyClass(C);
 					((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();

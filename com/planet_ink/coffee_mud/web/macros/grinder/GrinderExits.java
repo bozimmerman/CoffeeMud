@@ -76,7 +76,7 @@ public class GrinderExits
 				break;
 			case 7: // hasadoor
 				if(old.equals("on"))
-					E.setDoorsNLocks(true,false,E.defaultsClosed(),E.hasALock(),E.hasALock(),E.defaultsLocked());
+					E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),E.hasALock(),E.hasALock(),E.defaultsLocked());
 				else
 					E.setDoorsNLocks(false,true,false,false,false,false);
 				break;
@@ -94,7 +94,7 @@ public class GrinderExits
 				break;
 			case 12: // hasalock
 				if(old.equals("on"))
-					E.setDoorsNLocks(true,false,E.defaultsClosed(),true,true,E.defaultsLocked());
+					E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),true,E.defaultsLocked(),E.defaultsLocked());
 				else
 					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
 				break;
@@ -141,7 +141,7 @@ public class GrinderExits
 				break;
 			case 22: // is generic
 				break;
-			case 23: // misctext
+			case 23: // door name
 				if(!E.isGeneric())
 					E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
 				break;

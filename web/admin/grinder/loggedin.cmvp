@@ -44,7 +44,7 @@
 </TD>
 </TR></TABLE>
 @else@
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify">
+<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 @endif@
 </TD></TR></TABLE>
 </FORM>
