@@ -824,7 +824,7 @@ public class StdItem implements Item
 		default:
 			break;
 		}
-		mob.tell("You can't do that to "+name()+".");
+		mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 		return false;
 	}
 

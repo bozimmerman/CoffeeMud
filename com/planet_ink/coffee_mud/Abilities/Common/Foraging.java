@@ -100,7 +100,7 @@ public class Foraging extends CommonSkill
 		}
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging for food.");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

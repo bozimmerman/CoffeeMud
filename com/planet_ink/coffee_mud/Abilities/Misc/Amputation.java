@@ -232,7 +232,7 @@ public class Amputation extends StdAbility
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell("You can't do that to '"+targetName+"'.");
+						mob.tell(mob,target,null,"You can't do that to <T-NAMESELF>.");
 					return null;
 				}
 			}

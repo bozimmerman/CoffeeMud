@@ -1371,7 +1371,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_WIELD:
 			case Affect.TYP_MOUNT:
 			case Affect.TYP_DISMOUNT:
-				mob.tell("You can't do that to "+name()+".");
+				mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 				return false;
 			case Affect.TYP_GIVE:
 				if(affect.tool()==null) return false;
