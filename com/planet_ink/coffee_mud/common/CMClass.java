@@ -44,7 +44,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration abilities(){return abilities.elements();}
 	public static synchronized Enumeration sortedAbilities()
 	{
-		if(sortedAbilities==null)
+		if(sortedAbilities.size()!=abilities.size())
 		{
 			sortedAbilities=new Vector();
 			Object[] sorted=(Object[])(new TreeSet(abilities.keySet())).toArray();
@@ -461,7 +461,7 @@ public class CMClass extends ClassLoader
 		miscMagic=new Vector();
 		clantypes=new Vector();
 		areaTypes=new Vector();
-		sortedAbilities=null;
+		sortedAbilities=new Vector();
 	}
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
