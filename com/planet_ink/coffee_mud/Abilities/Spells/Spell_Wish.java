@@ -37,9 +37,9 @@ public class Spell_Wish extends Spell
 		{
 			Item item=(Item)target;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is teleport to "+here.displayText()+"!");
-			item.remove();
+			item.unWear();
 			item.setContainer(null);
-			item.removeThis();
+			item.removeFromOwnerContainer();
 			here.addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}

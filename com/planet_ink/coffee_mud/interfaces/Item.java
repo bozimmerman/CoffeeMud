@@ -29,7 +29,7 @@ public interface Item extends Environmental, Rider
 	public void setUsesRemaining(int newUses);
 	
 	public void destroyThis();
-	public void removeThis();
+	public void removeFromOwnerContainer();
 	public boolean savable();
 	
 	public int value();
@@ -121,7 +121,7 @@ public interface Item extends Environmental, Rider
 	public boolean canWear(MOB mob);
 	public void wearIfPossible(MOB mob);
 	public void wearAt(long wornCode);
-	public void remove();
+	public void unWear();
 	public long rawWornCode();
 	public void setRawWornCode(long newValue);
 	public long rawProperLocationBitmap();

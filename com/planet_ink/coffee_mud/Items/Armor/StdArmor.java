@@ -397,7 +397,7 @@ public class StdArmor extends StdContainer implements Armor
 				MOB owner=(MOB)owner();
 				setUsesRemaining(100);
 				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being worn by <S-NAME> is destroyed!"));
-				remove();
+				unWear();
 				destroyThis();
 				owner.recoverEnvStats();
 				owner.recoverCharStats();

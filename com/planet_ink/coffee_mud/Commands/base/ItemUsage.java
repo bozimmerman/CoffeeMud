@@ -370,7 +370,10 @@ public class ItemUsage
 				if(dropThis!=null)
 				{
 					if((!dropThis.amWearingAt(Item.HELD))&&(!dropThis.amWearingAt(Item.WIELD)))
+					{
 						mob.tell("You must remove that first.");
+						return;
+					}
 					else
 					if(!remove(mob,dropThis,true))
 						return;

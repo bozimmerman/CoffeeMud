@@ -1891,7 +1891,7 @@ public class StdMOB implements MOB
 			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY)))
 			{
 				long oldCode=item.rawWornCode();
-				item.remove();
+				item.unWear();
 				int msgCode=Affect.MSG_WEAR;
 				if((oldCode&Item.WIELD)>0)
 					msgCode=Affect.MSG_WIELD;
@@ -2275,6 +2275,73 @@ public class StdMOB implements MOB
 		return false;
 	}
 
+	public void giveItem(Item thisContainer)
+	{
+		// caller is responsible for recovering any env
+		// stat changes!
+		if(Sense.isHidden(thisContainer))
+			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+		
+		// ensure its out of its previous place
+		Environmental owner=location();
+		if(thisContainer.owner()!=null)
+		{
+			owner=thisContainer.owner();
+			if(thisContainer.owner() instanceof Room)
+				((Room)thisContainer.owner()).delItem(thisContainer);
+			else
+			if(thisContainer.owner() instanceof MOB)
+				((MOB)thisContainer.owner()).delInventory(thisContainer);
+		}
+		location().delItem(thisContainer);
+		
+		thisContainer.unWear();
+		for(int a=thisContainer.numAffects()-1;a>=0;a--)
+		{
+			Ability A=thisContainer.fetchAffect(a);
+			if((A!=null)&&(!A.ID().equals("ItemRejuv")))
+				A.unInvoke();
+		}
+		
+		if(!isMine(thisContainer))
+			addInventory(thisContainer);
+		thisContainer.recoverEnvStats();
+		
+		boolean nothingDone=true;
+		do
+		{
+			nothingDone=true;
+			if(owner instanceof Room)
+			{
+				Room R=(Room)owner;
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item thisItem=R.fetchItem(i);
+					if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					{
+						giveItem(thisItem);
+						nothingDone=false;
+						break;
+					}
+				}
+			}
+			else
+			if(owner instanceof MOB)
+			{
+				MOB M=(MOB)owner;
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item thisItem=M.fetchInventory(i);
+					if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					{
+						giveItem(thisItem);
+						nothingDone=false;
+						break;
+					}
+				}
+			}
+		}while(!nothingDone);
+	}
 	private void fightingFollowers(MOB target, MOB source)
 	{
 		if((source==null)||(target==null)) return;

@@ -97,7 +97,7 @@ public class Spell_Shatter extends Spell
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
 						else
 							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
-						target.remove();
+						target.unWear();
 						target.destroyThis();
 						mob.location().recoverRoomStats();
 					}

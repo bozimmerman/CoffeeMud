@@ -35,7 +35,7 @@ public class StdInnKey extends StdKey implements InnKey
 			if((owner()!=null)&&(owner()==myShopkeeper))
 				return false;
 			if(owner()!=null)
-				removeThis();
+				removeFromOwnerContainer();
 			if(myShopkeeper!=null)
 				myShopkeeper.addStoreInventory(this);
 			return false;

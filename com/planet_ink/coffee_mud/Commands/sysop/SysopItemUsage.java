@@ -38,7 +38,7 @@ public class SysopItemUsage
 			mob.tell(victim.name()+" doesn't seem to have a '"+itemName+"'.");
 			return;
 		}
-		I.remove();
+		I.unWear();
 		FullMsg newMsg=new FullMsg(victim,mob,I,Affect.MASK_GENERAL|Affect.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
 		if(victim.location().okAffect(victim,newMsg))
 			victim.location().send(victim,newMsg);

@@ -30,8 +30,8 @@ public class Trap_Boomerang extends StdTrap
 					disable();
 				if(affected instanceof Item)
 				{
-					((Item)affected).remove();
-					((Item)affected).removeThis();
+					((Item)affected).unWear();
+					((Item)affected).removeFromOwnerContainer();
 					invoker().addInventory((Item)affected);
 				}
 			}

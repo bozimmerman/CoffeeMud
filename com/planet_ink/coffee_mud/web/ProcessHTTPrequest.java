@@ -851,21 +851,22 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 		try
 		{
-			if (sin != null)
+			if (sout != null)
 			{
-				sin.close();
-				sin = null;
+				sout.flush();
+				try{Thread.sleep(500);}catch(Exception e){}
+				sout.close();
+				sout = null;
 			}
 		}
 		catch (Exception e)	{}
 
 		try
 		{
-			if (sout != null)
+			if (sin != null)
 			{
-				sout.flush();
-				sout.close();
-				sout = null;
+				sin.close();
+				sin = null;
 			}
 		}
 		catch (Exception e)	{}

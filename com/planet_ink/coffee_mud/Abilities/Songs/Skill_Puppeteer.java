@@ -144,7 +144,7 @@ public class Skill_Puppeteer extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.remove();
+				target.unWear();
 				if(mob.isMine(target))
 					mob.location().show(mob,target,Affect.MSG_DROP,"<S-NAME> start(s) animating <T-NAME>!");
 				else

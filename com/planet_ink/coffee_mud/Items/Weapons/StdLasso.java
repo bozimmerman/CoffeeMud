@@ -44,7 +44,7 @@ public class StdLasso extends StdWeapon
 		&&(affect.target() instanceof MOB)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 		{
-			remove();
+			unWear();
 			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MASK_GENERAL|Affect.MSG_DROP,null));
 			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),this,Affect.MASK_GENERAL|Affect.MSG_GET,null));
 			affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),this,Affect.MASK_GENERAL|Affect.TYP_GENERAL,null));

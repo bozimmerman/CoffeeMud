@@ -82,7 +82,7 @@ public class Chant_MetalMold extends Chant
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed by mold!");
 						else
 							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed by mold!");
-						target.remove();
+						target.unWear();
 						target.destroyThis();
 						mob.location().recoverRoomStats();
 					}

@@ -17,7 +17,7 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud 3.0 Player Skill Information</h3><P>
+<h3>CoffeeMud 4.0 Player Skill Information</h3><P>
 
 	<TABLE WIDTH=100% BORDER=1> @LevelNext?reset@ 
 	@loop@ @LevelNext@

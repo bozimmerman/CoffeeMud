@@ -58,7 +58,7 @@ public class Chicken extends StdMOB
 				if(I.name().equals("an egg"))
 				{
 					location().show(this,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
-					I.removeThis();
+					I.removeFromOwnerContainer();
 					location().addItemRefuse(I,Item.REFUSE_RESOURCE);
 					location().recoverRoomStats();
 				}

@@ -36,7 +36,7 @@ public class Chant_AntTrain extends Chant
 					mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants.");
 				else
 					mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME>, is carried back into <S-HIS-HER> hands by a departing train of ants.");
-				item.remove();
+				item.unWear();
 			}
 			if(wasntMine)
 				ExternalPlay.drop(mob,item,true);

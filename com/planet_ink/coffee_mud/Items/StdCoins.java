@@ -112,7 +112,7 @@ public class StdCoins extends StdItem implements Coins
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{
 				setContainer(null);
-				remove();
+				unWear();
 				destroyThis();
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				affect.source().location().recoverRoomStats();

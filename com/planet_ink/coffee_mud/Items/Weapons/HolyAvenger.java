@@ -52,7 +52,7 @@ public class HolyAvenger extends TwoHandedSword
 			if((!affect.source().charStats().getCurrentClass().ID().equals("Paladin"))
 			||(affect.source().getAlignment()<650))
 			{
-				remove();
+				unWear();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,name()+" flashes and flys out of <S-HIS-HER> hands!");
 				if(affect.source().isMine(this))
 					ExternalPlay.drop(affect.source(),this,true);

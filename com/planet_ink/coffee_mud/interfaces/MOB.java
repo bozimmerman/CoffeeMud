@@ -180,6 +180,7 @@ public interface MOB
 	public boolean amWearingSomethingHere(long wornCode);
 	public boolean isMine(Environmental env);
 	public void confirmWearability();
+	public void giveItem(Item thisContainer);
 
 	/** Manipulation of followers */
 	public void addFollower(MOB follower);

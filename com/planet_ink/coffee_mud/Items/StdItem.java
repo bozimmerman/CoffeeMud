@@ -189,7 +189,7 @@ public class StdItem implements Item
 	{
 		if(wornCode==Item.INVENTORY)
 		{
-			remove();
+			unWear();
 			return;
 		}
 		if(wornLogicalAnd)
@@ -268,7 +268,7 @@ public class StdItem implements Item
 		myWornCode=newValue;
 	}
 
-	public void remove()
+	public void unWear()
 	{
 		setRawWornCode(Item.INVENTORY);
 		recoverEnvStats();
@@ -862,7 +862,7 @@ public class StdItem implements Item
 					mob.location().delItem(this);
 				if(!mob.isMine(this))
 					mob.addInventory(this);
-				remove();
+				unWear();
 				mob.location().recoverRoomStats();
 			}
 			break;
@@ -878,7 +878,7 @@ public class StdItem implements Item
 				if(mob.location()!=affect.tool())
 					mob.location().recoverRoomStats();
 			}
-			remove();
+			unWear();
 			setContainer(null);
 			break;
 		case Affect.TYP_DROP:
@@ -889,7 +889,7 @@ public class StdItem implements Item
 					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
 				mob.location().recoverRoomStats();
 			}
-			remove();
+			unWear();
 			setContainer(null);
 			break;
 		case Affect.TYP_WRITE:
@@ -946,7 +946,7 @@ public class StdItem implements Item
 		recoverEnvStats();
 	}
 
-	public void removeThis()
+	public void removeFromOwnerContainer()
 	{
 		myContainer=null;
 
@@ -967,7 +967,7 @@ public class StdItem implements Item
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
-					thisItem.removeThis();
+					thisItem.removeFromOwnerContainer();
 			}
 			thisRoom.delItem(this);
 		}
@@ -981,7 +981,7 @@ public class StdItem implements Item
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
-					thisItem.removeThis();
+					thisItem.removeFromOwnerContainer();
 			}
 			mob.delInventory(this);
 		}

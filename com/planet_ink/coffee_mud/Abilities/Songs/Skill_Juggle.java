@@ -18,31 +18,328 @@ public class Skill_Juggle extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Juggle();}
 	protected Vector juggles=new Vector();
-
-	public boolean okAffect(Environmental myHost, Affect affect)
+	protected long lastJuggle=-1;
+	protected boolean pause=false;
+	
+	public int maxJuggles()
 	{
-		return super.okAffect(myHost,affect);
+		if((affected!=null)&&(affected instanceof MOB))
+			return 5+(CMAble.qualifyingClassLevel((MOB)affected,this));
+		return 5;
+	}
+	
+	public int maxAttacks()
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+			return (int)Math.round(affected.envStats().speed())
+				   +(CMAble.qualifyingClassLevel((MOB)affected,this)/5);
+		return 1;
+	}
+	
+	public String displayText()
+	{
+		if(juggles.size()>0)
+		{
+			StringBuffer str=new StringBuffer("(Juggling: ");
+			Vector V=(Vector)juggles.clone();
+			for(int i=0;i<V.size();i++)
+			{
+				Item I=(Item)V.elementAt(i);
+				boolean back=false;
+				for(int ii=0;ii<i;ii++)
+				{
+					Item I2=(Item)V.elementAt(ii);
+					if(I2.name().equals(I.name()))
+					{ back=true; break;}
+				}
+				if(back) continue;
+				boolean morethanone=false;
+				for(int ii=i+1;ii<V.size();ii++)
+				{
+					Item I2=(Item)V.elementAt(ii);
+					if(I2.name().equals(I.name()))
+					{ morethanone=true; break;}
+				}
+				str.append(I.name()+(morethanone?"s":"")+" ");
+			}
+			return str.toString()+")";
+		}
+		else
+			return "(Juggling??)";
+			
+	}
+
+	private void unJuggle(Item I)
+	{
+		if(I==null) return;
+		Ability A=I.fetchAffect("Spell_Fly");
+		if(A!=null) A.unInvoke();
+		juggles.removeElement(I);
+	}
+	
+	public void juggleItem(Item I)
+	{
+		if(I==null) return;
+		if(juggles.contains(I)) return;
+		if(I.fetchAffect("Spell_Fly")==null)
+		{
+			Ability A=CMClass.getAbility("Spell_Fly");
+			if(A!=null)
+			{
+				I.addAffect(A);
+				I.recoverEnvStats();
+			}
+		}
+		juggles.addElement(I);
+	}
+	
+	private synchronized void juggle()
+	{
+		boolean anythingToDo=false;
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB M=(MOB)affected;
+		Room R=M.location();
+		if(R==null) return;
+		for(int i=0;i<juggles.size();i++)
+		{
+			Item I=null;
+			try{I=(Item)juggles.elementAt(i);}catch(Exception e){}
+			if((I==null)
+			||(I.owner()==null)
+			||((I.owner() instanceof MOB)&&(I.owner()!=M))
+			||((I.owner() instanceof Room)&&(I.owner()!=R)))
+			{ 
+				anythingToDo=true;
+				break;
+			}
+		}
+		if(anythingToDo)
+		{
+			Vector copy=(Vector)juggles.clone();
+			for(int i=0;i<copy.size();i++)
+			{
+				Item I=(Item)copy.elementAt(i);
+				if((I.owner()==null)
+				||((I.owner() instanceof MOB)&&(I.owner()!=M)))
+					unJuggle(I);
+				else
+				if((I.owner() instanceof Room)&&(I.owner()!=R))
+					R.bringItemHere(I);
+			}
+		}
+		pause=true;
+		for(int i=0;i<M.inventorySize();i++)
+		{
+			Item I=M.fetchInventory(i);
+			if((I!=null)
+			&&((I.amWearingAt(Item.WIELD)||I.amWearingAt(Item.HELD)))
+			&&(!juggles.contains(I))
+			&&(juggles.size()<maxJuggles()))
+			{
+				if(M.location().show(M,I,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>."))
+					juggleItem(I);
+				else
+				{
+					unJuggle(I);
+					ExternalPlay.drop(M,I,false);
+					break;
+				}
+			}
+		}
+		pause=false;
+		if(juggles.size()==0)
+		{ 
+			unInvoke();
+			return;
+		}
+		if(lastJuggle>(System.currentTimeMillis()-500))
+			return;
+		lastJuggle=System.currentTimeMillis();
+		Vector copy=(Vector)juggles.clone();
+		int jug=-1;
+		for(int i=0;i<copy.size();i++)
+		{
+			Item I=(Item)copy.elementAt(i);
+			if(I.amWearingAt(Item.WIELD)||I.amWearingAt(Item.HELD))
+			{
+				I.setRawWornCode(Item.INVENTORY);
+				jug=i;
+			}
+		}
+		jug++;
+		if((jug<0)||(jug>=copy.size()-2))
+			jug=0;
+		for(int i=0;i<copy.size();i++)
+		{
+			Item I=(Item)copy.elementAt(i);
+			if((i==jug)||(i==jug+1))
+			{
+				if(!M.isMine(I))
+					M.giveItem(I);
+				if(i==jug)
+					I.setRawWornCode(Item.WIELD);
+				else
+					I.setRawWornCode(Item.HELD);
+			}
+			else
+			{
+				I.unWear();
+				if(!M.location().isContent(I))
+					M.location().bringItemHere(I);
+			}
+		}
+		M.location().recoverRoomStats();
+	}
+	
+	public void affect(Environmental myHost, Affect affect)
+	{
+		if(!pause)
+		{
+			juggle();
+			if((affect.targetMinor()==Affect.TYP_GET)
+			&&(affect.target()!=null)
+			&&(affect.target() instanceof Item)
+			&&(juggles.contains(affect.target())))
+			{
+				unJuggle((Item)affect.target());
+				if(juggles.size()==0) 
+					unInvoke();
+			}
+		}
+		super.affect(myHost,affect);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		if(!pause)
+		{
+			juggle();
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(juggles.size()>0))
+			{
+				MOB mob=(MOB)affected;
+				if(mob.location()!=null)
+				{
+					if(!mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> juggle(s) "+juggles.size()+" items in the air."))
+					   unInvoke();
+					else
+					if(mob.isInCombat())
+					{
+						Vector copy=(Vector)juggles.clone();
+						int maxAttacks=maxAttacks();
+						for(int i=0;((i<maxAttacks)&&(copy.size()>0));i++)
+						{
+							Item I=(Item)copy.elementAt(Dice.roll(1,copy.size(),-1));
+							I.unWear();
+							mob.giveItem(I);
+							if((mob.isMine(I))&&(ExternalPlay.drop(mob,I,true)))
+							{
+								Weapon w=(Weapon)CMClass.getWeapon("StdWeapon");
+								w.setName(I.name());
+								w.setDisplayText(I.displayText());
+								w.setDescription(I.description());
+								copy.removeElement(I);
+								unJuggle(I);
+								w.setWeaponClassification(Weapon.CLASS_RANGED);
+								w.setRanges(0,10);
+								if(I instanceof Weapon)
+									w.setWeaponType(((Weapon)I).weaponType());
+								else
+									w.setWeaponType(Weapon.TYPE_BASHING);
+								w.baseEnvStats().setDamage(1);
+								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
+								w.recoverEnvStats();
+								ExternalPlay.postAttack(mob,mob.getVictim(),w);
+								w.destroyThis();
+							}
+							else
+								break;
+						}
+					}
+				}
+			}
+		}
 		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()
 	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB M=(MOB)affected;
+			while(juggles.size()>0)
+			{
+				Item I=(Item)juggles.elementAt(0);
+				M.location().show(M,I,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
+				unJuggle(I);
+				I.unWear();
+				if(!M.isMine(I)) M.giveItem(I);
+			}
+		}
 		super.unInvoke();
-	}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
-		if(target==null) return false;
+		String whatToJuggle=Util.combine(commands,0);
+		Skill_Juggle A=(Skill_Juggle)mob.fetchAffect("Skill_Juggle");
+		if(whatToJuggle.length()==0)
+		{
+			if(A==null)
+			{
+				mob.tell("Juggle what?");
+				return false;
+			}
+			else
+			{
+				mob.tell("You stop juggling.");
+				A.unInvoke();
+				return true;
+			}
+		}
+		
+		if((A!=null)&&(A.juggles.size()>=A.maxJuggles()))
+		{
+			mob.tell("You are already juggling the most items you can.");
+			return false;
+		}
+		
+		Vector V=new Vector();
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(whatToJuggle.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(4);}
+		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
+		int addendum=1;
+		String addendumStr="";
+		do
+		{
+			Item juggleThis=mob.fetchInventory(null,whatToJuggle+addendumStr);
+			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Item.INVENTORY)))
+			{
+				if((!juggleThis.amWearingAt(Item.HELD))&&(!juggleThis.amWearingAt(Item.WIELD)))
+				{
+					addendumStr="."+(++addendum);
+					continue;
+				}
+				else
+				if(!ExternalPlay.remove(mob,juggleThis,true))
+					return false;
+			}
+			if(juggleThis==null) break;
+			if((Sense.canBeSeenBy(juggleThis,mob))
+			&&((A==null)||(!A.juggles.contains(juggleThis)))
+			&&(!V.contains(juggleThis)))
+				V.addElement(juggleThis);
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+
+		if(V.size()==0)
+		{
+			mob.tell("You don't seem to be carrying that.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -51,15 +348,31 @@ public class Skill_Juggle extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_DELICATE_HANDS_ACT,null);
-			if(mob.location().okAffect(mob,msg))
+			if(A==null)
 			{
-				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,0);
+				A=(Skill_Juggle)mob.fetchAffect(ID());
+				if(A==null) return false;
 			}
+			A.makeLongLasting();
+			A.pause=true;
+			for(int i=0;i<V.size();i++)
+			{
+				Item I=(Item)V.elementAt(i);
+				FullMsg msg=new FullMsg(mob,I,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> start(s) juggling <T-NAMESELF>.");
+				if((A.juggles.size()<A.maxJuggles())
+				&&(mob.location().okAffect(mob,msg)))
+				{
+					mob.location().send(mob,msg);
+					A.juggleItem(I);
+				}
+				else
+					break;
+			}
+			A.pause=false;
 		}
 		else
-			mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> attempt(s) to juggle, but messes up.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<T-NAME> attempt(s) to juggle, but messes up.");
 
 
 		// return whether it worked

@@ -53,8 +53,7 @@ public class Skill_Buffoonery extends StdAbility
 			return false;
 		}
 		if(((I instanceof Armor)&&(I.baseEnvStats().armor()>1))
-		||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1))
-		||((I instanceof Container)&&(((Container)I).getContents().size()>0)))
+		||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1)))
 		{
 			mob.tell(I.name()+" is not buffoonish enough!");
 			return false;
@@ -71,14 +70,10 @@ public class Skill_Buffoonery extends StdAbility
 		{
 			Item I2=target.fetchInventory(i);
 			if((!I2.amWearingAt(Item.INVENTORY))
-			   &&(((I2 instanceof Weapon)&&(I.baseEnvStats().damage()>1))
-				  ||((I2 instanceof Armor)&&(I.baseEnvStats().armor()>1)))
-			   &&(I2.container()==null)
-			   &&((!(I2 instanceof Container))
-				  ||(((Container)I2).getContents().size()==0)))
-			{
+			&&(((I2 instanceof Weapon)&&(I.baseEnvStats().damage()>1))
+			   ||((I2 instanceof Armor)&&(I.baseEnvStats().armor()>1)))
+			&&(I2.container()==null))
 				V.addElement(I2);
-			}
 		}
 		if(V.size()>0)
 			targetItem=(Item)V.elementAt(Dice.roll(1,V.size(),-1));
@@ -110,7 +105,7 @@ public class Skill_Buffoonery extends StdAbility
 				if(targetItem!=null)
 				{
 					position=targetItem.rawWornCode();
-					targetItem.remove();
+					targetItem.unWear();
 				}
 				else
 				{
@@ -128,9 +123,8 @@ public class Skill_Buffoonery extends StdAbility
 				}
 				if(position>=0)
 				{
-					I.remove();
-					I.removeThis();
-					target.addInventory(I);
+					I.unWear();
+					target.giveItem(I);
 					I.wearAt(position);
 				}
 			}

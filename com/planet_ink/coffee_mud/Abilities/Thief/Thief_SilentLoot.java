@@ -43,8 +43,8 @@ public class Thief_SilentLoot extends ThiefSkill
 				MOB target=(MOB)affect.target();
 				if((item!=null)&&(target.isMine(item)))
 				{
-					item.remove();
-					item.removeThis();
+					item.unWear();
+					item.removeFromOwnerContainer();
 					item.setContainer(null);
 					mob.location().addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
 					ExternalPlay.get(mob,null,item,true);

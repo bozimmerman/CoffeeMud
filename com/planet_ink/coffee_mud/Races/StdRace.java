@@ -403,7 +403,7 @@ public class StdRace implements Race
 				}
 				else
 					mob.delInventory(thisItem);
-				thisItem.remove();
+				thisItem.unWear();
 				if(thisItem.container()==null)
 					thisItem.setContainer(Body);
 				room.addItem(thisItem);

@@ -33,7 +33,7 @@ public class Spell_FakeArmor extends Spell
 		{
 			notAgainThisRound=true;
 			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,affected.name()+" absorbs some of the damage done to <S-NAME>."));
-			((Item)affected).remove();
+			((Item)affected).unWear();
 			((Item)affected).destroyThis();
 		}
 		return super.okAffect(myHost,affect);

@@ -103,7 +103,7 @@ public class GenCoins extends GenItem implements Coins
 			{
 				setContainer(null);
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
-				remove();
+				unWear();
 				destroyThis();
 				affect.source().location().recoverRoomStats();
 			}

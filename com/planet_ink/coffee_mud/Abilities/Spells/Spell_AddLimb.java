@@ -46,7 +46,7 @@ public class Spell_AddLimb extends Spell
 		if(otherI!=null)
 		{
 			long old=otherI.rawWornCode();
-			otherI.remove();
+			otherI.unWear();
 			boolean nowCan=I.canWear(mob);
 			otherI.setRawWornCode(old);
 			return !nowCan;
@@ -81,7 +81,7 @@ public class Spell_AddLimb extends Spell
 					itemRef=otherI;
 					wornRef=otherI.rawWornCode();
 					oldMsg=msg.targetCode();
-					otherI.remove();
+					otherI.unWear();
 				}
 			}
 			else

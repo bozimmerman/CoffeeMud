@@ -404,7 +404,10 @@ public class SocialProcessor
 				if(giveThis!=null)
 				{
 					if((!((Item)giveThis).amWearingAt(Item.HELD))&&(!((Item)giveThis).amWearingAt(Item.WIELD)))
+					{
 						mob.tell("You must remove that first.");
+						return;
+					}
 					else
 					if(!ItemUsage.remove(mob,((Item)giveThis),true))
 						return;

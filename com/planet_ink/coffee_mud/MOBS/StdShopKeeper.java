@@ -577,7 +577,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
 						foundKey=(Key)I;
-					((Item)I).remove();
+					((Item)I).unWear();
 					V.addElement(I);
 					storeInventory.removeElement(I);
 					((Item)I).setContainer((Item)product);
@@ -639,7 +639,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
-							item2.remove();
+							item2.unWear();
 							mob.delInventory(item2);
 							if(item!=item2)
 							{

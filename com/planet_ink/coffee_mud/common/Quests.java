@@ -750,8 +750,7 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+Util.combine(p,2)+"'.");
 							error=true; break;
 						}
-						I.removeThis();
-						M.addInventory(I);
+						M.giveItem(I);
 					}
 					else
 					if(cmd.equals("ABILITY"))

@@ -269,19 +269,19 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)affect.tool();
 					if(newitem.container()==this)
 						newitem.setContainer(null);
-					remove();
+					unWear();
 				}
 				else
 				if(!mob.isMine(this))
 				{
-					this.setContainer(null);
-					recursiveGetRoom(mob,this);
+					setContainer(null);
+					mob.giveItem(this);
 					mob.location().recoverRoomStats();
 				}
 				else
 				{
 					this.setContainer(null);
-					remove();
+					unWear();
 					mob.location().recoverRoomStats();
 				}
 				break;
@@ -500,34 +500,6 @@ public class StdContainer extends StdItem implements Container
 		isLocked=newIsLocked;
 	}
 
-	protected static void recursiveGetRoom(MOB mob, Item thisContainer)
-	{
-
-		// caller is responsible for recovering any env
-		// stat changes!
-		if(Sense.isHidden(thisContainer))
-			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
-		mob.location().delItem(thisContainer);
-		thisContainer.remove();
-		if(!mob.isMine(thisContainer))
-			mob.addInventory(thisContainer);
-		thisContainer.recoverEnvStats();
-		boolean nothingDone=true;
-		do
-		{
-			nothingDone=true;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item thisItem=mob.location().fetchItem(i);
-				if((thisItem!=null)&&(thisItem.container()==thisContainer))
-				{
-					recursiveGetRoom(mob,thisItem);
-					nothingDone=false;
-					break;
-				}
-			}
-		}while(!nothingDone);
-	}
 	public void setMiscText(String newMiscText)
 	{
 		miscText=newMiscText;
@@ -553,7 +525,7 @@ public class StdContainer extends StdItem implements Container
 		if(Sense.isHidden(thisContainer))
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
-		thisContainer.remove();
+		thisContainer.unWear();
 		if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
 		if(bodyFlag)
 		{

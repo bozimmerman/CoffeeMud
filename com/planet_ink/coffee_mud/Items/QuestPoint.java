@@ -39,7 +39,7 @@ public class QuestPoint extends StdItem
 				destroyThis();
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
-				remove();
+				unWear();
 				mob.location().recoverRoomStats();
 				return;
 				}

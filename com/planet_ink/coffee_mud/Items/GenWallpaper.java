@@ -74,7 +74,7 @@ public class GenWallpaper implements Item
 	public boolean canWear(MOB mob){ return false;}
 	public long rawWornCode(){return 0;}
 	public void setRawWornCode(long newValue){}
-	public void remove(){}
+	public void unWear(){}
 	public int capacity(){return 0;}
 	public void setCapacity(int newValue){}
 	public int material(){return EnvResource.RESOURCE_PAPER;}
@@ -217,10 +217,10 @@ public class GenWallpaper implements Item
 	{
 		if(owner==null) return;
 		destroyed=true;
-		removeThis();
+		removeFromOwnerContainer();
 	}
 
-	public void removeThis()
+	public void removeFromOwnerContainer()
 	{
 		if(owner==null) return;
 		if (owner instanceof Room)

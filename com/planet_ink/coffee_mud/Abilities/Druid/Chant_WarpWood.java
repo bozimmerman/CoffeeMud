@@ -81,7 +81,7 @@ public class Chant_WarpWood extends Chant
 					{
 						target.setUsesRemaining(100);
 						mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
-						target.remove();
+						target.unWear();
 						target.destroyThis();
 						mob.location().recoverRoomStats();
 					}

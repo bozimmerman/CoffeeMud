@@ -34,7 +34,7 @@ public class Spell_FloatingDisc extends Spell
 			if(item.amWearingAt(Item.FLOATING_NEARBY))
 			{
 				mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
-				item.remove();
+				item.unWear();
 			}
 			if(wasntMine)
 				ExternalPlay.drop(mob,item,true);

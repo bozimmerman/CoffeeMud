@@ -64,7 +64,7 @@ public class Spell_Grease extends Spell
 									msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 									if(mob.location().okAffect(mob,msg))
 									{
-										weapon.remove();
+										weapon.unWear();
 										mob.location().send(mob,msg);
 									}
                                 }
@@ -85,7 +85,7 @@ public class Spell_Grease extends Spell
 										msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 										if(mob.location().okAffect(mob,msg))
 										{
-											weapon.remove();
+											weapon.unWear();
 											mob.location().send(mob,msg);
 										}
 									}

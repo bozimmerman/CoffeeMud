@@ -11,7 +11,7 @@ public class Spell_Fly extends Spell
 	public String name(){return "Fly";}
 	public String displayText(){return "(Fly spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Fly();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
@@ -26,7 +26,10 @@ public class Spell_Fly extends Spell
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			super.unInvoke();
 			return;
+		}
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
@@ -34,11 +37,10 @@ public class Spell_Fly extends Spell
 			mob.tell("You begin to float back down to the ground.");
 	}
 
-
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

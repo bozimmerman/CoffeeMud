@@ -114,7 +114,7 @@ public class Chant_FurCoat extends Chant
 				{
 					Item I=mob.fetchInventory(i);
 					if((I.rawWornCode()&wornCode)>0)
-						I.removeThis();
+						I.unWear();
 				}
 				Ability A=CMClass.getAbility("Prop_WearResister");
 				A.setMiscText("cold");
