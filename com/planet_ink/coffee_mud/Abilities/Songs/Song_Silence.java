@@ -29,7 +29,7 @@ public class Song_Silence extends Song
 		||(referenceSong.invoker()==null)
 		||(invoker.location()!=mob.location()))
 		{
-			unsing(mob);
+			unsing(mob,null,this);
 			return false;
 		}
 		return true;

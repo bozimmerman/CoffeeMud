@@ -12,22 +12,16 @@ public class Prayer_Restoration extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Restoration();}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((auto)||(mob.curState().getMana()<mob.maxState().getMana()))
-		{
-			mob.tell("You must be at full mana to invoke this power.");
-			return false;
-		}
-		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
+		
 		
 		boolean success=profficiencyCheck(0,auto);
 

@@ -54,19 +54,26 @@ public class Song extends StdAbility
 		||(!Sense.aliveAwakeMobile(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
-			unsing(mob);
+			unsing(mob,null,this);
 			return false;
 		}
 		return true;
 	}
 
-	protected void unsing(MOB mob)
+	protected void unsing(MOB mob, MOB invoker, Ability song)
 	{
 		if(mob==null) return;
+		if(song!=null)
+		{
+			song=mob.fetchAffect(song.ID());
+			if(song!=null) song.unInvoke();
+		}
+		else
 		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchAffect(a);
-			if((A!=null)&&(A instanceof Song))
+			if(((A!=null)&&(A instanceof Song))
+			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
 	}
@@ -86,7 +93,7 @@ public class Song extends StdAbility
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-		unsing(mob);
+		unsing(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";

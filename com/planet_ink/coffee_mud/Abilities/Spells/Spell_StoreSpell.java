@@ -12,7 +12,9 @@ public class Spell_StoreSpell extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_StoreSpell();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	protected int overrideMana(){return overridemana;}
 	public String spellName="";
+	private int overridemana=-1;
 
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
@@ -141,10 +143,16 @@ public class Spell_StoreSpell extends Spell
 		int charges=0;
 		int x=A.text().indexOf("/");
 		if(x>=0) charges=Util.s_int(A.text().substring(x+1));
+		overridemana=-1;
+		int mana=manaCost(mob)+wandThis.manaCost(mob);
+		if(mana>mob.maxState().getMana())
+			mana=mob.maxState().getMana();
+		overridemana=mana;
 
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		overridemana=-1;
 
 		boolean success=profficiencyCheck(0,auto);
 

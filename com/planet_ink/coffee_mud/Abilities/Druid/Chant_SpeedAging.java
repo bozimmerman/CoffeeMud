@@ -11,6 +11,7 @@ public class Chant_SpeedAging extends Chant
 	public String name(){ return "Speed Aging";}
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.OK_OTHERS;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public Environmental newInstance(){	return new Chant_SpeedAging();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -18,17 +19,9 @@ public class Chant_SpeedAging extends Chant
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("This Chant requires you to be at full mana.");
-			return false;
-		}
-		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		
-		mob.curState().setMana(0);
-
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{

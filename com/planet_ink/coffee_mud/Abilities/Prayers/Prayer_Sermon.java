@@ -14,6 +14,7 @@ public class Prayer_Sermon extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Sermon();}
 	public long flags(){return Ability.FLAG_CHARMING;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public void unInvoke()
 	{
@@ -62,12 +63,6 @@ public class Prayer_Sermon extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		
-		if(!auto)
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("You need to be at full mana to use this prayer.");
-			return false;
-		}
 		Hashtable h=new Hashtable();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -89,7 +84,6 @@ public class Prayer_Sermon extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(!auto)mob.curState().setMana(0);
 		
 		boolean success=profficiencyCheck(-(h.size()*3),auto);
 

@@ -12,6 +12,7 @@ public class Spell_EnchantArmor extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_EnchantArmor();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -23,18 +24,11 @@ public class Spell_EnchantArmor extends Spell
 			mob.tell("You can't enchant that with an Enchant Armor spell!");
 			return false;
 		}
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		mob.charStats().getCurrentClass().loseExperience(mob,50);
-
-		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

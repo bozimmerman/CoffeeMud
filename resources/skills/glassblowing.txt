@@ -7,3 +7,4 @@ Pitcher	1	30	20	1	GenWater		15
 Mirror	5	60	40	100	GenMirror		
 Glass Wand	12	30	20	3	GenWand		
 Flask	1	20	5	1	GenWater		1
+Glass Lens	5	10	5	1	GenResource		

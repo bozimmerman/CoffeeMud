@@ -23,7 +23,7 @@ public class StdAbility implements Ability, Cloneable
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 	public long flags(){return 0;}
-	protected int overrideMana(){return -1;}
+	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
@@ -405,7 +405,7 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
-	protected int manaCost(MOB mob)
+	public int manaCost(MOB mob)
 	{
 		int diff=0;
 		for(int c=0;c<mob.charStats().numClasses();c++)
@@ -421,7 +421,11 @@ public class StdAbility implements Ability, Cloneable
 		if(diff>0)
 			manaConsumed=manaConsumed - (manaConsumed /10 * diff);
 		if(manaConsumed<5) manaConsumed=5;
-		if(overrideMana()>=0) manaConsumed=overrideMana();
+		if(overrideMana()==Integer.MAX_VALUE)
+			manaConsumed=mob.maxState().getMana();
+		else
+		if(overrideMana()>=0) 
+			manaConsumed=overrideMana();
 		return manaConsumed;
 	}
 	
@@ -473,7 +477,10 @@ public class StdAbility implements Ability, Cloneable
 			
 			if(mob.curState().getMana()<manaConsumed)
 			{
-				mob.tell("You don't have enough mana to do that.");
+				if(mob.maxState().getMana()==manaConsumed)
+					mob.tell("You must be at full mana to do that.");
+				else
+					mob.tell("You don't have enough mana to do that.");
 				return false;
 			}
 			mob.curState().adjMana(-manaConsumed,mob.maxState());

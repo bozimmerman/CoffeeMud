@@ -12,6 +12,7 @@ public class Spell_Duplicate extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Duplicate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -24,19 +25,11 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
 		mob.charStats().getCurrentClass().loseExperience(mob,target.envStats().level()*5);
-
-		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

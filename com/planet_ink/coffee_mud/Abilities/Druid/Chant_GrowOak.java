@@ -12,6 +12,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_GrowOak();}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected int hpRemaining=0;
 	protected int lastHp=-1;
 
@@ -83,11 +84,6 @@ public class Chant_GrowOak extends Chant_SummonPlants
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You must be at full mana to grow the oak.");
-			return false;
-		}
 		Vector V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)
 		{
@@ -105,10 +101,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			}
 		}
 		if(super.invoke(mob,commands,givenTarget,auto))
-		{
-			if(!auto)mob.curState().setMana(0);
 			return true;
-		}
 		return false;
 	}
 }

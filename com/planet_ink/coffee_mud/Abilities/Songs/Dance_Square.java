@@ -54,7 +54,7 @@ public class Dance_Square extends Dance
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		undance(mob);
+		undance(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";

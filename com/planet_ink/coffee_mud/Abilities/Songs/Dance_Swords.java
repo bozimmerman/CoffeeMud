@@ -22,7 +22,7 @@ public class Dance_Swords extends Dance
 		||(affected==null))
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected);
+				undance((MOB)affected,null,this);
 			else
 				unInvoke();
 			return false;
@@ -34,7 +34,7 @@ public class Dance_Swords extends Dance
 			case Affect.TYP_GET:
 			case Affect.TYP_REMOVE:
 				if(affected instanceof MOB)
-					undance((MOB)affected);
+					undance((MOB)affected,null,this);
 				else
 					unInvoke();
 				break;
@@ -140,7 +140,7 @@ public class Dance_Swords extends Dance
 		else
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected);
+				undance((MOB)affected,null,this);
 			else
 				unInvoke();
 			return false;
@@ -157,7 +157,7 @@ public class Dance_Swords extends Dance
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		undance(mob);
+		undance(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";

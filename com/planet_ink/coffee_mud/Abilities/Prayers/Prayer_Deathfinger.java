@@ -12,23 +12,16 @@ public class Prayer_Deathfinger extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Deathfinger();}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		
-		if((auto)||(mob.curState().getMana()<mob.maxState().getMana()))
-		{
-			mob.tell("You must be at full mana to invoke this power.");
-			return false;
-		}
-		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		
-		if(!auto)mob.curState().setMana(0);
-
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

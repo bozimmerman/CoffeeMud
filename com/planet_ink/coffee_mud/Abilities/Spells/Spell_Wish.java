@@ -12,6 +12,7 @@ public class Spell_Wish extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_Wish();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	private Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
 	{
@@ -55,11 +56,6 @@ public class Spell_Wish extends Spell
 		}
 
 		String myWish=Util.combine(commands,0);
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 		if(mob.envStats().level()<20)
 		{
 			mob.tell("You are too weak to wish.");
@@ -74,8 +70,6 @@ public class Spell_Wish extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
 
 		int baseLoss=25;
 		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");

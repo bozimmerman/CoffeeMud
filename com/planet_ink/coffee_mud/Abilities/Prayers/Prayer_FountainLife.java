@@ -15,6 +15,7 @@ public class Prayer_FountainLife extends Prayer
 	protected int canTargetCode(){return 0;}
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public Environmental newInstance(){	return new Prayer_FountainLife();}
 
 	public void unInvoke()
@@ -38,15 +39,9 @@ public class Prayer_FountainLife extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((!auto)&&(mob.curState().getMana()<mob.maxState().getMana()))
-		{
-			mob.tell("This prayer requires all of your mana.");
-			return false;
-		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(!auto)mob.curState().setMana(0);
 
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);

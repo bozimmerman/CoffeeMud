@@ -228,7 +228,7 @@ public class Song_Ode extends Song
 			   ||(Sense.isSleeping(invoker))
 			   ||(!Sense.canBeSeenBy(whom,invoker)))
 			{
-				unsing(mob);
+				unsing(mob,null,this);
 				return false;
 			}
 		}
@@ -375,7 +375,7 @@ public class Song_Ode extends Song
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			unsing(mob);
+			unsing(mob,null,null);
 			whom=target;
 			String str="^S<S-NAME> begin(s) to compose an "+songOf()+".^?";
 			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_DELICATE_HANDS_ACT,str);

@@ -890,8 +890,8 @@ public class ItemUsage
 		commands.removeElementAt(0);
 
 		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
-		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
 		Environmental thisThang=null;
+		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(commands.size()-1),Item.WORN_REQ_ANY);
 		String theRest=null;
 		if(thisThang==null)

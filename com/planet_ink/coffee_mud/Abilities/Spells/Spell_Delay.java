@@ -16,6 +16,7 @@ public class Spell_Delay extends Spell
 	private Vector parameters=null;
 	public Environmental newInstance(){	return new Spell_Delay();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public void unInvoke()
 	{
@@ -54,11 +55,6 @@ public class Spell_Delay extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 		if(commands.size()<1)
 		{
 			mob.tell("You must specify what arcane spell to delay, and any necessary parameters.");
@@ -91,8 +87,6 @@ public class Spell_Delay extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
-		if(!auto)mob.curState().setMana(0);
 		
 		Environmental target = mob.location();
 		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))

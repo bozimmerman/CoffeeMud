@@ -14,6 +14,7 @@ public class Spell_FindFamiliar extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_FindFamiliar();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -22,18 +23,11 @@ public class Spell_FindFamiliar extends Spell
 			mob.tell("You cannot have any followers when casting this spell.");
 			return false;
 		}
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		mob.charStats().getCurrentClass().loseExperience(mob,100);
-		
-		if(!auto)mob.curState().setMana(0);
 		
 		boolean success=profficiencyCheck(0,auto);
 

@@ -12,6 +12,7 @@ public class Spell_Scribe extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Scribe();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -30,11 +31,6 @@ public class Spell_Scribe extends Spell
 		if(!(target instanceof Scroll))
 		{
 			mob.tell("You can't scribe onto that.");
-			return false;
-		}
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
 			return false;
 		}
 
@@ -75,8 +71,6 @@ public class Spell_Scribe extends Spell
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
 
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);

@@ -12,6 +12,7 @@ public class Spell_EnchantWand extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_EnchantWand();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -29,11 +30,6 @@ public class Spell_EnchantWand extends Spell
 		if(!(target instanceof Wand))
 		{
 			mob.tell("You can't enchant that.");
-			return false;
-		}
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
 			return false;
 		}
 
@@ -66,8 +62,6 @@ public class Spell_EnchantWand extends Spell
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
 
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(wandThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);

@@ -93,19 +93,26 @@ public class Play extends StdAbility
 		||(!Sense.aliveAwakeMobile(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
-			unplay(mob);
+			unplay(mob,null,this);
 			return false;
 		}
 		return true;
 	}
 
-	protected static void unplay(MOB mob)
+	protected static void unplay(MOB mob, MOB invoker, Ability song)
 	{
 		if(mob==null) return;
+		if(song!=null)
+		{
+			song=mob.fetchAffect(song.ID());
+			if(song!=null) song.unInvoke();
+		}
+		else
 		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchAffect(a);
-			if((A!=null)&&(A instanceof Play))
+			if(((A!=null)&&(A instanceof Play))
+			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
 	}
@@ -195,7 +202,7 @@ public class Play extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		unplay(mob);
+		unplay(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";

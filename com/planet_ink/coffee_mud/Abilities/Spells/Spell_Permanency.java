@@ -14,21 +14,15 @@ public class Spell_Permanency extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	public Environmental newInstance(){	return new Spell_Permanency();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

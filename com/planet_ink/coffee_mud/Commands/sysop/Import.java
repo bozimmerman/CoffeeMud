@@ -220,6 +220,8 @@ public class Import
 			else
 			if(word.startsWith("CALL LIGH")) i=6;
 			else
+			if(word.startsWith("GENERAL PURPOSE")) i=-1;
+			else
 			if(word.startsWith("CANCELLA")) i=59;
 			else
 			if(word.startsWith("CAUSE CRI")) i=63;
@@ -503,6 +505,8 @@ public class Import
 		while(buf.size()>0)
 		{
 			String s=((String)buf.elementAt(0)).toUpperCase().trim();
+			if(s.startsWith("#")&&((String)buf.elementAt(0)).startsWith(" "))
+				s=((String)buf.elementAt(0)).toUpperCase();
 			boolean okString=true;
 			if(s.startsWith("#"))
 			{
@@ -1106,7 +1110,7 @@ public class Import
 				else
 					baseHP=getDRoll(Util.getBit(codeStr2,3));
 				baseHP=baseHP-10;
-				baseHP=baseHP-(M.baseEnvStats().level()*M.baseEnvStats().level());
+				baseHP=baseHP-((int)Math.round(Util.mul(M.baseEnvStats().level()*M.baseEnvStats().level(),0.85)));
 				baseHP=baseHP/M.baseEnvStats().level();
 				M.baseEnvStats().setAbility(baseHP);
 				
@@ -1504,6 +1508,12 @@ public class Import
 						M.addAbility(CMClass.getAbility("Acidbreath"));
 					}
 					else
+					if(special.equals("SPEC_CAST_JUDGE"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Skill_Explosive"));
+					}
+					else
 					if(special.equals("SPEC_BREATH_FIRE"))
 					{
 						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
@@ -1567,8 +1577,9 @@ public class Import
 				if(A!=null)
 					A.autoInvocation(M);
 			}
-			int rejuv=(int)Math.round(Util.div((long)60000,Host.TICK_TIME)*2.0);
-			M.baseEnvStats().setRejuv(rejuv*M.baseEnvStats().level());
+			long rejuv=Host.TICKS_PER_MIN+Host.TICKS_PER_MIN+(Host.TICKS_PER_MIN*M.baseEnvStats().level()/2);
+			if(rejuv>(30*Host.TICKS_PER_MIN)) rejuv=(30*Host.TICKS_PER_MIN);
+			M.baseEnvStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
 			M.recoverCharStats();
@@ -2971,8 +2982,11 @@ public class Import
 
 				}
 			}
-			Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
-			Socials.save();
+			if(didSocials)
+			{
+				Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
+				Socials.save();
+			}
 		}
 		catch(Exception e)
 		{

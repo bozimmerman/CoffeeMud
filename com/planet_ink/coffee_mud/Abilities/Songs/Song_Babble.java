@@ -121,7 +121,7 @@ public class Song_Babble extends Song
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-		unsing(mob);
+		unsing(mob,null,null);
 		if(success)
 		{
 			String str=auto?"The "+songOf()+" begins to play!":"<S-NAME> begin(s) to sing the "+songOf()+".";

@@ -39,7 +39,7 @@ public class Skill_Conduct extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		Play.unplay(mob);
+		Play.unplay(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SSymphonic Conduction Begins!^?":"^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?";

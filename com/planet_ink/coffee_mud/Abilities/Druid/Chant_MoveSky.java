@@ -13,20 +13,14 @@ public class Chant_MoveSky extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public Environmental newInstance(){	return new Chant_MoveSky();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You must be at full mana to cast this.");
-			return false;
-		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		
-		if(!auto)mob.curState().setMana(0);
-
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{

@@ -16,6 +16,7 @@ public class Spell_SummonFlyer extends Spell
 	public Environmental newInstance(){	return new Spell_SummonFlyer();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
+	protected int overrideMana(){return 50;}
 
 	public void unInvoke()
 	{
@@ -63,16 +64,8 @@ public class Spell_SummonFlyer extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

@@ -20,7 +20,7 @@ public class Play_Reveille extends Play
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		boolean success=profficiencyCheck(0,auto);
-		unplay(mob);
+		unplay(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";

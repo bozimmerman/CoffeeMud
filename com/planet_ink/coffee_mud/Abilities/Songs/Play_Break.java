@@ -29,7 +29,7 @@ public class Play_Break extends Play
 			if((A!=null)&&(A instanceof Play))
 				foundOne=true;
 		}
-		unplay(mob);
+		unplay(mob,null,null);
 		if(!foundOne)
 		{
 			mob.tell(auto?"There is noone playing.":"You aren't playing anything.");

@@ -67,27 +67,35 @@ public class Dance extends StdAbility
 			||(!Sense.aliveAwakeMobile(invoker(),true))
 			||(!Sense.canBeSeenBy(invoker,mob)))
 			{
-				undance(mob);
+				undance(mob,null,this);
 				return false;
 			}
 			if(invokerManaCost<0) invokerManaCost=manaCost(invoker());
 			if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 			{
 				mob.tell("The dancing exhausts you.");
-				undance(mob);
+				undance(mob,null,this);
 				return false;
 			}
 		}
 		return true;
 	}
 
-	protected void undance(MOB mob)
+	protected void undance(MOB mob, MOB invoker, Ability song)
 	{
 		if(mob==null) return;
+		if(song!=null)
+		{
+			song=mob.fetchAffect(song.ID());
+			if(song!=null) song.unInvoke();
+		}
+		else
 		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchAffect(a);
-			if((A!=null)&&(A instanceof Dance))
+			if((A!=null)
+			&&(A instanceof Dance)
+			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
 	}
@@ -104,7 +112,7 @@ public class Dance extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		undance(mob);
+		undance(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
@@ -148,7 +156,7 @@ public class Dance extends StdAbility
 								follower.location().send(follower,msg3);
 								if((!msg3.wasModified())&&(follower.fetchAffect(newOne.ID())==null))
 								{
-									undance(follower);
+									undance(follower,mob,null);
 									if(follower!=mob)
 										follower.addAffect((Ability)newOne.copyOf());
 									else

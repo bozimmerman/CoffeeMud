@@ -57,7 +57,7 @@ public class Song_Friendship extends Song
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-		unsing(mob);
+		unsing(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";

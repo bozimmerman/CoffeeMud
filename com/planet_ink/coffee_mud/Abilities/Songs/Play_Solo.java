@@ -33,14 +33,14 @@ public class Play_Solo extends Play
 				&&(otherBard.location()!=null))
 				{
 					if(otherBard.location().show(otherBard,myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
-						unplay(myChar);
+						unplay(myChar,null,null);
 				}
 				else
 				if(otherBard.location()!=null)
 				{
 					otherBard.tell("You can't seem to upstage "+myChar.name()+"'s solo.");
 					if(!invoker().curState().adjMana(-10,invoker().maxState()))
-						unplay(myChar);
+						unplay(myChar,null,null);
 					return false;
 				}
 			}
@@ -54,7 +54,7 @@ public class Play_Solo extends Play
 			return false;
 		
 		boolean success=profficiencyCheck(0,auto);
-		unplay(mob);
+		unplay(mob,null,null);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
@@ -97,11 +97,11 @@ public class Play_Solo extends Play
 					&&(A.affecting() instanceof MOB))
 					{
 						MOB M=(MOB)A.affecting();
-						if(A instanceof Song) ((Song)A).unsing(M);
+						if(A instanceof Song) ((Song)A).unsing(M,null,null);
 						else
-						if(A instanceof Dance) ((Dance)A).undance(M);
+						if(A instanceof Dance) ((Dance)A).undance(M,null,null);
 						else
-						if(A instanceof Play) ((Play)A).unplay(M);
+						if(A instanceof Play) ((Play)A).unplay(M,null,null);
 						else
 							A.unInvoke();
 					}

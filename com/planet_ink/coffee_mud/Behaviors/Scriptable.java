@@ -2749,9 +2749,15 @@ public class Scriptable extends StdBehavior
 			case 17: // mptransfer
 			{
 				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				String mobName=Util.getCleanBit(s,2);
+				if((mobName.length()==0)&&(roomName.length()>0)&&(lastKnownLocation!=null))
+				{
+					mobName=roomName;
+					roomName=lastKnownLocation.roomID();
+				}
 				if(roomName.length()>0)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,mobName);
 					Room newRoom=getRoom(roomName,lastKnownLocation);
 					if(newRoom!=null)
 					{
@@ -2770,7 +2776,20 @@ public class Scriptable extends StdBehavior
 						}
 						else
 						{
-							MOB findOne=lastKnownLocation.fetchInhabitant(s);
+							MOB findOne=null;
+							Area A=null;
+							if(lastKnownLocation!=null)
+							{
+								findOne=lastKnownLocation.fetchInhabitant(s);
+								A=lastKnownLocation.getArea();
+							}
+							if((findOne==null)&&(A!=null))
+								for(Enumeration r=A.getMap();r.hasMoreElements();)
+								{
+									Room R=(Room)r.nextElement();
+									findOne=R.fetchInhabitant(s);
+									if(findOne!=null) V.addElement(findOne);
+								}
 							if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
 								V.addElement(findOne);
 						}
