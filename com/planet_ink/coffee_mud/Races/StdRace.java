@@ -267,6 +267,7 @@ public class StdRace implements Race
 		I.setName(name);
 		I.setDisplayText(name+" has been left here.");
 		I.setDescription("It looks like "+name);
+		I.setMaterial(type);
 		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
