@@ -3064,6 +3064,8 @@ public class Import extends StdCommand
 								break;
 							 }
 						 }
+						if(I.readableText().length()==0)
+							I.setReadableText("#"+str4);
 					 }
 					 break;
 			case 98: I=CMClass.getStdItem("GenKey");
