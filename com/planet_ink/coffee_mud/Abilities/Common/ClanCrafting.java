@@ -335,7 +335,7 @@ public class ClanCrafting extends CommonSkill
 			{
 				building.setMaterial(EnvResource.MATERIAL_PAPER);
 				building.setReadable(true);
-				building.setReadableText("Hear the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
+				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}
 

@@ -8,6 +8,7 @@ import java.util.*;
 public class TaxCollector extends StdBehavior
 {
 	public String ID(){return "TaxCollector";}
+	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private DVector demanded=null;
 	private DVector paid=null;
 	private long waitTime=1000*60*2;
@@ -63,7 +64,6 @@ public class TaxCollector extends StdBehavior
 		{
 			int money=Money.totalMoney(msg.source());
 			int coins=((Coins)msg.tool()).numberOfCoins();
-			money+=coins;
 			int owed=money/10;
 			if(owed<1) owed=1;
 			if(coins<owed)
@@ -79,7 +79,9 @@ public class TaxCollector extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_MOB) return true;
+		if((tickID!=Host.TICK_MOB)||(!(ticking instanceof MOB))) 
+			return true;
+		
 		MOB mob=(MOB)ticking;
 		if(demanded==null) demanded=new DVector(2);
 		if(paid==null) paid=new DVector(2);
@@ -91,16 +93,18 @@ public class TaxCollector extends StdBehavior
 				paid.removeElementAt(i);
 		}
 		
-					
 		Room R=mob.location();
 		if((R!=null)
 		&&(!mob.isInCombat())
-		&&(Sense.aliveAwakeMobile(mob,true)))
+		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(R.numInhabitants()>1))
 		{
 			MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
 			if((M!=null)
-			&&((mob.getClanID().length()==0)||(!M.getClanID().equals(mob.getClanID()))
-			&&(Sense.isAnimalIntelligence(M))
+			&&((mob.getClanID().length()==0)
+			   ||(M.getClanID().length()==0)
+			   ||(!M.getClanID().equals(mob.getClanID()))
+			&&(!Sense.isAnimalIntelligence(M))
 			&&(Sense.canBeSeenBy(M,mob))))
 			{
 				int money=Money.totalMoney(M);

@@ -2,8 +2,8 @@ name,type1/amt1,type2/amt2,citype,level,ticks,exp,value,class,misc,capacity,armo
 Flag %	COTTON/1	OAK/1	0	1	200	1000	0	GenClanFlag					
 GuardBanner %	COTTON/1	OAK/1	1	1	40	100	0	GenClanItem					
 Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	500	0	GenClanItem					
-Book of the Laws %	OAK/100		0	10	100	1000	0	GanLawBook	AREA				
-Pamphlet of %	OAK/1		3	5	20	250	0	GenClanPamphlet					
+Book of the Laws %	OAK/100		0	10	100	1000	0	GenLawBook	AREA				
+Pamphlet %	OAK/1		3	5	20	250	0	GenClanPamphlet					
 Miners Pick %	OAK/5	IRON/10	4	1	10	50	0	GenClanCommonItem	Mining				
 Foragers Basket %	VINE/20		4	1	10	50	0	GenClanCommonContainer	Foraging	30		0		
 Lumberjacks Saw %	OAK/10	IRON/5	4	1	10	50	0	GenClanCommonItem	Chopping				

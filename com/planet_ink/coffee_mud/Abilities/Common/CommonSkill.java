@@ -78,13 +78,14 @@ public class CommonSkill extends StdAbility
 		if(canBeUninvoked())
 		{
 			if((affected!=null)
-			&&(affected instanceof MOB))
+			&&(affected instanceof MOB)
+			&&(((MOB)affected).location()!=null))
 			{
 				MOB mob=(MOB)affected;
 				if(aborted)
-					commonEmote(mob,"<S-NAME> stop(s) "+verb);
+					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb);
 				else
-					commonEmote(mob,"<S-NAME> <S-IS-ARE> done "+verb);
+					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> done "+verb);
 
 			}
 		}

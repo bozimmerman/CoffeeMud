@@ -38,29 +38,36 @@ public class StdClanFlag extends StdItem implements ClanItem
 		{
 			super.executeMsg(myHost,msg);
 			if((msg.amITarget(this))
-			&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
+			&&(clanID().length()>0)
+			&&(msg.source().getClanID().equals(clanID())))
 			{
-				Room R=msg.source().location();
-				Area A=null;
-				Behavior B=null;
-				Vector V=null;
-				if(R!=null)	A=R.getArea();
-				if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
-				if(B!=null)
+				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_EXAMINESOMETHING,null));
+				else
+				if(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 				{
-					V.clear();
-					V.addElement(new Integer(Law.MOD_WARINFO));
-					if((B.modifyBehavior(A,msg.source(),V))
-					&&(V.size()>0)
-					&&(V.firstElement() instanceof String))
-						msg.source().tell((String)V.firstElement());
+					Room R=msg.source().location();
+					Area A=null;
+					Behavior B=null;
+					Vector V=null;
+					if(R!=null)	A=R.getArea();
+					if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+					if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+					if(B!=null)
+					{
+						V.clear();
+						V.addElement(new Integer(Law.MOD_WARINFO));
+						if((B.modifyBehavior(A,msg.source(),V))
+						&&(V.size()>0)
+						&&(V.firstElement() instanceof String))
+							msg.source().tell((String)V.firstElement());
+						else
+							msg.source().tell("This area is under the control of the Archons.");
+					}
 					else
 						msg.source().tell("This area is under the control of the Archons.");
+					return;
 				}
-				else
-					msg.source().tell("This area is under the control of the Archons.");
-				return;
 			}
 		}
 	}
@@ -68,28 +75,68 @@ public class StdClanFlag extends StdItem implements ClanItem
 	{
 		if((clanID().length()>0)
 		&&(msg.amITarget(myHost))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
 		&&(!msg.source().getClanID().equals(clanID())))
 		{
-			Room R=CoffeeUtensils.roomLocation(this);
-			if(R!=null)
-				for(int i=0;i<R.numInhabitants();i++)
-				{
-					MOB M=R.fetchInhabitant(i);
-					if((M!=null)
-					&&(M.isMonster())
-					&&(M.getClanID().equals(clanID())
-					&&(Sense.aliveAwakeMobile(M,true))
-					&&(Sense.canSee(M))
-					&&(!Sense.isAnimalIntelligence(M))))
+			if(msg.targetMinor()==CMMsg.TYP_GET)
+			{
+				Room R=CoffeeUtensils.roomLocation(this);
+				if(R!=null)
+					for(int i=0;i<R.numInhabitants();i++)
 					{
-						R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
+						MOB M=R.fetchInhabitant(i);
+						if((M!=null)
+						&&(M.isMonster())
+						&&(M.getClanID().equals(clanID())
+						&&(Sense.aliveAwakeMobile(M,true))
+						&&(Sense.canBeSeenBy(this,M))
+						&&(!Sense.isAnimalIntelligence(M))))
+						{
+							R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
+							return false;
+						}
+					}
+			}
+			else
+			if(msg.targetMinor()==CMMsg.TYP_DROP)
+			{
+				Room R=msg.source().location();
+				LandTitle T=null;
+				Area A=null;
+				Behavior B=null;
+				Vector V=null;
+				if(R!=null)
+				{
+					A=R.getArea();
+					for(int r=0;r<R.numEffects();r++)
+						if(R.fetchEffect(r) instanceof LandTitle)
+							T=(LandTitle)R.fetchEffect(r);
+				}
+				if((T==null)
+				||((!T.landOwner().equals(clanID()))&&(!T.landOwner().equals(msg.source().Name()))))
+				{
+					if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+					if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+					boolean ok=false;
+					if(B!=null)
+					{
+						V.clear();
+						V.addElement(new Integer(Law.MOD_RULINGCLAN));
+						String rulingClan="";
+						if((B.modifyBehavior(A,msg.source(),V))
+						&&(V.size()>0)
+						&&(V.firstElement() instanceof String))
+							ok=true;
+					}
+					if(!ok)
+					{
+						msg.source().tell("You can not place a flag here, this place is controlled by the Archons.");
 						return false;
 					}
 				}
+			}
 		}
 		
-		if(StdClanItem.stdOkMessage(myHost,msg))
+		if(StdClanItem.stdOkMessage(this,msg))
 		{
 			if((clanID().length()>0)
 			&&(msg.amITarget(myHost))

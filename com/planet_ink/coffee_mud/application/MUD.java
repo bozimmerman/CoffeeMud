@@ -734,6 +734,25 @@ public class MUD extends Thread implements Host
 		return realAC;
 	}
 
+	public static int killCount(ThreadGroup tGroup, Thread thisOne)
+	{
+		int killed=0;
+		
+		int ac = tGroup.activeCount();
+		Thread tArray[] = new Thread [ac+1];
+		tGroup.enumerate(tArray);
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null && tArray[i].isAlive() && (tArray[i] != thisOne))
+			{
+				((Thread)tArray[i]).interrupt();
+				try{Thread.sleep(500);}catch(Exception e){}
+				killed++;
+			}
+		}
+		return killed;
+	}
+	
 	public static void threadList(ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
@@ -872,8 +891,13 @@ public class MUD extends Thread implements Host
 
 				if(activeCount(Thread.currentThread().getThreadGroup())>1)
 				{
-					Log.sysOut("MUD","WARNING: " + activeCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
-					threadList(Thread.currentThread().getThreadGroup());
+					try{ Thread.sleep(1000);}catch(Exception e){}
+					killCount(Thread.currentThread().getThreadGroup(),Thread.currentThread());
+					if(activeCount(Thread.currentThread().getThreadGroup())>1)
+					{
+						Log.sysOut("MUD","WARNING: " + activeCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
+						threadList(Thread.currentThread().getThreadGroup());
+					}
 				}
 				if(keepDown)
 				   break;
