@@ -854,7 +854,7 @@ public class StdRoom
 
 		if(item.owner()==null) return;
 		Environmental o=item.owner();
-
+		
 		Vector V=new Vector();
 		if(item instanceof Container)
 			V=((Container)item).getContents();
@@ -873,6 +873,25 @@ public class StdRoom
 			addItem(i2);
 		}
 		item.setContainer(null);
+		
+		if(item.riding()!=null)
+		{
+			if((item.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
+			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
+			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
+			&&(item.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
+			{
+				if(item.riding() instanceof MOB)
+					bringMobHere((MOB)item.riding(),true);
+				else
+				if(item.riding() instanceof Item)
+					bringItemHere((Item)item.riding(),-1);
+			}
+			else
+				item.setRiding(null);
+		}
+		
 		if(o instanceof Room)
 			((Room)o).recoverRoomStats();
 		else

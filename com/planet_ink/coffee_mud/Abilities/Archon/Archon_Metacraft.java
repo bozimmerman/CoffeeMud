@@ -66,7 +66,7 @@ public class Archon_Metacraft extends CraftingSkill
 			skill=(Ability)craftingSkills.elementAt(i);
 			if(skill instanceof CraftingSkill)
 			{
-				Vector V=((CraftingSkill)skill).loadRecipes();
+				Vector V=((CraftingSkill)skill).fetchRecipes();
 				V=matchingRecipeNames(V,recipe);
 				if((V!=null)&&(V.size()>0))
 					break;
@@ -86,6 +86,7 @@ public class Archon_Metacraft extends CraftingSkill
 		{
 			Vector V=new Vector();
 			V.addElement(new Integer(material));
+			V.addElement(recipe);
 			skill.invoke(mob,V,skill,true,asLevel);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{

@@ -113,7 +113,7 @@ public class Embroidering extends CommonSkill
 		if((!profficiencyCheck(mob,0,auto))||(!write.profficiencyCheck(mob,0,auto)))
 			writing="";
 		int duration=30-mob.envStats().level();
-		if(duration<6) duration=6;
+		if(duration<3) duration=3;
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) embroidering on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{

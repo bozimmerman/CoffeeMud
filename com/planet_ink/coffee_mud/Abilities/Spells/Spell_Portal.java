@@ -27,7 +27,7 @@ public class Spell_Portal extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
-	protected int overrideMana(){return Integer.MAX_VALUE;}
+	protected int overrideMana(){return Integer.MAX_VALUE-90;}
 
 	Room newRoom=null;
 	Room oldRoom=null;

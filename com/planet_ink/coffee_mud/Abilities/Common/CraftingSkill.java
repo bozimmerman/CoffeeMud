@@ -188,6 +188,10 @@ public class CraftingSkill extends CommonSkill
 		if(amt<0) amt=1;
 		return amt;
 	}
+	
+	public Vector fetchRecipes(){return loadRecipes();}
+	protected Vector loadRecipes(){ return new Vector();}
+	
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,

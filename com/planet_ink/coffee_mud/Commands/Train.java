@@ -60,6 +60,13 @@ public class Train extends StdCommand
 				trainsRequired=4;
 			else
 				trainsRequired=5;
+			
+			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
+			{
+				mob.tell("You cannot train that any further.");
+				return false;
+			}
 		}
 		CharClass theClass=null;
 		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
@@ -176,13 +183,6 @@ public class Train extends StdCommand
 
 		if(abilityCode<100)
 		{
-			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))
-			{
-				mob.tell("You cannot train that any further.");
-				return false;
-			}
-
 			int teachStat=teacher.charStats().getStat(abilityCode);
 			if(curStat>teachStat)
 			{

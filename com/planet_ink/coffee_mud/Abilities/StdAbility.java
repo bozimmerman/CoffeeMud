@@ -42,7 +42,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	protected int practicesToPractice(){return 1;}
 	public long flags(){return 0;}
 	public int usageType(){return USAGE_MANA;}
-	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all
+	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all, Integer.MAX_VALUE-100
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_AREAS|
 										 Ability.CAN_ITEMS|
@@ -522,18 +522,27 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			if(usageCosts[0]<5)	usageCosts[0]=5;
 			if(consumed==Integer.MAX_VALUE)
 				usageCosts[0]=mob.maxState().getMana();
+			else
+			if(consumed>(Integer.MAX_VALUE-100))
+				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMana(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		if(useMoves){
 			usageCosts[1]=consumed/divider;
 			if(usageCosts[1]<5)	usageCosts[1]=5;
 			if(consumed==Integer.MAX_VALUE)
 				usageCosts[1]=mob.maxState().getMovement();
+			else
+			if(consumed>(Integer.MAX_VALUE-100))
+				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMovement(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		if(useHits){
 			usageCosts[2]=consumed/divider;
 			if(usageCosts[2]<5)	usageCosts[2]=5;
 			if(consumed==Integer.MAX_VALUE)
 				usageCosts[2]=mob.maxState().getHitPoints();
+			else
+			if(consumed>(Integer.MAX_VALUE-100))
+				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getHitPoints(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
 		}
 		return usageCosts;
 	}
@@ -581,6 +590,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 
 	public void helpProfficiency(MOB mob)
 	{
+		if(mob==null) return;
 		Ability A=(Ability)mob.fetchAbility(ID());
 		if((A==null)||(A.isBorrowed(mob))) return;
 

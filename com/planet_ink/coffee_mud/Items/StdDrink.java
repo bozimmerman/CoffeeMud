@@ -177,7 +177,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 						amountOfLiquidRemaining+=amountToTake;
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;
-					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
+					if((amountOfLiquidRemaining<=0)
+					&&((disappearsAfterDrinking)||(this instanceof EnvResource)))
 						destroy();
 				}
 				break;

@@ -31,8 +31,14 @@ public class Spell_ClanDonate extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=getTarget(mob,null,givenTarget,null,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
+		if(!mob.isMine(target))
+		{
+			mob.tell("You aren't holding that!");
+			return false;
+		}
+		
 		Room clanDonateRoom=null;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
@@ -63,7 +69,7 @@ public class Spell_ClanDonate extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))&&(CommonMsgs.drop(mob,target,true,false)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" vanishes!");

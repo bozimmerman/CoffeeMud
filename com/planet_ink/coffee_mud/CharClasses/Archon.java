@@ -50,6 +50,7 @@ public class Archon extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 		}

@@ -159,6 +159,35 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				Item I=(Item)ticking;
+				Vector riders=null;
+				if(ticking instanceof Rideable)
+				{
+					riders=new Vector();
+					for(int i=0;i<((Rideable)ticking).numRiders();i++)
+						riders.addElement(((Rideable)ticking).fetchRider(i));
+					Exit opExit=thatRoom.getReverseExit(direction);
+					for(int i=0;i<riders.size();i++)
+					{
+						Rider R=(Rider)riders.elementAt(i);
+						if(R instanceof MOB)
+						{
+							MOB mob=(MOB)R;
+							FullMsg enterMsg=new FullMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
+							FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+							if((E!=null)&&(!E.okMessage(mob,enterMsg)))
+								return true;
+							else
+							if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
+								return true;
+							else
+							if(!enterMsg.target().okMessage(mob,enterMsg))
+								return true;
+							else
+							if(!mob.okMessage(mob,enterMsg))
+								return true;
+						}
+					}
+				}
 				
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 				thatRoom.bringItemHere(I,-1);
@@ -166,6 +195,29 @@ public class Patroller extends ActiveTicker
 				{
 					step++;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
+					if(riders!=null)
+					for(int i=0;i<riders.size();i++)
+					{
+						Rider R=(Rider)riders.elementAt(i);
+						if(CoffeeUtensils.roomLocation(R)!=thatRoom)
+							if((((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SIT)
+							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_TABLE)
+							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_SLEEP)
+							&&(((Rideable)ticking).rideBasis()!=Rideable.RIDEABLE_LADDER))
+							{
+								if(R instanceof MOB)
+								{
+									thatRoom.bringMobHere((MOB)R,true);
+									CommonMsgs.look((MOB)R,true);
+								}
+								else
+								if(R instanceof Item)
+									thatRoom.bringItemHere((Item)R,-1);
+							}
+							else
+								R.setRiding(null);
+					}
 				}
 				else
 				if(I.owner()==thisRoom)

@@ -1,11 +1,12 @@
+Expanding on your death thoughts, I think when players die, it would be nice to have a channel, like Wizinfo, that players can see, that  states Bob has been killed by a Water Snake
+add that silly group ranging thing
 ?Shapeshifting into a cow lets people see the WIZ channel?!
-Patrolling rideables don't carry the ridden
-wind affects throws
 look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
 spraypaint is the command, which doesn't seem to want to unload/reload.
 abyss/portal change
 prop to give each mob a unique death message
 items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
+wind affects throws
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 Install ship battery
 ability to deposit a container and its contents.

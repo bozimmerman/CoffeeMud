@@ -585,7 +585,7 @@ public class StdLawBook extends StdItem
 				String key=(String)e.nextElement();
 				String[] set=(String[])theLaw.abilityCrimes().get(key);
 				if(!key.startsWith("$")) continue;
-				Ability AB=CMClass.getAbility(key);
+				Ability AB=CMClass.getAbility(key.substring(1));
 				if((AB==null)||(set==null)||(set.length<Law.BIT_NUMBITS)) continue;
 				filteredTable.put(key,set);
 			}
@@ -594,7 +594,7 @@ public class StdLawBook extends StdItem
 			{
 				String key=(String)e.nextElement();
 				String[] set=(String[])filteredTable.get(key);
-				Ability AB=CMClass.getAbility(key);
+				Ability AB=CMClass.getAbility(key.substring(1));
 				str.append(Util.padRight(""+(highest+1)+". "+AB.name(),20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}

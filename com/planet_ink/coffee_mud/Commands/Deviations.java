@@ -229,7 +229,7 @@ public class Deviations extends StdCommand
 												M.baseCharStats().getCurrentClass().getLevelAttack(M)),5)+" ");
 				mobResults.append(Util.padRight(""+getDeviation(
 												M.baseEnvStats().damage(),
-												M.baseCharStats().getCurrentClass().getLevelDamage(M)),5)+" ");
+												(int)Math.round(Util.div(M.baseCharStats().getCurrentClass().getLevelDamage(M),M.baseEnvStats().speed()))),5)+" ");
 				mobResults.append(Util.padRight(""+getDeviation(
 												M.baseEnvStats().armor(),
 												M.baseCharStats().getCurrentClass().getLevelArmor(M)),5)+" ");
