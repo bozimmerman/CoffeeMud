@@ -3,22 +3,13 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMUD Web Server</title>
+	<title>@RaceName@</title>
 </head>
 
 <body BGCOLOR=#FFFFCC>
-<h3>CoffeeMud 3.0 Player Races Information</h3><P>
-<UL>
-@loop@
-@RaceNext@
-<LI><A href="#@RaceID@">@RaceName@</A>
-@back@
-</UL><P>
-@RaceNext?reset@
-@loop@
-@RaceNext@
-<CENTER><a name="@RaceID@"><H3>@RaceName@</H3></a></CENTER>
+<h3>CoffeeMud 3.0 Player Race Information</h3><P>
 <TABLE WIDTH=100% BORDER=1>
+<TR><TD WIDTH=100% BGCOLOR=#FFCCFF ALIGN=CENTER><a name="@RaceID@"><H1>@RaceName@</H1></a></TD></TR>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Description</B></TD><TD>@RaceData?help@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Stat Adjustments</B></TD><TD>@RaceData?stats&trains&pracs@</TD>
 <TR><TD WIDTH=25% BGCOLOR=#FFCCFF><B>Bonus Abilities</B></TD><TD>@RaceData?senses&dispositions&abilities@</TD>
@@ -34,6 +25,5 @@
 </TD>
 </TR>
 </TABLE>
-@back@
 </BODY>
 </HTML>

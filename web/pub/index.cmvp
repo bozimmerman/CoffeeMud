@@ -3,29 +3,45 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMUD Web Server</title>
+	<title>CoffeeMUD v3.0</title>
 </head>
 
 <body>
-<div align="center">
 <IMG src="images/logo.gif" ALIGN=LEFT>
-@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@<br>
-<br>
-Server status: <b>@MUDSERVERSTATUS@</B><br>
-Players currently online: <b>@NUMPLAYERS@</B><br>
-<br>
-<a href="gamestatus.cmvp">Detailed Game Status</a><br><br>
-<a href="areas.cmvp">Installed Map Areas</a><br><br>
-<br>
-<a href="guides/mudintro.html">Introduction</a><br>
-<a href="guides/features.html">CoffeeMUD features</a><br>
-<a href="classes.cmvp">Player Classes</a><br>
-<a href="races.cmvp">Player Races</a><br>
-<a href="guides/ArchonGuide.html">Archon's Guide (v1.2)</a><br>
-<a href="guides/bugs.txt">Bugs</a><br>
-<a href="guides/todo.txt">To Do</a><br>
-
-<br>
-</DIV>
+<TABLE WIDTH=50% BORDER=0>
+<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=BLUE><B>
+@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@
+</B></FONT></TD></TR>
+<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=LTGREEN><B>
+Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a>
+</B></FONT></TD></TR>
+<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=ORANGE><B>
+Players currently online: <b>@NUMPLAYERS@</B>
+</B></FONT></TD></TR>
+<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%>
+<BR><BR>
+<UL>
+<LI><a href="guides/mudintro.html">Introduction</a>
+<LI><a href="guides/features.html">CoffeeMUD features</a>
+<LI>Classes: 
+	@loop@
+	@CharClassNext@
+	<A href="classes.cmvp?CLASS=@CharClassID@">@CharClassName@</A>
+	@back@<BR>
+<LI>Races: 
+	@loop@
+	@RaceNext@
+	<A href="races.cmvp?RACE=@RaceID@">@RaceName@</A>
+	@back@<BR>
+<LI>Player Abilities: <a href="spells.cmvp?ABILITYTYPE=SPELL">Spells</a> 
+					  <a href="ables.cmvp?ABILITYTYPE=SONG">Songs</a>
+					  <a href="ables.cmvp?ABILITYTYPE=PRAYER">Prayers</a>  
+					  <a href="ables.cmvp?ABILITYTYPE=CHANT">Chants</a>  
+					  <a href="skills.cmvp">Skills</a>
+					  <BR>
+<LI><a href="areas.cmvp">Installed Areas</a>
+<LI><a href="guides/ArchonGuide.html">Archon's Guide (v1.2)</a>
+</UL>
+</TD></TR>
 </body>
 </html>

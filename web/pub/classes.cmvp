@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMUD Web Server</title>
+	<title>@CharClassName@</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
 	function openUp(named)
@@ -18,19 +18,8 @@
 
 <body BGCOLOR=#CCFFFF>
 <h3>CoffeeMud 3.0 Player Class Information</h3><P>
-<UL>
-@loop@
-@CharClassNext@
-<LI><A href="#@CharClassID@">@CharClassName@</A>
-@back@
-</UL>
-<P>
-@CharClassNext?reset@
-
-@loop@
-@CharClassNext@
-<CENTER><a name="@CharClassID@"><H3>@CharClassName@</H3></a></CENTER>
 <TABLE WIDTH=100% BORDER=1>
+<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#99CCCC VALIGN=CENTER ALIGN=CENTER><a name="@CharClassID@"><H2><FONT COLOR=BLACK>@CharClassName@</FONT></H2></a></TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Description</B></TD><TD>@CharClassData?help@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Prime Statistic</B></TD><TD>@CharClassData?prime@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Qualifications</B></TD><TD>@CharClassData?quals@</TD></TR>
@@ -69,6 +58,5 @@
 	@back@
 	</TABLE></TD></TR>
 </TABLE>
-@back@
 </BODY>
 </HTML>

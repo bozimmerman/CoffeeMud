@@ -18,6 +18,13 @@ public class AbilityNext extends StdWebMacro
 			if(last!=null) httpReq.getRequestParameters().remove("ABILITY");
 			return "";
 		}
+		String ableType=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
+		if((ableType!=null)&&(ableType.length()>0))
+			parms.put(ableType,ableType);
+		String domainType=(String)httpReq.getRequestParameters().get("DOMAIN");
+		if((domainType!=null)&&(domainType.length()>0))
+			parms.put("DOMAIN",domainType);
+		
 		String lastID="";
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
@@ -37,18 +44,24 @@ public class AbilityNext extends StdWebMacro
 						okToShow=false;
 				}
 			}
+			else
+			{
+				int level=CMAble.getQualifyingLevel("Archon",A.ID());
+				if(level<0)
+					okToShow=false;
+				else
+				{
+					String levelName=(String)httpReq.getRequestParameters().get("LEVEL");
+					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
+						okToShow=false;
+				}
+			}
 			if(okToShow)
 			{
-				String ableType=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
-				if((ableType!=null)&&(ableType.length()>0))
-					parms.put(ableType,ableType);
-				String domainType=(String)httpReq.getRequestParameters().get("DOMAIN");
-				if((domainType!=null)&&(domainType.length()>0))
-					parms.put("DOMAIN",domainType);
 				if(parms.containsKey("DOMAIN")&&(classType==Ability.SPELL))
 				{
 					String domain=(String)parms.get("DOMAIN");
-					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[A.classificationCode()&Ability.ALL_DOMAINS]))
+					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
 					   okToShow=false;
 				}
 				else
@@ -61,6 +74,7 @@ public class AbilityNext extends StdWebMacro
 						okToShow=false;
 				}
 			}
+			if(parms.containsKey("NOT")) okToShow=!okToShow;
 			if(okToShow)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))))

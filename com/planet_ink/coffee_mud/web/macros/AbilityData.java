@@ -27,32 +27,7 @@ public class AbilityData extends StdWebMacro
 					StringBuffer s=ExternalPlay.getHelpText(A.ID());
 					if(s==null)
 						s=ExternalPlay.getHelpText(A.name());
-					if(s!=null)
-					{
-						int x=s.toString().indexOf("\n\r");
-						while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
-						x=s.toString().indexOf("\r\n");
-						while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\r\n");}
-						x=s.toString().lastIndexOf("<BR>");
-						int count=0;
-						int lastSpace=x+4;
-						while((x>=0)&&(x<s.length()))
-						{
-							count++;
-							if(s.charAt(x)==' ')
-								lastSpace=x;
-							if(count>=70)
-							{
-								s.replace(lastSpace,lastSpace+1,"<BR>");
-								lastSpace=lastSpace+4;
-								x=lastSpace+4;
-								count=0;
-							}
-							else
-								x++;
-						}
-						str.append(s);
-					}
+					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("RANGES"))
 				{
