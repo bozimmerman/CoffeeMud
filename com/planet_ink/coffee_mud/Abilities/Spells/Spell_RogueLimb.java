@@ -19,14 +19,24 @@ public class Spell_RogueLimb extends Spell
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((rogueLimb==null)
-		||(affected==null)
-		||(!(affected instanceof MOB))
-		||(rogueLimb.amFollowing()!=null)
-		||(rogueLimb.getVictim()!=affected)
-		||(!Sense.aliveAwakeMobile(rogueLimb,true))
-		||(!Sense.aliveAwakeMobile((MOB)affected,true))
-		||(rogueLimb.location()!=((MOB)affected).location()))
+		if((rogueLimb!=null)
+		&&(affected!=null)
+		&&(affected instanceof MOB))
+		{
+			if(rogueLimb.location()!=((MOB)affected).location())
+			{
+				((MOB)affected).location().bringMobHere(rogueLimb,false);
+				rogueLimb.setVictim((MOB)affected);
+			}
+			if((rogueLimb.amFollowing()!=null)
+			||(rogueLimb.getVictim()!=affected)
+			||(!Sense.aliveAwakeMobile(rogueLimb,true))
+			||(!Sense.aliveAwakeMobile((MOB)affected,true))
+			||(!((MOB)affected).location().isInhabitant((MOB)affected))
+			||(!rogueLimb.location().isInhabitant(rogueLimb)))
+				unInvoke();
+		}
+		else
 			unInvoke();
 		return super.tick(ticking,tickID);
 	}
@@ -35,8 +45,15 @@ public class Spell_RogueLimb extends Spell
 	{
 		if(!super.okAffect(myHost,affect))
 			return false;
-		if((affected==null)||(!(affected instanceof MOB)))
+		if((affected==null)
+		   ||(!(affected instanceof MOB))
+		   ||(rogueLimb==null))
 			return true;
+		if(affect.amITarget(rogueLimb)
+		&&(Sense.aliveAwakeMobile(rogueLimb,true))
+		&&(Sense.aliveAwakeMobile((MOB)affected,true))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+			ExternalPlay.postDamage(rogueLimb,(MOB)affected,affect.tool(),affect.targetCode()-Affect.MASK_HURT,Affect.MASK_GENERAL|affect.sourceCode(),Weapon.TYPE_NATURAL,null);
 		if(affect.amISource(rogueLimb)
 		&&(affect.sourceMinor()==Affect.TYP_DEATH))
 		{
@@ -75,39 +92,45 @@ public class Spell_RogueLimb extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector limbs=new Vector();
-				Race theRace=target.charStats().getMyRace();
-				for(int i=0;i<Race.BODY_PARTS;i++)
+				if(!msg.wasModified())
 				{
-					if((theRace.bodyMask()[i]>0)
-					&&(i!=Race.BODY_TORSO))
-						limbs.addElement(new Integer(i));
+					Vector limbs=new Vector();
+					Race theRace=target.charStats().getMyRace();
+					for(int i=0;i<Race.BODY_PARTS;i++)
+					{
+						if((theRace.bodyMask()[i]>0)
+						&&(i!=Race.BODY_TORSO))
+							limbs.addElement(new Integer(i));
+					}
+					String limb=null;
+					if(limbs.size()==0) 
+						limb="body part";
+					else 
+						limb=((String)Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()]).toLowerCase();
+					rogueLimb=CMClass.getMOB("GenMob");
+					rogueLimb.setName(target.name()+"'s "+limb);
+					rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");
+					rogueLimb.baseEnvStats().setAttackAdjustment((-target.adjustedArmor())+50);
+					rogueLimb.baseEnvStats().setArmor(100-target.adjustedAttackBonus());
+					rogueLimb.baseCharStats().setMyRace(theRace);
+					int hp=100; 
+					if(hp>(target.baseState().getHitPoints()/3)) 
+						hp=(target.baseState().getHitPoints()/3);
+					rogueLimb.baseEnvStats().setDamage(1);
+					rogueLimb.baseState().setHitPoints(100);
+					rogueLimb.baseState().setMana(0);
+					rogueLimb.baseState().setMovement(100);
+					rogueLimb.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+					rogueLimb.setVictim(target);
+					rogueLimb.recoverMaxState();
+					rogueLimb.recoverCharStats();
+					rogueLimb.recoverEnvStats();
+					rogueLimb.resetToMaxState();
+					rogueLimb.bringToLife(mob.location(),true);
+					rogueLimb.setVictim(target);
+					maliciousAffect(mob,target,0,-1);
+					rogueLimb.setVictim(target);
 				}
-				String limb=null;
-				if(limbs.size()==0) 
-					limb="body part";
-				else 
-					limb=(String)Race.BODYPARTSTR[((Integer)limbs.elementAt(Dice.roll(1,limbs.size(),-1))).intValue()];
-				rogueLimb=CMClass.getMOB("GenMob");
-				rogueLimb.setName(target.name()+"'s "+limb);
-				rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");
-				rogueLimb.baseEnvStats().setAttackAdjustment((-target.adjustedArmor()));
-				rogueLimb.baseEnvStats().setArmor(100-target.adjustedAttackBonus());
-				rogueLimb.baseCharStats().setMyRace(theRace);
-				int hp=100; 
-				if(hp>(target.baseState().getHitPoints()/3)) 
-					hp=(target.baseState().getHitPoints()/3);
-				rogueLimb.baseEnvStats().setDamage(1);
-				rogueLimb.baseState().setHitPoints(100);
-				rogueLimb.baseState().setMana(0);
-				rogueLimb.baseState().setMovement(100);
-				rogueLimb.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
-				rogueLimb.setVictim(target);
-				rogueLimb.recoverCharStats();
-				rogueLimb.recoverEnvStats();
-				rogueLimb.recoverMaxState();
-				rogueLimb.bringToLife(mob.location(),true);
-				maliciousAffect(mob,target,0,-1);
 			}
 		}
 		else
