@@ -223,7 +223,7 @@ public class StdWeapon extends StdItem implements Weapon
 									Ability A=I.fetchEffect(a); 
 									if((A!=null)&&(!A.isBorrowed(this))&&(fetchEffect(A.ID())==null))
 									{
-										A=(Ability)copyOf();
+										A=(Ability)A.copyOf();
 										A.setInvoker(null);
 										A.setBorrowed(this,true);
 										addEffect(A);

@@ -590,7 +590,10 @@ public class BaseGenerics extends StdCommand
 					mob.tell(showNumber+". Assigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
 				else
 				if(E instanceof Ammunition)
+				{
 					mob.tell(showNumber+". Ammunition type: '"+E.readableText()+"'.");
+					ok=true;
+				}
 				else
 				if(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 				{
