@@ -92,6 +92,7 @@ public class IMudInterface implements ImudServices, Serializable
 				ChannelPacket ck=(ChannelPacket)packet;
 				MOB mob=CMClass.getMOB("StdMOB");
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
+				mob.setLocation(CMClass.getLocale("StdRoom"));
 				String channelName=ck.channel;
 				FullMsg msg=null;
 				
@@ -146,6 +147,7 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.LOCATE_REPLY:
 			{
 				LocateReplyPacket lk=(LocateReplyPacket)packet;
+				Log.errOut("IMudInterface","Received Locate Reply Packet: "+lk.target_name+"/"+lk.sender_mud+"/"+lk.located_visible_name);
 				MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
 					smob.tell(lk.located_visible_name+"@"+lk.located_mud_name+" ("+lk.idle_time+"): "+lk.status);
@@ -168,9 +170,10 @@ public class IMudInterface implements ImudServices, Serializable
 						String nom = (String)V2.elementAt(0);
 						int idle = ((Integer)V2.elementAt(1)).intValue();
 						String xtra = (String)V2.elementAt(2);
-						buf.append("["+Util.padRight(nom,20)+"] ("+Util.padRightPreserve(""+idle,3)+"): "+xtra+"\n\r");
+						buf.append("["+Util.padRight(nom,20)+"] "+xtra+"("+idle+")\n\r");
 					}
-					smob.session().unfilteredPrintln(buf.toString());
+					String str=replaceAll(buf.toString(),"%ESET%","");
+					smob.session().unfilteredPrintln(str);
 					break;
 				}
 			}
@@ -209,6 +212,7 @@ public class IMudInterface implements ImudServices, Serializable
 				TellPacket tk=(TellPacket)packet;
 				MOB mob=CMClass.getMOB("StdMOB");
 				mob.setName(tk.sender_name+"@"+tk.sender_mud);
+				mob.setLocation(CMClass.getLocale("StdRoom"));
 				MOB smob=findSessMob(tk.target_name);
 				if(smob!=null)
 				{

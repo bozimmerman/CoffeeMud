@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.system.I3.packets;
 
 import com.planet_ink.coffee_mud.system.I3.server.Server;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.Vector;
 
 public class LocateQueryPacket extends Packet {
@@ -37,8 +38,10 @@ public class LocateQueryPacket extends Packet {
     }
 
     public String toString() {
-        return "({\"locate-req\",5,\"" + Server.getMudName() +
+		String str="({\"locate-req\",5,\"" + Server.getMudName() +
                "\", \"" + sender_name + "\",0,0,\"" +
                user_name + "\"})";
+		Log.errOut("LocateQueryPacket","Sent: "+str);
+		return str;
     }
 }
