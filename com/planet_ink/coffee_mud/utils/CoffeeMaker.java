@@ -1408,7 +1408,7 @@ public class CoffeeMaker
 			item.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"IABLE"));
 			if(!E.isGeneric())
 				item.setMiscText(XMLManager.getValFromPieces(V,"ITEXT"));
-			item.wearAt(XMLManager.getIntFromPieces(V,"USES"));
+			//item.wearAt(XMLManager.getIntFromPieces(V,"USES"));
 		}
 		else
 		if(E instanceof MOB)
@@ -1509,6 +1509,12 @@ public class CoffeeMaker
 					String ILOC=(String)LOCmap.get(item);
 					if(ILOC!=null)
 						item.setContainer((Item)IIDmap.get(ILOC));
+					else
+					if(item.amWearingAt(Item.HELD)
+					&&(!item.rawLogicalAnd())
+					&&((item.rawProperLocationBitmap()&Item.WIELD)>0)
+					&&(M.numWearingHere(Item.WIELD)==0))
+						item.wearAt(Item.WIELD);
 				}
 			}
 		}
