@@ -107,8 +107,7 @@ public class StdMOB implements MOB
 	public void setBitmap(int newVal)
 	{
 		attributesBitmap=newVal;
-		if(mySession!=null) 
-		    mySession.initTermID(Util.unsetb(attributesBitmap,ATT_MXP));
+		if(mySession!=null) mySession.initTermID(attributesBitmap);
 	}
 
 	protected int tickCounter=0;

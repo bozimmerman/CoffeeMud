@@ -79,6 +79,8 @@ public class Say extends StdCommand
 			if(whom.length()>0)
 			{
 				target=mob.location().fetchFromRoomFavorMOBs(null,whom,Item.WORN_REQ_ANY);
+				if((toFlag)&&(target==null))
+				    target=mob.fetchInventory(null,whom);
 				
 				if((!toFlag)&&(target!=null))
 				{
