@@ -32,19 +32,8 @@ public class Poison_Liquor extends Poison_Alcohol
 	public int classificationCode(){return Ability.POISON;}
 
 	protected int alchoholContribution(){return 2;}
+	protected int level(){return 2;}
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round((drunkness+((MOB)affected).envStats().level())*4));
-	}
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-(drunkness*2)));
-		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
-			affectableStats.setStat(CharStats.DEXTERITY,1);
-	}
-
 	public void unInvoke()
 	{
 		MOB mob=null;

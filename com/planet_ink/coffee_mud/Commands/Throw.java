@@ -97,7 +97,6 @@ public class Throw extends StdCommand
 					mob.location().send(mob,msg);
 				}
 			}
-			else
 			if(target instanceof MOB)
 				MUDFight.postAttack(mob,(MOB)target,item);
 		}

@@ -55,23 +55,31 @@ public class Transfer extends At
 				mobname=mobname.substring(4);
 				allFlag=true;
 			}
-			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				MOB M=null;
-				int num=1;
-				while((num<=1)||(M!=null))
+			if(!allFlag)
+				for(int s=0;s<Sessions.size();s++)
 				{
-					M=R.fetchInhabitant(mobname+"."+num);
-					if((M!=null)&&(!V.contains(M)))
-					   V.addElement(M);
-					num++;
+					Session S=Sessions.elementAt(s);
+					MOB M=S.mob();
+					if((M!=null)&&(M.Name().equalsIgnoreCase(mobname)))
+						V.addElement(M);
+				}
+			if(V.size()==0)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					MOB M=null;
+					int num=1;
+					while((num<=1)||(M!=null))
+					{
+						M=R.fetchInhabitant(mobname+"."+num);
+						if((M!=null)&&(!V.contains(M)))
+						   V.addElement(M);
+						num++;
+						if((!allFlag)&&(V.size()>0)) break;
+					}
 					if((!allFlag)&&(V.size()>0)) break;
 				}
-				if((!allFlag)&&(V.size()>0)) break;
-			}
 			if(V.size()==0)
-			{
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
@@ -87,7 +95,6 @@ public class Transfer extends At
 					}
 					if((!allFlag)&&(V.size()>0)) break;
 				}
-			}
 		}
 
 		if(V.size()==0)

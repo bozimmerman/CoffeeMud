@@ -40,6 +40,7 @@ public class Poison_Alcohol extends Poison
 	protected boolean disableHappiness=false;
 
 	protected int alchoholContribution(){return 1;}
+	protected int level(){return 1;}
 	protected int drunkness=5;
 	
 	public Poison_Alcohol()
@@ -243,15 +244,18 @@ public class Poison_Alcohol extends Poison
 		if((givenTarget instanceof MOB)&&(auto)&&(givenTarget.fetchEffect(ID())!=null))
 		{
 			Vector found=new Vector();
+			Vector remove=new Vector();
 			largest=0;
 			for(int a=0;a<givenTarget.numEffects();a++)
 			{
 				Ability A=givenTarget.fetchEffect(a);
 				if(A instanceof Poison_Alcohol)
 				{
-					if(((Poison_Alcohol)A).drunkness>largest)
-						largest=((Poison_Alcohol)A).drunkness;
-					found.addElement(A);
+					largest+=((Poison_Alcohol)A).drunkness;
+					if(((Poison_Alcohol)A).level()>=level())
+						found.addElement(A);
+					else
+						remove.addElement(A);
 				}
 			}
 			largest+=alchoholContribution();
@@ -276,6 +280,9 @@ public class Poison_Alcohol extends Poison
 				}
 				return false;
 			}
+			else
+			for(int i=0;i<remove.size();i++)
+				givenTarget.delEffect((Ability)remove.elementAt(i));
 		}
 		boolean success=super.invoke(mob,commands,givenTarget,auto);
 		if(success&&(givenTarget instanceof MOB)&&(auto))

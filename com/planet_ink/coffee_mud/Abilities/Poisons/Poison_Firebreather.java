@@ -31,7 +31,8 @@ public class Poison_Firebreather extends Poison_Liquor
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int POISON_TICKS(){return 35;}
 
-	protected int alchoholContribution(){return 3;}
+	protected int alchoholContribution(){return 3;} 
+	protected int level(){return 3;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
