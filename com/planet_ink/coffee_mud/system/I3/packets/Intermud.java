@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.system.I3.persist.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -41,7 +42,7 @@ import java.util.Vector;
  * @see imaginary.net.i3.ImudServices
  * @see imaginary.persist.PersistentPeer
  */
-public class Intermud implements Runnable, Persistent {
+public class Intermud implements Runnable, Persistent, Serializable {
     static private Intermud thread = null;
 
     /**
@@ -53,6 +54,7 @@ public class Intermud implements Runnable, Persistent {
      * @see imaginary.net.i3.Packet
      */
     static public void sendPacket(Packet p) {
+		if(!isConnected()) return;
         thread.send(p);
     }
 
@@ -79,6 +81,7 @@ public class Intermud implements Runnable, Persistent {
      * @return the specified mud's canonical name
      */
     static public String translateName(String mud) {
+		if(!isConnected()) return "";
         return thread.getMudNameFor(mud);
     }
 
@@ -92,6 +95,7 @@ public class Intermud implements Runnable, Persistent {
      * @see imaginary.net.i3.ImudServices#getLocalChannel
      */
     static public String getLocalChannel(String c ) {
+		if(!isConnected()) return "";
         return thread.intermud.getLocalChannel(c);
     }
 
@@ -105,6 +109,7 @@ public class Intermud implements Runnable, Persistent {
      * @see imaginary.net.i3.ImudServices#getRemoteChannel
      */
     static public String getRemoteChannel(String c) {
+		if(!isConnected()) return "";
         return thread.intermud.getRemoteChannel(c);
     }
 
@@ -116,6 +121,7 @@ public class Intermud implements Runnable, Persistent {
      * @return true if the mud is currently up, false otherwise
      */
     static public boolean isUp(String mud) {
+		if(!isConnected()) return false;
         Mud m = thread.getMud(mud);
 
         if( m == null ) {
@@ -126,20 +132,20 @@ public class Intermud implements Runnable, Persistent {
         }
     }
 
-    private int                 attempts;
-    private Hashtable           banned;
-    private ChannelList         channels;
     private boolean             connected;
     private Socket              connection;
     private Thread              input_thread;
     private ImudServices        intermud;
     private int                 modified;
-    private MudList             muds;
-    private Vector              name_servers;
     private DataOutputStream    output;
-    private int                 password;
     private PersistentPeer      peer;
     private SaveThread          save_thread;
+    public int                 attempts;
+    public Hashtable           banned;
+    public ChannelList         channels;
+    public MudList             muds;
+    public Vector              name_servers;
+    public int                 password;
 
     private Intermud(ImudServices imud, PersistentPeer p) {
         super();
@@ -221,7 +227,7 @@ public class Intermud implements Runnable, Persistent {
                 while( e.hasMoreElements() ) {
                     String chan = (String)e.nextElement();
 
-                    send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
+					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
                          n.name + "\",0,\"" + chan + "\",1,})");
                 }
             }
@@ -295,6 +301,12 @@ public class Intermud implements Runnable, Persistent {
         modified = Persistent.UNMODIFIED;
     }
 
+	public static boolean isConnected()
+	{
+		if(thread==null) return false;
+		return thread.connected;
+	}
+	
     public void run() {
         DataInputStream input;
 
@@ -540,6 +552,13 @@ public class Intermud implements Runnable, Persistent {
         return muds;
     }
 
+    /**
+     * @return the list of known muds
+     */
+    public static MudList getAllMudsList() {
+		if(!isConnected()) return new MudList(-1);
+        return thread.muds;
+    }
     /**
      * Sets the list of known muds to the specified list.
      * @param list the new list of muds

@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.system.I3.packets;
+import java.io.Serializable;
 
-public class Mud {
+public class Mud implements Serializable
+{
     public String address;
     public String admin_email;
     public String base_mudlib;

@@ -252,6 +252,18 @@ public class CommandProcessor
 				case CommandSet.HOLD:
 					itemUsage.hold(mob,commands);
 					break;
+				case CommandSet.I3LIST:
+					if(!(ExternalPlay.i3().i3online()))
+						mob.tell("I3 is unavailable.");
+					else
+						ExternalPlay.i3().giveMudList(mob);
+					break;
+				case CommandSet.I3LOCATE:
+					if(!(ExternalPlay.i3().i3online()))
+						mob.tell("I3 is unavailable.");
+					else
+						ExternalPlay.i3().i3locate(mob,Util.combine(commands,0));
+					break;
 				case CommandSet.IDEA:
 					ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.name(),"ALL","IDEA",Util.combine(commands,1),-1);
 					mob.tell("Thank you for your contribution!");

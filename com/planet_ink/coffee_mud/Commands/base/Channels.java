@@ -31,7 +31,31 @@ public class Channels
 		if(channelNames.size()==0) buf.append("None!");
 		mob.tell(buf.toString());
 	}
+	
+	public int getChannelInt(String channelName)
+	{
+		for(int c=0;c<channelNames.size();c++)
+			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+				return c;
+		return -1;
+	}
 
+	public int getChannelNum(String channelName)
+	{
+		for(int c=0;c<channelNames.size();c++)
+			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+				return 1<<c;
+		return -1;
+	}
+
+	public String getChannelName(String channelName)
+	{
+		for(int c=0;c<channelNames.size();c++)
+			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+				return (String)channelNames.elementAt(c);
+		return "";
+	}
+	
 	public int loadChannels(String list, CommandSet cmdSet)
 	{
 		while(list.length()>0)
@@ -65,17 +89,8 @@ public class Channels
 		commands.removeElementAt(0);
 
 
-		int channelNum=0;
-		int channelInt=0;
-		for(int c=0;c<channelNames.size();c++)
-		{
-			if(((String)channelNames.elementAt(c)).startsWith(channelName))
-			{
-				channelNum=1<<c;
-				channelInt=c;
-				break;
-			}
-		}
+		int channelInt=getChannelInt(channelName);
+		int channelNum=getChannelNum(channelName);
 
 		if(Util.isSet(mob.getChannelMask(),channelInt))
 		{
@@ -110,6 +125,8 @@ public class Channels
 					ses.mob().affect(msg);
 			}
 		}
+		if((ExternalPlay.i3().i3online())&&(ExternalPlay.i3().isI3channel(getChannelName(channelName))))
+			ExternalPlay.i3().i3channel(mob,getChannelName(channelName),Util.combine(commands,0));
 	}
 	public void nochannel(MOB mob, Vector commands)
 	{

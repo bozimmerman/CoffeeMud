@@ -4,14 +4,18 @@ import com.planet_ink.coffee_mud.system.I3.server.Server;
 import java.util.Vector;
 
 public class Packet {
-    static public int CHAN_MESSAGE = 1;
-    static public int CHAN_EMOTE   = 2;
-    static public int CHAN_TARGET  = 3;
-    static public int WHO_REQUEST  = 4;
-    static public int WHO_REPLY    = 5;
-    static public int TELL         = 6;
-    static public int LOCATE_QUERY = 7;
-    static public int LOCATE_REPLY = 8;
+	/*
+		Transmissions are LPC arrays with a predefined set of six initial elements: 
+	({ type, ttl, originator mudname, originator username, target mudname, target username, ... }). 
+	*/
+    final static public int CHAN_MESSAGE = 1;
+    final static public int CHAN_EMOTE   = 2;
+    final static public int CHAN_TARGET  = 3;
+    final static public int WHO_REQUEST  = 4;
+    final static public int WHO_REPLY    = 5;
+    final static public int TELL         = 6;
+    final static public int LOCATE_QUERY = 7;
+    final static public int LOCATE_REPLY = 8;
 
     public String sender_mud = null;
     public String sender_name = null;

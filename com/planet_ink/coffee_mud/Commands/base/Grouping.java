@@ -16,6 +16,15 @@ public class Grouping
 			mob.tell("whois whom?");
 			return;
 		}
+		
+		if((mobName!=null)&&(mobName.startsWith("@")))
+		{
+			if(!(ExternalPlay.i3().i3online()))
+				mob.tell("I3 is unavailable.");
+			else
+				ExternalPlay.i3().i3who(mob,mobName.substring(1));
+			return;
+		}
 
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)

@@ -143,7 +143,8 @@ public class CommandSet extends Hashtable
 	public static final int SNOOP=131;
 	public static final int BRIEF=132;
 	public static final int AUTOWEATHER=133;
-	
+	public static final int I3LOCATE=134;
+	public static final int I3LIST=135;
 
 	public CommandSet()
 	{
@@ -245,6 +246,7 @@ public class CommandSet extends Hashtable
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
 		put("LINK",new Integer(LINK));
+		put("LOCATE",new Integer(I3LOCATE));
 		put("LOCK",new Integer(LOCK));
 		put("LOOK",new Integer(LOOK));
 			put("LOO",new Integer(LOOK));
@@ -255,6 +257,7 @@ public class CommandSet extends Hashtable
 			put("BOARD",new Integer(MOUNT));
 			put("RIDE",new Integer(MOUNT));
 			put("M",new Integer(MOUNT));
+		put("MUDLIST",new Integer(I3LIST));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
 		put("NOFOLLOW",new Integer(NOFOLLOW));

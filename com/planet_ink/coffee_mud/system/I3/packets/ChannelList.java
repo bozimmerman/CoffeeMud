@@ -1,8 +1,9 @@
 package com.planet_ink.coffee_mud.system.I3.packets;
 
 import java.util.Hashtable;
+import java.io.Serializable;
 
-public class ChannelList {
+public class ChannelList implements Serializable {
     private int id;
     private Hashtable list;
 

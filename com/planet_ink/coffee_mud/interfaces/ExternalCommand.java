@@ -33,6 +33,7 @@ public interface ExternalCommand
 	public StringBuffer getHelpText(String helpStr);
 	public StringBuffer getScore(MOB mob);
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
+	public int channelInt(String channelName);
 	
 	
 	// misc

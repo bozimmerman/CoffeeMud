@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.system.I3.packets;
+import java.io.Serializable;
 
-public class NameServer {
+public class NameServer implements Serializable {
     protected String ip;
     protected String name;
     protected int    port;

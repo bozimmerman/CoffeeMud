@@ -22,6 +22,7 @@ import java.util.Vector;
  * @version 1.0
  */
 public class TellPacket extends Packet {
+	
     /**
      * The display name for the person sending the tell.
      */
@@ -31,6 +32,12 @@ public class TellPacket extends Packet {
      */
     public String message = null;
 
+	public TellPacket()
+	{
+		super();
+        type = Packet.TELL;
+	}
+	
     /**
      * Constructs a tell package based on an I3 mud mode vector.
      * @exception imaginary.net.i3.InvalidPacketException thrown if the incoming packet is bad

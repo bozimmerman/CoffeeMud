@@ -2,8 +2,9 @@ package com.planet_ink.coffee_mud.system.I3.packets;
 import com.planet_ink.coffee_mud.system.I3.persist.Persistent;
 
 import java.util.Hashtable;
+import java.io.Serializable;
 
-public class MudList {
+public class MudList implements Serializable {
     private int id;
     private Hashtable list;
     private int modified;

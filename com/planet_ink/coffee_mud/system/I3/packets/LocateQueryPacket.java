@@ -6,6 +6,11 @@ import java.util.Vector;
 public class LocateQueryPacket extends Packet {
     public String user_name;
 
+	public LocateQueryPacket()
+	{
+		super();
+        type = Packet.LOCATE_QUERY;
+	}
     public LocateQueryPacket(Vector v) throws InvalidPacketException {
         super(v);
         try {

@@ -15,6 +15,11 @@ public class ExternalCommands implements ExternalCommand
 		return processor.itemUsage.wear(mob,item);
 	}
 	
+	public int channelInt(String channelName)
+	{
+		return processor.channels.getChannelInt(channelName);
+	}
+	
 	public void obliterateArea(String areaName)
 	{
 		processor.sysopRooms.obliterateArea(areaName);

@@ -6,6 +6,12 @@ import java.util.Vector;
 public class WhoPacket extends Packet {
     public Vector who = null;
 
+	public WhoPacket()
+	{
+		super();
+        type = Packet.WHO_REQUEST;
+	}
+	
     public WhoPacket(Vector v) throws InvalidPacketException {
         super(v);
         if( v.size() == 6 ) {

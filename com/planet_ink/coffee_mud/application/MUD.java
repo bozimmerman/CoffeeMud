@@ -223,7 +223,7 @@ public class MUD extends Thread implements Host
 		}
 		
 		CommandProcessor commandProcessor=new CommandProcessor();
-		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
+		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems(), new IMudClient());
 
 		if(!CMClass.loadClasses(page))
 		{
@@ -286,9 +286,12 @@ public class MUD extends Thread implements Host
 		
 		try
 		{
-			IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),null);
-			imserver=new Server();
-			imserver.start("CoffeeMud",27766,imud);
+			if(page.getBoolean("RUNI3SERVER"))
+			{
+				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),null);
+				imserver=new Server();
+				imserver.start("CoffeeMud",27766,imud);
+			}
 		}
 		catch(Exception e)
 		{

@@ -8,6 +8,7 @@
 
 package com.planet_ink.coffee_mud.system.I3.packets;
 import com.planet_ink.coffee_mud.system.I3.persist.Persistent;
+import java.io.Serializable;
 
 
 /**
@@ -16,7 +17,7 @@ import com.planet_ink.coffee_mud.system.I3.persist.Persistent;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public class Channel {
+public class Channel implements Serializable {
     /**
      * The name of the channel
      */

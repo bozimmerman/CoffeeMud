@@ -46,9 +46,22 @@ public class SocialProcessor
 		{
 			if(tellFlag)
 			{
-				mob.tell(mob,target,"You tell "+target.name()+" '"+text+"'.");
-				target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'.");
-				target.setReplyTo(mob);
+				String targetName=target.name();
+				if(targetName.indexOf("@")>=0)
+				{
+					String mudName=targetName.substring(targetName.indexOf("@")+1);
+					targetName=targetName.substring(0,targetName.indexOf("@"));
+					if(!(ExternalPlay.i3().i3online()))
+						mob.tell("I3 is unavailable.");
+					else
+						ExternalPlay.i3().i3tell(mob,targetName,mudName,text);
+				}
+				else
+				{
+					mob.tell(mob,target,"You tell "+targetName+" '"+text+"'.");
+					target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'.");
+					target.setReplyTo(mob);
+				}
 			}
 			else
 			{
@@ -149,11 +162,6 @@ public class SocialProcessor
 				break;
 			}
 		}
-		if(target==null)
-		{
-			mob.tell("That person doesn't appear to be online.");
-			return;
-		}
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
@@ -165,6 +173,24 @@ public class SocialProcessor
 		{
 			mob.tell("Tell them what?");
 			return;
+		}
+		if(target==null)
+		{
+			if(targetName.indexOf("@")>=0)
+			{
+				String mudName=targetName.substring(targetName.indexOf("@")+1);
+				targetName=targetName.substring(0,targetName.indexOf("@"));
+				if(!(ExternalPlay.i3().i3online()))
+					mob.tell("I3 is unavailable.");
+				else
+					ExternalPlay.i3().i3tell(mob,targetName,mudName,combinedCommands);
+				return;
+			}
+			else
+			{
+				mob.tell("That person doesn't appear to be online.");
+				return;
+			}
 		}
 		mob.tell("You tell "+target.name()+" '"+combinedCommands+"'");
 		// deafness does not matter!

@@ -4,11 +4,16 @@ import com.planet_ink.coffee_mud.system.I3.server.Server;
 
 import java.util.Vector;
 
-public class ChannelPacket extends Packet {
+public class ChannelPacket extends Packet  {
     public String channel = null;
     public String sender_visible_name = null;
     public String message = null;
 
+	public ChannelPacket()
+	{
+		super();
+        type = ChannelPacket.CHAN_MESSAGE;
+	}
     public ChannelPacket(Vector v) throws InvalidPacketException {
         super(v);
         try {

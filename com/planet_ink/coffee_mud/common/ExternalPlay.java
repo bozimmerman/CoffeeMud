@@ -8,16 +8,24 @@ public class ExternalPlay
 	private static ExternalSystem sysPlayer=null;
 	private static final Calendar startTime=Calendar.getInstance();
 	private static boolean systemStarted=false;
+	private static I3Interface i3interface=null;
 	
-	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer)
+	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer, I3Interface i3)
 	{
 		player=newPlayer;
 		sysPlayer=otherNewPlayer;
+		i3interface=i3;
 	}
 	
 	public static Calendar getStartTime()
 	{
 		return startTime;
+	}
+	public static I3Interface i3(){return i3interface;}
+	public static int channelInt(String channelName)
+	{
+		if(player!=null) return player.channelInt(channelName);
+		return -1;
 	}
 	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
