@@ -42,6 +42,8 @@ public class Authenticate extends StdWebMacro
 			mob.setName(login);
 			if(!ExternalPlay.DBUserSearch(mob,login))
 				return null;
+			if(!ExternalPlay.DBReadUserOnly(mob))
+				return null;
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 		}
