@@ -15,7 +15,7 @@ public class Spell_WallOfForce extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_WallOfDarkness();}
+	public Environmental newInstance(){	return new Spell_WallOfForce();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	private Item theWall=null;
@@ -103,7 +103,7 @@ public class Spell_WallOfForce extends Spell
 			Item I=mob.location().fetchItem(i);
 			if((I!=null)&&(I.fetchAffect(ID())!=null))
 			{
-				mob.tell("There is already a wall of darkness here.");
+				mob.tell("There is already a wall of force here.");
 				return false;
 			}
 		}
