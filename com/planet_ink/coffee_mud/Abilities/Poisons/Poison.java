@@ -161,7 +161,6 @@ public class Poison extends StdAbility
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -181,7 +180,11 @@ public class Poison extends StdAbility
 						R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
 				}
+				else
+					success=false;
 			}
+			else
+				success=false;
 		}
 		else
 			return maliciousFizzle(mob,target,POISON_FAIL());
