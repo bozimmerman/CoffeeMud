@@ -248,8 +248,8 @@ public class FrontDoor
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 
-				if(mob.session().confirm("\n\rDoes your client support MSP sound codes (y/N)?","N"))
-					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
+				/*if(mob.session().confirm("\n\rDoes your client support MSP sound codes (y/N)?","N"))
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));*/
 				
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 

@@ -78,7 +78,9 @@ public class Scriptable extends StdBehavior
 		"ISHERE", // 36
 		"INLOCALE", // 37
 		"ISTIME", // 38
-		"ISDAY" // 39
+		"ISDAY", // 39
+		"NUMBER", // 40
+		"EVAL", // 41
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -120,6 +122,7 @@ public class Scriptable extends StdBehavior
 		Item pi=null;
 		Item si=null;
 		Vector scr;
+		String message=null;
 
 		public ScriptableResponse(MOB source,
 								  Environmental target,
@@ -127,7 +130,8 @@ public class Scriptable extends StdBehavior
 								  Item primaryItem,
 								  Item secondaryItem,
 								  Vector script,
-								  int ticks)
+								  int ticks,
+								  String msg)
 		{
 			s=source;
 			t=target;
@@ -136,12 +140,13 @@ public class Scriptable extends StdBehavior
 			si=secondaryItem;
 			scr=script;
 			tickDelay=ticks;
+			message=msg;
 		}
 		public boolean tickOrGo()
 		{
 			if((--tickDelay)<=0)
 			{
-				execute(s,t,m,pi,si,scr);
+				execute(s,t,m,pi,si,scr,message);
 				return true;
 			}
 			return false;
@@ -326,7 +331,7 @@ public class Scriptable extends StdBehavior
 		return thing;
 	}
 
-	public Environmental getArgumentItem(String str, MOB source, MOB monster, Environmental target, Item primaryItem, Item secondaryItem)
+	public Environmental getArgumentItem(String str, MOB source, MOB monster, Environmental target, Item primaryItem, Item secondaryItem, String msg)
 	{
 		if(str.length()<2) return null;
 		if(str.charAt(0)=='$')
@@ -352,13 +357,13 @@ public class Scriptable extends StdBehavior
 		}
 		if(lastKnownLocation!=null)
 		{
-			str=varify(source,target,monster,primaryItem,secondaryItem,str);
+			str=varify(source,target,monster,primaryItem,secondaryItem,msg,str);
 			return lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORN_REQ_ANY);
 		}
 		return null;
 	}
 
-	public boolean eval(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String evaluable)
+	public boolean eval(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String evaluable)
 	{
 		String uevaluable=evaluable.toUpperCase().trim();
 		boolean returnable=false;
@@ -381,7 +386,7 @@ public class Scriptable extends StdBehavior
 						String expr=evaluable.substring(1,i);
 						evaluable=evaluable.substring(i+1);
 						uevaluable=uevaluable.substring(i+1);
-						returnable=eval(source,target,monster,primaryItem,secondaryItem,expr);
+						returnable=eval(source,target,monster,primaryItem,secondaryItem,msg,expr);
 						break;
 					}
 					else
@@ -393,13 +398,13 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			if(evaluable.startsWith("!"))
-				return !eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(1).trim());
+				return !eval(source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(1).trim());
 			else
 			if(uevaluable.startsWith("AND "))
-				return returnable&&eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(3).trim());
+				return returnable&&eval(source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(3).trim());
 			else
 			if(uevaluable.startsWith("OR "))
-				return returnable||eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(2).trim());
+				return returnable||eval(source,target,monster,primaryItem,secondaryItem,msg,evaluable.substring(2).trim());
 			else
 			if((y<0)||(z<y))
 			{
@@ -421,8 +426,8 @@ public class Scriptable extends StdBehavior
 			case 2: // has
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(arg2.length()==0)
 				{
 					Log.errOut("Scriptable","HAS Syntax -- "+monster.Name()+", "+evaluable);
@@ -446,8 +451,8 @@ public class Scriptable extends StdBehavior
 			case 3: // worn
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(arg2.length()==0)
 				{
 					Log.errOut("Scriptable","WORN Syntax -- "+monster.Name()+", "+evaluable);
@@ -468,7 +473,7 @@ public class Scriptable extends StdBehavior
 			case 4: // isnpc
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -478,7 +483,7 @@ public class Scriptable extends StdBehavior
 			case 5: // ispc
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -488,7 +493,7 @@ public class Scriptable extends StdBehavior
 			case 6: // isgood
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -498,7 +503,7 @@ public class Scriptable extends StdBehavior
 			case 8: // isevil
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -508,7 +513,7 @@ public class Scriptable extends StdBehavior
 			case 9: // isneutral
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -518,7 +523,7 @@ public class Scriptable extends StdBehavior
 			case 10: // isfight
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -528,7 +533,7 @@ public class Scriptable extends StdBehavior
 			case 11: // isimmort
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -538,7 +543,7 @@ public class Scriptable extends StdBehavior
 			case 12: // ischarmed
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -559,7 +564,7 @@ public class Scriptable extends StdBehavior
 			case 15: // isfollow
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -575,8 +580,8 @@ public class Scriptable extends StdBehavior
 			case 7: // isname
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
 				else
@@ -587,7 +592,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
 				else
@@ -596,7 +601,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 28: // questwinner
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				Quest Q=Quests.fetchQuest(arg2);
 				if(Q==null)
@@ -607,7 +612,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 29: // questmob
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				Quest Q=Quests.fetchQuest(arg2);
 				if(Q==null)
@@ -618,7 +623,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 31: // isquestmobalive
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				Quest Q=Quests.fetchQuest(arg2);
 				if(Q==null)
@@ -637,7 +642,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 32: // nummobsinarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
 				int num=0;
@@ -678,7 +683,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 33: // nummobs
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
 				int num=0;
@@ -719,7 +724,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 34: // numracesinarea
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
 				int num=0;
@@ -760,7 +765,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 35: // numraces
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
 				int num=0;
@@ -801,7 +806,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 30: // questitem
 			{
-				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				Quest Q=Quests.fetchQuest(arg2);
 				if(Q==null)
@@ -815,7 +820,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.Name()+", "+evaluable);
@@ -894,7 +899,7 @@ public class Scriptable extends StdBehavior
 			case 36: // ishere
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E==null)
 					returnable=false;
 				else
@@ -950,7 +955,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","SEX Syntax -- "+monster.Name()+", "+evaluable);
@@ -979,8 +984,8 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),3));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),3));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","STAT Syntax -- "+monster.Name()+", "+evaluable);
@@ -1023,7 +1028,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","POSITION Syntax -- "+monster.Name()+", "+evaluable);
@@ -1057,7 +1062,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.Name()+", "+evaluable);
@@ -1100,7 +1105,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","CLASS Syntax -- "+monster.Name()+", "+evaluable);
@@ -1129,7 +1134,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","CLASS Syntax -- "+monster.Name()+", "+evaluable);
@@ -1158,7 +1163,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","RACE Syntax -- "+monster.Name()+", "+evaluable);
@@ -1187,7 +1192,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.Name()+", "+evaluable);
@@ -1215,8 +1220,8 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),2));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.Name()+", "+evaluable);
@@ -1273,7 +1278,7 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","OBJTYPE Syntax -- "+monster.Name()+", "+evaluable);
@@ -1302,8 +1307,8 @@ public class Scriptable extends StdBehavior
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1).toUpperCase();
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
-				String arg4=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),3));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),3));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","VAR Syntax -- "+monster.Name()+", "+evaluable);
@@ -1346,6 +1351,50 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 41: // eval
+			{
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				if(arg3.length()==0)
+				{
+					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
+					return returnable;
+				}
+				if(arg3.equals("=="))
+					returnable=val.equals(arg4);
+				else
+				if(arg3.equals("!="))
+					returnable=!val.equals(arg4);
+				else
+				if(arg3.equals(">"))
+					returnable=Util.s_int(val)>Util.s_int(arg4);
+				else
+				if(arg3.equals("<"))
+					returnable=Util.s_int(val)<Util.s_int(arg4);
+				else
+				if(arg3.equals(">="))
+					returnable=Util.s_int(val)>=Util.s_int(arg4);
+				else
+				if(arg3.equals("<="))
+					returnable=Util.s_int(val)<=Util.s_int(arg4);
+				else
+				{
+					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
+					return returnable;
+				}
+				break;
+			}
+			case 40: // number
+			{
+				String val=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).trim();
+				boolean isnumber=(val.length()>0);
+				for(int i=0;i<val.length();i++)
+					if(!Character.isDigit(val.charAt(i)))
+					{ isnumber=false; break;}
+				returnable=isnumber;
+				break;
+			}
 			default:
 				Log.errOut("Scriptable","Unknown CMD -- "+monster.Name()+", "+evaluable);
 				return returnable;
@@ -1379,7 +1428,7 @@ public class Scriptable extends StdBehavior
 		return randMOB;
 	}
 
-	public String varify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String varifyable)
+	public String varify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String varifyable)
 	{
 		int t=varifyable.indexOf("$");
 		if((monster!=null)&&(monster.location()!=null))
@@ -1465,6 +1514,8 @@ public class Scriptable extends StdBehavior
 				if(primaryItem!=null)
 					middle=primaryItem.name();
 				break;
+			case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
+			case 'G': middle=((msg==null)?"":msg); break;
 			case 'p':
 			case 'P':
 				if(secondaryItem!=null)
@@ -1480,7 +1531,7 @@ public class Scriptable extends StdBehavior
 						Environmental E=null;
 						if(y>=0)
 						{
-							E=getArgumentItem(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem);
+							E=getArgumentItem(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem,msg);
 							mid=mid.substring(y+1).trim();
 						}
 						if(E!=null)
@@ -1538,13 +1589,58 @@ public class Scriptable extends StdBehavior
 				// unnecessary, since, in coffeemud, this is part of the name
 				break;
 			}
+			if((middle.length()>0)
+			&&(back.startsWith("."))
+			&&(back.length()>1)
+			&&(Character.isDigit(back.charAt(1))))
+			{
+				int x=1;
+				while((x<back.length())
+				&&(Character.isDigit(back.charAt(x))))
+					x++;
+				int y=Util.s_int(back.substring(1,x));
+				back=back.substring(x);
+				Vector V=Util.parse(middle);
+				if((V.size()>0)&&(y>=0))
+				{
+					if(y>=V.size())
+						middle="";
+					else
+						middle=(String)V.elementAt(y);
+				}
+			}
 			varifyable=front+middle+back;
 			t=varifyable.indexOf("$");
 		}
 		return varifyable;
 	}
 
-	public void execute(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, Vector script)
+	public void mpsetvar(String name, String key, String val)
+	{
+		Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+name);
+		if(H==null)
+		{
+			H=new Hashtable();
+			Resources.submitResource("SCRIPTVAR-"+name,H);
+		}
+		if(val.equals("++"))
+		{
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)+1).toString();
+		}
+		else
+		if(val.equals("--"))
+		{
+			String num=(String)H.get(key);
+			val=new Integer(Util.s_int(num)-1).toString();
+		}
+		if(H.containsKey(key))
+			H.remove(key);
+		H.put(key,val);
+	}
+	
+	
+	public void execute(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, Vector script, String msg)
 	{
 		for(int si=1;si<script.size();si++)
 		{
@@ -1560,7 +1656,7 @@ public class Scriptable extends StdBehavior
 			case 19: // if
 			{
 				String conditionStr=(s.substring(2).trim());
-				boolean condition=eval(source,target,monster,primaryItem,secondaryItem,conditionStr);
+				boolean condition=eval(source,target,monster,primaryItem,secondaryItem,msg,conditionStr);
 				Vector V=new Vector();
 				V.addElement("");
 				int depth=0;
@@ -1607,14 +1703,14 @@ public class Scriptable extends StdBehavior
 					//source.tell("Starting "+conditionStr);
 					//for(int v=0;v<V.size();v++)
 					//	source.tell("Statement "+((String)V.elementAt(v)));
-					execute(source,target,monster,primaryItem,secondaryItem,V);
+					execute(source,target,monster,primaryItem,secondaryItem,V,msg);
 					//source.tell("Stopping "+conditionStr);
 				}
 				break;
 			}
 			case 1: // mpasound
 			{
-				String echo=varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim());
+				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(8).trim());
 				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,echo);
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
@@ -1627,7 +1723,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 4: // mpjunk
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 				if(s.equalsIgnoreCase("all"))
 				{
 					while(monster.inventorySize()>0)
@@ -1646,12 +1742,12 @@ public class Scriptable extends StdBehavior
 			}
 			case 2: // mpecho
 			{
-				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim()));
+				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
 				break;
 			}
 			case 13: // mpunaffect
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				for(int a=newTarget.numAffects()-1;a>=0;a--)
@@ -1664,7 +1760,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 3: // mpslay
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 					ExternalPlay.postDeath(newTarget,monster,null);
@@ -1672,9 +1768,9 @@ public class Scriptable extends StdBehavior
 			}
 			case 16: // mpset
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				String arg2=Util.getCleanBit(s,2);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,2));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				Environmental E=null;
 				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
 				if(E!=null)
@@ -1699,7 +1795,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 11: // mpexp
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				int t=Util.s_int(Util.getCleanBit(s,2));
 				if((t>0)&&(newTarget!=null))
@@ -1718,7 +1814,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 5: // mpmload
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(7).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
 				MOB m=CMClass.getMOB(s);
 				if(m==null)
 				{
@@ -1764,30 +1860,30 @@ public class Scriptable extends StdBehavior
 			}
 			case 7: // mpechoat
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
 					s=Util.getPastBit(s,1).trim();
-					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
+					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
 				}
 				break;
 			}
 			case 8: // mpechoaround
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
 					s=Util.getPastBit(s,1).trim();
-					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
+					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
 				}
 				break;
 			}
 			case 9: // mpcast
 			{
 				String cast=Util.getCleanBit(s,1);
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,2));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
@@ -1800,7 +1896,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 10: // mpkill
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 					monster.setVictim(newTarget);
@@ -1810,7 +1906,7 @@ public class Scriptable extends StdBehavior
 			{
 				if(lastKnownLocation!=null)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(7).trim());
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
 					Environmental E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,s,Item.WORN_REQ_UNWORNONLY);
 					if(E!=null)
 					{
@@ -1835,7 +1931,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 14: // mpgoto
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
 				Room goHere=getRoom(s,lastKnownLocation);
 				if(goHere!=null)
 					goHere.bringMobHere(monster,true);
@@ -1844,7 +1940,7 @@ public class Scriptable extends StdBehavior
 			case 15: // mpat
 			{
 				Room lastPlace=lastKnownLocation;
-				String roomName=Util.getCleanBit(s,1);
+				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(roomName.length()>0)
 				{
 					s=Util.getPastBit(s,1).trim();
@@ -1855,7 +1951,7 @@ public class Scriptable extends StdBehavior
 						Vector V=new Vector();
 						V.addElement("");
 						V.addElement(s.trim());
-						execute(source,target,monster,primaryItem,secondaryItem,V);
+						execute(source,target,monster,primaryItem,secondaryItem,V,msg);
 						lastPlace.bringMobHere(monster,true);
 					}
 				}
@@ -1863,10 +1959,10 @@ public class Scriptable extends StdBehavior
 			}
 			case 17: // mptransfer
 			{
-				String roomName=Util.getCleanBit(s,1);
+				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(roomName.length()>0)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,Util.getPastBit(s,1).trim());
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1).trim());
 					Room newRoom=getRoom(roomName,lastKnownLocation);
 					if(newRoom!=null)
 					{
@@ -1927,8 +2023,8 @@ public class Scriptable extends StdBehavior
 			}
 			case 18: // mpforce
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
-				s=varify(source,target,monster,primaryItem,secondaryItem,s);
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s);
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 				{
@@ -1946,53 +2042,32 @@ public class Scriptable extends StdBehavior
 			}
 			case 20: // mpsetvar
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,2));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,3));
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				Environmental E=null;
 				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
 				if((E!=null)&&(arg2.length()>0))
-				{
-					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
-					if(H==null)
-					{
-						H=new Hashtable();
-						Resources.submitResource("SCRIPTVAR-"+E.Name(),H);
-					}
-					if(arg3.equals("++"))
-					{
-						String val=(String)H.get(arg2);
-						arg3=new Integer(Util.s_int(val)+1).toString();
-					}
-					else
-					if(arg3.equals("--"))
-					{
-						String val=(String)H.get(arg2);
-						arg3=new Integer(Util.s_int(val)-1).toString();
-					}
-					if(H.containsKey(arg2))
-						H.remove(arg2);
-					H.put(arg2,arg3);
-				}
+					mpsetvar(E.Name(),arg2,arg3);
 				break;
 			}
 			case 21: //MPENDQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(10).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
 				break;
 			}
 			case 23: //MPSTARTQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(10).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.startQuest();
 				break;
 			}
 			case 22: //MPQUESTWIN
 			{
-				String whoName=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				String whoName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(whoName.length()>0)
 				{
 					s=Util.getPastBit(s,1).trim();
@@ -2006,7 +2081,7 @@ public class Scriptable extends StdBehavior
 				{
 					try
 					{
-						Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,s));
+						Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,msg,s));
 						if(V.size()>0)
 							ExternalPlay.doCommand(monster,V);
 					}
@@ -2031,6 +2106,19 @@ public class Scriptable extends StdBehavior
 		return scripts;
 	}
 
+	public boolean match(String str, String patt)
+	{
+		if(patt.trim().equalsIgnoreCase("ALL")) 
+			return true;
+		if(patt.length()==0) 
+			return true;
+		if(str.length()==0) 
+			return false;
+		if(str.indexOf(patt)>=0) 
+			return true;
+		return false;
+	}
+	
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting,affect);
@@ -2070,7 +2158,7 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
 				}
 				break;
 			case 2: // allgreet_prog
@@ -2081,7 +2169,7 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
 				}
 				break;
 			case 3: // speech_prog
@@ -2101,9 +2189,9 @@ public class Scriptable extends StdBehavior
 					trigger=trigger.substring(11).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
-						trigger=trigger.substring(1).trim();
-						if((" "+trigger+" ").indexOf(msg)>=0)
-							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2));
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(match(msg,trigger))
+							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,msg));
 					}
 					else
 					{
@@ -2112,10 +2200,7 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i);
 							if(msg.indexOf(" "+t+" ")>=0)
-							{
-								que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2));
 								break;
-							}
 						}
 					}
 				}
@@ -2130,21 +2215,21 @@ public class Scriptable extends StdBehavior
 					trigger=trigger.substring(9).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
-						trigger=trigger.substring(1).trim();
+						trigger=trigger.substring(1).trim().toUpperCase();
 						if(((" "+trigger+" ").indexOf(affect.tool().Name().toUpperCase())>=0)
-						||(trigger.equalsIgnoreCase("all")))
-							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
+						||(trigger.equalsIgnoreCase("ALL")))
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
 					}
 					else
 					{
 						int num=Util.numBits(trigger);
 						for(int i=0;i<num;i++)
 						{
-							String t=Util.getCleanBit(trigger,i);
+							String t=Util.getCleanBit(trigger,i).toUpperCase();
 							if(((" "+affect.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-							||(t.equalsIgnoreCase("all")))
+							||(t.equalsIgnoreCase("ALL")))
 							{
-								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
 								break;
 							}
 						}
@@ -2158,7 +2243,7 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if(Dice.rollPercentage()<prcnt)
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
 				}
 				break;
 			case 9: // exit prog
@@ -2169,7 +2254,7 @@ public class Scriptable extends StdBehavior
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
-						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2,null));
 				}
 				break;
 			case 10: // death prog
@@ -2179,7 +2264,7 @@ public class Scriptable extends StdBehavior
 					MOB src=lastToHurtMe;
 					if((src==null)||(src.location()!=monster.location()))
 					   src=monster;
-					execute(src,monster,monster,null,null,script);
+					execute(src,monster,monster,null,null,script,null);
 				}
 				break;
 			case 12: // mask prog
@@ -2194,8 +2279,8 @@ public class Scriptable extends StdBehavior
 					trigger=trigger.substring(9).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
-						trigger=trigger.substring(1).trim();
-						if((" "+msg+" ").indexOf(trigger)>=0)
+						trigger=trigger.substring(1).trim().toUpperCase();
+						if(match(msg,trigger))
 							doIt=true;
 					}
 					else
@@ -2203,7 +2288,7 @@ public class Scriptable extends StdBehavior
 						int num=Util.numBits(trigger);
 						for(int i=0;i<num;i++)
 						{
-							String t=Util.getCleanBit(trigger,i).trim();
+							String t=Util.getCleanBit(trigger,i).toUpperCase().trim();
 							if(msg.indexOf(" "+t+" ")>=0)
 							{
 								doIt=true;
@@ -2217,12 +2302,12 @@ public class Scriptable extends StdBehavior
 						if(affect.tool() instanceof Item)
 							Tool=(Item)affect.tool();
 						if(affect.target() instanceof MOB)
-							que.addElement(new ScriptableResponse(affect.source(),(MOB)affect.target(),monster,Tool,null,script,2));
+							que.addElement(new ScriptableResponse(affect.source(),(MOB)affect.target(),monster,Tool,null,script,2,msg));
 						else
 						if(affect.target() instanceof Item)
-							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,(Item)affect.target(),script,2));
+							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,(Item)affect.target(),script,2,msg));
 						else
-							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,null,script,2));
+							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,null,script,2,msg));
 					}
 				}
 				break;
@@ -2266,7 +2351,7 @@ public class Scriptable extends StdBehavior
 					{
 						int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 						if(Dice.rollPercentage()<prcnt)
-							execute(mob,mob,mob,null,null,script);
+							execute(mob,mob,mob,null,null,script,null);
 					}
 					break;
 				case 16: // delay_prog
@@ -2290,7 +2375,7 @@ public class Scriptable extends StdBehavior
 							delayProgCounters.put(new Integer(v),new Integer(0));
 						if(delayProgCounter==targetTick)
 						{
-							execute(mob,mob,mob,null,null,script);
+							execute(mob,mob,mob,null,null,script,null);
 							delayProgCounter=-1;
 						}
 						delayProgCounters.remove(new Integer(v));
@@ -2302,7 +2387,7 @@ public class Scriptable extends StdBehavior
 					{
 						int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 						if(Dice.rollPercentage()<prcnt)
-							execute(mob.getVictim(),mob,mob,null,null,script);
+							execute(mob.getVictim(),mob,mob,null,null,script,null);
 					}
 					break;
 				case 11: // hitprcnt
@@ -2310,14 +2395,14 @@ public class Scriptable extends StdBehavior
 					{
 						int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getCleanBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
 						if(mob.curState().getHitPoints()<=floor)
-							execute(mob.getVictim(),mob,mob,null,null,script);
+							execute(mob.getVictim(),mob,mob,null,null,script,null);
 					}
 					break;
 				case 6: // once_prog
 					if(!oncesDone.contains(script))
 					{
 						oncesDone.addElement(script);
-						execute(mob,mob,mob,null,null,script);
+						execute(mob,mob,mob,null,null,script,null);
 					}
 					break;
 				case 14: // time_prog
@@ -2336,7 +2421,7 @@ public class Scriptable extends StdBehavior
 								if(time==Util.s_int(Util.getCleanBit(trigger,i)))
 								{
 									done=true;
-									execute(mob,mob,mob,null,null,script);
+									execute(mob,mob,mob,null,null,script,null);
 									lastTimeProgsDone.remove(new Integer(v));
 									lastTimeProgsDone.put(new Integer(v),new Integer(time));
 									break;
@@ -2362,7 +2447,7 @@ public class Scriptable extends StdBehavior
 								if(day==Util.s_int(Util.getCleanBit(trigger,i)))
 								{
 									done=true;
-									execute(mob,mob,mob,null,null,script);
+									execute(mob,mob,mob,null,null,script,null);
 									lastDayProgsDone.remove(new Integer(v));
 									lastDayProgsDone.put(new Integer(v),new Integer(day));
 									break;
@@ -2382,7 +2467,7 @@ public class Scriptable extends StdBehavior
 							if(time>=Q.minsRemaining())
 							{
 								oncesDone.addElement(script);
-								execute(mob,mob,mob,null,null,script);
+								execute(mob,mob,mob,null,null,script,null);
 							}
 						}
 					}

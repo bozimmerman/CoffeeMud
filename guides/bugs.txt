@@ -1,5 +1,4 @@
 GAES still isn't done
-Two specifics, why are there MEDIDATE and GAIN socials if they're commands/skills?
-SLAP social doesn't work thanks to slapstick
-make xcommands override regular ones
+aggressive behaviors should have a flag to set them onto other mobs.
+
 

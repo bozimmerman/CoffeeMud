@@ -9,8 +9,8 @@
 	<!--
 		function Clicked(action)
 		{
-			document.JOURNAL.JOURNAL.action=action;
-			document.JOURNAL.JOURNAL.value'';
+			document.JOURNAL.action=action;
+			document.JOURNAL.JOURNAL.value='';
 			document.JOURNAL.JOURNALMESSAGE.value='';
 			document.JOURNAL.FUNCTION.value='';
 			document.JOURNAL.submit();
