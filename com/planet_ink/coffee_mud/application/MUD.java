@@ -458,7 +458,11 @@ public class MUD extends Thread implements MudHost
 		}
 		catch(Throwable t)
 		{
-			Log.errOut("MUD",t);
+		    if((!(t instanceof java.net.SocketException))
+		    ||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN)))
+		    {
+				Log.errOut("MUD",t);
+		    }
 
 			if (!serverIsRunning)
 				isOK = false;
@@ -493,6 +497,7 @@ public class MUD extends Thread implements MudHost
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN,true);
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
@@ -523,7 +528,11 @@ public class MUD extends Thread implements MudHost
 			R.send(mob,msg);
 		}
 		if(S!=null)S.println("done");
-		if((saveThread==null)||(utiliThread==null)) return;
+		if((saveThread==null)||(utiliThread==null))
+		{
+			CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN,false);
+		    return;
+		}
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Quests");
 		Quests.shutdown();
@@ -761,6 +770,7 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=mudThreads.size()-1;m>=0;m--)
 			((MUD)mudThreads.elementAt(m)).interrupt();
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN,false);
 	}
 
 
