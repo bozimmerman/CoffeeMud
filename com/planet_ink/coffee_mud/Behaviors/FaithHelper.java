@@ -15,7 +15,7 @@ public class FaithHelper extends StdBehavior
 	
 	public void startBehavior(Environmental forMe)
 	{
-		startBehavior(forMe);
+		super.startBehavior(forMe);
 		if(forMe instanceof MOB)
 		{
 			if(parms.length()>0)

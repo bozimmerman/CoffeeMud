@@ -206,7 +206,7 @@ public class CMMap
 			cat.replace(' ','_');
 			String thisOne=page.getProperty(start+"_"+R.racialCategory().toUpperCase());
 			if((thisOne!=null)&&(thisOne.length()>0))
-				table.put(R.racialCategory(),thisOne);
+				table.put(cat,thisOne);
 		}
 		String thisOne=page.getProperty(start+"_GOOD");
 		if((thisOne!=null)&&(thisOne.length()>0))

@@ -395,7 +395,7 @@ public class Movement extends Scriptable
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
 					if((follower.location()==thisRoom)
-					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==0))
+					   &&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
 						if(!move(follower,directionCode,false,false,false))

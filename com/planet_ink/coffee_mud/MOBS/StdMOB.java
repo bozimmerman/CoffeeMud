@@ -293,6 +293,10 @@ public class StdMOB implements MOB
 	{
 		return (baseEnvStats().weight()+50+(charStats().getStat(CharStats.STRENGTH)*30));
 	}
+	public int maxFollowers()
+	{
+		return ((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1);
+	}
 
 	public CharStats baseCharStats(){return baseCharStats;}
 	public CharStats charStats(){return charStats;}
@@ -395,18 +399,34 @@ public class StdMOB implements MOB
 		}
 		setFollowing(null);
 		if(!isMonster())
+		{
 			ExternalPlay.DBUpdateFollowers(this);
-
+			for(int f=numFollowers()-1;f>=0;f--)
+			{
+				MOB follower=fetchFollower(f);
+				if((follower!=null)&&(follower.amFollowing()==this))
+				{
+					if(follower.isMonster())
+						follower.killMeDead(false);
+					else
+					{
+						follower.setFollowing(null);
+						delFollower(follower);
+					}
+				}
+			}
+		}
+		else
 		while(numFollowers()>0)
 		{
 			MOB follower=fetchFollower(0);
 			if(follower!=null)
 			{
-				if((follower.amFollowing()==this)&&(follower.isMonster()))
-					follower.destroy();
+				follower.setFollowing(null);
 				delFollower(follower);
 			}
 		}
+			
 		if(!isMonster())
 			session().setKillFlag(true);
 	}
@@ -508,8 +528,8 @@ public class StdMOB implements MOB
 			return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 			return false;
-		if((getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
-		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
+		if(!Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)) return false;
+		if(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)) return false;
 		return true;
 	}
 	public boolean mayPhysicallyAttack(MOB mob)
@@ -1038,14 +1058,23 @@ public class StdMOB implements MOB
 					return false;
 				}
 				break;
-			case Affect.TYP_BUY:
+			case Affect.TYP_OPEN:
 			case Affect.TYP_CLOSE:
+				if(isInCombat())
+				{
+					if((affect.target()!=null)
+					&&((affect.target() instanceof Exit)||(affect.source().isMine(affect.target()))))
+						break;
+					tell("Not while you are fighting!");
+					return false;
+				}
+				break;
+			case Affect.TYP_BUY:
 			case Affect.TYP_DELICATE_HANDS_ACT:
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_FILL:
 			case Affect.TYP_LIST:
 			case Affect.TYP_LOCK:
-			case Affect.TYP_OPEN:
 			case Affect.TYP_SIT:
 			case Affect.TYP_SLEEP:
 			case Affect.TYP_UNLOCK:
@@ -1055,11 +1084,6 @@ public class StdMOB implements MOB
 			case Affect.TYP_READSOMETHING:
 				if(isInCombat())
 				{
-					// the door-for-fleeing exception!
-					if(((affect.sourceMinor()==Affect.TYP_OPEN)||(affect.sourceMinor()==Affect.TYP_CLOSE))
-					   &&(affect.target()!=null)
-					   &&(affect.target() instanceof Exit))
-						break;
 					tell("Not while you are fighting!");
 					return false;
 				}
@@ -1330,7 +1354,7 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_FOLLOW:
-				if(numFollowers()>=((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1))
+				if(numFollowers()>=maxFollowers())
 				{
 					mob.tell(name()+" can't accept any more followers.");
 					return false;
@@ -1412,7 +1436,7 @@ public class StdMOB implements MOB
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
 				{
 					StringBuffer myDescription=new StringBuffer("");
-					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 					{
@@ -1562,7 +1586,7 @@ public class StdMOB implements MOB
 			&&(Sense.canBeSeenBy(this,mob)))
 			{
 				StringBuffer myDescription=new StringBuffer("");
-				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 				{
@@ -1730,7 +1754,7 @@ public class StdMOB implements MOB
 				}
 				if(isInCombat())
 				{
-					if((getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW)
+					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW))
 					 	ExternalPlay.drawIfNecessary(this,false);
 
 					Item weapon=this.fetchWieldedItem();
@@ -1748,7 +1772,7 @@ public class StdMOB implements MOB
 							{
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
 									weapon=this.fetchWieldedItem();
-								if(((getBitmap()&MOB.ATT_AUTOMELEE)==0))
+								if((!Util.bset(getBitmap(),MOB.ATT_AUTOMELEE)))
 									ExternalPlay.postAttack(this,victim,weapon);
 								else
 								{
@@ -2231,7 +2255,7 @@ public class StdMOB implements MOB
 	{
 		if((source==null)||(target==null)) return;
 		if((target==this)||(source==this)) return;
-		if(((getBitmap()&MOB.ATT_AUTOASSIST)>0)) return;
+		if((Util.bset(getBitmap(),MOB.ATT_AUTOASSIST))) return;
 		if(isInCombat()) return;
 
 		if((amFollowing()==target)

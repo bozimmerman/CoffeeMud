@@ -12,7 +12,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
 	public static final int SYSTEMI_MAXSTAT=2;
-	public static final int NUMI_SYSTEM=3;
+	public static final int SYSTEMI_EDITORTYPE=3;
+	public static final int NUMI_SYSTEM=4;
 	
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];

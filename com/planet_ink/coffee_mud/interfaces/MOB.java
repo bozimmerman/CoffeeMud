@@ -146,6 +146,7 @@ public interface MOB
 	public Item fetchWornItem(String itemName);
 	public Item fetchWornItem(long wornCode);
 	public Item fetchWieldedItem();
+	public int maxFollowers();
 	public boolean amWearingSomethingHere(long wornCode);
 	public boolean isMine(Environmental env);
 	public void confirmWearability();

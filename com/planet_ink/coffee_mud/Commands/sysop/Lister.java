@@ -357,6 +357,24 @@ public class Lister
 		ExternalPlay.listUsers(mob,sortBy);
 	}
 
+	public static StringBuffer listRaces(Enumeration these)
+	{
+		StringBuffer lines=new StringBuffer("");
+		if(!these.hasMoreElements()) return lines;
+		int column=0;
+		for(Enumeration e=these;e.hasMoreElements();)
+		{
+			Race thisThang=(Race)e.nextElement();
+			if(++column>3)
+			{
+				lines.append("\n\r");
+				column=1;
+			}
+			lines.append(Util.padRight(thisThang.ID()+" ("+thisThang.racialCategory()+")",25));
+		}
+		lines.append("\n\r");
+		return lines;
+	}
 	public static StringBuffer listQuests()
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -428,7 +446,7 @@ public class Lister
 			s.rawPrintln(reallyList(CMClass.exits()).toString());
 		else
 		if("RACES".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.races()).toString());
+			s.rawPrintln(listRaces(CMClass.races()).toString());
 		else
 		if("CLASSES".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.charClasses()).toString());

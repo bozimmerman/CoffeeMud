@@ -22,21 +22,30 @@ public class CommandProcessor
 		if(mob.location()==null) return;
 
 		String firstWord=((String)commands.elementAt(0)).toUpperCase();
-
 		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
 		if((commandCodeObj==null)&&(firstWord.length()>0))
 		{
-			Command C=CMClass.findExtraCommand(firstWord);
-			if((C!=null)&&(!C.execute(mob,commands)))
-				return;
-			for(Enumeration e=commandSet.keys();e.hasMoreElements();)
+			if(!Character.isLetterOrDigit(firstWord.charAt(0)))
+				commandCodeObj=(Integer)commandSet.get(""+firstWord.charAt(0));
+			if(commandCodeObj!=null)
 			{
-				String key=(String)e.nextElement();
-				if(key.toUpperCase().startsWith(firstWord))
+				commands.setElementAt(""+firstWord.charAt(0),0);
+				commands.insertElementAt(((String)commands.elementAt(0)).substring(1),1);
+			}
+			else
+			{
+				Command C=CMClass.findExtraCommand(firstWord);
+				if((C!=null)&&(!C.execute(mob,commands)))
+					return;
+				for(Enumeration e=commandSet.keys();e.hasMoreElements();)
 				{
-					commandCodeObj=(Integer)commandSet.get(key);
-					commands.setElementAt(key.toLowerCase(),0);
-					break;
+					String key=(String)e.nextElement();
+					if(key.toUpperCase().startsWith(firstWord))
+					{
+						commandCodeObj=(Integer)commandSet.get(key);
+						commands.setElementAt(key.toLowerCase(),0);
+						break;
+					}
 				}
 			}
 		}

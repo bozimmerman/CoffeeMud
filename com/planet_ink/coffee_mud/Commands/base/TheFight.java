@@ -168,7 +168,7 @@ public class TheFight
 			return;
 
 		if((weapon==null)
-		&&((attacker.getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW))
+		&&(Util.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
 		{
 			draw(attacker,new Vector(),true,false);
 			weapon=attacker.fetchWieldedItem();
@@ -264,7 +264,7 @@ public class TheFight
 		}
 
 		int deadMoney=target.getMoney();
-		if((source!=null)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
+		if((source!=null)&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOGOLD)))
 			target.setMoney(0);
 
 		DeadBody Body=null;
@@ -305,7 +305,7 @@ public class TheFight
 
 		if(source!=null)
 		{
-			if((deadMoney>0)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
+			if((deadMoney>0)&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOGOLD)))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
 					source.tell("You'll need to dismount to get gold off the body.");
@@ -330,7 +330,7 @@ public class TheFight
 					}
 				}
 			}
-			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+			if(Util.bset(source.getBitmap(),MOB.ATT_AUTOLOOT))
 			{
 				if((source.riding()!=null)&&(source.riding() instanceof MOB))
 					source.tell("You'll need to dismount to loot the body.");
@@ -354,14 +354,14 @@ public class TheFight
 
 	public static void autoloot(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOLOOT))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOLOOT);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
 			mob.tell("Autolooting has been turned off.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOLOOT);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOLOOT));
 			mob.tell("Autolooting has been turned on.");
 		}
 	}
@@ -380,14 +380,14 @@ public class TheFight
 			mob.tell("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!");
 			return;
 		}
-		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
 			if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ONEWAY"))
 			{
 				mob.tell("Once turned on, this flag may not be turned off again.");
 				return;
 			}
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 			mob.tell("Your playerkill flag has been turned off.");
 		}
 		else
@@ -396,7 +396,7 @@ public class TheFight
 			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
 			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
 			{
-				mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+				mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 				mob.tell("Your playerkill flag has been turned on.");
 			}
 			else
@@ -405,44 +405,44 @@ public class TheFight
 	}
 	public static void autogold(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOGOLD)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOGOLD);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
 			mob.tell("Autogold has been turned off.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGOLD);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGOLD));
 			mob.tell("Autogold has been turned on.");
 		}
 	}
 
 	public static void autoAssist(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOASSIST)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOASSIST);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			mob.tell("Autoassist has been turned on.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOASSIST);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			mob.tell("Autoassist has been turned off.");
 		}
 	}
 
 	public static void autoMelee(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
+		if(!Util.bset(mob.getBitmap(),MOB.ATT_AUTOMELEE))
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOMELEE);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell("Automelee has been turned off.  You will no longer charge into melee combat from a ranged position.");
 			if(mob.isMonster())
 				SocialProcessor.quickSay(mob,null,"I will no longer charge into melee.",false,false);
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOMELEE);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOMELEE));
 			mob.tell("Automelee has been turned back on.  You will now enter melee combat normally.");
 			if(mob.isMonster())
 				SocialProcessor.quickSay(mob,null,"I will now enter melee combat normally.",false,false);
@@ -451,14 +451,14 @@ public class TheFight
 
 	public static void autoDraw(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTODRAW)==0)
+		if(!Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTODRAW);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTODRAW));
 			mob.tell("Auto weapon drawing has been turned on.  You will now draw a weapon when one is handy.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTODRAW);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
 			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
 		}
 	}
@@ -553,17 +553,17 @@ public class TheFight
 
 	public static void autoGuard(MOB mob, Vector commands)
 	{
-		if(((mob.getBitmap()&MOB.ATT_AUTOGUARD)==0)
+		if((!Util.bset(mob.getBitmap(),MOB.ATT_AUTOGUARD))
 		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGUARD);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell("You are now on guard. You will no longer follow group leaders.");
 			if(mob.isMonster())
 				ExternalPlay.quickSay(mob,null,"I am now on guard.",false,false);
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOGUARD);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
 			mob.tell("You are on longer on guard.  You will now follow group leaders.");
 			if(mob.isMonster())
 				ExternalPlay.quickSay(mob,null,"I will now follow my group leader.",false,false);

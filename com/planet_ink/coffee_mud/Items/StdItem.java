@@ -795,7 +795,7 @@ public class StdItem implements Item
 			{
 				if(Sense.canBeSeenBy(this,mob))
 				{
-					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)

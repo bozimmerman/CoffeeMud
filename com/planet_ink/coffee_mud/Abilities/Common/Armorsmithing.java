@@ -206,7 +206,8 @@ public class Armorsmithing extends CommonSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+			if(((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+			&&((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL))
 			{
 				commonTell(mob,"That's not made of metal.  That can't be refitted.");
 				return false;

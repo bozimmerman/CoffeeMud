@@ -21,20 +21,14 @@ public class Prop_Retainable extends Property
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(mob.amFollowing()!=null))
 			{
 				Room room=mob.location();
 				mob.baseEnvStats().setRejuv(0);
 				mob.setStartRoom(room);
-				if(affect.sourceMinor()==Affect.TYP_SHUTDOWN)
-				{
-					MOB M=(MOB)mob.amFollowing();
-					if(M!=null)
-					{
-						mob.setFollowing(null);
-						ExternalPlay.DBUpdateFollowers(mob);
-					}
-				}
+				if((affect.sourceMinor()==Affect.TYP_SHUTDOWN)
+				||((affect.sourceMinor()==Affect.TYP_QUIT)&&(affect.amISource(mob.amFollowing()))))
+					mob.setFollowing(null);
 			}
 		}
 	}

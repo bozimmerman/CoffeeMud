@@ -34,7 +34,7 @@ public class StdCage extends StdContainer
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				StringBuffer buf=new StringBuffer("");
-				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 				else
 					buf.append(description()+"\n\r");

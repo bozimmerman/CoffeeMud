@@ -19,7 +19,7 @@ public class Skill_HandCuff extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 
 	public int amountRemaining=0;
-	public int oldAssist=0;
+	public boolean oldAssist=false;
 
 	public Environmental newInstance(){	return new Skill_HandCuff();}
 
@@ -99,8 +99,8 @@ public class Skill_HandCuff extends StdAbility
 			mob.setFollowing(null);
 			if(!mob.amDead())
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
-			if(oldAssist>0)
-				mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOASSIST);
+			if(!oldAssist)
+				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOASSIST));
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -144,9 +144,9 @@ public class Skill_HandCuff extends StdAbility
 						success=maliciousAffect(mob,target,Integer.MAX_VALUE-1000,-1);
 						if(success)
 						{
-							oldAssist=target.getBitmap()&MOB.ATT_AUTOASSIST;
-							if(oldAssist>0)
-								target.setBitmap(target.getBitmap()-MOB.ATT_AUTOASSIST);
+							oldAssist=Util.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
+							if(!oldAssist)
+								target.setBitmap(Util.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
 							ExternalPlay.unfollow(target,true);
 							ExternalPlay.follow(target,mob,true);
 							target.setFollowing(mob);

@@ -193,11 +193,11 @@ public class SysOpSkills
 	
 	public static void toggleSysopMsgs(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_SYSOPMSGS);
+		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 		else
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_SYSOPMSGS);
-		mob.tell("Extended messages are now : "+(((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)?"ON":"OFF"));
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
+		mob.tell("Extended messages are now : "+((Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))?"ON":"OFF"));
 	}
 
 	public static void beacon(MOB mob, Vector commands)

@@ -335,11 +335,24 @@ public class MOBloader
 
 	public static void DBReadFollowers(MOB mob)
 	{
-		DBConnection D=null;
-		// now grab the followers
 		Room location=mob.location();
 		if(location==null)
 			location=mob.getStartRoom();
+		if(mob.numFollowers()>0)
+		{
+			for(int f=0;f>mob.numFollowers();f++)
+			{
+				MOB follower=mob.fetchFollower(f);
+				if((follower!=null)&&(follower.isMonster()))
+				{
+					if(location==null) location=follower.getStartRoom();
+					follower.bringToLife(location,true);
+					location.showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+				}
+			}
+		}
+		DBConnection D=null;
+		// now grab the followers
 		try
 		{
 			D=DBConnector.DBFetch();

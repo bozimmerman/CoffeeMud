@@ -21,7 +21,7 @@ public class NoCombatAssist extends StdBehavior
 
 		if(tickID!=Host.MOB_TICK) return true;
 		if(--tickTock>0) return true;
-		((MOB)ticking).setBitmap(((MOB)ticking).getBitmap()|MOB.ATT_AUTOASSIST);
+		((MOB)ticking).setBitmap(Util.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOASSIST));
 		if((++tickTocker)==100) tickTocker=99;
 		tickTock=tickTocker;
 		return true;

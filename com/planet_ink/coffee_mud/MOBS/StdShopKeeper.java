@@ -641,7 +641,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		changeBag.setCapacity(totalWeight);
 		changeBag.recoverEnvStats();
 		changeBag.text();
-		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME>_PUT to <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 		if(banker.location().okAffect(banker,newMsg))
 		{
 			banker.location().send(banker,newMsg);
@@ -666,8 +666,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 				}
 			}
+			else
+				ExternalPlay.drop(banker,changeBag,true);
 			return changeBag;
 		}
+		else
+			ExternalPlay.drop(banker,changeBag,true);
 		return null;
 	}
 
@@ -811,6 +815,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(((Item)affect.tool()).envStats().level()>mob.envStats().level())
 						{
 							ExternalPlay.quickSay(this,mob,"That's too advanced for you, I'm afraid.",true,false);
+							return false;
+						}
+					}
+					if(affect.tool() instanceof MOB)
+					{
+						if(affect.source().numFollowers()>=affect.source().maxFollowers())
+						{
+							ExternalPlay.quickSay(this,mob,"You can't accept any more followers.",true,false);
 							return false;
 						}
 					}

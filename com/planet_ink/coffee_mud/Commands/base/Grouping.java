@@ -252,7 +252,7 @@ public class Grouping
 			mob.tell("You cannot follow '"+target.name()+"'.");
 			return;
 		}
-		if((target.getBitmap()&MOB.ATT_NOFOLLOW)>0)
+		if(Util.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
 			mob.tell(target.name()+" is not accepting followers.");
 			return;
@@ -262,15 +262,15 @@ public class Grouping
 
 	public static void togglenofollow(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_NOFOLLOW)==0)
+		if(!Util.bset(mob.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_NOFOLLOW);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
 			unfollow(mob,false);
 			mob.tell("You are no longer accepting followers.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_NOFOLLOW);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_NOFOLLOW));
 			mob.tell("You are now accepting followers.");
 		}
 	}

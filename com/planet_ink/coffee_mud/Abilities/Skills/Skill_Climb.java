@@ -33,6 +33,11 @@ public class Skill_Climb extends StdAbility
 			mob.tell("Climb where?");
 			return false;
 		}
+		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		{
+			mob.tell("You need to stand up first!");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

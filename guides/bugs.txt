@@ -1,15 +1,9 @@
 GAES still isn't done
-START_GNOME not working
-modify - whether one wishes to use the wizard or the menu by means of the .ini 
-fleas as a disease -- contageous!
-A couple players are still reporting that even on 3.8.7.0, they sometimes lose ansi color when they turn on autoexits.
-'hello  would be the same as ' hello
-followers need to be tested finally -- including saves!
-I just opened a door while hiding, and it says that I am stilll hidden
-I can't open a backpack in combat? Why not?
-on illusory wall, SENSE INVISIBLE won't let you see the exit.
-buying a pet, if you can't have another follower, don't allow the purchase
-if a pet is sleeping and you recall, you lose the pet
+followers need to be done right
+MovingRoom behavior?
 Reimplement SysOpModLocale
 mailto:marqphex@iname.com?subject=Glitch/Broken Code
-I had to crawl south and then climb up somewhere...  When I said slimb, it took the 50 mana, but told me I had to stand.  Seems kinda.. cheapskate.
+I just killed two ofcol city guards: Ivan killed first, we got 23 xp, lion killed second we got 23xp. Look into the pet & druid xp split code
+gain new skills and spells.
+ability gaining -- look for qualified skills first, instead of first thing to come along.
+

@@ -577,20 +577,21 @@ public class StdRoom
 	private void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
-		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(myArea!=null)
 				Say.append("^!Area  :^N("+myArea.name()+")"+"\n\r");
 			Say.append("^!Locale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}
-		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
+		if((Sense.canBeSeenBy(this,mob))
+		   ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
 			Say.append("^O" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
-			if((!careAboutBrief)||((mob.getBitmap()&MOB.ATT_BRIEF)==0))
+			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
 				Say.append("^L" + description());
-				if(((mob.getBitmap()&MOB.ATT_AUTOWEATHER)>0)
+				if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 				&&((domainType()&Room.INDOORS)==0))
 					Say.append("\n\r\n\r"+getArea().weatherDescription(this));
 				Say.append("^N\n\r\n\r");
@@ -613,9 +614,9 @@ public class StdRoom
 			   &&(mob2!=mob)
 			   &&((Sense.canBeSeenBy(mob2,mob)))
 			   &&((mob2.displayText(mob).length()>0)
-				  ||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)))
+				  ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))))
 			{
-				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					Say.append("^H("+CMClass.className(mob2)+")^N ");
 
 				Say.append("^M");

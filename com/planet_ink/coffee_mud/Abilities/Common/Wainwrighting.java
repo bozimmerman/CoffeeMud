@@ -31,8 +31,11 @@ public class Wainwrighting extends CommonSkill
 	public Wainwrighting()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
+		if((!mapped)&&(ID().equals("Wainwrighting")))
+		{
+			mapped=true;
+			CMAble.addCharAbilityMapping("All",1,ID(),false);
+		}
 	}
 	public Environmental newInstance(){return new Wainwrighting();}
 

@@ -298,7 +298,7 @@ public class ClanCommands
 			}
 		}
 
-		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			msg.append("-----------------------------------------------------------------\n\r"
 			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)+": "+crewList(C,Clan.POS_MEMBER)+"\n\r");

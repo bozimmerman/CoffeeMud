@@ -20,7 +20,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Name: '"+E.name()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 			E.setName(newName);
@@ -33,7 +33,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return R;
 		mob.tell(showNumber+". Type: '"+CMClass.className(R)+"'");
-		if(showFlag!=showNumber) return R;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 		{
@@ -115,7 +115,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Description: '"+E.description()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 			E.setDescription(newName);
@@ -128,7 +128,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Display: '"+E.displayText()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
 		if(newName.length()>0)
 		{
@@ -146,7 +146,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Closed Text: '"+E.closedText()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),newName);
@@ -158,7 +158,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Door Name: '"+E.doorName()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
@@ -171,7 +171,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Open Word: '"+E.openWord()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),newName,E.closedText());
@@ -187,7 +187,7 @@ public class Generic
 		while(newName.length()>0)
 		{
 			mob.tell(showNumber+". Area SubOperator user names: "+A.getSubOpList());
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
 			if(newName.length()>0)
 			{
@@ -213,7 +213,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Close Word: '"+E.closeWord()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),newName,E.openWord(),E.closedText());
@@ -229,7 +229,7 @@ public class Generic
 		{
 			E.setReadable(false);
 			mob.tell(showNumber+". Assigned Key Item: '"+E.keyName()+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newName=mob.session().prompt("Enter something new\n\r:","");
 			if(newName.length()>0)
 				E.setKeyName(newName);
@@ -238,7 +238,7 @@ public class Generic
 		}
 		else
 		{
-			if(showFlag!=showNumber)
+			if((showFlag!=showNumber)&&(showFlag>-999))
 			{
 				if(!E.isReadable())
 					mob.tell(showNumber+". Door not is readable.");
@@ -280,7 +280,7 @@ public class Generic
 		 ||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
 			E.setReadable(true);
 		else
-		if(showFlag!=showNumber)
+		if((showFlag!=showNumber)&&(showFlag>-999))
 			mob.tell(showNumber+". Item is readable: "+E.isReadable());
 		else
 			E.setReadable(genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
@@ -339,7 +339,7 @@ public class Generic
 					ok=true;
 				}
 				
-				if(showFlag!=showNumber) return;
+				if((showFlag!=showNumber)&&(showFlag>-999)) return;
 				String newName=mob.session().prompt("Enter something new (?)\n\r:","");
 				if((E instanceof Wand)
 				||(E instanceof Scroll)
@@ -401,7 +401,7 @@ public class Generic
 		if(E instanceof Drink)
 		{
 			mob.session().println(showNumber+". Current liquid type: "+EnvResource.RESOURCE_DESCS[((Drink)E).liquidType()&EnvResource.RESOURCE_MASK]);
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			boolean q=false;
 			while(!q)
 			{
@@ -448,7 +448,7 @@ public class Generic
 			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.CAN_NOT_SEE)>0)?"true":"false"));
 			if(E instanceof Weapon)
 				mob.session().println("    E) Is Two-Handed : "+E.rawLogicalAnd());
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
@@ -489,7 +489,7 @@ public class Generic
 					 EnvStats.IS_SNEAKING,
 					 EnvStats.IS_EVIL,
 					 EnvStats.IS_GOOD};
-		if(showFlag!=showNumber)
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			String[] briefs={"hide",
 							 "unseen",
@@ -591,7 +591,7 @@ public class Generic
 			mob.session().println("C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
 			mob.session().println("W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
 			mob.session().println("D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
@@ -630,7 +630,7 @@ public class Generic
 						 "MUTE",
 						 "DEAF",
 						 "BLIND"};
-		if(showFlag!=showNumber)
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			StringBuffer buf=new StringBuffer(showNumber+". Senses: ");
 			for(int i=0;i<senses.length;i++)
@@ -682,7 +682,7 @@ public class Generic
 		boolean HasLock=E.hasALock();
 		boolean Locked=E.isLocked();
 		boolean DefaultsLocked=E.defaultsLocked();
-		if(showFlag!=showNumber){
+		if((showFlag!=showNumber)&&(showFlag>-999)){
 			mob.tell(showNumber+". Has a door: "+E.hasADoor()
 					+"\n\r   Has a lock: "+E.hasALock()
 					+"\n\r   Open ticks: "+E.openDelayTicks());
@@ -743,7 +743,7 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(showFlag!=showNumber){
+		if((showFlag!=showNumber)&&(showFlag>-999)){
 			mob.tell(showNumber+". Can contain : "+makeContainerTypes(E)
 					+"\n\r   Has a lid   : "+E.hasALid()
 					+"\n\r   Has a lock  : "+E.hasALock());
@@ -810,7 +810,7 @@ public class Generic
 		if(E.baseEnvStats().level()<0)
 			E.baseEnvStats().setLevel(1);
 		mob.tell(showNumber+". Level: '"+E.baseEnvStats().level()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setLevel(getNumericData(mob,"Enter a new level\n\r:",E.baseEnvStats().level()));
 	}
 
@@ -819,7 +819,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Rejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
 		int newLevel=Util.s_int(rlevel);
 		if((newLevel>0)||(rlevel.trim().equals("0")))
@@ -840,7 +840,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Uses Remaining: '"+E.usesRemaining()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
@@ -849,7 +849,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Condition: '"+E.usesRemaining()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setUsesRemaining(getNumericData(mob,"Enter a new value\n\r:",E.usesRemaining()));
 	}
 
@@ -933,7 +933,7 @@ public class Generic
 		{
 			if((showFlag>0)&&(showFlag!=showNumber)) return;
 			mob.tell(showNumber+". Misc Text: '"+E.text()+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			String newText=mob.session().prompt("Re-enter now ('null'=='')\n\r:","");
 			if(newText.equalsIgnoreCase("NULL"))
 				E.setMiscText("");
@@ -951,7 +951,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Land plot ID: '"+E.landRoomID()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newText="?!?!";
 		while((newText.length()>0)&&(CMMap.getRoom(newText)==null))
 		{
@@ -971,7 +971,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Magical Ability: '"+E.baseEnvStats().ability()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
 	}
 
@@ -981,7 +981,7 @@ public class Generic
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
 		mob.tell(showNumber+". Hit Points/Level Modifier (hp=((10*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
@@ -995,7 +995,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Base Value: '"+E.baseGoldValue()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setBaseValue(getNumericData(mob,"Enter a new value\n\r:",E.baseGoldValue()));
 	}
 
@@ -1004,7 +1004,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Weight: '"+E.baseEnvStats().weight()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setWeight(getNumericData(mob,"Enter a new weight\n\r:",E.baseEnvStats().weight()));
 	}
 
@@ -1014,7 +1014,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Height: '"+E.baseEnvStats().height()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new height\n\r:",E.baseEnvStats().height()));
 	}
 
@@ -1024,7 +1024,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Size: '"+E.baseEnvStats().height()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setHeight(getNumericData(mob,"Enter a new size\n\r:",E.baseEnvStats().height()));
 	}
 
@@ -1034,7 +1034,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Capacity: '"+E.capacity()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setCapacity(getNumericData(mob,"Enter a new capacity\n\r:",E.capacity()));
 	}
 
@@ -1043,7 +1043,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". AttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().attackAdjustment()));
 	}
 
@@ -1052,7 +1052,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Damage/Hit: '"+E.baseEnvStats().damage()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setDamage(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().damage()));
 	}
 
@@ -1061,7 +1061,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Coin Interest: '"+E.getCoinInterest()+"'% per real day.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setCoinInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getCoinInterest()));
 	}
 	public static void genBanker2(MOB mob, Banker E, int showNumber, int showFlag)
@@ -1069,7 +1069,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Item Interest: '"+E.getItemInterest()+"'% per real day.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setItemInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getItemInterest()));
 	}
 	public static void genBanker3(MOB mob, Banker E, int showNumber, int showFlag)
@@ -1077,7 +1077,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Bank Chain   : '"+E.bankChain()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter a new chain\n\r:","");
 		if(newValue.length()>0)
 			E.setBankChain(newValue);
@@ -1090,7 +1090,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Attacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setSpeed(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.baseEnvStats().speed())));
 	}
 
@@ -1102,7 +1102,7 @@ public class Generic
 			mob.tell(showNumber+". Armor (lower-better): '"+E.baseEnvStats().armor()+"'.");
 		else
 			mob.tell(showNumber+". Armor (higher-better): '"+E.baseEnvStats().armor()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setArmor(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().armor()));
 	}
 
@@ -1111,7 +1111,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Money: '"+E.getMoney()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setMoney(getNumericData(mob,"Enter a new value\n\r:",E.getMoney()));
 	}
 
@@ -1120,7 +1120,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String defaultAmmo=(E.requiresAmmunition())?"Y":"N";
-		if(showFlag!=showNumber)
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			mob.tell(showNumber+". Ammo required: "+(E.requiresAmmunition()?E.ammunitionType():"NO"));
 			return;
@@ -1156,7 +1156,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Minimum/Maximum Ranges: "+((int)Math.round(E.minRange()))+"/"+((int)Math.round(E.maxRange()))+".");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
 		String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
 		if((newMinStr.length()==0)&&(newMaxStr.length()==0))
@@ -1177,7 +1177,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Weapon Attack Type: '"+Weapon.typeDescription[E.weaponType()]+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="NSPBFMR";
 		while(!q)
@@ -1208,7 +1208,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Technology Level: '"+Area.TECH_DESCS[A.getTechLevel()]+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
@@ -1242,7 +1242,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Material Type: '"+EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
@@ -1275,7 +1275,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Alignment: '"+CommonStrings.alignmentStr(E.getAlignment())+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newType=mob.session().choose("Enter a new alignment (G/N/E)\n\r:","GNE","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -1302,7 +1302,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Gender: '"+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.GENDER))+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newType=mob.session().choose("Enter a new gender (M/F/N)\n\r:","MFN","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -1331,7 +1331,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Weapon Classification: '"+Weapon.classifictionDescription[E.weaponClassification()]+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel=("ABEFHKPRSDTN");
 		while(!q)
@@ -1362,7 +1362,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Secret Identity: '"+E.rawSecretIdentity()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter a new identity\n\r:","");
 		if(newValue.length()>0)
 			E.setSecretIdentity(newValue);
@@ -1375,7 +1375,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Nourishment/Eat: '"+E.nourishment()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
 		if(newValue>0)
 			E.setNourishment(newValue);
@@ -1391,7 +1391,7 @@ public class Generic
 		while(raceID.length()>0)
 		{
 			mob.tell(showNumber+". Race: '"+E.baseCharStats().getMyRace().ID()+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			raceID=mob.session().prompt("Enter a new race (?)\n\r:","").trim();
 			if(raceID.equalsIgnoreCase("?"))
 				mob.tell(Lister.reallyList(CMClass.races(),-1).toString());
@@ -1420,7 +1420,7 @@ public class Generic
 		while(classID.length()>0)
 		{
 			mob.tell(showNumber+". Class: '"+E.baseCharStats().getCurrentClass().ID()+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			classID=mob.session().prompt("Enter a new class (?)\n\r:","").trim();
 			if(classID.equalsIgnoreCase("?"))
 				mob.tell(Lister.reallyList(CMClass.charClasses(),-1).toString());
@@ -1461,7 +1461,7 @@ public class Generic
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
 			mob.tell(showNumber+". Behaviors: '"+behaviorstr+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter a behavior to add/remove (?)\n\r:","");
 			if(behave.length()>0)
 			{
@@ -1543,7 +1543,7 @@ public class Generic
 			if(affectstr.length()>0)
 				affectstr=affectstr.substring(0,affectstr.length()-2);
 			mob.tell(showNumber+". Affects: '"+affectstr+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter an affect to add/remove (?)\n\r:","");
 			if(behave.length()>0)
 			{
@@ -1591,7 +1591,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Rideable Type: '"+Rideable.RIDEABLE_DESCS[R.rideBasis()]+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="LWACBTEDG";
 		while(!q)
@@ -1621,7 +1621,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Number of MOBs held: '"+R.riderCapacity()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newLevelStr=mob.session().prompt("Enter a new value: ","");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
@@ -1647,7 +1647,7 @@ public class Generic
 				buf.append(c+") "+ShopKeeper.SOLDCODES[r]+"\n\r");
 			}
 		}
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newType=mob.session().choose(buf.toString()+"Enter a new value\n\r:",codes.toString(),"");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -1678,7 +1678,7 @@ public class Generic
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
 			mob.tell(showNumber+". Inventory: '"+inventorystr+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			itemstr=mob.session().prompt("Enter something to add/remove (?)\n\r:","");
 			if(itemstr.length()>0)
 			{
@@ -1748,7 +1748,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Prejudice: '"+E.prejudiceFactors()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter a new string\n\r:","");
 		if(newValue.length()>0)
 			E.setPrejudiceFactors(newValue);
@@ -1773,7 +1773,7 @@ public class Generic
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell(showNumber+". Abilities: '"+abilitiestr+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
 			if(behave.length()>0)
 			{
@@ -1835,7 +1835,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Cleric Requirements: '"+E.getClericRequirements()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter new requirements\n\r:","");
 		if(newValue.length()>0)
 			E.setClericRequirements(newValue);
@@ -1847,7 +1847,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Cleric Ritual: '"+E.getClericRitual()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter new ritual\n\r:","");
 		if(newValue.length()>0)
 			E.setClericRitual(newValue);
@@ -1859,7 +1859,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Worshiper Requirements: '"+E.getWorshipRequirements()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter new requirements\n\r:","");
 		if(newValue.length()>0)
 			E.setWorshipRequirements(newValue);
@@ -1871,7 +1871,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Worshiper Ritual: '"+E.getWorshipRitual()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter new ritual\n\r:","");
 		if(newValue.length()>0)
 			E.setWorshipRitual(newValue);
@@ -1895,7 +1895,7 @@ public class Generic
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
 			mob.tell(showNumber+". Blessings: '"+abilitiestr+"'.");
-			if(showFlag!=showNumber) return;
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			behave=mob.session().prompt("Enter an ability to add/remove (?)\n\r:","");
 			if(behave.length()>0)
 			{
@@ -1951,7 +1951,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Size (X): '"+E.xSize()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter a new size\n\r:","");
 		if(Util.s_int(newValue)>0)
 			E.setXSize(Util.s_int(newValue));
@@ -1964,7 +1964,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Size (Y): '"+E.ySize()+"'.");
-		if(showNumber!=showFlag) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newValue=mob.session().prompt("Enter a new size\n\r:","");
 		if(Util.s_int(newValue)>0)
 			E.setYSize(Util.s_int(newValue));
@@ -1976,7 +1976,7 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(showFlag!=showNumber)
+		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
 			StringBuffer buf=new StringBuffer(showNumber+". ");
 			if(!E.rawLogicalAnd())
@@ -2034,7 +2034,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Quenched/Drink: '"+E.thirstQuenched()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setThirstQuenched(getNumericData(mob,"Enter a new amount\n\r:",E.thirstQuenched()));
 	}
 
@@ -2043,7 +2043,7 @@ public class Generic
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Amount of Drink Held: '"+E.liquidHeld()+"'.");
-		if(showFlag!=showNumber) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.setLiquidHeld(getNumericData(mob,"Enter a new amount\n\r:",E.liquidHeld()));
 		E.setLiquidRemaining(E.liquidHeld());
 	}
@@ -2055,6 +2055,8 @@ public class Generic
 	{
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			if(mob.isMonster())	return;
@@ -2078,6 +2080,7 @@ public class Generic
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof LandTitle)
 				genTitleRoom(mob,(LandTitle)me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2101,6 +2104,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2119,6 +2124,7 @@ public class Generic
 			genReadable2(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2141,6 +2147,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2163,6 +2171,7 @@ public class Generic
 			genDisposition(mob,me,++showNumber,showFlag);
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2186,6 +2195,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2193,6 +2204,7 @@ public class Generic
 			genDescription(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2216,6 +2228,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2234,6 +2248,7 @@ public class Generic
 			genDisposition(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2257,6 +2272,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2283,6 +2300,7 @@ public class Generic
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2306,6 +2324,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2337,6 +2357,7 @@ public class Generic
 			genDisposition(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2359,6 +2380,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2384,6 +2407,7 @@ public class Generic
 			genDisposition(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2406,6 +2430,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2425,6 +2451,7 @@ public class Generic
 			genDisposition(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2447,6 +2474,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2487,6 +2516,7 @@ public class Generic
 				genDeity2(mob,(Deity)me,++showNumber,showFlag);
 				genDeity3(mob,(Deity)me,++showNumber,showFlag);
 			}
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2517,6 +2547,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		String oldName=me.ID();
 		while(!ok)
 		{
@@ -2550,6 +2582,7 @@ public class Generic
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 			}
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 
@@ -2579,6 +2612,8 @@ public class Generic
 			return;
 		boolean ok=false;
 		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
 		while(!ok)
 		{
 			int showNumber=0;
@@ -2617,6 +2652,7 @@ public class Generic
 			}
 			genDisposition(mob,me,++showNumber,showFlag);
 			genSensesMask(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 

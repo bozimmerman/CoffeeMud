@@ -163,6 +163,8 @@ public class Rooms
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
+			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+				showFlag=-999;
 			boolean ok=false;
 			while(!ok)
 			{
@@ -174,6 +176,7 @@ public class Rooms
 				Generic.genSubOps(mob,myArea,++showNumber,showFlag);
 				Generic.genBehaviors(mob,myArea,++showNumber,showFlag);
 				Generic.genAffects(mob,myArea,++showNumber,showFlag);
+				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0) 
@@ -330,6 +333,8 @@ public class Rooms
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
+			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+				showFlag=-999;
 			boolean ok=false;
 			while(!ok)
 			{
@@ -346,6 +351,7 @@ public class Rooms
 				}
 				Generic.genBehaviors(mob,mob.location(),++showNumber,showFlag);
 				Generic.genAffects(mob,mob.location(),++showNumber,showFlag);
+				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 				if(showFlag<=0) 

@@ -34,11 +34,10 @@ public class Thief_Hide extends ThiefSkill
 
 		if(affect.amISource(mob))
 		{
-
 			if(((affect.sourceMinor()==Affect.TYP_ENTER)
-				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				 ||(affect.sourceMinor()==Affect.TYP_FLEE)
-				 ||(affect.sourceMinor()==Affect.TYP_RECALL))
+				||(affect.sourceMinor()==Affect.TYP_LEAVE)
+				||(affect.sourceMinor()==Affect.TYP_FLEE)
+				||(affect.sourceMinor()==Affect.TYP_RECALL))
 			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			&&(affect.sourceMajor()>0))
 			{
@@ -46,15 +45,42 @@ public class Thief_Hide extends ThiefSkill
 				mob.recoverEnvStats();
 			}
 			else
-			if((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK))
-			 &&(abilityCode()==0)
-			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
-			 &&(affect.sourceMajor()>0))
+			if((abilityCode()==0)
+			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			&&(affect.othersMinor()!=Affect.TYP_EXAMINESOMETHING)
+			&&(affect.othersMajor()>0))
 			{
-				unInvoke();
-				mob.recoverEnvStats();
+				if(Util.bset(affect.othersMajor(),Affect.MASK_SOUND))
+				{
+					unInvoke();
+					mob.recoverEnvStats();
+				}
+				else
+				switch(affect.othersMinor())
+				{
+				case Affect.TYP_SPEAK:
+				case Affect.TYP_CAST_SPELL:
+					{
+						unInvoke();
+						mob.recoverEnvStats();
+					}
+					break;
+				case Affect.TYP_OPEN:
+				case Affect.TYP_CLOSE:
+				case Affect.TYP_LOCK:
+				case Affect.TYP_UNLOCK:
+				case Affect.TYP_PUSH:
+				case Affect.TYP_PULL:
+					if((affect.target()!=null)
+					&&((affect.target() instanceof Exit)
+						||((affect.target() instanceof Item)
+						   &&(!affect.source().isMine((Item)affect.target())))))
+					{
+						unInvoke();
+						mob.recoverEnvStats();
+					}
+					break;
+				}
 			}
 		}
 		return;

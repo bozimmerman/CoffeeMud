@@ -358,6 +358,8 @@ public class CreateEdit
 				if(!thang.isGeneric())
 				{
 					int showFlag=-1;
+					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+						showFlag=-999;
 					boolean ok=false;
 					while(!ok)
 					{
@@ -367,6 +369,7 @@ public class CreateEdit
 						Generic.genRejuv(mob,thang,++showNumber,showFlag);
 						Generic.genUses(mob,(Item)thang,++showNumber,showFlag);
 						Generic.genMiscText(mob,thang,++showNumber,showFlag);
+						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
 						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0) 
@@ -388,6 +391,8 @@ public class CreateEdit
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					int showFlag=-1;
+					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+						showFlag=-999;
 					boolean ok=false;
 					while(!ok)
 					{
@@ -396,6 +401,7 @@ public class CreateEdit
 						Generic.genAbility(mob,thang,++showNumber,showFlag);
 						Generic.genRejuv(mob,thang,++showNumber,showFlag);
 						Generic.genMiscText(mob,thang,++showNumber,showFlag);
+						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
 						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 						if(showFlag<=0) 

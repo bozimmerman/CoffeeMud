@@ -74,7 +74,7 @@ public class BasicSenses
 
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
-				if((thisThang instanceof Room)&&((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0))
+				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
 					((Room)thisThang).listExits(mob);
 
 			}
@@ -93,7 +93,7 @@ public class BasicSenses
 			FullMsg msg=new FullMsg(mob,mob.location(),null,Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"));
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
-			if(((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+			if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 			&&(Sense.canBeSeenBy(mob.location(),mob)))
 				mob.location().listExits(mob);
 		}
@@ -381,42 +381,42 @@ public class BasicSenses
 
 	public static void autoExits(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOEXITS);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
 			mob.tell("Autoexits has been turned off.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOEXITS);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
 			mob.tell("Autoexits has been turned on.");
 		}
 	}
 
 	public static void brief(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_BRIEF)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_BRIEF))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_BRIEF);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_BRIEF));
 			mob.tell("Brief room descriptions are now off.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_BRIEF);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_BRIEF));
 			mob.tell("Brief room descriptions are now on.");
 		}
 	}
 
 	public static void autoweather(MOB mob)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOWEATHER)>0)
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 		{
-			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOWEATHER);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
 			mob.tell("Weather descriptions are now off.");
 		}
 		else
 		{
-			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOWEATHER);
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOWEATHER));
 			mob.tell("Weather descriptions are now on.");
 		}
 	}
@@ -429,23 +429,23 @@ public class BasicSenses
 			{
 			case -1:
 			{
-				if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
 				{
-					mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
 					mob.tell("ANSI colour disabled.\n\r");
 				}
 				else
 				{
-					mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 					mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
 				}
 			}
 			break;
 			case 0:
 			{
-				if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
 				{
-					mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
 					mob.tell("ANSI colour disabled.\n\r");
 				}
 				else
@@ -456,9 +456,9 @@ public class BasicSenses
 			break;
 			case 1:
 			{
-				if((mob.getBitmap()&MOB.ATT_ANSI)==0)
+				if(!Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
 				{
-					mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 					mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
 				}
 				else

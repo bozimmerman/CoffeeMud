@@ -184,6 +184,9 @@ public class MUD extends Thread implements Host
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,0);
+		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,1);
+		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)

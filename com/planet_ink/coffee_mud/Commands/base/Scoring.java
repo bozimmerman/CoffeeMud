@@ -146,7 +146,9 @@ public class Scoring
 				}
 			}
 			if((Sense.canBeSeenBy(item,mob))
-			&&(((item.displayText().length()>0)||useName||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))))
+			&&(((item.displayText().length()>0)
+				||useName
+				||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))))
 			{
 				if(reps==0)	say.append("      ");
 				else
@@ -155,7 +157,7 @@ public class Scoring
 				else
 				if(reps>0)
 					say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
-				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					say.append("^H("+CMClass.className(item)+")^N ");
 				say.append("^I");
 				if(item.envStats().replacementName()!=null)
