@@ -3,11 +3,11 @@ name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
 % Plaque	1	10	10	50	GenItem		0	0
 % Toy	1	10	5	1	GenItem		0	0
 % Chessboard	1	80	30	250	GenItem		0	0
-% Cup	1	20	10	0	GenWater		5	1
-% Mug	1	20	10	0	GenWater		5	1
+% Cup	1	20	10	0	GenDrink		5	1
+% Mug	1	20	10	0	GenDrink		5	1
 % Plate	1	20	10	0	GenContainer		5	0
 % Lamp	1	30	25	50	GenLantern		0	1
-% Bowl	1	20	10	0	GenWater		5	0
+% Bowl	1	20	10	0	GenDrink		5	0
 % Podium	1	30	80	15	GenRideable	TABLE	40	0
 % Box	1	30	80	0	GenContainer		25	0
 % Book Shelf	6	40	70	10	GenRideable	TABLE	30	128

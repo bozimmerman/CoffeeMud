@@ -2938,7 +2938,7 @@ public class Import extends StdCommand
 						 ((Container)I).setKeyName(areaName+"#"+val3);
 					 break;
 			case 16: I=CMClass.getStdItem("GenItem"); break;
-			case 17: I=CMClass.getStdItem("GenWater");
+			case 17: I=CMClass.getStdItem("GenDrink");
 					 str3=str3.toUpperCase().trim();
 					 if(((val3>0)&&(val3<6))
 					 ||(str3.indexOf("BEER")>=0)

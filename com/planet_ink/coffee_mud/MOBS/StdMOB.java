@@ -434,7 +434,6 @@ public class StdMOB implements MOB
 			I.destroy();
 			delInventory(I);
 		}
-		riding=null;
 	}
 
 	public void removeFromGame()
@@ -476,6 +475,7 @@ public class StdMOB implements MOB
 			}
 			session().setKillFlag(true);
 		}
+		setRiding(null);
 	}
 
 	public String getClanID(){return ((clanID==null)?"":clanID);}

@@ -121,7 +121,34 @@ public class Thief_Trap extends ThiefSkill
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
+				boolean permanent=false;
+				if((trapThis instanceof Room)
+				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)trapThis)))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)trapThis))))))
+					permanent=true;
+				else
+				if(trapThis instanceof Exit)
+				{
+					Room R=mob.location();
+					Room R2=null;
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+						if(R.getExitInDir(d)==trapThis)
+						{ R2=R.getRoomInDir(d); break;}
+					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
+					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
+					||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+						permanent=true;
+				}
+				if(permanent)
+				{
+					Ability newTrap=(Ability)theTrap.copyOf();
+					newTrap.setInvoker(mob);
+					trapThis.addNonUninvokableEffect(newTrap);
+					CMClass.DBEngine().DBUpdateRoom(mob.location());
+				}
+				else
+					theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
 			}
 			else
 			{

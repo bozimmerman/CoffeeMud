@@ -107,7 +107,7 @@ public class SMTPserver extends Thread implements Tickable
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			Log.sysOut(getName(),"SMTPserver (C)2004 Bo Zimmerman");
+			//Log.sysOut(getName(),"SMTPserver (C)2004 Bo Zimmerman");
 		}
 		if(mailbox.length()==0)
 			Log.sysOut(getName(),"Player mail box system is disabled.");
@@ -209,12 +209,20 @@ public class SMTPserver extends Thread implements Tickable
 			while(true)
 			{
 				sock=servsock.accept();
-
-				ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
-				W.equals(W); // this prevents an initialized by never used error
-				// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
-				//  if succeeds - no need to .start() it here
-				sock = null;
+				if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+				{
+					ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
+					W.equals(W); // this prevents an initialized by never used error
+					// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
+					//  if succeeds - no need to .start() it here
+				}
+				else
+				{
+					sock.getOutputStream().write(("421 Mud down.. try later.\r\n").getBytes());
+					sock.getOutputStream().flush();
+					sock.close();
+				}
+				sock=null;
 			}
 		}
 		catch(Throwable t)

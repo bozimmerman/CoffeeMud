@@ -1,17 +1,17 @@
 FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,ARMORDMG,CONTAINMASK,SPELL
 % Bundle	1	1	25	0	GenResource	BUNDLE
-% Cup	1	10	8	1	GenWater		5		1
+% Cup	1	10	8	1	GenDrink		5		1
 % Bowl	1	10	8	1	GenContainer		5		1
 % Toy	1	10	5	1	GenItem		0		0
 Puppet	1	10	5	1	GenItem		0		0
 Marionette	1	10	5	1	GenItem		0		0
 % Chopsticks	1	5	1	1	GenItem		0		0
-% Mug	1	10	8	1	GenWater		5		1
+% Mug	1	10	8	1	GenDrink		5		1
 % Plate	1	10	8	1	GenContainer		5		0
-% Pitcher	1	15	15	1	GenWater		15		1
-% Barrel	1	30	30	5	GenWater		50		0
+% Pitcher	1	15	15	1	GenDrink		15		1
+% Barrel	1	30	30	5	GenDrink		50		0
 % Wheel	1	20	10	1	GenItem		0		0
-% Bucket	1	20	20	5	GenWater		15		0
+% Bucket	1	20	20	5	GenDrink		15		0
 % Plaque	1	20	5	20	GenItem		0		0
 % pipe	1	10	1	2	GenPipe	SMOKE	2		8192
 Small % Table	1	15	30	15	GenRideable	TABLE	20		0

@@ -81,9 +81,9 @@ public class ProcessSMTPrequest extends Thread
 				String s=null;
 				char lastc=(char)-1;
 				char c=(char)-1;
+				StringBuffer input=new StringBuffer("");
 				while(!quitFlag)
 				{
-					StringBuffer input=new StringBuffer("");
 					lastc=c;
 					c=(char)sin.read();
 					if(c<0)	throw new IOException("reset by peer");
@@ -111,6 +111,7 @@ public class ProcessSMTPrequest extends Thread
 								while(true)
 								{
 									String s2=lineR.readLine();
+									if(s2==null) break;
 									if(startBuffering)
 										finalData.append(s2+cr);
 									else
@@ -132,6 +133,13 @@ public class ProcessSMTPrequest extends Thread
 								}
 							}
 							catch(IOException e){}
+							
+							if((finalData.length()==0)
+							&&(!startBuffering))
+							{
+								finalData=new StringBuffer(data.toString());
+								subject="";
+							}
 							
 							if((finalData.length()>0)&&(subject!=null))
 								for(int i=0;i<to.size();i++)
@@ -159,6 +167,7 @@ public class ProcessSMTPrequest extends Thread
 						if(data.length()<server.getMaxMsgSize())
 							data.append(s+cr);
 					}
+					continue;
 				}
 				
 				String cmd=s.toUpperCase();
@@ -166,7 +175,7 @@ public class ProcessSMTPrequest extends Thread
 				int cmdindex=s.indexOf(" ");
 				if(cmdindex>0)
 				{
-					cmd=s.substring(0,cmdindex);
+					cmd=s.substring(0,cmdindex).toUpperCase();
 					parm=s.substring(cmdindex+1);
 				}
 				
@@ -324,7 +333,7 @@ public class ProcessSMTPrequest extends Thread
 				}
 				else
 				if(cmd.equals("NOOP"))
-					replyData=(S_250.getBytes()+cr).getBytes();
+					replyData=(S_250+cr).getBytes();
 				else
 				if(cmd.equals("HELO")
 				||cmd.equals("EHLO"))
@@ -454,7 +463,7 @@ public class ProcessSMTPrequest extends Thread
 				else
 				if(cmd.equals("RCPT"))
 				{
-					if(to==null)
+					if(from==null)
 						replyData=("503 Need MAIL before RCPT"+cr).getBytes();
 					else
 					{
@@ -577,6 +586,7 @@ public class ProcessSMTPrequest extends Thread
 		}
 		catch (Exception e)
 		{
+Log.errOut(getName(),e);
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
 		}
 		

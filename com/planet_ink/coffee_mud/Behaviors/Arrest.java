@@ -1758,6 +1758,7 @@ public class Arrest extends StdBehavior
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
+					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.canBeSeenBy(W.criminal(),officer))
 					&&(canFocusOn(officer,W.criminal())))
@@ -1810,6 +1811,7 @@ public class Arrest extends StdBehavior
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal()))
+					&&(!W.criminal().amDead())
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
@@ -1861,6 +1863,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
+					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -1900,12 +1903,11 @@ public class Arrest extends StdBehavior
 							}
 						}
 						Ability cuff=W.criminal().fetchEffect("Skill_HandCuff");
-						if(Sense.isSitting(W.criminal())
-						||(cuff!=null)
-						||(Sense.isSleeping(W.criminal())))
+						if((Sense.isSitting(W.criminal())||(cuff!=null)||(Sense.isSleeping(W.criminal())))
+						&&(!W.criminal().amDead())
+						&&(Sense.isInTheGame(W.criminal())))
 						{
 							makePeace(officer.location());
-
 							// cuff him!
 							W.setState(Law.STATE_MOVING);
 							if(cuff!=null){ cuff.unInvoke(); W.criminal().delEffect(cuff);}
@@ -1935,6 +1937,15 @@ public class Arrest extends StdBehavior
 									dismissOfficer(W.arrestingOfficer());
 							}
 						}
+						else
+						{
+							if(officer!=null)
+								CommonMsgs.say(officer,null,"Hmph.",false,false);
+							W.setTravelAttemptTime(0);
+							unCuff(W.criminal());
+							W.setArrestingOfficer(null);
+							W.setState(Law.STATE_SEEKING);
+						}
 					}
 					else
 					{
@@ -1953,6 +1964,7 @@ public class Arrest extends StdBehavior
 
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
+					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
@@ -1998,6 +2010,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
+					&&(!W.criminal().amDead())
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.aliveAwakeMobile(officer,true)))
@@ -2056,6 +2069,7 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
+					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
@@ -2113,6 +2127,7 @@ public class Arrest extends StdBehavior
 					W.setTravelAttemptTime(0);
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
+					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
@@ -2160,6 +2175,7 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
+					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
@@ -2224,6 +2240,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(Sense.isInTheGame(W.criminal()))
+					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
@@ -2273,6 +2290,7 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
+					&&(!W.criminal().amDead())
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.isInTheGame(W.criminal()))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
@@ -2346,6 +2364,7 @@ public class Arrest extends StdBehavior
 							MOB officer=W.arrestingOfficer();
 							if((officer==null)
 							||(!Sense.aliveAwakeMobile(officer,true))
+							||(W.criminal().amDead())
 							||(!Sense.isInTheGame(W.criminal()))
 							||(!W.criminal().location().isInhabitant(officer)))
 							{

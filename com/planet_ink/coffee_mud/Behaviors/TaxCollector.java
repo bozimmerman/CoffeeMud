@@ -100,6 +100,7 @@ public class TaxCollector extends StdBehavior
 		{
 			MOB M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
 			if((M!=null)
+			&&(M!=mob)
 			&&((mob.getClanID().length()==0)
 			   ||(M.getClanID().length()==0)
 			   ||(!M.getClanID().equals(mob.getClanID()))
