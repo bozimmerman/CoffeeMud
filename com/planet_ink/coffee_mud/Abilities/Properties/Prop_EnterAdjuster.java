@@ -99,7 +99,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.setQuestPoint(mob.getQuestPoint()+getVal(readableText,"ques"));
 		mob.setMoney(mob.getMoney()+getVal(readableText,"coin"));
 		int exp=getVal(readableText,"expe");
-		if(exp>0) mob.charStats().getCurrentClass().gainExperience(mob,null,mob.getLeigeID(),exp);
+		if(exp>0) mob.charStats().getCurrentClass().gainExperience(mob,null,mob.getLeigeID(),exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

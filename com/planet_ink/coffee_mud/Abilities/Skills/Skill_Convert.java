@@ -95,7 +95,7 @@ public class Skill_Convert extends StdAbility
 				if(mob!=target)
 				{
 					mob.tell("You gain 200 experience points.");
-					mob.charStats().getCurrentClass().gainExperience(mob,null,null,200);
+					mob.charStats().getCurrentClass().gainExperience(mob,null,null,200,false);
 				}
 			}
 		}

@@ -22,6 +22,7 @@ YAWNS.  if you get too fatigued, you may get this disease, which is contagious. 
 Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable item of FAT for the duration of the obessity.  You can get rid of Obessity with a cure disease, or by remaining hungry for a good while.  You contract obessity by overeatting.
 Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
 WIZINFO type channel (shows logins, logoffs, creates, etc..)
+jewelmaking should allow you to add jewels to any item
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
@@ -30,7 +31,6 @@ Create Docking areas.
 Electronic items which can be activated/deactivated, grant some affect, and use up power
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
 
-ARTISAN:  Master of all the common skills.  Bonus 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. WIS and CHA. Bard combat. BARDIC SONGS to qualify for.
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
 level and type and wear locations for weaponsmithing and armorsmithing
 possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...

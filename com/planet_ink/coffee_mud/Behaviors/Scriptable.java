@@ -1811,7 +1811,7 @@ public class Scriptable extends StdBehavior
 					{
 						MOB M=(MOB)e.nextElement();
 						if(M.location()==lastKnownLocation)
-							M.charStats().getCurrentClass().gainExperience(M,null,M.getLeigeID(),t);
+							M.charStats().getCurrentClass().gainExperience(M,null,M.getLeigeID(),t,false);
 					}
 				}
 				break;

@@ -9,19 +9,20 @@ import java.util.*;
 public class OilFlask extends StdDrink
 {
 	public String ID(){	return "OilFlask";}
-	public int amountOfLiquidHeld=5;
-	public int amountOfLiquidRemaining=5;
+	
 
 	public OilFlask()
 	{
 		super();
 		name="an oil flask";
-		baseEnvStats.setWeight(10);
+		baseEnvStats.setWeight(3);
 		capacity=0;
 		setMaterial(EnvResource.RESOURCE_GLASS);
 		displayText="an oil flask sits here.";
 		description="A small glass flask containing lamp oil, with a lid.";
 		baseGoldValue=5;
+		amountOfLiquidHeld=5;
+		amountOfLiquidRemaining=5;
 		liquidType=EnvResource.RESOURCE_LAMPOIL;
 		recoverEnvStats();
 	}

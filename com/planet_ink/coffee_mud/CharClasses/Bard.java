@@ -94,7 +94,8 @@ public class Bard extends StdCharClass
 	public void gainExperience(MOB mob,
 							   MOB victim,
 							   String homage,
-							   int amount)
+							   int amount,
+							   boolean quiet)
 	{
 		double theAmount=new Integer(amount).doubleValue();
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
@@ -117,7 +118,7 @@ public class Bard extends StdCharClass
 				}
 			}
 		}
-		super.gainExperience(mob,victim,homage,(int)Math.round(theAmount));
+		super.gainExperience(mob,victim,homage,(int)Math.round(theAmount),quiet);
 	}
 
 	public boolean playerSelectable()

@@ -47,7 +47,7 @@ public class Prayer_Bury extends Prayer
 					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
-					mob.charStats().getCurrentClass().gainExperience(mob,null,null,(int)Math.round(exp));
+					mob.charStats().getCurrentClass().gainExperience(mob,null,null,(int)Math.round(exp),false);
 				}
 				mob.location().recoverRoomStats();
 			}

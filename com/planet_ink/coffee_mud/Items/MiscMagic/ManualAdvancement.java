@@ -47,7 +47,7 @@ public class ManualAdvancement extends StdItem implements MiscMagic
 						{
 							this.setUsesRemaining(this.usesRemaining()-1);
 							mob.tell("The manual glows softly, enveloping you in its wisdom.");
-							mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
+							mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 					}
 					else

@@ -3,7 +3,7 @@
 Puppet	1	10	5	1	GenItem		0		0
 Marionette	1	10	5	1	GenItem		0		0
 % Chopsticks	1	5	1	1	GenItem		0		0
-% Bookshelf	3	30	10	15	GenContainer		10		128
+% Bookshelf	3	30	10	15	GenContainer		10		768
 % Scroll Case	3	30	10	10	GenContainer		3		256
 % Mug	1	10	8	1	GenWater		5		1
 % Plate	1	10	8	1	GenContainer		5		0

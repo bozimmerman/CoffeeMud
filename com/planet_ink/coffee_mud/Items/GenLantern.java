@@ -9,6 +9,7 @@ import java.util.*;
 public class GenLantern extends GenLightSource
 {
 	public String ID(){	return "GenLantern";}
+	public static final int DURATION_TICKS=400;
 	public GenLantern()
 	{
 		super();
@@ -17,7 +18,7 @@ public class GenLantern extends GenLightSource
 		description="";
 
 		baseEnvStats().setWeight(5);
-		setDuration(400);
+		setDuration(DURATION_TICKS);
 		destroyedWhenBurnedOut=false;
 		goesOutInTheRain=false;
 		baseGoldValue=60;
@@ -40,11 +41,6 @@ public class GenLantern extends GenLightSource
 				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
-						if(getDuration()>0)
-						{
-							mob.tell(name()+" still has some oil left in it.");
-							return false;
-						}
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
@@ -53,7 +49,7 @@ public class GenLantern extends GenLightSource
 								return false;
 							}
 							Drink thePuddle=(Drink)affect.tool();
-							if(thePuddle.liquidRemaining()<1)
+							if(!thePuddle.containsDrink())
 							{
 								mob.tell(thePuddle.name()+" is empty.");
 								return false;
@@ -89,11 +85,9 @@ public class GenLantern extends GenLightSource
 				{
 					Drink thePuddle=(Drink)affect.tool();
 					int amountToTake=1;
-					if(amountToTake>thePuddle.liquidRemaining())
-						amountToTake=0;
+					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
-					lit=false;
-					setDuration(200);
+					setDuration(DURATION_TICKS);
 					description="The lantern still looks like it has some oil in it.";
 				}
 				break;

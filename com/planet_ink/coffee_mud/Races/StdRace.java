@@ -74,8 +74,14 @@ public class StdRace implements Race
 					return false;
 				}
 				break;
-			case Affect.TYP_CLOSE:
 			case Affect.TYP_DELICATE_HANDS_ACT:
+				if(((forbiddenWornBits()&Item.HELD)>0)&&(affect.othersMinor()!=Affect.NO_EFFECT))
+				{
+					myChar.tell("Your anatomy prevents you from doing that.");
+					return false;
+				}
+				break;
+			case Affect.TYP_CLOSE:
 			case Affect.TYP_DROP:
 			case Affect.TYP_FILL:
 			case Affect.TYP_GET:

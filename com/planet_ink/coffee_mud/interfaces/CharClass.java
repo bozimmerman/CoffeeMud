@@ -15,7 +15,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public CharClass copyOf();
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
-	public void gainExperience(MOB mob, MOB victim, String homage, int amount);
+	public void gainExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 	public void loseExperience(MOB mob, int amount);
 	public Hashtable dispenseExperience(MOB killer, MOB killed);
 	public void level(MOB mob);

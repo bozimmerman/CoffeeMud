@@ -47,7 +47,7 @@ public class Lantern extends LightSource
 								return false;
 							}
 							Drink thePuddle=(Drink)affect.tool();
-							if(thePuddle.liquidRemaining()<1)
+							if(!thePuddle.containsDrink())
 							{
 								mob.tell(thePuddle.name()+" is empty.");
 								return false;
@@ -83,8 +83,7 @@ public class Lantern extends LightSource
 				{
 					Drink thePuddle=(Drink)affect.tool();
 					int amountToTake=1;
-					if(amountToTake>thePuddle.liquidRemaining())
-						amountToTake=0;
+					if(!thePuddle.containsDrink()) amountToTake=0;
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					setDuration(DURATION_TICKS);
 					description="The lantern still looks like it has some oil in it.";

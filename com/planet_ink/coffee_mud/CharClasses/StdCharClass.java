@@ -208,7 +208,8 @@ public class StdCharClass implements CharClass, Cloneable
 	public void gainExperience(MOB mob,
 							   MOB victim,
 							   String homage,
-							   int amount)
+							   int amount,
+							   boolean quiet)
 	{
 		if(victim!=null)
 		{
@@ -241,17 +242,20 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				if(sire.charStats()!=null)
-					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare);
+					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 		}
 
 		mob.setExperience(mob.getExperience()+amount);
 		if(homage==null) homage="";
-		if(amount>1)
-			mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homage+".^N");
-		else
-		if(amount>0)
-			mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
+		if(!quiet)
+		{
+			if(amount>1)
+				mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homage+".^N");
+			else
+			if(amount>0)
+				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
+		}
 
 		while(mob.getExperience()>=mob.getExpNextLevel())
 			level(mob);
@@ -260,7 +264,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public void unLevel(MOB mob)
 	{
 		if(mob.baseEnvStats().level()<2) return;
-		mob.tell("\n\r^ZYou've lost a level!!!^.^N");
+		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 
 		levelAdjuster(mob,-1);
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
@@ -407,7 +411,7 @@ public class StdCharClass implements CharClass, Cloneable
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
-			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
+			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
 			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
 			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
 			mob.recoverEnvStats();
@@ -428,10 +432,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
-		{
-			mob.tell("^xYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 			unLevel(mob);
-		}
 	}
 	public void level(MOB mob)
 	{
@@ -546,7 +547,7 @@ public class StdCharClass implements CharClass, Cloneable
 				MOB mob=(MOB)e.nextElement();
 				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
-				mob.charStats().getCurrentClass().gainExperience(mob,killed,"",myAmount);
+				mob.charStats().getCurrentClass().gainExperience(mob,killed,"",myAmount,false);
 			}
 		return beneficiaries;
 	}
