@@ -64,7 +64,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
 			
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Search",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_Detection",false);
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Bribe",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Surrender",false);

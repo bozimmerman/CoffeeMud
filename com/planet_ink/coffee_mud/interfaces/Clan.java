@@ -28,6 +28,10 @@ public interface Clan extends Cloneable
 	public static final int POS_LEADER=8;
 	public static final int POS_BOSS=16;
 
+	public static final int STATUS_ACTIVE=0;
+	public static final int STATUS_PENDING=1;
+	public static final int STATUS_FADING=2;
+
 	public static final int TYPE_CLAN=1;
 
 	public static final int SETTING_RESTRICT_LEVEL=1;
@@ -53,11 +57,17 @@ public interface Clan extends Cloneable
 	/** Sets this Clan's basic story.  See {@link getPremise} for more info. */
 	public void setPremise(String newPremise);
 
+	/** Creates the string for the 'clandetail' command */
+	public String getDetail(MOB mob);
+
 	public String getAcceptanceSettings();
 	public void setAcceptanceSettings(String newSettings);
 
 	public String getPolitics();
 	public void setPolitics(String politics);
+
+	public int getStatus();
+	public void setStatus(int newStatus);
 
 	public String getRecall();
 	public void setRecall(String newRecall);
@@ -67,6 +77,8 @@ public interface Clan extends Cloneable
   
 	public Vector getMemberList();
 	public Vector getMemberList(int PosFilter);
+
+	public int getTopRank();
 
 	public void update();
 	

@@ -436,6 +436,12 @@ public class MOBloader
 	
 	public static void DBClanFill(String clan, Vector members, Vector roles)
 	{
+		Vector dateJunk=new Vector();
+		DBClanFill(clan,members,roles,dateJunk);
+	}	
+
+	public static void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
+	{
 		DBConnection D=null;
 		try
 		{
@@ -445,9 +451,12 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
+				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
+				long lastDateTime=IQCalendar.string2Millis(dateTimeStr);
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
+				lastDates.addElement(new Long(lastDateTime));
 			}
 			DBConnector.DBDone(D);
 		}

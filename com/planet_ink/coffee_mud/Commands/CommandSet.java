@@ -180,6 +180,13 @@ public class CommandSet extends Hashtable
 	public static final int WHISPER=167;
 	public static final int CONFIG=168;
 	public static final int LOAD=169;
+	public static final int CLANASSIGN=170;
+	public static final int CLANDONATESET=171;
+	public static final int CLANDEPOSIT=172;
+	public static final int CLANWITHDRAW=173;
+	public static final int CLANBALANCE=174;
+	public static final int CLANDONATE=175;
+	public static final int CLANCREATE=176;
 
 	private CommandSet()
 	{
@@ -217,14 +224,21 @@ public class CommandSet extends Hashtable
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
-		put("CLANACCEPT",new Integer(CLANACCEPT));
+	  	put("CLANACCEPT",new Integer(CLANACCEPT));
 		put("CLANAPPLY",new Integer(CLANAPPLY));
+		put("CLANASSIGN",new Integer(CLANASSIGN));
+		put("CLANBALANCE",new Integer(CLANBALANCE));
+		put("CLANCREATE",new Integer(CLANCREATE));
+		put("CLANDEPOSIT",new Integer(CLANDEPOSIT));
 		put("CLANDETAILS",new Integer(CLANDETAILS));
+		put("CLANDONATE",new Integer(CLANDONATE));
+		put("CLANDONATESET",new Integer(CLANDONATESET));
 		put("CLANEXILE",new Integer(CLANEXILE));
 		put("CLANHOMESET",new Integer(CLANHOMESET));
 		put("CLANLIST",new Integer(CLANLIST));
 		put("CLANREJECT",new Integer(CLANREJECT));
 		put("CLANRESIGN",new Integer(CLANRESIGN));
+		put("CLANWITHDRAW",new Integer(CLANWITHDRAW));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

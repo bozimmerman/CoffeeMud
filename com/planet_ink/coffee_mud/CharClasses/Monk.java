@@ -66,7 +66,7 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Search",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_Detection",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",true);

@@ -42,6 +42,7 @@ public class ClanLoader
 				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
 				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
+				C.setStatus(Util.s_int(DBConnections.getRes(R, "CMSTAT")));
 				Clans.addElement(C);
 		        updateBootStatus(myHost,"Clans");
 			}
@@ -69,6 +70,7 @@ public class ClanLoader
 				+"CMPOLI='"+C.getPolitics()+"',"
 				+"CMRCLL='"+C.getRecall()+"',"
 				+"CMDNAT='"+C.getDonation()+"'"
+				+"CMSTAT='"+C.getStatus()+"'"
 				+" WHERE CMCLID='"+C.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
@@ -97,7 +99,8 @@ public class ClanLoader
 			+"CMACPT,"
 			+"CMPOLI,"
 			+"CMRCLL,"
-			+"CMDNAT"
+			+"CMDNAT,"
+			+"CMSTAT"
 			+") values ("
 			+"'"+C.ID()+"',"
 			+""+C.getType()+","
@@ -105,7 +108,8 @@ public class ClanLoader
 			+"'"+C.getAcceptanceSettings()+"',"
 			+"'"+C.getPolitics()+"',"
 			+"'"+C.getRecall()+"',"
-			+"'"+C.getDonation()+"')";
+			+"'"+C.getDonation()+"',"
+			+"'"+C.getStatus()+"')";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}

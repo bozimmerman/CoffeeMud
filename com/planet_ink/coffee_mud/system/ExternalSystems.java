@@ -35,6 +35,8 @@ public class ExternalSystems implements ExternalSystem
 	public void DBUpdateIP(MOB mob){ MOBloader.DBUpdateIP(mob);}
 	public void DBClanFill(String clan, Vector members, Vector roles)
 	{ MOBloader.DBClanFill(clan,members,roles);}
+	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
+	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
 	public void DBUpdateClan(String name, String clan, int role)
 	{ MOBloader.DBUpdateClan(name,clan,role);}
 	

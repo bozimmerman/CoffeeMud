@@ -3,3 +3,4 @@ When I boot a player, they're still listed according to the website and archon c
 MPAT should support other scriptable commands!!
 I'm getting SQL errors whenever someone uses a single quote (') in a room description.
 move sky sometimes goes backward to dawn or dusk
+ProtectedCitizen

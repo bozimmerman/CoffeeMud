@@ -21,6 +21,7 @@ public class StdClan implements Clan
 	String clanDonationRoom="";
 	String AcceptanceSettings="";
 	int clanType=Clan.TYPE_CLAN;
+	int ClanStatus=0;
 	String PoliticString="";
 
 	public int getAlign()
@@ -46,6 +47,65 @@ public class StdClan implements Clan
 			return AvgAlign;
 		}
 	}
+
+	public String getDetail(MOB mob)
+	{
+		Clan C=this; 
+		StringBuffer msg=new StringBuffer("");
+		msg.append(""+C.typeName()+" Profile: "+C.ID()+"\n\r"
+		          +"-----------------------------------------------------------------\n\r"
+		          +C.getPremise()+"\n\r"
+		          +"-----------------------------------------------------------------\n\r"
+		          +Util.padRight(Clans.getRoleName(Clan.POS_BOSS,true,true),16)+": "+crewList(C,Clan.POS_BOSS)+"\n\r"
+		          +Util.padRight(Clans.getRoleName(Clan.POS_LEADER,true,true),16)+": "+crewList(C,Clan.POS_LEADER)+"\n\r"
+		          +Util.padRight(Clans.getRoleName(Clan.POS_TREASURER,true,true),16)+": "+crewList(C,Clan.POS_TREASURER)+"\n\r"
+		          +"Total Members   : "+C.getSize()+"\n\r"
+		          +"Clan Alignment  : "+CommonStrings.alignmentStr(C.getAlign())+"\n\r");
+		if(mob.getClanID().equalsIgnoreCase(C.ID()))
+		{
+			msg.append("-----------------------------------------------------------------\n\r"
+			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)+": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
+			if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
+			{
+				msg.append("-----------------------------------------------------------------\n\r"
+				        +Util.padRight(Clans.getRoleName(Clan.POS_APPLICANT,true,true),16)+": "+crewList(C,Clan.POS_APPLICANT)+"\n\r");
+			}
+		}
+
+		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+		{
+			msg.append("-----------------------------------------------------------------\n\r"
+			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)+": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
+			msg.append("-----------------------------------------------------------------\n\r"
+			          +Util.padRight(Clans.getRoleName(Clan.POS_APPLICANT,true,true),16)+": "+crewList(C,Clan.POS_APPLICANT)+"\n\r");
+		}
+		return msg.toString();
+	}
+
+	private String crewList(Clan C, int posType)
+	{
+		StringBuffer list=new StringBuffer("");
+		Vector Members=new Vector();
+		MOB m;
+
+		Members = C.getMemberList(posType);
+		Members.trimToSize();
+		if(Members.size()>1)
+		{
+			for(int j=0;j<(Members.size() - 1);j++)
+			{
+				list.append(Members.elementAt(j)+", ");
+			}
+			list.append("and "+Members.lastElement());
+		}
+		else
+		if(Members.size()>0)
+		{
+			list.append((String)Members.firstElement());
+		}
+		return list.toString();
+	}
+
 	public String typeName()
 	{
 		switch(clanType)
@@ -88,6 +148,9 @@ public class StdClan implements Clan
 	public String getPolitics() { return PoliticString; }
 	public void setPolitics(String politics) { PoliticString=politics; }
 
+	public int getStatus() { return ClanStatus; }
+	public void setStatus(int newStatus) { ClanStatus=newStatus; }
+
 	public String getRecall() { return clanRecall; }
 	public void setRecall(String newRecall) { clanRecall=newRecall; }
 
@@ -115,6 +178,8 @@ public class StdClan implements Clan
 		}
 		return filteredMembers;
 	}
+	
+	public int getTopRank() { return Clan.POS_BOSS; }
 
 	public void update()
 	{

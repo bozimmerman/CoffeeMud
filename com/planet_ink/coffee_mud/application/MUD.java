@@ -179,15 +179,18 @@ public class MUD extends Thread implements Host
 		
 		offlineReason=new String("Booting: connecting to database");
 		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,0);
 		if(page.getStr("EDITORTYPE").equalsIgnoreCase("WIZARD")) CommonStrings.setIntVar(CommonStrings.SYSTEMI_EDITORTYPE,1);
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS,page.getStr("MINCLANMEMBERS"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH,page.getStr("DAYSCLANDEATH"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL,page.getStr("MINCLANLEVEL"));
 		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();

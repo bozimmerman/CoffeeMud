@@ -89,9 +89,27 @@ public class Clans
 		return roleName.toString();
 	}
 
+	public static boolean checkDates(Clan C)
+	{
+		
+		return false;
+	}
+
+	public static void createClan(Clan C)
+	{
+		ClanLoader.DBCreate(C);
+		addElement(C);
+	}
+
 	public static void updateClan(Clan C)
 	{
 		ClanLoader.DBUpdate(C);
+	}
+
+	public static void destroyClan(Clan C)
+	{
+		ClanLoader.DBDelete(C);
+		removeElement(C);
 	}
 
 	public static Clan elementAt(int x)
