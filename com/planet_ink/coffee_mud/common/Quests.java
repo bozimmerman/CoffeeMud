@@ -343,6 +343,14 @@ public class Quests implements Cloneable, Quest
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
 						String mobName=Util.combine(p,2).toUpperCase();
+						String mask="";
+						int x=mobName.indexOf("MASK=");
+						if(x>=0)
+						{
+							mask=mobName.substring(x+5).trim();
+							mobName=mobName.substring(0,x).trim();
+						}
+						if(mobName.length()==0) mobName="ANY";
 						Enumeration e=CMMap.rooms();
 						if(A!=null) e=A.getMap();
 						for(;e.hasMoreElements();)
@@ -356,6 +364,8 @@ public class Quests implements Cloneable, Quest
 									String mname=M2.name().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
 									String mdesc=M2.description().toUpperCase();
+									if(!SaucerSupport.zapperCheck(mask,M2))
+										continue;
 									if(mobName.equalsIgnoreCase("any"))
 									{
 										choices=choices0;
@@ -601,10 +611,20 @@ public class Quests implements Cloneable, Quest
 							error=true; break;
 						}
 						String mobName=Util.combine(p,2);
+						String mask="";
+						int x=mobName.indexOf("MASK=");
+						if(x>=0)
+						{
+							mask=mobName.substring(x+5).trim();
+							mobName=mobName.substring(0,x).trim();
+						}
+						if(mobName.length()==0) mobName="ANY";
 						Vector choices=new Vector();
 						for(int i=0;i<loadedMobs.size();i++)
 						{
 							MOB M2=(MOB)loadedMobs.elementAt(i);
+							if(!SaucerSupport.zapperCheck(mask,M2))
+								continue;
 							if((mobName.equalsIgnoreCase("any"))
 							||(CoffeeUtensils.containsString(M2.name(),mobName))
 							||(CoffeeUtensils.containsString(M2.displayText(),mobName))
