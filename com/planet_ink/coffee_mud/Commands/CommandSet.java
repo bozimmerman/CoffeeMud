@@ -206,6 +206,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANQUAL=193;
 	public static final int CLANTAX=194;
 	public static final int NOPURGE=195;
+	public static final int AFTER=196;
 
 	
 
@@ -214,6 +215,7 @@ public class CommandSet extends Hashtable
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
 		put("AFK",new Integer(AFK));
+		put("AFTER",new Integer(AFTER));
 		put("ANNOUNCE",new Integer(ANNOUNCE));
 		put("ANSI",new Integer(ANSI));
 			put("COLOR",new Integer(ANSI));

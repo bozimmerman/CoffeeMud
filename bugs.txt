@@ -1,12 +1,3 @@
-A young player had a follower, who had the skill kick and a decent amount of movement.  She turned off autoassist, then ordered the follower to kick a mob.  She then could order the mob to kick as often as she could type it, completely bypassing the fight delay system.
-A sengir Scholar was killed by one touch of my flameshield. It just said that it warmed him, but he died
 amputation does not affect wear position because WEAR ring is not rejected when left finger gone.  Need consolodated way to follow limbs.
-I have noticed this, Lothos has noticed it. Sometimes, at the expiration of a spell, you will suddenly die. Lothos died when his Mage armor wore off. I have died when haste wore off. The Sengir Scholar will sometimes die if you take his book away from him. I don't know what it is...maybe other affects interacting...but it is definitely a bug.
 packaging skill now
 book of laws can be crafted
-AFTER archon command to do delayed commands (after 5 ticks at hassan smile) (in 5 minutes shutdown noprompt)
-add noprompt shutdown
-Can we get some sorta little INI setting that after X connection attempts within Y minutes, auto-block that IP for Z minutes?
-mudchat shouldn't work if they can't see you.
-Coffins should prevent item decay on Body-type items.
-wood and herbs sink

@@ -60,11 +60,14 @@ public class UtiliThread extends Thread
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
-					Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+					if(CMMap.getPlayer(mob.Name())==null)
+						Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+					else
+						Log.errOut("UtiliThread","Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 					if(!ticked)
 					{
 						status="destroying unticked mob "+mob.name();
-						mob.destroy();
+						if(CMMap.getPlayer(mob.Name())==null) mob.destroy();
 						R.delInhabitant(mob);
 						status="checking";
 					}

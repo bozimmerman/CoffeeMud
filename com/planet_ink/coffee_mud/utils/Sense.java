@@ -382,7 +382,7 @@ public class Sense
 	{
 		if(E==null) return false;
 		if(Sense.isSwimming(E)) return true;
-		if(E instanceof Rider)
+		if((E instanceof Rider)&&(((Rider)E).riding()!=null))
 			return isWaterWorthy(((Rider)E).riding());
 		if(E instanceof Item)
 		{

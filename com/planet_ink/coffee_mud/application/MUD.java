@@ -32,6 +32,8 @@ public class MUD extends Thread implements Host
 	public static HTTPserver adminServerThread=null;
 	public static Vector mudThreads=new Vector();
 	private static String offlineReason="UNKNOWN";
+	public static DVector accessed=new DVector(2);
+	public static Vector autoblocked=new Vector();
 
 	public static boolean serverIsRunning = false;
 	public static boolean isOK = false;
@@ -418,34 +420,73 @@ public class MUD extends Thread implements Host
 				if (acceptConnections)
 				{
 					String address="unknown";
-					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
+					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
 					Log.sysOut("MUD","Got a connection from "+address);
 					// now see if they are banned!
 					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
-					boolean ok=true;
+					int proceed=0;
 					if((banned!=null)&&(banned.size()>0))
 					for(int b=0;b<banned.size();b++)
 					{
 						String str=(String)banned.elementAt(b);
 						if(str.length()>0)
 						{
-							if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(address))) ok= false;
+							if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(address))) proceed=1;
 							else
-							if(str.startsWith("*")&&str.endsWith("*")&&(address.indexOf(str.substring(1,str.length()-1))>=0)) ok= false;
+							if(str.startsWith("*")&&str.endsWith("*")&&(address.indexOf(str.substring(1,str.length()-1))>=0)) proceed=1;
 							else
-							if(str.startsWith("*")&&(address.endsWith(str.substring(1)))) ok= false;
+							if(str.startsWith("*")&&(address.endsWith(str.substring(1)))) proceed=1;
 							else
-							if(str.endsWith("*")&&(address.startsWith(str.substring(0,str.length()-1)))) ok= false;
+							if(str.endsWith("*")&&(address.startsWith(str.substring(0,str.length()-1)))) proceed=1;
 						}
-						if(!ok) break;
+						if(proceed!=0) break;
 					}
-					if(!ok)
+					
+					int numAtThisAddress=0;
+					long ConnectionWindow=(180*1000);
+					long LastConnectionDelay=(5*60*1000);
+					long lastTimeThisAddress=-1;
+					boolean anyAtThisAddress=false;
+					int maxAtThisAddress=6;
+					try{
+						for(int a=accessed.size()-1;a>=0;a--)
+						{
+							if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
+								accessed.removeElementAt(a);
+							else
+							if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+							{
+								anyAtThisAddress=true;
+								if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
+									numAtThisAddress++;
+							}
+						}
+						if(autoblocked.contains(address.toUpperCase()))
+						{
+							if(!anyAtThisAddress)
+								autoblocked.remove(address.toUpperCase());
+							else
+								proceed=2;
+						}
+						else
+						if(numAtThisAddress>=maxAtThisAddress)
+						{
+							autoblocked.addElement(address.toUpperCase());
+							proceed=2;
+						}
+					}catch(java.lang.ArrayIndexOutOfBoundsException e){}
+					
+					accessed.addElement(address,new Long(System.currentTimeMillis()));
+					if(proceed!=0)
 					{
 						Log.sysOut("MUD","Blocking a connection from "+address);
 						PrintWriter out = new PrintWriter(sock.getOutputStream());
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
-						out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+						if(proceed==2)
+							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in "+((int)Math.round(LastConnectionDelay/60000))+" minutes, and not before.\n\r\n\r");
+						else
+							out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 						out.flush();
 						out.close();
 						sock = null;

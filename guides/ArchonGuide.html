@@ -770,10 +770,10 @@ Parent room to perform modifications.&nbsp; To get to the parent room, use the
 GOTO command.&nbsp; In the example above, we would enter "goto Coffee 
 Grounds#19".&nbsp; This will allow us to properly modify the room, and add any 
 creatures (mobs) to it later on.</P>
-<P>Once you are in the parent room of a Grid or Maze, you may 
-use "modify room" to modify the properties of the entire grid or maze.&nbsp; You 
-can modify things like the dimensions in the X and Y, to make your grid anything 
-from a long hallway to a giant hedge maze.&nbsp; </P>
+<P>Once you are in the parent room of a Grid or Maze, you 
+may use "modify room" to modify the properties of the entire grid or maze.&nbsp; 
+You can modify things like the dimensions in the X and Y, to make your grid 
+anything from a long hallway to a giant hedge maze.&nbsp; </P>
 <P>Modifying the <EM>display&nbsp; 
 </EM>and <EM>description </EM>fields also has unique 
 consequences inside a Maze or Grid.&nbsp; You may enter a random selection of 
@@ -803,24 +803,27 @@ from those listed under Areas above, here are additional Behaviors you might
 enjoy: </P>
 <P>"DelayedTransporter" causes all those who enter to be 
 whisked elsewhere.<BR>"Emoter" - yea -- this was mentioned 
-under Areas, but it's just sooo cool.<BR>"Sounder" is still a 
-good alternative to Emoter.<BR>"Mime"&nbsp;causes the room to 
-mimic players.&nbsp; Wierd.. yea, I know.<BR>"MovingRoom" the 
-fast train to somewhere.<BR>"ProtectedCitizens" will allow 
-resident mobs to scream for help and receive it&nbsp;when attacked.<BR>"ResourceOverride" if you want fishing in the desert, or sand 
-in your swap, this is the way to go.<BR>Lots of other 
+under Areas, but it's just sooo cool.<BR>"Sounder" is still 
+a good alternative to Emoter.<BR>"Mime"&nbsp;causes the room 
+to mimic players.&nbsp; Wierd.. yea, I know.<BR>"MovingRoom" 
+the fast train to somewhere.<BR>"ProtectedCitizens" will 
+allow resident mobs to scream for help and receive it&nbsp;when attacked.<BR>"ResourceOverride" if you want fishing in the desert, or 
+sand in your swap, this is the way to go.<BR>Lots of other 
 properties and affects are also available for rooms.&nbsp; In addition to all 
 the ones listed above under Areas, here are a few more you might want to add: 
 </P>
 <P>"Prop_ClosedDayNight" turns off the lights in a lit room 
-at nighttime.<BR>"Prop_ItemTransporter" drop it, and its gone 
--- elsewhere.<BR>"Prop_ItemReceiver" is the elsewhere.<BR>"Prop_LotsForSale" puts this room up for sale, and ensures 
-that you never run out of new rooms to buy.<BR>"Prop_NarrowLedge" makes this a room you can cross.. if you 
-are very very careful.<BR>"Prop_ReqTattoo" checks out a mobs 
-forearm before letting them in.<BR>"Prop_RestrictSpells" 
-shuts down a list of spells that you provide.<BR>"Prop_RoomDark" turns off the lights.<BR>"Prop_RoomForSale" puts this one little room on the 
-market.<BR>"Prop_RoomsForSale" designates that this room, and 
-all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" makes this room seem to be another...<BR>"Prop_AbilityImmunity" protects the room from specified 
+at nighttime.<BR>"Prop_ItemTransporter" drop it, and its 
+gone -- elsewhere.<BR>"Prop_ItemReceiver" is the 
+elsewhere.<BR>"Prop_LotsForSale" puts this room up for sale, 
+and ensures that you never run out of new rooms to buy.<BR>"Prop_NarrowLedge" makes this a room you can cross.. if you 
+are very very careful.<BR>"Prop_NoPurge" makes the room safe for dropped 
+garbage.<BR>"Prop_ReqTattoo" checks out a mobs forearm 
+before letting them in.<BR>"Prop_RestrictSpells" shuts down 
+a list of spells that you provide.<BR>"Prop_RoomDark" turns 
+off the lights.<BR>"Prop_RoomForSale" puts this one little 
+room on the market.<BR>"Prop_RoomsForSale" designates that 
+this room, and all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" makes this room seem to be another...<BR>"Prop_AbilityImmunity" protects the room from specified 
 targeted spells.<BR>"Prop_RoomWatch" allows folks in other 
 rooms to watch what goes on here.<BR>"Prop_SparringRoom" 
 makes the consequences of death more palatable.<BR>"Prop_SpellAdder" puts everyone who enters under its 
@@ -869,8 +872,8 @@ that there is no path from the detached room back to here again.&nbsp; You may
 have to conjure yourself into the&nbsp;other place and enter a "unlink south" 
 command to completely detach them forever.</P>
 <P><STRONG><FONT color=blue size=5>Destroying a Room</FONT></STRONG></P>
-<P>Sometimes the pain born from a failed or evil place is too 
-much to bear, and as an Archon, you can do something about it.&nbsp; This 
+<P>Sometimes the pain born from a failed or evil place is 
+too much to bear, and as an Archon, you can do something about it.&nbsp; This 
 involves the destroy command.&nbsp; It does not merely unlink the room, but 
 obliterates it altogether and forever.&nbsp; To do this, first make sure you are 
 not standing in the room you wish to destroy.&nbsp; Such destructive magic would 
@@ -880,8 +883,8 @@ doomed place.&nbsp; If the room you wish to destroy has the Room ID of
 that place from the planet forever.</P>
 <P><IMG alt="" src="images/destroyroom2.gif" ></P>
 <P><STRONG><FONT color=blue size=5>Creating Exits</FONT></STRONG></P>
-<P>The difference between Exits and Rooms is a very important 
-one.&nbsp; Creating and destroying Rooms describes <EM>WHETHER</EM> two rooms are connected, and by which 
+<P>The difference between Exits and Rooms is a very 
+important one.&nbsp; Creating and destroying Rooms describes <EM>WHETHER</EM> two rooms are connected, and by which 
 direction.&nbsp; Creating and destroying Exits describes <EM>HOW</EM> one gets from one room to the next.&nbsp; Two rooms 
 must be connected together before exits between them can be modified.</P>
 <P>For instance, suppose you linked "MyArea#123" and 
@@ -893,17 +896,17 @@ the southernmost room of the two, then changing them both is simply a matter of
 issuing the command "create Door north".</P>
 <P><IMG alt="" src="images/createexit.gif" ></P>
 <P><STRONG><FONT color=blue size=5>Destroying Exits</FONT></STRONG></P>
-<P>Just as unlinking rooms disconnects them, destroying exits 
-can SEEM to disconnect them.&nbsp; When you issue a simple destroy command, and 
-refer specifically to the exit, then you will not be destroying the link between 
-the two rooms, but merely the exit that travels between them.&nbsp; Archons can 
-still travel through these missing links, but players will not be able to.&nbsp; 
-Also, destroying an exit only deletes the exit in one direction, not both.&nbsp; 
-For instance, if you are standing in the southerly room of two linked rooms that 
-both have Exits between them, and you issue the command "destroy exit north", 
-you will destroy the Open exit between the rooms.&nbsp; As an Archon, you can 
-still travel north through the destroyed exit, but players will not be able 
-to.</P>
+<P>Just as unlinking rooms disconnects them, destroying 
+exits can SEEM to disconnect them.&nbsp; When you issue a simple destroy 
+command, and refer specifically to the exit, then you will not be destroying the 
+link between the two rooms, but merely the exit that travels between them.&nbsp; 
+Archons can still travel through these missing links, but players will not be 
+able to.&nbsp; Also, destroying an exit only deletes the exit in one direction, 
+not both.&nbsp; For instance, if you are standing in the southerly room of two 
+linked rooms that both have Exits between them, and you issue the command 
+"destroy exit north", you will destroy the Open exit between the rooms.&nbsp; As 
+an Archon, you can still travel north through the destroyed exit, but players 
+will not be able to.</P>
 <P><IMG alt="" src="images/destroyexit.gif" ></P>
 <P>&nbsp;</P>
 <P>Now, that an exit has been deleted, it is possible to 
@@ -970,33 +973,36 @@ border=1>
   <TR>
     <TD><EM>Has A Door</EM></TD>
     <TD>I think thou canst figure these next few out. 
-</TD></TR>
+  </TD></TR>
   <TR>
-    <TD><EM>Door Defaults Closed</EM></TD>
+    <TD><EM>Door Defaults 
+    Closed</EM></TD>
     <TD style="WIDTH: 100%" width="100%"></TD></TR>
   <TR>
     <TD><EM>Has A Lock</EM></TD>
     <TD></TD></TR>
   <TR>
-    <TD><EM>Door Defaults Locked</EM></TD>
+    <TD><EM>Door Defaults 
+    Locked</EM></TD>
     <TD></TD></TR>
   <TR>
     <TD><EM>Reset Delay #</EM></I></TD>
-    <TD>Whenever this exit is opened after previously being 
-      closed, this is the number of ticks (where a tick is currently&nbsp;4 
-      seconds) that will transpire before the exit is reset to its default 
-      state. </TD></TR>
+    <TD>Whenever this exit is opened after previously 
+      being closed, this is the number of ticks (where a tick is 
+      currently&nbsp;4 seconds) that will transpire before the exit is reset to 
+      its default state. </TD></TR>
   <TR>
     <TD><EM>Closed Text </EM></TD>
     <TD>what one sees when the EXITS command is issued and 
       the way is CLOSED. </TD></TR>
   <TR>
     <TD><EM>Assigned Key Item</EM></TD>
-    <TD>This is the secret code that must be present in the 
-      StdKey for you to be able to unlock it.&nbsp; The StdKey must have it's 
-      Miscellaneous Text property set the same as this value in order to open 
-      this exit using the UNLOCK command.&nbsp; If the level is sufficiently 
-      low, the door can still be KNOCKed or PICKed without the key. </TD></TR>
+    <TD>This is the secret code that must be present in 
+      the StdKey for you to be able to unlock it.&nbsp; The StdKey must have 
+      it's Miscellaneous Text property set the same as this value in order to 
+      open this exit using the UNLOCK command.&nbsp; If the level is 
+      sufficiently low, the door can still be KNOCKed or PICKed without the key. 
+    </TD></TR>
   <TR>
     <TD><EM>Door Name</EM></TD>
     <TD>Is it a gate, door, grate, or portcullis. Specify 
@@ -1919,11 +1925,14 @@ throws.<BR>"Prop_HaveSpellCast" gives a spell affect to the
 owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from specified 
 targeted spells.<BR>"Prop_ItemTransporter" makes an item 
 that transports things.<BR>"Prop_ItemTransReceiver" makes an 
-item receives transported things.<BR>"Prop_OpenPassword" 
-gives a container a secret opening word.<BR>"Prop_RideAdjuster" modifies the mounted persons stats.<BR>"Prop_RideResister" modifies the mounted persons saving 
-throws.<BR>"Prop_RideSpellCast" gives a spell affect to the 
-mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
-something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
+item receives transported things.<BR>"Prop_NoPurge" makes the item a permanent 
+piece of garbage.<BR>"Prop_OpenPassword" gives a container a 
+secret opening word.<BR>"Prop_RideAdjuster" modifies the 
+mounted persons stats.<BR>"Prop_RideResister" modifies the 
+mounted persons saving throws.<BR>"Prop_RideSpellCast" gives 
+a spell affect to the mounter.<BR>"Prop_RideZapper" 
+restricts mounting.<BR>"Prop_RoomView" makes an item that 
+gives you a view of something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
 reflects magic.<BR>"Prop_TattooAdder" makes an item that 
 grants one a tattoo.<BR>"Prop_TicketTaker" makes a rideable 
 that requires money to board.<BR>"Prop_Trashcan" makes a 
@@ -2305,10 +2314,10 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
       is evaluated from left to right, so any matches made&nbsp;on the left that 
       apply to a player will cancel evaluation of the rest of the 
       field!&nbsp;&nbsp; </P>
-      <P>Just as a bonus feature, if an adjustment begins with the words 
-      "LIMIT=", then you may enter a number representing the maximum number of 
-      rows of inventory the shopkeeper will display whenever a LIST is 
-      done.&nbsp; This feature has no relation with the above 
+      <P>Just as a bonus feature, if an adjustment begins 
+      with the words "LIMIT=", then you may enter a number representing the 
+      maximum number of rows of inventory the shopkeeper will display whenever a 
+      LIST is done.&nbsp; This feature has no relation with the above 
       prejudice&nbsp;functionality -- its just 
 bonus.</P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>

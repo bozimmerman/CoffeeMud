@@ -82,6 +82,9 @@ public class CommandProcessor
 		case CommandSet.AFK:
 			BasicSenses.afk(mob);
 			break;
+		case CommandSet.AFTER:
+			SysOpSkills.after(mob,commands);
+			break;
 		case CommandSet.ANNOUNCE:
 			if(mob.isASysOp(mob.location()))
 				SysOpSkills.announce(mob,commands);
@@ -838,17 +841,25 @@ public class CommandProcessor
 		throws IOException
 	{
 		if(mob.isMonster()) return;
-		if(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N"))
-			return;
 		boolean keepItDown=true;
+		boolean noPrompt=false;
 		String externalCommand=null;
-		if(commands.size()>1)
+		for(int i=commands.size()-1;i>=1;i--)
 		{
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("RESTART"))
-				keepItDown=false;
-			if(commands.size()>2)
-				externalCommand=Util.combine(commands,2);
+			String s=(String)commands.elementAt(i);
+			if(s.equalsIgnoreCase("RESTART"))
+			{ keepItDown=false; commands.removeElementAt(i);}
+			else
+			if(s.equalsIgnoreCase("NOPROMPT"))
+			{ noPrompt=true; commands.removeElementAt(i); }
 		}
+		if((!keepItDown)&&(commands.size()>1))
+			externalCommand=Util.combine(commands,1);
+		
+		if((!noPrompt)
+		&&(!mob.session().confirm("Are you fully aware of the consequences of this act (y/N)?","N")))
+			return;
+		
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 		else
