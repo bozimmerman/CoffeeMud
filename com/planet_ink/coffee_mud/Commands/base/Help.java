@@ -262,7 +262,9 @@ public class Help
 					{
 						CharClass C=(CharClass)c.nextElement();
 						int lvl=CMAble.getQualifyingLevel(C.ID(),A.ID());
-						if((!C.ID().equalsIgnoreCase("Archon"))&&(lvl>=0))
+						if((!C.ID().equalsIgnoreCase("Archon"))
+						&&(lvl>=0)
+						&&(!CMAble.getSecretSkill(C.ID(),A.ID())))
 							avail.addElement(C.name()+"("+lvl+")");
 					}
 					for(int c=0;c<avail.size();c++)

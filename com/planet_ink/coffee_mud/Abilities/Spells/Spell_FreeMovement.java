@@ -37,11 +37,9 @@ public class Spell_FreeMovement extends Spell
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&(!mob.amDead()))
 		{
 			Ability A=(Ability)affect.tool();
 			if(Util.bset(A.flags(),Ability.FLAG_BINDING))

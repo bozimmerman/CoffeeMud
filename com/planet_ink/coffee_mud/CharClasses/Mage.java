@@ -67,6 +67,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Dream",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_ResistGas",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Grease",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Spell_SummoningWard",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_WizardLock",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Deafness",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_Knock",false);
@@ -92,6 +93,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectGold",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_WallOfStone",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Spook",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CharmWard",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ResistCold",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Mend",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_WeaknessGas",false);
@@ -127,6 +129,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_FaerieFog",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Lightning",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_ResistDisease",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_TeleportationWard",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Shatter",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_ElementalStorm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_WallOfDarkness",false);
@@ -311,6 +314,7 @@ public class Mage extends StdCharClass
 			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
 			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
+			&&(!CMAble.getSecretSkill(ID(),A.ID()))
 			&&(!CMAble.getDefaultGain(ID(),A.ID()))
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}

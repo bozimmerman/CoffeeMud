@@ -265,7 +265,6 @@ public class CMAble
 		}
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
-			CharClass C=mob.charStats().getMyClass(c);
 			String charClass=mob.charStats().getMyClass(c).ID();
 			if(classAbleMap.containsKey(charClass))
 			{
@@ -277,7 +276,27 @@ public class CMAble
 				}
 			}
 		}
-		return false;
+		return true;
+	}
+	
+	public static boolean getSecretSkill(String ability)
+	{
+		if(getAllSecretSkill(ability)) return true;
+		boolean secret=true;
+		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		{
+			String charClass=((CharClass)e.nextElement()).ID();
+			if(classAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
+			{
+				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+				if(ableMap.containsKey(ability))
+				{
+					CMAble AB=(CMAble)ableMap.get(ability);
+					if(!AB.isSecret) return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	public static String getDefaultParm(String charClass, 

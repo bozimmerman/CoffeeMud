@@ -166,6 +166,7 @@ public class Druid extends StdCharClass
 			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
 			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
+			&&(!CMAble.getSecretSkill(ID(),A.ID()))
 			&&(!CMAble.getDefaultGain(ID(),A.ID()))
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}

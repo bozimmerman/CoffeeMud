@@ -184,9 +184,9 @@ public class TelnetSession extends Thread implements Session
 		if(afkFlag==truefalse) return;
 		afkFlag=truefalse;
 		if(afkFlag)
-			println("You are now listed as AFK.");
+			println("\n\rYou are now listed as AFK.");
 		else
-			println("You are no longer AFK.");
+			println("\n\rYou are no longer AFK.");
 	}
 
 	private void errorOut(Exception t)
@@ -1380,6 +1380,7 @@ public class TelnetSession extends Thread implements Session
 						String input=readlineContinue();
 						if(input!=null)
 						{
+							lastKeystroke=System.currentTimeMillis();
 							setAfkFlag(false);
 							enque(0,Util.parse(input));
 						}

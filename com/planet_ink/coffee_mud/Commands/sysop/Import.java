@@ -3111,7 +3111,10 @@ public class Import
 				}
 				
 				if(Util.isSet(codeBits,18))
+				{
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoSummon"));
+					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoCharm"));
+				}
 
 				if(Util.isSet(codeBits,19))
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_reqPKill"));

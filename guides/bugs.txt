@@ -1,10 +1,1 @@
 GAES still isn't done
-//NOTRAIN - If ON, people cannot teach, train or prac with you.
-//Prompt for teaching.  create message type for teaching, practicing, etc.
-//a toggleable on mobs that let's you set AFK and it'll show in the who listing that you're AFK and for how long you've been idle if idle > 5 minutes'
-//test free movement spell
-//check corpseeater
-//here's a little bug.  You say something to a mob.. mob responds.  You use reply to talk back.. (mob) is no longer logged in.
-adamantium smelting is proken!
-cant demolish relowd's house.
-//test flee

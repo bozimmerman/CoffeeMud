@@ -395,8 +395,8 @@ public class Construction extends CommonSkill
 			else
 			if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
 				woodRequired=woodRequired*2;
+			if(woodRequired<1) woodRequired=1;
 		}
-		if(woodRequired<1) woodRequired=1;
 		if(foundWood<woodRequired)
 		{
 			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+names[doingCode].toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");

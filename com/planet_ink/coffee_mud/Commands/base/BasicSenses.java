@@ -408,12 +408,12 @@ public class BasicSenses
 		if(Util.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_NOTEACH));
-			mob.tell("You are no longer teaching, training, or learning.");
+			mob.tell("You may now teach, train, or learn.");
 		}
 		else
 		{
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_NOTEACH));
-			mob.tell("You may now teach, train, or learn.");
+			mob.tell("You are no longer teaching, training, or learning.");
 		}
 	}
 

@@ -177,6 +177,7 @@ public class Cleric extends StdCharClass
 				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				&&(A.appropriateToMyAlignment(mob.getAlignment()))
+				&&(!CMAble.getSecretSkill(ID(),A.ID()))
 				&&(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this))
 				&&(!CMAble.getDefaultGain(ID(),A.ID())))
 				{

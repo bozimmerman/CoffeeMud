@@ -167,6 +167,7 @@ public class Oracle extends Cleric
 					{
 						Ability A=CMClass.randomAbility();
 						if((A!=null)
+						   &&(!CMAble.getSecretSkill(C.ID(),A.ID()))
 						   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=1)
 						   &&(CMAble.getQualifyingLevel(this.ID(),A.ID())<0))
 						{

@@ -26,18 +26,19 @@ public class SpecialistMage extends Mage
 				&&(level>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
+					boolean secret=CMAble.getSecretSkill(ID(),A.ID());
 					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
 					{
 						if(CMAble.getDefaultGain(baseClass(),A.ID()))
-							CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
+							CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 						else
 							CMAble.delCharAbilityMapping(ID(),A.ID());
 					}
 					else
-					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain())
+					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain()&&(!secret))
 						CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
 					else
-						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
+						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,"",false,secret);
 				}
 			}
 		}

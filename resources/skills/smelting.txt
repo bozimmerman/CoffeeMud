@@ -1,4 +1,4 @@
 Bronze	1	40	1	1	GenEnvResource	TIN	COPPER
 Steel	6	120	1	1	GenEnvResource	IRON	COAL
 Brass	1	40	1	1	GenEnvResource	ZINC	COPPER
-Adamantium	12	250	1	1	GenEnvResource	MITHRIL	STEEL
+Adamantite	12	250	1	1	GenEnvResource	MITHRIL	STEEL

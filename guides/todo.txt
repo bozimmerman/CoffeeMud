@@ -30,10 +30,8 @@ Wild Mage: 50% of the time, a spell cast will end up higher level, different spe
 2)	Seapoints—A sea based auto-travelling system.
 Prayer could be a SunCURSE.  If the MOB enters a sunlit room, it turns to stone (petrification).  
 sleep (exhaustion) ticker
-KNOCKBACK:  issue command, and the last attack of a series will attempt to push opponent back 1 range increment.Fighter QUAL 22, Ranger QUAL 18, Barbar QUAL 12
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Druids should have some chants that affect Sex: Mating Instinct, a geas to find a creature of same race/opposite gender. Find Mate , a chant to track someone of opposite sex (closest?) that can be cast on others (CHANT find mate zara) will make zara be able to find a mate of (elf male) type. Feel Sex makes sexual activities more intense, basically just giving WONDERFUL sex results. YEARN SEX is a chant that makes the target suffer 8 WIS until they have sex (or the chant wears off). CROSSGENDER is a chant that maker any gender valid for sex. HOMOSEXUALITY, duh. NEUTER is a chant that makes no gender sexually viable. SPEED BIRTH creates a lvl 1 MOB of that Race, after sex. FERTILITY makes a BIRTH produce more offspring.
-Spell: a TRANSFORMATION spell that lowers your level by 1. REGRESSION?
 Spell: 'Rogue Limb'  One sof your limbs goes out of your control, causing you to do battle with it.  However, you take both sides of the damage.  heh.
 level and type and wear locations for weaponsmithing and armorsmithing
 LYING DOWN position?

@@ -11,7 +11,7 @@ public class CorpseEater extends ActiveTicker
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public CorpseEater()
 	{
-		minTicks=10; maxTicks=30; chance=25;
+		minTicks=5; maxTicks=20; chance=75;
 		tickReset();
 	}
 	public Behavior newInstance()

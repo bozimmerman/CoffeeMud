@@ -18,12 +18,17 @@ public class Prop_NoTeleportOut extends Property
 		&&(affect.tool() instanceof Ability)
 		&&(affect.source()!=null)
 		&&(affect.source().location()!=null)
-		&&(affect.source().location()!=affected)
-		&&(affect.source().location().getArea()!=affected)
-		&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		&&(affect.sourceMinor()!=Affect.TYP_ENTER))
 		{
-			affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
-			return false;
+			boolean shere=(affect.source().location()==affected)||(affect.source().location().getArea()==affected);
+			boolean summon=Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_SUMMONING);
+			boolean teleport=Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_TRANSPORTING);
+			if(((shere)&&(!summon)&&(teleport))
+			   ||((!shere)&&(summon)))
+			{
+				affect.source().location().showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");
+				return false;
+			}
 		}
 		return true;
 	}
