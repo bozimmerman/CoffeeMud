@@ -844,14 +844,14 @@ resets on all items in the room.</FONT> </P>
 section, we saw how items are given to mobs by simply calling the addInventory() 
 method, so this will not be repeated. Regardless of where or how the item is 
 created, however, it is destroyed the same way. With a simple call to the 
-destroyThis() method on the item. Here is an example of destroying all the items 
+destroy() method on the item. Here is an example of destroying all the items 
 in a room. </FONT></P>
 <P><FONT size=4></FONT></P><PRE>	
 Room room=CMMap.getRoom("Midgaard#3504");
 for(int i=0;i&lt;room.numItems();i++)
 {
 	Item item=room.fetchItem(i);
-	item.destroyThis();
+	item.destroy();
 }
 </PRE>
 <P align=left></P>

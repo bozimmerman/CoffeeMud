@@ -29,6 +29,7 @@ public interface Item extends Environmental, Rider
 	public void setUsesRemaining(int newUses);
 	
 	public void destroy();
+	public void stopTicking();
 	public void removeFromOwnerContainer();
 	public boolean savable();
 	

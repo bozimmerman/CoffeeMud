@@ -191,7 +191,15 @@ public class RoomData extends StdWebMacro
 					{	found=true;	break;	}
 				}
 				if((!found)&&(M.isEligibleMonster()))
-					mobs.addElement((MOB)M.copyOf());
+				{
+					MOB M3=(MOB)M.copyOf();
+					mobs.addElement(M3);
+					for(int i3=0;i3<M3.inventorySize();i3++)
+					{
+						Item I3=M3.fetchInventory(i3);
+						if(I3!=null) I3.stopTicking();
+					}
+				}
 			}
 		}
 		return mobs;
@@ -225,13 +233,16 @@ public class RoomData extends StdWebMacro
 				{
 					I.setContainer(null);
 					I.wearAt(Item.INVENTORY);
-					items.addElement(I.copyOf());
+					Item I2=(Item)I.copyOf();
+					items.addElement(I2);
+					I2.stopTicking();
 				}
 			}
 		}
 		return items;
 	}
 
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -257,7 +268,6 @@ public class RoomData extends StdWebMacro
 			ExternalPlay.resetRoom(R);
 			httpReq.cache().addElement(R);
 		}
-
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("NAME"))
 		{
@@ -286,7 +296,6 @@ public class RoomData extends StdWebMacro
 		}
 
 		str.append(AreaData.affectsNBehaves(R,httpReq,parms));
-
 		if(parms.containsKey("DESCRIPTION"))
 		{
 			String desc=httpReq.getRequestParameter("DESCRIPTION");
@@ -294,7 +303,6 @@ public class RoomData extends StdWebMacro
 				desc=R.description();
 			str.append(desc);
 		}
-
 		if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
 		{
 			String size=httpReq.getRequestParameter("XGRID");

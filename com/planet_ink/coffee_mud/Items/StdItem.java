@@ -909,6 +909,7 @@ public class StdItem implements Item
 		}
 	}
 
+	public void stopTicking(){destroyed=true;}
 	public void destroy()
 	{
 		myContainer=null;
@@ -931,8 +932,8 @@ public class StdItem implements Item
 				{
 					Item thisItem = thisRoom.fetchItem(r);
 					if((thisItem!=null)
-					   &&(thisItem.container()!=null)
-					   &&(thisItem.container()==this))
+					&&(thisItem.container()!=null)
+					&&(thisItem.container()==this))
 						thisItem.destroy();
 				}
 				thisRoom.delItem(this);
@@ -944,7 +945,9 @@ public class StdItem implements Item
 				for(int r=mob.inventorySize()-1;r>=0;r--)
 				{
 					Item thisItem = mob.fetchInventory(r);
-					if((thisItem!=null)&&(thisItem.container()!=null)&&(thisItem.container()==this))
+					if((thisItem!=null)
+					&&(thisItem.container()!=null)
+					&&(thisItem.container()==this))
 						thisItem.destroy();
 				}
 				mob.delInventory(this);

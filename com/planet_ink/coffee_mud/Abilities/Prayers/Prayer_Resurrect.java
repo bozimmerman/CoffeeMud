@@ -49,10 +49,8 @@ public class Prayer_Resurrect extends Prayer
 						rejuvedMOB.tell("You are being resurrected.");
 						if(rejuvedMOB.location()!=mob.location())
 						{
-							rejuvedMOB.location().delInhabitant(rejuvedMOB);
 							rejuvedMOB.location().showOthers(rejuvedMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> disappears!");
-							mob.location().addInhabitant(rejuvedMOB);
-							rejuvedMOB.setLocation(mob.location());
+							mob.location().bringMobHere(rejuvedMOB,false);
 						}
 						int it=0;
 						while(it<rejuvedMOB.location().numItems())

@@ -38,7 +38,6 @@ public class Prop_SparringRoom extends Property
 
 				beneficiaries=C.dispenseExperience(source,target);
 			}
-			if(target.location()!=null) target.location().delInhabitant(target);
 			target.makePeace();
 			target.setRiding(null);
 			for(int a=target.numAffects()-1;a>=0;a--)
@@ -61,6 +60,7 @@ public class Prop_SparringRoom extends Property
 			if(text().trim().length()>0)
 				R=CMMap.getRoom(text().trim());
 			if(R==null) R=target.getStartRoom();
+			R.bringMobHere(target,false);
 			target.bringToLife(R,true);
 			target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 			deathRoom.recoverRoomStats();
