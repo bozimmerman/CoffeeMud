@@ -49,7 +49,7 @@
 <h3>Modify @RequestParameter?LINK@ Exit from '@RoomID@'.</H3>
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
-<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editexitdone.cmvp">
+<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editexitdone.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">

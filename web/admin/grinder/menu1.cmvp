@@ -20,7 +20,7 @@
 	</script>
 </head>
 <BODY>
-<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/quickfind.cmvp">
+<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/quickfind.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">

@@ -14,7 +14,7 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder</H3>
 <P>
-<FORM NAME=NEWAREA METHOD=GET ACTION="/index.cmvp" TARGET=_top>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/index.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <B><FONT COLOR=RED>Your login or password was not matched in the 
 CoffeeMUD database.  Please go back and try again.</FONT><P>

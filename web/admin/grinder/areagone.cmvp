@@ -17,7 +17,7 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder</H3>
 <BR>
-<FORM NAME=NEWAREA METHOD=GET ACTION="/grinder/loggedin.cmvp" TARGET=_top>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/loggedin.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <br><FONT COLOR=RED>@MUDGrinder?DELAREA@</FONT><P>
 <INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Continue">

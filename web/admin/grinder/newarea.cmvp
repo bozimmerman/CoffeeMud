@@ -16,7 +16,7 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder -- Create a New Area</H3>
 <br>
-<FORM NAME=NEWAREA METHOD=GET ACTION="/grinder/newarea2.cmvp" TARGET=_top>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/newarea2.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER><FONT COLOR=WHITE><B>Enter a name:</B></FONT></TD></TR>
