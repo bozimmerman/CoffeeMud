@@ -87,3 +87,51 @@ Resources with special Properties.  Meat that makes you sick.  Bread that heals,
     Summon   - You can be summoned people outside your clan and group.
     TelnetGA - You receive a telnet GA sequence.
     Visit    - Your home can be visited by other players.
+
+CoffeeMUD suggestions
+
+Properties:
+1)	Waypoints—A Land Based auto-travelling system.  Any area that has a Prop_WayPoint can be accessed from another Prop_WayPoint Area, provided the character has the TRAVELLER skill, and has learned each of those way points.  The computer will determine (approx) the shortest route from WayPoint A to WayPoint B.  If the path becomes blocked or someone attacks the TRAVELLER, then the traveling stops in that room.  Note: You can only initiate the TRAVELLER skill from a WayPoint.
+2)	Seapoints—A sea based auto-travelling system.
+3)	Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
+4)	DIETY—This just gives a MOB a chosen Diety.  Characters may select a diety at any given time, but it costs 100 XP to change deities.
+5)	ReligiousHelper—Aids other MOBs of given religion
+6)	Nonconvertable—MOB won’t accept another religion.
+
+
+Skills
+1)	TRAVELLER: this skill allows a character to travel from a waypoint he is familiar with to a waypoint he is familiar with, by land.  A character can learn a new waypoint by the command GAIN WAYPOINT at a way point.  This command calls on the character’s TRAVELLER skill, and will add it to a list of waypoints stored with the character.  The character can see what waypoints they know (Listing both LAND and SEA waypoints) by typing in the command WAYPOINTS.
+2)	WRITE LANGUAGE:  Similar to read language.  Type in Write Dwarven to start writing in dwarven.  From that point on, all language will be written in Dwarven.
+3)	NAVIGATION:  This is the sea-based version of Traveller.
+4)	IMPROVED TURNING:  Affects your bonus to Turn or control.  Don’t give this to anyone yet, but specialty clerics will need to have access to it.
+5)	* ENHANCEMENT, Where the * stands for a school of magic.  Makes spells of this nature upto twice as effective (doubling damage dealt, effect, ect.)
+6)	* EXTENSION, Where * is a school of magic, makes all spells cast from that school last up to twice as long.
+7)	* RESISTANCE, Where * is a school of magic, adds resistance to all harmful spells from that school.
+8)	* SPECIALIZATION, Where * is a school of magic, makes all spells from that school more difficult to resist.
+9)	CONVERT:  A Cleric may convert a character to his Diety.  It will ask a confirmation from the other character.  Cleric gains 25 XP for each conversion.  A Cleric MAY attempt to convert MOBs, and get that XP.  A Cleric loses 25 XP for killing a MOB of his religion.
+10)	 Weapon Designer:  Allows a character to make a blueprint for making a weapon of unique qualities.  (Allows them to create a GenWeapon, under 1 set formula.)  When trying to design the weapon, they list the qualities it should have.  		IE:  DESIGN sword Qualish Dam=5 hp=200 metal att=+1.  The Computer would then figure out the WEIGHT and COST based on our formulas.  Alternatively, the designer could add in a WEIGHT factor, and then the COST would be determined.  Any field can be left blank, to be filled in either randomly or by default.  The end result would be a piece of paper (part of the required inventory to create) that would allow someone to create that item with the appropriate creation feat.
+11)	Armor Designer.  As above.
+12)	 Clothing Designer.  As above.
+13)	 Boat Designer.  As above.
+14)	 Furniture Designer.  As above.
+15)	 Recipe Designer.  As above.  Can work spells into the recipe (like alchemist.)
+16)	 Jewelry Designer.  As above.
+17)	 Cover.  This is a defensive skill that improves a character’s AC vs all ranged attacks.
+18)	 Sniper.  This allows a character to make a single ranged attack from a hidden position without entering combat.  After the shot, combat is ended, as is the Hide.
+19)	 * slayer.  Where * is the name of a race.
+
+Spells (Chants, Songs, Prayers)
+1)	Contingency: caster makes a contingency statement (HP<x, MANA<x, MOVE<x, COMBAT START, COMBAT END, x ENTERS [the room]) and then the spell to cast upon that contingency (TELEPORT HOME, STONESKIN, etc)
+2)	Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
+3)	Offering: A cleric may sacrifice money to their deity.  Doing so restores X/10 Mana points.
+4)	COUPDEGRACE:  A fighter, or high level thief, may attempt a Coup de Grace against a tripped, whomped or sleeping opponent.  They get to do MAX damage as if a BACKSTAB where performed (if they have backstab).  This is the only special effect (instant max damage against fallen foe).  I realize that people already take more damage when fallen, which is what makes this skill particularly deadly.
+5)	Analyze Dwoemer: Improved Identify that gives material type, item type (Sword, flail, etc) but not value.
+
+Modifications:
+1)	Double the damage on all Ranged Weapons to make them more deadly.
+2)	Double the damage of any spell that can not be cast at range 0.
+3)	Color category for all items.
+4)	make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.  Weapon range for melee combat is 	(0-70)=0; (71-140)=1; (140+)=2.
+5)	When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
+6)	When Underwater, movement is expended at 2* the rate.  If you run out of movement on water, you suffer a -50% to your swim check.
+7)	

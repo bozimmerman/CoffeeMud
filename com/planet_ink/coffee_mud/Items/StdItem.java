@@ -610,9 +610,9 @@ public class StdItem implements Item
 				if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 				{
 					if((mob.riding()!=null)&&(mob.riding()==this))
-						mob.tell("You are "+mob.riding().stateString()+" "+name()+"!");
+						mob.tell("You are "+((Rideable)this).stateString()+" "+name()+"!");
 					else
-						mob.tell("Someone is "+mob.riding().stateString()+" "+name()+"!");
+						mob.tell("Someone is "+((Rideable)this).stateString()+" "+name()+"!");
 					return false;
 				}
 				return true;
