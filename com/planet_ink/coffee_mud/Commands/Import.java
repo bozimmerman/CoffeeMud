@@ -4052,6 +4052,68 @@ public class Import extends StdCommand
 				}
 			}
 			else
+			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
+			{
+				if(mob.session()!=null)
+					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
+				Vector mobs=new Vector();
+				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
+				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				//if(error.length()==0)
+				//	error=CoffeeMaker.addPLAYERsFromXML(buf.toString(),mobs,mob.session());
+				if(mob.session()!=null)	
+					mob.session().rawPrintln("!");
+				if(error.length()>0)
+				{
+					mob.tell("An error occurred on import: "+error);
+					mob.tell("Please correct the problem and try the import again.");
+					return false;
+				}
+				else
+				{
+					for(int m=0;m<mobs.size();m++)
+					{
+						MOB M=(MOB)mobs.elementAt(m);
+						if(M.playerStats()!=null)
+						{
+							M.playerStats().setLastDateTime(System.currentTimeMillis());
+							M.playerStats().setUpdated(System.currentTimeMillis());
+						}
+						M.recoverCharStats();
+						M.recoverEnvStats();
+						M.recoverMaxState();
+						M.resetToMaxState();
+						CMClass.DBEngine().DBCreateCharacter(M);
+						if(CMMap.getPlayer(M.Name())==null)
+							CMMap.addPlayer(M);
+
+						if(mob.session()!=null)
+							M.playerStats().setLastIP(mob.session().getAddress());
+						Log.sysOut("Import","Imported user: "+M.Name());
+						for(int s=0;s<Sessions.size();s++)
+						{
+							Session S=Sessions.elementAt(s);
+							if((S!=null)
+							&&(S.mob()!=null)
+							&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+							&&(S.mob().playerStats()!=null)
+							&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
+								S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
+						}
+						CommonMsgs.channel("WIZINFO","",M.Name()+" has just been created.",true);
+						if(M.getStartRoom()==null)
+							M.setStartRoom(CMMap.getStartRoom(M));
+						if(M.location()==null)
+							M.setLocation(mob.location());
+						CMClass.DBEngine().DBUpdateMOB(M);
+						M.removeFromGame();
+					}
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
+					mob.tell("PLAYER(s) successfully imported!");
+					continue;
+				}
+			}
+			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 			{
 				if(mob.session()!=null)

@@ -65,11 +65,11 @@ public class Thief_Autosneak extends ThiefSkill
 					if(A.invoke(mob,Util.parse(Directions.getDirectionName(dir)),null,false))
 					{
 						int[] usage=A.usageCost(mob);
-						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGE_HITPOINTSINDEX]>0))
 							mob.curState().adjHitPoints(usage[USAGE_HITPOINTSINDEX]/2,mob.maxState());
-						if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+						if(Util.bset(A.usageType(),Ability.USAGE_MANA)&&(usage[USAGE_MANAINDEX]>0))
 							mob.curState().adjMana(usage[USAGE_MANAINDEX]/2,mob.maxState());
-						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT)&&(usage[USAGE_MOVEMENTINDEX]>0))
 							mob.curState().adjMovement(usage[USAGE_MOVEMENTINDEX]/2,mob.maxState());
 					}
 					if(Dice.rollPercentage()<10)
