@@ -38,15 +38,6 @@ public class Prayer_FeignLife extends Prayer
 		affectableStats.setRaceName("Human");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
-		if(Util.bset(affectableStats.disposition(),EnvStats.IS_GOLEM))
-			affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_GOLEM));
-	}
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell

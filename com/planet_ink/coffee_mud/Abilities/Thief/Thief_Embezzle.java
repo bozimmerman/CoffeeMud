@@ -84,7 +84,7 @@ public class Thief_Embezzle extends ThiefSkill
 		{
 			String possVic=(String)accounts.elementAt(Dice.roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
-			if((C!=null)&&(C instanceof Coins)&&((((Coins)C).numberOfCoins()/50)>0))
+			if((C!=null)&&(C instanceof Coins)&&((((Coins)C).numberOfCoins()/50)>0)&&(!mob.Name().equals(possVic)))
 			{
 				hisCoins=(Coins)C;
 				victim=possVic;

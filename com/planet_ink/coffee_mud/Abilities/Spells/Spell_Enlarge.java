@@ -36,6 +36,24 @@ public class Spell_Enlarge extends Spell
 		affectableStats.setName(affected.name()+addOnString);
 	}
 
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((canBeUninvoked())&&(affected instanceof Item)&&(Sense.isInTheGame(affected,true)))
+		{
+			Item I=(Item)affected;
+			if(I.owner() instanceof MOB)
+				((MOB)I.owner()).tell(I.name()+" in your inventory shrinks back to size.");
+			else
+			{
+				Room R=CoffeeUtensils.roomLocation(I);
+				if(R!=null)
+					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" shrinks back to normal size.");
+			}
+		}
+		super.unInvoke();
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);

@@ -1096,6 +1096,10 @@ public class Util
 	{
 		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(y).doubleValue()));
 	}
+	public static int squared(int x)
+	{
+		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(x).doubleValue()));
+	}
 	public static boolean bset(int num, int bitmask)
 	{
 		return ((num&bitmask)==bitmask);

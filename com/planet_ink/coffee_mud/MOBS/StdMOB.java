@@ -641,7 +641,8 @@ public class StdMOB implements MOB
 		if(mob==null)
 			return (int)Math.round(att);
 		else
-			return ((envStats().level()-mob.envStats().level())*2)+(int)Math.round(att);
+			return (Util.squared(envStats().level()-mob.envStats().level())/2)
+				   +(int)Math.round(att);
 	}
 
 	public int adjustedArmor()

@@ -52,7 +52,10 @@ public class Prayer_SenseLife extends Prayer
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&(!Sense.isGolem(M))&&(M!=mob))
+			if((M!=null)
+			&&(!Sense.isGolem(M))
+			&&(M.charStats().getMyRace().fertile())
+			&&(M!=mob))
 				return true;
 		}
 		return false;

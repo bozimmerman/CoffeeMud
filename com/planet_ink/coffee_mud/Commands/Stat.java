@@ -192,6 +192,18 @@ public class Stat extends BaseAbleLister
 		if(commands.size()>1)
 		{
 			String s=((String)commands.elementAt(0)).toUpperCase();
+			if("TATTOOS".startsWith(s))
+			{
+				ableTypes=-5;
+				commands.removeElementAt(0);
+			}
+			else
+			if("QUESTWINS".startsWith(s)||"QUESTS".startsWith(s))
+			{
+				ableTypes=-4;
+				commands.removeElementAt(0);
+			}
+			else
 			if("EQUIPMENT".startsWith(s))
 			{
 				ableTypes=-2;
@@ -257,6 +269,28 @@ public class Stat extends BaseAbleLister
 		else
 		if(ableTypes==-3)
 			str=CommonMsgs.getInventory(mob,target);
+		else
+		if(ableTypes==-4)
+		{
+			str.append("Quests won:");
+			for(int q=0;q<Quests.numQuests();q++)
+			{
+				Quests Q=Quests.fetchQuest(q);
+				if(Q.wasWinner(target.Name()))
+					str.append(" "+Q.name()+",");
+			}
+			str.deleteCharAt(str.length()-1);
+			str.append("\n\r");
+		}
+		else
+		if(ableTypes==-5)
+		{
+			str.append("Tattoos:");
+			for(int q=0;q<target.numTattoos();q++)
+				str.append(" "+target.fetchTattoo(q)+",");
+			str.deleteCharAt(str.length()-1);
+			str.append("\n\r");
+		}
 		else
 			str=CommonMsgs.getScore(target);
 		if(!mob.isMonster())

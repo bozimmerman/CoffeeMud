@@ -288,7 +288,7 @@ public class Import extends StdCommand
 			&&(areaName.charAt(40)==' '))
 				areaName=areaName.substring(21,41).trim();
 			else
-			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))			
+			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))
 			{
 				int x=areaName.indexOf("}",12);
 				if(x>12)
@@ -2933,7 +2933,7 @@ public class Import extends StdCommand
 						I=CMClass.getArmor("GenArmor");
 					 else
 						I=CMClass.getStdItem("GenContainer");
-					 ((Container)I).setCapacity(val1);
+					((Container)I).setCapacity(val1);
 					 boolean lid=false;
 					 boolean open=true;
 					 boolean lock=false;
@@ -3758,6 +3758,7 @@ public class Import extends StdCommand
 
 	public static boolean localDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
+		if(" ".equals(" ")) return true;
 		if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 		{
 			mob.tell("You dip!  You are IN that area!  Leave it first...");
@@ -4444,6 +4445,7 @@ public class Import extends StdCommand
 			Room lastRoom=null;
 			Hashtable petShops=new Hashtable();
 
+			if(lastRoom!=null)
 			for(int r=0;r<roomData.size();r++)
 			{
 				Vector roomV=null;
@@ -4683,6 +4685,7 @@ public class Import extends StdCommand
 
 			// begin second pass through rooms
 			// handle exits, mobs, objects, etc.
+			if(lastRoom!=null)
 			for(int r=0;r<roomData.size();r++)
 			{
 				Vector roomV=null;
@@ -4691,7 +4694,7 @@ public class Import extends StdCommand
 				else
 					continue;
 				String roomID=eatLine(roomV);
-				Room R=findRoomSomewhere(roomID,areaName,doneRooms);
+				Room R=mob.location();//findRoomSomewhere(roomID,areaName,doneRooms);
 				if(R==null)
 				{
 					Log.errOut("Import","Unhashed room "+roomID+"! Aborting!");
@@ -4709,6 +4712,7 @@ public class Import extends StdCommand
 					{
 						String nameString=Util.safetyFilter(eatLineSquiggle(roomV));
 						String descString=Util.safetyFilter(eatLineSquiggle(roomV));
+						if(" ".equals(" ")) continue;
 						Item I=null;
 						if(hasReadableContent(nameString))
 						{
@@ -4730,6 +4734,7 @@ public class Import extends StdCommand
 						String descStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
+						if(" ".equals(" ")) continue;
 						switch(dirCode)
 						{
 						case 0: dirCode=Directions.NORTH; break;
@@ -4955,7 +4960,8 @@ public class Import extends StdCommand
 				{
 					String mobID=Util.getCleanBit(s,2);
 					String roomID=Util.getCleanBit(s,4);
-					R=findRoomSomewhere(roomID,areaName,doneRooms);
+					if(" ".equals(" ")) continue;
+					R=mob.location();//findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
 						if(multiArea)
@@ -4980,6 +4986,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("G "))
 				{
+					M=mob;
 					if(M==null)
 					{
 						if(multiArea)
@@ -5049,6 +5056,7 @@ public class Import extends StdCommand
 								}
 							}
 							else
+							if(I.ID().toUpperCase().endsWith("PORTAL"))
 								M.addInventory(I);
 							I.recoverEnvStats();
 							M.recoverCharStats();
@@ -5067,8 +5075,8 @@ public class Import extends StdCommand
 					String mobID=Util.getCleanBit(s,2);
 					int x=roomID.lastIndexOf("#");
 					if(x>=0) roomID=roomID.substring(x);
-					Room R2=findRoomSomewhere(roomID,areaName,doneRooms);
-					MOB M2=null;
+					Room R2=mob.location();//findRoomSomewhere(roomID,areaName,doneRooms);
+					MOB M2=mob;
 					if(R2!=null)
 						M2=R2.fetchInhabitant(mobID);
 					if((R2==null)||(M2==null))
@@ -5090,6 +5098,7 @@ public class Import extends StdCommand
 								returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
 						}
 						else
+						if(I.ID().toUpperCase().endsWith("PORTAL"))
 						{
 							M2.addInventory(I);
 							I.wearIfPossible(M2);
@@ -5106,6 +5115,7 @@ public class Import extends StdCommand
 				else
 				if(s.startsWith("E "))
 				{
+					M=mob;
 					if(M==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5129,6 +5139,7 @@ public class Import extends StdCommand
 								returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
 						}
 						else
+						if(I.ID().toUpperCase().endsWith("PORTAL"))
 						{
 							M.addInventory(I);
 							I.wearIfPossible(M);
@@ -5147,7 +5158,7 @@ public class Import extends StdCommand
 				{
 					String itemID=Util.getCleanBit(s,2);
 					String roomID=Util.getCleanBit(s,4);
-					R=findRoomSomewhere(roomID,areaName,doneRooms);
+					R=mob.location();//findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -5164,7 +5175,9 @@ public class Import extends StdCommand
 							returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
 						}
 						else
+						if(I.ID().toUpperCase().endsWith("PORTAL"))
 						{
+							I.setSecretIdentity(I.rawSecretIdentity()+"/"+roomID);
 							R.addItem(I);
 							if(Sense.isGettable(I))
 							{
@@ -5185,6 +5198,7 @@ public class Import extends StdCommand
 				{
 					String itemID=Util.getCleanBit(s,2);
 					String containerID=Util.getCleanBit(s,4);
+					if(" ".equals(" ")) continue;
 					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems,doneRooms);
 					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
@@ -5208,27 +5222,33 @@ public class Import extends StdCommand
 						returnAnError(mob,"Reset error (no container owner) on line: "+s+", area="+areaName);
 					}
 					else
-					if(C.owner() instanceof Room)
+					if(I.ID().toUpperCase().endsWith("PORTAL"))
 					{
-						Room RR=(Room)C.owner();
-						RR.addItem(I);
-						I.setContainer(C);
-						if(Sense.isGettable(I))
-							I.baseEnvStats().setRejuv(1000);
-						I.recoverEnvStats();
-						if(I instanceof Container)
-							containerHash.put(itemID,I);
-					}
-					else
-					if(C.owner() instanceof MOB)
-					{
-						MOB MM=(MOB)C.owner();
-						MM.addInventory(I);
-						I.setContainer(C);
-						M.text();
-						I.recoverEnvStats();
-						if(I instanceof Container)
-							containerHash.put(itemID,I);
+						if(I!=null)
+							mob.location().addItem(I);
+						else
+						if(C.owner() instanceof Room)
+						{
+							Room RR=(Room)C.owner();
+							RR.addItem(I);
+							I.setContainer(C);
+							if(Sense.isGettable(I))
+								I.baseEnvStats().setRejuv(1000);
+							I.recoverEnvStats();
+							if(I instanceof Container)
+								containerHash.put(itemID,I);
+						}
+						else
+						if(C.owner() instanceof MOB)
+						{
+							MOB MM=(MOB)C.owner();
+							MM.addInventory(I);
+							I.setContainer(C);
+							M.text();
+							I.recoverEnvStats();
+							if(I instanceof Container)
+								containerHash.put(itemID,I);
+						}
 					}
 				}
 				else
@@ -5236,6 +5256,7 @@ public class Import extends StdCommand
 				{
 					String roomID=Util.getCleanBit(s,2);
 					int dirCode=getBitMask(s,3);
+					if(" ".equals(" ")) continue;
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
@@ -5399,7 +5420,7 @@ public class Import extends StdCommand
 			mob.session().print("\n\rResets...");
 
 			// try to re-link olde room links
-			if(reLinkTable!=null)
+			if((reLinkTable!=null)&&(" ".equals("!")))
 				for(int r=0;r<reLinkTable.size();r++)
 				{
 					String link=(String)reLinkTable.elementAt(r);
@@ -5424,9 +5445,6 @@ public class Import extends StdCommand
 					}
 				}
 
-			if(newRooms.size()==0)
-				mob.session().println("\nDone? No Room!\n\r");
-			else
 			if(!multiArea)
 				mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
 			else
@@ -5440,7 +5458,7 @@ public class Import extends StdCommand
 		}
 		}
 
-		if(nextResetData.size()>0)
+		if((nextResetData.size()>0)&&(" ".equals("!")))
 		{
 			StringBuffer nrf=new StringBuffer("Import bad resets:\n\r");
 			for(int nrd=0;nrd<nextResetData.size();nrd++)
@@ -5449,41 +5467,44 @@ public class Import extends StdCommand
 			Log.errOut("Import",nrf.toString());
 		}
 
-		mob.session().print("\n\nSaving all areas imported...");
-		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
+		if(" ".equals("!"))
 		{
-			Room saveRoom=(Room)e.nextElement();
-			CMClass.DBEngine().DBCreateRoom(saveRoom,CMClass.className(saveRoom));
-			// final exit clean-up optomization
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			mob.session().print("\n\nSaving all areas imported...");
+			for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 			{
-				Exit E=saveRoom.rawExits()[d];
-				if((E!=null)
-				&&(E.isGeneric())
-				&&(!E.hasADoor())
-				&&(!E.hasALock())
-				&&(E.name().equalsIgnoreCase("the ground"))
-				&&(!E.isReadable())
-				&&(E.numEffects()==0)
-				&&(E.numBehaviors()==0)
-				&&(E.temporaryDoorLink().length()==0)
-				&&(E.displayText().equals(E.description())))
+				Room saveRoom=(Room)e.nextElement();
+				CMClass.DBEngine().DBCreateRoom(saveRoom,CMClass.className(saveRoom));
+				// final exit clean-up optomization
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
-					Exit E2=CMClass.getExit("OpenDescriptable");
-					E2.setMiscText(E.displayText());
-					saveRoom.rawExits()[d]=E2;
+					Exit E=saveRoom.rawExits()[d];
+					if((E!=null)
+					&&(E.isGeneric())
+					&&(!E.hasADoor())
+					&&(!E.hasALock())
+					&&(E.name().equalsIgnoreCase("the ground"))
+					&&(!E.isReadable())
+					&&(E.numEffects()==0)
+					&&(E.numBehaviors()==0)
+					&&(E.temporaryDoorLink().length()==0)
+					&&(E.displayText().equals(E.description())))
+					{
+						Exit E2=CMClass.getExit("OpenDescriptable");
+						E2.setMiscText(E.displayText());
+						saveRoom.rawExits()[d]=E2;
+					}
 				}
+				CMClass.DBEngine().DBUpdateExits(saveRoom);
+				CMClass.DBEngine().DBUpdateMOBs(saveRoom);
+				CMClass.DBEngine().DBUpdateItems(saveRoom);
+				CoffeeUtensils.clearDebriAndRestart(saveRoom,0);
+				saveRoom.recoverRoomStats();
+				mob.session().print(".");
 			}
-			CMClass.DBEngine().DBUpdateExits(saveRoom);
-			CMClass.DBEngine().DBUpdateMOBs(saveRoom);
-			CMClass.DBEngine().DBUpdateItems(saveRoom);
-			CoffeeUtensils.clearDebriAndRestart(saveRoom,0);
-			saveRoom.recoverRoomStats();
-			mob.session().print(".");
 		}
 		mob.session().println("!");
 
-		if(laterLinks.size()>0)
+		if((laterLinks.size()>0)&&(" ".equals("!")))
 		{
 			for(Enumeration e=laterLinks.keys();e.hasMoreElements();)
 			{
@@ -5525,14 +5546,17 @@ public class Import extends StdCommand
 			}
 		}
 
-		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
+		if(" ".equals("!"))
 		{
-			Room saveRoom=(Room)e.nextElement();
-			saveRoom.getArea().toggleMobility(true);
+			for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
+			{
+				Room saveRoom=(Room)e.nextElement();
+				saveRoom.getArea().toggleMobility(true);
+			}
+			if(doneRooms.elements().hasMoreElements())
+				for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+					((Area)a.nextElement()).fillInAreaRooms();
 		}
-		if(doneRooms.elements().hasMoreElements())
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-				((Area)a.nextElement()).fillInAreaRooms();
 		mob.session().println("done!");
 		return false;
 	}
