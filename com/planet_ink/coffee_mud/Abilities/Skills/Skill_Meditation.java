@@ -8,37 +8,16 @@ import java.util.*;
 
 public class Skill_Meditation extends StdAbility
 {
-	public Skill_Meditation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Meditation";
-		displayText="";
-		miscText="";
-
-		triggerStrings.addElement("MEDITATE");
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(19);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Meditation();
-	}
-
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_Meditation"; }
+	public String name(){ return "Meditation";}
+	public String displayText(){ return "(Meditating)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"MEDITATE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Meditation();}
 
 	public void unInvoke()
 	{

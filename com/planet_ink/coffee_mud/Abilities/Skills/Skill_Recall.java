@@ -7,39 +7,15 @@ import java.util.*;
 
 public class Skill_Recall extends StdAbility
 {
-	public Skill_Recall()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Recall";
-		displayText="(Recalled)";
-		miscText="";
-
-		triggerStrings.addElement("RECALL");
-		triggerStrings.addElement("/");
-
-		trainsRequired=1;
-		practicesRequired=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=0;
-		canAffectCode=0;
-		
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Recall();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_Recall"; }
+	public String name(){ return "Recall";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"RECALL","/"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Recall();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

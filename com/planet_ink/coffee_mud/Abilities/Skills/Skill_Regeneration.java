@@ -9,33 +9,21 @@ import java.util.*;
 
 public class Skill_Regeneration extends StdAbility
 {
+	public String ID() { return "Skill_Regeneration"; }
+	public String name(){ return "Regeneration";}
+	public String displayText(){ return "(Regeneration)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"REGENERATE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public boolean canBeUninvoked(){return false;}
+	public int classificationCode(){return Ability.SKILL;}
+	
 	private static final int maxTickDown=3;
 	private int regenDown=maxTickDown;
-
-	public Skill_Regeneration()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Regeneration";
-		displayText="(Regeneration)";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Regeneration();
-	}
+	public Environmental newInstance(){	return new Skill_Regeneration();}
 
 	public boolean tick(int tickID)
 	{

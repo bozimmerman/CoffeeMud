@@ -8,25 +8,18 @@ import java.util.*;
 
 public class Skill_Resistance extends StdAbility
 {
+	public String ID() { return "Skill_Resistance"; }
+	public String name(){ return "Resistance";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
-	public Skill_Resistance()
-	{
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resistance";
-		displayText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
+	public Environmental newInstance(){	return new Skill_Resistance();}
+	
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -76,16 +69,6 @@ public class Skill_Resistance extends StdAbility
 		}
 	}
 	
-	public Environmental newInstance()
-	{
-		return new Skill_Resistance();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

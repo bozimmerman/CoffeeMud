@@ -7,41 +7,16 @@ import java.util.*;
 
 public class Skill_TurnUndead extends StdAbility
 {
-	public Skill_TurnUndead()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Turn/Control Undead";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Turned)";
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		triggerStrings.addElement("TURN");
-		triggerStrings.addElement("CONTROL");
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_TurnUndead();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_TurnUndead"; }
+	public String name(){ return "Turn/Control Undead";}
+	public String displayText(){ return "(Turned)";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"TURN","CONTROL"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_TurnUndead();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -7,37 +7,19 @@ import java.util.*;
 
 public class Skill_TwoWeaponFighting extends StdAbility
 {
+	public String ID() { return "Skill_TwoWeaponFighting"; }
+	public String name(){ return "Two Weapon Fighting";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	
 	private boolean middleOfTheFight=false;
 	private Weapon lastWeapon=null;
-	public Skill_TwoWeaponFighting()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Two Weapon Fighting";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_TwoWeaponFighting();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public Environmental newInstance(){	return new Skill_TwoWeaponFighting();	}
 
 	private Weapon getSecondWeapon(MOB mob)
 	{

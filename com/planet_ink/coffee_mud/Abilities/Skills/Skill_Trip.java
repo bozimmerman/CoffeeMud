@@ -8,45 +8,22 @@ import java.util.*;
 public class Skill_Trip extends StdAbility
 {
 	boolean doneTicking=false;
-
-	public Skill_Trip()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Trip";
-		displayText="(Tripped)";
-		miscText="";
-
-		triggerStrings.addElement("TRIP");
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(13);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Trip();
-	}
+	public String ID() { return "Skill_Trip"; }
+	public String name(){ return "Trip";}
+	public String displayText(){ return "(Tripped)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"TRIP"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Trip();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
 	}
 
 	public boolean okAffect(Affect affect)

@@ -8,47 +8,23 @@ import java.util.*;
 public class Skill_Dirt extends StdAbility
 {
 	boolean doneTicking=false;
-
-	public Skill_Dirt()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dirt";
-		displayText="(Dirt in your eyes)";
-		miscText="";
-
-		triggerStrings.addElement("DIRT");
-
-		quality=Ability.MALICIOUS;
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(6);
-
-		recoverEnvStats();
-		minRange=0;
-		maxRange=1;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Dirt();
-	}
+	public String ID() { return "Skill_Dirt"; }
+	public String name(){ return "Dirt";}
+	public String displayText(){ return "(Dirt in your eyes)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"DIRT"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public int maxRange(){return 1;}
+	public Environmental newInstance(){	return new Skill_Dirt();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
 	}
 
 	public boolean okAffect(Affect affect)

@@ -7,37 +7,17 @@ import java.util.*;
 
 public class Skill_Attack3 extends StdAbility
 {
+	public String ID() { return "Skill_Attack3"; }
+	public String name(){ return "Third Attack";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
 	private boolean active=true;
-
-	public Skill_Attack3()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Third Attack";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(18);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Attack3();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public Environmental newInstance(){	return new Skill_Attack3();	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

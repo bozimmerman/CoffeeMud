@@ -7,35 +7,17 @@ import java.util.*;
 
 public class Skill_Climb extends StdAbility
 {
-
-	public Skill_Climb()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Climb";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("CLIMB");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		trainsRequired=0;
-		practicesRequired=2;
-		
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Climb();
-	}
+	public String ID() { return "Skill_Climb"; }
+	public String name(){ return "Climb";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"CLIMB"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	protected int trainsRequired(){return 0;}
+	protected int practicesRequired(){return 2;}
+	public Environmental newInstance(){	return new Skill_Climb();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

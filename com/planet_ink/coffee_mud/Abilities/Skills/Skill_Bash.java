@@ -7,38 +7,15 @@ import java.util.*;
 
 public class Skill_Bash extends StdAbility
 {
-	public Skill_Bash()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bash";
-		displayText="(Dented)";
-		miscText="";
-
-		triggerStrings.addElement("BASH");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(4);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Bash();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_Bash"; }
+	public String name(){ return "Bash";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"BASH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Bash();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

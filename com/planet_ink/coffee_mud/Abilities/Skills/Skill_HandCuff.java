@@ -8,39 +8,20 @@ import java.util.*;
 
 public class Skill_HandCuff extends StdAbility
 {
+	public String ID() { return "Skill_HandCuff"; }
+	public String name(){ return "Handcuff";}
+	public String displayText(){ return "(Handcuffed)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"HANDCUFF","CUFF"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	
 	public int amountRemaining=0;
 	public int oldAssist=0;
 	
-	public Skill_HandCuff()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Handcuff";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Handcuffed)";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		triggerStrings.addElement("HANDCUFF");
-		triggerStrings.addElement("CUFF");
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_HandCuff();
-	}
+	public Environmental newInstance(){	return new Skill_HandCuff();}
 
 	public boolean okAffect(Affect affect)
 	{

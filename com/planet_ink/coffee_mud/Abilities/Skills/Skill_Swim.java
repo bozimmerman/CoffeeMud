@@ -7,35 +7,18 @@ import java.util.*;
 
 public class Skill_Swim extends StdAbility
 {
-
-	public Skill_Swim()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Swim";
-		displayText="(in a wet place)";
-		miscText="";
-
-		triggerStrings.addElement("SWIM");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		trainsRequired=0;
-		practicesRequired=2;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Swim();
-	}
+	public String ID() { return "Skill_Swim"; }
+	public String name(){ return "Swim";}
+	public String displayText(){ return "(Swimming)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"SWIM"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Swim();}
+	protected int trainsRequired(){return 0;}
+	protected int practicesRequired(){return 2;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

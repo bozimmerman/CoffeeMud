@@ -8,32 +8,16 @@ import java.util.*;
 
 public class Skill_Revoke extends StdAbility
 {
-	public Skill_Revoke()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Revoke";
-		displayText="(in a the fantastic world of magic)";
-		miscText="";
-
-		triggerStrings.addElement("REVOKE");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
-		canAffectCode=0;
-		
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-		maxRange=10;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Revoke();
-	}
+	public String ID() { return "Skill_Revoke"; }
+	public String name(){ return "Revoke";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"REVOKE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public int maxRange(){return 10;}
+	public Environmental newInstance(){	return new Skill_Revoke();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

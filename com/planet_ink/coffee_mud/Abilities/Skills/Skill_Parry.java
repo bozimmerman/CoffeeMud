@@ -7,36 +7,18 @@ import java.util.*;
 
 public class Skill_Parry extends StdAbility
 {
+	public String ID() { return "Skill_Parry"; }
+	public String name(){ return "Parry";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	
 	boolean lastTime=false;
-	public Skill_Parry()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Parry";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(3);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Parry();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public Environmental newInstance(){	return new Skill_Parry();}
 
 	public boolean okAffect(Affect affect)
 	{

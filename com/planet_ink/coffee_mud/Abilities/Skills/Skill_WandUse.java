@@ -8,30 +8,12 @@ import java.util.*;
 
 public class Skill_WandUse extends StdAbility
 {
-
-	boolean activated=false;
-
-	public Skill_WandUse()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wands";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_WandUse();
-	}
+	public String ID() { return "Skill_WandUse"; }
+	public String name(){ return "Wands";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_WandUse();	}
 }

@@ -7,41 +7,17 @@ import java.util.*;
 
 public class Skill_Write extends StdAbility
 {
-
-	public Skill_Write()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Write";
-		displayText="";
-		miscText="";
-
-		triggerStrings.addElement("WRITE");
-		triggerStrings.addElement("WR");
-
-		canTargetCode=Ability.CAN_ITEMS;
-		canAffectCode=0;
-		
-		trainsRequired=0;
-		practicesRequired=3;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Write();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_Write"; }
+	public String name(){ return "Write";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"WRITE","WR"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	protected int trainsRequired(){return 0;}
+	protected int practicesRequired(){return 3;}
+	public Environmental newInstance(){	return new Skill_Write();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -7,37 +7,18 @@ import java.util.*;
 
 public class Skill_Dodge extends StdAbility
 {
+	public String ID() { return "Skill_Dodge"; }
+	public String name(){ return "Dodge";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Skill_Dodge();}
+
 	boolean lastTime=false;
-	public Skill_Dodge()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dodge";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(7);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Dodge();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -7,34 +7,15 @@ import java.util.*;
 
 public class Skill_Disarm extends StdAbility
 {
-
-	public Skill_Disarm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Disarm";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("DISARM");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(11);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_Disarm();
-	}
+	public String ID() { return "Skill_Disarm"; }
+	public String name(){ return "Disarm";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"BASH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_Disarm();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

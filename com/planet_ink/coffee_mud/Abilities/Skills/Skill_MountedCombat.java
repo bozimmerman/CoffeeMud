@@ -7,35 +7,16 @@ import java.util.*;
 
 public class Skill_MountedCombat extends StdAbility
 {
-	public Skill_MountedCombat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mounted Combat";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_MountedCombat();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_MountedCombat"; }
+	public String name(){ return "Mounted Combat";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Skill_MountedCombat();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -8,36 +8,16 @@ import java.util.*;
 
 public class Skill_AllBreathing extends StdAbility
 {
-
-	public Skill_AllBreathing()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="All Breathing";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_AllBreathing();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Skill_AllBreathing"; }
+	public String name(){ return "All Breathing";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Skill_AllBreathing();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -7,33 +7,15 @@ import java.util.*;
 
 public class Skill_ScrollCopy extends StdAbility
 {
-
-	public Skill_ScrollCopy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Scroll Copy";
-		displayText="(in the mystical realm of magic)";
-		miscText="";
-
-		triggerStrings.addElement("COPY");
-		triggerStrings.addElement("SCROLLCOPY");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canTargetCode=Ability.CAN_ITEMS;
-		canAffectCode=0;
-		
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Skill_ScrollCopy();
-	}
+	public String ID() { return "Skill_ScrollCopy"; }
+	public String name(){ return "Scroll Copy";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"COPY","SCROLLCOPY"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_ScrollCopy();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
