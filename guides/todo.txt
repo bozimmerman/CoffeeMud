@@ -15,9 +15,11 @@
 ! Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
 ! Crawl command, and crawlspace property for rooms and exits
 ! Furniture.. chairs to sit in, beds to lie in, tables to put things on?  It's all riding...
-~ Convert some properties to work with the new areas. Prop_NOMOB, etc..
-~ make room properties also work for exits
-~ Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject.  The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
+! Convert some properties to work with the new areas. Prop_NOMOB, etc..
+! make room properties also work for exits
+! Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject.  The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
+! Forget spell to make someone forget a skill they try, at random!
+! Predict Weather spell! 
 
 A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
@@ -26,6 +28,8 @@ Following thing would be automatic, if an Exit and Direction extensions are used
 ranger skills: find water, hunt (finds a huntable animal)
 
 target commmand to switch among targets fighting you
+
+genbed, gentable
 
 Two-handed fighting
 
@@ -43,8 +47,6 @@ PlayerKill flag, properties for nopkill areas, rooms, etc.. (and pkill ONLY area
 
 vassels command to list the ones who serve you (even those which are online)
 
-Forget spell to make someone forget a skill they try, at random!
-
 Distract ability (can't fight during) to make an enemies scores worse...
 
 ThievesTools required for picking locks, check/remove traps without severe penalty.
@@ -57,8 +59,6 @@ HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poiso
 animals will produce poisoned meat, of course.
 
 Meditation for Mage should be like Endurance for Fighter.
-
-Predict Weather spell! Change weather! Call Lightening! Call hailstones!
 
 Lore skill for Bards.. allows an identify for them.
 
@@ -82,6 +82,7 @@ Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at memorize time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
+Druid : a good new base class
 
 Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
 derivatives of the standard Interfaces.

@@ -29,6 +29,10 @@ public class Prop_ItemTransporter extends Property
 	{
 		if(item==null) return null;
 		if(item.location()==null) return item;
+		if(item.location().location()==item)
+			item.location().setLocation(null);
+		if(item.location()==item)
+			item.setLocation(null);
 		return ultimateParent(item.location());
 	}
 
