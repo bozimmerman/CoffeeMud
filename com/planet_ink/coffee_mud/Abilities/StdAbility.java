@@ -591,7 +591,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public void helpProfficiency(MOB mob)
 	{
 		if(mob==null) return;
-		Ability A=(Ability)mob.fetchAbility(ID());
+		Ability A=mob.fetchAbility(ID());
 		if((A==null)||(A.isBorrowed(mob))) return;
 
 		if((System.currentTimeMillis()
@@ -713,13 +713,12 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			((StdAbility)newOne).canBeUninvoked=true;
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*4)+25;
-
+				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*2)+25;
 				if((target!=null)&&(asLevel<=0)&&(mob!=null))
 					tickAdjustmentFromStandard=(int)Math.round(Util.mul(tickAdjustmentFromStandard,Util.div(mob.envStats().level(),target.envStats().level())));
 
 				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
-					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
+					tickAdjustmentFromStandard=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
 
 				if(tickAdjustmentFromStandard<2)
 					tickAdjustmentFromStandard=2;
@@ -783,7 +782,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob,asLevel)*7)+60;
 				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
-					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
+					tickAdjustmentFromStandard=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}

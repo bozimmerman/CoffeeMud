@@ -731,7 +731,6 @@ public class ItemData extends StdWebMacro
 					if(I instanceof MagicDust) return "true";
 					else return "false";
 				case 72: // is perfume
-System.out.println(I.ID()+"/"+(I instanceof Perfume)+"/"+(I instanceof MagicDust));
 					if(I instanceof Perfume) return "true";
 					else return "false";
 				case 73: // smells

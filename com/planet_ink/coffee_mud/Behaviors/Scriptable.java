@@ -35,12 +35,12 @@ public class Scriptable extends StdBehavior
 	private Hashtable delayProgCounters=new Hashtable();
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
-	private Quests myQuest=null;
 
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
 		if(O instanceof Quests)
-			myQuest=(Quests)O;
+		{
+		}
 		else
 		if(O instanceof String)
 		{
@@ -279,6 +279,8 @@ public class Scriptable extends StdBehavior
 			{
 				results.append(parse.substring(0,y).trim()+"\n");
 				int z=parse.indexOf("~",y);
+				while((z>0)&&(parse.charAt(z-1)=='\\'))
+				    z=parse.indexOf("~",z+1);
 				if(z>0)
 				{
 					String filename=parse.substring(y+5,z).trim();
@@ -317,9 +319,12 @@ public class Scriptable extends StdBehavior
 		}
 		Vector V=new Vector();
 		text=parseLoads(text,0);
+		int y=0;
 		while((text!=null)&&(text.length()>0))
 		{
-			int y=text.indexOf("~");
+			y=text.indexOf("~");
+			while((y>0)&&(text.charAt(y-1)=='\\'))
+			    y=text.indexOf("~",y+1);
 			String script="";
 			if(y<0)
 			{
@@ -340,7 +345,7 @@ public class Scriptable extends StdBehavior
 			Vector script=new Vector();
 			while(s.length()>0)
 			{
-				int y=-1;
+				y=-1;
 				int yy=0;
 				while(yy<s.length())
 					if((s.charAt(yy)==';')&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
@@ -361,7 +366,10 @@ public class Scriptable extends StdBehavior
 					s=s.substring(y+1).trim();
 				}
 				if((cmd.length()>0)&&(!cmd.startsWith("#")))
+				{
+				    cmd=Util.replaceAll(cmd,"\\~","~");
 					script.addElement(Util.replaceAll(cmd,"\\;",";"));
+				}
 				V.setElementAt(script,v);
 			}
 		}
@@ -698,6 +706,383 @@ public class Scriptable extends StdBehavior
 		}
 		return null;
 	}
+
+	public String varify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String varifyable)
+	{
+		int t=varifyable.indexOf("$");
+		if((monster!=null)&&(monster.location()!=null))
+			lastKnownLocation=monster.location();
+		MOB randMOB=null;
+		while((t>=0)&&(t<varifyable.length()-1))
+		{
+			char c=varifyable.charAt(t+1);
+			String middle="";
+			String front=varifyable.substring(0,t);
+			String back=varifyable.substring(t+2);
+			switch(c)
+			{
+			case 'a':
+				if(lastKnownLocation!=null)
+					return lastKnownLocation.name();
+				break;
+			case 'i':
+				if(monster!=null)
+					middle=monster.name();
+				break;
+			case 'I':
+				if(monster!=null)
+					middle=monster.displayText();
+				break;
+			case 'n':
+			case 'N':
+				if(source!=null)
+					middle=source.name();
+				break;
+			case 't':
+			case 'T':
+				if(target!=null)
+					middle=target.name();
+				break;
+			case 'r':
+			case 'R':
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				if(randMOB!=null)
+					middle=randMOB.name();
+				break;
+			case 'j':
+				if(monster!=null)
+					middle=monster.charStats().heshe();
+				break;
+			case 'f':
+				if((monster!=null)&&(monster.amFollowing()!=null))
+					middle=monster.amFollowing().name();
+				break;
+			case 'F':
+				if((monster!=null)&&(monster.amFollowing()!=null))
+					middle=monster.amFollowing().charStats().heshe();
+				break;
+			case 'e':
+				if(source!=null)
+					middle=source.charStats().heshe();
+				break;
+			case 'E':
+				if((target!=null)&&(target instanceof MOB))
+					middle=((MOB)target).charStats().heshe();
+				break;
+			case 'J':
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				if(randMOB!=null)
+					middle=randMOB.charStats().heshe();
+				break;
+			case 'k':
+				if(monster!=null)
+					middle=monster.charStats().hisher();
+				break;
+			case 'm':
+				if(source!=null)
+					middle=source.charStats().hisher();
+				break;
+			case 'M':
+				if((target!=null)&&(target instanceof MOB))
+					middle=((MOB)target).charStats().hisher();
+				break;
+			case 'K':
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
+				if(randMOB!=null)
+					middle=randMOB.charStats().hisher();
+				break;
+			case 'o':
+			case 'O':
+				if(primaryItem!=null)
+					middle=primaryItem.name();
+				break;
+			case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
+			case 'G': middle=((msg==null)?"":msg); break;
+			case 'p':
+			case 'P':
+				if(secondaryItem!=null)
+					middle=secondaryItem.name();
+				break;
+			case 'l':
+				if(lastKnownLocation!=null)
+				{
+					StringBuffer str=new StringBuffer("");
+					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+					{
+						MOB M=lastKnownLocation.fetchInhabitant(i);
+						if((M!=null)&&(M!=monster)&&(Sense.canBeSeenBy(M,monster)))
+						   str.append("\""+M.name()+"\" ");
+					}
+					middle=str.toString();
+					break;
+				}
+			case 'L':
+				if(lastKnownLocation!=null)
+				{
+					StringBuffer str=new StringBuffer("");
+					for(int i=0;i<lastKnownLocation.numItems();i++)
+					{
+						Item I=lastKnownLocation.fetchItem(i);
+						if((I!=null)&&(I.container()==null)&&(Sense.canBeSeenBy(I,monster)))
+						   str.append("\""+I.name()+"\" ");
+					}
+					middle=str.toString();
+					break;
+				}
+			case '<':
+				{
+					int x=back.indexOf(">");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x);
+						int y=mid.indexOf(" ");
+						Environmental E=null;
+						if(y>=0)
+						{
+							E=getArgumentMOB(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem,msg);
+							mid=mid.substring(y+1).trim();
+						}
+						if(E!=null)
+						{
+							middle=null;
+							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+							if(H!=null)
+								middle=(String)H.get(mid);
+							if(middle==null) middle="";
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			case '[':
+				{
+					middle="";
+					int x=back.indexOf("]");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x);
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=Util.s_int(mid.substring(0,y));
+							mid=mid.substring(y+1).trim();
+							Quest Q=Quests.fetchQuest(mid);
+							if(Q!=null)	middle=Q.getQuestItemName(num);
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			case '{':
+				{
+					middle="";
+					int x=back.indexOf("}");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x).trim();
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=Util.s_int(mid.substring(0,y));
+							mid=mid.substring(y+1).trim();
+							Quest Q=Quests.fetchQuest(mid);
+							if(Q!=null)	middle=Q.getQuestMobName(num);
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			case '%':
+				{
+					middle="";
+					int x=back.indexOf("%");
+					if(x>=0)
+					{
+						middle=functify(monster,source,target,monster,primaryItem,secondaryItem,msg,back.substring(0,x).trim());
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			//case 'a':
+			case 'A':
+				// unnecessary, since, in coffeemud, this is part of the name
+				break;
+			case 'x':
+			case 'X':
+				if(lastKnownLocation!=null)
+				{
+					middle="";
+					Exit E=null;
+					int dir=-1;
+					if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
+					{
+						dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
+						E=lastKnownLocation.getExitInDir(dir);
+					}
+					else
+					{
+						int i=0;
+						while(((++i)<100)||(E!=null))
+						{
+							dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+							E=lastKnownLocation.getExitInDir(dir);
+						}
+					}
+					if((dir>=0)&&(E!=null))
+					{
+						if(c=='x')
+							middle=Directions.getDirectionName(dir);
+						else
+							middle=E.name();
+					}
+				}
+				break;
+			}
+			if((middle.length()>0)
+			&&(back.startsWith("."))
+			&&(back.length()>1)
+			&&(Character.isDigit(back.charAt(1))))
+			{
+				int x=1;
+				while((x<back.length())
+				&&(Character.isDigit(back.charAt(x))))
+					x++;
+				int y=Util.s_int(back.substring(1,x));
+				back=back.substring(x);
+				boolean rest=back.startsWith("..");
+				if(rest) back=back.substring(2);
+				Vector V=Util.parse(middle);
+				if((V.size()>0)&&(y>=0))
+				{
+					if(y>=V.size())
+						middle="";
+					else
+					if(rest)
+					    middle=Util.combine(V,y);
+					else
+						middle=(String)V.elementAt(y);
+				}
+			}
+			varifyable=front+middle+back;
+			t=varifyable.indexOf("$");
+		}
+		return varifyable;
+	}
+
+	public DVector getScriptVarSet(String mobname, String varname)
+	{
+		DVector set=new DVector(2);
+		if(mobname.equals("*"))
+		{
+			Vector V=Resources.findResourceKeys("SCRIPTVAR-");
+			for(int v=0;v<V.size();v++)
+			{
+				String key=(String)V.elementAt(v);
+				if(key.startsWith("SCRIPTVAR-"))
+				{
+					Hashtable H=(Hashtable)Resources.getResource(key);
+					if(varname.equals("*"))
+					{
+						for(Enumeration e=H.keys();e.hasMoreElements();)
+						{
+							String vn=(String)e.nextElement();
+							set.addElement(key.substring(10),vn);
+						}
+					}
+					else
+						set.addElement(key.substring(10),varname);
+				}
+			}
+		}
+		else
+		{
+			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+mobname);
+			if(varname.equals("*"))
+			{
+				for(Enumeration e=H.keys();e.hasMoreElements();)
+				{
+					String vn=(String)e.nextElement();
+					set.addElement(mobname,vn);
+				}
+			}
+			else
+				set.addElement(mobname,varname);
+		}
+		return set;
+	}
+
+	public void mpsetvar(String name, String key, String val)
+	{
+		DVector V=getScriptVarSet(name,key);
+		for(int v=0;v<V.size();v++)
+		{
+			name=(String)V.elementAt(v,1);
+			key=(String)V.elementAt(v,2);
+			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+name);
+			if(H==null)
+			{
+				if(val.length()==0)
+					continue;
+
+				H=new Hashtable();
+				Resources.submitResource("SCRIPTVAR-"+name,H);
+			}
+			if(val.equals("++"))
+			{
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)+1).toString();
+			}
+			else
+			if(val.equals("--"))
+			{
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)-1).toString();
+			}
+			else
+			if(val.startsWith("+"))
+			{
+				// add via +number form
+				val=val.substring(1);
+				int amount=Util.s_int(val);
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)+amount).toString();
+			}
+			else
+			if(val.startsWith("-"))
+			{
+				// subtract -number form
+				val=val.substring(1);
+				int amount=Util.s_int(val);
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)-amount).toString();
+			}
+			else
+			if(val.startsWith("*"))
+			{
+				// multiply via *number form
+				val=val.substring(1);
+				int amount=Util.s_int(val);
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)*amount).toString();
+			}
+			else
+			if(val.startsWith("/"))
+			{
+				// divide /number form
+				val=val.substring(1);
+				int amount=Util.s_int(val);
+				String num=(String)H.get(key);
+				val=new Integer(Util.s_int(num)/amount).toString();
+			}
+			if(H.containsKey(key))
+				H.remove(key);
+			if(val.trim().length()>0)
+				H.put(key,val);
+			if(H.size()==0)
+				Resources.removeResource("SCRIPTVAR-"+name);
+		}
+	}
+
 
 	public boolean eval(Environmental scripted,
 						MOB source,
@@ -2228,7 +2613,7 @@ public class Scriptable extends StdBehavior
 				else
 				if((E instanceof Item)&&(!(((Item)E).amWearingAt(Item.INVENTORY))))
 				{
-					choices.addElement((Item)E);
+					choices.addElement(E);
 					if(E instanceof Container)
 						choices=((Container)E).getContents();
 				}
@@ -3006,378 +3391,6 @@ public class Scriptable extends StdBehavior
 		}
 		return randMOB;
 	}
-
-	public String varify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String varifyable)
-	{
-		int t=varifyable.indexOf("$");
-		if((monster!=null)&&(monster.location()!=null))
-			lastKnownLocation=monster.location();
-		MOB randMOB=null;
-		while((t>=0)&&(t<varifyable.length()-1))
-		{
-			char c=varifyable.charAt(t+1);
-			String middle="";
-			String front=varifyable.substring(0,t);
-			String back=varifyable.substring(t+2);
-			switch(c)
-			{
-			case 'a':
-				if(lastKnownLocation!=null)
-					return lastKnownLocation.name();
-				break;
-			case 'i':
-				if(monster!=null)
-					middle=monster.name();
-				break;
-			case 'I':
-				if(monster!=null)
-					middle=monster.displayText();
-				break;
-			case 'n':
-			case 'N':
-				if(source!=null)
-					middle=source.name();
-				break;
-			case 't':
-			case 'T':
-				if(target!=null)
-					middle=target.name();
-				break;
-			case 'r':
-			case 'R':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.name();
-				break;
-			case 'j':
-				if(monster!=null)
-					middle=monster.charStats().heshe();
-				break;
-			case 'f':
-				if((monster!=null)&&(monster.amFollowing()!=null))
-					middle=monster.amFollowing().name();
-				break;
-			case 'F':
-				if((monster!=null)&&(monster.amFollowing()!=null))
-					middle=monster.amFollowing().charStats().heshe();
-				break;
-			case 'e':
-				if(source!=null)
-					middle=source.charStats().heshe();
-				break;
-			case 'E':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().heshe();
-				break;
-			case 'J':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.charStats().heshe();
-				break;
-			case 'k':
-				if(monster!=null)
-					middle=monster.charStats().hisher();
-				break;
-			case 'm':
-				if(source!=null)
-					middle=source.charStats().hisher();
-				break;
-			case 'M':
-				if((target!=null)&&(target instanceof MOB))
-					middle=((MOB)target).charStats().hisher();
-				break;
-			case 'K':
-				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
-				if(randMOB!=null)
-					middle=randMOB.charStats().hisher();
-				break;
-			case 'o':
-			case 'O':
-				if(primaryItem!=null)
-					middle=primaryItem.name();
-				break;
-			case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
-			case 'G': middle=((msg==null)?"":msg); break;
-			case 'p':
-			case 'P':
-				if(secondaryItem!=null)
-					middle=secondaryItem.name();
-				break;
-			case 'l':
-				if(lastKnownLocation!=null)
-				{
-					StringBuffer str=new StringBuffer("");
-					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
-					{
-						MOB M=lastKnownLocation.fetchInhabitant(i);
-						if((M!=null)&&(M!=monster)&&(Sense.canBeSeenBy(M,monster)))
-						   str.append("\""+M.name()+"\" ");
-					}
-					middle=str.toString();
-					break;
-				}
-			case 'L':
-				if(lastKnownLocation!=null)
-				{
-					StringBuffer str=new StringBuffer("");
-					for(int i=0;i<lastKnownLocation.numItems();i++)
-					{
-						Item I=lastKnownLocation.fetchItem(i);
-						if((I!=null)&&(I.container()==null)&&(Sense.canBeSeenBy(I,monster)))
-						   str.append("\""+I.name()+"\" ");
-					}
-					middle=str.toString();
-					break;
-				}
-			case '<':
-				{
-					int x=back.indexOf(">");
-					if(x>=0)
-					{
-						String mid=back.substring(0,x);
-						int y=mid.indexOf(" ");
-						Environmental E=null;
-						if(y>=0)
-						{
-							E=getArgumentMOB(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem,msg);
-							mid=mid.substring(y+1).trim();
-						}
-						if(E!=null)
-						{
-							middle=null;
-							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
-							if(H!=null)
-								middle=(String)H.get(mid);
-							if(middle==null) middle="";
-						}
-						back=back.substring(x+1);
-					}
-				}
-				break;
-			case '[':
-				{
-					middle="";
-					int x=back.indexOf("]");
-					if(x>=0)
-					{
-						String mid=back.substring(0,x);
-						int y=mid.indexOf(" ");
-						if(y>0)
-						{
-							int num=Util.s_int(mid.substring(0,y));
-							mid=mid.substring(y+1).trim();
-							Quest Q=Quests.fetchQuest(mid);
-							if(Q!=null)	middle=Q.getQuestItemName(num);
-						}
-						back=back.substring(x+1);
-					}
-				}
-				break;
-			case '{':
-				{
-					middle="";
-					int x=back.indexOf("}");
-					if(x>=0)
-					{
-						String mid=back.substring(0,x).trim();
-						int y=mid.indexOf(" ");
-						if(y>0)
-						{
-							int num=Util.s_int(mid.substring(0,y));
-							mid=mid.substring(y+1).trim();
-							Quest Q=Quests.fetchQuest(mid);
-							if(Q!=null)	middle=Q.getQuestMobName(num);
-						}
-						back=back.substring(x+1);
-					}
-				}
-				break;
-			case '%':
-				{
-					middle="";
-					int x=back.indexOf("%");
-					if(x>=0)
-					{
-						middle=functify(monster,source,target,monster,primaryItem,secondaryItem,msg,back.substring(0,x).trim());
-						back=back.substring(x+1);
-					}
-				}
-				break;
-			//case 'a':
-			case 'A':
-				// unnecessary, since, in coffeemud, this is part of the name
-				break;
-			case 'x':
-			case 'X':
-				if(lastKnownLocation!=null)
-				{
-					middle="";
-					Exit E=null;
-					int dir=-1;
-					if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
-					{
-						dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
-						E=lastKnownLocation.getExitInDir(dir);
-					}
-					else
-					{
-						int i=0;
-						while(((++i)<100)||(E!=null))
-						{
-							dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
-							E=lastKnownLocation.getExitInDir(dir);
-						}
-					}
-					if((dir>=0)&&(E!=null))
-					{
-						if(c=='x')
-							middle=Directions.getDirectionName(dir);
-						else
-							middle=E.name();
-					}
-				}
-				break;
-			}
-			if((middle.length()>0)
-			&&(back.startsWith("."))
-			&&(back.length()>1)
-			&&(Character.isDigit(back.charAt(1))))
-			{
-				int x=1;
-				while((x<back.length())
-				&&(Character.isDigit(back.charAt(x))))
-					x++;
-				int y=Util.s_int(back.substring(1,x));
-				back=back.substring(x);
-				Vector V=Util.parse(middle);
-				if((V.size()>0)&&(y>=0))
-				{
-					if(y>=V.size())
-						middle="";
-					else
-						middle=(String)V.elementAt(y);
-				}
-			}
-			varifyable=front+middle+back;
-			t=varifyable.indexOf("$");
-		}
-		return varifyable;
-	}
-
-	public DVector getScriptVarSet(String mobname, String varname)
-	{
-		DVector set=new DVector(2);
-		if(mobname.equals("*"))
-		{
-			Vector V=Resources.findResourceKeys("SCRIPTVAR-");
-			for(int v=0;v<V.size();v++)
-			{
-				String key=(String)V.elementAt(v);
-				if(key.startsWith("SCRIPTVAR-"))
-				{
-					Hashtable H=(Hashtable)Resources.getResource(key);
-					if(varname.equals("*"))
-					{
-						for(Enumeration e=H.keys();e.hasMoreElements();)
-						{
-							String vn=(String)e.nextElement();
-							set.addElement(key.substring(10),vn);
-						}
-					}
-					else
-						set.addElement(key.substring(10),varname);
-				}
-			}
-		}
-		else
-		{
-			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+mobname);
-			if(varname.equals("*"))
-			{
-				for(Enumeration e=H.keys();e.hasMoreElements();)
-				{
-					String vn=(String)e.nextElement();
-					set.addElement(mobname,vn);
-				}
-			}
-			else
-				set.addElement(mobname,varname);
-		}
-		return set;
-	}
-
-	public void mpsetvar(String name, String key, String val)
-	{
-		DVector V=getScriptVarSet(name,key);
-		for(int v=0;v<V.size();v++)
-		{
-			name=(String)V.elementAt(v,1);
-			key=(String)V.elementAt(v,2);
-			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+name);
-			if(H==null)
-			{
-				if(val.length()==0)
-					continue;
-
-				H=new Hashtable();
-				Resources.submitResource("SCRIPTVAR-"+name,H);
-			}
-			if(val.equals("++"))
-			{
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)+1).toString();
-			}
-			else
-			if(val.equals("--"))
-			{
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)-1).toString();
-			}
-			else
-			if(val.startsWith("+"))
-			{
-				// add via +number form
-				val=val.substring(1);
-				int amount=Util.s_int(val);
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)+amount).toString();
-			}
-			else
-			if(val.startsWith("-"))
-			{
-				// subtract -number form
-				val=val.substring(1);
-				int amount=Util.s_int(val);
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)-amount).toString();
-			}
-			else
-			if(val.startsWith("*"))
-			{
-				// multiply via *number form
-				val=val.substring(1);
-				int amount=Util.s_int(val);
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)*amount).toString();
-			}
-			else
-			if(val.startsWith("/"))
-			{
-				// divide /number form
-				val=val.substring(1);
-				int amount=Util.s_int(val);
-				String num=(String)H.get(key);
-				val=new Integer(Util.s_int(num)/amount).toString();
-			}
-			if(H.containsKey(key))
-				H.remove(key);
-			if(val.trim().length()>0)
-				H.put(key,val);
-			if(H.size()==0)
-				Resources.removeResource("SCRIPTVAR-"+name);
-		}
-	}
-
 
 	public String execute(Environmental scripted,
 						  MOB source,
@@ -5003,7 +5016,7 @@ public class Scriptable extends StdBehavior
 							Tool=(Item)msg.tool();
 						if(Tool==null) Tool=defaultItem;
 						if(msg.target() instanceof MOB)
-							que.addElement(new ScriptableResponse(affecting,msg.source(),(MOB)msg.target(),monster,Tool,defaultItem,script,1,str));
+							que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
 						else
 						if(msg.target() instanceof Item)
 							que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));

@@ -129,12 +129,10 @@ public class SMTPclient
 			try
 			{
 				sock = new Socket( hostid, DEFAULT_PORT );
-System.out.println(hostid);
 				reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 				sock.setSoTimeout(DEFAULT_TIMEOUT);
 				send = new PrintWriter( sock.getOutputStream() );
 				String rstr = reply.readLine();
-System.out.println(rstr);
 				if ((rstr==null)||(!rstr.startsWith("220"))) throw new ProtocolException(rstr);
 				while (rstr.indexOf('-') == 3) {
 				    rstr = reply.readLine();
