@@ -313,18 +313,18 @@ public class StdRace implements Race
 		double baseMaxDouble=new Integer(baseMax).doubleValue()-2.0;
 		while((avg!=max)&&((++tries)<100000000))
 		{
-			C.setStat(C.STRENGTH,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(C.INTELLIGENCE,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(C.DEXTERITY,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(C.WISDOM,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(C.CONSTITUTION,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			C.setStat(C.CHARISMA,3+(int)Math.floor(Math.random()*baseMaxDouble));
-			avg=(C.getStat(C.STRENGTH)
-				 +C.getStat(C.INTELLIGENCE)
-				 +C.getStat(C.DEXTERITY)
-				 +C.getStat(C.WISDOM)
-				 +C.getStat(C.CONSTITUTION)
-				 +C.getStat(C.CHARISMA));
+			C.setStat(CharStats.STRENGTH,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			C.setStat(CharStats.INTELLIGENCE,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			C.setStat(CharStats.DEXTERITY,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			C.setStat(CharStats.WISDOM,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			C.setStat(CharStats.CONSTITUTION,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			C.setStat(CharStats.CHARISMA,3+(int)Math.floor(Math.random()*baseMaxDouble));
+			avg=(C.getStat(CharStats.STRENGTH)
+				 +C.getStat(CharStats.INTELLIGENCE)
+				 +C.getStat(CharStats.DEXTERITY)
+				 +C.getStat(CharStats.WISDOM)
+				 +C.getStat(CharStats.CONSTITUTION)
+				 +C.getStat(CharStats.CHARISMA));
 		}
 	}
 

@@ -174,7 +174,7 @@ public class Spell_Cogniportive extends Spell
 				str=Util.combine(V,1);
 				if(EnglishParser.containsString(affected.name(),str)
 				||EnglishParser.containsString(affected.displayText(),str))
-					msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),msg.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),affected,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.sourceMessage(),CMMsg.NO_EFFECT,null));
 			}
 			break;
 		default:

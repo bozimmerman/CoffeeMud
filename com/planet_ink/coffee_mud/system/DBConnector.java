@@ -124,11 +124,11 @@ public class DBConnector
 	 */
 	public static String getRes(ResultSet Results, String Field)
 	throws SQLException
-	{ return DBs.getRes(Results,Field);}
+	{ return DBConnections.getRes(Results,Field);}
 
 	public static String getResQuietly(ResultSet Results, String Field)
 	throws SQLException
-	{ return DBs.getResQuietly(Results, Field);}
+	{ return DBConnections.getResQuietly(Results, Field);}
 
 	/** 
  	 * When reading a database table, this routine will read in
@@ -141,7 +141,7 @@ public class DBConnector
 	 * @return String	The value of the field being returned
 	 */
 	public static long getLongRes(ResultSet Results, String Field)
-	{ return DBs.getLongRes(Results,Field);}
+	{ return DBConnections.getLongRes(Results,Field);}
 	
 	/** 
 	 * When reading a database table, this routine will read in
@@ -154,7 +154,7 @@ public class DBConnector
 	 * @return String	The value of the field being returned
 	 */
 	public static String getRes(ResultSet Results, int One)
-	{ return DBs.getRes(Results,One);}
+	{ return DBConnections.getRes(Results,One);}
 	
 	/** 
 	 * Destroy all database connections, effectively

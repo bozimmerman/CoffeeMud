@@ -15,12 +15,16 @@ package com.planet_ink.coffee_mud.i3.packets;
  * limitations under the License.
  *
  */
-public class I3Exception extends Exception {
-    public I3Exception() {
+public class I3Exception extends Exception 
+{
+	public static final long serialVersionUID=0;
+    public I3Exception() 
+    {
         this("Unidentified exception.");
     }
 
-    public I3Exception(String str) {
+    public I3Exception(String str) 
+    {
         super(str);
     }
 }

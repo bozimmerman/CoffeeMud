@@ -53,10 +53,10 @@ public class CoffeeTableRows extends StdWebMacro
 		if(V.size()==0){return "";}
 		StringBuffer table=new StringBuffer("");
 		IQCalendar C=new IQCalendar(System.currentTimeMillis());
-		C.set(C.HOUR_OF_DAY,23);
-		C.set(C.MINUTE,59);
-		C.set(C.SECOND,59);
-		C.set(C.MILLISECOND,999);
+		C.set(Calendar.HOUR_OF_DAY,23);
+		C.set(Calendar.MINUTE,59);
+		C.set(Calendar.SECOND,59);
+		C.set(Calendar.MILLISECOND,999);
 		long curTime=C.getTimeInMillis();
 		long lastCur=0;
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
@@ -65,10 +65,10 @@ public class CoffeeTableRows extends StdWebMacro
 			IQCalendar C2=new IQCalendar(curTime);
 			C2.add(Calendar.DATE,-scale);
 			curTime=C2.getTimeInMillis();
-			C2.set(C.HOUR_OF_DAY,23);
-			C2.set(C.MINUTE,59);
-			C2.set(C.SECOND,59);
-			C2.set(C.MILLISECOND,999);
+			C2.set(Calendar.HOUR_OF_DAY,23);
+			C2.set(Calendar.MINUTE,59);
+			C2.set(Calendar.SECOND,59);
+			C2.set(Calendar.MILLISECOND,999);
 			curTime=C2.getTimeInMillis();
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)

@@ -111,7 +111,7 @@ public class Amputation extends StdAbility
 			{
 				if((amputations[Race.BODY_ARM]<0)&&(mob.getWearPositions(Item.ON_ARMS)==0))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-				affectableStats.setDisposition(affectableStats.disposition()|affectableStats.IS_SITTING);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 			}
 			if((amputations[Race.BODY_EYE]<0)&&(mob.getWearPositions(Item.ON_EYES)==0))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);

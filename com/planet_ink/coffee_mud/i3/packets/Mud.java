@@ -18,6 +18,8 @@ import java.io.Serializable;
  */
 public class Mud implements Serializable
 {
+	public static final long serialVersionUID=0;
+	
     public String address;
     public String admin_email;
     public String base_mudlib;

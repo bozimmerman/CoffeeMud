@@ -128,7 +128,7 @@ public class CombatAbilities extends StdBehavior
 			||(tryThisOne.triggerStrings().length==0)
 			||((tryThisOne.quality()!=Ability.MALICIOUS)
 				&&(tryThisOne.quality()!=Ability.BENEFICIAL_SELF)
-				&&(tryThisOne.quality()!=tryThisOne.BENEFICIAL_OTHERS))
+				&&(tryThisOne.quality()!=Ability.BENEFICIAL_OTHERS))
 			||(victim.fetchEffect(tryThisOne.ID())!=null))
 				tryThisOne=null;
 			else

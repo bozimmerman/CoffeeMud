@@ -21,7 +21,9 @@ import java.io.Serializable;
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
  */
-public class Channel implements Serializable {
+public class Channel implements Serializable 
+{
+	public static final long serialVersionUID=0;
     /**
      * The name of the channel
      */

@@ -1419,13 +1419,13 @@ public class BaseGenerics extends StdCommand
 		E.setClanID(mob.session().prompt("Enter a new clan\n\r:",clanID));
 		if(E.clanID().equals(clanID))
 			mob.tell("(no change)");
-		String clanType=E.CI_DESC[E.ciType()];
+		String clanType=ClanItem.CI_DESC[E.ciType()];
 		String s="?";
 		while(s.equals("?"))
 		{
 			s=mob.session().prompt("Enter a new type (?)\n\r:",clanType);
 			if(s.equalsIgnoreCase("?"))
-				mob.tell("Types: "+Util.toStringList(E.CI_DESC));
+				mob.tell("Types: "+Util.toStringList(ClanItem.CI_DESC));
 			else
 			if(s.equalsIgnoreCase(clanType))
 			{
@@ -1435,8 +1435,8 @@ public class BaseGenerics extends StdCommand
 			else
 			{
 				boolean found=false;
-				for(int i=0;i<E.CI_DESC.length;i++)
-					if(E.CI_DESC[i].equalsIgnoreCase(s))
+				for(int i=0;i<ClanItem.CI_DESC.length;i++)
+					if(ClanItem.CI_DESC[i].equalsIgnoreCase(s))
 					{ found=true; E.setCIType(i); break;}
 				if(!found)
 				{
@@ -2399,10 +2399,10 @@ public class BaseGenerics extends StdCommand
 							item.recoverEnvStats();
 							boolean ok=E.doISellThis(item);
 							if((item instanceof Ability)
-							   &&((E.whatIsSold()==E.DEAL_TRAINER)||(E.whatIsSold()==E.DEAL_CASTER)))
+							   &&((E.whatIsSold()==ShopKeeper.DEAL_TRAINER)||(E.whatIsSold()==ShopKeeper.DEAL_CASTER)))
 								ok=true;
 							else
-							if(E.whatIsSold()==E.DEAL_INVENTORYONLY)
+							if(E.whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)
 								ok=true;
 							if(!ok)
 							{
@@ -3405,23 +3405,23 @@ public class BaseGenerics extends StdCommand
 		CharStats S=new DefaultCharStats(0);
 		CoffeeMaker.setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
-		for(int i=0;i<S.TRAITS.length;i++)
+		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
-				parts.append(Util.capitalize(S.TRAITS[i])+"("+S.getStat(i)+") ");
+				parts.append(Util.capitalize(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
 		if(newName.length()>0)
 		{
 			int partNum=-1;
-			for(int i=0;i<S.TRAITS.length;i++)
-				if(newName.equalsIgnoreCase(S.TRAITS[i]))
+			for(int i=0;i<CharStats.TRAITS.length;i++)
+				if(newName.equalsIgnoreCase(CharStats.TRAITS[i]))
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
 				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
-				for(int i=0;i<S.TRAITS.length;i++)
-					str.append(S.TRAITS[i]+", ");
+				for(int i=0;i<CharStats.TRAITS.length;i++)
+					str.append(CharStats.TRAITS[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
@@ -3431,7 +3431,7 @@ public class BaseGenerics extends StdCommand
 				{
 					S.setStat(partNum,Util.s_int(newName));
 					boolean zereoed=true;
-					for(int i=0;i<S.TRAITS.length;i++)
+					for(int i=0;i<CharStats.TRAITS.length;i++)
 					{
 						if(S.getStat(i)!=0)
 						{ zereoed=false; break;}
@@ -3575,23 +3575,23 @@ public class BaseGenerics extends StdCommand
 		CharStats S=new DefaultCharStats(0);
 		CoffeeMaker.setCharStats(S,R.getStat(Field));
 		StringBuffer parts=new StringBuffer("");
-		for(int i=0;i<S.TRAITS.length;i++)
+		for(int i=0;i<CharStats.TRAITS.length;i++)
 			if(S.getStat(i)!=0)
-				parts.append(Util.capitalize(S.TRAITS[i])+"("+S.getStat(i)+") ");
+				parts.append(Util.capitalize(CharStats.TRAITS[i])+"("+S.getStat(i)+") ");
 		mob.tell(showNumber+". "+FieldName+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
 		if(newName.length()>0)
 		{
 			int partNum=-1;
-			for(int i=0;i<S.TRAITS.length;i++)
-				if(newName.equalsIgnoreCase(S.TRAITS[i]))
+			for(int i=0;i<CharStats.TRAITS.length;i++)
+				if(newName.equalsIgnoreCase(CharStats.TRAITS[i]))
 				{ partNum=i; break;}
 			if(partNum<0)
 			{
 				StringBuffer str=new StringBuffer("That stat is invalid.  Valid stats include: ");
-				for(int i=0;i<S.TRAITS.length;i++)
-					str.append(S.TRAITS[i]+", ");
+				for(int i=0;i<CharStats.TRAITS.length;i++)
+					str.append(CharStats.TRAITS[i]+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 			}
 			else
@@ -3601,7 +3601,7 @@ public class BaseGenerics extends StdCommand
 				{
 					S.setStat(partNum,Util.s_int(newName));
 					boolean zereoed=true;
-					for(int i=0;i<S.TRAITS.length;i++)
+					for(int i=0;i<CharStats.TRAITS.length;i++)
 					{
 						if(S.getStat(i)!=0)
 						{ zereoed=false; break;}

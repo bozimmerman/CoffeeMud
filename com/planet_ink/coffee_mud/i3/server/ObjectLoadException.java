@@ -16,7 +16,10 @@ package com.planet_ink.coffee_mud.i3.server;
  * limitations under the License.
  *
  */
-public class ObjectLoadException extends Exception {
+public class ObjectLoadException extends Exception 
+{
+	public static final long serialVersionUID=0;
+	
     public ObjectLoadException() {
         super();
     }

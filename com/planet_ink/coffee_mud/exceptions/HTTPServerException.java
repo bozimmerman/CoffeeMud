@@ -18,6 +18,7 @@ package com.planet_ink.coffee_mud.exceptions;
 */
 public class HTTPServerException extends CoffeeMudException
 {
+	public static final long serialVersionUID=0;
 	public HTTPServerException(String s)
 	{
 		super(s);

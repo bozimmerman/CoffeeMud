@@ -76,8 +76,8 @@ public class Spell_DetectMagic extends Spell
 			{
 				FullMsg msg3=new FullMsg(msg.source(),msg.target(),this,
 										CMMsg.MSG_OK_VISUAL,msg2+".",
-										msg.NO_EFFECT,null,
-										msg.NO_EFFECT,null);
+										CMMsg.NO_EFFECT,null,
+										CMMsg.NO_EFFECT,null);
 
 				msg.addTrailerMsg(msg3);
 			}

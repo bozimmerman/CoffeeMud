@@ -428,7 +428,7 @@ public class MudChat extends StdBehavior
 			&&(Sense.canBeSeenBy(mob,monster))
 			&&(mob.isMonster())
 			&&(msg.source()!=monster))
-			   talkDown=this.TALK_WAIT_DELAY;
+			   talkDown=TALK_WAIT_DELAY;
 			else
 			if((Sense.canBeHeardBy(mob,monster))
 			&&(Sense.canBeSeenBy(mob,monster))

@@ -39,7 +39,7 @@ public class AreaList extends StdEspressoCommand {
     {
       // We pass back a vector of areas.  First element is just the MUD
       Vector areaV = new Vector();
-      MOB mob = server.getMOB(auth(param));
+      MOB mob = EspressoServer.getMOB(auth(param));
       if(mob==null)
         return null;
       for (Enumeration a = CMMap.areas(); a.hasMoreElements(); ) {

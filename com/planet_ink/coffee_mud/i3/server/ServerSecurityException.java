@@ -26,7 +26,9 @@ package com.planet_ink.coffee_mud.i3.server;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public class ServerSecurityException extends Exception {
+public class ServerSecurityException extends Exception 
+{
+	public static final long serialVersionUID=0;
     /**
      * Constructs a new security excetption with a generic
      * message.

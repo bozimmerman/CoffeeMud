@@ -89,10 +89,10 @@ public class Stat extends BaseAbleLister
 					 +Util.padRight("MARR",5)+"\n\r");
 		table.append(Util.repeat("-",75)+"\n\r");
 		IQCalendar C=new IQCalendar(System.currentTimeMillis());
-		C.set(C.HOUR_OF_DAY,23);
-		C.set(C.MINUTE,59);
-		C.set(C.SECOND,59);
-		C.set(C.MILLISECOND,999);
+		C.set(Calendar.HOUR_OF_DAY,23);
+		C.set(Calendar.MINUTE,59);
+		C.set(Calendar.SECOND,59);
+		C.set(Calendar.MILLISECOND,999);
 		long curTime=C.getTimeInMillis();
 		String code="*";
 		if(rest.length()>0) code=""+rest.toUpperCase().charAt(0);
@@ -103,10 +103,10 @@ public class Stat extends BaseAbleLister
 			IQCalendar C2=new IQCalendar(curTime);
 			C2.add(Calendar.DATE,-(scale));
 			curTime=C2.getTimeInMillis();
-			C2.set(C.HOUR_OF_DAY,23);
-			C2.set(C.MINUTE,59);
-			C2.set(C.SECOND,59);
-			C2.set(C.MILLISECOND,999);
+			C2.set(Calendar.HOUR_OF_DAY,23);
+			C2.set(Calendar.MINUTE,59);
+			C2.set(Calendar.SECOND,59);
+			C2.set(Calendar.MILLISECOND,999);
 			curTime=C2.getTimeInMillis();
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)

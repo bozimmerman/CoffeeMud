@@ -179,7 +179,7 @@ public class GenSuperPill extends GenPill
 					super.executeMsg(myHost,msg);
 				}
 				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				break;
 			default:
 				super.executeMsg(myHost,msg);

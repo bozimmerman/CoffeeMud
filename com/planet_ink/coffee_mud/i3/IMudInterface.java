@@ -25,6 +25,7 @@ import com.planet_ink.coffee_mud.i3.packets.*;
 */
 public class IMudInterface implements ImudServices, Serializable
 {
+	public static final long serialVersionUID=0;
 	public String version="CoffeeMud vX.X";
 	public String name="CoffeeMud";
 	public String i3state="Open to the public";

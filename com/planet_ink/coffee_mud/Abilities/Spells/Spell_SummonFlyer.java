@@ -166,7 +166,7 @@ public class Spell_SummonFlyer extends Spell
 		{
             MOB possibleBitch = mob.fetchFollower(i);
             if(newPackmate.Name().equalsIgnoreCase(possibleBitch.Name())
-            && (Dice.rollPercentage()-mob.charStats().CHARISMA+newPackmate.envStats().level() > 75))
+            && (Dice.rollPercentage()-mob.charStats().getStat(CharStats.CHARISMA)+newPackmate.envStats().level() > 75))
                 return possibleBitch;
         }
         return null;

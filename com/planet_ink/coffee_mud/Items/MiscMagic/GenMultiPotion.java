@@ -134,7 +134,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 				}
 				else
 				{
-					msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 					super.executeMsg(myHost,msg);
 				}
 				break;

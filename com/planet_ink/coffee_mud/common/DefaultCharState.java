@@ -258,8 +258,8 @@ public class DefaultCharState implements Cloneable, CharState
 				if(thirsty)ticksThirsty++;
 				if(hungry)ticksHungry++;
 
-				if((ticksThirsty>this.DEATH_THIRST_TICKS)
-				||(ticksHungry>this.DEATH_HUNGER_TICKS))
+				if((ticksThirsty>DEATH_THIRST_TICKS)
+				||(ticksHungry>DEATH_HUNGER_TICKS))
 				{
 					if(thirsty)
 						mob.tell("YOU ARE DYING OF THIRST!");

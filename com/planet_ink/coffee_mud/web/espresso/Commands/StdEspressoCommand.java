@@ -43,13 +43,13 @@ public class StdEspressoCommand implements EspressoCommand {
 
   public Object run(Vector paramV, EspressoServer server)
   {
-    loggedIn=server.getMOB(auth(paramV));
+    loggedIn=EspressoServer.getMOB(auth(paramV));
     return "";
   }
 
   public boolean isAuthenticated(Vector param, EspressoServer server)
   {
-    return server.authenticated((String)param.elementAt(0));
+    return EspressoServer.authenticated((String)param.elementAt(0));
   }
 
   public String auth(Vector param)

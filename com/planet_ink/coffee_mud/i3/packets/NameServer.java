@@ -16,7 +16,10 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class NameServer implements Serializable {
+public class NameServer implements Serializable 
+{
+	public static final long serialVersionUID=0;
+	
     protected String ip;
     protected String name;
     protected int    port;

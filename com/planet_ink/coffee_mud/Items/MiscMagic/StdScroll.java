@@ -233,7 +233,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 					readIfAble(mob,this,msg.targetMessage());
 				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
+					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),CMMsg.NO_EFFECT,null));
 				return;
 			default:
 				break;

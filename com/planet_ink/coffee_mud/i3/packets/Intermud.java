@@ -45,7 +45,9 @@ import java.util.Vector;
  * @see imaginary.net.i3.ImudServices
  * @see imaginary.persist.PersistentPeer
  */
-public class Intermud implements Runnable, Persistent, Serializable {
+public class Intermud implements Runnable, Persistent, Serializable 
+{
+	public static final long serialVersionUID=0;
     static private Intermud thread = null;
 
     /**

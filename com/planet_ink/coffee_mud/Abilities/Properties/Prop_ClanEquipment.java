@@ -391,11 +391,11 @@ public class Prop_ClanEquipment extends Property
 			case CMMsg.TYP_SPEAK:
 			  if (msg.sourceMinor() == CMMsg.TYP_SPEAK)
 			    msg.addTrailerMsg(new FullMsg(msg.source(), this,
-			                                     msg.target(), msg.NO_EFFECT, null,
+			                                     msg.target(), CMMsg.NO_EFFECT, null,
 			                                     CMMsg.MASK_GENERAL |
 			                                     CMMsg.TYP_WAND_USE,
 			                                     msg.targetMessage(),
-			                                     msg.NO_EFFECT, null));
+			                                     CMMsg.NO_EFFECT, null));
 			  break;
 			default:
 			  break;

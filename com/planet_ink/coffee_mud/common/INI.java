@@ -22,6 +22,7 @@ import com.planet_ink.coffee_mud.utils.*;
 */
 public class INI extends Properties
 {
+	public static final long serialVersionUID=0;
 	public boolean loaded=false;
 
 

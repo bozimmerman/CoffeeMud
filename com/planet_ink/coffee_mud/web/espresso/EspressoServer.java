@@ -160,6 +160,6 @@ public class EspressoServer
   public static MOB getMOB(String auth)
   {
     Authenticate authCmd = new Authenticate();
-    return authCmd.getMOB(authCmd.getLogin(auth));
+    return Authenticate.getMOB(Authenticate.getLogin(auth));
   }
 }

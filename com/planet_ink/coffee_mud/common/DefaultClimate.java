@@ -591,7 +591,7 @@ public class DefaultClimate implements Climate
 			if((A.climateType()&Area.CLIMATE_WINDY)>0)
 				desc.append("swirls all around you.");
 			else
-				desc.append("blows in from "+Directions.getFromDirectionName(this.windDirection));
+				desc.append("blows in from "+Directions.getFromDirectionName(windDirection));
 			break;
 		case Climate.WEATHER_BLIZZARD:
 			desc.append("A thunderous blizzard ");
@@ -673,7 +673,7 @@ public class DefaultClimate implements Climate
 				desc.append("A hot "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			else
 				desc.append("A light "+(((A.climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			desc.append("blows from "+Directions.getFromDirectionName(this.windDirection));
+			desc.append("blows from "+Directions.getFromDirectionName(windDirection));
 			break;
 		}
 		return desc.toString();

@@ -53,7 +53,7 @@ public class Prayer_SenseDisease extends Prayer
 			for(int m=0;m<((MOB)mob).numAllEffects();m++)
 			{
 				Ability A=((MOB)mob).fetchEffect(m);
-				if((A.classificationCode()&A.ALL_CODES)==A.DISEASE)
+				if((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE)
 					return A;
 			}
 		}
@@ -61,7 +61,7 @@ public class Prayer_SenseDisease extends Prayer
 		for(int m=0;m<mob.numEffects();m++)
 		{
 			Ability A=mob.fetchEffect(m);
-			if((A.classificationCode()&A.ALL_CODES)==A.DISEASE)
+			if((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE)
 				return A;
 		}
 		return null;

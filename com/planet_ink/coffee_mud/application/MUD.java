@@ -219,7 +219,7 @@ public class MUD extends Thread implements MudHost
 			    if(espport==0) espport=27755;
 			    espserver=new EspressoServer((MudHost)mudThreads.firstElement(),espport);
 			    espserver.start();
-			    espserver.loadEspressoCommands();
+			    EspressoServer.loadEspressoCommands();
 			}
 			catch(Exception e)
 			{
@@ -320,12 +320,12 @@ public class MUD extends Thread implements MudHost
 				imserver=new Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
-				imserver.start(CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),i3port,imud);
+				Server.start(CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),i3port,imud);
 			}
 		}
 		catch(Exception e)
 		{
-			if(imserver!=null) imserver.shutdown();
+			if(imserver!=null) Server.shutdown();
 			imserver=null;
 		}
 
@@ -597,7 +597,7 @@ public class MUD extends Thread implements MudHost
 		if(imserver!=null)
 		{
 			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
-			imserver.shutdown();
+			Server.shutdown();
 			imserver=null;
 			if(S!=null)S.println("I3Server stopped");
 			Log.sysOut("MUD","I3Server stopped");

@@ -19,7 +19,10 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
-public class MudList implements Serializable {
+public class MudList implements Serializable 
+{
+	public static final long serialVersionUID=0;
+	
     private int id;
     private Hashtable list;
     private int modified;

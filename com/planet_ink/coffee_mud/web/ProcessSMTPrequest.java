@@ -90,7 +90,7 @@ public class ProcessSMTPrequest extends Thread
 		{
 			sout = new DataOutputStream(sock.getOutputStream());
 			sin=new DataInputStream(sock.getInputStream());
-			sout.write(("220 ESMTP "+server.domainName()+" "+server.ServerVersionString+"; "+new IQCalendar().d2String()+cr).getBytes());
+			sout.write(("220 ESMTP "+server.domainName()+" "+SMTPserver.ServerVersionString+"; "+new IQCalendar().d2String()+cr).getBytes());
 			boolean quitFlag=false;
 			boolean dataMode=false;
 			while(!quitFlag)
@@ -256,7 +256,7 @@ public class ProcessSMTPrequest extends Thread
 					if(parm.length()==0)
 					{
 						replyData=(
-						"214-This is "+server.ServerVersionString+cr+
+						"214-This is "+SMTPserver.ServerVersionString+cr+
 						"214-Topics:"+cr+
 						"214-    HELO    EHLO    MAIL    RCPT    DATA"+cr+
 						"214-    RSET    NOOP    QUIT    HELP    VRFY"+cr+

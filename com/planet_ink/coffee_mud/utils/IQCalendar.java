@@ -20,6 +20,7 @@ import java.text.*;
 */
 public class IQCalendar extends GregorianCalendar
 {
+	public static final long serialVersionUID=0;
 
 	public final static long MILI_SECOND=1000;
 	public final static long MILI_MINUTE=MILI_SECOND*60;

@@ -26,8 +26,9 @@ import java.io.*;
  * @version 1.0.0.0
  */
 public class DrawingDir implements Serializable {
-  public String room="";
-  public boolean hasADoor=false;
-  public boolean positionedAlready=false;
-  public boolean exitNull=false;
+	public static final long serialVersionUID=0;
+	public String room="";
+	public boolean hasADoor=false;
+	public boolean positionedAlready=false;
+	public boolean exitNull=false;
 }

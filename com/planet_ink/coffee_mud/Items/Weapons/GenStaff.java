@@ -110,7 +110,7 @@ public class GenStaff extends GenWeapon implements Wand
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-				msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),msg.NO_EFFECT,null));
+				msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.target(),CMMsg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),CMMsg.NO_EFFECT,null));
 			break;
 		default:
 			break;

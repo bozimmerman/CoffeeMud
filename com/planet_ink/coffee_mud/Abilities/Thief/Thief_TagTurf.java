@@ -58,13 +58,13 @@ public class Thief_TagTurf extends ThiefSkill
 			if(msg.source().Name().equals(text()))
 				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This is your turf.",
-										msg.NO_EFFECT,null,
-										msg.NO_EFFECT,null));
+										CMMsg.NO_EFFECT,null,
+										CMMsg.NO_EFFECT,null));
 			else
 				msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,
 										CMMsg.MSG_OK_VISUAL,"This turf has been claimed by "+text()+".",
-										msg.NO_EFFECT,null,
-										msg.NO_EFFECT,null));
+										CMMsg.NO_EFFECT,null,
+										CMMsg.NO_EFFECT,null));
 		}
 	}
 

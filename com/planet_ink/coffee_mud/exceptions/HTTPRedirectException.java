@@ -18,6 +18,7 @@ package com.planet_ink.coffee_mud.exceptions;
 */
 public class HTTPRedirectException extends HTTPServerException
 {
+	public static final long serialVersionUID=0;
 	public HTTPRedirectException(String url)
 	{
 		super(url);

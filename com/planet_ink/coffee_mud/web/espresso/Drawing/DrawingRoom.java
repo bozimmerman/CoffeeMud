@@ -25,7 +25,9 @@ import java.io.*;
  * @author not attributable
  * @version 1.0.0.0
  */
-public class DrawingRoom implements Serializable {
+public class DrawingRoom implements Serializable 
+{
+  public static final long serialVersionUID=0;
   public int x = 0;
   public int y = 0;
   public int z = 0;

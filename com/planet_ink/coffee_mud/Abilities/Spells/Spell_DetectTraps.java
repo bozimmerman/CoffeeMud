@@ -127,7 +127,7 @@ public class Spell_DetectTraps extends Spell
 			}
 			else
 			{
-				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,msg.NO_EFFECT,msg.NO_EFFECT,null);
+				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);
 			}
 		}

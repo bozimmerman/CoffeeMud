@@ -17,6 +17,7 @@ package com.planet_ink.coffee_mud.exceptions;
 */
 public class BadEmailAddressException extends CoffeeMudException
 {
+	public static final long serialVersionUID=0;
 	public BadEmailAddressException(String s)
 	{
 		super(s);

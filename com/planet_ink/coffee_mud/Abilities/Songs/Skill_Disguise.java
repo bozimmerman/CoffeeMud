@@ -47,7 +47,7 @@ public class Skill_Disguise extends BardSkill
 		//0!     1!      2!    3!     4!       5!     6!      7!
 		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT"};
 	private final static int[] levels={2,10,4,12,6,8,0,18};
-	protected final static String[] values=new String[whats.length];
+	protected String[] values=new String[whats.length];
 
 	public void affectEnvStats(Environmental myHost, EnvStats affectableStats)
 	{

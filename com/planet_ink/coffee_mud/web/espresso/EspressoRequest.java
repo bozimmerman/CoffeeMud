@@ -73,7 +73,7 @@ public class EspressoRequest extends Thread {
   {
     Object response;
     if((command!=null) && (param!=null))
-      return server.runCommand(command,param);
+      return EspressoServer.runCommand(command,param);
     return null;
   }
 

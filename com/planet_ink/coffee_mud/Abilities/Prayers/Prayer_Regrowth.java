@@ -89,7 +89,7 @@ public class Prayer_Regrowth extends Prayer
 						if(found) break;
 					}
 					if((found)&&(missLimb!=null))
-						Amp.unamputate(target, Amp, missLimb.toLowerCase());
+						Amputation.unamputate(target, Amp, missLimb.toLowerCase());
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();

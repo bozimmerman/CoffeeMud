@@ -3884,7 +3884,7 @@ public class Scriptable extends StdBehavior
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setMiscText(m2);
-					if((A.classificationCode()&Ability.ALL_CODES)==A.PROPERTY)
+					if((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY)
 						newTarget.addNonUninvokableEffect(A);
 					else
 						A.invoke(monster,Util.parse(m2),newTarget,true,0);

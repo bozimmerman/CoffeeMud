@@ -26,7 +26,9 @@ package com.planet_ink.coffee_mud.i3.net;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-public class InvalidNameException extends Exception {
+public class InvalidNameException extends Exception 
+{
+	public static final long serialVersionUID=0;
     /**
      * Constructs a new invalid name exception with
      * the specified reason.

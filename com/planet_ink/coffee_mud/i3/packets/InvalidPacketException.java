@@ -15,7 +15,9 @@ package com.planet_ink.coffee_mud.i3.packets;
  * limitations under the License.
  *
  */
-public class InvalidPacketException extends I3Exception {
+public class InvalidPacketException extends I3Exception 
+{
+	public static final long serialVersionUID=0;
     public InvalidPacketException() {
         super("Invalid packet.");
     }
