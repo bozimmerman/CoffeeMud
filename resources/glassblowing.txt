@@ -1,11 +1,8 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+Glass Cup	1	20	10	1	GenWater		5
+Mug	1	20	10	1	GenWater		5
+Plate	1	20	10	1	GenContainer		5
+Glass Pot	1	30	20	1	GenWater		15
+Glass Pan	1	30	20	1	GenContainer		15
+Pitcher	1	30	20	1	GenWater		15
+Mirror	5	60	40	100	GenMirror
+Wand	12	30	20	3	GenWand
