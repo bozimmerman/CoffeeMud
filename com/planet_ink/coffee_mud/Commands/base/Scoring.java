@@ -42,7 +42,8 @@ public class Scoring
 		throws IOException
 	{
 		if(mob.isMonster()) return;
-		String pwd=mob.session().prompt("Re-enter your password:","");
+		mob.tell("^HThis will delete your player from the system FOREVER!");
+		String pwd=mob.session().prompt("If that's what you want, re-enter your password:","");
 		if(pwd.length()==0) return;
 		if(!pwd.equalsIgnoreCase(mob.password()))
 		{

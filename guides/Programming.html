@@ -273,6 +273,7 @@ etc.</FONT>
 		Username="a super sword";
 		setDescription("A long super duper sword!"); 
 		setDisplayText("Someone left their super sword here.");
+		setSecretIdentity(description());
 		
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		setBaseValue(500);
@@ -285,7 +286,34 @@ etc.</FONT>
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>What is shown above is entirely sufficient for the creation of a StdWeapon.  The material, weight, attack
-and damage describe it completely.  Other classes, however, have different requirements.  For instance, StdArmor:</FONT>
+and damage describe it completely.  However, what if we wanted a missile weapon?</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewBow()
+	{
+		super();
+
+		Username="a super bow";
+		setDescription("A long super duper bow!"); 
+		setDisplayText("Someone left their super bow here.");
+		setSecretIdentity(description());
+		
+		setMaterial(EnvResource.RESOURCE_OAK);
+		setBaseValue(5000);
+		baseEnvStats.setWeight(15);
+		baseEnvStats.setAttackAdjustment(20);
+		baseEnvStats.setDamage(5);
+		setRanges(1,5);
+		setAmmunitionType("arrows");
+		recoverEnvStats();
+	}
+	
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>You'll notice we added two new mathods, setRanges, and setAmmunitionType.  With the
+former, we specify that this is a ranged-only weapon, usable from range 1 (0=melee) to range 5.  The
+ammunition type specifies that it uses arrows. Other classes, however, have different 
+requirements altogether.  For instance, StdArmor:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewArmor()
@@ -295,6 +323,7 @@ and damage describe it completely.  Other classes, however, have different requi
 		Username="a super bracer";
 		setDescription("A super duper bracer"); 
 		setDisplayText("Someone left their super bracer here.");
+		setSecretIdentity(description());
 		
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		setBaseValue(100);
@@ -319,6 +348,7 @@ true.  Now, a StdContainer:</FONT>
 		Username="a super bag";
 		setDescription("A super duper bag"); 
 		setDisplayText("Someone left their super bag here.");
+		setSecretIdentity(description());
 		
 		setBaseValue(50);
 		setLidsNLocks(false,true,false,false);
@@ -343,6 +373,7 @@ silly!&nbsp;  Now, a StdDrink container:</FONT>
 		Username="a super cup";
 		setDescription("A super duper cup"); 
 		setDisplayText("Someone left their super bag here.");
+		setSecretIdentity(description());
 		
 		setMaterial(EnvResource.RESOURCE_LEATHER);
 		setBaseValue(5);
@@ -367,6 +398,7 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 		Username="a super crumb";
 		setDescription("A super duper crumb");
 		setDisplayText("Someone left their super crumbs.");
+		setSecretIdentity(description());
 		
 		setBaseValue(1);
 		setMaterial(EnvResource.RESOURCE_MEAT);
@@ -386,6 +418,7 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 		Username="a bed";
 		setDescription("A bed");
 		setDisplayText("A bed is here");
+		setSecretIdentity(description());
 		
 		setBaseValue(100);
 		setMobCapacity(2);
@@ -405,6 +438,7 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 		Username="a pile of coins";
 		setDescription("A pile of coins");
 		setDisplayText("Someone left their money here.");
+		setSecretIdentity(description());
 		
 		setBaseValue(0);
 		setMaterial(EnvResource.RESOURCE_GOLD);
@@ -414,22 +448,98 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>The StdDrink created above is an enormous cup of milk!  You'll notice the capacity is 0, meaning 
-that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
+<P><FONT size=4>    Notice that the base value of  the coins is 0, it's the Ability 
+score that does all the work.&nbsp; Now, to  a magical StdPill:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
-	public MyNewFood()
+	public MyNewPill()
 	{
 		super();
 
-		Username="a super crumb";
-		setDescription("A super duper crumb");
-		setDisplayText("Someone left their super crumbs.");
+		Username="a super pill";
+		setDescription("A super duper pill");
+		setDisplayText("Someone left their super pill.");
+		setSecretIdentity("");
 		
 		setBaseValue(1);
 		setMaterial(EnvResource.RESOURCE_MEAT);
 		setNourishment(500);
 		baseEnvStats.setWeight(1);
+		setSpellList("Spell_Sleep;Prayer_CureLightWounds");
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>The spells cast on the eater are listed by their Class names, seperated
+by semicolons.  The secret identity is also trimmed out, since the system will handle
+that automatically.  Also notice that the StdPill resembles StdFood except for the addition
+of the setSpellList method.  In the exact same way, the StdPotion class resembles the
+StdDrink class except that it has an identical setSpellList method added to IT.  So, in
+the interests of saving a little sand for future generations, I would enumerate the 
+StdPotion.  We can, however, show off a StdScroll:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewScroll()
+	{
+		super();
+
+		Username="a super scroll";
+		setDescription("A super duper scroll");
+		setDisplayText("Someone left their super scroll.");
+		setSecretIdentity("");
+		
+		setBaseValue(100);
+		setMaterial(EnvResource.RESOURCE_PAPER);
+		baseEnvStats.setWeight(1);
+		setScrollSpells("Spell_Sleep;Prayer_CureLightWounds");
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>Not too difficult, right?  Looks like the other two, but the spell setting
+method has a different name.  Now, let's look at a StdWand:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewWand()
+	{
+		super();
+
+		Username="a wand";
+		setDescription("A magic wand");
+		setDisplayText("Someone left their magic wand.");
+		setSecretIdentity("");
+		
+		setBaseValue(1000);
+		setMaterial(EnvResource.RESOURCE_OAK);
+		baseEnvStats.setWeight(1);
+		setSpell(CMClass.getAbility("Spell_Fireball"));
+		setUsesRemaining(50);
+		recoverEnvStats();
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>In this case, we made use of the "uses remaining" field to set the number
+of charges for the wand.  The way the spell is set is also different.  A wand may only 
+have one spell, and the actual Ability object for the spell must be passed in, instead of
+just the class name as we did before.  You will find that this is also how the StdStaff 
+works.  The StdStaff resembles the StdWeapon we did above, except that the additional
+setSpell and setUsesRemaining calls become appropriate to the constructor.  </FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewWand()
+	{
+		super();
+
+		Username="a wand";
+		setDescription("A magic wand");
+		setDisplayText("Someone left their magic wand.");
+		setSecretIdentity("");
+		
+		setBaseValue(1000);
+		setMaterial(EnvResource.RESOURCE_OAK);
+		baseEnvStats.setWeight(1);
+		setSpell(CMClass.getAbility("Spell_Fireball"));
+		setUsesRemaining(50);
 		recoverEnvStats();
 	}
 </pre>

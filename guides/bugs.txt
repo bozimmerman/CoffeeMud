@@ -1,2 +1,0 @@
-Add a way to suicide (finish Retire command)
-
