@@ -1372,7 +1372,9 @@ public class Generic
 		}
 		if(E instanceof DeadBody)
 		{
-			((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			try{
+				((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			} catch(Exception e){}
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{
