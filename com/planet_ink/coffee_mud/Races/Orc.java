@@ -40,9 +40,9 @@ public class Orc extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(190+weightModifier);
 	}
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
+		super.startRacing(mob,verifyOnly);
 		Ability A=CMClass.getAbility("Orcish");
 		if(A!=null)
 		{

@@ -30,7 +30,7 @@ public class HeavenlyServent extends StdMOB
 		baseEnvStats().setLevel(10);
 		baseEnvStats().setArmor(0);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints(200);
 

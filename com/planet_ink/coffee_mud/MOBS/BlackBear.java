@@ -27,7 +27,7 @@ public class BlackBear extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,16);
 		baseCharStats().setStat(CharStats.DEXTERITY,18);
 		baseCharStats().setMyRace(CMClass.getRace("Bear"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setDamage(6);
 		baseEnvStats().setSpeed(2.0);

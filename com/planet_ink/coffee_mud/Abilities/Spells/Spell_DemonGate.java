@@ -121,7 +121,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Unique"));
-		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),'M');
+		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		newMOB.setName("the great demonbeast");
 		newMOB.setDisplayText("a horrendous demonbeast is stalking around here");

@@ -95,7 +95,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
-		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),(char)newMOB.baseCharStats().getStat(CharStats.GENDER));
+		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.setName("a flying warhorse");
 		newMOB.setDisplayText("a warhorse with broad powerful wings stands here");
 		newMOB.setDescription("A ferocious, fleet of foot, flying friend.");

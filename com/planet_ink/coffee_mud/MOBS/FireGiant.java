@@ -24,7 +24,7 @@ public class FireGiant extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,20);
 		baseCharStats().setStat(CharStats.DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setDamage(20);
 		baseEnvStats().setSpeed(1.0);

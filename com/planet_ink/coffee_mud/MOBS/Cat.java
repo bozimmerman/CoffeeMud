@@ -32,7 +32,7 @@ public class Cat extends StdMOB
 		baseEnvStats().setArmor(10);
 
 		baseCharStats().setMyRace(CMClass.getRace("Cat"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 6) + 2);
 
 		recoverMaxState();

@@ -38,6 +38,7 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Song_Valor",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_Appraise",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Song_Armor",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Song_Clumsiness",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
@@ -90,35 +91,31 @@ public class Bard extends StdCharClass
 		return true;
 	}
 
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
-		super.newCharacter(mob, isBorrowedClass);
-
-		Hashtable extras=new Hashtable();
-		int q=-1;
-		for(int r=0;r<7;r++)
+		super.startCharacter(mob, isBorrowedClass, verifyOnly);
+		if(!verifyOnly)
 		{
-			q=-1;
-			while(q<5)
+			Hashtable extras=new Hashtable();
+			int q=-1;
+			for(int r=0;r<7;r++)
 			{
-				q=(int)Math.round(Math.floor(Math.random()*21.0))+5;
-				if(extras.get(new Integer(q))==null)
-					extras.put(new Integer(q), new Integer(q));
-				else
-					q=-1;
+				q=-1;
+				while(q<5)
+				{
+					q=(int)Math.round(Math.floor(Math.random()*21.0))+5;
+					if(extras.get(new Integer(q))==null)
+						extras.put(new Integer(q), new Integer(q));
+					else
+						q=-1;
+				}
 			}
-		}
 
 		
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if(A.qualifyingLevel(mob)>=0)
+			for(int a=0;a<CMClass.abilities.size();a++)
 			{
-				if(CMAble.getDefaultGain(ID(),A.ID()))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-				else
-				if((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((A.qualifyingLevel(mob)>=0)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG))
 				{
 					if((A.qualifyingLevel(mob)<5)&&(A.qualifyingLevel(mob)>=1))
 						giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
@@ -128,8 +125,6 @@ public class Bard extends StdCharClass
 				}
 			}
 		}
-		if(!mob.isMonster())
-			outfit(mob);
 	}
 
 
@@ -150,8 +145,4 @@ public class Bard extends StdCharClass
 		return super.okAffect(myChar, affect);
 	}
 
-	public void level(MOB mob)
-	{
-		super.level(mob);
-	}
 }

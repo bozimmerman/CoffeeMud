@@ -46,12 +46,13 @@ public class SysOpSkills
 		mob.baseState().setHitPoints(20);
 		mob.baseState().setMovement(100);
 		mob.baseState().setMana(100);
-		mob.baseCharStats().getMyRace().newCharacter(mob);
+		mob.baseCharStats().getMyRace().startRacing(mob,false);
+		mob.baseCharStats().getMyRace().outfit(mob);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		mob.baseCharStats().getMyClass().newCharacter(mob,false);
+		mob.baseCharStats().getMyClass().startCharacter(mob,false,false);
 
 		for(int lvl=1;lvl<level;lvl++)
 		{

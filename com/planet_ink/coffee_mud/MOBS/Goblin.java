@@ -18,7 +18,7 @@ public class Goblin extends StdMOB
 
 		setMOBSpecifics(goblinType);
 		baseCharStats().setMyRace(CMClass.getRace("Goblin"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 
 		recoverMaxState();

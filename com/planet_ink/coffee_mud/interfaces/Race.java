@@ -5,7 +5,7 @@ public interface Race
 	public String ID();
 	public String name();
 	public boolean playerSelectable();
-	public void newCharacter(MOB mob);
+	public void startRacing(MOB mob, boolean verifyOnly);
 	public void setHeightWeight(EnvStats stats, char gender);
 	public void outfit(MOB mob);
 	public Weapon myNaturalWeapon();

@@ -1,11 +1,11 @@
-package com.planet_ink.coffee_mud.Abilities.Misc;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Ranger_Track extends StdAbility
+public class Skill_Track extends StdAbility
 {
 	private MOB trackingWhom=null;
 	private Vector theTrail=null;
@@ -13,7 +13,7 @@ public class Ranger_Track extends StdAbility
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
 
-	public Ranger_Track()
+	public Skill_Track()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -36,7 +36,7 @@ public class Ranger_Track extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Ranger_Track();
+		return new Skill_Track();
 	}
 
 	public int nextDirectionFromHere(Room location)
@@ -216,7 +216,7 @@ public class Ranger_Track extends StdAbility
 			return false;
 		}
 
-		Ranger_Track oldTrack=(Ranger_Track)mob.fetchAffect(this.ID());
+		Skill_Track oldTrack=(Skill_Track)mob.fetchAffect(this.ID());
 		if(oldTrack!=null)
 		{
 			mob.tell(mob,null,"You stop tracking "+trackingWhom.name()+".");
@@ -262,7 +262,7 @@ public class Ranger_Track extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(tracking "+trackingWhom.name()+")";
-				Ranger_Track newOne=(Ranger_Track)this.copyOf();
+				Skill_Track newOne=(Skill_Track)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();

@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Misc;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Cleric_Turn extends StdAbility
+public class Skill_TurnUndead extends StdAbility
 {
-	public Cleric_Turn()
+	public Skill_TurnUndead()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,12 +31,12 @@ public class Cleric_Turn extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Cleric_Turn();
+		return new Skill_TurnUndead();
 	}
 
 	public int classificationCode()
 	{
-		return Ability.PRAYER;
+		return Ability.SKILL;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -37,9 +37,9 @@ public class Wyvern extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
+		super.startRacing(mob,verifyOnly);
 		Ability A=CMClass.getAbility("Draconic");
 		if(A!=null)
 		{

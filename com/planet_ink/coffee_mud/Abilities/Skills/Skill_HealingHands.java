@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Misc;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Paladin_LayHands extends StdAbility
+public class Skill_HealingHands extends StdAbility
 {
-	public Paladin_LayHands()
+	public Skill_HealingHands()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -32,7 +32,7 @@ public class Paladin_LayHands extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Paladin_LayHands();
+		return new Skill_HealingHands();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

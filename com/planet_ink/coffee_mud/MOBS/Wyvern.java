@@ -27,7 +27,7 @@ public class Wyvern extends StdMOB
 		baseCharStats().setStat(CharStats.STRENGTH,18);
 		baseCharStats().setStat(CharStats.DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Wyvern"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setDamage(16);
 		baseEnvStats().setSpeed(2.0);

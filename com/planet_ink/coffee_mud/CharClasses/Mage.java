@@ -268,63 +268,58 @@ public class Mage extends StdCharClass
 		return true;
 	}
 
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
-		super.newCharacter(mob, isBorrowedClass);
+		super.startCharacter(mob, isBorrowedClass, verifyOnly);
 
-		int numTotal=0;
-		for(int a=0;a<CMClass.abilities.size();a++)
+		if(!verifyOnly)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if(A.qualifyingLevel(mob)>0)
+			int numTotal=0;
+			for(int a=0;a<CMClass.abilities.size();a++)
 			{
-				if(CMAble.getDefaultGain(ID(),A.ID()))
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-				else
-				if((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((A.qualifyingLevel(mob)>0)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 					numTotal++;
 			}
-		}
-		Hashtable given=new Hashtable();
-		for(int level=2;level<26;level++)
-		{
-			int numSpells=3;
-			if(level<8)
-				numSpells=3;
-			else
-			if(level<19)
-				numSpells=2;
-			else
-				numSpells=1;
-			int numLevel=0;
-			while(numLevel<numSpells)
+			Hashtable given=new Hashtable();
+			for(int level=2;level<26;level++)
 			{
-				int randSpell=(int)Math.round(Math.random()*numTotal);
-				for(int a=0;a<CMClass.abilities.size();a++)
+				int numSpells=3;
+				if(level<8)
+					numSpells=3;
+				else
+				if(level<19)
+					numSpells=2;
+				else
+					numSpells=1;
+				int numLevel=0;
+				while(numLevel<numSpells)
 				{
-					Ability A=(Ability)CMClass.abilities.elementAt(a);
-					if((A.qualifyingLevel(mob)>0)
-					&&(!CMAble.getDefaultGain(ID(),A.ID()))
-					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+					int randSpell=(int)Math.round(Math.random()*numTotal);
+					for(int a=0;a<CMClass.abilities.size();a++)
 					{
-						if(randSpell==0)
+						Ability A=(Ability)CMClass.abilities.elementAt(a);
+						if((A.qualifyingLevel(mob)>0)
+						&&(!CMAble.getDefaultGain(ID(),A.ID()))
+						&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 						{
-							if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
+							if(randSpell==0)
 							{
-								giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-								given.put(A.ID(),A);
-								numLevel++;
+								if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
+								{
+									giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+									given.put(A.ID(),A);
+									numLevel++;
+								}
+								break;
 							}
-							break;
+							else
+								randSpell--;
 						}
-						else
-							randSpell--;
 					}
 				}
 			}
 		}
-		if(!mob.isMonster())
-			outfit(mob);
 	}
 
 	public void outfit(MOB mob)

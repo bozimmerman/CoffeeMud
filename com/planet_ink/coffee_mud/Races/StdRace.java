@@ -84,11 +84,17 @@ public class StdRace implements Race
 	public void level(MOB mob)
 	{
 	}
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
-		mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
-
+		if(!verifyOnly)
+		{
+			if(mob.baseEnvStats().level()==1)
+			{
+				mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
+				mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
+			}
+			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+		}
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -32,6 +32,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Peek",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Skill_Appraise",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
@@ -85,19 +86,6 @@ public class Thief extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
-	{
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-		}
-		if(!mob.isMonster())
-			outfit(mob);
-		super.newCharacter(mob, isBorrowedClass);
-	}
-
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))

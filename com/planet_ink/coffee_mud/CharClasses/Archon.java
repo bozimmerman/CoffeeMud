@@ -33,9 +33,20 @@ public class Archon extends StdCharClass
 		return false;
 	}
 
-	public void logon(MOB mob)
+	public void outfit(MOB mob)
 	{
-		super.logon(mob);
+		Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");
+		if(mob.fetchInventory(w.ID())==null)
+		{
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
+		}
+	}
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	{
+		// archons ALWAYS use borrowed abilities
+		super.startCharacter(mob, true, verifyOnly);
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
@@ -55,22 +66,6 @@ public class Archon extends StdCharClass
 					giveMobAbility(mob,A,100,true);
 			}
 		}
-	}
-
-	public void outfit(MOB mob)
-	{
-		Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");
-		if(mob.fetchInventory(w.ID())==null)
-		{
-			mob.addInventory(w);
-			if(!mob.amWearingSomethingHere(Item.WIELD))
-				w.wearAt(Item.WIELD);
-		}
-	}
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
-	{
-		super.newCharacter(mob, isBorrowedClass);
-		logon(mob);
 	}
 
 	public void level(MOB mob)

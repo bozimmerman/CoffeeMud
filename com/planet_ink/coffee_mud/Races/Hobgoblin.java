@@ -34,9 +34,9 @@ public class Hobgoblin extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,8);
 	}
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
+		super.startRacing(mob,verifyOnly);
 		Ability A=CMClass.getAbility("Orcish");
 		if(A!=null)
 		{

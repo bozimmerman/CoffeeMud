@@ -13,8 +13,8 @@ public class HalfElf extends StdRace
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Half Elf";
 		// inches
-		shortestMale=59;
-		shortestFemale=55;
+		shortestMale=64;
+		shortestFemale=59;
 		heightVariance=12;
 		// pounds
 		lightestWeight=90;
@@ -22,9 +22,9 @@ public class HalfElf extends StdRace
 	}
 	public boolean playerSelectable(){return true;}
 
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
+		super.startRacing(mob,verifyOnly);
 		mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
@@ -32,11 +32,9 @@ public class HalfElf extends StdRace
 			A=(Ability)A.newInstance();
 			mob.addAbility(A);
 			A.autoInvocation(mob);
-			if(mob.isMonster())
+			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		if(!mob.isMonster())
-			outfit(mob);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

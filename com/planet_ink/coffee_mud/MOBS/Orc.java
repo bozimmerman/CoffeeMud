@@ -28,7 +28,7 @@ public class Orc extends StdMOB
 		baseCharStats().setStat(CharStats.INTELLIGENCE,6);
 		baseCharStats().setStat(CharStats.CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("Orc"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

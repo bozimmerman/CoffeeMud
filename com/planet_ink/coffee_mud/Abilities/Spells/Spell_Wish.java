@@ -489,8 +489,10 @@ public class Spell_Wish extends Spell
 				{
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					((MOB)target).baseCharStats().setMyRace(R);
-					((MOB)target).baseCharStats().getMyRace().setHeightWeight(target.baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
+					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
 					((MOB)target).recoverCharStats();
+					((MOB)target).recoverEnvStats();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
 					return true;
 				}
@@ -511,7 +513,9 @@ public class Spell_Wish extends Spell
 				{
 					mob.baseCharStats().getMyClass().unLevel(mob);
 					((MOB)target).baseCharStats().setMyClass(C);
+					((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
+					((MOB)target).recoverEnvStats();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now a "+C.name()+"!");
 					return true;
 				}
@@ -529,7 +533,6 @@ public class Spell_Wish extends Spell
 				x=myWish.indexOf(" ABLE TO "); if((x>=0)&&(x+8>code)) code=x+8;
 				x=myWish.indexOf(" CAST "); if((x>=0)&&(x+5>code)) code=x+5;
 				x=myWish.indexOf(" SING "); if((x>=0)&&(x+5>code)) code=x+5;
-				x=myWish.indexOf(" PRAY "); if((x>=0)&&(x+5>code)) code=x+5;
 				x=myWish.indexOf(" PRAY FOR "); if((x>=0)&&(x+9>code)) code=x+9;
 				if((code>=0)&&(code<myWish.length()))
 				{

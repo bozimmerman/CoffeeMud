@@ -7,7 +7,7 @@ public interface CharClass
 	public boolean playerSelectable();
 	public boolean qualifiesForThisClass(MOB mob);
 
-	public void newCharacter(MOB mob, boolean isBorrowedClass);
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount);
 	public void loseExperience(MOB mob, int amount);
 	public Hashtable dispenseExperience(MOB killer, MOB killed);
@@ -41,6 +41,4 @@ public interface CharClass
 	public int getLevelArmor(MOB mob);
 	public int getLevelDamage(MOB mob);
 	public int[] maxStat();
-
-	public void logon(MOB mob);
 }

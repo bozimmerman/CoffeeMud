@@ -18,7 +18,7 @@ public class GenUndead extends GenMob
 		setWimpHitPoint(0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 		baseCharStats().setStat(CharStats.CHARISMA,2);
 
 		baseEnvStats().setAbility(10);

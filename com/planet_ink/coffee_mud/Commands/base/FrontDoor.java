@@ -106,7 +106,10 @@ public class FrontDoor
 					ExternalPlay.DBUpdateMOB(mob);
 					if(mob.baseCharStats()!=null)
 						if(mob.baseCharStats().getMyClass()!=null)
-							mob.baseCharStats().getMyClass().logon(mob);
+						{
+							mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
+							mob.baseCharStats().getMyRace().startRacing(mob,true);
+						}
 				}
 				mob.bringToLife(mob.location());
 				ExternalPlay.DBReadFollowers(mob);
@@ -207,7 +210,7 @@ public class FrontDoor
 					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
 
 				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
-				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+				mob.baseCharStats().getMyRace().startRacing(mob,false);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
 
@@ -307,14 +310,16 @@ public class FrontDoor
 				mob.addInventory(t);
 				mob.setWimpHitPoint(5);
 
-				mob.baseCharStats().getMyRace().newCharacter(mob);
+				mob.baseCharStats().getMyRace().startRacing(mob,false);
+				mob.baseCharStats().getMyRace().outfit(mob);
 
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.resetToMaxState();
 
-				mob.baseCharStats().getMyClass().newCharacter(mob,false);
+				mob.baseCharStats().getMyClass().startCharacter(mob,false,false);
+				mob.baseCharStats().getMyClass().outfit(mob);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
 

@@ -13,7 +13,7 @@ public class Skill_Write extends StdAbility
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Write";
-		displayText="(in the mystical realm of magic)";
+		displayText="";
 		miscText="";
 
 		triggerStrings.addElement("WRITE");

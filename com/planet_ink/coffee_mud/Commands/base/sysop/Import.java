@@ -1126,7 +1126,7 @@ public class Import
 				case 5: M.baseEnvStats().setWeight(2000); break;
 				}
 				// ignore the above, coffeemud does it better!
-				M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+				M.baseCharStats().getMyRace().startRacing(M,false);
 				int numAbiles=M.numAbilities();
 				//if(Util.isSet(off,0)) // no area killers in coffeemud
 				//if(Util.isSet(off,1)) // no circling in coffeemud
@@ -1351,7 +1351,7 @@ public class Import
 						M.addAbility(CMClass.getAbility("Undead_ColdTouch"));
 						M.addAbility(CMClass.getAbility("Undead_LifeDrain"));
 						M.baseCharStats().setMyRace(CMClass.getRace("Undead"));
-						M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+						M.baseCharStats().getMyRace().startRacing(M,false);
 					}
 					else
 					if(special.equals("SPEC_GUARD"))

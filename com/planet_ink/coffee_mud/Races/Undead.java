@@ -22,11 +22,6 @@ public class Undead extends StdRace
 	}
 	public boolean playerSelectable(){return false;}
 
-	public void newCharacter(MOB mob)
-	{
-		super.newCharacter(mob);
-	}
-
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

@@ -138,7 +138,7 @@ public class Dragon extends StdMOB
 		baseCharStats().setStat(CharStats.CONSTITUTION,13 + (DragonAge*2));
 		baseCharStats().setStat(CharStats.CHARISMA,13 + (DragonAge*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		// ===== if the dragon is an adult or larger add the swallow whole
 		Stomach=null;

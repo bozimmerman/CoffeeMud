@@ -1148,7 +1148,7 @@ public class Generic
 				if(R!=null)
 				{
 					E.baseCharStats().setMyRace(R);
-					E.baseCharStats().getMyRace().setHeightWeight(E.baseEnvStats(),(char)E.baseCharStats().getStat(CharStats.GENDER));
+					E.baseCharStats().getMyRace().startRacing(mob,false);
 				}
 				else
 					mob.tell("Unknown race! Try 'LIST'.");

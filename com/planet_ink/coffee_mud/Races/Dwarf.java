@@ -22,20 +22,18 @@ public class Dwarf extends StdRace
 	}
 	public boolean playerSelectable(){return true;}
 
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
+		super.startRacing(mob,verifyOnly);
 		Ability A=CMClass.getAbility("Dwarven");
 		if(A!=null)
 		{
 			A=(Ability)A.newInstance();
 			mob.addAbility(A);
 			A.autoInvocation(mob);
-			if(mob.isMonster())
+			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		if(!mob.isMonster())
-			outfit(mob);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

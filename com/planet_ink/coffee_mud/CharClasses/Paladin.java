@@ -37,13 +37,13 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Paladin_LayHands",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_LayHands",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",75,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Cleric_Turn",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
@@ -116,19 +116,6 @@ public class Paladin extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
-	{
-		super.newCharacter(mob, isBorrowedClass);
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-		}
-		if(!mob.isMonster())
-			outfit(mob);
-	}
-
 	public void level(MOB mob)
 	{
 		super.level(mob);

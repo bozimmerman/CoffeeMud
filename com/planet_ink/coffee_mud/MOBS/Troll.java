@@ -26,7 +26,7 @@ public class Troll extends StdMOB
 		baseCharStats().setStat(CharStats.INTELLIGENCE,8 + Math.abs(randomizer.nextInt()) % 3);
 		baseCharStats().setStat(CharStats.CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("Troll"));
-		baseCharStats().getMyRace().setHeightWeight(baseEnvStats(),(char)baseCharStats().getStat(CharStats.GENDER));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(8);

@@ -22,23 +22,18 @@ public class Halfling extends StdRace
 	}
 	public boolean playerSelectable(){return true;}
 
-	public void newCharacter(MOB mob)
+	public void startRacing(MOB mob, boolean verifyOnly)
 	{
-		super.newCharacter(mob);
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
-		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)-1);
-		mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
+		super.startRacing(mob,verifyOnly);
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
 		{
 			A=(Ability)A.newInstance();
 			mob.addAbility(A);
 			A.autoInvocation(mob);
-			if(mob.isMonster())
+			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		if(!mob.isMonster())
-			outfit(mob);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -30,7 +30,7 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Cleric_Turn",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_TurnUndead",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
@@ -160,19 +160,6 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
-	public void newCharacter(MOB mob, boolean isBorrowedClass)
-	{
-		super.newCharacter(mob, isBorrowedClass);
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-		}
-		if(!mob.isMonster())
-			outfit(mob);
-	}
-
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
@@ -182,9 +169,5 @@ public class Cleric extends StdCharClass
 			if(!mob.amWearingSomethingHere(Item.WIELD))
 				w.wearAt(Item.WIELD);
 		}
-	}
-	public void level(MOB mob)
-	{
-		super.level(mob);
 	}
 }

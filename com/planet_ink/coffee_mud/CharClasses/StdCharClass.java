@@ -56,14 +56,19 @@ public class StdCharClass implements CharClass
 		return maxStat;
 	}
 
-	public void logon(MOB mob)
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
-	}
-
-	public void newCharacter(MOB mob, boolean isBorrowed)
-	{
-		mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
-		mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
+		if(!verifyOnly)
+		{
+			mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
+			mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
+		}
+		for(int a=0;a<CMClass.abilities.size();a++)
+		{
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
+		}
 	}
 
 	public void outfit(MOB mob)
@@ -241,7 +246,7 @@ public class StdCharClass implements CharClass
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
-		mob.baseCharStats().getMyClass().newCharacter(mob,true);
+		mob.baseCharStats().getMyClass().startCharacter(mob,true,false);
 
 		for(int lvl=1;lvl<level;lvl++)
 		{

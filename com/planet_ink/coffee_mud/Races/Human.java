@@ -14,8 +14,8 @@ public class Human extends StdRace
 		name=myID;
 		trainsAtFirstLevel=2;
 		// inches
-		shortestMale=64;
-		shortestFemale=60;
+		shortestMale=68;
+		shortestFemale=64;
 		heightVariance=12;
 		// pounds
 		lightestWeight=100;
@@ -23,14 +23,6 @@ public class Human extends StdRace
 	}
 
 	public boolean playerSelectable(){return true;}
-
-	public void newCharacter(MOB mob)
-	{
-		super.newCharacter(mob);
-
-		if(!mob.isMonster())
-			outfit(mob);
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
