@@ -303,7 +303,9 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case Affect.TYP_SLEEP:
-			if(amRiding(affect.source()))
+			if((amRiding(affect.source()))
+			&&(((!affect.amITarget(this))&&(affect.target()!=null))
+			   ||((rideBasis()!=Rideable.RIDEABLE_SLEEP)&&(rideBasis()!=Rideable.RIDEABLE_ENTERIN))))
 			{
 				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
 				affect.source().setRiding(this);

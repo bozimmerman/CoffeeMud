@@ -308,7 +308,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				{
 					try
 					{
-						thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1), "UTF-8")));
+						if(thisParamName.equalsIgnoreCase("RAWTEXT"))
+							thisParamValue=URLDecoder.decode(thisParam.substring(eq+1), "UTF-8");
+						else
+							thisParamValue=preFilter(new StringBuffer(URLDecoder.decode(thisParam.substring(eq+1), "UTF-8")));
 					}
 					catch(UnsupportedEncodingException e)
 					{

@@ -69,7 +69,7 @@
 		@endif@
 	@endif@
 @endif@
-<TEXTAREA ROWS=25 COLS=85 NAME=SCRIPT>@if?!CheckReqParm?FILE=@ 
+<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT>@if?!CheckReqParm?FILE=@ 
 @FileInfo?DATA@ @endif@</TEXTAREA>
 <BR>
 <TABLE WIDTH=100% BORDER=0>

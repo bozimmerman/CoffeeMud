@@ -51,7 +51,7 @@ public class FileMgr extends StdWebMacro
 				if(parms.containsKey("CREATE"))
 				{
 					FileWriter FW=new FileWriter(F,false);
-					String s=httpReq.getRequestParameter("SCRIPT");
+					String s=httpReq.getRequestParameter("RAWTEXT");
 					if(s==null) return "File `"+last+"` not updated -- no buffer!";
 					FW.write(s);
 					FW.flush();
@@ -62,7 +62,7 @@ public class FileMgr extends StdWebMacro
 				if(parms.containsKey("APPEND"))
 				{
 					FileWriter FW=new FileWriter(F,true);
-					String s=httpReq.getRequestParameter("SCRIPT");
+					String s=httpReq.getRequestParameter("RAWTEXT");
 					if(s==null) return "File `"+last+"` not appended -- no buffer!";
 					FW.write(s);
 					FW.flush();

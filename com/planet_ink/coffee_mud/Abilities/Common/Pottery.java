@@ -44,7 +44,10 @@ public class Pottery extends CommonSkill
 			||(!Sense.isOnFire(fire))
 			||(!mob.location().isContent(fire))
 			||(mob.isMine(fire)))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -765,7 +765,7 @@ public class Movement extends Scriptable
 		else
 			mountStr=getScr("Movement","sleepson");
 		String sourceMountStr=null;
-		if(Sense.canBeSeenBy(E,mob))
+		if(!Sense.canBeSeenBy(E,mob))
 			sourceMountStr=mountStr;
 		else
 		{

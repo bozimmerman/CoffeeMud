@@ -314,9 +314,11 @@ public class StdGrid extends StdRoom implements GridLocale
 				c=Dice.roll(1,descriptions.size(),-1);
 			gc.setDescription((String)descriptions.elementAt(c));
 		}
+		
 		for(int a=0;a<numAffects();a++)
 			gc.addAffect((Ability)fetchAffect(a).copyOf());
-
+		for(int b=0;b<numBehaviors();b++)
+			gc.addBehavior((Behavior)fetchBehavior(b).copyOf());
 		return gc;
 	}
 

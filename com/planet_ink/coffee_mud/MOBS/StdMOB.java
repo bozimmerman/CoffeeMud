@@ -2333,7 +2333,7 @@ public class StdMOB implements MOB
 		// stat changes!
 		if(Sense.isHidden(thisContainer))
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
-		
+
 		// ensure its out of its previous place
 		Environmental owner=location();
 		if(thisContainer.owner()!=null)
@@ -2348,12 +2348,6 @@ public class StdMOB implements MOB
 		location().delItem(thisContainer);
 		
 		thisContainer.unWear();
-		for(int a=thisContainer.numAffects()-1;a>=0;a--)
-		{
-			Ability A=thisContainer.fetchAffect(a);
-			if((A!=null)&&(!A.ID().equals("ItemRejuv")))
-				A.unInvoke();
-		}
 		
 		if(!isMine(thisContainer))
 			addInventory(thisContainer);

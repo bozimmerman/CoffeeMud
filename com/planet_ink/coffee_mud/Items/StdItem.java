@@ -961,12 +961,6 @@ public class StdItem implements Item
 		myContainer=null;
 
 		if(owner==null) return;
-		for(int a=this.numAffects()-1;a>=0;a--)
-		{
-			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.ID().equals("ItemRejuv")))
-				A.unInvoke();
-		}
 
 		if (owner instanceof Room)
 		{

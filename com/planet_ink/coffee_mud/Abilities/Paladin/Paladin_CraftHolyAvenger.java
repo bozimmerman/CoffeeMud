@@ -28,7 +28,10 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			||(!Sense.isOnFire(fire))
 			||(!mob.location().isContent(fire))
 			||(mob.isMine(fire)))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -69,6 +69,24 @@ public class Skill_Juggle extends StdAbility
 			
 	}
 
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if(!super.okAffect(myHost,msg))
+			return false;
+		if((msg.targetMinor()==Affect.TYP_GET)
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof Item)
+		&&(juggles.contains(msg.target()))
+		&&(affected instanceof MOB)
+		&&(Dice.rollPercentage()<90)
+		&&(msg.source()!=affected))
+		{
+			msg.source().tell(msg.source(),msg.target(),null,"<T-NAME> is moving too fast for you to grab it.");
+			return false;
+		}
+		return true;
+	}
+	
 	private void unJuggle(Item I)
 	{
 		if(I==null) return;
@@ -87,6 +105,8 @@ public class Skill_Juggle extends StdAbility
 			if(A!=null)
 			{
 				I.addAffect(A);
+				A.makeLongLasting();
+				A.setBorrowed(I,true);
 				I.recoverEnvStats();
 			}
 		}
