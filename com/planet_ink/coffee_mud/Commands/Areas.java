@@ -18,7 +18,10 @@ public class Areas extends StdCommand
 		{
 			Area A=(Area)a.nextElement();
 			if(Sense.canAccess(mob,A))
-				areasVec.addElement(A.name());
+				if(Sense.isHidden(A))
+					areasVec.addElement(" "+A.name());
+				else
+					areasVec.addElement("("+A.name()+")");
 		}
 		Collections.sort((java.util.List)areasVec);
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
@@ -30,8 +33,7 @@ public class Areas extends StdCommand
 				msg.append("\n\r");
 				col=1;
 			}
-
-			msg.append(Util.padRight((String)areasVec.elementAt(i),23)+"^N");
+			msg.append(Util.padRight((String)areasVec.elementAt(i),22)+"^N");
 		}
 		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if(!mob.isMonster())

@@ -136,7 +136,7 @@ public class Prop_AbsorbDamage extends Property
 					x=text.indexOf(" ");
 					if(x>0) text=text.substring(0,x).trim();
 					if(text.endsWith("%"))
-						msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(Util.s_int(text.substring(0,text.length()-1)),100.0))));
+						msg.setValue(msg.value()-(int)Math.round(Util.mul(msg.value(),Util.div(Util.s_int(text.substring(0,text.length()-1)),100.0))));
 					else
 						msg.setValue(msg.value()-Util.s_int(text));
 					if(msg.value()<0) msg.setValue(0);

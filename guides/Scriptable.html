@@ -814,25 +814,26 @@ different.</TD></TR></TABLE>&nbsp;</P>
 one of the functions listed in the following chart.&nbsp; All functions must 
 have parenthesis after their names, and most functions require one or more 
 parameters inside the parenthesis.</P>
-<P class=MsoNormal>The parameters usually include a [code].&nbsp; This may be 
-either the string name of either a mob or an item (whichever is appropriate to 
-the function), or a code from the previous chart which represents a mob or an 
-item.&nbsp; The description for each function will specify whether mob names or 
-codes representing mobs are more appropriate, or whether item names or codes 
-representing items are more appropriate.</P>
-<P class=MsoNormal>Here is an example of this code being used in a say 
-statement:</P>
-<P class=MsoNormal><EM>say I am $%isgood($i)% and my favourite number is 
-$%rand()%.</EM></P>
-<P class=MsoNormal>This string would replace the $%.. codes with the results of 
-the given function calls.&nbsp; </P>
-<P class=MsoNormal>Here is the list of accepted functions for the $% code.&nbsp; 
-Where 'monster' is referred to below, you may assume this to be whatever object 
-(mob, item, room, exit) which has the Scriptable behavior on it.&nbsp; Usually 
-this is an npc mob.&nbsp; In the case of an item, it refers to a mob who takes 
-the place of the item for scripting purposes.&nbsp; For this reason, using $i 
-and $I codes, or using functions which only return information about the 
-scripted monster&nbsp;when an item is being scripted is totally useless. </P>
+<P class=MsoNormal>The parameters usually include a 
+[code].&nbsp; This may be either the string name of either a mob or an item 
+(whichever is appropriate to the function), or a code from the previous chart 
+which represents a mob or an item.&nbsp; The description for each function will 
+specify whether mob names or codes representing mobs are more appropriate, or 
+whether item names or codes representing items are more appropriate.</P>
+<P class=MsoNormal>Here is an example of this code being 
+used in a say statement:</P>
+<P class=MsoNormal><EM>say I am 
+$%isgood($i)% and my favourite number is $%rand()%.</EM></P>
+<P class=MsoNormal>This string would replace the $%.. codes 
+with the results of the given function calls.&nbsp; </P>
+<P class=MsoNormal>Here is the list of accepted functions 
+for the $% code.&nbsp; Where 'monster' is referred to below, you may assume this 
+to be whatever object (mob, item, room, exit) which has the Scriptable behavior 
+on it.&nbsp; Usually this is an npc mob.&nbsp; In the case of an item, it refers 
+to a mob who takes the place of the item for scripting purposes.&nbsp; For this 
+reason, using $i and $I codes, or using functions which only return information 
+about the scripted monster&nbsp;when an item is being scripted is totally 
+useless. </P>
 <P class=MsoNormal>
 <TABLE width="100%" bgColor=lightgreen border=1>
   
@@ -856,8 +857,9 @@ scripted monster&nbsp;when an item is being scripted is totally useless. </P>
   <TR>
     <TD>GSTAT([code] [stat variable])</TD>
     <TD>Value of the given stat variable for the given 
-      mob or item.&nbsp; For example: &nbsp;<EM>$%GSTAT($i strength)%</EM>&nbsp; 
-      See the MPGSET command below for a complete list of variables.</TD></TR>
+      mob or item.&nbsp; For example: &nbsp;<EM>$%GSTAT($i 
+      strength)%</EM>&nbsp; See the MPGSET command below for a complete list of 
+      variables.</TD></TR>
   <TR>
     <TD>HAS([code])</TD>
     <TD>Returns the name of a random item in&nbsp;the 
@@ -918,7 +920,7 @@ scripted monster&nbsp;when an item is being scripted is totally useless. </P>
     <TD>ISIMMORT([code])</TD>
     <TD>not implemented.</TD></TR>
   <TR>
-    <TD>ISLOCKED([code/direction])</TD>
+    <TD>ISLOCKED([code or direction])</TD>
     <TD>Returns the key name if the given container name 
       or direction has a lock.&nbsp;&nbsp; The code may refer to an item 
       container with a lock, or a direction name, such as north, south, east, 
@@ -938,7 +940,7 @@ scripted monster&nbsp;when an item is being scripted is totally useless. </P>
     <TD>ISNPC([code])</TD>
     <TD>Not implemented -- do not use.</TD></TR>
   <TR>
-    <TD>ISOPEN([CODE/DIRECTION])</TD>
+    <TD>ISOPEN([code or direction])</TD>
     <TD>Returns "true" if the container item is open, or 
       the exit in the given direction name is open.</TD></TR>
   <TR>
@@ -970,18 +972,18 @@ scripted monster&nbsp;when an item is being scripted is totally useless. </P>
     <TD>Returns the numberic value of the given 
     argument.</TD></TR>
   <TR>
-    <TD>NUMITEMSMOB([NAME])</TD>
+    <TD>NUMITEMSMOB([code])</TD>
     <TD>Returns the number of items the given mob 
   has.</TD></TR>
   <TR>
     <TD>NUMITEMSROOM()</TD>
     <TD>Returns the number of items in the room.</TD></TR>
   <TR>
-    <TD>NUMMOBS([MOB NAME])</TD>
+    <TD>NUMMOBS([name])</TD>
     <TD>Returns the number of mobs in the world matching 
       the given mob name.</TD></TR>
   <TR>
-    <TD>NUMMOBSINAREA([MOB NAME])</TD>
+    <TD>NUMMOBSINAREA([name])</TD>
     <TD>Returns the number of mobs in the scripted 
       monsters area matching the given mob name.</TD></TR>
   <TR>
@@ -1036,12 +1038,12 @@ value.</TD></TR>
     <TD>SEX([code])</TD>
     <TD>Returns the sex of the given mob.</TD></TR>
   <TR>
-    <TD>STAT([code] [STAT])</TD>
+    <TD>STAT([code] [stat variable])</TD>
     <TD>Returns the value of the given stat for the given 
       object, mob, or item.&nbsp; See MPSTAT in the section on Commands for more 
       information.</TD></TR>
   <TR>
-    <TD>VAR([code] [VAR NAME])</TD>
+    <TD>VAR([code] [variable name])</TD>
     <TD>Retturns the value of the given variable.&nbsp; 
       See MPSETVAR in the section on Commands for more information.</TD></TR>
   <TR>
@@ -1556,8 +1558,9 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mploadvar</SPAN
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>This command loads a variable stored in 
 the database using the given parameters.&nbsp; The variable is then available to 
-the VAR function, as well as the $&lt; syntax.</P>
-<P class=MsoNormal><o:p></O:P></P>
+the VAR function, as well as the $&lt; syntax.&nbsp; The mob name&nbsp;can for a 
+variable can be a literal name string or a code like $n or $i.&nbsp; The 
+variable name must be a literal string.<o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><EM>mploadvar $n 
@@ -1710,9 +1713,13 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsavevar</SPAN
 <P class=MsoNormal>This command saves a variable&nbsp;to 
 the database using the given parameters.&nbsp; This will ensure that the 
 variable, if reloaded later using mploadvar, survives reboots, resets, and other 
-catastrophes.&nbsp; The variable must be one available to the VAR 
-function,&nbsp;or&nbsp; the $&lt; syntax.</P>
-<P class=MsoNormal><o:p></O:P></P>
+catastrophes.&nbsp; The variable specified must be one created by the MPSETVAR 
+command.</P>
+<P class=MsoNormal>The mob name&nbsp;can for a variable can be a literal name 
+string or a code like $n or $i.&nbsp; The mob name can also be *, which will 
+save the value of every existing variable of the given variable name.&nbsp; 
+Likewide, the variable name can also be *, which will save the value of every 
+existing variable for the given mob.&nbsp;&nbsp;<o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><EM>mpsavevar $n 
@@ -1743,18 +1750,27 @@ correctly and fairly.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpsetvar<o:p></O:P></SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mpsetvar [target] [variable name] [value]<BR>mpsetvar [target] [variable name] ++<BR>mpsetvar [target] [variable name] --<BR>mpsetvar [target] [variable name] +[number]<BR>mpsetvar [target] [variable name] -[number]<BR>mpsetvar [target] [variable name] *[number]<BR>mpsetvar [target] [variable name] /[number]</EM> </P>
+<P class=MsoNormal>Usage: <BR><EM>mpsetvar [mob name] [variable name] [value]<BR>mpsetvar [mob name] [variable name] ++<BR>mpsetvar [mob name] [variable name] --<BR>mpsetvar [mob name] [variable name] +[number]<BR>mpsetvar [mob name] [variable name] -[number]<BR>mpsetvar [mob name] [variable name] *[number]<BR>mpsetvar [mob name] [variable name] /[number]</EM> </P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>This command creates a variable for a 
-target and stores a value in it. You can mpsetvar any name that you choose to, 
-and the value can be a specific text string, an integer, or an expanded 
-character variable. The value can even be mathematical expression as shown 
-above.&nbsp; The starting value of the variable will be affected by the 
+mob or player and stores a value in it. You can mpsetvar any name that you 
+choose to, and the value can be a specific text string, an integer, or an 
+expanded character variable. The value can even be mathematical expression as 
+shown above.&nbsp; The starting value of the variable will be affected by the 
 expression given instead of merely set to it.</P>
-<P class=MsoNormal>The target has to be a mob, but can be 
-either&nbsp;$n or $i, or the keyword of another mob. See the examples below.</P>
+<P class=MsoNormal>The mob name&nbsp;can be a literal name 
+string or a code like $n or $i.&nbsp; The mob name can also be *, which will 
+change the value of every existing variable of the given variable name.&nbsp; 
+Likewide, the variable name can also be *, which will change the value of every 
+existing variable for the given mob.&nbsp;&nbsp;A value is normally required, 
+but&nbsp;not giving a value removes&nbsp;that variable from memory, so if you 
+want a variable to remain in memory so&nbsp;as to be&nbsp;accessible to * 
+syntax, you will need to include some value.</P>
+<P class=MsoNormal>See the examples below.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpsetvar&nbsp;$i bugcount 1<BR>mpsetvar&nbsp;$i bugcount ++<BR>mpsetvar 'frog boy' 'my victim' The guard<BR>mpsetvar&nbsp;$n 'my victim' var-actor<BR>mpsetvar $i bugcount $&lt;$n bugcount&gt;</EM> 
+<BR><EM>mpsetvar&nbsp;* bugcount </EM><BR><EM>mpsetvar&nbsp;$i&nbsp; *&nbsp; 
+null&nbsp;</EM><BR>
 <P class=MsoNormal><o:p></O:P></P>SPECIAL NOTES: Variables rock. You can do almost 
 anything you ever wanted to do once you get the hang of them. 
 <P></P>
