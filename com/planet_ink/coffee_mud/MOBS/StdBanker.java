@@ -6,8 +6,11 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class StdBanker extends StdShopKeeper implements Banker
 {
-	double coinInterest=0.1;
-	double itemInterest=-0.1;
+	protected double coinInterest=0.008;
+	protected double itemInterest=-0.001;
+	protected static final Integer allDown=new Integer(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5/Host.TICK_TIME);
+	protected static Hashtable bankTicks=new Hashtable();
+	protected static Hashtable bankTimes=new Hashtable();
 	
 	public StdBanker()
 	{
@@ -45,17 +48,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public String bankChain(){return text();}
 	public void setBankChain(String name){setMiscText(name);}
 	
-	public void addDepositInventory(MOB mob, Item thisThang)
+	public void addDepositInventory(String mob, Item thisThang)
 	{
 		String name=thisThang.name();
 		if(thisThang instanceof Coins) name="COINS";
-		ExternalPlay.DBWriteJournal(bankChain(),mob.name(),CMClass.className(thisThang),name,Generic.getPropertiesStr(thisThang,true),-1);
+		ExternalPlay.DBWriteJournal(bankChain(),mob,CMClass.className(thisThang),name,Generic.getPropertiesStr(thisThang,true),-1);
 	};
-	public void delDepositInventory(MOB mob, Item thisThang)
+	public void delDepositInventory(String mob, Item thisThang)
 	{
 		Vector V=getDepositInventory(mob);
 		boolean money=thisThang instanceof Coins;
-		for(int v=V.size()-1;v>=0;v++)
+		for(int v=V.size()-1;v>=0;v--)
 		{
 			Vector V2=(Vector)V.elementAt(v);
 			String fullName=((String)V2.elementAt(4));
@@ -64,22 +67,40 @@ public class StdBanker extends StdShopKeeper implements Banker
 				ExternalPlay.DBDeleteJournal(((String)V2.elementAt(0)),Integer.MAX_VALUE);
 		}
 	};
-	public void delAllDeposits(MOB mob)
+	public void delAllDeposits(String mob)
 	{
 		Vector V=ExternalPlay.DBReadJournal(bankChain());
 		int num=0;
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.name()))
+			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob))
 				ExternalPlay.DBDeleteJournal(((String)V2.elementAt(0)),Integer.MAX_VALUE);
 		}
 	};
-	public int numberDeposited(MOB mob)
+	public int numberDeposited(String mob)
 	{
 		return getDepositInventory(mob).size();
 	};
-	public Vector getDepositInventory(MOB mob)
+	public Vector getDepositedItems(String mob)
+	{
+		Vector V=getDepositInventory(mob);
+		Vector mine=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			Vector V2=(Vector)V.elementAt(v);
+			Item I=CMClass.getItem(((String)V2.elementAt(3)));
+			if(I!=null)
+			{
+				Generic.setPropertiesStr(I,((String)V2.elementAt(5)),true);
+				I.recoverEnvStats();
+				I.text();
+				mine.addElement(I);
+			}
+		}
+		return mine;
+	}
+	public Vector getDepositInventory(String mob)
 	{
 		Vector V=ExternalPlay.DBReadJournal(bankChain());
 		Vector mine=new Vector();
@@ -87,12 +108,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.name()))
+			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob))
 				mine.addElement(V2);
 		}
 		return mine;
 	};
-	public Item findDepositInventory(MOB mob, String likeThis)
+	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
 		boolean money=Util.s_int(likeThis)>0;
@@ -107,6 +128,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(I!=null)
 				{
 					Generic.setPropertiesStr(I,((String)V2.elementAt(5)),true);
+					I.recoverEnvStats();
+					I.text();
 					return I;
 				}
 			}
@@ -122,17 +145,104 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		if(!super.tick(tickID))
 			return false;
+		try{
 		if(tickID==Host.MOB_TICK)
 		{
-			// ** to do = handle interest by watching the days go by...
+			Calendar C=Calendar.getInstance();
+			C.add(Calendar.MILLISECOND,-(Host.TICK_TIME/2));
+			boolean proceed=false;
+			// handle interest by watching the days go by...
 			// put stuff up for sale if the account runs out
+			synchronized(bankChain())
+			{
+				IQCalendar c=(IQCalendar)bankTimes.get(bankChain());
+				if(c==null) c=IQCalendar.getIQInstance();
+				else
+				if(c.before(C))
+				{
+					bankTimes.remove(bankChain());
+					bankTimes.put(bankChain(),c);
+					Integer i=(Integer)bankTicks.get(bankChain());
+					if(i==null) 
+						i=new Integer(-1);
+					else 
+						i=new Integer(i.intValue()-1);
+					if(i.intValue()<=0)
+					{ 
+						i=allDown;
+						proceed=true;
+					}
+					bankTicks.remove(bankChain());
+					bankTicks.put(bankChain(),i);
+				}
+			}
+			if(proceed)
+			{
+				Vector V=ExternalPlay.DBReadJournal(bankChain());
+				Vector userNames=new Vector();
+				for(int v=0;v<V.size();v++)
+				{
+					Vector V2=(Vector)V.elementAt(v);
+					String name=(String)V2.elementAt(1);
+					if(!userNames.contains(name))
+					{
+						if(!ExternalPlay.DBUserSearch(null,name))
+							delAllDeposits(name);
+						else
+							userNames.addElement(name);
+					}
+				}
+				for(int u=0;u<userNames.size();u++)
+				{
+					String name=(String)userNames.elementAt(u);
+					Coins coinItem=null;
+					int totalValue=0;
+					V=getDepositedItems(name);
+					for(int v=0;v<V.size();v++)
+					{
+						Item I=(Item)V.elementAt(v);
+						if(I instanceof Coins)
+							coinItem=(Coins)I;
+						else
+						if(itemInterest!=0.0)
+							totalValue+=I.value();
+					}
+					int newBalance=0;
+					if(coinItem!=null)
+						newBalance=coinItem.numberOfCoins();
+					newBalance+=(int)Math.round(Util.mul(newBalance,1.0+coinInterest));
+					if(totalValue>0)
+						newBalance+=(int)Math.round(Util.mul(totalValue,1.0+itemInterest));
+					if(newBalance<0)
+					{
+						for(int v=0;v<V.size();v++)
+						{
+							Item I=(Item)V.elementAt(v);
+							if(!(I instanceof Coins))
+								addStoreInventory(I);
+						}
+						delAllDeposits(name);
+					}
+					else
+					if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
+					{
+						if(coinItem!=null)
+							delDepositInventory(name,coinItem);
+						coinItem=(Coins)CMClass.getItem("StdCoins");
+						coinItem.setNumberOfCoins(newBalance);
+						coinItem.recoverEnvStats();
+						addDepositInventory(name,coinItem);
+					}
+				}
+			}
 		}
+		}catch(Exception e){Log.errOut("StdBanker",e);}
 		return true;
 	}
 	
 	protected int getBalance(MOB mob)
 	{
-		Item old=findDepositInventory(mob,""+Integer.MAX_VALUE);
+		Item old=findDepositInventory(mob.name(),""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
 			return ((Coins)old).numberOfCoins();
 		return 0;
@@ -140,7 +250,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	
 	protected int minBalance(MOB mob)
 	{
-		Vector V=getDepositInventory(mob);
+		Vector V=getDepositedItems(mob.name());
 		int min=0;
 		for(int v=0;v<V.size();v++)
 		{
@@ -185,34 +295,34 @@ public class StdBanker extends StdShopKeeper implements Banker
 						Coins older=(Coins)affect.tool();
 						Coins item=(Coins)CMClass.getItem("StdCoins");
 						int newNum=older.numberOfCoins();
-						Item old=findDepositInventory(affect.source(),""+Integer.MAX_VALUE);
+						Item old=findDepositInventory(affect.source().name(),""+Integer.MAX_VALUE);
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
 						item.setNumberOfCoins(newNum);
 						if(old!=null)
-							delDepositInventory(affect.source(),old);
-						addDepositInventory(affect.source(),item);
+							delDepositInventory(affect.source().name(),old);
+						addDepositInventory(affect.source().name(),item);
 					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",false,false);
 					}
 					else
 					{
-						addDepositInventory(affect.source(),(Item)affect.tool());
+						addDepositInventory(affect.source().name(),(Item)affect.tool());
 					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",false,false);
 					}
 				}
 				return;
 			case Affect.TYP_WITHDRAW:
 				{
-					Item old=(Item)affect.source();
+					Item old=(Item)affect.tool();
 					if(old instanceof Coins)
 					{
-						Item item=findDepositInventory(affect.source(),""+Integer.MAX_VALUE);
+						Item item=findDepositInventory(affect.source().name(),""+Integer.MAX_VALUE);
 						if((item!=null)&&(item instanceof Coins))
 						{
 							Coins coins=(Coins)item;
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
-							delDepositInventory(affect.source(),item);
+							delDepositInventory(affect.source().name(),item);
 							if(coins.numberOfCoins()<=0)
 							{
 								ExternalPlay.quickSay(this,mob,"I have closed your account. Thanks for your business.",false,false);
@@ -220,7 +330,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 							else
 							{
-								addDepositInventory(affect.source(),item);
+								addDepositInventory(affect.source().name(),item);
 							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",false,false);
 							}
 						}
@@ -229,7 +339,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						delDepositInventory(affect.source(),old);
+						delDepositInventory(affect.source().name(),old);
 					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",false,false);
 					}
 					
@@ -250,20 +360,22 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case Affect.TYP_LIST:
 			{
 				super.affect(affect);
-				Vector V=this.getDepositInventory(affect.source());
-				StringBuffer msg=new StringBuffer("");
+				Vector V=getDepositedItems(mob.name());
+				StringBuffer msg=new StringBuffer("\n\r");
 				String c="^x[Item                ] ";
 				msg.append(c+c+"^^^N\n\r");
 				int colNum=0;
 				Coins coins=null;
+				boolean otherThanCoins=false;
 				for(int i=0;i<V.size();i++)
 				{
-					Item I=(Item)inventory.elementAt(i);
+					Item I=(Item)V.elementAt(i);
 					if(I instanceof Coins)
 					{
 						coins=(Coins)I;
 						continue;
 					}
+					otherThanCoins=true;
 					String col=null;
 					col="["+Util.padRight(I.name(),20)+"] ";
 					if((++colNum)>2)
@@ -273,9 +385,25 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					msg.append(col);
 				}
+				if(!otherThanCoins)
+					msg=new StringBuffer("\n\r^N");
+				else
+					msg.append("\n\r\n\r");
 				if(coins!=null)
-				msg.append("\n\r^^^NYour balance with us is ^H"+coins.numberOfCoins()+" gold coins.");
-				ExternalPlay.quickSay(this,mob,"\n\r"+msg.toString()+"^T",true,false);
+					msg.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
+				if(coinInterest!=0.0)
+				{
+					double cci=Util.mul(Math.abs(coinInterest),100.0);
+					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+					msg.append("\n\rWe "+ci+"weekly on money deposited here."); 
+				}
+				if(itemInterest!=0.0)
+				{
+					double cci=Util.mul(Math.abs(itemInterest),100.0);
+					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+					msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
+				}
+				ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
 				return;
 			}
 			default:
@@ -323,7 +451,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 						ExternalPlay.quickSay(this,mob,"What do you want? I'm busy!",false,false);
 						return false;
 					}
-					if(findDepositInventory(affect.source(),affect.tool().name())==null)
+					if((!(affect.tool() instanceof Coins))
+					&&(findDepositInventory(affect.source().name(),affect.tool().name())==null))
 					{
 						ExternalPlay.quickSay(this,mob,"You want WHAT?",false,false);
 						return false;
@@ -356,7 +485,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okAffect(affect);
 			case Affect.TYP_LIST:
 			{
-				if(numberDeposited(affect.source())==0)
+				if(numberDeposited(affect.source().name())==0)
 				{
 					ExternalPlay.quickSay(this,mob,"You don't have an account with us, I'm afraid.",false,false);
 					return false;

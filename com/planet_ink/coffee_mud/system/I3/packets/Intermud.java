@@ -141,6 +141,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
     private DataOutputStream    output;
     private PersistentPeer      peer;
     private SaveThread          save_thread;
+	public boolean				shutdown=false;
+    public DataInputStream input;
     public int                 attempts;
     public Hashtable           banned;
     public ChannelList         channels;
@@ -206,6 +208,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
     }
 
     private synchronized void connect() {
+		if(shutdown) return;
         attempts++;
         try {
             NameServer n = (NameServer)name_servers.elementAt(0);
@@ -309,7 +312,6 @@ public class Intermud implements Runnable, Persistent, Serializable {
 	}
 	
     public void run() {
-        DataInputStream input;
 
         try {
             input = new DataInputStream(connection.getInputStream());
@@ -509,17 +511,23 @@ public class Intermud implements Runnable, Persistent, Serializable {
      * reconnecting.
      * @see java.lang.Runnable#stop
      */
-    public void stop() {
-        try {
-            connection.close();
-        }
-        catch( java.io.IOException e ) {
-        }
-        connected = false;
-        input_thread.stop();
-        save_thread.stop();
+    public void stop() 
+	{
+		connected = false;
+		shutdown=true;
+		try { if(input!=null) input.close();}catch(Exception e){}
+		try { if(connection!=null) connection.close();}catch(Exception e){}
+		try { if(input_thread!=null) input_thread.interrupt();}catch(Exception e){}
+		input_thread=null;
+		if(save_thread!=null)
+		{
+			try { save_thread.close();}catch(Exception e){}
+			try { save_thread.interrupt();}catch(Exception e){}
+		}
+		save_thread=null;
         try { save(); }
         catch( PersistenceException e ) { }
+		shutdown=false;
     }
 
     /**
@@ -637,25 +645,37 @@ public class Intermud implements Runnable, Persistent, Serializable {
     public void setPassword(int pass) {
         password = pass;
     }
+	
+	public static void shutdown()
+	{
+		if(thread!=null)
+			thread.stop();
+		thread=null;
+	}
+	
 }
 
 class SaveThread extends Thread {
     private Intermud intermud;
-
+	private boolean closed=false;
+	
     public SaveThread(Intermud imud) {
         super("Intermud save");
         intermud = imud;
     }
 
+	public void close()
+	{ closed=true; }
+	
     public void run() {
-        while( true ) {
+        while( !closed ) {
             try {
                 Thread.sleep(120000);
-                intermud.save();
+                if(!closed) intermud.save();
             }
             catch( InterruptedException e ) { }
             catch( PersistenceException e ) {
-                e.printStackTrace();
+                
             }
         }
     }

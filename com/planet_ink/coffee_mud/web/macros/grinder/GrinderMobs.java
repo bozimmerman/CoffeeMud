@@ -97,7 +97,8 @@ public class GrinderMobs
 						  "RACE","GENDER","HEIGHT","WEIGHT",
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC"};
+						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
+						  "ISBANKER","COININT","ITEMINT","BANKNAME"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -186,6 +187,20 @@ public class GrinderMobs
 					((ShopKeeper)M).setWhatIsSold(Util.s_int(old));
 				break;
 			case 23: // is generic
+				break;
+			case 24: // is banker
+				break;
+			case 25: // coin interest
+				if(M instanceof Banker)
+					((Banker)M).setCoinInterest(Util.s_double(old));
+				break;
+			case 26: // item interest
+				if(M instanceof Banker)
+					((Banker)M).setItemInterest(Util.s_double(old));
+				break;
+			case 27: // bank name
+				if(M instanceof Banker)
+					((Banker)M).setBankChain(old);
 				break;
 			}
 		}

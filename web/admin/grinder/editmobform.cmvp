@@ -278,6 +278,23 @@
 		</FONT>
 		</TD>
 	</TR>
+	@if?MobData?ISBANKER@
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Bank Chain Name:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BANKNAME SIZE=50 VALUE="@MobData?BANKNAME@">
+		    </TD>
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Coin Interest Rate:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=COININT SIZE=7 VALUE="@MobData?COININT@">
+		    </TD>
+		</TR>
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Interest Rate:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ITEMINT SIZE=7 VALUE="@MobData?ITEMINT@">
+		    </TD>
+		</TR>
+	@endif@
 @endif@
 <TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>MOB Inventory:</B></FONT></TD>

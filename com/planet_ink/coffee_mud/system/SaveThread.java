@@ -9,9 +9,7 @@ public class SaveThread extends Thread
 {
 	public static boolean started=false;
 	private static boolean shutDown=false;
-	public final static int SAVE_DELAY=10*60000; // 10 minutes, right now.
 	public boolean reset=true;
-	public final static int TIME_SAVE_DELAY=18; // 3 hours...
 	public int timeSaveTicker=0;
 	public Calendar lastStart=null;
 	public Calendar lastStop=null;
@@ -83,7 +81,7 @@ public class SaveThread extends Thread
 		}
 		if(raiseLowerTheSun) raiseLowerTheSunEverywhere();
 		
-		if((++timeSaveTicker)<TIME_SAVE_DELAY)
+		if((++timeSaveTicker)<Host.TIME_SAVE_DELAY)
 			return;
 		timeSaveTicker=0;
 		StringBuffer timeRsc=new StringBuffer("<DAY>"+A.getDayOfMonth()+"</DAY><MONTH>"+A.getMonth()+"</MONTH><YEAR>"+A.getYear()+"</YEAR>");
@@ -210,7 +208,7 @@ public class SaveThread extends Thread
 				lastStop=Calendar.getInstance();
 				milliTotal+=(lastStop.getTimeInMillis()-lastStart.getTimeInMillis());
 				tickTotal++;
-				Thread.sleep(SAVE_DELAY);
+				Thread.sleep(Host.TIME_TICK_DELAY);
 				lastStart=Calendar.getInstance();
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{

@@ -591,7 +591,7 @@ class InputThread implements Runnable {
      * any reason.
      */
     public void stop() {
-        thread.stop();
+        thread.interrupt();
         destructed = true;
     }
 

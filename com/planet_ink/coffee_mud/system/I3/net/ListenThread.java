@@ -15,7 +15,7 @@ public class ListenThread extends Thread {
     }
 
     public void run() {
-        while( true ) {
+        while( listen!=null && !listen.isClosed() ) {
             Socket client;
 
             try {
@@ -25,11 +25,19 @@ public class ListenThread extends Thread {
                 }
             }
             catch( java.io.IOException e ) {
-                e.printStackTrace();
             }
         }
     }
 
+	public void close()
+	{
+		try
+		{
+			if(listen!=null) listen.close();
+		}
+		catch(Exception e){}
+	}
+	
     public Socket nextSocket() {
         Socket client;
 

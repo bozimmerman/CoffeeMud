@@ -815,6 +815,19 @@ public class Generic
 		return numValue;
 	}
 	
+	double getDoubleData(MOB mob, String prompt, double oldValue)
+		throws IOException
+	{
+		String value=mob.session().prompt(prompt,"");
+		double numValue=Util.s_double(value);
+		if((numValue==0.0)&&(!value.trim().equals("0")))
+		{
+			mob.tell("(no change)");
+			return oldValue;
+		}
+		return numValue;
+	}
+	
 	void genMiscText(MOB mob, Environmental E)
 		throws IOException
 	{
@@ -910,10 +923,10 @@ public class Generic
 	void genBanker(MOB mob, Banker E)
 		throws IOException
 	{
-		mob.tell("\n\rCoin Interest: '"+((int)Math.round(E.getCoinInterest()*1000.0))+"'/1000th % per day.");
-		E.setCoinInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
-		mob.tell("\n\rItem Interest: '"+((int)Math.round(E.getCoinInterest()*1000.0))+"'/1000th % per day.");
-		E.setItemInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
+		mob.tell("\n\rCoin Interest: '"+E.getCoinInterest()+"'% per real day.");
+		E.setCoinInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getCoinInterest()));
+		mob.tell("\n\rItem Interest: '"+E.getItemInterest()+"'% per real day.");
+		E.setItemInterest(getDoubleData(mob,"Enter a new value\n\r:",E.getItemInterest()));
 		mob.tell("\n\rBank Chain   : '"+E.bankChain()+"'.");
 		String newValue=mob.session().prompt("Enter a new chain\n\r:","");
 		if(newValue.length()>0)

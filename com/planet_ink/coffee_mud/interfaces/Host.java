@@ -4,6 +4,8 @@ import java.util.Properties;
 public interface Host
 {
 	public final static int TICK_TIME=4000;
+	public final static int TIME_TICK_DELAY=10*60000; // 10 minutes, right now.
+	public final static int TIME_SAVE_DELAY=18; // 3 hours...
 
 	public static final int MOB_TICK=0;
 	public static final int ITEM_BEHAVIOR_TICK=1;

@@ -203,7 +203,6 @@ public class ShopKeepers
 
 	public void deposit(MOB mob, Vector commands)
 	{
-		mob.tell("Not yet implemented.");
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
 		{
@@ -253,7 +252,6 @@ public class ShopKeepers
 	
 	public void withdraw(MOB mob, Vector commands)
 	{
-		mob.tell("Not yet implemented.");
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
 		{
@@ -284,18 +282,53 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 		}
+		String str=(String)commands.firstElement();
+		if(((String)commands.lastElement()).equalsIgnoreCase("coins"))
+		{
+			if((!str.equalsIgnoreCase("all"))
+			&&(Util.s_int((String)commands.firstElement())<=0))
+			{
+				mob.tell("Withdraw how much?");
+				return;
+			}
+			
+			commands.removeElement(commands.lastElement());
+		}
+		if(((String)commands.lastElement()).equalsIgnoreCase("gold"))
+		{
+			if((!str.equalsIgnoreCase("all"))
+			&&(Util.s_int((String)commands.firstElement())<=0))
+			{
+				mob.tell("Withdraw how much?");
+				return;
+			}
+			commands.removeElement(commands.lastElement());
+		}
+		   
 		String thisName=Util.combine(commands,0);
-		Item thisThang=((Banker)shopkeeper).findDepositInventory(mob,thisName);
+		Item thisThang=null;
+		if(thisName.equalsIgnoreCase("all"))
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob.name(),""+Integer.MAX_VALUE);
+		else
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob.name(),thisName);
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
-			mob.tell("That doesn't appear to be available.");
+			mob.tell("That doesn't appear to be available.  Try LIST.");
 			return;
 		}
 		if(thisThang instanceof Coins)
 		{
 			Coins oldThang=(Coins)thisThang;
-			thisThang=(Item)oldThang.copyOf();
-			((Coins)thisThang).setNumberOfCoins(Util.s_int(((String)(Util.parse(thisName).elementAt(0)))));
+			if(!thisName.equalsIgnoreCase("all"))
+			{
+				thisThang=(Item)oldThang.copyOf();
+				((Coins)thisThang).setNumberOfCoins(Util.s_int(thisName));
+				if(((Coins)thisThang).numberOfCoins()<=0)
+				{
+					mob.tell("Withdraw how much?");
+					return;
+				}
+			}
 		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okAffect(newMsg))

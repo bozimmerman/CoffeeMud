@@ -323,7 +323,8 @@ public class MobData extends StdWebMacro
 						  "RACE","GENDER","HEIGHT","WEIGHT",
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
-						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC"};
+						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
+						  "ISBANKER","COININT","ITEMINT","BANKNAME"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -512,6 +513,24 @@ public class MobData extends StdWebMacro
 			case 23:
 				if(M.isGeneric()) return "true";
 				else return "false";
+			case 24: // is banker
+				if(M instanceof Banker) return "true";
+				else return "false";
+			case 25: // coin interest
+				if((firstTime)&&(M instanceof Banker))
+					old=""+((Banker)M).getCoinInterest();
+				str.append(old);
+				break;
+			case 26: // item interest
+				if((firstTime)&&(M instanceof Banker))
+					old=""+((Banker)M).getItemInterest();
+				str.append(old);
+				break;
+			case 27: // bank name
+				if((firstTime)&&(M instanceof Banker))
+					old=""+((Banker)M).bankChain();
+				str.append(old);
+				break;
 			}
 			if(firstTime)
 				reqs.put(okparms[o],old.equals("checked")?"on":old);

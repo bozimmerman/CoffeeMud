@@ -106,6 +106,10 @@
 	    </TD>
 	</TR>
 	@endif@
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Parameters:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MISCTEXT SIZE=60 VALUE="@MobData?MISCTEXT@"></TD>
+</TR>
 @else@
 @if?ItemData?ISWALLPAPER@
 	<TR>

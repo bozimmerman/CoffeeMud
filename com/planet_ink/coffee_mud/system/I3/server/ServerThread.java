@@ -33,6 +33,7 @@ public class ServerThread extends Thread {
     private int                 port;
     private boolean             running;
 	private ImudServices		intermuds;
+    private ListenThread listen_thread;
 
     protected ServerThread(String mname, 
 						   int mport,
@@ -109,7 +110,6 @@ public class ServerThread extends Thread {
      * </OL>
      */
     public void run() {
-        ListenThread listen_thread;
 
         if( boot_time != null ) {
             new ServerSecurityException("Illegal attempt to invoke run().");
@@ -240,6 +240,13 @@ public class ServerThread extends Thread {
 	public void shutdown()
 	{
 		running=false;
+		Intermud.shutdown();
+		if(listen_thread!=null)
+		{
+			listen_thread.close();
+			listen_thread.interrupt();
+		}
+		try{ Thread.sleep(100);}catch(Exception e){}
 	}
 	
     protected synchronized ServerObject[] getObjects() {
