@@ -234,6 +234,7 @@ public class CommandSet extends Hashtable
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
+		
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

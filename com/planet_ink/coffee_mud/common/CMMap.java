@@ -59,6 +59,66 @@ public class CMMap
 		return A;
 	}
 
+	public static String createNewExit(Room from, Room room, int direction)
+	{
+		Room opRoom=from.rawDoors()[direction];
+		if((opRoom!=null)&&(opRoom.roomID().length()==0))
+			opRoom=null;
+		Room reverseRoom=null;
+		if(opRoom!=null)
+			reverseRoom=opRoom.rawDoors()[Directions.getOpDirectionCode(direction)];
+
+		if((reverseRoom!=null)&&(reverseRoom==from))
+			return "Opposite room already exists and heads this way.  One-way link created.";
+
+		if(opRoom!=null)
+			from.rawDoors()[direction]=null;
+
+		from.rawDoors()[direction]=room;
+		Exit thisExit=from.rawExits()[direction];
+		if(thisExit==null)
+		{
+			thisExit=CMClass.getExit("StdOpenDoorway");
+			from.rawExits()[direction]=thisExit;
+		}
+		ExternalPlay.DBUpdateExits(from);
+
+		if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
+		{
+			room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
+			room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
+			ExternalPlay.DBUpdateExits(room);
+		}
+		return "";
+	}
+
+	public static String getOpenRoomID(String AreaID)
+	{
+		int highest=Integer.MIN_VALUE;
+		int lowest=Integer.MAX_VALUE;
+		Hashtable allNums=new Hashtable();
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if((R.getArea().Name().equals(AreaID))
+			&&(R.roomID().startsWith(AreaID+"#")))
+			{
+				int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
+				if(newnum>=highest)	highest=newnum;
+				if(newnum<=lowest) lowest=newnum;
+				allNums.put(new Integer(newnum),R);
+			}
+		}
+		if(highest<0) return AreaID+"#0";
+		if(lowest<highest)
+			for(int i=lowest;i<=highest;i++)
+			{
+				if(!allNums.containsKey(new Integer(i)))
+					return AreaID+"#"+i;
+			}
+		return AreaID+"#"+(highest+1);
+	}
+
 
 	public static int numRooms() { return roomsList.size(); }
 	public static void addRoom(Room newOne)

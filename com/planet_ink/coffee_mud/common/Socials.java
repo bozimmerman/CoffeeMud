@@ -139,6 +139,193 @@ public class Socials
 		}
 	}
 
+	public static boolean modifySocialInterface(MOB mob, Social soc)
+		throws IOException
+	{
+		String name=soc.name();
+		int x=name.toUpperCase().indexOf("<T-NAME>");
+		boolean targeted=false;
+		boolean self=false;
+		if(x>=0)
+		{
+			targeted=true;
+			name=name.substring(0,x).trim().toUpperCase();
+		}
+		else
+		if(name.toUpperCase().endsWith("SELF"))
+		{
+			self=true;
+			name=name.substring(0,name.length()-4).trim().toUpperCase();
+		}
+
+
+		mob.session().rawPrintln("\n\rSocial name '"+name+"' Enter new.");
+		String newName=mob.session().prompt(": ","");
+		if((newName!=null)&&(newName.length()>0))
+			name=newName;
+		else
+			mob.session().println("(no change)");
+
+		mob.session().rawPrintln("\n\rTarget="+(targeted?"TARGET":(self?"SELF":"NONE")));
+		newName=mob.session().choose("Change T)arget, S)elf, N)one: ","TSN","");
+		if((newName!=null)&&(newName.length()>0))
+		{
+			newName=newName.toUpperCase();
+			switch(newName.charAt(0))
+			{
+				case 'T':
+				targeted=true;
+				self=false;
+				break;
+				case 'S':
+				targeted=false;
+				self=true;
+				break;
+				case 'N':
+				targeted=false;
+				self=false;
+				break;
+			}
+		}
+		else
+			mob.session().println("(no change)");
+
+		if(targeted)
+			soc.setName(name+" <T-NAME>");
+		else
+		if(self)
+			soc.setName(name+" SELF");
+		else
+			soc.setName(name);
+
+		mob.session().rawPrintln("\n\rYou see '"+soc.You_see()+"'.  Enter new.");
+		newName=mob.session().prompt(": ","");
+		if((newName!=null)&&(newName.length()>0))
+			soc.setYou_see(newName);
+		else
+			mob.session().println("(no change)");
+
+
+		if(soc.sourceCode()==CMMsg.MSG_OK_ACTION)
+			soc.setSourceCode(CMMsg.MSG_HANDS);
+		mob.session().rawPrintln("\n\rYour action type="+((soc.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((soc.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((soc.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
+		newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement ","WMSL","");
+		if((newName!=null)&&(newName.length()>0))
+		{
+			newName=newName.toUpperCase();
+			switch(newName.charAt(0))
+			{
+				case 'W':
+				soc.setSourceCode(CMMsg.MSG_SPEAK);
+				break;
+				case 'M':
+				soc.setSourceCode(CMMsg.MSG_HANDS);
+				break;
+				case 'S':
+				soc.setSourceCode(CMMsg.MSG_NOISE);
+				break;
+				case 'L':
+				soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+				break;
+			}
+		}
+		else
+			mob.session().println("(no change)");
+
+		mob.session().rawPrintln("\n\rOthers see '"+soc.Third_party_sees()+"'.  Enter new.");
+		newName=mob.session().prompt(": ","");
+		if((newName!=null)&&(newName.length()>0))
+			soc.setThird_party_sees(newName);
+		else
+			mob.session().println("(no change)");
+
+		if(soc.othersCode()==CMMsg.MSG_OK_ACTION)
+			soc.setOthersCode(CMMsg.MSG_HANDS);
+		mob.session().rawPrintln("\n\rOthers Effect type="+((soc.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((soc.sourceCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
+		if((newName!=null)&&(newName.length()>0))
+		{
+			newName=newName.toUpperCase();
+			switch(newName.charAt(0))
+			{
+				case 'H':
+				soc.setOthersCode(CMMsg.MSG_HANDS);
+				soc.setTargetCode(CMMsg.MSG_HANDS);
+				break;
+				case 'W':
+				soc.setOthersCode(CMMsg.MSG_SPEAK);
+				soc.setTargetCode(CMMsg.MSG_SPEAK);
+				break;
+				case 'M':
+				soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+				soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+				break;
+				case 'S':
+				soc.setOthersCode(CMMsg.MSG_NOISE);
+				soc.setTargetCode(CMMsg.MSG_NOISE);
+				break;
+				case 'V':
+				soc.setOthersCode(CMMsg.MSG_OK_VISUAL);
+				soc.setTargetCode(CMMsg.MSG_OK_VISUAL);
+				break;
+			}
+		}
+		else
+			mob.session().println("(no change)");
+
+
+
+		if(soc.name().indexOf("<T-NAME>")>=0)
+		{
+			mob.session().rawPrintln("\n\rTarget sees '"+soc.Target_sees()+"'.  Enter new.");
+			newName=mob.session().prompt(": ","");
+			if((newName!=null)&&(newName.length()>0))
+				soc.setTarget_sees(newName);
+			else
+				mob.session().println("(no change)");
+
+
+		if(soc.targetCode()==CMMsg.MSG_OK_ACTION)
+			soc.setTargetCode(CMMsg.MSG_HANDS);
+		mob.session().rawPrintln("\n\rTarget Effect type="+((soc.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((soc.sourceCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
+		if((newName!=null)&&(newName.length()>0))
+		{
+			newName=newName.toUpperCase();
+			switch(newName.charAt(0))
+			{
+				case 'W':
+				soc.setTargetCode(CMMsg.MSG_SPEAK);
+				break;
+				case 'M':
+				soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+				break;
+				case 'H':
+				soc.setTargetCode(CMMsg.MSG_HANDS);
+				break;
+				case 'S':
+				soc.setTargetCode(CMMsg.MSG_NOISE);
+				break;
+				case 'V':
+				soc.setTargetCode(CMMsg.MSG_OK_VISUAL);
+				break;
+			}
+		}
+		else
+			mob.session().println("(no change)");
+
+
+
+			mob.session().rawPrintln("\n\rYou see when no target '"+soc.See_when_no_target()+"'.  Enter new.");
+			newName=mob.session().prompt(": ","");
+			if((newName!=null)&&(newName.length()>0))
+				soc.setSee_when_no_target(newName);
+			else
+				mob.session().println("(no change)");
+		}
+		return true;
+	}
+
 	public static Social FetchSocial(String name, boolean exactOnly)
 	{
 		Social thisOne=(Social)soc.get(name.toUpperCase());
