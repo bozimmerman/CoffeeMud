@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items;
-
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -20,27 +20,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLightSource extends LightSource
+public class GenJournal extends StdJournal
 {
-	public String ID(){	return "GenLightSource";}
-	protected String	readableText="";
-
-	public GenLightSource()
+	public String ID(){	return "GenJournal";}
+	protected String readableText="";
+	public GenJournal()
 	{
 		super();
-
-		setName("a generic lightable thing");
-		setDisplayText("a generic lightable thing sits here.");
-		setDescription("");
-		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(200);
+		setDisplayText("a journal sits here.");
+		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		recoverEnvStats();
+		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 
 
-	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
-	
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -56,7 +50,6 @@ public class GenLightSource extends LightSource
 		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-
 	public String getStat(String code)
 	{ return CoffeeMaker.getGenItemStat(this,code);}
 	public void setStat(String code, String val)
@@ -64,7 +57,7 @@ public class GenLightSource extends LightSource
 	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLightSource)) return false;
+		if(!(E instanceof GenJournal)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

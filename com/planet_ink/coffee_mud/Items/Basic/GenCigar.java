@@ -20,27 +20,33 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLightSource extends LightSource
+public class GenCigar extends StdSmokable
 {
-	public String ID(){	return "GenLightSource";}
-	protected String	readableText="";
-
-	public GenLightSource()
+	public String ID(){	return "GenCigar";}
+	private String readableText = "";
+	public GenCigar()
 	{
 		super();
-
-		setName("a generic lightable thing");
-		setDisplayText("a generic lightable thing sits here.");
+		setName("a generic cigar");
+		baseEnvStats.setWeight(1);
+		setDisplayText("a generic cigar sits here.");
 		setDescription("");
-		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(200);
+		baseGoldValue=5;
+		capacity=0;
+		durationTicks=200;
+		recoverEnvStats();
 	}
 
-
-	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
-	
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
+	public String keyName()
+	{
+		return readableText;
+	}
+	public void setKeyName(String newKeyName)
+	{
+		readableText=newKeyName;
+	}
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -48,15 +54,12 @@ public class GenLightSource extends LightSource
 		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
 	public void setMiscText(String newText)
 	{
 		miscText="";
 		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-
 	public String getStat(String code)
 	{ return CoffeeMaker.getGenItemStat(this,code);}
 	public void setStat(String code, String val)
@@ -64,7 +67,7 @@ public class GenLightSource extends LightSource
 	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLightSource)) return false;
+		if(!(E instanceof GenCigar)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

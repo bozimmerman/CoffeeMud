@@ -20,36 +20,37 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLightSource extends LightSource
+public class GenAmmunition extends StdItem implements Ammunition
 {
-	public String ID(){	return "GenLightSource";}
+	public String ID(){	return "GenAmmunition";}
 	protected String	readableText="";
-
-	public GenLightSource()
+	public GenAmmunition()
 	{
 		super();
 
-		setName("a generic lightable thing");
-		setDisplayText("a generic lightable thing sits here.");
+		setName("a batch of arrows");
+		setDisplayText("a generic batch of arrows sits here.");
+		setUsesRemaining(100);
+		setAmmunitionType("arrows");
 		setDescription("");
-		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(200);
+		recoverEnvStats();
 	}
 
-
-	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
-	
 	public boolean isGeneric(){return true;}
 
 	public String text()
 	{
 		return CoffeeMaker.getPropertiesStr(this,false);
 	}
-
 	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
+	public void setReadableText(String text)
+	{
+		if(Sense.isReadable(this)) Sense.setReadable(this,false);
+		readableText=text;
+	}
+	public String ammunitionType(){return readableText;}
+	public void setAmmunitionType(String text){readableText=text;}
+
 	public void setMiscText(String newText)
 	{
 		miscText="";
@@ -57,17 +58,27 @@ public class GenLightSource extends LightSource
 		recoverEnvStats();
 	}
 
-	public String getStat(String code)
-	{ return CoffeeMaker.getGenItemStat(this,code);}
-	public void setStat(String code, String val)
-	{ CoffeeMaker.setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
-	public boolean sameAs(Environmental E)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!(E instanceof GenLightSource)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
-				return false;
-		return true;
+		MOB mob=msg.source();
+		if(!msg.amITarget(this))
+			return super.okMessage(myHost,msg);
+		else
+		if(msg.targetCode()==CMMsg.NO_EFFECT)
+			return super.okMessage(myHost,msg);
+		else
+		switch(msg.targetMinor())
+		{
+		case CMMsg.TYP_HOLD:
+			mob.tell("You can't hold "+name()+".");
+			return false;
+		case CMMsg.TYP_WEAR:
+			mob.tell("You can't wear "+name()+".");
+			return false;
+		case CMMsg.TYP_WIELD:
+			mob.tell("You can't wield "+name()+" as a weapon.");
+			return false;
+		}
+		return super.okMessage(myHost,msg);
 	}
 }

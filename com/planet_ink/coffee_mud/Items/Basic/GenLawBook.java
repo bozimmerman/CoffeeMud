@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items;
-
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -20,29 +20,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLightSource extends LightSource
+public class GenLawBook extends StdLawBook
 {
-	public String ID(){	return "GenLightSource";}
+	public String ID(){	return "GenLawBook";}
 	protected String	readableText="";
-
-	public GenLightSource()
+	public GenLawBook()
 	{
 		super();
-
-		setName("a generic lightable thing");
-		setDisplayText("a generic lightable thing sits here.");
-		setDescription("");
-		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(200);
+		setName("a law book");
+		setDisplayText("a law book sits here.");
+		setDescription("Enter `READ [PAGE NUMBER] \"law book\"` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
+		material=EnvResource.RESOURCE_PAPER;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		recoverEnvStats();
 	}
 
 
-	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
-	
 	public boolean isGeneric(){return true;}
-
 	public String text()
 	{
 		return CoffeeMaker.getPropertiesStr(this,false);
@@ -64,7 +58,7 @@ public class GenLightSource extends LightSource
 	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLightSource)) return false;
+		if(!(E instanceof GenItem)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

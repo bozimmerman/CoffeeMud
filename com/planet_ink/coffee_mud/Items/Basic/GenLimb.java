@@ -20,27 +20,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenLightSource extends LightSource
+public class GenLimb extends StdLimb
 {
-	public String ID(){	return "GenLightSource";}
+	public String ID(){	return "GenLimb";}
 	protected String	readableText="";
-
-	public GenLightSource()
+	public GenLimb()
 	{
 		super();
-
-		setName("a generic lightable thing");
-		setDisplayText("a generic lightable thing sits here.");
+		setName("a generic limb");
+		setDisplayText("a generic limb sits here.");
 		setDescription("");
-		destroyedWhenBurnedOut=true;
-		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(200);
 	}
 
-
-	public void setDuration(int duration){readableText=""+duration;}
-	public int getDuration(){return Util.s_int(readableText);}
-	
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -64,7 +55,7 @@ public class GenLightSource extends LightSource
 	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenLightSource)) return false;
+		if(!(E instanceof GenLimb)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
