@@ -30,17 +30,6 @@ public class Dice
         return total;
     }
 
-    public static boolean rollSavingThrow(int target)
-    {
-        if (randomizer == null)
-            seed();
-        int save = (Math.abs(randomizer.nextInt() % 20)) + 1;
-        if (save > target)
-            return true;
-        else
-            return false;    
-    }
-
     public static int rollPercentage()
     {
         if (randomizer == null)
