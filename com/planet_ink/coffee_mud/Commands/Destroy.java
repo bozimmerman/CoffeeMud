@@ -397,6 +397,12 @@ public class Destroy extends BaseItemParser
 	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
+		if(!mob.isASysOp(null))
+		{
+			mob.tell("You are not powerful enough to do that.");
+			return false;
+		}
+
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");

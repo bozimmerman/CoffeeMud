@@ -678,6 +678,12 @@ public class Modify extends BaseGenerics
 		if(mob.isMonster())
 			return;
 
+		if(!mob.isASysOp(null))
+		{
+			mob.tell("You are not powerful enough to do that.");
+			return false;
+		}
+
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");

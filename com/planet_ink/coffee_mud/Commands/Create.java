@@ -361,6 +361,12 @@ public class Create extends BaseGenerics
 	{
 		if(mob.isMonster())
 			return;
+		
+		if(!mob.isASysOp(null))
+		{
+			mob.tell("You are not powerful enough to do that.");
+			return false;
+		}
 
 		if(commands.size()<3)
 		{

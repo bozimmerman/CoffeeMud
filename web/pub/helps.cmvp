@@ -6,7 +6,7 @@
 	<!--
 	function openUp(named)
 	{
-		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
 		w=window.open("help.cmvp?HELPTOPIC="+named,
 		            "Help",strFeatures, false);
 	}

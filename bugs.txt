@@ -2,7 +2,6 @@ document motd and other files somewhere
 Would it be possible to change the ProtectedCitizen behavior to also do emotes along with speech in calling for help?
 Prop_RoomView on an item (or a GenPortal in this case) makes it impossible to see the item's description - it skips right to the room that RoomView points to.
 unable to use the scriptable $R variable. It always returns null. While finding this out it also seems that rooms and items are unable to target mobs with MPDAMAGE. Imagine me then trying to sort out what wasn't working in my erupting volcano script when the room tried to MPDAMAGE a '$R' random player.
-document clan positions
 better document the damn variable eq thang
 Ability to buy space ship areas, and add them to shopkeepers
 mutable body parts, with ability to grant powers

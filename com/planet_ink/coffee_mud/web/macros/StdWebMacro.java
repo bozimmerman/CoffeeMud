@@ -28,6 +28,7 @@ public class StdWebMacro implements WebMacro
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
 			x=s.toString().indexOf("\r\n");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\r\n");}
+			
 			int count=0;
 			x=0;
 			int lastSpace=0;
@@ -44,7 +45,25 @@ public class StdWebMacro implements WebMacro
 					x=x+4;
 					lastSpace=x+4;
 				}
-				if(count>=70)
+				if((s.charAt(x)=='-')
+				&&(x>4)
+				&&(s.charAt(x-1)=='-')
+				&&(s.charAt(x-2)=='-')
+				&&(s.charAt(x-3)=='-'))
+				{
+					count=0;
+					lastSpace=x;
+				}
+				if((s.charAt(x)=='!')
+				&&(x>4)
+				&&(s.charAt(x-1)==' ')
+				&&(s.charAt(x-2)==' ')
+				&&(s.charAt(x-3)==' '))
+				{
+					count=0;
+					lastSpace=x;
+				}
+				if(count==70)
 				{
 					s.replace(lastSpace,lastSpace+1,"<BR>");
 					lastSpace=lastSpace+4;
