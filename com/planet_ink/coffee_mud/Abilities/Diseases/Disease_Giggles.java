@@ -21,7 +21,7 @@ public class Disease_Giggles extends Disease
 	protected String DISEASE_DONE(){return "You feel more serious.";}
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) giggling.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> giggle(s) and laugh(s) uncontrollably.";}
-	public int spreadCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -21,7 +21,7 @@ public class Disease_Asthma extends Disease
 	protected String DISEASE_DONE(){return "Your asthma clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) wheezing.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wheeze(s) loudly.";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

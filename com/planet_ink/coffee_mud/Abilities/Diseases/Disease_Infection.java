@@ -22,7 +22,7 @@ public class Disease_Infection extends Disease
 	protected String DISEASE_DONE(){return "Your infected wounds feel better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> infected wounds.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

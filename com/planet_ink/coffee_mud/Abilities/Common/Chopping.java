@@ -63,7 +63,7 @@ public class Chopping extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=Dice.roll(1,20,10)*(usesRemaining());
+					int amount=Dice.roll(1,20,10)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to chop up "+amount+" pound"+s+" of "+foundShortName+".");

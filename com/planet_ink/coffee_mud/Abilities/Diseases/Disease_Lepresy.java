@@ -22,7 +22,7 @@ public class Disease_Lepresy extends Disease
 	protected String DISEASE_DONE(){return "Your lepresy is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{

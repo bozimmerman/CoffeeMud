@@ -53,8 +53,8 @@ CMAble.addCharAbilityMapping(ID(),2,"Thief_SneakAttack",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Peek",true);
-CMAble.addCharAbilityMapping(ID(),7,"Thief_Poison",true);
-			
+CMAble.addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
+		
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
 			

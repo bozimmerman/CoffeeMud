@@ -9,53 +9,11 @@ public class Chant_Poison extends Chant
 {
 	public String ID() { return "Chant_Poison"; }
 	public String name(){ return "Venomous Bite";}
-	public String displayText(){return "(Poisoned)";}
+	public String displayText(){return "";}
+	public int canAffectCode(){return 0;}
+	public int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	int poisonTick=3;
 	public Environmental newInstance(){	return new Chant_Poison();}
-
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-
-		MOB mob=(MOB)affected;
-		if(mob==null) return false;
-		if(invoker==null) return false;
-
-		if((--poisonTick)<=0)
-		{
-			poisonTick=3;
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
-			int damage=Dice.roll(invoker.envStats().level(),3,1);
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_POISON,-1,null);
-		}
-		return true;
-	}
-
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-5);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-5);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
-	}
-
-	public void unInvoke()
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-		if(canBeUninvoked())
-			mob.tell("The unholy poison runs its course.");
-	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -72,17 +30,19 @@ public class Chant_Poison extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF> and bite(s) <T-HIM-HER>!^?");
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if(!msg.wasModified())
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,48,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
+					Ability A=CMClass.getAbility("Poison");
+					if(A!=null)
+					{
+						A.setAbilityCode(Drink.POISON_VENOM);
+						A.invoke(mob,target,true);
+					}
 				}
 			}
 		}

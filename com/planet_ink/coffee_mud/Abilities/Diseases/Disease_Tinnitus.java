@@ -21,7 +21,7 @@ public class Disease_Tinnitus extends Disease
 	protected String DISEASE_DONE(){return "Your ears stop ringing.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 	
 	protected boolean ringing=false;
 	

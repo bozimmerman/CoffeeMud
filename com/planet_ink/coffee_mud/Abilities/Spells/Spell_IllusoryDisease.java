@@ -22,7 +22,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 		affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(Util.div(affectableStats.getStat(CharStats.STRENGTH),2.0)));
 	}
 
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -18,7 +18,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Disease_MummyRot();}
 	public int classificationCode(){return Ability.DISEASE;}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 
 	int conDown=1;
 	int diseaseTick=0;

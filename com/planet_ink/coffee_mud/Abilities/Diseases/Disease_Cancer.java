@@ -21,7 +21,7 @@ public class Disease_Cancer extends Disease
 	protected String DISEASE_DONE(){return "Your cancer is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 	protected int conDown=1;
 	
 	public boolean tick(Tickable ticking, int tickID)

@@ -22,7 +22,7 @@ public class Disease_Amnesia extends Disease
 	protected String DISEASE_DONE(){return "Your memory returns.";}
 	protected String DISEASE_START(){return "^G<S-NAME> feel(s) like <S-HE-SHE> <S-HAS-HAVE> forgotten something.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

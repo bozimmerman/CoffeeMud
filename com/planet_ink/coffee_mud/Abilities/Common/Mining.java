@@ -61,7 +61,7 @@ public class Mining extends CommonSkill
 					int amount=Dice.roll(1,10,0);
 					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
 						amount=Dice.roll(1,85,0);
-					amount=amount*(usesRemaining());
+					amount=amount*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to mine "+amount+" pound"+s+" of "+foundShortName+".");

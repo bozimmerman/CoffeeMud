@@ -21,7 +21,7 @@ public class Disease_PoisonIvy extends Disease
 	protected String DISEASE_DONE(){return "Your poison ivy clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> covered in poison ivy.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIM-HERSELF>.";}
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

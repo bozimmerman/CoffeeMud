@@ -21,7 +21,7 @@ public class Disease_Cold extends Disease
 	protected String DISEASE_DONE(){return "Your cold clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a cold.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{

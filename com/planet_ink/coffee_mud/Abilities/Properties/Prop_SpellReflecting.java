@@ -20,8 +20,8 @@ public class Prop_SpellReflecting extends Property
 	protected int uses=100;
 	protected long lastFade=0;
 
-	public int usesRemaining(){return uses;}
-	public void setUsesRemaining(int newUses){uses=newUses;}
+	public int abilityCode(){return uses;}
+	public void setAbilityCode(int newCode){uses=newCode;}
 
 	public void setMiscText(String newText)
 	{
@@ -31,13 +31,13 @@ public class Prop_SpellReflecting extends Property
 		chance=getParmVal(newText,"chance",chance);
 		fade=getParmVal(newText,"fade",fade);
 		remaining=getParmVal(newText,"remain",remaining);
-		setUsesRemaining(remaining);
+		setAbilityCode(remaining);
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected==null)	return true;
-		if((fade<=0)&&(usesRemaining()<remaining))
+		if((fade<=0)&&(abilityCode()<remaining))
 		{
 			if(lastFade==0) lastFade=System.currentTimeMillis();
 			long time=System.currentTimeMillis()-lastFade;
@@ -46,9 +46,9 @@ public class Prop_SpellReflecting extends Property
 				double div=Util.div(time,(long)5*60000);
 				if(div>1.0)
 				{
-					setUsesRemaining(usesRemaining()+(int)Math.round(div));
-					if(usesRemaining()>remaining)
-						setUsesRemaining(remaining);
+					setAbilityCode(abilityCode()+(int)Math.round(div));
+					if(abilityCode()>remaining)
+						setAbilityCode(remaining);
 					lastFade=System.currentTimeMillis();
 				}
 			}
@@ -59,7 +59,7 @@ public class Prop_SpellReflecting extends Property
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&(Dice.rollPercentage()<=chance)
-		&&(usesRemaining()>0)
+		&&(abilityCode()>0)
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 		{
 			MOB target=null;
@@ -86,8 +86,8 @@ public class Prop_SpellReflecting extends Property
 			target.location().show(target,affected,Affect.MSG_OK_VISUAL,"The field around <T-NAMESELF> reflects the spell!");
 			Ability A=(Ability)affect.tool();
 			A.invoke(target,affect.source(),true);
-			setUsesRemaining(usesRemaining()-lvl);
-			if(usesRemaining()<=0)
+			setAbilityCode(abilityCode()-lvl);
+			if(abilityCode()<=0)
 			{
 				if(affected instanceof MOB)
 				{

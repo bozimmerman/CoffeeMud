@@ -1466,7 +1466,7 @@ public class Import
 					if(special.equals("SPEC_POISON"))
 					{
 						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
-						M.addAbility(CMClass.getAbility("Thief_Poison"));
+						M.addAbility(CMClass.getAbility("Poison"));
 					}
 					else
 					if(special.equals("SPEC_OGRE_MEMBER"))
@@ -1744,24 +1744,45 @@ public class Import
 			case 17: I=CMClass.getStdItem("GenWater");
 					 str3=str3.toUpperCase().trim();
 					 if(((val3>0)&&(val3<6))
-					  ||(str3.indexOf("BEER")>=0)
-					  ||(str3.indexOf("ALE")>=0)
-					  ||(str3.indexOf("BREW")>=0)
-					  ||(str3.indexOf("WINE")>=0)
-					  ||(str3.indexOf("FIREBEATHER")>=0)
-					  ||(str3.indexOf("LOCAL SPECIALTY")>=0)
-					  ||(str3.indexOf("WHISKEY")>=0))
+					 ||(str3.indexOf("BEER")>=0)
+					 ||(str3.indexOf("ALE")>=0)
+					 ||(str3.indexOf("BREW")>=0)
+					 ||(str3.indexOf("WINE")>=0))
 					 {
-						 I=CMClass.getMiscMagic("GenMultiPotion");
-						 ((Potion)I).setSpellList("Inebriation"+";");
+						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						I.baseEnvStats().setAbility(Drink.LIQUOR_BEER);
+						((Drink)I).setLiquidHeld(val1*10);
+						((Drink)I).setLiquidRemaining(val2);
+					 }
+					 else
+					 if(str3.indexOf("FIREBREATHER")>=0)
+					 {
+						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						I.baseEnvStats().setAbility(Drink.LIQUOR_FIREBREATHER);
+						((Drink)I).setLiquidHeld(val1*10);
+						((Drink)I).setLiquidRemaining(val2);
+					 }
+					 else
+					 if(str3.indexOf("LOCAL SPECIALTY")>=0)
+					 {
+						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						I.baseEnvStats().setAbility(Drink.LIQUOR_TEQUILA);
+						((Drink)I).setLiquidHeld(val1*10);
+						((Drink)I).setLiquidRemaining(val2);
+					 }
+					 else
+					 if(str3.indexOf("WHISKEY")>=0)
+					 {
+						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
+						I.baseEnvStats().setAbility(Drink.LIQUOR_LIQUOR);
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
 					 else
 					 if((val4>0)||(str3.indexOf("POISON")>=0))
 					 {
-						 I=CMClass.getMiscMagic("GenMultiPotion");
-						 ((Potion)I).setSpellList("Poison"+";");
+						((Drink)I).setLiquidType(EnvResource.RESOURCE_POISON);
+						I.baseEnvStats().setAbility(Drink.POISON_DRAINING);
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }

@@ -17,7 +17,7 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 	public Environmental newInstance(){	return new Prayer_Plague();}
 	int plagueDown=4;
 
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

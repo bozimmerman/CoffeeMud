@@ -32,8 +32,8 @@ public class CommonSkill extends StdAbility
 	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
 	private int yield=1;
-	public int usesRemaining(){return yield;}
-	public void setUsesRemaining(int newUses){yield=newUses;}
+	public int abilityCode(){return yield;}
+	public void setAbilityCode(int newCode){yield=newCode;}
 	
 	protected String replacePercent(String thisStr, String withThis)
 	{

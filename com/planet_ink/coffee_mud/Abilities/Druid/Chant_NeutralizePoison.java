@@ -21,20 +21,15 @@ public class Chant_NeutralizePoison extends Chant
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if(A!=null)
-			{
-				if((A.ID().toUpperCase().indexOf("POISON")>=0)
-				||(A.name().toUpperCase().indexOf("POISON")>=0)
-				||(A.displayText().toUpperCase().indexOf("POISON")>=0))
-					offenders.addElement(A);
-			}
+			if((A!=null)&&(A.ID().toUpperCase().indexOf("POISON")>=0))
+				offenders.addElement(A);
 		}
 		return offenders;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -43,25 +38,39 @@ public class Chant_NeutralizePoison extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		Vector offensiveAffects=returnOffensiveAffects(target);
 
-		if((success)&&(offensiveAffects.size()>0))
+		if((success)&&((offensiveAffects.size()>0)
+					   ||((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> chant(s) for <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> look(s) cleansed of any poisons.":"^S<S-NAME> chant(s) for <T-NAME> to be cleansed of poisons.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int old=target.numAffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))
+				{
+					((Drink)target).setLiquidHeld(EnvResource.RESOURCE_FRESHWATER);
+					target.baseEnvStats().setAbility(0);
+				}
 				if(old>target.numAffects())
-					target.tell("You feel much better!");
+				{
+					if(target instanceof MOB)
+					{
+						((MOB)target).tell("You feel much better!");
+						((MOB)target).recoverCharStats();
+						((MOB)target).recoverMaxState();
+					}
+				}
+				target.recoverEnvStats();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> chant(s) for <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> chant(s) for <T-NAME>, but nothing happens.");
 
 
 		// return whether it worked

@@ -339,14 +339,14 @@ public class Carpentry extends CommonSkill
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
-				building.baseEnvStats().setAttackAdjustment((usesRemaining()-1));
+				building.baseEnvStats().setAttackAdjustment((abilityCode()-1));
 				building.baseEnvStats().setDamage(armordmg);
 				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+(usesRemaining()-1));
+				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{

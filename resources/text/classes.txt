@@ -8,6 +8,6 @@
 
 ^xCleric  :^.^? Clerics are the great vassels of the Gods, who possess great magical abilities in their numerous "prayers".  This also includes numerous specialist devotional Cleric classes.
 
-^xMage    :^.^? Mages are masters of magic, and wielders of the great elemental powers.  This also includes Wild Mages, and Specialist Mage classes.
+^xMage    :^.^? Mages are masters of magic, and wielders of the great elemental powers.  This also includes numerous Specialist Mage classes.
 
 ^xDruid   :^.^? Druids are mystical guardians of the natural world, whose magic is drawn from earth, sea, and sky.

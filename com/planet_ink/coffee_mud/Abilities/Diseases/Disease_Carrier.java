@@ -21,5 +21,5 @@ public class Disease_Carrier extends Disease
 	protected String DISEASE_DONE(){return "";}
 	protected String DISEASE_START(){return "";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 }

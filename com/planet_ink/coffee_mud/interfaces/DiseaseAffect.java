@@ -7,5 +7,4 @@ public interface DiseaseAffect extends Ability
 	public final static int SPREAD_PROXIMITY=4;
 	public final static int SPREAD_CONSUMPTION=8;
 	public final static int SPREAD_DAMAGE=16;
-	public int spreadCode();
 }

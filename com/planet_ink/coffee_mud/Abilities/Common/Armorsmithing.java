@@ -335,7 +335,7 @@ public class Armorsmithing extends CommonSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(usesRemaining()-1));
+				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{

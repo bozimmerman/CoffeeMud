@@ -74,7 +74,7 @@ public class Smelting extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((building!=null)&&(!aborted))
 				{
-					amountMaking=amountMaking*(usesRemaining());
+					amountMaking=amountMaking*(abilityCode());
 					if(messedUp)
 						commonEmote(mob,"<S-NAME> ruin(s) "+building.name()+"!");
 					else

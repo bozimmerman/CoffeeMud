@@ -59,6 +59,7 @@ public interface Ability  extends Environmental
 	public int quality();
 	// who is responsible for initiating this affect?
 	public MOB invoker();
+	public void setInvoker(MOB mob);
 	// who (or what) is being affected by the abilitys use?
 	public Environmental affecting();
 	public void setAffectedOne(Environmental being);
@@ -102,10 +103,9 @@ public interface Ability  extends Environmental
 	public boolean isBorrowed(Environmental toMe);
 	public void setBorrowed(Environmental toMe, boolean truefalse);
 	
-	/** If it applies, the number of uses remaining
-	 * for this Ability */
-	public int usesRemaining();
-	public void setUsesRemaining(int newUses);
+	/** An optional numeric code for this ability */
+	public int abilityCode();
+	public void setAbilityCode(int newCode);
 	
 	// methods to assist in teaching and learning the
 	// abilities

@@ -12,7 +12,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 	public String displayText(){return "(Plague)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Chant_Plague();}
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
 	int plagueDown=4;
 	public boolean tick(Tickable ticking, int tickID)
 	{

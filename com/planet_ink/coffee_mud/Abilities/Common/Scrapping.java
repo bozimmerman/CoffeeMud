@@ -58,7 +58,7 @@ public class Scrapping extends CommonSkill
 						commonTell(mob,"You've messed up scrapping "+oldItemName+"!");
 					else
 					{
-						amount=amount*(usesRemaining());
+						amount=amount*(abilityCode());
 						String s="s";
 						if(amount==1) s="";
 						mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to scrap "+amount+" pound"+s+" of "+foundShortName+".");

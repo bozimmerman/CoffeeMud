@@ -49,8 +49,8 @@ public class Butchering extends CommonSkill
 							Ability A=body.fetchAffect(i);
 							if((A!=null)&&(A instanceof DiseaseAffect))
 							{
-								if((Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-								||(Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+								if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+								||(Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 									diseases.addElement(A);
 							}
 						}
@@ -61,7 +61,7 @@ public class Butchering extends CommonSkill
 								I.setContainer(null);
 						}
 						body.destroyThis();
-						for(int y=0;y<usesRemaining();y++)
+						for(int y=0;y<abilityCode();y++)
 						{
 							for(int i=0;i<resources.size();i++)
 							{

@@ -315,8 +315,8 @@ public class StdRace implements Race
 			Ability A=mob.fetchAffect(i);
 			if((A!=null)&&(A instanceof DiseaseAffect))
 			{
-				if((Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-				||(Util.bset(((DiseaseAffect)A).spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+				if((Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+				||(Util.bset(((DiseaseAffect)A).abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					Body.addNonUninvokableAffect((Ability)A.copyOf());
 			}
 		}

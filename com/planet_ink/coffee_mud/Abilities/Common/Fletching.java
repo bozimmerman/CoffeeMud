@@ -272,7 +272,7 @@ public class Fletching extends CommonSkill
 					((Weapon)building).setAmmoRemaining(0);
 					((Weapon)building).setAmmunitionType(ammotype);
 				}
-				building.baseEnvStats().setAttackAdjustment((usesRemaining()-1));
+				building.baseEnvStats().setAttackAdjustment((abilityCode()-1));
 				building.baseEnvStats().setDamage(armordmg);
 				((Weapon)building).setRanges(((Weapon)building).minRange(),maxrange);
 			}

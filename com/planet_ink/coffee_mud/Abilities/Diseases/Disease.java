@@ -23,7 +23,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
 	
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 	private boolean processing=false;
 	
 
@@ -88,7 +88,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
 			// from trying to do ANYTHING except sleep
-			if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_DAMAGE))
+			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_DAMAGE))
 			&&(affect.amISource(mob))
 			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.tool()!=null)
@@ -101,7 +101,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getStat(CharStats.SAVE_DISEASE)+70)))
 				catchIt(mob,affect.target());
 			else
-			if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT))
+			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
 			&&(affect.amISource(mob)||affect.amITarget(mob))
 			&&(affect.target()!=null)
 			&&(affect.target() instanceof MOB)
@@ -123,8 +123,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 				switch(affect.sourceMinor())
 				{
 				case Affect.TYP_DRINK:
-					if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+					if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 						if((myItem instanceof Drink)
 						&&(affect.amITarget(myItem)))
@@ -132,8 +132,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 					}
 					break;
 				case Affect.TYP_EAT:
-					if((Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONSUMPTION))
-					||(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT)))
+					if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
+					||(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					{
 						
 						if((myItem instanceof Food)
@@ -142,7 +142,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					}
 					break;
 				case Affect.TYP_GET:
-					if(Util.bset(spreadCode(),DiseaseAffect.SPREAD_CONTACT))
+					if(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
 					{
 						if((!(myItem instanceof Drink))
 						  &&(!(myItem instanceof Food))

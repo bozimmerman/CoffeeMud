@@ -16,8 +16,8 @@ public class Property implements Ability, Cloneable
 	protected Environmental affected=null;
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int usesRemaining(){return 0;}
-	public void setUsesRemaining(int newUses){}
+	public int abilityCode(){return 0;}
+	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob){return -1;}
 	public boolean bubbleAffect(){return false;}
 
@@ -25,6 +25,7 @@ public class Property implements Ability, Cloneable
 	public void setDescription(String newDescription){}
 	public void setDisplayText(String newDisplayText){}
 	public MOB invoker(){return null;}
+	public void setInvoker(MOB mob){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto){return false;}

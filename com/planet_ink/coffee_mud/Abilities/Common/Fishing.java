@@ -54,7 +54,7 @@ public class Fishing extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=Dice.roll(1,5,0)*(usesRemaining());
+					int amount=Dice.roll(1,5,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");

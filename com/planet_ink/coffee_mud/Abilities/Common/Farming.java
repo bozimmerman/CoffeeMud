@@ -53,7 +53,7 @@ public class Farming extends CommonSkill
 			{
 				if((found!=null)&&(!aborted))
 				{
-					int amount=Dice.roll(1,20,0)*(usesRemaining());
+					int amount=Dice.roll(1,20,0)*(abilityCode());
 					String s="s";
 					if(amount==1) s="";
 					room.showHappens(Affect.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");

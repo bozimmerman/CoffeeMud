@@ -20,20 +20,15 @@ public class Prayer_RemovePoison extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if(A!=null)
-			{
-				if((A.ID().toUpperCase().indexOf("POISON")>=0)
-				||(A.name().toUpperCase().indexOf("POISON")>=0)
-				||(A.displayText().toUpperCase().indexOf("POISON")>=0))
-					offenders.addElement(A);
-			}
+			if((A!=null)&&(A.ID().toUpperCase().indexOf("POISON")>=0))
+				offenders.addElement(A);
 		}
 		return offenders;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -48,19 +43,32 @@ public class Prayer_RemovePoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) purified of <T-HIS-HER> poisons.":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be purified of <T-HIS-HER> poisons.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int old=target.numAffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))
+				{
+					((Drink)target).setLiquidHeld(EnvResource.RESOURCE_FRESHWATER);
+					target.baseEnvStats().setAbility(0);
+				}
 				if(old>target.numAffects())
-					target.tell("You feel much better!");
+				{
+					if(target instanceof MOB)
+					{
+						((MOB)target).tell("You feel much better!");
+						((MOB)target).recoverCharStats();
+						((MOB)target).recoverMaxState();
+					}
+				}
+				target.recoverEnvStats();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but there is no answer.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" that <T-NAME> be purified of <T-HIS-HER> poisons, but there is no answer.");
 
 
 		// return whether it worked

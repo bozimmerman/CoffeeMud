@@ -359,7 +359,7 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if(Util.s_int((String)foundRecipe.elementAt(RCP_HANDS))==2)
 				building.setRawLogicalAnd(true);
-			building.baseEnvStats().setAttackAdjustment(Util.s_int((String)foundRecipe.elementAt(RCP_ATTACK))+(hardness*5)+(usesRemaining()-1));
+			building.baseEnvStats().setAttackAdjustment(Util.s_int((String)foundRecipe.elementAt(RCP_ATTACK))+(hardness*5)+(abilityCode()-1));
 			building.baseEnvStats().setDamage(Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+hardness);
 
 			building.recoverEnvStats();

@@ -181,6 +181,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 			Ability P=CMClass.getAbility("Poison");
+			P.setAbilityCode(Drink.POISON_DRAINING);
 			P.invoke(invoker,target,true);
 		}
 	}
@@ -197,6 +198,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			if(msg.wasModified())
 				dmg=(int)Math.round(Util.div(dmg,2.0));
 			Ability P=CMClass.getAbility("Poison");
+			P.setAbilityCode(Drink.POISON_DRAINING);
 			P.invoke(invoker,target,true);
 			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 		}

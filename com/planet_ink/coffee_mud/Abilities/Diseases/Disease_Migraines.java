@@ -21,7 +21,7 @@ public class Disease_Migraines extends Disease
 	protected String DISEASE_DONE(){return "Your headaches stop.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int spreadCode(){return 0;}
+	public int abilityCode(){return 0;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

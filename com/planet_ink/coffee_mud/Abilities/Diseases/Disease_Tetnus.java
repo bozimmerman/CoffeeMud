@@ -21,7 +21,7 @@ public class Disease_Tetnus extends Disease
 	protected String DISEASE_DONE(){return "Your tetnus clears up!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	protected int dexDown=1;
 	
 	public boolean tick(Tickable ticking, int tickID)

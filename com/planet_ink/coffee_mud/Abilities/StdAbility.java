@@ -64,8 +64,8 @@ public class StdAbility implements Ability, Cloneable
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
-	public int usesRemaining(){return 100;}
-	public void setUsesRemaining(int newUses){}
+	public int abilityCode(){return 0;}
+	public void setAbilityCode(int newCode){}
 
 	// ** For most abilities, the following stuff actually matters */
 	public void setMiscText(String newMiscText)	{ miscText=newMiscText;}
@@ -374,6 +374,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		return invoker;
 	}
+	public void setInvoker(MOB mob){invoker=mob;}
 
 	public void helpProfficiency(MOB mob)
 	{

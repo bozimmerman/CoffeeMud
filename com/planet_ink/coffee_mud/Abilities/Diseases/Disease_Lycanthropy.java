@@ -23,7 +23,7 @@ public class Disease_Lycanthropy extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	protected boolean changed=false;
-	public int spreadCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
 	protected Vector deathTrail=null;
 	protected Race theRace=null;
 	protected Race lycanRace(){

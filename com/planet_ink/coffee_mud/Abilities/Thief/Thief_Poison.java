@@ -7,58 +7,20 @@ import java.util.*;
 
 public class Thief_Poison extends ThiefSkill
 {
+	// **
+	// This is a deprecated skill provided only
+	// for backwards compatibility.  It has been
+	// replaced with Thief_UsePoison
+	// **
 	public String ID() { return "Thief_Poison"; }
-	public String name(){ return "Poisoning";}
-	public String displayText(){ return "(Poisoned)";}
-	protected int canAffectCode(){return CAN_MOBS;}
+	public String name(){ return "Deprecated Poison";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	private static final String[] triggerStrings = {"POISON"};
+	private static final String[] triggerStrings = {"DOPOISON"};
 	public String[] triggerStrings(){return triggerStrings;}
-	int poisonDown=3;
 	public Environmental newInstance(){	return new Thief_Poison();}
-
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-
-		MOB mob=(MOB)affected;
-		if(mob==null) return false;
-		if(invoker==null) return false;
-
-		if((--poisonDown)<=0)
-		{
-			poisonDown=3;
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
-			int hpLoss=invoker.envStats().level();
-			ExternalPlay.postDamage(invoker,mob,this,hpLoss,Affect.NO_EFFECT,-1,null);
-		}
-		return true;
-	}
-
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		super.affectCharStats(affected,affectableStats);
-		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-8);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-8);
-		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
-			affectableStats.setStat(CharStats.CONSTITUTION,1);
-		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
-			affectableStats.setStat(CharStats.STRENGTH,1);
-	}
-
-	public void unInvoke()
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-		if(canBeUninvoked())
-			mob.tell("The poison runs its course.");
-	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -74,14 +36,15 @@ public class Thief_Poison extends ThiefSkill
 		if(success)
 		{
 			str=auto?"":"^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),str,Affect.MSG_NOISYMOVEMENT,str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.MSG_THIEF_ACT|(auto?Affect.MASK_GENERAL:0),str,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,this,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
-					success=maliciousAffect(mob,target,0,-1);
+					Ability A=CMClass.getAbility("Poison");
+					A.setAbilityCode(Drink.POISON_DRAINING);
+					A.invoke(mob,target,true);
 				}
 			}
 		}
