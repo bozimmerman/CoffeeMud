@@ -26,6 +26,9 @@ public class Spell_Blindness extends Spell
 
 		baseEnvStats().setLevel(9);
 
+		addQualifyingClass("Mage",9);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -2550,18 +2550,6 @@
 9
 
 ############################################################
->bat
-
-(bat|hi|hello)
-8:squeals at you.
-3:flys around.
-4:
-
-#matches anything and then says nothing
-()
-9
-
-############################################################
 >chicken
 
 (chicken|hi|hello)
@@ -2574,7 +2562,7 @@
 9
 
 ############################################################
->insect centipede scorpion
+>insect centipede
 
 (centipede|hi|hello)
 8:crawls around.

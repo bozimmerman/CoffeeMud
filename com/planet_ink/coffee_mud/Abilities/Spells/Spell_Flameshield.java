@@ -19,6 +19,8 @@ public class Spell_Flameshield extends Spell
 		baseEnvStats().setLevel(9);
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		addQualifyingClass("Mage",baseEnvStats().level());
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -45,29 +47,23 @@ public class Spell_Flameshield extends Spell
 		super.affect(affect);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-		if(affect.target()==null) return;
-		if(affect.source()==null) return;
-		MOB source=affect.source();
-		if(source.location()==null) return;
-		
 
-		if(affect.amITarget(mob))
+		if(affect.target()==affected)
 		{
-			if(Util.bset(affect.targetCode(),Affect.AFF_TOUCHED)&&(affect.targetMessage()!=null)&&(affect.targetMessage().length()>0))
+			if(Util.bset(affect.targetCode(),Affect.AFF_TOUCHED))
 			{
-				if((Dice.rollPercentage()>(source.charStats().getDexterity()*3)))
+				if((Dice.rollPercentage()>(affect.source().charStats().getDexterity()*3)))
 				{
-					FullMsg msg=new FullMsg(source,mob,this,affectType,null);
-					if(source.location().okAffect(msg))
+					FullMsg msg=new FullMsg(affect.source(),affected,this,affectType,null);
+					if(affect.source().location().okAffect(msg))
 					{
-						source.location().send(source,msg);
-						if(invoker==null) invoker=source;
+						affect.source().location().send(affect.source(),msg);
+						if(invoker==null) invoker=affect.source();
 						if(!msg.wasModified())
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							affect.source().location().show(mob,source,Affect.MSG_OK_ACTION,"The flame shield around <S-NAME> flares and "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <T-NAME>!");
-							ExternalPlay.postDamage(mob,source,this,damage);
+							affect.source().location().show((MOB)affected,affect.source(),Affect.MSG_OK_ACTION,"The flame shield around <S-NAME> flares and "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <T-NAME>!");
+							ExternalPlay.postDamage((MOB)affected,affect.source(),this,damage);
 						}
 					}
 				}

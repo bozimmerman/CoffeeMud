@@ -16,6 +16,8 @@ public class Prayer_Hellfire extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(19);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

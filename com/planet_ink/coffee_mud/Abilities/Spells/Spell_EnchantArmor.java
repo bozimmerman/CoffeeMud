@@ -20,6 +20,9 @@ public class Spell_EnchantArmor extends Spell
 
 		baseEnvStats().setLevel(20);
 
+		addQualifyingClass("Mage",20);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -25,6 +25,9 @@ public class Spell_MagicalAura extends Spell
 		baseEnvStats().setLevel(1);
 		quality=Ability.BENEFICIAL_SELF;
 
+		addQualifyingClass("Mage",1);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -24,7 +24,6 @@ public class CommandProcessor
 	public CreateEdit createEdit=new CreateEdit(socials);
 	public Import importer=new Import();
 	public SysopItemUsage sysopItemUsage=new SysopItemUsage();
-	public SysOpSkills sysopSkills=new SysOpSkills();
 	public XMLIO xmlIO=new XMLIO();
 	public Reset reset=new Reset();
 	public Properties helpFile=null;
@@ -56,16 +55,16 @@ public class CommandProcessor
 					}
 					break;
 				case CommandSet.ARCHELP:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						arcHelp(mob,Util.combine(commands,1));
 					else
-						mob.tell("You are not powerful enough to even care.\n\r");
+						mob.tell("Only an Archon should even care...\n\r");
 					break;
 				case CommandSet.ARCTOPICS:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						arcTopics(mob);
 					else
-						mob.tell("You are not powerful enough to even care.\n\r");
+						mob.tell("Only an Archon should even care...\n\r");
 					break;
 				case CommandSet.AREAS:
 					scoring.areas(mob);
@@ -104,12 +103,6 @@ public class CommandProcessor
 				case CommandSet.CHANNELS:
 					channels.listChannels(mob);
 					break;
-				case CommandSet.CHARGEN:
-					if(mob.isASysOp(mob.location()))
-						sysopSkills.chargen(mob,commands);
-					else
-						mob.tell("Sorry, you don't have that power!");
-					break;
 				case CommandSet.CONSIDER:
 					socialProcessor.consider(mob,commands);
 					break;
@@ -120,10 +113,10 @@ public class CommandProcessor
 					scoring.commands(mob,commandSet);
 					break;
 				case CommandSet.CREATE:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						createEdit.create(mob,commands);
 					else
-						mob.tell("You lack the power of creation.\n\r");
+						mob.tell("Only the Archons may create.\n\r");
 					break;
 				case CommandSet.CREDITS:
 					credits(mob);
@@ -132,10 +125,10 @@ public class CommandProcessor
 					basicSenses.description(mob,commands);
 					break;
 				case CommandSet.DESTROY:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						createEdit.destroy(mob,commands);
 					else
-						mob.tell("You lack the power to destroy things this way.  Did you mean kill?\n\r");
+						mob.tell("Only the Archons may destroy things this way.  Did you mean kill?\n\r");
 					break;
 				case CommandSet.DOWN:
 					movement.move(mob,Directions.DOWN,false);
@@ -147,7 +140,7 @@ public class CommandProcessor
 					itemUsage.drop(mob,commands);
 					break;
 				case CommandSet.DUMPFILE:
-					if(mob.isASysOp(null))
+					if(mob.isASysOp())
 						cmdDumpfile(mob,commands);
 					else
 						mob.tell("Huh?\n\r");
@@ -191,12 +184,6 @@ public class CommandProcessor
 				case CommandSet.GO:
 					movement.go(mob,commands);
 					break;
-				case CommandSet.GOTO:
-					if(mob.isASysOp(mob.location()))
-						sysopSkills.gotoCmd(mob,commands);
-					else
-						mob.tell("Try 'GO'.");
-					break;
 				case CommandSet.GROUP:
 					grouping.group(mob);
 					break;
@@ -210,7 +197,7 @@ public class CommandProcessor
 					itemUsage.hold(mob,commands);
 					break;
 				case CommandSet.IMPORT:
-					if(mob.isASysOp(null))
+					if(mob.isASysOp())
 						importer.areimport(mob,commands);
 					else
 						mob.tell("Only the Archons may Import.\n\r");
@@ -225,10 +212,10 @@ public class CommandProcessor
 					socialProcessor.list(mob,commands);
 					break;
 				case CommandSet.LINK:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						createEdit.link(mob,commands);
 					else
-						mob.tell("You lack the power to link rooms.\n\r");
+						mob.tell("Only the Archons may link rooms.\n\r");
 					break;
 				case CommandSet.LOCK:
 					movement.lock(mob,Util.combine(commands,1));
@@ -237,10 +224,10 @@ public class CommandProcessor
 					basicSenses.look(mob,commands,false);
 					break;
 				case CommandSet.MODIFY:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						createEdit.edit(mob,commands);
 					else
-						mob.tell("You lack the power to modify things.\n\r");
+						mob.tell("Only the Archons may modify things.\n\r");
 					break;
 				case CommandSet.NOANSI:
 					if(!mob.isMonster())
@@ -251,7 +238,7 @@ public class CommandProcessor
 					}
 					break;
 				case CommandSet.NOFOLLOW:
-					grouping.nofollow(mob,true,false);
+					grouping.nofollow(mob,true);
 					break;
 				case CommandSet.NORTH:
 					movement.move(mob,Directions.NORTH,false);
@@ -270,12 +257,6 @@ public class CommandProcessor
 					break;
 				case CommandSet.PASSWORD:
 					basicSenses.password(mob,commands);
-					break;
-				case CommandSet.POSSESS:
-					if(mob.isASysOp(mob.location()))
-						sysopSkills.possess(mob,commands);
-					else
-						mob.tell("You aren't powerful enough to possess anyone.");
 					break;
 				case CommandSet.PRACTICE:
 					abilityEvoker.practice(mob,commands);
@@ -298,7 +279,11 @@ public class CommandProcessor
 					break;
 				case CommandSet.QUIT:
 					if(mob.soulMate()!=null)
-						new SysOpSkills().dispossess(mob);
+					{
+						Ability A=CMClass.getAbility("Archon_Possess");
+						A.setAffectedOne(mob);
+						A.unInvoke();
+					}
 					else
 					if(!mob.isMonster())
 						mob.session().cmdExit(mob,commands);
@@ -319,13 +304,13 @@ public class CommandProcessor
 					socialProcessor.report(mob);
 					break;
 				case CommandSet.RESET:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						reset.resetSomething(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.SAVE:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						createEdit.save(mob,commands);
 					else
 						mob.tell("Your game is automatically being saved while you play.\n\r");
@@ -334,7 +319,7 @@ public class CommandProcessor
 					socialProcessor.cmdSay(mob,commands);
 					break;
 				case CommandSet.SHUTDOWN:
-					if(mob.isASysOp(null))
+					if(mob.isASysOp())
 						shutdown(mob, commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
@@ -373,11 +358,11 @@ public class CommandProcessor
 					movement.stand(mob);
 					break;
 				case CommandSet.SYSMSGS:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						mob.toggleReadSysopMsgs();
 					break;
 				case CommandSet.TAKE:
-					if(mob.isASysOp(mob.location()))
+					if(mob.isASysOp())
 						sysopItemUsage.take(mob,commands);
 					else
 						basicSenses.mundaneTake(mob,commands);
@@ -402,7 +387,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.UNLOADHELP:
 
-					if(mob.isASysOp(null))
+					if(mob.isASysOp())
 						unloadHelpFile(mob);
 					else
 						mob.tell("Only the Archons may unload the help files...\n\r");
@@ -413,20 +398,11 @@ public class CommandProcessor
 				case CommandSet.VALUE:
 					socialProcessor.value(mob,commands);
 					break;
-				case CommandSet.VER:
-					mob.tell(myHost.getVer());
-					mob.tell("(C) 2000-2002 Bo Zimmerman");
-					mob.tell("bo@zimmers.net");
-					mob.tell("http://www.zimmers.net/home/mud.html");
-					break;
 				case CommandSet.WAKE:
 					movement.wake(mob);
 					break;
 				case CommandSet.WEAR:
 					itemUsage.wear(mob,commands);
-					break;
-				case CommandSet.WEATHER:
-					basicSenses.weather(mob,commands);
 					break;
 				case CommandSet.WEST:
 					movement.move(mob,Directions.WEST,false);
@@ -443,14 +419,8 @@ public class CommandProcessor
 				case CommandSet.WIMPY:
 					basicSenses.wimpy(mob,commands);
 					break;
-				case CommandSet.WIZINV:
-					if(mob.isASysOp(null))
-						sysopSkills.wizinv(mob,commands);
-					else
-						mob.tell("You aren't powerful enough to do that.");
-					break;
 				case CommandSet.XML:
-					if(mob.isASysOp(null))
+					if(mob.isASysOp())
 						xmlIO.xml(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
@@ -618,18 +588,6 @@ public class CommandProcessor
 			if(!getHelpFile())
 			{
 				mob.tell("No help is available.");
-				return;
-			}
-			// the area exception
-			if(CMMap.getArea(helpStr.trim())!=null)
-			{
-				StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
-				if(s==null)
-				{
-					s=CMMap.getArea(helpStr.trim()).getAreaStats();
-					Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
-				}
-				mob.tell(s.toString());
 				return;
 			}
 		}

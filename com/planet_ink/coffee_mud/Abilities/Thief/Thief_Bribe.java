@@ -23,6 +23,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		baseEnvStats().setLevel(20);
 
+		addQualifyingClass("Thief",20);
 		recoverEnvStats();
 	}
 

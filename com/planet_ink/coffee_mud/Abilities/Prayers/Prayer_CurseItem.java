@@ -17,6 +17,8 @@ public class Prayer_CurseItem extends Prayer
 
 		baseEnvStats().setLevel(24);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

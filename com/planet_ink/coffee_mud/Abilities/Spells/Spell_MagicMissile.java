@@ -24,6 +24,9 @@ public class Spell_MagicMissile extends Spell
 
 		baseEnvStats().setLevel(1);
 
+		addQualifyingClass("Mage",1);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -16,6 +16,8 @@ public class Prayer_Desecrate extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(3);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

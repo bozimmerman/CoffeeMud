@@ -7,8 +7,6 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Archon extends StdCharClass
 {
-	private static boolean abilitiesLoaded=false;
-	
 	public Archon()
 	{
 		super();
@@ -16,15 +14,6 @@ public class Archon extends StdCharClass
 		for(int i=0;i<=5;i++)
 			maxStat[i]=25;
 		name=myID;
-		if(!abilitiesLoaded)
-		{
-			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),"Archon_CharGen",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_GOTO",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_Possess",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_WizInvis",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Resistance",1,true);
-		}
 	}
 
 	public boolean playerSelectable()

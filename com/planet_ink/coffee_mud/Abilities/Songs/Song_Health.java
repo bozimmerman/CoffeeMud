@@ -24,6 +24,8 @@ public class Song_Health extends Song
 
 		baseEnvStats().setLevel(12);
 
+		addQualifyingClass("Bard",12);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

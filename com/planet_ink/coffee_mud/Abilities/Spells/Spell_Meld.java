@@ -26,6 +26,9 @@ public class Spell_Meld extends Spell
 
 		baseEnvStats().setLevel(6);
 
+		addQualifyingClass("Mage",6);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

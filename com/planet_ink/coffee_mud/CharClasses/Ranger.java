@@ -7,8 +7,6 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Ranger extends StdCharClass
 {
-	private static boolean abilitiesLoaded=false;
-	
 	public Ranger()
 	{
 		super();
@@ -24,51 +22,6 @@ public class Ranger extends StdCharClass
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;
 		damageBonusPerLevel=1;
-		if(!abilitiesLoaded)
-		{
-			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Ranger_Track",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_Attack3",true);	
-			
-			// qualify for all spells
-			Mage m=new Mage(); // make sure a mage is available
-			for(int level=1;level<22;level++)
-			{
-				Vector V=CMAble.getLevelListings(m.ID(),level);
-				for(int v=0;v<V.size();v++)
-				{
-					String spell=(String)V.elementAt(v);
-					if(spell.startsWith("Spell_"))
-						CMAble.addCharAbilityMapping(ID(),level+4,spell,false);
-				}
-			}
-			
-			CMAble.addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Spell_Light",true);
-		}
 	}
 
 	public boolean playerSelectable()
@@ -106,12 +59,20 @@ public class Ranger extends StdCharClass
 	public void newCharacter(MOB mob, boolean isBorrowedClass)
 	{
 		super.newCharacter(mob, isBorrowedClass);
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				this.giveMobAbility(mob,A,isBorrowedClass);
-		}
+		giveMobAbility(mob,CMClass.getAbility("Ranger_Track"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_BlindFighting"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_Rescue"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack2"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack3"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Bash"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Disarm"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dirt"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dodge"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Parry"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Trip"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_ReadMagic"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_Light"), isBorrowedClass);
+
 		if(!mob.isMonster())
 			outfit(mob);
 	}

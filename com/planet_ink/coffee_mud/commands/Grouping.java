@@ -113,11 +113,12 @@ public class Grouping
 		}
 	}
 
-	public void nofollow(MOB mob, boolean errorsOk, boolean quiet)
+	public void nofollow(MOB mob, boolean errorsOk)
 	{
 		if(mob.amFollowing()!=null)
 		{
-			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) following <T-NAMESELF>.");
+			mob.setFollowing(null);
 			// no OKaffects, since the damn leader may not be here.
 			mob.location().send(mob,msg);
 		}
@@ -129,25 +130,6 @@ public class Grouping
 		}
 	}
 
-	public void processFollow(MOB mob, MOB tofollow, boolean quiet)
-	{
-		if(tofollow!=null)
-		{
-			if(mob.amFollowing()==tofollow)
-			{
-				if(!quiet)
-					mob.tell("You are already following "+tofollow.name()+"!");
-				return;
-			}
-			nofollow(mob,false,false);
-			FullMsg msg=new FullMsg(mob,tofollow,null,Affect.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-		else
-			nofollow(mob,!quiet,quiet);
-	}
-	
 	public void follow(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -162,7 +144,18 @@ public class Grouping
 			mob.tell("I don't see them here.");
 			return;
 		}
-		processFollow(mob,target,false);
+		if(mob.amFollowing()==target)
+		{
+			mob.tell("You are already following "+target.name()+"!");
+			return;
+		}
+		nofollow(mob,false);
+		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> follow(s) <T-NAMESELF>.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.setFollowing(target);
+			mob.location().send(mob,msg);
+		}
 	}
 
 	public void order(MOB mob, Vector commands)

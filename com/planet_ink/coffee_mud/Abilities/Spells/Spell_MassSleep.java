@@ -24,6 +24,9 @@ public class Spell_MassSleep extends Spell
 
 		baseEnvStats().setLevel(10);
 
+		addQualifyingClass("Mage",10);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

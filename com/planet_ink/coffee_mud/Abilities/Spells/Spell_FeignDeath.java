@@ -27,6 +27,9 @@ public class Spell_FeignDeath extends Spell
 
 		baseEnvStats().setLevel(13);
 
+		addQualifyingClass("Mage",13);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -118,8 +121,6 @@ public class Spell_FeignDeath extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
-		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -135,8 +136,7 @@ public class Spell_FeignDeath extends Spell
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			beneficialAffect(mob,target,0);
 
-			int tries=0;
-			while((target.numFollowers()>0)&&((++tries)<1000))
+			while(target.numFollowers()>0)
 			{
 				MOB follower=target.fetchFollower(0);
 				if(follower!=null)

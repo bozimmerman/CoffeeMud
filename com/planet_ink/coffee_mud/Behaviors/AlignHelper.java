@@ -38,7 +38,7 @@ public class AlignHelper extends StdBehavior
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(ExternalPlay.shortAlignmentStr(target.getAlignment()).equals(ExternalPlay.shortAlignmentStr(observer.getAlignment()))))
+		&&(ExternalPlay.shortAlignmentStr(target).equals(ExternalPlay.shortAlignmentStr(observer))))
 			Aggressive.startFight(observer,source,true);
 	}
 }

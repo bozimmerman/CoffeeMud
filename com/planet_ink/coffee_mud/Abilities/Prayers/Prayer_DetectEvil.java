@@ -16,6 +16,8 @@ public class Prayer_DetectEvil extends Prayer
 
 		baseEnvStats().setLevel(2);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

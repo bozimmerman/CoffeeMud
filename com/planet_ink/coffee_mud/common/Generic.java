@@ -117,9 +117,6 @@ public class Generic
 		if(E instanceof Room)
 			return getExtraEnvPropertiesStr(E);
 		else
-		if(E instanceof Area)
-			return getExtraEnvPropertiesStr(E);
-		else
 		if(E instanceof Ability)
 			return XMLManager.convertXMLtoTag("AWRAP",E.text());
 		else
@@ -307,9 +304,6 @@ public class Generic
 
 
 		if(E instanceof Room)
-			setExtraEnvProperties(E,V);
-		else
-		if(E instanceof Area)
 			setExtraEnvProperties(E,V);
 		else
 		if(E instanceof Ability)

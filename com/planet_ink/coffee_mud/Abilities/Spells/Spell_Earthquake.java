@@ -23,6 +23,9 @@ public class Spell_Earthquake extends Spell
 
 		baseEnvStats().setLevel(15);
 
+		addQualifyingClass("Mage",15);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

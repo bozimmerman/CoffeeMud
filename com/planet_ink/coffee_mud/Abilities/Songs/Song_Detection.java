@@ -23,6 +23,8 @@ public class Song_Detection extends Song
 		baseEnvStats().setLevel(1);
 		quality=Ability.OK_OTHERS;
 
+		addQualifyingClass("Bard",1);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

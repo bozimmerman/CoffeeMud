@@ -7,8 +7,6 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Thief extends StdCharClass
 {
-	private static boolean abilitiesLoaded=false;
-	
 	public Thief()
 	{
 		super();
@@ -21,41 +19,6 @@ public class Thief extends StdCharClass
 		bonusAttackLevel=1;
 		damageBonusPerLevel=0;
 		name=myID;
-		if(!abilitiesLoaded)
-		{
-			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Peek",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_Pick",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_DetectTraps",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Thief_BackStab",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Thief_Steal",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Parry",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Thief_Observation",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Thief_Listen",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Skill_Trip",false);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Search",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_DetectInvisible",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Thief_Poison",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Thief_Bribe",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Skill_Dirt",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_Charm",false);
-		}
 	}
 
 	public boolean playerSelectable()
@@ -85,9 +48,10 @@ public class Thief extends StdCharClass
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				this.giveMobAbility(mob,A,isBorrowedClass);
+			if((A.qualifyingLevel(mob)>0)&&(A.classificationCode()==Ability.THIEF_SKILL))
+				giveMobAbility(mob,A, isBorrowedClass);
 		}
+		giveMobAbility(mob,CMClass.getAbility("Skill_Climb"), isBorrowedClass);
 		if(!mob.isMonster())
 			outfit(mob);
 		super.newCharacter(mob, isBorrowedClass);

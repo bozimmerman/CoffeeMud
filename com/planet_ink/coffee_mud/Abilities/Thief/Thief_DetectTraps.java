@@ -25,6 +25,8 @@ public class Thief_DetectTraps extends ThiefSkill
 
 		baseEnvStats().setLevel(6);
 
+		addQualifyingClass("Thief",6);
+		addQualifyingClass("Bard",15);
 		recoverEnvStats();
 	}
 

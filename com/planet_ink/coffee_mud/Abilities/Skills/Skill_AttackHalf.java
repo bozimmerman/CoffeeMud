@@ -21,6 +21,9 @@ public class Skill_AttackHalf extends StdAbility
 
 		baseEnvStats().setLevel(8);
 
+		//addQualifyingClass("Thief",8);
+		//addQualifyingClass("Cleric",9);
+		//addQualifyingClass("Mage",9);
 		recoverEnvStats();
 	}
 

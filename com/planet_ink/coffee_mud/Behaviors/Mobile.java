@@ -55,7 +55,7 @@ public class Mobile extends ActiveTicker
 						}
 					}
 
-					if((!otherRoom.getArea().name().equals(thisRoom.getArea().name()))&&(this.getParms().toUpperCase().indexOf("WANDER")<0))
+					if((!otherRoom.getAreaID().equals(thisRoom.getAreaID()))&&(this.getParms().toUpperCase().indexOf("WANDER")<0))
 						direction=-1;
 					else
 						break;
@@ -71,7 +71,7 @@ public class Mobile extends ActiveTicker
 			for(int m=0;m<thisRoom.numInhabitants();m++)
 			{
 				MOB inhab=thisRoom.fetchInhabitant(m);
-				if((inhab!=null)&&(inhab.isASysOp(thisRoom)))
+				if((inhab!=null)&&(inhab.isASysOp()))
 					move=false;
 			}
 			if(move)

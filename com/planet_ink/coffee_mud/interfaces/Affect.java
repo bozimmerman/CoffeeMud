@@ -111,13 +111,13 @@ public interface Affect
 	public static final int TYP_LIST=29;
 	public static final int TYP_EAT=30;
 	public static final int TYP_ENTER=31;
-	public static final int TYP_FOLLOW=32;
+	//public static final int TYP_CAST_ATTACK_VERBAL_SPELL=32;
 	public static final int TYP_LEAVE=33;
 	public static final int TYP_SLEEP=34;
 	public static final int TYP_SIT=35;
 	public static final int TYP_STAND=36;
 	public static final int TYP_FLEE=37;
-	public static final int TYP_NOFOLLOW=38;
+	//public static final int TYP_CAST_OK_SOMANTIC_SPELL=38;
 	//public static final int TYP_CAST_ATTACK_SOMANTIC_SPELL=39;
 	public static final int TYP_FIRE=40;
 	public static final int TYP_COLD=41;
@@ -194,7 +194,5 @@ public interface Affect
 	public static final int MSG_OK_VISUAL=ACT_GENERAL|TYP_OK_VISUAL;
 	public static final int MSG_DRINK=ACT_HANDS|ACT_MOUTH|TYP_DRINK;
 	public static final int MSG_HANDS=ACT_HANDS|TYP_HANDS;
-	public static final int MSG_FOLLOW=ACT_GENERAL|TYP_FOLLOW;
-	public static final int MSG_NOFOLLOW=ACT_GENERAL|TYP_NOFOLLOW;
 }
 

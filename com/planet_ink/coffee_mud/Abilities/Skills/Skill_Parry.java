@@ -22,6 +22,10 @@ public class Skill_Parry extends StdAbility
 
 		baseEnvStats().setLevel(3);
 
+		addQualifyingClass("Fighter",3);
+		addQualifyingClass("Ranger",3);
+		addQualifyingClass("Paladin",3);
+		addQualifyingClass("Thief",9);
 		recoverEnvStats();
 	}
 

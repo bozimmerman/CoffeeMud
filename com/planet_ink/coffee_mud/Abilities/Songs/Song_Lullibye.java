@@ -26,6 +26,8 @@ public class Song_Lullibye extends Song
 
 		baseEnvStats().setLevel(22);
 
+		addQualifyingClass("Bard",22);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

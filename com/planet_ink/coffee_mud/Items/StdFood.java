@@ -8,7 +8,7 @@ import java.util.*;
 public class StdFood extends StdItem implements Food
 {
 
-	protected int amountOfNourishment=500;
+	protected int amountOfNourishment=300;
 
 	public StdFood()
 	{

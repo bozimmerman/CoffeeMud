@@ -20,6 +20,9 @@ public class Spell_KnowAlignment extends Spell
 
 		baseEnvStats().setLevel(2);
 
+		addQualifyingClass("Mage",2);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -50,12 +53,12 @@ public class Spell_KnowAlignment extends Spell
 		{
 			mob.location().send(mob,msg);
 			if(success)
-				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(target.getAlignment())+".");
+				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(target)+".");
 			else
 			{
 				MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
 				newMOB.setAlignment(Dice.rollPercentage()*10);
-				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(newMOB.getAlignment())+".");
+				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(newMOB)+".");
 			}
 		}
 

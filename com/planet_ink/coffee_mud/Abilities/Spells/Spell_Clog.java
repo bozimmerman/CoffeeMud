@@ -26,6 +26,9 @@ public class Spell_Clog extends Spell
 
 		baseEnvStats().setLevel(2);
 
+		addQualifyingClass("Mage",2);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -459,7 +459,7 @@ public class SocialProcessor
 		{
 			if(commands.size()<2)
 			{
-				if(mob.isASysOp(mob.location()))
+				if(mob.isASysOp())
 					mob.tell("List what or from whom?");
 				else
 					mob.tell("List from whom?");
@@ -471,7 +471,7 @@ public class SocialProcessor
 				shopkeeper=(ShopKeeper)possibleShopkeeper;
 			else
 			{
-				if(mob.isASysOp(mob.location()))
+				if(mob.isASysOp())
 					new Lister().list(mob,commands);
 				else
 					mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");

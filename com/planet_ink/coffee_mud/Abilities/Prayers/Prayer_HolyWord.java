@@ -17,6 +17,8 @@ public class Prayer_HolyWord extends Prayer
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(23);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

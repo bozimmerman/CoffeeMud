@@ -23,6 +23,8 @@ public class Song_Blasting extends Song
 
 		baseEnvStats().setLevel(20);
 
+		addQualifyingClass("Bard",20);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

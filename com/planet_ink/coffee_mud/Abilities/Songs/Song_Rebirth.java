@@ -24,6 +24,8 @@ public class Song_Rebirth extends Song
 
 		baseEnvStats().setLevel(25);
 
+		addQualifyingClass("Bard",25);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -24,6 +24,9 @@ public class Spell_Spook extends Spell
 
 		baseEnvStats().setLevel(5);
 
+		addQualifyingClass("Mage",5);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -23,6 +23,9 @@ public class Specialization_Axe extends Specialization_Weapon
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_AXE;
 
+		addQualifyingClass("Fighter",1);
+		addQualifyingClass("Ranger",1);
+		addQualifyingClass("Paladin",1);
 		recoverEnvStats();
 	}
 

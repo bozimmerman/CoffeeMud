@@ -325,7 +325,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if(!mob.isASysOp(mob.location()))
+				if(!mob.isASysOp())
 				{
 					mob.tell("The Shopkeeper is not accepting charity.");
 					return false;
@@ -418,7 +418,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
+				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp())))
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:
@@ -522,13 +522,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof MOB)
 					{
-						product.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-						product.recoverEnvStats();
-						product.setMiscText(product.text());
 						((MOB)product).bringToLife(mob.location());
-						ExternalPlay.follow((MOB)product,mob,false);
-						if(((MOB)product).amFollowing()==null)
-							mob.tell("You cannot accept any more followers!");
+						((MOB)product).setFollowing(mob);
 					}
 					else
 					if(product instanceof Ability)

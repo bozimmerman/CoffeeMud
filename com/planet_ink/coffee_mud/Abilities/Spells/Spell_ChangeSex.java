@@ -25,6 +25,9 @@ public class Spell_ChangeSex extends Spell
 
 		baseEnvStats().setLevel(12);
 
+		addQualifyingClass("Mage",12);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}
@@ -63,11 +66,6 @@ public class Spell_ChangeSex extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(target.isMonster())
-			quality=Ability.MALICIOUS;
-		else
-			quality=Ability.INDIFFERENT;
-		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

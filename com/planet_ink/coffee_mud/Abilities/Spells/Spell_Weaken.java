@@ -27,6 +27,9 @@ public class Spell_Weaken extends Spell
 
 		baseEnvStats().setLevel(11);
 
+		addQualifyingClass("Mage",11);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

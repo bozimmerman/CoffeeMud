@@ -27,6 +27,10 @@ public class Spell_DetectInvisible extends Spell
 
 		baseEnvStats().setLevel(6);
 
+		addQualifyingClass("Thief",15);
+		addQualifyingClass("Mage",6);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

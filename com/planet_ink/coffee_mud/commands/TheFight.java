@@ -4,7 +4,6 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.commands.sysop.SysopItemUsage;
-import com.planet_ink.coffee_mud.commands.sysop.SysOpSkills;
 import java.io.*;
 import java.util.*;
 public class TheFight
@@ -30,7 +29,7 @@ public class TheFight
 		}
 		boolean reallyKill=false;
 		String whomToKill=Util.combine(commands,1);
-		if(mob.isASysOp(mob.location())&&(!mob.isMonster()))
+		if(mob.isASysOp()&&(!mob.isMonster()))
 		{
 			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("DEAD"))
 			{
@@ -290,7 +289,7 @@ public class TheFight
 				target.tell("You lose 100 experience points.");
 			}
 			DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
-			Body.baseEnvStats().setWeight(target.baseEnvStats().weight());
+			Body.baseEnvStats().setWeight(target.envStats().weight());
 			if(!target.isMonster())
 				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 			deathRoom.addItem(Body);
@@ -321,11 +320,6 @@ public class TheFight
 					deathRoom.addItem(thisItem);
 					items.addElement(thisItem);
 				}
-				else
-				if(thisItem!=null)
-					target.delInventory(thisItem);
-				else
-					i++;
 			}
 			target.kill();
 			
@@ -341,15 +335,8 @@ public class TheFight
 				{
 					if(inhab.getVictim()!=target)
 					{
-						MOB victim=inhab.getVictim();
-						if((victim.getVictim()==null)||(victim.getVictim()==target))
-						{
-							if((inhab.amFollowing()!=null)&&(victim.amFollowing()!=null)&&(inhab.amFollowing()==victim.amFollowing()))
-								inhab.setVictim(null);
-							else
-								victim.setVictim(inhab);
-						}
-							
+						if((inhab.getVictim().getVictim()==null)||(inhab.getVictim().getVictim()==target))
+							inhab.getVictim().setVictim(inhab);
 					}
 					else
 						inhab.setVictim(null);
@@ -364,7 +351,11 @@ public class TheFight
 				if(target.soulMate()==null)
 					target.raiseFromDead();
 				else
-					new SysOpSkills().dispossess(target);
+				{
+					Ability A=CMClass.getAbility("Archon_Possess");
+					A.setAffectedOne(target);
+					A.unInvoke();
+				}
 			}
 			Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();

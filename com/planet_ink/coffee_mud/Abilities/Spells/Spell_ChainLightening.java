@@ -23,6 +23,9 @@ public class Spell_ChainLightening extends Spell
 
 		baseEnvStats().setLevel(16);
 
+		addQualifyingClass("Mage",16);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

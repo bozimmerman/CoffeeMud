@@ -24,6 +24,9 @@ public class Spell_Alarm extends Spell
 
 		baseEnvStats().setLevel(14);
 
+		addQualifyingClass("Mage",14);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

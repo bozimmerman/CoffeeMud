@@ -3,10 +3,9 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.utils.Log;
-import com.planet_ink.coffee_mud.utils.INI;
 import com.planet_ink.coffee_mud.utils.CoffeeUtensils;
 
-public class CMClass extends ClassLoader
+public class CMClass
 {
 	public static Vector races=new Vector();
 	public static Vector charClasses=new Vector();
@@ -19,7 +18,6 @@ public class CMClass extends ClassLoader
 	public static Vector weapons=new Vector();
 	public static Vector armor=new Vector();
 	public static Vector miscMagic=new Vector();
-	public static Vector areaTypes=new Vector();
 
 	public static Item getItem(String calledThis)
 	{
@@ -142,13 +140,6 @@ public class CMClass extends ClassLoader
 			Log.sysOut("CMClass","Unknown Locale '"+calledThis+"'.");
 		return thisItem;
 	}
-	public static Area getAreaType(String calledThis)
-	{
-		Area thisItem= (Area)getEnv(areaTypes,calledThis);
-		if((thisItem==null)&&(areaTypes.size()>0)&&(calledThis.length()>0))
-			Log.sysOut("CMClass","Unknown Area '"+calledThis+"'.");
-		return thisItem;
-	}
 	public static Exit getExit(String calledThis)
 	{
 		Exit thisItem= (Exit)getEnv(exits,calledThis);
@@ -211,90 +202,86 @@ public class CMClass extends ClassLoader
 		return null;
 	}
 
-	public static boolean loadClasses(INI page)
+	public static boolean loadClasses()
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
 
-		races=loadVectorListToObj(prefix+"Races"+File.separatorChar,page.getStr("RACES"));
+		races=loadVectorListToObj(prefix+"Races"+File.separatorChar);
 		Log.sysOut("MUD","Races loaded      : "+races.size());
 		if(races.size()==0) return false;
 
-		charClasses=loadVectorListToObj(prefix+"CharClasses"+File.separatorChar,page.getStr("CHARCLASSES"));
+		charClasses=loadVectorListToObj(prefix+"CharClasses"+File.separatorChar);
 		Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
 		if(charClasses.size()==0) return false;
 
-		MOBs=loadVectorListToObj(prefix+"MOBS"+File.separatorChar,page.getStr("MOBS"));
+		MOBs=loadVectorListToObj(prefix+"MOBS"+File.separatorChar);
 		Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
 		if(MOBs.size()==0) return false;
 
-		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar,page.getStr("EXITS"));
+		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar);
 		Log.sysOut("MUD","Exit Types loaded : "+exits.size());
 		if(exits.size()==0) return false;
 
-		areaTypes=loadVectorListToObj(prefix+"Areas"+File.separatorChar,page.getStr("AREAS"));
-		Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
-		if(areaTypes.size()==0) return false;
-
-		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar,page.getStr("LOCALES"));
+		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar);
 		Log.sysOut("MUD","Locales loaded    : "+locales.size());
 		if(locales.size()==0) return false;
 
-		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"));
+		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar);
 		Log.sysOut("MUD","Abilities loaded  : "+abilities.size());
 		if(abilities.size()==0) return false;
 
 		Vector tempV;
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar);
 		Log.sysOut("MUD","           Archon : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar);
 		Log.sysOut("MUD","          Fighter : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar);
 		Log.sysOut("MUD","             Misc : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar);
 		Log.sysOut("MUD","          Prayers : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar);
 		Log.sysOut("MUD","       Properties : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar);
 		Log.sysOut("MUD","           Skills : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar);
 		Log.sysOut("MUD","            Songs : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar);
 		Log.sysOut("MUD","  Specializations : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar);
 		Log.sysOut("MUD","           Spells : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar);
 		Log.sysOut("MUD","            Thief : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar);
 		Log.sysOut("MUD","            Traps : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 
-		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"));
+		items=loadVectorListToObj(prefix+"Items"+File.separatorChar);
 		Log.sysOut("MUD","Items loaded      : "+items.size());
 		if(items.size()==0) return false;
 
-		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,"");
+		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar);
 		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
 		if(weapons.size()==0) return false;
 
-		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar,"");
+		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar);
 		Log.sysOut("MUD","Armor loaded      : "+armor.size());
 		if(armor.size()==0) return false;
 
-		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,"");
+		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar);
 		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
 		if(miscMagic.size()==0) return false;
 
-		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"));
+		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar);
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 		return true;
@@ -320,39 +307,31 @@ public class CMClass extends ClassLoader
 		weapons=new Vector();
 		armor=new Vector();
 		miscMagic=new Vector();
-		areaTypes=new Vector();
 	}
 
-	public static Hashtable loadHashListToObj(String filePath, String auxPath)
+	public static Hashtable loadHashListToObj(String filePath)
 	{
 		Hashtable h=new Hashtable();
-		loadListToObj(h,filePath,false);
-		if(auxPath.length()>0)
-			loadListToObj(h,auxPath,true);
+		loadListToObj(h,filePath);
 		return h;
 	}
-	public static Vector loadVectorListToObj(String filePath, String auxPath)
+	public static Vector loadVectorListToObj(String filePath)
 	{
 		Vector v=new Vector();
-		loadListToObj(v,filePath,false);
-		if(auxPath.length()>0)
-			loadListToObj(v,auxPath,true);
+		loadListToObj(v,filePath);
 		return v;
 	}
-	public static void loadListToObj(Object toThis, String filePath, boolean aux)
+	public static void loadListToObj(Object toThis, String filePath)
 	{
 		StringBuffer objPathBuf=new StringBuffer(filePath);
 		String objPath=objPathBuf.toString();
-		
 		int x=0;
-		if(!aux)
 		while((x=objPath.indexOf(File.separatorChar))>=0)
 		{
 			objPathBuf.setCharAt(x,'.');
 			objPath=objPathBuf.toString();
 		}
 		File directory=new File(filePath);
-		CMClass loader=new CMClass();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			String[] list=directory.list();
@@ -363,33 +342,18 @@ public class CMClass extends ClassLoader
 				{
 					if(item.toUpperCase().endsWith(".CLASS")&&(item.indexOf("$")<0))
 					{
-						String itemName=item.substring(0,item.length()-6);
+						item=item.substring(0,item.length()-6);
 						try
 						{
-							Object O=null;
-							if(aux)
-							{
-								File f=new File(objPath+item);
-								byte[] data=new byte[(int)f.length()];
-								new FileInputStream(f).read(data,0,(int)f.length());
-								Class C=loader.defineClass(itemName, data, 0, data.length);
-								loader.resolveClass(C);
-								O=(Object)C.newInstance();
-							}
+							Object O=(Object)Class.forName(objPath+item).newInstance();
+							if(toThis instanceof Hashtable)
+								((Hashtable)toThis).put(item.trim(),O);
 							else
-								O=(Object)Class.forName(objPath+itemName).newInstance();
-							if(O!=null)
-							{
-								if(toThis instanceof Hashtable)
-									((Hashtable)toThis).put(itemName.trim(),O);
-								else
-								if(toThis instanceof Vector)
-									((Vector)toThis).addElement(O);
-							}
+							if(toThis instanceof Vector)
+								((Vector)toThis).addElement(O);
 						}
 						catch(Exception e)
 						{
-							Log.errOut("CMCLASS",e);
 							if((!item.endsWith("Child"))&&(!item.endsWith("Room")))
 								Log.sysOut("CMClass","Couldn't load: "+objPath+item);
 						}

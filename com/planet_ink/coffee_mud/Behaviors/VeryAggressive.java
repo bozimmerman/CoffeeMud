@@ -32,7 +32,7 @@ public class VeryAggressive extends Aggressive
 		{
 			Room room=thisRoom.doors()[d];
 			Exit exit=thisRoom.exits()[d];
-			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
+			if((room!=null)&&(exit!=null)&&(room.getAreaID().equals(thisRoom.getAreaID())))
 			{
 				if(exit.isOpen())
 				{

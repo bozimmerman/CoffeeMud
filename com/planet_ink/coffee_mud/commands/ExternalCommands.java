@@ -88,13 +88,13 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.doCommand(mob,commands);
 	}
-	public String shortAlignmentStr(int al)
+	public String shortAlignmentStr(MOB mob)
 	{
-		return processor.scoring.shortAlignmentStr(al);
+		return processor.scoring.shortAlignmentStr(mob);
 	}
-	public String alignmentStr(int al)
+	public String alignmentStr(MOB mob)
 	{
-		return processor.scoring.alignmentStr(al);
+		return processor.scoring.alignmentStr(mob);
 	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{
@@ -127,10 +127,6 @@ public class ExternalCommands implements ExternalCommand
 	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		return processor.itemUsage.get(mob,container,getThis,quiet);
-	}
-	public void follow(MOB mob, MOB tofollow, boolean quiet)
-	{
-		processor.grouping.processFollow(mob,tofollow, quiet);
 	}
 	public boolean login(MOB mob)
 		throws IOException

@@ -328,22 +328,4 @@ public class BasicSenses
 			mob.tell("Autoexits has been turned on.");
 		}
 	}
-	
-	public void weather(MOB mob, Vector commands)
-	{
-		Room room=mob.location();
-		if(room==null) return;
-		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
-		{
-			StringBuffer tellMe=new StringBuffer("");
-			for(int a=0;a<CMMap.AREAS.size();a++)
-			{
-				Area A=(Area)CMMap.AREAS.elementAt(a);
-				tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
-			}
-			mob.tell(tellMe.toString());
-			return;
-		}
-		mob.tell(room.getArea().weatherDescription(room));
-	}
 }

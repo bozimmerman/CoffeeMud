@@ -20,6 +20,9 @@ public class Spell_Teleport extends Spell
 
 		baseEnvStats().setLevel(10);
 
+		addQualifyingClass("Mage",10);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -43,7 +46,7 @@ public class Spell_Teleport extends Spell
 		for(int m=0;m<CMMap.map.size();m++)
 		{
 			Room room=(Room)CMMap.map.elementAt(m);
-			if(room.getArea().name().toUpperCase().startsWith(areaName))
+			if(room.getAreaID().toUpperCase().startsWith(areaName))
 				numRooms++;
 		}
 
@@ -57,11 +60,11 @@ public class Spell_Teleport extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			int roomNum=Dice.roll(1,numRooms,-1);
+			int roomNum=(int)Math.round(Math.random()*numRooms);
 			for(int m=0;m<CMMap.map.size();m++)
 			{
 				Room room=(Room)CMMap.map.elementAt(m);
-				if(room.getArea().name().toUpperCase().startsWith(areaName))
+				if(room.getAreaID().toUpperCase().startsWith(areaName))
 				{
 					if(roomNum==0)
 					{

@@ -23,6 +23,9 @@ public class Spell_Fear extends Spell
 
 		baseEnvStats().setLevel(8);
 
+		addQualifyingClass("Mage",8);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

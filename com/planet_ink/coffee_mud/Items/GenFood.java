@@ -17,7 +17,7 @@ public class GenFood extends StdFood
 		displayText="a generic blob of food sits here.";
 		description="Looks like some mystery meat";
 		baseGoldValue=5;
-		amountOfNourishment=500;
+		amountOfNourishment=300;
 		recoverEnvStats();
 	}
 

@@ -26,6 +26,9 @@ public class Spell_Friends extends Spell
 
 		baseEnvStats().setLevel(4);
 
+		addQualifyingClass("Mage",4);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

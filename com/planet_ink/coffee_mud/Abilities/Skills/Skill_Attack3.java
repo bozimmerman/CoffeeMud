@@ -23,6 +23,9 @@ public class Skill_Attack3 extends StdAbility
 
 		baseEnvStats().setLevel(18);
 
+		addQualifyingClass("Fighter",18);
+		addQualifyingClass("Ranger",20);
+		addQualifyingClass("Paladin",20);
 		recoverEnvStats();
 	}
 

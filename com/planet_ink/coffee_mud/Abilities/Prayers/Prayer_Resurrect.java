@@ -16,6 +16,8 @@ public class Prayer_Resurrect extends Prayer
 
 		baseEnvStats().setLevel(25);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

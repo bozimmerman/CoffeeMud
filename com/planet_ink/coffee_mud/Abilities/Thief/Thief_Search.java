@@ -11,7 +11,7 @@ public class Thief_Search extends ThiefSkill
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Search";
+		name="Hide";
 		displayText="(Ability to search for all things hidden)";
 		miscText="";
 
@@ -22,6 +22,7 @@ public class Thief_Search extends ThiefSkill
 
 		baseEnvStats().setLevel(14);
 
+		addQualifyingClass("Thief",14);
 		recoverEnvStats();
 	}
 

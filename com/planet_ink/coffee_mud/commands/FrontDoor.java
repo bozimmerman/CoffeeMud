@@ -60,8 +60,8 @@ public class FrontDoor
 
 		if(login.equalsIgnoreCase("You"))
 			return false;
-		boolean found=ExternalPlay.DBUserSearch(mob,login);
-		if(found)
+		ExternalPlay.DBUserSearch(mob,login);
+		if(mob.ID().trim().length()>0)
 		{
 			mob.session().print("password:");
 			String password=mob.session().blockingIn();
@@ -101,9 +101,9 @@ public class FrontDoor
 				}
 				else
 				{
-					ExternalPlay.DBReadMOB(mob);
+					ExternalPlay.DBRead(mob);
 					mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
-					ExternalPlay.DBUpdateMOB(mob);
+					ExternalPlay.DBUpdate(mob);
 					if(mob.baseCharStats()!=null)
 						if(mob.baseCharStats().getMyClass()!=null)
 							mob.baseCharStats().getMyClass().logon(mob);

@@ -28,6 +28,9 @@ public class Spell_Frost extends Spell
 
 		baseEnvStats().setLevel(4);
 
+		addQualifyingClass("Mage",4);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		recoverEnvStats();
 	}
 

@@ -29,7 +29,7 @@ public class Prop_RoomAlignments extends Property
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			int x=text().toUpperCase().indexOf("ALL");
-			int y=text().toUpperCase().indexOf(ExternalPlay.shortAlignmentStr(affect.source().getAlignment()).toUpperCase());
+			int y=text().toUpperCase().indexOf(ExternalPlay.shortAlignmentStr(affect.source()).toUpperCase());
 			if(((x>0)
 				&&(text().charAt(x-1)=='-')
 				&&((y<=0)

@@ -18,6 +18,8 @@ public class Prayer_Sanctuary extends Prayer
 
 		baseEnvStats().setLevel(13);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

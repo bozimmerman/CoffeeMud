@@ -26,6 +26,9 @@ public class Spell_GiantStrength extends Spell
 
 		baseEnvStats().setLevel(13);
 
+		addQualifyingClass("Mage",13);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

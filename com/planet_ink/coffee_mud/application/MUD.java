@@ -16,8 +16,8 @@ public class MUD extends Thread implements Host
 	public boolean keepDown=true;
 	public String execExternalCommand=null;
 
-	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)0.1;
+	public static final float HOST_VERSION_MAJOR=(float)1.2;
+	public static final float HOST_VERSION_MINOR=(float)5.0;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -99,7 +99,7 @@ public class MUD extends Thread implements Host
 		
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
 		System.out.println();
-		Log.sysOut("MUD",getVer());
+		Log.sysOut("MUD","CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		Log.sysOut("MUD","Starting...\n\r");
@@ -123,7 +123,7 @@ public class MUD extends Thread implements Host
 		CommandProcessor commandProcessor=new CommandProcessor();
 		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
 
-		if(!CMClass.loadClasses(page))
+		if(!CMClass.loadClasses())
 		{
 			fatalStartupError(0);
 			return false;
@@ -141,8 +141,8 @@ public class MUD extends Thread implements Host
 
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (this can take a while).");
-		RoomLoader.DBRead(CMMap.AREAS,CMMap.map);
-		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size()+" in "+CMMap.AREAS.size()+" areas");
+		RoomLoader.DBRead(CMMap.map);
+		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size());
 		if(CMMap.map.size()==0)
 		{
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
@@ -354,11 +354,6 @@ public class MUD extends Thread implements Host
 			if (tArray[i] != null && tArray[i].isAlive())
 				Log.sysOut("MUD", "-->Thread: "+tArray[i].getName() + "\n\r");
 		}
-	}
-	
-	public String getVer()
-	{
-		return "CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR;
 	}
 	
 	public static void main(String a[]) throws IOException

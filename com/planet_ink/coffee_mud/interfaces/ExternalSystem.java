@@ -11,21 +11,18 @@ public interface ExternalSystem
 	public void DBReadContent(Room thisRoom);
 	public void DBUpdateExits(Room room);
 	public void DBUpdateMOBs(Room room);
-	public void DBCreateRoom(Room room, String LocaleID);
+	public void DBCreate(Room room, String LocaleID);
 	public void DBUpdateRoom(Room room);
-	public void DBUpdateMOB(MOB mob);
+	public void DBUpdate(MOB mob);
 	public void DBUpdateItems(Room room);
 	public void DBReCreate(Room room, String oldID);
-	public void DBDeleteRoom(Room room);
-	public void DBReadMOB(MOB mob);
+	public void DBDelete(Room room);
+	public void DBRead(MOB mob);
 	public void listUsers(MOB mob);
 	public void DBReadFollowers(MOB mob);
-	public void DBDeleteMOB(MOB mob);
+	public void DBDelete(MOB mob);
 	public void DBCreateCharacter(MOB mob);
-	public Area DBCreateArea(String areaName, String areaType);
-	public void DBDeleteArea(Area A);
-	public void DBUpdateArea(Area A);
 	public void clearDebri(Room room, int taskCode);
-	public StringBuffer listTicks(int whichTick);
-	public boolean DBUserSearch(MOB mob, String Login);
+	public StringBuffer listTicks();
+	public void DBUserSearch(MOB mob, String Login);
 }

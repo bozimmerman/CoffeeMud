@@ -23,6 +23,9 @@ public class Spell_Shield extends Spell
 		baseEnvStats().setLevel(1);
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		addQualifyingClass("Mage",1);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

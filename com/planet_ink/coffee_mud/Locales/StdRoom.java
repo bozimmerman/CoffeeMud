@@ -10,11 +10,11 @@ public class StdRoom
 {
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	protected String name="room";
+	protected String myAreaID="StdArea";
 	protected String displayText="Standard Room";
 	protected String miscText="";
 	protected String description="";
 	private String objectID=myID;
-	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -116,17 +116,17 @@ public class StdRoom
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
+	public String getAreaID()
+	{
+		return myAreaID;
+	}
 	public void setID(String newID)
 	{
 		myID=newID;
 	}
-	public Area getArea()
+	public void setAreaID(String newArea)
 	{
-		return myArea;
-	}
-	public void setArea(Area newArea)
-	{
-		myArea=newArea;
+		myAreaID=newArea;
 	}
 
 	protected void giveASky(Room room)
@@ -140,7 +140,7 @@ public class StdRoom
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
 			EndlessSky sky=new EndlessSky();
-			sky.setArea(room.getArea());
+			sky.setAreaID(room.getAreaID());
 			sky.setID("");
 			room.doors()[Directions.UP]=sky;
 			room.exits()[Directions.UP]=o;
@@ -152,9 +152,6 @@ public class StdRoom
 
 	public boolean okAffect(Affect affect)
 	{
-		if(!getArea().okAffect(affect))
-			return false;
-		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -176,7 +173,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
+						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
 						   if(!otherRoom.okAffect(affect)) return false;
 					}
 				}
@@ -231,9 +228,6 @@ public class StdRoom
 
 	public void affect(Affect affect)
 	{
-		
-		getArea().affect(affect);
-		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -269,7 +263,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
+						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
 						   otherRoom.affect(affect);
 					}
 				}
@@ -306,7 +300,6 @@ public class StdRoom
 			if(A!=null)
 				A.affect(affect);
 		}
-		
 	}
 
 	public void startItemRejuv()
@@ -367,9 +360,6 @@ public class StdRoom
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		Area myArea=getArea();
-		if(myArea!=null)
-			myArea.affectEnvStats(this,envStats());
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);
@@ -417,7 +407,6 @@ public class StdRoom
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		getArea().affectEnvStats(affected,affectableStats);
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition();
@@ -429,21 +418,16 @@ public class StdRoom
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{
-		getArea().affectCharStats(affectedMob,affectableStats);
-	}
+	{}//rooms will never be asked this, so this method should always do NOTHING
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{
-		getArea().affectCharState(affectedMob,affectableMaxState);
-	}
+	{}//rooms will never be asked this, so this method should always do NOTHING
 
 	public void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			if(myArea!=null)
-				Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
+			Say.append("^BArea  :^N("+myAreaID+")"+"\n\r");
 			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}

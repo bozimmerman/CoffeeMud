@@ -18,6 +18,8 @@ public class Prayer_ProtectElements extends Prayer
 
 		baseEnvStats().setLevel(18);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

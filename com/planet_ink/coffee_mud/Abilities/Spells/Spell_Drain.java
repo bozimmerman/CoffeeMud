@@ -27,6 +27,9 @@ public class Spell_Drain extends Spell
 
 		baseEnvStats().setLevel(17);
 
+		addQualifyingClass("Mage",17);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -196,7 +196,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 			{
 				Room room=(Room)e.nextElement();
-				if(room.getArea().name().trim().equalsIgnoreCase(area))
+				if(room.getAreaID().trim().equalsIgnoreCase(area))
 				{
 					MapRoom m=new MapRoom();
 					m.r=room;

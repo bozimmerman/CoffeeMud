@@ -24,6 +24,13 @@ public class Skill_WandUse extends StdAbility
 		quality=Ability.BENEFICIAL_SELF;
 
 		baseEnvStats().setLevel(1);
+		addQualifyingClass("Mage",1);
+		addQualifyingClass("Cleric",1);
+		addQualifyingClass("Thief",3);
+		addQualifyingClass("Bard",3);
+		addQualifyingClass("Ranger",5);
+		addQualifyingClass("Fighter",13);
+		addQualifyingClass("Paladin",7);
 		recoverEnvStats();
 	}
 

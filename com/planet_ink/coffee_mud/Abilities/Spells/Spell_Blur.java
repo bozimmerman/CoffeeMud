@@ -23,6 +23,9 @@ public class Spell_Blur extends Spell
 
 		baseEnvStats().setLevel(2);
 
+		addQualifyingClass("Mage",2);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -25,6 +25,9 @@ public class Spell_Delude extends Spell
 
 		baseEnvStats().setLevel(18);
 
+		addQualifyingClass("Mage",18);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -20,6 +20,9 @@ public class Spell_PassDoor extends Spell
 
 		baseEnvStats().setLevel(7);
 
+		addQualifyingClass("Mage",7);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

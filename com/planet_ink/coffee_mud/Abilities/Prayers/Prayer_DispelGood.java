@@ -17,6 +17,8 @@ public class Prayer_DispelGood extends Prayer
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(9);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

@@ -27,6 +27,9 @@ public class Spell_Infravision extends Spell
 
 		baseEnvStats().setLevel(2);
 
+		addQualifyingClass("Mage",2);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -22,6 +22,10 @@ public class Specialization_Hammer extends Specialization_Weapon
 
 		baseEnvStats().setLevel(1);
 
+		addQualifyingClass("Fighter",1);
+		addQualifyingClass("Ranger",1);
+		addQualifyingClass("Paladin",1);
+		addQualifyingClass("Cleric",1);
 		recoverEnvStats();
 	}
 

@@ -23,6 +23,11 @@ public class Skill_Climb extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
+		addQualifyingClass("Thief",1);
+		addQualifyingClass("Bard",3);
+		addQualifyingClass("Fighter",15);
+		addQualifyingClass("Ranger",15);
+		addQualifyingClass("Paladin",15);
 		recoverEnvStats();
 	}
 

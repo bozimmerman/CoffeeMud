@@ -25,6 +25,8 @@ public class Thief_Steal extends ThiefSkill
 
 		baseEnvStats().setLevel(8);
 
+		addQualifyingClass("Thief",8);
+		addQualifyingClass("Bard",23);
 		recoverEnvStats();
 	}
 

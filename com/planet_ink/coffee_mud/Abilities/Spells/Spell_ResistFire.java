@@ -25,6 +25,9 @@ public class Spell_ResistFire extends Spell
 
 		baseEnvStats().setLevel(6);
 
+		addQualifyingClass("Mage",6);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

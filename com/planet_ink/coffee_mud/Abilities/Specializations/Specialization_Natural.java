@@ -22,6 +22,10 @@ public class Specialization_Natural extends Specialization_Weapon
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_NATURAL;
 
+		addQualifyingClass("Fighter",1);
+		addQualifyingClass("Ranger",1);
+		addQualifyingClass("Paladin",1);
+		addQualifyingClass("Bard",1);
 		recoverEnvStats();
 	}
 

@@ -23,6 +23,8 @@ public class Song_Flying extends Song
 		baseEnvStats().setLevel(23);
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		addQualifyingClass("Bard",23);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -440,10 +440,7 @@ public class StdMOB implements MOB
 	public boolean isInCombat()
 	{
 		if(victim==null) return false;
-		if((victim.location()==null)
-		||(location()==null)
-		||(victim.location()!=location())
-		||(victim.amDead()))
+		if((victim.location()!=location())||(victim.amDead()))
 		{
 			setVictim(null);
 			return false;
@@ -788,6 +785,16 @@ public class StdMOB implements MOB
 		{
 			if((amDead())||(location()==null))
 				return false;
+			if(affect.targetMinor()==Affect.TYP_GIVE)
+			{
+				if(affect.tool()==null) return false;
+				if(!(affect.tool() instanceof Item)) return false;
+				if(!Sense.canBeSeenBy(affect.tool(),this))
+				{
+					mob.tell(name()+" can't see what you are giving.");
+					return false;
+				}
+			}
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
 				if((affect.amISource(this))
@@ -830,22 +837,6 @@ public class StdMOB implements MOB
 			case Affect.TYP_WIELD:
 				mob.tell("You can't do that to "+name()+".");
 				return false;
-			case Affect.TYP_GIVE:
-				if(affect.tool()==null) return false;
-				if(!(affect.tool() instanceof Item)) return false;
-				if(!Sense.canBeSeenBy(affect.tool(),this))
-				{
-					mob.tell(name()+" can't see what you are giving.");
-					return false;
-				}
-				break;
-			case Affect.TYP_FOLLOW:
-				if(numFollowers()>((int)Math.round(Util.div(charStats().getCharisma(),3.0))+1))
-				{
-					mob.tell(name()+" can't accept any more followers.");
-					return false;
-				}
-				break;
 			}
 		}
 		return true;
@@ -920,7 +911,7 @@ public class StdMOB implements MOB
 					mob.tell("There is nothing written on "+name());
 				break;
 			case Affect.TYP_SIT:
-				{
+			{
 				int oldDisposition=mob.baseEnvStats().disposition();
 				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
 				mob.baseEnvStats().setDisposition(oldDisposition|Sense.IS_SITTING);
@@ -928,10 +919,10 @@ public class StdMOB implements MOB
 				mob.recoverCharStats();
 				mob.recoverMaxState();
 				tell(affect.source(),affect.target(),affect.sourceMessage());
-				}
-				break;
+			}
+			break;
 			case Affect.TYP_SLEEP:
-				{
+			{
 				int oldDisposition=mob.baseEnvStats().disposition();
 				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
 				mob.baseEnvStats().setDisposition(oldDisposition|Sense.IS_SLEEPING);
@@ -939,10 +930,10 @@ public class StdMOB implements MOB
 				mob.recoverCharStats();
 				mob.recoverMaxState();
 				tell(affect.source(),affect.target(),affect.sourceMessage());
-				}
-				break;
+			}
+			break;
 			case Affect.TYP_STAND:
-				{
+			{
 				int oldDisposition=mob.baseEnvStats().disposition();
 				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
 				mob.baseEnvStats().setDisposition(oldDisposition);
@@ -950,8 +941,8 @@ public class StdMOB implements MOB
 				mob.recoverCharStats();
 				mob.recoverMaxState();
 				tell(affect.source(),affect.target(),affect.sourceMessage());
-				}
-				break;
+			}
+			break;
 			case Affect.TYP_RECALL:
 				if((affect.target()!=null) && (affect.target() instanceof Room) && (location() != affect.target()))
 				{
@@ -965,18 +956,7 @@ public class StdMOB implements MOB
 					affect.source().recoverMaxState();
 					ExternalPlay.look(mob,new Vector(),true);
 				}
-				break;
-			case Affect.TYP_FOLLOW:
-				if((affect.target()!=null)&&(affect.target() instanceof MOB))
-				{
-					setFollowing((MOB)affect.target());
-					tell(affect.source(),affect.target(),affect.sourceMessage());
-				}
-				break;
-			case Affect.TYP_NOFOLLOW:
-				setFollowing(null);
-				tell(affect.source(),affect.target(),affect.sourceMessage());
-				break;
+			break;
 			default:
 				// you pretty much always know what you are doing, if you can do it.
 				tell(affect.source(),affect.target(),affect.sourceMessage());
@@ -1292,16 +1272,12 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public boolean isASysOp(Room of)
+	public boolean isASysOp()
 	{
 		if(isMonster()) return false;
 		if(baseCharStats()==null) return false;
 		if(baseCharStats().getMyClass()==null) return false;
 		if(this.baseCharStats().getMyClass().ID().equals("Archon"))
-			return true;
-		if(of==null) return false;
-		if(of.getArea()==null) return false;
-		if(of.getArea().amISubOp(Username))
 			return true;
 		return false;
 	}
@@ -1607,12 +1583,12 @@ public class StdMOB implements MOB
 		if((amFollowing()==target)
 		||(target.amFollowing()==this)
 		||((target.amFollowing()!=null)&&(target.amFollowing()==this.amFollowing())))
-			setVictim(source);//ExternalPlay.postAttack(this,source,fetchWieldedItem());
+			ExternalPlay.postAttack(this,source,fetchWieldedItem());
 		else
 		if((amFollowing()==source)
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
-			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
+			ExternalPlay.postAttack(this,target,fetchWieldedItem());
 	}
 	public int getTermID()
 	{

@@ -20,6 +20,9 @@ public class Spell_Summon extends Spell
 
 		baseEnvStats().setLevel(18);
 
+		addQualifyingClass("Mage",18);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -4,13 +4,12 @@ import java.util.*;
 
 public interface Room extends Environmental
 {
+	public String getAreaID();
 	public void setID(String newID);
 	public String objectID();
+	public void setAreaID(String newArea);
 	public void startItemRejuv();
 	public void recoverRoomStats();
-	
-	public Area getArea();
-	public void setArea(Area newArea);
 	
 	public Exit[] exits();
 	public Room[] doors();
@@ -21,6 +20,8 @@ public interface Room extends Environmental
 	public void look(MOB mob);
 	public void listExits(MOB mob);
 	public void bringMobHere(MOB mob, boolean andFollowers);
+	
+	
 	
 	public void send(MOB source, Affect msg);
 	public void sendOthers(MOB source, Affect msg);

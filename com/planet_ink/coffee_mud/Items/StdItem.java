@@ -415,7 +415,7 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 	
-	public boolean savable(){return true;}
+	public boolean savable(){return false;}
 	
 
 	public boolean okAffect(Affect affect)

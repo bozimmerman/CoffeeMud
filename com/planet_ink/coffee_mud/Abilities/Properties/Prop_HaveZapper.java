@@ -40,7 +40,7 @@ public class Prop_HaveZapper extends Property
 		if(mob.charStats().getMyRace()==null) return true;
 		String mobClass=mob.charStats().getMyClass().name().toUpperCase().substring(0,3);
 		String mobRace=mob.charStats().getMyRace().name().toUpperCase().substring(0,3);
-		String mobAlign=ExternalPlay.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
+		String mobAlign=ExternalPlay.shortAlignmentStr(mob).toUpperCase().substring(0,3);
 		String text=me.text().toUpperCase();
 
 		// do class first

@@ -24,6 +24,8 @@ public class Song_Mute extends Song
 
 		baseEnvStats().setLevel(8);
 
+		addQualifyingClass("Bard",8);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

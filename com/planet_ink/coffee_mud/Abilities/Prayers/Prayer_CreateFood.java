@@ -14,6 +14,8 @@ public class Prayer_CreateFood extends Prayer
 		name="Create Food";
 		baseEnvStats().setLevel(5);
 
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

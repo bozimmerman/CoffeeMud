@@ -22,6 +22,11 @@ public class Specialization_Ranged extends Specialization_Weapon
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_RANGED;
 
+		addQualifyingClass("Fighter",1);
+		addQualifyingClass("Ranger",1);
+		addQualifyingClass("Paladin",1);
+		addQualifyingClass("Thief",1);
+		addQualifyingClass("Bard",1);
 		recoverEnvStats();
 	}
 

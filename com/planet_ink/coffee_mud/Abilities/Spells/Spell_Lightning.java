@@ -27,6 +27,9 @@ public class Spell_Lightning extends Spell
 
 		baseEnvStats().setLevel(8);
 
+		addQualifyingClass("Mage",8);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -25,6 +25,9 @@ public class Spell_ResistCold extends Spell
 
 		baseEnvStats().setLevel(4);
 
+		addQualifyingClass("Mage",4);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -56,7 +56,7 @@ public interface MOB
 	
 	/** Whether a sessiob object is attached to this MOB */
 	public boolean isMonster();
-	public boolean isASysOp(Room of);
+	public boolean isASysOp();
 	public MOB soulMate();
 	public void setSoulMate(MOB mob);
 	

@@ -40,7 +40,7 @@ public class AbilityEvoker
 		{
 			Ability thisAbility=mob.fetchAbility(a);
 			if((thisAbility!=null)
-			&&(evokedBy(thisAbility,evokeWord)))
+			   &&(evokedBy(thisAbility,evokeWord)))
 				if(evokableAbility!=null)
 				{
 					foundMoreThanOne=true;
@@ -63,20 +63,16 @@ public class AbilityEvoker
 			{
 				Ability thisAbility=mob.fetchAbility(a);
 				if((thisAbility!=null)
-				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
+				   &&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
 				{
 					if(thisAbility.name().equalsIgnoreCase(secondWord))
 					{
 						evokableAbility=thisAbility;
-						foundMoreThanOne=false;
 						break;
 					}
 					else
 					if(evokableAbility!=null)
-					{
 						foundMoreThanOne=true;
-						break;
-					}
 					else
 						evokableAbility=thisAbility;
 						

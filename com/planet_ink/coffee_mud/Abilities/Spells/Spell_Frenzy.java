@@ -28,6 +28,9 @@ public class Spell_Frenzy extends Spell
 
 		baseEnvStats().setLevel(13);
 
+		addQualifyingClass("Mage",13);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -7,8 +7,6 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Bard extends StdCharClass
 {
-	private static boolean abilitiesLoaded=false;
-	
 	public Bard()
 	{
 		super();
@@ -21,53 +19,6 @@ public class Bard extends StdCharClass
 		damageBonusPerLevel=0;
 		bonusAttackLevel=1;
 		name=myID;
-		
-		if(!abilitiesLoaded)
-		{
-			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Detection",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
-			CMAble.addCharAbilityMapping(ID(),"Song_Seeing",2,false);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Climb",3,false);
-			CMAble.addCharAbilityMapping(ID(),"Skill_WandUse",3,false);
-			CMAble.addCharAbilityMapping(ID(),"Thief_Hide",3,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Valor",3,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Charm",4,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Armor",5,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Clumsiness",6,false);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Dodge",7,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Rage",7,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Mute",8,false);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Trip",9,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Serenity",9,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Revelation",10,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Inebriation",11,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Health",12,false);
-			CMAble.addCharAbilityMapping(ID(),"Thief_Peek",13,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Silence",13,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Dexterity",14,false);
-			CMAble.addCharAbilityMapping(ID(),"Thief_DetectTraps",15,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Protection",15,false);
-			CMAble.addCharAbilityMapping(ID(),"Spell_ReadMagic",16,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Mana",16,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Quickness",17,false);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Attack2",17,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Lethargy",18,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Friendship",19,false);
-			CMAble.addCharAbilityMapping(ID(),"Thief_Swipe",19,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Blasting",20,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Strength",21,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Lullibye",22,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Flying",23,false);
-			CMAble.addCharAbilityMapping(ID(),"Thief_Steal",23,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Death",24,false);
-			CMAble.addCharAbilityMapping(ID(),"Song_Rebirth",25,false);
-		}
 	}
 
 	public boolean playerSelectable()
@@ -92,6 +43,7 @@ public class Bard extends StdCharClass
 	{
 		super.newCharacter(mob, isBorrowedClass);
 
+
 		Hashtable extras=new Hashtable();
 		int q=-1;
 		for(int r=0;r<7;r++)
@@ -107,13 +59,12 @@ public class Bard extends StdCharClass
 			}
 		}
 
-		
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if(A.qualifyingLevel(mob)>=0)
 			{
-				if(CMAble.getDefaultGain(ID(),A.ID()))
+				if(A.classificationCode()==Ability.THIEF_SKILL)
 					giveMobAbility(mob,A, isBorrowedClass);
 				else
 				if(A.classificationCode()==Ability.SONG)

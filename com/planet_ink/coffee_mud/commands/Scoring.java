@@ -67,7 +67,7 @@ public class Scoring
 		msg.append("You have ^B"+mob.getPractices()+"^? practices, ^B"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
 		msg.append("You have scored ^B"+mob.getExperience()+"^? experience points, and have been online for ^B"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		msg.append("You need ^B"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
-		msg.append("Your alignment is      : ^H"+alignmentStr(mob.getAlignment())+" ("+mob.getAlignment()+")^?.\n\r");
+		msg.append("Your alignment is      : ^H"+alignmentStr(mob)+" ("+mob.getAlignment()+")^?.\n\r");
 		msg.append("Your armored defense is: ^H"+theFight.armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your combat prowess is : ^H"+theFight.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^B"+mob.getWimpHitPoint()+"^? hit points.\n\r");
@@ -309,8 +309,9 @@ public class Scoring
 			mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob));
 	}
 
-	public String shortAlignmentStr(int al)
+	public String shortAlignmentStr(MOB mob)
 	{
+		int al=mob.getAlignment();
 		if(al<350)
 			return "evil";
 		else
@@ -320,8 +321,9 @@ public class Scoring
 			return "good";
 	}
 
-	public String alignmentStr(int al)
+	public String alignmentStr(MOB mob)
 	{
+		int al=mob.getAlignment();
 		if(al<50)
 			return "pure evil";
 		else
@@ -360,9 +362,17 @@ public class Scoring
 		if(areasList==null)
 		{
 
+			Hashtable areasHash=new Hashtable();
 			Vector areasVec=new Vector();
-			for(int a=0;a<CMMap.AREAS.size();a++)
-				areasVec.addElement(((Area)CMMap.AREAS.elementAt(a)).name());
+			for(int m=0;m<CMMap.map.size();m++)
+			{
+				Room room=(Room)CMMap.map.elementAt(m);
+				if(areasHash.get(room.getAreaID())==null)
+				{
+					areasHash.put(room.getAreaID(),room.getAreaID());
+					areasVec.addElement(room.getAreaID());
+				}
+			}
 			Collections.sort((List)areasVec);
 			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
 			int col=0;
@@ -376,7 +386,6 @@ public class Scoring
 
 				msg.append(Util.padRight((String)areasVec.elementAt(i),25));
 			}
-			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			Resources.submitResource("areasList",msg);
 			areasList=msg;
 		}

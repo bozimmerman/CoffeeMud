@@ -23,6 +23,8 @@ public class Thief_Hide extends ThiefSkill
 
 		baseEnvStats().setLevel(3);
 
+		addQualifyingClass("Thief",3);
+		addQualifyingClass("Bard",3);
 		recoverEnvStats();
 	}
 

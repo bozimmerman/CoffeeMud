@@ -19,6 +19,9 @@ public class Spell_Gate extends Spell
 
 		baseEnvStats().setLevel(13);
 
+		addQualifyingClass("Mage",13);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

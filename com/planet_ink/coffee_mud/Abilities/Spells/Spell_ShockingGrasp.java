@@ -24,6 +24,9 @@ public class Spell_ShockingGrasp extends Spell
 
 		baseEnvStats().setLevel(6);
 
+		addQualifyingClass("Mage",6);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -24,6 +24,8 @@ public class Song_Strength extends Song
 
 		baseEnvStats().setLevel(21);
 
+		addQualifyingClass("Bard",21);
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -30,6 +30,9 @@ public class Spell_Grease extends Spell
 
 		baseEnvStats().setLevel(3);
 
+		addQualifyingClass("Mage",3);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}
