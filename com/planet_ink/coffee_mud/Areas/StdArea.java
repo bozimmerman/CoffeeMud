@@ -602,23 +602,23 @@ public class StdArea implements Area
 		switch(weather)
 		{
 		case Area.WEATHER_HAIL:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("Golfball sized clumps of ice ");
 			else
-				desc.append("Light streams of sleet and hail ");
+				desc.append("Light streams of hail ");
 			if((climateType()&Area.CLIMATE_WINDY)>0)
 				desc.append("swirl down from above.");
 			else
 				desc.append("fall from the sky.");
 			break;
 		case Area.WEATHER_HEAT_WAVE:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("It is rather warm.");
 			else
 				desc.append("It is very hot. ");
 			break;
 		case Area.WEATHER_WINTER_COLD:
-			if((climateType()&Area.CLIMASK_HOT)>0)
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
 				desc.append("It is rather cold.");
 			else
 				desc.append("It is very cold. ");
@@ -627,13 +627,13 @@ public class StdArea implements Area
 			desc.append("There are horrible drought conditions.");
 			break;
 		case Area.WEATHER_CLOUDY:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("Grey and gloomy clouds ");
 			else
 			if((climateType()&Area.CLIMASK_WET)>0)
 				desc.append("Dark and looming stormclouds ");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
 				desc.append("Light whisps of cloud ");
 			else
 				desc.append("Fluffy cloudbanks ");
@@ -664,10 +664,10 @@ public class StdArea implements Area
 				desc.append("pours down from above.");
 			break;
 		case Area.WEATHER_CLEAR:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("The weather is cool and clear.");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
 			{
 				if((climateType()&Area.CLIMASK_WET)>0)
 					desc.append("The weather is warm and humid, but clear.");
@@ -678,14 +678,14 @@ public class StdArea implements Area
 				desc.append("The weather is clear.");
 			break;
 		case Area.WEATHER_RAIN:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("A cold light rain ");
 			else
 			if((climateType()&Area.CLIMASK_WET)>0)
 				desc.append("A cool soaking rain ");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
-				desc.append("A warm steaming rain ");
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
+				desc.append("A warm rain ");
 			else
 				desc.append("A light rain ");
 			if((climateType()&Area.CLIMATE_WINDY)>0)
@@ -694,13 +694,13 @@ public class StdArea implements Area
 				desc.append("falls from the sky.");
 			break;
 		case Area.WEATHER_SNOW:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("A light snow ");
 			else
 			if((climateType()&Area.CLIMASK_WET)>0)
 				desc.append("A slushy snow ");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
 				desc.append("A freakish snow ");
 			else
 				desc.append("An unseasonable snow ");
@@ -710,13 +710,13 @@ public class StdArea implements Area
 				desc.append("falls from the sky.");
 			break;
 		case Area.WEATHER_SLEET:
-			if((climateType()&Area.CLIMASK_COLD)>0)
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
 				desc.append("A sleet storm ");
 			else
 			if((climateType()&Area.CLIMASK_WET)>0)
 				desc.append("A slushy snow ");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
 				desc.append("A freakish sleet storm ");
 			else
 				desc.append("An unseasonable sleet storm ");
@@ -726,16 +726,16 @@ public class StdArea implements Area
 				desc.append("falls from the sky.");
 			break;
 		case Area.WEATHER_WINDY:
-			if((climateType()&Area.CLIMASK_COLD)>0)
-				desc.append("A cold "+(((climateType()&Area.CLIMASK_HOT)>0)?"dry ":"")+"wind ");
+			if(((climateType()&Area.CLIMASK_COLD)>0)||(getSeasonCode()==Area.SEASON_WINTER))
+				desc.append("A cold "+(((climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			else
 			if((climateType()&Area.CLIMASK_WET)>0)
 				desc.append("A forboding gust of wind ");
 			else
-			if((climateType()&Area.CLIMASK_HOT)>0)
-				desc.append("A hot "+(((climateType()&Area.CLIMASK_HOT)>0)?"dry ":"")+"wind ");
+			if(((climateType()&Area.CLIMASK_HOT)>0)||(getSeasonCode()==Area.SEASON_SUMMER))
+				desc.append("A hot "+(((climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			else
-				desc.append("A light "+(((climateType()&Area.CLIMASK_HOT)>0)?"dry ":"")+"wind ");
+				desc.append("A light "+(((climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			desc.append("blows from the "+Directions.getFromDirectionName(this.windDirection));
 			break;
 		}
