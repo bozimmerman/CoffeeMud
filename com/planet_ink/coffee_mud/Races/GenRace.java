@@ -235,12 +235,12 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<REFFECTS>");
-			for(int r=0;r<racialAbilityNames.length;r++)
+			for(int r=0;r<racialEffectNames.length;r++)
 			{
 				str.append("<REFFECT>");
-				str.append("<RFCLASS>"+racialEffectNames[r]+"</RCLASS>");
-				str.append("<RFLEVEL>"+racialEffectLevels[r]+"</RLEVEL>");
-				str.append("<RFPARM>"+racialEffectParms[r]+"</RPROFF>");
+				str.append("<RFCLASS>"+racialEffectNames[r]+"</RFCLASS>");
+				str.append("<RFLEVEL>"+racialEffectLevels[r]+"</RFLEVEL>");
+				str.append("<RFPARM>"+racialEffectParms[r]+"</RFPARM>");
 				str.append("</REFFECT>");
 			}
 			str.append("</REFFECTS>");

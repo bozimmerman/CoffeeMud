@@ -170,6 +170,31 @@ public class Pregnancy extends StdAbility
 			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 
+		data1=race1.racialEffects(null);
+		data2=race2.racialEffects(null);
+		// kill half of them.
+		for(int i=1;i<data1.size();i++)
+			data1.removeElementAt(i);
+		for(int i=1;i<data2.size();i++)
+			data2.removeElementAt(i);
+
+		if((data1.size()+data2.size())>0)
+			GR.setStat("NUMREFF",""+(data1.size()+data2.size()));
+		else
+			GR.setStat("NUMREFF","");
+		for(int i=0;i<data1.size();i++)
+		{
+			GR.setStat("GETREFF"+i,(String)data1.elementAt(i));
+			GR.setStat("GETREFFLVL"+i,""+CMAble.getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETREFFPARM"+i,""+CMAble.getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
+		}
+		for(int i=0;i<data2.size();i++)
+		{
+			GR.setStat("GETREFF"+(i+data1.size()),(String)data2.elementAt(i));
+			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMAble.getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
+		}
+		
 		CMClass.addRace(GR);
 		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
 		return GR;

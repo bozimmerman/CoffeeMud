@@ -1,6 +1,4 @@
-Either change the cr/lf encoding of the InstallUNIX.sh file in  CoffeeMud.zip, or add a step in the install instructions that the file  should be converted with dos2unix (or like tool), before running the shell  script.
 cmstat table in ms access
-[ca, geas, troll, kill, hassan]
 racial affects
 Look into stopping the autocombat stuff? Do Combat Queueing, whatever that is.
 Install ship battery

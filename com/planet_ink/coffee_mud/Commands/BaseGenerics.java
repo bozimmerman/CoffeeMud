@@ -3959,10 +3959,10 @@ public class BaseGenerics extends StdCommand
 						E.setStat("NUMREFF","");
 					for(int i=0;i<data.size();i++)
 					{
-						Vector V=Util.parseSquiggles((String)data.elementAt(i));
+						Vector V=Util.parseSquiggleDelimited((String)data.elementAt(i),false);
 						E.setStat("GETREFF"+i,((String)V.elementAt(0)));
 						E.setStat("GETREFFLVL"+i,((String)V.elementAt(1)));
-						E.setStat("GETREFFPARM"+i,((String)V.elementAt(3)));
+						E.setStat("GETREFFPARM"+i,((String)V.elementAt(2)));
 					}
 				}
 			}

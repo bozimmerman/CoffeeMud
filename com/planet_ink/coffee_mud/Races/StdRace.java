@@ -405,6 +405,9 @@ public class StdRace implements Race
 
 	public Vector racialEffects(MOB mob)
 	{
+		if(racialEffectNames()==null)
+			return empty;
+		
 		if((racialEffectMap==null)
 		&&(racialEffectNames()!=null)
 		&&(racialEffectLevels()!=null)
@@ -439,7 +442,7 @@ public class StdRace implements Race
 				}
 			}
 		}
-		racialAbilityMap.put(level,finalV);
+		racialEffectMap.put(level,finalV);
 		return finalV;
 	}
 
