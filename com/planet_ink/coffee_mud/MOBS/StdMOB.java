@@ -1881,7 +1881,7 @@ public class StdMOB implements MOB
 			{
 			    if((followers!=null)
 			    &&(followers.contains(msg.source()))
-				&&(Dice.rollPercentage()>1)
+				&&(Dice.rollPercentage()==1)
 			    &&(fetchEffect("Disease_Depression")==null))
 				{
 				    Ability A=CMClass.getAbility("Disease_Depression");
