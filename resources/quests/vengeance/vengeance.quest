@@ -1,0 +1,25 @@
+#set the quest name
+set quest vengeance
+
+set area Midgaard
+# inform the quest that it occurs in Midgaard
+
+set mob any
+# load up any mob from the above area.  Will set a room!
+
+give behavior Scriptable("LOAD=quests/vengeance/wronged.script")
+# load the above behavior into the last mob
+
+set room
+# clears the room that was set above with set mob any.
+
+set mob any
+# load up any mob from area with that name.  If mob not in the last set room, 
+# the mob will be moved there!
+
+give behavior Scriptable("LOAD=quests/vengeance/wronger.script")
+# load the above behavior into the last mob
+
+set duration 5
+# the duration of the quest is 5 minutes.  The scripts on the mobs will
+# do the rest...
