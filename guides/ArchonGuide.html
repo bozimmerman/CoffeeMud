@@ -747,7 +747,7 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
     <TD>whether there are any readable markings on the 
       item</TD></TR>
   <TR>
-    <TD><EM>Readable Text</EM></TD>
+    <TD><EM>Assigned Readable Text</EM></TD>
     <TD>if this item is marked, what those markings 
     say.</TD></TR>
   <TR>
@@ -818,7 +818,59 @@ all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
     <TD>the number of ticks (4 second intervals) which 
       will transpire before the light source will burn out.&nbsp; In the case of 
       a GenLantern, the object may be refilled with oil to continue.&nbsp; For a 
-      GenLightSource, the object will vanish.</TD></TR></TABLE><BR>The "GenWeapon"</STRONG></P>
+      GenLightSource, the object will vanish.</TD></TR></TABLE></P>
+<P>The "GenJournal"</STRONG><BR><BR></P>
+<P>Whenever a GenJournal is created, much like the 
+GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The properties include 
+all of the fields listed above under GenItem, plus&nbsp;one&nbsp;that works a
+little bit differently than described above:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Assigned Readable Text</EM></TD>
+    <TD>A Journal is always readable, so this field is really redundant to the
+    journal.  Therefore, it is now used as field where you may set requirements
+    for reading from and writing to the journal.  If no requirements are mentioned,
+    anyone may read the journal.  A reading requirement is specified by putting
+    READ= followed by some requirements.  A writing requirement is specified by 
+    putting WRITE= followed by some requirements.  The requirments for each of
+    these setting are as follows:
+      <UL>
+        <LI>-sysop (archons and area subops may never read) 
+        <LI>-class (disallow all classes) 
+        <LI>-baseclass (disallow all base classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions 
+        to -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only 
+        listed classes) 
+        <LI>-race (disallow all racial categories) 
+        <LI>+elf +dwarf +human +half +gnome (create 
+        exceptions to -race) 
+        <LI>-elf -dward -human -half -gnome (disallow only 
+        listed races) 
+        <LI>-alignment (disallow all alignments) 
+        <LI>+evil +good +neutral (create exceptions to 
+        -alignment) 
+        <LI>-evil -good -neutral (disallow only listed 
+        alignments) 
+        <LI>-gender (disallow all genders) 
+        <LI>+male +female +neuter (create exceptions to 
+        -gender) 
+        <LI>-male -female -neuter (disallow only listed 
+        genders) 
+        <LI>-level (disallow all levels) 
+        <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
+        exceptions to -level, put your level for 10) 
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
+        (disallow only listed levels, put your level for 10) </LI></UL>
+</TD></TR></TABLE></P>
+<BR>The "GenWeapon"</STRONG></P>
 <P>Whenever a GenWeapon is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
@@ -1756,6 +1808,13 @@ LockableContainer, etc</P>
   <LI>
   <DIV class=MsoNormal>misc text - The name of the key 
   which will open this container.</DIV></LI></UL>
+<P class=MsoNormal>StdJournal</P>
+<UL>
+  <LI>
+  <DIV class=MsoNormal>misc text - The reading and writing requirements for the 
+  journal.  The proper format is READ=REQUIREMENTS WRITE=REQUIREMENTS.  The 
+  REQUIREMENTS are as described above under the Assigned Readable Text field in the 
+  GenJournal entry.</DIV></LI></UL>
 <P class=MsoNormal>StdKey</P>
 <UL>
   <LI>

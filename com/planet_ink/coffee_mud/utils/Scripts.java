@@ -32,7 +32,7 @@ public class Scripts
 	{
 		if(messages==null) setLocale(language,country);
 		String msg=messages.getString(tag);
-		if(msg!=null) Util.replaceAll(msg,"@x1",replaceX);
+		if(msg!=null) msg=Util.replaceAll(msg,"@x1",replaceX);
 		else msg="";
 		return msg;
 	}

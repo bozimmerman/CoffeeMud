@@ -149,7 +149,7 @@ public class Movement
 		else
 		{
 			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,Scripts.get("Movement-senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?Scripts.get("Movement-youflee",directionName):null),leaveCode,null,leaveCode,((flee)?Scripts.get("Movement-sflees",directionName):(Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName));
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?Scripts.get("Movement-youflee",directionName):null),leaveCode,null,leaveCode,((flee)?Scripts.get("Movement-sflees",directionName):Scripts.get("Movement-sleaves",Sense.dispositionString(mob,Sense.flag_leaves),directionName)));
 		}
 		if((exit==null)&&(!mob.isASysOp(destRoom)))
 		{

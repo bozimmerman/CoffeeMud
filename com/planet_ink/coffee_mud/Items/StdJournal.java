@@ -14,7 +14,6 @@ public class StdJournal extends StdItem
 		name="a journal";
 		displayText="a journal sits here.";
 		description="Enter 'READ [NUMBER] [JOURNAL]' to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
-		description="Use the READ command to read the journal, and WRITE to add your own entries.";
 		material=EnvResource.RESOURCE_PAPER;
 		isReadable=true;
 	}
@@ -29,8 +28,7 @@ public class StdJournal extends StdItem
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WRITE:
-			if((affect.source().envStats().level()<envStats().level())
-			   &&(!affect.source().isASysOp(null)))
+			if((!ExternalPlay.zapperCheck(getWriteReq(),mob))&&(!affect.source().isASysOp(null)))
 			{
 				affect.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -52,6 +50,11 @@ public class StdJournal extends StdItem
 			else
 			if(!mob.isMonster())
 			{
+				if(!ExternalPlay.zapperCheck(getReadReq(),mob))
+				{
+					mob.tell("You are not allowed to read "+name()+".");
+					return false;
+				}
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
 					which=Util.s_int(affect.targetMessage());
@@ -72,8 +75,7 @@ public class StdJournal extends StdItem
 				mob.tell(entry.toString()+"\n\r");
 				if((entry.toString().trim().length()>0)
 				&&(which>0)
-				&&((envStats().level()<=mob.envStats().level())
-				 	||(mob.isASysOp(null))))
+				&&(ExternalPlay.zapperCheck(getWriteReq(),mob)||(mob.isASysOp(null))))
 				{
 					try
 					{
@@ -225,5 +227,30 @@ public class StdJournal extends StdItem
 						   +"\n\r"+message);
 		}
 		return buf;
+	}
+	
+	private String getReadReq()
+	{
+		if(readableText().length()==0) return "";
+		String text=readableText().toUpperCase();
+		int readeq=text.indexOf("READ=");
+		if(readeq<0) return "";
+		text=text.substring(readeq+5);
+		int writeeq=text.indexOf("WRITE=");
+		if(writeeq>=0)
+			return text.substring(0,writeeq);
+		return text;
+	}
+	private String getWriteReq()
+	{
+		if(readableText().length()==0) return "";
+		String text=readableText().toUpperCase();
+		int writeeq=text.indexOf("WRITE=");
+		if(writeeq<0) return "";
+		text=text.substring(writeeq+6);
+		int readeq=text.indexOf("READ=");
+		if(readeq>=0)
+			return text.substring(0,readeq);
+		return text;
 	}
 }

@@ -13,7 +13,7 @@ public class GenJournal extends StdJournal
 	{
 		super();
 		displayText="a journal sits here.";
-		description="Use the READ command to read the journal, and WRITE to add your own entries.";
+		description="Enter 'READ [NUMBER] [JOURNAL]' to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
 		isReadable=true;
 		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
