@@ -69,7 +69,7 @@ href="http://aoc.pandapub.com/home.shtml">http://aoc.pandapub.com/home.shtml</A>
 </P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">all_greet_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>greet_prog [integer 
+<P class=MsoNormal>Usage:<BR><EM>all_greet_prog [integer 
 percentage]</EM></P>
 <P class=MsoNormal>This type of mobprog checks a percentage 
 chance every time someone enters the room that the mob is currently in. If the 
@@ -81,11 +81,11 @@ giving in-zone quest information to people entering the room, creating
 aggressive progs, etc. It is a good idea to use the if isqueued function in 
 greet_progs to cut down on spam when multiple players enter the room at the same 
 time.</P>
-<P class=MsoNormal>EXAMPLES:<BR><EM><BR>greet_prog 25</EM><SPAN 
+<P class=MsoNormal>EXAMPLES:<BR><EM><BR>all_greet_prog 25</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 prog will be triggered 25% of the time when someone enters the room where the 
 mob currently is.)</P>
-<P class=MsoNormal><EM>greet_prog 100</EM><SPAN 
+<P class=MsoNormal><EM>all_greet_prog 100</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 100% of the time when someone enters the 
 room where the mob currently is. This means every time.)</P>
 <P class=MsoNormal>SPECIAL NOTES: You’ll probably want to do 
@@ -687,9 +687,7 @@ difference is actually more important with MP Functions.&nbsp; This is because
 most MP Commands only have one parameter, so that&nbsp;parameter word grouping 
 using quotes is usually not necessary.</FONT></P>
 <P class=MsoNormal><FONT color=black><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<?xml:namespace 
-prefix = o ns = "urn:schemas-microsoft-com:office:office" 
-/><o:p></o:p></SPAN></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></o:p></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpasound [text string]</EM></P>
 <P class=MsoNormal>This command will echo the text string to all of the rooms 
 adjacent to the one the mob is in, much like the death echo when a mob dies. 

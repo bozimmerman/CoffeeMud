@@ -3321,13 +3321,15 @@ public class Scriptable extends StdBehavior
 							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
 								CoffeeMaker.setGenMobStat((MOB)newTarget,CoffeeMaker.GENMOBCODES[i],arg3);
-								found=true; break;
+								found=true; 
+								break;
 							}
 						}
 						if(!found)
 						{
 							MOB M=(MOB)newTarget;
 							for(int i=0;i<CharStats.TRAITS.length;i++)
+							{
 								if(CharStats.TRAITS[i].equalsIgnoreCase(arg2))
 								{
 									M.baseCharStats().setStat(i,Util.s_int(arg3));
@@ -3335,22 +3337,27 @@ public class Scriptable extends StdBehavior
 									found=true;
 									break;
 								}
+							}
 							if(!found)
 							for(int i=0;i<M.curState().getCodes().length;i++)
+							{
 								if(M.curState().getCodes()[i].equalsIgnoreCase(arg2))
 								{
 									M.curState().setStat(arg2,arg3);
 									found=true;
 									break;
 								}
+							}
 							if(!found)
 							for(int i=0;i<M.baseEnvStats().getCodes().length;i++)
+							{
 								if(M.baseEnvStats().getCodes()[i].equalsIgnoreCase(arg2))
 								{
 									M.baseEnvStats().setStat(arg2,arg3);
 									found=true;
 									break;
 								}
+							}
 						}
 					}
 					else
@@ -3361,7 +3368,8 @@ public class Scriptable extends StdBehavior
 							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
 								CoffeeMaker.setGenItemStat((Item)newTarget,CoffeeMaker.GENITEMCODES[i],arg3);
-								found=true; break;
+								found=true; 
+								break;
 							}
 						}
 					}
@@ -3808,14 +3816,23 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E instanceof MOB)
 				{
-					String arg2=Util.getCleanBit(s,2);
-					String arg3=Util.getCleanBit(s,3);
+					
+					String arg2="";
+					String arg3="";
+					if(Util.numBits(s)>2)
+					{
+						arg2=Util.getCleanBit(s,2);
+						if(Util.numBits(s)>3)
+							arg3=Util.getCleanBit(s,3);
+					}
+					
 					CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 					if((caged!=null)&&caged.cageMe((MOB)E)&&(lastKnownLocation!=null))
 					{
 						if(arg2.length()>0) ((Item)caged).setName(arg2);
 						if(arg3.length()>0) ((Item)caged).setDisplayText(arg3);
 						lastKnownLocation.addItemRefuse((Item)caged,Item.REFUSE_PLAYER_DROP);
+						((MOB)E).killMeDead(false);
 					}
 				}
 				else
@@ -4097,7 +4114,7 @@ public class Scriptable extends StdBehavior
 				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if((Dice.rollPercentage()<prcnt)&&(!msg.source().isMonster()))
+					if(Dice.rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
@@ -4111,7 +4128,7 @@ public class Scriptable extends StdBehavior
 				&&(canActAtAll(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if((Dice.rollPercentage()<prcnt)&&(!msg.source().isMonster()))
+					if(Dice.rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
 						return;
@@ -4429,7 +4446,7 @@ public class Scriptable extends StdBehavior
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
-					if((Dice.rollPercentage()<prcnt)&&(!msg.source().isMonster()))
+					if(Dice.rollPercentage()<prcnt)
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,2,null));
 						return;

@@ -3,7 +3,3 @@ document clan positions
 better document the damn variable eq thang
 Ability to buy space ship areas, and add them to shopkeepers
 mutable body parts, with ability to grant powers
-document MPM2I2M -- test, does it work?
-MPECHO $%GSTAT($n STRENGTH)% This gives me the STRENGTH value however I have been unable to transfer that value into a variable with: MPSETVAR $n HOLD $%GSTAT($n STRENGTH)% If I check the value of hold I have "GSTAT(playnername" not the actual value.
-I'm also trying to update the player stat with: MPGSET $n STRENGTH 100
-     
