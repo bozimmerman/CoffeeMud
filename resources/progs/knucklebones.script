@@ -216,6 +216,10 @@ SPEECH_PROG toss throw tosses throws
 	ENDIF
 ~
 
+SPEECH_PROG rules rule 
+	say "$n" Everyone who bets gets to roll two dice.  The first person to roll dice may then choose to stand pat, or roll again.  If he stands pat, the person who rolled the highest face value on his dice wins the whole pot.  If he rolls dice again, he may choose to keep one or none of the resulting dice, and everyone else will also be allowed to roll again and do the same.  Again, the winner is the person with the highest added dice score.  Ties always go to the one who rolled first.
+~
+
 SPEECH_PROG ante
 	say "$n" The bet is $<$i KBBET> gold.
 ~

@@ -285,6 +285,9 @@ ELSE
 ENDIF
 
 ~
+SPEECH_PROG rules rule 
+	say "$n" This is blackjack.  You know, twenty-one?  The card game?
+~
 SPEECH_PROG ante
     say "$n" My ante is $<$i BJANTE>.
 ~

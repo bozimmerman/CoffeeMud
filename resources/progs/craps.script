@@ -120,6 +120,10 @@ SPEECH_PROG point
 		
 	ENDIF
 ~
+SPEECH_PROG rules rule 
+	say "$n" You may bet any amount between the minimum ante, and the maximum bet.  You then roll two dice.  A total of 7 or 11 wins.  A total or 2, 3, or 12 loses.  Any other value becomes the point.  You must then continue to roll dice until you match the point again, or roll 7 and lose.
+~
+
 SPEECH_PROG ante
     say "$n" There's no ANTE man.  Just drop some gold (DROP 10) to play!
 ~
