@@ -8,12 +8,17 @@ import java.util.*;
 
 public class Dragonbreath extends StdAbility
 {
-	private String puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
-	private String autoPhrase="A blast of flames erupts!";
-	private String stuffWord="flames";
-	private String castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
-	private int WeaponType=Weapon.TYPE_BURNING;
-	private int strikeType=Affect.TYP_FIRE;
+	public String ID() { return "Dragonbreath"; }
+	public String name(){ return "Dragonbreath";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 10;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"DRAGONBREATH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Dragonbreath();}
+	public int classificationCode(){return Ability.SKILL;}
 	private final static String[][] DragonColors={
 		{"WHITE","c"},
 		{"BLACK","a"},
@@ -27,40 +32,59 @@ public class Dragonbreath extends StdAbility
 		{"GOLD","g"},
 	};
 
-	public String ID() { return "Dragonbreath"; }
-	public String name(){ return "Dragonbreath";}
-	public int quality(){return Ability.MALICIOUS;}
-	public int maxRange(){return 10;}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"DRAGONBREATH"};
-	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Dragonbreath();}
-	public int classificationCode(){return Ability.SKILL;}
-
-	public Dragonbreath()
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		super();
-		setMiscText("");
-	}
-	public void setMiscText(String newType)
-	{
-		super.setMiscText(newType);
-		if(newType.trim().length()==0)
+		Hashtable h=properTargets(mob,givenTarget,auto);
+		if(h==null)
+		{
+			mob.tell("There doesn't appear to be anyone here worth breathing on.");
+			return false;
+		}
+		char colorc='f';
+		if((text().length()==0)
+		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))
+		{
+			int color=-1;
+			for(int i=0;i<DragonColors.length;i++)
+				if(CoffeeUtensils.containsString(mob.Name(),DragonColors[i][0]))
+				{ color=i; break;}
+			if(color<0)
+			for(int i=0;i<DragonColors.length;i++)
+				if(CoffeeUtensils.containsString(mob.displayText(),DragonColors[i][0]))
+				{ color=i; break;}
+			if(color<0)	
+				colorc='f';
+			else 
+				colorc=DragonColors[color][1].charAt(0);
+		}
+		else
+		if(text().trim().length()>0)
+			colorc=text().trim().toLowerCase().charAt(0);
+		else
 		{
 			int x=Dice.roll(1,5,-1);
-			newType=("rlcag").substring(x,x+1);
+			colorc=("rlcag").substring(x,x+1).charAt(0);
 		}
-		char c=newType.trim().toLowerCase().charAt(0);
-		switch(c)
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(0,auto);
+
+		String puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
+		String autoPhrase="A blast of flames erupts!";
+		String stuffWord="flames";
+		String castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
+		int WeaponType=Weapon.TYPE_BURNING;
+		int strikeType=Affect.TYP_FIRE;
+
+		switch(colorc)
 		{
 		case 'f':
-				puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
-				autoPhrase="A blast of flames erupts!";
-				stuffWord="flames";
-				castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!"+CommonStrings.msp("fireball.wav",40);
-				WeaponType=Weapon.TYPE_BURNING;
 				break;
 		case 'l':
 				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
@@ -92,42 +116,7 @@ public class Dragonbreath extends StdAbility
 				break;
 
 		}
-	}
-
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
-	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
-		if(h==null)
-		{
-			mob.tell("There doesn't appear to be anyone here worth breathing on.");
-			return false;
-		}
-		if((text().length()==0)
-		&&(mob.charStats().getMyRace().racialCategory().equals("Dragon")))
-		{
-			int color=-1;
-			for(int i=0;i<DragonColors.length;i++)
-				if(CoffeeUtensils.containsString(mob.Name(),DragonColors[i][0]))
-				{ color=i; break;}
-			if(color<0)
-			for(int i=0;i<DragonColors.length;i++)
-				if(CoffeeUtensils.containsString(mob.displayText(),DragonColors[i][0]))
-				{ color=i; break;}
-			if(color<0)	
-				setMiscText("fire");
-			else 
-				setMiscText(DragonColors[color][1]);
-		}
-
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
-		boolean success=profficiencyCheck(0,auto);
-
+		
 		if(success)
 		{
 

@@ -6,56 +6,57 @@ import com.planet_ink.coffee_mud.common.*;
 public class Sense
 {
 	public static boolean canSee(Environmental E)
-	{ return (!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
+	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
 	public static boolean canSeeHidden(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
 	public static boolean canSeeInvisible(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_INVISIBLE)==EnvStats.CAN_SEE_INVISIBLE); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INVISIBLE)==EnvStats.CAN_SEE_INVISIBLE); }
 	public static boolean canSeeEvil(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_EVIL)==EnvStats.CAN_SEE_EVIL); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_EVIL)==EnvStats.CAN_SEE_EVIL); }
 	public static boolean canSeeGood(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_GOOD)==EnvStats.CAN_SEE_GOOD); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_GOOD)==EnvStats.CAN_SEE_GOOD); }
 	public static boolean canSeeSneakers(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_SNEAKERS)==EnvStats.CAN_SEE_SNEAKERS); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_SNEAKERS)==EnvStats.CAN_SEE_SNEAKERS); }
 	public static boolean canSeeBonusItems(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_BONUS)==EnvStats.CAN_SEE_BONUS); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_BONUS)==EnvStats.CAN_SEE_BONUS); }
 	public static boolean canSeeInDark(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_DARK)==EnvStats.CAN_SEE_DARK); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_DARK)==EnvStats.CAN_SEE_DARK); }
 	public static boolean canSeeVictims(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_VICTIM)==EnvStats.CAN_SEE_VICTIM); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_VICTIM)==EnvStats.CAN_SEE_VICTIM); }
 	public static boolean canSeeInfrared(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)==EnvStats.CAN_SEE_INFRARED); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)==EnvStats.CAN_SEE_INFRARED); }
 	public static boolean canHear(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_HEAR)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_HEAR)==0); }
 	public static boolean canMove(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_MOVE)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_MOVE)==0); }
 	public static boolean canSmell(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_SMELL)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SMELL)==0); }
 	public static boolean canTaste(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_TASTE)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_TASTE)==0); }
 	public static boolean canSpeak(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_SPEAK)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SPEAK)==0); }
 	public static boolean canBreathe(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
 	public static boolean canSeeMetal(Environmental E)
-	{ return ((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
+	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
 	
 	public static boolean isSeen(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E); }
+	{ return (E!=null)&&(((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E)); }
 	public static boolean isHidden(Environmental E)
 	{
+		if(E==null) return false;
 		boolean isInHide=((E.envStats().disposition()&EnvStats.IS_HIDDEN)==EnvStats.IS_HIDDEN);
 		if((isInHide)
-		&&(E!=null)
 		&&(E instanceof MOB)
 		&&(((MOB)E).isInCombat()))
 			return false;
 		return isInHide; 
 	}
 	public static boolean isInvisible(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE); }
 	public static boolean isEvil(Environmental E)
 	{
+		if(E==null) return false;
 		if ((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL)
 			return true;
 		else
@@ -84,6 +85,7 @@ public class Sense
 	
 	public static boolean isGood(Environmental E)
 	{
+		if(E==null) return false;
 		if ((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
 			return true;
 		else
@@ -93,29 +95,29 @@ public class Sense
 		return false;
 	}
 	public static boolean isSneaking(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_SNEAKING)==EnvStats.IS_SNEAKING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SNEAKING)==EnvStats.IS_SNEAKING); }
 	public static boolean isABonusItems(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS); }
 	public static boolean isInDark(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_DARK)==EnvStats.IS_DARK); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_DARK)==EnvStats.IS_DARK); }
 	public static boolean isLightSource(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE); }
 	public static boolean isGlowing(Environmental E)
-	{ return (isLightSource(E)||((E.envStats().disposition()&EnvStats.IS_GLOWING)==EnvStats.IS_GLOWING)); }
+	{ return (E!=null)&&((isLightSource(E)||((E.envStats().disposition()&EnvStats.IS_GLOWING)==EnvStats.IS_GLOWING))); }
 	public static boolean isGolem(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_GOLEM)==EnvStats.IS_GOLEM); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_GOLEM)==EnvStats.IS_GOLEM); }
 	public static boolean isSleeping(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_SLEEPING)==EnvStats.IS_SLEEPING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SLEEPING)==EnvStats.IS_SLEEPING); }
 	public static boolean isSitting(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_SITTING)==EnvStats.IS_SITTING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SITTING)==EnvStats.IS_SITTING); }
 	public static boolean isFlying(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_FLYING)==EnvStats.IS_FLYING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FLYING)==EnvStats.IS_FLYING); }
 	public static boolean isClimbing(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_CLIMBING)==EnvStats.IS_CLIMBING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_CLIMBING)==EnvStats.IS_CLIMBING); }
 	public static boolean isSwimming(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_SWIMMING)==EnvStats.IS_SWIMMING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SWIMMING)==EnvStats.IS_SWIMMING); }
 	public static boolean isFalling(Environmental E)
-	{ return ((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
+	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
 
 	public static boolean canBeHeardBy(Environmental heard , Environmental hearer)
 	{
@@ -140,6 +142,7 @@ public class Sense
 
 	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{
+		if(mob==null) return false;
 		if(mob.amDead()||(mob.curState()==null)||(mob.curState().getHitPoints()<0))
 		{
 			if(!quiet)
@@ -163,7 +166,7 @@ public class Sense
 
 	public static boolean isBound(Environmental E)
 	{
-		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND)
+		if((E!=null)&&((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND))
 			return true;
 		return false;
 	}
@@ -403,11 +406,11 @@ public class Sense
 	
 	public static boolean isAnimalIntelligence(MOB E)
 	{
-		return (E.charStats().getStat(CharStats.INTELLIGENCE)<2);
+		return (E!=null)&&(E.charStats().getStat(CharStats.INTELLIGENCE)<2);
 	}
 	public static boolean isVegetable(MOB E)
 	{
-		return (E.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
+		return (E!=null)&&(E.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
 	}
 	
 	public static boolean isMobile(Environmental E)

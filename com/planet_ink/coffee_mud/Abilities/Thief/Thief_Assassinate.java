@@ -264,7 +264,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+tracking.name()+" for assassination, but fail(s).");
+			return beneficialVisualFizzle(mob,tracking,"<S-NAME> attempt(s) to track <T-NAMESELF> for assassination, but fail(s).");
 
 
 		// return whether it worked

@@ -215,6 +215,7 @@ public class DBConnections
 					ThisDB=(DBConnection)Connections.elementAt(i);
 					if(ThisDB.use(""))
 						break;
+					ThisDB=null;
 				}
 			}
 			
