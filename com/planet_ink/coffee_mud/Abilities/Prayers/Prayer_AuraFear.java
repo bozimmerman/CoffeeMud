@@ -62,6 +62,13 @@ public class Prayer_AuraFear extends Prayer
 		{
 			H=new HashSet();
 			invoker().getGroupMembers(H);
+			H.add(invoker());
+		}
+		if((affected instanceof MOB)&&(affected!=invoker()))
+		{
+		    if(H==null) H=new HashSet();
+		    ((MOB)affected).getGroupMembers(H);
+			H.add(affected);
 		}
 		for(int i=0;i<R.numInhabitants();i++)
 		{
