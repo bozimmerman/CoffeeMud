@@ -320,20 +320,21 @@ public class StdExit implements Exit
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if(isOpen())
-		{
-			if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
-				Say.append("darkness");
+		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
+			if(isOpen())
+			{
+				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
+					Say.append("darkness");
+				else
+				if(displayText().length()>0)
+					Say.append(displayText());
+				else
+				if(room!=null)
+					Say.append(room.displayText()+Sense.colorCodes(room,mob));
+			}
 			else
-			if(displayText().length()>0)
-				Say.append(displayText());
-			else
-			if(room!=null)
-				Say.append(room.displayText()+Sense.colorCodes(room,mob));
-		}
-		else
-		if(Sense.canBeSeenBy(this,mob))
-			Say.append(closedText()+Sense.colorCodes(this,mob));
+			if(Sense.canBeSeenBy(this,mob))
+				Say.append(closedText()+Sense.colorCodes(this,mob));
 		return Say;
 	}
 

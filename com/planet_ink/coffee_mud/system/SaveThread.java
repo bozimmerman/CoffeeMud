@@ -138,6 +138,7 @@ public class SaveThread extends Thread
 			Room room=CMMap.getRoom(r);
 			if((room!=null)&&((room.numInhabitants()>0)||(room.numItems()>0)))
 			{
+				room.recoverEnvStats();
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob=room.fetchInhabitant(m);
@@ -177,10 +178,8 @@ public class SaveThread extends Thread
 						}
 					}
 				}
-				room.recoverRoomStats();
 			}
-			else
-				room.recoverEnvStats();
+			room.recoverRoomStats();
 		}
 	}
 

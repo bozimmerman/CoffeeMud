@@ -47,17 +47,20 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
-		Room newRoom=null;
+		Vector candidates=new Vector();
 		MOB target=null;
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
 			Room room=CMMap.getRoom(m);
 			target=room.fetchInhabitant(areaName);
 			if(target!=null)
-			{
-				newRoom=room;
-				break;
-			}
+				candidates.addElement(target);
+		}
+		Room newRoom=null;
+		if(candidates.size()>0)
+		{
+			target=(MOB)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+			newRoom=target.location();
 		}
 
 		if(newRoom==null)
