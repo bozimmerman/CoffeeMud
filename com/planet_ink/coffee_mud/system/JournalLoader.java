@@ -25,7 +25,7 @@ public class JournalLoader
 				}
 				DBConnector.DBDone(D);
 			}
-			catch(SQLException sqle)
+			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
 				if(D!=null) DBConnector.DBDone(D);
@@ -82,7 +82,7 @@ public class JournalLoader
 				}
 				DBConnector.DBDone(D);
 			}
-			catch(SQLException sqle)
+			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
 				if(D!=null) DBConnector.DBDone(D);

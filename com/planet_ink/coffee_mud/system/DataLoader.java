@@ -23,13 +23,12 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMRDAT"));
 				rows.addElement(V);
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment 
 		return rows;
 	}
@@ -48,13 +47,12 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMCDAT"));
 				rows.addElement(V);
 			}
-			DBConnector.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment 
 		return rows;
 	}
@@ -84,13 +82,12 @@ public class DataLoader
 					rows.addElement(V);
 				}
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment 
 		return rows;
 	}
@@ -121,13 +118,12 @@ public class DataLoader
 					rows.addElement(V);
 				}
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment 
 		return rows;
 	}
@@ -148,13 +144,12 @@ public class DataLoader
 				V.addElement(DBConnections.getRes(R,"CMPDAT"));
 				rows.addElement(V);
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment 
 		return rows;
 	}
@@ -185,11 +180,11 @@ public class DataLoader
 			else
 				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
 	public static void DBDelete(String playerID, String section, String key)
 	{
@@ -202,13 +197,12 @@ public class DataLoader
 				D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"'",0);
 			else
 				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'",0);
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
 	public static void DBDeleteRace(String raceID)
 	{

@@ -44,14 +44,12 @@ public class ClanLoader
 				Clans.addClan(C);
 		        updateBootStatus("Clans");
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("Clan",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-			return;
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		// log comment
 	}
 

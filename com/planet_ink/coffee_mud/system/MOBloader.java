@@ -84,13 +84,12 @@ public class MOBloader
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
 				found=true;
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		return found;
 	}
 
@@ -137,7 +136,6 @@ public class MOBloader
 					mob.addInventory(newItem);
 				}
 			}
-			DBConnector.DBDone(D);
 			for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
 			{
 				Item keyItem=(Item)e.nextElement();
@@ -151,11 +149,12 @@ public class MOBloader
 				}
 			}
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
+		D=null;
 
 
 		// now grab the abilities
@@ -201,13 +200,12 @@ public class MOBloader
 					}
 				}
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
@@ -247,13 +245,12 @@ public class MOBloader
 				String username=DBConnections.getRes(R,"CMUSERID");
 				V.addElement(username);
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		return V;
 	}
 
@@ -304,13 +301,12 @@ public class MOBloader
 				}
 				catch(Exception e){Log.errOut("MOBloader",e);}
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		return allUsers;
 	}
 
@@ -379,13 +375,12 @@ public class MOBloader
 				}
 			}
 			mob.tell(head.toString());
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
 
 	public static void DBReadFollowers(MOB mob, boolean bringToLife)
@@ -433,14 +428,12 @@ public class MOBloader
 					}
 				}
 			}
-			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
-
+		if(D!=null) DBConnector.DBDone(D);
 	}
 
 	public static void DBUpdateEmail(MOB mob)
@@ -477,7 +470,7 @@ public class MOBloader
 					lastDates.addElement(new Long(lastDateTime));
 			}
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
 		}
@@ -817,7 +810,7 @@ public class MOBloader
 				}
 			}
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",sqle);
 		}

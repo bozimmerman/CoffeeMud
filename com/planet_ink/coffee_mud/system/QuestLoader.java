@@ -36,15 +36,15 @@ public class QuestLoader
 				if((Q.name().length()>0)&&(Q.duration()>=0)&&(Quests.fetchQuest(Q.name())==null))
 					Quests.addQuest(Q);
 			}
-			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("Quest",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-			return;
 		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
+	
+	
 	public static void DBUpdateQuest(Quest Q)
 	{
 		if(Q==null) return;
