@@ -97,7 +97,9 @@ public class StdDrink extends StdContainer implements Drink,Item
 					mob.tell(name()+" is full.");
 					return false;
 				}
-				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+				if((affect.tool()!=null)
+				&&(affect.tool()!=affect.target())
+				&&(affect.tool() instanceof Drink))
 				{
 					Drink thePuddle=(Drink)affect.tool();
 					if(!thePuddle.containsDrink())

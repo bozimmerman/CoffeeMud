@@ -39,7 +39,9 @@ public class GenLantern extends GenLightSource
 			switch(affect.targetMinor())
 			{
 				case Affect.TYP_FILL:
-					if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+					if((affect.tool()!=null)
+					&&(affect.tool()!=affect.target())
+					&&(affect.tool() instanceof Drink))
 					{
 						if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
 						{

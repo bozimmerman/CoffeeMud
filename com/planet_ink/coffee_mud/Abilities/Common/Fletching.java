@@ -234,7 +234,7 @@ public class Fletching extends CommonSkill
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -261,6 +261,7 @@ public class Fletching extends CommonSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=spell.equalsIgnoreCase("BUNDLE");
+			if(bundle) building.setBaseValue(lostValue);
 			if(spell.length()>0)
 			{
 				String parm="";

@@ -160,7 +160,7 @@ public class GlassBlowing extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
@@ -210,6 +210,7 @@ public class GlassBlowing extends CommonSkill
 			if((capacity*50)<250)
 				((Drink)building).setThirstQuenched(capacity*50);
 		}
+		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

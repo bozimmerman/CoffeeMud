@@ -236,17 +236,7 @@ public class Shipwright extends CommonSkill
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 			int woodDestroyed=woodRequired;
-			for(int i=mob.location().numItems()-1;i>=0;i--)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
-				&&(I.container()==null)
-				&&(!Sense.isOnFire(I))
-				&&(I.material()==firstWood.material())
-				&&((--woodDestroyed)>=0))
-					I.destroy();
-			}
+			int lostValue=destroyResources(mob.location(),woodDestroyed,firstWood.material(),null,null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -270,6 +260,7 @@ public class Shipwright extends CommonSkill
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
+			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 			if(spell.length()>0)
 			{
 				String parm="";

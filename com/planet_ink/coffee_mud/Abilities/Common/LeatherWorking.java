@@ -298,7 +298,7 @@ public class LeatherWorking extends CommonSkill
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			destroyResources(mob.location(),woodRequired,firstWood.material(),((multiplier==3)?firstMetal:null),null);
+			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),((multiplier==3)?firstMetal:null),null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -328,6 +328,7 @@ public class LeatherWorking extends CommonSkill
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
+			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(spell.length()>0)
 			{

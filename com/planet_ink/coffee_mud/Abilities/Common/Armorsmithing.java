@@ -295,7 +295,7 @@ public class Armorsmithing extends CommonSkill
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -327,6 +327,7 @@ public class Armorsmithing extends CommonSkill
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
+			if(bundle) building.setBaseValue(lostValue);
 			if(spell.length()>0)
 			{
 				String parm="";

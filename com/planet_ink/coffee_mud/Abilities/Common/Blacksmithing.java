@@ -169,7 +169,7 @@ public class Blacksmithing extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
@@ -244,6 +244,7 @@ public class Blacksmithing extends CommonSkill
 				((Drink)building).setThirstQuenched(capacity*50);
 			((Drink)building).setLiquidRemaining(0);
 		}
+		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

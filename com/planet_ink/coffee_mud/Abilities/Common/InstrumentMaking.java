@@ -178,7 +178,7 @@ public class InstrumentMaking extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
@@ -239,6 +239,7 @@ public class InstrumentMaking extends CommonSkill
 				}
 			}
 		}
+		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

@@ -269,16 +269,7 @@ public class JewelMaking extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		int woodDestroyed=woodRequired;
-		for(int i=mob.location().numItems()-1;i>=0;i--)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null)
-			&&(I.material()==firstWood.material())
-			&&((--woodDestroyed)>=0))
-				I.destroy();
-		}
-		if(firstOther!=null) firstOther.destroy();
+		int lostValue=destroyResources(mob.location(),woodDestroyed,firstWood.material(),firstOther,null);
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
@@ -359,8 +350,7 @@ public class JewelMaking extends CommonSkill
 				}
 			}
 		}
-
-
+		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

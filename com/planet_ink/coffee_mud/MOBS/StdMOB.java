@@ -1612,15 +1612,18 @@ public class StdMOB implements MOB
 			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			{
 				int dmg=affect.targetCode()-Affect.MASK_HURT;
-				if(dmg>0)
+				synchronized(this)
 				{
-					if((!curState().adjHitPoints(-dmg,maxState()))
-					&&(curState().getHitPoints()<1)
-					&&(location()!=null))
-						ExternalPlay.postDeath(affect.source(),this,affect);
-					else
-					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
-						ExternalPlay.postPanic(this,affect);
+					if((dmg>0)&&(!amDead))
+					{
+						if((!curState().adjHitPoints(-dmg,maxState()))
+						&&(curState().getHitPoints()<1)
+						&&(location()!=null))
+							ExternalPlay.postDeath(affect.source(),this,affect);
+						else
+						if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
+							ExternalPlay.postPanic(this,affect);
+					}
 				}
 			}
 		}

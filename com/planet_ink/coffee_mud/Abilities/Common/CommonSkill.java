@@ -593,13 +593,14 @@ public class CommonSkill extends StdAbility
 		return true;
 	}
 	
-	protected void destroyResources(Room room, 
+	protected int destroyResources(Room room, 
 									int howMuch, 
 									int finalMaterial, 
 									Item firstOther,
 									Item never)
 	{
-		if(room==null) return;
+		int lostValue=0;
+		if(room==null) return 0;
 		
 		if(howMuch>0)
 		for(int i=room.numItems()-1;i>=0;i--)
@@ -609,7 +610,10 @@ public class CommonSkill extends StdAbility
 			if(I==never) continue;
 			
 			if((firstOther!=null)&&(I==firstOther))
+			{
+				lostValue+=I.value();
 				I.destroy();
+			}
 			else
 			if((I instanceof EnvResource)
 			&&(I.container()==null)
@@ -620,6 +624,7 @@ public class CommonSkill extends StdAbility
 				{ 
 					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
 					I.destroy();
+					lostValue+=I.value();
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{
 						Environmental E=makeResource(finalMaterial,true);
@@ -632,11 +637,13 @@ public class CommonSkill extends StdAbility
 				{
 					howMuch-=I.baseEnvStats().weight();
 					I.destroy();
+					lostValue+=I.value();
 					if(howMuch<=0) 
 						break;
 				}
 			}
 		}
+		return lostValue;
 	}
 	
 	

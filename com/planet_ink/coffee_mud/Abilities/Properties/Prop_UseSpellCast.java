@@ -61,6 +61,7 @@ public class Prop_UseSpellCast extends Property
 			{
 			case Affect.TYP_FILL:
 				if((myItem instanceof Drink)
+				&&(affect.tool()!=myItem)
 				&&(affect.amITarget(myItem)))
 					addMeIfNeccessary(affect.source(),affect.source());
 				break;

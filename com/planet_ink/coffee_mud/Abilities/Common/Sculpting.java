@@ -321,12 +321,13 @@ public class Sculpting extends CommonSkill
 				commonTell(mob,"You are not allowed to build that here.");
 				return false;
 			}
+			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,building);
+			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(!super.invoke(mob,commands,givenTarget,auto))
+				return false;
 			building.text();
 			building.recoverEnvStats();
 			
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,building);
-			if(!super.invoke(mob,commands,givenTarget,auto))
-				return false;
 		}
 
 		messedUp=!profficiencyCheck(0,auto);

@@ -11,7 +11,7 @@ public class Rat extends StdMOB
 	{
 		super();
 		Username="a rat";
-		setDescription("The rat is an ungly long rodent with a long tail.");
+		setDescription("A small furry rodent with a long, leathery tail.");
 		setDisplayText("A rat is here nibbling on something.");
 		setAlignment(500);
 		setMoney(0);
