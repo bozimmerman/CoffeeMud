@@ -34,7 +34,7 @@ A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type woul
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
 Following thing would be automatic, if an Exit and Direction extensions are used.
 
-Add last-call to list users.
+Add last- call to list users?
 
 be able to drink or fill waterskin from freshwater locales
 
@@ -45,6 +45,10 @@ Forget spell to make someone forget a skill they try, at random!
 Distract ability (can't fight during) to make an enemies scores worse...
 
 ThievesTools required for picking locks, check/remove traps without severe penalty.
+
+thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
+
+appraise skill to give weight, base value, and material of an item
 
 HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
 animals will produce poisoned meat, of course.
