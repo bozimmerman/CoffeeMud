@@ -222,7 +222,7 @@ public class Fletching extends CommonSkill
 				commonTell(mob,"You need a pound of "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 				return false;
 			}
-			if((firstOther!=null)&&((firstOther.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+			if((firstOther!=null)&&(Sense.isMetal(firstOther)))
 			{
 				Item fire=null;
 				for(int i=0;i<mob.location().numItems();i++)

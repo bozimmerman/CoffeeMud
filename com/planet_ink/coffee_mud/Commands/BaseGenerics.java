@@ -4189,8 +4189,6 @@ public class BaseGenerics extends StdCommand
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
-				if(CMClass.className(me).toUpperCase().endsWith("PORTAL"))
-					genReadable2(mob,me,++showNumber,showFlag);
 			}
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

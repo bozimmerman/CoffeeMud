@@ -595,6 +595,14 @@ public class Sense
 			return true;
 		return false;
 	}
+	
+	public static boolean isMetal(Environmental E)
+	{
+		if(E instanceof Item)
+			return((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			   ||((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL);
+		return false;
+	}
 
 	
 	public static int burnStatus(Environmental E)

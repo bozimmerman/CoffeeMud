@@ -62,7 +62,7 @@ public class Prayer_FreezeMetal extends Prayer
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Item.INVENTORY))
-			   &&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			   &&(Sense.isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))
 			{

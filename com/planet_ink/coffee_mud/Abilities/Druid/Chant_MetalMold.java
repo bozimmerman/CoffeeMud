@@ -24,8 +24,8 @@ public class Chant_MetalMold extends Chant
 			{
 				Item item=mobTarget.fetchInventory(i);
 				if((item!=null)
-				   &&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-				   &&(item.subjectToWearAndTear()))
+				&&(Sense.isMetal(item))
+				&&(item.subjectToWearAndTear()))
 				{
 					if(item.amWearingAt(Item.INVENTORY))
 						possibilities.addElement(item);

@@ -53,16 +53,12 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);
-CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
-//Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
 			
-CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",false);
-//Endure rust 	Causes the target to never have to worry about rust for the duration of the chant. Should protect against water-rust as well as chants. 
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",false);
 
-CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
-//Fodder Signal 	a Faerie Fire that makes MOBs aggressive towards the target. 
-CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
-//Den 	creates a room off of a cave room. The room will be temporary (1 mud day per 5 levels), but accessible through normal means. 
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
 
 CMAble.addCharAbilityMapping(ID(),9,"Chant_RockFeet",false);
 //Rockfeet 	Causes the earth around an opponent to encase his feet, immobilizing him. 

@@ -418,8 +418,7 @@ public class JewelMaking extends CommonSkill
 			verb="making "+building.name();
 			building.setDisplayText(itemName+" is here");
 			if((firstOther!=null)&&(firstWood!=null)
-			&&((((firstWood.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
-			   ||(((firstWood.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
+			&&(Sense.isMetal(firstWood))
 			&&(((firstOther.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)))
 				building.setDescription(itemName+" made of "+EnvResource.RESOURCE_DESCS[firstWood.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
 			else

@@ -24,7 +24,7 @@ public class Chant_ChargeMetal extends Chant
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
 			&&(!item.amWearingAt(Item.INVENTORY))
-			&&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			&&(Sense.isMetal(item))
 			&&(item.container()==null)
 			&&(!mob.amDead()))
 				return item;
@@ -101,7 +101,7 @@ public class Chant_ChargeMetal extends Chant
 		if(target instanceof MOB) I=wieldingMetal((MOB)target);
 
 		if((target instanceof Item)
-		&&((((Item)target).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+		&&(Sense.isMetal(target)))
 			I=(Item)target;
 		else
 		if(target instanceof Item)
