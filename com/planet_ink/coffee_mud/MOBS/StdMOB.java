@@ -2131,7 +2131,10 @@ public class StdMOB implements MOB
 					if(!isMonster())
 					{
 						String levelStr=charStats().displayClassLevel(this,false);
-						myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+						myDescription.append(name()+" the ");
+						if(charStats.getStat(CharStats.AGE)>0)
+						    myDescription.append(charStats.ageName().toLowerCase()+" ");
+						myDescription.append(charStats().raceName()+" is a "+levelStr+".\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -2563,12 +2566,11 @@ public class StdMOB implements MOB
 						if((baseCharStats.getStat(CharStats.AGE)>0)
 						&&(playerStats()!=null)
 						&&(playerStats().getBirthday()!=null)
-						&&(getStartRoom()!=null)
 						&&((AgeHours%20)==0))
 						{
-						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+getStartRoom().getArea().getTimeObj().getYear()-playerStats().getBirthday()[2];
-					        int month=getStartRoom().getArea().getTimeObj().getMonth();
-					        int day=getStartRoom().getArea().getTimeObj().getDayOfMonth();
+						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+DefaultTimeClock.globalClock.getYear()-playerStats().getBirthday()[2];
+					        int month=DefaultTimeClock.globalClock.getMonth();
+					        int day=DefaultTimeClock.globalClock.getDayOfMonth();
 					        int bday=playerStats().getBirthday()[0];
 					        int bmonth=playerStats().getBirthday()[1];
 						    while((tage>baseCharStats.getStat(CharStats.AGE))
@@ -2595,6 +2597,18 @@ public class StdMOB implements MOB
 									Ability A=CMClass.getAbility("Disease_Arthritis");
 									if((A!=null)&&(fetchEffect(A.ID())==null))
 										A.invoke(this,this,true,0);
+								}
+								else
+								if(Dice.rollPercentage()<10)
+								{
+									int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT);
+									for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
+									    if((max+charStats.getStat(i))<=0)
+									    {
+									        tell("Your max "+CharStats.TRAITS[i].toLowerCase()+" has fallen below 1!");
+									        MUDFight.postDeath(null,this,null);
+									        break;
+									    }
 								}
 							}
 						}

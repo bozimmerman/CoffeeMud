@@ -26,7 +26,7 @@ public class Chant_SpeedAging extends Chant
 	public String ID() { return "Chant_SpeedAging"; }
 	public String name(){ return "Speed Aging";}
 	protected int canAffectCode(){return 0;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int quality(){return Ability.MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -37,6 +37,23 @@ public class Chant_SpeedAging extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+	    int type=affectType(auto);
+	    if((target instanceof MOB)
+	    &&(Util.bset(type,CMMsg.MASK_MALICIOUS))
+	    &&(((MOB)target).charStats().getStat(CharStats.AGE)>0))
+	    {
+	        MOB mobt=(MOB)target;
+	        if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
+		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+	        else
+	        if((mobt.getLiegeID().equals(mob.Name()))||(mobt.amFollowing()==mob))
+		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+	        else
+	        if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
+	        &&(mobt.getLiegeID().length()>0))
+		        type=Util.unsetb(type,CMMsg.MASK_MALICIOUS);
+	    }
+	            
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
@@ -44,7 +61,7 @@ public class Chant_SpeedAging extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,type,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -89,11 +106,11 @@ public class Chant_SpeedAging extends Chant
 					if(M.baseCharStats().getStat(CharStats.AGE)<=0)
 						M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
 					else
-					if((M.playerStats().getBirthday()!=null)&&(M.getStartRoom()!=null))
+					if(M.playerStats().getBirthday()!=null)
 					{
 					    double aging=Util.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
 					    int years=(int)Math.round(Math.floor(aging));
-					    int monthsInYear=M.getStartRoom().getArea().getTimeObj().getMonthsInYear();
+					    int monthsInYear=DefaultTimeClock.globalClock.getMonthsInYear();
 					    int months=(int)Math.round(Util.mul(aging-Math.floor(aging),monthsInYear));
 					    M.playerStats().getBirthday()[2]-=years;
 					    M.playerStats().getBirthday()[1]-=months;
@@ -104,10 +121,9 @@ public class Chant_SpeedAging extends Chant
 						    M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
 					    }
 					    M.baseCharStats().setStat(CharStats.AGE,M.baseCharStats().getStat(CharStats.AGE)+years);
-					    M.recoverCharStats();
 					}
-					target.recoverEnvStats();
-					
+					M.recoverEnvStats();
+					M.recoverCharStats();
 				}
 				else
 				{
@@ -125,6 +141,9 @@ public class Chant_SpeedAging extends Chant
 				}
 			}
 		}
+		else
+		if(Util.bset(type,CMMsg.MASK_MALICIOUS))
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
 		else
 			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");
 

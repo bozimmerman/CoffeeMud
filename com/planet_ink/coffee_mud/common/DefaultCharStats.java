@@ -349,10 +349,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 		int age=getStat(CharStats.AGE);
 		int cat=Race.AGE_INFANT;
 		int[] chart=getMyRace().getAgingChart();
-		if(age<=0) return cat;
-		while((cat<Race.AGE_ANCIENT)&&(age>chart[cat]))
+		if(age<chart[1]) return cat;
+		while((cat<=Race.AGE_ANCIENT)&&(age>chart[cat]))
 			cat++;
-		return cat;
+		return cat-1;
 	}
 
 	public String ageName()
@@ -363,7 +363,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		int[] chart=getMyRace().getAgingChart();
 		int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
 		age=age-chart[Race.AGE_ANCIENT];
-		int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff)))-1:0;
+		int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff))):0;
 		if(num<=0) return Race.AGE_DESCS[cat];
 		return Race.AGE_DESCS[cat]+" "+Util.convertToRoman(num);
 	}

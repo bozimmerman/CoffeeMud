@@ -574,7 +574,7 @@ public class FrontLogin extends StdCommand
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));
-			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.getStartRoom().getArea().getTimeObj(),mob.baseCharStats().getMyRace()));
+			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
 				mob.bringToLife(mob.getStartRoom(),true);
 				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 				CMClass.DBEngine().DBCreateCharacter(mob);

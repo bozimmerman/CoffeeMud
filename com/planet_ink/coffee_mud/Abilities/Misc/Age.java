@@ -38,16 +38,22 @@ public class Age extends StdAbility
 		if(start<Integer.MAX_VALUE)
 		    return "";
 		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
-		long months=days/30;
+		long months=days/DefaultTimeClock.globalClock.getDaysInMonth();
+		long years=months/DefaultTimeClock.globalClock.getMonthsInYear();
 		if(days<1)
 			return "(<1 day old)";
 		else
 		if(months<1)
 			return "("+days+" day(s) old)";
 		else
+		if(years<1)
 			return "("+months+" month(s) old)";
+		else
+			return "("+years+" year(s) old)";
 	}
 	private boolean norecurse=false;
+	private Race myRace=null;
+	private double divisor=0.0;
 
 	public final static String happyBabyEmoter="min=1 max=500 chance=10;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
@@ -63,13 +69,27 @@ public class Age extends StdAbility
 		if(l<Integer.MAX_VALUE) return;
 		norecurse=true;
 
-		long day=60000; // one minute
-		day*=60; // one hour
-		day*=24; // on day
-		long ellapsed=(System.currentTimeMillis()-l);
+		if(divisor==0.0)
+		    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+		
+		int ellapsed=(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
-			if(ellapsed>(30*day))
+		    if(myRace==null)
+		    {
+		        MOB M=((CagedAnimal)affected).unCageMe();
+		        if(M!=null)
+			        myRace=M.baseCharStats().getMyRace();
+		        else
+		        {
+		            Room R=CoffeeUtensils.roomLocation(affected);
+		            if(R!=null)
+		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
+		            ((Item)affected).destroy();
+		        }
+	            M.destroy();
+		    }
+			if(ellapsed>=myRace.getAgingChart()[1])
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if(R!=null)
@@ -136,10 +156,11 @@ public class Age extends StdAbility
 		&&(((MOB)affected).location().isInhabitant((MOB)affected))
 		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
 		{
+		    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
 			if((((MOB)affected).getLiegeID().length()==0)&&(!((MOB)affected).amFollowing().getLiegeID().equals(affected.Name())))
 				((MOB)affected).setLiegeID(((MOB)affected).amFollowing().Name());
 			((MOB)affected).setBitmap(Util.unsetb(((MOB)affected).getBitmap(),MOB.ATT_AUTOASSIST));
-			if((ellapsed>(60*day))
+			if((ellapsed>=myRace.getAgingChart()[2])
 			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
@@ -176,7 +197,7 @@ public class Age extends StdAbility
 				}
 			}
 			else
-			if((ellapsed>(90*day))
+			if((ellapsed>=myRace.getAgingChart()[3])
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
 			&&(((MOB)affected).charStats().getStat(CharStats.INTELLIGENCE)>1))
 			{
@@ -205,7 +226,7 @@ public class Age extends StdAbility
 					newMan.setLocation(babe.location());
 					newMan.setMoney(babe.getMoney());
 					newMan.setName(babe.Name());
-					newMan.setPlayerStats(new DefaultPlayerStats()); // ***TODO
+					newMan.setPlayerStats(new DefaultPlayerStats());
 					newMan.setPractices(babe.getPractices());
 					newMan.setQuestPoint(babe.getQuestPoint());
 					newMan.setStartRoom(babe.getStartRoom());
@@ -217,7 +238,8 @@ public class Age extends StdAbility
 					newMan.playerStats().setUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
-					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday((int)Math.round(Util.div(babe.getAgeHours(),60.0)),newMan.getStartRoom().getArea().getTimeObj(),newMan.baseCharStats().getMyRace()));
+					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
+					newMan.baseCharStats().setStat(CharStats.AGE,ellapsed);
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
 					newMan.baseState().setHitPoints(20);
 					newMan.baseState().setMana(100);
@@ -289,7 +311,7 @@ public class Age extends StdAbility
 						babe.amFollowing().tell(babe.Name()+" has just grown up to be a mob.");
 					liege.tell(babe.Name()+" has just grown up to be a mob.");
 					Ability A=babe.fetchEffect(ID());
-					if(A!=null) babe.delEffect(A);
+					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
@@ -338,6 +360,13 @@ public class Age extends StdAbility
 		{
 		    affected.baseCharStats().setStat(CharStats.AGE,(int)l);
 		    affectableStats.setStat(CharStats.AGE,(int)l);
+		}
+		else
+		{
+			if(divisor==0.0)
+			    divisor=new Integer(DefaultTimeClock.globalClock.getMonthsInYear()*DefaultTimeClock.globalClock.getDaysInMonth()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+			affected.baseCharStats().setStat(CharStats.AGE,(int)Math.round(Math.floor(Util.div(Util.div(System.currentTimeMillis()-l,MudHost.TICK_TIME),divisor))));
+			affectableStats.setStat(CharStats.AGE,affected.baseCharStats().getStat(CharStats.AGE));
 		}
 	}
 }

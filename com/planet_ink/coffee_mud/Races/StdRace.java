@@ -93,6 +93,7 @@ public class StdRace implements Race
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
 	{
 		if((baseStats.getStat(CharStats.AGE)>0)&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
+		{
 			switch(baseStats.ageCategory())
 			{
 				case -1: break;
@@ -159,6 +160,7 @@ public class StdRace implements Race
 				    break;
 				}
 			}
+		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{

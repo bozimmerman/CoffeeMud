@@ -54,5 +54,5 @@ public interface PlayerStats
 	public MOB replyTo();
 	public Vector getSecurityGroups();
 	public int[] getBirthday();
-	public int initializeBirthday(int ageHours, TimeClock C, Race R);
+	public int initializeBirthday(int ageHours, Race R);
 }

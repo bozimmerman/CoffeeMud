@@ -36,15 +36,16 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
 			long start=Util.s_long(text().substring(0,x));
-			long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
-			long months=days/30;
+			long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
+			long months=days/DefaultTimeClock.globalClock.getDaysInMonth();
 			if(days<1)
 				return "(<1 day pregnant)";
 			else
 			if(months<1)
 				return "("+days+" day(s) pregnant)";
 			else
-				return "("+months+" month(s) pregnant)";
+				return "("+months+" months(s) pregnant)";
 		}
 		return "";
 	}
@@ -321,8 +322,9 @@ public class Pregnancy extends StdAbility
 				{
 					int z=text().indexOf("/",y+1);
 					long end=Util.s_long(text().substring(x+1,y));
-					long days=((end-System.currentTimeMillis())/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days
-					monthsRemaining=days/30; // down to months
+					long divisor=MudHost.TICK_TIME*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+					long days=(end-System.currentTimeMillis())/divisor; // down to days
+					monthsRemaining=days/DefaultTimeClock.globalClock.getDaysInMonth(); // down to months
 					if(days<7) // BIRTH!
 					{
 						if(Sense.isSleeping(mob))
@@ -356,11 +358,13 @@ public class Pregnancy extends StdAbility
 								Ability A=mob.fetchEffect(ID());
 								while(A!=null){
 									mob.delEffect(A);
+								    A.setAffectedOne(null);
 									A=mob.fetchEffect(ID());
 								}
 								A=mob.fetchAbility(ID());
 								while(A!=null){
 									mob.delAbility(A);
+								    A.setAffectedOne(null);
 									A=mob.fetchAbility(ID());
 								}
 							}
@@ -458,14 +462,21 @@ public class Pregnancy extends StdAbility
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
-		long add=((10)*(30)*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME);
-		long end=start+add;
+		Race R=mob.charStats().getMyRace();
+		long tickspermudmonth=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+		tickspermudmonth=tickspermudmonth*DefaultTimeClock.globalClock.getDaysInMonth();
+		int birthmonths=(int)Math.round(Util.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*DefaultTimeClock.globalClock.getMonthsInYear(),0.8335));
+		if(birthmonths<=0) birthmonths=5;
+		long ticksperbirthperiod=tickspermudmonth*birthmonths;
+		long millisperbirthperiod=ticksperbirthperiod*MudHost.TICK_TIME;
+		
+		long end=start+millisperbirthperiod;
 		if(success)
 		{
 			if(!auto)
 			{
 				end=start;
-				start-=add;
+				start-=millisperbirthperiod;
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<S-NAME> imgregnate(s) <T-NAMESELF>.");
 			}
 			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());

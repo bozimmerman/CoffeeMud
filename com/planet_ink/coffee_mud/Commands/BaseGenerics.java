@@ -979,8 +979,8 @@ public class BaseGenerics extends StdCommand
 				&&(num!=CharStats.GENDER))
 				{
 					E.baseCharStats().setStat(num,Util.s_int(newVal));
-					if((num==CharStats.AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null)&&(E.getStartRoom()!=null))
-					    E.playerStats().getBirthday()[2]=E.getStartRoom().getArea().getTimeObj().getYear()-Util.s_int(newVal);
+					if((num==CharStats.AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null))
+					    E.playerStats().getBirthday()[2]=DefaultTimeClock.globalClock.getYear()-Util.s_int(newVal);
 				}
 				else
 					mob.tell("(no change)");

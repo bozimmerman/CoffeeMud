@@ -121,9 +121,10 @@ public class DefaultPlayerStats implements PlayerStats
 	public String tranPoofIn(){return tranpoofin;}
 	public String tranPoofOut(){return tranpoofout;}
 	public int[] getBirthday(){return birthday;}
-	public int initializeBirthday(int ageHours, TimeClock C, Race R)
+	public int initializeBirthday(int ageHours, Race R)
 	{
 	    birthday=new int[3];
+	    TimeClock C=DefaultTimeClock.globalClock;
 	    birthday[0]=C.getDayOfMonth();
 	    birthday[1]=C.getMonth();
 	    birthday[2]=C.getYear();

@@ -4172,9 +4172,9 @@ public class Import extends StdCommand
 							M.setStartRoom(CMMap.getStartRoom(M));
 						if(M.location()==null)
 							M.setLocation(mob.location());
-						if((M.playerStats().getBirthday()==null)&&(M.getStartRoom()!=null))
+						if(M.playerStats().getBirthday()==null)
 						{
-						    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.getStartRoom().getArea().getTimeObj(),M.baseCharStats().getMyRace()));
+						    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.baseCharStats().getMyRace()));
 						    M.recoverCharStats();
 						}
 						CMClass.DBEngine().DBUpdateMOB(M);

@@ -64,6 +64,8 @@ public class Chant_Fertility extends Chant
 			&&((myChar.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals(myChar.charStats().getMyRace().ID())))
+			&&(myChar.charStats().getMyRace().fertile())
+			&&(mate.charStats().getMyRace().fertile())
 			&&(myChar.location()==mate.location())
 			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
 			&&(mate.numWearingHere(Item.ON_LEGS)==0)
