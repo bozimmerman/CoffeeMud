@@ -8,12 +8,13 @@ public class GrinderItems
 {
 	public static String editItem(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
-		String itemCode=(String)httpReq.getRequestParameters().get("ITEM");
+		Hashtable reqs=httpReq.getRequestParameters();
+		String itemCode=(String)reqs.get("ITEM");
 		if(itemCode==null) return "@break@";
 		int itemNum=Util.s_int(itemCode);
 
-		String mobNum=(String)httpReq.getRequestParameters().get("MOB");
-		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
+		String mobNum=(String)reqs.get("MOB");
+		String newClassID=(String)reqs.get("CLASSES");
 		
 		ExternalPlay.resetRoom(R);
 		
@@ -62,7 +63,7 @@ public class GrinderItems
 				generic=false;
 				parm=parm.substring(1);
 			}
-			String old=(String)httpReq.getRequestParameters().get(parm);
+			String old=(String)reqs.get(parm);
 			if(old==null) old="";
 			
 			if((I.isGeneric()||(!generic)))
@@ -129,8 +130,16 @@ public class GrinderItems
 					I.baseEnvStats().setArmor(Util.s_int(old));
 				break;
 			case 19: // worn data
-				if(I instanceof Armor)
-					I.setRawWornCode(Util.s_long(old));
+				if((I instanceof Armor)&&(reqs.containsKey("WORNDATA")))
+				{
+					int climate=Util.s_int((String)reqs.get("WORNDATA"));
+					for(int i=1;;i++)
+						if(reqs.containsKey("WORNDATA"+(new Integer(i).toString())))
+							climate=climate|Util.s_int((String)reqs.get("WORNDATA"+(new Integer(i).toString())));
+						else
+							break;
+					((Armor)I).setRawProperLocationBitmap(climate);
+				}
 				break;
 			case 20: // height
 				if(I instanceof Armor)

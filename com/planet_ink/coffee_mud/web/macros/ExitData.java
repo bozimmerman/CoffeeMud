@@ -8,7 +8,8 @@ import com.planet_ink.coffee_mud.utils.*;
 public class ExitData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-
+	
+	
 	private static final String[] dispositions={"ISSEEN",
 												"ISHIDDEN",
 												"ISINVISIBLE",

@@ -420,30 +420,22 @@ public class RoomData extends StdWebMacro
 				Item I=(Item)itemlist.elementAt(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
 			}
-			for(int i=0;i<CMClass.items.size();i++)
-			{
-				Item I=(Item)CMClass.items.elementAt(i);
-				if(!I.isGeneric())
-				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
-			}
-			for(int i=0;i<CMClass.armor.size();i++)
-			{
-				Item I=(Item)CMClass.armor.elementAt(i);
-				if(!I.isGeneric())
-				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
-			}
-			for(int i=0;i<CMClass.weapons.size();i++)
-			{
-				Item I=(Item)CMClass.weapons.elementAt(i);
-				if(!I.isGeneric())
-				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
-			}
-			for(int i=0;i<CMClass.miscMagic.size();i++)
-			{
-				Item I=(Item)CMClass.miscMagic.elementAt(i);
-				if(!I.isGeneric())
-				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
-			}
+			Vector sortMe=new Vector();
+			for(int r=0;r<CMClass.items.size();r++)
+				if(!((Item)CMClass.items.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.items.elementAt(r)));
+			for(int r=0;r<CMClass.weapons.size();r++)
+				if(!((Item)CMClass.weapons.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
+			for(int r=0;r<CMClass.armor.size();r++)
+				if(!((Item)CMClass.armor.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.armor.elementAt(r)));
+			for(int r=0;r<CMClass.miscMagic.size();r++)
+				if(!((Item)CMClass.miscMagic.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+			for(int i=0;i<sorted.length;i++)
+				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");

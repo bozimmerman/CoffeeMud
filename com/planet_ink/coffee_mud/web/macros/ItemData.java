@@ -196,7 +196,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 19: // worn data
-					long climate=I.rawWornCode();
+					long climate=I.rawProperLocationBitmap();
 					if(reqs.containsKey("WORNDATA"))
 					{
 						climate=Util.s_int((String)reqs.get("WORNDATA"));
