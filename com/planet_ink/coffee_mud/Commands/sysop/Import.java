@@ -156,6 +156,16 @@ public class Import
 		return (num|Util.s_int(s));
 	}
 
+	private static String trimSpacesOnly(String s)
+	{
+		while(s.startsWith(" ")||s.startsWith("\t")||s.startsWith("\n")||s.startsWith("\r")) 
+			s=s.substring(1);
+		while(s.endsWith(" ")||s.endsWith("\t")||s.endsWith("\n")||s.endsWith("\r")) 
+			s=s.substring(0,s.length()-1);
+		return s;
+	}
+	
+	
 	private static String eatLineSquiggle(Vector V)
 	{
 		if(V.size()==0) return "";
@@ -171,17 +181,20 @@ public class Import
 			else
 				s+=" "+l;
 		}
-		s=s.trim();
+		s=trimSpacesOnly(s);
+		
 		if(s.endsWith("~"))
-			s=s.substring(0,s.length()-1).trim();
+			s=s.substring(0,s.length()-1);
 		
 		if(s.indexOf("^")>=0)	s=Util.replaceAll(s,"^","^^");
 		
 		if(s.indexOf(""+((char)27))>=0)
-		for(int s1=0;s1<colors.length;s1++)
-			s=Util.replaceAll(s,((char)27)+colors[s1][0]+((char)27),colors[s1][1]);
+		{
+			for(int s1=0;s1<colors.length;s1++)
+				s=Util.replaceAll(s,((char)27)+colors[s1][0]+((char)27),colors[s1][1]);
+		}
 		
-		return s;
+		return s.trim();
 	}
 
 	private static boolean hasReadableContent(String objectName)

@@ -15,6 +15,10 @@ public class Spell_Earthquake extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Earthquake();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	private boolean oncePerRd=false;
+
+	public boolean tick(Tickable ticking, int tickID)
+	{ oncePerRd=false; return super.tick(ticking,tickID);}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -35,8 +39,10 @@ public class Spell_Earthquake extends Spell
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==Affect.TYP_STAND)
-		&&(mob.location()!=null))
+		&&(mob.location()!=null)
+		&&(!oncePerRd))
 		{
+			oncePerRd=true;
 			if(mob!=lastMOB)
 			{
 				lastMOB=mob;

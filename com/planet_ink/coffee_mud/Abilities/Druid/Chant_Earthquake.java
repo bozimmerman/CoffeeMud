@@ -14,7 +14,11 @@ public class Chant_Earthquake extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_Earthquake();}
+	private boolean oncePerRd=false;
 
+	public boolean tick(Tickable ticking, int tickID)
+	{ oncePerRd=false; return super.tick(ticking,tickID);}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -35,8 +39,10 @@ public class Chant_Earthquake extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==Affect.TYP_STAND)
-		&&(mob.location()!=null))
+		&&(mob.location()!=null)
+		&&(!oncePerRd))
 		{
+			oncePerRd=true;
 			if(mob!=lastMOB)
 			{
 				lastMOB=mob;
@@ -49,6 +55,7 @@ public class Chant_Earthquake extends Chant
 		return super.okAffect(myHost,msg);
 	}
 
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

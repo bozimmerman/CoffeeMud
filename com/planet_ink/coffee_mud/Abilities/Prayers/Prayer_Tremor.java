@@ -15,6 +15,10 @@ public class Prayer_Tremor extends Prayer
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Tremor();}
+	private boolean oncePerRd=false;
+
+	public boolean tick(Tickable ticking, int tickID)
+	{ oncePerRd=false; return super.tick(ticking,tickID);}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -36,8 +40,10 @@ public class Prayer_Tremor extends Prayer
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==Affect.TYP_STAND)
-		&&(mob.location()!=null))
+		&&(mob.location()!=null)
+		&&(!oncePerRd))
 		{
+			oncePerRd=true;
 			if(mob!=lastMOB)
 			{
 				lastMOB=mob;

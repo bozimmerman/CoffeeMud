@@ -217,7 +217,7 @@ public class Sense
 						return true;
 					if(canSeeInDark(seer))
 						return true;
-					if((!isGolem(seen))&&(canSeeInfrared(seer)))
+					if((!isGolem(seen))&&(canSeeInfrared(seer))&&(seen instanceof MOB))
 					   return true;
 					if((canSeeVictims(seer))&&(mob.getVictim()==seen))
 						return true;

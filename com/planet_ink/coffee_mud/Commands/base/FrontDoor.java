@@ -196,7 +196,10 @@ public class FrontDoor
 					for(int f=0;f<mob.numFollowers();f++)
 					{
 						MOB follower=mob.fetchFollower(f);
-						if(follower!=null)
+						Room R=follower.location();
+						if((follower!=null)
+						&&(follower.isMonster())
+						&&((R==null)||(!R.isInhabitant(follower))))
 						{
 							follower.setLocation(mob.location());
 							follower.bringToLife(mob.location(),false);

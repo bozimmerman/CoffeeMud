@@ -106,6 +106,9 @@ public class CommandProcessor
 		case CommandSet.AREAS:
 			Scoring.areas(mob);
 			break;
+		case CommandSet.AT:
+			SysOpSkills.at(mob,commands);
+			break;
 		case CommandSet.AUCTION:
 			Channels.auction(mob,commands);
 			break;

@@ -185,7 +185,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANPREMISE=172;
 	//public static final int CLANWITHDRAW=173;
 	//public static final int CLANBALANCE=174;
-	//public static final int CLANDONATE=175;
+	public static final int AT=175;
 	public static final int CLANCREATE=176;
 	public static final int EMAIL=177;
 	public static final int AUCTION=178;
@@ -215,6 +215,7 @@ public class CommandSet extends Hashtable
 		put("ARCTOPICS",new Integer(ARCTOPICS));
 			put("ATOPICS",new Integer(ARCTOPICS));
 		put("AREAS",new Integer(AREAS));
+		put("AT",new Integer(AT));
 		put("AUCTION",new Integer(AUCTION));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("AUTOGOLD",new Integer(AUTOGOLD));

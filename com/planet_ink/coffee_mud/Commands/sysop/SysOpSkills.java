@@ -19,6 +19,37 @@ public class SysOpSkills
 		A.tickTock(h);
 	}
 
+	public static void at(MOB mob, Vector commands)
+		throws Exception
+	{
+		commands.removeElementAt(0);
+		if(commands.size()==0)
+		{
+			mob.tell("At where do what?");
+			return;
+		}
+		String cmd=(String)commands.firstElement();
+		commands.removeElementAt(0);
+		Room room=findRoomLiberally(mob,new StringBuffer(cmd));
+		if(room==null)
+		{
+			if(mob.isASysOp(mob.location()))
+				mob.tell("At where? Try a Room ID, player name, area name, or room text!");
+			else
+				mob.tell("You aren't powerful enough to do that.");
+			return ;
+		}
+		if(!mob.isASysOp(room))
+		{
+			mob.tell("You aren't powerful enough to do that.");
+			return ;
+		}
+		Room R=mob.location();
+		if(R!=room)	room.bringMobHere(mob,false);
+		ExternalPlay.doCommand(mob,commands);
+		if(mob.location()!=R) R.bringMobHere(mob,false);
+	}
+	
 	public static void load(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
