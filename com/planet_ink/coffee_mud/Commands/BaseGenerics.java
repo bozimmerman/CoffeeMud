@@ -620,7 +620,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
 		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
-		 ||(E instanceof Potion)
+		 ||(E instanceof Wand)
 		 ||(E instanceof Light)
 		 ||(E instanceof Key))
 		{
