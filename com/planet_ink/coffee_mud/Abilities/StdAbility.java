@@ -224,6 +224,11 @@ public class StdAbility implements Ability, Cloneable
 			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornReqCode);
 			if(target==null)
 				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
+			if((target==null)
+			&&(targetName.equalsIgnoreCase("room")
+				||targetName.equalsIgnoreCase("here")
+				||targetName.equalsIgnoreCase("place")))
+				target=mob.location();
 		}
 		if(target!=null) targetName=target.name();
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))

@@ -88,7 +88,10 @@ public class Foraging extends CommonSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
+			  ||(resourceType==EnvResource.RESOURCE_HEMP)
+			  ||(resourceType==EnvResource.RESOURCE_SILK)
+			  ||(resourceType==EnvResource.RESOURCE_COTTON)))
 		{
 			found=(Item)makeResource(resourceType);
 			foundShortName="nothing";

@@ -129,10 +129,11 @@ public class CommonStrings extends Scriptable
 			// F S - fight spell
 			clookup[(int)'F']="^r";
 			clookup[(int)'S']="^y";
-			// E T Q - emote talk channeltalk
+			// E T Q - emote talk channeltalk channelfore
 			clookup[(int)'E']="^p";
 			clookup[(int)'T']="^b";
 			clookup[(int)'Q']="\033[0;36;44m";
+			clookup[(int)'q']="^w";
 			// X Y Z - important messages
 			clookup[(int)'x']="\033[1;36;44m";
 			clookup[(int)'X']="\033[1;33;44m";

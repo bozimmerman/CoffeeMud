@@ -93,17 +93,33 @@ public class Chant_VineWeave extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		if(((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
 		&&((mob.location().myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_COTTON)))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_SILK)))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_HEMP)))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_VINE)))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_WHEAT)))
+		&&(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_SEAWEED))))
 		{
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		int material=EnvResource.RESOURCE_HEMP;
+		int material=EnvResource.RESOURCE_VINE;
+		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_VINE)))
+			material=EnvResource.RESOURCE_VINE;
+		else
+		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_SILK)))
+			material=EnvResource.RESOURCE_SILK;
+		else
+		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_HEMP)))
+			material=EnvResource.RESOURCE_HEMP;
+		else
+		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_WHEAT)))
+			material=EnvResource.RESOURCE_WHEAT;
+		else
+		if(mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_SEAWEED)))
+			material=EnvResource.RESOURCE_SEAWEED;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -158,7 +174,6 @@ public class Chant_VineWeave extends Chant
 				int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 				if(building instanceof Weapon)
 				{
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
 					((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
 					for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
 					{

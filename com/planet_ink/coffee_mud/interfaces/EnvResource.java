@@ -133,6 +133,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_BARLEY=MATERIAL_VEGETATION|95;
 	public final static int RESOURCE_MUSHROOMS=MATERIAL_VEGETATION|96;
 	public final static int RESOURCE_HERBS=MATERIAL_VEGETATION|97;
+	public final static int RESOURCE_VINE=MATERIAL_VEGETATION|98;
 	
 	public final static int RESOURCE_MASK=255;	
 
@@ -235,7 +236,8 @@ public interface EnvResource extends Item
 	"HONEY", // 94
 	"BARLEY", // 95
 	"MUSHROOMS", // 96
-	"HERBS" // 98
+	"HERBS", // 98
+	"VINE"
 	};
 	public final static int[][] RESOURCE_DATA={ // full code, base value, frequency, strength (1-10)
 	{RESOURCE_NOTHING,0,0,0}, 
@@ -335,6 +337,7 @@ public interface EnvResource extends Item
 	{RESOURCE_HONEY,1,50,1}, 
 	{RESOURCE_BARLEY,1,20,1}, 
 	{RESOURCE_MUSHROOMS,1,20,1},
-	{RESOURCE_HERBS,1,10,1}
+	{RESOURCE_HERBS,1,10,1},
+	{RESOURCE_VINE,1,10,1}
 	};
 }

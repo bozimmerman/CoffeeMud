@@ -388,9 +388,14 @@ public class CommonSkill extends StdAbility
 				break;
 			case EnvResource.MATERIAL_VEGETATION:
 			{
-				I=CMClass.getItem("GenFoodResource");
-				if(myResource==EnvResource.RESOURCE_HERBS)
-					((Food)I).setNourishment(1);
+				if(myResource==EnvResource.RESOURCE_VINE)
+					I=CMClass.getItem("GenResource");
+				else
+				{
+					I=CMClass.getItem("GenFoodResource");
+					if(myResource==EnvResource.RESOURCE_HERBS)
+						((Food)I).setNourishment(1);
+				}
 				break;
 			}
 			case EnvResource.MATERIAL_LIQUID:

@@ -1,6 +1,6 @@
 % Rope	5	20	10	15	GenRideable	LADDER	1	0	0
-% Lasso	5	30	10	20	GenLasso		0	0	0
-% Net	10	50	20	15	GenNet		0	0	0
+% Lasso	5	30	10	20	GenLasso	THROWN	0	0	0
+% Net	10	50	20	15	GenNet	THROWN	0	0	0
 % Basket	1	10	5	5	GenContainer		20	0	0
 % Bag	1	10	5	5	GenContainer		30	0	0
 % Mat	1	5	5	0	GenItem		0	0	0

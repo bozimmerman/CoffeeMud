@@ -7,13 +7,13 @@ import java.util.*;
 
 public class Chant_SummonFlyTrap extends Chant
 {
-	public String ID() { return "Chant_SummonSapling"; }
-	public String name(){ return "Summon Sapling";}
-	public String displayText(){return "(Summon Sapling)";}
+	public String ID() { return "Chant_SummonFlyTrap"; }
+	public String name(){ return "Summon FlyTrap";}
+	public String displayText(){return "(Summon FlyTrap)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonSapling();}
+	public Environmental newInstance(){	return new Chant_SummonFlyTrap();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -119,7 +119,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		Behavior B=CMClass.getBehavior("Aggressive");
-		B.setParms("-RACE +Insect +Arachnid");
+		B.setParms("mobkiller -RACE +Insect +Arachnid");
 		newMOB.addBehavior(B);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
@@ -135,6 +135,7 @@ public class Chant_SummonFlyTrap extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.location().show(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> grow(s) from the ground.");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

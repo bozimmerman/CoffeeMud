@@ -723,13 +723,15 @@ public class Scoring
 						   {"Highlighted Text","H"},
 						   {"Fight Text","F"},
 						   {"Spells","S"},
-						   {"Emotes","F"},
+						   {"Emotes","p"},
 						   {"Talks","T"},
 						   {"Room Titles","O"},
 						   {"Room Descriptions","L"},
 						   {"Doors","d"},
 						   {"Items","I"},
-						   {"MOBs","M"}};
+						   {"MOBs","M"},
+						   {"Channel Foreground","q"}
+		};
 		String[][] theColors={{"White","w"},
 							  {"Green","g"},
 							  {"Blue","b"},

@@ -75,6 +75,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Farming",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_VineWeave",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantBed",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_SummonSeed",true);
 
@@ -82,6 +83,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonFlyTrap",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Observation",false);
@@ -94,6 +96,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_Blight",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_PlantSnare",false);
@@ -106,6 +109,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_SaplingWorkers",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Treehouse",true);
@@ -122,7 +126,8 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_BrownMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",true);
-
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_SweetScent",false);
+			
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 		}
 	}

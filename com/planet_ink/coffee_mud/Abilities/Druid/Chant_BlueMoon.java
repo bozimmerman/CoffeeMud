@@ -69,8 +69,7 @@ public class Chant_BlueMoon extends Chant
 			Ability A=R.fetchAffect(a);
 			if((A!=null)
 			&&(A!=Acheck)
-			&&(A.Name().endsWith(" Moon"))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+			&&(Util.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
 				return true;
 		}
 		return false;

@@ -49,6 +49,7 @@ public class Jungle extends StdRoom
 		new Integer(EnvResource.RESOURCE_BERRIES),
 		new Integer(EnvResource.RESOURCE_ORANGES),
 		new Integer(EnvResource.RESOURCE_HERBS),
+		new Integer(EnvResource.RESOURCE_VINE),
 		new Integer(EnvResource.RESOURCE_LEMONS),
 		new Integer(EnvResource.RESOURCE_FUR),
 		new Integer(EnvResource.RESOURCE_FEATHERS)

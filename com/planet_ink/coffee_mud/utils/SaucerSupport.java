@@ -380,7 +380,8 @@ public class SaucerSupport
 					&&(!fromHere(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
-					if(!fromHere(V,'+',v+1,mobRace)) return false;
+					if(!fromHere(V,'+',v+1,mobRace)) 
+						return false;
 					break;
 				case 3: // -Alignment
 					if(!fromHere(V,'+',v+1,mobAlign)) return false;

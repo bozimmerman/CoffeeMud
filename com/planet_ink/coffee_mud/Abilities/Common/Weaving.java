@@ -109,6 +109,7 @@ public class Weaving extends CommonSkill
 		if((IE.material()!=EnvResource.RESOURCE_COTTON)
 		&&(IE.material()!=EnvResource.RESOURCE_SILK)
 		&&(IE.material()!=EnvResource.RESOURCE_HEMP)
+		&&(IE.material()!=EnvResource.RESOURCE_VINE)
 		&&(IE.material()!=EnvResource.RESOURCE_WHEAT)
 		&&(IE.material()!=EnvResource.RESOURCE_SEAWEED))
 		{
@@ -188,6 +189,7 @@ public class Weaving extends CommonSkill
 			if((building.material()!=EnvResource.RESOURCE_COTTON)
 			&&(building.material()!=EnvResource.RESOURCE_SILK)
 			&&(building.material()!=EnvResource.RESOURCE_HEMP)
+			&&(building.material()!=EnvResource.RESOURCE_VINE)
 			&&(building.material()!=EnvResource.RESOURCE_WHEAT)
 			&&(building.material()!=EnvResource.RESOURCE_SEAWEED))
 			{
@@ -243,8 +245,7 @@ public class Weaving extends CommonSkill
 			Item firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_COTTON);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_SILK);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_HEMP);
-			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_LEATHER);
-			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_FUR);
+			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_VINE);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_WHEAT);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_SEAWEED);
 			int foundWood=0;
@@ -301,7 +302,6 @@ public class Weaving extends CommonSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
 				{
