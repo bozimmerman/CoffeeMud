@@ -1,10 +1,5 @@
-Unholy armament tells me that the gods can see I'm armed, but I only have an unholy vambrace on the left wrist. It doesn't seem to have noticed that I should have one for the right wrist as well.
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
-prop_hereadjuster, prop_here
-rob, disrobe, buffoonery, should piss mobs off.
-test innkeepers
-test randmonmonster locale restrictions
-take a look at WebIQ pregnancy.
+take a look at WebIQ pregnancy stuff in session.
 
 Skills:
 	soap recipe ash lime internal oragans.

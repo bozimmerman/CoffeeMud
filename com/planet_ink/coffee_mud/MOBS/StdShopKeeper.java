@@ -721,9 +721,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 			case CMMsg.TYP_GIVE:
 				if((msg.tool()!=null)
-				&&((CMSecurity.isAllowed(this,location(),"ORDER")
-					||(CMSecurity.isAllowed(this,location(),"CMMOBS")&&(isMonster()))
-					||(CMSecurity.isAllowed(this,location(),"CMROOMS")&&(isMonster()))))
+				&&((CMSecurity.isAllowed(msg.source(),location(),"ORDER")
+					||(CMSecurity.isAllowed(msg.source(),location(),"CMMOBS")&&(isMonster()))
+					||(CMSecurity.isAllowed(msg.source(),location(),"CMROOMS")&&(isMonster()))))
 				&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
 				{
 					Item item2=(Item)msg.tool().copyOf();

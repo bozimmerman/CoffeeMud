@@ -166,7 +166,9 @@ public class Thief_Robbery extends ThiefSkill
 				A=(Thief_Robbery)target.fetchEffect(ID());
 				if(A!=null)
 					A.mobs.addElement(mob);
-				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
+				if(((hisStr==null)||mob.isMonster())
+				&&(!alreadyFighting)
+				&&((stolen==null)||(Dice.rollPercentage()>stolen.envStats().level())))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
