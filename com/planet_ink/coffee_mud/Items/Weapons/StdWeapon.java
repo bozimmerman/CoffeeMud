@@ -245,10 +245,25 @@ public class StdWeapon extends StdItem implements Weapon
 	public int minRange(){return minRange;}
 	public int maxRange(){return maxRange;}
 	public void setRanges(int min, int max){minRange=min;maxRange=max;}
-	public boolean requiresAmmunition(){if(readableText()!=null) return readableText().length()>0;return false;};
-	public void setAmmunitionType(String ammo){setReadableText(ammo);}
-	public String ammunitionType(){return readableText();}
-	public int ammunitionRemaining(){return usesRemaining();}
+	public boolean requiresAmmunition()
+	{
+		if((readableText()==null)||(this instanceof Wand)) 
+			return false; 
+		return readableText().length()>0;
+	};
+	public void setAmmunitionType(String ammo)
+	{
+		if(!(this instanceof Wand))
+			setReadableText(ammo);
+	}
+	public String ammunitionType()
+	{
+		return readableText();
+	}
+	public int ammunitionRemaining()
+	{
+		return usesRemaining();
+	}
 	public void setAmmoRemaining(int amount)
 	{
 		if(amount==Integer.MAX_VALUE)

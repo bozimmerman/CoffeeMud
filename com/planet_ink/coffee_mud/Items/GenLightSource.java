@@ -18,7 +18,7 @@ public class GenLightSource extends GenItem implements Light
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic lightable thing";
 		displayText="a generic lightable thing sits here.";
-		description="Looks like something you can use for light.";
+		description="";
 		isReadable=false;
 		destroyedWhenBurnedOut=true;
 		setMaterial(EnvResource.RESOURCE_OAK);

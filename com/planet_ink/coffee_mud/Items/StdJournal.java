@@ -57,6 +57,7 @@ public class StdJournal extends StdItem
 				}
 				mob.tell(entry.toString()+"\n\r");
 				setReadableText(IQCalendar.getInstance().getTime().getTime()+"");
+System.out.println("BLAH/"+entry.toString().trim().length()+"/"+which+"/"+entry.toString());
 				if((entry.toString().trim().length()>0)&&(which>0))
 				{
 					try

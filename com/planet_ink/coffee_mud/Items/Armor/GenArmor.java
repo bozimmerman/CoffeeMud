@@ -15,7 +15,7 @@ public class GenArmor extends StdArmor
 		name="a generic armor piece";
 		baseEnvStats.setWeight(25);
 		displayText="a generic piece of armor sits here.";
-		description="Looks like armor";
+		description="";
 		baseGoldValue=5;
 		properWornBitmap=Item.INVENTORY;
 		wornLogicalAnd=false;

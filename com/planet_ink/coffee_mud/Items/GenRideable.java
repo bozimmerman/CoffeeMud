@@ -15,7 +15,7 @@ public class GenRideable extends StdRideable
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic boat";
 		displayText="a generic boat sits here.";
-		description="Looks like a boat";
+		description="";
 		baseEnvStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_WATER;
 		setMaterial(EnvResource.RESOURCE_OAK);

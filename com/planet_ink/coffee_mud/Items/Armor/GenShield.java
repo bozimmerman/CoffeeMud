@@ -11,7 +11,7 @@ public class GenShield extends GenArmor implements Shield
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a shield";
 		displayText="a sturdy round shield sits here.";
-		description="Its made of steel, and looks in good shape.";
+		description="";
 		properWornBitmap=Item.HELD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);

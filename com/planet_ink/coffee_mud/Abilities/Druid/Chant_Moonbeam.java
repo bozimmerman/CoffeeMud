@@ -69,6 +69,7 @@ public class Chant_Moonbeam extends Chant
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,0);
+			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");

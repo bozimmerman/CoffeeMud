@@ -149,6 +149,7 @@ public class Druid extends StdCharClass
 						case EnvResource.MATERIAL_ROCK:
 						case EnvResource.MATERIAL_WOODEN:
 						case EnvResource.MATERIAL_PAPER:
+						case EnvResource.MATERIAL_UNKNOWN:
 							break;
 						default:
 							if((Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
@@ -172,16 +173,23 @@ public class Druid extends StdCharClass
 			else
 			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
 			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon)
-			&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-			&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+			&&(affect.tool() instanceof Weapon))
+				switch(((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
-					return false;
+				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_UNKNOWN:
+				case EnvResource.MATERIAL_LEATHER:
+				case EnvResource.MATERIAL_VEGETATION:
+				case EnvResource.MATERIAL_FLESH:
+					break;
+				default:
+					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+					{
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						return false;
+					}
+					break;
 				}
-			}
 		}
 		return true;
 	}

@@ -15,7 +15,7 @@ public class GenChair extends GenRideable
 		name="a generic chair";
 		baseEnvStats.setWeight(150);
 		displayText="a generic chair is here.";
-		description="Looks like a chair";
+		description="";
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);

@@ -187,6 +187,7 @@ public class Cooking extends CommonSkill
 				{
 					int amount=1;
 					if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+					if(amount==0) amount=1;
 					if(amount<0) amount=amount*-1;
 					if(ingrediant.equalsIgnoreCase("water"))
 						amount=amount*10;

@@ -95,12 +95,12 @@ public class Chant_Poison extends Chant
 				{
 					invoker=mob;
 					maliciousAffect(mob,target,48,-1);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) an green!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chants(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
 
 
 		// return whether it worked

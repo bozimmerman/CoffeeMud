@@ -15,7 +15,7 @@ public class GenMap extends StdMap
 		name="a generic map";
 		baseEnvStats.setWeight(1);
 		displayText="a generic map sits here.";
-		description="Looks like a map of some place";
+		description="";
 		baseGoldValue=5;
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();

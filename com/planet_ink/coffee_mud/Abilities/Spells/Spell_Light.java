@@ -77,6 +77,7 @@ public class Spell_Light extends Spell
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,0);
+			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke light, but fail(s).");

@@ -1,0 +1,7 @@
+Golem (and other stuff in old thalos)
+(held)              : a two-handed sword
+(held)              : a two-handed sword
+(wield)             : a two-handed sword
+(wield)             : a two-handed sword
+
+cook fido meat doesn't work

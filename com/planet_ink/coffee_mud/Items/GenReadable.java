@@ -14,7 +14,7 @@ public class GenReadable extends GenItem
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic readable thing";
 		displayText="a generic readable thing sits here.";
-		description="Looks like something";
+		description="";
 		setMaterial(EnvResource.RESOURCE_WOOD);
 		isReadable=true;
 		baseEnvStats().setWeight(1);

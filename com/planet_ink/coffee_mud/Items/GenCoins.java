@@ -14,7 +14,7 @@ public class GenCoins extends GenItem implements Coins
 		displayText="some gold coins sit here.";
 		myContainer=null;
 		setMaterial(EnvResource.RESOURCE_GOLD);
-		description="Looks like someone left some gold sitting around.";
+		description="";
 		isReadable=false;
 	}
 

@@ -14,7 +14,7 @@ public class GenResource extends GenItem implements EnvResource
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a pile of resource thing";
 		displayText="a pile of resource sits here.";
-		description="Looks like resource";
+		description="";
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_IRON);
 		baseEnvStats().setWeight(0);

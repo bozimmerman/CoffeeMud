@@ -15,7 +15,7 @@ public class GenWeapon extends StdWeapon
 		name="a generic weapon";
 		baseEnvStats.setWeight(2);
 		displayText="a generic weapon sits here.";
-		description="Looks like a weapon";
+		description="";
 		baseGoldValue=5;
 		properWornBitmap=Item.WIELD|Item.HELD;
 		wornLogicalAnd=false;

@@ -14,7 +14,7 @@ public class GenSling extends StdSling
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic sling";
 		displayText="a generic sling sits here.";
-		description="Looks like a sling.";
+		description="";
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

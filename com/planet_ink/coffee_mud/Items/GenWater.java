@@ -15,7 +15,7 @@ public class GenWater extends StdDrink
 		name="a generic puddle of water";
 		baseEnvStats.setWeight(2);
 		displayText="a generic puddle of water sits here.";
-		description="Looks like a puddle";
+		description="";
 		baseGoldValue=5;
 		capacity=0;
 		amountOfThirstQuenched=250;

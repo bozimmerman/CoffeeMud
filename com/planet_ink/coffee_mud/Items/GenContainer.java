@@ -15,7 +15,7 @@ public class GenContainer extends StdContainer
 		name="a generic container";
 		baseEnvStats.setWeight(2);
 		displayText="a generic container sits here.";
-		description="Looks like a container";
+		description="";
 		baseGoldValue=5;
 		capacity=50;
 		recoverEnvStats();

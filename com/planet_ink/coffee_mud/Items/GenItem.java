@@ -15,7 +15,7 @@ public class GenItem extends StdItem
 		name="a generic item";
 		baseEnvStats.setWeight(2);
 		displayText="a generic item sits here.";
-		description="Looks like something";
+		description="";
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();

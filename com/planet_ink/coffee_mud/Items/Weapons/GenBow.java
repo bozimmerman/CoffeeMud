@@ -14,7 +14,7 @@ public class GenBow extends StdBow
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic short bow";
 		displayText="a generic short bow sits here.";
-		description="Looks like a short bow.";
+		description="";
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

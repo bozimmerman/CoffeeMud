@@ -14,7 +14,7 @@ public class GenLantern extends GenLightSource
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a hooded lantern";
 		displayText="a hooded lantern sits here.";
-		description="The lantern still looks like it has some oil in it.";
+		description="";
 
 		baseEnvStats().setWeight(5);
 		setDuration(200);

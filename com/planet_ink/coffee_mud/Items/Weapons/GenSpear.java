@@ -14,7 +14,7 @@ public class GenSpear extends StdSpear
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic spear";
 		displayText="a generic spear sits here.";
-		description="Looks like a spear.";
+		description="";
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

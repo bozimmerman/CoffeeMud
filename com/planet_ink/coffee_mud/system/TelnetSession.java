@@ -605,7 +605,7 @@ public class TelnetSession extends Thread implements Session
 									if(regarding==null)
 										replacement="";
 									else
-									if((source==target)&&(mob==regarding))
+									if(((source==target)||(target==null))&&(mob==regarding))
 										replacement="yourself";
 									else
 									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))

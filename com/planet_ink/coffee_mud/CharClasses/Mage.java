@@ -355,6 +355,7 @@ public class Mage extends StdCharClass
 						switch(I.material()&EnvResource.MATERIAL_MASK)
 						{
 						case EnvResource.MATERIAL_CLOTH:
+						case EnvResource.MATERIAL_UNKNOWN:
 						case EnvResource.MATERIAL_VEGETATION:
 						case EnvResource.MATERIAL_PAPER:
 							break;

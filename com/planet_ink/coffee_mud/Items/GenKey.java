@@ -14,7 +14,7 @@ public class GenKey extends GenItem implements Key
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic key thing";
 		displayText="a generic key thing sits here.";
-		description="Looks like something";
+		description="";
 		isReadable=false;
 		setMaterial(EnvResource.RESOURCE_IRON);
 	}
