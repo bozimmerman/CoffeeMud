@@ -1,4 +1,4 @@
 bug look for alternate materials in the common skills
 Damn Scriptable Behavior
-view.n A large golden statue adorns 
-deposit all
+deposit all, withdraw all
+\n is still a problem?!

@@ -295,6 +295,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						addDepositInventory(affect.source().name(),(Item)affect.tool());
 					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",true,false);
+						((Item)affect.tool()).destroyThis();
 					}
 				}
 				return;
