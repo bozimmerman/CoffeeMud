@@ -63,7 +63,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Paladin_PoisonImmunity",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Goodness",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Paladin_Goodness",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);	
 			CMAble.addCharAbilityMapping(ID(),25,"Craft_HolyAvenger",true);
 			

@@ -11,7 +11,7 @@ public class Paladin_HealingHands extends StdAbility
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lay Hands";
+		name="Healing Hands";
 		displayText="(in the holy dominion of the gods)";
 		miscText="";
 		triggerStrings.addElement("HANDS");

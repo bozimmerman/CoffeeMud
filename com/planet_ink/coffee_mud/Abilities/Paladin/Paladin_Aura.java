@@ -1,5 +1,74 @@
 package com.planet_ink.coffee_mud.Abilities.Paladin;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
 
-public class Paladin_Aura
+public class Paladin_Aura extends Paladin
 {
+	public Paladin_Aura()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Paladin's Aura";
+		paladinsGroup=new Vector();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Paladin_Aura();
+	}
+
+	public boolean tick(int tickID)
+	{
+		if(!super.tick(tickID)) return false;
+		for(int i=paladinsGroup.size()-1;i>=0;i--)
+		{
+			MOB mob=(MOB)paladinsGroup.elementAt(i);
+			if((mob.getAlignment()<350)
+			&&(profficiencyCheck(0,false)))
+			{
+				int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The aura around <S-NAME> <DAMAGE> <T-NAME>!");
+			}
+		}
+		return true;
+	}
+
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+		if((invoker==null)||(invoker.getAlignment()<650))
+			return true;
+		if(affected==null) return true;
+		if(!(affected instanceof MOB)) return true;
+
+		if((affect.target()!=null)
+		   &&(paladinsGroup.contains(affect.target()))
+		   &&(!paladinsGroup.contains(affect.source()))
+		   &&(profficiencyCheck(0,false))
+		   &&(affect.target() instanceof MOB)
+		   &&(affect.source()!=invoker))
+		{
+			if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Prayer))
+			{
+				Prayer bob=(Prayer)affect.tool();
+				if(bob.holyQuality()==Prayer.HOLY_EVIL)
+				{
+					affect.source().location().show((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+					return false;
+				}
+			}
+			if(((affect.targetMinor()==Affect.TYP_POISON)||(affect.targetMinor()==Affect.TYP_DISEASE))
+			&&(profficiencyCheck(0,false)))
+				return false;
+		}
+		return true;
+	}
 }

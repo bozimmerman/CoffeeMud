@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_PoisonImmunity extends StdAbility
+public class Paladin_PoisonImmunity extends Paladin
 {
-	public Skill_PoisonImmunity()
+	public Paladin_PoisonImmunity()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -26,7 +26,7 @@ public class Skill_PoisonImmunity extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_PoisonImmunity();
+		return new Paladin_PoisonImmunity();
 	}
 
 	public int classificationCode()
@@ -43,13 +43,15 @@ public class Skill_PoisonImmunity extends StdAbility
 		if((affect.amITarget(mob))
 		&&(affect.targetMinor()==Affect.TYP_POISON)
 		&&(!mob.amDead())
+		&&(mob.getAlignment()>650)
 		&&(profficiencyCheck(0,false)))
 			return false;
 		return super.okAffect(affect);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+50+profficiency());
+		super.affectCharStats(affected,affectableStats);
+		if((affected!=null)&&(affected.getAlignment()>650))
+			affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+50+profficiency());
 	}
 }

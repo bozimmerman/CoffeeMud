@@ -11,7 +11,7 @@ public class Paladin_SummonMount extends StdAbility
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Mount";
+		name="Call Mount";
 		displayText="(Mount)";
 		miscText="";
 
