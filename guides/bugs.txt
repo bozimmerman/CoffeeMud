@@ -1,2 +1,3 @@
 GAES still isn't done
-'get all corpse' in a room with thier body and three dead mobs made them pick up all the bodies.
+Corky is too low level.
+Add instrument stuff to the command-line editor, and wear location.

@@ -1048,14 +1048,14 @@ public class StdMOB implements MOB
 						(affect.target()==null)
 						||(!(affect.target() instanceof Item))
 						||(isMine(affect.target()))
-						||(((Item)affect.target()).owner()==riding())
-						||(((Item)affect.target()).container()==riding());
+						||((riding()!=null)&&(((Item)affect.target()).owner()==riding()))
+						||((riding()!=null)&&(((Item)affect.target()).container()==riding()));
 					boolean oreachable=
 						(affect.tool()==null)
 						||(!(affect.tool() instanceof Item))
 						||(isMine(affect.tool()))
-						||(((Item)affect.tool()).owner()==riding())
-						||(((Item)affect.tool()).container()==riding());
+						||((riding()!=null)&&(((Item)affect.tool()).owner()==riding()))
+						||((riding()!=null)&&(((Item)affect.tool()).container()==riding()));
 					if((!treachable)||(!oreachable))
 					{
 						tell("You need to stand up!");
