@@ -1501,8 +1501,8 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
     }
 
-    final class call_out
-        extends Thread {
+    final class call_out extends Thread
+    {
 
         IMC2Driver imc_client;
         boolean shutdown=false;

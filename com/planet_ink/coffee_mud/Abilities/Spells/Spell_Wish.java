@@ -653,14 +653,19 @@ public class Spell_Wish extends Spell
 				{
 					int levelsLost=level;
 					if(levelsLost<0) levelsLost=levelsLost*-1;
+					int levelsGained=levelsLost;
+					levelsLost*=4;
 					if(levelsLost>=mob.baseEnvStats().level())
 					{
 						levelsLost=mob.baseEnvStats().level()-1;
-						if(level>0) level=levelsLost;
-						else level=-levelsLost;
+						levelsGained=levelsLost/4;
+						if(level>0) level=levelsGained;
+						else level=-levelsGained;
 					}
 					int newLevel=target.baseEnvStats().level()+level;
-					if((target instanceof MOB)&&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))&&(newLevel>target.baseEnvStats().level()))
+					if((target instanceof MOB)
+				    &&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))
+				    &&(newLevel>target.baseEnvStats().level()))
 					{
 						wishDrain(mob,baseLoss,false);
 						mob.tell("That's beyond your power, but you lost exp even for trying.");
@@ -672,7 +677,7 @@ public class Spell_Wish extends Spell
 						MOB MT=(MOB)target;
 						if(level>0)
 						{
-							for(int i2=0;i2<levelsLost;i2++)
+							for(int i2=0;i2<levelsGained;i2++)
 							{
 								MT.baseCharStats().getCurrentClass().level(MT);
 								MT.recoverEnvStats();

@@ -164,7 +164,10 @@ public class DefaultTimeClock implements TimeClock
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
+			if((R!=null)
+			&&(R.getArea()!=null)
+			&&(R.getArea().getTimeObj()==this)
+			&&((R.numInhabitants()>0)||(R.numItems()>0)))
 			{
 				R.recoverEnvStats();
 				for(int m=0;m<R.numInhabitants();m++)

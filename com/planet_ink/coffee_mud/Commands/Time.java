@@ -65,7 +65,7 @@ public class Time extends StdCommand
 				x=x+bmonth;
 				timeDesc.append(C.getWeekNames()[(int)(x%C.getDaysInWeek())]+", ");
 			}
-			timeDesc.append("the "+bday+numAppendage(day));
+			timeDesc.append("the "+bday+numAppendage(bday));
 			timeDesc.append(" day of "+C.getMonthNames()[bmonth-1]);
 			if(C.getYearNames().length>0)
 				timeDesc.append(", "+Util.replaceAll(C.getYearNames()[year%C.getYearNames().length],"#",""+year));

@@ -720,7 +720,21 @@ public class MUD extends Thread implements MudHost
 		for (int i = 0; i<ac; ++i)
 		{
 			if (tArray[i] != null && tArray[i].isAlive())
-				Log.sysOut("MUD", "-->Thread: "+tArray[i].getName() + "\n\r");
+			{
+			    if(tArray[i] instanceof Session)
+			    {
+			        Session S=(Session)tArray[i];
+					Log.sysOut("MUD", "-->Thread: Session "+S.getTermID()+"-"+S.getStatus()+"-"+Util.combine(S.previousCMD(),0) + "\n\r");
+			    }
+			    else
+			    if(tArray[i] instanceof Tickable)
+			    {
+			        Tickable T=(Tickable)tArray[i];
+					Log.sysOut("MUD", "-->Thread: "+T.ID()+"-"+T.name()+"-"+T.getTickStatus() + "\n\r");
+			    }
+			    else
+					Log.sysOut("MUD", "-->Thread: "+tArray[i].getName() + "\n\r");
+			}
 		}
 	}
 

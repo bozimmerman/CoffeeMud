@@ -45,7 +45,7 @@ public class Prayer_BloodHearth extends Prayer
 			for(Iterator e=H.iterator();e.hasNext();)
 				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
 				{
-					msg.setValue(msg.value()*10);
+					msg.setValue(msg.value()+(msg.value()/2));
 					break;
 				}
 		}
