@@ -14,7 +14,7 @@ public class Ranger_Hide extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
-	private static final String[] triggerStrings = {"HIDE"};
+	private static final String[] triggerStrings = {"WHIDE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Ranger_Hide();}
 	public int classificationCode(){return Ability.SKILL;}

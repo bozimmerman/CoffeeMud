@@ -53,6 +53,11 @@ public class Thief_TrophyCount extends ThiefSkill
 					theList.put(R.name(),set);
 				}
 				set[1]=new Integer(Util.s_int(set[1])+1).toString();
+				if((affected!=null)&&(affected instanceof MOB))
+				{
+					Ability A=((MOB)affected).fetchAbility(ID());
+					if(A!=null)	A.setMiscText(text());
+				}
 			}
 		}
 		super.affect(myHost,msg);
@@ -74,6 +79,7 @@ public class Thief_TrophyCount extends ThiefSkill
 					String[] one=new String[4];
 					one[0]=XMLManager.getValFromPieces(ablk.contents,"RACE");
 					one[1]=XMLManager.getValFromPieces(ablk.contents,"KILLS");
+					theList.put(one[0],one);
 				}
 			}
 		}

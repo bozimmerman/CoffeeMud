@@ -29,8 +29,8 @@ public class CommandProcessor
 				commandCodeObj=(Integer)commandSet.get(""+firstWord.charAt(0));
 			if(commandCodeObj!=null)
 			{
-				commands.setElementAt(""+firstWord.charAt(0),0);
 				commands.insertElementAt(((String)commands.elementAt(0)).substring(1),1);
+				commands.setElementAt(""+firstWord.charAt(0),0);
 			}
 			else
 			{

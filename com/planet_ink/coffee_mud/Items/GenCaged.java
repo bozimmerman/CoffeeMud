@@ -89,10 +89,10 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M.resetToMaxState();
 		return M;
 	}
-	public String cageText(){ return readableText();}
+	public String cageText(){ return Generic.restoreAngleBrackets(readableText());}
 	public void setCageText(String text)
 	{
-		setReadableText(text);
+		setReadableText(Generic.parseOutAngleBrackets(text));
 		setReadable(false);
 	}
 }

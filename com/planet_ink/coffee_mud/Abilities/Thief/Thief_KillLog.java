@@ -64,6 +64,11 @@ public class Thief_KillLog extends ThiefSkill
 			set[1]=""+mark.envStats().level();
 			set[3]=new Integer(Util.s_int(set[3])+1).toString();
 			mark=null;
+			if((affected!=null)&&(affected instanceof MOB))
+			{
+				Ability A=((MOB)affected).fetchAbility(ID());
+				if(A!=null)	A.setMiscText(text());
+			}
 		}
 		super.affect(myHost,msg);
 	}
@@ -86,6 +91,7 @@ public class Thief_KillLog extends ThiefSkill
 					one[1]=XMLManager.getValFromPieces(ablk.contents,"LEVEL");
 					one[2]=XMLManager.getValFromPieces(ablk.contents,"TOTAL");
 					one[3]=XMLManager.getValFromPieces(ablk.contents,"KILLS");
+					theList.put(one[0],one);
 				}
 			}
 		}
@@ -113,6 +119,11 @@ public class Thief_KillLog extends ThiefSkill
 				}
 				set[1]=""+mark.envStats().level();
 				set[2]=new Integer(Util.s_int(set[2])+1).toString();
+				if((affected!=null)&&(affected instanceof MOB))
+				{
+					Ability A=((MOB)affected).fetchAbility(ID());
+					if(A!=null)	A.setMiscText(text());
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -128,16 +139,25 @@ public class Thief_KillLog extends ThiefSkill
 			str.append(Util.padRight("Name",20)+Util.padRight("Level",6)+"Kill Pct.\n\r");
 			Vector order=new Vector();
 			int lowLevel=Integer.MIN_VALUE;
+			String[] addOne=null;
 			while(theList.size()>order.size())
-			for(Enumeration e=theList.elements();e.hasMoreElements();)
 			{
-				String[] one=(String[])e.nextElement();
-				if((Util.s_int(one[1])>=lowLevel)
-				&&(!order.contains(one)))
+				addOne=null;
+				lowLevel=Integer.MIN_VALUE;
+				for(Enumeration e=theList.elements();e.hasMoreElements();)
 				{
-					lowLevel=Util.s_int(one[1]);
-					order.addElement(one);
+					String[] one=(String[])e.nextElement();
+					if((Util.s_int(one[1])>=lowLevel)
+					&&(!order.contains(one)))
+					{
+						lowLevel=Util.s_int(one[1]);
+						addOne=one;
+					}
 				}
+				if(addOne==null) 
+					break;
+				else
+					order.addElement(addOne);
 			}
 			for(int i=0;i<order.size();i++)
 			{

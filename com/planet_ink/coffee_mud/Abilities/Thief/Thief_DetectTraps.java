@@ -22,9 +22,13 @@ public class Thief_DetectTraps extends ThiefSkill
 	{
 		String whatTounlock=Util.combine(commands,0);
 		Environmental unlockThis=null;
+		Room nextRoom=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
+		{
 			unlockThis=mob.location().getExitInDir(dirCode);
+			nextRoom=mob.location().getRoomInDir(dirCode);
+		}
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			unlockThis=mob.location();
 		if(unlockThis==null)
@@ -45,6 +49,8 @@ public class Thief_DetectTraps extends ThiefSkill
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
+				Trap roomTrap=null;
+				if(nextRoom!=null) roomTrap=CMClass.fetchMyTrap(nextRoom);
 				if(exit!=null) opTrap=CMClass.fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
@@ -54,6 +60,12 @@ public class Thief_DetectTraps extends ThiefSkill
 				else
 				if((opTrap!=null)&&(theTrap==null))
 					theTrap=opTrap;
+				if((theTrap.disabled())&&(roomTrap!=null))
+				{
+					opTrap=null;
+					unlockThis=nextRoom;
+					theTrap=roomTrap;
+				}
 			}
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");

@@ -23,8 +23,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 		String whatTounlock=Util.combine(commands,0);
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		Room nextRoom=null;
 		if(dirCode>=0)
+		{
+			nextRoom=mob.location().getRoomInDir(dirCode);
 			unlockThis=mob.location().getExitInDir(dirCode);
+		}
 		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
 			unlockThis=mob.location();
 		if(unlockThis==null)
@@ -47,6 +51,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 				Exit exit=mob.location().getReverseExit(dirCode);
 				if(exit!=null)
 					opTrap=CMClass.fetchMyTrap(exit);
+				Trap roomTrap=null;
+				if(nextRoom!=null) roomTrap=CMClass.fetchMyTrap(nextRoom);
+				if((theTrap.disabled())&&(roomTrap!=null))
+				{
+					opTrap=null;
+					unlockThis=nextRoom;
+					theTrap=roomTrap;
+				}
 			}
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");

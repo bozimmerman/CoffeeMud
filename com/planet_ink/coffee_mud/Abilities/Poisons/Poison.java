@@ -143,7 +143,7 @@ public class Poison extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -153,12 +153,13 @@ public class Poison extends StdAbility
 		{
 			String str=auto?"":POISON_CAST();
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),str);
-			if(target.location().okAffect(target,msg))
+			if(mob.location().okAffect(mob,msg))
 			{
-			    target.location().send(target,msg);
+			    mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					target.location().show(target,null,Affect.MSG_OK_VISUAL,POISON_START());
+					if(target instanceof MOB)
+						mob.location().show((MOB)target,null,Affect.MSG_OK_VISUAL,POISON_START());
 				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
 				}
 			}

@@ -15,7 +15,7 @@ public class Thief_Bind extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"BIND"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public int amountRemaining=0;
+	public int amountRemaining=500;
 
 	public Environmental newInstance(){	return new Thief_Bind();}
 

@@ -73,7 +73,11 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		{
 			Room R=room.getRoomInDir(d);
 			Exit E=room.getExitInDir(d);
-			if((R!=null)&&(E!=null)&&(E.isOpen())&&(!roomsDone.contains(R)))
+			if((R!=null)
+			   &&(E!=null)
+			   &&(R.getArea()==room.getArea())
+			   &&(E.isOpen())
+			   &&(!roomsDone.contains(R)))
 			{
 				R.showHappens(Affect.MSG_NOISE,"You hear a loud alarm "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+".");
 				roomsDone.addElement(R);

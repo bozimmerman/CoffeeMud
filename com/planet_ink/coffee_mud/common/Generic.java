@@ -11,7 +11,7 @@ public class Generic
 		return (x&m)==m;
 	}
 	
-	private static String parseOutAngleBrackets(String s)
+	public static String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf("<");
 		while(x>=0)
@@ -29,7 +29,7 @@ public class Generic
 	}
 	
 	private final static String hexStr="0123456789ABCDEF";
-	private static String restoreAngleBrackets(String s)
+	public static String restoreAngleBrackets(String s)
 	{
 		StringBuffer buf=new StringBuffer(s);
 		int loop=0;

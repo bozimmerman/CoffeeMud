@@ -34,11 +34,24 @@ public class Thief_Trap extends ThiefSkill
 		else
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Requires\n\r");
+			Exit E=CMClass.getExit("StdExit");
+			Item I=CMClass.getItem("StdItem");
+			StringBuffer buf=new StringBuffer(Util.padRight("Trap Name",20)+" "+Util.padRight("Affects",20)+" Requires\n\r");
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(Util.padRight(T.name(),20)+" "+T.requiresToSet()+"\n\r");
+				buf.append(Util.padRight(T.name(),20)+" ");
+				if(T.canAffect(mob.location()))
+					buf.append(Util.padRight("Rooms",20)+" ");
+				else
+				if(T.canAffect(E))
+					buf.append(Util.padRight("Exits, Containers",20)+" ");
+				else
+				if(T.canAffect(I))
+					buf.append(Util.padRight("Items",20)+" ");
+				else
+					buf.append(Util.padRight("Unknown",20)+" ");
+				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
 			return true;
@@ -66,10 +79,10 @@ public class Thief_Trap extends ThiefSkill
 		
 			String whatToTrap=Util.combine(commands,0);
 			int dirCode=Directions.getGoodDirectionCode(whatToTrap);
-			if((dirCode>=0)&&(trapThis==null))
-				trapThis=mob.location().getExitInDir(dirCode);
 			if((trapThis==null)&&(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here")))
 				trapThis=mob.location();
+			if((dirCode>=0)&&(trapThis==null))
+				trapThis=mob.location().getExitInDir(dirCode);
 			if(trapThis==null)
 				trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 			if(trapThis==null) return false;

@@ -15,12 +15,33 @@ public class StdTrap extends StdAbility implements Trap
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new StdTrap();}
 	
-	protected boolean disabled=false;
-	protected boolean sprung=false;
-	protected int reset=0;
+	public int baseRejuvTime(int level)
+	{	
+		int time=((30-level)*30);
+		if(time<1) time=1;
+		return time;
+	}
+	public int baseDestructTime(int level)
+	{
+		return level*30;
+	}
 	
-	public boolean disabled(){return disabled;}
-	public void disable(){ disabled=true;unInvoke();}
+	protected boolean sprung=false;
+	protected int reset=60; // 5 minute reset is standard
+	
+	public boolean disabled(){
+		return sprung||(affected==null)||(affected.fetchAffect(ID())==null);
+	}
+	public void disable(){ 
+		sprung=true;
+		if(!canBeUninvoked())
+		{
+			tickDown=getReset();
+			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+		}
+		else
+			unInvoke();
+	}
 	public void setReset(int Reset){reset=Reset;}
 	public int getReset(){return reset;}
 
@@ -90,6 +111,11 @@ public class StdTrap extends StdAbility implements Trap
 			mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
 			return false;
 		}
+		if(E.fetchAffect(ID())!=null)
+		{
+			mob.tell("This trap is already set on "+E.name()+".");
+			return false;
+		}
 		if(!canAffect(E))
 		{
 			mob.tell("You can't set '"+name()+"' on "+E.name()+".");
@@ -118,12 +144,13 @@ public class StdTrap extends StdAbility implements Trap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		int rejuv=((30-qualifyingClassLevel)*30);
+		int rejuv=baseRejuvTime(qualifyingClassLevel);
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
+		T.setBorrowed(E,true);
 		E.addAffect(T);
-		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,qualifyingClassLevel*30);
+		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
 	
@@ -213,6 +240,19 @@ public class StdTrap extends StdAbility implements Trap
 			}
 		}
 		return mostItem;	   
+	}
+	
+	protected void destroyResources(Room room, int resource, int number)
+	{
+		for(int i=room.numItems()-1;i>=0;i--)
+		{
+			Item I=room.fetchItem(i);
+			if((I instanceof EnvResource)
+			&&(I.container()==null)
+			&&(I.material()==resource)
+			&&((--number)>=0))
+				I.destroyThis();
+		}
 	}
 	
 	protected int findNumberOfResource(Room room, int resource)

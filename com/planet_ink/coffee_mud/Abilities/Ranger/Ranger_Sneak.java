@@ -13,14 +13,16 @@ public class Ranger_Sneak extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.INDIFFERENT;}
-	private static final String[] triggerStrings = {"SNEAK"};
+	private static final String[] triggerStrings = {"WSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Ranger_Sneak();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		int dirCode=Directions.getGoodDirectionCode(Util.combine(commands,0));
+		String dir=Util.combine(commands,0);
+		if(commands.size()>0) dir=(String)commands.lastElement();
+		int dirCode=Directions.getGoodDirectionCode(dir);
 		if(dirCode<0)
 		{
 			mob.tell("Sneak where?");

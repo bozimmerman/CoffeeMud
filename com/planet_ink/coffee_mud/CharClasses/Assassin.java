@@ -38,7 +38,8 @@ public class Assassin extends Thief
 	public Assassin()
 	{
 		super();
-		maxStat[CharStats.DEXTERITY]=25;
+		maxStat[CharStats.DEXTERITY]=22;
+		maxStat[CharStats.WISDOM]=22;
 		if(!loaded())
 		{
 			setLoaded(true);
