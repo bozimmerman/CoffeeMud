@@ -579,17 +579,18 @@ public class StdCharClass implements CharClass, Cloneable
 		int expAmount=100;
 		
 		if(deathRoom!=null)
-		for(int m=0;m<deathRoom.numInhabitants();m++)
-		{
-			MOB mob=deathRoom.fetchInhabitant(m);
-			if((isValidBeneficiary(killer,killed,mob,followers))
-			&&(beneficiaries.get(mob)==null))
+			for(int m=0;m<deathRoom.numInhabitants();m++)
 			{
-				beneficiaries.put(mob,mob);
-				totalLevels+=mob.envStats().level();
-				expAmount+=25;
+				MOB mob=deathRoom.fetchInhabitant(m);
+				if((isValidBeneficiary(killer,killed,mob,followers))
+				&&(beneficiaries.get(mob)==null))
+				{
+					beneficiaries.put(mob,mob);
+					totalLevels+=mob.envStats().level();
+					expAmount+=25;
+				}
 			}
-		}
+		
 		if(beneficiaries.size()>0)
 			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 			{

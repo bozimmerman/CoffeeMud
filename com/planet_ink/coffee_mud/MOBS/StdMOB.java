@@ -1611,7 +1611,9 @@ public class StdMOB implements MOB
 				int dmg=affect.targetCode()-Affect.MASK_HURT;
 				if(dmg>0)
 				{
-					if((!curState().adjHitPoints(-dmg,maxState()))&&(location()!=null))
+					if((!curState().adjHitPoints(-dmg,maxState()))
+					&&(curState().getHitPoints()<1)
+					&&(location()!=null))
 						ExternalPlay.postDeath(affect.source(),this,affect);
 					else
 					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
@@ -2108,6 +2110,7 @@ public class StdMOB implements MOB
 			
 			Vector expenseAffects=null;
 			if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)>0)
+			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT)>0)
 			&&((--manaConsumeCounter)<=0))
 			{
 				expenseAffects=new Vector();
@@ -2149,9 +2152,31 @@ public class StdMOB implements MOB
                 if(fetchAffect("Prop_MagicBurn1")!=null)
 					basePrice=2;  // No way to make a prop that actually increases mana spent
 				
+				switch(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT))
+				{
+				case -100: basePrice=basePrice*envStats().level(); break;
+				case -200: 
+					{
+						int total=0;
+						for(int a1=0;a1<expenseAffects.size();a1++)
+						{
+							int lql=CMAble.lowestQualifyingLevel(((Ability)expenseAffects.elementAt(a1)).ID());
+							if(lql>0)
+								total+=lql;
+							else
+								total+=1;
+						}
+						basePrice=basePrice*(total/expenseAffects.size());
+					}
+					break;
+				default:
+					basePrice=basePrice*CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT);
+					break;
+				}
+				
                 // 1 per tick per level per affect.  +1 to the affects so that way it's about
                 // 3 cost = 1 regen... :)
-                int reallyEat=(basePrice*envStats().level())*(expenseAffects.size()+1);
+                int reallyEat=basePrice*(expenseAffects.size()+1);
                 while(curState().getMana()<reallyEat)
                 {
                     location().show(this,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
@@ -2159,7 +2184,7 @@ public class StdMOB implements MOB
                     Ability A=(Ability)expenseAffects.elementAt(Dice.roll(1,expenseAffects.size(),-1));
                     A.unInvoke();
                     expenseAffects.remove(A);
-                    reallyEat=(basePrice*envStats().level())*expenseAffects.size();
+                    reallyEat=basePrice*expenseAffects.size();
                 }
                 if(reallyEat>0)
                     curState().adjMana( -reallyEat, maxState());

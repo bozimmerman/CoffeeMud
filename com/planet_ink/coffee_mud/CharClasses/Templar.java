@@ -100,6 +100,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_BackStab",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_HealUndead",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_SunCurse",0,"",false,true);
