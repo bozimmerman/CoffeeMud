@@ -1110,7 +1110,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				for(Enumeration r=CMMap.areas();r.hasMoreElements();)
 				{
 					Area A=(Area)r.nextElement();
-					if((A instanceof SpaceObject)&&(A.ID().toUpperCase().indexOf("PLANET")<0))
+					if((A instanceof SpaceObject)
+					&&(Sense.isHidden(A))
+					&&(A.ID().toUpperCase().indexOf("PLANET")<0))
 					{
 						LandTitle LT=CoffeeUtensils.getLandTitle(A);
 						if(LT!=null) titles.put(A,LT);
@@ -1131,9 +1133,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				LandTitle A=(LandTitle)titles.get(R);
 				if(!roomsHandling.contains(R))
 				{
-					Vector V2=A.getPropertyRooms();
-					for(int v=0;v<V2.size();v++)
-						roomsHandling.add(V2.elementAt(v));
+					if(R instanceof Area)
+						roomsHandling.add(R);
+					else
+					{
+						Vector V2=A.getPropertyRooms();
+						for(int v=0;v<V2.size();v++)
+							roomsHandling.add(V2.elementAt(v));
+					}
 					Item I=(Item)titleSets.get(A);
 					if(I==null)
 					{

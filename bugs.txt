@@ -1,4 +1,6 @@
 Ability to buy space ship areas, and add them to shopkeepers
+Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change
+make metal room
 Add Prop_HaveDmgAbsorb
 Finish Scripting doc
 do new security system

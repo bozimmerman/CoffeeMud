@@ -2926,7 +2926,7 @@ public class CoffeeMaker
 		return vals;
 	}
 
-	public Area copyArea(Area A, String newName)
+	public static Area copyArea(Area A, String newName)
 	{
 		Area newArea=(Area)A.copyOf();
 		newArea.setName(newName);

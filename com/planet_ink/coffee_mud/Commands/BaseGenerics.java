@@ -2209,7 +2209,7 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". Shopkeeper type: '"+E.storeKeeperString()+"'.");
 		StringBuffer buf=new StringBuffer("");
 		StringBuffer codes=new StringBuffer("");
-		String codeStr="0123456789ABCDEFGHIJKLMNOP";
+		String codeStr="0123456789ABCDEFGHIJKLMNOPQR";
 		if(E instanceof Banker)
 		{
 			int r=ShopKeeper.DEAL_BANKER;

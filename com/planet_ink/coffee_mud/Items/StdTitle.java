@@ -140,6 +140,26 @@ public class StdTitle extends StdItem implements LandTitle
 			mob.tell("You shouldn't write on "+name()+".");
 			return false;
 		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.amITarget(this))
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof ShopKeeper))
+		{
+			LandTitle A=fetchALandTitle();
+			if(A==null)
+			{
+				destroy();
+				msg.source().tell("You can't buy that.");
+				return false;
+			}
+			if(A.landOwner().length()==0)
+			{
+				Area AREA=CMMap.getArea(A.landPropertyID());
+				if((AREA!=null)&&(AREA.Name().indexOf("<NEW>")>=0)&&(msg.source().isMonster()))
+					return false;
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 
@@ -202,6 +222,58 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 			if(A.landOwner().length()==0)
 			{
+				Area AREA=CMMap.getArea(landPropertyID());
+				if((AREA!=null)&&(AREA.Name().indexOf("<NEW>")>=0))
+				{
+					String newName="";
+					try{
+						while(newName.trim().length()==0)
+						{
+							String n=msg.source().session().prompt("What would you like to name your ship? ","",60000).trim().toLowerCase();
+							if(n.indexOf(" ")>=0)
+							{
+								msg.source().tell("Spaces are not allowed in names! Please enter another one.");
+								newName="";
+							}
+							else
+							if(n.length()!=0)
+							{
+								String nn=Util.replaceAll(AREA.Name(),"<NEW>",Util.capitalize(n.toLowerCase()));
+								if(CMClass.DBEngine().DBUserSearch(null,nn))
+									msg.source().tell("That name is already taken.  Please enter a different one.");
+								else
+								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))
+								{
+									name=Util.replaceAll(name,"<NEW>",Util.capitalize(n.toLowerCase()));
+									displayText=Util.replaceAll(displayText,"<NEW>",Util.capitalize(n.toLowerCase()));
+									setDescription(Util.replaceAll(description(),"<NEW>",Util.capitalize(n.toLowerCase())));
+									newName=nn;
+								}
+								else
+									newName="";
+							}
+						}
+					}
+					catch(Throwable t)
+					{
+						return;
+					};
+					AREA=CoffeeMaker.copyArea(AREA,newName);
+					if(AREA==null)
+					{
+						msg.source().tell("Purchase failed.");
+						return;
+					}
+					setLandPropertyID(AREA.Name());
+					A=fetchALandTitle();
+					if(A==null)
+					{
+						destroy();
+						Log.errOut("StdTitle","Unsellable room: "+landPropertyID());
+						return;
+					}
+					A.setLandPropertyID(AREA.Name());
+				}
 				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
 				&&(msg.source().getClanID().length()>0))
 					A.setLandOwner(msg.source().getClanID());
