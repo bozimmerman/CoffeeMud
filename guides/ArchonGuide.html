@@ -55,8 +55,8 @@ the players, and when they logged on last.&nbsp; This is useful for weeding out
 olde players (see DESTROY below).&nbsp; "list sessions" will show you a list of 
 all active players.&nbsp; "list threads" will show you how many Java threads 
 are active.&nbsp; "list ticks" will show you all the objects making use of 
-those threads! "list reports" will&nbsp;show you your resource usage.&nbsp; "list subops" will 
-show you a list of your areas and any Area SubOps defined for them.  You may also 
+those threads! "list reports" will&nbsp;show you your resource usage.&nbsp; "list staff" will 
+show you a list of your areas and any Area staff defined for them.  You may also 
 list things like locales, items, weapons, armor, mobs, and other things 
 discussed further down in the sections on world building.</P>
 <P align=left><EM>SYSMSGS<BR></EM>This important little trick is vital to those doing 
@@ -169,7 +169,7 @@ admins to talk to folks playing on other muds.</P>
 <P align=left><STRONG><FONT color=red 
 size=5>Security</FONT></STRONG> </P>
 <P align=left>CoffeeMud has three security levels built 
-into it: the Archon, the Area SubOp, and the player.&nbsp;</P>
+into it: the Archon, the Area staff, and the player.&nbsp;</P>
 <P align=left>The Archon has access to all commands above, 
 and rights to use them anywhere in the world.&nbsp; The Archon has rights to all 
 the functions of the MUDGrinder, and the power to enforce any rule.&nbsp; The 
@@ -178,7 +178,7 @@ Character Class called "Archon".&nbsp; Archons can be created by having OTHER
 Archons modifying them and making their current class Archon.&nbsp; Archons can 
 also be created by reading from the Manual of the Archons, which is an item that 
 can be created at will by an Archon.</P>
-<P align=left>The Area SubOp (also called an Area Archon) 
+<P align=left>The Area staff (also called an Area Archon) 
 is a&nbsp;player with limited rights and powers within a single Area of the 
 world.&nbsp;&nbsp; Unlike the full Archon, an Area SubOp may be any class.&nbsp; 
 While residing in an Area that has designated the player as an Area SubOp, the 
@@ -1310,9 +1310,9 @@ differently than described above:</P>
       followed by some requirements. The requirments for each of these setting 
       are as follows: 
       <UL>
-        <LI>+SYSOP (allow archons or area subops to bypass 
+        <LI>+SYSOP (allow archons or area staff to bypass 
         the rules) 
-        <LI>-SYSOP (archons and area subops always fail the 
+        <LI>-SYSOP (archons and area staff always fail the 
         check) 
         <LI>-PLAYER (disallow all players) 
         <LI>-MOB (disallow all mobs/npcs) 
@@ -1960,9 +1960,9 @@ listed under GenItem, plus one more:</P>
 10 pages of detailed information about the laws in the area for which it is 
 "written".&nbsp; An Area must have either the "Arrest" or "Conquerable" 
 behaviors in order to have any laws for the law book to list.&nbsp; If the Area 
-has the Arrest behavior with a property of "custom", then Archons and SubOps may 
+has the Arrest behavior with a property of "custom", then Archons and staff may 
 also use the GenLawBook to modify aspects of the law in that area.&nbsp; If the 
-Area has the "Conquerable" behavior, then either the Archon, SubOp, or duly 
+Area has the "Conquerable" behavior, then either the Archon, staff, or duly 
 authorized clan member may use the book to modify law.</P>
 <P>Whenever a GenLawBook is created, much like the 
 GenReadable above, you are presented with a list of properties to fill in.&nbsp; 
@@ -2657,9 +2657,9 @@ Requirements</EM></TD>
       masks: 
       <P>
       <UL>
-        <LI>+SYSOP (allow archons or area subops to bypass 
+        <LI>+SYSOP (allow archons or area staff to bypass 
         the rules) 
-        <LI>-SYSOP (archons and area subops always fail the 
+        <LI>-SYSOP (archons and area staff always fail the 
         check) 
         <LI>-PLAYER (disallow all players) 
         <LI>-MOB (disallow all mobs/npcs) 

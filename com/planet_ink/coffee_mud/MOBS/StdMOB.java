@@ -1135,9 +1135,7 @@ public class StdMOB implements MOB
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-			&&(!isMonster())
-			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
-			&&(baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+			&&(CMSecurity.isAllowed(this,location(),"IMMORT")))
 			{
 				curState().setHitPoints(1);
 				if((msg.tool()!=null)
@@ -2404,8 +2402,7 @@ public class StdMOB implements MOB
 					if(Sense.isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
 					else
-					if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)==0)
-					||(baseEnvStats().level()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+					if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
 					{
 						curState().adjFatigue(MudHost.TICK_TIME,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
@@ -2428,8 +2425,7 @@ public class StdMOB implements MOB
 						tickCounter=0;
 						setAgeHours(AgeHours+1);
 						if((AgeHours>60000)
-						&&((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)==0)
-						||(baseEnvStats().level()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))))
+						&&(!CMSecurity.isAllowed(this,location(),"IMMORT")))
 						{
 							if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
 							{

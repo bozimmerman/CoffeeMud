@@ -81,7 +81,7 @@ public class MOBloader
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
 				String buf=DBConnections.getRes(R,"CMPFIL");
-				pstats.setFriendsIgnoreStr(buf);
+				pstats.setXML(buf);
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
 				Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
 				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
@@ -552,7 +552,7 @@ public class MOBloader
 
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
-		StringBuffer pfxml=new StringBuffer(pstats.getFriendsIgnoreStr());
+		StringBuffer pfxml=new StringBuffer(pstats.getXML());
 		if(mob.numTattoos()>0)
 		{
 			pfxml.append("<TATTS>");

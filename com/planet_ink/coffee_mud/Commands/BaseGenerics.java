@@ -398,7 +398,7 @@ public class BaseGenerics extends StdCommand
 		String newName="Q";
 		while(newName.length()>0)
 		{
-			mob.tell(showNumber+". Area SubOperator user names: "+A.getSubOpList());
+			mob.tell(showNumber+". Area staff names: "+A.getSubOpList());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
 			if(newName.length()>0)
@@ -406,13 +406,13 @@ public class BaseGenerics extends StdCommand
 				if(A.amISubOp(newName))
 				{
 					A.delSubOp(newName);
-					mob.tell("SubOperator removed.");
+					mob.tell("Staff removed.");
 				}
 				else
 				if(CMClass.DBEngine().DBUserSearch(null,newName))
 				{
 					A.addSubOp(newName);
-					mob.tell("SubOperator added.");
+					mob.tell("Staff added.");
 				}
 				else
 					mob.tell("'"+newName+"' is not recognized as a valid user name.");
@@ -2020,7 +2020,6 @@ public class BaseGenerics extends StdCommand
 		while(behave.length()>0)
 		{
 			String behaviorstr="";
-			if(P.getSecurityGroups()!=null)
 			for(int b=0;b<P.getSecurityGroups().size();b++)
 			{
 				String B=(String)P.getSecurityGroups().elementAt(b);
@@ -2040,10 +2039,7 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					if(P.getSecurityGroups()!=null)
-						P.getSecurityGroups().addElement(behave.trim().toUpperCase());
-					else
-						P.setSecurityGroupStr(behave.trim().toUpperCase());
+					P.getSecurityGroups().addElement(behave.trim().toUpperCase());
 					mob.tell(behave+" added.");
 				}
 			}
@@ -2877,6 +2873,18 @@ public class BaseGenerics extends StdCommand
 			E.setStat(Field,newName);
 		else
 			mob.tell("(no change)");
+	}
+	static String genText(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
+		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
+		String newName=mob.session().prompt("Enter a new value\n\r:","");
+		if(newName.length()>0)
+			return newName;
+		else
+			return oldVal;
 	}
 	static void genText(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
 		throws IOException

@@ -457,7 +457,7 @@ public class Modify extends BaseGenerics
 			{
 				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
 				{
-					mob.tell("Unknown or invalid subOp name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
+					mob.tell("Unknown or invalid staff name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
 				myArea.delSubOp(restStr);
@@ -981,7 +981,38 @@ public class Modify extends BaseGenerics
 		else
 		{
 			String allWord=Util.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
+			int x=allWord.indexOf("@");
+			MOB srchMob=mob;
+			Room srchRoom=mob.location();
+			if(x>0)
+			{
+				String rest=allWord.substring(x+1).trim();
+				allWord=allWord.substring(0,x).trim();
+				if(rest.equalsIgnoreCase("room"))
+					srchMob=null;
+				else
+				if(rest.length()>0)
+				{
+					MOB M=srchRoom.fetchInhabitant(rest);
+					if(M==null)
+					{
+						mob.tell("MOB '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
+					srchMob=M;
+					srchRoom=null;
+				}
+			}
+			Environmental thang=null;
+			if((srchMob!=null)&&(srchRoom!=null))
+				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORN_REQ_ANY);
+			else
+			if(srchMob!=null)
+				thang=srchMob.fetchInventory(allWord);
+			else
+			if(srchRoom!=null)
+				thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) return errorOut(mob);

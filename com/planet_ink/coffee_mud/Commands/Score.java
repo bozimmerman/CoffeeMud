@@ -83,7 +83,7 @@ public class Score extends Affect
 		msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
 		&&(mob.baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
-			msg.append("You are immortal, and will not gain further levels through experience.\n\r");
+			msg.append("You will not gain further levels through experience.\n\r");
 		else
 		if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 			msg.append("You will not gain further levels through experience.\n\r");

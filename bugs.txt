@@ -1,9 +1,12 @@
-LIST is only half done in the security stuff
 grinder is not done at all in the security stuff
+document security in the archons guide
 resist divination no protect from scry
 scry should not tell you if you are being scryed on
 preload shows spells being invoked on people
 parolled mobs should wander off after being sentenced
+When something is eaten, instead of saying you digest, it says you digests. (Appears to be no seperate self message).
+Zenthlas has a good point about CHANGE SEX and IMPROVED POLYMORPH. Change sex is a maliscious spell, while improved is a circumstantial. I think Change sex should be considered circumstantial, and all circumstantial should be considered attacks upon creatures unless they are in your group.
+There is an exit in this room, The Hall of Erebus in Olympia, but it is not a useable exit.
 add days of week, months, and years to scripts
 document real estate and space ship selling, document genairlock?
 The programmer's guide still shows the playerSelectable method btw.

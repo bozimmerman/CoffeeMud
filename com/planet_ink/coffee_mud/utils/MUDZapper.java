@@ -88,8 +88,8 @@ public class MUDZapper
 		return zapCodes;
 	}
 
-	private static final String ZAP ="+SYSOP (allow archons or area subops to bypass the rules)  <BR>"
-									+"-SYSOP (always <WORD> archons and area subops)  <BR>"
+	private static final String ZAP ="+SYSOP (allow archons or area staff to bypass the rules)  <BR>"
+									+"-SYSOP (always <WORD> archons and area staff)  <BR>"
 									+"-PLAYER (<WORD> all players) <BR>"
 									+"-MOB (<WORD> all mobs/npcs)  <BR>"
 									+"-CLASS  (<WORD> all classes)  <BR>"
@@ -1301,14 +1301,15 @@ public class MUDZapper
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 
 		Vector V=Util.parse(text.toUpperCase());
-		if(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
-		for(int v=0;v<V.size();v++)
-		{
-			String str=(String)V.elementAt(v);
-			if(str.equals("+SYSOP")) return true;
-			else
-			if(str.equals("-SYSOP")) return false;
-		}
+		if(CMSecurity.isASysOp(mob)
+		||((mob.location()!=null)&&(mob.location().getArea().amISubOp(mob.Name()))))
+			for(int v=0;v<V.size();v++)
+			{
+				String str=(String)V.elementAt(v);
+				if(str.equals("+SYSOP")) return true;
+				else
+				if(str.equals("-SYSOP")) return false;
+			}
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);

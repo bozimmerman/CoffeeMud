@@ -9,29 +9,63 @@ public class CMSecurity
 	private static final long startTime=System.currentTimeMillis();
 	private static Hashtable groups=new Hashtable();
 	private static Vector compiledSysop=null;
-	// supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, MISC (chargen),
+	// supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, CHARGEN
 	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDSOCIALS, CMDROOMS,
 	// CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
 	// KILLIDEAS, KILLTYPOS, CMDCLANS, DUMPFILE, GOTO, LOADUNLOAD, CMDPLAYERS
 	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WHERE
 	// RESET, RESETUTILS, KILLDEAD, MERGE, IMPORTROOMS, IMPORTMOBS, IMPORTITEMS
-	// IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE
+	// IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE, RESTRING, PURGE
 	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV)
 	// CMDMOBS (also prevents walkaways)
-	// SUPERSKILL (never fails skills)
-	// JOURNALS, PKILL
-	// LIST: 
-	// (list is also affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
-	//  cmditems, cmdmobs, cmdrooms, 
+	// SUPERSKILL (never fails skills), IMMORT (never dies)
+	// JOURNALS, PKILL, SESSIONS, TRAILTO, 
+	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
+	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin
+	// 
 	
-	// todo: import, export, merge
 	public static void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
 			zapCheck="-ANYCLASS +Archon";
 		compiledSysop=MUDZapper.zapperCompile(zapCheck);
 	}
+
+	
+	public static void clearGroups(){ groups.clear();}
+	
+	public static void parseGroups(Properties page)
+	{
+		clearGroups();
+		if(page==null) return;
+		for(Enumeration e=page.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if(key.startsWith("GROUP_"))
+				addGroup(key.substring(6),(String)page.get(key));
+		}
+	}
+	
+	public static void addGroup(String name, HashSet set)
+	{
+		name=name.toUpperCase().trim();
+		if(groups.containsKey(name)) groups.remove(name);
+		groups.put(name,set);
+	}
+	
+	public static void addGroup(String name, Vector set)
+	{
+		HashSet H=new HashSet();
+		for(int v=0;v<set.size();v++)
+		{
+			String s=(String)set.elementAt(v);
+			H.add(s.trim().toUpperCase());
+		}
+		addGroup(name,H);
+	}
+	public static void addGroup(String name, String set)
+	{addGroup(name,Util.parseCommas(set,true));}
 	
 	public static boolean isASysOp(MOB mob)
 	{
@@ -59,7 +93,6 @@ public class CMSecurity
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
-		if(mob.playerStats().getSecurityGroups()==null) return false;
 		if(mob.playerStats().getSecurityGroups().size()==0) return false;
 		return true;
 	}
@@ -69,13 +102,16 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
 		Vector V=mob.playerStats().getSecurityGroups();
-		if(V==null) return false;
+		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
 		for(int v=0;v<V.size();v++)
 		{
-			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			String set=(String)V.elementAt(v);
+			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
+			   return true;
+			HashSet H=(HashSet)groups.get(set);
 			if(H!=null)
 			{
 				for(Iterator i=H.iterator();i.hasNext();)
@@ -97,13 +133,16 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
 		Vector V=mob.playerStats().getSecurityGroups();
-		if(V==null) return false;
+		if(V.size()==0) return false;
 		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
 		for(int v=0;v<V.size();v++)
 		{
-			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			String set=(String)V.elementAt(v);
+			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
+			   return true;
+			HashSet H=(HashSet)groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -120,11 +159,14 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
 		Vector V=mob.playerStats().getSecurityGroups();
-		if(V==null) return false;
+		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
 		{
-			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			String set=(String)V.elementAt(v);
+			if(set.startsWith(code))
+			   return true;
+			HashSet H=(HashSet)groups.get(set);
 			if(H!=null)
 			{
 				for(Iterator i=H.iterator();i.hasNext();)
@@ -142,7 +184,10 @@ public class CMSecurity
 		
 			for(int v=0;v<V.size();v++)
 			{
-				HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+				String set=(String)V.elementAt(v);
+				if(set.startsWith("AREA "+code))
+				   return true;
+				HashSet H=(HashSet)groups.get(set);
 				if(H!=null)
 				{
 					for(Iterator i=H.iterator();i.hasNext();)
@@ -162,11 +207,13 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
 		Vector V=mob.playerStats().getSecurityGroups();
-		if(V==null) return false;
+		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
 		{
-			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			String set=(String)V.elementAt(v);
+			if(set.equals(code)) return true;
+			HashSet H=(HashSet)groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -181,11 +228,14 @@ public class CMSecurity
 		if(mob==null) return false;
 		if(mob.playerStats()==null) return false;
 		Vector V=mob.playerStats().getSecurityGroups();
-		if(V==null) return false;
+		if(V.size()==0) return false;
 		
 		for(int v=0;v<V.size();v++)
 		{
-			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			String set=(String)V.elementAt(v);
+			if(set.equals(code))
+			   return true;
+			HashSet H=(HashSet)groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -199,7 +249,9 @@ public class CMSecurity
 		
 			for(int v=0;v<V.size();v++)
 			{
-				HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+				String set=(String)V.elementAt(v);
+				if(set.equals("AREA "+code)) return true;
+				HashSet H=(HashSet)groups.get(set);
 				if(H!=null)
 				{
 					if(H.contains("AREA "+code))

@@ -16,8 +16,10 @@ public class DefaultPlayerStats implements PlayerStats
 	private String Password="";
 	private String colorStr="";
 	private String prompt="";
+	private String poofin="";
+	private String poofout="";						  
 	private MOB replyTo=null;
-	private Vector securityGroups=null;
+	private Vector securityGroups=new Vector();
 	
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
@@ -68,6 +70,9 @@ public class DefaultPlayerStats implements PlayerStats
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
 	
+	public String poofIn(){return poofin;}
+	public String poofOut(){return poofout;}
+	
 	private String getPrivateList(HashSet h)
 	{
 		if((h==null)||(h.size()==0)) return "";
@@ -76,32 +81,32 @@ public class DefaultPlayerStats implements PlayerStats
 			list.append(((String)e.next())+";");
 		return list.toString();
 	}
-	public String getFriendsIgnoreStr()
+	public String getXML()
 	{
 		String f=getPrivateList(getFriends());
 		String i=getPrivateList(getIgnored());
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
-			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"");
+			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
+			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
+			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
+			+getSecurityGroupStr();
 	}
-	public void setFriendsIgnoreStr(String str)
+	public void setXML(String str)
 	{
 		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
+		setSecurityGroupStr(XMLManager.returnXMLValue(str,"SECGRPS"));
+		poofin=XMLManager.returnXMLValue(str,"POOFIN");
+		if(poofin==null) poofin="";
+		poofout=XMLManager.returnXMLValue(str,"POOFOUT");
+		if(poofout==null) poofout="";
 	}
 	
-	public void setSecurityGroupXml(String grps)
+	private void setSecurityGroupStr(String grps)
 	{
-		securityGroups=null;
-		if((grps==null)||(grps.trim().length()==0))	
-			return;
-		setSecurityGroupXml(XMLManager.returnXMLValue(grps,"FRIENDS"));
-	}
-	public void setSecurityGroupStr(String grps)
-	{
-		securityGroups=null;
-		if((grps==null)||(grps.trim().length()==0))	
-			return;
 		securityGroups=new Vector();
+		if((grps==null)||(grps.trim().length()==0))	
+			return;
 		int x=grps.indexOf(";");
 		while(x>=0)
 		{
@@ -113,9 +118,9 @@ public class DefaultPlayerStats implements PlayerStats
 		if(grps.trim().length()>0)
 			securityGroups.addElement(grps.trim().toUpperCase());
 	}
-	public String getSecurityGroupStr()
+	private String getSecurityGroupStr()
 	{
-		if((securityGroups==null)||(securityGroups.size()==0)) return "";
+		if(securityGroups.size()==0) return "";
 		StringBuffer list=new StringBuffer("");
 		for(Iterator e=securityGroups.iterator();e.hasNext();)
 			list.append(((String)e.next())+";");
@@ -123,4 +128,9 @@ public class DefaultPlayerStats implements PlayerStats
 		
 	}
 	public Vector getSecurityGroups(){	return securityGroups;}
+	public void setPoofs(String poofIn, String poofOut)
+	{
+		poofin=poofIn;
+		poofout=poofOut;
+	}
 }

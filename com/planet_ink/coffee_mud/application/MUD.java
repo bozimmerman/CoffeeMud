@@ -290,6 +290,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 		CMSecurity.setSysOp(page.getStr("SYSOP")); // requires all classes be loaded
+		CMSecurity.parseGroups(page);
 
 		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"));
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);

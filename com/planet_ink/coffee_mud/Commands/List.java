@@ -48,35 +48,6 @@ public class List extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer listSessions(MOB mob)
-	{
-		StringBuffer lines=new StringBuffer("^x");
-		lines.append(Util.padRight("Status",9)+"| ");
-		lines.append(Util.padRight("Valid",5)+"| ");
-		lines.append(Util.padRight("Name",17)+"| ");
-		lines.append(Util.padRight("IP",17)+"| ");
-		lines.append(Util.padRight("Idle",17)+"^.^N\n\r");
-		for(int s=0;s<Sessions.size();s++)
-		{
-			Session thisSession=(Session)Sessions.elementAt(s);
-			lines.append((thisSession.killFlag()?"^H":"")+Util.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ");
-			if (thisSession.mob() != null)
-			{
-				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ");
-				lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
-			}
-			else
-			{
-				lines.append(Util.padRight("N/A",5)+"| ");
-				lines.append(Util.padRight("NAMELESS",17)+"| ");
-			}
-			lines.append(Util.padRight(thisSession.getAddress(),17)+"| ");
-			lines.append(Util.padRight((thisSession.getIdleMillis()+""),17));
-			lines.append("\n\r");
-		}
-		return lines;
-	}
-
 	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
@@ -582,7 +553,7 @@ public class List extends StdCommand
 			Area A=(Area)a.nextElement();
 			msg.append(Util.padRight(A.Name(),25)+": ");
 			if(A.getSubOpList().length()==0)
-				msg.append("No Area SubOps defined.\n\r");
+				msg.append("No Area staff defined.\n\r");
 			else
 				msg.append(A.getSubOpList()+"\n\r");
 		}
@@ -651,187 +622,6 @@ public class List extends StdCommand
 		int oval=val-val2;
 		if(oval>0) return "+"+oval;
 		else return ""+oval;
-	}
-
-	private int getRoomDirection(Room R, Room toRoom, Vector ignore)
-	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-			if((R.getRoomInDir(d)==toRoom)
-			&&(R!=toRoom)
-			&&(!ignore.contains(R)))
-				return d;
-		return -1;
-	}
-	public String trailTo(Room R1, Vector commands)
-	{
-		String where=Util.combine(commands,1);
-		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.";
-		if(R1==null) return "Where are you?";
-		boolean confirm=false;
-		if(where.endsWith(" CONFIRM!"))
-		{
-			where=where.substring(0,where.length()-9).trim();
-			confirm=true;
-		}
-		Vector set=new Vector();
-		MUDTracker.getRadiantRooms(R1,set,false,false,true,null,Integer.MAX_VALUE);
-		if(where.equalsIgnoreCase("everyarea"))
-		{
-			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-			{
-				Area A=(Area)a.nextElement();
-				str.append(Util.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),confirm)+"\n\r");
-			}
-			if(confirm) Log.rawSysOut(str.toString());
-			return str.toString();
-		}
-		else
-		if(where.equalsIgnoreCase("everyroom"))
-		{
-			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMMap.rooms();a.hasMoreElements();)
-			{
-				Room R=(Room)a.nextElement();
-				if((R!=R1)&&(R.roomID().length()>0))
-					str.append(Util.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),confirm)+"\n\r");
-			}
-			if(confirm) Log.rawSysOut(str.toString());
-			return str.toString();
-		}
-		else
-		{
-			String str=Util.padRightPreserve(where,30)+": "+trailTo(R1,set,where,confirm);
-			if(confirm) Log.rawSysOut(str);
-			return str;
-		}
-	}
-	public String trailTo(Room R1, Vector set, String where, boolean confirm)
-	{
-		Room R2=CMMap.getRoom(where);
-		if(R2==null)
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-			{
-				Area A=(Area)a.nextElement();
-				if(A.name().equalsIgnoreCase(where))
-				{
-					if(set.size()==0)
-					{
-						int lowest=Integer.MAX_VALUE;
-						for(Enumeration r=A.getMap();r.hasMoreElements();)
-						{
-							Room R=(Room)r.nextElement();
-							int x=R.roomID().indexOf("#");
-							if((x>=0)&&(Util.s_int(R.roomID().substring(x+1))<lowest))
-								lowest=Util.s_int(R.roomID().substring(x+1));
-						}
-						if(lowest<Integer.MAX_VALUE)
-							R2=CMMap.getRoom(A.name()+"#"+lowest);
-					}
-					else
-					{
-						for(int i=0;i<set.size();i++)
-						{
-							Room R=(Room)set.elementAt(i);
-							if(R.getArea()==A)
-							{
-								R2=R;
-								break;
-							}
-						}
-					}
-					break;
-				}
-			}
-		if(R2==null) return "Unable to determine '"+where+"'.";
-		if(set.size()==0)
-			MUDTracker.getRadiantRooms(R1,set,false,false,true,R2,Integer.MAX_VALUE);
-		int foundAt=-1;
-		for(int i=0;i<set.size();i++)
-		{
-			Room R=(Room)set.elementAt(i);
-			if(R==R2){ foundAt=i; break;}
-		}
-		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
-		Room checkR=R2;
-		Vector trailV=new Vector();
-		trailV.addElement(R2);
-		boolean didSomething=false;
-		while(checkR!=R1)
-		{
-			didSomething=false;
-			for(int r=0;r<foundAt;r++)
-			{
-				Room R=(Room)set.elementAt(r);
-				if(getRoomDirection(R,checkR,trailV)>=0)
-				{
-					trailV.addElement(R);
-					foundAt=r;
-					checkR=R;
-					didSomething=true;
-					break;
-				}
-			}
-			if(!didSomething)
-				return "No trail was found?!";
-		}
-		Vector theDirTrail=new Vector();
-		Vector empty=new Vector();
-		for(int s=trailV.size()-1;s>=1;s--)
-		{
-			Room R=(Room)trailV.elementAt(s);
-			Room RA=(Room)trailV.elementAt(s-1);
-			theDirTrail.addElement(new Character(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0)).toString()+" ");
-		}
-		StringBuffer theTrail=new StringBuffer("");
-		if(confirm)	theTrail.append("\n\r"+Util.padRight("Trail",30)+": ");
-		char lastDir='\0';
-		int lastNum=0;
-		while(theDirTrail.size()>0)
-		{
-			String s=(String)theDirTrail.elementAt(0);
-			if(lastNum==0)
-			{
-				lastDir=s.charAt(0);
-				lastNum=1;
-			}
-			else
-			if(s.charAt(0)==lastDir)
-				lastNum++;
-			else
-			{
-				if(lastNum==1)
-					theTrail.append(new Character(lastDir).toString()+" ");
-				else
-					theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString()+" ");
-				lastDir=s.charAt(0);
-				lastNum=1;
-			}
-			theDirTrail.removeElementAt(0);
-		}
-		if(lastNum==1)
-			theTrail.append(new Character(lastDir).toString());
-		else
-		if(lastNum>0)
-			theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString());
-
-		if((confirm)&&(trailV.size()>1))
-		{
-			for(int i=0;i<trailV.size();i++)
-			{
-				Room R=(Room)trailV.elementAt(i);
-				if(R.roomID().length()==0)
-				{
-					theTrail.append("*");
-					break;
-				}
-			}
-			Room R=(Room)trailV.elementAt(1);
-			theTrail.append("\n\r"+Util.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
-			theTrail.append("\n\r"+Util.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
-			theTrail.append("\n\r\n\r");
-		}
-		return theTrail.toString();
 	}
 
 	public StringBuffer deviations(MOB mob, String rest)
@@ -953,33 +743,6 @@ public class List extends StdCommand
 		return str;
 	}
 
-	private String reallyFindWords(MOB mob, Vector commands)
-	{
-		String words=Util.combine(commands,1);
-		if(words.length()==0)
-			return "Perhaps you should specify some words to search for.";
-		StringBuffer str=new StringBuffer("");
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			StringBuffer s=new StringBuffer("");
-			if(EnglishParser.containsString(R.displayText(),words))
-				s.append("display ");
-			if(EnglishParser.containsString(R.description(),words))
-				s.append("description ");
-			MOB M=R.fetchInhabitant(words);
-			if(M!=null)
-				s.append("mob '"+M.name()+"' ");
-			Item I=R.fetchItem(null,words);
-			if(I!=null)
-				s.append("item '"+I.name()+"' ");
-			if(s.length()>0)
-				str.append(Util.padRight(R.roomID(),30)+": "+s.toString()+"\n\r");
-		}
-		return str.toString();
-	}
-
-
 	private String reallyFindOneWays(MOB mob, Vector commands)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -1055,57 +818,78 @@ public class List extends StdCommand
 		return str.toString();
 	}
 	
+	public Vector getMyCmdWords(MOB mob)
+	{
+		Vector V=new Vector();
+		for(int i=0;i<SECURITY_LISTMAP.length;i++)
+		{
+			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			for(int c=1;c<cmd.length;c++)
+				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
+				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+				{ V.addElement(cmd[0]); break;}
+		}
+		return V;
+	}
+	
+	public int getMyCmdCode(MOB mob, String s)
+	{
+		s=s.toUpperCase().trim();
+		for(int i=0;i<SECURITY_LISTMAP.length;i++)
+		{
+			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			if(cmd[0].startsWith(s))
+			for(int c=1;c<cmd.length;c++)
+				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
+				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+				{ return i;}
+		}
+		return -1;
+	}
+	
 	public final static String[][] SECURITY_LISTMAP={
-		{"ITEMS","CMDITEMS"},
-		{"TRAILTO",""},
-		{"ARMOR","CMDITEMS"},
-		{"ENVRESOURCES",""},
-		{"WEAPONS","CMDITEMS"},
-		{"MOBS","CMDMOBS"},
-		{"ROOMS",""},
-		{"AREA",""},
-		{"LOCALES","CMDROOMS"},
-		{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"EXITS","CMDEXITS"},
-		{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
-		{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
-		{"SUBOPS",""},
-		{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"DEVIATIONS",""},
-		{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"QUESTS","CMDQUESTS"},
-		{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
-		{"ARMOR","CMDITEMS"},
-		{"",""},
-		{"",""},
+		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
+		/*01*/{"ITEMS","CMDITEMS"},
+		/*02*/{"ARMOR","CMDITEMS"},
+		/*03*/{"ENVRESOURCES","CMDITEMS","CMDROOMS","CMDAREAS"},
+		/*04*/{"WEAPONS","CMDITEMS"},
+		/*05*/{"MOBS","CMDMOBS"},
+		/*06*/{"ROOMS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*07*/{"AREA","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*08*/{"LOCALES","CMDROOMS"},
+		/*09*/{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*10*/{"EXITS","CMDEXITS"},
+		/*11*/{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
+		/*12*/{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
+		/*13*/{"STAFF","CMDAREAS"},
+		/*14*/{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*15*/{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*16*/{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*17*/{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*18*/{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*19*/{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*20*/{"DEVIATIONS","CMDITEMS"},
+		/*21*/{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*22*/{"QUESTS","CMDQUESTS"},
+		/*23*/{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*24*/{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*25*/{"TICKS","LISTADMIN"},
+		/*26*/{"MAGIC","CMDITEMS"},
+		/*27*/{"TECH","CMDITEMS"},
+		/*28*/{"CLANITEMS","CMDITEMS"},
+		/*29*/{"BUGS","KILLBUGS"},
+		/*30*/{"IDEAS","KILLIDEAS"},
+		/*31*/{"NOPURGE","NOPURGE"},
+		/*32*/{"BANNED","BAN"},
+		/*33*/{"TYPOS","KILLTYPOS"},
+		/*34*/{"LOG","LISTADMIN"},
+		/*35*/{"USERS","CMDPLAYERS"},
+		/*36*/{"LINKAGES","CMDAREAS"},
+		/*37*/{"REPORTS","LISTADMIN"},
+		/*38*/{"THREADS","LISTADMIN"},
+		/*39*/{"RESOURCES","LOADUNLOAD"},
+		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
 	};
-	/*
-		if(("TICKS".startsWith(listWord))&&(mob.isASysOp(null)))
-		if("MAGIC".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-		if("TECH".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-		if("CLANITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-		if(("BUGS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")))
-		if(("IDEAS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")))
-		if(("NOPURGE".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
-		if(("BANNED".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"BAN")))
-		if(("TYPOS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")))
-		if(("LOG".startsWith(listThis))&&(mob.isASysOp(null)))
-		if(("USERS".startsWith(listWord))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
-		if(("SESSIONS".startsWith(listThis))&&(mob.isASysOp(null)))
-        if(("LINKAGES".startsWith(listThis))&&(mob.isASysOp(null)))
-		if(("REPORTS".startsWith(listThis))&&(mob.isASysOp(null)))
-		if(("THREADS".startsWith(listThis))&&(mob.isASysOp(null)))
-		if("RESOURCES".startsWith(listThis))
-		if("WORDS".startsWith(listWord))
-		if("ONEWAYDOORS".startsWith(listWord))
-		if("UNLINKEDEXITS".startsWith(listWord))
-	*/
 	
 	public void archonlist(MOB mob, Vector commands)
 	{
@@ -1118,103 +902,63 @@ public class List extends StdCommand
 		Session s=mob.session();
 		if(s==null) return;
 
-		String listThis=Util.combine(commands,0).toUpperCase();
 		String listWord=((String)commands.firstElement()).toUpperCase();
-
-		if("ITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.items()).toString());
-		else
-		if("TRAILTO".startsWith(listWord))
-			s.rawPrintln(trailTo(mob.location(),commands));
-		else
-		if("ARMOR".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.armor()).toString());
-		else
-		if("ENVRESOURCES".startsWith(listThis)&&CMSecurity.isAllowed(mob,mob.location(),"LOADUNLOAD"))
-			s.rawPrintln(listEnvResources());
-		else
-		if("WEAPONS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.weapons()).toString());
-		else
-		if("MOBS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.mobTypes()).toString());
-		else
-		if("ROOMS".startsWith(listThis))
-			s.rawPrintln(roomDetails(CMMap.rooms(),mob.location()).toString());
-		else
-		if("AREA".startsWith(listThis))
-			s.rawPrintln(roomTypes(CMMap.rooms(),mob.location()).toString());
-		else
-		if("LOCALES".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.locales()).toString());
-		else
-		if("BEHAVIORS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.behaviors()).toString());
-		else
-		if("EXITS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.exits()).toString());
-		else
-		if("RACES".startsWith(listThis))
-			s.rawPrintln(listRaces(CMClass.races()).toString());
-		else
-		if("CLASSES".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.charClasses()).toString());
-		else
-		if("SUBOPS".startsWith(listThis))
-			s.rawPrintln(listSubOps(mob).toString());
-		else
-		if("SPELLS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SPELL).toString());
-		else
-		if("SONGS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SONG).toString());
-		else
-		if("PRAYERS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PRAYER).toString());
-		else
-		if("PROPERTIES".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PROPERTY).toString());
-		else
-		if("THIEFSKILLS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString());
-		else
-		if("COMMON".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString());
-		else
-		if("DEVIATIONS".startsWith(listWord))
-			s.rawPrintln(deviations(mob,Util.combine(commands,1)).toString());
-		else
-		if("SKILLS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString());
-		else
-		if(("QUESTS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")))
-			mob.tell(listQuests().toString());
-		else
-		if("DISEASES".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.DISEASE).toString());
-		else
-		if("POISONS".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.POISON).toString());
-		else
-		if(("TICKS".startsWith(listWord))&&(CMSecurity.isASysOp(mob)))
-			mob.tell(listTicks(Util.combine(commands,1)).toString());
-		else
-		if("MAGIC".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.miscMagic()).toString());
-		else
-		if("TECH".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.miscTech()).toString());
-		else
-		if("CLANITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
-			s.rawPrintln(CMLister.reallyList(CMClass.clanItems()).toString());
-		else
-		if(("BUGS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")))
-			mob.tell(journalList("SYSTEM_BUGS").toString());
-		else
-		if(("IDEAS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")))
-			mob.tell(journalList("SYSTEM_IDEAS").toString());
-		else
-		if(("NOPURGE".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
+		int code=getMyCmdCode(mob, listWord);
+		if(code<0)
+		{
+			Vector V=getMyCmdWords(mob);
+			if(V.size()==0)
+				mob.tell("You are not allowed to use this command!");
+			else
+			{
+				StringBuffer str=new StringBuffer("");
+				for(int v=0;v<V.size();v++)
+				{
+					str.append((String)V.elementAt(v));
+					if(v==(V.size()-2))
+						str.append(", or ");
+					else
+					if(v<(V.size()-1))
+						str.append(", ");
+				}
+				mob.tell("You cannot list '"+listWord+"'.  Try "+str.toString()+".");
+			}
+			return;
+		}
+		switch(code)
+		{
+		case 0:	s.rawPrintln(unlinkedExits(mob,commands)); break;
+		case 1: s.rawPrintln(CMLister.reallyList(CMClass.items()).toString()); break;
+		case 2: s.rawPrintln(CMLister.reallyList(CMClass.armor()).toString()); break;
+		case 3: s.rawPrintln(listEnvResources()); break;
+		case 4: s.rawPrintln(CMLister.reallyList(CMClass.weapons()).toString()); break;
+		case 5: s.rawPrintln(CMLister.reallyList(CMClass.mobTypes()).toString()); break;
+		case 6: s.rawPrintln(roomDetails(CMMap.rooms(),mob.location()).toString()); break;
+		case 7: s.rawPrintln(roomTypes(CMMap.rooms(),mob.location()).toString()); break;
+		case 8: s.rawPrintln(CMLister.reallyList(CMClass.locales()).toString()); break;
+		case 9: s.rawPrintln(CMLister.reallyList(CMClass.behaviors()).toString()); break;
+		case 10: s.rawPrintln(CMLister.reallyList(CMClass.exits()).toString()); break;
+		case 11: s.rawPrintln(listRaces(CMClass.races()).toString()); break;
+		case 12: s.rawPrintln(CMLister.reallyList(CMClass.charClasses()).toString()); break;
+		case 13: s.rawPrintln(listSubOps(mob).toString()); break;
+		case 14: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SPELL).toString()); break;
+		case 15: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SONG).toString()); break;
+		case 16: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PRAYER).toString()); break;
+		case 17: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PROPERTY).toString()); break;
+		case 18: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString()); break;
+		case 19: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString()); break;
+		case 20: s.rawPrintln(deviations(mob,Util.combine(commands,1)).toString()); break;
+		case 21: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString()); break;
+		case 22: s.println(listQuests().toString()); break;
+		case 23: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;
+		case 24: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.POISON).toString()); break;
+		case 25: s.println(listTicks(Util.combine(commands,1)).toString()); break;
+		case 26: s.rawPrintln(CMLister.reallyList(CMClass.miscMagic()).toString()); break;
+		case 27: s.rawPrintln(CMLister.reallyList(CMClass.miscTech()).toString()); break;
+		case 28: s.rawPrintln(CMLister.reallyList(CMClass.clanItems()).toString()); break;
+		case 29: s.println(journalList("SYSTEM_BUGS").toString()); break;
+		case 30: s.println(journalList("SYSTEM_IDEAS").toString()); break;
+		case 31:
 		{
 			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
 			Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -1222,9 +966,9 @@ public class List extends StdCommand
 			for(int b=0;b<protectedOnes.size();b++)
 				str.append((b+1)+") "+((String)protectedOnes.elementAt(b))+"\n\r");
 			s.rawPrintln(str.toString());
+			break;
 		}
-		else
-		if(("BANNED".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"BAN")))
+		case 32:
 		{
 			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
 			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
@@ -1232,42 +976,20 @@ public class List extends StdCommand
 			for(int b=0;b<banned.size();b++)
 				str.append((b+1)+") "+((String)banned.elementAt(b))+"\n\r");
 			s.rawPrintln(str.toString());
+			break;
 		}
-		else
-		if(("TYPOS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")))
-			mob.tell(journalList("SYSTEM_TYPOS").toString());
-		else
-		if(("LOG".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
-			s.rawPrintln(Log.getLog().toString());
-		else
-		if(("USERS".startsWith(listWord))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
-			listUsers(mob,commands);
-		else
-		if(("SESSIONS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
-			mob.tell(listSessions(mob).toString());
-        else
-        if(("LINKAGES".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")))
-            mob.tell(listLinkages(mob).toString());
-        else
-		if(("REPORTS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
-			mob.tell(listReports(mob).toString());
-		else
-		if(("THREADS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
-			mob.tell(listThreads(mob).toString());
-		else
-		if("RESOURCES".startsWith(listThis))
-			s.rawPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString());
-		else
-		if("WORDS".startsWith(listWord))
-			s.rawPrintln(reallyFindWords(mob,commands));
-		else
-		if("ONEWAYDOORS".startsWith(listWord))
-			s.rawPrintln(reallyFindOneWays(mob,commands));
-		else
-		if("UNLINKEDEXITS".startsWith(listWord))
-			s.rawPrintln(unlinkedExits(mob,commands));
-		else
-			s.rawPrintln("Can't list those, try ITEMS, POISONS, COMMON, DISEASES, ARMOR, WEAPONS, CLANITEMS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, TECH, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, NOPURGE, WORDS, RESOURCES, ENVRESOURCES, SUBOPS, TRAILTO, or AREA.");
+		case 33: s.println(journalList("SYSTEM_TYPOS").toString()); break;
+		case 34: s.rawPrintln(Log.getLog().toString()); break;
+		case 35: listUsers(mob,commands); break;
+		case 36: s.println(listLinkages(mob).toString()); break;
+		case 37: s.println(listReports(mob).toString()); break;
+		case 38: s.println(listThreads(mob).toString()); break;
+		case 39: s.rawPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
+		case 40: s.rawPrintln(reallyFindOneWays(mob,commands)); break;
+		default:
+			s.println("List?!");
+			break;
+		}
 	}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -1280,16 +1002,11 @@ public class List extends StdCommand
 		else
 		{
 			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper==null)||(CoffeeUtensils.getShopKeeper(shopkeeper)==null)||(!Sense.canBeSeenBy(shopkeeper,mob)))
-			{
-				if(CMSecurity.isStaff(mob))
-				{
-					archonlist(mob,commands);
-					return false;
-				}
-			}
-			else
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				V.addElement(shopkeeper);
+			else
+			if(getMyCmdCode(mob, (String)commands.firstElement())>0)
+				archonlist(mob,commands);
 		}
 		if(V.size()==0)
 		{

@@ -951,8 +951,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
-						&&(((MOB)E).baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL));
+					returnable=CMSecurity.isAllowed(((MOB)E),lastKnownLocation,"IMMORT");
 				break;
 			}
 			case 12: // ischarmed

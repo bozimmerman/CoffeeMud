@@ -22,14 +22,14 @@ public interface PlayerStats
 	public void setPrompt(String prompt);
 	public HashSet getFriends();
 	public HashSet getIgnored();
-	public String getFriendsIgnoreStr();
-	public void setFriendsIgnoreStr(String str);
+	public String poofIn();
+	public String poofOut();
+	public void setPoofs(String poofIn, String poofOut);
+	public String getXML();
+	public void setXML(String str);
 	public String lastIP();
 	public void setLastIP(String ip);
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
-	public void setSecurityGroupStr(String grps);
-	public String getSecurityGroupStr();
 	public Vector getSecurityGroups();
-	public void setSecurityGroupXml(String grps);
 }

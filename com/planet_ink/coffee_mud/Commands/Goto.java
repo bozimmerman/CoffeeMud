@@ -20,12 +20,6 @@ public class Goto extends At
 			return false;
 		}
 		commands.removeElementAt(0);
-		boolean chariot=false;
-		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
-		{
-		   chariot=true;
-		   commands.removeElement(commands.lastElement());
-		}
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
 		Room curRoom=mob.location();
 		room=findRoomLiberally(mob,cmd);
@@ -47,14 +41,12 @@ public class Goto extends At
 		}
 		else
 		{
+			if(mob.playerStats().poofOut().length()>0)
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofOut());
 			room.bringMobHere(mob,true);
-			if(chariot)
-			{
-				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> ride(s) in on a flaming chariot.");
-				CommonMsgs.look(mob,true);
-			}
-			else
-				mob.tell("Done.");
+			if(mob.playerStats().poofIn().length()>0)
+				room.show(mob,null,CMMsg.MSG_OK_VISUAL,mob.playerStats().poofIn());
+			CommonMsgs.look(mob,true);
 			return false;
 		}
 	}

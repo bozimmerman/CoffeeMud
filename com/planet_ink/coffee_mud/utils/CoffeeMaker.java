@@ -1893,7 +1893,7 @@ public class CoffeeMaker
 
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
-		StringBuffer pfxml=new StringBuffer(pstats.getFriendsIgnoreStr());
+		StringBuffer pfxml=new StringBuffer(pstats.getXML());
 		if(mob.numTattoos()>0)
 		{
 			pfxml.append("<TATTS>");
@@ -2058,7 +2058,7 @@ public class CoffeeMaker
 			mob.setClanRole(XMLManager.getIntFromPieces(mblk.contents,"CLRO"));
 			mob.playerStats().setEmail(XMLManager.getValFromPieces(mblk.contents,"EMAL"));
 			String buf=XMLManager.getValFromPieces(mblk.contents,"CMPFIL");
-			mob.playerStats().setFriendsIgnoreStr(buf);
+			mob.playerStats().setXML(buf);
 			Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
 			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
