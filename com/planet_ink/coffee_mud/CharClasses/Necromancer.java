@@ -23,7 +23,7 @@ public class Necromancer extends Cleric
 	
 	public Necromancer()
 	{
-		maxStat[CharStats.STRENGTH]=22;
+		maxStat[CharStats.WISDOM]=22;
 		maxStat[CharStats.CONSTITUTION]=22;
 		if(!loaded())
 		{

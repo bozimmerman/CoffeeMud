@@ -37,7 +37,7 @@ public class Prayer_Deathfinger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A finger of death rages at <T-NAME>.":"^S<S-NAME> point(s) in rage at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A finger of death rages at <T-NAME>.":"^S<S-NAME> point(s) in rage at <T-NAMESELF> and "+prayWord(mob)+"!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -49,7 +49,7 @@ public class Prayer_Deathfinger extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) in rage at <T-NAMESELF>, but <S-HIS-HER> god does nothing.");
+			return maliciousFizzle(mob,target,"<S-NAME> point(s) in rage at <T-NAMESELF> and "+prayWord(mob)+", but <S-HIS-HER> god does nothing.");
 
 
 		// return whether it worked

@@ -109,8 +109,8 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(caster==null) return 1;
 		int adjLevel=CMAble.lowestQualifyingLevel(this.ID())
-					 +CMAble.qualifyingClassLevel(caster,this)
-					 -CMAble.qualifyingLevel(caster,this);
+					+CMAble.qualifyingClassLevel(caster,this)
+					-CMAble.qualifyingLevel(caster,this);
 		if(adjLevel<1) return 1;
 		return adjLevel;
 	}

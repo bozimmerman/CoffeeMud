@@ -21,7 +21,7 @@ public class Shaman extends Cleric
 	
 	public Shaman()
 	{
-		maxStat[CharStats.STRENGTH]=22;
+		maxStat[CharStats.WISDOM]=22;
 		maxStat[CharStats.CONSTITUTION]=22;
 		if(!loaded())
 		{

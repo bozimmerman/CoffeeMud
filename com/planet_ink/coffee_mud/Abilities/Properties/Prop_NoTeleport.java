@@ -10,7 +10,7 @@ public class Prop_NoTeleport extends Property
 	
 	public final static String spellList=
 		(" Spell_Gate Spell_Teleport Spell_Portal Chant_PlantPass "
-		 +" Spell_Cogniportive").toUpperCase();
+		 +" Spell_Cogniportive Prayer_Gateway").toUpperCase();
 	
 	public String text(){ return spellList; }
 

@@ -30,7 +30,7 @@ public class Prayer_Thunderbolt extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Thunderbolt newOne=(Prayer_Thunderbolt)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> invoke(s) the power of <S-HIS-HER> god against <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> "+prayForWord(mob)+" to strike down <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -42,7 +42,7 @@ public class Prayer_Thunderbolt extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> invoke(s) <S-HIS-HER> god, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
 
 
 		// return whether it worked
