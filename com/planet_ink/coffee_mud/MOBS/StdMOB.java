@@ -727,7 +727,7 @@ public class StdMOB implements MOB
 				if(mob.isInCombat())
 				{
 					// the door-for-fleeing exception!
-					if((affect.sourceMinor()==Affect.TYP_OPEN)
+					if(((affect.sourceMinor()==Affect.TYP_OPEN)||(affect.sourceMinor()==Affect.TYP_CLOSE))
 					   &&(affect.target()!=null)
 					   &&(affect.target() instanceof Exit))
 						break;
