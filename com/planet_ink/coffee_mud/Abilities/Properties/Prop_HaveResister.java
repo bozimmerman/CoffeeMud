@@ -5,6 +5,9 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
 import java.util.*;
 
+// this ability is the very picture of the infectuous affect.
+// It lobs itself onto other qualified objects, and withdraws
+// again when it will.  Don't lothe the HaveResister, LOVE IT.
 public class Prop_HaveResister extends Property
 {
 	private Item myItem=null;
