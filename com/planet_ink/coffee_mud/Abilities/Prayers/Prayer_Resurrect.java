@@ -46,7 +46,7 @@ public class Prayer_Resurrect extends Prayer
 					MOB rejuvedMOB=CMMap.getPlayer(mobName);
 					if(rejuvedMOB!=null)
 					{
-						rejuvedMOB.tell(rejuvedMOB,null,"You are being resurrected.");
+						rejuvedMOB.tell("You are being resurrected.");
 						if(rejuvedMOB.location()!=mob.location())
 						{
 							rejuvedMOB.location().delInhabitant(rejuvedMOB);

@@ -35,7 +35,7 @@ public class Prayer_SenseAlignment extends Prayer
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+CommonStrings.alignmentStr(target.getAlignment())+".");
+				mob.tell(mob,target,null,"<T-NAME> seem(s) like <T-HE-SHE> is "+CommonStrings.alignmentStr(target.getAlignment())+".");
 			}
 		}
 		else

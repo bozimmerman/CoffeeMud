@@ -62,7 +62,7 @@ public class Undead_EnergyDrain extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"The energy drain is lifted.");
+			mob.tell("The energy drain is lifted.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

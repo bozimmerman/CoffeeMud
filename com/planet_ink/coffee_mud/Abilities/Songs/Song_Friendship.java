@@ -79,7 +79,7 @@ public class Song_Friendship extends Song
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
 
 						if((levelDiff>3)&&(mindAttack()))
-							mob.tell(mob,follower,"<T-NAME> looks too powerful.");
+							mob.tell(mob,follower,null,"<T-NAME> looks too powerful.");
 						else
 						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
 						{

@@ -31,13 +31,13 @@ public class Song_Dexterity extends Song
 
 		if(amount<=0)
 		{
-			mob.tell(mob,null,"Sing about how much dexterity?");
+			mob.tell("Sing about how much dexterity?");
 			return false;
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.DEXTERITY))
 		{
-			mob.tell(mob,null,"You can't sing away that much dexterity.");
+			mob.tell("You can't sing away that much dexterity.");
 			return false;
 		}
 

@@ -437,9 +437,9 @@ public class StdRideable extends StdContainer implements Rideable
 				if((amRiding(tmob))&&(!amRiding(affect.source())))
 				{
 					if(rideBasis()==Rideable.RIDEABLE_ENTERIN)
-						affect.source().tell(affect.source(),tmob,"<T-NAME> must exit first.");
+						affect.source().tell(affect.source(),tmob,null,"<T-NAME> must exit first.");
 					else
-						affect.source().tell(affect.source(),tmob,"<T-NAME> must disembark first.");
+						affect.source().tell(affect.source(),tmob,null,"<T-NAME> must disembark first.");
 					return false;
 				}
 			}

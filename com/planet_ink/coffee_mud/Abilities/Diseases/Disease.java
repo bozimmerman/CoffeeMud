@@ -52,7 +52,7 @@ public class Disease extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,DISEASE_DONE());
+			mob.tell(mob,null,this,DISEASE_DONE());
 	}
 
 	public void affect(Environmental myHost, Affect affect)

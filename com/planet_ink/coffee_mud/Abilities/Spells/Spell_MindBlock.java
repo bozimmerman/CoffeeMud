@@ -53,7 +53,7 @@ public class Spell_MindBlock extends Spell
 			}
 			if(yep)
 			{
-				affect.source().tell(affect.source(),mob,"<T-NAME> seem(s) unaffected.");
+				affect.source().tell(affect.source(),mob,null,"<T-NAME> seem(s) unaffected.");
 				return false;
 			}
 		}

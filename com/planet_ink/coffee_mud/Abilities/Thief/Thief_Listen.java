@@ -42,7 +42,7 @@ public class Thief_Listen extends ThiefSkill
 				&&(!lastSaid.equals(msg.sourceMessage())))
 				{
 					lastSaid=msg.sourceMessage();
-					invoker().tell(msg.source(),msg.target(),msg.sourceMessage());
+					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				}
 			}
 			else
@@ -53,7 +53,7 @@ public class Thief_Listen extends ThiefSkill
 			&&(!lastSaid.equals(msg.sourceMessage())))
 			{
 				lastSaid=msg.sourceMessage();
-				invoker().tell(msg.source(),msg.target(),msg.sourceMessage());
+				invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 			}
 				
 		}

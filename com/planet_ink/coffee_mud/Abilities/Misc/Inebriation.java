@@ -173,7 +173,7 @@ public class Inebriation extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"You feel sober now.");
+			mob.tell("You feel sober now.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

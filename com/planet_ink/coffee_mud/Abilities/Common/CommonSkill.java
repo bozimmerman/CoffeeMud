@@ -151,7 +151,7 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT|Affect.MASK_GENERAL,str);
 		else
-			mob.tell(mob,null,str);
+			mob.tell(mob,null,null,str);
 	}
 
 	protected int lookingFor(int material, Room fromHere)

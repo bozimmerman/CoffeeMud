@@ -35,7 +35,7 @@ public class Thief_Sap extends ThiefSkill
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
 			{
 				if(affect.sourceMessage()!=null)
-					mob.tell(mob,null,"You are way too drowsy.");
+					mob.tell("You are way too drowsy.");
 				return false;
 			}
 		}

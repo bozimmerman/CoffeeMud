@@ -118,7 +118,7 @@ public class LightSource extends StdItem implements Light
 				else
 				if(myLight.owner() instanceof MOB)
 				{
-					((MOB)myLight.owner()).tell(((MOB)myLight.owner()),null,myLight.name()+" flickers and burns out.");
+					((MOB)myLight.owner()).tell(((MOB)myLight.owner()),null,myLight,"<O-NAME> flickers and burns out.");
 					myLight.setDuration(0);
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();

@@ -11,19 +11,22 @@ public interface Session
 	
 	public void stdPrint(String msg);
 	public void stdPrint(Environmental Source,
-					  Environmental Target,
-					  String msg);
+						 Environmental Target,
+						 Environmental Tool,
+						 String msg);
 	public void stdPrint(String msg,
 						 int Length,
 						 String msgEnd);
 	public void stdPrintln(String msg);
 	public void stdPrintln(Environmental Source,
 						   Environmental Target,
+						   Environmental Tool,
 						   String msg);
 	
 	public void print(String msg);
 	public void print(Environmental Source,
 					  Environmental Target,
+					  Environmental Tool,
 					  String msg);
 	public void print(String msg,
 					  int Length,
@@ -31,6 +34,7 @@ public interface Session
 	public void println(String msg);
 	public void println(Environmental Source,
 						Environmental Target,
+						Environmental Tool,
 						String msg);
 	
 	public void setPromptFlag(boolean truefalse);
@@ -67,6 +71,7 @@ public interface Session
 		throws IOException;
 	public String filter(Environmental source,
 						 Environmental target,
+						 Environmental tool,
 						 String msg,
 						 boolean wrapOnly);
 

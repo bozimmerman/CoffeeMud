@@ -25,7 +25,7 @@ public class Spell_DetectUndead extends Spell
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your senses are no longer as dark.");
+			mob.tell("Your senses are no longer as dark.");
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{

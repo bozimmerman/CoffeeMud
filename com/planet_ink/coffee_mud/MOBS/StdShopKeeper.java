@@ -928,7 +928,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 					}
 					if(mySession!=null)
-						mySession.stdPrintln(affect.source(),affect.target(),affect.targetMessage());
+						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 					mob.location().recoverRoomStats();
 				}
 				return;
@@ -980,7 +980,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
 						if(location().okAffect(mob,msg))
 						{
-							tell(affect.source(),affect.target(),affect.targetMessage());
+							tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 							location().send(mob,msg);
 							if((affect.tool() instanceof InnKey)&&(location()!=null))
 							{
@@ -1037,7 +1037,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 
 					if(mySession!=null)
-						mySession.stdPrintln(affect.source(),affect.target(),affect.targetMessage());
+						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 					mob.location().recoverRoomStats();
 				}
 				return;

@@ -46,7 +46,7 @@ public class Spell_Frenzy extends Spell
 				mob.curState().setHitPoints(1);
 			else
 				mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-			mob.tell(mob,null,"You feel calmer.");
+			mob.tell("You feel calmer.");
 			mob.recoverMaxState();
 		}
 	}

@@ -36,7 +36,7 @@ public class Undead_ColdTouch extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"The chill is lifted.");
+			mob.tell("The chill is lifted.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

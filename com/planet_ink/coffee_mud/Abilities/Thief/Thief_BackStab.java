@@ -45,7 +45,7 @@ public class Thief_BackStab extends ThiefSkill
 			weapon=(Weapon)mob.fetchWieldedItem();
 		if(weapon==null)
 		{
-			mob.tell(mob,target,"Backstab <T-HIM-HER> with what? You need to wield a weapon!");
+			mob.tell(mob,target,null,"Backstab <T-HIM-HER> with what? You need to wield a weapon!");
 			return false;
 		}
 		if((weapon.weaponClassification()==Weapon.CLASS_BLUNT)
@@ -54,7 +54,7 @@ public class Thief_BackStab extends ThiefSkill
 		||(weapon.weaponClassification()==Weapon.CLASS_THROWN)
 		||(weapon.weaponClassification()==Weapon.CLASS_STAFF))
 		{
-			mob.tell(mob,target,"You cannot stab anyone with "+weapon.name()+".");
+			mob.tell(mob,target,weapon,"You cannot stab anyone with <O-NAME>.");
 			return false;
 		}
 

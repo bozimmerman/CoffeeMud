@@ -23,7 +23,7 @@ public class Spell_DetectMetal extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your senses are no longer as metallic.");
+			mob.tell("Your senses are no longer as metallic.");
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -25,7 +25,7 @@ public class Spell_DetectAmbush extends Spell
 		lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"You are no longer detecting ambushes.");
+			mob.tell("You are no longer detecting ambushes.");
 	}
 
 	public boolean okAffect(Environmental myHost, Affect msg)

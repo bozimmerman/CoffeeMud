@@ -69,7 +69,7 @@ public interface MOB
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/
 	public Session session();
-	public void tell(MOB source, Environmental target, String msg);
+	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
 	public void setSession(Session newSession);
 	public void setReplyTo(MOB mob);

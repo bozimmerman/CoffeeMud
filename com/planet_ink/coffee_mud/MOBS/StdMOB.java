@@ -1339,16 +1339,16 @@ public class StdMOB implements MOB
 		return true;
 	}
 
-	public void tell(MOB source, Environmental target, String msg)
+	public void tell(MOB source, Environmental target, Environmental tool, String msg)
 	{
 		if(mySession!=null)
-			mySession.stdPrintln(source,target,msg);
+			mySession.stdPrintln(source,target,tool,msg);
 
 	}
 
 	public void tell(String msg)
 	{
-		tell(this,this,msg);
+		tell(this,this,null,msg);
 	}
 
 	public void affect(Environmental myHost, Affect affect)
@@ -1393,18 +1393,18 @@ public class StdMOB implements MOB
 					ExternalPlay.justDie((MOB)affect.tool(),this);
 				else
 					ExternalPlay.justDie(null,this);
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			case Affect.TYP_REBUKE:
 				if(((affect.target()==null)&&(getLeigeID().length()>0))
 				||((affect.target()!=null)&&(affect.target().name().equals(getLeigeID()))))
 					setLeigeID("");
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			case Affect.TYP_SERVE:
 				if((affect.target()!=null)&&(!(affect.target() instanceof Deity)))
 					setLeigeID(affect.target().name());
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			case Affect.TYP_EXAMINESOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
@@ -1442,7 +1442,7 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_SLEEP:
@@ -1453,7 +1453,7 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_STAND:
@@ -1464,13 +1464,13 @@ public class StdMOB implements MOB
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
-				tell(this,affect.target(),affect.sourceMessage());
+				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_RECALL:
 				if((affect.target()!=null) && (affect.target() instanceof Room) && (location() != affect.target()))
 				{
-					tell(affect.source(),null,affect.targetMessage());
+					tell(affect.source(),null,affect.tool(),affect.targetMessage());
 					location().delInhabitant(this);
 					((Room)affect.target()).addInhabitant(this);
 					((Room)affect.target()).showOthers(mob,null,Affect.MSG_ENTER,"<S-NAME> appears out of the Java Plain.");
@@ -1485,16 +1485,16 @@ public class StdMOB implements MOB
 				if((affect.target()!=null)&&(affect.target() instanceof MOB))
 				{
 					setFollowing((MOB)affect.target());
-					tell(affect.source(),affect.target(),affect.sourceMessage());
+					tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
 				}
 				break;
 			case Affect.TYP_NOFOLLOW:
 				setFollowing(null);
-				tell(affect.source(),affect.target(),affect.sourceMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			default:
 				// you pretty much always know what you are doing, if you can do it.
-				tell(affect.source(),affect.target(),affect.sourceMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			}
 		}
@@ -1590,24 +1590,24 @@ public class StdMOB implements MOB
 			{
 				if((affect.targetMinor()==Affect.TYP_SPEAK)&&(affect.source()!=null))
 					replyTo=affect.source();
-				tell(affect.source(),affect.target(),affect.targetMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 			else
 			if(((Util.bset(targetMajor,Affect.MASK_EYES))
 			  ||(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			  ||(Util.bset(targetMajor,Affect.MASK_GENERAL)))
 			&&(!asleep)&&(canseesrc))
-				tell(affect.source(),affect.target(),affect.targetMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-				tell(affect.source(),affect.target(),affect.targetMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			else
 			if(((Util.bset(targetMajor,Affect.MASK_HANDS))
 				||(Util.bset(targetMajor,Affect.MASK_MOVE))
 				||((Util.bset(targetMajor,Affect.MASK_MOUTH))
 				   &&(!Util.bset(targetMajor,Affect.MASK_SOUND))))
 			&&(!asleep)&&((canhearsrc)||(canseesrc)))
-				tell(affect.source(),affect.target(),affect.targetMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 		}
 		else
 		if((affect.othersCode()!=Affect.NO_EFFECT)
@@ -1626,31 +1626,31 @@ public class StdMOB implements MOB
 			{
 				if(((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
 				&&(Sense.canSenseMoving(affect.source(),this)))
-					tell(affect.source(),affect.target(),affect.othersMessage());
+					tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			}
 			else
 			if(Util.bset(othersMajor,affect.MASK_CHANNEL))
 			{
 				if(!Util.isSet(getChannelMask(),(affect.othersCode()-affect.MASK_CHANNEL)))
-					tell(affect.source(),affect.target(),affect.othersMessage());
+					tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			}
 			else
 			if((Util.bset(othersMajor,Affect.MASK_SOUND))
 			&&(!asleep)
 			&&(canhearsrc))
-				tell(affect.source(),affect.target(),affect.othersMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			else
 			if(((Util.bset(othersMajor,Affect.MASK_EYES))
 			||(Util.bset(othersMajor,Affect.MASK_HANDS))
 			||(Util.bset(othersMajor,Affect.MASK_GENERAL)))
 			&&((!asleep)&&(canseesrc)))
-				tell(affect.source(),affect.target(),affect.othersMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			else
 			if(((Util.bset(othersMajor,Affect.MASK_MOVE))
 				||((Util.bset(othersMajor,Affect.MASK_MOUTH))&&(!Util.bset(othersMajor,Affect.MASK_SOUND))))
 			&&(!asleep)
 			&&((canseesrc)||(canhearsrc)))
-				tell(affect.source(),affect.target(),affect.othersMessage());
+				tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 
 			if((affect.othersMinor()==Affect.TYP_DEATH)&&(victim!=null))
 			{

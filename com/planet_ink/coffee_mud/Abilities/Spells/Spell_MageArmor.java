@@ -48,7 +48,7 @@ public class Spell_MageArmor extends Spell
 
 		if(target.amWearingSomethingHere(Item.ON_TORSO))
 		{
-			mob.tell(mob,null,"You are already wearing something on your torso!");
+			mob.tell("You are already wearing something on your torso!");
 			return false;
 		}
 

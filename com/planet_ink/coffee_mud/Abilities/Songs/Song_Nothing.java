@@ -33,7 +33,7 @@ public class Song_Nothing extends Song
 		unsing(mob);
 		if(!foundOne)
 		{
-			mob.tell(mob,null,auto?"There is no song playing.":"You aren't singing.");
+			mob.tell(auto?"There is no song playing.":"You aren't singing.");
 			return true;
 		}
 

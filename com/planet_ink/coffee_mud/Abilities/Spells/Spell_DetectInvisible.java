@@ -24,7 +24,7 @@ public class Spell_DetectInvisible extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your sight becomes less keen.");
+			mob.tell("Your sight becomes less keen.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-public class AbilityEvoker
+public class AbilityEvoker extends Scriptable
 {
 	private AbilityEvoker(){}
 
@@ -14,10 +14,10 @@ public class AbilityEvoker
 	{
 		if(commands.size()==1)
 		{
-			mob.tell("Gain what?  Enter QUALIFY to see what you can gain.");
+			mob.tell(getScr("Movement","gainerr"));
 			return;
 		}
-		commands.insertElementAt("SAY",0);
+		commands.insertElementAt(getScr("CommandSet","say"),0);
 		ExternalPlay.doCommand(mob,commands);
 	}
 	private static boolean evokedBy(Ability thisAbility, String thisWord)
@@ -155,13 +155,13 @@ public class AbilityEvoker
 		Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
 		{
-			mob.tell("You don't know how to do that.");
+			mob.tell(getScr("AbilityEvoker","evokeerr1"));
 			return;
 		}
 		if((CMAble.qualifyingLevel(mob,evokableAbility)>=0)
 		&&(!CMAble.qualifiesByLevel(mob,evokableAbility)))
 		{
-			mob.tell("You are not high enough level to do that.");
+			mob.tell(getScr("AbilityEvoker","evokeerr2"));
 			return;
 		}
 		evokableAbility.invoke(mob,commands,null,false);
@@ -171,7 +171,7 @@ public class AbilityEvoker
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("Teach who what?");
+			mob.tell(getScr("AbilityEvoker","teacherr1"));
 			return;
 		}
 		commands.removeElementAt(0);
@@ -180,7 +180,7 @@ public class AbilityEvoker
 		MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
 		if((student==null)||((student!=null)&&(!Sense.canBeSeenBy(student,mob))))
 		{
-			mob.tell("That person doesn't seem to be here.");
+			mob.tell(getScr("AbilityEvoker","teacherr2"));
 			return;
 		}
 		commands.removeElementAt(0);
@@ -195,7 +195,7 @@ public class AbilityEvoker
 			myAbility=mob.fetchAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell("You don't seem to know "+abilityName+".");
+			mob.tell(getScr("AbilityEvoker","teacherr3",abilityName));
 			return;
 		}
 		if(!myAbility.canBeTaughtBy(mob,student))
@@ -204,13 +204,13 @@ public class AbilityEvoker
 			return;
 		if(student.fetchAbility(myAbility.ID())!=null)
 		{
-			mob.tell(student.name()+" already knows how to do that.");
+			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
+		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.name()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		myAbility.teach(mob,student);
@@ -221,7 +221,7 @@ public class AbilityEvoker
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Practice what?");
+			mob.tell(getScr("AbilityEvoker","pracerr1"));
 			return;
 		}
 		commands.removeElementAt(0);
@@ -248,21 +248,21 @@ public class AbilityEvoker
 
 		if((teacher==null)||((teacher!=null)&&(!Sense.canBeSeenBy(teacher,mob))))
 		{
-			mob.tell("That person doesn't seem to be here.");
+			mob.tell(getScr("AbilityEvoker","pracerr2"));
 			return;
 		}
 
 		Ability myAbility=mob.fetchAbility(abilityName);
 		if(myAbility==null)
 		{
-			mob.tell("You don't seem to know "+abilityName+".");
+			mob.tell(getScr("AbilityEvoker","pracerr3",abilityName));
 			return;
 		}
 
 		Ability teacherAbility=mob.fetchAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(teacher.name()+" doesn't seem to know "+abilityName+".");
+			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.name(),abilityName));
 			return;
 		}
 
@@ -273,7 +273,7 @@ public class AbilityEvoker
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> practice(s) '"+myAbility.name()+"' with <T-NAMESELF>.");
+		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.name()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		teacherAbility.practice(teacher,mob);

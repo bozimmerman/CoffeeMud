@@ -26,7 +26,7 @@ public class Spell_KnowBliss extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell(mob,null,"You feel less blissful.");
+			mob.tell("You feel less blissful.");
 			if((mob.isMonster())
 			   &&(!mob.amDead())
 			   &&(mob.location()!=null)

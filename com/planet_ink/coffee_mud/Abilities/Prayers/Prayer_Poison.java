@@ -56,7 +56,7 @@ public class Prayer_Poison extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"The unholy poison runs its course.");
+			mob.tell("The unholy poison runs its course.");
 	}
 
 

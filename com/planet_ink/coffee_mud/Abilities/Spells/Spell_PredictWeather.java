@@ -27,7 +27,7 @@ public class Spell_PredictWeather extends Spell
 			lastPrediction="";
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
+			mob.tell("Your senses are no longer sensitive to the weather.");
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{

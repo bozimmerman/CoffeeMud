@@ -32,7 +32,7 @@ public class Spell_Shelter extends Spell
 			{
 				mob=shelter.fetchInhabitant(0);
 				if(mob==null) break;
-				mob.tell(mob,null,"You return to your previous location.");
+				mob.tell("You return to your previous location.");
 
 				FullMsg enterMsg=new FullMsg(mob,previousLocation,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere!");
 				shelter.delInhabitant(mob);

@@ -22,7 +22,7 @@ public class Prayer_Gills extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"You gills vanish.");
+			mob.tell("Your gills vanish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

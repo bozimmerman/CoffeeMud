@@ -24,7 +24,7 @@ public class Spell_TrueSight extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your no longer have true sight.");
+			mob.tell("You no longer have true sight.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

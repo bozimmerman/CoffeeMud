@@ -24,7 +24,7 @@ public class Spell_WaterBreathing extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your gills disappear.");
+			mob.tell("Your gills disappear.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

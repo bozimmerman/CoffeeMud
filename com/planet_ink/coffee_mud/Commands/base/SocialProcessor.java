@@ -65,8 +65,8 @@ public class SocialProcessor
 				}
 				else
 				{
-					mob.tell(mob,target,"You tell "+targetName+" '"+text+"'");
-					target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'");
+					mob.tell("You tell "+targetName+" '"+text+"'");
+					target.tell(mob.name()+" tell(s) you '"+text+"'");
 					target.setReplyTo(mob);
 				}
 			}

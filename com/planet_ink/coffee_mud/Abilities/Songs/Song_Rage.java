@@ -37,7 +37,7 @@ public class Song_Rage extends Song
 		if(affect.sourceMinor()!=Affect.TYP_FLEE) return true;
 		if(affect.source().fetchAffect(this.ID())==null) return true;
 
-		affect.source().tell(affect.source(),null,"You are too enraged to flee.");
+		affect.source().tell("You are too enraged to flee.");
 		return false;
 	}
 

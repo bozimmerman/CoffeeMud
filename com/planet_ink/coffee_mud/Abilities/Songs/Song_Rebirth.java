@@ -50,7 +50,7 @@ public class Song_Rebirth extends Song
 						MOB rejuvedMOB=CMMap.getPlayer(mobName);
 						if(rejuvedMOB!=null)
 						{
-							rejuvedMOB.tell(rejuvedMOB,null,"You are being resusitated.");
+							rejuvedMOB.tell("You are being resusitated.");
 							if(rejuvedMOB.location()!=mob.location())
 							{
 								rejuvedMOB.location().delInhabitant(rejuvedMOB);
@@ -86,7 +86,7 @@ public class Song_Rebirth extends Song
 						i++;
 				}
 				if(!foundOne)
-					mob.tell(mob,null,"Nothing seems to happen.");
+					mob.tell("Nothing seems to happen.");
 			}
 		}
 		else

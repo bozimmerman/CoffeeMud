@@ -100,7 +100,7 @@ public class Ranger_Track extends StdAbility
 		if(oldTrack==null) oldTrack=mob.fetchAffect("Ranger_TrackAnimal");
 		if(oldTrack!=null)
 		{
-			mob.tell(mob,null,"You stop tracking.");
+			mob.tell("You stop tracking.");
 			oldTrack.unInvoke();
 			if(commands.size()==0) return true;
 		}

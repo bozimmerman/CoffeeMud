@@ -22,7 +22,7 @@ public class Chant_BreatheWater extends Chant
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your ability to breathe underwater fades.");
+			mob.tell("Your ability to breathe underwater fades.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

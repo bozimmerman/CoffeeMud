@@ -219,7 +219,7 @@ public class TelnetSession extends Thread implements Session
 				((Session)snoops.elementAt(s)).print(msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,msg,false));
+		out.print(filter(mob,mob,null,msg,false));
 		out.flush();
 	}
 
@@ -241,29 +241,31 @@ public class TelnetSession extends Thread implements Session
 
 	public void print(Environmental Source,
 					  Environmental Target,
+					  Environmental Tool,
 					  String msg)
 	{
 		if(snoops.size()>0)
 			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).print(Source,Target,msg);
+				((Session)snoops.elementAt(s)).print(Source,Target,Tool,msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(Source,Target,msg,false));
+		out.print(filter(Source,Target,Tool,msg,false));
 		out.flush();
 	}
 
 	public void stdPrint(Environmental Source,
-					  Environmental Target,
-					  String msg)
+						 Environmental Target,
+						 Environmental Tool,
+						 String msg)
 	{
 		if(snoops.size()>0)
 			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrint(Source,Target,msg);
+				((Session)snoops.elementAt(s)).stdPrint(Source,Target,Tool,msg);
 
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
-		print(Source,Target,msg);
+		print(Source,Target,Tool,msg);
 		needPrompt=true;
 	}
 
@@ -279,7 +281,7 @@ public class TelnetSession extends Thread implements Session
 		while(msg.length()<Length)
 			msg=msg+" ";
 		msg=msg+msgEnd;
-		out.print(filter(mob,mob,msg, false));
+		out.print(filter(mob,mob,null,msg, false));
 		out.flush();
 	}
 
@@ -306,7 +308,7 @@ public class TelnetSession extends Thread implements Session
 				((Session)snoops.elementAt(s)).println(msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,msg,false)+"\n\r");
+		out.print(filter(mob,mob,null,msg,false)+"\n\r");
 		out.flush();
 	}
 
@@ -317,7 +319,7 @@ public class TelnetSession extends Thread implements Session
 				((Session)snoops.elementAt(s)).unfilteredPrintln(msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,msg,true)+"\n\r");
+		out.print(filter(mob,mob,null,msg,true)+"\n\r");
 		out.flush();
 		needPrompt=true;
 	}
@@ -329,7 +331,7 @@ public class TelnetSession extends Thread implements Session
 				((Session)snoops.elementAt(s)).unfilteredPrint(msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(mob,mob,msg,true));
+		out.print(filter(mob,mob,null,msg,true));
 		out.flush();
 		needPrompt=true;
 	}
@@ -367,36 +369,38 @@ public class TelnetSession extends Thread implements Session
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
-		out.print(filter(mob,mob,msg,false)+"\n\r");
+		out.print(filter(mob,mob,null,msg,false)+"\n\r");
 		out.flush();
 		needPrompt=true;
 	}
 
 	public void println(Environmental Source,
 						Environmental Target,
+						Environmental Tool,
 						String msg)
 	{
 		if(snoops.size()>0)
 			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).println(Source,Target,msg);
+				((Session)snoops.elementAt(s)).println(Source,Target,Tool,msg);
 
 		if((out==null)||(msg==null)) return;
-		out.print(filter(Source,Target,msg,false)+"\n\r");
+		out.print(filter(Source,Target,Tool,msg,false)+"\n\r");
 		out.flush();
 	}
 
 	public void stdPrintln(Environmental Source,
 						   Environmental Target,
+						   Environmental Tool,
 						   String msg)
 	{
 		if(snoops.size()>0)
 			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).stdPrintln(Source,Target,msg);
+				((Session)snoops.elementAt(s)).stdPrintln(Source,Target,Tool,msg);
 
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
-		out.print(filter(Source,Target,msg,false)+"\n\r");
+		out.print(filter(Source,Target,Tool,msg,false)+"\n\r");
 		out.flush();
 		needPrompt=true;
 	}
@@ -541,6 +545,7 @@ public class TelnetSession extends Thread implements Session
 
 	public String filter(Environmental source,
 						 Environmental target,
+						 Environmental tool,
 						 String msg,
 						 boolean wrapOnly)
 	{
@@ -691,9 +696,13 @@ public class TelnetSession extends Thread implements Session
 								cmd.append(Character.toUpperCase(buf.charAt(ldex)));
 						if((ldex<buf.length())&&(buf.charAt(ldex)=='>')&&(cmd.length()>4))
 						{
-							Environmental regarding=source;
-							if(Character.toUpperCase(cmd.charAt(0))=='T')
-								regarding=target;
+							Environmental regarding=null;
+							switch(Character.toUpperCase(cmd.charAt(0)))
+							{
+							case 'S': regarding=source; break;
+							case 'T': regarding=target; break;
+							case 'O': regarding=tool; break;
+							}
 							String replacement=null;
 							Integer I=(Integer)tagTable.get(cmd.substring(1));
 							if(I!=null)

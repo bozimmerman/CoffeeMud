@@ -57,7 +57,7 @@ public class Prayer_Nullification extends Prayer
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The magic on <T-NAME> appears too powerful to be nullified.");
 						else
 						if(auto)
-							mob.tell(mob,target,"Nothing seems to be happening to <T-NAME>.");
+							mob.tell(mob,target,null,"Nothing seems to be happening to <T-NAME>.");
 					}
 					else
 						revokeThis.unInvoke();

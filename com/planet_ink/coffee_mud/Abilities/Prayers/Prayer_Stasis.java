@@ -69,7 +69,7 @@ public class Prayer_Stasis extends Prayer
 		else
 		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 		{
-			affect.source().tell(affect.source(),mob,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
+			affect.source().tell(affect.source(),mob,null,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
 			return false;
 		}
 

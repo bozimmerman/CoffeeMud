@@ -25,7 +25,7 @@ public class Spell_DetectHidden extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your vision is no longer as keen.");
+			mob.tell("Your vision is no longer as keen.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

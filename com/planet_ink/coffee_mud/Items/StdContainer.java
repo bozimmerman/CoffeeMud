@@ -57,25 +57,25 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)affect.tool();
 					if(hasALid()&&(!isOpen()))
 					{
-						mob.tell(mob,null,name()+" is closed.");
+						mob.tell(name()+" is closed.");
 						return false;
 					}
 					else
 					if(newitem.amWearingAt(Item.WIELD))
 					{
-						mob.tell(mob,null,"You are wielding that!");
+						mob.tell("You are wielding that!");
 						return false;
 					}
 					else
 					if(newitem.amWearingAt(Item.HELD))
 					{
-						mob.tell(mob,null,"You are holding that!");
+						mob.tell("You are holding that!");
 						return false;
 					}
 					else
 					if(!newitem.amWearingAt(Item.INVENTORY))
 					{
-						mob.tell(mob,null,"You are wearing that!");
+						mob.tell("You are wearing that!");
 						return false;
 					}
 					else
@@ -126,7 +126,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(mob,null,name()+" is closed.");
+							mob.tell(name()+" is closed.");
 							return false;
 						}
 						else

@@ -46,7 +46,7 @@ public class Disease_MummyRot extends StdAbility
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"The rot is cured.");
+			mob.tell("The rot is cured.");
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -33,9 +33,9 @@ public class Spell_Geas extends Spell
 		if(canBeUninvoked())
 		{
 			if(completed)
-				mob.tell(mob,null,"You have completed your geas.");
+				mob.tell("You have completed your geas.");
 			else
-				mob.tell(mob,null,"You have been released from your geas.");
+				mob.tell("You have been released from your geas.");
 			
 			if((mob.isMonster())
 			   &&(!mob.amDead())

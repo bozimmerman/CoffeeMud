@@ -24,7 +24,7 @@ public class Spell_DetectMagic extends Spell
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your eyes cease to sparkle.");
+			mob.tell("Your eyes cease to sparkle.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

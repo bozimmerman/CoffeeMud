@@ -26,7 +26,7 @@ public class Spell_DetectWater extends Spell
 			lastRoom=null;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell(mob,null,"Your senses are no longer sensitive to liquids.");
+			mob.tell("Your senses are no longer sensitive to liquids.");
 	}
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{
