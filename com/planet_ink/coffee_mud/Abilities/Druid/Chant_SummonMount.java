@@ -33,12 +33,13 @@ public class Chant_SummonMount extends Chant
 		{
 			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
-				if(((((MOB)affected).amFollowing()==null)
-				||(((MOB)affected).location()!=invoker.location()))
+				MOB mob=(MOB)affected;
+				if(((mob.amFollowing()==null)
+				||(mob.location()!=invoker.location()))
 				&&(invoker.riding()!=affected))
 				{
-					((MOB)affected).delAffect(this);
-					((MOB)affected).destroy();
+					mob.delAffect(this);
+					mob.destroy();
 				}
 			}
 		}

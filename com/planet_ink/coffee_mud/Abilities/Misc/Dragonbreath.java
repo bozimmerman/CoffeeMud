@@ -58,7 +58,7 @@ public class Dragonbreath extends StdAbility
 				WeaponType=Weapon.TYPE_BURSTING;
 				break;
 		case 'c':
-				puffPhrase="<S-NAME> puff(s) cost air from <S-HIS-HER> mouth.";
+				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of frozen air erupts!";
 				stuffWord="cold";
 				castPhrase="<S-NAME> blast(s) a frozen cone from <S-HIS-HER> mouth!";

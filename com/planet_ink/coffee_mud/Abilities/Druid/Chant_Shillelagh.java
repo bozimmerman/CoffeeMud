@@ -57,6 +57,17 @@ public class Chant_Shillelagh extends Chant
 		Item target=getTarget(mob,mob.location(),givenTarget,commands);
 		if(target==null) return false;
 
+		if(!(target instanceof Weapon))
+		{
+			mob.tell("You can only enchant weapons.");
+			return false;
+		}
+		if(((((Weapon)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		&&((((Weapon)target).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
+		{
+			mob.tell("You cannot enchant this foreign material.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -106,6 +106,7 @@ public class Thief extends StdCharClass
 						{
 						case EnvResource.MATERIAL_CLOTH:
 						case EnvResource.MATERIAL_LEATHER:
+						case EnvResource.MATERIAL_FLESH:
 						case EnvResource.MATERIAL_VEGETATION:
 							break;
 						default:

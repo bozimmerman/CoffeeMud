@@ -33,68 +33,68 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			
+			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Druid_MyPlants",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonPlants",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonPlants",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmWind",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonFire",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_SenseLife",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_LocateAnimals",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_Hunger",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_SummonFood",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_WaterBreathing",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_WaterWalking",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_Treeform",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_Sunray",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Farsight",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_Hunger",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_WarpWood",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_HoldAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_FortifyFood",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_SummonFire",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_Goodberry",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_ControlFire",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_AnimalFriendship",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Barkskin",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Treeform",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonPeace",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Chant_CalmWeather",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_CharmAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_SummonHeat",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonMount",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonCold",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_WindGust",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonRain",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_ControlFire",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Druid_DruidicPass",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_NeutralizePoison",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_SummonWind",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantPass",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_ResistFire",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_WhisperWard",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_Treemind",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_ResistCold",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_SummonLightning",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_ResistPoison",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Sunray",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_ResistGas",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Barkskin",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_ResistLightning",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_Farsight",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonFear",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonInsects",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_Bury",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Chant_Hibernation",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_CharmArea",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_IllusionaryForest",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_AnimalSpy",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_DistantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_WaterWalking",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_WindGust",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_WaterBreathing",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_HoldAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_ResistPoison",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_WhisperWard",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_Treemind",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_Bury",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_ResistFire",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_ResistCold",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_CharmAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_CalmWind",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_ResistLightning",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_Shillelagh",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_CalmWeather",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_ResistGas",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonHeat",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonCold",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonInsects",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_Hibernation",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_AnimalSpy",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonRain",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonWind",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonMount",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_NeutralizePoison",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_PlantSnare",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_Treemorph",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonElemental",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_Earthquake",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_PlantSnare",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_Shillelagh",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_IllusionaryForest",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_CharmArea",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_Treemorph",true);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class Druid extends StdCharClass
 	}
 
 	public String weaponLimitations(){return "To avoid fumbling, must be Natural, Wooden, or Vegetation-based weapons.";}
-	public String armorLimitations(){return "Must wear cloth, paper, or vegetation armor to avoid chant failure.";}
+	public String armorLimitations(){return "Must wear cloth, paper, leather, or vegetation armor to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
@@ -139,6 +139,9 @@ public class Druid extends StdCharClass
 						{
 						case EnvResource.MATERIAL_CLOTH:
 						case EnvResource.MATERIAL_VEGETATION:
+						case EnvResource.MATERIAL_LEATHER:
+						case EnvResource.MATERIAL_FLESH:
+						case EnvResource.MATERIAL_ROCK:
 						case EnvResource.MATERIAL_PAPER:
 							break;
 						default:

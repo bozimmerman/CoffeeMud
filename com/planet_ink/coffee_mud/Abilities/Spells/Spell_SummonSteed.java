@@ -43,10 +43,13 @@ public class Spell_SummonSteed extends Spell
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(((MOB)affected).amFollowing()==null)
+				MOB mob=(MOB)affected;
+				if(((mob.amFollowing()==null)
+				||(mob.location()!=invoker.location()))
+				&&(invoker.riding()!=affected))
 				{
-					((MOB)affected).delAffect(this);
-					((MOB)affected).destroy();
+					mob.delAffect(this);
+					mob.destroy();
 				}
 			}
 		}

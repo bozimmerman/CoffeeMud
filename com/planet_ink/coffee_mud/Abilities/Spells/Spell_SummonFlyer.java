@@ -43,8 +43,14 @@ public class Spell_SummonFlyer extends Spell
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(((MOB)affected).amFollowing()==null)
-					((MOB)affected).destroy();
+				MOB mob=(MOB)affected;
+				if(((mob.amFollowing()==null)
+				||(mob.location()!=invoker.location()))
+				&&(invoker.riding()!=affected))
+				{
+					mob.delAffect(this);
+					mob.destroy();
+				}
 			}
 		}
 		return super.tick(tickID);

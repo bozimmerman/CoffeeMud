@@ -56,6 +56,7 @@ public class Skill_Distract extends StdAbility
 		{
 			// preventing distracting player from doin anything else
 			if(affect.amISource(invoker)
+			&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.WISDOM)*2))
 			&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
 			{
 				invoker.location().show(invoker,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
@@ -73,7 +74,7 @@ public class Skill_Distract extends StdAbility
 		if(!mob.amDead())
 		{
 			if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
-				mob.tell("You are no longer distracing "+mob.name()+".");
+				invoker.tell("You are no longer distracting "+mob.name()+".");
 			mob.tell("You are no longer distracted.");
 		}
 		super.unInvoke();
