@@ -45,6 +45,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Charge",true);
 			

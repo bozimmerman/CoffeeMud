@@ -129,4 +129,4 @@ Master % Battle Dart	38	100	4	728	GenSpear	THROWN	PIERCING	8	55	1	1
 Master Shuriken	41	120	2	1112	GenSpear	THROWN	SLASHING	16	25	1	1
 Master Pilum	46	130	8	2428	GenSpear	THROWN	PIERCING	28	5	1	2
 Master Hurlbat	48	140	8	2248	GenSpear	THROWN	SLASHING	72	-125	1	1
-Master Dwarven Thrower	49	170	8	2932	GenSpear	THROWN	BASHING	36	-15	1	2	MITHRIL	Spell_Returning
+Master Dwarven Thrower	49	170	8	2932	GenSpear	THROWN	BASHING	36	-15	1	2	MITHRIL	Spell_Boomerang

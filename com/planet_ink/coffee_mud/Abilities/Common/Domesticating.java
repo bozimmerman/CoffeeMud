@@ -33,7 +33,10 @@ public class Domesticating extends CommonSkill
 		{
 			MOB mob=(MOB)affected;
 			if((taming==null)||(!mob.location().isInhabitant(taming)))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

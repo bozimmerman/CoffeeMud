@@ -33,11 +33,20 @@ public class AnimalTaming extends CommonSkill
 		{
 			MOB mob=(MOB)affected;
 			if((taming==null)||(mob.location()==null))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 			if((taming instanceof MOB)&&(!mob.location().isInhabitant((MOB)taming)))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 			if((taming instanceof Item)&&(!mob.location().isContent((Item)taming)))
+			{
+				messedUp=true;
 				unInvoke();
+			}
 		}
 		return super.tick(ticking,tickID);
 	}

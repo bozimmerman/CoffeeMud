@@ -248,11 +248,19 @@ public class CombatAbilities extends StdBehavior
 				{
 					if(A.quality()!=Ability.MALICIOUS)
 						victim=mob;
-					Vector V=new Vector();
-					V.addElement("say");
-					V.addElement(victim.name());
-					V.addElement(((Wand)myWand).magicWord());
-					mob.doCommand(V);
+					else
+					if(mob.getVictim()!=null)
+						victim=mob.getVictim();
+					else
+						victim=null;
+					if(victim!=null)
+					{
+						Vector V=new Vector();
+						V.addElement("say");
+						V.addElement(victim.name());
+						V.addElement(((Wand)myWand).magicWord());
+						mob.doCommand(V);
+					}
 				}
 			}
 		}
