@@ -56,6 +56,70 @@ public class Prayer_Curse extends Prayer
 		super.unInvoke();
 	}
 
+	public static Item getSomething(MOB mob, boolean blessedOnly)
+	{
+		Vector good=new Vector();
+		Vector great=new Vector();
+		Item target=null;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((!blessedOnly)||(isBlessed(I)))
+				if(I.amWearingAt(Item.INVENTORY))
+					good.addElement(I);
+				else
+					great.addElement(I);
+		}
+		if(great.size()>0)
+			target=(Item)great.elementAt(Dice.roll(1,great.size(),-1));
+		else
+		if(good.size()>0)
+			target=(Item)good.elementAt(Dice.roll(1,good.size(),-1));
+		return target;
+	}
+	
+	public static boolean isBlessed(Item item)
+	{
+		if(item.fetchAffect("Prayer_Bless")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_HolyAura")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_BlessItem")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_HolyWord")!=null)
+			return true;
+		return false;
+	}
+	
+	public static void endIt(Environmental target, int level)
+	{
+		for(int a=target.numAffects()-1;a>=0;a--)
+		{
+			Ability A=target.fetchAffect(a);
+			if(A!=null)
+			{
+				if(A instanceof Prayer_Bless)
+					A.unInvoke();
+				if(A instanceof Prayer_BlessItem)
+					A.unInvoke();
+				if(A instanceof Prayer_Sanctuary)
+					A.unInvoke();
+				if((A instanceof Prayer_HolyAura)&&(level>0))
+					A.unInvoke();
+				if((A instanceof Prayer_HolyWord)&&(level>1))
+					A.unInvoke();
+				if((A instanceof Prayer_UnholyWord)&&(level!=2))
+					A.unInvoke();
+				if((A instanceof Prayer_Curse)&&(level!=0))
+					A.unInvoke();
+				if((A instanceof Prayer_CurseItem)&&(level!=0))
+					A.unInvoke();
+				if((A instanceof Prayer_GreatCurse)&&(level!=1))
+					A.unInvoke();
+			}
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -79,27 +143,13 @@ public class Prayer_Curse extends Prayer
 				if(!msg.wasModified())
 				{
 					success=maliciousAffect(mob,target,0,-1);
-					int a=0;
-					while(a<target.numAffects())
+					Item I=getSomething(mob,true);
+					if(I!=null)
 					{
-						Ability A=target.fetchAffect(a);
-						if(A!=null)
-						{
-							int b=target.numAffects();
-							if(A instanceof Prayer_Bless)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_UnholyWord)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_GreatCurse)
-								A.unInvoke();
-							if(b==target.numAffects())
-								a++;
-						}
-						else
-							a++;
+						endIt(I,0);
+						I.recoverEnvStats();
 					}
+					endIt(target,0);
 					target.recoverEnvStats();
 				}
 			}

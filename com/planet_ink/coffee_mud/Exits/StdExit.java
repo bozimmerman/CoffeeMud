@@ -149,17 +149,17 @@ public class StdExit implements Exit
 		case Affect.TYP_OK_ACTION:
 			return true;
 		case Affect.TYP_ENTER:
-			if((!Sense.canBeSeenBy(this,affect.source()))
-			&&(Sense.canSee(affect.source()))
-			&&(!Sense.isGlowing(this))
-			&&((Sense.isHidden(this)&&(!Sense.canSeeHidden(affect.source())))
-				||(Sense.isInvisible(this)&&(!Sense.canSeeInvisible(affect.source())))))
-			{
-				mob.tell("You can't go that way.");
-				return false;
-			}
 			if((hasADoor)&&(!isOpen))
 			{
+				if((!Sense.canBeSeenBy(this,affect.source()))
+				&&(Sense.canSee(affect.source()))
+				&&(!Sense.isGlowing(this))
+				&&((Sense.isHidden(this)&&(!Sense.canSeeHidden(affect.source())))
+					||(Sense.isInvisible(this)&&(!Sense.canSeeInvisible(affect.source())))))
+				{
+					mob.tell("You can't go that way.");
+					return false;
+				}
 				mob.tell("The "+doorName+" is "+closeName+"d.");
 				return false;
 			}
@@ -331,7 +331,7 @@ public class StdExit implements Exit
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
+		if((Sense.canBeSeenBy(this,mob))||isOpen())
 			if(isOpen())
 			{
 				if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))

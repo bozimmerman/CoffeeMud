@@ -72,31 +72,18 @@ public class Prayer_HolyAura extends Prayer
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
-				int a=0;
-				while(a<target.numAffects())
+				Item I=Prayer_Bless.getSomething(mob,true);
+				while(I!=null)
 				{
-					Ability A=target.fetchAffect(a);
-					if(A!=null)
-					{
-						int b=target.numAffects();
-						if(A instanceof Prayer_Curse)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_Bless)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_GreatCurse)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_HolyWord)
-							A.unInvoke();
-						if(b==target.numAffects())
-							a++;
-					}
-					else
-						a++;
+					FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					if(mob.location().okAffect(msg2))
+						mob.location().send(target,msg2);
+					Prayer_Bless.endIt(I,1);
+					I.recoverEnvStats();
+					I=Prayer_Bless.getSomething(mob,true);
 				}
+				Prayer_Bless.endIt(target,1);
+				beneficialAffect(mob,target,0);
 				target.recoverEnvStats();
 			}
 		}

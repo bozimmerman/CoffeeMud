@@ -35,7 +35,6 @@ public class Spell_PassDoor extends Spell
 		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 

@@ -101,28 +101,9 @@ public class Prayer_CurseItem extends Prayer
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true);
 		Item target=null;
 		if(mobTarget!=null)
-		{
-			Vector goodPossibilities=new Vector();
-			Vector possibilities=new Vector();
-			for(int i=0;i<mobTarget.inventorySize();i++)
-			{
-				Item item=mobTarget.fetchInventory(i);
-				if((item!=null)
-				   &&(item.container()==null))
-				{
-					if(item.amWearingAt(Item.INVENTORY))
-						possibilities.addElement(item);
-					else
-						goodPossibilities.addElement(item);
-				}
-				if(goodPossibilities.size()>0)
-					target=(Item)goodPossibilities.elementAt(Dice.roll(1,goodPossibilities.size(),-1));
-				else
-				if(possibilities.size()>0)
-					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
-			}
-		}
-		
+			target=Prayer_Curse.getSomething(mobTarget,true);
+		if((target==null)&&(mobTarget!=null))
+			target=Prayer_Curse.getSomething(mobTarget,false);
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		
@@ -148,24 +129,8 @@ public class Prayer_CurseItem extends Prayer
 					mob.location().send(mob,msg2);
 				if(!msg.wasModified())
 				{
+					Prayer_Curse.endIt(target,0);
 					success=maliciousAffect(mob,target,0,-1);
-					int a=0;
-					while(a<target.numAffects())
-					{
-						Ability A=target.fetchAffect(a);
-						if(A!=null)
-						{
-							int b=target.numAffects();
-							if(A instanceof Prayer_BlessItem)
-								A.unInvoke();
-							if(A instanceof Prayer_Bless)
-								A.unInvoke();
-							if(b==target.numAffects())
-								a++;
-						}
-						else
-							a++;
-					}
 					target.recoverEnvStats();
 				}
 			}

@@ -95,37 +95,14 @@ public class Prayer_UnholyWord extends Prayer
 					{
 						if(Sense.canBeHeardBy(mob,target))
 						{
-							beneficialAffect(mob,target,0);
-							int a=0;
-							while(a<target.numAffects())
+							Item I=Prayer_Curse.getSomething(mob,true);
+							if(I!=null)
 							{
-								Ability A=target.fetchAffect(a);
-								if(A!=null)
-								{
-									int b=target.numAffects();
-									if(A instanceof Prayer_Bless)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_Sanctuary)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_HolyAura)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_HolyWord)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_Curse)
-										A.unInvoke();
-									else
-									if(A instanceof Prayer_GreatCurse)
-										A.unInvoke();
-									if(b==target.numAffects())
-										a++;
-								}
-								else
-									a++;
+								Prayer_Curse.endIt(I,2);
+								I.recoverEnvStats();
 							}
+							Prayer_Curse.endIt(target,2);
+							beneficialAffect(mob,target,0);
 							target.recoverEnvStats();
 						}
 						else

@@ -71,34 +71,14 @@ public class Prayer_GreatCurse extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,-1);
-					int a=0;
-					while(a<target.numAffects())
+					Item I=Prayer_Curse.getSomething(mob,true);
+					if(I!=null)
 					{
-						Ability A=target.fetchAffect(a);
-						if(A!=null)
-						{
-							int b=target.numAffects();
-							if(A instanceof Prayer_Bless)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_Sanctuary)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_HolyAura)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_Curse)
-								A.unInvoke();
-							else
-							if(A instanceof Prayer_UnholyWord)
-								A.unInvoke();
-							if(b==target.numAffects())
-								a++;
-						}
-						else
-							a++;
+						Prayer_Curse.endIt(I,1);
+						I.recoverEnvStats();
 					}
+					Prayer_Curse.endIt(target,1);
+					success=maliciousAffect(mob,target,0,-1);
 				}
 			}
 		}

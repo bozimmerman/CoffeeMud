@@ -1,23 +1,23 @@
 ^HMOVEMENT^N                            ^HCOMMUNICATION^?
 north south east west up down       gossip chat gratz greet
-exits recall ride crawl             answer quote say tell channels
+exits recall ride crawl climb       answer quote say tell channels
 sleep wake rest stand enter         quiet emote socials yell ask
 
 ^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
 kill backstab flee wimpy rescue     help credits commands areas
-climb bash disarm dirt trip         report score attributes who
+sweep bash disarm dirt trip         report score affect who
 spells skills prayers songs         description topics weather
-pray practice cast sing
+pray practice cast sing chant
                                     ^HGROUPS^?
 ^HOBJECTS^?                             follow group gtell split
 inventory equipment look compare    
-get put drop give                   ^HOTHER^?
-wear wield hold eat drink           ! quit password train qualify
+get put drop give wear wield        ^HOTHER^?
+hold eat drink fill                 ! quit password train qualify
 lock unlock open close pick         ansi noansi
 list buy sell value                 
                                     ^HCLASSES^?
 ^HHELP^?                                fighter mage cleric thief 
-help commands bug topics            ranger paladin bard
+help commands bug topics            ranger paladin bard druid
 
 ** enter ^HHELP 'command name'^? or ^HTOPICS^? for more help!
 

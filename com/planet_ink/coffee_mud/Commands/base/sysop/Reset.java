@@ -60,6 +60,7 @@ public class Reset
 				for(int i=0;i<room.numItems();i++)
 				{
 					Item I=room.fetchItem(i);
+					if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
 					String str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 					if(str.length()>0)
 					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
@@ -79,6 +80,7 @@ public class Reset
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB M=room.fetchInhabitant(m);
+					if(M==mob) continue;
 					String str=mob.session().prompt(M.name()+"/"+M.charStats().getMyRace().ID(),"");
 					if(str.length()>0)
 					{
@@ -101,7 +103,11 @@ public class Reset
 						Item I=M.fetchInventory(i);
 						str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 						if(str.equalsIgnoreCase("delete"))
+						{
 							M.delInventory(I);
+							somethingDone=true;
+							mob.tell("deleted");
+						}
 						else
 						if(str.length()>0)
 						for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
@@ -117,7 +123,7 @@ public class Reset
 					}
 					if(M instanceof ShopKeeper)
 					{
-						Vector V=((ShopKeeper)M).getBaseInventory();
+						Vector V=((ShopKeeper)M).getUniqueStoreInventory();
 						for(int i=V.size()-1;i>=0;i--)
 						{
 							Environmental E=(Environmental)V.elementAt(i);
@@ -126,7 +132,11 @@ public class Reset
 								Item I=(Item)E;
 								str=mob.session().prompt(I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 								if(str.equalsIgnoreCase("delete"))
+								{
 									((ShopKeeper)M).delStoreInventory(I);
+									somethingDone=true;
+									mob.tell("deleted");
+								}
 								else
 								if(str.length()>0)
 								for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)

@@ -470,6 +470,9 @@ public class Scoring
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean foundButUnseen=false;
+		if(Sense.isSleeping(seer))
+			return new StringBuffer("(nothing you can see right now)");
+		
 		for(int l=0;l<18;l++)
 		{
 			int wornCode=1<<l;
@@ -487,16 +490,12 @@ public class Scoring
 						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}
 					else
-						foundButUnseen=true;
+						msg.append(header+"(something you can`t see)"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 				}
 			}
 		}
-		if(foundButUnseen)
-			msg.append("(nothing you can see right now)");
-		else
 		if(msg.length()==0)
 			msg.append("^B(nothing)^?\n\r");
-
 		return msg;
 	}
 	public void equipment(MOB mob)

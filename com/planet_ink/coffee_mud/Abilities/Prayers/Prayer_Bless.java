@@ -61,6 +61,72 @@ public class Prayer_Bless extends Prayer
 		super.unInvoke();
 	}
 
+	public static Item getSomething(MOB mob, boolean cursedOnly)
+	{
+		Vector good=new Vector();
+		Vector great=new Vector();
+		Item target=null;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((!cursedOnly)||(isCursed(I)))
+				if(I.amWearingAt(Item.INVENTORY))
+					good.addElement(I);
+				else
+					great.addElement(I);
+		}
+		if(great.size()>0)
+			target=(Item)great.elementAt(Dice.roll(1,great.size(),-1));
+		else
+		if(good.size()>0)
+			target=(Item)good.elementAt(Dice.roll(1,good.size(),-1));
+		return target;
+	}
+	
+	public static void endIt(Environmental target, int level)
+	{
+		for(int a=target.numAffects()-1;a>=0;a--)
+		{
+			Ability A=target.fetchAffect(a);
+			if(A!=null)
+			{
+				if(A instanceof Prayer_Curse)
+					A.unInvoke();
+				if(A instanceof Prayer_CurseItem)
+					A.unInvoke();
+				if((A instanceof Prayer_Bless)&&(level!=0))
+					A.unInvoke();
+				if((A instanceof Prayer_BlessItem)&&(level!=0))
+					A.unInvoke();
+				if((A instanceof Prayer_HolyAura)&&(level!=1))
+					A.unInvoke();
+				if((A instanceof Prayer_HolyWord)&&(level!=2))
+					A.unInvoke();
+				if((A instanceof Prayer_GreatCurse)&&(level>0))
+					A.unInvoke();
+				if((A instanceof Prayer_UnholyWord)&&(level>1))
+					A.unInvoke();
+			}
+		}
+	}
+	
+	public static boolean isCursed(Item item)
+	{
+		if(item.fetchAffect("Prayer_Curse")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_GreatCurse")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_CurseItem")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_UnholyWord")!=null)
+			return true;
+		if(!item.isGettable())
+			return true;
+		if(!item.isDroppable())
+			return true;
+		return false;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -82,28 +148,19 @@ public class Prayer_Bless extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				int a=0;
-				while(a<target.numAffects())
+				Item I=getSomething(mob,true);
+				while(I!=null)
 				{
-					Ability A=target.fetchAffect(a);
-					if(A!=null)
-					{
-						int b=target.numAffects();
-						if(A instanceof Prayer_Curse)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_HolyWord)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_HolyAura)
-							A.unInvoke();
-						if(b==target.numAffects())
-							a++;
-					}
-					else
-						a++;
+					FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					if(mob.location().okAffect(msg2))
+						mob.location().send(target,msg2);
+					endIt(I,0);
+					I.recoverEnvStats();
+					I=getSomething(mob,true);
 				}
+				endIt(target,0);
 				target.recoverEnvStats();
+				target.location().recoverRoomStats();
 			}
 		}
 		else
