@@ -76,6 +76,7 @@ public class CMMap
 	
 	public static String getExtendedRoomID(Room R)
 	{
+		if(R==null) return "";
 		if(R.roomID().length()>0) return R.roomID();
 		Area A=R.getArea();
 		if(A==null) return "";

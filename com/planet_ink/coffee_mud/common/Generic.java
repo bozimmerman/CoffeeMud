@@ -11,7 +11,6 @@ public class Generic
 		return (x&m)==m;
 	}
 
-	
 	public static void resetGenMOB(MOB mob, String newText)
 	{
 		if((newText!=null)&&(newText.length()>10))
@@ -190,8 +189,30 @@ public class Generic
 		}
 		else
 		if(E instanceof Area)
-			return XMLManager.convertXMLtoTag("ARCHP",((Area)E).getArchivePath())
-				   +getExtraEnvPropertiesStr(E);
+		{
+		    StringBuffer str = new StringBuffer();
+		    StringBuffer parentstr = new StringBuffer();
+		    StringBuffer childrenstr = new StringBuffer();
+		    str.append(XMLManager.convertXMLtoTag("ARCHP", ( (Area) E).getArchivePath()));
+		    for(Enumeration e=((Area)E).getParents(); e.hasMoreElements();) 
+			{
+		        Area A=(Area)e.nextElement();
+		        parentstr.append("<PARENT>");
+		        parentstr.append(XMLManager.convertXMLtoTag("PARENTNAMED", A.name()));
+		        parentstr.append("</PARENT>");
+		    }
+		    str.append(XMLManager.convertXMLtoTag("PARENTS",parentstr.toString()));
+		    for(Enumeration e=((Area)E).getChildren(); e.hasMoreElements();) 
+			{
+		        Area A=(Area)e.nextElement();
+		        childrenstr.append("<CHILD>");
+		        childrenstr.append(XMLManager.convertXMLtoTag("CHILDNAMED", A.name()));
+		        childrenstr.append("</CHILD>");
+		    }
+		    str.append(XMLManager.convertXMLtoTag("CHILDREN",childrenstr.toString()));
+		    str.append(getExtraEnvPropertiesStr(E));
+		    return str.toString();
+		}
 		else
 		if(E instanceof Ability)
 			return XMLManager.convertXMLtoTag("AWRAP",E.text());
@@ -321,7 +342,7 @@ public class Generic
 
 		if(E instanceof LandTitle)
 			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landRoomID()));
-		
+
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()!=null)
@@ -373,7 +394,7 @@ public class Generic
 					itemstr.append("</BLESS>");
 				}
 				text.append(XMLManager.convertXMLtoTag("BLESSINGS",itemstr.toString()));
-				
+
 				itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numCurses();b++)
 				{
@@ -385,7 +406,7 @@ public class Generic
 					itemstr.append("</CURSE>");
 				}
 				text.append(XMLManager.convertXMLtoTag("CURSES",itemstr.toString()));
-				
+
 				itemstr=new StringBuffer("");
 				for(int b=0;b<((Deity)E).numPowers();b++)
 				{
@@ -660,7 +681,7 @@ public class Generic
 		}
 		return "";
 	}
-	
+
 	public static String fillAreasVectorFromXML(String buf, Vector areas, Vector custom)
 	{
 		Vector xml=XMLManager.parseAllXML(buf);
@@ -1140,7 +1161,7 @@ public class Generic
 						if((mob.charStats().getMyRace().isGeneric())
 						&&(!custom.contains(mob.charStats().getMyRace())))
 						   custom.add(mob.charStats().getMyRace());
-							
+
 						buf.append("<RMOB>");
 						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
@@ -1258,6 +1279,34 @@ public class Generic
 		if(E instanceof Area)
 		{
 			((Area)E).setArchivePath(XMLManager.getValFromPieces(V,"ARCHP"));
+            Vector VP=XMLManager.getRealContentsFromPieces(V,"PARENTS");
+            if(VP!=null)
+            {
+                for(int i=0;i<VP.size();i++)
+                {
+                    XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VP.elementAt(i);
+                    if((!ablk.tag.equalsIgnoreCase("PARENT"))||(ablk.contents==null))
+                    {
+                        Log.errOut("Generic","Error parsing 'PARENT' of "+E.name()+" ("+E.ID()+").  Load aborted");
+                        return;
+                    }
+                    ((Area)E).addParentToLoad(XMLManager.getValFromPieces(ablk.contents,"PARENTNAMED"));
+                }
+            }
+            Vector VC=XMLManager.getRealContentsFromPieces(V,"CHILDREN");
+            if(VC!=null)
+            {
+                for(int i=0;i<VC.size();i++)
+                {
+                    XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)VC.elementAt(i);
+                    if((!ablk.tag.equalsIgnoreCase("CHILD"))||(ablk.contents==null))
+                    {
+                        Log.errOut("Generic","Error parsing 'CHILD' of "+E.name()+" ("+E.ID()+").  Load aborted");
+                        return;
+                    }
+                    ((Area)E).addChildToLoad(XMLManager.getValFromPieces(ablk.contents,"CHILDNAMED"));
+                }
+            }
 			setExtraEnvProperties(E,V);
 		}
 		else
@@ -1439,7 +1488,7 @@ public class Generic
 				}
 			}
 		}
-		
+
 		setEnvProperties(E,buf);
 
 		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
@@ -1713,7 +1762,7 @@ public class Generic
 		text.append(XMLManager.convertXMLtoTag("AFFECS",affectstr.toString()));
 		return text.toString();
 	}
-	
+
 	public static String getEnvStatsStr(EnvStats E)
 	{
 		return E.ability()+"|"+
@@ -1827,7 +1876,7 @@ public class Generic
 		E.setHeight((int)Math.round(nums[9]));
 		E.setSensesMask((int)Math.round(nums[10]));
 	}
-	
+
 	private static void setEnvProperties(Environmental E, Vector buf)
 	{
 		E.setName(XMLManager.getValFromPieces(buf,"NAME"));
@@ -1979,7 +2028,7 @@ public class Generic
 									 "DISPOSITION","SENSES","ARMOR",
 									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
 									 "ABLES","INVENTORY"};
-	
+
 	public static int getGenMobCodeNum(String code)
 	{
 		if(GENMOBCODESHASH.size()==0)

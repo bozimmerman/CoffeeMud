@@ -226,7 +226,7 @@ public class Skill_Track extends StdAbility
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 			if(theTrail==null)
 				theTrail=SaucerSupport.findBastardTheBestWay(thisRoom,rooms,false);
-			if((cacheCode==1)&&(rooms.size()==1))
+			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
 		

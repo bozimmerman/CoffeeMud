@@ -100,6 +100,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDAREA"))
 		{
+            MOB mob=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
@@ -108,12 +109,13 @@ public class MUDGrinder extends StdWebMacro
 				A=ExternalPlay.DBCreateArea(AREA,"StdArea");
 			else
 				return "false";
-			Log.sysOut("Grinder","Someone added area "+A.Name());
+			Log.sysOut("Grinder",mob.Name()+" added area "+A.Name());
 			return "true";
 		}
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
+            MOB mob=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
@@ -121,9 +123,7 @@ public class MUDGrinder extends StdWebMacro
 			if(A==null) return "";
 			String error=GrinderAreas.modifyArea(httpReq,parms);
 			AREA=httpReq.getRequestParameter("AREA");
-			Log.sysOut("Grinder","Someone edited area "+A.Name());
-			if(error==null) error="";
-			httpReq.addRequestParameters("ERRMSG",error);
+			Log.sysOut("Grinder",mob.Name()+" edited area "+A.Name());
 		}
 		else
 		if(parms.containsKey("DELEXIT"))

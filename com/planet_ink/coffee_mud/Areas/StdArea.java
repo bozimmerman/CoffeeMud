@@ -22,6 +22,11 @@ public class StdArea implements Area
 	private Boolean roomSemaphore=new Boolean(true);
 	private int[] statData=null;
 
+    protected Vector children=null;
+    protected Vector parents=null;
+    public Vector childrenToLoad=new Vector();
+    public Vector parentsToLoad=new Vector();
+	
 	protected static int year=1;
 	protected static int month=1;
 	protected static int day=1;
@@ -1522,6 +1527,196 @@ public class StdArea implements Area
 		return subOps;
 	}
 
+    public void addChildToLoad(String str) { childrenToLoad.addElement(str);}
+    public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
+	
+	// Children
+	public void initChildren() {
+	        if(children==null) {
+	                children=new Vector();
+	                for(int i=0;i<childrenToLoad.size();i++) {
+	                  Area A=CMMap.getArea((String)childrenToLoad.elementAt(i));
+	                  if(A==null)
+	                    continue;
+	                  children.addElement(A);
+	                }
+	        }
+	}
+	public Enumeration getChildren() { initChildren(); return children.elements(); }
+	public String getChildrenList() {
+	        initChildren();
+	        StringBuffer str=new StringBuffer("");
+	        for(Enumeration e=getChildren(); e.hasMoreElements();) {
+	                Area A=(Area)e.nextElement();
+	                if(str.length()>0) str.append(";");
+	                str.append(A.name());
+	        }
+	        return str.toString();
+	}
+
+	public int getNumChildren() { initChildren(); return children.size(); }
+	public Area getChild(int num) { initChildren(); return (Area)children.elementAt(num); }
+	public Area getChild(String named) {
+	        initChildren();
+	        for(int i=0;i<children.size();i++){
+	                Area A=(Area)children.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                       return A;
+	        }
+	        return null;
+	}
+	public boolean isChild(Area named) {
+	        initChildren();
+	        for(int i=0;i<children.size();i++){
+	                Area A=(Area)children.elementAt(i);
+	                if(A.equals(named))
+	                       return true;
+	        }
+	        return false;
+	}
+	public boolean isChild(String named) {
+	        initChildren();
+	        for(int i=0;i<children.size();i++){
+	                Area A=(Area)children.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                        return true;
+	        }
+	        return false;
+	}
+	public void addChild(Area Adopted) {
+	        initChildren();
+	        // So areas can load ok, the code needs to be able to replace 'dummy' children with 'real' ones
+	        for(int i=0;i<children.size();i++){
+	                Area A=(Area)children.elementAt(i);
+	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
+	                        children.setElementAt(Adopted, i);
+	                        return;
+	                }
+	        }
+	        children.addElement(Adopted);
+	}
+	public void removeChild(Area Disowned) { initChildren(); children.removeElement(Disowned); }
+	public void removeChild(int Disowned) { initChildren(); children.removeElementAt(Disowned); }
+	// child based circular reference check
+	public boolean canChild(Area newChild) {
+	        initParents();
+	        // Someone asked this area if newChild can be a child to them,
+	        // which means this is a parent to someone.  If newChild is a
+	        // parent, directly or indirectly, return false.
+	        if(parents.contains(newChild))
+	        {
+	                return false; // It is directly a parent
+	        }
+	        for(int i=0;i<parents.size();i++) {
+	                // check with all the parents about how they feel
+	                Area rent=(Area)parents.elementAt(i);
+	                // as soon as any parent says false, dump that false back to them
+	                if(!(rent.canChild(newChild)))
+	                {
+	                        return false;
+	                }
+	        }
+	        // no parent is the same as newChild, nor is it indirectly a parent.
+	        // Go for it!
+	        return true;
+	}
+
+	// Parent
+	public void initParents() {
+	        if (parents == null) {
+	                parents = new Vector();
+	                for (int i = 0; i < parentsToLoad.size(); i++) {
+	                        Area A = CMMap.getArea( (String) parentsToLoad.elementAt(i));
+	                        if (A == null)
+	                                continue;
+	                        parents.addElement(A);
+	                }
+	        }
+	}
+	public Enumeration getParents() { initParents(); return parents.elements(); }
+	public String getParentsList() {
+	        initParents();
+	        StringBuffer str=new StringBuffer("");
+	        for(Enumeration e=getParents(); e.hasMoreElements();) {
+	                Area A=(Area)e.nextElement();
+	                if(str.length()>0) str.append(";");
+	                str.append(A.name());
+	        }
+	        return str.toString();
+	}
+
+	public int getNumParents() { initParents(); return parents.size(); }
+	public Area getParent(int num) { initParents(); return (Area)parents.elementAt(num); }
+	public Area getParent(String named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                       return A;
+	        }
+	        return null;
+	}
+	public boolean isParent(Area named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if(A.equals(named))
+	                       return true;
+	        }
+	        return false;
+	}
+	public boolean isParent(String named) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if((A.name().equalsIgnoreCase(named))
+	                   ||(A.Name().equalsIgnoreCase(named)))
+	                        return true;
+	        }
+	        return false;
+	}
+	public void addParent(Area Adopted) {
+	        initParents();
+	        for(int i=0;i<parents.size();i++){
+	                Area A=(Area)parents.elementAt(i);
+	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
+	                        parents.setElementAt(Adopted, i);
+	                        return;
+	                }
+	        }
+	        parents.addElement(Adopted);
+	}
+	public void removeParent(Area Disowned) { initParents();parents.removeElement(Disowned); }
+	public void removeParent(int Disowned) { initParents();parents.removeElementAt(Disowned); }
+	public boolean canParent(Area newParent) {
+	        initChildren();
+	        // Someone asked this area if newParent can be a parent to them,
+	        // which means this is a child to someone.  If newParent is a
+	        // child, directly or indirectly, return false.
+	        if(children.contains(newParent))
+	        {
+	                return false; // It is directly a child, so it can't Parent
+	        }
+	        for(int i=0;i<children.size();i++) {
+	                // check with all the children about how they feel
+	                Area child=(Area)children.elementAt(i);
+	                // as soon as any child says false, dump that false back to them
+	                if(!(child.canParent(newParent)))
+	                {
+	                        return false;
+	                }
+	        }
+	        // no child is the same as newParent, nor is it indirectly a child.
+	        // Go for it!
+	        return true;
+	}
+
+
+	
+	
 	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

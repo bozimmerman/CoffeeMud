@@ -73,10 +73,12 @@ public class GrinderAreas
 
 	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
+        Vector areasNeedingUpdates=new Vector();
 		String last=httpReq.getRequestParameter("AREA");
 		if((last==null)||(last.length()==0)) return "Old area name not defined!";
 		Area A=CMMap.getArea(last);
 		if(A==null) return "Old Area not defined!";
+		areasNeedingUpdates.addElement(A);
 
 		boolean redoAllMyDamnRooms=false;
 		Vector allMyDamnRooms=null;
@@ -158,6 +160,86 @@ public class GrinderAreas
 		if(desc==null)desc="";
 		A.setDescription(Util.safetyFilter(desc));
 
+        // modify Child Area list
+        String parents=httpReq.getRequestParameter("PARENT");
+        for(int v=0;v<A.getNumParents();v++)
+            A.removeParent(v);
+        if((parents!=null)&&(parents.length()>0))
+        {
+            Area parent=CMMap.getArea(parents);
+            if(parent!=null) 
+			{
+                if(A.canParent(parent)) 
+				{
+                    A.addParent(parent);
+                    parent.addChild(A);
+                    areasNeedingUpdates.addElement(parent);
+                }
+                else
+                    return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
+            }
+            for(int i=1;;i++)
+                if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString()))) 
+				{
+                    parent=CMMap.getArea(httpReq.getRequestParameter("PARENT"+(new Integer(i).toString())));
+                    if(parent==null) 
+						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()))+"' not found by CMMap");
+                    else
+					{
+						if(A.canParent(parent)) 
+						{
+							A.addParent(parent);
+							parent.addChild(A);
+							areasNeedingUpdates.addElement(parent);
+						}
+						else
+						    return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
+                    }
+                } 
+				else 
+					break;
+        }
+
+        // modify Child Area list
+        String children=httpReq.getRequestParameter("CHILDREN");
+        for(int v=0;v<A.getNumChildren();v++)
+            A.removeChild(v);
+        if((children!=null)&&(children.length()>0))
+        {
+			Area child=CMMap.getArea(children);
+			if(child!=null) 
+			{
+				if(A.canChild(child)) 
+				{
+				    A.addChild(child);
+				    child.addParent(A);
+				    areasNeedingUpdates.addElement(child);
+				}
+				else
+				    return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+			}
+			for(int i=1;;i++)
+			    if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString()))) 
+				{
+			        child=CMMap.getArea(httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString())));
+			        if(child==null) 
+						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()))+"' not found by CMMap");
+			        else
+					{
+			            if(A.canChild(child)) 
+						{
+			                A.addChild(child);
+			                child.addParent(A);
+			                areasNeedingUpdates.addElement(child);
+			            }
+			            else
+			                return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
+			        }
+			    } 
+				else 
+					break;
+        }
+
 		// archive file
 		String file=httpReq.getRequestParameter("ARCHP");
 		if(file==null)file="";
@@ -168,7 +250,12 @@ public class GrinderAreas
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 			CMMap.renameRooms(A,oldName,allMyDamnRooms);
-		ExternalPlay.DBUpdateArea(A.Name(),A);
+		
+		for(int i=0;i<areasNeedingUpdates.size();i++) // will always include A
+		{
+		    Area A2=(Area)areasNeedingUpdates.elementAt(i);
+			ExternalPlay.DBUpdateArea(A2.Name(),A2);
+		}
 		return "";
 	}
 }

@@ -277,6 +277,53 @@ public class AreaData extends StdWebMacro
 					str.append(desc);
 				}
 
+                if(parms.containsKey("PARENT"))
+                {
+                    String parents=httpReq.getRequestParameter("PARENT");
+                    if((parents==null)||(parents.length()==0))
+                        parents=A.getParentsList();
+                    else
+                    for(int i=1;;i++)
+                        if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString())))
+                            parents+=";"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()));
+                        else
+                            break;
+                    for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+                    {
+                        String cnam=((Area)e.nextElement()).Name();
+                        str.append("<OPTION VALUE=\""+cnam+"\"");
+                        if(parents.equals(cnam)
+                           ||(parents.indexOf(";"+cnam)>=0)
+                           ||(parents.startsWith(cnam+";")))
+                                str.append(" SELECTED");
+                        str.append(">"+cnam);
+                    }
+                }
+
+                if(parms.containsKey("CHILDREN"))
+                {
+                    String children=httpReq.getRequestParameter("CHILDREN");
+                    if((children==null)||(children.length()==0))
+                        children=A.getChildrenList();
+                    else
+                    for(int i=1;;i++)
+                        if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString())))
+                            children+=";"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()));
+                        else
+                            break;
+                    for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+                    {
+                        String cnam=((Area)e.nextElement()).Name();
+                        str.append("<OPTION VALUE=\""+cnam+"\"");
+                        if(children.equals(cnam)
+                           ||(children.indexOf(";"+cnam)>=0)
+                           ||(children.startsWith(cnam+";")))
+                                str.append(" SELECTED");
+                        str.append(">"+cnam);
+                    }
+                }
+
+
 				if(parms.containsKey("SEASON"))
 					str.append(Area.SEASON_DESCS[A.getSeasonCode()]+", ");
 				if(parms.containsKey("TODCODE"))

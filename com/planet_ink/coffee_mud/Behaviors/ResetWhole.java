@@ -37,14 +37,14 @@ public class ResetWhole extends StdBehavior
 		super.tick(ticking,tickID);
 		if(lastAccess<0) return true;
 		
-		long time=1800000;
+		long time=(long)1800000;
 		try
 		{
 			time=Long.parseLong(getParms());
 			time=time*Host.TICK_TIME;
 		}
 		catch(Exception e){}
-		if((lastAccess+time)>System.currentTimeMillis())
+		if((lastAccess+time)<System.currentTimeMillis())
 		{
 			if(ticking instanceof Area)
 			{
@@ -69,7 +69,7 @@ public class ResetWhole extends StdBehavior
 				if(room!=null)
 					ExternalPlay.resetRoom(room);
 			}
-			lastAccess=-1;
+			lastAccess=System.currentTimeMillis();
 		}
 		return true;
 	}

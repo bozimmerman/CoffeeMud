@@ -147,4 +147,29 @@ public interface Area extends Environmental
 	public final static int AREASTAT_MEDALIGN=6;
 	public final static int AREASTAT_NUMBER=7;
 	
+    // Partition Necessary
+    public void addChildToLoad(String str);
+    public void addParentToLoad(String str);
+    public Enumeration getChildren();
+    public String getChildrenList();
+    public int getNumChildren();
+    public Area getChild(int num);
+    public Area getChild(String named);
+    public boolean isChild(Area named);
+    public boolean isChild(String named);
+    public void addChild(Area Adopted);
+    public void removeChild(Area Disowned);
+    public void removeChild(int Disowned);
+    public boolean canChild(Area newChild);
+    public Enumeration getParents();
+    public String getParentsList();
+    public int getNumParents();
+    public Area getParent(int num);
+    public Area getParent(String named);
+    public boolean isParent(Area named);
+    public boolean isParent(String named);
+    public void addParent(Area Adopted);
+    public void removeParent(Area Disowned);
+    public void removeParent(int Disowned);
+    public boolean canParent(Area newParent);
 }
