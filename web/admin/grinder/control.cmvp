@@ -386,6 +386,9 @@
 		<P>
 		<A HREF="javascript:openUp('Prop_HaveZapper')">Click here for Prop_HaveZapper help</a>
 		<P>
+		<FONT COLOR=WHITE><B>WIZINFO Names:</B></FONT><BR>
+		<INPUT TYPE=TEXT SIZE=80 NAME=WIZINFONAMES VALUE="@INIValue?MASK=WIZINFONAMES&VALUE@"><BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=WIZINFONAMES&INIHELP@</FONT>
 	@endif@
 	@if?CheckReqParm?INIPAGE=ABILITIES@
 		<TABLE WIDTH=100% BORDER=1>

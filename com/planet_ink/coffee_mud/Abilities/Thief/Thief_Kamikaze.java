@@ -81,7 +81,8 @@ public class Thief_Kamikaze extends ThiefSkill
 
 		if((canBeUninvoked())&&(!mob.amDead())&&(mob.location()!=null))
 		{
-			CommonMsgs.follow(mob,null,false);
+			if(mob.amFollowing()!=null)
+				CommonMsgs.follow(mob,null,false);
 			CommonMsgs.stand(mob,true);
 			if((mob.isMonster())&&(!Sense.isMobile(mob)))
 				MUDTracker.wanderAway(mob,true,true);

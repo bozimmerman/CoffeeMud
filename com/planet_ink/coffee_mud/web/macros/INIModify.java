@@ -152,6 +152,7 @@ public class INIModify extends StdWebMacro
 					CMMap.initBodyRooms(ipage);
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
+				||(modified(modified,"WIZINFONAMES"))
 				||(modified(modified,"IMC2CHANNELS")))
 				{
 					ChannelSet.unloadChannels();

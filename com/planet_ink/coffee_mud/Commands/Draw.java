@@ -148,7 +148,7 @@ public class Draw extends Get
 				if((container!=null)&&(mob.isMine(container)))
 				   getThis=mob.fetchInventory((Item)container,whatToGet+addendumStr);
 				if(getThis==null) break;
-				if((getThis instanceof Weapon)&&(Sense.canBeSeenBy(getThis,mob)))
+				if(getThis instanceof Weapon)
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
 			}

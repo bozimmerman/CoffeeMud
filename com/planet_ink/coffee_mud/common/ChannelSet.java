@@ -284,7 +284,7 @@ public class ChannelSet
 
 		channelNames.addElement(new String("WIZINFO"));
 		channelQue.addElement(new Vector());
-		channelMasks.addElement("+SYSOP -NAMES");
+		channelMasks.addElement("+SYSOP -NAMES "+CommonStrings.getVar(CommonStrings.SYSTEM_WIZINFONAMES));
 		ichannelList.addElement("");
 		imc2channelList.addElement("");
 		numChannelsLoaded++;

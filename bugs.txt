@@ -1,7 +1,3 @@
-Just because I can`t see in the dark shouldn`t mean that I can`t draw my weapon from my sheath....especially if I have blind fighting.
-Assuming I understood Loki right, unholy armament gets stuck when it`s time to summon leggings for me since I don`t have a leggings slot. That means that I can`t summon any of the armor that comes after leggings. -Kyrna, the Dragon-Demoness.
-Casting charm on yourself results in you being charmed and then spammed by the line `You aren`t following anyone!` for the duration of the charm.
-wizinfo channel for others
 the idea of unique items
 map command.  
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.

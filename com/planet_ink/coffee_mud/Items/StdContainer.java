@@ -135,6 +135,7 @@ public class StdContainer extends StdItem implements Container
 					if(newitem.container()==this)
 					{
 						if((!Sense.canBeSeenBy(newitem,mob))
+						&&(amWearingAt(Item.INVENTORY))
 						&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0))
 						{
 							mob.tell("You can't see that.");

@@ -711,8 +711,8 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!Sense.canBeSeenBy(this,mob))
-				   &&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
-				   &&(amWearingAt(Item.INVENTORY)))
+				&&((msg.sourceMajor()&CMMsg.MASK_GENERAL)==0)
+				&&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;

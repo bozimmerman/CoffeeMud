@@ -108,10 +108,13 @@ public class Spell_Charm extends Spell
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
-		if((getCharmer()!=null)&&(!Sense.isInTheGame(getCharmer())))
+		if((getCharmer()!=null)
+		&&(!Sense.isInTheGame(getCharmer())))
 			unInvoke();
 		else
-		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
+		if((affected==mob)
+		&&(invoker()!=mob)
+		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
 			CommonMsgs.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}
@@ -128,7 +131,8 @@ public class Spell_Charm extends Spell
 		if(canBeUninvoked())
 		{
 			mob.tell("Your free-will returns.");
-			CommonMsgs.follow(mob,null,false);
+			if(mob.amFollowing()!=null)
+				CommonMsgs.follow(mob,null,false);
 			CommonMsgs.stand(mob,true);
 			if(mob.isMonster())
 			{
