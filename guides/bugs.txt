@@ -1,4 +1,3 @@
 summon a horse, jump on it, get attacked by something, wait till its dead, and cast a spell at it, your encumbrance goes up, cast another spell and it goes back down.
 Some mage stuff at the trading post.
 ability to make wallpaper
-VIEW should let you get a description of items in shopkeeper inventory.
