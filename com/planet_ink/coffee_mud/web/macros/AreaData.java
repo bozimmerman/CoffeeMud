@@ -159,7 +159,6 @@ public class AreaData extends StdWebMacro
 		}
 		return str;
 	}
-
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);

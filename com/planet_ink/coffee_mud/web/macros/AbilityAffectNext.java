@@ -19,6 +19,9 @@ public class AbilityAffectNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
+		String ableType=httpReq.getRequestParameter("ABILITYTYPE");
+		if((ableType!=null)&&(ableType.length()>0))
+			parms.put(ableType,ableType);
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -26,9 +29,6 @@ public class AbilityAffectNext extends StdWebMacro
 			int classType=A.classificationCode()&Ability.ALL_CODES;
 			if(CMAble.getQualifyingLevel("Archon",A.ID())>=0)
 				continue;
-			String ableType=httpReq.getRequestParameter("ABILITYTYPE");
-			if((ableType!=null)&&(ableType.length()>0))
-				parms.put(ableType,ableType);
 			boolean containsOne=false;
 			for(int i=0;i<Ability.TYPE_DESCS.length;i++)
 				if(parms.containsKey(Ability.TYPE_DESCS[i]))

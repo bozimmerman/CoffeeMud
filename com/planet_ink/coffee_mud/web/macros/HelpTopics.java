@@ -22,10 +22,9 @@ public class HelpTopics extends StdWebMacro
 		else
 		if(parms.containsKey("DATA"))
 		{
-			String which=httpReq.getRequestParameter("TOPIC");
-			if((which!=null)&&(which.length()>0))
+			if((last!=null)&&(last.length()>0))
 			{
-				StringBuffer s=ExternalPlay.getHelpText(which);
+				StringBuffer s=ExternalPlay.getHelpText(last);
 				if(s!=null)
 					return helpHelp(s).toString();
 			}
