@@ -28,6 +28,19 @@ public class Generic
 			mob.tell("(no change)");
 	}
 
+	static void genArchivePath(MOB mob, Area E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Archive file name: '"+E.getArchivePath()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if(newName.length()>0)
+			E.setArchivePath(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	public static Room changeRoomType(Room R, Room newRoom)
 	{
 		if((R==null)||(newRoom==null)) return R;
@@ -637,11 +650,11 @@ public class Generic
 		while(!c.equals("\n"))
 		{
 			mob.session().println(""+showNumber+". Climate:");
-			mob.session().println("R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
-			mob.session().println("H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
-			mob.session().println("C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
-			mob.session().println("W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
-			mob.session().println("D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
+			mob.session().println("    R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
+			mob.session().println("    H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
+			mob.session().println("    C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
+			mob.session().println("    W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
+			mob.session().println("    D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
 			switch(c.charAt(0))

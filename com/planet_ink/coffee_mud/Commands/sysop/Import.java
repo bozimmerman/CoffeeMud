@@ -3717,6 +3717,8 @@ public class Import
 	{
 		String commandType="";
 		String fileName="";
+		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path
+		
 		commands.removeElementAt(0);
 		if(commands.size()>0)
 		{
@@ -3743,7 +3745,22 @@ public class Import
 				subType=sub;
 				commands.removeElementAt(0);
 			}
+			if(commands.size()==0)
+			{
+				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
+				return;
+			}
 			fileName=Util.combine(commands,0);
+			if(fileName.equalsIgnoreCase("screen"))
+				fileNameCode=0;
+			else
+			{
+				File F=new File(fileName);
+				if(F.isDirectory())
+					fileNameCode=2;
+			}
+			if(fileNameCode<0)
+				fileNameCode=1;
 		}
 		else
 		{
@@ -3755,19 +3772,29 @@ public class Import
 		if(subType.equalsIgnoreCase("DATA"))
 		{
 			if(commandType.equalsIgnoreCase("ROOM"))
+			{
 				xml=com.planet_ink.coffee_mud.common.Generic.getRoomXML(mob.location(),true).toString();
+				if(fileNameCode==2) fileName=fileName+File.separatorChar+"room";
+			}
 			else
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area '"+mob.location().getArea().name()+"'...");
 				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),mob.session(),true).toString();
+				if(fileNameCode==2){
+					if(mob.location().getArea().getArchivePath().length()>0)
+						fileName=fileName+File.separatorChar+mob.location().getArea().getArchivePath();
+					else
+						fileName=fileName+File.separatorChar+mob.location().getArea().name();
+				}
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
 			}
 			else
 			{
-				StringBuffer buf=new StringBuffer("<AREAS>");
+				StringBuffer buf=new StringBuffer("");
+				if(fileNameCode!=2) buf.append("<AREAS>");
 				for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 				{
 					Area A=(Area)a.nextElement();
@@ -3778,14 +3805,25 @@ public class Import
 						buf.append(com.planet_ink.coffee_mud.common.Generic.getAreaXML(A,mob.session(),true).toString());
 						if(mob.session()!=null)
 							mob.session().rawPrintln("!");
+						if(fileNameCode==2)
+						{
+							String name=fileName;
+							if(A.getArchivePath().length()>0)
+								name=fileName+File.separatorChar+A.getArchivePath();
+							else
+								name=fileName+File.separatorChar+A.name();
+							reallyExport(mob,name,buf.toString());
+							buf=new StringBuffer("");
+						}
 					}
 				}
-				xml=buf.toString()+"</AREAS>";
+				if(fileNameCode!=2) xml=buf.toString()+"</AREAS>";
 			}
 		}
 		else
 		if(subType.equalsIgnoreCase("MOBS"))
 		{
+			if(fileNameCode==2) fileName=fileName+File.separatorChar+"mobs";
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<MOBS>"+com.planet_ink.coffee_mud.common.Generic.getRoomMobs(mob.location(),found).toString()+"</MOBS>";
@@ -3827,9 +3865,24 @@ public class Import
 		||(subType.equalsIgnoreCase("ARMOR")))
 		{
 			int type=0;
-			if(subType.equalsIgnoreCase("WEAPONS")) type=1;
+			if(subType.equalsIgnoreCase("WEAPONS"))
+			{
+				if(fileNameCode==2) 
+					fileName=fileName+File.separatorChar+"weapons";
+				type=1;
+			}
 			else
-			if(subType.equalsIgnoreCase("ARMOR")) type=2;
+			if(subType.equalsIgnoreCase("ARMOR"))
+			{
+				if(fileNameCode==2) 
+					fileName=fileName+File.separatorChar+"armor";
+				type=2;
+			}
+			else
+			if(fileNameCode==2)
+			{
+				fileName=fileName+File.separatorChar+"items";
+			}
 			
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
@@ -3866,12 +3919,21 @@ public class Import
 					mob.session().rawPrintln("!");
 			}
 		}
-		
+		reallyExport(mob,fileName,xml);
+	}
+
+	public static void reallyExport(MOB mob, String fileName, String xml)
+	{
+		if(fileName==null) return;
+		if(mob==null) return;
+		if(xml==null) return;
+		if(xml.length()==0) return;
 		
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
 			mob.tell("Here it is:\n\r\n\r");
-			mob.session().rawPrintln(xml+"\n\r\n\r");
+			if(mob.session()!=null)
+				mob.session().rawPrintln(xml+"\n\r\n\r");
 		}
 		else
 		{

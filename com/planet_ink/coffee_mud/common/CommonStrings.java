@@ -301,7 +301,7 @@ public class CommonStrings extends Scriptable
 			case 1: return "graze(s)";
 			case 2: return "wound(s)";
 			case 3: return "cut(s)";
-			case 4: return "badly damage(s)";
+			case 4: return "damage(s)";
 			case 5: return "decimate(s)";
 			case 6: return "murder(s)";
 			}
@@ -352,13 +352,13 @@ public class CommonStrings extends Scriptable
 	{
 		if((weaponName==null)||(weaponName.length()==0))
 			weaponClass=Weapon.CLASS_NATURAL;
-		boolean showDamn=CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).startsWith("NO");
+		boolean showDamn=CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
-			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+"<T-HIM-HER>";
+			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>";
 		case Weapon.CLASS_THROWN:
-			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+"<T-HIM-HER>";
+			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>";
 		default:
 			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName;
 		}

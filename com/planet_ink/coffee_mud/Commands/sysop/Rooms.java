@@ -148,7 +148,7 @@ public class Rooms
 
 	private static void flunkCmd2(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 	public static void modifyArea(MOB mob, Vector commands)
@@ -173,6 +173,7 @@ public class Rooms
 				Generic.genDescription(mob,myArea,++showNumber,showFlag);
 				Generic.genTechLevel(mob,myArea,++showNumber,showFlag);
 				Generic.genClimateType(mob,myArea,++showNumber,showFlag);
+				Generic.genArchivePath(mob,myArea,++showNumber,showFlag);
 				Generic.genSubOps(mob,myArea,++showNumber,showFlag);
 				Generic.genBehaviors(mob,myArea,++showNumber,showFlag);
 				Generic.genAffects(mob,myArea,++showNumber,showFlag);
@@ -198,13 +199,19 @@ public class Rooms
 			if(command.equalsIgnoreCase("NAME"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
-				mob.location().setName(restStr);
+				myArea.setName(restStr);
 			}
 			else
 			if(command.equalsIgnoreCase("DESC"))
 			{
 				if(commands.size()<4) { flunkCmd2(mob); return;}
-				mob.location().setDescription(restStr);
+				myArea.setDescription(restStr);
+			}
+			else
+			if(command.equalsIgnoreCase("FILE"))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				myArea.setArchivePath(restStr);
 			}
 			else
 			if(command.equalsIgnoreCase("CLIMATE"))
@@ -262,13 +269,13 @@ public class Rooms
 			else
 			if(command.equalsIgnoreCase("AFFECTS"))
 			{
-				Generic.genAffects(mob,mob.location(),1,1);
+				Generic.genAffects(mob,myArea,1,1);
 				myArea.recoverEnvStats();
 			}
 			else
 			if(command.equalsIgnoreCase("BEHAVIORS"))
 			{
-				Generic.genBehaviors(mob,mob.location(),1,1);
+				Generic.genBehaviors(mob,myArea,1,1);
 				myArea.recoverEnvStats();
 			}
 			else

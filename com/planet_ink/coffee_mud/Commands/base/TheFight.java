@@ -206,10 +206,10 @@ public class TheFight
 		int replace=str.indexOf("<DAMAGE>");
 		if(replace>=0)
 		{
-			if(CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).startsWith("NO"))
-				return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+str.substring( replace+8);
+			if(!CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES"))
+				return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+str.substring(replace+8);
 			else
-				return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+"("+damage+")"+ str.substring(replace+8);
+				return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+" ("+damage+")"+ str.substring(replace+8);
 		}
 		return str;
 	}

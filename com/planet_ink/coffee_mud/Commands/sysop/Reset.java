@@ -45,8 +45,34 @@ public class Reset
 			mob.tell("Done.");
 		}
 		else
-		if(s.equalsIgnoreCase("golems"))
+		if(s.toLowerCase().startsWith("golems"))
 		{
+			if(s.toLowerCase().endsWith("change"))
+			{
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					R.getArea().toggleMobility(false);
+					resetRoom(R);
+					boolean somethingDone=false;
+					mob.tell(R.ID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
+					somethingDone=false;
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if(M==mob) continue;
+						int d=M.baseEnvStats().disposition();
+						if((d&EnvStats.IS_GOLEM)>0)
+						{
+							somethingDone=true;
+							M.baseEnvStats().setDisposition(d-EnvStats.IS_GOLEM);
+						}
+					}
+					if(somethingDone)
+						ExternalPlay.DBUpdateMOBs(R);
+					R.getArea().toggleMobility(true);
+				}
+			}
 			StringBuffer is=new StringBuffer("");
 			StringBuffer isnot=new StringBuffer("");
 			Hashtable names=new Hashtable();
@@ -69,6 +95,7 @@ public class Reset
 			mob.tell("ISNOT-"+isnot.toString());
 			Log.sysOut("GOLEMS","ISNOT-"+isnot.toString());
 		}
+		else
 		if(s.equalsIgnoreCase("areaoramamana"))
 		{
 			// this is just utility code and will change frequently

@@ -128,9 +128,9 @@ public class ItemUsage
 			{
 				Item I=(Item)mob.fetchInventory(i);
 				if((I!=null)
-				   &&(I!=compareThis)
-				   &&(I.rawProperLocationBitmap()==compareThis.rawProperLocationBitmap())
-				   &&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
+				&&(I!=compareThis)
+				&&(I.rawProperLocationBitmap()==compareThis.rawProperLocationBitmap())
+				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
 				{
 					if(!I.amWearingAt(Item.INVENTORY))
 					{ toThis=I; break;}
@@ -285,7 +285,8 @@ public class ItemUsage
 				if(getThis==null) break;
 				if((getThis instanceof Item)
 				&&(Sense.canBeSeenBy(getThis,mob))
-				&&((!allFlag)||((Item)getThis).isGettable()||(getThis.displayText().length()>0)))
+				&&((!allFlag)||((Item)getThis).isGettable()||(getThis.displayText().length()>0))
+				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
 			}
@@ -360,7 +361,8 @@ public class ItemUsage
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if(dropThis==null) break;
-			if(Sense.canBeSeenBy(dropThis,mob))
+			if((Sense.canBeSeenBy(dropThis,mob))
+			&&(!V.contains(dropThis)))
 				V.addElement(dropThis);
 			addendumStr="."+(++addendum);
 		}
@@ -435,7 +437,8 @@ public class ItemUsage
 			else
 				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
 			if(putThis==null) break;
-			if(Sense.canBeSeenBy(putThis,mob))
+			if((Sense.canBeSeenBy(putThis,mob))
+			&&(!V.contains(putThis)))
 				V.addElement(putThis);
 			addendumStr="."+(++addendum);
 		}
@@ -497,7 +500,8 @@ public class ItemUsage
 		{
 			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
 			if(fillThis==null) break;
-			if(Sense.canBeSeenBy(fillThis,mob))
+			if((Sense.canBeSeenBy(fillThis,mob))
+			&&(!V.contains(fillThis)))
 				V.addElement(fillThis);
 			addendumStr="."+(++addendum);
 		}
@@ -608,8 +612,9 @@ public class ItemUsage
 			if(from instanceof Room)
 				item=((Room)from).fetchFromMOBRoomFavorsItems(mob,container,name+addendumStr,preferredLoc);
 			if((item!=null)
-			   &&(item instanceof Item)
-			   &&((!visionMatters)||(Sense.canBeSeenBy(item,mob))))
+			&&(item instanceof Item)
+			&&((!visionMatters)||(Sense.canBeSeenBy(item,mob)))
+			&&(!V.contains(item)))
 				V.addElement(item);
 			if(item==null) return V;
 			addendumStr="."+(++addendum);

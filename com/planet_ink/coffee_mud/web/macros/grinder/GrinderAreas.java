@@ -158,6 +158,11 @@ public class GrinderAreas
 		if(desc==null)desc="";
 		A.setDescription(desc);
 		
+		// archive file
+		String file=(String)httpReq.getRequestParameters().get("ARCHP");
+		if(file==null)file="";
+		A.setArchivePath(file);
+		
 		String err=GrinderAreas.doAffectsNBehavs(A,httpReq,parms);
 		if(err.length()>0) return err;
 		

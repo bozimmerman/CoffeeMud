@@ -286,9 +286,9 @@ public class StdCharClass implements CharClass, Cloneable
 		else
 		for(int i=1;i<level;i++)
 			if(i<breakLevel)
-				neededLevel+=1000+(125*i);
+				neededLevel+=1000+(75*i);
 			else
-				neededLevel+=1000+(125*(breakLevel-1))+(25*(i-(breakLevel-1)));
+				neededLevel+=1000+(75*(breakLevel-1))+(25*(i-(breakLevel-1)));
 		return neededLevel;
 	}
 	

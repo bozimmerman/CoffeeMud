@@ -30,6 +30,11 @@ public class InTheAir extends StdRoom
 	
 	public static void makeFall(Environmental E, Room room, int avg)
 	{
+		if((E==null)||(room==null)) return;
+		
+		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) return;
+		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
+		
 		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
 		||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 		{
@@ -99,12 +104,7 @@ public class InTheAir extends StdRoom
 			if(A!=null) A.setProfficiency(avg);
 		}
 		for(int i=0;i<needToFall.size();i++)
-		{
-			Environmental E=(Environmental)needToFall.elementAt(i);
-			if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
-			||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
-				makeFall(E,room,avg);
-		}
+			makeFall((Environmental)needToFall.elementAt(i),room,avg);
 	}
 
 	public void affect(Environmental myHost, Affect affect)
