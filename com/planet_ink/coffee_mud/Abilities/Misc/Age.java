@@ -214,6 +214,7 @@ public class Age extends StdAbility
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					liege.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+					CMClass.DBEngine().DBUpdateMOB(newMan);
 					newMan.removeFromGame();
 					babe.destroy();
 				}

@@ -15,9 +15,12 @@ public class PlayerList extends StdWebMacro
 		{
 			Session session=Sessions.elementAt(i);
 			// list entry with style sheet class
-			s.append("<li class=\"cmPlayerListEntry");
+			
 			MOB m = session.mob();
 			if((m!=null)&&(!Sense.isSeen(m))) continue;
+			
+			s.append("<li class=\"cmPlayerListEntry");
+			
 			if((m!=null)&&(m.soulMate()!=null))
 				m=m.soulMate();
 

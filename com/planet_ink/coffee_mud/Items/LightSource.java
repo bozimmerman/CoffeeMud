@@ -28,7 +28,8 @@ public class LightSource extends StdItem implements Light
 
 	public void setDuration(int duration){durationTicks=duration;}
 	public int getDuration(){return durationTicks;}
-	public boolean destroyedWhenBurnedOut(){return this.destroyedWhenBurnedOut;}
+	public boolean destroyedWhenBurnedOut(){return destroyedWhenBurnedOut;}
+	public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
 	public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
 	public boolean isLit(){return lit;}
 	public void light(boolean isLit){lit=isLit;}

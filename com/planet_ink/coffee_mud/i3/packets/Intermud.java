@@ -272,7 +272,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             I3Exception e;
 
             e = new I3Exception(msg);
-			Log.errOut("Intermud",e);
+			Log.errOut("Intermud",e.getMessage());
         }
         else {
         }
@@ -377,7 +377,9 @@ public class Intermud implements Runnable, Persistent, Serializable {
 						}
 					}
                     connect();
-					if((e.getMessage()!=null)&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0))
+					if((e.getMessage()!=null)
+					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
+					&&(e.getMessage().toLowerCase().indexOf("Connection reset")<0))
 						Log.errOut("InterMud",e.getMessage());
                     return;
                 }
@@ -385,7 +387,9 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
-					if((e.getMessage()!=null)&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0))
+					if((e.getMessage()!=null)
+					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
+					&&(e.getMessage().toLowerCase().indexOf("Connection reset")<0))
 						Log.errOut("InterMud",e.getMessage());
                     continue;
                 }
@@ -401,7 +405,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","0-"+e.getMessage());
                     }
                 }
                 else if( type.equals("chan-who-req") ) {
@@ -411,7 +415,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","1-"+e.getMessage());
                     }
                 }
                 else if( type.equals("channel-add") ) {
@@ -421,7 +425,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","2-"+e.getMessage());
                     }
                 }
                 else if( type.equals("channel-remove") ) {
@@ -431,7 +435,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","3-"+e.getMessage());
                     }
                 }
                 else if( type.equals("channel-listen") ) {
@@ -441,7 +445,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","4-"+e.getMessage());
                     }
                 }
                 else if( type.equals("chan-who-reply") ) {
@@ -451,7 +455,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","5-"+e.getMessage());
                     }
                 }
                 else if( type.equals("chanlist-reply") ) {
@@ -464,7 +468,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","6-"+e.getMessage());
                     }
                 }
                 else if( type.equals("locate-req") ) {
@@ -474,7 +478,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","7-"+e.getMessage());
                     }
                 }
                 else if( type.equals("mudlist") ) {
@@ -490,7 +494,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","8-"+e.getMessage());
                     }
                 }
                 else if( type.equals("who-req") ) {
@@ -500,7 +504,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","9-"+e.getMessage());
                     }
 				}
                 else if( type.equals("who-reply") ) {
@@ -510,7 +514,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-						Log.errOut("Intermud",e);
+						Log.errOut("Intermud","10-"+e.getMessage());
                     }
                 }
                 else if( type.equals("error") ) {
@@ -551,7 +555,10 @@ public class Intermud implements Runnable, Persistent, Serializable {
             output.writeBytes(str);
         }
         catch( java.io.IOException e ) {
-			Log.errOut("Intermud",e);
+			if((e.getMessage()!=null)
+			&&(e.getMessage().indexOf("reset by peer")<0)
+			&&(e.getMessage().indexOf("Connection reset")<0))
+				Log.errOut("Intermud",e.getMessage());
         }
     }
 

@@ -513,6 +513,9 @@ DIE!</TD></TR>
     <TD>GenExit</TD>
     <TD>the maleable generic exit</TD></TR>
   <TR>
+    <TD>GenDoor</TD>
+    <TD>the maleable generic door</TD></TR>
+  <TR>
     <TD>Grate</TD>
     <TD>an ordinary closed grate in the street</TD></TR>
   <TR>
@@ -565,10 +568,10 @@ enters, but does not go back to there when one leaves, make a note of that
 too.</P>
 <P>However, it may come to pass that there is a rickety 
 straw door to some hut you wish to have, but it was not listed among your 
-choices.&nbsp; Fear not, for there is "GenExit".&nbsp; "GenExit" stands for 
+choices.&nbsp; Fear not, for there is "GenExit" and "GenDoor".&nbsp; "GenExit" stands for 
 "Generic Exit", and represents the finest in Archon power.&nbsp; A completely 
 customizable exit flowing from one room to another.&nbsp; And thusly are exits 
-divided from each other: the GenExits are customizable, flexible, changable, and 
+divided from each other: the GenExits and GenDoors are customizable, flexible, changable, and 
 otherwise maleable.&nbsp; All the other exits, however, are "Standard", meaning 
 they are not very customizable at all, but they do load very quickly, and take 
 up very little memory compared to a GenExit.&nbsp; GenExits, as well as the 
@@ -610,7 +613,7 @@ command.&nbsp; Other items include weapons, which can be discovered through
 through "list magic".&nbsp; </P>
 <P>For those items you need by are not present, there is 
 also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenBed", "GenCoins", 
-"GenCorpse", "GenKey", "GenLantern", "GenLightSource", 
+"GenCorpse", "GenKey", "GenLantern", "GenLightSource", "GenCigar", "GenPipe",
 "GenMap",&nbsp;&nbsp;"GenResource", "GenLiquidResource", "GenFoodResource", 
 "GenRideable", "GenWallpaper", "GenJournal", "GenContainer", "GenFood", 
 "GenDrink", "GenWater", and "GenReadable".&nbsp; For the fighting spirit there is the 
@@ -943,14 +946,14 @@ section using the "create Door south" command.</P>
 <P><BR><STRONG><FONT color=blue size=5>Modifying 
 Exits</FONT></STRONG></P>
 <P>To modify an exit that is east of your present location, 
-simply enter "modify east".&nbsp; If the exit to the east of you is a GenExit, 
+simply enter "modify east".&nbsp; If the exit to the east of you is a GenExit or a GenDoor, 
 you will receive the properties mentioned above.&nbsp; If the exit is anything 
 other, than you will be prompted to enter the Miscellaneous Text field.&nbsp; 
 For a standard&nbsp;exit, like Open or Door, this field represents the secret 
 code that must also be specified in the StdKey item in order for you to unlock 
 this door without spells or thief picking.&nbsp; For a readable exit, this field 
 represents the text that is written on the door.</P>
-<P><STRONG>The "GenExit"</STRONG></P>
+<P><STRONG>The "GenExit" and "GenDoor"</STRONG></P>
 <P>As mentioned briefly earlier, the GenExit is an 
 undefined exit that one can mold to fit ones needs.&nbsp; Whenever a GenExit is 
 created or modified, you will be presented with a series of properties to 
@@ -1203,15 +1206,17 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       considered magical. The exception to this is the <B 
       >GenCoins</B> object. For coins, this denotes the 
       number of coins in the pile!</TD></TR></TABLE></P>
-<P><STRONG>The "GenLightSource" 
+<P><STRONG>The "GenLightSource", "GenCigar", "GenPipe", 
 and&nbsp;"GenLantern"&nbsp;</STRONG><BR><BR></P>
 <P>A GenLightSource and GenLantern provide light for 
-players whenever they are HELD.&nbsp; GenLightSources will burn away after a 
-time, while GenLanterns can be refilled with oil from an oil flask.</P>
-<P>Whenever a GenLightSource is created, much like the 
+players whenever they are HELD.&nbsp; GenCigars and GenPipes are WORN on the 
+mouth for enjoyment.  GenLightSources and GenCigars will burn away after a 
+time, while GenLanterns can be refilled with oil from an oil flask, and GenPipes
+must be filled with an herb.</P>
+<P>Whenever these GenLightSources are created, much like the 
 GenItem above, you are presented with a list of properties to fill in.&nbsp; 
 Pressing enter will leave the property unchanged.&nbsp; The properties include 
-all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
+all of the fields listed above under GenItem, plus&nbsp;two&nbsp;more:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1223,9 +1228,17 @@ all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
   <TR>
     <TD><EM>Light Duration</EM></TD>
     <TD>the number of ticks (4 second intervals) which 
-      will transpire before the light source will burn out.&nbsp; In the case of 
-      a GenLantern, the object may be refilled with oil to continue.&nbsp; For a 
-      GenLightSource, the object will vanish.</TD></TR></TABLE></P>
+      will transpire before the light source will burn out.
+      See the next field for more information on burning out.
+      </TD></TR>
+  <TR>
+    <TD><EM>Is Destroyed after burnout</EM></TD>
+    <TD>Whether the item is destroyed after burnout.  This defaults to true for
+    GenCigar and GenLightSource (torches), which vanish after use.  GenLanterns and GenCigars default this
+    to false, meaning the item remains after it burns out (though no longer gives
+    off light).  The GenLantern may be refilled with oil at this time, or the 
+    GenPipe may be refilled with herbs to continue.</TD></TR>
+</TABLE></P>
 <P>The "GenJournal"</STRONG><BR><BR></P>
 <P>GenJournals represent message boards for players to 
 commonly post on and everyone to read.&nbsp; All GenJournals who have the same 

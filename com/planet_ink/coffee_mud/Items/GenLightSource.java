@@ -34,6 +34,7 @@ public class GenLightSource extends GenItem implements Light
 	public void setDuration(int duration){readableText=""+duration;}
 	public int getDuration(){return Util.s_int(readableText);}
 	public boolean destroyedWhenBurnedOut(){return destroyedWhenBurnedOut;}
+	public void setDestroyedWhenBurntOut(boolean truefalse){destroyedWhenBurnedOut=truefalse;}
 	public boolean goesOutInTheRain(){return goesOutInTheRain;}
 	public boolean isLit(){return lit;}
 	public void light(boolean isLit){lit=isLit;}

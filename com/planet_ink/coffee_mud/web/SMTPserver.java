@@ -257,7 +257,7 @@ public class SMTPserver extends Thread implements Tickable
 		{
 		}
 
-		Log.sysOut(getName(),"Thread stopped!");
+		//Log.sysOut(getName(),"Thread stopped!");
 	}
 
 

@@ -329,6 +329,9 @@ public class CoffeeMaker
 				text.append(XMLManager.convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
 		}
 
+		if(E instanceof Light)
+			text.append(XMLManager.convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
+		
 		if(E instanceof Rideable)
 		{
 			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
@@ -1576,6 +1579,12 @@ public class CoffeeMaker
 		{
 			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setRiderCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
+		}
+		if(E instanceof Light)
+		{
+			String bo=XMLManager.getValFromPieces(buf,"BURNOUT");
+			if((bo!=null)&&(bo.length()>0))
+				((Light)E).setDestroyedWhenBurntOut(Util.s_bool(bo));
 		}
 
 		if(E instanceof LandTitle)

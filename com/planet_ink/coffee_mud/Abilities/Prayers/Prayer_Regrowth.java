@@ -61,12 +61,13 @@ public class Prayer_Regrowth extends Prayer
 					Vector missing = Amp.missingLimbNameSet();
 					String LookingFor = null;
 					boolean found = false;
+					String missLimb=null;
 					for(int i=0;i<limbsToRegrow.size();i++) 
 					{
 						LookingFor = (String)limbsToRegrow.elementAt(i);
 						for(int j=0;j<missing.size();j++) 
 						{
-							String missLimb = (String)missing.elementAt(j);
+							missLimb = (String)missing.elementAt(j);
 							if(missLimb.toUpperCase().indexOf(LookingFor)>=0) 
 							{
 								found = true;
@@ -75,10 +76,8 @@ public class Prayer_Regrowth extends Prayer
 						}
 						if(found) break;
 					}
-					if(found) 
-					{
+					if((found)&&(missLimb!=null))
 						Amp.unamputate(target, Amp, missLimb.toLowerCase());
-					}
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();

@@ -327,6 +327,15 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	public static void genBurnout(MOB mob, Light E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Is destroyed after burnout: '"+E.destroyedWhenBurnedOut()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		E.setDestroyedWhenBurntOut(!E.destroyedWhenBurnedOut());
+	}
+
 	public static void genOpenWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3957,6 +3966,7 @@ public class BaseGenerics extends StdCommand
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genAbility(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
@@ -4010,6 +4020,7 @@ public class BaseGenerics extends StdCommand
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
@@ -4054,6 +4065,7 @@ public class BaseGenerics extends StdCommand
 			genGettable(mob,(Item)me,++showNumber,showFlag);
 			genReadable1(mob,(Item)me,++showNumber,showFlag);
 			genReadable2(mob,(Item)me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
@@ -4092,6 +4104,7 @@ public class BaseGenerics extends StdCommand
 			genDescription(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
@@ -4183,6 +4196,7 @@ public class BaseGenerics extends StdCommand
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			if(me instanceof Rideable)
@@ -4233,6 +4247,7 @@ public class BaseGenerics extends StdCommand
 			{
 				genReadable1(mob,me,++showNumber,showFlag);
 				genReadable2(mob,me,++showNumber,showFlag);
+				if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			}
 			else
 				genWeaponAmmo(mob,me,++showNumber,showFlag);
@@ -4295,6 +4310,7 @@ public class BaseGenerics extends StdCommand
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genSize(mob,me,++showNumber,showFlag);

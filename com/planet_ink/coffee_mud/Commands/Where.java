@@ -119,7 +119,7 @@ public class Where extends StdCommand
 			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				if(Sense.canAccess(mob,A))
+				if((Sense.canAccess(mob,A))&&(A.getAreaIStats()!=null))
 				{
 					int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
 					int medianDiff=0;
