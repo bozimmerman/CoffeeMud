@@ -444,7 +444,7 @@ public class TelnetSession extends Thread implements Session
 			clookup=CommonStrings.standardColorLookups();
 			
 		if((mob()!=null)
-		&&(mob().getColorStr()!=null)
+		&&(mob().getColorStr().length()>0)
 		&&(!mob().getColorStr().equals(lastColorStr)))
 		{
 			String changes=mob().getColorStr();

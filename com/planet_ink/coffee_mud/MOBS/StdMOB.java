@@ -412,7 +412,10 @@ public class StdMOB implements MOB
 			return prompt;
 	}
 	public void setPrompt(String newPrompt){prompt=newPrompt;}
-	public String getColorStr(){return colorStr;}
+	public String getColorStr(){
+		if(colorStr==null) return "";
+		return colorStr;
+	}
 	public void setColorStr(String newColors){colorStr=newColors;}
 	
 	public void bringToLife(Room newLocation, boolean resetStats)

@@ -40,11 +40,11 @@ public class Generic
 			case '&':
 				if(loop<buf.length()-3)
 				{
-					if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
-						buf.replace(loop,loop+3,"<");
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("lt;"))
+						buf.replace(loop,loop+4,"<");
 					else
-					if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
-						buf.replace(loop,loop+3,">");
+					if(buf.substring(loop+1,loop+4).equalsIgnoreCase("gt;"))
+						buf.replace(loop,loop+4,">");
 				}
 				break;
 			case '%':
