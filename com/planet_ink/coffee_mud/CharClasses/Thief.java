@@ -127,6 +127,7 @@ public class Thief extends StdCharClass
 					int classification=((Weapon)I).weaponClassification();
 					if(!((classification==Weapon.CLASS_SWORD)
 					||(classification==Weapon.CLASS_RANGED)
+					||(classification==Weapon.CLASS_THROWN)
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_DAGGER))
 					   )

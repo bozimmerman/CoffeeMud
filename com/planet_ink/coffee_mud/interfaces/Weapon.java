@@ -23,6 +23,7 @@ public interface Weapon extends Item
 	public final static int CLASS_SWORD=8;
 	public final static int CLASS_DAGGER=9;
 	public final static int CLASS_STAFF=10;
+	public final static int CLASS_THROWN=11;
 	
 	public int weaponType();
 	public int weaponClassification();

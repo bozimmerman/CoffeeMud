@@ -288,16 +288,9 @@ public class Generic
 			}
 		}
 	}
-	void genGettable(MOB mob, Item E)
+	void genReadable(MOB mob, Item E)
 		throws IOException
 	{
-		if(E instanceof Potion)
-			((Potion)E).setDrunk((Potion)E,false);
-
-		E.setGettable(genGenericPrompt(mob,"Is this item gettable",E.isGettable()));
-		E.setDroppable(genGenericPrompt(mob,"Is this item droppable",E.isDroppable()));
-		E.setRemovable(genGenericPrompt(mob,"Is this item removable",E.isRemovable()));
-		E.setTrapped(genGenericPrompt(mob,"Is this item trapped",E.isTrapped()));
 		if((E instanceof Wand)
 		 ||(E instanceof Scroll)
 		 ||(E instanceof Pill)
@@ -413,6 +406,34 @@ public class Generic
 					else
 						mob.tell("(no change)");
 				}
+			}
+		}
+	}
+	void genGettable(MOB mob, Item E)
+		throws IOException
+	{
+		if(E instanceof Potion)
+			((Potion)E).setDrunk((Potion)E,false);
+
+		String c="Q";
+		while(!c.equals("\n"))
+		{
+			mob.session().println("\n\r1) Is Gettable   : "+E.isGettable());
+			mob.session().println("2) Is Droppable  : "+E.isDroppable());
+			mob.session().println("3) Is Removable  : "+E.isRemovable());
+			mob.session().println("4) Is Trapped    : "+E.isTrapped());
+			if(E instanceof Weapon)
+				mob.session().println("5) Is Two-Handed : "+E.isTrapped());
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","12345\n","\n").toUpperCase();
+			switch(c.charAt(0))
+			{
+			case '1': E.setGettable(!E.isGettable()); break;
+			case '2': E.setDroppable(!E.isDroppable()); break;
+			case '3': E.setRemovable(!E.isRemovable()); break;
+			case '4': E.setTrapped(!E.isTrapped()); break;
+			case '5': if(E instanceof Weapon) 
+						  E.setRawLogicalAnd(!E.rawLogicalAnd()); 
+					  break;
 			}
 		}
 		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,E.isTrapped());
@@ -890,9 +911,19 @@ public class Generic
 			}
 			else
 				mob.tell("(no change)");
+			mob.tell("\n\rAmmo capacity: '"+E.ammunitionCapacity()+"'.");
+			int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
+			if(newValue>0)
+				E.setAmmoCapacity(newValue);
+			else
+				mob.tell("(no change)");
+			E.setAmmoRemaining(E.ammunitionCapacity());
 		}
 		else
+		{
 			E.setAmmunitionType("");
+			E.setAmmoCapacity(0);
+		}
 	}
 	void genWeaponRanges(MOB mob, Weapon E)
 		throws IOException
@@ -917,28 +948,66 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rWeapon Attack Type: '"+E.typeDescription()+"'.");
-		String newType=mob.session().choose("Enter a new value (N/S/P/B/F/M/R)\n\r:","NSPBFMR","");
-		int newValue=-1;
-		if(newType.length()>0)
-			newValue=("NSPBFMR").indexOf(newType.toUpperCase());
-		if(newValue>=0)
-			E.setWeaponType(newValue);
-		else
-			mob.tell("(no change)");
+		boolean q=false;
+		String sel="NSPBFMR";
+		while(!q)
+		{
+			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			if(newType.equals("?"))
+			{
+				Weapon temp=(Weapon)E.newInstance();
+				for(int i=0;i<sel.length();i++)
+				{
+					temp.setWeaponType(i);
+					mob.tell(sel.charAt(i)+") "+temp.typeDescription());
+				}
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=-1;
+				if(newType.length()>0)
+					newValue=sel.indexOf(newType.toUpperCase());
+				if(newValue>=0)
+					E.setWeaponType(newValue);
+				else
+					mob.tell("(no change)");
+			}
+		}
 	}
 
 	void genMaterialCode(MOB mob, Item E)
 		throws IOException
 	{
 		mob.tell("\n\rMaterial Type: '"+E.materialDescription()+"'.");
-		String newType=mob.session().choose("Enter a new value (C/L/M/I/W/G)\n\r:","CLMIWG","");
-		int newValue=-1;
-		if(newType.length()>0)
-			newValue=("CLMIWG").indexOf(newType.toUpperCase());
-		if(newValue>=0)
-			E.setMaterial(newValue);
-		else
-			mob.tell("(no change)");
+		boolean q=false;
+		String sel="CLMIWG";
+		while(!q)
+		{
+			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			if(newType.equals("?"))
+			{
+				Item item=(Item)E.newInstance();
+				for(int i=0;i<sel.length();i++)
+				{
+					item.setMaterial(i);
+					mob.tell(sel.charAt(i)+") "+item.materialDescription());
+				}
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=-1;
+				if(newType.length()>0)
+					newValue=sel.indexOf(newType.toUpperCase());
+				if(newValue>=0)
+					E.setMaterial(newValue);
+				else
+					mob.tell("(no change)");
+			}
+		}
 	}
 
 	void genAlignment(MOB mob, MOB E)
@@ -992,20 +1061,33 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rWeapon Classification: '"+E.classifictionDescription()+"'.");
-		String newType=mob.session().choose("Enter a new value (a/b/e/f/h/k/p/r/s/d/t)\n\r:","ABEFHKPRSDT","");
-		int newValue=-1;
-		if(newType.length()>0)
-			newValue=("ABEFHKPRSDT").indexOf(newType.toUpperCase());
-		if(newValue>=0)
-			E.setWeaponClassification(newValue);
-		else
-			mob.tell("(no change)");
-	}
-
-	void genWeaponHands(MOB mob, Weapon E)
-		throws IOException
-	{
-		E.setRawLogicalAnd(genGenericPrompt(mob,"\n\r\n\rTwo-Handed?",E.rawLogicalAnd()));
+		boolean q=false;
+		String sel=("ABEFHKPRSDTN");
+		while(!q)
+		{
+			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			if(newType.equals("?"))
+			{
+				Weapon temp=(Weapon)E.newInstance();
+				for(int i=0;i<sel.length();i++)
+				{
+					temp.setWeaponClassification(i);
+					mob.tell(sel.charAt(i)+") "+temp.classifictionDescription());
+				}
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=-1;
+				if(newType.length()>0)
+					newValue=sel.indexOf(newType.toUpperCase());
+				if(newValue>=0)
+					E.setWeaponClassification(newValue);
+				else
+					mob.tell("(no change)");
+			}
+		}
 	}
 
 	void genSecretIdentity(MOB mob, Item E)
@@ -1451,6 +1533,7 @@ public class Generic
 			genNourishment(mob,me);
 			genDisposition(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
@@ -1480,6 +1563,7 @@ public class Generic
 			genMaterialCode(mob,me);
 			genDrinkHeld(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genAffects(mob,me);
 			genDisposition(mob,me);
 			ok=true;
@@ -1507,6 +1591,7 @@ public class Generic
 			genSecretIdentity(mob,me);
 			genMaterialCode(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genRejuv(mob,me);
 			genAbility(mob,me);
 			genUses(mob,me);
@@ -1539,6 +1624,7 @@ public class Generic
 			genLevel(mob,me);
 			genSecretIdentity(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
 			genRejuv(mob,me);
@@ -1578,6 +1664,7 @@ public class Generic
 			genWeight(mob,me);
 			genDisposition(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			ok=true;
@@ -1607,9 +1694,11 @@ public class Generic
 			genMaterialCode(mob,me);
 			genWeaponType(mob,me);
 			genWeaponClassification(mob,me);
-			genWeaponHands(mob,me);
 			genWeaponRanges(mob,me);
-			genWeaponAmmo(mob,me);
+			if(me instanceof Wand)
+				genReadable(mob,me);
+			else
+				genWeaponAmmo(mob,me);
 			genRejuv(mob,me);
 			genAbility(mob,me);
 			genSecretIdentity(mob,me);
@@ -1648,6 +1737,7 @@ public class Generic
 			genCapacity(mob,me);
 			genSecretIdentity(mob,me);
 			genGettable(mob,me);
+			genReadable(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
 			genDisposition(mob,me);

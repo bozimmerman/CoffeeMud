@@ -125,6 +125,7 @@ public class Cleric extends StdCharClass
 				{
 					if((classification==Weapon.CLASS_BLUNT)
 					||(classification==Weapon.CLASS_RANGED)
+					||(classification==Weapon.CLASS_THROWN)
 					||(classification==Weapon.CLASS_STAFF)
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_SWORD))

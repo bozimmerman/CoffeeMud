@@ -195,6 +195,8 @@ public class Generic
 		{
 			text.append(XMLManager.convertXMLtoTag("TYPE",((Weapon)E).weaponType()));
 			text.append(XMLManager.convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
+			text.append(XMLManager.convertXMLtoTag("MINR",((Weapon)E).minRange()));
+			text.append(XMLManager.convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
 		}
 
 		if(E instanceof MOB)
@@ -420,6 +422,7 @@ public class Generic
 		{
 			((Weapon)E).setWeaponType(XMLManager.getIntFromPieces(buf,"TYPE"));
 			((Weapon)E).setWeaponClassification(XMLManager.getIntFromPieces(buf,"CLASS"));
+			((Weapon)E).setRanges(XMLManager.getIntFromPieces(buf,"MINR"),XMLManager.getIntFromPieces(buf,"MAXR"));
 		}
 		if(E instanceof MOB)
 		{

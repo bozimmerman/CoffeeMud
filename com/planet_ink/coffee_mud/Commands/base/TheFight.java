@@ -472,7 +472,15 @@ public class TheFight
 	public String standardHitString(int weaponType, int weaponClass, int damageAmount, String weaponName)
 	{
 		if((weaponClass!=Weapon.CLASS_NATURAL)&&(weaponName!=null)&&(weaponName.length()>0))
-			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
+		{
+			if(weaponClass==Weapon.CLASS_RANGED)
+				return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+			else
+			if(weaponClass==Weapon.CLASS_THROWN)
+				return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+			else
+				return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
+		}
 		else
 			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
 	}
@@ -780,6 +788,9 @@ public class TheFight
 	{
 		if(weaponClassification==Weapon.CLASS_RANGED)
 			return "<S-NAME> fire(s) at <T-NAMESELF>"+(useExtendedMissString?" with "+weaponName:"")+" and miss(es).";
+		else
+		if(weaponClassification==Weapon.CLASS_THROWN)
+			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and miss(es).";
 		else
 		switch(weaponType)
 		{

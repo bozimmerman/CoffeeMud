@@ -21,6 +21,7 @@ public class Specialization_Ranged extends Specialization_Weapon
 
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_RANGED;
+		secondWeaponType=Weapon.CLASS_THROWN;
 
 		recoverEnvStats();
 	}

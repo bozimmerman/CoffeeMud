@@ -123,6 +123,7 @@ public class StdRoom
 	}
 	public Area getArea()
 	{
+		if(myArea==null) return (Area)CMClass.getAreaType("StdArea");
 		return myArea;
 	}
 	public void setArea(Area newArea)

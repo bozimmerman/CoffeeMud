@@ -686,59 +686,6 @@ public class StdMOB implements MOB
 						else
 							atRange=maxRange(affect.tool());
 					}
-						
-					// and now, the consequences of range
-					if((location()!=null)
-					   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-					   &&(atRange>maxRange(affect.tool())))
-					{
-						atRange--;
-						String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
-						affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
-						if(location().okAffect(affect))
-							return true;
-						location().send(this,affect);
-						return false;
-					}
-					else
-					{
-						int useRange=atRange;
-						if(getVictim()!=null)
-						{
-							if(getVictim()==target)
-							{
-								useRange=atRange;
-								if(target.getVictim()==this)
-									target.setAtRange(atRange);
-							}
-							else
-							{
-								if(target.getVictim()==this)
-									useRange=target.rangeToTarget();
-								else
-									useRange=maxRange(affect.tool());
-							}
-						}
-						if((useRange>=0)&&(maxRange(affect.tool())<useRange))
-						{
-							if((affect.tool()!=null)&&(target!=null))
-								mob.tell("You are far away from "+target.name()+" to use "+affect.tool().name()+".");
-							return false;
-						}
-						else
-						if((useRange>=0)&&(minRange(affect.tool())>useRange))
-						{
-							if((affect.tool()!=null)&&(target!=null))
-							{
-								mob.tell("You are too close to "+target.name()+" to use "+affect.tool().name()+".");
-								if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-								&&(affect.tool() instanceof Weapon)
-								&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY)))
-									ExternalPlay.remove(this,(Weapon)affect.tool());
-							}
-							return false;
-						}
-					}
 				}
 			}
 
@@ -872,6 +819,65 @@ public class StdMOB implements MOB
 				break;
 			default:
 				break;
+			}
+		}
+		
+		if((affect.sourceCode()!=Affect.NO_EFFECT)
+		&&(affect.amISource(this))
+		&&(affect.target()!=null)
+		&&(affect.target()!=this)
+		&&(affect.target() instanceof MOB))
+		{
+			MOB target=(MOB)affect.target();
+			// and now, the consequences of range
+			if((location()!=null)
+			   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+			   &&(atRange>maxRange(affect.tool())))
+			{
+				atRange--;
+				if(victim!=null) victim.setAtRange(atRange);
+				String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
+				affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
+				if(location().okAffect(affect))
+					return true;
+				location().send(this,affect);
+				return false;
+			}
+			else
+			{
+				int useRange=atRange;
+				Environmental tool=affect.tool();
+				if(getVictim()!=null)
+				{
+					if(getVictim()==target)
+						useRange=atRange;
+					else
+					{
+						if(target.getVictim()==this)
+							useRange=target.rangeToTarget();
+						else
+							useRange=maxRange(tool);
+					}
+				}
+				if((useRange>=0)&&(maxRange(tool)<useRange))
+				{
+					if((tool!=null)&&(target!=null))
+						mob.tell("You are too far away from "+target.name()+" to use "+tool.name()+".");
+					return false;
+				}
+				else
+				if((useRange>=0)&&(minRange(tool)>useRange))
+				{
+					if((tool!=null)&&(target!=null))
+					{
+						mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
+						if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+						&&(tool instanceof Weapon)
+						&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
+							ExternalPlay.remove(this,(Item)tool);
+					}
+					return false;
+				}
 			}
 		}
 
@@ -1345,7 +1351,11 @@ public class StdMOB implements MOB
 									if((!amDead())
 									&&(curState().getHitPoints()>0)
 									&&((s==0)||(!Sense.isSitting(this))))
+									{
+										if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
+											weapon=this.fetchWieldedItem();
 										ExternalPlay.postAttack(this,victim,weapon);
+									}
 								curState().expendEnergy(this,maxState,true);
 							}
 						}

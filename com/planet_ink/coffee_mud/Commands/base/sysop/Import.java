@@ -630,15 +630,24 @@ public class Import
 				((Weapon)I).setAmmoCapacity(20);
 				((Weapon)I).setAmmoRemaining(20);
 				((Weapon)I).setAmmunitionType("arrows");
+				((Weapon)I).setRanges(1,3);
 				break;
 		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
 		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;
-		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); break;
+		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
+				((Weapon)I).setRanges(1,1);
+				break;
 		case 4: ((Weapon)I).setWeaponClassification(Weapon.CLASS_BLUNT); break;
 		case 5: ((Weapon)I).setWeaponClassification(Weapon.CLASS_AXE); break;
-		case 6: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); break;
-		case 7: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); break;
-		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); break;
+		case 6: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); 
+				((Weapon)I).setRanges(0,1);
+				break;
+		case 7: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); 
+				((Weapon)I).setRanges(0,1);
+				break;
+		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
+				((Weapon)I).setRanges(1,1);
+				break;
 		case 9: ((Weapon)I).setWeaponClassification(Weapon.CLASS_DAGGER); break;
 		case 10: ((Weapon)I).setWeaponClassification(Weapon.CLASS_STAFF); break;
 		case 11: ((Weapon)I).setWeaponClassification(Weapon.CLASS_HAMMER); break;
@@ -2740,28 +2749,37 @@ public class Import
 								{
 									((ShopKeeper)M).setWhatIsSold(ShopKeeper.ONLYBASEINVENTORY);
 									((ShopKeeper)M).addStoreInventory(CMClass.getStdItem("Parchment"),num);
-									Item journal1=CMClass.getItem("GenJournal");
+									Item journal1=CMClass.getStdItem("GenJournal");
 									journal1.setName("the bug journal");
-									journal1.setBaseValue(5);
+									journal1.setBaseValue(250);
+									journal1.recoverEnvStats();
+									journal1.text();
 									((ShopKeeper)M).addStoreInventory(journal1,num);
-									Item journal2=CMClass.getItem("GenJournal");
+									Item journal2=CMClass.getStdItem("GenJournal");
 									journal2.setName("the adventurers journal");
 									journal2.setBaseValue(250);
+									journal2.recoverEnvStats();
+									journal2.text();
 									((ShopKeeper)M).addStoreInventory(journal2,num);
-									Item journal3=CMClass.getItem("GenJournal");
+									Item journal3=CMClass.getStdItem("GenJournal");
 									journal3.setName("a feature guide");
-									journal3.setBaseValue(50);
+									journal3.setBaseValue(500);
+									journal3.recoverEnvStats();
+									journal3.text();
 									((ShopKeeper)M).addStoreInventory(journal3,num);
 								}
 								else
 								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.WEAPONS)
 								{
-									Item arrows=CMClass.getItem("GenItem");
-									I.setSecretIdentity("arrows");
-									I.setName("a pack of 20 arrows");
-									I.setBaseValue(50);
-									I.setDescription("They are sturdy and wooden, but probably not much use without a bow.");
-									I.setDisplayText("Some arrows have been left here.");
+									Item arrows=CMClass.getStdItem("GenItem");
+									arrows.setSecretIdentity("arrows");
+									arrows.setName("a pack of 20 arrows");
+									arrows.setUsesRemaining(20);
+									arrows.setBaseValue(50);
+									arrows.setDescription("They are sturdy and wooden, but probably not much use without a bow.");
+									arrows.setDisplayText("Some arrows have been left here.");
+									arrows.recoverEnvStats();
+									arrows.text();
 									((ShopKeeper)M).addStoreInventory(arrows,num);
 								}
 							}

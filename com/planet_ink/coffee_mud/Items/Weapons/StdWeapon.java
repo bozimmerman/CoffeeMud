@@ -48,14 +48,6 @@ public class StdWeapon extends StdItem implements Weapon
 			id=name()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
 		return id+"\n\rAttack: "+envStats().attackAdjustment()+", Damage: "+envStats().damage();
 	}
-	public String description()
-	{
-		if(!requiresAmmunition())
-			return super.description();
-		else
-			return super.description()+"\n\r"+ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".";
-	}	 
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -66,10 +58,26 @@ public class StdWeapon extends StdItem implements Weapon
 		}
 	}
 
+	public void affect(Affect affect)
+	{
+		super.affect(affect);
+		
+		if((affect.amITarget(this))
+		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(this,affect.source()))
+		&&(requiresAmmunition()))
+			affect.source().tell(ammunitionType()+" remaining: "+ammunitionRemaining()+"/"+ammunitionCapacity()+".");
+		else
+		if((affect.tool()==this)
+		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		&&(weaponClassification()==Weapon.CLASS_THROWN))
+			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MSG_DROP,null));
+	}
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))
 			return false;
+			
 		if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 		   &&(affect.tool()==this)
 		   &&(requiresAmmunition())
@@ -94,7 +102,6 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I.usesRemaining()==0)
 						   ||(I.usesRemaining()==Integer.MAX_VALUE)
 						   ||(I.location()!=null)
-						   ||(!I.amWearingAt(Item.INVENTORY))
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
 							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+I.name()+".");
@@ -102,6 +109,7 @@ public class StdWeapon extends StdItem implements Weapon
 							I.setUsesRemaining(0);
 							I.destroyThis();
 							reLoaded=true;
+							break;
 						}
 					}
 				}
@@ -167,6 +175,8 @@ public class StdWeapon extends StdItem implements Weapon
 			return "DAGGER";
 		case CLASS_STAFF:
 			return "STAFF";
+		case CLASS_THROWN:
+			return "THROWN";
 		}
 		return "";
 	}
@@ -177,7 +187,13 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public String hitString(int damageAmount)
 	{
-		return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+name();
+		if(weaponClassification==Weapon.CLASS_RANGED)
+			return "<S-NAME> fire(s) "+name()+" at <T-NAMESELF> and "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+		else
+		if(weaponClassification==Weapon.CLASS_THROWN)
+			return "<S-NAME> throw(s) "+name()+" at <T-NAMESELF> and "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+		else
+			return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+name();
 	}
 	public int minRange(){return minRange;}
 	public int maxRange(){return maxRange;}
