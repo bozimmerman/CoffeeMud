@@ -300,6 +300,7 @@ public class Pregnancy extends StdAbility
 								}
 								catch(Throwable t)
 								{
+									labor=false;
 									ticksInLabor=0;
 									return true;
 								};
