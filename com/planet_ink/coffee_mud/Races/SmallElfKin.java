@@ -16,7 +16,7 @@ public class SmallElfKin extends StdRace
 	public int weightVariance(){return 5;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Elvish","Foraging"};
+	private String[]culturalAbilityNames={"Fey","Foraging"};
 	private int[]culturalAbilityProfficiencies={100,50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}

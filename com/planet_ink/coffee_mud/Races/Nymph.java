@@ -15,8 +15,8 @@ public class Nymph extends StdRace
 	public int lightestWeight(){return 90;}
 	public int weightVariance(){return 90;}
 	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Elvish"};
+	public String racialCategory(){return "Fairy-kin";}
+	private String[]culturalAbilityNames={"Fey"};
 	private int[]culturalAbilityProfficiencies={50};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
