@@ -135,20 +135,17 @@ public class Prop_HaveResister extends Property
 		&&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon))
 		{
-			int recovery=msg.value();
-			recovery=(int)Math.round(Util.mul(recovery,Math.random()));
-			if(recovery<=0) recovery=0;
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
-				msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"weapons"),100.0))));
+				msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"weapons"),100.0))));
 			else
 			{
 				Weapon W=(Weapon)msg.tool();
 				if((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
-					msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"blunt"),100.0))));
+					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"blunt"),100.0))));
 				if((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")));
-					msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"pierce"),100.0))));
+					msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"pierce"),100.0))));
 			    if((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash")));
-			    	msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"slash"),100.0))));
+			    	msg.setValue((int)Math.round(Util.mul(msg.value(),1.0-Util.div(getProtection(me,"slash"),100.0))));
 			}
 			return;
 		}

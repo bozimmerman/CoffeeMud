@@ -331,10 +331,14 @@ public class CMMap
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
+		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
 		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
 		String roomID=(String)startRooms.get(race);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)startRooms.get(realrace);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
@@ -395,10 +399,14 @@ public class CMMap
 	    }
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
+		realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
 		deity.replace(' ','_');
 		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
 		String roomID=(String)bodyRooms.get(race);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)bodyRooms.get(realrace);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)bodyRooms.get(align);
 		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))

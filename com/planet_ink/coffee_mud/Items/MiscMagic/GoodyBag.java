@@ -64,7 +64,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			        for(int v2=0;v2<V2.size();v2++)
 			        {
 						Coins C=BeanCounter.makeBestCurrency(currency,((Double)V2.elementAt(v2,1)).doubleValue(),owner(),this);
-						C.setNumberOfCoins(100);
+						if(C!=null)	C.setNumberOfCoins(100);
 			        }
 			    }
 				Item I=CMClass.getItem("GenSuperPill");

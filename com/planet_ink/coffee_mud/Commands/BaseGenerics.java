@@ -1556,8 +1556,33 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Money data: '"+E.getNumberOfCoins()+" x "+BeanCounter.getDenominationName(E.getCurrency(),E.getDenomination())+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		E.setCurrency(getTextData(mob,"Enter currency code\n\r:",E.getCurrency()));
-		E.setDenomination(getDoubleData(mob,"Enter denomination\n\r:",E.getDenomination()));
+		boolean gocontinue=true;
+		while(gocontinue)
+		{
+			E.setCurrency(getTextData(mob,"Enter currency code\n\r:",E.getCurrency()));
+			if((E.getCurrency().length()>0)&&(!BeanCounter.getAllCurrencies().contains(E.getCurrency())))
+			{
+			    mob.tell("'"+E.getCurrency()+"' is not recognized.  Try: "+Util.toStringList(BeanCounter.getAllCurrencies())+".");
+			    gocontinue=false;
+			}
+			else
+			    gocontinue=true;
+		}
+		while(gocontinue)
+		{
+			E.setDenomination(getDoubleData(mob,"Enter denomination\n\r:",E.getDenomination()));
+			DVector DV=BeanCounter.getCurrencySet(E.getCurrency());
+			if((DV!=null)&&(!DV.contains(new Double(E.getDenomination()))))
+			{
+			    StringBuffer allDenoms=new StringBuffer("");
+			    for(int i=0;i<DV.size();i++)
+			        allDenoms.append(((Double)DV.elementAt(i,1)).doubleValue()+" ");
+			    mob.tell("'"+E.getDenomination()+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");
+			    gocontinue=false;
+			}
+			else
+			    gocontinue=true;
+		}
 		E.setNumberOfCoins(getLongData(mob,"Enter stack size\n\r:",E.getNumberOfCoins()));
 	}
 

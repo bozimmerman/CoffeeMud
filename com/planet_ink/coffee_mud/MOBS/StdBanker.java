@@ -400,6 +400,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 						    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						recoverEnvStats();
+						((Coins)msg.tool()).setNumberOfCoins(0);
+						double riches=BeanCounter.getTotalAbsoluteNativeValue(this);
+						if(riches>0.0) BeanCounter.subtractMoney(this,riches);
 					}
 					else
 					{

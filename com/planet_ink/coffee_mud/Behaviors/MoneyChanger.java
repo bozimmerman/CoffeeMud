@@ -68,7 +68,10 @@ public class MoneyChanger extends StdBehavior
 						double val=Util.s_double(newParm.substring(0,x));
 						if(newParm.substring(0,x).indexOf(".")<0)
 							val= new Long(Util.s_long(newParm.substring(0,x))).doubleValue();
-						newParm=newParm.substring(x+1);
+						if(x<newParm.length())
+							newParm=newParm.substring(x+1);
+						else
+						    newParm="";
 						if(parm.equalsIgnoreCase("default"))
 						    parm="";
 						if(parm.equalsIgnoreCase("cut"))
@@ -108,7 +111,22 @@ public class MoneyChanger extends StdBehavior
 				CommonMsgs.say(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
 				return false;
 			}
-			        
+			double value=((Coins)msg.tool()).getTotalValue();
+			double takeCut=cut;
+			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
+			if((rates.size()>0)&&(rates.containsKey(currency)))
+			    takeCut=((Double)rates.get(currency)).doubleValue();
+			double amountToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
+			if((amountToTake>0.0)&&(amountToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer))))
+			    amountToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
+			value-=amountToTake;
+			observer.recoverEnvStats();
+			Coins C=BeanCounter.makeBestCurrency(observer,value);
+			if((value<=0)||(C==null))
+			{
+				CommonMsgs.say(observer,source,"I'm sorry, I can not change such a small amount.",true,false);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -134,17 +152,15 @@ public class MoneyChanger extends StdBehavior
 		{
 			double value=((Coins)msg.tool()).getTotalValue();
 			double takeCut=cut;
-			if((rates.size()>0)&&(rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase())))
-			    takeCut=((Double)rates.get(((Coins)msg.tool()).getCurrency().toUpperCase())).doubleValue();
-			double numberToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
-			if(numberToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer)))
-			    numberToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
-			value-=numberToTake;
-			double myMoney=BeanCounter.getTotalAbsoluteNativeValue(observer);
-			if(myMoney>value)
-				BeanCounter.subtractMoney(observer,myMoney-value);
+			String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
+			if((rates.size()>0)&&(rates.containsKey(currency)))
+			    takeCut=((Double)rates.get(currency)).doubleValue();
+			double amountToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
+			if((amountToTake>0.0)&&(amountToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer))))
+			    amountToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
+			value-=amountToTake;
 			observer.recoverEnvStats();
-			if(value>0)
+			if((value>0.0)&&(BeanCounter.makeBestCurrency(observer,value)!=null))
 			{
 				BeanCounter.giveSomeoneMoney(observer,source,value);
 				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
