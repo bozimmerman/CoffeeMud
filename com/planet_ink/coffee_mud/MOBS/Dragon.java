@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Dragon extends StdMOB
 {
+	public String ID(){return "Dragon";}
 	private boolean started=false;
 	private int breatheDown=4;
 	private int swallowDown=5;

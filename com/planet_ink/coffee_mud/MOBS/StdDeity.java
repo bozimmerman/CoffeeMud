@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class StdDeity extends StdMOB implements Deity
 {
+	public String ID(){return "StdDeity";}
 	protected int xpwrath=100;
 	protected String clericReqs="";
 	protected String worshipReqs="";

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class GenRideable extends StdRideable
 {
-
+	public String ID(){return "GenRideable";}
 	public GenRideable()
 	{
 		super();

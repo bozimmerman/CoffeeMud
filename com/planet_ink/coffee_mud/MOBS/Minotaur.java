@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Minotaur extends StdMOB
 {
-
+	public String ID(){return "Minotaur";}
 	public Minotaur()
 	{
 		super();

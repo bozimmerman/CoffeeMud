@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Goblin extends StdMOB
 {
+	public String ID(){return "Goblin";}
 	Random randomizer = new Random(System.currentTimeMillis());
 	int birthType=0;
 

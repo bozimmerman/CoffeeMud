@@ -6,6 +6,8 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class StdBanker extends StdShopKeeper implements Banker
 {
+	public String ID(){return "StdBanker";}
+	
 	protected double coinInterest=0.008;
 	protected double itemInterest=-0.001;
 	protected static final Integer allDown=new Integer(new Long(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5).intValue());

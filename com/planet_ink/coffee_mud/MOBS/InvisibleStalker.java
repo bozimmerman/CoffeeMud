@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class InvisibleStalker extends StdMOB
 {
-
+	public String ID(){return "InvisibleStalker";}
 	public InvisibleStalker()
 	{
 		super();

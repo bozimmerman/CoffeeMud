@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
+	public String ID(){return "StdShopKeeper";}
 	protected int whatISell=0;
 	private Vector storeInventory=new Vector();
 	protected Vector baseInventory=new Vector();

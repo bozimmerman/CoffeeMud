@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class FireGiant extends StdMOB
 {
-
+	public String ID(){return "FireGiant";}
 	public FireGiant()
 	{
 		super();

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class DrowPriestess extends DrowElf
 {
+	public String ID(){return "DrowPriestess";}
 	private int spellDown=3;
 	private int darkDown=4;
 	private int magicResistance = 50;

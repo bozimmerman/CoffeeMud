@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class LizardMan extends StdMOB
 {
-
+	public String ID(){return "LizardMan";}
 	public LizardMan()
 	{
 		super();

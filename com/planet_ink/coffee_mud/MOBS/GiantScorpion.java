@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class GiantScorpion extends StdMOB
 {
-
+	public String ID(){return "GiantScorpion";}
 	public int stingDown=5;
 
 	public GiantScorpion()

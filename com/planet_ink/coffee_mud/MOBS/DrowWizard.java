@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class DrowWizard extends DrowElf
 {
+	public String ID(){return "DrowWizard";}
 	public int darkDown=4;
 	public int spellDown=2;
     private int magicResistance = 50;

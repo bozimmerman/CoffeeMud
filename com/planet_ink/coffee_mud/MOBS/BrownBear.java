@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class BrownBear extends StdMOB
 {
-
+	public String ID(){return "BrownBear";}
 	public BrownBear()
 	{
 		super();

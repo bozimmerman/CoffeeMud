@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class StdMOB implements MOB
 {
+	public String ID(){return "StdMOB";}
 	protected String Username="";
 	protected String Password="";
 	protected long LastDateTime=System.currentTimeMillis();
@@ -139,16 +140,15 @@ public class StdMOB implements MOB
 	private double speeder=0.0;
 	protected int atRange=-1;
 
-	public String ID()
+	public String name()
 	{
 		return Username;
 	}
-	public String name(){ return Username;}
 	public void setName(String newName){Username=newName;}
 	public String displayName()
 	{ 
 		if(envStats().newName()!=null) return envStats().newName();
-		return name();
+		return Username;
 	}
 	public String password()
 	{
@@ -2301,8 +2301,8 @@ public class StdMOB implements MOB
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+baseEnvStats().ability();
-		case 2: return ""+baseEnvStats().level();
+		case 1: return ""+baseEnvStats().level();
+		case 2: return ""+baseEnvStats().ability();
 		case 3: return text();
 		}
 		return "";

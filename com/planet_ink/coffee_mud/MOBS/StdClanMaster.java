@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class StdClanMaster extends StdMOB implements ClanMaster
 {
+	public String ID(){return "StdClanMaster";}
 	protected static final Integer realLifeDay=new Integer(new Long(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*9).intValue());
 	protected static Long nextHousekeeping=null;
 	protected static Integer DaysClanDeath=new Integer(0);

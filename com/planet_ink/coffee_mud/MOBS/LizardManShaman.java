@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class LizardManShaman extends LizardMan
 {
+	public String ID(){return "LizardManShaman";}
 	private int spellDown=3;
 
 	public LizardManShaman()

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class UmberHulk extends StdMOB
 {
+	public String ID(){return "UmberHulk";}
 	Random randomizer = new Random();
 	int confuseDown=3;
 

@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Bugbear extends StdMOB
 {
-
+	public String ID(){return "Bugbear";}
 	public Bugbear()
 	{
 		super();

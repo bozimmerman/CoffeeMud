@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Troll extends StdMOB
 {
+	public String ID(){return "Troll";}
 	Random randomizer = new Random();
 	int regDown=3;
 

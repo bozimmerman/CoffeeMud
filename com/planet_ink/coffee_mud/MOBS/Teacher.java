@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Teacher extends StdMOB
 {
-
+	public String ID(){return "Teacher";}
 	public Teacher()
 	{
 		super();

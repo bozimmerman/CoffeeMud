@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Cow extends StdMOB implements Drink
 {
+	public String ID(){return "Cow";}
 	public Cow()
 	{
 		super();

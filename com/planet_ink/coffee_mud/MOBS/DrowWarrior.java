@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class DrowWarrior extends DrowElf
 {
+	public String ID(){return "DrowWarrior";}
 	public int darkDown=4;
 	public int fightDown=2;
 	public int statCheck=3;

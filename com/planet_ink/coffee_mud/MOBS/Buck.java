@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Buck extends Deer
 {
-
+	public String ID(){return "Buck";}
 	public Buck()
 	{
 		super();

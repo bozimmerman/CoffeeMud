@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.Environmental;
 
 public class CopperDragon extends Dragon
 {
-	
+	public String ID(){return "CopperDragon";}
 	public CopperDragon()
 	{
 		// ===== call the super class constructor 

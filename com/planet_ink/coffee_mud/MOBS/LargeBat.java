@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class LargeBat extends StdMOB
 {
-
+	public String ID(){return "LargeBat";}
 	public LargeBat()
 	{
 		super();

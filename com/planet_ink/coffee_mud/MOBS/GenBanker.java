@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class GenBanker extends StdBanker
 {
+	public String ID(){return "GenBanker";}
 	private String PrejudiceFactors="";
 	private String bankChain="GenBank";
 	

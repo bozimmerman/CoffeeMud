@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Gnoll extends StdMOB
 {
-
+	public String ID(){return "Gnoll";}
 	public Gnoll()
 	{
 		super();

@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class DrowElf extends StdMOB
 {
-
+	public String ID(){return "DrowElf";}
 	public static final int MALE	= 0;
 	public static final int FEMALE	= 1;
 

@@ -8,6 +8,7 @@ import java.util.*;
 
 public class StdRideable extends StdMOB implements Rideable
 {
+	public String ID(){return "StdRideable";}
 	protected int rideBasis=Rideable.RIDEABLE_LAND;
 	protected int riderCapacity=2;
 	protected Vector riders=new Vector();

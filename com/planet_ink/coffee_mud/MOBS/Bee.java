@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Bee extends StdMOB
 {
-
+	public String ID(){return "Bee";}
 	public Bee()
 	{
 		super();

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class Doppleganger extends StdMOB
 {
-
+	public String ID(){return "Doppleganger";}
 	private MOB mimicing=null;
 	private long ticksSinceMimicing=0;
 

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class GenShopkeeper extends StdShopKeeper
 {
+	public String ID(){return "GenShopkeeper";}
 	private String PrejudiceFactors="";
 
 	public GenShopkeeper()

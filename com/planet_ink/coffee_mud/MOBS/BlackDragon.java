@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.Environmental;
 
 public class BlackDragon extends Dragon
 {
-	
+	public String ID(){return "BlackDragon";}
 	public BlackDragon()
 	{
 		// ===== call the super class constructor that creates a White
