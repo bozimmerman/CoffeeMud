@@ -754,7 +754,8 @@ public class BaseGenerics extends StdCommand
 			Sense.setReadable(E,false);
 		else
 		if((CMClass.className(E).endsWith("Readable"))
-		 ||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
+		||(E instanceof Recipe)
+		||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
 			Sense.setReadable(E,true);
 		else
 		if((showFlag!=showNumber)&&(showFlag>-999))
@@ -771,6 +772,7 @@ public class BaseGenerics extends StdCommand
 		if((Sense.isReadable(E))
 		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
+		 ||(E instanceof Recipe)
 		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 		 ||(E instanceof Wand)
 		 ||(E instanceof Light)
@@ -917,6 +919,53 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+	}
+	
+	public static void genRecipe(MOB mob, Recipe E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String prompt="Recipe Data for";
+		mob.tell(showNumber+". "+prompt+": "+E.getCommonSkillID()+".");
+		mob.tell(Util.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+E.getRecipeCodeLine()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		while(!mob.session().killFlag())
+		{
+			String newName=mob.session().prompt("Enter new skill id (?)\n\r:","");
+			if(newName.equalsIgnoreCase("?"))
+			{
+			    StringBuffer str=new StringBuffer("");
+			    Ability A=null;
+				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				{
+				 	A=(Ability)e.nextElement();
+				 	if((A.classificationCode()==Ability.COMMON_SKILL)
+				 	&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
+				 	    str.append(A.ID()+"\n\r");
+				}
+			}
+			else
+			if((newName.length()>0)
+			&&(CMClass.getAbility(newName)!=null)
+			&&(CMClass.getAbility(newName).classificationCode()==Ability.COMMON_SKILL))
+			{
+			    E.setCommonSkillID(CMClass.getAbility(newName).ID());
+			    break;
+			}
+			else
+			if(newName.length()>0)
+			    mob.tell("'"+newName+"' is not a valid common skill.  Try ?.");
+			else
+			{
+				mob.tell("(no change)");
+				break;
+			}
+		}
+		String newName=mob.session().prompt("Enter new data line\n\r:","");
+		if(newName.length()>0)
+			E.setRecipeCodeLine(newName);
+		else
+			mob.tell("(no change)");
 	}
 
 	public static void genGettable(MOB mob, Item E, int showNumber, int showFlag)
@@ -4757,6 +4806,7 @@ public class BaseGenerics extends StdCommand
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
+			if(me instanceof Recipe) genRecipe(mob,(Recipe)me,++showNumber,showFlag);
 			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			if(me instanceof Coins)

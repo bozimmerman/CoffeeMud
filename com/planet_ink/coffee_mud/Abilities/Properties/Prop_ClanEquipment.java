@@ -307,6 +307,7 @@ public class Prop_ClanEquipment extends Property
 		{
 		    if((clanName!=null)&&(clanName.length()>0)&&(Clans.getClan(clanName)==null))
 			    affected.delEffect(this);
+		    LastChecked=System.currentTimeMillis();
 		}
 		
 		MOB mob = null;

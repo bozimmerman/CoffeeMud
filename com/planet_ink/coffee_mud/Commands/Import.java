@@ -3717,8 +3717,31 @@ public class Import extends StdCommand
 		return CMMap.getRoom(areaName+"#"+roomID);
 	}
 
-	public static void importCustomObjects(MOB mob, Vector custom, HashSet customBother, boolean noPrompt)
+	public static void importCustomFiles(MOB mob, Hashtable files, HashSet customBother, boolean noPrompt)
 		throws IOException
+	{
+		if(files.size()==0) return;
+		if((!noPrompt)&&(mob.session()==null)) return;
+		for(Enumeration e=files.keys();e.hasMoreElements();)
+		{
+		    String filename=(String)e.nextElement();
+		    String data=(String)files.get(filename);
+			if(customBother.contains(filename))
+			   continue;
+
+			if(Resources.getFileResource(filename)!=null)
+			{
+				if(!noPrompt)
+					if(!mob.session().confirm("External resource '"+filename+"' found, import (Y/n)?","Y"))
+						continue;
+			}
+		    Resources.submitResource(filename,new StringBuffer(data));
+		    Resources.saveFileResource(filename);
+		}
+	}
+
+	public static void importCustomObjects(MOB mob, Vector custom, HashSet customBother, boolean noPrompt)
+	throws IOException
 	{
 		if(custom.size()==0) return;
 		if((!noPrompt)&&(mob.session()==null)) return;
@@ -3729,7 +3752,7 @@ public class Import extends StdCommand
 				Race R=(Race)custom.elementAt(c);
 				if(customBother.contains(R.ID()))
 				   continue;
-
+	
 				Race R2=CMClass.getRace(R.ID());
 				if(R2==null)
 				{
@@ -3755,7 +3778,7 @@ public class Import extends StdCommand
 				CharClass C=(CharClass)custom.elementAt(c);
 				if(customBother.contains(C.ID()))
 				   continue;
-
+	
 				CharClass C2=CMClass.getCharClass(C.ID());
 				if(C2==null)
 				{
@@ -3777,7 +3800,6 @@ public class Import extends StdCommand
 			}
 		}
 	}
-
 	public static boolean localDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
 		if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
@@ -3837,6 +3859,7 @@ public class Import extends StdCommand
 		Hashtable laterLinks=new Hashtable();
 		boolean multiArea=false;
 		Vector custom=new Vector();
+		Hashtable externalFiles=new Hashtable();
 		HashSet customBotherChecker=new HashSet();
 
 		commands.removeElementAt(0);
@@ -3941,8 +3964,9 @@ public class Import extends StdCommand
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
-				String error=CoffeeMaker.fillAreasVectorFromXML(buf.toString(),areas,custom);
+				String error=CoffeeMaker.fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
 				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()>0) return false;
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -4008,8 +4032,9 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
-				String error=CoffeeMaker.fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				String error=CoffeeMaker.fillAreaAndCustomVectorFromXML(buf.toString(),areaD,custom,externalFiles);
+				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=CoffeeMaker.unpackAreaFromXML(areaD,mob.session(),true);
 				if(mob.session()!=null)
@@ -4054,8 +4079,9 @@ public class Import extends StdCommand
 					continue;
 				}
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
+				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=CoffeeMaker.unpackRoomFromXML(buf.toString(),true);
 				if(error.startsWith("Room Exists: "))
@@ -4103,8 +4129,9 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=CoffeeMaker.addMOBsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");
@@ -4140,8 +4167,9 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=CoffeeMaker.addPLAYERsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	
@@ -4215,8 +4243,9 @@ public class Import extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
-				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
-				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
+				if(error.length()==0) Import.importCustomObjects(mob,custom,customBotherChecker,!prompt);
+				if(error.length()==0) Import.importCustomFiles(mob,externalFiles,customBotherChecker,!prompt);
 				if(error.length()==0)
 					error=CoffeeMaker.addItemsFromXML(buf.toString(),items,mob.session());
 				if(mob.session()!=null)	mob.session().rawPrintln("!");

@@ -386,10 +386,10 @@ public class Export extends StdCommand
 			for(Iterator i=files.iterator();i.hasNext();)
 			{
 				String filename=(String)i.next();
-				StringBuffer buf=Resources.getFileResource(filename);
+				StringBuffer buf=Resources.getFile("resources"+File.separatorChar+filename);
 				if(buf!=null)
 				{
-					str.append("<FILE NAME=\">"+filename+"\">");
+					str.append("<FILE NAME=\""+filename+"\">");
 					str.append(buf);
 					str.append("</FILE>");
 				}

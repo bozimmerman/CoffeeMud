@@ -209,13 +209,13 @@ public class Weaponsmithing extends CraftingSkill
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", or \"weaponsmith mend <item>\".");
 			return false;
 		}
-		Vector recipes=loadRecipes();
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		boolean bundle=false;
 		String startStr=null;

@@ -45,6 +45,32 @@ public class CraftingSkill extends CommonSkill
 		}
 		return thisStr;
 	}
+	
+	protected Vector addRecipes(MOB mob, Vector recipes)
+	{
+	    if(mob==null) return recipes;
+	    Item I=null;
+	    Vector V=null;
+	    Vector V2=null;
+	    boolean clonedYet=false;
+	    for(int i=0;i<mob.inventorySize();i++)
+	    {
+	        I=mob.fetchInventory(i);
+	        if((I instanceof Recipe)
+	        &&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
+	        {
+	            if(!clonedYet){ recipes=(Vector)recipes.clone(); clonedYet=true;}
+	            V=loadList(new StringBuffer(((Recipe)I).getRecipeCodeLine()));
+	            for(int v=0;v<V.size();v++)
+	            {
+	                V2=(Vector)V.elementAt(v);
+	                if((recipes.size()==0)||(((Vector)recipes.firstElement()).size()==V2.size()))
+	                    recipes.addElement(V2);
+	            }
+	        }
+	    }
+	    return recipes;
+	}
 
 	protected Vector loadList(StringBuffer str)
 	{

@@ -110,13 +110,13 @@ public class Blacksmithing extends CraftingSkill
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \""+triggerStrings[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
-		Vector recipes=loadRecipes();
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;

@@ -68,7 +68,7 @@ public class MasterArmorsmithing extends Armorsmithing
 			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"marmorsmith list\" for a list,\"marmorsmith scan\", or \"marmorsmith mend <item>\".");

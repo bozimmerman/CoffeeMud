@@ -212,6 +212,13 @@ public class Resources
 	}
 	public static StringBuffer getFileResource(String filename)
 	{ return getFileResource(filename,true);}
+	public static boolean isFileResource(String filename)
+	{
+	    if(getResource(filename)!=null) return true;
+	    if(getFile(makeFileResourceName(filename))!=null)
+	    	return true;
+	    return false;
+	}
 	public static StringBuffer getFileResource(String filename, boolean reportErrors)
 	{
 		Object rsc=getResource(filename);

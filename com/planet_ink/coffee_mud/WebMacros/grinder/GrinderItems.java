@@ -99,7 +99,8 @@ public class GrinderItems
 		        		  "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
 		        		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
 		        		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
-						  "NUMCOINS","CURRENCY","DENOM"
+						  "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
+						  "RECIPEDATA"
 						  };
 		for(int o=0;o<okparms.length;o++)
 		{
@@ -425,6 +426,16 @@ public class GrinderItems
 			case 76: // denomination
 			    if(I instanceof Coins)
 			        ((Coins)I).setDenomination(Util.s_double(old));
+			    break;
+			case 77: // isrecipe
+			    break;
+			case 78: // recipeskill
+			    if(I instanceof Recipe)
+			        ((Recipe)I).setCommonSkillID(old);
+			    break;
+			case 79: // recipedata
+			    if(I instanceof Recipe)
+			        ((Recipe)I).setRecipeCodeLine(old);
 			    break;
 			}
 		}

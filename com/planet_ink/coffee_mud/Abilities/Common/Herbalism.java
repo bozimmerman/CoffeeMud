@@ -104,13 +104,13 @@ public class Herbalism extends CraftingSkill
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()<1)
 		{
 			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
 			return false;
 		}
-		Vector recipes=loadRecipes();
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
 		if(pos.equalsIgnoreCase("list"))
 		{

@@ -26,6 +26,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	public String ID(){	return "StdClanContainer";}
 	protected String myClan="";
 	protected int ciType=0;
+	private long lastClanCheck=0;
 	public int ciType(){return ciType;}
 	public void setCIType(int type){ ciType=type;}
 	public StdClanContainer()
@@ -48,6 +49,12 @@ public class StdClanContainer extends StdContainer implements ClanItem
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+	    if((System.currentTimeMillis()-lastClanCheck)>IQCalendar.MILI_HOUR)
+	    {
+		    if((clanID().length()>0)&&(Clans.getClan(clanID())==null))
+		        destroy();
+		    lastClanCheck=System.currentTimeMillis();
+	    }
 		if(StdClanItem.stdExecuteMsg(this,msg))
 			super.executeMsg(myHost,msg);
 	}

@@ -156,13 +156,13 @@ public class Cobbling extends CraftingSkill
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"cobble list\" for a list, \"cobble refit <item>\" to resize, \"cobble scan\", or \"cobble mend <item>\".");
 			return false;
 		}
-		Vector recipes=loadRecipes();
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		boolean bundle=false;

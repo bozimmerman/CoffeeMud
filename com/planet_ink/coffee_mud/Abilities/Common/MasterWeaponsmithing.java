@@ -65,7 +65,7 @@ public class MasterWeaponsmithing extends Weaponsmithing
 			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith scan\", or \"mweaponsmith mend <item>\".");

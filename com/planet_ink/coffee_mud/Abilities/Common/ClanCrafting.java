@@ -122,7 +122,7 @@ public class ClanCrafting extends CraftingSkill
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
-		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"clancraft list\" for a list.");
@@ -144,7 +144,7 @@ public class ClanCrafting extends CraftingSkill
 			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
 			return false;
 		}
-		Vector recipes=loadRecipes();
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
