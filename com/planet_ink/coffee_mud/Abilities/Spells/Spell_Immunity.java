@@ -81,7 +81,7 @@ public class Spell_Immunity extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) an immunity barrier.":"<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				switch(Dice.roll(1,5,0))

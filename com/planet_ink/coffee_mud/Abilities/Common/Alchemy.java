@@ -21,7 +21,7 @@ public class Alchemy extends CommonSkill
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
-		//CMAble.addCharAbilityMapping("All",1,ID(),false);
+		CMAble.addCharAbilityMapping("All",1,ID(),false);
 	}
 	
 	public Environmental newInstance()

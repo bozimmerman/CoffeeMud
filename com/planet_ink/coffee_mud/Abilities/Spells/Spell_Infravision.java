@@ -68,7 +68,7 @@ public class Spell_Infravision extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> chant(s) for glowing red eyes!");
+		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> attain(s) glowing eyes!":"<S-NAME> chant(s) for glowing red eyes!");
 		if(mob.location().okAffect(msg))
 		{
 			successfulObservation=success;
