@@ -5,13 +5,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_LightningStrike extends Prayer
+public class Prayer_ElectricStrike extends Prayer
 {
-	public String ID() { return "Prayer_LightningStrike"; }
-	public String name(){ return "Lightning Strike";}
+	public String ID() { return "Prayer_ElectricStrike"; }
+	public String name(){ return "Electric Strike";}
 	public int quality(){ return MALICIOUS;}
 	public int holyQuality(){ return HOLY_NEUTRAL;}
-	public Environmental newInstance(){	return new Prayer_LightningStrike();}
+	public Environmental newInstance(){	return new Prayer_ElectricStrike();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -37,7 +37,7 @@ public class Prayer_LightningStrike extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),5);
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe LIGHTNING STRIKE of the gods <DAMAGE> <T-NAME>!^?");
+					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_STRIKING,"^SThe ELECTRIC STRIKE <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}
