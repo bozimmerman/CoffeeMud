@@ -88,6 +88,12 @@ public class Chant_DeathMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
+					for(int i=0;i<target.numInhabitants();i++)
+					{
+						MOB M=target.fetchInhabitant(i);
+						if((M!=null)&&(mob!=M))
+							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
+					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Death Moon Rises!");
 					beneficialAffect(mob,target,0);
 				}

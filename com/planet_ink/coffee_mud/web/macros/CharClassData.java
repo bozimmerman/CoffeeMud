@@ -156,14 +156,17 @@ public class CharClassData extends StdWebMacro
 					CharClass C2=(CharClass)c.nextElement();
 					if(C2==C) continue;
 					if(!C2.playerSelectable()) continue;
-					int tlvl=CMAble.getQualifyingLevel(C2.ID(),true,able);
-					if(tlvl>0)
+					if(C2.baseClass().equals(C.baseClass()))
 					{
-						if(tlvl>l)
-							thisCrossClassLevelDiffs+=(tlvl-l);
-						else
-							thisCrossClassLevelDiffs+=(l-tlvl);
-						numOthers++;
+						int tlvl=CMAble.getQualifyingLevel(C2.ID(),true,able);
+						if(tlvl>0)
+						{
+							if(tlvl>l)
+								thisCrossClassLevelDiffs+=(tlvl-l);
+							else
+								thisCrossClassLevelDiffs+=(l-tlvl);
+							numOthers++;
+						}
 					}
 				}
 				if(numOthers==0)

@@ -1,14 +1,10 @@
-Test: Annul, Divorce, Wilderness Lore
-
-Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
-Acid Rain  May only be cast during rain storm. Turns rain into damage-dealing acid that affects all enemies.  
-Hippieness  if a mob, loses clan loyalty.  Is unable to perform common skills.  randomly removes clothing and streaks.
-Magenetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
-crossbreed to allow mixed races, but both races must be pure.
+fix pregnancy for crossbreeds
+Test: Annul, Divorce, Wilderness Lore, Acid Rain, Hippieness, Brittle, Reabsorb
+Test: Animal growth, Crossbreed
 Raging Vegetation (Area) acts like a slow for all opponents. Slows mobs/players trying to walk through area -- makes them stop and hack the vegetation.
-Restore Nature causes the ground to absorb all manufactured items (armor/weapons/containers/etc/clothing -- metal/cloth) on the ground in the area!
 
-Brittle  Causes an item, regardless of condition to become extremely brittle and shatter when used  (detect magic is only way to see -- works by watching for condition change of any kind, then BOOM gone)
+Delver
+Magenetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
 Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
 
 Thieves

@@ -100,7 +100,7 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_SpeedBirth",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_SpeedBirth",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_AntTrain",false);
@@ -110,6 +110,7 @@ public class Beastmaster extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SoaringEagle",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_AnimalGrowth",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Berzerk",false);
@@ -118,13 +119,14 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",true);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_UnicornsHealth",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindMate",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Druid_Rend",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_Crossbreed",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_Dragonsight",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_FindMate",false);
 
 			CMAble.addCharAbilityMapping(ID(),30,"Druid_PackCall",true);
 		}

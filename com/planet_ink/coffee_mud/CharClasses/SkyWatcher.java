@@ -109,6 +109,7 @@ public class SkyWatcher extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonWind",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_PrayerWard",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_AcidRain",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Blindfighting",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_DistantWindColor",true);
