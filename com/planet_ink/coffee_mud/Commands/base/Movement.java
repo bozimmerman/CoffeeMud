@@ -13,7 +13,7 @@ public class Movement extends Scriptable
 	{
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
 		if(direction>=0)
-			move(mob,direction,false,false);
+			move(mob,direction,false,false,false);
 		else
 		{
 			String doing=(String)commands.elementAt(0);
@@ -71,7 +71,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",enterWhat.toLowerCase()));
 			return;
 		}
-		move(mob,dir,false,false);
+		move(mob,dir,false,false,false);
 	}
 	
 	public static void crawl(MOB mob, Vector commands)
@@ -91,7 +91,7 @@ public class Movement extends Scriptable
 				if(!Sense.isSitting(mob))
 					mob.location().send(mob,msg);
 				if((mob.isMonster())||(tagged))
-					move(mob,direction,false,false);
+					move(mob,direction,false,false,false);
 				else
 				{
 					commands.addElement(""+mob);
@@ -114,10 +114,148 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","standandgoerr1"));
 			return;
 		}
-		move(mob,directionCode,false,false);
+		move(mob,directionCode,false,false,false);
 	}
 
-	public static boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
+	public static void ridersBehind(Vector riders,
+									Room sourceRoom,
+									Room destRoom,
+									int directionCode,
+									boolean flee)
+	{
+		if(riders!=null)
+		for(int r=0;r<riders.size();r++)
+		{
+			Rider rider=(Rider)riders.elementAt(r);
+			if(rider instanceof MOB)
+			{
+				MOB rMOB=(MOB)rider;
+					
+				if((rMOB.location()==sourceRoom)
+				   ||(rMOB.location()==destRoom))
+				{
+					boolean fallOff=false;
+					if(rMOB.location()==sourceRoom)
+					{
+						if(rMOB.riding()!=null)
+							rMOB.tell(getScr("Movement","youride",rMOB.riding().name(),Directions.getDirectionName(directionCode)));
+						if(!move(rMOB,directionCode,flee,false,true))
+							fallOff=true;
+					}
+					if(fallOff)
+					{
+						if(rMOB.riding()!=null)
+							rMOB.tell(getScr("Movement","youfalloff",rMOB.riding().name()));
+						rMOB.setRiding(null);
+					}
+				}
+				else
+					rMOB.setRiding(null);
+			}
+			else
+			if(rider instanceof Item)
+			{
+				Item rItem=(Item)rider;
+				if((rItem.owner()==sourceRoom)
+				||(rItem.owner()==destRoom))
+					destRoom.bringItemHere(rItem);
+				else
+					rItem.setRiding(null);
+			}
+		}
+	}
+	
+	public static Vector addRiders(Rider theRider,
+								   Rideable riding,
+								   Vector riders)
+	{
+		
+		if((riding!=null)&&(riding.mobileRideBasis()))
+			for(int r=0;r<riding.numRiders();r++)
+			{
+				Rider rider=riding.fetchRider(r);
+				if((rider!=null)
+				&&(rider!=theRider)
+				&&(!riders.contains(rider)))
+				{
+					riders.addElement(rider);
+					if(rider instanceof Rideable)
+						addRiders(theRider,(Rideable)rider,riders);
+				}
+			}
+		return riders;
+	}
+	
+	public static Vector ridersAhead(Rider theRider,
+									 Room sourceRoom,
+									 Room destRoom,
+									 int directionCode,
+									 boolean flee)
+	{
+		Vector riders=new Vector();
+		Rideable riding=theRider.riding();
+		Vector rideables=new Vector();
+		while((riding!=null)&&(riding.mobileRideBasis()))
+		{
+			rideables.addElement(riding);
+			addRiders(theRider,riding,riders);
+			if((riding instanceof Rider)&&((Rider)riding).riding()!=theRider.riding())
+				riding=((Rider)riding).riding();
+			else
+				riding=null;
+		}
+		if(theRider instanceof Rideable)
+			addRiders(theRider,(Rideable)theRider,riders);
+		for(int r=riders.size()-1;r>=0;r--)
+		{
+			Rider R=(Rider)riders.elementAt(r);
+			if((R instanceof Rideable)&&(((Rideable)R).numRiders()>0))
+			{
+				if(!rideables.contains(R))
+					rideables.addElement(R);
+				riders.removeElement(R);
+			}
+		}
+		for(int r=0;r<rideables.size();r++)
+		{
+			riding=(Rideable)rideables.elementAt(r);
+			if((riding instanceof Item)
+			&&((sourceRoom).isContent((Item)riding)))
+				destRoom.bringItemHere((Item)riding);
+			else
+			if((riding instanceof MOB)
+			&&((sourceRoom).isInhabitant((MOB)riding)))
+			{
+				((MOB)riding).tell(getScr("Movement","youridden",Directions.getDirectionName(directionCode)));
+				if(!move(((MOB)riding),directionCode,false,false,true))
+				{
+					if(theRider instanceof MOB)
+						((MOB)theRider).tell(getScr("Movement","rideerr1",((MOB)riding).name()));
+					r=r-1;
+					for(;r>=0;r--)
+					{
+						riding=(Rideable)rideables.elementAt(r);
+						if((riding instanceof Item)
+						&&((destRoom).isContent((Item)riding)))
+							sourceRoom.bringItemHere((Item)riding);
+						else
+						if((riding instanceof MOB)
+						&&(((MOB)riding).isMonster())
+						&&((destRoom).isInhabitant((MOB)riding)))
+							sourceRoom.bringMobHere((MOB)riding,true);
+					}
+					return null;
+				}
+			}
+		}
+		return riders;
+	}
+	
+	public static boolean move(MOB mob, 
+							   int directionCode, 
+							   boolean flee, 
+							   boolean nolook,
+							   boolean noriders)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
@@ -191,28 +329,10 @@ public class Movement extends Scriptable
 		}
 
 		Vector riders=null;
-		Rideable riding=mob.riding();
-		if((riding!=null)&&(riding.mobileRideBasis()))
+		if(!noriders)
 		{
-			riders=new Vector();
-			for(int r=0;r<riding.numRiders();r++)
-			{
-				Rider rider=riding.fetchRider(r);
-				if((rider!=null)&&(rider!=mob))
-					riders.addElement(rider);
-			}
-			if((riding instanceof Item)
-			   &&(((Room)leaveMsg.target()).isContent((Item)riding)))
-				((Room)enterMsg.target()).bringItemHere((Item)riding);
-			else
-			if((riding instanceof MOB)
-			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
-			{
-				((MOB)riding).tell(getScr("Movement","youridden",Directions.getDirectionName(directionCode)));
-				move(((MOB)riding),directionCode,false,false);
-			}
-			else
-				riders=null;
+			riders=ridersAhead(mob,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);
+			if(riders==null) return false;
 		}
 		
 		if(exit!=null) exit.affect(enterMsg);
@@ -228,49 +348,8 @@ public class Movement extends Scriptable
 		if(!nolook)
 			ExternalPlay.look(mob,null,true);
 
-		if((riders!=null)&&(riders.size()>0))
-		{
-			for(int r=0;r<riders.size();r++)
-			{
-				Rider rider=(Rider)riders.elementAt(r);
-				if(rider instanceof MOB)
-				{
-					MOB rMOB=(MOB)rider;
-					if((rMOB.location()==thisRoom)||(rMOB.location()==destRoom))
-					{
-						boolean fallOff=false;
-						if(rMOB.location()==thisRoom)
-						{
-							rMOB.tell(getScr("Movement","youride",riding.name(),Directions.getDirectionName(directionCode)));
-							if(!move(rMOB,directionCode,flee,false))
-								fallOff=true;
-						}
-						if(fallOff)
-						{
-							rMOB.tell(getScr("Movement","youfalloff",riding.name()));
-							rMOB.setRiding(null);
-						}
-						else
-							rMOB.setRiding(riding);
-					}
-					else
-						rMOB.setRiding(null);
-				}
-				else
-				if(rider instanceof Item)
-				{
-					Item rItem=(Item)rider;
-					if((rItem.owner()==thisRoom)||(rItem.owner()==destRoom))
-					{
-						//boolean fallOff=false;
-						if(rItem.owner()==thisRoom)
-							destRoom.bringItemHere(rItem);
-					}
-					else
-						rItem.setRiding(null);
-				}
-			}
-		}
+		if(!noriders)
+			ridersBehind(riders,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);
 		
 		if(!flee)
 		for(int f=0;f<mob.numFollowers();f++)
@@ -285,7 +364,7 @@ public class Movement extends Scriptable
 					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==0))
 					{
 						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
-						if(!move(follower,directionCode,false,false))
+						if(!move(follower,directionCode,false,false,false))
 						{
 							//follower.setFollowing(null);
 						}
@@ -342,7 +421,7 @@ public class Movement extends Scriptable
 			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
 			if(lostExperience<10) lostExperience=10;
 		}
-		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false))))
+		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace();
 			mob.tell(getScr("Movement","fleeexp",""+lostExperience));
@@ -522,7 +601,7 @@ public class Movement extends Scriptable
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(Affect.TYP_SIT),E.name());
+			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(Affect.TYP_SIT,mob),E.name());
 		else
 			mountStr=getScr("Movement","sitson",E.name());
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,mountStr);
@@ -546,7 +625,7 @@ public class Movement extends Scriptable
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP),E.name());
+			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP,mob),E.name());
 		else
 			mountStr=getScr("Movement","sleepson",E.name());
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,mountStr);
@@ -654,6 +733,17 @@ public class Movement extends Scriptable
 			if((I!=null)&&(I instanceof Rideable))
 				possRecipients.addElement(I);
 		}
+		Rider RI=null;
+		if(commands.size()>1)
+		{
+			Item I=mob.location().fetchItem(null,(String)commands.firstElement());
+			if(I!=null)
+			{
+				commands.removeElementAt(0);
+				I.setRiding(null);
+				RI=I;
+			}
+		}
 		recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
 		if(recipient==null)
 			recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
@@ -666,22 +756,57 @@ public class Movement extends Scriptable
 		}
 		String mountStr=null;
 		if(recipient instanceof Rideable)
-			mountStr=getScr("Movement","mounton",((Rideable)recipient).mountString(Affect.TYP_MOUNT));
+		{
+			if(RI!=null)
+				mountStr=getScr("Movement","mountonto",RI.name());
+			else
+				mountStr=getScr("Movement","mounton",((Rideable)recipient).mountString(Affect.TYP_MOUNT,mob));
+		}
 		else
-			mountStr=getScr("Movement","mounts");
-		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,mountStr);
+		{
+			if(RI!=null)
+				mountStr=getScr("Movement","mountsto",RI.name());
+			else
+				mountStr=getScr("Movement","mounts");
+		}
+		FullMsg msg=new FullMsg(mob,recipient,RI,Affect.MSG_MOUNT,mountStr);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
+	
 	public static void dismount(MOB mob, Vector commands)
 	{
-		if(mob.riding()==null)
+		commands.removeElementAt(0);
+		if(commands.size()==0)
 		{
-			mob.tell(getScr("Movement","dismounterr1"));
-			return;
+			if(mob.riding()==null)
+			{
+				mob.tell(getScr("Movement","dismounterr1"));
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,getScr("Movement","dismounts",mob.riding().dismountString(mob)));
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
 		}
-		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,getScr("Movement","dismounts",mob.riding().dismountString()));
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
+		else
+		{
+			Item RI=mob.location().fetchItem(null,Util.combine(commands,0));
+			if(RI==null)
+			{
+				mob.tell(getScr("Movement","dismounterr2",Util.combine(commands,0)));
+				return;
+			}
+			if((RI.riding()==null)
+			   ||((RI.riding() instanceof MOB)&&(!mob.location().isInhabitant((MOB)RI.riding())))
+			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
+			   ||(!Sense.canBeSeenBy(RI.riding(),mob)))
+			{
+				mob.tell(getScr("Movement","dismounterr3",RI.name()));
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,RI.riding(),RI,Affect.MSG_DISMOUNT,getScr("Movement","dismounts2",RI.name()));
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
 	}
 }

@@ -128,7 +128,7 @@ public class StdExit implements Exit
 
 	private void mountLadder(MOB mob, Rideable ladder)
 	{
-		String mountStr=ladder.mountString(Affect.TYP_MOUNT);
+		String mountStr=ladder.mountString(Affect.TYP_MOUNT,mob);
 		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;

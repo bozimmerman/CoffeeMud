@@ -671,9 +671,9 @@ public class StdItem implements Item
 				if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 				{
 					if((mob.riding()!=null)&&(mob.riding()==this))
-						mob.tell("You are "+((Rideable)this).stateString()+" "+name()+"!");
+						mob.tell("You are "+((Rideable)this).stateString(mob)+" "+name()+"!");
 					else
-						mob.tell("Someone is "+((Rideable)this).stateString()+" "+name()+"!");
+						mob.tell("Someone is "+((Rideable)this).stateString(mob)+" "+name()+"!");
 					return false;
 				}
 				return true;
@@ -907,7 +907,8 @@ public class StdItem implements Item
 			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
 				aff.unInvoke();
 		}
-
+		
+		riding=null;
 		destroyed=true;
 
 		if (owner instanceof Room)

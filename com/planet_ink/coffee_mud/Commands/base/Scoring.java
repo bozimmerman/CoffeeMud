@@ -266,7 +266,7 @@ public class Scoring
 			msg.append("^!You are standing.^?\n\r");
 		
 		if(mob.riding()!=null)
-			msg.append("^!You are "+mob.riding().stateString()+" "+mob.riding().name()+".^?\n\r");
+			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
 
 		if(Sense.isInvisible(mob))
 			msg.append("^!You are invisible.^?\n\r");

@@ -716,7 +716,7 @@ public class StdMOB implements MOB
 			sendBack.append(" here");
 			if(riding()!=null)
 			{
-				sendBack.append(" "+riding().stateString()+" ");
+				sendBack.append(" "+riding().stateString(this)+" ");
 				if(riding()==viewer)
 					sendBack.append("YOU");
 				else
@@ -725,14 +725,15 @@ public class StdMOB implements MOB
 			else
 			if((this instanceof Rideable)
 			   &&(((Rideable)this).numRiders()>0)
-			   &&(((Rideable)this).stateStringSubject().length()>0))
+			   &&(((Rideable)this).stateStringSubject(((Rideable)this).fetchRider(0)).length()>0))
 			{
 				Rideable me=(Rideable)this;
-				sendBack.append(" "+me.stateStringSubject()+" ");
+				String first=me.stateStringSubject(me.fetchRider(0));
+				sendBack.append(" "+first+" ");
 				for(int r=0;r<me.numRiders();r++)
 				{
 					Rider rider=me.fetchRider(r);
-					if(rider!=null)
+					if((rider!=null)&&(me.stateStringSubject(rider).equals(first)))
 					{
 						if(r>0)
 						{

@@ -8,7 +8,7 @@ public class Scripts
 	private static String language="en";
 	private static String country="TX";
 	private static Locale currentLocale;
-	private static Hashtable scripts=null;
+	private static HashMap scripts=null;
 	
 	public static void setLocale(String lang, String state)
 	{
@@ -18,7 +18,7 @@ public class Scripts
 			language=lang;
 		}
 		currentLocale = new Locale(language, country);
-		scripts=new Hashtable();
+		scripts=new HashMap();
 	}
 
 	public static ResourceBundle load(String ID)
@@ -34,7 +34,12 @@ public class Scripts
 		if(buf==null)
 			Log.errOut("Scripts","Unknown file: resources/scripts/"+language.toUpperCase()+"_"+country.toUpperCase()+"/"+ID+".ini");
 		else
-			scripts.put(ID,buf);
+		{
+			synchronized(scripts)
+			{
+				scripts.put(ID,buf);
+			}
+		}
 		return buf;
 	}
 	

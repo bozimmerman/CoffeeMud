@@ -103,7 +103,7 @@ public class Fighter_CircleTrip extends StdAbility
 
 				if(target.riding()!=null)
 				{
-					mob.tell("You can't trip someone "+target.riding().stateString()+" "+target.riding().name()+"!");
+					mob.tell("You can't trip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
 					return false;
 				}
 				if(Sense.isFlying(target))
