@@ -183,14 +183,14 @@ public class SkyWatcher extends StdCharClass
 		{
 			Room room=affected.location();
 			if((affected.charStats().getClassLevel(this)>=5)
-			   &&(room.getArea().getMoonPhase()<moonfactors.length))
+			   &&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
 			{
 				affectableState.setMovement(affectableState.getMovement()
-											+(int)Math.round(Util.mul(Util.div(affectableState.getMovement(),8.0),moonfactors[room.getArea().getMoonPhase()])));
+											+(int)Math.round(Util.mul(Util.div(affectableState.getMovement(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableState.setHitPoints(affectableState.getHitPoints()
-											+(int)Math.round(Util.mul(Util.div(affectableState.getHitPoints(),8.0),moonfactors[room.getArea().getMoonPhase()])));
+											+(int)Math.round(Util.mul(Util.div(affectableState.getHitPoints(),8.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableState.setMana(affectableState.getMana()
-											-(int)Math.round(Util.mul(Util.div(affectableState.getMana(),4.0),moonfactors[room.getArea().getMoonPhase()])));
+											-(int)Math.round(Util.mul(Util.div(affectableState.getMana(),4.0),moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 			}
 		}
 	}
@@ -202,12 +202,12 @@ public class SkyWatcher extends StdCharClass
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
 			int classLevel=mob.charStats().getClassLevel(this);
-			if((classLevel>=5)&&(room.getArea().getMoonPhase()<moonfactors.length))
+			if((classLevel>=5)&&(room.getArea().getTimeObj().getMoonPhase()<moonfactors.length))
 			{
 				affectableStats.setArmor(affectableStats.armor() // - is good
-										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getMoonPhase()])));
+										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() // - is bad
-										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getMoonPhase()])));
+										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getTimeObj().getMoonPhase()])));
 			}
 		}
 	}

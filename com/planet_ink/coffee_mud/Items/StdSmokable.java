@@ -145,8 +145,8 @@ public class StdSmokable extends StdContainer implements Light
 	{
 		if(room==null) return false;
 		return (((room.domainType()&Room.INDOORS)==0)
-				&&((room.getArea().weatherType(room)==Area.WEATHER_RAIN)
-				   ||(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM)));
+				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
+				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
 	}
 	public static boolean inTheWater(Room room)
 	{

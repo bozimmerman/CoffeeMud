@@ -79,8 +79,8 @@ public class Chant_EelShock extends Chant
 		}
 
 		Area currentArea = location.getArea();
-		if(currentArea.weatherType(location) == Area.WEATHER_RAIN ||
-		   currentArea.weatherType(location) == Area.WEATHER_THUNDERSTORM)
+		if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
+		   currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
 		{
 		   roomWet = true;
 		}

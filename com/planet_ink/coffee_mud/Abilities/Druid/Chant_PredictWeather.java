@@ -35,7 +35,7 @@ public class Chant_PredictWeather extends Chant
 		   &&(((MOB)affected).location()!=null)
 		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
-		   String prediction=(((MOB)affected).location().getArea().nextWeatherDescription(((MOB)affected).location()));
+		   String prediction=(((MOB)affected).location().getArea().getClimateObj().nextWeatherDescription(((MOB)affected).location()));
 		   if(!prediction.equals(lastPrediction))
 		   {
 			   lastPrediction=prediction;

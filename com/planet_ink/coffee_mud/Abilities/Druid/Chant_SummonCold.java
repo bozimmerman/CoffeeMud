@@ -35,51 +35,51 @@ public class Chant_SummonCold extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				switch(mob.location().getArea().weatherType(mob.location()))
+				switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
 				{
-				case Area.WEATHER_BLIZZARD:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_BLIZZARD);
+				case Climate.WEATHER_BLIZZARD:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_BLIZZARD);
 					break;
-				case Area.WEATHER_CLEAR:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINTER_COLD);
+				case Climate.WEATHER_CLEAR:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINTER_COLD);
 					break;
-				case Area.WEATHER_CLOUDY:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_SNOW);
+				case Climate.WEATHER_CLOUDY:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
 					break;
-				case Area.WEATHER_DROUGHT:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINTER_COLD);
+				case Climate.WEATHER_DROUGHT:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINTER_COLD);
 					break;
-				case Area.WEATHER_DUSTSTORM:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINDY);
+				case Climate.WEATHER_DUSTSTORM:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
 					break;
-				case Area.WEATHER_HAIL:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_HAIL);
+				case Climate.WEATHER_HAIL:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_HAIL);
 					break;
-				case Area.WEATHER_HEAT_WAVE:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINDY);
+				case Climate.WEATHER_HEAT_WAVE:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
 					break;
-				case Area.WEATHER_RAIN:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_SLEET);
+				case Climate.WEATHER_RAIN:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SLEET);
 					break;
-				case Area.WEATHER_SLEET:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_SNOW);
+				case Climate.WEATHER_SLEET:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
 					break;
-				case Area.WEATHER_SNOW:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_SNOW);
+				case Climate.WEATHER_SNOW:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
 					break;
-				case Area.WEATHER_THUNDERSTORM:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_BLIZZARD);
+				case Climate.WEATHER_THUNDERSTORM:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_BLIZZARD);
 					break;
-				case Area.WEATHER_WINDY:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINTER_COLD);
+				case Climate.WEATHER_WINDY:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINTER_COLD);
 					break;
-				case Area.WEATHER_WINTER_COLD:
-					mob.location().getArea().setNextWeatherType(Area.WEATHER_WINTER_COLD);
+				case Climate.WEATHER_WINTER_COLD:
+					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINTER_COLD);
 					break;
 				default:
 					break;
 				}
-				mob.location().getArea().forceWeatherTick();
+				mob.location().getArea().getClimateObj().forceWeatherTick(mob.location().getArea());
 			}
 		}
 		else

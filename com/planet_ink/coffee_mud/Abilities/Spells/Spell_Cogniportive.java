@@ -18,7 +18,7 @@ public class Spell_Cogniportive extends Spell
 	public String establishHome(MOB mob, Item me)
 	{
 		if(me instanceof LandTitle)
-			return ((LandTitle)me).landRoomID();
+			return ((Room)((LandTitle)me).getPropertyRooms().firstElement()).roomID();
 		else
 		{
 			// check mobs worn items first!

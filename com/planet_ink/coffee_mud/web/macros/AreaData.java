@@ -325,13 +325,13 @@ public class AreaData extends StdWebMacro
 
 
 				if(parms.containsKey("SEASON"))
-					str.append(Area.SEASON_DESCS[A.getSeasonCode()]+", ");
+					str.append(TimeClock.SEASON_DESCS[A.getTimeObj().getSeasonCode()]+", ");
 				if(parms.containsKey("TODCODE"))
-					str.append(Area.TOD_DESC[A.getTODCode()]+", ");
+					str.append(TimeClock.TOD_DESC[A.getTimeObj().getTODCode()]+", ");
 				if(parms.containsKey("WEATHER"))
-					str.append(A.getWeatherDescription()+", ");
+					str.append(A.getClimateObj().getWeatherDescription(A)+", ");
 				if(parms.containsKey("MOON"))
-					str.append(Area.MOON_PHASES[A.getMoonPhase()]+", ");
+					str.append(TimeClock.MOON_PHASES[A.getTimeObj().getMoonPhase()]+", ");
 				if(parms.containsKey("STATS"))
 					str.append(A.getAreaStats()+", ");
 				String strstr=str.toString();

@@ -1221,17 +1221,19 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Land plot ID: '"+E.landRoomID()+"'.");
+		mob.tell(showNumber+". Land plot ID: '"+E.landPropertyID()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newText="?!?!";
 		while((newText.length()>0)&&(CMMap.getRoom(newText)==null))
 		{
-			newText=mob.session().prompt("New Room ID:","");
-			if((newText.length()==0)&&(CMMap.getRoom(newText)==null))
-				mob.tell("That room ID doesn't exist!");
+			newText=mob.session().prompt("New Property ID:","");
+			if((newText.length()==0)
+			&&(CMMap.getRoom(newText)==null)
+			&&(CMMap.getArea(newText)==null))
+				mob.tell("That property (room ID) doesn't exist!");
 		}
 		if(newText.length()>0)
-			E.setLandRoomID(newText);
+			E.setLandPropertyID(newText);
 		else
 			mob.tell("(no change)");
 

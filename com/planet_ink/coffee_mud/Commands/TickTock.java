@@ -14,11 +14,11 @@ public class TickTock extends StdCommand
 		throws java.io.IOException
 	{
 		if(!mob.isASysOp(null)) return false;
-		Area A=CMMap.getFirstArea();
 		int h=Util.s_int(Util.combine(commands,1));
 		if(h==0) h=1;
 		mob.tell("..tick..tock..");
-		A.tickTock(h);
+		mob.location().getArea().getTimeObj().tickTock(h);
+		mob.location().getArea().getTimeObj().save();
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -158,26 +158,26 @@ public class FireBuilding extends CommonSkill
 			verb="lighting "+lighting.name();
 		}
 
-		switch(mob.location().getArea().weatherType(mob.location()))
+		switch(mob.location().getArea().getClimateObj().weatherType(mob.location()))
 		{
-		case Area.WEATHER_BLIZZARD:
-		case Area.WEATHER_SNOW:
-		case Area.WEATHER_THUNDERSTORM:
+		case Climate.WEATHER_BLIZZARD:
+		case Climate.WEATHER_SNOW:
+		case Climate.WEATHER_THUNDERSTORM:
 			profficiencyAdjustment=-80;
 			break;
-		case Area.WEATHER_DROUGHT:
+		case Climate.WEATHER_DROUGHT:
 			profficiencyAdjustment=50;
 			break;
-		case Area.WEATHER_DUSTSTORM:
-		case Area.WEATHER_WINDY:
+		case Climate.WEATHER_DUSTSTORM:
+		case Climate.WEATHER_WINDY:
 			profficiencyAdjustment=-10;
 			break;
-		case Area.WEATHER_HEAT_WAVE:
+		case Climate.WEATHER_HEAT_WAVE:
 			profficiencyAdjustment=10;
 			break;
-		case Area.WEATHER_RAIN:
-		case Area.WEATHER_SLEET:
-		case Area.WEATHER_HAIL:
+		case Climate.WEATHER_RAIN:
+		case Climate.WEATHER_SLEET:
+		case Climate.WEATHER_HAIL:
 			profficiencyAdjustment=-50;
 			break;
 		}

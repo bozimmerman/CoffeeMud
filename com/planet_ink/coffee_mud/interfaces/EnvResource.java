@@ -411,7 +411,7 @@ public interface EnvResource extends Item
 	{RESOURCE_WOOD,			2,	10,	3,	920}, 
 	{RESOURCE_PINE,			4,	10,	3,	650}, 
 	{RESOURCE_BALSA,		1,	5,	2,	130}, 
-	{RESOURCE_OAK,			5,	5,	3,	720}, 
+	{RESOURCE_OAK,			5,	10,	3,	720}, 
 	{RESOURCE_MAPLE,		10,	5,	3,	689}, 
 	{RESOURCE_REDWOOD,		20,	2,	3,	450}, 
 	{RESOURCE_HICKORY,		5,	5,	3,	830}, 
@@ -519,6 +519,6 @@ public interface EnvResource extends Item
 	{RESOURCE_SHRIMP,		6,	1,	1,	1000},	
 	{RESOURCE_TUNA,			6,	1,	1,	1000},	
 	{RESOURCE_CATFISH,		6,	1,	1,	1000},	
-	{RESOURCE_BAMBOO,		15,	1,	4,	120},	
+	{RESOURCE_BAMBOO,		15,	10,	4,	120},	
 	};
 }

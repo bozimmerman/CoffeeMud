@@ -151,14 +151,14 @@ public class Ranger_FindWater extends StdAbility
 			if(room.domainConditions()==Room.CONDITION_WET)
 				msg.append("Your water-finding senses are saturated.  This is a damp place.\n\r");
 			else
-			if((room.getArea().weatherType(room)==Area.WEATHER_RAIN)
-			||(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM))
+			if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
+			||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM))
 				msg.append("It is raining here! Your water-finding senses are saturated!\n\r");
 			else
-			if(room.getArea().weatherType(room)==Area.WEATHER_HAIL)
+			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
 				msg.append("It is hailing here! Your water-finding senses are saturated!\n\r");
 			else
-			if(room.getArea().weatherType(room)==Area.WEATHER_SNOW)
+			if(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
 				msg.append("It is snowing here! Your water-finding senses are saturated!\n\r");
 			else
 			{

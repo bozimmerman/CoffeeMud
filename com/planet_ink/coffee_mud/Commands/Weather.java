@@ -22,12 +22,12 @@ public class Weather extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				if(Sense.canAccess(mob,A))
-					tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
+					tellMe.append(Util.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");
 			}
 			mob.tell(tellMe.toString());
 			return false;
 		}
-		mob.tell(room.getArea().weatherDescription(room));
+		mob.tell(room.getArea().getClimateObj().weatherDescription(room));
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -38,7 +38,7 @@ public class Chant_AlterTime extends Chant
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves forwards!");
 				else
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Time moves backwards!");
-				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(x);
+				mob.location().getArea().getTimeObj().tickTock(x);
 			}
 		}
 		else

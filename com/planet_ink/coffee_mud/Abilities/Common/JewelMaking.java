@@ -311,6 +311,12 @@ public class JewelMaking extends CommonSkill
 			refitting=false;
 			messedUp=false;
 			if(fire==null) return false;
+			int amount=-1;
+			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+			{
+				amount=Util.s_int((String)commands.lastElement());
+				commands.removeElementAt(commands.size()-1);
+			}
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName);
@@ -333,6 +339,7 @@ public class JewelMaking extends CommonSkill
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
 			if(firstWood==null) firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);

@@ -47,11 +47,7 @@ public class ClanHomeSet extends BaseClanner
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 			{
-				for(int a=0;a<R.numEffects();a++)
-				{
-					if(R.fetchEffect(a) instanceof LandTitle)
-						l=(LandTitle)R.fetchEffect(a);
-				}
+				l=CoffeeUtensils.getLandTitle(R);
 				if(l==null)
 				{
 					mob.tell("Your "+C.typeName()+" does not own this room.");

@@ -349,7 +349,7 @@ public class CoffeeMaker
 		}
 
 		if(E instanceof LandTitle)
-			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landRoomID()));
+			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 
 		if(E instanceof DeadBody)
 		{
@@ -1456,6 +1456,12 @@ public class CoffeeMaker
 			return;
 		}
 
+		if(XMLManager.getValFromPieces(buf,"GENDER").length()==0)
+		{
+			Log.errOut("CoffeeMaker",E.ID()+"/"+E.name()+" has malformed XML. Load aborted.");
+			return;
+		}
+		
 		if(E instanceof MOB)
 		{
 			while(((MOB)E).numLearnedAbilities()>0)
@@ -1502,10 +1508,7 @@ public class CoffeeMaker
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			if(XMLManager.getValFromPieces(buf,"GENDER").length()>0)
-				mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
-			else
-				Log.errOut("CoffeeMaker",E.name()+" has a null GENDER.");
+			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
@@ -1570,7 +1573,7 @@ public class CoffeeMaker
 		}
 
 		if(E instanceof LandTitle)
-			((LandTitle)E).setLandRoomID(XMLManager.getValFromPieces(buf,"LANDID"));
+			((LandTitle)E).setLandPropertyID(XMLManager.getValFromPieces(buf,"LANDID"));
 
 		if(E instanceof Food)
 			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));

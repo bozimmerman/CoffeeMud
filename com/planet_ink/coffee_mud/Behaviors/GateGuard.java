@@ -137,7 +137,7 @@ public class GateGuard extends StdBehavior
 		if(noticeTock==0)
 		{
 			if(heardKnock) numPlayers++;
-			if((!allnight)&&(mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
+			if((!allnight)&&(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))
 				{
@@ -185,7 +185,7 @@ public class GateGuard extends StdBehavior
 		if(noticeTock<0)
 		{
 			if(heardKnock) numPlayers++;
-			if(mob.location().getArea().getTODCode()==Area.TIME_NIGHT)
+			if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)
 				noticeTock=5;
 			else
 			if((e.isLocked())||((numPlayers==0)&&(e.isOpen())))

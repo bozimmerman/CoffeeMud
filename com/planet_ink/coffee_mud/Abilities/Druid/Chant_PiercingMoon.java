@@ -36,8 +36,8 @@ public class Chant_PiercingMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if((R.getArea().getTODCode()!=Area.TIME_DUSK)
-			&&(R.getArea().getTODCode()!=Area.TIME_NIGHT))
+			if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK)
+			&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT))
 				unInvoke();
 		}
 		return true;
@@ -47,8 +47,8 @@ public class Chant_PiercingMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.getArea().getTODCode()!=Area.TIME_DUSK)
-		&&(target.getArea().getTODCode()!=Area.TIME_NIGHT))
+		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK)
+		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT))
 		{
 			mob.tell("You can only start this chant at night.");
 			return false;
@@ -86,7 +86,7 @@ public class Chant_PiercingMoon extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if(!mob.location().getArea().canSeeTheMoon(mob.location()))
+					if(!mob.location().getArea().getClimateObj().canSeeTheMoon(mob.location()))
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon pierces through the clouds!");
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Moon brightens!");

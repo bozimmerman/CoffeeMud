@@ -15,7 +15,7 @@ public class Time extends StdCommand
 	{
 		Room room=mob.location();
 		if(room==null) return false;
-		mob.tell(room.getArea().timeDescription(mob,room));
+		mob.tell(room.getArea().getTimeObj().timeDescription(mob,room));
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

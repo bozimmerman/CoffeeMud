@@ -125,6 +125,12 @@ public class Wainwrighting extends CommonSkill
 		building=null;
 		key=null;
 		messedUp=false;
+		int amount=-1;
+		if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+		{
+			amount=Util.s_int((String)commands.lastElement());
+			commands.removeElementAt(commands.size()-1);
+		}
 		String recipeName=Util.combine(commands,0);
 		Vector foundRecipe=null;
 		Vector matches=matchingRecipeNames(recipes,recipeName);
@@ -147,6 +153,7 @@ public class Wainwrighting extends CommonSkill
 			return false;
 		}
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+		if(amount>woodRequired) woodRequired=amount;
 		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
 		int foundWood=0;
 		if(firstWood!=null)

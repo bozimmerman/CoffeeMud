@@ -18,10 +18,10 @@ public class PuddleMaker extends StdBehavior
 	{
 		switch(weather)
 		{
-		case Area.WEATHER_BLIZZARD:
-		case Area.WEATHER_SLEET:
-		case Area.WEATHER_SNOW:
-		case Area.WEATHER_HAIL:
+		case Climate.WEATHER_BLIZZARD:
+		case Climate.WEATHER_SLEET:
+		case Climate.WEATHER_SNOW:
+		case Climate.WEATHER_HAIL:
 			return true;
 		}
 		return false;
@@ -30,9 +30,9 @@ public class PuddleMaker extends StdBehavior
 	{
 		switch(weather)
 		{
-		case Area.WEATHER_DROUGHT:
-		case Area.WEATHER_DUSTSTORM:
-		case Area.WEATHER_HEAT_WAVE:
+		case Climate.WEATHER_DROUGHT:
+		case Climate.WEATHER_DUSTSTORM:
+		case Climate.WEATHER_HEAT_WAVE:
 			return true;
 		}
 		return false;
@@ -41,8 +41,8 @@ public class PuddleMaker extends StdBehavior
 	{
 		switch(weather)
 		{
-		case Area.WEATHER_RAIN:
-		case Area.WEATHER_THUNDERSTORM:
+		case Climate.WEATHER_RAIN:
+		case Climate.WEATHER_THUNDERSTORM:
 			return true;
 		}
 		return false;
@@ -105,17 +105,17 @@ public class PuddleMaker extends StdBehavior
 			{
 				Room R=(Room)ticking;
 				Area A=R.getArea();
-				if((!anyWetWeather(A.weatherType(R)))
-				&&(!dryWeather(A.weatherType(R)))
+				if((!anyWetWeather(A.getClimateObj().weatherType(R)))
+				&&(!dryWeather(A.getClimateObj().weatherType(R)))
 				&&(Dice.rollPercentage()<pct()))
-					makePuddle(R,lastWeather,A.weatherType(R));
+					makePuddle(R,lastWeather,A.getClimateObj().weatherType(R));
 			}
 			else
 			if(ticking instanceof Area)
 			{
 				Area A=(Area)ticking;
-				if((!anyWetWeather(A.weatherType(null)))
-				&&(!dryWeather(A.weatherType(null))))
+				if((!anyWetWeather(A.getClimateObj().weatherType(null)))
+				&&(!dryWeather(A.getClimateObj().weatherType(null))))
 					for(Enumeration e=A.getMap();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
@@ -123,16 +123,16 @@ public class PuddleMaker extends StdBehavior
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
 						&&(Dice.rollPercentage()<pct()))
-							makePuddle(R,lastWeather,A.weatherType(null));
+							makePuddle(R,lastWeather,A.getClimateObj().weatherType(null));
 					}
 			}
 		}
 
 		if(ticking instanceof Room)
-			lastWeather=((Room)ticking).getArea().weatherType((Room)ticking);
+			lastWeather=((Room)ticking).getArea().getClimateObj().weatherType((Room)ticking);
 		else
 		if(ticking instanceof Area)
-			lastWeather=((Area)ticking).weatherType(null);
+			lastWeather=((Area)ticking).getClimateObj().weatherType(null);
 		return true;
 	}
 }

@@ -44,21 +44,21 @@ public class Chant_FeelHeat extends Chant
 			Room room=dummy.location();
 			if(room!=null)
 			{
-				if((room.getArea().weatherType(room)==Area.WEATHER_HEAT_WAVE)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HEAT_WAVE)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);
 					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The scorching heat <DAMAGE> <T-NAME>!");
 				}
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_DUSTSTORM)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DUSTSTORM)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,16,0);
 					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The burning hot dust <DAMAGE> <T-NAME>!");
 				}
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_DROUGHT)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_DROUGHT)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_FIRE)))
 				{
 					int damage=Dice.roll(1,8,0);

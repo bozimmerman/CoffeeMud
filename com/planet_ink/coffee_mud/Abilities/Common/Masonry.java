@@ -214,16 +214,13 @@ public class Masonry extends CommonSkill
 								R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
 								R.rawDoors()[Directions.DOWN]=R2;
 								R2.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
-								for(int a=0;a<R.numEffects();a++)
+								LandTitle title=CoffeeUtensils.getLandTitle(R);
+								if((title!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
 								{
-									Ability A=R.fetchEffect(a);
-									if((A!=null)&&(A instanceof LandTitle))
-									{
-										LandTitle A2=(LandTitle)A.newInstance();
-										A2.setLandPrice(((LandTitle)A).landPrice());
-										R2.addNonUninvokableEffect((Ability)A2);
-										break;
-									}
+									LandTitle A2=(LandTitle)title.newInstance();
+									A2.setLandPrice(((LandTitle)title).landPrice());
+									R2.addNonUninvokableEffect((Ability)A2);
+									break;
 								}
 								CMClass.DBEngine().DBCreateRoom(R2,R2.ID());
 								CMClass.DBEngine().DBUpdateExits(R2);

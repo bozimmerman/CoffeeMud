@@ -129,24 +129,24 @@ public class InTheAir extends StdRoom
 				return false;
 			}
 			if(Dice.rollPercentage()>50)
-			switch(room.getArea().weatherType(room))
+			switch(room.getArea().getClimateObj().weatherType(room))
 			{
-			case Area.WEATHER_BLIZZARD:
+			case Climate.WEATHER_BLIZZARD:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The swirling blizzard inhibits <S-YOUPOSS> progress.");
 				return false;
-			case Area.WEATHER_HAIL:
+			case Climate.WEATHER_HAIL:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hail storm inhibits <S-YOUPOSS> progress.");
 				return false;
-			case Area.WEATHER_RAIN:
+			case Climate.WEATHER_RAIN:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The rain storm inhibits <S-YOUPOSS> progress.");
 				return false;
-			case Area.WEATHER_SLEET:
+			case Climate.WEATHER_SLEET:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The biting sleet inhibits <S-YOUPOSS> progress.");
 				return false;
-			case Area.WEATHER_THUNDERSTORM:
+			case Climate.WEATHER_THUNDERSTORM:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The thunderstorm inhibits <S-YOUPOSS> progress.");
 				return false;
-			case Area.WEATHER_WINDY:
+			case Climate.WEATHER_WINDY:
 				room.show(mob,null,CMMsg.MSG_OK_VISUAL,"The hard winds inhibit <S-YOUPOSS> progress.");
 				return false;
 			}

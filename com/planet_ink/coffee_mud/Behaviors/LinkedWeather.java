@@ -45,11 +45,11 @@ public class LinkedWeather extends StdBehavior
 		if((A!=null)&&(linkedA!=null))
 		{
 			if(rolling)
-				A.setNextWeatherType(linkedA.weatherType(null));
+				A.getClimateObj().setNextWeatherType(linkedA.getClimateObj().weatherType(null));
 			else
 			{
-				A.setCurrentWeatherType(linkedA.weatherType(null));
-				A.setNextWeatherType(linkedA.nextWeatherType(null));
+				A.getClimateObj().setCurrentWeatherType(linkedA.getClimateObj().weatherType(null));
+				A.getClimateObj().setNextWeatherType(linkedA.getClimateObj().nextWeatherType(null));
 			}
 		}
 		return true;

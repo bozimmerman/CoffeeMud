@@ -293,7 +293,7 @@ public class Pregnancy extends StdAbility
 						if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");
 						else
-						if((months>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
+						if((months>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
 						{
 							if(Dice.rollPercentage()>25)
 								mob.tell("You feel really sick this morning.");

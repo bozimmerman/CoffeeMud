@@ -7,7 +7,7 @@ public interface MudHost
 	public final static long TIME_TICK_DELAY=10*60000; // 10 minutes, right now.
 	public final static long TIME_SAVE_DELAY=18; // 3 hours...
 	public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TICK_TIME).doubleValue());
-	public final static long TICKS_PER_MUDDAY=(TIME_TICK_DELAY*Area.A_FULL_DAY)/TICK_TIME;
+	public final static long TICKS_PER_MUDDAY=(TIME_TICK_DELAY*TimeClock.A_FULL_DAY)/TICK_TIME;
 
 	public static final int TICK_MOB=0;
 	public static final int TICK_ITEM_BEHAVIOR=1;

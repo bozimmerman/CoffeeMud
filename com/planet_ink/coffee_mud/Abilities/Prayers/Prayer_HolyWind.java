@@ -98,9 +98,9 @@ public class Prayer_HolyWind extends Prayer
 					if((msg.value()<=0)&&(target.location()==mob.location()))
 					{
 						int howLong=2;
-						if((mob.location().getArea().weatherType(mob.location())==Area.WEATHER_WINDY)
-						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_DUSTSTORM)
-						||(mob.location().getArea().weatherType(mob.location())==Area.WEATHER_THUNDERSTORM))
+						if((mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_WINDY)
+						||(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DUSTSTORM)
+						||(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_THUNDERSTORM))
 							howLong=4;
 
 						MOB victim=target.getVictim();

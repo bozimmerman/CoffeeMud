@@ -34,7 +34,7 @@ public class Prayer_SunCurse extends Prayer
 			return super.tick(ticking,tickID);
 		MOB mob=(MOB)affected;
 		if((mob.location()!=null)
-		&&(mob.location().getArea().canSeeTheSun(mob.location()))
+		&&(mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
 		&&(mob.location().isInhabitant(mob)))
 		{
 			mob.tell("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r");
@@ -67,7 +67,7 @@ public class Prayer_SunCurse extends Prayer
 
 		if((!auto)
 		&&(target.location()!=null)
-		&&(target.location().getArea().canSeeTheSun(target.location())))
+		&&(target.location().getArea().getClimateObj().canSeeTheSun(target.location())))
 		{
 			mob.tell("This cannot be prayed for while the sun is shining on you.");
 			return false;

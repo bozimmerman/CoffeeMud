@@ -23,7 +23,7 @@ public class Chant_SummonLightning extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if(mob.location().getArea().weatherType(mob.location())!=Area.WEATHER_THUNDERSTORM)
+		if(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 		{
 			mob.tell("This chant requires a thunderstorm!");
 			return false;

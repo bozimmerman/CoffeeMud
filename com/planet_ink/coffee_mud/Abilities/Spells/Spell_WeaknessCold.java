@@ -45,30 +45,30 @@ public class Spell_WeaknessCold extends Spell
 			Room room=dummy.location();
 			if(room!=null)
 			{
-				if((room.getArea().weatherType(room)==Area.WEATHER_WINDY)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINDY)
 				&&((room.getArea().climateType()&Area.CLIMASK_COLD)>0)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 					MUDFight.postDamage(invoker,dummy,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_WINTER_COLD)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_WINTER_COLD)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 					MUDFight.postDamage(invoker,dummy,null,1,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The biting cold <DAMAGE> <T-NAME>!");
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_SNOW)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_SNOW)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,8,0);
 					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blistering snow <DAMAGE> <T-NAME>!");
 				}
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_BLIZZARD)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_BLIZZARD)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,16,0);
 					MUDFight.postDamage(invoker,dummy,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_COLD,Weapon.TYPE_FROSTING,"The blizzard <DAMAGE> <T-NAME>!");
 				}
 				else
-				if((room.getArea().weatherType(room)==Area.WEATHER_HAIL)
+				if((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_HAIL)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,8,0);

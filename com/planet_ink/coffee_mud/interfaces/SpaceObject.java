@@ -16,14 +16,32 @@ public interface SpaceObject extends Environmental
 	public SpaceObject orbiting();
 	public void setOrbiting(SpaceObject O);
 	
-	public static final long DISTANCE_LIGHTYEAR=30000000;
-	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*(long)10000;
-	public static final long DISTANCE_ORBITING=5;
-	public static final long DISTANCE_QUADRANT=DISTANCE_LIGHTYEAR*(long)133333;
-	
-	public static final long VELOCITY_LIGHT=200000;
-	public static final long VELOCITY_SUBLIGHT=180000;
-	public static final long VELOCITY_SOUND=100;
-	public static final long VELOCITY_ORBITING=25000;
-	public static final long VELOCITY_1MPH=1;
+	public static final long DISTANCE_LIGHTYEAR=2000000000;
+	public static final long DISTANCE_AROUNDGALAXY=DISTANCE_LIGHTYEAR*(long)100;
+	public static final long DISTANCE_ORBITING=3252;
+
+	public static final long VELOCITY_LIGHT=833333;
+	public static final long VELOCITY_SUBLIGHT=750000;
+	public static final long VELOCITY_SOUND=1;
+	public static final long VELOCITY_ORBITING=311;
+	public static final long VELOCITY_WARP1=VELOCITY_LIGHT;
+	public static final long VELOCITY_WARP2=VELOCITY_LIGHT*(long)4;
+	public static final long VELOCITY_WARP3=VELOCITY_LIGHT*(long)9;
+	public static final long VELOCITY_WARP4=VELOCITY_LIGHT*(long)16;
+	public static final long VELOCITY_WARP5=VELOCITY_LIGHT*(long)25;
+	public static final long VELOCITY_WARP6=VELOCITY_LIGHT*(long)36;
+	public static final long VELOCITY_WARP7=VELOCITY_LIGHT*(long)49;
+	public static final long VELOCITY_WARP8=VELOCITY_LIGHT*(long)64;
+	public static final long VELOCITY_WARP9=VELOCITY_LIGHT*(long)81;
+	public static final long VELOCITY_WARP10=VELOCITY_LIGHT*(long)100;
+	public static final long VELOCITY_TRANSWARP1=VELOCITY_LIGHT;
+	public static final long VELOCITY_TRANSWARP2=VELOCITY_LIGHT*(long)8;
+	public static final long VELOCITY_TRANSWARP3=VELOCITY_LIGHT*(long)27;
+	public static final long VELOCITY_TRANSWARP4=VELOCITY_LIGHT*(long)64;
+	public static final long VELOCITY_TRANSWARP5=VELOCITY_LIGHT*(long)125;
+	public static final long VELOCITY_TRANSWARP6=VELOCITY_LIGHT*(long)216;
+	public static final long VELOCITY_TRANSWARP7=VELOCITY_LIGHT*(long)343;
+	public static final long VELOCITY_TRANSWARP8=VELOCITY_LIGHT*(long)512;
+	public static final long VELOCITY_TRANSWARP9=VELOCITY_LIGHT*(long)729;
+	public static final long VELOCITY_TRANSWARP10=VELOCITY_LIGHT*(long)1000;
 }

@@ -29,8 +29,8 @@ public class Chant_SummonTornado extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if((mob.location().getArea().weatherType(mob.location())!=Area.WEATHER_THUNDERSTORM)
-		&&(mob.location().getArea().weatherType(mob.location())!=Area.WEATHER_WINDY))
+		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
+		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
 		{
 			mob.tell("This chant requires a thunderstorm!");
 			return false;

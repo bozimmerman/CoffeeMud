@@ -36,8 +36,8 @@ public class Chant_WakingMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room R=(Room)affected;
-			if((R.getArea().getTODCode()!=Area.TIME_DAWN)
-			&&(R.getArea().getTODCode()!=Area.TIME_DAY))
+			if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN)
+			&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY))
 				unInvoke();
 		}
 		return true;
@@ -47,8 +47,8 @@ public class Chant_WakingMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.getArea().getTODCode()!=Area.TIME_DAWN)
-		&&(target.getArea().getTODCode()!=Area.TIME_DAY))
+		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAWN)
+		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DAY))
 		{
 			mob.tell("You can only start this chant during the day.");
 			return false;

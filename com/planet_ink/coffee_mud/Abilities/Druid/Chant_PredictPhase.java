@@ -28,7 +28,7 @@ public class Chant_PredictPhase extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(Area.MOON_PHASES[mob.location().getArea().getMoonPhase()]);
+				mob.tell(TimeClock.MOON_PHASES[mob.location().getArea().getTimeObj().getMoonPhase()]);
 			}
 		}
 		else

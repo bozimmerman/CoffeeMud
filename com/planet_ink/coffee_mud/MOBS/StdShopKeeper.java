@@ -1036,14 +1036,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return val;
 	}
 
-	protected LandTitle getTitle(Room R)
-	{
-		for(int a=0;a<R.numEffects();a++)
-			if(R.fetchEffect(a) instanceof LandTitle)
-				return (LandTitle)R.fetchEffect(a);
-		return null;
-	}
-
 	protected Vector addRealEstate(Vector V,MOB mob)
 	{
 		if(((whatISell==DEAL_LANDSELLER)
@@ -1058,14 +1050,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				LandTitle A=getTitle(R);
+				LandTitle A=CoffeeUtensils.getLandTitle(R);
 				if((A!=null)&&(R.roomID().length()>0)&&(!roomsHandling.contains(R)))
 				{
-					Vector V2=A.getRooms();
+					Vector V2=A.getPropertyRooms();
 					for(int v=0;v<V2.size();v++)
 						roomsHandling.addElement(V2.elementAt(v));
 					Item I=CMClass.getItem("GenTitle");
-					((LandTitle)I).setLandRoomID(CMMap.getExtendedRoomID(R));
+					((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
 					if(((LandTitle)I).landOwner().equals(name))
 					{
 						if(!I.Name().endsWith(" (Copy)"))
@@ -1083,7 +1075,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							LandTitle L2=null;
 							if(R2!=null)
 							{
-								L2=getTitle(R2);
+								L2=CoffeeUtensils.getLandTitle(R2);
 								if(L2==null)
 								{ skipThisOne=false; break;}
 							}

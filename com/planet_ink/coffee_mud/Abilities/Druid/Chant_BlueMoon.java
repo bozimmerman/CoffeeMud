@@ -60,7 +60,7 @@ public class Chant_BlueMoon extends Chant
 	public static boolean moonInSky(Room R, Ability Acheck)
 	{
 		if(R==null) return false;
-		if(R.getArea().canSeeTheMoon(R)) return true;
+		if(R.getArea().getClimateObj().canSeeTheMoon(R)) return true;
 		Vector V=Sense.flaggedAffects(R,Ability.FLAG_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
 			if(V.elementAt(v)!=Acheck)

@@ -199,16 +199,16 @@ public class Gaian extends StdCharClass
 				}
 				else
 				if((room.domainType()&Room.INDOORS)==0)
-					switch(room.getArea().weatherType(room))
+					switch(room.getArea().getClimateObj().weatherType(room))
 					{
-					case Area.WEATHER_BLIZZARD:
-					case Area.WEATHER_CLOUDY:
-					case Area.WEATHER_DUSTSTORM:
-					case Area.WEATHER_HAIL:
-					case Area.WEATHER_RAIN:
-					case Area.WEATHER_SLEET:
-					case Area.WEATHER_SNOW:
-					case Area.WEATHER_THUNDERSTORM:
+					case Climate.WEATHER_BLIZZARD:
+					case Climate.WEATHER_CLOUDY:
+					case Climate.WEATHER_DUSTSTORM:
+					case Climate.WEATHER_HAIL:
+					case Climate.WEATHER_RAIN:
+					case Climate.WEATHER_SLEET:
+					case Climate.WEATHER_SNOW:
+					case Climate.WEATHER_THUNDERSTORM:
 						break;
 					default:
 						affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/4));
@@ -239,16 +239,16 @@ public class Gaian extends StdCharClass
 					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-((classLevel/5)+1));
 				else
 				if((room.domainType()&Room.INDOORS)==0)
-					switch(room.getArea().weatherType(room))
+					switch(room.getArea().getClimateObj().weatherType(room))
 					{
-					case Area.WEATHER_BLIZZARD:
-					case Area.WEATHER_CLOUDY:
-					case Area.WEATHER_DUSTSTORM:
-					case Area.WEATHER_HAIL:
-					case Area.WEATHER_RAIN:
-					case Area.WEATHER_SLEET:
-					case Area.WEATHER_SNOW:
-					case Area.WEATHER_THUNDERSTORM:
+					case Climate.WEATHER_BLIZZARD:
+					case Climate.WEATHER_CLOUDY:
+					case Climate.WEATHER_DUSTSTORM:
+					case Climate.WEATHER_HAIL:
+					case Climate.WEATHER_RAIN:
+					case Climate.WEATHER_SLEET:
+					case Climate.WEATHER_SNOW:
+					case Climate.WEATHER_THUNDERSTORM:
 						break;
 					default:
 						affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((classLevel/5)+1));

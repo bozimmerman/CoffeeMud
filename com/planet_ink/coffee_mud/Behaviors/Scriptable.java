@@ -989,9 +989,9 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				returnable=false;
 				if(monster.location()!=null)
-				for(int a=0;a<Area.SEASON_DESCS.length;a++)
-					if((Area.SEASON_DESCS[a]).startsWith(arg1.toUpperCase())
-					&&(monster.location().getArea().getSeasonCode()==a))
+				for(int a=0;a<TimeClock.SEASON_DESCS.length;a++)
+					if((TimeClock.SEASON_DESCS[a]).startsWith(arg1.toUpperCase())
+					&&(monster.location().getArea().getTimeObj().getSeasonCode()==a))
 					{returnable=true; break;}
 				break;
 			}
@@ -1000,9 +1000,9 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				returnable=false;
 				if(monster.location()!=null)
-				for(int a=0;a<Area.WEATHER_DESCS.length;a++)
-					if((Area.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
-					&&(monster.location().getArea().weatherType(monster.location())==a))
+				for(int a=0;a<Climate.WEATHER_DESCS.length;a++)
+					if((Climate.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
+					&&(monster.location().getArea().getClimateObj().weatherType(monster.location())==a))
 					{returnable=true; break;}
 				break;
 			}
@@ -1013,22 +1013,22 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				if(("daytime").startsWith(arg1.toLowerCase())
-				&&(monster.location().getArea().getTODCode()==Area.TIME_DAY))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAY))
 					returnable=true;
 				else
 				if(("dawn").startsWith(arg1.toLowerCase())
-				&&(monster.location().getArea().getTODCode()==Area.TIME_DAWN))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DAWN))
 					returnable=true;
 				else
 				if(("dusk").startsWith(arg1.toLowerCase())
-				&&(monster.location().getArea().getTODCode()==Area.TIME_DUSK))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_DUSK))
 					returnable=true;
 				else
 				if(("nighttime").startsWith(arg1.toLowerCase())
-				&&(monster.location().getArea().getTODCode()==Area.TIME_NIGHT))
+				&&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
 					returnable=true;
 				else
-				if((monster.location().getArea().getTODCode()==Util.s_int(arg1)))
+				if((monster.location().getArea().getTimeObj().getTODCode()==Util.s_int(arg1)))
 					returnable=true;
 				else
 					returnable=false;
@@ -1037,7 +1037,7 @@ public class Scriptable extends StdBehavior
 			case 39: // isday
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
-				if((monster.location()!=null)&&(monster.location().getArea().getDayOfMonth()==Util.s_int(arg1)))
+				if((monster.location()!=null)&&(monster.location().getArea().getTimeObj().getDayOfMonth()==Util.s_int(arg1)))
 					returnable=true;
 				else
 					returnable=false;
@@ -2115,25 +2115,25 @@ public class Scriptable extends StdBehavior
 			case 50: // isseason
 			{
 				if(monster.location()!=null)
-					results.append(Area.SEASON_DESCS[monster.location().getArea().getSeasonCode()]);
+					results.append(TimeClock.SEASON_DESCS[monster.location().getArea().getTimeObj().getSeasonCode()]);
 				break;
 			}
 			case 51: // isweather
 			{
 				if(monster.location()!=null)
-					results.append(Area.WEATHER_DESCS[monster.location().getArea().weatherType(monster.location())]);
+					results.append(Climate.WEATHER_DESCS[monster.location().getArea().getClimateObj().weatherType(monster.location())]);
 				break;
 			}
 			case 38: // istime
 			{
 				if(lastKnownLocation!=null)
-					results.append(Area.TOD_DESC[lastKnownLocation.getArea().getTODCode()].toLowerCase());
+					results.append(TimeClock.TOD_DESC[lastKnownLocation.getArea().getTimeObj().getTODCode()].toLowerCase());
 				break;
 			}
 			case 39: // isday
 			{
 				if(lastKnownLocation!=null)
-					results.append(""+lastKnownLocation.getArea().getDayOfMonth());
+					results.append(""+lastKnownLocation.getArea().getTimeObj().getDayOfMonth());
 				break;
 			}
 			case 43: // roommob
@@ -4325,7 +4325,7 @@ public class Scriptable extends StdBehavior
 					int lastTimeProgDone=-1;
 					if(lastTimeProgsDone.containsKey(new Integer(v)))
 						lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(v))).intValue();
-					int time=mob.location().getArea().getTimeOfDay();
+					int time=mob.location().getArea().getTimeObj().getTimeOfDay();
 					if(lastTimeProgDone!=time)
 					{
 						boolean done=false;
@@ -4352,7 +4352,7 @@ public class Scriptable extends StdBehavior
 					int lastDayProgDone=-1;
 					if(lastDayProgsDone.containsKey(new Integer(v)))
 						lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(v))).intValue();
-					int day=mob.location().getArea().getDayOfMonth();
+					int day=mob.location().getArea().getTimeObj().getDayOfMonth();
 					if(lastDayProgDone!=day)
 					{
 						boolean done=false;

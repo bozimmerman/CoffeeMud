@@ -79,17 +79,17 @@ public class Prop_ClosedDayNight extends Property
 		boolean closed=false;
 		if((openTime<0)&&(closeTime<0))
 		{
-			closed=(CMMap.getFirstArea().getTODCode()==Area.TIME_NIGHT);
+			closed=(CMMap.getFirstArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT);
 			if(dayFlag) closed=!closed;
 		}
 		else
 		{
 			if(openTime<closeTime)
-				closed=(CMMap.getFirstArea().getTimeOfDay()<openTime)
-					||(CMMap.getFirstArea().getTimeOfDay()>closeTime);
+				closed=(CMMap.getFirstArea().getTimeObj().getTimeOfDay()<openTime)
+					||(CMMap.getFirstArea().getTimeObj().getTimeOfDay()>closeTime);
 			else
-				closed=(CMMap.getFirstArea().getTimeOfDay()>closeTime)
-					&&(CMMap.getFirstArea().getTimeOfDay()<openTime);
+				closed=(CMMap.getFirstArea().getTimeObj().getTimeOfDay()>closeTime)
+					&&(CMMap.getFirstArea().getTimeObj().getTimeOfDay()<openTime);
 		}
 		return closed;
 	}

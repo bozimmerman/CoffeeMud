@@ -600,29 +600,29 @@ public class StdRoom
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	protected final static String[][] variationCodes={
-		{"SUMMER","S"+Area.SEASON_SUMMER},
-		{"SPRING","S"+Area.SEASON_SPRING},
-		{"WINTER","S"+Area.SEASON_WINTER},
-		{"FALL","S"+Area.SEASON_FALL},
-		{"DAY","C"+Area.TIME_DAY},
-		{"DAYTIME","C"+Area.TIME_DAY},
-		{"NIGHT","C"+Area.TIME_NIGHT},
-		{"NIGHTTIME","C"+Area.TIME_NIGHT},
-		{"DAWN","C"+Area.TIME_DAWN},
-		{"DUSK","C"+Area.TIME_DUSK},
-		{"RAIN","W"+Area.WEATHER_RAIN},
-		{"SLEET","W"+Area.WEATHER_SLEET},
-		{"SNOW","W"+Area.WEATHER_SNOW},
-		{"CLEAR","W"+Area.WEATHER_CLEAR},
-		{"HEATWAVE","W"+Area.WEATHER_HEAT_WAVE},
-		{"THUNDERSTORM","W"+Area.WEATHER_THUNDERSTORM},
-		{"BLIZZARD","W"+Area.WEATHER_BLIZZARD},
-		{"WINDY","W"+Area.WEATHER_WINDY},
-		{"DROUGHT","W"+Area.WEATHER_DROUGHT},
-		{"DUSTSTORM","W"+Area.WEATHER_DUSTSTORM},
-		{"COLD","W"+Area.WEATHER_WINTER_COLD},
-		{"HAIL","W"+Area.WEATHER_HAIL},
-		{"CLOUDY","W"+Area.WEATHER_CLOUDY}
+		{"SUMMER","S"+TimeClock.SEASON_SUMMER},
+		{"SPRING","S"+TimeClock.SEASON_SPRING},
+		{"WINTER","S"+TimeClock.SEASON_WINTER},
+		{"FALL","S"+TimeClock.SEASON_FALL},
+		{"DAY","C"+TimeClock.TIME_DAY},
+		{"DAYTIME","C"+TimeClock.TIME_DAY},
+		{"NIGHT","C"+TimeClock.TIME_NIGHT},
+		{"NIGHTTIME","C"+TimeClock.TIME_NIGHT},
+		{"DAWN","C"+TimeClock.TIME_DAWN},
+		{"DUSK","C"+TimeClock.TIME_DUSK},
+		{"RAIN","W"+Climate.WEATHER_RAIN},
+		{"SLEET","W"+Climate.WEATHER_SLEET},
+		{"SNOW","W"+Climate.WEATHER_SNOW},
+		{"CLEAR","W"+Climate.WEATHER_CLEAR},
+		{"HEATWAVE","W"+Climate.WEATHER_HEAT_WAVE},
+		{"THUNDERSTORM","W"+Climate.WEATHER_THUNDERSTORM},
+		{"BLIZZARD","W"+Climate.WEATHER_BLIZZARD},
+		{"WINDY","W"+Climate.WEATHER_WINDY},
+		{"DROUGHT","W"+Climate.WEATHER_DROUGHT},
+		{"DUSTSTORM","W"+Climate.WEATHER_DUSTSTORM},
+		{"COLD","W"+Climate.WEATHER_WINTER_COLD},
+		{"HAIL","W"+Climate.WEATHER_HAIL},
+		{"CLOUDY","W"+Climate.WEATHER_CLOUDY}
 	};
 
 	protected String parseVariesCodes(String text)
@@ -654,15 +654,15 @@ public class StdRoom
 					switch(variationCodes[i][1].charAt(0))
 					{
 					case 'W':
-						if(getArea().weatherType(null)==num)
+						if(getArea().getClimateObj().weatherType(null)==num)
 							buf.append(parseVariesCodes(dispute));
 						break;
 					case 'C':
-						if(getArea().getTODCode()==num)
+						if(getArea().getTimeObj().getTODCode()==num)
 							buf.append(parseVariesCodes(dispute));
 						break;
 					case 'S':
-						if(getArea().getSeasonCode()==num)
+						if(getArea().getTimeObj().getSeasonCode()==num)
 							buf.append(parseVariesCodes(dispute));
 						break;
 					}
@@ -721,7 +721,7 @@ public class StdRoom
 				Say.append("^L" + roomDescription());
 				if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 				&&((domainType()&Room.INDOORS)==0))
-					Say.append("\n\r\n\r"+getArea().weatherDescription(this));
+					Say.append("\n\r\n\r"+getArea().getClimateObj().weatherDescription(this));
 				Say.append("^N\n\r\n\r");
 			}
 		}
@@ -1277,17 +1277,17 @@ public class StdRoom
 	}
 
 	public int pointsPerMove(MOB mob)
-	{	return getArea().adjustMovement(envStats().weight(),mob,this);	}
+	{	return getArea().getClimateObj().adjustMovement(envStats().weight(),mob,this);	}
 	public int thirstPerRound(MOB mob)
 	{
 		switch(domainConditions())
 		{
 		case Room.CONDITION_HOT:
-			return getArea().adjustWaterConsumption(baseThirst+1,mob,this);
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst+1,mob,this);
 		case Room.CONDITION_WET:
-			return getArea().adjustWaterConsumption(baseThirst-1,mob,this);
+			return getArea().getClimateObj().adjustWaterConsumption(baseThirst-1,mob,this);
 		}
-		return getArea().adjustWaterConsumption(baseThirst,mob,this);
+		return getArea().getClimateObj().adjustWaterConsumption(baseThirst,mob,this);
 	}
 	public int minRange(){return Integer.MIN_VALUE;}
 	public int maxRange()

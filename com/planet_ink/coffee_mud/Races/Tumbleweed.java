@@ -36,12 +36,12 @@ public class Tumbleweed extends StdRace
 			if(R!=null)
 			{
 				Area A=R.getArea();
-				switch(A.weatherType(R))
+				switch(A.getClimateObj().weatherType(R))
 				{
-				case Area.WEATHER_BLIZZARD:
-				case Area.WEATHER_DUSTSTORM:
-				case Area.WEATHER_THUNDERSTORM:
-				case Area.WEATHER_WINDY:
+				case Climate.WEATHER_BLIZZARD:
+				case Climate.WEATHER_DUSTSTORM:
+				case Climate.WEATHER_THUNDERSTORM:
+				case Climate.WEATHER_WINDY:
 					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 					break;
 				default:

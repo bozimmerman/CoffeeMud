@@ -222,6 +222,12 @@ public class Weaving extends CommonSkill
 			mending=false;
 			key=null;
 			messedUp=false;
+			int amount=-1;
+			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+			{
+				amount=Util.s_int((String)commands.lastElement());
+				commands.removeElementAt(commands.size()-1);
+			}
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName);
@@ -244,6 +250,7 @@ public class Weaving extends CommonSkill
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			if(amount>woodRequired) woodRequired=amount;
 			Item firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_COTTON);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_SILK);
 			if(firstWood==null) firstWood=findFirstResource(mob.location(),EnvResource.RESOURCE_HEMP);

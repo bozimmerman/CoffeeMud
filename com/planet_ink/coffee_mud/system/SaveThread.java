@@ -26,16 +26,11 @@ public class SaveThread extends Thread
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			LandTitle T=null;
-			for(int a=0;a<R.numEffects();a++)
+			LandTitle T=CoffeeUtensils.getLandTitle(R);
+			if(T!=null)
 			{
-				Ability A=R.fetchEffect(a);
-				if((A!=null)&&(A instanceof LandTitle))
-					T=(LandTitle)A;
-			}
-			if(T!=null){
 				status="updating title in "+R.roomID();
-				T.updateLot(R,T);
+				T.updateLot();
 				status="sweeping";
 			}
 		}

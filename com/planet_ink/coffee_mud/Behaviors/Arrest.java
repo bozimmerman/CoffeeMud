@@ -1216,16 +1216,8 @@ System.out.println(mob.name()+"/"+officer.name()+"/"+laws+"/"+W);
 				else
 				if(str.endsWith("HOME")&&(str.length()<6))
 				{
-					for(int a=0;a<mob.location().numEffects();a++)
-					{
-						Ability A=mob.location().fetchEffect(a);
-						if((A!=null)&&(A instanceof LandTitle))
-						{
-							LandTitle L=(LandTitle)A;
-							if(L.landOwner().equals(mob.Name()))
-								if(str.startsWith("!")) return false;
-						}
-					}
+					if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
+						if(str.startsWith("!")) return false;
 					if(!str.startsWith("!")) return false;
 					aCrime=true;
 				}

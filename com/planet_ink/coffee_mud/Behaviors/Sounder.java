@@ -127,6 +127,30 @@ public class Sounder extends StdBehavior
 					strings[v]=s.substring(10).trim();
 				}
 				else
+				if((s.toUpperCase().startsWith("HOLD ")))
+				{
+					triggers[v]=CMMsg.TYP_HOLD;
+					strings[v]=s.substring(5).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("HOLD_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_HOLD|ROOM_MASK;
+					strings[v]=s.substring(10).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("WIELD ")))
+				{
+					triggers[v]=CMMsg.TYP_WIELD;
+					strings[v]=s.substring(6).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("WIELD_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_WIELD|ROOM_MASK;
+					strings[v]=s.substring(11).trim();
+				}
+				else
 				if((s.toUpperCase().startsWith("DRINK ")))
 				{
 					triggers[v]=CMMsg.TYP_DRINK;

@@ -30,7 +30,7 @@ public class Chant_FeelElectricity extends Chant
 			MOB dummy=(MOB)affecting();
 			Room room=dummy.location();
 			if((room!=null)
-			&&(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM)
+			&&(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)
 			&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_ELECTRIC)))
 			{
 				int damage=Dice.roll(1,5,0);

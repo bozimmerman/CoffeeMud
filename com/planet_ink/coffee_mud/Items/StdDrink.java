@@ -55,7 +55,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		&&(owner()!=null)
 		&&(owner() instanceof Room)
 		&&(((Room)owner()).getArea()!=null)
-		&&(((Room)owner()).getArea().weatherType((Room)owner())==Area.WEATHER_DROUGHT)))
+		&&(((Room)owner()).getArea().getClimateObj().weatherType((Room)owner())==Climate.WEATHER_DROUGHT)))
 			return false;
 		return true;
 	}

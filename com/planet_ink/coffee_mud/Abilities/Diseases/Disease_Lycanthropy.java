@@ -163,8 +163,8 @@ public class Disease_Lycanthropy extends Disease
 		{
 			if(mob.location()==null) return true;
 			Area A=mob.location().getArea();
-			if(((A.getTODCode()==Area.TIME_DUSK)||(A.getTODCode()==Area.TIME_NIGHT))
-			&&(A.getMoonPhase()==4))
+			if(((A.getTimeObj().getTODCode()==TimeClock.TIME_DUSK)||(A.getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
+			&&(A.getTimeObj().getMoonPhase()==4))
 			{
 				changed=true;
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a "+lycanRace().name()+"!");
@@ -178,8 +178,8 @@ public class Disease_Lycanthropy extends Disease
 		{
 			if(mob.location()==null) return true;
 			Area A=mob.location().getArea();
-			if(((A.getTODCode()!=Area.TIME_DUSK)&&(A.getTODCode()!=Area.TIME_NIGHT))
-			||(A.getMoonPhase()!=4))
+			if(((A.getTimeObj().getTODCode()!=TimeClock.TIME_DUSK)&&(A.getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT))
+			||(A.getTimeObj().getMoonPhase()!=4))
 			{
 				changed=false;
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to normal.");

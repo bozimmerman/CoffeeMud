@@ -7,6 +7,15 @@ import java.io.*;
 
 public class CoffeeUtensils
 {
+	public static boolean hasASky(Room room)
+	{
+		if((room==null)
+		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||((room.domainType()&Room.INDOORS)>0))
+			return false;
+		return true;
+	}
+	
 	public static ShopKeeper getShopKeeper(MOB mob)
 	{
 		if(mob==null) return null;
@@ -444,20 +453,34 @@ public class CoffeeUtensils
 		CMMap.delArea(A);
 	}
 
-	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	public static LandTitle getLandTitle(Room room)
 	{
-		String titleInName="";
-		if((room==null)||(mob==null)) return false;
+		if(room==null) return null;
+		Area area=room.getArea();
+		if(area!=null)
+			for(int a=0;a<area.numEffects();a++)
+			{
+				Ability A=area.fetchEffect(a);
+				if((A!=null)&&(A instanceof LandTitle))
+					return (LandTitle)A;
+			}
 		for(int a=0;a<room.numEffects();a++)
 		{
 			Ability A=room.fetchEffect(a);
 			if((A!=null)&&(A instanceof LandTitle))
-			{ titleInName=((LandTitle)A).landOwner(); break;}
+				return (LandTitle)A;
 		}
-		if(titleInName==null) return false;
-		if(titleInName.length()==0) return false;
-		if(titleInName.equals(mob.Name())) return true;
-		if(titleInName.equals(mob.getClanID()))
+		return null;
+	}
+
+	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	{
+		LandTitle title=getLandTitle(room);
+		if(title==null) return false;
+		if(title.landOwner()==null) return false;
+		if(title.landOwner().length()==0) return false;
+		if(title.landOwner().equals(mob.Name())) return true;
+		if(title.landOwner().equals(mob.getClanID()))
 		{
 			Clan C=Clans.getClan(mob.getClanID());
 			if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANPROPERTYOWNER)>=0))
@@ -465,7 +488,7 @@ public class CoffeeUtensils
 		}
 		return false;
 	}
-
+	
 	public static boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;

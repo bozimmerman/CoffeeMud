@@ -59,7 +59,7 @@ public class Prayer_Fertilize extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),CMAble.qualifyingClassLevel(mob,this)*new Long(((MudHost.TIME_TICK_DELAY*Area.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,mob.location(),CMAble.qualifyingClassLevel(mob,this)*new Long(((MudHost.TIME_TICK_DELAY*TimeClock.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
 			}
 
 		}

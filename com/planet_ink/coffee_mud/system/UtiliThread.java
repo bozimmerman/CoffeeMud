@@ -213,6 +213,8 @@ public class UtiliThread extends Thread
 			return;
 		}
 		started=true;
+		
+		// now start the thread
 		while(true)
 		{
 			try
@@ -221,8 +223,6 @@ public class UtiliThread extends Thread
 				{
 					itemSweep();
 					checkHealth();
-					status="ticking the first area for time";
-					if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
 					lastStop=System.currentTimeMillis();
 					milliTotal+=(lastStop-lastStart);
 					tickTotal++;
@@ -252,9 +252,17 @@ public class UtiliThread extends Thread
 			}
 		}
 
-		// force final time save!
-		if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
-
+		// force final time tick!
+		Vector timeObjects=new Vector();
+		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		{
+			Area A=((Area)e.nextElement());
+			if(!timeObjects.contains(A.getTimeObj()))
+				timeObjects.addElement(A.getTimeObj());
+		}
+		for(int t=0;t<timeObjects.size();t++)
+			((TimeClock)timeObjects.elementAt(t)).save();
+		
 		Log.sysOut("UtiliThread","Shutdown complete.");
 	}
 }

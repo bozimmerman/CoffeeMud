@@ -262,6 +262,41 @@ public class Create extends BaseGenerics
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
 	}
 
+	public void areas(MOB mob, Vector commands)
+		throws IOException
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE AREA [AREA NAME]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String areaName=Util.combine(commands,2);
+		Area A=CMMap.getArea(areaName);
+		if(A!=null)
+		{
+			mob.tell("An area with the name '"+A.name()+"' already exists!");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+		String areaType="";
+		int tries=0;
+		while((areaType.length()==0)&&((++tries)<10))
+		{
+			areaType=mob.session().prompt("Enter an area type to create (default=StdArea): ","StdArea");
+			if(CMClass.getAreaType(areaType)==null)
+			{
+				mob.session().println("Invalid area type! Valid ones are:");
+				mob.session().println(CMLister.reallyList(CMClass.areaTypes(),-1,null).toString());
+				areaType="";
+			}
+		}
+		if(areaType.length()==0) areaType="StdArea";
+		A.setName(areaName);
+		A=CMClass.DBEngine().DBCreateArea(areaName,areaType);
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
+	}
+
 	public void classes(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -358,8 +393,8 @@ public class Create extends BaseGenerics
 		else
 		if(commandType.equals("AREA"))
 		{
-			mob.tell("To create a new Area, you must first create a new room, then give that new room a new Area name.");
-			return false;
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			areas(mob,commands);
 		}
 		else
 		if(commandType.equals("CLAN"))

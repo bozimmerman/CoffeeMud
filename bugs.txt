@@ -1,4 +1,8 @@
 and if I embezzle while having money on the account i lose it and it goes to that 4000
+!Bundles should entertain larger groups of resources
+make Age create a player
+finish Prop_lotsforsale, retest property
+add Prop_AreaForSale
 
 time to re-balance the classes
 mutable body parts, with ability to grant powers

@@ -486,14 +486,23 @@ public class Sense
 	public static boolean canAccess(MOB mob, Area A)
 	{
 		if(A==null) return false;
-		if((!isHidden(A))||(mob.isASysOp(null))||(A.amISubOp(mob.Name())))
+		if(((mob==null)&&(!isHidden(A)))
+		||((!isHidden(A))
+			&&(mob.location()!=null)
+			&&(mob.location().getArea().getTimeObj()==A.getTimeObj()))
+		||(mob.isASysOp(null))
+		||(A.amISubOp(mob.Name())))
 			return true;
 		return false;
 	}
 	public static boolean canAccess(MOB mob, Room R)
 	{
 		if(R==null) return false;
-		if((!isHidden(R))||(mob.isASysOp(R)))
+		if(((mob==null)&&(!isHidden(R)))
+		||((!isHidden(R))
+			&&(mob.location()!=null)
+			&&(mob.location().getArea().getTimeObj()==R.getArea().getTimeObj()))
+		||(mob.isASysOp(R)))
 			return true;
 		return false;
 	}

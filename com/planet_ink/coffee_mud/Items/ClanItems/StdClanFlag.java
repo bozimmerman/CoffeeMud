@@ -115,9 +115,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					if(R!=null)
 					{
 						A=R.getArea();
-						for(int r=0;r<R.numEffects();r++)
-							if(R.fetchEffect(r) instanceof LandTitle)
-								T=(LandTitle)R.fetchEffect(r);
+						T=CoffeeUtensils.getLandTitle(R);
 					}
 					if((T==null)
 					||((!T.landOwner().equals(clanID()))&&(!T.landOwner().equals(msg.source().Name()))))

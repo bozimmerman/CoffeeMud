@@ -2384,21 +2384,9 @@ public class StdArea implements Area
 	
 	[...]
 	
-	public int weatherType(Room room);
-	public void setCurrentWeatherType(int weatherCode);
-	
-	public int nextWeatherType(Room room);
-	public void setNextWeatherType(int weatherCode);
-	
-	public String weatherDescription(Room room);
-	public String nextWeatherDescription(Room room);
-	public String getWeatherDescription();
-	public String getNextWeatherDescription();
-	
-	public void setClimateType(int newClimateType);
+	public Climate getClimateObj();
 	public int climateType();
-	
-	public void forceWeatherTick();
+	public void setClimateType(int newClimateType);
 </PRE>
 <P></P>
 <P align=left><FONT size=4>Of course, 
@@ -2408,11 +2396,11 @@ is required!&nbsp; The name, display text, description, and others are all
 handled by the builder, or Properties or behaviors, and aren't pertinant to this 
 discussion of Areas.</FONT></P>
 <P align=left><FONT size=4>The 
-weather, however, is a direct function of each area.&nbsp; Each area knows its 
-current weather code (see the AREA interface) as well as the next weather change 
-"in the que".&nbsp; These can be read and set by the methods below.&nbsp; Each 
+weather, however, is a relative function of each area.&nbsp; Each area knows its 
+current weather object (see the Climate interface) as well as the next weather change 
+"in the que".&nbsp; These can be read and set by the methods in the Climate object.&nbsp; Each 
 area also knows it climatic "tendencies", and this also can be set and read from 
-the area.&nbsp; Lastly, a method exists to force the area to cycle through its 
+the area itself.&nbsp; Lastly, a method exists on the Climate object to force the area to cycle through its 
 weather, which will force the "next" weather code to become current, and 
 establish a new "next" weather code.</FONT></P>
 <P><PRE>	public int getTechLevel();
@@ -2438,36 +2426,16 @@ can use weather or any other factors to adjust the water consumption or movement
 consumption numbers use by mobs walking around and fighting.&nbsp; These methods 
 are where this is done, based on the "base" levels provided by the 
 Locale.</FONT></P>
-<P><PRE>	public String timeDescription(MOB mob, Room room);
-	public int getYear();
-	public void setYear(int y);
-	public int getMonth();
-	public void setMonth(int m);
-	public int getDayOfMonth();
-	public void setDayOfMonth(int d);
-	public int getTimeOfDay();
-	public boolean setTimeOfDay(int t);
-	public int getTODCode();
-	
-	public int getSeasonCode();
-	
-	public void tickTock(int howManyHours);
+<P><PRE>	
+	public TimeClock getTimeObj();
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Although 
-the time is properly a global notion, being the same regardless of area, these 
-methods were placed inside the Area object just in case you wanted some areas to 
-be on a totally different time-zone.&nbsp; Although the StdArea has lots of help 
-from the system, a coder overriding these methods would have to handle all their 
-own updates, and is provided a ticktock method to assist with this.</FONT></P>
-<P><PRE>	public int getMoonPhase();
-	public boolean canSeeTheMoon(Room room);
-	public boolean canSeeTheSun(Room room);
-</PRE>
-<P></P>
-<P align=left><FONT size=4>The phase 
-of the moon, and whether or not a player can see the sun or the moon from inside 
-a given room can be established by an area.</FONT></P>
+<P align=left><FONT size=4>Similar to Climate above, each area has a 
+reference to a TimeClock object which contains information about local time.
+Unlike the Climate, however, StdAreas all share the same Time object, meaning
+that time is global.  However, the object exists here in case you want local
+time areas.
+</FONT></P>
 <P><PRE>	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 </PRE>
