@@ -10,6 +10,7 @@ SET JAVACPATH=D:\java\jdk1.4.0\bin\javac
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Paladin\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Prayers\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Properties\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\Abilities\Poisons\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Diseases\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Ranger\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Abilities\Skills\*.java
