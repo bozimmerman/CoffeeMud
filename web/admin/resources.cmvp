@@ -14,10 +14,10 @@
 	@ResourceMgr?RESET@
 	@loop@
 	<TR>
-	@ResourceMgr?NEXT@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=DELETE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=DELETE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=DELETE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
-	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=DELETE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
+	@ResourceMgr?NEXT@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
+	@ResourceMgr?NEXT&EMPTYOK@<TD WIDTH=25%><INPUT TYPE=RADIO NAME=RESOURCE VALUE="@ResourceMgr@"><B>@ResourceMgr@</B></a></TD>
 	</TR>
 	@back@
 	</TABLE>
@@ -25,7 +25,7 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=50% ALIGN=CENTER>
-	<a href="admin/">Back to main Admin screen</a>
+	<a href="admin/grinder/loggedin.cmvp">Back to previous menu</a>
 	</TD>
 	<TD WIDTH=50% ALIGN=CENTER>
 	<INPUT TYPE=SUBMIT NAME="Delete selected" VALUE="Delete selected">
