@@ -38,13 +38,14 @@ public class Title extends StdCommand
 	    {
 	        String title=(String)ps.getTitles().elementAt(i);
 	        if(title.equalsIgnoreCase("*"))
-	    	    menu.append(Util.padRight(""+(i+1),2)+": Do not use a title.");
+	    	    menu.append(Util.padRight(""+(i+1),2)+": Do not use a title.\n\r");
 	        else
-		        menu.append(Util.padRight(""+(i+1),2)+": "+title+"\n\r");
+		        menu.append(Util.padRight(""+(i+1),2)+": "+Util.replaceAll(title,"*",mob.Name())+"\n\r");
 	    }
 	    int selection=1;
 	    while((mob.session()!=null)&&(!mob.session().killFlag()))
 	    {
+		    mob.tell(menu.toString());
 	        String which=mob.session().prompt("Enter a selection: ",""+selection);
 	        if(which.length()==0)
 	            break;
@@ -62,6 +63,7 @@ public class Title extends StdCommand
 	        String which=(String)ps.getTitles().elementAt(selection-1);
 	        ps.getTitles().removeElementAt(selection-1);
 	        ps.getTitles().insertElementAt(which,0);
+	        mob.tell("Title changed accepted.");
 	    }
 		return false;
 	}

@@ -185,13 +185,22 @@ public class Skill_Enslave extends StdAbility
 		    {
 		        hungerTickDown=HUNGERTICKMAX;
 		        mob.curState().expendEnergy(mob,mob.maxState(),false);
-		        if((!mob.isInCombat())&&(Dice.rollPercentage()>(masterAnger/10)))
+		        if((!mob.isInCombat())&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()<(masterAnger/10)))
 		        {
 		            if(myMaster==null) myMaster=CMMap.getPlayer(text());
 		            if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 		            {
 		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
-		                MUDFight.postAttack(mob,myMaster,mob.fetchWieldedItem());
+		                setMiscText("");
+		                MOB master=myMaster;
+		                myMaster=null;
+		                mob.setLiegeID("");
+		                mob.setClanID("");
+		                mob.recoverCharStats();
+		                mob.recoverEnvStats();
+		                mob.resetToMaxState();
+		                mob.setFollowing(null);
+		                MUDFight.postAttack(mob,master,mob.fetchWieldedItem());
 		            }
 		            else
 		            if(Dice.rollPercentage()<50)

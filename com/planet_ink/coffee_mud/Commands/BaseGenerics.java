@@ -2024,6 +2024,49 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	public static void genTitles(MOB mob, MOB E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if(E.playerStats()==null) return;
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String behaviorstr="";
+			for(int b=0;b<E.playerStats().getTitles().size();b++)
+			{
+				String B=(String)E.playerStats().getTitles().elementAt(b);
+				if(B!=null)	behaviorstr+=B+", ";
+			}
+			if(behaviorstr.length()>0)
+				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+			mob.tell(showNumber+". Titles: '"+behaviorstr+"'.");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			behave=mob.session().prompt("Enter a title to add/remove\n\r:","");
+			if(behave.length()>0)
+			{
+				String tattoo=behave;
+				if((tattoo.length()>0)
+				&&(Character.isDigit(tattoo.charAt(0)))
+				&&(tattoo.indexOf(" ")>0)
+				&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+					tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+				if(E.playerStats().getTitles().contains(tattoo))
+				{
+					mob.tell(tattoo.trim().toUpperCase()+" removed.");
+					E.playerStats().getTitles().remove(tattoo);
+				}
+				else
+				{
+					mob.tell(behave.trim().toUpperCase()+" added.");
+					E.playerStats().getTitles().addElement(tattoo);
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+	
 	public static void genEducations(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4981,6 +5024,7 @@ public class BaseGenerics extends StdCommand
 			}
 			genTattoos(mob,me,++showNumber,showFlag);
 			genEducations(mob,me,++showNumber,showFlag);
+			genTitles(mob,me,++showNumber,showFlag);
 			genEmail(mob,me,++showNumber,showFlag);
 			genSecurity(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}

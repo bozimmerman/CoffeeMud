@@ -46,9 +46,9 @@ public class Who extends StdCommand
 		msg.append(Util.padRight(levelStr,7));
 		String name=null;
 		if(Util.bset(who.envStats().disposition(),EnvStats.IS_NOT_SEEN))
-			name="("+who.name()+")";
+			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
 		else
-			name=who.name();
+			name=(who.Name().equals(who.name())?who.titledName():who.name());
 		if((who.session()!=null)&&(who.session().afkFlag()))
 		{
 			long t=(who.session().getIdleMillis()/1000);

@@ -37,6 +37,7 @@ public interface PlayerStats
 	public void setPrompt(String prompt);
 	public HashSet getFriends();
 	public HashSet getIgnored();
+	public Vector getTitles();
 	public void addTellStack(String msg);
 	public Vector getTellStack();
 	public void addGTellStack(String msg);

@@ -166,6 +166,7 @@ public class Scriptable extends StdBehavior
 		"DEITY", // 64
 		"CLAN", // 65
 		"CLANRANK", // 66
+		"HASTITLE", // 67
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -215,7 +216,8 @@ public class Scriptable extends StdBehavior
 		"MPCLOSE", // 45
 		"MPLOCK", // 46
 		"MPUNLOCK", // 47
-		"RETURN" // 48
+		"RETURN", // 48
+		"MPTITLE", // 49
 	};
 
 
@@ -1251,6 +1253,25 @@ public class Scriptable extends StdBehavior
 				}
 				else
 					returnable=false;
+				break;
+			}
+			case 67: // hastitle
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(arg2.length()==0)
+				{
+					scriptableError(scripted,"HASTITLE","Syntax",evaluable);
+					return returnable;
+				}
+				if(E instanceof MOB)
+				{
+				    MOB M=(MOB)E;
+				    returnable=(M.playerStats()!=null)&&(M.playerStats().getTitles().contains(arg2));
+				}
+				else
+				    returnable=false;
 				break;
 			}
 			case 3: // worn
@@ -3320,6 +3341,18 @@ public class Scriptable extends StdBehavior
 					results.append(E.envStats().level());
 				break;
 			}
+			case 67: // hastitle
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()>0)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null))
+				{
+				    MOB M=(MOB)E;
+				    results.append((String)M.playerStats().getTitles().firstElement());
+				}
+				break;
+			}
 			case 66: // clanrank
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
@@ -4099,6 +4132,35 @@ public class Scriptable extends StdBehavior
 					else
 					if(!tattooMinus)
 						themob.addTattoo(tattooName);
+				}
+				break;
+			}
+			case 49: // mptitle
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				String tattooName=Util.getCleanBit(s,2);
+				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
+				{
+					MOB themob=(MOB)newTarget;
+					boolean tattooMinus=tattooName.startsWith("-");
+					if(tattooMinus)	tattooName=tattooName.substring(1);
+					String tattoo=tattooName;
+					if((tattoo.length()>0)
+					&&(Character.isDigit(tattoo.charAt(0)))
+					&&(tattoo.indexOf(" ")>0)
+					&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+						tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+					if(themob.playerStats()!=null)
+					{
+						if(themob.playerStats().getTitles().contains(tattoo))
+						{
+							if(tattooMinus)
+								themob.playerStats().getTitles().removeElement(tattooName);
+						}
+						else
+						if(!tattooMinus)
+							themob.playerStats().getTitles().insertElementAt(tattooName,0);
+					}
 				}
 				break;
 			}

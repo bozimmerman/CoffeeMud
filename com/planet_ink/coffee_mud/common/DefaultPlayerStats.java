@@ -28,6 +28,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private HashSet ignored=new HashSet();
 	private Vector tellStack=new Vector();
 	private Vector gtellStack=new Vector();
+	private Vector titles=new Vector();
 	private String lastIP="";
 	private long LastDateTime=System.currentTimeMillis();
 	private long lastUpdated=0;
@@ -116,6 +117,27 @@ public class DefaultPlayerStats implements PlayerStats
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
 	
+	public Vector getTitles()
+	{
+	    return titles;
+	}
+	public String getTitleXML()
+	{
+	    if(titles.size()==0) return "";
+	    StringBuffer str=new StringBuffer("");
+	    for(int t=titles.size()-1;t>=0;t--)
+	    {
+	        String s=(String)titles.elementAt(t);
+	        if(s.length()==0) titles.removeElementAt(t);
+	    }
+	    for(int t=0;t<titles.size();t++)
+	    {
+	        String s=(String)titles.elementAt(t);
+	        str.append("<TITLE"+t+">"+s+"</TITLE"+t+">");
+	    }
+	    return str.toString();
+	}
+	
 	public String poofIn(){return poofin;}
 	public String poofOut(){return poofout;}
 	public String tranPoofIn(){return tranpoofin;}
@@ -160,6 +182,7 @@ public class DefaultPlayerStats implements PlayerStats
 		String i=getPrivateList(getIgnored());
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
+			+getTitleXML()
 			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
@@ -180,6 +203,17 @@ public class DefaultPlayerStats implements PlayerStats
 		    for(int v=0;v<V.size();v++)
 		        birthday[v]=Util.s_int((String)V.elementAt(v));
 		}
+		titles.clear();
+		int t=-1;
+		while((++t)>=0)
+		{
+			String title=XMLManager.returnXMLValue(str,"TITLE"+t);
+			if(title.length()==0)
+			    break;
+			else
+			    titles.addElement(title);
+		}
+		
 		poofin=XMLManager.returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
 		poofout=XMLManager.returnXMLValue(str,"POOFOUT");

@@ -190,6 +190,12 @@ public class StdMOB implements MOB
 		if(envStats().newName()!=null) return envStats().newName();
 		return Username;
 	}
+	public String titledName()
+	{
+	    if((playerStats==null)||(playerStats.getTitles().size()==0))
+	        return name();
+	    return Util.replaceAll((String)playerStats.getTitles().firstElement(),"*",Name());
+	}
 
 	public StdMOB(){}
 
@@ -864,6 +870,7 @@ public class StdMOB implements MOB
 	{
 		if((displayText.length()==0)
 		   ||(!name().equals(Name()))
+		   ||(!titledName().equals(Name()))
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
@@ -871,7 +878,10 @@ public class StdMOB implements MOB
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;
-			sendBack=new StringBuffer(name());
+			if(!name().equals(Name()))
+				sendBack=new StringBuffer(name());
+			else
+				sendBack=new StringBuffer(titledName());
 			sendBack.append(" ");
 			sendBack.append(Sense.dispositionString(this,Sense.flag_is));
 			sendBack.append(" here");

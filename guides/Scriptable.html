@@ -9,8 +9,7 @@ style="FONT-SIZE: 18pt"><FONT size=6><STRONG>Scripting in
 CoffeeMud 4.6</STRONG></FONT></SPAN></P>
 <P style="TEXT-ALIGN: center" align=left><IMG 
 src="images/mug.jpg"></P>
-<P><FONT color=royalblue size=6>Introduction to 
-Scripting</FONT>&nbsp;</P>
+<P><FONT color=royalblue size=6>Introduction to Scripting</FONT>&nbsp;</P>
 <P>Scripting is the ability to makes something behave 
 proactively, or respond to game stimuli, in a way specified by the game 
 builders.&nbsp; A Script is the set of commands written by the builders to 
@@ -35,7 +34,8 @@ parameter.&nbsp;&nbsp; Scripts entered in this way differ from scripts entered
 into text files for the LOAD parameter in one significant sense: Every line of a 
 script entered in this way must be terminated by a semicolon.&nbsp; Here is an 
 example.</P>
-<P><EM>RAND_PROG 50;bounce;say "hi!";~;</EM>&nbsp;</P>
+<P><EM>RAND_PROG 50;bounce;say 
+"hi!";~;</EM>&nbsp;</P>
 <P>Scripts which are entered into text files for the LOAD 
 parameter have their lines terminated by carriage returns (ENTER) instead of 
 semicolons.&nbsp; The script&nbsp;syntax&nbsp;is, in all other ways, 
@@ -44,7 +44,7 @@ identical.</P>
 language in other mud codebases will have no trouble picking up on the CoffeeMud 
 scripting language.&nbsp; In fact, most of your existing scripts will probably 
 work without changes.</P>
-<P><FONT color=royalblue size=6> Script 
+<P><FONT color=royalblue size=6>Script 
 Structure</FONT></P>
 <P>The CoffeeMud scripting language is an "event-based" 
 language.&nbsp;&nbsp; Each script&nbsp;may contain one or more event 
@@ -54,33 +54,27 @@ which are executed only when the trigger event occurs.&nbsp; Each event
 trigger/command grouping is terminated by a ~ character, which should appear on 
 a line by itself.&nbsp;&nbsp; Putting this together, we have a high level syntax 
 that looks like this:</P>
-<P><EM>EVENT_TRIGGER&nbsp; parameter1 parameter2 
-...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR><EM>~</EM></P>
-<P><EM>ANOTHER_EVENT_TRIGGER&nbsp; parameter1 parameter2 
-...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR><EM>~</EM></P>
+<P><EM>EVENT_TRIGGER&nbsp; parameter1 
+parameter2 ...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR><EM>~</EM></P>
+<P><EM>ANOTHER_EVENT_TRIGGER&nbsp; 
+parameter1 parameter2 ...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR><EM>~</EM></P>
 <P>etc.</P>
 <P><FONT color=royalblue size=6>Scripting Events</FONT></P>
 <P>Below are a list of the valid event triggers, along with 
 their parameters, and a description of the events or circumstances under which 
 the events occur.&nbsp; These docs borrow heavily from the nicely written 
-MOBPROG Tutorial at:<A 
-href="http://aoc.pandapub.com/home.shtml">http://aoc.pandapub.com/home.shtml</A>.             
-            
-</P>
+MOBPROG Tutorial at:<A href="http://aoc.pandapub.com/home.shtml">http://aoc.pandapub.com/home.shtml</A>. </P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">all_greet_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>all_greet_prog [integer 
-percentage]</EM></P>
-<P class=MsoNormal>       
-               
-      This type of mobprog checks a percentage chance every 
-time someone enters the room that the mob is currently in. If 
-the random number generated between 1 and 100 is equal to or below the percentage 
-of the all_greet_prog, the prog is triggered. Note that all_greet_progs are triggered by 
-both players and mobs, and a mob in a maze 
-can actually sometimes end up triggering itself! This type of mobprog has all sorts of 
-uses, ranging from giving in-zone quest information to people entering the room, creating aggressive progs, 
-etc.</P>
+<P class=MsoNormal>Usage:<BR><EM>all_greet_prog [integer percentage]</EM></P>
+<P class=MsoNormal>This type of mobprog checks a percentage 
+chance every time someone enters the room that the mob is currently in. If the 
+random number generated between 1 and 100 is equal to or below the percentage of 
+the all_greet_prog, the prog is triggered. Note that all_greet_progs are 
+triggered by both players and mobs, and a mob in a maze can actually sometimes 
+end up triggering itself! This type of mobprog has all sorts of uses, ranging 
+from giving in-zone quest information to people entering the room, creating 
+aggressive progs, etc.</P>
 <P class=MsoNormal>EXAMPLES:<BR><EM><BR>all_greet_prog 25</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 prog will be triggered 25% of the time when someone enters the room where the 
@@ -111,14 +105,14 @@ You can use these and act_progs to safely have mobs trigger each other, without
 people seeing what is going on. Other uses include triggering off of people 
 fleeing, moving out of the room, etc. The possibilities are endless.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>act_prog wolf dog 
-coyote</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever the 
+<P class=MsoNormal><EM>act_prog wolf 
+dog coyote</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever the 
 mob sees a segment of text containing any of the words wolf, dog, or<SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>coyote. If the 
 string contains more than one of these, the prog will be triggered multiple 
 times.)</P>
-<P class=MsoNormal><EM>act_prog p A wolf 
-howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
+<P class=MsoNormal><EM>act_prog p A 
+wolf howls at the moon.</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog when 
 it sees this precise message. Note that punctuation is important here as 
 well.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
@@ -126,8 +120,8 @@ one act_prog on a mob, but you shouldn’t have multiple act_progs that trigger
 off of the same message.</P>
 <P class=MsoNormal>SPECIAL NOTES: ANSI colors on objects 
 don’t seem to work well with act_progs, so avoid using ANSI colors in anything 
-that may be part of your act_prog trigger. Variables and Codes are not used in act_progs, 
-so do not try to use them; it won’t work.</P>
+that may be part of your act_prog trigger. Variables and Codes are not used in 
+act_progs, so do not try to use them; it won’t work.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">bribe_prog</SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>bribe_prog [integer money value]</EM></P>
@@ -157,30 +151,29 @@ don’t do this your larger sum bribe_progs will never be triggered.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">consume_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>consume_prog [keyword list]<BR>consume_prog p [keyword list]<BR>consume_prog all</EM></P>
-<P class=MsoNormal>        
-This type of mobprog is triggered eating or drinking from 
-an object. If the object&nbsp;used&nbsp;matches the keywords of the consume_prog, the prog is triggered. 
-If there is a ‘p’ placed before the keyword list, the keywords of the 
-object must exactly match that of the consume_prog. If there is not, then any object with 
-any of the keywords in the list in it will trigger it. If a consume_prog all 
-is used, then the consume_prog will trigger from any object at 
-all. This type of prog is usually used for in-zone quests and special mob 
-behavior, and has a variety of uses.</P>
+<P class=MsoNormal>This type of mobprog is triggered eating 
+or drinking from an object. If the object&nbsp;used&nbsp;matches the keywords of 
+the consume_prog, the prog is triggered. If there is a ‘p’ placed before the 
+keyword list, the keywords of the object must exactly match that of the 
+consume_prog. If there is not, then any object with any of the keywords in the 
+list in it will trigger it. If a consume_prog all is used, then the consume_prog 
+will trigger from any object at all. This type of prog is usually used for 
+in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>consume_prog 
-orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>   (This will trigger 
-if the object eaten has any of the keywords orange, apple, or banana. This means 
-that it would be triggered by&nbsp;eating a banana, an apple pie, or even an 
-orange shield.)</P>
+orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
+eaten has any of the keywords orange, apple, or banana. This means that it would 
+be triggered by&nbsp;eating a banana, an apple pie, or even an orange 
+shield.)</P>
 <P class=MsoNormal><EM>consume_prog p 
-apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>  (This will trigger 
-if the object&nbsp;eaten has the exact keywords apple pie delicious. 
-The prog would not be triggered by eating an object with keywords red apple or 
-blackberry pie or anything except the exact order and wording of the keyword 
-list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;eaten has the exact keywords apple pie delicious. The prog would not 
+be triggered by eating an object with keywords red apple or blackberry pie or 
+anything except the exact order and wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>consume_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
-</SPAN>   (This will trigger if any object is ate or drank.)</P>
+</SPAN>(This will trigger if any object is ate or drank.)</P>
 <P class=MsoNormal>MULTIPLE PROGS: You can have more than 
 one consume_prog on a mob. Generally it is best not to have consume_progs with 
 the same keywords in them, unless they are a consume_prog p with different 
@@ -189,15 +182,15 @@ red juicy and a consume_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">damage_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>damage_prog </EM></P>
-<P class=MsoNormal>This type of mobprog is triggered whenever the scripted mob 
-is damaged, or the scripted item is used to deliver damage.&nbsp; The source and 
-target mobs will be as you expect.&nbsp; The seconday item will be the weapon 
-used to deliver the damage, if it was a physical item (spells are not 
-items).&nbsp; The string returned in $g will be the amount of damage taken.</P>
+<P class=MsoNormal>This type of mobprog is triggered 
+whenever the scripted mob is damaged, or the scripted item is used to deliver 
+damage.&nbsp; The source and target mobs will be as you expect.&nbsp; The 
+seconday item will be the weapon used to deliver the damage, if it was a 
+physical item (spells are not items).&nbsp; The string returned in $g will be 
+the amount of damage taken.</P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>damage_prog&nbsp;</EM><SPAN 
-style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; This program will trigger when 
-damage is taken by a mob, or given by&nbsp;the scripted item.</SPAN></P>
+<P class=MsoNormal><EM>damage_prog&nbsp;</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; This program will trigger when damage is 
+taken by a mob, or given by&nbsp;the scripted item.</SPAN></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">day_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>day_prog [list of integer day of the month]</EM></P>
@@ -238,31 +231,30 @@ the load off of rand_prog type programs.</P>
 <P><EM>delay_prog 1 11</EM><SPAN 
 style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
 delay_prog will be triggered after 1-11 ticks have elapsed.)&nbsp;</P>
-<P> 
-        <SPAN 
+<P><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">drop_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>drop_prog [keyword list]<BR>drop_prog 
 p [keyword list]<BR>drop_prog all</EM></P>
-<P class=MsoNormal>This type of mobprog is triggered by dropping an object. If the object&nbsp;dropped matches 
-the keywords of the drop_prog, the prog is triggered. If there is a ‘p’ placed 
-before the keyword list, the keywords of the object must exactly match that of 
-the drop_prog. If there is not, then any object with any of the keywords in the 
-list in it will trigger it. If a drop_prog all is used, then the drop_prog will 
-trigger from any object at all being&nbsp;dropped. This type of 
-prog is usually used for in-zone quests and special mob behavior, and has a 
-variety of uses.</P>
+<P class=MsoNormal>This type of mobprog is triggered by 
+dropping an object. If the object&nbsp;dropped matches the keywords of the 
+drop_prog, the prog is triggered. If there is a ‘p’ placed before the keyword 
+list, the keywords of the object must exactly match that of the drop_prog. If 
+there is not, then any object with any of the keywords in the list in it will 
+trigger it. If a drop_prog all is used, then the drop_prog will trigger from any 
+object at all being&nbsp;dropped. This type of prog is usually used for in-zone 
+quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>drop_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-dropped has any of the keywords orange, apple, or banana. This means 
-that it would be triggered by dropping a banana, an apple pie, or even an orange 
+dropped has any of the keywords orange, apple, or banana. This means that it 
+would be triggered by dropping a banana, an apple pie, or even an orange 
 shield.)</P>
 <P class=MsoNormal><EM>drop_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;dropped has the exact keywords apple pie delicious. 
-The prog would not be triggered by&nbsp;dropping an object with keywords red 
-apple or blackberry pie or anything except the exact order and wording of the 
-keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+object&nbsp;dropped has the exact keywords apple pie delicious. The prog would 
+not be triggered by&nbsp;dropping an object with keywords red apple or 
+blackberry pie or anything except the exact order and wording of the keyword 
+list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>drop_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
 </SPAN>(This will trigger if any object is&nbsp;dropped.)</P>
@@ -340,27 +332,26 @@ called by MPCALLFUNC)</P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">get_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>get_prog [keyword list]<BR>get_prog p 
 [keyword list]<BR>get_prog all</EM></P>
-<P class=MsoNormal> This type of mobprog is triggered by 
-getting an object. If the object picked up&nbsp; matches the 
-keywords of the get_prog, the prog is triggered. If there is a ‘p’ placed before 
-the keyword list, the keywords of the object must exactly match that of the 
-get_prog. If there is not, then any object with any of the keywords in the list 
-in it will trigger it. If a get_prog all is used, then the get_prog will trigger 
-from any object at all being&nbsp;picked up. This type of prog 
-is usually used for in-zone quests and special mob behavior, and has a variety 
-of uses.</P>
+<P class=MsoNormal>This type of mobprog is triggered by 
+getting an object. If the object picked up&nbsp; matches the keywords of the 
+get_prog, the prog is triggered. If there is a ‘p’ placed before the keyword 
+list, the keywords of the object must exactly match that of the get_prog. If 
+there is not, then any object with any of the keywords in the list in it will 
+trigger it. If a get_prog all is used, then the get_prog will trigger from any 
+object at all being&nbsp;picked up. This type of prog is usually used for 
+in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>get_prog orange 
 apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-picked up&nbsp; has any of the keywords orange, apple, or banana. This 
-means that it would be triggered by&nbsp;getting a banana, an apple pie, or even 
-an orange shield.)</P>
-<P class=MsoNormal><EM>get_prog p apple 
-pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;picked up has the exact keywords apple pie 
-delicious. The prog would not be triggered by getting an object with keywords 
-red apple or blackberry pie or anything except the exact order and wording of 
-the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+picked up&nbsp; has any of the keywords orange, apple, or banana. This means 
+that it would be triggered by&nbsp;getting a banana, an apple pie, or even an 
+orange shield.)</P>
+<P class=MsoNormal><EM>get_prog p 
+apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;picked up has the exact keywords apple pie delicious. The prog would 
+not be triggered by getting an object with keywords red apple or blackberry pie 
+or anything except the exact order and wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>get_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
 </SPAN>(This will trigger if any object is&nbsp;picked up.)</P>
@@ -371,8 +362,8 @@ some of the same keywords – for example a get_prog p apple red juicy and a
 get_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">give_prog<o:p></O:P></SPAN></P>
-<P class=MsoNormal>Usage:<BR><EM>give_prog [keyword list]<BR>give_prog p 
-[keyword list]<BR>give_prog all</EM></P>
+<P class=MsoNormal>Usage:<BR><EM>give_prog [keyword list]<BR>give_prog 
+p [keyword list]<BR>give_prog all</EM></P>
 <P class=MsoNormal>This type of mobprog is triggered by the 
 mob being given an object. If the object given to the mob matches the keywords 
 of the give_prog, the prog is triggered. If there is a ‘p’ placed before the 
@@ -484,32 +475,31 @@ triggered on the final 20th minute of the quest 'my quest'.)</P>
 <P><EM>quest_time_prog 'that 
 quest'&nbsp;1</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This quest_time_prog will be 
 triggered on the final minute of the quest 'that quest'.)&nbsp;</P>
-<P>    
-         <SPAN 
+<P><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">put_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>put_prog [keyword list]<BR>put_prog p 
 [keyword list]<BR>put_prog all</EM></P>
-<P class=MsoNormal> This type of mobprog is triggered by 
-putting something in a container. If the&nbsp;container being 
-used&nbsp; matches the keywords of the put_prog, the prog is 
-triggered. If there is a ‘p’ placed before the keyword list, the keywords of the 
-object must exactly match that of the put_prog. If there is not, then any 
-container with any of the keywords in the list in it will trigger it. If a 
-put_prog all is used, then the put_prog will trigger from any container at all 
-being&nbsp;used. This type of prog is usually used for in-zone 
-quests and special mob behavior, and has a variety of uses.</P>
+<P class=MsoNormal>This type of mobprog is triggered by 
+putting something in a container. If the&nbsp;container being used&nbsp; matches 
+the keywords of the put_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the put_prog. If there is not, then any container with any of the keywords in 
+the list in it will trigger it. If a put_prog all is used, then the put_prog 
+will trigger from any container at all being&nbsp;used. This type of prog is 
+usually used for in-zone quests and special mob behavior, and has a variety of 
+uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>put_prog orange 
 apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-container&nbsp;used&nbsp; has any of the keywords orange, apple, or 
-banana. This means that it would be triggered by putting something into a 
-banana, an apple pie, or even an orange shield.)</P>
+container&nbsp;used&nbsp; has any of the keywords orange, apple, or banana. This 
+means that it would be triggered by putting something into a banana, an apple 
+pie, or even an orange shield.)</P>
 <P class=MsoNormal><EM>put_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-container used up has the exact keywords apple pie delicious. 
-The prog would not be triggered by putting anything into a&nbsp;container with 
-keywords red apple or blackberry pie or anything except the exact order and 
-wording of the keyword list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+container used up has the exact keywords apple pie delicious. The prog would not 
+be triggered by putting anything into a&nbsp;container with keywords red apple 
+or blackberry pie or anything except the exact order and wording of the keyword 
+list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>put_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
 </SPAN>(This will trigger if any container is&nbsp;used.)</P>
@@ -546,9 +536,9 @@ themselves afterwards.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">remove_prog<O:P></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>remove_prog [keyword list]<BR>remove_prog p [keyword list]<BR>remove_prog all</EM></P>
-<P class=MsoNormal>   This type of mobprog is 
-triggered by&nbsp;removing an object. If the object removed&nbsp;&nbsp;matches 
-the keywords of the remove_prog, the prog is triggered. If there is a ‘p’ placed 
+<P class=MsoNormal>This type of mobprog is triggered 
+by&nbsp;removing an object. If the object removed&nbsp;&nbsp;matches the 
+keywords of the remove_prog, the prog is triggered. If there is a ‘p’ placed 
 before the keyword list, the keywords of the object must exactly match that of 
 the remove_prog. If there is not, then any object with any of the keywords in 
 the list in it will trigger it. If a remove_prog all is used, then the 
@@ -558,14 +548,14 @@ behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>remove_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;removed&nbsp; has any of the keywords orange, apple, or 
-banana. This means that it would be triggered by&nbsp;removing a banana, an 
-apple pie, or even an orange shield.)</P>
+object&nbsp;removed&nbsp; has any of the keywords orange, apple, or banana. This 
+means that it would be triggered by&nbsp;removing a banana, an apple pie, or 
+even an orange shield.)</P>
 <P class=MsoNormal><EM>remove_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the object 
-removed has the exact keywords apple pie delicious. The prog would 
-not be triggered by removing an object with keywords red apple or blackberry pie 
-or anything except the exact order and wording of the keyword list.)<SPAN 
+removed has the exact keywords apple pie delicious. The prog would not be 
+triggered by removing an object with keywords red apple or blackberry pie or 
+anything except the exact order and wording of the keyword list.)<SPAN 
 style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>remove_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
@@ -617,27 +607,26 @@ the&nbsp;3rd&nbsp;hour of every month .)&nbsp;</P><o:p></O:P>
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">wear_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>wear_prog [keyword list]<BR>wear_prog 
 p [keyword list]<BR>wear_prog all</EM></P>
-<P class=MsoNormal> This type of mobprog is triggered by 
-wearing, wielding, or holding an item. If the object&nbsp;worn matches 
-the keywords of the wear_prog, the prog is triggered. If there 
-is a ‘p’ placed before the keyword list, the keywords of the object must exactly 
-match that of the wear_prog. If there is not, then any object with any of the 
-keywords in the list in it will trigger it. If a wear_prog all is used, then the 
-wear_prog will trigger from any object at all worn. This type of 
-prog is usually used for in-zone quests and special mob behavior, and has a 
-variety of uses.</P>
+<P class=MsoNormal>This type of mobprog is triggered by 
+wearing, wielding, or holding an item. If the object&nbsp;worn matches the 
+keywords of the wear_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the wear_prog. If there is not, then any object with any of the keywords in the 
+list in it will trigger it. If a wear_prog all is used, then the wear_prog will 
+trigger from any object at all worn. This type of prog is usually used for 
+in-zone quests and special mob behavior, and has a variety of uses.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>wear_prog 
 orange apple banana</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;worn&nbsp; has any of the keywords orange, apple, or 
-banana. This means that it would be triggered by&nbsp;wearing a banana, an apple 
-pie, or even an orange shield.)</P>
+object&nbsp;worn&nbsp; has any of the keywords orange, apple, or banana. This 
+means that it would be triggered by&nbsp;wearing a banana, an apple pie, or even 
+an orange shield.)</P>
 <P class=MsoNormal><EM>wear_prog p 
 apple pie delicious</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
-object&nbsp;worn has the exact keywords apple pie delicious. The 
-prog would not be triggered by wearing an object with keywords red apple or 
-blackberry pie or anything except the exact order and wording of the keyword 
-list.)<SPAN style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
+object&nbsp;worn has the exact keywords apple pie delicious. The prog would not 
+be triggered by wearing an object with keywords red apple or blackberry pie or 
+anything except the exact order and wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN></P>
 <P class=MsoNormal><EM>wear_prog 
 all</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
 </SPAN>(This will trigger if any object is&nbsp;worn.)</P>
@@ -653,13 +642,14 @@ literal&nbsp;is a specific&nbsp;static string or number, such as&nbsp;'the hairy
 blog' or 'green' or&nbsp;'72'.&nbsp; A scripting code, however, is a 
 special&nbsp;string which represents a literal and stands for it in your 
 scripts.&nbsp; </P>
-<P class=MsoNormal>Understanding scripting&nbsp;codes is absolutely 
-necessary for you to write scripts successfully.&nbsp; When a DEATH_PROG 
-triggers, for example, it is impossible for the commands that execute to 
-guess the name of the mobs killer.&nbsp; Therefore the name of the killer is stored 
-in a scripting code for you.&nbsp; In this case, that code is $n.&nbsp; This 
-allows you to use the code $n in your DEATH_PROG&nbsp; commands and be sure that wherever 
-you use it, it is referring to "the creature that killed me".&nbsp; </P>
+<P class=MsoNormal>Understanding scripting&nbsp;codes is 
+absolutely necessary for you to write scripts successfully.&nbsp; When a 
+DEATH_PROG triggers, for example, it is impossible for the commands that execute 
+to guess the name of the mobs killer.&nbsp; Therefore the name of the killer is 
+stored in a scripting code for you.&nbsp; In this case, that code is $n.&nbsp; 
+This allows you to use the code $n in your DEATH_PROG&nbsp; commands and be sure 
+that wherever you use it, it is referring to "the creature that killed 
+me".&nbsp; </P>
 <P class=MsoNormal>Also, when using commands that cause 
 strings to echo, you may want to use a pronoun to refer to the creature who 
 triggers an event.&nbsp; Guessing, however, won't work here either.&nbsp; In the 
@@ -797,8 +787,8 @@ monster.</TD></TR>
     <TD width="35%" colSpan=2>$&lt;[CODE] [VAR NAME]&gt; 
     </TD>
     <TD width="65%">The variable of the given 
-      name,&nbsp;and the given code. Where code is $i, $n, $t, $o, $w, $W, or $p. See 
-      MPSETVAR below. </TD></TR>
+      name,&nbsp;and the given code. Where code is $i, $n, $t, $o, $w, $W, or 
+      $p. See MPSETVAR below. </TD></TR>
   <TR>
     <TD width="35%" colSpan=2>${[NUM] [QUEST NAME]}</TD>
     <TD width="65%">A&nbsp;mob name from the given quest, 
@@ -816,10 +806,10 @@ by a period and a literal number to&nbsp;designate a particular word inside a
 string of many words. For instance,&nbsp;if $o evaluates to "a magic wand", then 
 $o.1 would evalulate to "magic". If&nbsp;$l evaluated to "orc bob hassan", then 
 $l.2 would give "hassan".&nbsp; This can be very useful when used with the $l 
-or&nbsp;$L codes to iterate through the contents of a&nbsp;room.   This syntax can 
-also be used to generate substrings by following the number with two periods "..".
-For instance, of $l evaluates to "orc bob hassan", then $l.1.. would give "bob hassan".
-</P>
+or&nbsp;$L codes to iterate through the contents of a&nbsp;room. This syntax can 
+also be used to generate substrings by following the number with two periods 
+"..". For instance, of $l evaluates to "orc bob hassan", then $l.1.. would give 
+"bob hassan". </P>
 <P class=MsoNormal>The last code we are going to discuss is 
 also the most powerful.&nbsp; It allows you to fill in a value from a function 
 call.&nbsp; The format of this code is as follows:</P>
@@ -870,14 +860,16 @@ useless. </P>
     <TD>Returns the base class of the given mob.</TD></TR>
   <TR>
     <TD>CALLFUNC([function name] [parms])</TD>
-    <TD>Calls the FUNCTION_PROG of the given name, with the given parameters, 
-    and returns the value returned by the program using the RETURN statement.</TD></TR>
+    <TD>Calls the FUNCTION_PROG of the given name, with 
+      the given parameters, and returns the value returned by the program using 
+      the RETURN statement.</TD></TR>
   <TR>
     <TD>CLAN([code])</TD>
     <TD>Returns the clan of the given mob.</TD></TR>
   <TR>
     <TD>CLANRANK([code])</TD>
-    <TD>Returns the rank of the given mob in their clan.</TD></TR>
+    <TD>Returns the rank of the given mob in their 
+    clan.</TD></TR>
   <TR>
     <TD>CLASS([code])</TD>
     <TD>Returns the class of the given mob.</TD></TR>
@@ -901,6 +893,10 @@ useless. </P>
     <TD>HAS([code])</TD>
     <TD>Returns the name of a random item in&nbsp;the 
       scripted monsters&nbsp;inventory.</TD></TR>
+  <TR>
+    <TD>HASTITLE([code])</TD>
+    <TD>Returns the selected title of the given player 
+      mob.</TD></TR>
   <TR>
     <TD>HITPRCNT([code])</TD>
     <TD>Return the % of hit points remaining for the 
@@ -1029,8 +1025,8 @@ useless. </P>
       the scripted monster, including the monster.</TD></TR>
   <TR>
     <TD>NUMPCSROOM()</TD>
-    <TD>Returns the number of pcs in the same room as 
-      the scripted monster.</TD></TR>
+    <TD>Returns the number of pcs in the same room as the 
+      scripted monster.</TD></TR>
   <TR>
     <TD>NUMRACEINAREA([race name])</TD>
     <TD>Returns the number of mobs in the same area as 
@@ -1085,8 +1081,9 @@ value.</TD></TR>
       information.</TD></TR>
   <TR>
     <TD>STRIN([string] [string])</TD>
-    <TD>Returns the word number (0..n) where the second string appears in the first.
-    This function deals in whole words only.</TD></TR>
+    <TD>Returns the word number (0..n) where the second 
+      string appears in the first. This function deals in whole words 
+only.</TD></TR>
   <TR>
     <TD>VAR([code] [variable name])</TD>
     <TD>Retturns the value of the given variable.&nbsp; 
@@ -1094,8 +1091,7 @@ value.</TD></TR>
   <TR>
     <TD>WORN([code])</TD>
     <TD>The name of a random worn item in the given mobs 
-      inventory.</TD></TR>
-</TABLE></P>
+      inventory.</TD></TR></TABLE></P>
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal>&nbsp;</P>
 <P class=MsoNormal><FONT color=#4169e1 size=6>Scripting Commands</FONT></P>
@@ -1154,10 +1150,10 @@ if the condition is true.&nbsp; Either way,&nbsp;statements after an endif
 statement are executed regardless.</FONT></P>
 <P class=MsoNormal><FONT size=3>Every 
 if statement MUST have a corresponding endif statement somewhere after it.&nbsp; 
-The else statement is completely optional, 
-but if it is used, it must be between the if 
-statement and the endif statement.&nbsp; A BREAK statement may be included inside an IF..ENDIF block 
-to skip the&nbsp;remaining statements in that block.</FONT></P>
+The else statement is completely optional, but if it is used, it must be between 
+the if statement and the endif statement.&nbsp; A BREAK statement may be 
+included inside an IF..ENDIF block to skip the&nbsp;remaining statements in that 
+block.</FONT></P>
 <P class=MsoNormal><FONT size=3>Of 
 course, everything that happens or doesn't happen in an if condition depends on 
 the condition itself.&nbsp;&nbsp;Every condition consists of a valid function 
@@ -1239,10 +1235,10 @@ group of instructions in the function_prog after&nbsp;some delay.</FONT> </P>
 <P class=MsoNormal><FONT color=black><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpasound<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpasound [text string]</EM></P>
-<P class=MsoNormal> This command will echo the text 
-string to all of the rooms adjacent to the one the mob is in, much like the echo 
-when a mob yells. This can be useful for creating dramatic deaths from mobs, or 
-for use with mobs such as a wandering minstrel or the like.</P>
+<P class=MsoNormal>This command will echo the text string 
+to all of the rooms adjacent to the one the mob is in, much like the echo when a 
+mob yells. This can be useful for creating dramatic deaths from mobs, or for use 
+with mobs such as a wandering minstrel or the like.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpasound You 
 hear a scream from nearby!<BR>mpasound A delightful music 
@@ -1283,12 +1279,11 @@ pool'&nbsp;$n</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpbehave</SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpbehave [behavior id] [target] [parameters]</EM></P>
-<P class=MsoNormal><FONT size=3> 
-   This command will&nbsp;put the target&nbsp;under the affect 
-of the given CoffeeMud behavior.&nbsp;&nbsp; The&nbsp;parameters given 
-apply specifically to CoffeeMud behaviors.&nbsp; The Archon may use LIST 
-BEHAVIORS, and AHELP&nbsp;[behavior name] for more information.&nbsp;&nbsp; 
-</FONT></P>
+<P class=MsoNormal><FONT size=3>This 
+command will&nbsp;put the target&nbsp;under the affect of the given CoffeeMud 
+behavior.&nbsp;&nbsp; The&nbsp;parameters given apply specifically to CoffeeMud 
+behaviors.&nbsp; The Archon may use LIST BEHAVIORS, and AHELP&nbsp;[behavior 
+name] for more information.&nbsp;&nbsp; </FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpbehave&nbsp;Aggressive $n<BR>mpbehave<SPAN style="mso-spacerun: yes">&nbsp;</SPAN>Mobile $n <BR><SPAN 
 style="mso-spacerun: yes"></SPAN>mbehave&nbsp;Scriptable $n 
@@ -1344,8 +1339,8 @@ a number of hit points equal to their condition.&nbsp; This command is useful
 not only for hurting mobs, but for scratching up their armor when acid falls 
 from the ceiling or something similar.</FONT></P>
 <P class=MsoNormal>EXAMPLES:</P>
-<P class=MsoNormal><EM>mpdamage $r 1 10 
-KILL<BR>mpdamage $n 10 50</EM></P>
+<P class=MsoNormal><EM>mpdamage $r 1 
+10 KILL<BR>mpdamage $n 10 50</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpdisable</SPAN></P>
 <P class=MsoNormal>Usage: <BR><EM>mpdisable&nbsp;[target] [spell]</EM></P>
@@ -1370,9 +1365,9 @@ act_progs.</P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><EM>mpecho $i says, 
 ‘Hey how’s it going?’<BR>mpecho A blast of strong wind 
-rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, $n, 
-you’ve come to face me…’<BR>mpecho A dagger flashes into 
-$i’s hand, and $j snickers softly.</EM></P>
+rushes into the room suddenly!<BR>mpecho $i hisses, ‘So, 
+$n, you’ve come to face me…’<BR>mpecho A dagger flashes 
+into $i’s hand, and $j snickers softly.</EM></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>SPECIAL NOTES: Using mpecho $i says, 
 ‘blah’ is a safe way to have a mob talk. Anytime you want to have a mob say 
@@ -1844,15 +1839,29 @@ you.</P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptattoo</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mptattoo&nbsp;[target]&nbsp;[tattoo name]</EM></P>
+<P class=MsoNormal>Usage: <BR><EM>mptattoo&nbsp;[target]&nbsp;(-)[tattoo name]</EM></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>This command&nbsp;grants the target a 
-tattoo of the given name.&nbsp; This is useful for permanently flagging players 
-in some way which can be checked and acted on elsewhere, for instance using the 
-HASTATTOO function.</P>
+<P class=MsoNormal>This command&nbsp;grants or 
+removes&nbsp;from the target a tattoo of the given name.&nbsp; This is useful 
+for permanently flagging players in some way which can be checked and acted on 
+elsewhere, for instance using the HASTATTOO function.&nbsp; The tattoo must 
+begin with the character - to denote removal.</P>
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mptattoo 
-$n&nbsp;smurfkiller</EM></P>
+$n&nbsp;smurfkiller<BR>mptattoo $n&nbsp;-smurfkiller</EM></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptitle</SPAN></P>
+<P class=MsoNormal><?XML:NAMESPACE PREFIX = O /><O:P></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mptitle&nbsp;[target]&nbsp;(-)[title 
+string]</EM></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>This command&nbsp;grants or removes from&nbsp;the target a 
+title given.&nbsp; Title strings are are name replacements for player mobs in 
+which any * character in the string is replaced with the players name.&nbsp; The 
+player uses the TITLE command to select which of any granted titles they may 
+use.&nbsp; This command is completely case sensitive.
+<P class=MsoNormal><O:P></O:P></P>EXAMPLES:<BR><BR><EM>mptitle $n&nbsp;*, slayer 
+of smurfs<BR>mptitle $n&nbsp;-*, slayer of smurfs</EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mptrackto</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
@@ -2036,34 +2045,31 @@ This callfunc function will always return false, since my parmeters are
 empty.<BR>&nbsp; endif<BR>~</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><O:P><EM></EM></O:P></SPAN></B></P>
-
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clan<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clan(character == clanname)</EM></P>
-<P class=MsoNormal>This checks the name of the clan of the character 
-variable.&nbsp; Where '==' may be&nbsp;another 
-logical operator from&nbsp;above.&nbsp;</P>
+<P class=MsoNormal>This checks the name of the clan of the 
+character variable.&nbsp; Where '==' may be&nbsp;another logical operator 
+from&nbsp;above.&nbsp;</P>
 <P class=MsoNormal>EXAMPLE:</P>
 <P class=MsoNormal><EM>if clan($n == 
 'The Unholy Goobers')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
 an Unholy Goober.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be a Goober.<BR>endif</EM></P>
-
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clanrank<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clanrank(character == integer)</EM></P>
-<P class=MsoNormal>This checks the rank of the character in their clan.&nbsp; Where '==' may be&nbsp;another 
-logical operator from&nbsp;above.&nbsp;  
-Valid values include: APPLICANT=0, MEMBER=1, STAFF=2, ENCHANTER=4, TREASURER=8, LEADER=16, BOSS=32
-</P>
+<P class=MsoNormal>This checks the rank of the character in 
+their clan.&nbsp; Where '==' may be&nbsp;another logical operator 
+from&nbsp;above.&nbsp; Valid values include: APPLICANT=0, MEMBER=1, STAFF=2, 
+ENCHANTER=4, TREASURER=8, LEADER=16, BOSS=32 </P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if clanrank($n == 
-0)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
+<P class=MsoNormal><EM>if clanrank($n 
+== 0)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
 an APPLICANT.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be an APPLICANT.<BR>endif</EM></P>
-
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>class(character == classname)</EM></P>
@@ -2078,22 +2084,19 @@ Gaian)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor trigger
 a Gaian.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be a Gaian.<BR>endif</EM></P>
-
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">deity<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>deity(character == deityname)</EM></P>
-<P class=MsoNormal>This checks the name of the deity of the character 
-variable.&nbsp; Where '==' may be&nbsp;another 
-logical operator from&nbsp;above.&nbsp;</P>
+<P class=MsoNormal>This checks the name of the deity of the 
+character variable.&nbsp; Where '==' may be&nbsp;another logical operator 
+from&nbsp;above.&nbsp;</P>
 <P class=MsoNormal>EXAMPLE:</P>
 <P class=MsoNormal><EM>if deity($n == 
-'Gothon')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to worship 
-an Unholy Goober.<BR>else<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
-triggering me appears not to worship Gothon.<BR>endif</EM></P>
-
-<P class=MsoNormal><B style="mso-bidi-font-weight: normal">
-<SPAN style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">eval</SPAN></B></P>
+'Gothon')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to 
+worship an Unholy Goober.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho The actor triggering me appears not to worship Gothon.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">eval</SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>eval(expression == expression)</EM></P>
 <P class=MsoNormal>This powerful function compares the 
 first expression to the second expression.&nbsp; Expressions may be codes, 
