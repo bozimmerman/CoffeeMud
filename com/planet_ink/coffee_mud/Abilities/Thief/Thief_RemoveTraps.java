@@ -16,6 +16,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_RemoveTraps();}
+	public Environmental lastChecked=null;
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -27,7 +28,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(unlockThis==null)
 			unlockThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(unlockThis==null) return false;
-
+		int oldProfficiency=profficiency();
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -49,6 +51,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
+			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.sprung())))
+				setProfficiency(oldProfficiency);
 			if(success)
 			{
 				if(theTrap!=null)
@@ -56,10 +60,9 @@ public class Thief_RemoveTraps extends ThiefSkill
 				if(opTrap!=null)
 					opTrap.setSprung(true);
 			}
-
-
 			if(!auto)
 				mob.tell("You have completed your attempt.");
+			lastChecked=unlockThis;
 		}
 
 		return success;

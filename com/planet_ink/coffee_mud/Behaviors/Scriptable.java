@@ -123,6 +123,25 @@ public class Scriptable extends ActiveTicker
 		return thing;
 	}
 
+	public Environmental getArgumentItem(String str, MOB source, MOB monster, Environmental target, Item primaryItem, Item secondaryItem)
+	{
+		if(str.equalsIgnoreCase("$n"))
+			return source;
+		else
+		if(str.equalsIgnoreCase("$i"))
+			return monster;
+		else
+		if(str.equalsIgnoreCase("$t"))
+			return target;
+		else
+		if(str.equalsIgnoreCase("$o"))
+			return primaryItem;
+		else
+		if(str.equalsIgnoreCase("$p"))
+			return secondaryItem;
+		return null;
+	}
+	
 	public boolean eval(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String evaluable)
 	{
 		evaluable=evaluable.toUpperCase().trim();
@@ -162,6 +181,12 @@ public class Scriptable extends ActiveTicker
 			if(evaluable.startsWith("OR "))
 				return returnable||eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(2).trim());
 			else
+			if((y<0)||(z<y))
+			{
+				Log.errOut("Scriptable","() Syntax -- "+monster.name()+", "+evaluable);
+				break;
+			}
+			else	
 			if(preFab.equals("RAND"))
 			{
 				int arg=Util.s_int(evaluable.substring(y+1,z));
@@ -172,91 +197,419 @@ public class Scriptable extends ActiveTicker
 			else
 			if(preFab.equals("HAS"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(arg2.length()==0))
+				{
+					Log.errOut("Scriptable","HAS Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				if(E instanceof MOB)
+					returnable=(((MOB)E).fetchInventory(arg2)!=null);
+				else
+				if(E instanceof Item)
+					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+				else
+				if(E instanceof Room)
+					returnable=(((Room)E).fetchItem(null,arg2)!=null);
+				else
+					returnable=false;
 			}
 			else
 			if(preFab.equals("WORN"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(arg2.length()==0))
+				{
+					Log.errOut("Scriptable","WORN Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				if(E instanceof MOB)
+					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
+				else
+				if(E instanceof Item)
+					returnable=(CoffeeUtensils.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
+				else
+					returnable=false;
 			}
 			else
 			if(preFab.equals("ISNPC"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=((MOB)E).isMonster();
 			}
 			else
 			if(preFab.equals("ISPC"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=!((MOB)E).isMonster();
 			}
 			else
 			if(preFab.equals("ISGOOD"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("good");
 			}
 			else
 			if(preFab.equals("ISEVIL"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("evil");
 			}
 			else
 			if(preFab.equals("ISNEUTRAL"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("neutral");
 			}
 			else
 			if(preFab.equals("ISFIGHT"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=((MOB)E).isInCombat();
 			}
 			else
 			if(preFab.equals("ISIMMORT"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				returnable=((MOB)E).isASysOp(((MOB)E).location());
 			}
 			else
 			if(preFab.equals("ISCHARMED"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB)))
+					break;
+				Ability A=((MOB)E).fetchAffect("Spell_Charm");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_Enthrall");
+				if(A==null) A=((MOB)E).fetchAffect("Chant_CharmAnimal");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonMonster");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_DemonGate");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonEnemy");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonSteed");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonFlyer");
+				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonArmy");
+				returnable=(A!=null);
 			}
 			else
 			if(preFab.equals("ISFOLLOW"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null)))
+					break;
+				returnable=(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
 			}
 			else
 			if(preFab.equals("HITPRCNT"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				double hitPctD=Util.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
+				int val1=(int)Math.round(hitPctD*100.0);
+				int val2=Util.s_int(arg3);
+				
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(val1==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(val1>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(val1<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(val1>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(val1<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(val1!=val2);
+				else
+				{
+					Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
 			}
 			else
 			if(preFab.equals("INROOM"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null))||(arg2.length()==0))
+					break;
+				returnable=((MOB)E).location().ID().equalsIgnoreCase(arg2);
 			}
 			else
 			if(preFab.equals("SEX"))
 			{
-			}
-			else
-			if(preFab.equals("ISCHARMED"))
-			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.GENDER))).toUpperCase();
+				if(arg2.equals("=="))
+					returnable=arg3.startsWith(sex);
+				else
+				if(arg2.equals("!="))
+					returnable=!arg3.startsWith(sex);
+				else
+				{
+					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				
 			}
 			else
 			if(preFab.equals("POSITION"))
 			{
-			}
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex="STANDING";
+				if(Sense.isSleeping(E))
+					sex="SLEEPING";
+				else
+				if(Sense.isSitting(E))
+					sex="SITTING";
+				if(arg2.equals("=="))
+					returnable=sex.startsWith(arg3);
+				else
+				if(arg2.equals("!="))
+					returnable=!sex.startsWith(arg3);
+				else
+				{
+					Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+		}
 			else
 			if(preFab.equals("LEVEL"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				int val1=E.envStats().level();
+				int val2=Util.s_int(arg3);
+				
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(val1==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(val1>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(val1<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(val1>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(val1<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(val1!=val2);
+				else
+				{
+					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
 			}
 			else
 			if(preFab.equals("CLASS"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex=((MOB)E).charStats().getCurrentClass().name().toUpperCase();
+				if(arg2.equals("=="))
+					returnable=sex.startsWith(arg3);
+				else
+				if(arg2.equals("!="))
+					returnable=!sex.startsWith(arg3);
+				else
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+			}
+			else
+			if(preFab.equals("BASECLASS"))
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
+				if(arg2.equals("=="))
+					returnable=sex.startsWith(arg3);
+				else
+				if(arg2.equals("!="))
+					returnable=!sex.startsWith(arg3);
+				else
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
 			}
 			else
 			if(preFab.equals("RACE"))
 			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex=((MOB)E).charStats().getMyRace().name().toUpperCase();
+				if(arg2.equals("=="))
+					returnable=sex.startsWith(arg3);
+				else
+				if(arg2.equals("!="))
+					returnable=!sex.startsWith(arg3);
+				else
+				{
+					Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+			}
+			else
+			if(preFab.equals("RACECAT"))
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
+				if(arg2.equals("=="))
+					returnable=sex.startsWith(arg3);
+				else
+				if(arg2.equals("!="))
+					returnable=!sex.startsWith(arg3);
+				else
+				{
+					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
 			}
 			else
 			if(preFab.equals("GOLDAMT"))
 			{
-			}
-			else
-			if(preFab.equals("ISCHARMED"))
-			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				int val1=((MOB)E).getMoney();
+				int val2=Util.s_int(arg3);
+				
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(val1==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(val1>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(val1<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(val1>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(val1<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(val1!=val2);
+				else
+				{
+					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
 			}
 			else
 			if(preFab.equals("OBJTYPE"))
 			{
 			}
+			else
+			{
+				Log.errOut("Scriptable","Unknown CMD -- "+monster.name()+", "+evaluable);
+				break;
+			}
+			evaluable=evaluable.substring(z+1).trim();
 		}
 		return returnable;
 	}

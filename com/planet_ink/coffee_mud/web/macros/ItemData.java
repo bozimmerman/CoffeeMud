@@ -366,9 +366,9 @@ public class ItemData extends StdWebMacro
 								break;
 					}
 					mask=mask.toUpperCase()+";";
-					for(int i=1;i<CMMap.numAreas();i++)
+					for(int a=0;a<CMMap.numAreas();a++)
 					{
-						Area A2=CMMap.getArea(i);
+						Area A2=CMMap.getArea(a);
 						str.append("<OPTION VALUE=\""+A2.name()+"\"");
 						if(mask.indexOf(";"+A2.name().toUpperCase()+";")>=0) str.append(" SELECTED");
 						str.append(">"+A2.name());

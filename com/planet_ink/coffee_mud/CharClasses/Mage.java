@@ -321,9 +321,9 @@ public class Mage extends StdCharClass
 				numSpells--;
 			}
 		}
-		if(grantable.size()>0)
 		for(int i=0;i<numSpells;i++)
 		{
+			if(grantable.size()==0) break;
 			String AID=(String)grantable.elementAt(Dice.roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{

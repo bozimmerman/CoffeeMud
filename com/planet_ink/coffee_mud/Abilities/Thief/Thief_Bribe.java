@@ -15,6 +15,7 @@ public class Thief_Bribe extends ThiefSkill
 	private static final String[] triggerStrings = {"BRIBE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Bribe();}
+	private MOB lastChecked=null;
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -48,7 +49,8 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 
-
+		int oldProfficiency=profficiency();
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -85,6 +87,9 @@ public class Thief_Bribe extends ThiefSkill
 			target.setMoney(mob.getMoney()+amountRequired);
 			target.recoverEnvStats();
 		}
+		if(target==lastChecked)
+			setProfficiency(oldProfficiency);
+		lastChecked=target;
 		return success;
 	}
 

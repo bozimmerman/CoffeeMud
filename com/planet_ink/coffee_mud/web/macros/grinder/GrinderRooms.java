@@ -90,7 +90,8 @@ public class GrinderRooms
 			MOB M=oldR.fetchInhabitant(skip);
 			if(M.isEligibleMonster())
 			{
-				allmobs.addElement(M);
+				if(!allmobs.contains(M))
+					allmobs.addElement(M);
 				oldR.delInhabitant(M);
 			}
 			else
@@ -106,7 +107,8 @@ public class GrinderRooms
 		while(oldR.numItems()>0)
 		{
 			Item I=oldR.fetchItem(0);
-			allitems.addElement(I);
+			if(!allitems.contains(I))
+				allitems.addElement(I);
 			oldR.delItem(I);
 		}
 		
