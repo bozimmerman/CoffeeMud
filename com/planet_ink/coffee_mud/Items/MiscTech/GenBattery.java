@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Items.MiscTech;
-import com.planet_ink.coffee_mud.Items.StdItem;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;

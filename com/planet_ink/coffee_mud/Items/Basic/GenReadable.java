@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items;
+package com.planet_ink.coffee_mud.Items.Basic;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;

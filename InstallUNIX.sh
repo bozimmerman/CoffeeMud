@@ -88,7 +88,7 @@ $JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/packets/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/persist/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/i3/server/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/interfaces/*.java
-$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/*.java
+$JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/Basic/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/Weapons/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/MiscMagic/*.java
 $JAVACPATH -verbose ./com/planet_ink/coffee_mud/Items/ClanItems/*.java

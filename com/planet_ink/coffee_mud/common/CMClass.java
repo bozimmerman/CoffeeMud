@@ -639,8 +639,8 @@ public class CMClass extends ClassLoader
 			abilities=new Vector(new TreeSet(abilities));
 		}
 
-		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");
-		Log.sysOut("MUD","Items loaded      : "+items.size());
+		items=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Basic"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");
+		Log.sysOut("MUD","Basic Items loaded: "+items.size());
 
 		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,page.getStr("WEAPONS"),"com.planet_ink.coffee_mud.interfaces.Weapon");
 		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());

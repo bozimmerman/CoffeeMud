@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.StdDrink;
+import com.planet_ink.coffee_mud.Items.Basic.StdDrink;
 import java.util.*;
 
 /* 
