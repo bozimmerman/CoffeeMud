@@ -8,8 +8,6 @@ import java.util.*;
 public class Skill_Swim extends StdAbility
 {
 
-	public boolean successful=false;
-
 	public Skill_Swim()
 	{
 		super();
@@ -38,8 +36,7 @@ public class Skill_Swim extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(successful)
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SWIMMING);
+		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SWIMMING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -70,17 +67,20 @@ public class Skill_Swim extends StdAbility
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);
-
-			successful=success;
-			if(mob.fetchAffect(ID())==null)
+			if(!success)
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the water, making no progress.");
+			else
 			{
-				mob.addAffect(this);
+				if(mob.fetchAffect(ID())==null)
+				{
+					mob.addAffect(this);
+					mob.recoverEnvStats();
+				}
+
+				ExternalPlay.move(mob,dirCode,false);
+				mob.delAffect(this);
 				mob.recoverEnvStats();
 			}
-
-			ExternalPlay.move(mob,dirCode,false);
-			mob.delAffect(this);
-			mob.recoverEnvStats();
 		}
 		return success;
 	}
