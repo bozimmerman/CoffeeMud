@@ -450,7 +450,7 @@ public class Channels
 				return;
 			}
 			h.remove(name);
-			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
+			mob.tell("The Player '"+name+"' has been removed from your friends list.");
 		}
 		else
 		{

@@ -1,5 +1,3 @@
-PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
-
 Programming.html update
 	Updates to Locales, Mobs, Items for misc. methods.
 Installation.html update
@@ -41,6 +39,8 @@ TaxCollector Area Behavior. Designated mob wanders an area and charges taxesbase
 a behavior that watches the weather... in foul or cold weather, items of certain material types would cost more
 readables that can load text from a text file
 ability to have random formulaic weapons, armor.
+PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
+
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
