@@ -506,7 +506,7 @@ public class XMLIO
 				{
 					roomXML.append(XMLManager.convertXMLtoTag("EXITCLASS",CMClass.className(exit)));
 					roomXML.append(XMLManager.convertXMLtoTag("EXITTEXT",exit.text()));
-					roomXML.append(XMLManager.convertXMLtoTag("EXITSAME",""+(exit==opExit)));
+					roomXML.append(XMLManager.convertXMLtoTag("EXITSAME",""+(room.getPairedExit(d)==opExit)));
 					roomXML.append(XMLManager.convertXMLtoTag("EXITDOOR",""+exit.hasADoor()));
 				}
 				roomXML.append("</EXIT>");
