@@ -48,9 +48,9 @@ public class FasterRoom extends StdBehavior
 			MOB M=room.fetchInhabitant(i);
 			if(M!=null)
 			{
-				for(int i=0;i<burst;i++)
+				for(int i2=0;i2<burst;i2++)
 					M.tick(Host.MOB_TICK);
-				for(int i=0;i<health;i++)
+				for(int i2=0;i2<health;i2++)
 					M.curState().adjState(M,M.maxState());
 			}
 		}
@@ -69,7 +69,7 @@ public class FasterRoom extends StdBehavior
 				Area area=(Area)ticking;
 				Vector V=area.getMyMap();
 				for(int v=0;v<V.size();v++)
-					doBe((Room)V.elementAt(v));
+					doBe((Room)V.elementAt(v),burst,health);
 			}
 		}
 	}

@@ -29,8 +29,15 @@ public class VeryAggressive extends Aggressive
 
 		// let's not do this 100%
 		if(Dice.rollPercentage()>15) return;
-
+		
 		Room thisRoom=mob.location();
+		for(int m=0;m<thisRoom.numInhabitants();m++)
+		{
+			MOB inhab=thisRoom.fetchInhabitant(m);
+			if((inhab!=null)&&(inhab.isASysOp(thisRoom)))
+				return;
+		}
+
 		int dirCode=-1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
