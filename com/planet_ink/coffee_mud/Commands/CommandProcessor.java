@@ -485,7 +485,7 @@ public class CommandProcessor
 						mob.tell("Your game is automatically being saved while you play.\n\r");
 					break;
 				case CommandSet.SAY:
-					SocialProcessor.cmdSay(mob,commands);
+					SocialProcessor.say(mob,commands);
 					break;
 				case CommandSet.SHUTDOWN:
 					if(mob.isASysOp(null))

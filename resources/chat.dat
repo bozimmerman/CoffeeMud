@@ -30,7 +30,7 @@
 #                 to a database '> dragon red_dragon'  The _ here is treated
 #                 as a space in the name.
 #        %       include another file inline Ex: %talk.data
-#	 @       adds a continue jump to link to the database. Ex: @dog
+#		 @       adds a continue jump to link to the database. Ex: @dog
 #                 will make a continue link to the dog database.  Use @default
 #                 to link to the default database. Only 1 @ per database.
 #                 @ cannot do forward links!!!
@@ -39,7 +39,7 @@
 #  response operators:
 #        1-9     weights are the numerals. First column only. Mandatory.
 #        "       Issue response as "say".   Muds and 2nd column only. Optional.
-#	 :       Issue repsonse as "emote". Muds and 2nd column only. Optional.
+#		 :       Issue repsonse as "emote". Muds and 2nd column only. Optional.
 #        !       Issue response as command. Muds and 2nd column only. Optional.
 #                 Note, you do not need a space after an :,", or !
 #  

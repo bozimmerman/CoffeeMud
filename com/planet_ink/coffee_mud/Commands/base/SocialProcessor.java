@@ -117,7 +117,7 @@ public class SocialProcessor
 		}
 	}
 
-	public static void cmdSay(MOB mob, Vector commands)
+	public static void say(MOB mob, Vector commands)
 	{
 		String theWord="Say";
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("ask"))
@@ -165,6 +165,18 @@ public class SocialProcessor
 			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
+		if(theWord.equalsIgnoreCase("Yell"))
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Room R=mob.location().getRoomInDir(d);
+				Exit E=mob.location().getExitInDir(d);
+				if((R!=null)&&(E!=null)&&(E.isOpen()))
+				{
+					msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
+					if(R.okAffect(msg))
+						R.sendOthers(mob,msg);
+				}
+			}
 	}
 
 	public static void whisper(MOB mob, Vector commands)
@@ -248,12 +260,12 @@ public class SocialProcessor
 	public static void yell(MOB mob, Vector commands)
 	{
 		Vector newCommands=Util.parse(Util.combine(commands,0).toUpperCase());
-		cmdSay(mob,newCommands);
+		say(mob,newCommands);
 	}
 
 	public static void report(MOB mob)
 	{
-		cmdSay(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
+		say(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
 	}
 	
 	public static void reply(MOB mob, Vector commands)
