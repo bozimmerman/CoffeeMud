@@ -2,12 +2,20 @@ package com.planet_ink.coffee_mud.interfaces;
 import java.util.Vector;
 public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
+	public final static int AVAILABLE_ALL=0;
+	public final static int AVAILABLE_MAGICONLY=1;
+	public final static int AVAILABLE_NONE=2;
+	public final static String[] AVAILABLE_DESC={"Player selectable",
+												 "Available to magic spells only",
+												 "Not available to players"};
+	
+	
 	public String ID();
 	public String name();
 	public String racialCategory();
 	public Race copyOf();
 	
-	public boolean playerSelectable();
+	public int availability();
 	public void startRacing(MOB mob, boolean verifyOnly);
 	
 	public void setHeightWeight(EnvStats stats, char gender);

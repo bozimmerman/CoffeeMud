@@ -24,7 +24,7 @@ public class MetalGolem extends StdRace
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

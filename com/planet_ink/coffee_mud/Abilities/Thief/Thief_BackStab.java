@@ -12,7 +12,7 @@ public class Thief_BackStab extends ThiefSkill
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	private static final String[] triggerStrings = {"BACKSTAB"};
+	private static final String[] triggerStrings = {"BACKSTAB","BS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_BackStab();}
 	public int usageType(){return USAGE_MOVEMENT;}

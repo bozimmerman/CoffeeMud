@@ -20,7 +20,7 @@ public class FireElemental extends StdRace
 	public boolean uncharmable(){return true;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

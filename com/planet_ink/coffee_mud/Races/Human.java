@@ -27,13 +27,13 @@ public class Human extends StdRace
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return true;}
+	public int availability(){return Race.AVAILABLE_ALL;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+10);
 	}
-	
+
 	public Vector outfit()
 	{
 		if(outfitChoices==null)

@@ -33,7 +33,7 @@ public class RaceData extends StdWebMacro
 						str.append(helpHelp(s));
 				}
 				if(parms.containsKey("PLAYABLE"))
-					str.append(R.playerSelectable()+", ");
+					str.append(Race.AVAILABLE_DESC[R.availability()]+", ");
 				if(parms.containsKey("NATURALWEAPON"))
 					str.append(R.myNaturalWeapon().name()+", ");
 				MOB mob=CMClass.getMOB("StdMOB");

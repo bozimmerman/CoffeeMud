@@ -57,6 +57,9 @@ public class Spell_PolymorphSelf extends Spell
 		{
 			commands.clear();
 			Vector V=Util.denumerate(CMClass.races());
+			for(int v=V.size()-1;v>=0;v--)
+				if(((Race)V.elementAt(v)).availability()==Race.AVAILABLE_NONE)
+					V.removeElementAt(v);
 			if(V.size()>0)
 				commands.addElement(((Race)V.elementAt(Dice.roll(1,V.size(),-1))).name());
 		}
@@ -70,7 +73,7 @@ public class Spell_PolymorphSelf extends Spell
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		Race R=CMClass.getRace(race);
-		if(R==null)
+		if((R==null)||(R.availability()==Race.AVAILABLE_NONE))
 		{
 			mob.tell("You can't turn yourself into a '"+race+"'!");
 			return false;

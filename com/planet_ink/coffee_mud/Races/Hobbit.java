@@ -4,5 +4,5 @@ public class Hobbit extends Halfling
 {
 	public String ID(){	return "Hobbit"; }
 	public String name(){ return "Hobbit"; }
-	public boolean playerSelectable(){return false;}
+	public int availability(){return AVAILABLE_MAGICONLY;}
 }

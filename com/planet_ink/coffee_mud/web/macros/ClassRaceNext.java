@@ -34,7 +34,7 @@ public class ClassRaceNext extends StdWebMacro
 			Race R=(Race)r.nextElement();
 			mob.baseCharStats().setMyRace(R);
 			mob.recoverCharStats();
-			if(((R.playerSelectable())||(parms.containsKey("ALL")))
+			if(((R.availability()==Race.AVAILABLE_ALL)||(parms.containsKey("ALL")))
 			   &&(C.qualifiesForThisClass(mob,true)))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))

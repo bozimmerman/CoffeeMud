@@ -355,7 +355,7 @@ public class FrontLogin extends StdCommand
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
-					if(R.playerSelectable())
+					if(R.availability()==Race.AVAILABLE_ALL)
 					{
 						if (!tmpFirst)
 							listOfRaces.append(", ");
@@ -377,14 +377,14 @@ public class FrontLogin extends StdCommand
 					else
 					{
 						newRace=CMClass.getRace(raceStr);
-						if((newRace!=null)&&(!newRace.playerSelectable()))
+						if((newRace!=null)&&(newRace.availability()!=Race.AVAILABLE_ALL))
 							newRace=null;
 						if(newRace==null)
 							for(Enumeration r=CMClass.races();r.hasMoreElements();)
 							{
 								Race R=(Race)r.nextElement();
 								if((R.name().equalsIgnoreCase(raceStr))
-								&&(R.playerSelectable()))
+								&&(R.availability()==Race.AVAILABLE_ALL))
 								{
 									newRace=(Race)R;
 									break;
@@ -395,7 +395,7 @@ public class FrontLogin extends StdCommand
 							{
 								Race R=(Race)r.nextElement();
 								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-								&&(R.playerSelectable()))
+								&&(R.availability()==Race.AVAILABLE_ALL))
 								{
 									newRace=(Race)R;
 									break;

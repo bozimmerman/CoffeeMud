@@ -10,13 +10,13 @@ public class Githyanki extends Humanoid
 	public String ID(){	return "Githyanki"; }
 	public String name(){ return "Githyanki"; }
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 	public String racialCategory(){return "Gith";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

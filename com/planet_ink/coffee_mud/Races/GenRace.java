@@ -12,8 +12,8 @@ public class GenRace extends StdRace
 	public String name(){ return name; }
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
-	public boolean playerSelectable=false;
-	public boolean playerSelectable(){return playerSelectable;}
+	public int availability=Race.AVAILABLE_MAGICONLY;
+	public int availability(){return availability;}
 
 	public int shortestMale=24;
 	public int shortestMale(){return shortestMale;}
@@ -153,7 +153,7 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("BWEIGHT",""+lightestWeight()));
 		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
-		str.append(XMLManager.convertXMLtoTag("PLAYER",""+playerSelectable));
+		str.append(XMLManager.convertXMLtoTag("PLAYER",""+availability));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append((""+bodyMask()[i])+";");
@@ -268,7 +268,14 @@ public class GenRace extends StdRace
 		heightVariance=XMLManager.getIntFromPieces(raceData,"VHEIGHT");
 		shortestFemale=XMLManager.getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=XMLManager.getIntFromPieces(raceData,"MHEIGHT");
-		playerSelectable=XMLManager.getBoolFromPieces(raceData,"PLAYER");
+		String playerval=XMLManager.getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
+		if(playerval.startsWith("T")) 
+			availability=Race.AVAILABLE_ALL;
+		else
+		if(playerval.startsWith("F")) 
+			availability=Race.AVAILABLE_NONE;
+		else
+			availability=Util.s_int(playerval);
 		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
 		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
 		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
@@ -410,7 +417,7 @@ public class GenRace extends StdRace
 		case 6: return ""+heightVariance();
 		case 7: return ""+shortestFemale();
 		case 8: return ""+shortestMale();
-		case 9: return ""+playerSelectable();
+		case 9: return ""+availability();
 		case 10: return leaveStr();
 		case 11: return arriveStr();
 		case 12: return ((healthBuddy==null)?"":healthBuddy.ID());
@@ -463,7 +470,7 @@ public class GenRace extends StdRace
 		case 6: heightVariance=Util.s_int(val); break;
 		case 7: shortestFemale=Util.s_int(val); break;
 		case 8: shortestMale=Util.s_int(val); break;
-		case 9: playerSelectable=Util.s_bool(val); break;
+		case 9: availability=Util.s_int(val); break;
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
 		case 12: healthBuddy=CMClass.getRace(val); break;

@@ -16,7 +16,7 @@ public class UmberHulk extends StdRace
 	public int weightVariance(){return 200;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 	protected static Vector resources=new Vector();
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -26,7 +26,7 @@ public class Gnome extends StdRace
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return true;}
+	public int availability(){return Race.AVAILABLE_ALL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -54,7 +54,7 @@ public class Gnome extends StdRace
 			s1.setDescription("This small tunic is made of bits and pieces of many other shirts, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
 			s1.text();
 			outfitChoices.addElement(s1);
-			
+
 			Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of small shoes");
 			s2.setDisplayText("a pair of small shoes lie here.");

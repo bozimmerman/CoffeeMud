@@ -81,7 +81,7 @@ public class Spell_Polymorph extends Spell
 				{
 					newRace=null;
 					oldStats=null;
-					while((newRace==null)||(newRace.ID().equals("StdRace")))
+					while((newRace==null)||(newRace.ID().equals("StdRace"))||(newRace.availability()==Race.AVAILABLE_NONE))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					oldStats=target.baseEnvStats().cloneStats();

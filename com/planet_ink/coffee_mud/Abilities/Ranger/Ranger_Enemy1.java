@@ -30,7 +30,8 @@ public class Ranger_Enemy1 extends StdAbility
 			for(Enumeration r=CMClass.races();r.hasMoreElements();)
 			{
 				Race R=(Race)r.nextElement();
-				if(!choices.contains(R.racialCategory()))
+				if((!choices.contains(R.racialCategory()))
+				&&(R.availability()!=Race.AVAILABLE_NONE))
 					choices.addElement(R.racialCategory());
 			}
 			for(int a=0;a<mob.numLearnedAbilities();a++)

@@ -1,0 +1,92 @@
+Scary
+<S-NAME> is reaching for you.
+<S-NAME> is leaping out at you.
+<S-NAME> seems to be attacking you.
+<S-NAME> is ready to mangle you.
+You are startled by <S-NAME>.
+<S-NAME> is in a scary pose.
+
+Happy
+<S-NAME> is greeting you.
+<S-NAME> is waving at you.
+<S-NAME> is reaching for your hand to shake it.
+<S-NAME> is beaming at you.
+<S-NAME> is smiling at you.
+<S-NAME> is ready to hug you.
+<S-NAME> seems to be cheering for you.
+
+Sneaky
+<S-NAME> is prowling here.
+<S-NAME> is sneaking around here.
+<S-NAME> is hiding from you.
+<S-NAME> is looking you over.
+<S-NAME> seems to reach for your purse.
+
+Holy
+<S-NAME> is kneeling here.
+<S-NAME> is praying here.
+<S-NAME> seems to be praying for you.
+<S-NAME> seems to be forgiving your sins.
+<S-NAME> is blessing you.
+<S-NAME> is preaching to you.
+<S-NAME> is in a holy stance.
+
+Silly
+<S-NAME> is scratching his butt.
+<S-NAME> is doing the best headstand you`ve ever seen!
+<S-NAME> is lying on his back waiting for a tummy scratching.
+<S-NAME> is giving you a thumbs up and a cheesy grin.
+<S-NAME> seems to be deliberately ignoring you.
+<S-NAME> is here with his face smooshed to the floor.
+<S-NAME> wants you to pull his finger.
+<S-NAME> is in a kung-fu stance.
+<S-NAME> is in a silly pose.
+
+Confused
+<S-NAME> is talking to your foot.
+<S-NAME> seems very confused.
+<S-NAME> is looking at you cross-eyed.
+<S-NAME> is scratching his head.
+<S-NAME> has a confused expression on his face.
+
+Sexy
+<S-NAME> is winking at you suggestively.
+<S-NAME> seems to be trying to grab your rear.
+<S-NAME> is making a lewd gesture.
+<S-NAME> is in a lewd pose.
+
+Proud
+<S-NAME> seems pleased with <S-HIM-HERSELF>.
+<S-NAME> is here showing off.
+<S-NAME> seems to be waiting for your praise.
+<S-NAME> is in a proud pose.
+
+Quiet
+<S-NAME> is staring at nothing in particular.
+<S-NAME> is quietly watching you.
+<S-NAME> is looking upwards in wonder.
+<S-NAME> is in a quiet, thoughtful pose.
+<S-NAME> is standing in a corner, unobtrusively.
+
+Bashful
+<S-NAME> is hiding his face from you.
+<S-NAME> is cowing in the corner, hiding his face.
+<S-NAME> is trying to cover his nakedness.
+<S-NAME> doesn't appear to want you to look at him.
+<S-NAME> doesn't appear to want you to talk to him.
+
+Misc
+<S-NAME> is squatting here.
+<S-NAME> is stretching.
+<S-NAME> is standing here.
+<S-NAME> is here.
+<S-NAME> is lying here.
+<S-NAME> is sleeping here.
+<S-NAME> is sleeping peacefully.
+<S-NAME> is looking at you.
+
+Playful
+<S-NAME> seems to be rolling on the ground.
+<S-NAME> seems to be tickling you.
+<S-NAME> seems ready to play leap frog.
+<S-NAME> seems to be offering you a piggy back ride.

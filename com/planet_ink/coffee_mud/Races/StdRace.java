@@ -37,7 +37,7 @@ public class StdRace implements Race
 	public int[] culturalAbilityProfficiencies(){return null;}
 	public boolean uncharmable(){return false;}
 	
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
 	public boolean fertile(){return true;}
 

@@ -194,7 +194,7 @@ public class Spell_FleshStone extends Spell
 					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");
-					success=maliciousAffect(mob,target,mob.envStats().level()*50,-1);
+					success=maliciousAffect(mob,target,mob.envStats().level()*25,-1);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

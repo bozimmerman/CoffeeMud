@@ -12,7 +12,7 @@ public class Shadow extends Spirit
 	public long forbiddenWornBits(){return 0;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

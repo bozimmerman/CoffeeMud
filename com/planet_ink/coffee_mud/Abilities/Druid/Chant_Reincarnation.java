@@ -86,6 +86,7 @@ public class Chant_Reincarnation extends Chant
 			newRace=null;
 			while((newRace==null)
 			||(isGolem(newRace))
+			||(newRace.availability()==Race.AVAILABLE_NONE)
 			||(newRace.ID().equals("StdRace")))
 				newRace=CMClass.randomRace();
 			if(newRace!=null)

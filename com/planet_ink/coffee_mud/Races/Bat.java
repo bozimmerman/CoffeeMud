@@ -16,7 +16,7 @@ public class Bat extends StdRace
 	public int weightVariance(){return 0;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 	public String racialCategory(){return "Pteropine";}
 	private String[]racialAbilityNames={"WingFlying"};
 	private int[]racialAbilityLevels={1};

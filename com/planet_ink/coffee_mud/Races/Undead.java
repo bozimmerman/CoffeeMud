@@ -25,7 +25,7 @@ public class Undead extends StdRace
 
 	protected static Vector resources=new Vector();
 
-	public boolean playerSelectable(){return false;}
+	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{
@@ -129,7 +129,7 @@ public class Undead extends StdRace
 			if((mob.Name().toUpperCase().indexOf("GHOUL")>=0)
 			||(mob.Name().toUpperCase().indexOf("GHAST")>=0))
 				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
-			   
+
 		}
 		return body;
 	}

@@ -77,7 +77,7 @@ public class Spell_SummonEnemy extends Spell
 		while((monster==null)&&((--tries)>0))
 		{
 			Room room=CMMap.getRandomRoom();
-			if((room!=null)&&(room.numInhabitants()>0))
+			if((room!=null)&&Sense.canAccess(caster,room)&&(room.numInhabitants()>0))
 			{
 				MOB mob=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 				if((mob!=null)
@@ -85,7 +85,7 @@ public class Spell_SummonEnemy extends Spell
 				&&(mob.envStats().level()>=level)
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
-				&&(!mob.charStats().getMyRace().playerSelectable())
+				&&(mob.charStats().getMyRace().availability()==Race.AVAILABLE_MAGICONLY)
 				&&(Math.abs(new Integer(mob.getAlignment()-caster.getAlignment()).doubleValue())>350.0))
 					monster=mob;
 			}

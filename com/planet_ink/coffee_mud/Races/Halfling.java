@@ -26,7 +26,7 @@ public class Halfling extends StdRace
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public boolean playerSelectable(){return true;}
+	public int availability(){return Race.AVAILABLE_ALL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

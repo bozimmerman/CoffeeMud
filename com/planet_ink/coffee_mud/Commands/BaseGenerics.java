@@ -2961,6 +2961,27 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
+	static void genRaceAvailability(MOB mob, Race E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Availability: '"+Race.AVAILABLE_DESC[Util.s_int(E.getStat("PLAYER"))]+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new value (ALL/NONE/MAGIC)\n\r:","");
+		if(newName.length()==0)
+			mob.tell("(no change)");
+		else
+		if(newName.equalsIgnoreCase("ALL"))
+			E.setStat("PLAYER",""+Race.AVAILABLE_ALL);
+		else
+		if(newName.equalsIgnoreCase("NONE"))
+			E.setStat("PLAYER",""+Race.AVAILABLE_NONE);
+		else
+		if(newName.equalsIgnoreCase("MAGIC"))
+			E.setStat("PLAYER",""+Race.AVAILABLE_MAGICONLY);
+		else
+			mob.tell("(no change)");
+	}
 	static void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4009,7 +4030,7 @@ public class BaseGenerics extends StdCommand
 			genInt(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");
 			genInt(mob,me,++showNumber,showFlag,"Base Female Height","FHEIGHT");
 			genInt(mob,me,++showNumber,showFlag,"Height Variance","VHEIGHT");
-			genBool(mob,me,++showNumber,showFlag,"Player Race","PLAYER");
+			genRaceAvailability(mob,me,++showNumber,showFlag);
 			genText(mob,me,++showNumber,showFlag,"Leaving text","LEAVE");
 			genText(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
 			genHealthBuddy(mob,me,++showNumber,showFlag);
