@@ -172,7 +172,10 @@ public class JewelMaking extends CommonSkill
 		}
 		if((otherRequired.length()>0)&&(firstOther==null))
 		{
-			commonTell(mob,"You need some sort of precious stones to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+			if(otherRequired.equalsIgnoreCase("PRECIOUS"))
+				commonTell(mob,"You need some sort of precious stones to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+			else
+				commonTell(mob,"You need some "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -196,10 +199,10 @@ public class JewelMaking extends CommonSkill
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=null;
-		if(firstOther==null)
-			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-		else
+		if((firstOther!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+		else
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) making "+building.name()+".";

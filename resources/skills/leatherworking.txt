@@ -1,7 +1,7 @@
 % Cap 	1	10	5	150	GenArmor	HEAD	0	2	0
 % Coif	1	10	5	150	GenArmor	HEAD	0	2	0
 % Skullcap	1	10	5	100	GenArmor	HEAD	0	2	0
-% Mask	1	10	5	100	GenArmor	EYES	0	0	0
+% Mask	1	10	3	100	GenArmor	EYES	0	0	0
 % Sombrero	2	20	10	100	GenArmor	HEAD	0	1	0
 % Headband	1	20	5	50	GenArmor	HEAD	0	1	0
 % Mantle	1	20	5	50	GenArmor	NECK	0	1	0
