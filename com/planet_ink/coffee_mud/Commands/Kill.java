@@ -22,7 +22,7 @@ public class Kill extends StdCommand
 				return false;
 			}
 			else
-			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)!=MUDFight.COMBAT_DEFAULT)
+			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)
 				return false;
 			else
 				target=mob.getVictim();
@@ -72,7 +72,8 @@ public class Kill extends StdCommand
 				return false;
 			}
 			
-			if(mob.location().okMessage(mob,new FullMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
+			if((mob.location().okMessage(mob,new FullMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
+			&&(mob.getVictim()!=target))
 			{
 				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);
