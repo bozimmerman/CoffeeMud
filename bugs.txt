@@ -1,19 +1,14 @@
 Fenris, my attempt at a half-elf/demon is bugged. We have aged him for over 30 minutes as much as possible (with aid of the Butoh dance, so that`s at least twice a minute) and he hasn`t turned into a player. This is the second half demon lost.
 Half the time when I sign in, I have 10 hp out of full, about 50 mv out of full, and 100 mana out of full.
 I can put my armor back on after I start most dances and they don`t get stopped.
-Lorrel has just grown up! His password is the same as Esuom`s. Only Lorrel doesn`t seem to achually exist when I attempt to log him in.
 dodge does not work
 When I Lost Concentration when trying to enchant, It still cost me exp
-born chars start with 66 stat points, made ones are 70
-there is no listing for genpipe in the archon manual
-I would like there to be support for the genpipe to be consumed when the tobacco burns out if there is a decay feature on it, or if it`s uses is set to 1 or something like that. (Cigars and cigarettes).
 Ban by e-mail address?
 Name        {60 80} Sansara Margate~ not parsing right!
-GenDoor
 (copy) not appearing next to your titles
 Some ISMOON check for making events only happen in certain lunar phases.
 construct desc (outside door of my room) blah doesn't recognize ownership
-
+You can recall while charmed, if you follow someone else you get:You like Smurfette too much. You follow Zenthlas. You like Zenthlas too much. Smurfette being the mob that charmed me, Zenthlas hasn`t cast charm on me at all
 
 
 SMTP Server

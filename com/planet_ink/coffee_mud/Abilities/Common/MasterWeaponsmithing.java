@@ -17,7 +17,6 @@ public class MasterWeaponsmithing extends Weaponsmithing
 	
 	public MasterWeaponsmithing()
 	{
-		super();
 		if(!mapped2){mapped2=true;
 					CMAble.addCharAbilityMapping("All",30,ID(),false);}
 	}
