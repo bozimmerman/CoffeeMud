@@ -128,6 +128,7 @@ public class StdLawBook extends StdItem
 					case 8: doIllegalInfluence(A,B,theLaw,mob); break;
 					case 9: doIllegalSkill(A,B,theLaw,mob); break;
 					case 10: doIllegalEmotation(A,B,theLaw,mob); break;
+					case 11: doTaxLaw(A,B,theLaw,mob); break;
 					}
 				}
 				catch(Exception e)
@@ -569,6 +570,96 @@ public class StdLawBook extends StdItem
 		}
 	}
 
+	public void doTaxLaw(Area A, Behavior B, Law theLaw, MOB mob)
+	throws IOException
+	{
+		if(mob.session()==null) return;
+		mob.tell(getFromTOC("P11"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		while(true)
+		{
+			StringBuffer str=new StringBuffer("");
+			str.append("1. PROPERTY TAX   : "+(Util.s_int(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
+			str.append("2. SALES TAX      : "+(Util.s_int(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
+			str.append("3. TAX EVASION    : "+shortLawDesc((String[])theLaw.basicCrimes().get("TAXEVASION"))+"\n\r");
+			str.append("4. TREASURY       : ");
+			String S=theLaw.getInternalStr("TREASURY").trim();
+			String room="*";
+			String item="";
+			Vector V=Util.parseSemicolons(S,false);
+			if((S.length()==0)||(V.size()==0))
+				str.append("Not defined");
+			else
+			{
+				room=(String)V.firstElement();
+				if(V.size()>1) item=Util.combine(V,1);
+				if(room.equalsIgnoreCase("*")) 
+					str.append("Any");
+				else
+				{
+					Room R=CMMap.getRoom(room);
+					if(R==null)
+						str.append("Unknown");
+					else
+						str.append(R.displayText());
+				}
+				str.append(item+"\n\r");
+			}
+			mob.session().colorOnlyPrintln(str.toString());
+			if(!theLaw.hasModifiableLaws())
+				break;
+			String s=mob.session().prompt("\n\rEnter a number to modify: ","");
+			int x=Util.s_int(s);
+			if(x==0) break;
+			switch(x)
+			{
+			case 1:
+				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("PROPERTYTAX"));
+				if(Util.s_double(s)!=Util.s_double(theLaw.getInternalStr("PROPERTYTAX")))
+				{
+					changeTheLaw(A,B,mob,theLaw,"PROPERTYTAX",""+Util.s_double(s));
+					mob.tell("Changed.");
+				}
+				break;
+			case 2:
+				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("SALESTAX"));
+				if(Util.s_double(s)!=Util.s_double(theLaw.getInternalStr("SALESTAX")))
+				{
+					changeTheLaw(A,B,mob,theLaw,"SALESTAX",""+Util.s_double(s));
+					mob.tell("Changed.");
+				}
+				break;
+			case 3:
+				{
+					String[] oldLaw=(String[])theLaw.basicCrimes().get("TAXEVASION");
+					String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
+					if(newValue!=oldLaw)
+					{
+						StringBuffer s2=new StringBuffer("");
+						if(newValue!=null)
+							for(int i=0;i<newValue.length;i++)
+							{
+								s2.append(newValue[i]);
+								if(i<(newValue.length-1))
+									s2.append(";");
+							}
+						changeTheLaw(A,B,mob,theLaw,"TAXEVASION",s2.toString());
+						mob.tell("Changed.");
+					}
+					break;
+				}
+			case 4:
+				String room2=mob.session().prompt("Enter a new room ID (RETURN="+room+", *=any): ",room);
+				String item2=mob.session().prompt("Enter an optional container name (RETURN="+item+"): ",item);
+				if((!room.equalsIgnoreCase(room2))||(!item.equalsIgnoreCase(item2)))
+				{
+					changeTheLaw(A,B,mob,theLaw,"TREASURY",""+room2+";"+item2);
+					mob.tell("Changed.");
+				}
+				break;
+			}
+		}
+	}
+
 	public void doIllegalInfluence(Area A, Behavior B, Law theLaw, MOB mob)
 		throws IOException
 	{
@@ -692,6 +783,7 @@ public class StdLawBook extends StdItem
 			str.append("3. NUDITY            "+shortLawDesc((String[])theLaw.basicCrimes().get("NUDITY"))+"\n\r");
 			str.append("4. ARMED             "+shortLawDesc((String[])theLaw.basicCrimes().get("ARMED"))+"\n\r");
 			str.append("5. RESISTING ARREST  "+shortLawDesc((String[])theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
+			str.append("5. ROBBING HOMES     "+shortLawDesc((String[])theLaw.basicCrimes().get("PROPERTYROB"))+"\n\r");
 			str.append("\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
 			if(!theLaw.hasModifiableLaws())
@@ -699,7 +791,7 @@ public class StdLawBook extends StdItem
 			String s=mob.session().prompt("\n\rEnter number to modify or RETURN: ","");
 			int x=Util.s_int(s);
 			String crimeName="";
-			if((x>0)&&(x<=5))
+			if((x>0)&&(x<=6))
 				switch(x)
 				{
 				case 1: crimeName="ASSAULT"; break;
@@ -707,6 +799,7 @@ public class StdLawBook extends StdItem
 				case 3: crimeName="NUDITY"; break;
 				case 4: crimeName="ARMED"; break;
 				case 5: crimeName="RESISTINGARREST"; break;
+				case 6: crimeName="PROPERTYROB"; break;
 				}
 			if(crimeName.length()>0)
 			{

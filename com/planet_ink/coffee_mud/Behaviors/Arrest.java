@@ -292,8 +292,6 @@ public class Arrest extends StdBehavior
 			if(taxLaw.length()>0) taxLaws.put("TAXEVASION",getInternalBits(taxLaw));
 			taxLaw=getInternalStr("TREASURY");
 			if(taxLaw.length()>0) taxLaws.put("TREASURY",taxLaw);
-			taxLaw=getInternalStr("PROPERTYROB");
-			if(taxLaw.length()>0) taxLaws.put("PROPERTYROB",getInternalBits(taxLaw));
 			taxLaw=getInternalStr("SALESTAX");
 			if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
 			
@@ -310,6 +308,8 @@ public class Arrest extends StdBehavior
 			if(basicLaw.length()>0) basicCrimes.put("ARMED",getInternalBits(basicLaw));
 			basicLaw=getInternalStr("TRESPASSING");
 			if(basicLaw.length()>0) basicCrimes.put("TRESPASSING",getInternalBits(basicLaw));
+			basicLaw=getInternalStr("PROPERTYROB");
+			if(basicLaw.length()>0) basicCrimes.put("PROPERTYROB",getInternalBits(basicLaw));
 
 			abilityCrimes.clear();
 			otherCrimes.clear();
@@ -894,7 +894,7 @@ public class Arrest extends StdBehavior
 	{
 		// will witness talk, or victim press charges?
 		HashSet H=W.criminal().getGroupMembers(new HashSet());
-		if(W.witness().amDead()) return false;
+		if((W.witness()!=null)&&W.witness().amDead()) return false;
 		if(W.arrestingOfficer()!=null)
 		{
 			if(W.witness()==W.arrestingOfficer())
@@ -903,7 +903,7 @@ public class Arrest extends StdBehavior
 				return true;
 		}
 
-		if(H.contains(W.witness())) return false;
+		if((W.witness()!=null)&&H.contains(W.witness())) return false;
 		if((W.victim()!=null)&&(H.contains(W.victim()))) return false;
 		// crimes expire after three real days
 		if((W.lastOffense()>0)&&((System.currentTimeMillis()-W.lastOffense())>EXPIRATION_MILLIS))
@@ -1169,7 +1169,8 @@ public class Arrest extends StdBehavior
 				LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
-					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
+					if(W2.witness()!=null)
+						str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
 					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
@@ -1191,7 +1192,8 @@ public class Arrest extends StdBehavior
 				LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
 				if(W2.criminal()==criminal)
 				{
-					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
+					if(W2.witness()!=null)
+						str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".  ");
 					if((W2.warnMsg()!=null)&&(W2.warnMsg().length()>0))
 						str.append(W2.warnMsg()+"  ");
 					if((W2.offenses()>0)&&(laws.getMessage(Law.MSG_PREVOFF).length()>0))
@@ -1328,7 +1330,7 @@ public class Arrest extends StdBehavior
 
 		// is there a witness
 		MOB witness=getWitness(myArea,mob);
-		if(witness==null) return false;
+		boolean requiresWitness=true;
 
 		// is there a victim (if necessary)
 		MOB victim=null;
@@ -1336,6 +1338,48 @@ public class Arrest extends StdBehavior
 			victim=(MOB)target;
 		if(mob==victim) return false;
 
+		// any special circumstances?
+		if(crimeFlags.trim().length()>0)
+		{
+			Vector V=Util.parse(crimeFlags.toUpperCase());
+			for(int v=0;v<V.size();v++)
+			{
+				String str=(String)V.elementAt(v);
+				if(str.endsWith("WITNESS")&&(str.length()<9))
+				{
+					if(str.startsWith("!"))
+						requiresWitness=false;
+					else
+					if((witness!=null)&&(witness.location()!=mob.location()))
+					   return false;
+				}
+				else
+				if(str.endsWith("COMBAT")&&(str.length()<8))
+				{
+					if(mob.isInCombat())
+					{
+						if(str.startsWith("!")) return false;
+					}
+					else
+						if(!str.startsWith("!")) return false;
+
+				}
+				else
+				if(str.endsWith("RECENTLY")&&(str.length()<10))
+				{
+					LegalWarrant W=laws.getOldWarrant(mob,crime,false);
+					long thisTime=System.currentTimeMillis();
+					if((W!=null)&&((thisTime-W.lastOffense())<600000))
+					{
+						if(str.startsWith("!")) return false;
+					}
+					else
+						if(!str.startsWith("!")) return false;
+				}
+			}
+		}
+		if((requiresWitness)&&(witness==null)) return false;
+		
 		// is the location significant to this crime?
 		if(crimeLocs.trim().length()>0)
 		{
@@ -1371,46 +1415,6 @@ public class Arrest extends StdBehavior
 				{ aCrime=true; break;}
 			}
 			if(!aCrime) return false;
-		}
-
-		// any special circumstances?
-		if(crimeFlags.trim().length()>0)
-		{
-			Vector V=Util.parse(crimeFlags.toUpperCase());
-			for(int v=0;v<V.size();v++)
-			{
-				String str=(String)V.elementAt(v);
-				if(str.endsWith("WITNESS")&&(str.length()<9))
-				{
-					if((!str.startsWith("!"))
-					&&(witness!=null)
-					&&(witness.location()!=mob.location()))
-					   return false;
-				}
-				else
-				if(str.endsWith("COMBAT")&&(str.length()<8))
-				{
-					if(mob.isInCombat())
-					{
-						if(str.startsWith("!")) return false;
-					}
-					else
-						if(!str.startsWith("!")) return false;
-
-				}
-				else
-				if(str.endsWith("RECENTLY")&&(str.length()<10))
-				{
-					LegalWarrant W=laws.getOldWarrant(mob,crime,false);
-					long thisTime=System.currentTimeMillis();
-					if((W!=null)&&((thisTime-W.lastOffense())<600000))
-					{
-						if(str.startsWith("!")) return false;
-					}
-					else
-						if(!str.startsWith("!")) return false;
-				}
-			}
 		}
 
 		// is the victim a protected race?
@@ -1483,7 +1487,7 @@ public class Arrest extends StdBehavior
 			W.setActionCode(W.actionCode()/2);
 
 		if((isStillACrime(W))
-		&&(Sense.canBeSeenBy(W.criminal(),W.witness())))
+		&&((W.witness()==null)||Sense.canBeSeenBy(W.criminal(),W.witness())))
 			laws.warrants().addElement(W);
 		return true;
 	}
@@ -2171,7 +2175,7 @@ public class Arrest extends StdBehavior
 							for(int w2=0;w2<laws.warrants().size();w2++)
 							{
 								LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
-								if(W2.criminal()==W.criminal())
+								if((W2.criminal()==W.criminal())&&(W2.witness()!=null))
 									CommonMsgs.say(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
 							}
 							W.setState(Law.STATE_WAITING);
