@@ -305,7 +305,7 @@ public class Skill_Track extends StdAbility
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,!allowAir,!allowWater,radius);
+				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
 		    tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);

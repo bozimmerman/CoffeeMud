@@ -68,7 +68,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						if((!mob.charStats().getCurrentClass().leveless())
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!CMSecurity.isDisabled("LEVELS")))
-						while(mob.baseEnvStats().level()<=100)
+						while(mob.baseEnvStats().level()<100)
 						{
 							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(mob.charStats().getCurrentClass().expless())
@@ -78,6 +78,9 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 								MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 						mob.baseCharStats().setCurrentClass(newClass);
+						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
+						mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+30);
+						mob.setExperience(mob.getExpNextLevel());
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();

@@ -162,7 +162,6 @@ public class Copy extends StdCommand
 					((MOB)dest).addInventory(newItem);
 					end="into "+dest.name()+"'s arms";
 				}
-				room.recoverRoomStats();
 				if(i==0)
 				{
 					if(number>1)
@@ -232,6 +231,8 @@ public class Copy extends StdCommand
 				break;
 			}
 		}
+		if((E instanceof Item)&&(!(E instanceof ArchonOnly))&&(room!=null))
+		    room.recoverRoomStats();
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -34,12 +34,13 @@ public class StdPotion extends StdDrink implements Potion
 		setDisplayText("An empty potion sits here.");
 		setDescription("An empty potion with strange residue.");
 		secretIdentity="What was once a powerful potion.";
+		capacity=1;
+		containType=Container.CONTAIN_LIQUID;
+		liquidType=EnvResource.RESOURCE_DRINKABLE;
 		baseGoldValue=200;
 		material=EnvResource.RESOURCE_GLASS;
 		recoverEnvStats();
 	}
-
-
 
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 	public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
@@ -50,7 +51,7 @@ public class StdPotion extends StdDrink implements Potion
 		else
 			return super.value();
 	}
-
+	
 	public void setDrunk(boolean isTrue)
 	{
 		if(isTrue&&isDrunk()) return;

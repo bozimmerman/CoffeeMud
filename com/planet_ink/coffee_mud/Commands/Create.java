@@ -264,11 +264,14 @@ public class Create extends BaseGenerics
 		newMOB.setStartRoom(mob.location());
 		newMOB.setLocation(mob.location());
 		newMOB.envStats().setRejuv(5000);
+		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.baseEnvStats(),(char)newMOB.baseCharStats().getStat(CharStats.GENDER));
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(mob.location(),true);
+		newMOB.recoverCharStats();
+		newMOB.recoverEnvStats();
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 		if(newMOB.isGeneric())
 			genMiscSet(mob,newMOB);

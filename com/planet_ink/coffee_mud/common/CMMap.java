@@ -206,34 +206,38 @@ public class CMMap
 		if(R.roomID().length()>0) return R.roomID();
 		Area A=R.getArea();
 		if(A==null) return "";
-		if(R.getGridParent()!=null)
-			return R.getGridParent().getChildCode(R);
+		GridLocale GR=R.getGridParent();
+		if(GR!=null) return GR.getChildCode(R);
 		return R.roomID();
 	}
 
 	public static Room getRoom(String calledThis)
 	{
 		Room R = null;
-		if(calledThis==null) return null;
-		if(calledThis.endsWith(")"))
+		try
 		{
-			int child=calledThis.lastIndexOf("#(");
-			if(child>1)
+			if(calledThis==null) return null;
+			if(calledThis.endsWith(")"))
 			{
-				R=getRoom(calledThis.substring(0,child));
-				if((R!=null)&&(R instanceof GridLocale))
-					R=((GridLocale)R).getChild(calledThis);
-				else
-					R=null;
+				int child=calledThis.lastIndexOf("#(");
+				if(child>1)
+				{
+					R=getRoom(calledThis.substring(0,child));
+					if((R!=null)&&(R instanceof GridLocale))
+						R=((GridLocale)R).getChild(calledThis);
+					else
+						R=null;
+				}
+			}
+			if(R!=null) return R;
+			for (Enumeration i=rooms(); i.hasMoreElements();)
+			{
+				R = (Room)i.nextElement();
+				if (R.roomID().equalsIgnoreCase(calledThis))
+					return R;
 			}
 		}
-		if(R!=null) return R;
-		for (Enumeration i=rooms(); i.hasMoreElements();)
-		{
-			R = (Room)i.nextElement();
-			if (R.roomID().equalsIgnoreCase(calledThis))
-				return R;
-		}
+		catch(java.util.NoSuchElementException x){}
 		return null;
 	}
 	public static Enumeration rooms() {

@@ -188,6 +188,7 @@ public class Modify extends BaseGenerics
 			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
 				showFlag=-999;
 			boolean ok=false;
+			Room oldRoom=(Room)mob.location().copyOf();
 			while(!ok)
 			{
 				int showNumber=0;
@@ -211,8 +212,12 @@ public class Modify extends BaseGenerics
 					ok=true;
 				}
 			}
-			CMClass.DBEngine().DBUpdateRoom(mob.location());
-			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+			if(!oldRoom.sameAs(mob.location()))
+			{
+				CMClass.DBEngine().DBUpdateRoom(mob.location());
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
+				Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
+			}
 			return;
 		}
 		if(commands.size()<3) { flunkCmd1(mob); return;}

@@ -78,6 +78,20 @@ public class CraftingSkill extends CommonSkill
 	{
 	    if(spells.length()==0) return;
 	    if(spells.equalsIgnoreCase("bundle")) return;
+	    if(spells.startsWith("*"))
+	    {
+	        spells=spells.substring(1);
+	        int x=spells.indexOf(";");
+	        if(x<0) x=spells.length();
+	        Ability A=CMClass.getAbility(spells.substring(0,x));
+	        if(A!=null)
+	        {
+	            if(x<spells.length())
+		            A.setMiscText(spells.substring(x+1));
+	            E.addNonUninvokableEffect(A);
+	            return;
+	        }
+	    }
 	    Vector V=Util.parseSemicolons(spells,true);
 	    Ability lastSpell=null;
 	    Ability A=null;
@@ -278,6 +292,7 @@ public class CraftingSkill extends CommonSkill
 					firstWood=findMostOfMaterial(mob.location(),req1[i]);
 				else
 					firstWood=findFirstResource(mob.location(),req1[i]);
+				
 				if(firstWood!=null) break;
 			}
 		}

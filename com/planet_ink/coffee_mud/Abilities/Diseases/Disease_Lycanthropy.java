@@ -140,7 +140,7 @@ public class Disease_Lycanthropy extends Disease
 			Vector rooms=new Vector();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
-				deathTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,true,true,true,50);
+				deathTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,true,true,true,true,50);
 				if(deathTrail!=null)
 					deathTrail.addElement(mob.location());
 			}

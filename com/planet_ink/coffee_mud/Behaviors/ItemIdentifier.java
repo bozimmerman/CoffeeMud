@@ -63,10 +63,10 @@ public class ItemIdentifier extends StdBehavior
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
-		MOB source=msg.source();
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
+		MOB source=msg.source();
 
 		if((source!=observer)
 		&&(msg.amITarget(observer))

@@ -170,10 +170,15 @@ public class Prop_Auction extends Property
 			    if(sb.length()>0)
 			    {
 				    myCurrency=EnglishParser.numPossibleGoldCurrency(mob,sb);
-				    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
-				    long num=EnglishParser.numPossibleGold(mob,sb);
-				    b=Util.mul(denomination,num);
-				    bwords=BeanCounter.getDenominationName(myCurrency,denomination,num);
+				    if(myCurrency!=null)
+				    {
+					    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
+					    long num=EnglishParser.numPossibleGold(mob,sb);
+					    b=Util.mul(denomination,num);
+					    bwords=BeanCounter.getDenominationName(myCurrency,denomination,num);
+				    }
+				    else
+				        myCurrency=BeanCounter.getCurrency(mob);
 			    }
 			}
 			String bidWords=BeanCounter.nameCurrencyShort(currency,bid);

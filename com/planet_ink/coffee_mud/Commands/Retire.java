@@ -41,8 +41,8 @@ public class Retire extends StdCommand
 			return false;
 		}
 		mob.tell("^HThis will delete your player from the system FOREVER!");
-		pwd=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
-		if(pwd.equalsIgnoreCase("Y"))
+		pwd=mob.session().prompt("Are you absolutely SURE (y/N)?","N").trim();
+		if(pwd.equalsIgnoreCase("Y")||pwd.equalsIgnoreCase("YES"))
 		{
 			mob.tell("Fine!  Goodbye then!");
 			CoffeeUtensils.obliteratePlayer(mob,false);

@@ -185,7 +185,7 @@ public class Alchemy extends CraftingSkill
 			}
 			if(!(building instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+building.name()+" to cook!");
+				commonTell(mob,"There's nothing in "+building.name()+" to brew!");
 				return false;
 			}
 			if(!(building instanceof Drink))

@@ -257,7 +257,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,50);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);

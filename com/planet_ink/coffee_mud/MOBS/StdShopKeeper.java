@@ -622,7 +622,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case CMMsg.TYP_VALUE:
 			case CMMsg.TYP_SELL:
 			{
-				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
+				if((msg.tool()!=null)
+				&&(doISellThis(msg.tool()))
+				&&(!(msg.tool() instanceof Coins)))
 				{
 				    double yourValue=yourValue(mob,msg.tool(),false,true).absoluteGoldPrice;
 					if(yourValue<2)

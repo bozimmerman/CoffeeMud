@@ -232,7 +232,14 @@ public class Patroller extends ActiveTicker
 			        }
 					if((direction<0)||(thatRoom==null))
 			        {
-			            correction=MUDTracker.findBastardTheBestWay(thisRoom,Util.makeVector(R),ticking instanceof Item,false,!airOk,!waterOk,diameter);
+			            correction=MUDTracker.findBastardTheBestWay(thisRoom,
+			                    	Util.makeVector(R),
+			                    	ticking instanceof Item,
+			                    	false,
+			                    	true,
+			                    	!airOk,
+			                    	!waterOk,
+			                    	diameter);
 			            if(correction!=null)
 				            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
 			            else

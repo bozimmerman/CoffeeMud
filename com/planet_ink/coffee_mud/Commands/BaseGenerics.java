@@ -1696,20 +1696,22 @@ public class BaseGenerics extends StdCommand
 		    gocontinue=false;
 		    String newDenom=mob.session().prompt("Enter denomination (?):",""+E.getDenomination()).trim().toUpperCase();
 			DVector DV=BeanCounter.getCurrencySet(E.getCurrency());
-			if((newDenom.length()>0)&&(!Util.isDouble(newDenom))&&(!newDenom.equalsIgnoreCase("?")))
+			if((newDenom.length()>0)
+			&&(!Util.isDouble(newDenom))
+			&&(!newDenom.equalsIgnoreCase("?")))
 			{
 			    double denom=EnglishParser.matchAnyDenomination(E.getCurrency(),newDenom);
 			    if(denom>0.0) newDenom=""+denom;
 			}
 		    if((newDenom.length()==0)
 		    ||(Util.isDouble(newDenom)
-		            &&(!newDenom.equalsIgnoreCase("?"))
-		            &&(Util.s_double(newDenom)==E.getDenomination())))
-		        mob.tell("(no change)");
+	            &&(!newDenom.equalsIgnoreCase("?"))
+	            &&(Util.s_double(newDenom)==E.getDenomination())))
+			        mob.tell("(no change)");
 		    else
 			if((!Util.isDouble(newDenom))
 			||(newDenom.equalsIgnoreCase("?"))
-			||((DV!=null)&&(!DV.contains(new Double(E.getDenomination())))))
+			||((DV!=null)&&(!DV.contains(new Double(Util.s_double(newDenom))))))
 			{
 			    StringBuffer allDenoms=new StringBuffer("");
 			    for(int i=0;i<DV.size();i++)

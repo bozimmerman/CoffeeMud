@@ -53,6 +53,12 @@ public class Skill_Puppeteer extends BardSkill
 		&&(!((msg.tool()!=null)&&(msg.tool() instanceof Dance)))
 		&&(!msg.amITarget(puppet)))
 		{
+		    if((!msg.source().isInCombat())&&(msg.target() instanceof MOB))
+		    {
+			    if((Util.isSet(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
+			    ||(Util.isSet(msg.targetMajor(),CMMsg.MASK_MALICIOUS)))
+			        msg.source().setVictim((MOB)msg.target());
+		    }
 			invoker().location().show(invoker(),puppet,CMMsg.MSG_OK_ACTION,"<S-NAME> animate(s) <T-NAMESELF>.");
 			return false;
 		}
@@ -155,7 +161,7 @@ public class Skill_Puppeteer extends BardSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,null);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.TYP_DELICATE_HANDS_ACT,CMMsg.TYP_DELICATE_HANDS_ACT,null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -34,7 +34,7 @@ garlic cheese bread	FOOD		25	bread	1	herbs	1	cheese	1
 lemon meringue pie	FOOD		25	Lemons	2	pie crust	1	cream	1				
 stuffed peppers	FOOD		26	peppers	1	cheese	-1						
 tamales	FOOD		27	corn tortilla	1	meat	1	beef	-1				
-% dumpings	FOOD		28	apples	1	dough	1	cinnamon	1				
+% dumplings	FOOD		28	apples	1	dough	1	cinnamon	1				
 cinnamon rolls	FOOD		28	dough	2	cinnamon	1	sugar	1				
 % pizza	FOOD		29	dough	2	tomatoes	1	cheese	1	meat	-1	beef	-1
 swiss steak	FOOD		29	beef	1	tomatoes	1	carrots	1	water	1		
