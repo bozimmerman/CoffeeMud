@@ -52,3 +52,4 @@ Large % Shield	12	75	40	16	GenShield	HELD	1	13	0
 Large % Chest	15	100	45	45	GenContainer	LOCK	100		0
 % Chest of Drawers	20	100	45	45	GenContainer	LID	50		0
 % Wardrobe	15	75	70	60	GenContainer	LID	500		4096
+% Wand	22	30	5	3	GenWand		0		0

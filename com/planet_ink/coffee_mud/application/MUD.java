@@ -609,7 +609,6 @@ public class MUD extends Thread implements Host
 		offlineReason="Shutdown: you are the special lucky chosen one!";
 		for(int m=mudThreads.size()-1;m>=0;m--)
 			((MUD)mudThreads.elementAt(m)).interrupt();
-		try{Thread.sleep(2000);}catch(Exception i){}
 	}
 
 

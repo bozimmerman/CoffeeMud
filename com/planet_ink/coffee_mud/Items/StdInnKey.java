@@ -37,7 +37,10 @@ public class StdInnKey extends StdKey implements InnKey
 			if(owner()!=null)
 				removeFromOwnerContainer();
 			if(myShopkeeper!=null)
-				myShopkeeper.addStoreInventory(this);
+			{
+				myShopkeeper.addStoreInventory(this); // makes a copy
+				destroy();
+			}
 			return false;
 		}
 		return true;
@@ -60,9 +63,14 @@ public class StdInnKey extends StdKey implements InnKey
 		super.affect(myHost,affect);
 		if(((affect.targetMinor()==Affect.TYP_GIVE)
 		||(affect.targetMinor()==Affect.TYP_SELL))
+		&&(myShopkeeper!=null)
 		&&(affect.target()==myShopkeeper)
 		&&(affect.tool()==this))
+		{
 			ExternalPlay.deleteTick(this,Host.ITEM_BOUNCEBACK);
+			myShopkeeper.addStoreInventory(this); //makes a copy
+			destroy();
+		}
 	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -80,11 +88,10 @@ public class StdInnKey extends StdKey implements InnKey
 			return false;
 		}
 		else
-		if((affect.sourceMinor()==Affect.TYP_BUY)
-		&&(affect.target()==this)
-		&&(affect.tool()!=null)
+		if((affect.sourceMinor()==Affect.TYP_GET)
 		&&(myShopkeeper!=null)
-		&&(affect.tool()==myShopkeeper))
+		&&(affect.tool()==myShopkeeper)
+		&&(affect.target()==this))
 			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,(int)Host.TICKS_PER_DAY);
 		return true;
 	}

@@ -626,7 +626,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				&&(mob.isASysOp(mob.location()))
 				&&((doISellThis(affect.tool()))||(whatISell==DEAL_INVENTORYONLY)))
 				{
-					storeInventory.addElement(affect.tool().copyOf());
+					Item item2=(Item)affect.tool().copyOf();
+					storeInventory.addElement(item2);
+					if(item2 instanceof InnKey)
+						((InnKey)item2).hangOnRack(this);
 					return;
 				}
 				super.affect(myHost,affect);
@@ -663,6 +666,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 							else
 								storeInventory.addElement(item2);
+							if(item2 instanceof InnKey)
+								((InnKey)item2).hangOnRack(this);
 						}
 						item.setContainer(null);
 					}

@@ -479,7 +479,6 @@ public class CoffeeUtensils
 
 	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
-		
 		Room R=M.location();
 		if(R==null) return;
 		int tries=0;

@@ -342,19 +342,13 @@ public class BribeGateGuard extends StdBehavior
 			}
 			if((e.isOpen())&&(paidPlayers.isEmpty()))
 			{
-				FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> "+e.closeWord()+"(s) <T-NAME>.");
-				if(mob.location().okAffect(mob,msg))
-					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+				try{ExternalPlay.doCommand(mob,Util.parse("CLOSE "+Directions.getDirectionName(dir)));}catch(Exception e1){}
 			}
 			if((!e.isOpen())&&(!paidPlayers.isEmpty()))
 			{
-				FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> "+e.openWord()+"(s) <T-NAME>.");
 				for(int i=0;i<paidPlayers.size();i++)
-				{
 					ExternalPlay.quickSay(mob,(MOB)paidPlayers.elementAt(i),"I still have that "+getBalance((MOB)paidPlayers.elementAt(i))+" from before if you're heading through",true,false);
-				}
-				if(mob.location().okAffect(mob,msg))
-					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+				try{ExternalPlay.doCommand(mob,Util.parse("OPEN "+Directions.getDirectionName(dir)));}catch(Exception e1){}
 			}
 		}
 		return true;

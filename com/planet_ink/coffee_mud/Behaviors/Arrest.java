@@ -575,7 +575,9 @@ public class Arrest extends StdBehavior
 		if((myArea!=null)&&(mob.location().getArea()!=myArea))
 			return false;
 
-		if(isAnyKindOfOfficer(mob)||(isTheJudge(mob)))
+		if(isAnyKindOfOfficer(mob)
+		||(isTheJudge(mob))
+		||(mob.isASysOp(mob.location())))
 			return false;
 		
 		// is there a witness
@@ -759,6 +761,31 @@ public class Arrest extends StdBehavior
 		Properties laws=getLaws();
 		if(affect.source()==null) return;
 
+		// the archons pardon
+		if((affect.sourceMinor()==Affect.TYP_SPEAK)
+		&&(affect.sourceMessage()!=null)
+		&&((affect.source().isASysOp(affect.source().location()))
+		   ||(isTheJudge(affect.source()))))
+		{
+			int x=affect.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
+			if(x>0)
+			{
+				int y=affect.sourceMessage().lastIndexOf("'",x);
+				String name=null;
+				if(y>x)
+					name=affect.sourceMessage().substring(x+16,y);
+				else
+					name=affect.sourceMessage().substring(x+16);
+				if(name.length()>0)
+				for(int i=warrants.size()-1;i>=0;i--)
+				{
+					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					if((W.criminal!=null)&&(CoffeeUtensils.containsString(W.criminal.Name(),name)))
+						warrants.removeElement(W);
+				}
+			}
+		}
+		   
 		if(affect.sourceMinor()==Affect.TYP_DEATH)
 		{
 			String info=(String)laws.get("MURDER");

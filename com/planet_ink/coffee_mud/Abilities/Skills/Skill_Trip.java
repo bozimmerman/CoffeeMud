@@ -72,7 +72,7 @@ public class Skill_Trip extends StdAbility
 
 		if((Sense.isSitting(target)||Sense.isSleeping(target)))
 		{
-			mob.tell(target.name()+" is already on the floor!");
+			mob.tell(target,null,null,"<S-NAME> is already on the floor!");
 			return false;
 		}
 

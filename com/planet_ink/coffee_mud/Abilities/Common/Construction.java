@@ -122,9 +122,18 @@ public class Construction extends CommonSkill
 							CMMap.delRoom(room);
 							CMMap.addRoom(R);
 							for(int d=0;d<R.rawDoors().length;d++)
-								R.rawDoors()[d]=room.rawDoors()[d];
+							{
+								if((R.rawDoors()[d]==null)
+								||(R.rawDoors()[d].roomID().length()>0))
+									R.rawDoors()[d]=room.rawDoors()[d];
+							}
 							for(int d=0;d<R.rawExits().length;d++)
-								R.rawExits()[d]=room.rawExits()[d];
+							{
+								if((R.rawDoors()[d]==null)
+								||(R.rawDoors()[d].roomID().length()>0))
+									R.rawExits()[d]=room.rawExits()[d];
+							}
+							R.clearSky();
 							R.startItemRejuv();
 							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 							{

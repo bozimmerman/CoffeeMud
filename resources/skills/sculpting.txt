@@ -25,3 +25,4 @@
 % Forge	15	80	1200	300	GenContainer	LID	1000	0	Burning
 % Stove	3	40	100	20	GenRideable	TABLE	100	0	Burning
 % Oven	6	60	500	50	GenContainer	LID	50	0	Burning
+% Wand	28	10	20	1	GenItem		0	0

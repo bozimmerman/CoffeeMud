@@ -55,10 +55,10 @@ public class Undead extends StdRace
 			return "^y" + mob.name() + "^y is somewhat damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has grown weak and slightly damaged.^N";
+			return "^y" + mob.name() + "^y is very weak and slightly damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has lost stability and is very weak.^N";
+			return "^p" + mob.name() + "^p has lost stability and is weak.^N";
 		else
 		if(pct<.70)
 			return "^p" + mob.name() + "^p is unstable and slightly weak.^N";

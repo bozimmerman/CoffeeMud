@@ -606,7 +606,7 @@ public class Movement extends Scriptable
 					Exit opE=mob.location().getPairedExit(dirCode);
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isOpen()))
-					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afteropens",opE.name(),Directions.getFromDirectionName(opCode)));
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afteropens",opE.name(),Directions.getInDirectionName(opCode)));
 				}
 			}
 		}
@@ -649,7 +649,7 @@ public class Movement extends Scriptable
 					Exit opE=mob.location().getPairedExit(dirCode);
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(!opE.isLocked()))
-					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterunlocks",opE.name(),Directions.getFromDirectionName(opCode)));
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterunlocks",opE.name(),Directions.getInDirectionName(opCode)));
 				}
 			}
 		}
@@ -693,7 +693,7 @@ public class Movement extends Scriptable
 					Exit opE=mob.location().getPairedExit(dirCode);
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(!opE.isOpen()))
-					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","aftercloses",opE.name(),Directions.getFromDirectionName(opCode)));
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","aftercloses",opE.name(),Directions.getInDirectionName(opCode)));
 				}
 			}
 		}
@@ -778,7 +778,7 @@ public class Movement extends Scriptable
 					Exit opE=mob.location().getPairedExit(dirCode);
 					int opCode=Directions.getOpDirectionCode(dirCode);
 					if((opE!=null)&&(opE.isLocked()))
-					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterlocks",opE.name(),Directions.getFromDirectionName(opCode)));
+					   opR.showHappens(Affect.MSG_OK_ACTION,getScr("Movement","afterlocks",opE.name(),Directions.getInDirectionName(opCode)));
 				}
 			}
 		}

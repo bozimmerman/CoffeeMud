@@ -1,15 +1,15 @@
-Archons Guide updates
-	How to create Inns
 Programming.html update
 	Include building information
 	Create external class-creation info
 	Updates misc. methods. Locales, 
 	Updates misc. methods. Mobs, 
 	Updates misc. methods. Items
+	Do Abilities/Spells/etc.
 	
 //****** next version ********************************************************
 GenRaces
 racial abilities (abilities tied to the race)
+ability to make windows in Construction, Masonry
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  

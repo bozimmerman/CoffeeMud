@@ -389,7 +389,7 @@ public class Grouping
 		for(int v=0;v<doV.size();v++)
 		{
 			target=(MOB)doV.elementAt(v);
-			ExternalPlay.doCommand(target,commands);
+			ExternalPlay.doCommand(target,(Vector)commands.clone());
 		}
 	}
 

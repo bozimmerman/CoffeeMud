@@ -736,12 +736,11 @@ public class SaucerSupport
 						ExternalPlay.roomAffectFully(msg,oldRoom,direction);
 				}
 			}
-			FullMsg msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-			if(oldRoom.okAffect(mob,msg))
+			if(!nextExit.isOpen())
 			{
-				reclose=true;
-				msg=new FullMsg(mob,nextExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OPEN,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.openWord()+"(s) <T-NAMESELF>.");
-				ExternalPlay.roomAffectFully(msg,oldRoom,direction);
+				try{ExternalPlay.doCommand(mob,Util.parse("OPEN "+Directions.getDirectionName(direction)));}catch(Exception e){}
+				if(nextExit.isOpen())
+					reclose=true;
 			}
 		}
 		if(!nextExit.isOpen())
@@ -774,15 +773,10 @@ public class SaucerSupport
 			&&(opExit.hasADoor())
 			&&(opExit.isOpen()))
 			{
-				FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-				if(nextRoom.okAffect(mob,msg))
-				{
-					msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_CLOSE,Affect.MSG_OK_VISUAL,"<S-NAME> "+nextExit.closeWord()+"(s) <T-NAMESELF>.");
-					ExternalPlay.roomAffectFully(msg,nextRoom,opDirection);
-				}
+				try{ExternalPlay.doCommand(mob,Util.parse("CLOSE "+Directions.getDirectionName(opDirection)));}catch(Exception e){}
 				if((opExit.hasALock())&&(relock))
 				{
-					msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
+					FullMsg msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
 					if(nextRoom.okAffect(mob,msg))
 					{
 						msg=new FullMsg(mob,opExit,null,Affect.MSG_OK_VISUAL,Affect.MSG_LOCK,Affect.MSG_OK_VISUAL,"<S-NAME> lock(s) <T-NAMESELF>.");
