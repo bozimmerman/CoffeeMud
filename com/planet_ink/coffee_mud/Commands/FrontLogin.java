@@ -466,7 +466,7 @@ public class FrontLogin extends StdCommand
 							{
 								Race R=(Race)r.nextElement();
 								if((R.name().equalsIgnoreCase(raceStr))
-								&&(CommonStrings.isTheme(newRace.availabilityCode()))
+								&&(CommonStrings.isTheme(R.availabilityCode()))
 								&&(Util.bset(R.availabilityCode(),theme))
 								&&(!Util.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{

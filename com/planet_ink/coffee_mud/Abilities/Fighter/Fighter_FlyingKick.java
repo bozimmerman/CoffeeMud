@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -72,7 +73,7 @@ public class Fighter_FlyingKick extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob,mob.charStats().getStat(CharStats.STRENGTH)-target.charStats().getStat(CharStats.STRENGTH)-10,auto);
+		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.DEXTERITY)-target.charStats().getStat(CharStats.DEXTERITY))*2,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -197,7 +197,7 @@ public class StdItem implements Item
 	}
 	public void wearIfPossible(MOB mob)
 	{
-		for(int i=0;i<wornCodes.length;i++)
+		for(int i=1;i<wornCodes.length;i++)
 		{
 			if((fitsOn(wornCodes[i]))
 			&&(canWear(mob,wornCodes[i])))
@@ -250,7 +250,7 @@ public class StdItem implements Item
 
 		if(!wornLogicalAnd)
 		{
-			for(int i=0;i<wornCodes.length;i++)
+			for(int i=1;i<wornCodes.length;i++)
 			{
 				if(fitsOn(wornCodes[i]))
 				{
@@ -263,7 +263,7 @@ public class StdItem implements Item
 		}
 		else
 		{
-			for(int i=0;i<wornCodes.length;i++)
+			for(int i=1;i<wornCodes.length;i++)
 			{
 				if((fitsOn(wornCodes[i]))
 				&&(mob.freeWearPositions(wornCodes[i])==0))

@@ -110,6 +110,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(I!=null)
 		{
 			CoffeeMaker.setPropertiesStr(I,data.substring(x+1),true);
+			if((I instanceof Coins)
+			&&(((Coins)I).getDenomination()==0.0)
+			&&(((Coins)I).getNumberOfCoins()>0)) 
+			    ((Coins)I).setDenomination(1.0);
 			I.recoverEnvStats();
 			I.text();
 			return I;
@@ -462,9 +466,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 							{
 								addDepositInventory(owner,coins);
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
+								    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 								else
-								    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
+								    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 							}
 						}
 						else

@@ -84,21 +84,23 @@ public class GrinderItems
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
 
-		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
-						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
-						  "MATERIALS","ISGENERIC","ISREADABLE","READABLETEXT",
-						  "ISDRINK","LIQUIDHELD","QUENCHED","ISCONTAINER",
-						  "CAPACITY","ISARMOR","ARMOR","WORNDATA"," HEIGHT",
-						  "ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK","DAMAGE","MINRANGE",
-						  "MAXRANGE","SECRETIDENTITY","ISGETTABLE","ISREMOVABLE",
-						  "ISDROPPABLE","ISTWOHANDED","ISTRAPPED","READABLESPELLS",
-						  "ISWAND"," USESREMAIN","VALUE","WEIGHT","ISMAP","MAPAREAS","ISFOOD",
-						  "ISPILL","ISSUPERPILL","ISPOTION","LIQUIDTYPES","AMMOTYPE",
-						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
-						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
-						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
-						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM",
-						  "ISDUST","ISPERFUME","SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT"};
+		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION"," LEVEL",
+		        		  " ABILITY"," REJUV"," MISCTEXT","MATERIALS","ISGENERIC",
+		        		  "ISREADABLE","READABLETEXT","ISDRINK","LIQUIDHELD","QUENCHED",
+		        		  "ISCONTAINER","CAPACITY","ISARMOR","ARMOR","WORNDATA",
+		        		  " HEIGHT","ISWEAPON","WEAPONTYPE","WEAPONCLASS","ATTACK",
+		        		  "DAMAGE","MINRANGE","MAXRANGE","SECRETIDENTITY",
+		        		  "ISGETTABLE","ISREMOVABLE","ISDROPPABLE","ISTWOHANDED","ISTRAPPED",
+		        		  "READABLESPELLS","ISWAND"," USESREMAIN","VALUE","WEIGHT",
+		        		  "ISMAP","MAPAREAS","ISFOOD","ISPILL","ISSUPERPILL",
+		        		  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP","READABLESPELL",
+		        		  "ISRIDEABLE","RIDEABLETYPE","MOBSHELD","HASALID","HASALOCK",
+		        		  "KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER","ISLIGHTSOURCE",
+		        		  "DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES","ISINSTRUMENT",
+		        		  "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
+		        		  "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
+						  "NUMCOINS","CURRENCY","DENOM"
+						  };
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -411,6 +413,18 @@ public class GrinderItems
 			case 73: // exit closed text
 			    if(I instanceof Exit)
 			        ((Exit)I).setExitParams(((Exit)I).doorName(),((Exit)I).closeWord(),((Exit)I).openWord(),old);
+			    break;
+			case 74: // numcoins
+			    if(I instanceof Coins)
+			        ((Coins)I).setNumberOfCoins(Util.s_long(old));
+			    break;
+			case 75: // currency
+			    if(I instanceof Coins)
+			        ((Coins)I).setCurrency(old);
+			    break;
+			case 76: // denomination
+			    if(I instanceof Coins)
+			        ((Coins)I).setDenomination(Util.s_double(old));
 			    break;
 			}
 		}

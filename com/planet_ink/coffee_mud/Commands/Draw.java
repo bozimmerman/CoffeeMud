@@ -128,7 +128,7 @@ public class Draw extends Get
 		{
 			containerName=(String)commands.lastElement();
 			commands.insertElementAt("all",0);
-			containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
+			containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY,true);
 			if(containers.size()==0) containers=sheaths;
 			whatToGet=Util.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");

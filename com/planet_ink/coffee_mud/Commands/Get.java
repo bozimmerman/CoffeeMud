@@ -138,7 +138,8 @@ public class Get extends BaseItemParser
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Vector containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_ANY);
+		Vector containerCommands=(Vector)commands.clone();
+		Vector containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_ANY,true);
 		int c=0;
 
 		int maxToGet=Integer.MAX_VALUE;
@@ -243,7 +244,16 @@ public class Get extends BaseItemParser
 			if(containerName.equalsIgnoreCase("all"))
 				mob.tell("You don't see anything here.");
 			else
-				mob.tell("You don't see '"+containerName+"' here.");
+			{
+			    Vector V=EnglishParser.possibleContainers(mob,containerCommands,Item.WORN_REQ_ANY,false);
+			    if(V.size()==0)
+					mob.tell("You don't see '"+containerName+"' here.");
+				else
+			    if(V.size()==1)
+					mob.tell("You don't see that in "+((Item)V.firstElement()).name()+" here.");
+			    else
+					mob.tell("You don't see that in any '"+containerName+"'.");
+			}
 		}
 		return false;
 	}

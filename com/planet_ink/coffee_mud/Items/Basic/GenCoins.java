@@ -44,7 +44,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 	public String displayText()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":"lie here.");
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 	
 	public void setDynamicMaterial()
@@ -171,5 +171,58 @@ public class GenCoins extends GenItem implements Coins
 		default:
 			break;
 		}
+	}
+	private static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
+	public String getStat(String code)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			return CoffeeMaker.getGenItemStat(this,code);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+getNumberOfCoins();
+		case 1: return ""+getCurrency();
+		case 2: return ""+getDenomination();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			CoffeeMaker.setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setNumberOfCoins(Util.s_int(val)); break;
+		case 1: setCurrency(val); break;
+		case 2: setDenomination(Util.s_double(val)); break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenCoins)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
 	}
 }

@@ -124,6 +124,20 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public void setLandPropertyID(String landID){}
 
+	public static boolean shopkeeperMobPresent(Room R)
+	{
+	    if(R==null) return false;
+	    MOB M=null;
+	    for(int i=0;i<R.numInhabitants();i++)
+	    {
+	        M=R.fetchInhabitant(i);
+	        if((M.getStartRoom()==R)
+	        &&(M.isMonster())
+	        &&(CoffeeUtensils.getShopKeeper(M)!=null))
+	            return true;
+	    }
+	    return false;
+	}
 	
 	public static boolean robberyCheck(LandTitle A, CMMsg msg)
 	{
@@ -136,6 +150,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(msg.source().location()!=null)
 		    &&(msg.othersMessage()!=null)
 		    &&(msg.othersMessage().length()>0)
+		    &&(!shopkeeperMobPresent(msg.source().location()))
 			&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),msg.source().location())))
 		    {
 			    Room R=msg.source().location();

@@ -196,7 +196,7 @@ public class Undead extends StdRace
 			return "^g" + mob.name() + "^g is unbalanced and unstable.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is in somewhat unbalanced.^N";
+			return "^g" + mob.name() + "^g is somewhat unbalanced.^N";
 		else
 		if(pct<.99)
 			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";

@@ -131,6 +131,8 @@ public class StdJournal extends StdItem
 								else
 								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
 								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
+								if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))
+								{ prompt+="^<MENU^>T^</MENU^>)ransfer "; cmds+="T";}
 								prompt+="or RETURN: ";
 								String s=mob.session().choose(prompt,cmds+"\n","\n");
 								if(s.equalsIgnoreCase("S"))
@@ -185,9 +187,46 @@ public class StdJournal extends StdItem
 										repeat=true;
 								}
 								else
+								if(s.equalsIgnoreCase("T"))
+								{
+								    String journal=mob.session().prompt("Enter the journal to transfer this msg to: ","");
+								    journal=journal.trim();
+								    if(journal.length()>0)
+								    {
+								        if((!journal.equalsIgnoreCase("bugs"))
+								        &&(!journal.equalsIgnoreCase("typos"))
+								        &&(!journal.equalsIgnoreCase("ideas"))
+								        &&(CMClass.DBEngine().DBCountJournal(journal.toUpperCase(),null,null)<=0))
+											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
+								        else
+								        {
+											Vector journal2=CMClass.DBEngine().DBReadJournal(Name());
+											Vector entry2=(Vector)journal2.elementAt(which);
+											String from2=(String)entry2.elementAt(1);
+											String to=(String)entry2.elementAt(3);
+											String subject=(String)entry2.elementAt(4);
+											String message=(String)entry2.elementAt(5);
+											CMClass.DBEngine().DBDeleteJournal(Name(),which-1);
+									        if((journal.equalsIgnoreCase("bugs"))
+									        ||(journal.equalsIgnoreCase("typos"))
+									        ||(journal.equalsIgnoreCase("ideas")))
+									        	journal="SYSTEM_"+journal.toUpperCase();
+											CMClass.DBEngine().DBWriteJournal(journal.toUpperCase(),
+																			  from2,
+																			  to,
+																			  subject,
+																			  message,-1);
+											msg.setValue(-1);
+								        }
+										mob.tell("Message transferred.");
+								    }
+							        else
+										mob.tell("Aborted.");
+								}
+								else
 								if(s.equalsIgnoreCase("D"))
 								{
-									CMClass.DBEngine().DBDeleteJournal(name(),which-1);
+									CMClass.DBEngine().DBDeleteJournal(Name(),which-1);
 									msg.setValue(-1);
 									mob.tell("Entry deleted.");
 								}

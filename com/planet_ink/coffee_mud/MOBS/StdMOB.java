@@ -2979,8 +2979,8 @@ public class StdMOB implements MOB
 	            if(inv.elementAt(v) instanceof Coins)
 	                inv.removeElementAt(v);
 	    }
-		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,wornCode,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
+		Item item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,true);
+		if(item==null) item=EnglishParser.fetchAvailableItem(inv,itemName,goodLocation,wornCode,false);
 		return item;
 	}
 	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_ANY,true);}

@@ -71,9 +71,7 @@ public class Wear extends BaseItemParser
 		else
 		for(int i=0;i<items.size();i++)
 			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,0)))
-			{
 				wear(mob,(Item)items.elementAt(i),false);
-			}
 		return false;
 	}
 	public int ticksToExecute(){return 1;}

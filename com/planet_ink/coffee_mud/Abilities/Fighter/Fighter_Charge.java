@@ -28,7 +28,8 @@ public class Fighter_Charge extends StdAbility
 	private static final String[] triggerStrings = {"CHARGE"};
 	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
+	public String displayText(){return "(Charging!!)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}

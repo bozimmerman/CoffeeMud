@@ -44,7 +44,7 @@ public class StdCoins extends StdItem implements Coins
 	}
 	public String displayText()
 	{
-        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":"lie here.");
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
 	
 	public void setDynamicMaterial()
@@ -102,7 +102,7 @@ public class StdCoins extends StdItem implements Coins
 	}
 	public void recoverEnvStats()
 	{
-		baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
+		baseEnvStats.setWeight((int)Math.round((new Long(getNumberOfCoins()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 	}
 

@@ -655,8 +655,24 @@
 	@endif@
 	@if?ItemData?ISCOIN@
 	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Currency:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=CURRENCY ONCHANGE="ReShow();">
+	    @ItemData?CURRENCY@
+	    </SELECT>
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Denominatino:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=DENOM>
+	    @ItemData?DENOM@
+	    </SELECT>
+	    </TD>
+	</TR>
+	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Number of coins:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NUMCOINS SIZE=5 VALUE="@ItemData?NUMCOINS@">
 	    </TD>
 	</TR>
 	@else@

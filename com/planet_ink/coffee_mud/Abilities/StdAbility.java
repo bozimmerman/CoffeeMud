@@ -99,6 +99,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	public void setDescription(String newDescription){}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
+	public Vector externalFiles(){return null;}
 
 	// ** For most abilities, the following stuff actually matters */
 	public void setMiscText(String newMiscText)	{ miscText=newMiscText;}
