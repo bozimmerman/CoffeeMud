@@ -39,7 +39,7 @@ public class Spell_Disintegrate extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CommonStrings.msp("spelldam2.wav",40));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

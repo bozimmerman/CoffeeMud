@@ -516,7 +516,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToOpen));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,getScr("Movement","sopens"));
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,(getScr("Movement","sopens"))+CommonStrings.msp("dooropen.wav",10));
 		if(openThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -543,7 +543,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatTounlock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks"));
+		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks")+CommonStrings.msp("doorunlock.wav",10));
 		if(unlockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -570,7 +570,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToClose));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses"));
+		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses")+CommonStrings.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -639,7 +639,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatTolock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,getScr("Movement","slocks"));
+		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,getScr("Movement","slocks")+CommonStrings.msp("doorunlock.wav",10));
 		if(lockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else

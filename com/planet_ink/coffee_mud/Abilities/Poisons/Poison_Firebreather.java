@@ -42,10 +42,7 @@ public class Poison_Firebreather extends Poison_Liquor
 		{
 			if(Dice.rollPercentage()<40)
 			{
-				if(room.numInhabitants()==1)
-					room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!");
-				else
-				if(room.show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> belch(es) fire!"))
+				room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!"+CommonStrings.msp("fireball.wav",20));
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);

@@ -42,7 +42,7 @@ public class Spell_ChainLightening extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CommonStrings.msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				for(int i=0;i<targets.size();i++)

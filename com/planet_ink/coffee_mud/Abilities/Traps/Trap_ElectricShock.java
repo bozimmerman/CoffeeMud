@@ -47,7 +47,7 @@ public class Trap_ElectricShock extends StdTrap
 			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off an shocking trap!"))
 			{
 				super.spring(target);
-				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock <DAMAGE> <T-NAME>!"+CommonStrings.msp("shock.wav",30));
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

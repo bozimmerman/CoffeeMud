@@ -738,7 +738,7 @@ public class ItemUsage
 				}
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,thisThang,tool,Affect.MSG_DRINK,str);
+		FullMsg newMsg=new FullMsg(mob,thisThang,tool,Affect.MSG_DRINK,str+CommonStrings.msp("drink.wav",10));
 		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 	}
@@ -762,7 +762,7 @@ public class ItemUsage
 			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 			return;
 		}
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>."+CommonStrings.msp("gulp.wav",10));
 		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 	}

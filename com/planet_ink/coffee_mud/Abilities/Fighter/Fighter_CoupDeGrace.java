@@ -79,7 +79,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				ExternalPlay.postDamage(mob,target,ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!");
+				ExternalPlay.postDamage(mob,target,ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!"+CommonStrings.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 			}
 		}

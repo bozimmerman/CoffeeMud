@@ -47,28 +47,28 @@ public class Dragonbreath extends StdAbility
 				puffPhrase="<S-NAME> puff(s) smoke from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of flames erupts!";
 				stuffWord="flames";
-				castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!";
+				castPhrase="<S-NAME> blast(s) flames from <S-HIS-HER> mouth!"+CommonStrings.msp("fireball.wav",40);
 				WeaponType=Weapon.TYPE_BURNING;
 				break;
 		case 'l':
 				puffPhrase="<S-NAME> spark(s) a little from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of lightning bursts erupt!";
 				stuffWord="bolt";
-				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!";
+				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!"+CommonStrings.msp("lightning.wav",40);
 				WeaponType=Weapon.TYPE_STRIKING;
 				break;
 		case 'c':
 				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of frozen air erupts!";
 				stuffWord="cold";
-				castPhrase="<S-NAME> blast(s) a frozen cone from <S-HIS-HER> mouth!";
+				castPhrase="<S-NAME> blast(s) a frozen cone of frost from <S-HIS-HER> mouth!"+CommonStrings.msp("spelldam1.wav",40);
 				WeaponType=Weapon.TYPE_FROSTING;
 				break;
 		case 'a':
 				puffPhrase="<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.";
 				autoPhrase="A spray of acid erupts!";
 				stuffWord="acid";
-				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!";
+				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!"+CommonStrings.msp("water.wav",40);
 				WeaponType=Weapon.TYPE_MELTING;
 				break;
 		case 'g':

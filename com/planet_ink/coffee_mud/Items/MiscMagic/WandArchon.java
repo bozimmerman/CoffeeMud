@@ -113,7 +113,7 @@ public class WandArchon extends StdWand
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					ExternalPlay.postDamage(mob,target,null,(++flameDamage),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,me.name()+" <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,null,(++flameDamage),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
 					return;
 				}
 			}

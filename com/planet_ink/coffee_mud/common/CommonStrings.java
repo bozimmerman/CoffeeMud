@@ -20,7 +20,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_ESC7=13;
 	public static final int SYSTEM_ESC8=14;
 	public static final int SYSTEM_ESC9=15;
-	public static final int NUM_SYSTEM=16;
+	public static final int SYSTEM_MSPPATH=16;
+	public static final int NUM_SYSTEM=17;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -81,7 +82,7 @@ public class CommonStrings extends Scriptable
 			break;
 		}
 	}
-
+	
 	public static String[] standardColorLookups()
 	{
 		if(clookup==null)
@@ -354,7 +355,7 @@ public class CommonStrings extends Scriptable
 		if(!useExtendedMissString) return missStrs2[dex];
 		String str=missStrs1[dex];
 		int dexTool=str.indexOf("<TOOLNAME>");
-		return str.substring(0,dexTool)+weaponName+str.substring(dexTool+10);
+		return str.substring(0,dexTool)+weaponName+str.substring(dexTool+10)+msp("missed.wav",20);
 	}
 
 
@@ -366,11 +367,11 @@ public class CommonStrings extends Scriptable
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
-			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>";
+			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>"+msp("arrow.wav",20);
 		case Weapon.CLASS_THROWN:
-			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>";
+			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>"+msp("arrow.wav",20);
 		default:
-			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName;
+			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName+msp("punch"+Dice.roll(1,4,0)+".wav",20);
 		}
 	}
 
@@ -451,6 +452,20 @@ public class CommonStrings extends Scriptable
 			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,tackOn));
 		affect.tagModified(true);
 	}
+
+	// this is the sound support method.
+	// it builds a valid MSP sound code from built-in web server
+	// info, and the info provided.
+	public static String msp(String soundName, int volume, int priority)
+	{
+		if(getVar(SYSTEM_MSPPATH).length()>0)
+			return " !!SOUND("+soundName+" V="+volume+" P="+priority+" U="+getVar(SYSTEM_MSPPATH)+soundName+") ";
+		else
+			return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
+	}
+	
+	public static String msp(String soundName, int priority)
+	{ return msp(soundName,50,Dice.roll(1,50,priority));}
 
 	public static String[] armorStrs={
 	"nonexistant",				//0

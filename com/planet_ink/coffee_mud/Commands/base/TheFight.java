@@ -140,10 +140,11 @@ public class TheFight
 				return;
 		}
 
+		String msp=CommonStrings.msp("death"+Dice.roll(1,4,0)+".wav",50);
 		FullMsg msg=new FullMsg(target,null,null,
-			Affect.MSG_OK_VISUAL,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
+			Affect.MSG_OK_VISUAL,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r"+msp,
 			Affect.MSG_OK_VISUAL,null,
-			Affect.MSG_OK_VISUAL,"^F<S-NAME> is DEAD!!!^?\n\r");
+			Affect.MSG_OK_VISUAL,"^F<S-NAME> is DEAD!!!^?\n\r"+msp);
 		FullMsg msg2=new FullMsg(target,null,source,
 			Affect.MSG_DEATH,null,
 			Affect.MSG_DEATH,null,

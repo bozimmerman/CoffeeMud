@@ -107,7 +107,7 @@ public class Spell_WallOfFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?");
+			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),(auto?"A blazing wall of fire appears!":"^S<S-NAME> conjur(s) up a blazing wall of fire!^?")+CommonStrings.msp("fireball.wav",10));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

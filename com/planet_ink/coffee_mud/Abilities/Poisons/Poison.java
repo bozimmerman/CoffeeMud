@@ -61,7 +61,7 @@ public class Poison extends StdAbility
 		{
 			poisonTick=POISON_DELAY();
 			if(POISON_AFFECT().length()>0)
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,POISON_AFFECT());
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,POISON_AFFECT()+CommonStrings.msp("poisoned.wav",10));
 			if(invoker==null) invoker=mob;
 			if(POISON_DAMAGE()!=0)
 				ExternalPlay.postDamage(invoker,mob,this,POISON_DAMAGE(),Affect.MASK_GENERAL|Affect.TYP_POISON,-1,null);

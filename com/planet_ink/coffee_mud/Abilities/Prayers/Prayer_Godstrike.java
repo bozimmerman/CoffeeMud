@@ -30,7 +30,7 @@ public class Prayer_Godstrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Godstrike newOne=(Prayer_Godstrike)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> "+prayWord(mob)+" for power against the evil inside <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto)|Affect.MASK_MALICIOUS,(auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> "+prayWord(mob)+" for power against the evil inside <T-NAMESELF>!^?")+CommonStrings.msp("spelldam1.wav",40));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -114,7 +114,7 @@ public class Prayer_FlameWeapon extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is engulfed in flames!");
+				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,("<T-NAME> is engulfed in flames!")+CommonStrings.msp("fireball.wav",10));
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 			}

@@ -36,7 +36,7 @@ public class Spell_Dragonfire extends Spell
 		if(success)
 		{
 
-			if(mob.location().show(mob,null,this,affectType(auto),auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?"))
+			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A blast of flames erupt!":"^S<S-NAME> blast(s) flames from <S-HIS-HER> mouth!^?")+CommonStrings.msp("fireball.wav",40)))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

@@ -34,7 +34,7 @@ public class Spell_MagicMissile extends Spell
 			int numMissiles=((int)Math.round(Math.floor(Util.div(adjustedLevel(mob),5)))+1);
 			for(int i=0;i<numMissiles;i++)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?(auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?"):null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?")+CommonStrings.msp("spelldam2.wav",40)):null);
 				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);

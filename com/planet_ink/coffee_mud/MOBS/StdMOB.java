@@ -1756,7 +1756,7 @@ public class StdMOB implements MOB
 				curState().expendEnergy(this,maxState,false);
 				if(!Sense.canBreathe(this))
 				{
-					location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^.^?");
+					location().show(this,this,Affect.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CommonStrings.msp("choke.wav",10));
 					ExternalPlay.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),Affect.NO_EFFECT,-1,null);
 				}
 				if(isInCombat())

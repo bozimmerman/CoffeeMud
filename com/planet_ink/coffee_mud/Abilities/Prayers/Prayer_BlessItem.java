@@ -75,7 +75,7 @@ public class Prayer_BlessItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> bless(es) <T-NAMESELF>"+inTheNameOf(mob)+".^?")+CommonStrings.msp("bless.wav",10));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
