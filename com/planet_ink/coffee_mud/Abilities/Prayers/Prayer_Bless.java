@@ -139,7 +139,7 @@ public class Prayer_Bless extends Prayer
 				Item I=getSomething(target,true);
 				while(I!=null)
 				{
-					FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					endIt(I,0);
 					I.recoverEnvStats();

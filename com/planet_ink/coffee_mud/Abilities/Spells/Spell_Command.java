@@ -60,7 +60,7 @@ public class Spell_Command extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);

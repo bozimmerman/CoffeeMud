@@ -45,41 +45,22 @@ public interface Affect extends Cloneable
 	public void addTrailerMsg(Affect msg);
 	
 	// helpful seperator masks
-	public static final int MINOR_MASK=1023;
-	public static final int MAJOR_MASK=2096128;////1046528
+	public static final int MINOR_MASK=2047;
+	public static final int MAJOR_MASK=2095104;////1046528
 	
 	// masks for all messages
-	public static final int MASK_HURT=65536;
-	public static final int MASK_MAGIC=131072;    // the magic mask!
-	public static final int MASK_DELICATE=262144; // for thief skills!
-	public static final int MASK_MALICIOUS=524288;// for attacking
-	public static final int MASK_CHANNEL=1048576; // for channel messages
-
-	// action types
-	public static final int ACT_GENERAL=1024;     // anything!
-	public static final int ACT_HANDS=2048;       // small hand movements
-	public static final int ACT_MOVE=4096;        // large body movements (travel)
-	public static final int ACT_EYES=8192;        // looking and seeing
-	public static final int ACT_MOUTH=16384;      // speaking and eating
-	public static final int ACT_SOUND=32768;      // general body noises 
+	public static final int MASK_HANDS=2048;       // small hand movements
+	public static final int MASK_MOVE=4096;        // large body movements (travel)
+	public static final int MASK_EYES=8192;        // looking and seeing
+	public static final int MASK_MOUTH=16384;      // speaking and eating
+	public static final int MASK_SOUND=32768;      // general body noises 
+	public static final int MASK_GENERAL=65536;    // anything!
+	public static final int MASK_MAGIC=131072;     // the magic mask!
+	public static final int MASK_DELICATE=262144;  // for thief skills!
+	public static final int MASK_MALICIOUS=524288; // for attacking
+	public static final int MASK_CHANNEL=1048576;  // for channel messages
+	public static final int MASK_HURT=MASK_GENERAL|1024;
 	
-	
-	// action target affect types
-	public static final int AFF_GENERAL=1024;
-	public static final int AFF_TOUCHED=2048;
-	public static final int AFF_MOVEDON=4096;
-	public static final int AFF_SEEN=8192;
-	public static final int AFF_CONSUMED=16384;
-	public static final int AFF_SOUNDEDAT=32768;
-
-	// action observation types
-	public static final int OTH_GENERAL=1024;
-	public static final int OTH_SENSE_TOUCHING=2048;
-	public static final int OTH_SENSE_MOVEMENT=4096;
-	public static final int OTH_SEE_SEEING=8192;
-	public static final int OTH_SENSE_CONSUMPTION=16384;
-	public static final int OTH_HEAR_SOUNDS=32768;
-
 	// minor messages
 	public static final int TYP_AREAAFFECT=1;
 	public static final int TYP_PUSH=2;
@@ -154,79 +135,79 @@ public interface Affect extends Cloneable
 	
 
 	// helpful message groupings
-	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
-	public static final int MSK_CAST_MALICIOUS_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC|MASK_MALICIOUS;
-	public static final int MSK_CAST_SOMANTIC=ACT_HANDS|MASK_MAGIC;
-	public static final int MSK_CAST_MALICIOUS_SOMANTIC=ACT_HANDS|MASK_MAGIC|MASK_MALICIOUS;
-	public static final int MSK_HAGGLE=ACT_HANDS|ACT_SOUND|ACT_MOUTH;
+	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;
+	public static final int MSK_CAST_MALICIOUS_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC|MASK_MALICIOUS;
+	public static final int MSK_CAST_SOMANTIC=MASK_HANDS|MASK_MAGIC;
+	public static final int MSK_CAST_MALICIOUS_SOMANTIC=MASK_HANDS|MASK_MAGIC|MASK_MALICIOUS;
+	public static final int MSK_HAGGLE=MASK_HANDS|MASK_SOUND|MASK_MOUTH;
 	public static final int MSK_CAST=MSK_CAST_VERBAL|MSK_CAST_SOMANTIC;
 	public static final int MSK_CAST_MALICIOUS=MSK_CAST_MALICIOUS_VERBAL|MSK_CAST_MALICIOUS_SOMANTIC;
-	public static final int MSK_MALICIOUS_MOVE=MASK_MALICIOUS|ACT_MOVE|ACT_SOUND;
+	public static final int MSK_MALICIOUS_MOVE=MASK_MALICIOUS|MASK_MOVE|MASK_SOUND;
 	
 	// all major messages
 	public static final int NO_EFFECT=0;
-	public static final int MSG_AREAAFFECT=ACT_GENERAL|TYP_AREAAFFECT;
-	public static final int MSG_PUSH=ACT_HANDS|TYP_AREAAFFECT;
-	public static final int MSG_PULL=ACT_HANDS|TYP_PULL;
-	public static final int MSG_RECALL=ACT_MOUTH|ACT_SOUND|TYP_RECALL;
-	public static final int MSG_OPEN=ACT_HANDS|TYP_OPEN;
-	public static final int MSG_CLOSE=ACT_HANDS|TYP_CLOSE;
-	public static final int MSG_PUT=ACT_HANDS|TYP_PUT;
-	public static final int MSG_GET=ACT_HANDS|TYP_GET;
-	public static final int MSG_UNLOCK=ACT_HANDS|TYP_UNLOCK;
-	public static final int MSG_LOCK=ACT_HANDS|TYP_LOCK;
-	public static final int MSG_WIELD=ACT_HANDS|TYP_WIELD;
-	public static final int MSG_GIVE=ACT_HANDS|TYP_GIVE;
+	public static final int MSG_AREAAFFECT=MASK_GENERAL|TYP_AREAAFFECT;
+	public static final int MSG_PUSH=MASK_HANDS|TYP_AREAAFFECT;
+	public static final int MSG_PULL=MASK_HANDS|TYP_PULL;
+	public static final int MSG_RECALL=MASK_MOUTH|MASK_SOUND|TYP_RECALL;
+	public static final int MSG_OPEN=MASK_HANDS|TYP_OPEN;
+	public static final int MSG_CLOSE=MASK_HANDS|TYP_CLOSE;
+	public static final int MSG_PUT=MASK_HANDS|TYP_PUT;
+	public static final int MSG_GET=MASK_HANDS|TYP_GET;
+	public static final int MSG_UNLOCK=MASK_HANDS|TYP_UNLOCK;
+	public static final int MSG_LOCK=MASK_HANDS|TYP_LOCK;
+	public static final int MSG_WIELD=MASK_HANDS|TYP_WIELD;
+	public static final int MSG_GIVE=MASK_HANDS|TYP_GIVE;
 	public static final int MSG_BUY=MSK_HAGGLE|TYP_BUY;
 	public static final int MSG_SELL=MSK_HAGGLE|TYP_SELL;
-	public static final int MSG_DROP=ACT_HANDS|TYP_DROP;
-	public static final int MSG_WEAR=ACT_HANDS|TYP_WEAR;
-	public static final int MSG_FILL=ACT_HANDS|ACT_MOVE|ACT_SOUND|TYP_FILL;
-	public static final int MSG_DELICATE_HANDS_ACT=ACT_HANDS|ACT_MOVE|MASK_DELICATE|TYP_DELICATE_HANDS_ACT;
-	public static final int MSG_THIEF_ACT=ACT_HANDS|ACT_MOVE|MASK_DELICATE|TYP_JUSTICE;
+	public static final int MSG_DROP=MASK_HANDS|TYP_DROP;
+	public static final int MSG_WEAR=MASK_HANDS|TYP_WEAR;
+	public static final int MSG_FILL=MASK_HANDS|MASK_MOVE|MASK_SOUND|TYP_FILL;
+	public static final int MSG_DELICATE_HANDS_ACT=MASK_HANDS|MASK_MOVE|MASK_DELICATE|TYP_DELICATE_HANDS_ACT;
+	public static final int MSG_THIEF_ACT=MASK_HANDS|MASK_MOVE|MASK_DELICATE|TYP_JUSTICE;
 	public static final int MSG_VALUE=MSK_HAGGLE|TYP_VALUE;
-	public static final int MSG_HOLD=ACT_HANDS|TYP_HOLD;
-	public static final int MSG_NOISYMOVEMENT=ACT_HANDS|ACT_SOUND|ACT_MOVE|TYP_NOISYMOVEMENT;
-	public static final int MSG_QUIETMOVEMENT=ACT_HANDS|ACT_MOVE|TYP_QUIETMOVEMENT;
-	public static final int MSG_WEAPONATTACK=ACT_HANDS|ACT_MOVE|ACT_SOUND|MASK_MALICIOUS|TYP_WEAPONATTACK;
-	public static final int MSG_EXAMINESOMETHING=ACT_EYES|TYP_EXAMINESOMETHING;
-	public static final int MSG_READSOMETHING=ACT_EYES|TYP_READSOMETHING;
-	public static final int MSG_NOISE=ACT_SOUND|TYP_NOISE;
-	public static final int MSG_SPEAK=ACT_SOUND|ACT_MOUTH|TYP_SPEAK;
+	public static final int MSG_HOLD=MASK_HANDS|TYP_HOLD;
+	public static final int MSG_NOISYMOVEMENT=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_NOISYMOVEMENT;
+	public static final int MSG_QUIETMOVEMENT=MASK_HANDS|MASK_MOVE|TYP_QUIETMOVEMENT;
+	public static final int MSG_WEAPONATTACK=MASK_HANDS|MASK_MOVE|MASK_SOUND|MASK_MALICIOUS|TYP_WEAPONATTACK;
+	public static final int MSG_EXAMINESOMETHING=MASK_EYES|TYP_EXAMINESOMETHING;
+	public static final int MSG_READSOMETHING=MASK_EYES|TYP_READSOMETHING;
+	public static final int MSG_NOISE=MASK_SOUND|TYP_NOISE;
+	public static final int MSG_SPEAK=MASK_SOUND|MASK_MOUTH|TYP_SPEAK;
 	public static final int MSG_CAST_VERBAL_SPELL=MSK_CAST_VERBAL|TYP_CAST_SPELL;
-	public static final int MSG_LIST=ACT_SOUND|ACT_MOUTH|TYP_LIST;
-	public static final int MSG_EAT=ACT_HANDS|ACT_MOUTH|TYP_EAT;
-	public static final int MSG_ENTER=ACT_MOVE|ACT_SOUND|TYP_ENTER;
+	public static final int MSG_LIST=MASK_SOUND|MASK_MOUTH|TYP_LIST;
+	public static final int MSG_EAT=MASK_HANDS|MASK_MOUTH|TYP_EAT;
+	public static final int MSG_ENTER=MASK_MOVE|MASK_SOUND|TYP_ENTER;
 	public static final int MSG_CAST_ATTACK_VERBAL_SPELL=MSK_CAST_MALICIOUS_VERBAL|TYP_CAST_SPELL;
-	public static final int MSG_LEAVE=ACT_MOVE|ACT_SOUND|TYP_LEAVE;
-	public static final int MSG_SLEEP=ACT_MOVE|TYP_SLEEP;
-	public static final int MSG_SIT=ACT_MOVE|TYP_SIT;
-	public static final int MSG_STAND=ACT_MOVE|TYP_STAND;
-	public static final int MSG_FLEE=ACT_MOVE|ACT_SOUND|TYP_FLEE;
+	public static final int MSG_LEAVE=MASK_MOVE|MASK_SOUND|TYP_LEAVE;
+	public static final int MSG_SLEEP=MASK_MOVE|TYP_SLEEP;
+	public static final int MSG_SIT=MASK_MOVE|TYP_SIT;
+	public static final int MSG_STAND=MASK_MOVE|TYP_STAND;
+	public static final int MSG_FLEE=MASK_MOVE|MASK_SOUND|TYP_FLEE;
 	public static final int MSG_CAST_SOMANTIC_SPELL=MSK_CAST_SOMANTIC|TYP_CAST_SPELL;
 	public static final int MSG_CAST_ATTACK_SOMANTIC_SPELL=MSK_CAST_MALICIOUS_SOMANTIC|TYP_CAST_SPELL;
 	public static final int MSG_CAST=MSK_CAST|TYP_CAST_SPELL;
 	public static final int MSG_CAST_MALICIOUS=MSK_CAST_MALICIOUS|TYP_CAST_SPELL;
-	public static final int MSG_OK_ACTION=ACT_SOUND|ACT_GENERAL|TYP_OK_ACTION;
-	public static final int MSG_OK_VISUAL=ACT_GENERAL|TYP_OK_VISUAL;
-	public static final int MSG_DRINK=ACT_HANDS|ACT_MOUTH|TYP_DRINK;
-	public static final int MSG_HANDS=ACT_HANDS|TYP_HANDS;
-	public static final int MSG_EMOTE=ACT_SOUND|ACT_HANDS|TYP_EMOTE;
-	public static final int MSG_FOLLOW=ACT_GENERAL|TYP_FOLLOW;
-	public static final int MSG_NOFOLLOW=ACT_GENERAL|TYP_NOFOLLOW;
-	public static final int MSG_WRITE=ACT_HANDS|TYP_WRITE;
-	public static final int MSG_MOUNT=ACT_MOVE|ACT_SOUND|TYP_MOUNT;
-	public static final int MSG_DISMOUNT=ACT_MOVE|ACT_SOUND|TYP_DISMOUNT;
-	public static final int MSG_SERVE=ACT_MOUTH|ACT_SOUND|TYP_SERVE;
-	public static final int MSG_REBUKE=ACT_MOUTH|ACT_SOUND|TYP_REBUKE;
-	public static final int MSG_ADVANCE=ACT_MOVE|ACT_SOUND|MASK_MALICIOUS|TYP_ADVANCE;
-	public static final int MSG_DEATH=ACT_SOUND|ACT_GENERAL|TYP_DEATH;
-	public static final int MSG_WITHDRAW=ACT_HANDS|TYP_WITHDRAW;
-	public static final int MSG_DEPOSIT=ACT_HANDS|TYP_DEPOSIT;
-	public static final int MSG_QUIT=ACT_GENERAL|TYP_QUIT;
-	public static final int MSG_SHUTDOWN=ACT_GENERAL|TYP_SHUTDOWN;
-	public static final int MSG_VIEW=ACT_SOUND|ACT_MOUTH|TYP_VIEW;
-	public static final int MSG_RETIRE=ACT_GENERAL|TYP_RETIRE;
+	public static final int MSG_OK_ACTION=MASK_SOUND|MASK_GENERAL|TYP_OK_ACTION;
+	public static final int MSG_OK_VISUAL=MASK_GENERAL|TYP_OK_VISUAL;
+	public static final int MSG_DRINK=MASK_HANDS|MASK_MOUTH|TYP_DRINK;
+	public static final int MSG_HANDS=MASK_HANDS|TYP_HANDS;
+	public static final int MSG_EMOTE=MASK_SOUND|MASK_HANDS|TYP_EMOTE;
+	public static final int MSG_FOLLOW=MASK_GENERAL|TYP_FOLLOW;
+	public static final int MSG_NOFOLLOW=MASK_GENERAL|TYP_NOFOLLOW;
+	public static final int MSG_WRITE=MASK_HANDS|TYP_WRITE;
+	public static final int MSG_MOUNT=MASK_MOVE|MASK_SOUND|TYP_MOUNT;
+	public static final int MSG_DISMOUNT=MASK_MOVE|MASK_SOUND|TYP_DISMOUNT;
+	public static final int MSG_SERVE=MASK_MOUTH|MASK_SOUND|TYP_SERVE;
+	public static final int MSG_REBUKE=MASK_MOUTH|MASK_SOUND|TYP_REBUKE;
+	public static final int MSG_ADVANCE=MASK_MOVE|MASK_SOUND|MASK_MALICIOUS|TYP_ADVANCE;
+	public static final int MSG_DEATH=MASK_SOUND|MASK_GENERAL|TYP_DEATH;
+	public static final int MSG_WITHDRAW=MASK_HANDS|TYP_WITHDRAW;
+	public static final int MSG_DEPOSIT=MASK_HANDS|TYP_DEPOSIT;
+	public static final int MSG_QUIT=MASK_GENERAL|TYP_QUIT;
+	public static final int MSG_SHUTDOWN=MASK_GENERAL|TYP_SHUTDOWN;
+	public static final int MSG_VIEW=MASK_SOUND|MASK_MOUTH|TYP_VIEW;
+	public static final int MSG_RETIRE=MASK_GENERAL|TYP_RETIRE;
 		
 }
 

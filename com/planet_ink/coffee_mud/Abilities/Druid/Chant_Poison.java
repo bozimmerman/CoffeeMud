@@ -28,7 +28,7 @@ public class Chant_Poison extends Chant
 			poisonTick=3;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int damage=Dice.roll(invoker.envStats().level(),3,1);
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_POISON,-1,null);
+			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_POISON,-1,null);
 		}
 		return true;
 	}
@@ -73,7 +73,7 @@ public class Chant_Poison extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_POISON|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);

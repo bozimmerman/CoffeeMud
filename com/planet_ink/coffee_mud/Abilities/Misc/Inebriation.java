@@ -151,8 +151,7 @@ public class Inebriation extends StdAbility
 			return true;
 		if(affect.source().location()==null)
 			return true;
-		if((!Util.bset(affect.targetMajor(),Affect.ACT_GENERAL))
-		&&(!Util.bset(affect.targetMajor(),Affect.MASK_HURT))
+		if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
 		&&(affect.targetMajor()>0))
 		{
 			if((affect.target() !=null)

@@ -35,7 +35,7 @@ public class Spell_Disintegrate extends Spell
 			success=profficiencyCheck(-(target.envStats().level()*3),auto);
 		}
 
-		if(auto)affectType=affectType|Affect.ACT_GENERAL;
+		if(auto)affectType=affectType|Affect.MASK_GENERAL;
 
 		if(success)
 		{
@@ -56,7 +56,7 @@ public class Spell_Disintegrate extends Spell
 					if(target instanceof MOB)
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
-							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
+							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
 							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
 						else

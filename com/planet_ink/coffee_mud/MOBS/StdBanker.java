@@ -470,7 +470,20 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				if(numberDeposited(affect.source().name())==0)
 				{
-					ExternalPlay.quickSay(this,mob,"You don't have an account with us, I'm afraid.",true,false);
+					StringBuffer msg=new StringBuffer("You don't have an account with us, I'm afraid.");
+					if(coinInterest!=0.0)
+					{
+						double cci=Util.mul(Math.abs(coinInterest),100.0);
+						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						msg.append("\n\rWe "+ci+"weekly on money deposited here."); 
+					}
+					if(itemInterest!=0.0)
+					{
+						double cci=Util.mul(Math.abs(itemInterest),100.0);
+						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
+						msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
+					}
+					ExternalPlay.quickSay(this,mob,msg.toString()+"^T",true,false);
 					return false;
 				}
 				else

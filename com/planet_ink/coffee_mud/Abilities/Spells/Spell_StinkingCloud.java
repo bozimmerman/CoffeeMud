@@ -127,7 +127,7 @@ public class Spell_StinkingCloud extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.ACT_GENERAL:0),null);
+				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.MASK_GENERAL:0),null);
 				if((mob.location().okAffect(msg))
 				   &&(mob.location().okAffect(msg2))
 				   &&(target.fetchAffect(this.ID())==null))

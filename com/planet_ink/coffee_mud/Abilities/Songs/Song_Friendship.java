@@ -68,14 +68,14 @@ public class Song_Friendship extends Song
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.ACT_GENERAL;
+					if(auto) affectType=affectType|Affect.MASK_GENERAL;
 
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
+							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
 
 						if((levelDiff>3)&&(mindAttack()))

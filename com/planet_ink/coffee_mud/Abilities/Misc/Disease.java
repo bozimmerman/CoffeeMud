@@ -61,7 +61,7 @@ public class Disease extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.ACT_HANDS|Affect.TYP_DISEASE|(auto?Affect.ACT_GENERAL:0),"");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_HANDS|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),"");
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);

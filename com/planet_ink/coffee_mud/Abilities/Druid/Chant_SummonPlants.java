@@ -38,7 +38,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		if((affect.amITarget(littlePlants))
 		&&(affect.targetMinor()==Affect.TYP_GET))
-			affect.addTrailerMsg(new FullMsg(affect.source(),littlePlants,null,Affect.MSG_OK_VISUAL,Affect.ACT_GENERAL|Affect.MSG_DEATH,-1,null));
+			affect.addTrailerMsg(new FullMsg(affect.source(),littlePlants,null,Affect.MSG_OK_VISUAL,Affect.MASK_GENERAL|Affect.MSG_DEATH,-1,null));
 	}
 	
 	public static Item buildPlant(MOB mob, Room room)

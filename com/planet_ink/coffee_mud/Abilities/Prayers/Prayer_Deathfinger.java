@@ -44,7 +44,7 @@ public class Prayer_Deathfinger extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=(int)Math.round(Util.div(target.curState().getHitPoints(),2.0));
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The finger of DEATH <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The finger of DEATH <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

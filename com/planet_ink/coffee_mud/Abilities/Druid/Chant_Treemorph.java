@@ -62,7 +62,7 @@ public class Chant_Treemorph extends Chant
 			// from trying to do ANYTHING except sleep
 			if(affect.amISource(mob))
 			{
-				if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+				if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 				&&(affect.sourceMajor()>0))
 				{
 					mob.tell("Trees can't do that.");

@@ -30,12 +30,12 @@ public class Prop_Hidden extends Property
 		if(affect.amISource(mob))
 		{
 			
-			if(((!Util.bset(affect.sourceMajor(),Affect.ACT_SOUND)
+			if(((!Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
 				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
 				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
 				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
 				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
-			 &&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))
 			{

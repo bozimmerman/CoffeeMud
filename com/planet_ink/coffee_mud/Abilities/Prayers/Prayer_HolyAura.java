@@ -64,7 +64,7 @@ public class Prayer_HolyAura extends Prayer
 				Item I=Prayer_Bless.getSomething(target,true);
 				while(I!=null)
 				{
-					FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+					FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					Prayer_Bless.endIt(I,1);
 					I.recoverEnvStats();

@@ -27,12 +27,12 @@ public class Thief_Sap extends ThiefSkill
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL)))
+		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
 		{
-			if((Util.bset(affect.sourceMajor(),Affect.ACT_EYES))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOUTH))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE)))
+			if((Util.bset(affect.sourceMajor(),Affect.MASK_EYES))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
 			{
 				if(affect.sourceMessage()!=null)
 					mob.tell(mob,null,"You are way too drowsy.");
@@ -124,7 +124,7 @@ public class Thief_Sap extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.ACT_SOUND|Affect.MSK_MALICIOUS_MOVE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^?");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MSK_MALICIOUS_MOVE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -73,7 +73,7 @@ public class Spell_Cloudkill extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.ACT_GENERAL:0),null);
+				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.MASK_GENERAL:0),null);
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{
 					mob.location().send(mob,msg);
@@ -93,7 +93,7 @@ public class Spell_Cloudkill extends Spell
 					if(target.location()==mob.location())
 					{
 						maliciousAffect(mob,target,2,-1);
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}
 			}

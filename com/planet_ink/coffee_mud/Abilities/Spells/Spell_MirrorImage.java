@@ -62,10 +62,10 @@ public class Spell_MirrorImage extends Spell
 		if(affect.amISource(mob))
 		{
 			if((
-				(Util.bset(affect.othersCode(),Affect.OTH_SEE_SEEING))
-				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_MOVEMENT))
-				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_CONSUMPTION))
-				||(Util.bset(affect.othersCode(),Affect.OTH_SENSE_TOUCHING)))
+				(Util.bset(affect.othersCode(),Affect.MASK_EYES))
+				||(Util.bset(affect.othersCode(),Affect.MASK_MOVE))
+				||(Util.bset(affect.othersCode(),Affect.MASK_MOUTH))
+				||(Util.bset(affect.othersCode(),Affect.MASK_HANDS)))
 			&&(affect.othersMessage()!=null)
 			&&((affect.targetCode()&Affect.MASK_HURT)==0)
 			&&(affect.othersMessage().length()>0))

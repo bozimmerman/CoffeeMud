@@ -73,8 +73,7 @@ public class Song_Inebriation extends Song
 		if(!(affect.target() instanceof MOB))
 		   return true;
 
-		if((!Util.bset(affect.targetMajor(),Affect.ACT_GENERAL))
-		&&(!Util.bset(affect.targetMajor(),Affect.MASK_HURT))
+		if((!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL))
 		&&(affect.targetMajor()>0))
 		{
 			MOB newTarget=affect.source().location().fetchInhabitant(Dice.roll(1,affect.source().location().numInhabitants(),-1));

@@ -74,8 +74,8 @@ public class Spell_TimeStop extends Spell
 				return false;
 			default:
 				if((affect.source()!=invoker)
-				   &&(!Util.bset(affect.sourceCode(),Affect.ACT_GENERAL))
-				   &&(!Util.bset(affect.targetCode(),Affect.ACT_GENERAL)))
+				   &&(!Util.bset(affect.sourceCode(),Affect.MASK_GENERAL))
+				   &&(!Util.bset(affect.targetCode(),Affect.MASK_GENERAL)))
 				{
 					affect.source().tell("Time is stopped. Nothing just happened.  You didn't do that.");
 					return false;

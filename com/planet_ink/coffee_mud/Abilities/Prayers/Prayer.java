@@ -26,7 +26,7 @@ public class Prayer extends StdAbility
 		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
 			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		if(auto) affectType=affectType|Affect.MASK_GENERAL;
 		return affectType;
 	}
 	public Environmental newInstance(){	return new Prayer();}

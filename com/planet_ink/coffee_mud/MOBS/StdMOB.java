@@ -865,7 +865,7 @@ public class StdMOB implements MOB
 		MOB mob=affect.source();
 		if((affect.sourceCode()!=Affect.NO_EFFECT)
 		&&(affect.amISource(this))
-		&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL)))
+		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
 		{
 			int srcMajor=affect.sourceMajor();
 
@@ -895,7 +895,7 @@ public class StdMOB implements MOB
 			}
 
 			
-			if(Util.bset(srcMajor,Affect.ACT_EYES))
+			if(Util.bset(srcMajor,Affect.MASK_EYES))
 			{
 				if(Sense.isSleeping(this))
 				{
@@ -909,11 +909,11 @@ public class StdMOB implements MOB
 						return false;
 					}
 			}
-			if(Util.bset(srcMajor,Affect.ACT_MOUTH))
+			if(Util.bset(srcMajor,Affect.MASK_MOUTH))
 			{
 				if(!Sense.aliveAwakeMobile(this,false))
 					return false;
-				if(Util.bset(srcMajor,Affect.ACT_SOUND))
+				if(Util.bset(srcMajor,Affect.MASK_SOUND))
 				{
 					if((affect.tool()==null)
 					||(!(affect.tool() instanceof Ability))
@@ -951,7 +951,7 @@ public class StdMOB implements MOB
 					}
 				}
 			}
-			if(Util.bset(srcMajor,Affect.ACT_HANDS))
+			if(Util.bset(srcMajor,Affect.MASK_HANDS))
 			{
 				if((!Sense.canBeSeenBy(affect.target(),this))
 				&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
@@ -977,7 +977,7 @@ public class StdMOB implements MOB
 				}
 			}
 
-			if(Util.bset(srcMajor,Affect.ACT_MOVE))
+			if(Util.bset(srcMajor,Affect.MASK_MOVE))
 			{
 				boolean sitting=Sense.isSitting(this);
 				if((sitting)
@@ -1084,7 +1084,7 @@ public class StdMOB implements MOB
 		&&(affect.amISource(this))
 		&&(affect.target()!=null)
 		&&(affect.target()!=this)
-		&&(!Util.bset(affect.sourceCode(),Affect.ACT_GENERAL))
+		&&(!Util.bset(affect.sourceCode(),Affect.MASK_GENERAL))
 		&&(affect.target() instanceof MOB)
 		&&(location()==((MOB)affect.target()).location()))
 		{
@@ -1148,7 +1148,7 @@ public class StdMOB implements MOB
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
 				if((affect.amISource(this))
-				&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+				&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 				&&((affect.tool()==null)||(!(affect.tool() instanceof Ability))||(!((Ability)affect.tool()).isNowAnAutoEffect())))
 				{
 					mob.tell("You like yourself too much.");
@@ -1510,7 +1510,7 @@ public class StdMOB implements MOB
 				setLeigeID("");
 			
 			int targetMajor=affect.targetMajor();
-			if((Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))
+			if((Util.bset(targetMajor,Affect.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{
 				if((affect.targetMinor()==Affect.TYP_SPEAK)&&(affect.source()!=null))
@@ -1518,18 +1518,19 @@ public class StdMOB implements MOB
 				tell(affect.source(),affect.target(),affect.targetMessage());
 			}
 			else
-			if(((Util.bset(targetMajor,Affect.AFF_SEEN))
-			  ||(Util.bset(targetMajor,Affect.MASK_HURT))
-			  ||(Util.bset(targetMajor,Affect.AFF_GENERAL)))
+			if(((Util.bset(targetMajor,Affect.MASK_EYES))
+			  ||(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			  ||(Util.bset(targetMajor,Affect.MASK_GENERAL)))
 			&&(!asleep)&&(canseesrc))
 				tell(affect.source(),affect.target(),affect.targetMessage());
 			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 				tell(affect.source(),affect.target(),affect.targetMessage());
 			else
-			if(((Util.bset(targetMajor,Affect.AFF_TOUCHED))
-				||(Util.bset(targetMajor,Affect.AFF_MOVEDON))
-				||((Util.bset(targetMajor,Affect.AFF_CONSUMED))&&(!Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))))
+			if(((Util.bset(targetMajor,Affect.MASK_HANDS))
+				||(Util.bset(targetMajor,Affect.MASK_MOVE))
+				||((Util.bset(targetMajor,Affect.MASK_MOUTH))
+				   &&(!Util.bset(targetMajor,Affect.MASK_SOUND))))
 			&&(!asleep)&&((canhearsrc)||(canseesrc)))
 				tell(affect.source(),affect.target(),affect.targetMessage());
 		}
@@ -1549,19 +1550,19 @@ public class StdMOB implements MOB
 					tell(affect.source(),affect.target(),affect.othersMessage());
 			}
 			else
-			if((Util.bset(othersMajor,Affect.OTH_HEAR_SOUNDS))
+			if((Util.bset(othersMajor,Affect.MASK_SOUND))
 			&&(!asleep)
 			&&(canhearsrc))
 				tell(affect.source(),affect.target(),affect.othersMessage());
 			else
-			if(((Util.bset(othersMajor,Affect.OTH_SEE_SEEING))
-			||(Util.bset(othersMajor,Affect.OTH_SENSE_TOUCHING))
-			||(Util.bset(othersMajor,Affect.OTH_GENERAL)))
+			if(((Util.bset(othersMajor,Affect.MASK_EYES))
+			||(Util.bset(othersMajor,Affect.MASK_HANDS))
+			||(Util.bset(othersMajor,Affect.MASK_GENERAL)))
 			&&((!asleep)&&(canseesrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
 			else
-			if(((Util.bset(othersMajor,Affect.OTH_SENSE_MOVEMENT))
-				||((Util.bset(othersMajor,Affect.OTH_SENSE_CONSUMPTION))&&(!Util.bset(othersMajor,Affect.OTH_HEAR_SOUNDS))))
+			if(((Util.bset(othersMajor,Affect.MASK_MOVE))
+				||((Util.bset(othersMajor,Affect.MASK_MOUTH))&&(!Util.bset(othersMajor,Affect.MASK_SOUND))))
 			&&((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
 			&&((canseesrc)||(canhearsrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());

@@ -28,7 +28,7 @@ public class ClimbableSurface extends StdRoom
 		if(Sense.isSleeping(this)) return true;
 
 		if(affect.amITarget(this)
-		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE))
 		&&(!Sense.isFalling(affect.source()))
 		&&(!Sense.isClimbing(affect.source()))
 		&&(!Sense.isInFlight(affect.source())))
@@ -54,7 +54,7 @@ public class ClimbableSurface extends StdRoom
 		}
 		else
 		if(affect.amITarget(this)
-			&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
+			&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE))
 			&&(!Sense.isFalling(affect.source())))
 		{
 			MOB mob=affect.source();

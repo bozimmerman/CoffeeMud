@@ -112,7 +112,7 @@ public class Spell_Tourettes extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);

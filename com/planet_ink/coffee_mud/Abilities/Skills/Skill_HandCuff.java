@@ -53,9 +53,9 @@ public class Skill_HandCuff extends StdAbility
 			if(affect.sourceMinor()==Affect.TYP_ENTER)
 				return true;
 			else
-			if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
+			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);

@@ -69,7 +69,7 @@ public class Prayer_HolyWord extends Prayer
 			if(target==null) break;
 			
 			int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-			if(auto) affectType=affectType|Affect.ACT_GENERAL;
+			if(auto) affectType=affectType|Affect.MASK_GENERAL;
 			if(target.getAlignment()<350)
 				affectType=affectType|Affect.MASK_MALICIOUS;
 
@@ -91,7 +91,7 @@ public class Prayer_HolyWord extends Prayer
 							Item I=Prayer_Bless.getSomething(target,true);
 							while(I!=null)
 							{
-								FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
+								FullMsg msg2=new FullMsg(target,I,null,Affect.MASK_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
 								Prayer_Bless.endIt(I,2);
 								I.recoverEnvStats();

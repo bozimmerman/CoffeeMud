@@ -74,7 +74,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/2))))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

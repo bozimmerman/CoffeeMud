@@ -37,7 +37,7 @@ public class Paladin_Goodness extends Paladin
 				{
 					int harming=Dice.roll(1,15,0);
 					if(target.getAlignment()<350)
-						ExternalPlay.postDamage(invoker,target,this,harming,Affect.ACT_EYES|Affect.MASK_MALICIOUS|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGE> <T-NAME>!^?");
+						ExternalPlay.postDamage(invoker,target,this,harming,Affect.MASK_EYES|Affect.MASK_MALICIOUS|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

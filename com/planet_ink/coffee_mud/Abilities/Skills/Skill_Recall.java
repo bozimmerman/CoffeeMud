@@ -37,7 +37,7 @@ public class Skill_Recall extends StdAbility
 					MOB follower=mob.fetchFollower(f);
 					if((follower!=null)&&(follower.isMonster())&&(follower.location()!=null))
 					{
-						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,Affect.ACT_MOVE|Affect.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,Affect.MASK_MOVE|Affect.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
 						if(follower.location().okAffect(msg2))
 						{
 							if(follower.isInCombat()) ExternalPlay.flee(follower,"NOWHERE");

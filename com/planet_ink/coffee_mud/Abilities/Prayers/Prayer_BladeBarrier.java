@@ -43,8 +43,8 @@ public class Prayer_BladeBarrier extends Prayer
 			if((Dice.rollPercentage()>60+affect.source().charStats().getStat(CharStats.DEXTERITY))
 			&&(affect.source().rangeToTarget()==0)
 			&&((lastMessage==null)||(!lastMessage.startsWith("The blade barrier around")))
-			&&((Util.bset(affect.targetMajor(),Affect.AFF_TOUCHED))
-			   ||(Util.bset(affect.targetMajor(),Affect.AFF_MOVEDON))))
+			&&((Util.bset(affect.targetMajor(),Affect.MASK_HANDS))
+			   ||(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))))
 			{
 				int level=(int)Math.round(Util.div(invoker.envStats().level(),6.0));
 				if(level>5) level=5;

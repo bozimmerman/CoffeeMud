@@ -170,7 +170,7 @@ public class Falling extends StdAbility
 					unInvoke();
 					return true;
 				}
-				if(Util.bset(affect.targetMajor(),Affect.ACT_MOVE))
+				if(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))
 				{
 					affect.source().tell("You are too busy falling to do that right now.");
 					return false;

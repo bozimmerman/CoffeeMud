@@ -19,7 +19,7 @@ public class Impassable extends GenExit
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
 			return true;
 		else
-		if(Util.bset(affect.targetMajor(),Affect.AFF_MOVEDON))
+		if(Util.bset(affect.targetMajor(),Affect.MASK_MOVE))
 		{
 			mob.tell("You can't go that way.");
 			return false;

@@ -37,7 +37,7 @@ public class Spell_IceSheet extends Spell
 		if(affect.source().location()==room)
 		{
 			MOB mob=affect.source();
-			if(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+			if(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			{
 				if((room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
@@ -46,7 +46,7 @@ public class Spell_IceSheet extends Spell
 					return false;
 				}
 				else
-				if((Util.bset(affect.sourceMajor(),Affect.ACT_MOVE)))
+				if((Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
 				{
 					if((!Sense.isFlying(mob))
 					&&(Dice.rollPercentage()>((affect.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))

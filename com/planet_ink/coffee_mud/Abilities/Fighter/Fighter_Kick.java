@@ -45,7 +45,7 @@ public class Fighter_Kick extends StdAbility
 			invoker=mob;
 			int topDamage=adjustedLevel(mob)+2;
 			int damage=Dice.roll(1,topDamage,0);
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

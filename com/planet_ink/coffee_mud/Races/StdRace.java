@@ -41,7 +41,7 @@ public class StdRace implements Race
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		
-		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
+		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
 		{
 			switch(affect.sourceMinor())
 			{

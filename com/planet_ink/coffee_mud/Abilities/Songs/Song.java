@@ -27,7 +27,7 @@ public class Song extends StdAbility
 		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
 			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		if(auto) affectType=affectType|Affect.MASK_GENERAL;
 		return affectType;
 	}
 
@@ -110,7 +110,7 @@ public class Song extends StdAbility
 
 					// malicious songs must not affect the invoker!
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.ACT_GENERAL;
+					if(auto) affectType=affectType|Affect.MASK_GENERAL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|Affect.MASK_MALICIOUS;
 
@@ -119,7 +119,7 @@ public class Song extends StdAbility
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
-							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
+							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
 						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
 						{
 							follower.location().send(follower,msg2);

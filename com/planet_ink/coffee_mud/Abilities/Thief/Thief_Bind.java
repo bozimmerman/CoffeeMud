@@ -30,9 +30,9 @@ public class Thief_Bind extends ThiefSkill
 		// from trying to do ANYTHING except sleep
 		if(affect.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
+			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
@@ -88,7 +88,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.ACT_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
 			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);

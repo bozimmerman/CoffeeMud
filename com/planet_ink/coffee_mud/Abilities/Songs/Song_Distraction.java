@@ -26,11 +26,11 @@ public class Song_Distraction extends Song
 		// from trying to do ANYTHING except sleep
 		if(affect.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			&&(mob.isInCombat())
 			&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+50))
-			&&((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
+			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appear(s) distracted by the singing.");
 				return false;

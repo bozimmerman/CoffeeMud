@@ -708,7 +708,7 @@ public class Scriptable extends ActiveTicker
 					execute(affect.source(),monster,monster,(Item)affect.tool(),null,script);
 				break;
 			default:
-				if(trigger.startsWith("ACT_PROG"))
+				if(trigger.startsWith("MASK_PROG"))
 				{
 					boolean doIt=false;
 					String msg=affect.othersMessage().toUpperCase();

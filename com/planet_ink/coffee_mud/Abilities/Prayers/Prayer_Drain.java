@@ -35,7 +35,7 @@ public class Prayer_Drain extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),null);
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, praying!^?");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
@@ -49,7 +49,7 @@ public class Prayer_Drain extends Prayer
 						maxDie = 5;
 					damage += Dice.roll(maxDie,6,1);
 
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
 				}
 			}
 		}

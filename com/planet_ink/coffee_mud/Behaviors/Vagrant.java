@@ -21,7 +21,7 @@ public class Vagrant extends StdBehavior
 		   return super.okAffect(oking,msg);
 		MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
-		   &&(((msg.sourceCode()&Affect.ACT_MOVE)>0)||((msg.sourceCode()&Affect.ACT_HANDS)>0)))
+		   &&(((msg.sourceCode()&Affect.MASK_MOVE)>0)||((msg.sourceCode()&Affect.MASK_HANDS)>0)))
 		{
 			if(!msg.amISource(mob))
 				sleepForTicks=0;

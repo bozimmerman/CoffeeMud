@@ -38,7 +38,7 @@ public class Prayer_Godstrike extends Prayer
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),15);
 					if(target.getAlignment()<350)
-						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
+						ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

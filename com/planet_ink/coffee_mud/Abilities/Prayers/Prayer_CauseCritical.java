@@ -36,7 +36,7 @@ public class Prayer_CauseCritical extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob)+12,5);
-					ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

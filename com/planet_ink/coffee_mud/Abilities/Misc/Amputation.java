@@ -133,8 +133,8 @@ public class Amputation extends StdAbility
 		MOB myChar=(MOB)affected;
 		if(myChar==null) return false;
 		if((affect.amISource(myChar))
-			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_HURT))
-			&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
+			&&(!Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
 		{
 			long missingLimbList=missingLimbList();
 			switch(affect.targetMinor())
@@ -313,7 +313,7 @@ public class Amputation extends StdAbility
 			long code=AMPUTATE_CODES[(int)bit];
 			
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.ACT_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),str);
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);

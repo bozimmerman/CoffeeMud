@@ -319,8 +319,8 @@ public class StdRoom
 			case Affect.TYP_SPEAK:
 				break;
 			default:
-				if((Util.bset(affect.targetMajor(),Affect.AFF_TOUCHED))
-				||(Util.bset(affect.targetMajor(),Affect.AFF_CONSUMED)))
+				if((Util.bset(affect.targetMajor(),Affect.MASK_HANDS))
+				||(Util.bset(affect.targetMajor(),Affect.MASK_MOUTH)))
 				{
 					mob.tell("You can't do that here.");
 					return false;

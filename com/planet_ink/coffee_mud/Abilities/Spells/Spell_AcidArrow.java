@@ -46,7 +46,7 @@ public class Spell_AcidArrow extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"An arrow made of acid appears zooming towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, conjuring an acid arrow from the java plain!^?");
-			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);
@@ -56,7 +56,7 @@ public class Spell_AcidArrow extends Spell
 				int damage = Dice.roll(numDice, 4, 5);
 				if((msg2.wasModified())||(msg.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");
 				maliciousAffect(mob,target,3,-1);
 			}
 		}

@@ -68,7 +68,7 @@ public class Song_Flight extends Song
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.ACT_GENERAL;
+					if(auto) affectType=affectType|Affect.MASK_GENERAL;
 
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{

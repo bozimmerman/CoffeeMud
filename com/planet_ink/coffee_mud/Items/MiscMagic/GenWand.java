@@ -95,7 +95,7 @@ public class GenWand extends GenItem implements Wand
 			break;
 		case Affect.TYP_SPEAK:
 			if(affect.sourceMinor()==Affect.TYP_SPEAK)
-				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,Affect.ACT_GENERAL|Affect.TYP_WAND_USE,affect.targetMessage(),affect.NO_EFFECT,null));
+				affect.addTrailerMsg(new FullMsg(affect.source(),this,affect.target(),affect.NO_EFFECT,null,Affect.MASK_GENERAL|Affect.TYP_WAND_USE,affect.targetMessage(),affect.NO_EFFECT,null));
 			break;
 		default:
 			break;

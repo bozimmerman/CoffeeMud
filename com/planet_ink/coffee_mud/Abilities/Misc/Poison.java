@@ -34,7 +34,7 @@ public class Poison extends StdAbility
 			poisonTick=3;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int damage=Dice.roll(invoker.envStats().level(),3,1);
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_POISON,-1,null);
+			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_POISON,-1,null);
 		}
 		return true;
 	}
@@ -72,7 +72,7 @@ public class Poison extends StdAbility
 		if(success)
 		{
 			String str=auto?"":"^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.ACT_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.MASK_GENERAL:0),str);
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);

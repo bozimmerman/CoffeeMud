@@ -147,7 +147,7 @@ public class Song_Babble extends Song
 
 					// malicious songs must not affect the invoker!
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-					if(auto) affectType=affectType|Affect.ACT_GENERAL;
+					if(auto) affectType=affectType|Affect.MASK_GENERAL;
 					
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{

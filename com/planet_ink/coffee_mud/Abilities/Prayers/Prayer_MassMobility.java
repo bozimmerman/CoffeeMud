@@ -79,7 +79,7 @@ public class Prayer_MassMobility extends Prayer
 
 		Room room=mob.location();
 		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		if(auto) affectType=affectType|Affect.MASK_GENERAL;
 		if((success)&&(room!=null))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!^?");

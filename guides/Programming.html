@@ -865,42 +865,43 @@ gives some new meaning to the message.&nbsp; These bits are as follows:</P>
     <TD WIDTH="35%">Affect Equate Variable(s)</TD>
     <TD WIDTH="50%"><STRONG>Meaning</STRONG></TD></TR>
   <TR>
-    <TD WIDTH="15%">1024</TD>
+    <TD WIDTH="15%">1024 + 65536</TD>
     <TD WIDTH="35%">
-      <P>ACT_GENERAL,<BR>AFF_GENERAL,<BR>OTH_GENERAL</P></TD>
-    <TD WIDTH="50%">Override mask which flags the message 
-      as something which Must occur, regardless of the state of the source or 
-      target.</TD></TR>
+      <P>MASK_HURT</P></TD>
+    <TD WIDTH="50%">      
+                 *Special* Damage 
+      message.</TD></TR>
   <TR>
     <TD WIDTH="15%">2048</TD>
     <TD WIDTH="35%">
-      <P>ACT_HANDS,<BR>AFF_TOUCHED</P></TD>
+      <P>MASK_HANDS</P></TD>
     <TD WIDTH="50%">Message includes small 
   movements.</TD></TR>
   <TR>
     <TD WIDTH="15%">4096</TD>
     <TD WIDTH="35%">
-      <P>ACT_MOVE,<BR>AFF_MOVEDON</P></TD>
+      <P>MASK_MOVE</P></TD>
     <TD WIDTH="50%">Message includes large, full-body 
       movements.</TD></TR>
   <TR>
     <TD WIDTH="15%">8192</TD>
-    <TD WIDTH="35%">ACT_EYES,<BR>AFF_SEEN</TD>
+    <TD WIDTH="35%">MASK_EYES</TD>
     <TD WIDTH="50%">Message includes visual 
     information.</TD></TR>
   <TR>
     <TD WIDTH="15%">16384</TD>
-    <TD WIDTH="35%">ACT_MOUTH,<BR>AFF_CONSUMED</TD>
+    <TD WIDTH="35%">MASK_MOUTH</TD>
     <TD WIDTH="50%">Message include mouth movement, or 
       consumption.</TD></TR>
   <TR>
     <TD WIDTH="15%">32768</TD>
-    <TD WIDTH="35%">ACT_SOUND,<BR>AFF_SOUNDEDAT<BR></TD>
+    <TD WIDTH="35%">MASK_SOUND,<BR>MASK_SOUNDEDAT<BR></TD>
     <TD WIDTH="50%">Message includes auditory information.</TD></TR>
   <TR>
     <TD WIDTH="15%">65536</TD>
-    <TD WIDTH="35%">MASK_HURT</TD>
-    <TD WIDTH="50%">*Special* Damage message.</TD></TR>
+    <TD WIDTH="35%">MASK_GENERAL</TD>
+    <TD WIDTH="50%">Override mask which flags the message 
+      as something which Must occur, regardless of the state of the source or target.</TD></TR>
   <TR>
     <TD WIDTH="15%">131072</TD>
     <TD WIDTH="35%">MASK_MAGIC</TD>
@@ -925,7 +926,7 @@ with the appropriate Major and Minor aspects.</FONT></P>
 <P align=left><FONT size=4>The Minor Code&nbsp;represents the more specific activity 
 being performed, and is a simple integer ranging from&nbsp;0 (NO EFFECT) 
 to 1023.&nbsp; The exception to this is&nbsp;any message with the MASK_HURT 
-bits set.&nbsp; In that case, the 16 bits from 0-65535 represent the amount 
+bits set.&nbsp; In that case, the 16 bits from 0-1023 represent the amount 
 of damage being taken.&nbsp;&nbsp;Another exception is the CHANNEL&nbsp;Mask, 
 where the&nbsp;lower bits represent the CHANNEL number being chatted on.&nbsp; 
 In all other cases, however, the Minor Code is a unique&nbsp;integer 

@@ -28,12 +28,12 @@ public class Fighter_Whomp extends StdAbility
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL)))
+		if((affect.amISource(mob))&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
 		{
-			if((Util.bset(affect.sourceMajor(),Affect.ACT_EYES))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOUTH))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE)))
+			if((Util.bset(affect.sourceMajor(),Affect.MASK_EYES))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOUTH))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
 			{
 				if(affect.sourceMessage()!=null)
 					mob.tell(mob,null,"You are way too drowsy.");
@@ -121,7 +121,7 @@ public class Fighter_Whomp extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> knock(s) <T-NAMESELF> to the floor!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

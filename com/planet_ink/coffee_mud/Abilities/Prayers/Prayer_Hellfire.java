@@ -38,7 +38,7 @@ public class Prayer_Hellfire extends Prayer
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),15);
 					if(target.getAlignment()>650)
-						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

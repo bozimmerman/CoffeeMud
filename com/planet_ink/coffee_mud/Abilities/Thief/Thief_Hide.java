@@ -30,12 +30,12 @@ public class Thief_Hide extends ThiefSkill
 		if(affect.amISource(mob))
 		{
 			
-			if(((Util.bset(affect.sourceMajor(),Affect.ACT_SOUND)
+			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
 				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
 				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
 				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
 				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
-			 &&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))
 				unInvoke();
@@ -86,7 +86,7 @@ public class Thief_Hide extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

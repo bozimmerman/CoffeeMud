@@ -53,7 +53,7 @@ public class Skill_Climb extends StdAbility
 			mob.delAffect(this);
 			mob.recoverEnvStats();
 			if(!success)
-				mob.location().affect(new FullMsg(mob,mob.location(),Affect.ACT_MOVE|Affect.TYP_GENERAL,null));
+				mob.location().affect(new FullMsg(mob,mob.location(),Affect.MASK_MOVE|Affect.TYP_GENERAL,null));
 		}
 		return success;
 	}

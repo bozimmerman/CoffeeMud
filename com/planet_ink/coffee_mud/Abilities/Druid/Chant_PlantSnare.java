@@ -29,9 +29,9 @@ public class Chant_PlantSnare extends Chant
 		// from trying to do ANYTHING except sleep
 		if(affect.amISource(mob))
 		{
-			if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
-			&&((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
-			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
+			if((!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
+			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the snaring plants.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
