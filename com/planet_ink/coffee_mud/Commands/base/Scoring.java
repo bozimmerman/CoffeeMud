@@ -378,7 +378,7 @@ public class Scoring
 		{
 			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
 			int level=thisAbility.qualifyingLevel(able);
-			if((thisAbility.qualifies(able))
+			if((thisAbility.qualifiesByLevel(able))
 			&&(level>highestLevel)
 			&&(level<lowestLevel)
 			&&((thisAbility.classificationCode()&mask)==ofType))
@@ -391,7 +391,7 @@ public class Scoring
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-				if((thisAbility.qualifies(able))
+				if((thisAbility.qualifiesByLevel(able))
 				   &&(thisAbility.qualifyingLevel(able)==l)
 				   &&((thisAbility.classificationCode()&mask)==ofType))
 				{

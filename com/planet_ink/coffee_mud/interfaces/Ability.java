@@ -13,9 +13,10 @@ public interface Ability  extends Environmental
 	public static final int THIEF_SKILL=6;
 	public static final int LANGUAGE=7;
 	public static final int CHANT=8;
+	public static final int COMMON_SKILL=9;
 	public static final int ALL_CODES=31;
 	public static final String[] TYPE_DESCS={
-		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT"
+		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL"
 	};
 	
 	// domains
@@ -102,7 +103,7 @@ public interface Ability  extends Environmental
 	public boolean canBeLearnedBy(MOB teacher, MOB student);
 	public void teach(MOB teacher, MOB student);
 	public void practice(MOB teacher, MOB student);
-	public boolean qualifies(MOB student);
+	public boolean qualifiesByLevel(MOB student);
 	public int qualifyingLevel(MOB student);
 
 	// for use by the identify spell, this should return a

@@ -1,11 +1,12 @@
 <HTML>
 <HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
+<TITLE>@AbilityName@</TITLE>
 </HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<BODY BGCOLOR=#000066 TEXT=#FFFFFF>
+<H3>@AbilityName@</H3>
+<PRE>
+Invocation : @AbilityData?auto@
+@AbilityData?help@
+</PRE>
 </BODY>
 </HTML>

@@ -4,19 +4,12 @@
 </HEAD>
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@AbilityName@ (@AbilityData?domain@)</H3>
-<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Quality</B></FONT></TD>
-	<TD><FONT SIZE=-1>@AbilityData?quality@</FONT></TD></TR>
-<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Target</B></FONT></TD>
-	<TD><FONT SIZE=-1>@AbilityData?target@</FONT></TD></TR>
-<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Range</B></FONT></TD>
-	<TD><FONT SIZE=-1>@AbilityData?ranges@</FONT></TD></TR>
-<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Invocation</B></FONT></TD>
-	<TD><FONT SIZE=-1>@AbilityData?auto@</FONT></TD></TR>
-<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Alignment</B></FONT></TD>
-	<TD><FONT SIZE=-1>@AbilityData?alignment@</FONT></TD></TR>
-</TABLE>
-<BR><PRE>
+<PRE>
+Quality  : @AbilityData?quality@
+Target   : @AbilityData?target@
+Range    : @AbilityData?ranges@
+Invoked  : @AbilityData?auto@
+Alignment: @AbilityData?alignment@
 @AbilityData?help@
 </PRE>
 </BODY>

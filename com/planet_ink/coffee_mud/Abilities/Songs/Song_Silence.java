@@ -49,7 +49,10 @@ public class Song_Silence extends Song
 		||(referenceSong.affecting()==null)
 		||(referenceSong.invoker()==null)
 		||(invoker.location()!=mob.location()))
+		{
+			unsing(mob);
 			return false;
+		}
 		return true;
 	}
 

@@ -61,7 +61,7 @@ public class MOBTeacher extends CombatAbilities
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(i);
 				if(monster.fetchAbility(A.ID())==null)
-					if((A.qualifies(monster))||(monster.charStats().getMyClass().ID().equals("StdCharClass")))
+					if((A.qualifiesByLevel(monster))||(monster.charStats().getMyClass().ID().equals("StdCharClass")))
 					{
 						A=(Ability)A.copyOf();
 						A.setBorrowed(monster,true);
@@ -149,7 +149,7 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				if((!myAbility.qualifies(monster))
+				if((!myAbility.qualifiesByLevel(monster))
 				&&(!monster.baseCharStats().getMyClass().ID().equals("StdCharClass")))
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know '"+myAbility.name()+"'.",true,false);

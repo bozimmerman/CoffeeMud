@@ -23,6 +23,7 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <UL>
 <LI><a href="guides/mudintro.html">Introduction</a>
 <LI><a href="guides/features.html">CoffeeMUD features</a>
+<LI><a href="areas.cmvp">Installed Areas</a>
 	<BR><BR>
 <LI><B>Classes: </B>
 	@loop@
@@ -33,7 +34,7 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <LI><B>Races: </B>
 	@loop@
 	@RaceNext@
-	<A href="races.cmvp?RACE=@RaceID@">@RaceName@</A>
+	<A href="races.cmvp#@RaceID@">@RaceName@</A>
 	@back@
 	<BR><BR>
 <LI><B>Player Abilities: </B>
@@ -43,8 +44,8 @@ Players currently online: <b>@NUMPLAYERS@</B>
 					  <a href="ables.cmvp?ABILITYTYPE=CHANT">Chants</a>  
 					  <a href="skills.cmvp">Skills</a>
 					  <BR><BR>
-<LI><a href="areas.cmvp">Installed Areas</a>
 <LI><a href="guides/ArchonGuide.html">Archon's Guide (v1.2)</a>
+<LI><A href="archonables.cmvp">MOB Behaviors/Properties</a>
 </UL>
 </TD></TR>
 </body>

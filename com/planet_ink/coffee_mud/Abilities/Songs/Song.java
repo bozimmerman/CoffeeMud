@@ -60,21 +60,21 @@ public class Song extends StdAbility
 		||(invoker.location()!=mob.location())
 		||(Sense.isSleeping(invoker))
 		||(!Sense.canBeHeardBy(invoker,mob)))
+		{
+			unsing(mob);
 			return false;
+		}
 		return true;
 	}
 
 	protected void unsing(MOB mob)
 	{
-		int a=0;
-		while(a<mob.numAffects())
+		if(mob==null) return;
+		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
-			int n=mob.numAffects();
 			Ability A=(Ability)mob.fetchAffect(a);
 			if((A!=null)&&(A instanceof Song))
 				A.unInvoke();
-			if(mob.numAffects()==n)
-				a++;
 		}
 	}
 

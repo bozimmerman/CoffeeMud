@@ -39,7 +39,7 @@ public class StdAbility implements Ability, Cloneable
 	public StdAbility()
 	{
 	}
-	public boolean qualifies(MOB student)
+	public boolean qualifiesByLevel(MOB student)
 	{
 		int level=qualifyingLevel(student);
 		if(level<0) return false;

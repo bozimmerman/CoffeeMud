@@ -21,16 +21,13 @@ public class BehaviorNext extends StdWebMacro
 		String lastID="";
 		for(int b=0;b<CMClass.behaviors.size();b++)
 		{
-			Race B=(Race)CMClass.behaviors.elementAt(b);
-			if((B.playerSelectable())||(parms.containsKey("ALL")))
+			Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))))
 			{
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))))
-				{
-					httpReq.getRequestParameters().put("BEHAVIOR",B.ID());
-					return "";
-				}
-				lastID=B.ID();
+				httpReq.getRequestParameters().put("BEHAVIOR",B.ID());
+				return "";
 			}
+			lastID=B.ID();
 		}
 		httpReq.getRequestParameters().put("BEHAVIOR","");
 		if(parms.containsKey("EMPTYOK"))

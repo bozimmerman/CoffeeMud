@@ -45,7 +45,7 @@ public class Property implements Ability, Cloneable
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
-	public boolean qualifies(MOB student){return false;}
+	public boolean qualifiesByLevel(MOB student){return false;}
 	public int qualifyingLevel(MOB student){return -1;}
 	public void startTickDown(Environmental affected, int tickTime){}
 

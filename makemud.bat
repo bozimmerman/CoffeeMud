@@ -3,6 +3,10 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Archon\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Fighter\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Misc\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Prayers\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Druid\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Paladin\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Ranger\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Common\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Properties\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Skills\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Songs\*.java
