@@ -1,5 +1,2 @@
 GAES still isn't done
-Not all juggled items are in the air.
-Stealing juggled items from a jester should create problems.
-NIGHTMARE should be reduced in time by 1/2 it's current value. And, it should spit out random emotes about items/people in the room. IE HASSAN glares at you menacingly. The sword chops at your flesh. HASSAN rips open his jaws, and tries to stuff you in his mouth. The sword bends in your hands. Etc.... 
-Oh. Zac, I also already reported to Loki a problem where the girdle of many pouches gets removed everytime you remove something from it, but it stays on your waist when you put something into it.
+

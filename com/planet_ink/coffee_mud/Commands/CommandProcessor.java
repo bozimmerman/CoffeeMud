@@ -649,6 +649,9 @@ public class CommandProcessor
 		case CommandSet.TRAIN:
 			BasicSenses.train(mob,commands);
 			break;
+		case CommandSet.TRANSFER:
+			SysOpSkills.transferCmd(mob,commands);
+			break;
 		case CommandSet.TYPO:
 			if(Util.combine(commands,1).length()>0)
 			{

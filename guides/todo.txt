@@ -1,18 +1,10 @@
 Bard Subclasses
 Finish WebServer.html macro help files update
 Programming.html update
-Leatherwork scan, Armorsmith..  to show non-perfect stuff
-itemidentifier should also do appraise, and analyze item.
-MPBEACON [roomid] [name]
-MPALARM [number] [commands...]
-FUNC_PROG functionname
-MPCALLFUNC functionname parm parm parm parm
-clean up behaviors from quest mobs
-TRANSFER archon command, for moving players.
-
 
 
 //****** next version ********************************************************
+Arrest idea: banned substances (get, drop, eq, etc), and resisting arrest, and harder sentence for parole.
 friends list, for filter who
 Z-level for the GrinderMap (elevation?) how the heck would THAT work...
 group formations as an alternative way of determining range

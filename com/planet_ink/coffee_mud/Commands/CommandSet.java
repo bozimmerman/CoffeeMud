@@ -193,6 +193,7 @@ public class CommandSet extends Hashtable
 	public static final int NOSOUND=180;
 	public static final int AUTOIMPROVEMENT=181;
 	public static final int KNOCK=182;
+	public static final int TRANSFER=183;
 
 	private CommandSet()
 	{
@@ -424,6 +425,7 @@ public class CommandSet extends Hashtable
 		put("TOPICS",new Integer(TOPICS));
 		put("TRAIN",new Integer(TRAIN));
 			put("TR",new Integer(TRAIN));
+		put("TRANSFER",new Integer(TRANSFER));
 		put("TYPO",new Integer(TYPO));
 		put("UNDRESS",new Integer(UNDRESS));
 		put("UNLOCK",new Integer(UNLOCK));

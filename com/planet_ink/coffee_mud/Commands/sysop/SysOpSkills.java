@@ -542,25 +542,10 @@ public class SysOpSkills
 		return true;
 	}
 
-	public static boolean gotoCmd(MOB mob, Vector commands)
+	public static Room findRoomLiberally(MOB mob, StringBuffer cmd)
 	{
-
 		Room room=null;
-		if(commands.size()<2)
-		{
-			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
-			return false;
-		}
-		commands.removeElementAt(0);
-		boolean chariot=false;
-		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
-		{
-		   chariot=true;
-		   commands.removeElement(commands.lastElement());
-		}
 		Room curRoom=mob.location();
-		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
-
 		int dirCode=Directions.getGoodDirectionCode(cmd.toString());
 		if(dirCode>=0)
 			room=mob.location().rawDoors()[dirCode];
@@ -671,6 +656,29 @@ public class SysOpSkills
 				}
 			}
 		}
+		return room;
+	}
+	
+	public static boolean gotoCmd(MOB mob, Vector commands)
+	{
+
+		Room room=null;
+		if(commands.size()<2)
+		{
+			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
+			return false;
+		}
+		commands.removeElementAt(0);
+		boolean chariot=false;
+		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
+		{
+		   chariot=true;
+		   commands.removeElement(commands.lastElement());
+		}
+		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
+		Room curRoom=mob.location();
+		room=findRoomLiberally(mob,cmd);
+
 		if(room==null)
 		{
 			if(mob.isASysOp(mob.location()))
@@ -699,6 +707,73 @@ public class SysOpSkills
 			}
 			else
 				mob.tell("Done.");
+			return true;
+		}
+	}
+	public static boolean transferCmd(MOB mob, Vector commands)
+	{
+
+		Room room=null;
+		if(commands.size()<3)
+		{
+			mob.tell("Transfer whom where? Try all or a mob name, followerd by a Room ID, target player name, area name, or room text!");
+			return false;
+		}
+		commands.removeElementAt(0);
+		String mobname=(String)commands.elementAt(0);
+		Room curRoom=mob.location();
+		Vector V=new Vector();
+		if(mobname.equalsIgnoreCase("all"))
+		{
+			for(int i=0;i<curRoom.numInhabitants();i++)
+			{
+				MOB M=(MOB)curRoom.fetchInhabitant(i);
+				if(M!=null)
+					V.addElement(M);
+			}
+		}
+		else
+		{
+			MOB M=curRoom.fetchInhabitant(mobname);
+			if(M!=null)
+				V.addElement(M);
+		}
+		if(V.size()==0)
+		{
+			mob.tell("Transfer whom?  '"+mobname+"' is unknown to you.");
+			return false;
+		}
+		
+		StringBuffer cmd = new StringBuffer(Util.combine(commands,1));
+		room=findRoomLiberally(mob,cmd);
+
+		if(room==null)
+		{
+			if(mob.isASysOp(mob.location()))
+				mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
+			else
+				mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			return false;
+		}
+		if(!mob.isASysOp(room))
+		{
+			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			return false;
+		}
+		if(curRoom==room)
+		{
+			mob.tell("Done.");
+			return true;
+		}
+		else
+		{
+			for(int i=0;i<V.size();i++)
+			{
+				MOB M=(MOB)V.elementAt(i);
+				room.bringMobHere(M,true);
+				ExternalPlay.look(M,null,true);
+			}
+			mob.tell("Done.");
 			return true;
 		}
 	}

@@ -17,6 +17,16 @@ public class Quests implements Cloneable, Quest
 	protected int waitRemaining=-1;
 	protected int ticksRemaining=-1;
 
+	protected Vector addons=new Vector();
+	// contains a set of vectors, vectors are formatted as such:
+	// 0=environmental item/mob/etc
+	// 1=Ability, 2=Ability (for an ability added)
+	// 1=Ability, 2=Ability, 3=String (for an ability modified)
+	// 1=Affect(for an Affect added)
+	// 1=Affect, 2=String (for an Affect modified)
+	// 1=Behavior (for an Behavior added)
+	// 1=Behavior, 2=String (for an Behavior modified)
+	
 	// the unique name of the quest
 	public String name(){return name;}
 	public void setName(String newName){name=newName;}
@@ -771,17 +781,28 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(M.fetchAbility(A3.ID())!=null)
+						if(!stuff.contains(M))
 						{
-							A3=M.fetchAbility(A3.ID());
-							A3.setMiscText(Util.combine(p,3));
-							A3.setProfficiency(100);
-						}
-						else
-						{
-							A3.setMiscText(Util.combine(p,3));
-							A3.setProfficiency(100);
-							M.addAbility(A3);
+							Vector V=new Vector();
+							V.addElement(E);
+							if(M.fetchAbility(A3.ID())!=null)
+							{
+								A3=M.fetchAbility(A3.ID());
+								V.addElement(A3);
+								V.addElement(A3);
+								V.addElement(A3.text());
+								A3.setMiscText(Util.combine(p,3));
+								A3.setProfficiency(100);
+							}
+							else
+							{
+								A3.setMiscText(Util.combine(p,3));
+								V.addElement(A3);
+								V.addElement(A3);
+								A3.setProfficiency(100);
+								M.addAbility(A3);
+							}
+							addons.addElement(V);
 						}
 					}
 					else
@@ -803,15 +824,24 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(E.fetchBehavior(B.ID())!=null)
+						if(!stuff.contains(E))
 						{
-							B=E.fetchBehavior(B.ID());
-							B.setParms(Util.combine(p,3));
-						}
-						else
-						{
-							B.setParms(Util.combine(p,3));
-							E.addBehavior(B);
+							Vector V=new Vector();
+							V.addElement(E);
+							if(E.fetchBehavior(B.ID())!=null)
+							{
+								B=E.fetchBehavior(B.ID());
+								V.addElement(B);
+								V.addElement(B.getParms());
+								B.setParms(Util.combine(p,3));
+							}
+							else
+							{
+								V.addElement(B);
+								B.setParms(Util.combine(p,3));
+								E.addBehavior(B);
+							}
+							addons.addElement(V);
 						}
 					}
 					else
@@ -833,20 +863,29 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(E.fetchAffect(A3.ID())!=null)
+						if(!stuff.contains(E))
 						{
-							A3=E.fetchAffect(A3.ID());
-							A3.makeLongLasting();
-							A3.setMiscText(Util.combine(p,3));
-						}
-						else
-						{
-							A3.setMiscText(Util.combine(p,3));
-							if(M!=null)
-								A3.startTickDown(M,E,99999);
+							Vector V=new Vector();
+							V.addElement(E);
+							if(E.fetchAffect(A3.ID())!=null)
+							{
+								A3=E.fetchAffect(A3.ID());
+								V.addElement(A3);
+								V.addElement(A3.text());
+								A3.makeLongLasting();
+								A3.setMiscText(Util.combine(p,3));
+							}
 							else
-								A3.startTickDown(null,E,99999);
-							A3.makeLongLasting();
+							{
+								V.addElement(A3);
+								A3.setMiscText(Util.combine(p,3));
+								if(M!=null)
+									A3.startTickDown(M,E,99999);
+								else
+									A3.startTickDown(null,E,99999);
+								A3.makeLongLasting();
+							}
+							addons.addElement(V);
 						}
 					}
 					else
@@ -914,6 +953,56 @@ public class Quests implements Cloneable, Quest
 				}
 			}
 			stuff.clear();
+		}
+		if(addons.size()>0)
+		{
+			for(int i=0;i<addons.size();i++)
+			{
+				Vector V=(Vector)addons.elementAt(i);
+				if(V.size()<2) continue;
+				Environmental E=(Environmental)V.elementAt(0);
+				Object O=V.elementAt(1);
+				if(O instanceof Behavior)
+				{
+					Behavior B=E.fetchBehavior(((Behavior)O).ID());
+					if(B==null) continue;
+					if((V.size()>2)&&(V.elementAt(2) instanceof String))
+						B.setParms((String)V.elementAt(2));
+					else
+						E.delBehavior(B);
+				}
+				else
+				if(O instanceof Ability)
+				{
+					if((V.size()>2)
+					&&(V.elementAt(2) instanceof Ability)
+					&&(E instanceof MOB))
+					{
+						Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
+						if(A==null) continue;
+						if((V.size()>3)&&(V.elementAt(3) instanceof String))
+							A.setMiscText((String)V.elementAt(3));
+						else
+							((MOB)E).delAbility(A);
+					}
+					else
+					{
+						Ability A=E.fetchAffect(((Ability)O).ID());
+						if(A==null) continue;
+						if((V.size()>2)&&(V.elementAt(2) instanceof String))
+							A.setMiscText((String)V.elementAt(2));
+						else
+						{
+							A.unInvoke();
+							E.delAffect(A);
+						}
+					}
+				}
+				else
+				if(O instanceof Item)
+					((Item)O).destroy();
+			}
+			addons.clear();
 		}
 		if(running())
 		{
