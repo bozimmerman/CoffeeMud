@@ -506,6 +506,11 @@ public class Masonry extends CraftingSkill
 				commonTell(mob,targetMOB.Name()+" is not building anything.");
 				return false;
 			}
+			if(!super.invoke(mob,commands,givenTarget,auto))
+			{
+				helpingAbility=null;
+				return false;
+			}
 			helping=true;
 			verb="helping "+targetMOB.name()+" with "+helpingAbility.verb;
 			startStr="<S-NAME> start(s) "+verb;

@@ -98,14 +98,17 @@ public class Spell_Repulsion extends Spell
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);
+							int level=2;
+							if((CMAble.qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob)-CMAble.qualifyingClassLevel(mob,this))>10))
+								level+=((adjustedLevel(mob)-CMAble.qualifyingClassLevel(mob,this))-10)/10;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
 							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 								target.setAtRange(target.rangeToTarget());
 							else
-							if(target.location().maxRange()<2)
+							if(target.location().maxRange()<level)
 								target.setAtRange(target.location().maxRange());
 							else
-								target.setAtRange(2);
+								target.setAtRange(level);
 							if(target.getVictim()!=null)
 								target.getVictim().setAtRange(target.rangeToTarget());
 						}
