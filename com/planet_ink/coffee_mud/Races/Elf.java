@@ -36,7 +36,7 @@ public class Elf extends StdRace
 			if(mob.isMonster())
 				A.invoke(mob,mob,true);
 		}
-		A=CMClass.getAbility("Forage");
+		A=CMClass.getAbility("Foraging");
 		if(A!=null)
 		{
 			A.setProfficiency(50);

@@ -14,6 +14,8 @@ public class Movement
 			move(mob,direction,false);
 		else
 		{
+			String doing=(String)commands.elementAt(0);
+			mob.tell(Character.toUpperCase(doing.charAt(0))+doing.substring(1)+" which direction?");
 			mob.tell("Try north, south, east, west, up, or down.");
 			return;
 		}

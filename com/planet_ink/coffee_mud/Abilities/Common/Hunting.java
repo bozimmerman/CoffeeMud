@@ -27,7 +27,7 @@ public class Hunting extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Hunt();
+		return new Hunting();
 	}
 	
 	public Room nearByRoom()

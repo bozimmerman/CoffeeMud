@@ -36,7 +36,7 @@ public class Halfling extends StdRace
 			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		A=CMClass.getAbility("Cook");
+		A=CMClass.getAbility("Cooking");
 		if(A!=null)
 		{
 			A.setProfficiency(50);

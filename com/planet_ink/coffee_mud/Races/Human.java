@@ -41,7 +41,7 @@ public class Human extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Chop");
+		Ability A=CMClass.getAbility("Chopping");
 		if(A!=null)
 		{
 			A.setProfficiency(50);

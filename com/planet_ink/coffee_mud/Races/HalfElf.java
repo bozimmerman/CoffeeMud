@@ -37,7 +37,7 @@ public class HalfElf extends StdRace
 			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		A=CMClass.getAbility("Fish");
+		A=CMClass.getAbility("Fishing");
 		if(A!=null)
 		{
 			A.setProfficiency(50);

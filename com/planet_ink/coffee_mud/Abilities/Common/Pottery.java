@@ -163,7 +163,7 @@ public class Pottery extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.RESOURCE_MASK)==EnvResource.RESOURCE_CLAY)
+			&&(I.material()==EnvResource.RESOURCE_CLAY)
 			&&(I.container()==null))
 			{
 				if(firstWood==null)firstWood=I;
@@ -188,7 +188,7 @@ public class Pottery extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+			&&(I.material()==EnvResource.RESOURCE_CLAY)
 			&&(I.container()==null)
 			&&((--woodDestroyed)>=0)
 			&&(I.material()==firstWood.material()))
@@ -231,16 +231,13 @@ public class Pottery extends CommonSkill
 				((Container)building).setKeyName(new Double(Math.random()).toString());
 			}
 		}
-		if(building instanceof Rideable)
+		if(building instanceof Drink)
 		{
-			if(misctype.equalsIgnoreCase("CHAIR"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-			else
-			if(misctype.equalsIgnoreCase("TABLE"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-			else
-			if(misctype.equalsIgnoreCase("BED"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+			((Drink)building).setLiquidRemaining(0);
+			((Drink)building).setLiquidHeld(capacity*25);
+			((Drink)building).setThirstQuenched(250);
+			if((capacity*25)<250)
+				((Drink)building).setThirstQuenched(capacity*25);
 		}
 		building.recoverEnvStats();
 		building.text();
@@ -256,4 +253,5 @@ public class Pottery extends CommonSkill
 			beneficialAffect(mob,mob,completion);
 		}
 		return true;
-	}}
+	}
+}

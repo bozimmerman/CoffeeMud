@@ -36,7 +36,7 @@ public class Dwarf extends StdRace
 			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
-		A=CMClass.getAbility("Mine");
+		A=CMClass.getAbility("Mining");
 		if(A!=null)
 		{
 			A.setProfficiency(50);

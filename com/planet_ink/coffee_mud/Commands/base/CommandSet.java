@@ -202,6 +202,8 @@ public class CommandSet extends Hashtable
 		put("GET",new Integer(GET));
 		put("GIVE",new Integer(GIVE));
 		put("GO",new Integer(GO));
+			put("RUN",new Integer(GO));
+			put("WALK",new Integer(GO));
 		put("GOTO",new Integer(GOTO));
 		put("GROUP",new Integer(GROUP));
 			put("GR",new Integer(GROUP));
