@@ -29,6 +29,7 @@ public class CoffeeTableRows extends StdWebMacro
 		if((code==null)||(code.length()==0)) code="*";
 		
 		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis()-(days*(24*60*60*1000)));
+		
 		ENDQ.set(Calendar.HOUR_OF_DAY,0);
 		ENDQ.set(Calendar.MINUTE,0);
 		ENDQ.set(Calendar.SECOND,0);
@@ -48,6 +49,12 @@ public class CoffeeTableRows extends StdWebMacro
 		{
 			lastCur=curTime;
 			curTime=curTime-(scale*(24*60*60*1000));
+			IQCalendar C2=new IQCalendar(curTime);
+			C2.set(C.HOUR_OF_DAY,23);
+			C2.set(C.MINUTE,59);
+			C2.set(C.SECOND,59);
+			C2.set(C.MILLISECOND,999);
+			curTime=C2.getTimeInMillis();
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{

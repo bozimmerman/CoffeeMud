@@ -1,8 +1,9 @@
-are stats working?
-cast scry with no target gives a list.
-
-
+Shelter will instantaneously teleport the caster and his or her group. It doesn`t take the group, only the caster. Spell Shelter level 12 Conjuration.
+It takes all the metal on the ground to make one set of arrows, Like my 500 pounds of iron
 SMTP Server
+
+
+
 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.

@@ -63,7 +63,7 @@ public class Spell_Claireaudience extends Spell
 			StringBuffer scryList=new StringBuffer("");
 			for(int e=0;e<scries.size();e++)
 				if(scries.elementAt(e,2)==mob)
-					scryList.append(((e==0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+					scryList.append(((e>0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
 			if(scryList.length()>0)
 				mob.tell("Cast on or revoke from whom?  You currently have "+name()+" on the following: "+scryList.toString()+".");
 			else
