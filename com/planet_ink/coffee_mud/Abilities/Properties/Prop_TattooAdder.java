@@ -101,7 +101,7 @@ public class Prop_TattooAdder extends Property
 			if(tattooMinus)
 			{
 				if(!silent)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattoo+" tattoo from <S-NAME>.");
+					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,"<T-NAME> takes away the "+tattoo+" tattoo from <S-NAME>.");
 				mob.delTattoo(tattooName);
 			}
 		}
@@ -110,7 +110,7 @@ public class Prop_TattooAdder extends Property
 			if(tattooPlus)
 			{
 				if(!silent)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattoo+" tattoo.");
+					mob.location().show(mob,affected,CMMsg.MSG_OK_ACTION,"<T-NAME> gives <S-NAME> the "+tattoo+" tattoo.");
 				mob.addTattoo(tattooName);
 			}
 		}

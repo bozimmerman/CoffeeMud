@@ -570,7 +570,7 @@ public class Conquerable extends Arrest
 				&&(I.ciType()==ClanItem.CI_FLAG))
 				{
 					Room R=CoffeeUtensils.roomLocation(I);
-					if((R!=null)&&((A.inMetroArea(R.getArea()))||(A==null)))
+					if((R!=null)&&((A==null)||(A.inMetroArea(R.getArea()))))
 						return true;
 				}
 			}
