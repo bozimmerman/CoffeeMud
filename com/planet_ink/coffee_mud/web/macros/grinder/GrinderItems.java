@@ -3,6 +3,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.web.macros.RoomData;
 
 public class GrinderItems
 {
@@ -23,7 +24,7 @@ public class GrinderItems
 		MOB M=null;
 		if((mobNum!=null)&&(mobNum.length()>0))
 		{
-			M=R.fetchInhabitant(Util.s_int(mobNum)-1);
+			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobNum)-1);
 			if(M==null)
 				return "No MOB?!";
 		}
@@ -384,7 +385,17 @@ public class GrinderItems
 		if(M==null)
 			ExternalPlay.DBUpdateItems(R);
 		else
+		{
+			if((reqs.get("BEINGWORN")!=null)
+			   &&(((String)reqs.get("BEINGWORN")).equals("on")))
+			{
+				if(I.amWearingAt(Item.INVENTORY))
+					I.wearIfPossible(M);
+			}
+			else
+				I.wearAt(Item.INVENTORY);
 			ExternalPlay.DBUpdateMOBs(R);
+		}
 		R.startItemRejuv();
 		return "";
 	}

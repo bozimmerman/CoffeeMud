@@ -64,6 +64,10 @@
 	<SELECT NAME=CLASSES ONCHANGE="ChangedClass();">
 	@ItemData?CLASSES@
 	</SELECT>
+	@if?!CheckReqParm?MOB=@
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<INPUT TYPE=CHECKBOX @ItemData?BEINGWORN@ NAME=BEINGWORN>Being Worn/Wielded
+	@endif@
 	</TD>
 </TR>
 <TR>

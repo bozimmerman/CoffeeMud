@@ -44,7 +44,7 @@ public class ItemData extends StdWebMacro
 		else
 		if((mobNum!=null)&&(mobNum.length()>0))
 		{
-			M=R.fetchInhabitant(Util.s_int(mobNum)-1);
+			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobNum)-1);
 			if(M==null)
 				return "No MOB?!";
 			I=M.fetchInventory(Util.s_int(itemCode)-1);
@@ -83,7 +83,7 @@ public class ItemData extends StdWebMacro
 							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-							  "ISUNTWOHANDED","ISCOIN","ISSCROLL"};
+							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -550,6 +550,14 @@ public class ItemData extends StdWebMacro
 				case 62:
 					if(I instanceof Scroll) return "true";
 					else return "false";
+				case 63: // being worn
+					if(firstTime) 
+						old=I.amWearingAt(Item.INVENTORY)?"":"checked"; 
+					else 
+					if(old.equals("on")) 
+						old="checked";
+					str.append(old);
+					break;
 				}
 				if(firstTime)
 					reqs.put(okparms[o],old.equals("checked")?"on":old);

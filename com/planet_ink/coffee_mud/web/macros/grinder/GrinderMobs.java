@@ -74,7 +74,7 @@ public class GrinderMobs
 		if(mobCode.equals("NEW"))
 			M=CMClass.getMOB(newClassID);
 		else
-			M=R.fetchInhabitant(Util.s_int(mobCode)-1);
+			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobCode)-1);
 		
 		if(M==null)
 			return "No MOB?!";

@@ -276,7 +276,7 @@ public class MobData extends StdWebMacro
 		if(mobCode.equals("NEW"))
 			M=CMClass.getMOB("GenMob");
 		else
-			M=R.fetchInhabitant(Util.s_int(mobCode)-1);
+			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobCode)-1);
 		
 		if(M==null)
 			return "No MOB?!";
@@ -528,7 +528,7 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+(RoomData.getItemCardinality(M,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":"(worn/wielded)"));
+					str.append("<OPTION SELECTED VALUE=\""+(RoomData.getItemCardinality(M,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
 				else
 				if(itemlist.contains(I))
 					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
