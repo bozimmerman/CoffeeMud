@@ -13,6 +13,8 @@ Hot Chocolate and Chocolate same recipe!
 I have 2 walking arenedirs
 I can't withdraw from the bank. It says Your spouse's account has 45000 . I deposited 20000 and it said I had 0 in the bank.
 you still haven't made shopkeepers illegal to kill
+spouses automatically deposit to spouse, not to own -- cannot withdraw from own accounts
+
 
 Delver:
 

@@ -343,11 +343,14 @@ public class StdMOB implements MOB
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if((Sense.isLightSource(this))&&(affected instanceof Room))
+		if(affected instanceof Room)
 		{
-			if(Sense.isInDark(affected))
-				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+			if(Sense.isLightSource(this))
+			{
+				if(Sense.isInDark(affected))
+					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+			}
 		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
