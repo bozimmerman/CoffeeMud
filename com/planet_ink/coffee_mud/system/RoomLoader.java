@@ -274,7 +274,7 @@ public class RoomLoader
 
 	public static void DBReadContent(Room thisRoom, Hashtable rooms, boolean setStatus)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
 		
 		Hashtable stuff=new Hashtable();
@@ -439,7 +439,7 @@ public class RoomLoader
 					fixMOBRides(mobRides,itemNums);
 			}
 		}
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
 	}
 
@@ -483,21 +483,21 @@ public class RoomLoader
 	public static void DBUpdateItems(Room room)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
 		try{Thread.sleep(room.numItems());}catch(Exception e){}
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		DBUpdateContents(room);
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROIT")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
 	}
 
 	public static void DBUpdateExits(Room room)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROEX")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
@@ -522,13 +522,13 @@ public class RoomLoader
 				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')");
 			}
 		}
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROEX")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
 	private static void DBCreateThisMOB(Room room, MOB thisMOB)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+room.roomID());
 		String ride=null;
 		if(thisMOB.riding()!=null)
@@ -560,7 +560,7 @@ public class RoomLoader
 		+thisMOB.baseEnvStats().rejuv()+","
 		+"'"+ride+"'"
 		+")");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+room.roomID());
 		
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE))
@@ -569,18 +569,18 @@ public class RoomLoader
 	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector();
 		DBConnector.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue updating mobs for room "+room.roomID());
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.elementAt(m);
 			DBCreateThisMOB(room,thisMOB);
 		}
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
 	}
 
@@ -611,7 +611,7 @@ public class RoomLoader
 	public static void DBUpdateRoom(Room room)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
 		DBConnector.update(
 		"UPDATE CMROOM SET "
@@ -623,7 +623,7 @@ public class RoomLoader
 		+"WHERE CMROID='"+room.roomID()+"'");
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
 			room.setDescription("");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating room "+room.roomID());
 	}
 
@@ -631,7 +631,7 @@ public class RoomLoader
 	public static void DBReCreate(Room room, String oldID)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Recreating room "+room.roomID());
 		
 		DBConnector.update(
@@ -672,13 +672,13 @@ public class RoomLoader
 		"UPDATE CMCHAR SET "
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done recreating room "+room.roomID());
 	}
 
 	public static Area DBCreate(String areaName, String areaType)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating area "+areaName);
 		Area A=CMClass.getAreaType(areaType);
 		if(A==null) A=CMClass.getAreaType("StdArea");
@@ -706,14 +706,14 @@ public class RoomLoader
 		+A.getTechLevel()+")");
 		if(A==null) return null;
 		A.tickControl(true);
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done creating area "+areaName);
 		return A;
 	}
 
 	public static void DBUpdate(String keyName,Area A)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
 		DBConnector.update(
 		"UPDATE CMAREA SET "
@@ -725,7 +725,7 @@ public class RoomLoader
 		+"CMROTX='"+A.text()+" ',"
 		+"CMTECH="+A.getTechLevel()+" "
 		+"WHERE CMAREA='"+keyName+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
 
@@ -733,27 +733,27 @@ public class RoomLoader
 	{
 		if((room==null)||(room.roomID().length()==0)) return;
 		
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
 		DBConnector.update(
 		"DELETE FROM CMROCH "
 		+"WHERE CMROID='"+room.roomID()+"' "
 		+"AND CMCHNM='"+keyName+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+room.roomID());
 		DBCreateThisMOB(room,mob);
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
 	}
 
 	public static void DBDelete(Area A)
 	{
 		if(A==null) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Destroying area "+A.name());
 		A.tickControl(false);
 		DBConnector.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMAREA")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done destroying area "+A.name()+".");
 	}
 
@@ -761,7 +761,7 @@ public class RoomLoader
 	public static void DBCreate(Room room, String LocaleID)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating new room "+room.roomID());
 		DBConnector.update(
 		"INSERT INTO CMROOM ("
@@ -778,14 +778,14 @@ public class RoomLoader
 		+"'"+room.displayText()+" ',"
 		+"'"+room.description()+" ',"
 		+"'"+room.text()+" ')");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROOM")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done creating new room "+room.roomID());
 	}
 
 	public static void DBDelete(Room room)
 	{
 		if(room.roomID().length()==0) return;
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Destroying room "+room.roomID());
 		while(room.numInhabitants()>0)
 		{
@@ -814,7 +814,7 @@ public class RoomLoader
 		DBUpdateItems(room);
 
 		DBConnector.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMROCH")||CommonStrings.isDebugging("DBROOMS")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done gestroying room "+room.roomID());
 	}
 }

@@ -337,7 +337,7 @@ public class List extends StdCommand
 			Thread.sleep(1500);
 		}catch(Exception e){}
 		StringBuffer buf=new StringBuffer("");
-		long totalTime=System.currentTimeMillis()-CommonStrings.getStartTime();
+		long totalTime=System.currentTimeMillis()-CMSecurity.getStartTime();
 		buf.append("The system has been running for ^H"+Util.returnTime(totalTime,0)+"^?.\n\r");
 		long free=Runtime.getRuntime().freeMemory()/1000;
 		long total=Runtime.getRuntime().totalMemory()/1000;

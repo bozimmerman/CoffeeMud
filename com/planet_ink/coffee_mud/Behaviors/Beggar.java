@@ -31,7 +31,7 @@ public class Beggar extends StdBehavior
 
 		if(tickID!=MudHost.TICK_MOB) return true;
 		if(!canFreelyBehaveNormal(ticking)) return true;
-		if(CommonStrings.isDisabled("EMOTERS")) return true;
+		if(CMSecurity.isDisabled("EMOTERS")) return true;
 		tickTock++;
 		if(tickTock<5) return true;
 		tickTock=0;

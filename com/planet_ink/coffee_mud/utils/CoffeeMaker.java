@@ -986,7 +986,7 @@ public class CoffeeMaker
 							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 							dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
-							if(Log.debugChannelOn()&&CommonStrings.isDebugging("EXPORT"))
+							if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
 								logDiff(mob,dup);
 							dup.baseEnvStats().setHeight(oldHeight);
 							dup.baseEnvStats().setWeight(oldWeight);
@@ -1054,7 +1054,7 @@ public class CoffeeMaker
 					Item dup=(Item)dups.elementAt(v);
 					int oldHeight=item.baseEnvStats().height();
 					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
-					if(Log.debugChannelOn()&&CommonStrings.isDebugging("EXPORT"))
+					if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
 						logDiff(item,dup);
 					item.baseEnvStats().setHeight(oldHeight);
 				}

@@ -287,7 +287,7 @@ public class Sounder extends StdBehavior
 		if(!super.tick(ticking,tickID))
 			return false;
 		if(((--tickDown)<=0)
-		&&(!CommonStrings.isDisabled("EMOTERS"))
+		&&(!CMSecurity.isDisabled("EMOTERS"))
 		&&((!(ticking instanceof MOB))||(canFreelyBehaveNormal(ticking))))
 		{
 			tickReset();
@@ -307,7 +307,7 @@ public class Sounder extends StdBehavior
 		// this will work because, for items, behaviors
 		// get the first tick.
 		int lookFor=-1;
-		if((msg!=lastMsg)&&(!CommonStrings.isDisabled("EMOTERS")))
+		if((msg!=lastMsg)&&(!CMSecurity.isDisabled("EMOTERS")))
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_GET:

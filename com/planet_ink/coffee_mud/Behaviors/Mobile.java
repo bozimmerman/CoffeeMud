@@ -139,7 +139,7 @@ public class Mobile extends ActiveTicker
 		if((canAct(ticking,tickID))
 		&&(ticking instanceof MOB)
 		&&(!((MOB)ticking).isInCombat())
-		&&(!CommonStrings.isDisabled("MOBILITY")))
+		&&(!CMSecurity.isDisabled("MOBILITY")))
 		{
 			Vector objections=null;
 			MOB mob=(MOB)ticking;

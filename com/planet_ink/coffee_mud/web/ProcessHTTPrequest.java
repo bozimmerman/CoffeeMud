@@ -924,7 +924,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 		
-		if((Log.debugChannelOn())&&(CommonStrings.isDebugging("HTTPREQ")))
+		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ")))
 			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 					":" + status);
 

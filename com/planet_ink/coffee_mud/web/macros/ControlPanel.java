@@ -21,7 +21,7 @@ public class ControlPanel extends StdWebMacro
 			String field=(String)parms.get("FIELD");
 			if((field==null)||(field.length()==0))
 				return "";
-			if(CommonStrings.isDisabled(field))
+			if(CMSecurity.isDisabled(field))
 				return " CHECKED ";
 			return "";
 		}
@@ -32,7 +32,7 @@ public class ControlPanel extends StdWebMacro
 			if((field==null)||(field.length()==0))
 				return "";
 			String value=(String)parms.get("VALUE");
-			CommonStrings.setDisableVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
+			CMSecurity.setDisableVar(field,((value!=null)&&(value.equalsIgnoreCase("on"))));
 			return "";
 		}
 		else

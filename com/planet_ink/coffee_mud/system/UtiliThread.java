@@ -219,7 +219,7 @@ public class UtiliThread extends Thread
 		{
 			try
 			{
-				if(!CommonStrings.isDisabled("UTILITHREAD"))
+				if(!CMSecurity.isDisabled("UTILITHREAD"))
 				{
 					itemSweep();
 					checkHealth();

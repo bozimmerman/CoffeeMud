@@ -160,7 +160,7 @@ public class Emoter extends ActiveTicker
 		parseEmotes();
 		if((canAct(ticking,tickID))
 		&&(emotes.size()>0)
-		&&(!CommonStrings.isDisabled("EMOTERS")))
+		&&(!CMSecurity.isDisabled("EMOTERS")))
 		{
 			Vector emote=(Vector)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
 			MOB emoter=null;

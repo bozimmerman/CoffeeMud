@@ -113,6 +113,9 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
+	public final static long strangeDeviations=Item.FLOATING_NEARBY|Item.ON_MOUTH|Item.ON_EYES|Item.ON_EARS|Item.ON_NECK;
+	public final static long deviation20=Item.ON_TORSO|Item.ON_LEGS|Item.ON_WAIST|Item.ON_ARMS|Item.ON_HANDS|Item.ON_FEET;
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -123,22 +126,37 @@ public class StdArmor extends StdContainer implements Armor
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
 			int devianceAllowed=200;
-			if(((rawProperLocationBitmap()&Item.ON_TORSO)>0)
-			||((rawProperLocationBitmap()&Item.ON_LEGS)>0)
-			||((rawProperLocationBitmap()&Item.ON_WAIST)>0)
-			||((rawProperLocationBitmap()&Item.ON_ARMS)>0)
-			||((rawProperLocationBitmap()&Item.ON_HANDS)>0)
-			||((rawProperLocationBitmap()&Item.ON_FEET)>0))
+			if((rawProperLocationBitmap()&deviation20)>0)
 				devianceAllowed=20;
-			if(msg.source().envStats().height()<(envStats().height()-devianceAllowed))
+			else
+			if((rawProperLocationBitmap()&strangeDeviations)>0)
 			{
-				msg.source().tell(name()+" doesn't fit you -- it's too big.");
-				return false;
+				long wcode=rawProperLocationBitmap();
+			
+				if(Util.bset(wcode,Item.HELD)) 
+					wcode=wcode-Item.HELD;
+				if(wcode==Item.FLOATING_NEARBY) devianceAllowed=-1;
+				else
+				if(wcode==Item.ON_MOUTH) devianceAllowed=-1;
+				else
+				if(wcode==Item.ON_EYES) devianceAllowed=1000;
+				else
+				if(wcode==Item.ON_EARS) devianceAllowed=1000;
+				else
+				if(wcode==Item.ON_NECK) devianceAllowed=5000;
 			}
-			if(msg.source().envStats().height()>(envStats().height()+devianceAllowed))
+			if(devianceAllowed>0)
 			{
-				msg.source().tell(name()+" doesn't fit you -- it's too small.");
-				return false;
+				if(msg.source().envStats().height()<(envStats().height()-devianceAllowed))
+				{
+					msg.source().tell(name()+" doesn't fit you -- it's too big.");
+					return false;
+				}
+				if(msg.source().envStats().height()>(envStats().height()+devianceAllowed))
+				{
+					msg.source().tell(name()+" doesn't fit you -- it's too small.");
+					return false;
+				}
 			}
 		}
 		return true;

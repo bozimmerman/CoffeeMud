@@ -185,7 +185,7 @@ public class SaveThread extends Thread
 		{
 			try
 			{
-				if(!CommonStrings.isDisabled("SAVETHREAD"))
+				if(!CMSecurity.isDisabled("SAVETHREAD"))
 				{
 					status="checking database health";
 					StringBuffer ok=DBConnector.errorStatus();

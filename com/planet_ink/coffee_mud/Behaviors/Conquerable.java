@@ -175,7 +175,7 @@ public class Conquerable extends Arrest
 		if(holdingClan.length()==0)
 			return;
 		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-		||(CommonStrings.isDisabled("CONQUEST")))
+		||(CMSecurity.isDisabled("CONQUEST")))
 			return;
 
 		for(int v=0;v<clanItems.size();v++)
@@ -233,7 +233,7 @@ public class Conquerable extends Arrest
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-		||(CommonStrings.isDisabled("CONQUEST")))
+		||(CMSecurity.isDisabled("CONQUEST")))
 			return true;
 
 		if(!super.tick(ticking,tickID))
@@ -433,7 +433,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()>0)
 		&&(msg.source().getClanID().equals(holdingClan))
-		&&(!CommonStrings.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled("CONQUEST")))
 		{
 			if((msg.source().isMonster())
 			&&(msg.target() instanceof MOB)
@@ -476,7 +476,7 @@ public class Conquerable extends Arrest
 
 		if((holdingClan.length()>0)
 		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-		&&(!CommonStrings.isDisabled("CONQUEST"))
+		&&(!CMSecurity.isDisabled("CONQUEST"))
 		&&(!msg.source().isMonster())
 		&&(msg.value()>0))
 		{
@@ -628,7 +628,7 @@ public class Conquerable extends Arrest
 		super.executeMsg(myHost,msg);
 		if((myHost instanceof Area)
 		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED)
-		&&(!CommonStrings.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled("CONQUEST")))
 		&&(totalControlPoints>=0))
 		{
 			// first look for kills and follows and register the points
@@ -715,7 +715,7 @@ public class Conquerable extends Arrest
 		}
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(myArea!=null)
-		&&(!CommonStrings.isDisabled("CONQUEST")))
+		&&(!CMSecurity.isDisabled("CONQUEST")))
 		{
 			waitToReload=System.currentTimeMillis()+60000;
 			if((totalControlPoints>=0)
@@ -792,7 +792,7 @@ public class Conquerable extends Arrest
 		||(!allowLaw)
 		||(totalControlPoints<0)
 		||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-		||(CommonStrings.isDisabled("ARREST")))
+		||(CMSecurity.isDisabled("ARREST")))
 			return false;
 		if(flagFound(null,holdingClan))
 			return true;

@@ -1349,7 +1349,7 @@ public class Quests implements Cloneable, Quest
 	{
 		if(tickID!=MudHost.TICK_QUEST)
 			return false;
-		if(CommonStrings.isDisabled("QUESTS")) return true;
+		if(CMSecurity.isDisabled("QUESTS")) return true;
 		
 		tickStatus=Tickable.STATUS_START;
 		if(running())

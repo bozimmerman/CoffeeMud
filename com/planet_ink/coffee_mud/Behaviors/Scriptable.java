@@ -4224,7 +4224,7 @@ public class Scriptable extends StdBehavior
 
 	protected Vector getScripts()
 	{
-		if(CommonStrings.isDisabled("SCRIPTABLE"))
+		if(CMSecurity.isDisabled("SCRIPTABLE"))
 			return empty;
 		Vector scripts=null;
 		if(getParms().length()>100)

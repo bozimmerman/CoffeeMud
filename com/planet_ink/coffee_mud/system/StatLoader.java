@@ -10,7 +10,7 @@ public class StatLoader
 {
 	public static CoffeeTables DBRead(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Reading content of Stat  "+new IQCalendar(startTime).d2String());
 		DBConnection D=null;
 		CoffeeTables T=null;
@@ -37,7 +37,7 @@ public class StatLoader
 	
 	public static Vector DBReadAfter(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Reading content of Stats since "+new IQCalendar(startTime).d2String());
 		DBConnection D=null;
 		CoffeeTables T=null;
@@ -67,7 +67,7 @@ public class StatLoader
 	
 	public static void DBDelete(long startTime)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Deleting Stat  "+new IQCalendar(startTime).d2String());
 		try
 		{
@@ -80,7 +80,7 @@ public class StatLoader
 	}
 	public static void DBUpdate(long startTime, String data)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Updating Stat  "+new IQCalendar(startTime).d2String());
 		try
 		{
@@ -93,7 +93,7 @@ public class StatLoader
 	}
 	public static void DBCreate(long startTime, long endTime, String data)
 	{
-		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Creating Stat  "+new IQCalendar(startTime).d2String());
 		DBConnector.update(
 		 "INSERT INTO CMSTAT ("

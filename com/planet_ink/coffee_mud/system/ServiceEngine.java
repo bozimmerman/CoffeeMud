@@ -248,10 +248,10 @@ public class ServiceEngine implements ThreadEngine
 			return ""+(Runtime.getRuntime().totalMemory()/1000);
 		else
 		if(itemCode.equalsIgnoreCase("totalTime"))
-			return ""+Util.returnTime(System.currentTimeMillis()-CommonStrings.getStartTime(),0);
+			return ""+Util.returnTime(System.currentTimeMillis()-CMSecurity.getStartTime(),0);
 		else
 		if(itemCode.equalsIgnoreCase("startTime"))
-			return IQCalendar.d2String(CommonStrings.getStartTime());
+			return IQCalendar.d2String(CMSecurity.getStartTime());
 		else
 		if(itemCode.equalsIgnoreCase("currentTime"))
 			return IQCalendar.d2String(System.currentTimeMillis());

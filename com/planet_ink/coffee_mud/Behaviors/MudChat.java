@@ -344,7 +344,7 @@ public class MudChat extends StdBehavior
 		super.executeMsg(affecting,msg);
 
 		if((!canFreelyBehaveNormal(affecting))
-		||(CommonStrings.isDisabled("MUDCHAT")))
+		||(CMSecurity.isDisabled("MUDCHAT")))
 			return;
 		MOB mob=msg.source();
 		MOB monster=(MOB)affecting;
@@ -458,7 +458,7 @@ public class MudChat extends StdBehavior
 		super.tick(ticking,tickID);
 		if((tickID==MudHost.TICK_MOB)
 		&&(ticking instanceof MOB)
-		&&(!CommonStrings.isDisabled("MUDCHAT")))
+		&&(!CMSecurity.isDisabled("MUDCHAT")))
 		{
 			if(!canFreelyBehaveNormal(ticking))
 			{

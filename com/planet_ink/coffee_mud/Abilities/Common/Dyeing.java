@@ -31,7 +31,9 @@ public class Dyeing extends CommonSkill
 		if(end>0)
 		{
 			int start=name.substring(0,end).indexOf("^");
-			if((start>=0)&&(start<(end-3))) name=name.substring(0,start)+name.substring(end+3);
+			if((start>=0)&&(start<(end-3))) 
+				name=name.substring(0,start)
+					 +name.substring(end+3);
 		}
 		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
 		Vector V=Util.parse(name);

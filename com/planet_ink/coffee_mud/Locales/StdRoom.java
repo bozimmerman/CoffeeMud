@@ -953,7 +953,7 @@ public class StdRoom
 
 	private void reallyReallySend(MOB source, CMMsg msg)
 	{
-		if((Log.debugChannelOn())&&(CommonStrings.isDebugging("MESSAGES")))
+		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
 		Vector inhabs=(Vector)inhabitants.clone();
 		for(int i=0;i<inhabs.size();i++)

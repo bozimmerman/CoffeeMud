@@ -183,7 +183,7 @@ public class RandomMonsters extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-		||(CommonStrings.isDisabled("RANDOMMONSTERS")))
+		||(CMSecurity.isDisabled("RANDOMMONSTERS")))
 			return true;
 		for(int i=maintained.size()-1;i>=0;i--)
 		{

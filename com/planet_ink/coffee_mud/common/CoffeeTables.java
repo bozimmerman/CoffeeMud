@@ -166,7 +166,7 @@ public class CoffeeTables
 	
 	public static void update()
 	{
-		if(CommonStrings.isDisabled("STATS"))
+		if(CMSecurity.isDisabled("STATS"))
 			return;
 		if(todays!=null)
 			CMClass.DBEngine().DBUpdateStat(todays.startTime(),todays.data());
@@ -175,7 +175,7 @@ public class CoffeeTables
 	{
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
-		if(CommonStrings.isDisabled("STATS"))
+		if(CMSecurity.isDisabled("STATS"))
 			return;
 		if(todays==null)
 		{

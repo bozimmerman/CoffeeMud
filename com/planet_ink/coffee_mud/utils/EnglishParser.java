@@ -271,7 +271,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				map.clear();
 				continue;
 			}
-			if(CommonStrings.isDebugging("GEAS"))
+			if(CMSecurity.isDebugging("GEAS"))
 				Log.debugOut("GEAS","POSS-"+pmap[p][1]);
 			map.put("INSTR",pmap[p][1]);
 			possibilities.addElement(map);
@@ -343,7 +343,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			REQ=Util.parse(req);
 			poss=findMatch(me,REQ);
 		}
-		if(CommonStrings.isDebugging("GEAS"))
+		if(CMSecurity.isDebugging("GEAS"))
 			Log.debugOut("GEAS","POSSTOTAL-"+poss.size());
 		geasStep g=new geasStep();
 		if(poss.size()==0)
@@ -445,12 +445,12 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 				likelys.addElement(map);
 			}
-			if(CommonStrings.isDebugging("GEAS"))
+			if(CMSecurity.isDebugging("GEAS"))
 				Log.debugOut("GEAS","LIKELYTOTAL-"+likelys.size());
 			if(likelys.size()==0) likelys=poss;
 			Hashtable map=(Hashtable)likelys.elementAt(Dice.roll(1,likelys.size(),-1));
 			Vector all=Util.parseSemicolons((String)map.get("INSTR"),true);
-			if(CommonStrings.isDebugging("GEAS"))
+			if(CMSecurity.isDebugging("GEAS"))
 				Log.debugOut("GEAS",Util.toStringList(all));
 			g.que=new Vector();
 			for(int a=0;a<all.size();a++)
@@ -505,14 +505,14 @@ public class EnglishParser extends Scriptable implements Tickable
 						CommonMsgs.say(me,M,msgOrQ,false,false);
 						bothering=M;
 						bothered.addElement(M);
-						if(CommonStrings.isDebugging("GEAS"))
+						if(CMSecurity.isDebugging("GEAS"))
 							Log.debugOut("GEAS","BOTHERING: "+bothering.name());
 						return;
 					}
 				}
 			if(!bothered.contains(me.location()))
 				bothered.addElement(me.location());
-			if(CommonStrings.isDebugging("GEAS"))
+			if(CMSecurity.isDebugging("GEAS"))
 				Log.debugOut("GEAS","BEINGMOBILE: "+moveCode);
 			if(moveCode==0)
 			{
@@ -579,12 +579,12 @@ public class EnglishParser extends Scriptable implements Tickable
 				return;
 			}
 			String s=(String)cur.firstElement();
-			if(CommonStrings.isDebugging("GEAS"))
+			if(CMSecurity.isDebugging("GEAS"))
 				Log.debugOut("GEAS","STEP-"+s);
 			if(s.equalsIgnoreCase("itemfind"))
 			{
 				String item=Util.combine(cur,1);
-				if(CommonStrings.isDebugging("GEAS"))
+				if(CMSecurity.isDebugging("GEAS"))
 					Log.debugOut("GEAS","ITEMFIND: "+item);
 				if((Util.isNumber(item)&&(Util.s_int(item)>0)))
 				{
@@ -713,7 +713,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(s.equalsIgnoreCase("mobfind"))
 			{
 				String name=Util.combine(cur,1);
-				if(CommonStrings.isDebugging("GEAS"))
+				if(CMSecurity.isDebugging("GEAS"))
 					Log.debugOut("GEAS","MOBFIND: "+name);
 				if(name.equalsIgnoreCase("you")) name=me.name();
 				if(name.equalsIgnoreCase("yourself")) name=me.name();
@@ -728,7 +728,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				if(M==me) M=me.location().fetchInhabitant(name+".2");
 				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
 				{
-					if(CommonStrings.isDebugging("GEAS"))
+					if(CMSecurity.isDebugging("GEAS"))
 						Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
 					step=STEP_EVAL;
 					que.removeElementAt(0);
@@ -738,7 +738,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				// if asked someone something, give them time to respond.
 				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
 				{	
-					if(CommonStrings.isDebugging("GEAS"))
+					if(CMSecurity.isDebugging("GEAS"))
 						Log.debugOut("GEAS","MOBFIND-RESPONSEWAIT: "+bothering.name());
 					step++; 
 					return;
@@ -754,7 +754,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(s.toLowerCase().startsWith("find"))
 			{
 				String name=Util.combine(cur,1);
-				if(CommonStrings.isDebugging("GEAS"))
+				if(CMSecurity.isDebugging("GEAS"))
 					Log.debugOut("GEAS","FIND: "+name);
 				if(name.equalsIgnoreCase("you")) name=me.name();
 				if(name.equalsIgnoreCase("yourself")) name=me.name();
@@ -822,7 +822,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			else
 			if(s.equalsIgnoreCase("wanderquery"))
 			{
-				if(CommonStrings.isDebugging("GEAS"))
+				if(CMSecurity.isDebugging("GEAS"))
 					Log.debugOut("GEAS","WANDERQUERY: "+Util.combine(cur,1));
 				// if asked someone something, give them time to respond.
 				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
