@@ -71,7 +71,7 @@ public class Spell_SummonSteed extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and call(s), but chokes on the words.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) and call(s), but choke(s) on the words.");
 
 		// return whether it worked
 		return success;
@@ -84,6 +84,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.baseEnvStats().setAbility(11);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setWeight(500);
+		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		if(level<4)
@@ -118,15 +119,14 @@ public class Spell_SummonSteed extends Spell
 			ride.setMobCapacity(3);
 		}
 
-		newMOB=(MOB)newMOB.newInstance();
-		newMOB.setStartRoom(caster.location());
-		newMOB.setLocation(caster.location());
+		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
+		newMOB.text();
 		newMOB.bringToLife(caster.location());
-
+		caster.location().recoverRoomStats();
 		return(newMOB);
 
 
