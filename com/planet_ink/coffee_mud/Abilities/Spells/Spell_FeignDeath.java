@@ -135,6 +135,7 @@ public class Spell_FeignDeath extends Spell
 			peaceAt(target);
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");
+			Body.setCharStats(target.baseCharStats().cloneCharStats());
 			beneficialAffect(mob,target,0);
 
 			int tries=0;

@@ -6,8 +6,9 @@ import java.util.*;
 
 public class GenCorpse extends GenContainer implements DeadBody
 {
-	Room roomLocation=null;
-
+	protected Room roomLocation=null;
+	protected CharStats charStats=null;
+	
 	public GenCorpse()
 	{
 		super();
@@ -41,4 +42,6 @@ public class GenCorpse extends GenContainer implements DeadBody
 		else
 			return super.tick(tickID);
 	}
+	public CharStats charStats(){return charStats;}
+	public void setCharStats(CharStats newStats){charStats=newStats;}
 }

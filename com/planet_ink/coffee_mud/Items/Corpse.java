@@ -8,6 +8,7 @@ import java.util.*;
 public class Corpse extends StdContainer implements DeadBody
 {
 	protected Room roomLocation=null;
+	protected CharStats charStats=null;
 
 	public Corpse()
 	{
@@ -44,5 +45,12 @@ public class Corpse extends StdContainer implements DeadBody
 		else
 			return super.tick(tickID);
 	}
+	public CharStats charStats()
+	{
+		if(charStats==null)
+			charStats=new DefaultCharStats();
+		return charStats;
+	}
+	public void setCharStats(CharStats newStats){charStats=newStats;}
 
 }

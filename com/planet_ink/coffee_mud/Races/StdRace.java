@@ -252,6 +252,7 @@ public class StdRace implements Race
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		if(!mob.isMonster())
