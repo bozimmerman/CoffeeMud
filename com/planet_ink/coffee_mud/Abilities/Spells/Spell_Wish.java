@@ -95,11 +95,11 @@ public class Spell_Wish extends Spell
 
 		mob.curState().setMana(0);
 		int baseLoss=25;
-		mob.charStats().getMyClass().loseExperience(mob,25);
 		FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> wish(es) for '"+myWish+"'!!");
 		boolean success=profficiencyCheck(0,auto);
 		if(!success)
 		{
+			mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 			beneficialWordsFizzle(mob,null,"<S-NAME> wish(es) for '"+myWish+"', but the spell fizzles.");
 			return false;
 		}
@@ -117,6 +117,7 @@ public class Spell_Wish extends Spell
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
 				return false;
 			}
@@ -195,8 +196,8 @@ public class Spell_Wish extends Spell
 				}
 				if(experienceRequired<=0) 
 					experienceRequired=0;
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss+experienceRequired);
 				mob.tell("Your wish has drained you of "+(baseLoss+experienceRequired)+" experience points.");
-				mob.charStats().getMyClass().loseExperience(mob,experienceRequired);
 				return true;
 			}
 			
@@ -254,6 +255,7 @@ public class Spell_Wish extends Spell
 					recallRoom=((MOB)target).getStartRoom();
 				if(recallRoom!=null)
 				{
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					bringThangHere(mob,recallRoom,target);
 					return true;
@@ -300,6 +302,7 @@ public class Spell_Wish extends Spell
 						mob.setExperience(exp);
 					}
 				}
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				return true;
 			}
@@ -386,6 +389,7 @@ public class Spell_Wish extends Spell
 				}
 				if(newRoom!=null)
 				{
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					bringThangHere(mob,newRoom,target);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
@@ -404,6 +408,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -413,6 +418,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.baseState().setHitPoints(tm.baseState().getHitPoints()+2);
 					tm.recoverMaxState();
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -420,6 +426,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.curState().setMana(tm.maxState().getMana());
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -429,6 +436,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.baseState().setMana(tm.baseState().getMana()+2);
 					tm.recoverMaxState();
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -436,6 +444,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.curState().setMovement(tm.maxState().getMovement());
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -445,6 +454,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.baseState().setMovement(tm.baseState().getMovement()+5);
 					tm.recoverMaxState();
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
@@ -462,6 +472,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" MAN ")>=0)
 			||(myWish.indexOf(" BOY ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'M');
 				((MOB)target).recoverCharStats();
@@ -475,6 +486,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" LIGHTER ")>=0)
 			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight-=50;
@@ -490,6 +502,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" HEAVIER ")>=0)
 			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight+=50;
@@ -506,6 +519,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" SHORT ")>=0)
 			||(myWish.indexOf(" LITTLE ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				int weight=((MOB)target).baseEnvStats().height();
 				weight-=12;
@@ -522,6 +536,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BIG ")>=0)
 			||(myWish.indexOf(" TALL ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				int weight=((MOB)target).baseEnvStats().height();
 				weight+=12;
@@ -543,6 +558,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WOMAN ")>=0)
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'F');
 				((MOB)target).recoverCharStats();
@@ -563,10 +579,8 @@ public class Spell_Wish extends Spell
 				if(R!=null)
 				{
 					if(!((MOB)target).isMonster())
-					{
 						baseLoss+=500;
-						mob.charStats().getMyClass().loseExperience(mob,500);
-					}
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
@@ -727,9 +741,10 @@ public class Spell_Wish extends Spell
 			{
 				mob.baseCharStats().getMyClass().unLevel(mob);
 				if(foundAttribute<=6)
-					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-1);
+					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
 				else
-					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-33);
+					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-33);
+				((MOB)target).recoverCharStats();
 				mob.recoverCharStats();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
@@ -749,14 +764,16 @@ public class Spell_Wish extends Spell
 			{
 				mob.baseCharStats().getMyClass().unLevel(mob);
 				if(foundAttribute<=6)
-					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+1);
+					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else
-					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+33);
+					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+33);
 				mob.recoverCharStats();
+				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 			
+			mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;
 		}

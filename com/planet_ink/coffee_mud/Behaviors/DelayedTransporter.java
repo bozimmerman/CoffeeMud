@@ -71,7 +71,7 @@ public class DelayedTransporter extends ActiveTicker
 				if(I.intValue()>=minTicks)
 					if((Dice.rollPercentage()<chance)||(I.intValue()>maxTicks))
 					{
-						String roomName=(String)destRoomNames.elementAt(Dice.roll(1,destRoomNames.size(),0)-1);
+						String roomName=(String)destRoomNames.elementAt(Dice.roll(1,destRoomNames.size(),-1));
 						Room otherRoom=CMMap.getRoom(roomName);
 						if(otherRoom==null)
 							inhab.tell("You are whisked nowhere at all, since '"+roomName+"' is nowhere to be found.");

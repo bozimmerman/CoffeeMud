@@ -13,7 +13,7 @@ public class Prop_ClosedDayNight extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Day/Night Visibility";
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS;
+		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
 	}
 
 	public Environmental newInstance()
@@ -40,7 +40,8 @@ public class Prop_ClosedDayNight extends Property
 		if((affected instanceof MOB)
 		||(affected instanceof Item))
 		{
-			if(closed())
+			if((closed())
+			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
 			{
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);

@@ -67,7 +67,7 @@ public class ExitData extends StdWebMacro
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-						  "MISCTEXT","ISGENERIC"};
+						  "MISCTEXT","ISGENERIC","DOORNAME"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -249,6 +249,10 @@ public class ExitData extends StdWebMacro
 					return "true";
 				else
 					return "false";
+			case 23: // closedtext
+				if(firstTime) old=E.doorName(); 
+				str.append(old);
+				break;
 			}
 			if(firstTime)
 				reqs.put(okparms[o],old.equals("checked")?"on":old);

@@ -26,49 +26,53 @@ public class MOBTeacher extends CombatAbilities
 		setParms(parms);
 	}
 
+	private void ensureCharClass()
+	{
+		myMOB.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
+		if(getParms().toUpperCase().indexOf("MAG")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
+		if(getParms().toUpperCase().indexOf("THI")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
+		if(getParms().toUpperCase().indexOf("FIG")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+		if(getParms().toUpperCase().indexOf("CLE")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
+		if(getParms().toUpperCase().indexOf("RAN")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
+		if(getParms().toUpperCase().indexOf("PAL")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
+		if(getParms().toUpperCase().indexOf("BAR")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
+		if(getParms().toUpperCase().indexOf("DRU")>=0)
+			myMOB.baseCharStats().setMyClass(CMClass.getCharClass("Druid"));
+		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
+		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
+		myMOB.recoverCharStats();
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
 		if(myMOB==null) return;
 		MOB monster=myMOB;
-		monster.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
-		if(getParms().toUpperCase().indexOf("MAG")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
-		if(getParms().toUpperCase().indexOf("THI")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
-		if(getParms().toUpperCase().indexOf("FIG")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
-		if(getParms().toUpperCase().indexOf("CLE")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
-		if(getParms().toUpperCase().indexOf("RAN")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
-		if(getParms().toUpperCase().indexOf("PAL")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
-		if(getParms().toUpperCase().indexOf("BAR")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
-		monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
-		monster.baseCharStats().setStat(CharStats.WISDOM,18);
-		monster.recoverCharStats();
+		ensureCharClass();
 		while(monster.numAbilities()>0)
 		{
 			Ability A=monster.fetchAbility(0);
 			if(A!=null)
 				monster.delAbility(A);
 		}
-		if(monster.numAbilities()<CMClass.abilities.size())
+		for(int i=0;i<CMClass.abilities.size();i++)
 		{
-			for(int i=0;i<CMClass.abilities.size();i++)
-			{
-				Ability A=(Ability)CMClass.abilities.elementAt(i);
-				if(monster.fetchAbility(A.ID())==null)
-					if((A.qualifiesByLevel(monster))||(monster.charStats().getMyClass().ID().equals("StdCharClass")))
-					{
-						A=(Ability)A.copyOf();
-						A.setBorrowed(monster,true);
-						A.setProfficiency(100);
-						monster.addAbility(A);
-					}
-			}
+			Ability A=(Ability)CMClass.abilities.elementAt(i);
+			if(monster.fetchAbility(A.ID())==null)
+				if((A.qualifiesByLevel(monster))||(monster.charStats().getMyClass().ID().equals("StdCharClass")))
+				{
+					A=(Ability)A.copyOf();
+					A.setBorrowed(monster,true);
+					A.setProfficiency(100);
+					monster.addAbility(A);
+				}
 		}
 	}
 
@@ -125,23 +129,7 @@ public class MOBTeacher extends CombatAbilities
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
-				monster.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
-				if(getParms().toUpperCase().indexOf("MAG")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Mage"));
-				if(getParms().toUpperCase().indexOf("THI")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Thief"));
-				if(getParms().toUpperCase().indexOf("FIG")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
-				if(getParms().toUpperCase().indexOf("CLE")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
-				if(getParms().toUpperCase().indexOf("PAL")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
-				if(getParms().toUpperCase().indexOf("RAN")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
-				if(getParms().toUpperCase().indexOf("BAR")>=0)
-					monster.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
-				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
-				monster.baseCharStats().setStat(CharStats.WISDOM,18);
+				ensureCharClass();
 				if(giveABonus)
 				{
 					monster.baseCharStats().setStat(CharStats.INTELLIGENCE,25);

@@ -21,13 +21,13 @@ public class Grouping
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			if((thisSession.mob()!=null)
-			   &&(!thisSession.killFlag())
-			   &&((Sense.isSeen(thisSession.mob())||(mob.isASysOp(null))))
-			   &&((mobName==null)||(thisSession.mob().name().toUpperCase().startsWith(mobName.toUpperCase()))))
-			{
-				msg.append(showWho(thisSession.mob(),true));
-			}
+			MOB mob2=thisSession.mob();
+			if((mob2!=null)
+			&&(!thisSession.killFlag())
+			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
+			&&(mob2.envStats().level()>0)
+			&&((mobName==null)||(mob2.name().toUpperCase().startsWith(mobName.toUpperCase()))))
+				msg.append(showWho(mob2,true));
 		}
 		if((mobName!=null)&&(msg.length()==0))
 			msg.append("That person doesn't appear to be online.\n\r");

@@ -476,9 +476,9 @@ public class Scoring
 		if(Sense.isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
 		
-		for(int l=0;l<18;l++)
+		for(int l=0;l<Item.wornOrder.length;l++)
 		{
-			int wornCode=1<<l;
+			long wornCode=Item.wornOrder[l];
 			String header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
 			header+=Util.SPACES.substring(0,26-header.length())+": ^B";
 			for(int i=0;i<mob.inventorySize();i++)

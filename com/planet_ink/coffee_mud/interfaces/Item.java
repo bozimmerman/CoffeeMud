@@ -80,6 +80,26 @@ public interface Item extends Environmental
 	public static final long ON_EARS=65536;
 	public static final long ABOUT_BODY=131072;
 	
+	public static final long[] wornOrder={
+		ON_HEAD,
+		ON_EYES,
+		ON_EARS,
+		ON_NECK,
+		ABOUT_BODY,
+		ON_TORSO,
+		ON_ARMS,
+		ON_LEFT_WRIST,
+		ON_RIGHT_WRIST,
+		ON_HANDS,
+		ON_LEFT_FINGER,
+		ON_RIGHT_FINGER,
+		WIELD,
+		HELD,
+		ON_WAIST,
+		ON_LEGS,
+		ON_FEET,
+		FLOATING_NEARBY};
+	
 	public static final String[] wornLocation={
 		"inventory",
 		"head",

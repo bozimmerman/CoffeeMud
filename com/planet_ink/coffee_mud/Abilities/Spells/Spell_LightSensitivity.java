@@ -44,7 +44,7 @@ public class Spell_LightSensitivity extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
-		
+		if(((MOB)affected).location()==null) return;
 		if(Sense.isInDark(((MOB)affected).location()))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 		else

@@ -39,7 +39,7 @@ public class GrinderExits
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-						  " MISCTEXT","ISGENERIC"};
+						  " MISCTEXT","ISGENERIC","DOORNAME"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -140,6 +140,10 @@ public class GrinderExits
 					E.setMiscText(old); 
 				break;
 			case 22: // is generic
+				break;
+			case 23: // misctext
+				if(!E.isGeneric())
+					E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
 				break;
 			}
 		}

@@ -121,7 +121,7 @@ public class CombatAbilities extends StdBehavior
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
 				victim=mob;
 
-			tryThisOne.setProfficiency(Dice.roll(1,50,mob.baseEnvStats().level()));
+			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			tryThisOne.invoke(mob,V,victim,false);

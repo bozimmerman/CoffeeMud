@@ -63,14 +63,14 @@ public class Thief_Steal extends ThiefSkill
 
 		Item stolen=target.fetchCarried(null,itemToSteal);
 
+		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
+		if(discoverChance>95) discoverChance=95;
+		if(discoverChance<5) discoverChance=5;
 		boolean success=profficiencyCheck(-(levelDiff*15),auto);
 
 		if(!success)
 		{
-			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*5);
-			if(discoverChance>95) discoverChance=95;
-			if(discoverChance<5) discoverChance=5;
-			if(Dice.rollPercentage()<discoverChance)
+			if(Dice.rollPercentage()>discoverChance)
 			{
 				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",Affect.NO_EFFECT,null);
 				if(mob.location().okAffect(msg))
@@ -81,10 +81,6 @@ public class Thief_Steal extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*5);
-			if(discoverChance>95) discoverChance=95;
-			if(discoverChance<5) discoverChance=5;
-
 			String str=null;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
@@ -94,7 +90,7 @@ public class Thief_Steal extends ThiefSkill
 
 			String hisStr=str;
 			int hisCode=Affect.MSG_NOISYMOVEMENT;
-			if(Dice.rollPercentage()>discoverChance)
+			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 			else
 				hisCode=hisCode | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);

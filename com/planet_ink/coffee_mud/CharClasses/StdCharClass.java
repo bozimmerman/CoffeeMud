@@ -170,10 +170,9 @@ public class StdCharClass implements CharClass
 		if(mob.envStats().level()<2)
 			return;
 		mob.tell("\n\r^ZYou've lost a level!!!^N");
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()-1);
-		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+"^N.\n\r");
 
 		levelAdjuster(mob,-1);
+		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+"^N.\n\r");
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -194,12 +193,14 @@ public class StdCharClass implements CharClass
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
+		int gained=mob.getExperience()-mob.getExpNextLevel();
+		if(gained<50) gained=50;
 
 		int neededNext=neededToBeLevel(mob.baseEnvStats().level());
 		int neededLower=neededToBeLevel(mob.baseEnvStats().level()-1);
 		mob.setExpNextLevel(neededNext);
 		if(mob.getExperience()>mob.getExpNextLevel())
-			mob.setExperience(neededLower);
+			mob.setExperience(neededLower+gained);
 
 		StringBuffer theNews=new StringBuffer("");
 
