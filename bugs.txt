@@ -1,12 +1,9 @@
-I just used the STAT command and I had hang-time I couldn't seme to recover from. I tried to stat Lluaireagan because he was not on the WHO list but was on the WHERE list and that made me curious. Then I 'hung up' and had to re-loging.
-stats on grinder don't go very far back!
-I'll look into MXP
-I'll check out Dragons to see if/what is wrong.
-I have funky muppet pants that have a wear adjuster but, well, you can't even wear it. It's a food item.
-when trying to dress a child mob, it gives the message YOU CANNOT SEEM TO GET A NICE DRESS ON mobName. The dress is SIZE 0, so it can't be a sizing issue....
+UGH! when trying to dress a child mob, it gives the message YOU CANNOT SEEM TO GET A NICE DRESS ON mobName. The dress is SIZE 0, so it can't be a sizing issue....
 I do believe there's a bug in the shapeshift minotaur thing. I'm carrying over 5000 pounds of wood, yet my encumbrance is only 500/5100. I like it;)
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 the idea of unique items
+I'll look into MXP
+Economy: BUDGET$, BUDGETPERIOD, QUANTITYBOUGHT, DEVRATE%, RESETRATE
 map command.  its moronic, but there you go.
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.
 overview grid type thingy -- thin grid

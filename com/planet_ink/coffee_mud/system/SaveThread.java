@@ -179,7 +179,7 @@ public class SaveThread extends Thread
 			else
 				continue;
 
-	        if((last<warn)&&(last>when)) 
+	        if((last>when)&&(last<warn)) 
 			{
 				boolean protectedOne=false;
 				for(int p=0;p<protectedOnes.size();p++)
@@ -193,10 +193,36 @@ public class SaveThread extends Thread
 				}
 				if(!protectedOne)
 				{
-					MOB M=CMMap.getLoadPlayer(name);
-					if(M!=null)
+					Vector warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+					long foundWarning=-1;
+					if((warnedOnes!=null)&&(warnedOnes.size()>0))
 					{
-						warnPrePurge(M,when-warn);
+						boolean changed=false;
+						StringBuffer warnStr=new StringBuffer("");
+						for(int b=0;b<warnedOnes.size();b++)
+						{
+							String B=(String)warnedOnes.elementAt(b);
+							if(B.trim().length()>0)
+							{
+								if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
+									foundWarning=Util.s_long(B.substring(name.length()+1).trim());
+								warnStr.append(B+"\n");
+							}
+						}
+						if((foundWarning<0)||(foundWarning<when))
+						{
+							warnStr.append(name+" "+System.currentTimeMillis()+"\n");
+							Resources.updateResource("warnedplayers.ini",warnStr);
+							Resources.saveFileResource("warnedplayers.ini");
+						}
+					}
+					if((foundWarning<0)||(foundWarning<when))
+					{
+						MOB M=CMMap.getLoadPlayer(name);
+						if(M!=null)
+						{
+							warnPrePurge(M,when-warn);
+						}
 					}
 				}
 			}
@@ -224,6 +250,65 @@ public class SaveThread extends Thread
 		return true;
 	}
 
+	private void warnPrePurge(MOB mob, long timeLeft) 
+	{
+		// check for valid recipient
+		if(mob==null) return;
+
+		if((mob.playerStats()==null)
+		||(mob.playerStats().getEmail().length()==0)) // no email addy to forward TO
+			return;
+		
+		//  timeLeft is in millis
+		String from="AutoPurgeWarning";
+		String to=mob.Name();
+		long date=System.currentTimeMillis();
+		String subj=CommonStrings.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
+		String textTimeLeft="";
+		if(timeLeft>(1000*60*60*24*2)) 
+		{
+			int days=new Double(Util.div((double)timeLeft,1000*60*60*24)).intValue();
+			textTimeLeft = days + " days";
+		}
+		else
+		{
+			int hours=new Double(Util.div((double)timeLeft,1000*60*60)).intValue();
+			textTimeLeft = hours + " hours";
+		}
+		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
+
+		SMTPclient SC=null;
+		try
+		{
+			SC=new SMTPclient(mob.playerStats().getEmail());
+		}
+		catch(BadEmailAddressException be)
+		{
+			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.  Invalid email address.");
+			return;
+		}
+		catch(java.io.IOException ioe)
+		{
+			return;
+		}
+
+		String replyTo="AutoPurge";
+		String domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		try
+		{
+			SC.sendMessage(from+"@"+domain,
+						   replyTo+"@"+domain,
+						   mob.playerStats().getEmail(),
+						   mob.playerStats().getEmail(),
+						   subj,
+						   CoffeeFilter.simpleOutFilter(msg));
+		}
+		catch(java.io.IOException ioe)
+		{
+			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.");
+		}
+	}
+	
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
@@ -284,64 +369,4 @@ public class SaveThread extends Thread
 
 		Log.sysOut("SaveThread","Shutdown complete.");
 	}
-
-	private void warnPrePurge(MOB mob, long timeLeft) 
-	{
-		//  timeLeft is in millis
-		String from="AutoPurgeWarning";
-		String to=mob.Name();
-		long date=System.currentTimeMillis();
-		String subj=CommonStrings.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
-		String textTimeLeft="";
-		if(timeLeft>(1000*60*60*24*2)) 
-		{
-			int days=new Double(Util.div((double)timeLeft,1000*60*60*24)).intValue();
-			textTimeLeft = days + " days";
-		}
-		else
-		{
-			int hours=new Double(Util.div((double)timeLeft,1000*60*60)).intValue();
-			textTimeLeft = hours + " hours";
-		}
-		String msg="Your character, "+to+" is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
-		
-		// check for valid recipient
-		if(mob==null) return;
-
-		if((mob.playerStats()==null)
-		||(mob.playerStats().getEmail().length()==0)) // no email addy to forward TO
-			return;
-
-		SMTPclient SC=null;
-		try
-		{
-			SC=new SMTPclient(mob.playerStats().getEmail());
-		}
-		catch(BadEmailAddressException be)
-		{
-			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.  Invalid email address.");
-			return;
-		}
-		catch(java.io.IOException ioe)
-		{
-			return;
-		}
-
-		String replyTo="AutoPurge";
-		String domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
-		try
-		{
-			SC.sendMessage(from+"@"+domain,
-						   replyTo+"@"+domain,
-						   mob.playerStats().getEmail(),
-						   mob.playerStats().getEmail(),
-						   subj,
-						   CoffeeFilter.simpleOutFilter(msg));
-		}
-		catch(java.io.IOException ioe)
-		{
-			Log.errOut("SaveThread","Unable to notify "+to+" of impending autopurge.");
-		}
-	}
-
 }

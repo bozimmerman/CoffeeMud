@@ -49,6 +49,12 @@ public class Transfer extends At
 		}
 		else
 		{
+			boolean allFlag=false;
+			if(mobname.toUpperCase().startsWith("ALL "))
+			{
+				mobname=mobname.substring(4);
+				allFlag=true;
+			}
 			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -60,7 +66,9 @@ public class Transfer extends At
 					if((M!=null)&&(!V.contains(M)))
 					   V.addElement(M);
 					num++;
+					if((!allFlag)&&(V.size()>0)) break;
 				}
+				if((!allFlag)&&(V.size()>0)) break;
 			}
 			if(V.size()==0)
 			{
@@ -73,9 +81,11 @@ public class Transfer extends At
 					{
 						M=R.fetchInhabitant(mobname+"."+num);
 						if((M!=null)&&(!V.contains(M)))
-						   V.addElement(M);
+							V.addElement(M);
 						num++;
+						if((!allFlag)&&(V.size()>0)) break;
 					}
+					if((!allFlag)&&(V.size()>0)) break;
 				}
 			}
 		}
@@ -94,7 +104,7 @@ public class Transfer extends At
 
 		if(room==null)
 		{
-			mob.tell("Transfer where? Try a Room ID, player name, area name, or room text!");
+			mob.tell("Transfer where? '"+cmd.toString()+"' is unknown.  Enter a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		for(int i=0;i<V.size();i++)

@@ -23,7 +23,6 @@ import com.planet_ink.coffee_mud.common.*;
 public class Dragon extends StdMOB
 {
 	public String ID(){return "Dragon";}
-	private boolean started=false;
 	private int breatheDown=4;
 	private int swallowDown=5;
 	private int digestDown=4;
@@ -33,6 +32,7 @@ public class Dragon extends StdMOB
 
 
 	// ===== Defined Values for Dragon Ages
+	public final static int HATCHLING			= 0;	// 10
 	public final static int VERYYOUNG			= 1;	// 10
 	public final static int YOUNG				= 2;	// 15
 	public final static int SUBADULT			= 3;	// 20
@@ -42,47 +42,43 @@ public class Dragon extends StdMOB
 	public final static int VERYOLD				= 7;	// 5
 	public final static int ANCIENT				= 8;	// 3
 
-	public final static int DRAGONCOLORCOUNT	= 5;
+	public final static int DRAGONCOLORCOUNT	= 10;
 
 	// ===== Defined Values for Dragon Colors
-	public final static int WHITE				= 1;
-	public final static int BLACK				= 2;
-	public final static int BLUE				= 3;
-	public final static int GREEN				= 4;
-	public final static int RED					= 5;
-	public final static int BRASS				= 6;
-	public final static int COPPER				= 7;
-	public final static int BRONZE				= 8;
-	public final static int SILVER				= 9;
-	public final static int GOLD				= 10;
+	public final static int WHITE				= 0;
+	public final static int BLACK				= 1;
+	public final static int BLUE				= 2;
+	public final static int GREEN				= 3;
+	public final static int RED					= 4;
+	public final static int BRASS				= 5;
+	public final static int COPPER				= 6;
+	public final static int BRONZE				= 7;
+	public final static int SILVER				= 8;
+	public final static int GOLD				= 9;
 
 
 	// ===== Defined Value for holding the Dragon Type
-	private int DragonColor = WHITE;
-	private int DragonAge = VERYYOUNG;
+	private int DragonColor(){ return baseEnvStats().ability();}
+	private int DragonAge(){ return baseEnvStats().level()/8;}
 	private Room Stomach = null;
 
 	// ===== random constructor
 	public Dragon()
 	{
 		// ===== creates a random color and age of dragon
-		this((short)Math.round(Math.random()*DRAGONCOLORCOUNT-1)+1);
+		this((short)Math.round(Math.random()*DRAGONCOLORCOUNT));
 	}
 
 	// ===== constructs a dragon of a specified color, but a random age
 	public Dragon(int colorValue)
 	{
-		// ===== doit
-		this(colorValue,determineAge());
+		this(colorValue,determineAge()*8);
 	}
 
 	public void setupDragon(int colorValue, int ageValue)
 	{
-		// ===== set the parameter stuff		DragonAge = ageValue;
-		DragonColor = colorValue;
-		baseEnvStats().setLevel(8*DragonAge);
-		baseEnvStats().setAbility(colorValue);
-		birthAge=8*DragonAge;
+		// ===== set the parameter stuff		DragonAge() = ageValue;
+		birthAge=ageValue;
 		birthColor=colorValue;
 
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
@@ -98,11 +94,10 @@ public class Dragon extends StdMOB
 		{
 			baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		}
-
 		// ===== set the basics
-		Username=getAgeDescription(DragonAge).toString() + " " + getColorDescription(DragonColor) + " Dragon";
-		setDescription("A majestic " + getColorDescription(DragonColor) + " Dragon, simply being in its presence makes you uneasy.");
-		setDisplayText(getAgeDescription(DragonAge).toString() + " " + getColorDescription(DragonColor) + " Dragon watches you intently.");
+		setName(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon");
+		setDescription("A majestic " + getColorDescription(DragonColor()) + " Dragon, simply being in its presence makes you uneasy.");
+		setDisplayText(getAgeDescription(DragonAge()).toString() + " " + getColorDescription(DragonColor()) + " Dragon watches you intently.");
 
 		// ===== arm him
 		Weapon ClawOne=(Weapon)CMClass.getWeapon("DragonClaw");
@@ -116,13 +111,13 @@ public class Dragon extends StdMOB
 		}
 
 		// ===== Set his defenses based upon his age as well
-		baseEnvStats().setArmor(20 - (DragonAge*15));
+		baseEnvStats().setArmor(20 - (DragonAge()*15));
 
 		// ===== hitpoints are muxed by 10 To beef them up
 		int PointMod = 1;
 
 		// ===== set the mod based on the color
-		switch (DragonColor)
+		switch (DragonColor())
 		{
 			case WHITE:		PointMod = 1;	setAlignment(0);	break;
 			case BLACK:		PointMod = 2;	setAlignment(0);	break;
@@ -137,9 +132,9 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	setAlignment(500);	break;
 		}
 
-		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge));
-		setMoney(1000 * DragonAge);
-		baseEnvStats().setWeight(1500 * DragonAge);
+		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge()));
+		setMoney(1000 * DragonAge());
+		baseEnvStats().setWeight(1500 * DragonAge());
 
 		// ===== Dragons never flee.
 		setWimpHitPoint(0);
@@ -148,18 +143,17 @@ public class Dragon extends StdMOB
 		baseEnvStats().setSpeed(2.0);
 
 		// ===== Dragons get tougher with age
-		baseCharStats().setStat(CharStats.STRENGTH,13 + (DragonAge*2));
-		baseCharStats().setStat(CharStats.INTELLIGENCE,13 + (DragonAge*2));
-		baseCharStats().setStat(CharStats.WISDOM,13 + (DragonAge*2));
-		baseCharStats().setStat(CharStats.DEXTERITY,13 + (DragonAge*2));
-		baseCharStats().setStat(CharStats.CONSTITUTION,13 + (DragonAge*2));
-		baseCharStats().setStat(CharStats.CHARISMA,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.STRENGTH,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.WISDOM,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.DEXTERITY,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.CONSTITUTION,13 + (DragonAge()*2));
+		baseCharStats().setStat(CharStats.CHARISMA,13 + (DragonAge()*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		// ===== if the dragon is an adult or larger add the swallow whole
 		Stomach=null;
-		started=true;
 		// ===== Recover from birth.
 		recoverMaxState();
 		resetToMaxState();
@@ -171,7 +165,11 @@ public class Dragon extends StdMOB
 	public Dragon(int colorValue, int ageValue)
 	{
 		super();
+		baseEnvStats().setAbility(colorValue);
+		baseEnvStats().setLevel(ageValue);
 		setupDragon(colorValue,ageValue);
+		birthAge=-1;
+		birthColor=-1;
 	}
 
 	private static int determineAge()
@@ -180,6 +178,7 @@ public class Dragon extends StdMOB
 		int iRoll = Dice.rollPercentage()+1;
 
 		// ===== Determine the age based upon this
+		if (iRoll==1) return HATCHLING;
 		if (iRoll<=10) return VERYYOUNG;
 		if (iRoll<=25) return YOUNG;
 		if (iRoll<=45) return SUBADULT;
@@ -198,6 +197,7 @@ public class Dragon extends StdMOB
 		// ===== return a string that represents the age of the Dragon
 		switch (draconianAge)
 		{
+			case HATCHLING:		returnVal = new StringBuffer("a hatchling");break;
 			case VERYYOUNG:		returnVal = new StringBuffer("a very young");break;
 			case YOUNG:			returnVal = new StringBuffer("a young");break;
 			case SUBADULT:		returnVal = new StringBuffer("a sub-adult");break;
@@ -229,7 +229,7 @@ public class Dragon extends StdMOB
 			case BRONZE:returnVal = new StringBuffer("Bronze");break;
 			case SILVER:returnVal = new StringBuffer("Silver");break;
 			case GOLD:	returnVal = new StringBuffer("Gold");break;
-			default:	returnVal = new StringBuffer("");break;
+			default:	returnVal = new StringBuffer("Unknown");break;
 		}
 
 		return returnVal;
@@ -239,11 +239,12 @@ public class Dragon extends StdMOB
 	{
 		if((!amDead())&&(tickID==MudHost.TICK_MOB))
 		{
-			if(!started)setupDragon(birthColor,DragonAge/8);
-
+			if((baseEnvStats().level()!=birthAge)
+			||(baseEnvStats().ability()!=birthColor))
+				setupDragon(baseEnvStats().ability(),baseEnvStats().level());
 			if((Stomach==null)
 			&&(location()!=null)
-			&&(baseEnvStats().level()>=ADULT))
+			&&(DragonAge()>=ADULT))
 			{
 				Stomach = CMClass.getLocale("StdRoom");
 				if(Stomach!=null)
@@ -253,9 +254,6 @@ public class Dragon extends StdMOB
 					Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 				}
 			}
-			if((baseEnvStats().level()!=this.birthAge)
-			||(baseEnvStats().ability()!=this.birthColor))
-				setupDragon((int)Math.floor(Util.div(baseEnvStats().level(),8))+1,baseEnvStats().ability());
 			if (isInCombat())
 			{
 				if((--swallowDown)<=0)
@@ -296,7 +294,7 @@ public class Dragon extends StdMOB
 		}
 
 		// ===== Tell What the Beast is doing
-		switch (DragonColor)
+		switch (DragonColor())
 		{
 		case WHITE:
 			msgText = "The dragon breathes frost at <T-NAME>.";
@@ -368,7 +366,7 @@ public class Dragon extends StdMOB
 			// ===== get the next target
 			target = room.fetchInhabitant(x);
 			// ===== do not attack yourself
-			if ((target!=null)&&(!target.ID().equals(this.ID())))
+			if ((target!=null)&&(!target.ID().equals(ID())))
 			{
 				FullMsg Message = new FullMsg(this,
 											  target,
@@ -380,9 +378,9 @@ public class Dragon extends StdMOB
 				if (room.okMessage(this,Message))
 				{
 					room.send(this,Message);
-					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
+					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge()),2.0)));
 					if(Message.value()<=0)
-						damage=((short)Math.round(Math.random()*7)*DragonAge);
+						damage=((short)Math.round(Math.random()*7)*DragonAge());
 					MUDFight.postDamage(this,target,null,damage,CMMsg.MASK_GENERAL|AffectCode,WeaponType,"The blast <DAMAGE> <T-NAME>");
 				}
 			}
@@ -432,9 +430,11 @@ public class Dragon extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		if(!started)setupDragon(birthColor,DragonAge/8);
-		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_MAGIC)+DragonAge*5);
-		switch(DragonColor)
+		if((baseEnvStats().level()!=birthAge)
+		||(baseEnvStats().ability()!=birthColor))
+			setupDragon(baseEnvStats().ability(),baseEnvStats().level());
+		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_MAGIC)+DragonAge()*5);
+		switch(DragonColor())
 		{
 		case GOLD:
 			charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
