@@ -58,7 +58,7 @@ public class Spell_Light extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already <S-HAS-HAVE> light.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> light.");
 			return false;
 		}
 

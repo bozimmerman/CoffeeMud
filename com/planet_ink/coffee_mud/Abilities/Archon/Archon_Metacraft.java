@@ -123,7 +123,7 @@ public class Archon_Metacraft extends CraftingSkill
 
 		mob.giveItem(building);
 		if(key!=null) mob.giveItem(key);
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" appears in your hands.");
+		mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
 		mob.location().recoverEnvStats();
 		return true;
 	}

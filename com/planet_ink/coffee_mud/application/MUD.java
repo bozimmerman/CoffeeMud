@@ -773,8 +773,8 @@ public class MUD extends Thread implements MudHost
 				if ((page==null)||(!page.loaded))
 				{
 					Log.startLogFiles(1);
-					Log.errOut("MUD","ERROR: Unable to read ini file.");
-					System.out.println("MUD/ERROR: Unable to read ini file.");
+					Log.errOut("MUD","ERROR: Unable to read ini file: '"+iniFile+"'.");
+					System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 					System.exit(-1);
 				}
