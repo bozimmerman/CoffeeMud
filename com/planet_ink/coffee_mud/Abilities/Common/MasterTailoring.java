@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -164,7 +165,7 @@ public class MasterTailoring extends CraftingSkill
 			int toggler=1;
 			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",25)+" "+Util.padRight("Cloth",10)+" ");
+				buf.append(Util.padRight("Item",28)+" Lvl "+Util.padRight("Cloth",5)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -176,7 +177,7 @@ public class MasterTailoring extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,25)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,28)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

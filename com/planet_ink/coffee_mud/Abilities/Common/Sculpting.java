@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -143,7 +144,7 @@ public class Sculpting extends CraftingSkill
 		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",16)+" Lvl Stone required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -153,7 +154,7 @@ public class Sculpting extends CraftingSkill
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
+						buf.append(Util.padRight(item,16)+" "+Util.padRight(""+level,3)+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

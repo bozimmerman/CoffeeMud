@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -117,7 +118,7 @@ public class Smelting extends CraftingSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" "+Util.padRight("Metal #1",20)+" Metal #2\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Lvl "+Util.padRight("Metal #1",16)+" Metal #2\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -128,7 +129,7 @@ public class Smelting extends CraftingSkill
 					String metal1=((String)V.elementAt(RCP_METALONE)).toLowerCase();
 					String metal2=((String)V.elementAt(RCP_METALTWO)).toLowerCase();
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,20)+" "+Util.padRight(metal1,20)+" "+metal2+"\n\r");
+						buf.append(Util.padRight(item,20)+" "+Util.padRight(""+level,3)+" "+Util.padRight(metal1,16)+" "+metal2+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

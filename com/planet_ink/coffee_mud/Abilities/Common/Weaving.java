@@ -154,7 +154,7 @@ public class Weaving extends CraftingSkill
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",10)+" "+Util.padRight("Material",10)+" ");
+				buf.append(Util.padRight("Item",10)+" "+Util.padRight("Lvl",3)+" "+Util.padRight("Material",10)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -166,7 +166,7 @@ public class Weaving extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,10)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,10)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

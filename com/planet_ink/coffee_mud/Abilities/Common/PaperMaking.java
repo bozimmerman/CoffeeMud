@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -107,7 +108,7 @@ public class PaperMaking extends CraftingSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",21)+" Material required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",22)+" Lvl Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -118,7 +119,7 @@ public class PaperMaking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					String material=(String)V.elementAt(RCP_WOODTYPE);
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,21)+" "+wood+" "+material.toLowerCase()+"\n\r");
+						buf.append(Util.padRight(item,22)+" "+Util.padRight(""+level,3)+" "+wood+" "+material.toLowerCase()+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
