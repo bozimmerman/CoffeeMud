@@ -31,13 +31,9 @@ public class Play_Instrument extends Play
 		else
 			return name();
 	}
-	private static Ability theSpell=null;
 	protected Ability getSpell()
 	{
-		if(theSpell!=null) return theSpell;
-		if(mimicSpell().length()==0) return null;
-		theSpell=CMClass.getAbility(mimicSpell());
-		return theSpell;
+		return null;
 	}
 	public int quality()
 	{

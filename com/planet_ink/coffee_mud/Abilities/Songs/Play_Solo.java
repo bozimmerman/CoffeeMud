@@ -39,6 +39,8 @@ public class Play_Solo extends Play
 				if(otherBard.location()!=null)
 				{
 					otherBard.tell("You can't seem to upstage "+myChar.name()+"'s solo.");
+					if(!invoker().curState().adjMana(-10,invoker().maxState()))
+						unplay(myChar);
 					return false;
 				}
 			}

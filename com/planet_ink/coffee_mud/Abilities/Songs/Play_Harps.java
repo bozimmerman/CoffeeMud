@@ -11,4 +11,12 @@ public class Play_Harps extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_HARPS;}
 	public Environmental newInstance(){	return new Play_Harps();}
 	public String mimicSpell(){return "Spell_Friends";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 }

@@ -11,5 +11,13 @@ public class Play_Harmonicas extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_HARMONICAS;}
 	public Environmental newInstance(){	return new Play_Harmonicas();}
 	public String mimicSpell(){return "Spell_Awe";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 
 }

@@ -12,5 +12,13 @@ public class Play_Clarinets extends Play_Instrument
 	public Environmental newInstance(){	return new Play_Clarinets();}
 	public String mimicSpell(){return "Spell_ShockingGrasp";}
 	protected int canAffectCode(){return 0;}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 
 }

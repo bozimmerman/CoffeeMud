@@ -11,4 +11,12 @@ public class Play_Flutes extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_FLUTES;}
 	public Environmental newInstance(){	return new Play_Flutes();}
 	public String mimicSpell(){return "Chant_CharmAnimal";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 }

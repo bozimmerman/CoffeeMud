@@ -94,7 +94,7 @@ public class InstrumentMaking extends CommonSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Material required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" "+Util.padRight("Type",10)+" Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -105,9 +105,10 @@ public class InstrumentMaking extends CommonSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					String type=(String)V.elementAt(RCP_MATERIAL);
 					String race=((String)V.elementAt(RCP_RACES)).trim();
+					String itype=Util.capitalize(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
 					if((level<=mob.envStats().level())
 					&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
-						buf.append(Util.padRight(item,20)+" "+wood+" "+type+"\n\r");
+						buf.append(Util.padRight(item,20)+" "+Util.padRight(itype,10)+" "+wood+" "+type+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());

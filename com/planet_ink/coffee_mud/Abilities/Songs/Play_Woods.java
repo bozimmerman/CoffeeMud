@@ -11,5 +11,13 @@ public class Play_Woods extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_WOODS;}
 	public Environmental newInstance(){	return new Play_Woods();}
 	public String mimicSpell(){return "Spell_Shield";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 
 }

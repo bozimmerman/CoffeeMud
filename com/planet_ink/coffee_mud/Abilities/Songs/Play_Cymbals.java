@@ -11,6 +11,14 @@ public class Play_Cymbals extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_CYMBALS;}
 	public Environmental newInstance(){	return new Play_Cymbals();}
 	public String mimicSpell(){return "Spell_Knock";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 	
 	protected void inpersistantAffect(MOB mob)
 	{

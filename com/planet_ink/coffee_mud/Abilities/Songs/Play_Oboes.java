@@ -12,4 +12,12 @@ public class Play_Oboes extends Play_Instrument
 	public Environmental newInstance(){	return new Play_Oboes();}
 	public String mimicSpell(){return "Spell_AcidArrow";}
 	protected int canAffectCode(){return 0;}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 }

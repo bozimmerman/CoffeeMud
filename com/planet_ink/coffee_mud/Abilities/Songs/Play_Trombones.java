@@ -11,5 +11,13 @@ public class Play_Trombones extends Play_Instrument
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_TROMBONES;}
 	public Environmental newInstance(){	return new Play_Trombones();}
 	public String mimicSpell(){return "Spell_Frenzy";}
+	private static Ability theSpell=null;
+	protected Ability getSpell()
+	{
+		if(theSpell!=null) return theSpell;
+		if(mimicSpell().length()==0) return null;
+		theSpell=CMClass.getAbility(mimicSpell());
+		return theSpell;
+	}
 
 }

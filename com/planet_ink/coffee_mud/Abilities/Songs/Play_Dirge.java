@@ -19,18 +19,6 @@ public class Play_Dirge extends Play
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.location().domainType()&Room.INDOORS)>0)
-		{
-			mob.tell("The dead cannot be buried here");
-			return false;
-		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-		{
-			mob.tell("The dead cannot be buried here");
-			return false;
-		}
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
@@ -79,6 +67,8 @@ public class Play_Dirge extends Play
 						follower.charStats().getCurrentClass().gainExperience(follower,null,follower.getLeigeID(),expGained,false);
 				}
 				mob.location().recoverRoomStats();
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" fades away.");
+				target.destroy();
 			}
 		}
 		else
