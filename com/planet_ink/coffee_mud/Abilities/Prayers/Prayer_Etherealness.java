@@ -86,7 +86,6 @@ public class Prayer_Etherealness extends Prayer
 			case CMMsg.TYP_HANDS:
 				msg.source().tell("You fail to manipulate matter in this form.");
 				return false;
-			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_KNOCK:
 			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUSH:
@@ -94,6 +93,7 @@ public class Prayer_Etherealness extends Prayer
 			case CMMsg.TYP_CLOSE:
 				msg.source().tell("You fail your attempt to affect matter in this form.");
 				return false;
+			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_WEAPONATTACK:
 				msg.source().tell("You fail your attempt to affect matter in this form.");
 				msg.source().makePeace();

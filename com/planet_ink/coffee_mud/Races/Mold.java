@@ -107,7 +107,7 @@ public class Mold extends StdRace
 			else
 			if(msg.amITarget(myHost)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 			{
-				switch(msg.sourceMinor())
+				switch(msg.targetMinor())
 				{
 				case CMMsg.TYP_FIRE:
 					{

@@ -46,7 +46,7 @@ public class Paladin_Defend extends StdAbility
 		{
 			// preventing distracting player from doin anything else
 			if(msg.amISource(invoker)
-			&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
+			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
 				invoker.location().show(invoker,msg.target(),CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>.");
 				return false;

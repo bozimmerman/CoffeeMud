@@ -98,7 +98,7 @@ public class ClimbableSurface extends StdRoom
 		super.executeMsg(myHost,msg);
 		if(Sense.isSleeping(this)) return;
 
-		if((msg.targetMinor()==CMMsg.TYP_THROW)
+		if((msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(CoffeeUtensils.roomLocation(msg.target())==this)
 		&&(msg.tool() instanceof Item)
 		&&((!(msg.tool() instanceof Rideable))

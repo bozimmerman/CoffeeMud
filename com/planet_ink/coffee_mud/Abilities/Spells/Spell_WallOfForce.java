@@ -51,7 +51,7 @@ public class Spell_WallOfForce extends Spell
 		{
 			if(((msg.tool()!=null)
 				&&(msg.tool() instanceof Ability))
-			||((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			||((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Weapon)
 				&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))

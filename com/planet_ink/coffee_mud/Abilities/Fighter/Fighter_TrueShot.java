@@ -60,7 +60,7 @@ public class Fighter_TrueShot extends StdAbility
 
 		if((msg.amISource(mob))
 		&&(gettingBonus)
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(Dice.rollPercentage()>95)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())

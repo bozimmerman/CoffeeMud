@@ -65,7 +65,7 @@ public class Prop_AstralSpirit extends Property
 			if((msg.tool()!=null)&&(msg.tool().ID().equalsIgnoreCase("Skill_Revoke")))
 			   return super.okMessage(myHost,msg);
 			else
-			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				mob.tell("You are unable to attack in this incorporeal form.");
 				peaceAt(mob);

@@ -73,7 +73,7 @@ public class Spell_IronGrip extends Spell
 			}
 			else
 			if((msg.amISource(mob))
-			&&(msg.targetMinor()==CMMsg.TYP_THROW)
+			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(msg.tool() instanceof Item)
 			&&(mob.isMine((Item)msg.tool()))
 			&&(((Item)msg.tool()).amWearingAt(Item.WIELD)))

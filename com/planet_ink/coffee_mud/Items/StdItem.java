@@ -575,7 +575,7 @@ public class StdItem implements Item
 		MOB mob=msg.source();
 		
 		if((msg.tool()==this)
-		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(mob!=null)
 		&&(mob.isMine(this)))
 		{
@@ -900,7 +900,7 @@ public class StdItem implements Item
 
 		MOB mob=msg.source();
 		if((msg.tool()==this)
-		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(mob!=null)
 		&&(msg.target()!=null))
 		{
@@ -910,7 +910,7 @@ public class StdItem implements Item
 				mob.delInventory(this);
 				if(!R.isContent(this))
 					R.addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					R.recoverRoomStats();
 					if(mob.location()!=R)

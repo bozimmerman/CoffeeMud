@@ -71,7 +71,7 @@ public class Spell_FeignDeath extends Spell
 
 		if((msg.amISource(mob))&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL)))
 		{
-			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				mob.tell("You are unable to attack in this semi-incorporeal form.");
 				peaceAt(mob);

@@ -57,6 +57,7 @@ public class Spell_Grease extends Spell
 			case CMMsg.TYP_LEAVE:
 			case CMMsg.TYP_ENTER:
 			case CMMsg.TYP_WEAPONATTACK:
+			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_FLEE:
 				if(invoker()!=null)
 				{

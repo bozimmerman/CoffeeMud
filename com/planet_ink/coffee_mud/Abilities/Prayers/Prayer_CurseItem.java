@@ -76,7 +76,7 @@ public class Prayer_CurseItem extends Prayer
 		Item item=(Item)affected;
 
 		MOB mob=msg.source();
-		if((msg.tool()==item)&&(msg.targetMinor()==CMMsg.TYP_THROW))
+		if((msg.tool()==item)&&(msg.sourceMinor()==CMMsg.TYP_THROW))
 		{
 			mob.tell("You can't seem to get rid of "+item.name()+".");
 			return false;

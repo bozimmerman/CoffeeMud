@@ -37,7 +37,7 @@ public class Spell_MageClaws extends Spell
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()==null))
 		{
 			Weapon w=(Weapon)CMClass.getItem("GenWeapon");

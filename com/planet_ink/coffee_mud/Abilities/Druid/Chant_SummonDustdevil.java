@@ -97,7 +97,7 @@ public class Chant_SummonDustdevil extends Chant
 				unInvoke();
 				return false;
 			}
-			if(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				msg.source().tell("You can't fight!");
 				msg.source().setVictim(null);

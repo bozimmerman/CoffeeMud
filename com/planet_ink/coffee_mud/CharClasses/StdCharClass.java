@@ -248,7 +248,7 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
-		if(((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)
+		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
 		&&(mob.charStats().getCurrentClass()==this)
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&EnvResource.MATERIAL_MASK))))

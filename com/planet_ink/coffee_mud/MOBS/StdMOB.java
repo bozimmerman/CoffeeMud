@@ -1300,7 +1300,8 @@ public class StdMOB implements MOB
 					&&(msg.sourceMinor()!=CMMsg.TYP_SLEEP))
 					{
 						tell("You need to stand up!");
-						if(msg.sourceMinor()!=CMMsg.TYP_WEAPONATTACK)
+						if((msg.sourceMinor()!=CMMsg.TYP_WEAPONATTACK)
+						&&(msg.sourceMinor()!=CMMsg.TYP_THROW))
 							return false;
 					}
 					if(!Sense.canMove(this))
@@ -1319,7 +1320,6 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_OPEN:
 				case CMMsg.TYP_CLOSE:
-				case CMMsg.TYP_THROW:
 					if(charStats().getBodyPart(Race.BODY_ARM)==0)
 					{
 						tell("You need arms to do that.");
@@ -1377,6 +1377,13 @@ public class StdMOB implements MOB
 					&&(msg.target() instanceof Item))
 					{
 						tell("Not while you are fighting!");
+						return false;
+					}
+					break;
+				case CMMsg.TYP_THROW:
+					if(charStats().getBodyPart(Race.BODY_ARM)==0)
+					{
+						tell("You need arms to do that.");
 						return false;
 					}
 					break;

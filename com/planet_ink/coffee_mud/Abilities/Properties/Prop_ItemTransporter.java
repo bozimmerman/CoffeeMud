@@ -152,7 +152,7 @@ public class Prop_ItemTransporter extends Property
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item))
 		||((affected instanceof Room)
-			&&(msg.targetMinor()==CMMsg.TYP_THROW)
+			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		    &&(affected==CoffeeUtensils.roomLocation(msg.target()))
 			&&(msg.tool() instanceof Item)))
 		{
@@ -267,7 +267,7 @@ public class Prop_ItemTransporter extends Property
 		if((msg.targetMinor()==CMMsg.TYP_GET)
 		||(msg.targetMinor()==CMMsg.TYP_GIVE)
 		||(msg.targetMinor()==CMMsg.TYP_PUT)
-		||(msg.targetMinor()==CMMsg.TYP_THROW)
+		||(msg.sourceMinor()==CMMsg.TYP_THROW)
 		||(msg.targetMinor()==CMMsg.TYP_DROP))
 			tryToMoveStuff();
 	}

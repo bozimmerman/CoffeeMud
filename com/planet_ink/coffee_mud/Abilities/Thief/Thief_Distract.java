@@ -56,7 +56,7 @@ public class Thief_Distract extends ThiefSkill
 			// preventing distracting player from doin anything else
 			if(msg.amISource(invoker)
 			&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.WISDOM)*2))
-			&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
+			&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 			{
 				invoker.location().show(invoker,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
 				return false;

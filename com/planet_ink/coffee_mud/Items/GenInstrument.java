@@ -45,7 +45,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 		if(!super.okMessage(E,msg)) return false;
 		if(amWearingAt(Item.WIELD)
 		   &&(msg.source()==owner())
-		   &&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(msg.source().location()!=null)
 		   &&((msg.tool()==null)
 			  ||(msg.tool()==this)

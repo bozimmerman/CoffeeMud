@@ -44,7 +44,7 @@ public class Dance_Morris extends Dance
 		// preventing distracting player from doin anything else
 		if(msg.amISource(mob)
 		&&(Dice.rollPercentage()>(100-(invoker().charStats().getStat(CharStats.CHARISMA)*2)))
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> become(s) distracted.");
 			return false;

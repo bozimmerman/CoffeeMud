@@ -236,11 +236,11 @@ public class LightSource extends StdItem implements Light
 		LightSource.lightAffect(this,msg);
 		super.executeMsg(myHost,msg);
 		if((msg.tool()==this)
-		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(msg.source()!=null))
 		{
 			msg.source().recoverEnvStats();
-			if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+			if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().recoverRoomStats();

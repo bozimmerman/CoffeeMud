@@ -48,7 +48,7 @@ public class Skill_Attack3 extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if((msg.amISource(mob))
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(Dice.rollPercentage()>97)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())

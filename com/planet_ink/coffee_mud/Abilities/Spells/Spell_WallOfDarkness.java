@@ -53,7 +53,7 @@ public class Spell_WallOfDarkness extends Spell
 				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
 				return false;
 			}
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
+			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Weapon)
 			&&(!((Weapon)msg.tool()).amWearingAt(Item.INVENTORY))

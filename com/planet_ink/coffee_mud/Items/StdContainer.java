@@ -449,7 +449,7 @@ public class StdContainer extends StdItem implements Container
 		}
 		else
 		if((msg.tool()==this)
-		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(msg.source()!=null)
 		&&(msg.source().isMine(this)))
 		{
@@ -458,7 +458,7 @@ public class StdContainer extends StdItem implements Container
 			if(R!=null)
 			{
 				recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				if(!Util.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					msg.source().location().recoverRoomStats();
 					if(msg.source().location()!=R)
