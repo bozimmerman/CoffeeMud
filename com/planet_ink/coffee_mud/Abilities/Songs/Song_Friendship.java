@@ -43,9 +43,9 @@ public class Song_Friendship extends Song
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"^SThe song of "+name()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+name()+".^?";
+			String str=auto?"^SThe song of "+displayName()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+displayName()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
+				str="^S<S-NAME> start(s) the Song of "+displayName()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(mob,msg))

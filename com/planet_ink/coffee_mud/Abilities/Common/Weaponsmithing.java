@@ -155,13 +155,13 @@ public class Weaponsmithing extends CommonSkill
 		&&(student.fetchAbility("Specialization_Ranged")==null))
 		{
 			teacher.tell(student.displayName()+" has not yet specialized in any weapons.");
-			student.tell("You need to specialize in a weapon type to learn "+name()+".");
+			student.tell("You need to specialize in a weapon type to learn "+displayName()+".");
 			return false;
 		}
 		if(student.fetchAbility("Blacksmithing")==null)
 		{
 			teacher.tell(student.displayName()+" has not yet learned blacksmithing.");
-			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
+			student.tell("You need to learn blacksmithing before you can learn "+displayName()+".");
 			return false;
 		}
 

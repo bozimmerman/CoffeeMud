@@ -419,7 +419,7 @@ public class CommonStrings extends Scriptable
 				endPart=".";
 			else
 		    if(affect.tool() instanceof Ability)
-				tool=((Ability)affect.tool()).name();
+				tool=((Ability)affect.tool()).displayName();
 		}
 		String tackOn=null;
 		switch(affect.targetMinor())

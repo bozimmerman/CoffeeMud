@@ -26,7 +26,7 @@ public class ShieldWeapon extends StdWeapon
 
 	public void setShield(Item shield)
 	{
-		name=shield.name();
+		name=shield.displayName();
 		displayText=shield.displayText();
 		miscText="";
 		description=shield.description();

@@ -348,7 +348,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
-				mob.tell("You'll have to talk to "+name()+" about that.");
+				mob.tell("You'll have to talk to "+M.displayName()+" about that.");
 				return false;
 			case Affect.TYP_BUY:
 			case Affect.TYP_VIEW:

@@ -1427,7 +1427,7 @@ public class Scriptable extends StdBehavior
 						if(E!=null)
 						{
 							middle=null;
-							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.displayName());
+							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.name());
 							if(H!=null)
 								middle=(String)H.get(mid);
 							if(middle==null) middle="";

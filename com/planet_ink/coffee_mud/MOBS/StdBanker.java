@@ -378,7 +378,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					otherThanCoins=true;
 					String col=null;
-					col="["+Util.padRight(I.name(),34)+"] ";
+					col="["+Util.padRight(I.displayName(),34)+"] ";
 					if((++colNum)>2)
 					{
 						msg.append("\n\r");

@@ -66,7 +66,7 @@ public class WandArchon extends StdWand
 		case Affect.TYP_GET:
 			if(mob.charStats().getClassLevel("Archon")<0)
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,displayName()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;

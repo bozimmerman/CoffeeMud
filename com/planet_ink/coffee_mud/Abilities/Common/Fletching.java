@@ -59,7 +59,7 @@ public class Fletching extends CommonSkill
 		if(student.fetchAbility("Specialization_Ranged")==null)
 		{
 			teacher.tell(student.displayName()+" has not yet specialized in ranged weapons.");
-			student.tell("You need to specialize in ranged weapons to learn "+name()+".");
+			student.tell("You need to specialize in ranged weapons to learn "+displayName()+".");
 			return false;
 		}
 		return true;

@@ -625,7 +625,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".");
+					mob.tell(displayName()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".");
 					if(affect.tool() instanceof Item)
 					{
 						Item item=(Item)affect.tool();
@@ -979,7 +979,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.displayName(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");

@@ -164,7 +164,7 @@ public class GenWallpaper implements Item
 		case Affect.TYP_GET:
 			if((affect.tool()==null)||(affect.tool() instanceof MOB))
 			{
-				mob.tell("You can't get "+name()+".");
+				mob.tell("You can't get "+displayName()+".");
 				return false;
 			}
 			break;
@@ -174,7 +174,7 @@ public class GenWallpaper implements Item
 		default:
 			break;
 		}
-		mob.tell("You can't do that to "+name()+".");
+		mob.tell("You can't do that to "+displayName()+".");
 		return false;
 	}
 
@@ -203,7 +203,7 @@ public class GenWallpaper implements Item
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
-					mob.tell("There is nothing written on "+name()+".");
+					mob.tell("There is nothing written on "+displayName()+".");
 			}
 			else
 				mob.tell("You can't see that!");

@@ -100,7 +100,7 @@ public class Utils
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s drop from the sky.");
+						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.displayName()+"s drop from the sky.");
 					else
 						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" drops from the sky.");
 					Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" item "+newItem.ID()+".");

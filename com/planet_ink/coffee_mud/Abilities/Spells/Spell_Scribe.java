@@ -48,7 +48,7 @@ public class Spell_Scribe extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.displayName().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}

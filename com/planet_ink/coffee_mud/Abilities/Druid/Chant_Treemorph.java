@@ -105,13 +105,13 @@ public class Chant_Treemorph extends Chant
 		// can get them out of it.
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
-			if(affected.name().indexOf(" ")>0)
-				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
+			if(affected.displayName().indexOf(" ")>0)
+				affectableStats.setName("a "+treeForm.name()+" called "+affected.displayName());
 			else
-				affectableStats.setName(affected.name()+" the "+treeForm.name());
+				affectableStats.setName(affected.displayName()+" the "+treeForm.name());
 			treeForm.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
 			
-			//affectableStats.setReplacementName("a tree of "+affected.name());
+			//affectableStats.setReplacementName("a tree of "+affected.displayName());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);

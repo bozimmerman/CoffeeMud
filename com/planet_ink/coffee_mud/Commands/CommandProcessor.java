@@ -834,7 +834,7 @@ public class CommandProcessor
 
 				if (thisSession==null) continue;
 				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
-				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
+				if (allFlag || thisSession.mob().displayName().equalsIgnoreCase(targetName))
 				{
 					if (rawMode)
 						thisSession.rawPrintln(fileText.toString());

@@ -262,7 +262,7 @@ public class Scoring
 			msg.append("^!You are standing.^?\n\r");
 
 		if(mob.riding()!=null)
-			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
+			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().displayName()+".^?\n\r");
 
 		if(Sense.isInvisible(mob))
 			msg.append("^!You are invisible.^?\n\r");
@@ -529,7 +529,7 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.name(),(col==3)?18:19));
+					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.displayName(),(col==3)?18:19));
 				}
 			}
 			if(thisLine.length()>0)
@@ -592,7 +592,7 @@ public class Scoring
 						col=1;
 					}
 					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
-					+Util.padRight(A.name(),19)+" "
+					+Util.padRight(A.displayName(),19)+" "
 					+Util.padRight(A.requirements(),(col==2)?12:13));
 				}
 			}
@@ -798,7 +798,7 @@ public class Scoring
 		{
 			Area A=(Area)a.nextElement();
 			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
-				areasVec.addElement(A.name());
+				areasVec.addElement(A.displayName());
 		}
 		Collections.sort((List)areasVec);
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");

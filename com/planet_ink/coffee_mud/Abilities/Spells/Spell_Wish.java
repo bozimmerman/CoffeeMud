@@ -663,7 +663,7 @@ public class Spell_Wish extends Spell
 						A=tm.fetchAbility(A.ID());
 						A.setProfficiency(100);
 						A.autoInvocation(tm);
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.displayName()+" now knows "+A.name()+"!");
+						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.displayName()+" now knows "+A.displayName()+"!");
 						return true;
 					}
 				}

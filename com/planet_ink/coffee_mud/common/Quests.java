@@ -422,7 +422,7 @@ public class Quests implements Cloneable, Quest
 								Item I2=R2.fetchItem(i);
 								if(I2!=null)
 								{
-									String iname=I2.name().toUpperCase();
+									String iname=I2.displayName().toUpperCase();
 									String idisp=I2.displayText().toUpperCase();
 									String idesc=I2.description().toUpperCase();
 									if(itemName.equalsIgnoreCase("any"))
@@ -648,7 +648,7 @@ public class Quests implements Cloneable, Quest
 						{
 							Item I2=(Item)loadedItems.elementAt(i);
 							if((itemName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(I2.name(),itemName))
+							||(CoffeeUtensils.containsString(I2.displayName(),itemName))
 							||(CoffeeUtensils.containsString(I2.displayText(),itemName))
 							||(CoffeeUtensils.containsString(I2.description(),itemName)))
 								choices.addElement(I2);
@@ -1028,7 +1028,7 @@ public class Quests implements Cloneable, Quest
 			Environmental E=(Environmental)stuff.elementAt(i);
 			if(E instanceof MOB)
 			{
-				if(E.name().equalsIgnoreCase(name))
+				if(E.displayName().equalsIgnoreCase(name))
 					return num;
 				num++;
 			}
@@ -1043,7 +1043,7 @@ public class Quests implements Cloneable, Quest
 			Environmental E=(Environmental)stuff.elementAt(i);
 			if(E instanceof Item)
 			{
-				if(E.name().equalsIgnoreCase(name))
+				if(E.displayName().equalsIgnoreCase(name))
 					return num;
 				num++;
 			}
@@ -1097,13 +1097,13 @@ public class Quests implements Cloneable, Quest
 	public String getQuestMobName(int i)
 	{
 		MOB M=getQuestMob(i);
-		if(M!=null) return M.name();
+		if(M!=null) return M.displayName();
 		return "";
 	}
 	public String getQuestItemName(int i)
 	{
 		Item I=getQuestItem(i);
-		if(I!=null) return I.name();
+		if(I!=null) return I.displayName();
 		return "";
 	}
 	public int wasQuestObject(String name)
@@ -1111,7 +1111,7 @@ public class Quests implements Cloneable, Quest
 		for(int i=0;i<stuff.size();i++)
 		{
 			Environmental E=(Environmental)stuff.elementAt(i);
-			if(E.name().equalsIgnoreCase(name))
+			if(E.displayName().equalsIgnoreCase(name))
 				return (i+1);
 		}
 		return -1;
@@ -1121,7 +1121,7 @@ public class Quests implements Cloneable, Quest
 		if((i>=0)&&(i<stuff.size()))
 		{
 			Environmental E=(Environmental)stuff.elementAt(i);
-			if(E.name().equalsIgnoreCase(name))
+			if(E.displayName().equalsIgnoreCase(name))
 				return true;
 		}
 		return false;

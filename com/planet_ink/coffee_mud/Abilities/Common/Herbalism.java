@@ -168,7 +168,7 @@ public class Herbalism extends CommonSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(mob.envStats().level()>=level)
-					&&(A.name().equalsIgnoreCase(recipeName)))
+					&&(A.displayName().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
 						recipe=V;

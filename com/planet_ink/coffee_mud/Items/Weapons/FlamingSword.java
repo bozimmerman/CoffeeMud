@@ -49,7 +49,7 @@ public class FlamingSword extends Longsword
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,displayName()+" <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

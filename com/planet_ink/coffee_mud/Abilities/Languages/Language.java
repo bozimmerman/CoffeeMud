@@ -201,7 +201,7 @@ public class Language extends StdAbility
 			}
 		}
 		isAnAutoEffect=false;
-		mob.tell("You are now speaking "+name()+".");
+		mob.tell("You are now speaking "+displayName()+".");
 		return true;
 	}
 	

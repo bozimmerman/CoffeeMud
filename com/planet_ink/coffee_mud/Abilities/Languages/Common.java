@@ -33,7 +33,7 @@ public class Common extends Language
 		}
 		isAnAutoEffect=false;
 		if(!auto)
-			mob.tell("You are now speaking "+name()+".");
+			mob.tell("You are now speaking "+displayName()+".");
 		return true;
 	}
 }

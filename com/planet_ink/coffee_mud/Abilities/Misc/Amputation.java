@@ -215,7 +215,7 @@ public class Amputation extends StdAbility
 		&&(affect.targetMinor()==Affect.TYP_GIVE)
 		&&((missingLimbList()&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS))
 		{
-			affect.source().tell("You cannot give anything to the "+name()+".");
+			affect.source().tell("You cannot give anything to the "+displayName()+".");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

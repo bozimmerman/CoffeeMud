@@ -28,7 +28,7 @@ public class Fighter_FlyingKick extends StdAbility
 		if((student.fetchAbility("Fighter_AxKick")==null))
 		{
 			teacher.tell(student.displayName()+" has not yet learned the Ax Kick skill.");
-			student.tell("You need to learn the Ax Kick skill to learn "+name()+".");
+			student.tell("You need to learn the Ax Kick skill to learn "+displayName()+".");
 			return false;
 		}
 		return true;

@@ -104,7 +104,7 @@ public class Spell_AlterSubstance extends Spell
 				target.setMaterial(newMaterial);
 				String oldResourceName=EnvResource.RESOURCE_DESCS[oldMaterial&EnvResource.RESOURCE_MASK];
 				String oldMaterialName=EnvResource.MATERIAL_DESCS[(oldMaterial&EnvResource.MATERIAL_MASK)>>8];
-				String oldName=target.name().toUpperCase();
+				String oldName=target.displayName().toUpperCase();
 				oldName=Util.replaceAll(oldName,oldResourceName,material);
 				oldName=Util.replaceAll(oldName,oldMaterialName,material);
 				if(oldName.indexOf(material)<0)

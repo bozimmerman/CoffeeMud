@@ -58,7 +58,7 @@ public class Chant_SpellWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchAffect(ID())!=null)
 		{
-			target.tell("You are already affected by "+name()+".");
+			target.tell("You are already affected by "+displayName()+".");
 			return false;
 		}
 		

@@ -149,10 +149,10 @@ public class Cooking extends CommonSkill
 			if((((I.material()&EnvResource.MATERIAL_VEGETATION)>0)
 				||((I.material()&EnvResource.MATERIAL_LIQUID)>0)
 				||((I.material()&EnvResource.MATERIAL_FLESH)>0))
-				&&(Util.parse(I.name()).size()>0))
-					ing=((String)Util.parse(I.name()).lastElement()).toUpperCase();
+				&&(Util.parse(I.displayName()).size()>0))
+					ing=((String)Util.parse(I.displayName()).lastElement()).toUpperCase();
 			else
-				ing=I.name();
+				ing=I.displayName();
 			Integer INT=(Integer)h.get(ing+"/"+I.name().toUpperCase());
 			if(INT==null) INT=new Integer(0);
 			INT=new Integer(INT.intValue()+1);

@@ -22,7 +22,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.displayName()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
+			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.displayName()+" wither"+(littlePlants.displayName().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{

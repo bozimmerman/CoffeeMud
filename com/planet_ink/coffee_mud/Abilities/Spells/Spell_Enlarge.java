@@ -19,7 +19,7 @@ public class Spell_Enlarge extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(affectableStats.weight()+9999);
 		affectableStats.setHeight(affectableStats.height()+9999);
-		affectableStats.setName(affected.name()+addOnString);
+		affectableStats.setName(affected.displayName()+addOnString);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

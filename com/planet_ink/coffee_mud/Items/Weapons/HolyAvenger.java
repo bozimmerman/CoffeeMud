@@ -53,7 +53,7 @@ public class HolyAvenger extends TwoHandedSword
 			||(affect.source().getAlignment()<650))
 			{
 				remove();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,name()+" flashes and flys out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,displayName()+" flashes and flys out of <S-HIS-HER> hands!");
 				if(affect.source().isMine(this))
 					ExternalPlay.drop(affect.source(),this,true);
 				return false;
@@ -86,7 +86,7 @@ public class HolyAvenger extends TwoHandedSword
 				int damage=Dice.roll(1,15,0);
 				if(msg.wasModified())
 					damage=damage/2;
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
+				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,displayName()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
 				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+damage,Affect.NO_EFFECT,null));
 			}
 		}

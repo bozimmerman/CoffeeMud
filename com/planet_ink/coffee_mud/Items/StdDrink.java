@@ -74,7 +74,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					{
 						if(!containsDrink())
 						{
-							mob.tell(name()+" is empty.");
+							mob.tell(displayName()+" is empty.");
 							return false;
 						}
 						if((liquidType()==EnvResource.RESOURCE_SALTWATER)
@@ -95,7 +95,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					{
 						if(liquidRemaining()>=amountOfLiquidHeld)
 						{
-							mob.tell(name()+" is full.");
+							mob.tell(displayName()+" is full.");
 							return false;
 						}
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
@@ -109,7 +109,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 							if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 							{
 								mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
-										 +" left in "+name()+".  You must empty it before you can fill it with "
+										 +" left in "+displayName()+".  You must empty it before you can fill it with "
 										 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
 								return false;
 								
@@ -118,7 +118,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 						}
 						else
 						{
-							mob.tell("You can't fill "+name()+" from that.");
+							mob.tell("You can't fill "+displayName()+" from that.");
 							return false;
 						}
 					}

@@ -53,7 +53,7 @@ public class Fighter_KnifeHand extends StdAbility
 		if((student.fetchAbility("Fighter_MonkeyPunch")==null))
 		{
 			teacher.tell(student.displayName()+" has not yet learned to Monkey Punch.");
-			student.tell("You need to learn the Monkey Punch to learn "+name()+".");
+			student.tell("You need to learn the Monkey Punch to learn "+displayName()+".");
 			return false;
 		}
 		return true;

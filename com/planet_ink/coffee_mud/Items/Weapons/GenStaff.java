@@ -68,7 +68,7 @@ public class GenStaff extends GenWeapon implements Wand
 		String id=super.secretIdentity();
 		Ability A=getSpell();
 		if(A!=null)
-			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A staff of "+A.displayName()+"' Charges: "+usesRemaining()+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 

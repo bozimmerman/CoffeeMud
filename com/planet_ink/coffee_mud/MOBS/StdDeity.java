@@ -41,14 +41,14 @@ public class StdDeity extends StdMOB implements Deity
 	public String getWorshipRequirements(){return worshipReqs;}
 	public void setWorshipRequirements(String reqs){worshipReqs=reqs;}
 	public String getClericRitual(){
-		if(clericRitual.trim().length()==0) return "SAY Bless me "+name();
+		if(clericRitual.trim().length()==0) return "SAY Bless me "+displayName();
 		return clericRitual;}
 	public void setClericRitual(String ritual){
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
 	}
 	public String getWorshipRitual(){
-		if(worshipRitual.trim().length()==0) return "SAY Bless me "+name();
+		if(worshipRitual.trim().length()==0) return "SAY Bless me "+displayName();
 		return worshipRitual;}
 	public void setWorshipRitual(String ritual){
 		worshipRitual=ritual;
@@ -102,7 +102,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(A==null)
 					buf.append("the player casts '"+DT.parm1+"'");
 				else
-					buf.append("the player casts '"+A.name()+"'");
+					buf.append("the player casts '"+A.displayName()+"'");
 				}
 				break;
 			case TRIGGER_EMOTE:
@@ -158,22 +158,22 @@ public class StdDeity extends StdMOB implements Deity
 
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements());
+		return "The following may be clerics of "+displayName()+": "+ExternalPlay.zapperDesc(getClericRequirements());
 	}
 	public String getClericTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
+			return "The blessings of "+displayName()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
 		return "";
 	}
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+name()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
+		return "The following are acceptable worshipers of "+displayName()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
 	}
 	public String getWorshipTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
+			return "The blessings of "+displayName()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
 		return "";
 	}
 
@@ -198,7 +198,7 @@ public class StdDeity extends StdMOB implements Deity
 		case Affect.TYP_SERVE:
 			if(msg.source().getMyDeity()==this)
 			{
-				msg.source().tell("You already worship "+name()+".");
+				msg.source().tell("You already worship "+displayName()+".");
 				return false;
 			}
 			if(msg.source().getMyDeity()!=null)
@@ -210,21 +210,21 @@ public class StdDeity extends StdMOB implements Deity
 			{
 				if(!ExternalPlay.zapperCheck(getClericRequirements(),msg.source()))
 				{
-					msg.source().tell("You are unworthy of serving "+name()+".");
+					msg.source().tell("You are unworthy of serving "+displayName()+".");
 					return false;
 				}
 			}
 			else
 			if(!ExternalPlay.zapperCheck(getWorshipRequirements(),msg.source()))
 			{
-				msg.source().tell("You are unworthy of "+name()+".");
+				msg.source().tell("You are unworthy of "+displayName()+".");
 				return false;
 			}
 			break;
 		case Affect.TYP_REBUKE:
 			if(!msg.source().getWorshipCharID().equals(name()))
 			{
-				msg.source().tell("You do not worship "+name()+".");
+				msg.source().tell("You do not worship "+displayName()+".");
 				return false;
 			}
 			break;
@@ -323,12 +323,12 @@ public class StdDeity extends StdMOB implements Deity
 			removeBlessings(msg.source());
 			if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 			{
-				msg.source().tell("You feel the wrath of "+name()+"!");
+				msg.source().tell("You feel the wrath of "+displayName()+"!");
 				msg.source().charStats().getCurrentClass().unLevel(msg.source());
 			}
 			else
 			{
-				msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
+				msg.source().tell(displayName()+" takes "+xpwrath+" of experience from you.");
 				msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
 			}
 			break;

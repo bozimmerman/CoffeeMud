@@ -39,7 +39,7 @@ public class Skill_IdentifyPoison extends StdAbility
 		if(student.fetchAbility("Apothecary")==null)
 		{
 			teacher.tell(student.displayName()+" has not yet learned to be an apothecary.");
-			student.tell("You need to learn apothecary before you can learn "+name()+".");
+			student.tell("You need to learn apothecary before you can learn "+displayName()+".");
 			return false;
 		}
 
@@ -73,7 +73,7 @@ public class Skill_IdentifyPoison extends StdAbility
 					buf.append("weak impurities, ");
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
-					buf.append(((Ability)offensiveAffects.elementAt(i)).name()+", ");
+					buf.append(((Ability)offensiveAffects.elementAt(i)).displayName()+", ");
 				mob.tell(buf.toString().substring(0,buf.length()-2));
 			}
 		}

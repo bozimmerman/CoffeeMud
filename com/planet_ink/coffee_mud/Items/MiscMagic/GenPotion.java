@@ -79,7 +79,7 @@ public class GenPotion extends GenWater implements Potion
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					drinkIfAble(mob,this);
-					mob.tell(name()+" vanishes!");
+					mob.tell(displayName()+" vanishes!");
 					this.destroyThis();
 				}
 				else

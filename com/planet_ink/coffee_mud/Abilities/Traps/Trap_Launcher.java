@@ -36,7 +36,7 @@ public class Trap_Launcher extends StdTrap
 		Item I=getPoison(mob);
 		setMiscText("3/a projectile");
 		if(I!=null){
-			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
+			setMiscText(""+I.baseEnvStats().damage()+"/"+I.displayName());
 			I.destroyThis();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);

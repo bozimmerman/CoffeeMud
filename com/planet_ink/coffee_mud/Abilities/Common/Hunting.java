@@ -165,7 +165,7 @@ public class Hunting extends CommonSkill
 			foundShortName="nothing";
 			if(found!=null)
 			{
-				foundShortName=found.name();
+				foundShortName=found.displayName();
 				int x=0;
 				if((x=foundShortName.lastIndexOf(" "))>=0)
 					foundShortName=foundShortName.substring(x).trim().toLowerCase();

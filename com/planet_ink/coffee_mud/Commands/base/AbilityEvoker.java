@@ -36,7 +36,7 @@ public class AbilityEvoker extends Scriptable
 		{
 			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
 			{
-				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
+				if((thisAbility.displayName().toUpperCase().startsWith(secondWord)))
 					return true;
 			}
 		}
@@ -95,7 +95,7 @@ public class AbilityEvoker extends Scriptable
 				if((thisAbility!=null)
 				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
 				{
-					if(thisAbility.name().equalsIgnoreCase(secondWord))
+					if(thisAbility.displayName().equalsIgnoreCase(secondWord))
 					{
 						evokableAbility=thisAbility;
 						foundMoreThanOne=false;
@@ -138,7 +138,7 @@ public class AbilityEvoker extends Scriptable
 					Ability thisAbility=mob.fetchAbility(a);
 					if((thisAbility!=null)
 					&&(evokedBy(thisAbility,evokeWord))
-					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+					&&(thisAbility.displayName().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
 						evokableAbility=thisAbility;
 						commands.removeElementAt(0);
@@ -210,7 +210,7 @@ public class AbilityEvoker extends Scriptable
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.name()));
+		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.displayName()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		myAbility.teach(mob,student);
@@ -273,7 +273,7 @@ public class AbilityEvoker extends Scriptable
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.name()));
+		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.displayName()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		teacherAbility.practice(teacher,mob);

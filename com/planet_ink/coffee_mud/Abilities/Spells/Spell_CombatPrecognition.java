@@ -51,7 +51,7 @@ public class Spell_CombatPrecognition extends Spell
 			{
 				String tool=null;
 				if((affect.tool()!=null)&&(affect.tool() instanceof Ability))
-					tool=((Ability)affect.tool()).name();
+					tool=((Ability)affect.tool()).displayName();
 				FullMsg msg2=null;
 				switch(affect.targetMinor())
 				{

@@ -55,7 +55,7 @@ public class Thief_Forgery extends ThiefSkill
 		{
 			Item I=CMClass.getItem("StdTitle");
 			((LandTitle)I).setLandRoomID(room.ID());
-			newName=I.name();
+			newName=I.displayName();
 			newDescription=I.description();
 			newDisplay=I.displayText();
 			newSecretIdentity=I.secretIdentity();
@@ -84,10 +84,10 @@ public class Thief_Forgery extends ThiefSkill
 				}
 				else					  
 				{
-					newName=target.name();
+					newName=target.displayName();
 					newDisplay=target.displayText();
 					newDescription=target.description();
-					newSecretIdentity="a scroll of "+A.name()+" Charges: 10\n";
+					newSecretIdentity="a scroll of "+A.displayName()+" Charges: 10\n";
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public class Thief_Forgery extends ThiefSkill
 				Item note=Money.makeNote(coins[i],null,null);
 				if(CoffeeUtensils.containsString(note.name(),forgeWhat))
 				{
-					newName=note.name();
+					newName=note.displayName();
 					newDisplay=note.displayText();
 					newDescription=note.description();
 					newSecretIdentity=note.rawSecretIdentity();

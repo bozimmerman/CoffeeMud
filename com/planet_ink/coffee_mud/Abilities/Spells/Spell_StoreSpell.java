@@ -24,7 +24,7 @@ public class Spell_StoreSpell extends Spell
 			Environmental target=null;
 			if((mob.location()!=null))
 				target=afftarget;
-			String name=me.name().toUpperCase();
+			String name=me.displayName().toUpperCase();
 			if(name.startsWith("A ")) name=name.substring(2).trim();
 			if(name.startsWith("AN ")) name=name.substring(3).trim();
 			if(name.startsWith("THE ")) name=name.substring(4).trim();
@@ -57,7 +57,7 @@ public class Spell_StoreSpell extends Spell
 					A=(Ability)A.newInstance();
 					Vector V=new Vector();
 					if(target!=null)
-						V.addElement(target.name());
+						V.addElement(target.displayName());
 					V.addElement(message);
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly.");
 					A.invoke(mob, V, target, true);
@@ -117,7 +117,7 @@ public class Spell_StoreSpell extends Spell
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
-			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.displayName().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}

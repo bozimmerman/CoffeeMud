@@ -100,7 +100,7 @@ public class GenMultiPotion extends GenWater implements Potion
 					drinkIfAble(mob,this);
 					if(isDrunk())
 					{
-						mob.tell(name()+" vanishes!");
+						mob.tell(displayName()+" vanishes!");
 						destroyThis();
 					}
 				}

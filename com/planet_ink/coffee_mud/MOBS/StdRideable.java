@@ -142,7 +142,7 @@ public class StdRideable extends StdMOB implements Rideable
 				else
 				if(!amRiding(affect.source()))
 				{
-					affect.source().tell("You are not "+stateString(affect.source())+" "+name()+"!");
+					affect.source().tell("You are not "+stateString(affect.source())+" "+displayName()+"!");
 					if(affect.source().riding()==this)
 						affect.source().setRiding(null);
 					return false;
@@ -154,28 +154,28 @@ public class StdRideable extends StdMOB implements Rideable
 		case Affect.TYP_SIT:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
+				affect.source().tell("You are "+stateString(affect.source())+" "+displayName()+"!");
 				affect.source().setRiding(this);
 				return false;
 			}
 			else
 			if(affect.amITarget(this))
 			{
-				affect.source().tell("You cannot simply sit on "+name()+", try 'mount'.");
+				affect.source().tell("You cannot simply sit on "+displayName()+", try 'mount'.");
 				return false;
 			}
 			break;
 		case Affect.TYP_SLEEP:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
+				affect.source().tell("You are "+stateString(affect.source())+" "+displayName()+"!");
 				affect.source().setRiding(this);
 				return false;
 			}
 			else
 			if(affect.amITarget(this))
 			{
-				affect.source().tell("You cannot lie down on "+name()+".");
+				affect.source().tell("You cannot lie down on "+displayName()+".");
 				return false;
 			}
 			break;
@@ -185,7 +185,7 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				if(amRiding((Rider)affect.tool()))
 				{
-					affect.source().tell(affect.tool().displayName()+" is "+stateString((Rider)affect.tool())+" "+name()+"!");
+					affect.source().tell(affect.tool().displayName()+" is "+stateString((Rider)affect.tool())+" "+displayName()+"!");
 					((Rider)affect.tool()).setRiding(this);
 					return false;
 				}
@@ -193,20 +193,20 @@ public class StdRideable extends StdMOB implements Rideable
 				&&(affect.amITarget(this))
 				&&(((Rideable)affect.tool()).rideBasis()!=Rideable.RIDEABLE_WAGON))
 				{
-					affect.source().tell(affect.tool().displayName()+" can not be mounted onto "+name()+"!");
+					affect.source().tell(affect.tool().displayName()+" can not be mounted onto "+displayName()+"!");
 					return false;
 				}
 				if((baseEnvStats().weight()*5<affect.tool().baseEnvStats().weight())
 				&&(affect.amITarget(this)))
 				{
-					affect.source().tell(name()+" is too small to pull "+affect.tool().displayName()+".");
+					affect.source().tell(displayName()+" is too small to pull "+affect.tool().displayName()+".");
 					return false;
 				}
 			}
 			else
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You are "+stateString(affect.source())+" "+name()+"!");
+				affect.source().tell("You are "+stateString(affect.source())+" "+displayName()+"!");
 				affect.source().setRiding(this);
 				return false;
 			}
@@ -216,9 +216,9 @@ public class StdRideable extends StdMOB implements Rideable
 				if(numRiders()>=riderCapacity())
 				{
 					// for items
-					//affect.source().tell(name()+" is full.");
+					//affect.source().tell(displayName()+" is full.");
 					// for mobs
-					 affect.source().tell("No more can fit on "+name()+".");
+					 affect.source().tell("No more can fit on "+displayName()+".");
 					return false;
 				}
 				// protects from standard mob rejection
@@ -227,7 +227,7 @@ public class StdRideable extends StdMOB implements Rideable
 			else
 			if(affect.amITarget(this))
 			{
-				affect.source().tell("You cannot mount "+name()+".");
+				affect.source().tell("You cannot mount "+displayName()+".");
 				return false;
 			}
 			break;
@@ -264,12 +264,12 @@ public class StdRideable extends StdMOB implements Rideable
 					}
 					if(!ok)
 					{
-						affect.source().tell("You cannot ride "+name()+" that way.");
+						affect.source().tell("You cannot ride "+displayName()+" that way.");
 						return false;
 					}
 					if(Sense.isSitting(affect.source()))
 					{
-						affect.source().tell("You cannot crawl while "+stateString(affect.source())+" "+name()+".");
+						affect.source().tell("You cannot crawl while "+stateString(affect.source())+" "+displayName()+".");
 						return false;
 					}
 				}
@@ -290,7 +290,7 @@ public class StdRideable extends StdMOB implements Rideable
 		case Affect.TYP_SELL:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+displayName()+".");
 				return false;
 			}
 			break;
@@ -302,7 +302,7 @@ public class StdRideable extends StdMOB implements Rideable
 			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(affect.tool()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.tool())))
 			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target()))))
 			{
-				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+displayName()+".");
 				return false;
 			}
 		}
@@ -312,7 +312,7 @@ public class StdRideable extends StdMOB implements Rideable
 			   &&((affect.source().riding()==this)
 				  ||(this.amRiding(affect.source()))))
 			{
-				affect.source().tell("You can't attack "+name()+" right now.");
+				affect.source().tell("You can't attack "+displayName()+" right now.");
 				if(getVictim()==affect.source()) setVictim(null);
 				if(affect.source().getVictim()==this) affect.source().setVictim(null);
 				return false;

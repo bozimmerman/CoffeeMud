@@ -37,7 +37,7 @@ public class Grouping
 			&&(!thisSession.killFlag())
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
 			&&(mob2.envStats().level()>0)
-			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
+			&&(mob2.displayName().toUpperCase().startsWith(mobName.toUpperCase())))
 				msg.append(showWhoShort(mob2));
 		}
 		if((mobName!=null)&&(msg.length()==0))
@@ -248,7 +248,7 @@ public class Grouping
 		}
 		String whomToFollow=Util.combine(commands,1);
 		if((whomToFollow.equalsIgnoreCase("self"))
-		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
+		   ||(mob.displayName().toUpperCase().startsWith(whomToFollow)))
 		{
 			nofollow(mob,true,false);
 			return;

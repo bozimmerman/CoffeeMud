@@ -48,7 +48,7 @@ public class Spell_EnchantWand extends Spell
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
-			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.displayName().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}

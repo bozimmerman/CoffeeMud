@@ -127,7 +127,7 @@ public class ArchonStaff extends Staff implements Wand
 		case Affect.TYP_GET:
 			if(mob.charStats().getClassLevel("Archon")<0)
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,displayName()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
@@ -153,7 +153,7 @@ public class ArchonStaff extends Staff implements Wand
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,displayName()+" shoots a flame which <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

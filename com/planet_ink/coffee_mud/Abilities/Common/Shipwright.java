@@ -108,7 +108,7 @@ public class Shipwright extends CommonSkill
 		if(student.fetchAbility("Carpentry")==null)
 		{
 			teacher.tell(student.displayName()+" has not yet learned carpentry.");
-			student.tell("You need to learn carpentry before you can learn "+name()+".");
+			student.tell("You need to learn carpentry before you can learn "+displayName()+".");
 			return false;
 		}
 

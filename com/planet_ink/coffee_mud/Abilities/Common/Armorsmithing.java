@@ -116,7 +116,7 @@ public class Armorsmithing extends CommonSkill
 		if(student.fetchAbility("Blacksmithing")==null)
 		{
 			teacher.tell(student.displayName()+" has not yet learned blacksmithing.");
-			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
+			student.tell("You need to learn blacksmithing before you can learn "+displayName()+".");
 			return false;
 		}
 

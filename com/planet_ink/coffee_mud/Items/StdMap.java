@@ -579,7 +579,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 					}
 				}
 				else
-					mob.tell(name()+" appears to be blank.");
+					mob.tell(displayName()+" appears to be blank.");
 			}
 			else
 				mob.tell("You can't see that!");

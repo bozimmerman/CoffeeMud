@@ -57,7 +57,7 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)affect.tool();
 					if(hasALid()&&(!isOpen()))
 					{
-						mob.tell(name()+" is closed.");
+						mob.tell(displayName()+" is closed.");
 						return false;
 					}
 					else
@@ -81,26 +81,26 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(capacity<=0)
 					{
-						mob.tell("You can't put anything in "+name()+"!");
+						mob.tell("You can't put anything in "+displayName()+"!");
 						return false;
 					}
 					else
 					{
 						if(!canContain(newitem))
 						{
-							mob.tell("You can't put "+newitem.displayName()+" in "+name()+".");
+							mob.tell("You can't put "+newitem.displayName()+" in "+displayName()+".");
 							return false;
 						}
 						else
 						if(newitem.envStats().weight()>capacity)
 						{
-							mob.tell(newitem.displayName()+" won't fit in "+name()+".");
+							mob.tell(newitem.displayName()+" won't fit in "+displayName()+".");
 							return false;
 						}
 						else
 						if((recursiveWeight(this)+newitem.envStats().weight())>capacity)
 						{
-							mob.tell(name()+" is full.");
+							mob.tell(displayName()+" is full.");
 							return false;
 						}
 						if((!affect.source().isMine(this))&&(affect.source().isMine(newitem)))
@@ -126,7 +126,7 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(name()+" is closed.");
+							mob.tell(displayName()+" is closed.");
 							return false;
 						}
 						else
@@ -153,7 +153,7 @@ public class StdContainer extends StdItem implements Container
 				else
 				if((recursiveWeight(this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
-					mob.tell(name()+" is too heavy.");
+					mob.tell(displayName()+" is too heavy.");
 					return false;
 				}
 				break;
@@ -162,7 +162,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!hasALid)
 					{
-						mob.tell("There is nothing to close on "+name()+".");
+						mob.tell("There is nothing to close on "+displayName()+".");
 						return false;
 					}
 					else
@@ -170,26 +170,26 @@ public class StdContainer extends StdItem implements Container
 				}
 				else
 				{
-					mob.tell(name()+" is already closed.");
+					mob.tell(displayName()+" is already closed.");
 					return false;
 				}
 				//break;
 			case Affect.TYP_OPEN:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to open on "+name()+".");
+					mob.tell("There is nothing to open on "+displayName()+".");
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(name()+" is already open!");
+					mob.tell(displayName()+" is already open!");
 					return false;
 				}
 				else
 				{
 					if(isLocked)
 					{
-						mob.tell(name()+" is locked.");
+						mob.tell(displayName()+" is locked.");
 						return false;
 					}
 					else
@@ -200,12 +200,12 @@ public class StdContainer extends StdItem implements Container
 			case Affect.TYP_UNLOCK:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to lock or unlock on "+name()+".");
+					mob.tell("There is nothing to lock or unlock on "+displayName()+".");
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(name()+" is open!");
+					mob.tell(displayName()+" is open!");
 					return false;
 				}
 				else
@@ -218,13 +218,13 @@ public class StdContainer extends StdItem implements Container
 				{
 					if((!isLocked)&&(affect.targetMinor()==Affect.TYP_UNLOCK))
 					{
-						mob.tell(name()+" is not locked.");
+						mob.tell(displayName()+" is not locked.");
 						return false;
 					}
 					else
 					if((isLocked)&&(affect.targetMinor()==Affect.TYP_LOCK))
 					{
-						mob.tell(name()+" is already locked.");
+						mob.tell(displayName()+" is already locked.");
 						return false;
 					}
 					else
@@ -324,7 +324,7 @@ public class StdContainer extends StdItem implements Container
 						buf.append(description()+"\n\r");
 					if((isOpen)&&((capacity()>0)||(!(this instanceof Armor))))
 					{
-						buf.append(name()+" contains:\n\r");
+						buf.append(displayName()+" contains:\n\r");
 						Vector newItems=new Vector();
 						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
 						{
@@ -367,7 +367,7 @@ public class StdContainer extends StdItem implements Container
 					}
 					else
 					if(hasALid())
-						buf.append(name()+" is closed.");
+						buf.append(displayName()+" is closed.");
 					mob.tell(buf.toString());
 				}
 				else

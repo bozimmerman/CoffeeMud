@@ -206,7 +206,7 @@ public class Alchemy extends CommonSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(mob.envStats().level()>=spellLevel(mob,spell))
-					&&(A.name().equalsIgnoreCase(recipeName)))
+					&&(A.displayName().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
 						ingredient=(String)V.elementAt(1);

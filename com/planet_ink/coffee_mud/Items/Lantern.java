@@ -40,14 +40,14 @@ public class Lantern extends LightSource
 					{
 						if(getDuration()>0)
 						{
-							mob.tell(name()+" still has some oil left in it.");
+							mob.tell(displayName()+" still has some oil left in it.");
 							return false;
 						}
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
 							{
-								mob.tell("You can only fill "+name()+" with lamp oil!");
+								mob.tell("You can only fill "+displayName()+" with lamp oil!");
 								return false;
 							}
 							Drink thePuddle=(Drink)affect.tool();
@@ -60,7 +60,7 @@ public class Lantern extends LightSource
 						}
 						else
 						{
-							mob.tell("You can't fill "+name()+" from that.");
+							mob.tell("You can't fill "+displayName()+" from that.");
 							return false;
 						}
 					}

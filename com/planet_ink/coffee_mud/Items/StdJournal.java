@@ -30,7 +30,7 @@ public class StdJournal extends StdItem
 		case Affect.TYP_WRITE:
 			if((!ExternalPlay.zapperCheck(getWriteReq(),affect.source()))&&(!affect.source().isASysOp(null)))
 			{
-				affect.source().tell("You are not allowed to write on "+name());
+				affect.source().tell("You are not allowed to write on "+displayName());
 				return false;
 			}
 			return true;
@@ -52,7 +52,7 @@ public class StdJournal extends StdItem
 			{
 				if(!ExternalPlay.zapperCheck(getReadReq(),mob))
 				{
-					mob.tell("You are not allowed to read "+name()+".");
+					mob.tell("You are not allowed to read "+displayName()+".");
 					return;
 				}
 				int which=-1;

@@ -150,7 +150,7 @@ public class SysOpSkills
 				else
 				if((mob.isASysOp(S.mob().location())))
 				{
-					mob.tell("You boot "+S.mob().name());
+					mob.tell("You boot "+S.mob().displayName());
 					if(S.mob().location()!=null)
 						S.mob().location().show(S.mob(),null,Affect.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
 					S.setKillFlag(true);
@@ -398,7 +398,7 @@ public class SysOpSkills
 			if(S.amSnooping(mob.session()))
 			{
 				if(S.mob()!=null)
-					mob.tell("You stop snooping on "+S.mob().name()+".");
+					mob.tell("You stop snooping on "+S.mob().displayName()+".");
 				else
 					mob.tell("You stop snooping on someone.");
 				doneSomething=true;
@@ -427,7 +427,7 @@ public class SysOpSkills
 				if((!S.amSnooping(mob.session()))
 				&&(mob.isASysOp(S.mob().location())))
 				{
-					mob.tell("You start snooping on "+S.mob().name()+".");
+					mob.tell("You start snooping on "+S.mob().displayName()+".");
 					S.startSnooping(mob.session());
 					snoop=true;
 					break;
