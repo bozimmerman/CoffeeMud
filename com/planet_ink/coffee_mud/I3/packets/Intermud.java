@@ -750,11 +750,8 @@ class SaveThread extends Thread {
             }
 			catch (InterruptedException e)
 			{ 
-				if(intermud.shutdown)
-				{
-					Log.sysOut("Intermud","Shutdown!!!!");
-					return; 
-				}
+				Log.sysOut("Intermud","Save Thread Shutdown!");
+				return; 
 			}
             catch( PersistenceException e ) {
                 

@@ -231,9 +231,9 @@ public class ItemUsage
 			target=container;
 			theWhat="<O-NAME> from <T-NAME>";
 		}
-		if(!target.amWearingAt(Item.INVENTORY))
+		if(!getThis.amWearingAt(Item.INVENTORY))
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_REMOVE,null);
+			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_REMOVE,null);
 			if(!mob.location().okAffect(mob,msg))
 				return false;
 			mob.location().send(mob,msg);

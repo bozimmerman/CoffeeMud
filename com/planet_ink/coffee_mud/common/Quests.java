@@ -1039,10 +1039,9 @@ public class Quests implements Cloneable, Quest
 		name=name.trim();
 		if(name.length()==0)
 			return;
-		Vector V=getWinners();
 		if(!wasWinner(name))
 		{
-			V.addElement(name);
+			getWinners().addElement(name);
 			ExternalPlay.DBUpdateQuest(this);
 		}
 	}

@@ -2871,6 +2871,8 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
+				else
+					Log.errOut("Scriptable","MPENDQUEST -- unknown quest: "+s);
 				break;
 			}
 			case 23: //MPSTARTQUEST
@@ -2878,6 +2880,8 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.startQuest();
+				else
+					Log.errOut("Scriptable","MPSTARTQUEST -- unknown quest: "+s);
 				break;
 			}
 			case 22: //MPQUESTWIN
@@ -2885,9 +2889,11 @@ public class Scriptable extends StdBehavior
 				String whoName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(whoName.length()>0)
 				{
-					s=Util.getCleanBit(s,1);
+					s=Util.getCleanBit(s,2);
 					Quest Q=Quests.fetchQuest(s);
 					if(Q!=null) Q.declareWinner(whoName);
+					else
+						Log.errOut("Scriptable","MYQUESTWIN -- unknown quest: "+s);
 				}
 				break;
 			}

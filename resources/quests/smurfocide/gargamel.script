@@ -1,7 +1,7 @@
 # script for gargamel
 ONCE_PROG
 	QUESTCHAT I hate the smurfs! I hate them! I want them all dead right NOW!
-	mpsetvar i$ SMURFOCIDE  ''
+	mpsetvar $i SMURFOCIDE  ''
 ~
 
 SPEECH_PROG smurf hate kill all smurfocide quest dead want smurfs smurf? hate? kill? all? smurfocide? quest? dead? want? smurfs?
