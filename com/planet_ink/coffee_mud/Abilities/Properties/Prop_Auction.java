@@ -153,7 +153,10 @@ public class Prop_Auction extends Property
 			if(b>highBid)
 			{
 				if((highBidder!=null)&&(highBidder!=mob))
+				{
 					highBidder.tell("You have been outbid for "+auctioning.name()+".");
+					mob.tell("You have the high bid for "+auctioning.name()+".");
+				}
 
 				highBidder=mob;
 				if(highBid<0) highBid=0;
@@ -183,7 +186,10 @@ public class Prop_Auction extends Property
 				bid=b;
 			}
 			else
+			{
 				bid=b;
+				mob.tell("You have been outbid by proxy for "+auctioning.name()+".");
+			}
 			V.addElement("A new bid has been entered for "+auctioning.name()+". The current bid is "+bid+".");
 		}
 		if(invoker()!=null) invoker().doCommand(V);
