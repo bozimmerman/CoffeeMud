@@ -622,10 +622,10 @@ public class MUD extends Thread implements Host
 		{
 			while(true)
 			{
-				isOK = false;
 				if (!loadPropPage())
 				{
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
+					System.out.println("MUD","ERROR: Unable to read ini file.");
 					offlineReason=new String("A terminal error has occured!");
 				}
 				else
@@ -641,27 +641,30 @@ public class MUD extends Thread implements Host
 				Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
 				Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		
-				mudThreads=new Vector();
-				String ports=page.getProperty("PORT");
-				int pdex=ports.indexOf(",");
-				while(pdex>0)
+				if(isOk)
 				{
+					mudThreads=new Vector();
+					String ports=page.getProperty("PORT");
+					int pdex=ports.indexOf(",");
+					while(pdex>0)
+					{
+						MUD mud=new MUD();
+						mud.acceptConnections=false;
+						mud.port=Util.s_int(ports.substring(0,pdex));
+						ports=ports.substring(pdex+1);
+						mud.start();
+						mudThreads.addElement(mud);
+						pdex=ports.indexOf(",");
+					}
 					MUD mud=new MUD();
 					mud.acceptConnections=false;
-					mud.port=Util.s_int(ports.substring(0,pdex));
-					ports=ports.substring(pdex+1);
+					mud.port=Util.s_int(ports);
 					mud.start();
 					mudThreads.addElement(mud);
-					pdex=ports.indexOf(",");
 				}
-				MUD mud=new MUD();
-				mud.acceptConnections=false;
-				mud.port=Util.s_int(ports);
-				mud.start();
-				mudThreads.addElement(mud);
 				
-				initHost(Thread.currentThread());
-				((MUD)mudThreads.firstElement()).join();
+				if(initHost(Thread.currentThread()))
+					((MUD)mudThreads.firstElement()).join();
 				
 				System.gc();
 				System.runFinalization();
