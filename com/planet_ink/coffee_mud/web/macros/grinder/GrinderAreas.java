@@ -105,7 +105,8 @@ public class GrinderAreas
 		String name=(String)httpReq.getRequestParameters().get("NAME");
 		if((name==null)||(name.length()==0))
 			return "Please enter a name for this area.";
-		if(!name.equalsIgnoreCase(A.name()))
+		name=name.trim();
+		if(!name.equals(A.name().trim()))
 		{
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";

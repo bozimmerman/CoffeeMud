@@ -3745,6 +3745,10 @@ public class Import
 				subType=sub;
 				commands.removeElementAt(0);
 			}
+			else
+			if(sub.equalsIgnoreCase("data"))
+				commands.removeElementAt(0);
+			
 			if(commands.size()==0)
 			{
 				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
