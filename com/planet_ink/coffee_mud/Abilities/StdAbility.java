@@ -208,11 +208,19 @@ public class StdAbility implements Ability, Cloneable
 	{
 		String targetName=Util.combine(commands,0);
 
-		Environmental target=location.fetchFromRoomFavorItems(null,targetName);
+		Environmental target=null;
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
 			target=givenTarget;
+		
+		if(location!=null)
+			target=location.fetchFromRoomFavorItems(null,targetName);
 		if(target==null)
-			target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName);
+		{
+			if(location!=null)
+				target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName);
+			else
+				target=mob.fetchCarried(null,targetName);
+		}
 		if(target!=null) targetName=target.name();
 		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
 		{

@@ -38,8 +38,9 @@ public class Movement
 		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
 		int leaveCode=Affect.MSG_LEAVE;
-		if(flee)leaveCode=Affect.MSG_FLEE;
+		if(flee) leaveCode=Affect.MSG_FLEE;
 
+		
 		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
 		FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
 		if((exit==null)&&(!mob.isASysOp()))
@@ -67,7 +68,7 @@ public class Movement
 			return false;
 
 		mob.curState().expendEnergy(mob,mob.maxState(),true);
-		if(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState()))
+		if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState())))
 		{
 			mob.tell("You are too tired.");
 			return false;

@@ -70,7 +70,7 @@ public class Spell_Darkness extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> fizzles a spell.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"Darkness has already been cast here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;

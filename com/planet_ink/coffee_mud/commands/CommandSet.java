@@ -183,6 +183,7 @@ public class CommandSet extends Hashtable
 			put("INV",new Integer(INVENTORY));
 			put("I",new Integer(INVENTORY));
 		put("KILL",new Integer(KILL));
+			put("K",new Integer(KILL));
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
 		put("LINK",new Integer(LINK));
