@@ -54,14 +54,14 @@ public class Fighter_Spring extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),"<S-NAME> spring attack(s) <T-NAME>!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				ExternalPlay.postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					new FullMsg(mob,target,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
+					msg=new FullMsg(mob,target,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
 					if(mob.location().okAffect(msg))
 					{
 						mob.location().send(mob,msg);

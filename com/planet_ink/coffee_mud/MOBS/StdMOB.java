@@ -1677,18 +1677,22 @@ public class StdMOB implements MOB
 							{
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
 									weapon=this.fetchWieldedItem();
-								if(((getBitmap()&MOB.ATT_AUTOMELEE)>0)
-								&&(curState().getMovement()>=25)
-								&&(rangeToTarget()<minRange(weapon)))
-								{
-									FullMsg msg=new FullMsg(this,victim,Affect.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
-									if(location().okAffect(msg))
-										location().send(this,msg);
-								}
-								else
-								if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
-								||(rangeToTarget()<=minRange(weapon)))
+								if(((getBitmap()&MOB.ATT_AUTOMELEE)==0))
 									ExternalPlay.postAttack(this,victim,weapon);
+								else
+								{
+									boolean inminrange=(rangeToTarget()>=minRange(weapon));
+									boolean inmaxrange=(rangeToTarget()<=maxRange(weapon));
+									if((!inminrange)&&(curState().getMovement()>=25))
+									{
+										FullMsg msg=new FullMsg(this,victim,Affect.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
+										if(location().okAffect(msg))
+											location().send(this,msg);
+									}
+									else
+									if((weapon!=null)&&inminrange&&inmaxrange)
+										ExternalPlay.postAttack(this,victim,weapon);
+								}
 							}
 						}
 							

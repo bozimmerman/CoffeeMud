@@ -16,7 +16,6 @@ public class Fighter_AxKick extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_AxKick();}
 	public int classificationCode(){return Ability.SKILL;}
-	protected int overrideMana(){return 100;}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

@@ -69,6 +69,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 				neww.setWeaponType(((Weapon)w).weaponType());
 				neww.baseEnvStats().setWeight(1);
 				neww.setBaseValue(0);
+				neww.setRanges(w.minRange(),w.maxRange());
 				neww.recoverEnvStats();
 				w=neww;
 				mob.location().addItemRefuse(neww,Item.REFUSE_PLAYER_DROP);

@@ -106,7 +106,7 @@ public class CommonStrings
 	public static String standardHitWord(int type, int damage)
 	{
 		if(type<0) type=Weapon.TYPE_BURSTING;
-		int damnCode=9;
+		int damnCode=0;
 			 if(damage<=3) damnCode=0;
 		else if(damage<=6) damnCode=1;
 		else if(damage<=10) damnCode=2;
@@ -116,7 +116,26 @@ public class CommonStrings
 		else if(damage<=45) damnCode=6;
 		else if(damage<=65) damnCode=7;
 		else if(damage<=95) damnCode=8;
+		else if(damage<=115) damnCode=9;
+		else if(damage<=145) damnCode=10;
+		else if(damage<=175) damnCode=11;
+		else if(damage<=225) damnCode=12;
+		else if(damage<=300) damnCode=13;
+		else damnCode=14;
 		
+		switch(damnCode)
+		{
+			case 7: return "massacre(s)";
+			case 8: return "MASSACRE(S)";
+			case 9: return "destroy(s)";
+			case 10: return "DESTROY(S)";
+			case 11: return "obliterate(s)";
+			case 12: return "OBLITERATE(S)";
+			case 13: return "**OBLITERATE(S)**";
+			case 14: return "--==::OBLITERATE(S)::==--";
+		default:
+			break;
+		}
 		switch(type)
 		{
 		case Weapon.TYPE_NATURAL:
@@ -129,9 +148,6 @@ public class CommonStrings
 			case 4: return "hurt(s)";
 			case 5: return "rip(s)";
 			case 6: return "crunch(es)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_SLASHING:
@@ -144,9 +160,6 @@ public class CommonStrings
 			case 4: return "slice(s)";
 			case 5: return "gut(s)";
 			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_PIERCING:
@@ -159,9 +172,6 @@ public class CommonStrings
 			case 4: return "stab(s)";
 			case 5: return "pierce(s)";
 			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BASHING:
@@ -174,9 +184,6 @@ public class CommonStrings
 			case 4: return "bash(es)";
 			case 5: return "crush(es)";
 			case 6: return "crunch(es)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BURNING:
@@ -189,9 +196,6 @@ public class CommonStrings
 			case 4: return "flame(s)";
 			case 5: return "scorch(es)";
 			case 6: return "incinerate(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_SHOOT:
@@ -204,9 +208,6 @@ public class CommonStrings
 			case 4: return "pierce(s)";
 			case 5: return "decimate(s)";
 			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_FROSTING:
@@ -219,9 +220,6 @@ public class CommonStrings
 			case 4: return "blister(s)";
 			case 5: return "blast(s)";
 			case 6: return "incinerate(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_GASSING:
@@ -234,9 +232,6 @@ public class CommonStrings
 			case 4: return "choke(s)";
 			case 5: return "decimate(s)";
 			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_MELTING:
@@ -249,9 +244,6 @@ public class CommonStrings
 			case 4: return "scorch(es)";
 			case 5: return "melt(s)";
 			case 6: return "melt(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_STRIKING:
@@ -264,9 +256,6 @@ public class CommonStrings
 			case 4: return "scorch(es)";
 			case 5: return "blast(s)";
 			case 6: return "incinerate(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BURSTING:
@@ -280,9 +269,6 @@ public class CommonStrings
 			case 4: return "badly damage(s)";
 			case 5: return "decimate(s)";
 			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		}

@@ -9,7 +9,13 @@ public class Fighter_Pin extends StdAbility
 {
 	public String ID() { return "Fighter_Pin"; }
 	public String name(){ return "Pin";}
-	public String displayText(){return "(Pinned)";}
+	public String displayText()
+	{
+		if(affected==invoker)
+			return "(Pinning)";
+		else
+			return "(Pinned)";
+	}
 	private static final String[] triggerStrings = {"PIN"};
 	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}

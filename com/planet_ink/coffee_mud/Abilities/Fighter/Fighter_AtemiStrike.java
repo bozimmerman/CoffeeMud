@@ -9,7 +9,7 @@ public class Fighter_AtemiStrike extends StdAbility
 {
 	public String ID() { return "Fighter_AtemiStrike"; }
 	public String name(){ return "Atemi Strike";}
-	public String displayText(){return "";}
+	public String displayText(){return "(Atemi Strike)";}
 	private static final String[] triggerStrings = {"ATEMI"};
 	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}

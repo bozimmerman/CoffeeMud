@@ -59,7 +59,7 @@ public class Fighter_Warcry extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SPEAK,auto?"":"^S<S-NAME> screams(s) a mighty WAR CRY!!^?");
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty WAR CRY!!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
