@@ -66,6 +66,8 @@ public class MOBloader
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 				mob.setPrompt(DBConnections.getRes(R,"CMPRPT"));
 				mob.setColorStr(DBConnections.getRes(R,"CMCOLR"));
+				mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
+				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
 				found=true;
 			}
 			DBConnector.DBDone(D);
@@ -380,6 +382,82 @@ public class MOBloader
 
 	}
 
+	public static void DBUpdateIP(MOB mob)
+	{
+		if(mob.session()==null) return;
+
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="UPDATE CMCHAR SET"
+			+"  CMLSIP='"+mob.session().getAddress()+"'"
+			+"  WHERE CMUSERID='"+mob.ID()+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",str);
+			Log.errOut("MOB","UpdateIP:"+sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+	
+	public static void DBClanFill(String clan, Vector members, Vector roles)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR where CLCLAN='"+clan+"'");
+			if(R!=null)
+			while(R.next())
+			{
+				String username=DBConnector.getRes(R,"CMUSERID");
+				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
+				members.addElement(username);
+				roles.addElement(new Integer(role));
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+	
+	public static void DBUpdateClan(String name, String clan, int role)
+	{
+		DBConnection D=null;
+		String str=null;
+		MOB M=(MOB)CMMap.MOBs.get(name);
+		if(M!=null)
+		{
+			M.setClanID(clan);
+			M.setClanRole(role);
+		}
+		
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="UPDATE CMCLAN SET"
+			+"  CMCLAN='"+clan+"',"
+			+"  CMCLRO="+role+""
+			+"  WHERE CMUSERID='"+name+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",str);
+			Log.errOut("MOB","UpdateIP:"+sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+	
 	public static void DBUpdate(MOB mob)
 	{
 		if(mob.ID().length()==0)
@@ -433,6 +511,8 @@ public class MOBloader
 			+", CMWEIT="+mob.baseEnvStats().weight()
 			+", CMPRPT='"+mob.getPrompt()+"'"
 			+", CMCOLR='"+mob.getColorStr()+"'"
+			+", CMCLAN='"+mob.getClanID()+"'"
+			+", CMCLRO="+mob.getClanRole()
 			+"  WHERE CMUSERID='"+mob.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);

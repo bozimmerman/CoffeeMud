@@ -423,10 +423,13 @@ public class Generic
 		ExternalPlay.DBUpdateExits(newRoom);
 		if(andContent)
 		{
+			Hashtable identTable=new Hashtable();
+			
 			Vector cV=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
 			if(cV==null) return unpackErr("Room","null 'cV'"+" in room "+newRoom.ID());
 			if(cV.size()>0)
 			{
+				Hashtable mobRideTable=new Hashtable();
 				Vector mV=XMLManager.getRealContentsFromPieces(cV,"ROOMMOBS");
 				if(mV!=null) //return unpackErr("Room","null 'mV'"+" in room "+newRoom.ID());
 				for(int m=0;m<mV.size();m++)
@@ -437,10 +440,18 @@ public class Generic
 					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
 					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.ID());
+					if(newMOB instanceof Rideable)
+					{
+						String iden=XMLManager.getValFromPieces(mblk.contents,"MIDEN");
+						if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
+					}
 					newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
 					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
 					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
 					newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
+					String ride=XMLManager.getValFromPieces(mblk.contents,"MRIDE");
+					if((ride!=null)&&(ride.length()>0))
+						mobRideTable.put(newMOB,ride);
 					newMOB.setStartRoom(newRoom);
 					newMOB.setLocation(newRoom);
 					newMOB.recoverCharStats();
@@ -449,8 +460,8 @@ public class Generic
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(newRoom,true);
 				}
+				
 				Hashtable itemLocTable=new Hashtable();
-				Hashtable identTable=new Hashtable();
 				Vector iV=XMLManager.getRealContentsFromPieces(cV,"ROOMITEMS");
 				if(iV!=null) //return unpackErr("Room","null 'iV'"+" in room "+newRoom.ID());
 				for(int i=0;i<iV.size();i++)
@@ -461,8 +472,11 @@ public class Generic
 					String iClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.ID());
-					if(newItem instanceof Container)
-						identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
+					if((newItem instanceof Container)||(newItem instanceof Rideable))
+					{
+						String iden=XMLManager.getValFromPieces(iblk.contents,"IIDEN");
+						if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newItem);
+					}
 					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
 					newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
@@ -483,6 +497,17 @@ public class Generic
 					childI.setContainer(parentI);
 					childI.recoverEnvStats();
 					parentI.recoverEnvStats();
+				}
+				for(Enumeration e=mobRideTable.keys();e.hasMoreElements();)
+				{
+					MOB M=(MOB)e.nextElement();
+					String ride=(String)mobRideTable.get(M);
+					if((ride!=null)&&(ride.length()>0))
+					{
+						Environmental E=(Environmental)identTable.get(ride);
+						if(E instanceof Rideable)
+							M.setRiding((Rideable)E);
+					}
 				}
 			}
 		}
@@ -631,10 +656,16 @@ public class Generic
 					{
 						buf.append("<RMOB>");
 						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
+						if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))
+							buf.append(XMLManager.convertXMLtoTag("MIDEN",""+mob));
 						buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 						buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 						buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
 						buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
+						if(mob.riding()!=null)
+							buf.append(XMLManager.convertXMLtoTag("MRIDE",""+mob.riding()));
+						else
+							buf.append("<MRIDE />");
 						buf.append("</RMOB>");
 					}
 				}
@@ -650,7 +681,8 @@ public class Generic
 					buf.append("<RITEM>");
 					Item item=(Item)items.elementAt(i);
 					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
-					if((item instanceof Container)&&(((Container)item).capacity()>0))
+					if(((item instanceof Container)&&(((Container)item).capacity()>0))
+					||((item instanceof Rideable)&&(((Rideable)item).numRiders()>0)))
 						buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
 					if(item.container()==null)
 						buf.append("<ILOCA />");

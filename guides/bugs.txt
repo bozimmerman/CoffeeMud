@@ -1,2 +1,4 @@
 bug look for alternate materials in the common skills
 need to really test new zapper for level, class, sysop, alignment, etc.
+And the last IP the player connects from would be nice to have in the player-table
+Ability to save riding status in the database.

@@ -181,6 +181,8 @@ public class RoomLoader
 		if(thisRoom==null)
 			return;
 
+		Hashtable itemNums=new Hashtable();
+		
 		DBConnection D=null;
 		// now grab the items
 		try
@@ -188,7 +190,6 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+thisRoom.ID()+"'");
 			
-			Hashtable itemNums=new Hashtable();
 			Hashtable itemLocs=new Hashtable();
 			while(R.next())
 			{
@@ -242,22 +243,30 @@ public class RoomLoader
 		// now grab the inhabitants
 		try
 		{
+			Hashtable mobRides=new Hashtable();
+			
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+thisRoom.ID()+"'");
 			while(R.next())
 			{
 				String MOBID=DBConnections.getRes(R,"CMCHID");
+				String NUMID=DBConnections.getRes(R,"CMCHNM");
+				
 				MOB newMOB=(MOB)CMClass.getMOB(MOBID);
 				if(newMOB==null)
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
+					itemNums.put(NUMID,newMOB);
 					newMOB.setStartRoom(thisRoom);
 					newMOB.setLocation(thisRoom);
 					newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
 					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 					newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 					newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+					String ride=DBConnections.getRes(R,"CMCHRI");
+					if((ride!=null)&&(ride.length()>0))
+						mobRides.put(newMOB,ride);
 					newMOB.recoverCharStats();
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
@@ -266,6 +275,18 @@ public class RoomLoader
 				}
 			}
 			DBConnector.DBDone(D);
+			
+			for(Enumeration e=mobRides.keys();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				String ride=(String)mobRides.get(M);
+				if(ride!=null)
+				{
+					Environmental E=(Environmental)itemNums.get(ride);
+					if((E!=null)&&(E instanceof Rideable))
+						M.setRiding((Rideable)E);
+				}
+			}
 		}
 		catch(SQLException sqle)
 		{
@@ -409,15 +430,17 @@ public class RoomLoader
 					 +"CMCHTX, "
 					 +"CMCHLV, "
 					 +"CMCHAB, "
-					 +"CMCHRE "
+					 +"CMCHRE, "
+					 +"CMCHRI "
 					 +") values ("
 					 +"'"+room.ID()+"',"
-					 +m+","
+					 +"'"+thisMOB+"',"
 					 +"'"+CMClass.className(thisMOB)+"',"
 					 +"'"+thisMOB.text()+" ',"
 					 +thisMOB.baseEnvStats().level()+","
 					 +thisMOB.baseEnvStats().ability()+","
-					 +thisMOB.baseEnvStats().rejuv()+""
+					 +thisMOB.baseEnvStats().rejuv()+","
+					 +((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")
 					 +")";
 					D.update(str);
 					DBConnector.DBDone(D);

@@ -838,8 +838,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
-					if(affect.tool() instanceof LandTitle)
-						storeInventory.addElement(affect.tool());
 					if(affect.tool() instanceof Item)
 					{
 						Item item=(Item)affect.tool();

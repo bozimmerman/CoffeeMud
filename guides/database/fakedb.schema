@@ -43,6 +43,9 @@ CMHEIT integer NULL
 CMWEIT integer NULL
 CMPRPT string NULL
 CMCOLR string NULL
+CMLSIP string NULL
+CMCLAN string NULL
+CMCLRO integer NULL
 
 CMCHFO
 CMUSERID string KEY
@@ -66,12 +69,13 @@ CMHEIT integer NULL
 
 CMROCH
 CMROID string KEY
-CMCHNM integer KEY
+CMCHNM string KEY
 CMCHID string NULL
 CMCHTX string NULL
 CMCHLV integer NULL
 CMCHAB integer NULL
 CMCHRE integer NULL
+CMCHRI string NULL
 
 CMROEX
 CMROID string KEY

@@ -145,6 +145,7 @@ public class FrontDoor
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 				}
+				ExternalPlay.DBUpdateIP(mob);
 				ExternalPlay.DBReadFollowers(mob);
 			}
 			else

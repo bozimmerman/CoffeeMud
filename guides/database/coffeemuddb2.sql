@@ -44,8 +44,11 @@ CMBTMP integer NULL,
 CMLEIG varchar (50) NULL,
 CMHEIT integer NULL,
 CMWEIT integer NULL,
-CMPRPT char (250) NULL,
-CMCOLR char (50) NULL,
+CMPRPT varchar (250) NULL,
+CMCOLR varchar (50) NULL,
+CMLSIP varchar (100) NULL,
+CMCLAN varchar (100) NULL,
+CMCLRO integer NULL,
 PRIMARY KEY (CMUSERID)
 );
 
@@ -75,12 +78,13 @@ PRIMARY KEY (CMUSERID, CMITNM)
 
 CREATE TABLE CMROCH (
 CMROID varchar (50),
-CMCHNM integer,
+CMCHNM varchar (100),
 CMCHID varchar (50) NULL,
 CMCHTX text  NULL,
 CMCHLV integer NULL,
 CMCHAB integer NULL,
 CMCHRE integer NULL,
+CMCHRI varchar (100),
 PRIMARY KEY (CMROID, CMCHNM)
 );
 

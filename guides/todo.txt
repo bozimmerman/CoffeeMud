@@ -1,9 +1,7 @@
 Some sort of Archon-only Journal that you can add banned address to (and remove).
-And the last IP the player connects from would be nice to have in the player-table
-Archons can't boot players off? (shutdowns down count)
+owns a room, owns mobs who start there (clans)
 
 New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
-Ability to save riding status in the database.
 Wainsright - to create wagons
 Shipwright - create boats
 AUTOFOLLOW (or GUARD) to prevent a mob from actually following followers. 

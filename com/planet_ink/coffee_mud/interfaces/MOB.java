@@ -65,10 +65,6 @@ public interface MOB
 	public int adjustedDamage(Weapon weapon, MOB target);
 	
 	
-	/** Where this MOB is currently*/
-	public Room location();
-	public void setLocation(Room newRoom);
-	
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/
 	public Session session();
@@ -115,6 +111,10 @@ public interface MOB
 	// misc characteristics
 	public String getWorshipCharID();
 	public String getLeigeID();
+	public String getClanID();
+	public void setClanID(String clan);
+	public int getClanRole();
+	public void setClanRole(int role);
 	public void setLeigeID(String newVal);
 	public int getAlignment();
 	public int getWimpHitPoint();
@@ -125,11 +125,13 @@ public interface MOB
 	public void setWimpHitPoint(int newVal);
 	public void setQuestPoint(int newVal);
 	public void setRiding(Rideable ride);
+	public long lastTickedDateTime();
 	
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newVal);
-	public long lastTickedDateTime();
+	public Room location();
+	public void setLocation(Room newRoom);
 	
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */

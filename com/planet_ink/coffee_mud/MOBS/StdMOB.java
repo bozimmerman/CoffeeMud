@@ -15,6 +15,9 @@ public class StdMOB implements MOB
 	private String prompt=null;
 	protected int termID = 0;	//0:plain, 1:ansi
 	
+	private String clanID=null;
+	private int clanRole=0;
+	
 	protected CharStats baseCharStats=new DefaultCharStats();
 	protected CharStats charStats=new DefaultCharStats();
 
@@ -394,6 +397,11 @@ public class StdMOB implements MOB
 			session().setKillFlag(true);
 	}
 
+	public String getClanID(){return ((clanID==null)?"":clanID);}
+	public void setClanID(String clan){clanID=clan;}
+	public int getClanRole(){return clanRole;}
+	public void setClanRole(int role){clanRole=role;}
+	
 	public MOB replyTo(){	return replyTo;	}
 	public void setReplyTo(MOB mob){	replyTo=mob;	}
 	public String getPrompt()
