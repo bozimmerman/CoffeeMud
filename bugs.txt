@@ -1,3 +1,22 @@
+imc2 causing login problems?!?!
+i3 shake shows $N to others.
+Morris Cox (yahoo ) probs 
+genrace init problem
+cmstat table in ms access
+I turned smurfette into a statue, and then cast Acid Fog. It tells me Someone sizzles in the acid fog , even though noone else is here. (Loki looked, he saw smurfette's statue and smurfette, since she is petrified). The bug is: statue characters shouldn't take damage from area affect spells.
+When Increase Gravity is revoked, I still can't move afterward. Neither can anyone else in my party. 
+[ca, geas, troll, kill, hassan]
+Ranged Weapon Specialization 
+Lay Minor Traps 
+Song Write 
+Restore Mana 
+Sense Undead
+5/31/2004 11:02 PM  Info  MUD          -->Thread: main
+5/31/2004 11:02 PM  Info  MUD          -->Thread: Tick.3
+5/31/2004 11:02 PM  Info  MUD          -->Thread: Tick.198
+5/31/2004 11:02 PM  Info  MUD          -->Thread: Thread-0
+5/31/2004 11:02 PM  Info  MUD          -->Thread: Thread-1
+5/31/2004 11:02 PM  Info  MUD          -->Thread: TelnetSession.635
 Install ship battery
 make diff levels of drunk, and disease_hangover
 mutable body parts, with ability to grant powers

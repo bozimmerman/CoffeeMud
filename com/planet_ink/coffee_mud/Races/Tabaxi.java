@@ -16,7 +16,7 @@ public class Tabaxi extends GreatCat
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Feline";}
-	private String[]racialAbilityNames={"Skill_Hide","Skill_Sneak"};
+	private String[] racialAbilityNames={"Skill_Hide","Skill_Sneak"};
 	private int[]racialAbilityLevels={4,4};
 	private int[]racialAbilityProfficiencies={50,50};
 	private boolean[]racialAbilityQuals={false,false};
@@ -26,13 +26,13 @@ public class Tabaxi extends GreatCat
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,2 ,2 ,0 ,2 ,2 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0};
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
-		public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 	        affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED); //would like to turn this darkvison if it is okay with Zac.
@@ -40,12 +40,15 @@ public class Tabaxi extends GreatCat
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,19);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,20);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,10);
-		affectableStats.setPermaStat(CharStats.WISDOM,12);
-		}
+	    affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+3);
+		affectableStats.setStat(CharStats.MAX_DEXTERITY_ADJ,affectableStats.getStat(CharStats.MAX_DEXTERITY_ADJ)+3);
+        affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+3);
+		affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ)+3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)-4);
+		affectableStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)-4);
+		affectableStats.setStat(CharStats.WISDOM,affectableStats.getStat(CharStats.WISDOM)-2);
+		affectableStats.setStat(CharStats.MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.MAX_WISDOM_ADJ)-2);
+	}
 
 	public Vector myResources()
 	{

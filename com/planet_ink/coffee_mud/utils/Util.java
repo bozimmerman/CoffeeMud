@@ -420,6 +420,7 @@ public class Util
 		catch (Exception ex)
 		{
 			Log.errOut("MUD", "Error occur during decompression.");
+			encodeBuffer=new byte[65536];
 			return "";
 		}
 	}
@@ -447,6 +448,7 @@ public class Util
 		catch (Exception ex)
 		{
 			Log.errOut("MUD", "Error occur during compression");
+			encodeBuffer=new byte[65536];
 		}
 
 	    return result;
