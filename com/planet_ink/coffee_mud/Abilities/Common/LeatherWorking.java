@@ -22,6 +22,7 @@ public class LeatherWorking extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
+	private static final int RCP_CONTAINMASK=9;
 
 
 	private Item building=null;
@@ -354,6 +355,7 @@ public class LeatherWorking extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+((multiplier-1)*3));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
 			if(building instanceof Weapon)
 			{
@@ -372,6 +374,11 @@ public class LeatherWorking extends CommonSkill
 			{
 				((Armor)building).baseEnvStats().setArmor(armordmg);
 				((Armor)building).setRawProperLocationBitmap(0);
+				if(capacity>0)
+				{
+					((Armor)building).setCapacity(capacity+woodRequired);
+					((Armor)building).setContainTypes(canContain);
+				}
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
 					String WO=Item.wornLocation[wo].toUpperCase();

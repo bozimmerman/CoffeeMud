@@ -23,5 +23,8 @@ public interface Container extends Item
 	public static final int CONTAIN_DAGGERS=8;
 	public static final int CONTAIN_OTHERWEAPONS=16;
 	public static final int CONTAIN_ONEHANDWEAPONS=32;
-	public static final String[] CONTAIN_DESCS={"ANYTHING","LIQUID","COINS","SWORDS","DAGGERS","OTHER WEAPONS","ONE-HANDED WEAPONS"};
+	public static final int CONTAIN_BODIES=64;
+	public static final int CONTAIN_READABLES=128;
+	public static final int CONTAIN_SCROLLS=256;
+	public static final String[] CONTAIN_DESCS={"ANYTHING","LIQUID","COINS","SWORDS","DAGGERS","OTHER WEAPONS","ONE-HANDED WEAPONS","BODIES","READABLES","SCROLLS"};
 }

@@ -1,15 +1,11 @@
-when you use compare, if you only provide one param, have it compare it to what you have equipped
+GenLadder, GenFountain
 the shopkeepers give way to much money for items. It is too lucrative
-Transmutation lvl 24 HUNGERLESS target needs no food for duration of spell.
-WILL's spell ANIMATEWEAPON, Enchantment 14 causes targetted weapon to attack on it's own, as part of the caster's party.
-Transmutation lvl 22 THIRSTLESS target needs no water for duration of spell.
-
-owns a room, owns mobs who start there (clans)
-bankers be snobby by requiring a minimum balance to deposit.
-Paper-maker to make paper, scrolls (silkscreens) Wood. Cloth=Canvas. Cotton=Canvas. Silk=Silkscreen
 Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
-random monster property class which reads stats from a resource file
-Auto quests, quests, questbox (Behavior)
+property to force an object to decay once worn/picked up
+mime behavior: A MOB will mimic any social that you do.
+pillow social to start a pillow fight
+aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
+new social= smurf
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana on each room mapped.
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
@@ -18,7 +14,6 @@ problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 ARTIST ability to make wallpaper -- make Paintings.
-add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.
 add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?
@@ -34,14 +29,9 @@ add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
 Behavior & Skill libido - Property Pregnancy, Property Aging 
-property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
-mime behavior: A MOB will mimic any social that you do.
-pillow social to start a pillow fight
-aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
 titles for high levels.
-new social= smurf
-new items to add to the CARVE list and the SCULPT list Toy,Door, Wall, Chop Sticks, Bookshelf, Desk, Ladder, Steps, Fountain, Podium,Bridge, Coffin/sarcophogus,
+Auto quests, quests, questbox (Behavior)
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
 ReligiousHelper—Aids other MOBs of given religion
 Nonconvertable—MOB won’t accept another religion.
@@ -57,6 +47,8 @@ Offering: A cleric may sacrifice money to their deity.  Doing so restores X/10 M
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
 When Underwater, movement is expended at 2* the rate.  If you run out of movement on water, you suffer a -50% to your swim check.
+'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
+random monster property class which reads stats from a resource file
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
@@ -70,3 +62,4 @@ ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM commo
 
 1)	Waypoints—A Land Based auto-travelling system.  Any area that has a Prop_WayPoint can be accessed from another Prop_WayPoint Area, provided the character has the TRAVELLER skill, and has learned each of those way points.  The computer will determine (approx) the shortest route from WayPoint A to WayPoint B.  If the path becomes blocked or someone attacks the TRAVELLER, then the traveling stops in that room.  Note: You can only initiate the TRAVELLER skill from a WayPoint.
 2)	Seapoints—A sea based auto-travelling system.
+add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.

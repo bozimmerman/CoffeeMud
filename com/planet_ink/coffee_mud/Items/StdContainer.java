@@ -446,6 +446,19 @@ public class StdContainer extends StdItem implements Container
 					&&(((Weapon)E).rawLogicalAnd()==false))
 						return true;
 					break;
+				case CONTAIN_BODIES:
+					if(E instanceof DeadBody)
+						return true;
+					break;
+				case CONTAIN_READABLES:
+					if((E instanceof Item)
+					&&(((Item)E).isReadable()))
+						return true;
+					break;
+				case CONTAIN_SCROLLS:
+					if(E instanceof Scroll)
+						return true;
+					break;
 				}
 		return false;
 	}

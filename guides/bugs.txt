@@ -1,2 +1,1 @@
 bug look for alternate materials in the common skills
-need to really test new zapper for level, class, sysop, alignment, etc.

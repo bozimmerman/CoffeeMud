@@ -22,6 +22,7 @@ public class Carpentry extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
+	private static final int RCP_CONTAINMASK=9;
 
 
 	private Item building=null;
@@ -300,13 +301,17 @@ public class Carpentry extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			key=null;
 			if((building instanceof Container)
 			&&(!(building instanceof Armor)))
 			{
 				if(capacity>0)
+				{
 					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setContainTypes(canContain);
+				}
 				if(misctype.equalsIgnoreCase("LID"))
 					((Container)building).setLidsNLocks(true,false,false,false);
 				else

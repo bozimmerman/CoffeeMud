@@ -34,7 +34,8 @@ public class ShopKeepers
 		if(titleInName.equals(mob.name())) return true;
 		if(titleInName.equals(mob.getClanID()))
 		{
-			if(mob.getClanRole()==Clan.POS_LEADER)
+			if((mob.getClanRole()==Clan.POS_LEADER)
+			||(mob.getClanRole()==Clan.POS_BOSS))
 				return true;
 		}
 		return false;

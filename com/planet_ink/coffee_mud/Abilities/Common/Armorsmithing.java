@@ -22,6 +22,7 @@ public class Armorsmithing extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
+	private static final int RCP_CONTAINMASK=9;
 
 
 	private Item building=null;
@@ -349,6 +350,7 @@ public class Armorsmithing extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			if(building instanceof Armor)
 			{
@@ -380,7 +382,10 @@ public class Armorsmithing extends CommonSkill
 			}
 			if(building instanceof Container)
 				if(capacity>0)
+				{
 					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setContainTypes(canContain);
+				}
 			building.recoverEnvStats();
 			building.text();
 			building.recoverEnvStats();

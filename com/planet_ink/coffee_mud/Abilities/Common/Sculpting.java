@@ -21,6 +21,7 @@ public class Sculpting extends CommonSkill
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
+	private static final int RCP_CONTAINMASK=8;
 
 	private Item building=null;
 	private Item key=null;
@@ -254,6 +255,7 @@ public class Sculpting extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			key=null;
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 			{
@@ -275,7 +277,10 @@ public class Sculpting extends CommonSkill
 			if(building instanceof Container)
 			{
 				if(capacity>0)
+				{
 					((Container)building).setCapacity(capacity+woodRequired);
+					((Container)building).setContainTypes(canContain);
+				}
 				if(misctype.equalsIgnoreCase("LID"))
 					((Container)building).setLidsNLocks(true,false,false,false);
 				else

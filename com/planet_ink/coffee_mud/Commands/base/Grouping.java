@@ -304,8 +304,9 @@ public class Grouping
 		||(target.amFollowing()==mob)
 		||(target.getLeigeID().equals(mob.name()))
 		||((target.getClanID().length()>0)
-		   &&(target.getClanID().equals(mob.getClanID()))
-		   &&(mob.getClanRole()==Clan.POS_LEADER))
+			&&(target.getClanID().equals(mob.getClanID()))
+			&&((mob.getClanRole()==Clan.POS_LEADER)
+				||(mob.getClanRole()==Clan.POS_BOSS)))
 		||(ExternalPlay.doesOwnThisProperty(mob,target.getStartRoom())))
 		{
 			commands.removeElementAt(0);
