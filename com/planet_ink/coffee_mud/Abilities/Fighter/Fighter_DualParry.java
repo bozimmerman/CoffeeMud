@@ -35,7 +35,7 @@ public class Fighter_DualParry extends StdAbility
 			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
 			{
 				Item attackerWeapon=(Item)affect.tool();
-				Item myOtherWeapon=mob.fetchWornItem(Item.HELD);
+				Item myOtherWeapon=mob.fetchFirstWornItem(Item.HELD);
 				if((myOtherWeapon!=null)
 				&&(attackerWeapon!=null)
 				&&(myOtherWeapon instanceof Weapon)

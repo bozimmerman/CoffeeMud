@@ -15,12 +15,8 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public long forbiddenWornBits();
 	public int[] bodyMask();
 	public boolean fertile();
-	
 	public void outfit(MOB mob);
-	public boolean canWear(Item item);
-	
 	public String healthText(MOB mob);
-	
 	public Weapon myNaturalWeapon();
 	public Vector myResources();
 	
@@ -64,4 +60,26 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
+	
+	public final static long[][] BODY_WEARGRID={
+		{Item.ON_HEAD,-1}, // ANTENEA, having any of these removes that pos
+		{Item.ON_EYES,2}, // EYES, having any of these adds this position
+		{Item.ON_EARS,2}, // EARS, gains a wear position here for every 2
+		{Item.ON_HEAD,1}, // HEAD, gains a wear position here for every 1
+		{Item.ON_NECK,1}, // NECK, gains a wear position here for every 1
+		{Item.ON_ARMS,2}, // ARMS, gains a wear position here for every 2
+		{Item.WIELD|Item.HELD|Item.ON_HANDS
+	     |Item.ON_LEFT_FINGER|Item.ON_LEFT_WRIST
+		 |Item.ON_RIGHT_FINGER|Item.ON_RIGHT_WRIST,1}, // HANDS, gains a wear position here for every 1 
+			// lots of exceptions apply to the above
+		{Item.ON_TORSO|Item.ON_BACK,1}, // TORSO, gains a wear position here for every 1
+		{Item.ON_LEGS,2}, // LEGS, gains a wear position here for every 2
+		{Item.ON_FEET,2}, // FEET, gains a wear position here for every 2
+		{-1,-1}, // NOSE, No applicable wear position for this body part
+		{-1,-1}, // GILLS, No applicable wear position for this body part
+		{Item.ON_MOUTH,1}, // MOUTH, gains a wear position here for every 1
+		{Item.ON_WAIST,1}, // WAIST, gains a wear position here for every 1
+		{Item.ON_LEGS,-1}, // TAIL, having any of these removes that pos
+		{Item.ON_BACK,-1}, // WINGS, having any of these removes that pos
+	};
 }

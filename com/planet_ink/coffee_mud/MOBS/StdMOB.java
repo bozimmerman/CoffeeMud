@@ -1147,6 +1147,67 @@ public class StdMOB implements MOB
 					}
 				}
 
+				// limb check
+				if(!Util.bset(affect.targetCode(),Affect.MASK_HURT))
+				switch(affect.targetMinor())
+				{
+				case Affect.TYP_PULL:
+				case Affect.TYP_PUSH:
+				case Affect.TYP_GET:
+				case Affect.TYP_REMOVE:
+				case Affect.TYP_OPEN:
+				case Affect.TYP_CLOSE:
+				case Affect.TYP_DROP:
+				case Affect.TYP_THROW:
+					if(getWearPositions(Item.ON_ARMS)==0)
+					{
+						tell("You need arms to do that.");
+						return false;
+					}
+					break;
+				case Affect.TYP_DELICATE_HANDS_ACT:
+					if((getWearPositions(Item.ON_HANDS)==0)
+					&&(affect.othersMinor()!=Affect.NO_EFFECT))
+					{
+						tell("You need hands to do that.");
+						return false;
+					}
+					break;
+				case Affect.TYP_JUSTICE:
+					if((getWearPositions(Item.ON_HANDS)==0)
+					&&(affect.target() instanceof Item))
+					{
+						tell("You need hands to do that.");
+						return false;
+					}
+					break;
+				case Affect.TYP_FILL:
+				case Affect.TYP_GIVE:
+				case Affect.TYP_HANDS:
+				case Affect.TYP_LOCK:
+				case Affect.TYP_PUT:
+				case Affect.TYP_UNLOCK:
+				case Affect.TYP_WRITE:
+					if(getWearPositions(Item.ON_HANDS)==0)
+					{
+						tell("You need hands to do that.");
+						return false;
+					}
+					break;
+				case Affect.TYP_DRINK:
+					if(getWearPositions(Item.ON_HANDS)==0)
+					{
+						if((affect.target()!=null)
+						&&(isMine(affect.target())))
+						{
+							tell("You need hands to do that.");
+							return false;
+						}
+					}
+					break;
+				}
+				
+				// activity check
 				switch(affect.sourceMinor())
 				{
 				case Affect.TYP_ENTER:
@@ -1440,6 +1501,11 @@ public class StdMOB implements MOB
 			case Affect.TYP_GIVE:
 				if(affect.tool()==null) return false;
 				if(!(affect.tool() instanceof Item)) return false;
+				if(getWearPositions(Item.ON_ARMS)==0)
+				{
+					affect.source().tell(name()+" is unable to accept that from you.");
+					return false;
+				}
 				if(!Sense.canBeSeenBy(affect.tool(),this))
 				{
 					mob.tell(name()+" can't see what you are giving.");
@@ -2420,17 +2486,89 @@ public class StdMOB implements MOB
 		}
 		return null;
 	}
-	public boolean amWearingSomethingHere(long wornCode)
+	public int freeWearPositions(long wornCode)
 	{
+		int x=getWearPositions(wornCode);
+		if(x<=0) return 0;
+		x=x-numWearingHere(wornCode);
+		if(x<=0) return 0;
+		return x;
+	}
+	public int getWearPositions(long wornCode)
+	{
+		if((charStats().getMyRace().forbiddenWornBits()&wornCode)>0) 
+			return 0;
+		if(wornCode==Item.FLOATING_NEARBY)
+			return Integer.MAX_VALUE;
+		int total;
+		int add=0;
+		for(int i=0;i<Race.BODY_WEARGRID.length;i++)
+		{
+			if((Race.BODY_WEARGRID[i][0]>0)
+			&&((Race.BODY_WEARGRID[i][0]&wornCode)==wornCode))
+			{
+				total=charStats().getBodyPart(i);
+				if(Race.BODY_WEARGRID[i][1]<0)
+				{
+					if(total>0) return 0;
+				}
+				else
+				if(total<1)
+					return 0;
+				else
+				if(i==Race.BODY_HAND)
+				{
+					// casting is ok here since these are all originals
+					// that fall below the int/long fall.
+					if(wornCode>Integer.MAX_VALUE)
+						add+=total;
+					else
+					switch((int)wornCode)
+					{
+					case (int)Item.ON_HANDS:
+						if(total<2) 
+							add+=1;
+						else
+							add+=total/2;
+						break;
+					case (int)Item.WIELD:
+					case (int)Item.ON_RIGHT_FINGER:
+					case (int)Item.ON_RIGHT_WRIST:
+						add+=1; break;
+					case (int)Item.HELD:
+					case (int)Item.ON_LEFT_FINGER:
+					case (int)Item.ON_LEFT_WRIST:
+						add+=total-1; break;
+					default:
+						add+=total; break;
+					}
+				}
+				else
+				{
+					int num=total/((int)Race.BODY_WEARGRID[i][1]);
+					if(num<1) 
+						add+=1;
+					else
+						add+=num;
+				}
+			}
+		}
+		if(add==0) return 1;
+		return add;
+	}
+	
+	public int numWearingHere(long wornCode)
+	{
+		int num=0;
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
-				return true;
+				num++;
 		}
-		return false;
+		return num;
 	}
-	public Item fetchWornItem(long wornCode)
+	public Item fetchFirstWornItem(long wornCode)
 	{
 		for(int i=0;i<inventorySize();i++)
 		{

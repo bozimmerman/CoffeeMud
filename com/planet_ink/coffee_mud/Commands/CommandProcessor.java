@@ -329,7 +329,7 @@ public class CommandProcessor
 			AbilityEvoker.evoke(mob,commands);
 			break;
 		case CommandSet.EQUIPMENT:
-			Scoring.equipment(mob);
+			Scoring.equipment(mob,commands);
 			break;
 		case CommandSet.EXAMINE:
 			BasicSenses.look(mob,commands,false);

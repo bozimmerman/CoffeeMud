@@ -1424,9 +1424,9 @@ public class Arrest extends StdBehavior
 			{
 				if((laws.basicCrimes().containsKey("NUDITY"))
 				&&(!affect.source().isMonster())
-				&&(affect.source().fetchWornItem(Item.ON_LEGS)==null)
-				&&(affect.source().fetchWornItem(Item.ON_WAIST)==null)
-				&&(affect.source().fetchWornItem(Item.ABOUT_BODY)==null))
+				&&(affect.source().fetchFirstWornItem(Item.ON_LEGS)==null)
+				&&(affect.source().fetchFirstWornItem(Item.ON_WAIST)==null)
+				&&(affect.source().fetchFirstWornItem(Item.ABOUT_BODY)==null))
 				{
 					String info[]=(String[])laws.basicCrimes().get("NUDITY");
 					fillOutWarrant(affect.source(),

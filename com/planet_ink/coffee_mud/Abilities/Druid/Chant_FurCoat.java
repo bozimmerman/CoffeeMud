@@ -77,7 +77,7 @@ public class Chant_FurCoat extends Chant
 			return false;
 		}
 
-		if(target.amWearingSomethingHere(Item.ON_TORSO))
+		if(target.freeWearPositions(Item.ON_TORSO)<=0)
 		{
 			mob.tell("You are already wearing something on your torso!");
 			return false;

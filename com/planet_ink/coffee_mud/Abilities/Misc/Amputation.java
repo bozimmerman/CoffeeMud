@@ -29,7 +29,6 @@ public class Amputation extends StdAbility
 	public int classificationCode(){return Ability.PROPERTY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Vector missingLimbs=null;
-	private long forbiddenWornBits=-1;
 	private int[] amputations=new int[Race.BODY_PARTS];
 
 	public final static boolean[] validamputees={true,//antenea
@@ -67,41 +66,34 @@ public class Amputation extends StdAbility
 												{-1},//tail
 												{-1}//wing
 												};
-	public boolean canWear(Item item)
-	{
-		missingLimbNameSet();
-		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))
-			return false;
-		else
-		if((!item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&(Integer.MAX_VALUE-forbiddenWornBits))==0))
-			return false;
-		return true;
-	}
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		missingLimbNameSet();
-		if(Util.bset(forbiddenWornBits,Item.ON_LEGS))
+		if(affected instanceof MOB)
 		{
-			if(Util.bset(forbiddenWornBits,Item.ON_ARMS))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-			affectableStats.setDisposition(affectableStats.disposition()|affectableStats.IS_SITTING);
+			MOB mob=(MOB)affected;
+			if((amputations[Race.BODY_LEG]<0)&&(mob.getWearPositions(Item.ON_LEGS)==0))
+			{
+				if((amputations[Race.BODY_ARM]<0)&&(mob.getWearPositions(Item.ON_ARMS)==0))
+					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
+				affectableStats.setDisposition(affectableStats.disposition()|affectableStats.IS_SITTING);
+			}
+			if((amputations[Race.BODY_EYE]<0)&&(mob.getWearPositions(Item.ON_EYES)==0))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+			if((amputations[Race.BODY_EAR]<0)&&(mob.getWearPositions(Item.ON_EARS)==0))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 		}
-		if(Util.bset(forbiddenWornBits,Item.ON_EYES))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
-		if(Util.bset(forbiddenWornBits,Item.ON_EARS))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		missingLimbNameSet();
-		if(Util.bset(forbiddenWornBits,Item.ON_LEGS))
+		if((amputations[Race.BODY_LEG]<0)&&(affected.getWearPositions(Item.ON_LEGS)==0))
 			affectableState.setMovement(affectableState.getMovement()/8);
 		else
-		if(Util.bset(forbiddenWornBits,Item.ON_FEET))
+		if((amputations[Race.BODY_FOOT]<0)&&(affected.getWearPositions(Item.ON_FEET)==0))
 			affectableState.setMovement(affectableState.getMovement()/4);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -111,98 +103,6 @@ public class Amputation extends StdAbility
 		for(int i=0;i<amputations.length;i++)
 			if(amputations[i]!=0)
 				affectableStats.alterBodypart(i,amputations[i]);
-	}
-	public boolean okAffect(Environmental myHost, Affect affect)
-	{
-		MOB myChar=(MOB)affected;
-		if(myChar==null) return false;
-		if((affect.amISource(myChar))
-			&&(!Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
-		{
-			missingLimbNameSet();
-			switch(affect.targetMinor())
-			{
-			case Affect.TYP_PULL:
-			case Affect.TYP_PUSH:
-			case Affect.TYP_GET:
-			case Affect.TYP_REMOVE:
-			case Affect.TYP_CLOSE:
-			case Affect.TYP_DROP:
-			case Affect.TYP_THROW:
-			case Affect.TYP_OPEN:
-				if(Util.bset(forbiddenWornBits,Item.ON_ARMS))
-				{
-					myChar.tell("Your condition prevents you from doing that.");
-					return false;
-				}
-				break;
-			case Affect.TYP_DELICATE_HANDS_ACT:
-			case Affect.TYP_JUSTICE:
-			case Affect.TYP_FILL:
-			case Affect.TYP_GIVE:
-			case Affect.TYP_HANDS:
-			case Affect.TYP_LOCK:
-			case Affect.TYP_PUT:
-			case Affect.TYP_UNLOCK:
-			case Affect.TYP_WRITE:
-				if(Util.bset(forbiddenWornBits,Item.ON_HANDS))
-				{
-					myChar.tell("Your condition prevents you from doing that.");
-					return false;
-				}
-				break;
-			case Affect.TYP_HOLD:
-			case Affect.TYP_WIELD:
-				if((affect.target()!=null)
-				&&(Util.bset(forbiddenWornBits,Item.ON_LEFT_FINGER)||Util.bset(forbiddenWornBits,Item.ON_RIGHT_FINGER))
-				&&(affect.target() instanceof Item))
-				{
-					if((Util.bset(forbiddenWornBits,Item.ON_LEFT_FINGER)!=Util.bset(forbiddenWornBits,Item.ON_RIGHT_FINGER))
-					&&(!((Item)affect.target()).rawLogicalAnd())
-					&&((!myChar.amWearingSomethingHere(Item.HELD))&&(!myChar.amWearingSomethingHere(Item.WIELD))))
-						break;
-					switch(affect.targetMinor())
-					{
-						case Affect.TYP_HOLD:
-							myChar.tell("Your lack of limbs prevents you from holding "+affect.target().name()+".");
-							break;
-						case Affect.TYP_WIELD:
-							myChar.tell("Your lack of limbs prevents you from wielding "+affect.target().name()+".");
-							break;
-					}
-					return false;
-				}
-				break;
-			case Affect.TYP_WEAR:
-				if((affect.target()!=null)
-				&&(affect.target() instanceof Item)
-				&&(!canWear((Item)affect.target())))
-				{
-					myChar.tell("Your lack of limbs prevents you from putting on "+affect.target().name()+".");
-					return false;
-				}
-				break;
-			case Affect.TYP_DRINK:
-				if(Util.bset(forbiddenWornBits,Item.ON_HANDS))
-				{
-					if(affect.target()==null) return true;
-					if(!myChar.isMine(affect.target())) return true;
-					myChar.tell("Your lack the limbs prevents you from drinking from that.");
-					return false;
-				}
-				break;
-			}
-		}
-		else
-		if((affect.amITarget(myChar))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
-		&&(Util.bset(forbiddenWornBits,Item.ON_ARMS)))
-		{
-			affect.source().tell("You cannot give anything to the "+myChar.name()+".");
-			return false;
-		}
-		return super.okAffect(myHost,affect);
 	}
 
 
@@ -274,7 +174,6 @@ public class Amputation extends StdAbility
 	public Vector missingLimbNameSet()
 	{
 		if(missingLimbs!=null) return missingLimbs;
-		forbiddenWornBits=-1;
 		missingLimbs=new Vector();
 		if(affected==null) return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
@@ -292,27 +191,6 @@ public class Amputation extends StdAbility
 				{ code=r; break;}
 			if(code>=0)	amputations[code]--;
 		}
-		forbiddenWornBits=0;
-		if(missingLimbs.contains("left eye")&&missingLimbs.contains("right eye"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_EYES;
-		if(missingLimbs.contains("left ear")&&missingLimbs.contains("right ear"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_EARS;
-		if(missingLimbs.contains("left arm")&&missingLimbs.contains("right arm"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_ARMS;
-		if(missingLimbs.contains("left arm"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_WRIST;
-		if(missingLimbs.contains("right arm"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_WRIST;
-		if(missingLimbs.contains("left hand")&&missingLimbs.contains("right hand"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_HANDS;
-		if(missingLimbs.contains("left hand"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_FINGER;
-		if(missingLimbs.contains("right hand"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_FINGER;
-		if(missingLimbs.contains("left leg")&&missingLimbs.contains("right leg"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEGS;
-		if(missingLimbs.contains("left foot")&&missingLimbs.contains("right foot"))
-			forbiddenWornBits=forbiddenWornBits|Item.ON_FEET;
 		return missingLimbs;
 	}
 
@@ -324,21 +202,21 @@ public class Amputation extends StdAbility
 		for(int i=0;i<limbs.length;i++)
 		{
 			limbs[i]=M.charStats().getBodyPart(i);
-			if(limbs[i]>0)
+			if((limbs[i]>0)
+			&&(validamputees[i]))
 			{
-				if(validamputees[i])
-					if(limbs[i]-amputations[i]==1)
-						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
-					else
-					if(limbs[i]-amputations[i]==2)
-					{
-						if(limbs[i]==2)
-							V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
-						V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
-					}
-					else
-					for(int ii=0;ii<limbs[i];ii++)
-						V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				if(limbs[i]-amputations[i]==1)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				else
+				if(limbs[i]-amputations[i]==2)
+				{
+					if(limbs[i]==2)
+						V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+				}
+				else
+				for(int ii=0;ii<limbs[i];ii++)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
 			}
 		}
 		return V;

@@ -38,11 +38,13 @@ public class Chant_ChargeMetal extends Chant
 			return false;
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
+		
 		Item I=(Item)affected;
 		if((I.owner()==null)
 		||(!(I.owner() instanceof MOB))
 		||(I.amWearingAt(Item.INVENTORY)))
 			return true;
+		
 		MOB mob=(MOB)I.owner();
 		if((!msg.amITarget(mob))
 		&&(msg.targetMinor()==Affect.TYP_ELECTRIC))

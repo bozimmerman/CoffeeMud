@@ -51,10 +51,10 @@ public class Chant_Yearning extends Chant
 		&&(affect.tool().Name().equals("MATE <T-NAME>")
 			||affect.tool().Name().equals("SEX <T-NAME>"))
 		&&(myChar.location()==((MOB)affect.target()).location())
-		&&(!myChar.amWearingSomethingHere(Item.ON_LEGS))
-		&&(!((MOB)affect.target()).amWearingSomethingHere(Item.ON_LEGS))
-		&&(!myChar.amWearingSomethingHere(Item.ON_WAIST))
-		&&(!((MOB)affect.target()).amWearingSomethingHere(Item.ON_WAIST)))
+		&&(myChar.numWearingHere(Item.ON_LEGS)==0)
+		&&(((MOB)affect.target()).numWearingHere(Item.ON_LEGS)==0)
+		&&(myChar.numWearingHere(Item.ON_WAIST)==0)
+		&&(((MOB)affect.target()).numWearingHere(Item.ON_WAIST)==0))
 			unInvoke();
 	}
 

@@ -37,7 +37,7 @@ public class Thief_Snatch extends StdAbility
 			return false;
 		}
 		else
-		if(mob.amWearingSomethingHere(Item.HELD))
+		if(mob.freeWearPositions(Item.HELD)>0)
 		{
 			mob.tell("Your other hand needs to be free to do a weapon snatch.");
 			return false;

@@ -154,7 +154,7 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public StringBuffer getEquipment(MOB seer, MOB mob)
 	{
-		return Scoring.getEquipment(seer,mob);
+		return Scoring.getEquipment(seer,mob,false);
 	}
 	public void doCommand(MOB mob, Vector commands)
 		throws Exception

@@ -66,12 +66,6 @@ public class Chant_AntTrain extends Chant
 			return false;
 		}
 
-		if(mob.amWearingSomethingHere(Item.FLOATING_NEARBY))
-		{
-			mob.tell("You already have something floating nearby.");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

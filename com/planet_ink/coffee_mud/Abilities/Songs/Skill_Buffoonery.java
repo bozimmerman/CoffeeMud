@@ -26,7 +26,9 @@ public class Skill_Buffoonery extends StdAbility
 		boolean[] pos=new boolean[Item.wornOrder.length];
 		
 		for(int i=0;i<pos.length;i++)
-			if(target.amWearingSomethingHere(Item.wornOrder[i]))
+			if(target.freeWearPositions(Item.wornOrder[i])>0)
+				pos[i]=false;
+			else
 				pos[i]=true;
 		
 		for(int i=0;i<pos.length;i++)

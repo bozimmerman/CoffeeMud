@@ -41,7 +41,7 @@ public class Fighter_DeflectProjectile extends StdAbility
 		&&(mob.fetchAffect("Fighter_CatchProjectile")==null)
 		&&(mob.fetchAffect("Fighter_ReturnProjectile")==null)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
-		&&(mob.fetchWornItem(Item.HELD)==null))
+		&&(mob.freeWearPositions(Item.HELD)>0))
 		{
 			Item w=(Item)affect.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)

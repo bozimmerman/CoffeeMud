@@ -550,10 +550,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Ability A=(Ability)affect.tool();
 							if(A.canTarget(mob)){}
 							else
-							if(A.canTarget(CMClass.getItem("StdItem")))
+							if(A.canTarget(CMClass.sampleItem()))
 							{
 								Item I=mob.fetchWieldedItem();
-								if(I==null) I=mob.fetchWornItem(Item.HELD);
+								if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
 								if(I==null)
 								{
 									ExternalPlay.quickSay(this,mob,"You need to be wielding or holding the item you want this cast on.",true,false);
@@ -837,7 +837,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							if(A.canTarget(CMClass.sampleItem()))
 							{
 								Item I=mob.fetchWieldedItem();
-								if(I==null) I=mob.fetchWornItem(Item.HELD);
+								if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
 								if(I==null) I=mob.fetchWornItem("all");
 								if(I==null) I=mob.fetchCarried(null,"all");
 								if(I==null) return;

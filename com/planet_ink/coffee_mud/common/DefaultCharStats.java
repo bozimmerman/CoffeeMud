@@ -305,6 +305,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		if(bodyAlterations==null) bodyAlterations=new int[Race.BODY_PARTS];
 		bodyAlterations[racialPartNumber]=deviation;
 	}
+	
 	public int getSave(int which)
 	{
 		switch(which)

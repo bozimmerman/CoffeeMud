@@ -273,7 +273,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Blessing.canTarget(CMClass.sampleItem()))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchWornItem(Item.HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
@@ -324,7 +324,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Curse.canTarget(CMClass.sampleItem()))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchWornItem(Item.HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;

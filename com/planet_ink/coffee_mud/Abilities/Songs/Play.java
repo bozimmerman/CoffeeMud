@@ -67,8 +67,8 @@ public class Play extends StdAbility
 		if((I==null)||(mob==null)) return false;
 		if(I instanceof Rideable)
 			return (((Rideable)I).amRiding(mob)
-					&&(mob.fetchWornItem(Item.WIELD)==null)
-					&&(mob.fetchWornItem(Item.HELD)==null));
+					&&(mob.fetchFirstWornItem(Item.WIELD)==null)
+					&&(mob.fetchFirstWornItem(Item.HELD)==null));
 		else
 			return mob.isMine(I)&&(!I.amWearingAt(Item.INVENTORY));
 	}

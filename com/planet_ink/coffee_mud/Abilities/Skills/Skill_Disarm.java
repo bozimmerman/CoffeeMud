@@ -36,7 +36,7 @@ public class Skill_Disarm extends StdAbility
 			return false;
 		}
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		if(hisWeapon==null) hisWeapon=mob.getVictim().fetchWornItem(Item.HELD);
+		if(hisWeapon==null) hisWeapon=mob.getVictim().fetchFirstWornItem(Item.HELD);
 		if((hisWeapon==null)
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))

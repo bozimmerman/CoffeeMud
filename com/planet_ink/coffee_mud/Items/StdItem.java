@@ -179,7 +179,8 @@ public class StdItem implements Item
 			for(int i=0;i<20;i++)
 			{
 				long wornCode=1<<i;
-				if((this.canBeWornAt(wornCode))&&(!mob.amWearingSomethingHere(wornCode)))
+				if((canBeWornAt(wornCode))
+				&&(mob.freeWearPositions(wornCode)>0))
 				{
 					wearAt(wornCode);
 					break;
@@ -235,7 +236,7 @@ public class StdItem implements Item
 				if(canBeWornAt(wornCode))
 				{
 					couldHaveBeenWornAt=wornCode;
-					if(!mob.amWearingSomethingHere(wornCode))
+					if(mob.freeWearPositions(wornCode)>0)
 						return 0;
 				}
 			}
@@ -246,7 +247,8 @@ public class StdItem implements Item
 			for(int i=0;i<20;i++)
 			{
 				long wornCode=1<<i;
-				if((canBeWornAt(wornCode))&&(mob.amWearingSomethingHere(wornCode)))
+				if((canBeWornAt(wornCode))
+				&&(mob.freeWearPositions(wornCode)==0))
 					return wornCode;
 			}
 			return 0;
@@ -583,7 +585,7 @@ public class StdItem implements Item
 			}
 			if(!canWear(mob))
 			{
-				Item alreadyWearing=mob.fetchWornItem(Item.HELD);
+				Item alreadyWearing=mob.fetchFirstWornItem(Item.HELD);
 				if(alreadyWearing!=null)
 				{
 					if((!ExternalPlay.remove(mob,alreadyWearing,false))
@@ -595,7 +597,7 @@ public class StdItem implements Item
 				}
 				else
 				{
-					mob.tell("Your hands are full.");
+					mob.tell("You need hands to hold things.");
 					return false;
 				}
 			}
@@ -616,26 +618,33 @@ public class StdItem implements Item
 			if(!canWear(mob))
 			{
 				long cantWearAt=whereCantWear(mob);
-				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
-				if((alreadyWearing!=null)&&(cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
+				Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
+				if(alreadyWearing!=null)
 				{
-					if((!ExternalPlay.remove(mob,alreadyWearing,false))
-					||(!canWear(mob)))
+					if((cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						if((!ExternalPlay.remove(mob,alreadyWearing,false))
+						||(!canWear(mob)))
+						{
+							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+							return false;
+						}
+					}
+					else
+					{
+						if(cantWearAt==Item.HELD)
+							mob.tell("You are already holding "+alreadyWearing.name()+".");
+						else
+						if(cantWearAt==Item.WIELD)
+							mob.tell("You are already wielding "+alreadyWearing.name()+".");
+						else
+							mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
 					}
 				}
 				else
-				if(alreadyWearing!=null)
 				{
-					if(cantWearAt==Item.HELD)
-						mob.tell("You are already holding "+alreadyWearing.name()+".");
-					else
-					if(cantWearAt==Item.WIELD)
-						mob.tell("You are already wielding "+alreadyWearing.name()+".");
-					else
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+					mob.tell("You don't have anywhere you can wear that.");
 					return false;
 				}
 			}
@@ -653,9 +662,9 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			if(mob.amWearingSomethingHere(Item.WIELD))
+			if(!canWear(mob))
 			{
-				Item alreadyWearing=mob.fetchWornItem(Item.WIELD);
+				Item alreadyWearing=mob.fetchFirstWornItem(Item.WIELD);
 				if(alreadyWearing!=null)
 				{
 					if(!ExternalPlay.remove(mob,alreadyWearing,false))
@@ -666,14 +675,9 @@ public class StdItem implements Item
 				}
 				else
 				{
-					mob.tell("You are already wielding something.");
+					mob.tell("You need hands to wield things.");
 					return false;
 				}
-			}
-			if(!canWear(mob))
-			{
-				mob.tell("You can't wield "+name()+", your hands are full.");
-				return false;
 			}
 			return true;
 		case Affect.TYP_GET:

@@ -834,7 +834,7 @@ public class StdArea implements Area
 							for(int l=0;l<allspot.length;l++)
 							{
 								I.setRawProperLocationBitmap(allspot[l]);
-								if(!M.charStats().getMyRace().canWear(I))
+								if(M.getWearPositions(allspot[l])==0)
 									coveredPlaces=coveredPlaces|allspot[l];
 							}
 							for(int i=0;i<M.inventorySize();i++)

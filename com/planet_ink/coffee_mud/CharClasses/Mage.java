@@ -367,7 +367,7 @@ public class Mage extends StdCharClass
 		if(mob.fetchInventory(w.ID())==null)
 		{
 			mob.addInventory(w);
-			if(!mob.amWearingSomethingHere(Item.WIELD))
+			if(mob.freeWearPositions(Item.WIELD)>0)
 				w.wearAt(Item.WIELD);
 		}
 	}

@@ -69,98 +69,8 @@ public class StdRace implements Race
 	{
 
 	}
-
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!(myHost instanceof MOB)) return true;
-		MOB myChar=(MOB)myHost;
-		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
-		{
-			switch(affect.sourceMinor())
-			{
-			case Affect.TYP_JUSTICE:
-				if((affect.target()!=null)
-				&&(affect.target() instanceof Item)
-				&&(forbiddenWornBits()&Item.HELD)>0)
-				{
-					myChar.tell("Your anatomy prevents you from doing that.");
-					return false;
-				}
-				break;
-			case Affect.TYP_DELICATE_HANDS_ACT:
-				if(((forbiddenWornBits()&Item.HELD)>0)&&(affect.othersMinor()!=Affect.NO_EFFECT))
-				{
-					myChar.tell("Your anatomy prevents you from doing that.");
-					return false;
-				}
-				break;
-			case Affect.TYP_CLOSE:
-			case Affect.TYP_DROP:
-			case Affect.TYP_FILL:
-			case Affect.TYP_GET:
-			case Affect.TYP_GIVE:
-			case Affect.TYP_HANDS:
-			case Affect.TYP_LOCK:
-			case Affect.TYP_OPEN:
-			case Affect.TYP_PULL:
-			case Affect.TYP_PUSH:
-			case Affect.TYP_THROW:
-			case Affect.TYP_PUT:
-			case Affect.TYP_UNLOCK:
-			case Affect.TYP_WRITE:
-				if((forbiddenWornBits()&Item.HELD)>0)
-				{
-					myChar.tell("Your anatomy prevents you from doing that.");
-					return false;
-				}
-				break;
-			case Affect.TYP_DRINK:
-				if((forbiddenWornBits()&Item.HELD)>0)
-				{
-					if(affect.target()==null) return true;
-					if(!myChar.isMine(affect.target())) return true;
-					myChar.tell("You cannot drink from that.");
-					return false;
-				}
-				break;
-			}
-
-			switch(affect.targetMinor())
-			{
-			case Affect.TYP_HOLD:
-			case Affect.TYP_WIELD:
-				if((forbiddenWornBits()&Item.HELD)==0)
-					break;
-			case Affect.TYP_WEAR:
-				if((affect.target()!=null)
-				&&(affect.target() instanceof Item)
-				&&(!canWear((Item)affect.target())))
-				{
-					switch(affect.targetMinor())
-					{
-						case Affect.TYP_WEAR:
-							affect.source().tell("You lack the anatomy to wear "+affect.target().name()+".");
-							break;
-						case Affect.TYP_HOLD:
-							affect.source().tell("You lack the anatomy to hold "+affect.target().name()+".");
-							break;
-						case Affect.TYP_WIELD:
-							affect.source().tell("You lack the anatomy to wield "+affect.target().name()+".");
-							break;
-					}
-					return false;
-				}
-				break;
-			}
-		}
-		else
-		if((affect.amITarget(myChar))
-		&&((affect.targetMinor()==Affect.TYP_GIVE)
-		&&((forbiddenWornBits()&Item.HELD)>0)))
-		{
-			affect.source().tell("You cannot give anything to the "+name()+".");
-			return false;
-		}
 		return true;
 	}
 
@@ -184,10 +94,10 @@ public class StdRace implements Race
 		   ||(affect.source().charStats().getMyRace().ID().equals(ID())))
 		&&(affect.source().charStats().getMyRace().fertile())
 		&&(myChar.location()==affect.source().location())
-		&&(!myChar.amWearingSomethingHere(Item.ON_LEGS))
-		&&(!affect.source().amWearingSomethingHere(Item.ON_LEGS))
-		&&(!myChar.amWearingSomethingHere(Item.ON_WAIST))
-		&&(!affect.source().amWearingSomethingHere(Item.ON_WAIST)))
+		&&(myChar.numWearingHere(Item.ON_LEGS)>0)
+		&&(affect.source().numWearingHere(Item.ON_LEGS)>0)
+		&&(myChar.numWearingHere(Item.ON_WAIST)>0)
+		&&(affect.source().numWearingHere(Item.ON_WAIST)>0))
 		{
 			Ability A=CMClass.getAbility("Pregnancy");
 			if((A!=null)
@@ -201,19 +111,19 @@ public class StdRace implements Race
 		if((s1!=null)&&(mob.fetchInventory(s1.ID())==null))
 		{
 			mob.addInventory(s1);
-			if(!mob.amWearingSomethingHere(Item.ON_TORSO))
+			if(mob.freeWearPositions(Item.ON_TORSO)>0)
 				s1.wearAt(Item.ON_TORSO);
 		}
 		if((p1!=null)&&(mob.fetchInventory(p1.ID())==null))
 		{
 			mob.addInventory(p1);
-			if(!mob.amWearingSomethingHere(Item.ON_LEGS))
+			if(mob.freeWearPositions(Item.ON_LEGS)>0)
 				p1.wearAt(Item.ON_LEGS);
 		}
 		if((s2!=null)&&(mob.fetchInventory(s2.ID())==null))
 		{
 			mob.addInventory(s2);
-			if(!mob.amWearingSomethingHere(Item.ON_FEET))
+			if(mob.freeWearPositions(Item.ON_FEET)>0)
 				s2.wearAt(Item.ON_FEET);
 		}
 	}
@@ -341,16 +251,6 @@ public class StdRace implements Race
 	public int getMaxWeight()
 	{
 		return lightestWeight()+weightVariance();
-	}
-
-	public boolean canWear(Item item)
-	{
-		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits())>0))
-			return false;
-		else
-		if((!item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&(Integer.MAX_VALUE-forbiddenWornBits()))==0))
-			return false;
-		return true;
 	}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

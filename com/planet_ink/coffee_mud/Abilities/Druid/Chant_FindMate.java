@@ -45,13 +45,13 @@ public class Chant_FindMate extends Chant
 				{
 					mob.tell("You peer longingly at "+mate.name()+".");
 					
-					Item I=mob.fetchWornItem(Item.ON_WAIST);
+					Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
 					if(I!=null)	ExternalPlay.remove(mob,I,false);
-					I=mob.fetchWornItem(Item.ON_LEGS);
+					I=mob.fetchFirstWornItem(Item.ON_LEGS);
 					if(I!=null)	ExternalPlay.remove(mob,I,false);
 					
-					if((mob.fetchWornItem(Item.ON_WAIST)!=null)
-					||(mob.fetchWornItem(Item.ON_LEGS)!=null))
+					if((mob.fetchFirstWornItem(Item.ON_WAIST)!=null)
+					||(mob.fetchFirstWornItem(Item.ON_LEGS)!=null))
 						unInvoke();
 					try{
 						ExternalPlay.doCommand(mob,Util.parse("MATE \""+mate.name()+"$\""));
@@ -123,8 +123,8 @@ public class Chant_FindMate extends Chant
 		if(((merace.equals("Human"))
 		   ||(materace.equals("Human"))
 		   ||(merace.equals(materace)))
-		&&(!mate.amWearingSomethingHere(Item.ON_LEGS))
-		&&(!mate.amWearingSomethingHere(Item.ON_WAIST))
+		&&(mate.numWearingHere(Item.ON_LEGS)==0)
+		&&(mate.numWearingHere(Item.ON_WAIST)==0)
 		&&(Sense.canBeSeenBy(mate,forMe)))
 			return true;
 		return false;

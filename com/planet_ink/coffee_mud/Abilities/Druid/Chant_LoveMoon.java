@@ -63,9 +63,9 @@ public class Chant_LoveMoon extends Chant
 					try{
 					if(Dice.rollPercentage()==1)
 					{
-						Item I=mob.fetchWornItem(Item.ON_WAIST);
+						Item I=mob.fetchFirstWornItem(Item.ON_WAIST);
 						if(I!=null)	ExternalPlay.remove(mob,I,false);
-						I=mob.fetchWornItem(Item.ON_LEGS);
+						I=mob.fetchFirstWornItem(Item.ON_LEGS);
 						if(I!=null)	ExternalPlay.remove(mob,I,false);
 						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
 					}

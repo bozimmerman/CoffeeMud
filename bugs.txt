@@ -1,3 +1,6 @@
-amputation does not affect wear position because WEAR ring is not rejected when left finger gone.  Need consolodated way to follow limbs.
 packaging skill now
 book of laws can be crafted
+free wear positions wont respect shields as in bash
+amputated left arm, and left hand did not affect ability to HOLD in a giant
+amputated left hand did not affect ability to wear on left finger I suspect
+

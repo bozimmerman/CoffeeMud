@@ -34,83 +34,13 @@ public class Spell_AddLimb extends Spell
 		}
 	}
 	
-	public boolean reallyCantWear(Item I, int minor)
+	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return false;
-		MOB mob=(MOB)affected;
-		if(I.canWear(mob)) return false;
-		long where=I.whereCantWear(mob);
-		if((minor==Affect.TYP_HOLD)&&(where==Item.WIELD))
-			where=Item.HELD;
-		Item otherI=mob.fetchWornItem(where);
-		if(otherI!=null)
-		{
-			long old=otherI.rawWornCode();
-			otherI.unWear();
-			boolean nowCan=I.canWear(mob);
-			otherI.setRawWornCode(old);
-			return !nowCan;
-		}
-		return true;
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.alterBodypart(Race.BODY_ARM,1);
+		affectableStats.alterBodypart(Race.BODY_HAND,1);
 	}
 	
-	public boolean okAffect(Environmental myHost, Affect msg)
-	{
-		if(!super.okAffect(myHost,msg)) return false;
-		if((affected==null)||(!(affected instanceof MOB)))
-			return false;
-		MOB mob=(MOB)affected;
-		if(msg.amISource(mob)
-		   &&(msg.target()!=null)
-		   &&((msg.targetMinor()==Affect.TYP_WEAR)
-			  ||(msg.targetMinor()==Affect.TYP_HOLD))
-		   &&(msg.target() instanceof Item))
-		{
-			boolean really=reallyCantWear((Item)msg.target(),msg.targetMinor());
-			if((itemRef==null)&&(!really))
-			{
-				Item I=(Item)msg.target();
-				long where=I.whereCantWear(mob);
-				if((where&(Item.ON_RIGHT_FINGER|Item.ON_RIGHT_WRIST|Item.HELD|Item.WIELD))==0)
-					return true;
-				if((msg.targetMinor()==Affect.TYP_HOLD)&&(where==Item.WIELD))
-					where=Item.HELD;
-				Item otherI=mob.fetchWornItem(where);
-				if(otherI!=null)
-				{
-					itemRef=otherI;
-					wornRef=otherI.rawWornCode();
-					oldMsg=msg.targetCode();
-					otherI.unWear();
-				}
-			}
-			else
-			if(msg.target()==itemRef)
-			{
-			   itemRef.setRawWornCode(wornRef);
-			   itemRef=null;
-			   return false;
-			}
-		}
-		return true;
-	}
-	
-	public void affect(Environmental myHost, Affect msg)
-	{
-		super.affect(myHost,msg);
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		if(msg.amISource(mob)
-		&&(itemRef!=null)
-		&&(msg.target()!=null)
-		&&((msg.targetMinor()==Affect.TYP_WEAR)
-			||(msg.targetMinor()==Affect.TYP_HOLD)
-			||(msg.targetMinor()==Affect.TYP_WIELD)))
-			msg.addTrailerMsg(new FullMsg(mob,itemRef,oldMsg,null));
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

@@ -50,10 +50,10 @@ public class Chant_Fertility extends Chant
 			   ||(mate.charStats().getMyRace().ID().equals("Human"))
 			   ||(mate.charStats().getMyRace().ID().equals(ID())))
 			&&(myChar.location()==mate.location())
-			&&(!myChar.amWearingSomethingHere(Item.ON_LEGS))
-			&&(!mate.amWearingSomethingHere(Item.ON_LEGS))
-			&&(!myChar.amWearingSomethingHere(Item.ON_WAIST))
-			&&(!mate.amWearingSomethingHere(Item.ON_WAIST)))
+			&&(myChar.numWearingHere(Item.ON_LEGS)==0)
+			&&(mate.numWearingHere(Item.ON_LEGS)==0)
+			&&(myChar.numWearingHere(Item.ON_WAIST)==0)
+			&&(mate.numWearingHere(Item.ON_WAIST)==0))
 			{
 				MOB female=myChar;
 				MOB male=mate;
