@@ -49,15 +49,11 @@ public class StdClanCommonItem extends StdClanItem
 					{
 						Item I=null;
 						int tries=0;
-						while((I==null)&&(tries<10))
+						while((I==null)&&((++tries)<20))
 						{
 							I=M.fetchInventory(Dice.roll(1,M.inventorySize(),-1));
-							tries++;
-							if((I==null)
-							||(I==this) 
-							||(!I.amWearingAt(Item.INVENTORY)))
-								continue;
-							break;
+							if((I==null)||(I==this)||(!I.amWearingAt(Item.INVENTORY)))
+								I=null;
 						}
 						Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());

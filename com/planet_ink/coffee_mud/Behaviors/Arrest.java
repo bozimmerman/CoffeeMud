@@ -89,6 +89,8 @@ public class Arrest extends StdBehavior
 		private Vector officerNames=new Vector();
 		private Vector judgeNames=new Vector();
 		private String[] messages=new String[Law.MSG_TOTAL];
+		
+		private boolean activated=true;
 
 		private Vector oldWarrants=new Vector();
 		private Vector warrants=new Vector();
@@ -117,7 +119,7 @@ public class Arrest extends StdBehavior
 		public Vector otherBits() { return otherBits;}
 		public Hashtable abilityCrimes(){ return abilityCrimes;}
 		public Hashtable basicCrimes(){ return basicCrimes;}
-
+		
 		public boolean hasModifiableNames(){return namesModifiable;}
 		public boolean hasModifiableLaws(){return lawsModifiable;}
 
@@ -207,6 +209,7 @@ public class Arrest extends StdBehavior
 				theLaws.put(tag,value);
 			}
 		}
+		public boolean lawIsActivated(){ return activated;}
 
 		public void resetLaw()
 		{
@@ -216,6 +219,7 @@ public class Arrest extends StdBehavior
 		private void resetLaw(Properties laws)
 		{
 			theLaws=laws;
+			activated=(!getInternalStr("ACTIVATED").equalsIgnoreCase("FALSE"));
 			officerNames=Util.parse(getInternalStr("OFFICERS"));
 			chitChat=Util.parse(getInternalStr("CHITCHAT"));
 			chitChat2=Util.parse(getInternalStr("CHITCHAT2"));
@@ -376,7 +380,7 @@ public class Arrest extends StdBehavior
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=theLawIsEnabled()?getLaws((Area)hostObj,false):null;
+			Law laws=getLaws((Area)hostObj,false);
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -1364,6 +1368,7 @@ public class Arrest extends StdBehavior
 		
 		Area myArea=(Area)affecting;
 		Law laws=getLaws(affecting,false);
+		if(!laws.lawIsActivated()) return;
 		if(msg.source()==null) return;
 
 		// the archons pardon
@@ -1631,18 +1636,15 @@ public class Arrest extends StdBehavior
 		if(tickID!=Host.TICK_AREA) return true;
 		Area myArea=(Area)ticking;
 		
-		if(!theLawIsEnabled())
-		{
-			Law laws=getLaws(myArea,true);
-			if(laws!=null)
-			{
-				laws.warrants().clear();
-				laws.oldWarrants().clear();
-			}
-			return true;
-		}
+		if(!theLawIsEnabled())return true;
 		
 		Law laws=getLaws(myArea,false);
+		if(!laws.lawIsActivated())
+		{
+			laws.warrants().clear();
+			laws.oldWarrants().clear();
+			return true;
+		}
 
 
 		HashSet handled=new HashSet();

@@ -306,7 +306,8 @@ public class CommonSkill extends StdAbility
 		if((mob.isMonster()
 		&&(!Sense.isAnimalIntelligence(mob)))
 		&&(commands.size()==0)
-		&&((recipes!=null)&&(recipes.size()>0)))
+		&&(recipes!=null)
+		&&(recipes.size()>0))
 		{
 			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
 			commands.addElement((String)randomRecipe.firstElement());

@@ -100,6 +100,7 @@ public interface Law
 		"CHITCHAT2=\"You didn't really think you would get away with it did you?\" \"I hope you aren't claustrophobic!\" \"Remember not to drop your soap in there.\" \"MAKE WAY! DEAD MAN WALKING!\" \"I recommend you hold your breathe while you're in there -- I always do.  It stinks!\" \"Putting away scum like you makes it all worthwhile\"\n"+
 		"RESISTWARNMSG=I said SIT DOWN! NOW!\n"+
 		"NORESISTMSG=Good.  Now hold still.\n"+
+		"ACTIVATED=FALSE\n"+
 		"RESISTFIGHTMSG=Resisting arrest?! How DARE you!\n"+
 		"RESISTMSG=Resisting arrest eh?  Well, have it your way.\n"+
 		"PROTECTED=+INT 3\n"+
@@ -167,4 +168,5 @@ public interface Law
 		public String getInternalStr(String msg);
 		public void setInternalStr(String tag, String value);
 		public String rawLawString();
+		public boolean lawIsActivated();
 }

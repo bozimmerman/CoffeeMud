@@ -43,7 +43,7 @@ public class Conquerable extends Arrest
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=theLawIsEnabled()?getLaws((Area)hostObj,false):null;
+			Law laws=getLaws((Area)hostObj,false);
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -198,6 +198,15 @@ public class Conquerable extends Arrest
 			ExternalPlay.channel("CLANTALK","ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				ExternalPlay.DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
+			Law laws=getLaws(myArea,false);
+			if(laws.lawIsActivated())
+			{
+				laws.setInternalStr("ACTIVATED","FALSE");
+				laws.resetLaw();
+				ExternalPlay.DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
+				ExternalPlay.DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
+			}
+				
 		}
 		holdingClan="";
 		clanItems.clear();
