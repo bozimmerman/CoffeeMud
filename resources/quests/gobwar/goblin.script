@@ -18,7 +18,7 @@ RAND_PROG 50
 		IF ISFIGHT($i)
 			FLEE
 		ENDIF
-		MPTRACKTO Midgaard
+		MPWALKTO Midgaard
 	ENDIF
 ~
 

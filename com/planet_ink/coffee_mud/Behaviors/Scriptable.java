@@ -237,6 +237,7 @@ public class Scriptable extends StdBehavior
 		"BREAK", // 50
 		"MPSETCLANDATA", // 51
 		"MPPLAYERCLASS", // 52
+		"MPWALKTO", // 53
 	};
 
     private final static String[] clanVars={
@@ -4948,6 +4949,18 @@ public class Scriptable extends StdBehavior
 				{
 				    altStatusTickable=A;
 				    A.invoke(monster,Util.parse(arg1),null,true,0);
+				    altStatusTickable=null;
+				}
+				break;
+			}
+			case 53: // mpwalkto
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Ability A=CMClass.getAbility("Skill_Track");
+				if(A!=null)	
+				{
+				    altStatusTickable=A;
+				    A.invoke(monster,Util.parse(arg1+" LANDONLY"),null,true,0);
 				    altStatusTickable=null;
 				}
 				break;

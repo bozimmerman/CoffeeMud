@@ -531,32 +531,45 @@ public class List extends StdCommand
 	public StringBuffer listTicks(String whichTickTock)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10));
-		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10)+"\n\r");
+		boolean activeOnly=false;
+		if("ACTIVE".startsWith(whichTickTock.toUpperCase()))
+		{
+		    activeOnly=true;
+		    whichTickTock="";
+		}
+		if(!activeOnly)
+			msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Status",10));
+		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Status",10)+"\n\r");
 		int col=0;
 		int numGroups=Util.s_int(CMClass.ThreadEngine().tickInfo("tickGroupSize"));
 		int whichTick=-1;
-		if(whichTickTock.length()>0) whichTick=Util.s_int(whichTickTock);
+		if(Util.isNumber(whichTickTock)&&(whichTickTock.length()>0)) 
+		    whichTick=Util.s_int(whichTickTock);
 		for(int v=0;v<numGroups;v++)
 		{
 			int tickersSize=Util.s_int(CMClass.ThreadEngine().tickInfo("tickersSize"+v));
 			if((whichTick<0)||(whichTick==v))
 			for(int t=0;t<tickersSize;t++)
 			{
-				String name=CMClass.ThreadEngine().tickInfo("tickerName"+v+"-"+t);
-				String id=CMClass.ThreadEngine().tickInfo("tickerID"+v+"-"+t);
-				String pr=CMClass.ThreadEngine().tickInfo("tickerTickDown"+v+"-"+t);
-				String oo=CMClass.ThreadEngine().tickInfo("tickerReTickDown"+v+"-"+t);
-				boolean suspended=Util.s_bool(CMClass.ThreadEngine().tickInfo("tickerSuspended"+v+"-"+t));
-				if((col++)==2)
+				long tickerlaststartdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststartdate"+v+"-"+t));
+				long tickerlaststopdate=Util.s_long(CMClass.ThreadEngine().tickInfo("tickerlaststopdate"+v+"-"+t));
+				boolean isActive=(tickerlaststopdate<tickerlaststartdate);
+				if((!activeOnly)||(isActive))
 				{
-					msg.append("\n\r");
-					col=1;
+					String name=CMClass.ThreadEngine().tickInfo("tickerName"+v+"-"+t);
+					String id=CMClass.ThreadEngine().tickInfo("tickerID"+v+"-"+t);
+					String status=CMClass.ThreadEngine().tickInfo("tickercodeword"+v+"-"+t);
+					boolean suspended=Util.s_bool(CMClass.ThreadEngine().tickInfo("tickerSuspended"+v+"-"+t));
+					if(((col++)==2)||(activeOnly))
+					{
+						msg.append("\n\r");
+						col=1;
+					}
+					msg.append(Util.padRight(""+v,4)
+							   +Util.padRight(name,18)
+							   +" "+Util.padRight(id+"",5)
+							   +Util.padRight(status+(suspended?"*":""),10));
 				}
-				msg.append(Util.padRight(""+v,4)
-						   +Util.padRight(name,18)
-						   +" "+Util.padRight(id+"",5)
-						   +Util.padRight(pr+"/"+(suspended?"??":""+oo),10));
 			}
 		}
 		return msg;

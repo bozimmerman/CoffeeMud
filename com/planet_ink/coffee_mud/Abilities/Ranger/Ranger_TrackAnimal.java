@@ -177,7 +177,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,100);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,75);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

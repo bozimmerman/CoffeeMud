@@ -201,6 +201,33 @@ public class Skill_Track extends StdAbility
 		}
 
 	    tickStatus=Tickable.STATUS_MISC6+3;
+	    int radius=50;
+	    boolean allowAir=true;
+	    boolean allowWater=true;
+	    if((commands.size()>1)
+	    &&(((String)commands.lastElement()).toUpperCase().startsWith("RADIUS="))
+	    &&(Util.isInteger(((String)commands.lastElement()).substring(7))))
+	    {
+	        radius=Util.s_int(((String)commands.lastElement()).substring(7));
+	        commands.removeElementAt(commands.size()-1);
+	    }
+	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("LANDONLY")))
+	    {
+	        allowAir=false;
+	        allowWater=false;
+	        commands.removeElementAt(commands.size()-1);
+	    }
+	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOAIR")))
+	    {
+	        allowAir=false;
+	        commands.removeElementAt(commands.size()-1);
+	    }
+	    if((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("NOWATER")))
+	    {
+	        allowWater=false;
+	        commands.removeElementAt(commands.size()-1);
+	    }
+	    
 		String mobName=Util.combine(commands,0);
 		if((givenTarget==null)&&(mobName.length()==0))
 		{
@@ -278,7 +305,7 @@ public class Skill_Track extends StdAbility
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,false,false,200);
+				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,!allowAir,!allowWater,radius);
 		    tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);

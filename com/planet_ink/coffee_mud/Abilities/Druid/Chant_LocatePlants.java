@@ -153,7 +153,7 @@ public class Chant_LocatePlants extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(target.location(),rooms,false,false,false,false,50);
+			theTrail=MUDTracker.findBastardTheBestWay(target.location(),rooms,false,false,true,false,50);
 
 		if((success)&&(theTrail!=null))
 		{
