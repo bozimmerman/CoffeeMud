@@ -28,4 +28,8 @@ public interface PlayerStats
 	public void setLastIP(String ip);
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
+	public void setSecurityGroupStr(String grps);
+	public String getSecurityGroupStr();
+	public Vector getSecurityGroups();
+	public void setSecurityGroupXml(String grps);
 }

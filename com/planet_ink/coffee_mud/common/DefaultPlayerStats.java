@@ -17,6 +17,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private String colorStr="";
 	private String prompt="";
 	private MOB replyTo=null;
+	private Vector securityGroups=null;
 	
 	public String lastIP(){return lastIP;}
 	public void setLastIP(String ip){lastIP=ip;}
@@ -87,4 +88,39 @@ public class DefaultPlayerStats implements PlayerStats
 		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
 	}
+	
+	public void setSecurityGroupXml(String grps)
+	{
+		securityGroups=null;
+		if((grps==null)||(grps.trim().length()==0))	
+			return;
+		setSecurityGroupXml(XMLManager.returnXMLValue(grps,"FRIENDS"));
+	}
+	public void setSecurityGroupStr(String grps)
+	{
+		securityGroups=null;
+		if((grps==null)||(grps.trim().length()==0))	
+			return;
+		securityGroups=new Vector();
+		int x=grps.indexOf(";");
+		while(x>=0)
+		{
+			String fi=grps.substring(0,x).trim();
+			if(fi.length()>0) securityGroups.addElement(fi.toUpperCase());
+			grps=grps.substring(x+1);
+			x=grps.indexOf(";");
+		}
+		if(grps.trim().length()>0)
+			securityGroups.addElement(grps.trim().toUpperCase());
+	}
+	public String getSecurityGroupStr()
+	{
+		if((securityGroups==null)||(securityGroups.size()==0)) return "";
+		StringBuffer list=new StringBuffer("");
+		for(Iterator e=securityGroups.iterator();e.hasNext();)
+			list.append(((String)e.next())+";");
+		return "<SECGRPS>"+list.toString()+"</SECGRPS>";
+		
+	}
+	public Vector getSecurityGroups(){	return securityGroups;}
 }
