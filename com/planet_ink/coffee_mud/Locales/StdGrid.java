@@ -24,7 +24,6 @@ public class StdGrid extends StdRoom implements GridLocale
 		return new StdGrid();
 	}
 	public String getChildLocaleID(){return "StdRoom";}
-
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
@@ -306,16 +305,18 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(this.displayTexts!=null)
 		if(this.displayTexts.length>0)
 		{
-			c=Dice.roll(1,this.displayTexts.length,0)-1;
+			c=Dice.roll(1,this.displayTexts.length,-1);
 			gc.setDisplayText(this.displayTexts[c]);
 		}
 		if(this.descriptions!=null)
 		if(this.descriptions.length>0)
 		{
 			if((c<0)||(c>this.descriptions.length))
-				c=Dice.roll(1,this.descriptions.length,0)-1;
+				c=Dice.roll(1,this.descriptions.length,-1);
 			gc.setDescription(this.descriptions[c]);
 		}
+		for(int a=0;a<numAffects();a++)
+			gc.addAffect((Ability)fetchAffect(a).copyOf());
 
 		return gc;
 	}

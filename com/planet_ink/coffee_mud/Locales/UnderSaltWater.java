@@ -15,4 +15,5 @@ public class UnderSaltWater extends UnderWater
 	}
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
+	
 }

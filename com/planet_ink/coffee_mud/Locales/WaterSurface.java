@@ -1,9 +1,7 @@
 package com.planet_ink.coffee_mud.Locales;
-
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Sense;
-import com.planet_ink.coffee_mud.utils.Util;
 import java.util.*;
 
 public class WaterSurface extends StdRoom implements Drink
@@ -23,6 +21,42 @@ public class WaterSurface extends StdRoom implements Drink
 		return new WaterSurface();
 	}
 
+	protected void giveASky()
+	{
+		skyedYet=true;
+		if((rawDoors()[Directions.DOWN]==null)
+		&&((domainType()&Room.INDOORS)==0)
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+		{
+			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
+			UnderWaterGrid sky=new UnderWaterGrid();
+			sky.setArea(getArea());
+			sky.setID("");
+			rawDoors()[Directions.DOWN]=sky;
+			rawExits()[Directions.DOWN]=o;
+			sky.rawDoors()[Directions.UP]=this;
+			sky.rawExits()[Directions.UP]=o;
+			CMMap.addRoom(sky);
+		}
+	}
+	
+	public void clearSky()
+	{
+		if(!skyedYet) return;
+		Room room=rawDoors()[Directions.DOWN];
+		if(room==null) return;
+		if((room.ID().length()==0)&&(room instanceof UnderWaterGrid))
+		{
+			rawDoors()[Directions.UP]=null;
+			rawExits()[Directions.UP]=null;
+			room.rawDoors()[Directions.DOWN]=null;
+			room.rawExits()[Directions.DOWN]=null;
+			CMMap.delRoom(room);
+			skyedYet=false;
+		}
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if(Sense.isSleeping(this)) return super.okAffect(affect);

@@ -22,7 +22,7 @@ public class Spell_Shrink extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
-		quality=Ability.OK_OTHERS;
+		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(6);
 

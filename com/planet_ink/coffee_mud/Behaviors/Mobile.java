@@ -38,6 +38,7 @@ public class Mobile extends ActiveTicker
 				Vector V=((GridLocale)thisRoom).getAllRooms();
 				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
 				if(R!=null) R.bringMobHere(mob,true);
+				thisRoom=mob.location();
 			}
 
 			int tries=0;
