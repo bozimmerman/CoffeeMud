@@ -19,10 +19,10 @@ public class AbilityAffectNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
+			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			int classType=A.classificationCode()&Ability.ALL_CODES;
 			okToShow=(CMAble.getQualifyingLevel("Archon",A.ID())<0);
 			if(okToShow)

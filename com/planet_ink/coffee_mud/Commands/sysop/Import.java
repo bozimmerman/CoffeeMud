@@ -1019,9 +1019,9 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Prayer_Curse"));
 			if(Util.isSet(affFlag,11))
 			{
-				for(int i=0;i<CMClass.abilities.size();i++)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
-					Ability A=(Ability)CMClass.abilities.elementAt(i);
+					Ability A=(Ability)a.nextElement();
 					if(A.ID().startsWith("Specialization"))
 						M.addNonUninvokableAffect((Ability)A.newInstance());
 				}
@@ -3898,10 +3898,10 @@ public class Import
 		{
 			StringBuffer allFieldsMsg=new StringBuffer("");
 			Vector allKnownFields=new Vector();
-			for(int i=0;i<CMClass.MOBs.size();i++)
+			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 			{
-				MOB I=(MOB)CMClass.MOBs.elementAt(i);
-				String[] fields=I.getStatCodes();
+				MOB M=(MOB)m.nextElement();
+				String[] fields=M.getStatCodes();
 				for(int x=0;x<fields.length;x++)
 					if(!allKnownFields.contains(fields[x]))
 					{
@@ -3909,9 +3909,9 @@ public class Import
 						allFieldsMsg.append(fields[x]+" ");
 					}
 			}
-			for(int i=0;i<CMClass.items.size();i++)
+			for(Enumeration i=CMClass.items();i.hasMoreElements();)
 			{
-				Item I=(Item)CMClass.items.elementAt(i);
+				Item I=(Item)i.nextElement();
 				String[] fields=I.getStatCodes();
 				for(int x=0;x<fields.length;x++)
 					if(!allKnownFields.contains(fields[x]))
@@ -4002,10 +4002,10 @@ public class Import
 		}
 		StringBuffer allFieldsMsg=new StringBuffer("");
 		if(aremobs)
-			for(int i=0;i<CMClass.MOBs.size();i++)
+			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 			{
-				MOB I=(MOB)CMClass.MOBs.elementAt(i);
-				String[] fields=I.getStatCodes();
+				MOB M=(MOB)m.nextElement();
+				String[] fields=M.getStatCodes();
 				for(int x=0;x<fields.length;x++)
 					if(!allKnownFields.contains(fields[x]))
 					{
@@ -4014,9 +4014,10 @@ public class Import
 					}
 			}
 		else
-			for(int i=0;i<CMClass.items.size();i++)
+		{
+			for(Enumeration i=CMClass.items();i.hasMoreElements();)
 			{
-				Item I=(Item)CMClass.items.elementAt(i);
+				Item I=(Item)i.nextElement();
 				String[] fields=I.getStatCodes();
 				for(int x=0;x<fields.length;x++)
 					if(!allKnownFields.contains(fields[x]))
@@ -4025,6 +4026,29 @@ public class Import
 						allFieldsMsg.append(fields[x]+" ");
 					}
 			}
+			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				String[] fields=I.getStatCodes();
+				for(int x=0;x<fields.length;x++)
+					if(!allKnownFields.contains(fields[x]))
+					{
+						allKnownFields.addElement(fields[x]);
+						allFieldsMsg.append(fields[x]+" ");
+					}
+			}
+			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				String[] fields=I.getStatCodes();
+				for(int x=0;x<fields.length;x++)
+					if(!allKnownFields.contains(fields[x]))
+					{
+						allKnownFields.addElement(fields[x]);
+						allFieldsMsg.append(fields[x]+" ");
+					}
+			}
+		}
 		for(int i=0;i<commands.size();i++)
 		{
 			String str=((String)commands.elementAt(i)).toUpperCase();

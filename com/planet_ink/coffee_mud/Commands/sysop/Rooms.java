@@ -359,7 +359,7 @@ public class Rooms
 							if(CMClass.getAreaType(areaType)==null)
 							{
 								mob.session().println("Invalid area type! Valid ones are:");
-								mob.session().println(Lister.reallyList(CMClass.areaTypes,-1,null).toString());
+								mob.session().println(Lister.reallyList(CMClass.areaTypes(),-1,null).toString());
 								areaType="";
 							}
 						}

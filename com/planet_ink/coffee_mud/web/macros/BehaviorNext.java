@@ -19,9 +19,9 @@ public class BehaviorNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int b=0;b<CMClass.behaviors.size();b++)
+		for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 		{
-			Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+			Behavior B=(Behavior)b.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
 				httpReq.getRequestParameters().put("BEHAVIOR",B.ID());

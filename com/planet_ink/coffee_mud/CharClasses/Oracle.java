@@ -158,13 +158,13 @@ public class Oracle extends Cleric
 			int tries=0;
 			while((newOne==null)&&((++tries)<100))
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(Dice.roll(1,CMClass.charClasses.size(),-1));
+				CharClass C=CMClass.randomCharClass();
 				if((C!=null)&&(C!=this))
 				{
 					int tries2=0;
 					while((newOne==null)&&((++tries2)<1000))
 					{
-						Ability A=(Ability)CMClass.abilities.elementAt(Dice.roll(1,CMClass.abilities.size(),-1));
+						Ability A=CMClass.randomAbility();
 						if((A!=null)
 						   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=1)
 						   &&(CMAble.getQualifyingLevel(this.ID(),A.ID())<0))

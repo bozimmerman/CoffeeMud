@@ -228,12 +228,12 @@ public class IMudInterface implements ImudServices, Serializable
 				String stat="online";
 				MOB smob=findSessMob(lk.user_name);
 				if(smob==null)
-				for(int m=0;m<CMClass.MOBs.size();m++)
+				for(Enumeration p=CMMap.players();p.hasMoreElements();)
 				{
-					MOB mob=(MOB)CMClass.MOBs.elementAt(m);
-					if(mob.name().equalsIgnoreCase(lk.user_name))
+					MOB M=(MOB)p.nextElement();
+					if(M.name().equalsIgnoreCase(lk.user_name))
 					{
-						smob=mob;
+						smob=M;
 						stat="exists, but not logged in";
 						break;
 					}

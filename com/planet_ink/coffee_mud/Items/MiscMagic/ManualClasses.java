@@ -49,9 +49,9 @@ public class ManualClasses extends StdItem implements MiscMagic
 							mob.tell("The manual glows softly, enveloping you in its wisdom.");
 							CharClass lastC=null;
 							CharClass thisC=null;
-							for(int c=0;c<CMClass.charClasses.size();c++)
+							for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 							{
-								CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+								CharClass C=(CharClass)c.nextElement();
 								if(thisC==null) thisC=C;
 								if((lastC!=null)&&(thisC==mob.charStats().getCurrentClass()))
 								{

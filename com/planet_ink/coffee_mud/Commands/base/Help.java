@@ -161,9 +161,9 @@ public class Help
 			}
 			name=name.replace('_',' ');
 			Vector helpedPreviously=new Vector();
-			for(int a=0;a<CMClass.abilities.size();a++)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				Ability A=(Ability)a.nextElement();
 				if((A.ID().equalsIgnoreCase(tag)
 						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
 					||(A.name().equalsIgnoreCase(name)))
@@ -199,9 +199,9 @@ public class Help
 						prepend.append(Util.capitalize(Ability.DOMAIN_DESCS[school]));
 					}
 					Vector avail=new Vector();
-					for(int c=0;c<CMClass.charClasses.size();c++)
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						CharClass C=(CharClass)c.nextElement();
 						int lvl=CMAble.getQualifyingLevel(C.ID(),A.ID());
 						if((!C.ID().equalsIgnoreCase("Archon"))&&(lvl>=0))
 							avail.addElement(C.name()+"("+lvl+")");
@@ -259,15 +259,15 @@ public class Help
 						||(A.quality()==Ability.OK_SELF))
 							prepend.append("Caster only");
 						else
-						if((CMClass.items.size()>0)
-						&&(CMClass.MOBs.size()>0)
-						&&(CMClass.exits.size()>0)
-						&&(CMClass.locales.size()>0))
+						if((CMClass.items().hasMoreElements())
+						&&(CMClass.mobTypes().hasMoreElements())
+						&&(CMClass.exits().hasMoreElements())
+						&&(CMClass.locales().hasMoreElements()))
 						{
-							Item I=(Item)CMClass.items.elementAt(0);
-							MOB M=(MOB)CMClass.MOBs.elementAt(0);
-							Exit E=(Exit)CMClass.exits.elementAt(0);
-							Room R=(Room)CMClass.locales.elementAt(0);
+							Item I=(Item)CMClass.items().nextElement();
+							MOB M=(MOB)CMClass.mobTypes().nextElement();
+							Exit E=(Exit)CMClass.exits().nextElement();
+							Room R=(Room)CMClass.locales().nextElement();
 							if(A.canAffect(I)||A.canTarget(I))
 								prepend.append("Items ");
 							if(A.canAffect(M)||A.canTarget(M))
@@ -399,18 +399,18 @@ public class Help
 				{
 					Vector V=new Vector();
 					theRest=new StringBuffer("\n\rProperties:\n\r");
-					for(int a=0;a<CMClass.abilities.size();a++)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Ability A=(Ability)CMClass.abilities.elementAt(a);
+						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY))
 							V.addElement(A.ID());
 					}
 					theRest.append(fourColumns(V));
 					theRest.append("\n\r\n\rBehaviors:\n\r");
 					V=new Vector();
-					for(int b=0;b<CMClass.behaviors.size();b++)
+					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
-						Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+						Behavior B=(Behavior)b.nextElement();
 						if(B!=null) V.addElement(B.ID());
 					}
 					theRest.append(fourColumns(V)+"\n\r");

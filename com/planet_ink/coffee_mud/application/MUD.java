@@ -267,7 +267,7 @@ public class MUD extends Thread implements Host
 		offlineReason="Booting: readying for connections.";
 		try
 		{
-			CommandProcessor.commandSet.loadAbilities(CMClass.abilities);
+			CommandProcessor.commandSet.loadAbilities(CMClass.abilities());
 
 			saveThread=new SaveThread();
 			saveThread.start();

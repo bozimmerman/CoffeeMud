@@ -15,20 +15,24 @@ public class CrossClassAbilities extends StdWebMacro
 		String sort=(String)httpReq.getRequestParameters().get("SORTBY");
 		int sortByClassNum=-1;
 		if((sort!=null)&&(sort.length()>0))
-			for(int c=0;c<CMClass.charClasses.size();c++)
-			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-				if((C.ID().equals(sort))&&(C.playerSelectable()))
-					sortByClassNum=c;
-			}
-		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			StringBuffer buf=new StringBuffer("");
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			int numFound=0;
-			for(int c=0;c<CMClass.charClasses.size();c++)
+			int cnum=0;
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				CharClass C=(CharClass)c.nextElement();
+				if((C.ID().equals(sort))&&(C.playerSelectable()))
+					sortByClassNum=cnum;
+				cnum++;
+			}
+		}
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		{
+			Ability A=(Ability)a.nextElement();
+			StringBuffer buf=new StringBuffer("");
+			int numFound=0;
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=(CharClass)c.nextElement();
 				if(C.playerSelectable()
 				   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
 					if((++numFound)>0) break;
@@ -36,21 +40,23 @@ public class CrossClassAbilities extends StdWebMacro
 			if(numFound>0)
 			{
 				buf.append("<TR><TD><B>"+A.name()+"</B></TD>");
-				for(int c=0;c<CMClass.charClasses.size();c++)
+				int cnum=0;
+				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+					CharClass C=(CharClass)c.nextElement();
 					if(C.playerSelectable())
 					{
 						int qual=CMAble.getQualifyingLevel(C.ID(),A.ID());
 						if(qual>=0)
 						{
 							buf.append("<TD>"+qual+"</TD>");
-							if((c==sortByClassNum)&&(!rowsFavoring.contains(buf)))
+							if((cnum==sortByClassNum)&&(!rowsFavoring.contains(buf)))
 								rowsFavoring.addElement(buf);
 						}
 						else
 							buf.append("<TD><BR></TD>");
 					}
+					cnum++;
 				}
 				if(!rowsFavoring.contains(buf))
 					allOtherRows.addElement(buf);

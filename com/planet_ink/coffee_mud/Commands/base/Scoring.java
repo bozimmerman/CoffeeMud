@@ -373,9 +373,9 @@ public class Scoring
 		{
 			int col=0;
 			StringBuffer msg2=new StringBuffer("");
-			for(int c=0;c<CMClass.charClasses.size();c++)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				CharClass C=(CharClass)c.nextElement();
 				StringBuffer thisLine=new StringBuffer("");
 				if(C.playerSelectable()
 				&&(mob.charStats().getCurrentClass()!=C)
@@ -568,28 +568,28 @@ public class Scoring
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-			int level=CMAble.qualifyingLevel(able,thisAbility);
-			if((CMAble.qualifiesByLevel(able,thisAbility))
+			Ability A=(Ability)a.nextElement();
+			int level=CMAble.qualifyingLevel(able,A);
+			if((CMAble.qualifiesByLevel(able,A))
 			&&(level>highestLevel)
-			&&(level<(CMAble.qualifyingClassLevel(able,thisAbility)+1))
-			&&(able.fetchAbility(thisAbility.ID())==null)
-			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
+			&&(level<(CMAble.qualifyingClassLevel(able,A)+1))
+			&&(able.fetchAbility(A.ID())==null)
+			&&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
 				highestLevel=level;
 		}
 		int col=0;
 		for(int l=0;l<=highestLevel;l++)
 		{
 			StringBuffer thisLine=new StringBuffer("");
-			for(int a=0;a<CMClass.abilities.size();a++)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability thisAbility=(Ability)CMClass.abilities.elementAt(a);
-				if((CMAble.qualifiesByLevel(able,thisAbility))
-				   &&(CMAble.qualifyingLevel(able,thisAbility)==l)
-				   &&(able.fetchAbility(thisAbility.ID())==null)
-				   &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
+				Ability A=(Ability)a.nextElement();
+				if((CMAble.qualifiesByLevel(able,A))
+				   &&(CMAble.qualifyingLevel(able,A)==l)
+				   &&(able.fetchAbility(A.ID())==null)
+				   &&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
 				{
 					if((++col)>2)
 					{
@@ -597,8 +597,8 @@ public class Scoring
 						col=1;
 					}
 					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
-					+Util.padRight(thisAbility.name(),19)+" "
-					+Util.padRight(thisAbility.requirements(),(col==2)?12:13));
+					+Util.padRight(A.name(),19)+" "
+					+Util.padRight(A.requirements(),(col==2)?12:13));
 				}
 			}
 			if(thisLine.length()>0)

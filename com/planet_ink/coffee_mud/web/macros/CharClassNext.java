@@ -19,9 +19,9 @@ public class CharClassNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int c=0;c<CMClass.charClasses.size();c++)
+		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+			CharClass C=(CharClass)c.nextElement();
 			if((C.playerSelectable())||(parms.containsKey("ALL")))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.ID().equals(lastID))))

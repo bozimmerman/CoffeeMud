@@ -27,9 +27,9 @@ public class Ranger_Enemy1 extends StdAbility
 				return super.text();
 			MOB mob=(MOB)affected;
 			Vector choices=new Vector();
-			for(int r=0;r<CMClass.races.size();r++)
+			for(Enumeration r=CMClass.races();r.hasMoreElements();)
 			{
-				Race R=(Race)CMClass.races.elementAt(r);
+				Race R=(Race)r.nextElement();
 				if(!choices.contains(R.racialCategory()))
 					choices.addElement(R.racialCategory());
 			}

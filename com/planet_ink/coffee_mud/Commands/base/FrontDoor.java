@@ -22,11 +22,11 @@ public class FrontDoor
 	private static Vector classQualifies(MOB mob)
 	{
 		Vector them=new Vector();
-		for(int c=0;c<CMClass.charClasses.size();c++)
+		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
-			CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-			if(classOkForMe(mob,thisClass))
-				them.addElement(thisClass);
+			CharClass C=(CharClass)c.nextElement();
+			if(classOkForMe(mob,C))
+				them.addElement(C);
 		}
 		return them;
 	}
@@ -63,11 +63,11 @@ public class FrontDoor
 			||(CoffeeUtensils.containsString(D.name(),login)))
 				return false;
 		}
-		for(int m=0;m<CMClass.MOBs.size();m++)
+		for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 		{
-			MOB tm=(MOB)CMClass.MOBs.elementAt(m);
-			if((CoffeeUtensils.containsString(tm.ID(),login))
-			||(CoffeeUtensils.containsString(tm.name(),login)))
+			MOB M=(MOB)m.nextElement();
+			if((CoffeeUtensils.containsString(M.ID(),login))
+			||(CoffeeUtensils.containsString(M.name(),login)))
 				return false;
 		}
 		for(Enumeration e=CMMap.players();e.hasMoreElements();)
@@ -211,16 +211,16 @@ public class FrontDoor
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
-				for(int r=0;r<CMClass.races.size();r++)
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
-					Race thisRace=(Race)CMClass.races.elementAt(r);
-					if(thisRace.playerSelectable())
+					Race R=(Race)r.nextElement();
+					if(R.playerSelectable())
 					{
 						if (!tmpFirst)
 							listOfRaces.append(", ");
 						else
 							tmpFirst = false;
-						listOfRaces.append("^H"+thisRace.name()+"^N");
+						listOfRaces.append("^H"+R.name()+"^N");
 					}
 				}
 				listOfRaces.append("]");
@@ -239,24 +239,24 @@ public class FrontDoor
 						if((newRace!=null)&&(!newRace.playerSelectable()))
 							newRace=null;
 						if(newRace==null)
-							for(int r=0;r<CMClass.races.size();r++)
+							for(Enumeration r=CMClass.races();r.hasMoreElements();)
 							{
-								Race R=(Race)CMClass.races.elementAt(r);
+								Race R=(Race)r.nextElement();
 								if((R.name().equalsIgnoreCase(raceStr))
 								&&(R.playerSelectable()))
 								{
-									newRace=(Race)CMClass.races.elementAt(r);
+									newRace=(Race)R;
 									break;
 								}
 							}
 						if(newRace==null)
-							for(int r=0;r<CMClass.races.size();r++)
+							for(Enumeration r=CMClass.races();r.hasMoreElements();)
 							{
-								Race R=(Race)CMClass.races.elementAt(r);
+								Race R=(Race)r.nextElement();
 								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
 								&&(R.playerSelectable()))
 								{
-									newRace=(Race)CMClass.races.elementAt(r);
+									newRace=(Race)R;
 									break;
 								}
 							}
@@ -334,24 +334,24 @@ public class FrontDoor
 					{
 						newClass=CMClass.getCharClass(ClassStr);
 						if(newClass==null)
-						for(int c=0;c<CMClass.charClasses.size();c++)
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if(classOkForMe(mob,thisClass))
-								if(thisClass.name().equalsIgnoreCase(ClassStr))
+							CharClass C=(CharClass)c.nextElement();
+							if(classOkForMe(mob,C))
+								if(C.name().equalsIgnoreCase(ClassStr))
 								{
-									newClass=thisClass;
+									newClass=C;
 									break;
 								}
 						}
 						if(newClass==null)
-						for(int c=0;c<CMClass.charClasses.size();c++)
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if(classOkForMe(mob,thisClass))
-								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+							CharClass C=(CharClass)c.nextElement();
+							if(classOkForMe(mob,C))
+								if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 								{
-									newClass=thisClass;
+									newClass=C;
 									break;
 								}
 						}

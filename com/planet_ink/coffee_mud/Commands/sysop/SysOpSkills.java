@@ -413,9 +413,9 @@ public class SysOpSkills
 		int numClasses=0;
 		for(;tries<numTriesClass;tries++)
 		{
-			for(int c=0;c<CMClass.charClasses.size();c++)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				CharClass C=(CharClass)c.nextElement();
 				if(C.playerSelectable())
 				{
 					numClasses++;

@@ -171,9 +171,9 @@ public class Cleric extends StdCharClass
 					return;
 			}
 			// now only give one, for current level, respecting alignment!
-			for(int a=0;a<CMClass.abilities.size();a++)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				Ability A=(Ability)a.nextElement();
 				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				&&(A.appropriateToMyAlignment(mob.getAlignment()))
@@ -186,9 +186,9 @@ public class Cleric extends StdCharClass
 			}
 		}
 		else // monsters get everything -- leave it to other code to pick the right 
-		for(int a=0;a<CMClass.abilities.size();a++) // ...ones to use.
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=mob.baseCharStats().getClassLevel(this)))

@@ -187,9 +187,9 @@ public class CMMap
 	
 	private static void pageRooms(INI page, Hashtable table, String start)
 	{
-		for(int r=0;r<CMClass.races.size();r++)
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
-			Race R=(Race)CMClass.races.elementAt(r);
+			Race R=(Race)r.nextElement();
 			String cat=R.racialCategory().toUpperCase();
 			cat.replace(' ','_');
 			String thisOne=page.getProperty(start+"_"+R.racialCategory().toUpperCase());

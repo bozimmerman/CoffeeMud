@@ -77,16 +77,9 @@ public class Spell_Polymorph extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					int numRaces=CMClass.races.size();
 					newRace=null;
-					while(newRace==null)
-					{
-						int raceNum=(int)Math.round(Math.random()*numRaces);
-						if(raceNum<numRaces)
-							newRace=(Race)CMClass.races.elementAt(raceNum);
-						if((newRace!=null)&&(newRace.ID().equals("StdRace")))
-							newRace=null;
-					}
+					while((newRace==null)||(newRace.ID().equals("StdRace")))
+						newRace=CMClass.randomRace();
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,0);
 					target.recoverCharStats();

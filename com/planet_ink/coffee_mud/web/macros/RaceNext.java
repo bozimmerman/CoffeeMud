@@ -19,9 +19,9 @@ public class RaceNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(int r=0;r<CMClass.races.size();r++)
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
-			Race R=(Race)CMClass.races.elementAt(r);
+			Race R=(Race)r.nextElement();
 			if((R.playerSelectable())||(parms.containsKey("ALL")))
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))

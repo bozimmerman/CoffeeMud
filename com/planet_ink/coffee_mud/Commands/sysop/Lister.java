@@ -24,15 +24,23 @@ public class Lister
 	}
 	public static StringBuffer reallyList(Vector these, int ofType)
 	{
+		return reallyList(these.elements(),ofType,null);
+	}
+	public static StringBuffer reallyList(Enumeration these, int ofType)
+	{
 		return reallyList(these,ofType,null);
 	}
 	public static StringBuffer reallyList(Vector these)
+	{
+		return reallyList(these.elements(),-1,null);
+	}
+	public static StringBuffer reallyList(Enumeration these)
 	{
 		return reallyList(these,-1,null);
 	}
 	public static StringBuffer reallyList(Vector these, Room likeRoom)
 	{
-		return reallyList(these,-1,likeRoom);
+		return reallyList(these.elements(),-1,likeRoom);
 	}
 	public static StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
 	{
@@ -361,16 +369,16 @@ public class Lister
 		String listWord=((String)commands.firstElement()).toUpperCase();
 
 		if("ITEMS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.items).toString());
+			mob.tell(reallyList(CMClass.items()).toString());
 		else
 		if("ARMOR".startsWith(listThis))
-			mob.tell(reallyList(CMClass.armor).toString());
+			mob.tell(reallyList(CMClass.armor()).toString());
 		else
 		if("WEAPONS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.weapons).toString());
+			mob.tell(reallyList(CMClass.weapons()).toString());
 		else
 		if("MOBS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.MOBs).toString());
+			mob.tell(reallyList(CMClass.mobTypes()).toString());
 		else
 		if("ROOMS".startsWith(listThis))
 			mob.tell(roomDetails(CMMap.rooms(),mob.location()).toString());
@@ -379,37 +387,37 @@ public class Lister
 			mob.tell(reallyList(CMMap.rooms(),mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.locales).toString());
+			mob.tell(reallyList(CMClass.locales()).toString());
 		else
 		if("BEHAVIORS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.behaviors).toString());
+			mob.tell(reallyList(CMClass.behaviors()).toString());
 		else
 		if("EXITS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.exits).toString());
+			mob.tell(reallyList(CMClass.exits()).toString());
 		else
 		if("RACES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.races).toString());
+			mob.tell(reallyList(CMClass.races()).toString());
 		else
 		if("CLASSES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.charClasses).toString());
+			mob.tell(reallyList(CMClass.charClasses()).toString());
 		else
 		if("SPELLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.SPELL).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.SPELL).toString());
 		else
 		if("SONGS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.SONG).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.SONG).toString());
 		else
 		if("PRAYERS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.PRAYER).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.PRAYER).toString());
 		else
 		if("PROPERTIES".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.PROPERTY).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.PROPERTY).toString());
 		else
 		if("THIEFSKILLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.THIEF_SKILL).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString());
 		else
 		if("SKILLS".startsWith(listThis))
-			mob.tell(reallyList(CMClass.abilities,Ability.SKILL).toString());
+			mob.tell(reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
 		if("TICKS".startsWith(listThis))
 			mob.tell(ExternalPlay.listTicks(-1).toString());
@@ -418,7 +426,7 @@ public class Lister
 			mob.tell(ExternalPlay.listTicks(Util.s_int(Util.combine(commands,1))).toString());
 		else
 		if("MAGIC".startsWith(listThis))
-			mob.tell(reallyList(CMClass.miscMagic).toString());
+			mob.tell(reallyList(CMClass.miscMagic()).toString());
 		else
 		if("BUGS".startsWith(listThis))
 			mob.tell(journalList("SYSTEM_BUGS").toString());

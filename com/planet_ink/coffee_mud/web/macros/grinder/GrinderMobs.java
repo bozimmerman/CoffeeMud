@@ -342,16 +342,16 @@ public class GrinderMobs
 					else
 					{
 						Environmental O=null;
-						for(int m=0;m<CMClass.MOBs.size();m++)
+						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 						{
-							MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+							MOB M2=(MOB)m.nextElement();
 							if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
 							{	O=M2.copyOf(); break;	}
 						}
 						if(O==null)
-						for(int m=0;m<CMClass.abilities.size();m++)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
-							Ability A2=(Ability)CMClass.abilities.elementAt(m);
+							Ability A2=(Ability)a.nextElement();
 							if(CMClass.className(A2).equals(MATCHING))
 							{	O=A2.copyOf(); break;	}
 						}

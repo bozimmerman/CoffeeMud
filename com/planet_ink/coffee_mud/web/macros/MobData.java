@@ -65,8 +65,8 @@ public class MobData extends StdWebMacro
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 			Vector sortMeA=new Vector();
-			for(int r=0;r<CMClass.abilities.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(a.nextElement()));
 			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
@@ -127,8 +127,8 @@ public class MobData extends StdWebMacro
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 			Vector sortMeA=new Vector();
-			for(int r=0;r<CMClass.abilities.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(a.nextElement()));
 			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
@@ -204,16 +204,16 @@ public class MobData extends StdWebMacro
 					else
 					{
 						Environmental O=null;
-						for(int m=0;m<CMClass.MOBs.size();m++)
+						for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 						{
-							MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+							MOB M2=(MOB)m.nextElement();
 							if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
 							{	O=M2.copyOf(); break;	}
 						}
 						if(O==null)
-						for(int m=0;m<CMClass.abilities.size();m++)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
-							Ability A2=(Ability)CMClass.abilities.elementAt(m);
+							Ability A2=(Ability)a.nextElement();
 							if(CMClass.className(A2).equals(MATCHING))
 							{	O=A2.copyOf(); break;	}
 						}
@@ -269,18 +269,18 @@ public class MobData extends StdWebMacro
 			}
 			str.append("<TR><TD WIDTH=50%>");
 			Vector sortMeA=new Vector();
-			for(int r=0;r<CMClass.abilities.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
-			for(int r=0;r<CMClass.MOBs.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.MOBs.elementAt(r)));
-			for(int r=0;r<CMClass.items.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.items.elementAt(r)));
-			for(int r=0;r<CMClass.weapons.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
-			for(int r=0;r<CMClass.armor.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.armor.elementAt(r)));
-			for(int r=0;r<CMClass.miscMagic.size();r++)
-				sortMeA.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(a.nextElement()));
+			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(m.nextElement()));
+			for(Enumeration i=CMClass.items();i.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(i.nextElement()));
+			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(i.nextElement()));
+			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(i.nextElement()));
+			for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+				sortMeA.addElement(CMClass.className(i.nextElement()));
 			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
@@ -412,8 +412,8 @@ public class MobData extends StdWebMacro
 				{
 					if(firstTime) old=CMClass.className(M); 
 					Vector sortMe=new Vector();
-					for(int r=0;r<CMClass.MOBs.size();r++)
-						sortMe.addElement(CMClass.className(CMClass.MOBs.elementAt(r)));
+					for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+						sortMe.addElement(CMClass.className(m.nextElement()));
 					Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 					for(int r=0;r<sorted.length;r++)
 					{
@@ -454,9 +454,9 @@ public class MobData extends StdWebMacro
 				break;
 			case 8: // race
 				if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
-				for(int r=0;r<CMClass.races.size();r++)
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
-					Race R2=(Race)CMClass.races.elementAt(r);
+					Race R2=(Race)r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
 					if(R2.ID().equals(old))
 						str.append(" SELECTED");
@@ -706,18 +706,26 @@ public class MobData extends StdWebMacro
 				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
 			}
 			Vector sortMe=new Vector();
-			for(int r=0;r<CMClass.items.size();r++)
-				if(!((Item)CMClass.items.elementAt(r)).isGeneric())
-					sortMe.addElement(CMClass.className(CMClass.items.elementAt(r)));
-			for(int r=0;r<CMClass.weapons.size();r++)
-				if(!((Item)CMClass.weapons.elementAt(r)).isGeneric())
-					sortMe.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
-			for(int r=0;r<CMClass.armor.size();r++)
-				if(!((Item)CMClass.armor.elementAt(r)).isGeneric())
-					sortMe.addElement(CMClass.className(CMClass.armor.elementAt(r)));
-			for(int r=0;r<CMClass.miscMagic.size();r++)
-				if(!((Item)CMClass.miscMagic.elementAt(r)).isGeneric())
-					sortMe.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+			for(Enumeration i=CMClass.items();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+			}
+			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+			}
+			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+			}
+			for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+			}
 			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 			for(int i=0;i<sorted.length;i++)
 				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);

@@ -16,9 +16,9 @@ public class SpecialistMage extends Mage
 	public void cloneFix(CharClass C)
 	{
 		super.cloneFix(C);
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			Ability A=(Ability)a.nextElement();
 			if(A!=null)
 			{
 				int level=CMAble.getQualifyingLevel(ID(),A.ID());

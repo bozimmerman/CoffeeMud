@@ -46,9 +46,9 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 			Vector sortMeB=new Vector();
-			for(int r=0;r<CMClass.behaviors.size();r++)
+			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 			{
-				Behavior B=(Behavior)CMClass.behaviors.elementAt(r);
+				Behavior B=(Behavior)b.nextElement();
 				if(B.canImprove(E))
 					sortMeB.addElement(CMClass.className(B));
 			}
@@ -120,9 +120,9 @@ public class AreaData extends StdWebMacro
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
 			Vector sortMeA=new Vector();
-			for(int r=0;r<CMClass.abilities.size();r++)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
-				Ability A=(Ability)CMClass.abilities.elementAt(r);
+				Ability A=(Ability)a.nextElement();
 				if(A.canAffect(E))
 					sortMeA.addElement(CMClass.className(A));
 			}
@@ -228,8 +228,8 @@ public class AreaData extends StdWebMacro
 					if((className==null)||(className.length()==0))
 						className=CMClass.className(A);
 					Vector sortMeA=new Vector();
-					for(int r=0;r<CMClass.areaTypes.size();r++)
-						sortMeA.addElement(CMClass.className(CMClass.areaTypes.elementAt(r)));
+					for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
+						sortMeA.addElement(CMClass.className(a.nextElement()));
 					Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 					for(int r=0;r<sortedA.length;r++)
 					{

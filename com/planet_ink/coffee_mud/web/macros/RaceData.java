@@ -175,9 +175,9 @@ public class RaceData extends StdWebMacro
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						mob.baseCharStats().setStat(i,25);
 					mob.recoverCharStats();
-					for(int c=0;c<CMClass.charClasses.size();c++)
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						CharClass C=(CharClass)c.nextElement();
 						if((C!=null)&&(C.playerSelectable())&&(C.qualifiesForThisClass(mob,true)))
 							str.append(C.name()+", ");
 					}

@@ -158,9 +158,9 @@ public class AbilityHelper
 				case 0: // -class
 					{
 					buf.append("Allows only ");
-					for(int c=0;c<CMClass.charClasses.size();c++)
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						CharClass C=(CharClass)c.nextElement();
 						if(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))
 							buf.append(C.name()+", ");
 					}
@@ -172,9 +172,9 @@ public class AbilityHelper
 				case 1: // -baseclass
 					{
 						buf.append("Allows only ");
-						for(int c=0;c<CMClass.charClasses.size();c++)
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
-							CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
 							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
 								buf.append(C.name()+" types, ");
@@ -188,14 +188,14 @@ public class AbilityHelper
 					{
 						buf.append("Allows only ");
 						Vector cats=new Vector();
-						for(int c=0;c<CMClass.races.size();c++)
+						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
-							Race C=(Race)CMClass.races.elementAt(c);
-							String cat=C.racialCategory().toUpperCase();
+							Race R=(Race)r.nextElement();
+							String cat=R.racialCategory().toUpperCase();
 							if(cat.length()>6) cat=cat.substring(0,6);
-							if((!cats.contains(C.racialCategory())
+							if((!cats.contains(R.racialCategory())
 							&&(fromHere(V,'+',v+1,cat))))
-							   cats.addElement(C.racialCategory());
+							   cats.addElement(R.racialCategory());
 						}
 						for(int c=0;c<cats.size();c++)
 							buf.append(((String)cats.elementAt(c))+", ");
@@ -275,22 +275,22 @@ public class AbilityHelper
 				}
 			else
 			{
-				for(int c=0;c<CMClass.charClasses.size();c++)
+				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
-					CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+					CharClass C=(CharClass)c.nextElement();
 					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
 						buf.append("Disallows "+C.name()+".  ");
 				}
 				Vector cats=new Vector();
-				for(int c=0;c<CMClass.races.size();c++)
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
-					Race C=(Race)CMClass.races.elementAt(c);
-					String cat=C.racialCategory().toUpperCase();
+					Race R=(Race)r.nextElement();
+					String cat=R.racialCategory().toUpperCase();
 					if(cat.length()>6) cat=cat.substring(0,6);
-					if((str.startsWith("-"+cat))&&(!cats.contains(C.racialCategory())))
+					if((str.startsWith("-"+cat))&&(!cats.contains(R.racialCategory())))
 					{
-						cats.addElement(C.racialCategory());
-						buf.append("Disallows "+C.racialCategory()+".  ");
+						cats.addElement(R.racialCategory());
+						buf.append("Disallows "+R.racialCategory()+".  ");
 					}
 				}
 				for(int c=0;c<=1000;c+=500)

@@ -136,14 +136,14 @@ public class ItemData extends StdWebMacro
 					{
 						if(firstTime) old=CMClass.className(I); 
 						Vector sortMe=new Vector();
-						for(int r=0;r<CMClass.items.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.items.elementAt(r)));
-						for(int r=0;r<CMClass.weapons.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
-						for(int r=0;r<CMClass.armor.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.armor.elementAt(r)));
-						for(int r=0;r<CMClass.miscMagic.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+						for(Enumeration i=CMClass.items();i.hasMoreElements();)
+							sortMe.addElement(CMClass.className(i.nextElement()));
+						for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+							sortMe.addElement(CMClass.className(i.nextElement()));
+						for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+							sortMe.addElement(CMClass.className(i.nextElement()));
+						for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+							sortMe.addElement(CMClass.className(i.nextElement()));
 						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 						for(int r=0;r<sorted.length;r++)
 						{
@@ -355,8 +355,8 @@ public class ItemData extends StdWebMacro
 						}
 						old=old.toUpperCase()+";";
 						Vector sortMe=new Vector();
-						for(int r=0;r<CMClass.abilities.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+							sortMe.addElement(CMClass.className(a.nextElement()));
 						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 						for(int r=0;r<sorted.length;r++)
 						{
@@ -454,8 +454,8 @@ public class ItemData extends StdWebMacro
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
 						Vector sortMe=new Vector();
-						for(int r=0;r<CMClass.abilities.size();r++)
-							sortMe.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+							sortMe.addElement(CMClass.className(a.nextElement()));
 						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 						for(int r=0;r<sorted.length;r++)
 						{

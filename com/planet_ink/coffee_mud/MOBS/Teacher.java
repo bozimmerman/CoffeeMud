@@ -34,9 +34,9 @@ public class Teacher extends StdMOB
 		baseEnvStats().setLevel(25);
 		baseEnvStats().setArmor(-500);
 
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			Ability A=(Ability)a.nextElement();
 			A=(Ability)A.copyOf();
 			A.setProfficiency(100);
 			A.setBorrowed(this,true);

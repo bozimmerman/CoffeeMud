@@ -63,9 +63,9 @@ public class Archon extends StdCharClass
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
 			&&(CMAble.getQualifyingLevel(ID(),A.ID())<=mob.charStats().getClassLevel(this)))
 			{

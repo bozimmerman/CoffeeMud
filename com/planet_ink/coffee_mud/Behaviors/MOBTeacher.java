@@ -36,9 +36,9 @@ public class MOBTeacher extends CombatAbilities
 
 	private void classAbles(MOB mob)
 	{
-		for(int i=0;i<CMClass.abilities.size();i++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(i);
+			Ability A=(Ability)a.nextElement();
 			Ability A2=mob.fetchAbility(A.ID());
 			if(A2==null)
 			{
@@ -81,9 +81,9 @@ public class MOBTeacher extends CombatAbilities
 			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
 			String parm=getParms().toUpperCase();
-			for(int c=0;c<CMClass.charClasses.size();c++)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				CharClass C=(CharClass)c.nextElement();
 				int x=parm.indexOf(C.ID().toUpperCase());
 				if(x>=0)
 				{

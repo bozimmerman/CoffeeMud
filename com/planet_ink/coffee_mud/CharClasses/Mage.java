@@ -304,9 +304,9 @@ public class Mage extends StdCharClass
 			numSpells=2;
 		else
 			numSpells=1;
-		for(int a=0;a<CMClass.abilities.size();a++)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
 			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
 			&&(!CMAble.getDefaultGain(ID(),A.ID()))

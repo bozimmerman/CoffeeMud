@@ -28,9 +28,9 @@ public class ClassRaceNext extends StdWebMacro
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		for(int r=0;r<CMClass.races.size();r++)
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
-			Race R=(Race)CMClass.races.elementAt(r);
+			Race R=(Race)r.nextElement();
 			mob.baseCharStats().setMyRace(R);
 			mob.recoverCharStats();
 			if(((R.playerSelectable())||(parms.containsKey("ALL")))

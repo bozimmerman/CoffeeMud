@@ -178,9 +178,9 @@ public class BasicSenses
 		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 		&&(abilityCode<0))
 		{
-			for(int c=0;c<CMClass.charClasses.size();c++)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				CharClass C=(CharClass)c.nextElement();
 				if(C.name().toUpperCase().startsWith(abilityName.toUpperCase()))
 				{
 					if(C.qualifiesForThisClass(mob,false))

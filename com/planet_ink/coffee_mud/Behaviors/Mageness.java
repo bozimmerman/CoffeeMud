@@ -21,7 +21,7 @@ public class Mageness extends CombatAbilities
 			int tries=0;
 			while((addThis==null)&&((++tries)<10))
 			{
-				addThis=(Ability)CMClass.abilities.elementAt(Dice.roll(1,CMClass.abilities.size(),0)-1);
+				addThis=CMClass.randomAbility();
 				if((CMAble.qualifyingLevel(mob,addThis)<0)
 				||(!CMAble.qualifiesByLevel(mob,addThis))
 				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyAlignment(mob.getAlignment())))

@@ -435,11 +435,11 @@ public class CommandSet extends Hashtable
 		return self;
 	}
 
-	public void loadAbilities(Vector abilities)
+	public void loadAbilities(Enumeration abilities)
 	{
-		for(int e=0;e<abilities.size();e++)
+		for(Enumeration e=abilities;e.hasMoreElements();)
 		{
-			Ability thisAbility=(Ability)abilities.elementAt(e);
+			Ability thisAbility=(Ability)e.nextElement();
 			if((thisAbility.triggerStrings()!=null)
 			&&(thisAbility.triggerStrings().length>0))
 			{

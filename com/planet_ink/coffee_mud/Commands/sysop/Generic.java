@@ -331,7 +331,7 @@ public class Generic
 					else
 					{
 						if(newName.equalsIgnoreCase("?"))
-							mob.tell(Lister.reallyList(CMClass.abilities,-1).toString());
+							mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
 						else
 						if(E instanceof Wand)
 						{
@@ -1279,7 +1279,7 @@ public class Generic
 			if(showOnly) return;
 			raceID=mob.session().prompt("Enter a new race (?)\n\r:","").trim();
 			if(raceID.equalsIgnoreCase("?"))
-				mob.tell(Lister.reallyList(CMClass.races,-1).toString());
+				mob.tell(Lister.reallyList(CMClass.races(),-1).toString());
 			else
 			if(raceID.length()==0)
 				mob.tell("(no change)");
@@ -1307,7 +1307,7 @@ public class Generic
 			if(showOnly) return;
 			classID=mob.session().prompt("Enter a new class (?)\n\r:","").trim();
 			if(classID.equalsIgnoreCase("?"))
-				mob.tell(Lister.reallyList(CMClass.charClasses,-1).toString());
+				mob.tell(Lister.reallyList(CMClass.charClasses(),-1).toString());
 			else
 			if(classID.length()==0)
 				mob.tell("(no change)");
@@ -1349,7 +1349,7 @@ public class Generic
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(Lister.reallyList(CMClass.behaviors,-1).toString());
+					mob.tell(Lister.reallyList(CMClass.behaviors(),-1).toString());
 				else
 				{
 					Behavior chosenOne=null;
@@ -1430,7 +1430,7 @@ public class Generic
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(Lister.reallyList(CMClass.abilities,-1).toString());
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -1563,12 +1563,12 @@ public class Generic
 			{
 				if(itemstr.equalsIgnoreCase("?"))
 				{
-					mob.tell(Lister.reallyList(CMClass.abilities,-1).toString());
-					mob.tell(Lister.reallyList(CMClass.armor,-1).toString());
-					mob.tell(Lister.reallyList(CMClass.weapons,-1).toString());
-					mob.tell(Lister.reallyList(CMClass.miscMagic,-1).toString());
-					mob.tell(Lister.reallyList(CMClass.items,-1).toString());
-					mob.tell(Lister.reallyList(CMClass.MOBs,-1).toString());
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
+					mob.tell(Lister.reallyList(CMClass.armor(),-1).toString());
+					mob.tell(Lister.reallyList(CMClass.weapons(),-1).toString());
+					mob.tell(Lister.reallyList(CMClass.miscMagic(),-1).toString());
+					mob.tell(Lister.reallyList(CMClass.items(),-1).toString());
+					mob.tell(Lister.reallyList(CMClass.mobTypes(),-1).toString());
 				}
 				else
 				{
@@ -1651,7 +1651,7 @@ public class Generic
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(Lister.reallyList(CMClass.abilities,-1).toString());
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -1760,7 +1760,7 @@ public class Generic
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("?"))
-					mob.tell(Lister.reallyList(CMClass.abilities,-1).toString());
+					mob.tell(Lister.reallyList(CMClass.abilities(),-1).toString());
 				else
 				{
 					Ability chosenOne=null;

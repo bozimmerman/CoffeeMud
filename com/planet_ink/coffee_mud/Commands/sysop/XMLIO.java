@@ -58,78 +58,78 @@ public class XMLIO
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))
 				{
-					for(int m=0;m<CMClass.locales.size();m++)
+					for(Enumeration l=CMClass.locales();l.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.locales.elementAt(m);
+						Environmental E=(Environmental)l.nextElement();
 						roomXML.append(CMClass.className(E)+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("CLASS"))
 				{
-					for(int m=0;m<CMClass.charClasses.size();m++)
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
-						CharClass C=(CharClass)CMClass.charClasses.elementAt(m);
+						CharClass C=(CharClass)c.nextElement();
 						roomXML.append(C.ID()+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("EXIT"))
 				{
-					for(int m=0;m<CMClass.exits.size();m++)
+					for(Enumeration e=CMClass.exits();e.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.exits.elementAt(m);
+						Environmental E=(Environmental)e.nextElement();
 						roomXML.append(CMClass.className(E)+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("ITEM"))
 				{
-					for(int m=0;m<CMClass.items.size();m++)
+					for(Enumeration i=CMClass.items();i.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.items.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						Item I=(Item)i.nextElement();
+						roomXML.append(CMClass.className(I)+";");
 					}
-					for(int m=0;m<CMClass.weapons.size();m++)
+					for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.weapons.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						Item I=(Item)i.nextElement();
+						roomXML.append(CMClass.className(I)+";");
 					}
-					for(int m=0;m<CMClass.armor.size();m++)
+					for(Enumeration i=CMClass.armor();i.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.armor.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						Item I=(Item)i.nextElement();
+						roomXML.append(CMClass.className(I)+";");
 					}
-					for(int m=0;m<CMClass.miscMagic.size();m++)
+					for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.miscMagic.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						Item I=(Item)i.nextElement();
+						roomXML.append(CMClass.className(I)+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("MOB"))
 				{
-					for(int m=0;m<CMClass.MOBs.size();m++)
+					for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.MOBs.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						MOB M=(MOB)m.nextElement();
+						roomXML.append(CMClass.className(M)+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("ABILITY"))
 				{
-					for(int m=0;m<CMClass.abilities.size();m++)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
-						Environmental E=(Environmental)CMClass.abilities.elementAt(m);
-						roomXML.append(CMClass.className(E)+";");
+						Ability A=(Ability)a.nextElement();
+						roomXML.append(CMClass.className(A)+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("BEHAVIOR"))
 				{
-					for(int m=0;m<CMClass.behaviors.size();m++)
+					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
-						Behavior B=(Behavior)CMClass.behaviors.elementAt(m);
+						Behavior B=(Behavior)b.nextElement();
 						roomXML.append(B.ID()+";");
 					}
 				}

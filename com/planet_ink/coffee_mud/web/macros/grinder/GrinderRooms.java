@@ -155,9 +155,9 @@ public class GrinderRooms
 					}
 				}
 				else
-				for(int m=0;m<CMClass.MOBs.size();m++)
+				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 				{
-					MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+					MOB M2=(MOB)m.nextElement();
 					if((CMClass.className(M2).equals(MATCHING)))
 					{	
 						happilyAddMob((MOB)M2.copyOf(),R);

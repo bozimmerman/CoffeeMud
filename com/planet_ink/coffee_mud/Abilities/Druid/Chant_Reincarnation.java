@@ -77,7 +77,9 @@ public class Chant_Reincarnation extends Chant
 		if((msg.sourceMinor()==Affect.TYP_DEATH)
 		   &&(msg.amISource(mob)))
 		{
-			newRace=(Race)CMClass.races.elementAt(Dice.roll(1,CMClass.races.size(),-1));
+			newRace=null;
+			while((newRace==null)||(newRace.ID().equals("StdRace")))
+				newRace=CMClass.randomRace();
 			if(newRace!=null)
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
 		}

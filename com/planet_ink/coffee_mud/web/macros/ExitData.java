@@ -83,8 +83,8 @@ public class ExitData extends StdWebMacro
 				{
 					if(firstTime) old=CMClass.className(E); 
 					Vector sortMe=new Vector();
-					for(int r=0;r<CMClass.exits.size();r++)
-						sortMe.addElement(CMClass.className(CMClass.exits.elementAt(r)));
+					for(Enumeration e=CMClass.exits();e.hasMoreElements();)
+						sortMe.addElement(CMClass.className(e.nextElement()));
 					Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 					for(int r=0;r<sorted.length;r++)
 					{
