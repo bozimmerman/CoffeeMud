@@ -86,6 +86,7 @@ public class Prop_ClosedDayNight extends Property
 		boolean closed=false;
 		Room R=CoffeeUtensils.roomLocation(E);
 		if(R==null) R=((exitRoom==null)?CMMap.getFirstRoom():exitRoom);
+		if(R==null) return false;
 		if((openTime<0)&&(closeTime<0))
 		{
 			closed=(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT);
