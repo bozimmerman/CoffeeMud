@@ -105,7 +105,9 @@ public class Thief extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	public static boolean thiefOk(MOB myChar, Affect affect)
+	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
+	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
+	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
@@ -142,14 +144,6 @@ public class Thief extends StdCharClass
 				}
 			}
 		}
-		return true;
-	}
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-	public boolean okAffect(MOB myChar, Affect affect)
-	{
-		if(!thiefOk(myChar,affect))
-			return false;
 		return super.okAffect(myChar,affect);
 	}
 

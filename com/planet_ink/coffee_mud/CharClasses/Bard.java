@@ -130,11 +130,44 @@ public class Bard extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
+	
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if(!Thief.thiefOk(myChar,affect))
-			return false;
-		return super.okAffect(myChar, affect);
+		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		{
+			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
+			&&(!new Thief().armorCheck(myChar)))
+			{
+				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+				{
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
+					return false;
+				}
+			}
+			else
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon))
+			{
+				int classification=((Weapon)affect.tool()).weaponClassification();
+				switch(classification)
+				{
+				case Weapon.CLASS_SWORD:
+				case Weapon.CLASS_RANGED:
+				case Weapon.CLASS_THROWN:
+				case Weapon.CLASS_NATURAL:
+				case Weapon.CLASS_DAGGER:
+					break;
+				default:
+					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+					{
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						return false;
+					}
+					break;
+				}
+			}
+		}
+		return super.okAffect(myChar,affect);
 	}
-
 }
