@@ -1,11 +1,10 @@
 package com.planet_ink.coffee_mud.system;
 
-import com.planet_ink.coffee_mud.utils.*;
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 /**
 * DBConnection.java 
@@ -38,16 +37,15 @@ public class DBConnection
 	private String lastError=null;
 	
 	/** when this connection was put into use**/
-	private long useTime=System.currentTimeMillis();
+	private IQCalendar useTime=IQCalendar.getIQInstance();
+	
+	/** number of failures in a row */
+	private int failuresInARow=0;
+	
+	private boolean sqlserver=false;
 	
 	/** parent container of this connection **/
-	private DBConnections myParent=null;
-	private String myDBClass="";
-	private String myDBService=""; 
-	private String myDBUser="";
-	private String myDBPass="";
-
-	private boolean communicationLinkFailure=false;
+	private DBConnections myParent=null;	
 	
 	/** 
 	 * construction
@@ -67,12 +65,29 @@ public class DBConnection
 		throws SQLException
 	{
 		myParent=parentObject;
-		myDBClass=DBClass;
-		myDBService=DBService;
-		myDBUser=DBUser;
-		myDBPass=DBPass;
-		open();
+		if((DBClass==null)||(DBClass.length()==0))
+			DBClass="sun.jdbc.odbc.JdbcOdbcDriver";
+		try
+		{
+			Class.forName(DBClass);
+		}
+		catch(ClassNotFoundException ce)
+		{
+			ce.printStackTrace();
+		}
+		sqlserver=true;
+		myConnection=DriverManager.getConnection(DBService,DBUser,DBPass);
+		sqlserver=false;
 		inUse=false;
+	}
+	
+	public String catalog()
+	{
+		try{
+			return myConnection.getCatalog();
+		}
+		catch(Exception e){}
+		return "";
 	}
 	
 	/** 
@@ -90,24 +105,6 @@ public class DBConnection
 		myConnection=null;
 		myStatement=null;
 		myPreparedStatement=null;
-		inUse=false;
-	}
-	
-	public void open()
-		throws SQLException
-	{
-		if(myParent==null)
-			return;
-		
-		try
-		{
-			Class.forName(myDBClass);
-		}
-		catch(ClassNotFoundException ce)
-		{
-			System.out.println(ce);
-		}
-		myConnection=DriverManager.getConnection(myDBService,myDBUser,myDBPass);
 	}
 	
 	/** 
@@ -119,21 +116,24 @@ public class DBConnection
 	 */
 	public synchronized boolean use(String Opener)
 	{
-		if((!inUse)&&(ready()))
+		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
 			lastError=null;
-		
 			try
 			{
 				myPreparedStatement=null;
-				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				sqlserver=true;
+				myStatement=myConnection.createStatement();
 			}
 			catch(SQLException e)
 			{
 				myConnection=null;
+				failuresInARow++;
+				sqlserver=false;
 				return false;
 			}
 		
+			sqlserver=false;
 			try
 			{
 				if(!Opener.equals(""))
@@ -145,7 +145,7 @@ public class DBConnection
 				// not a real error?!
 			}
 		
-			useTime=System.currentTimeMillis();
+			useTime=IQCalendar.getIQInstance();
 			inUse=true;
 			return true;
 		}
@@ -171,15 +171,21 @@ public class DBConnection
 			try
 			{
 				myStatement=null;
+				sqlserver=true;
 				myPreparedStatement=myConnection.prepareStatement(SQL);
+				sqlserver=false;
 			}
 			catch(SQLException e)
 			{
+				sqlserver=false;
 				myConnection=null;
+				failuresInARow++;
 				return false;
 			}
 		
-			useTime=System.currentTimeMillis();
+			sqlserver=false;
+			useTime=IQCalendar.getIQInstance();
+			failuresInARow=0;
 			inUse=true;
 			return true;
 		}
@@ -239,57 +245,35 @@ public class DBConnection
 		{
 			try
 			{
+				sqlserver=true;
 				if(myStatement!=null)
 					R=myStatement.executeQuery(queryString);
 				else
 					lastError="DBConnection Statement not open.";
+				sqlserver=false;
 			}
 			catch(SQLException sqle)
 			{
-				if((!communicationLinkFailure)&&(sqle.getMessage().toUpperCase().indexOf("COMMUNICATION LINK FAILURE")>=0))
-				{
-					try
-					{
-						communicationLinkFailure=true;
-						close();
-						open();
-						use("");
-						ResultSet resSet=query(queryString);
-						communicationLinkFailure=false;
-						return resSet;
-					}
-					catch(SQLException sqle2)
-					{
-						lastError=""+sqle2;
-						throw sqle2;
-					}
-					
-				}
-				else
-				{
-					lastError=""+sqle;
-					throw sqle;
-				}
+				sqlserver=false;
+				failuresInARow++;
+				if(myParent!=null) 
+					myParent.reportError();
+				lastError=""+sqle;
+				throw sqle;
 			}
+			sqlserver=false;
 		}
 		else
 		{
 			lastError="DBConnection not ready.";
 		}
-		
-		useTime=System.currentTimeMillis();
+		sqlserver=false;
+		failuresInARow=0;
+		useTime=IQCalendar.getIQInstance();
+		if(myParent!=null) 
+			myParent.clearErrors();
 		return R;
 	}
-	
-	public String catalog()
-	{
-		try{
-			return myConnection.getCatalog();
-		}
-		catch(Exception e){}
-		return "";
-	}
-	
 	
 	/** 
 	 * execute an sql update, returning the status
@@ -298,7 +282,7 @@ public class DBConnection
 	 * @param UpdateString	SQL update-style string
 	 * @return int	The status of the update
 	 */
-	public int update(String updateString)
+	public int update(String updateString, int retryNum)
 		throws SQLException
 	{
 		int responseCode=-1;
@@ -306,58 +290,34 @@ public class DBConnection
 		{
 			try
 			{
+				sqlserver=true;
 				if(myStatement!=null)
 					responseCode=myStatement.executeUpdate(updateString);
 				else
 					lastError="DBConnection Statement not open.";
+				sqlserver=false;
 			}
 			catch(SQLException sqle)
 			{
-				if((!communicationLinkFailure)&&(sqle.getMessage().toUpperCase().indexOf("COMMUNICATION LINK FAILURE")>=0))
+				sqlserver=false;
+				if((sqle.getMessage()==null)
+				||(sqle.getMessage().toUpperCase().indexOf("PRIMARY KEY")<0))
+					failuresInARow++;
+				lastError=""+sqle;
+				if(myParent!=null)
 				{
-					try
-					{
-						communicationLinkFailure=true;
-						close();
-						open();
-						use("");
-						update(updateString);
-						communicationLinkFailure=false;
-					}
-					catch(SQLException sqle2)
-					{
-						try
-						{
-							lastError=""+sqle2;
-							if(myParent!=null)
-								myParent.enQueueError(updateString,""+sqle2);
-							throw sqle2;
-						}
-						catch(IOException e)
-						{
-							throw sqle2;
-						}
-					}
-					
+					myParent.enQueueError(updateString,""+sqle,""+(retryNum+1));
+					myParent.reportError();
 				}
-				else
-				{
-					try
-					{
-						lastError=""+sqle;
-						if(myParent!=null)
-							myParent.enQueueError(updateString,""+sqle);
-						throw sqle;
-					}
-					catch(IOException e)
-					{
-						throw sqle;
-					}
-				}
+				throw sqle;
 			}
 		}
 		
-		useTime=System.currentTimeMillis();
+		sqlserver=false;
+		useTime=IQCalendar.getIQInstance();
+		failuresInARow=0;
+		if(myParent!=null) 
+			myParent.clearErrors();
 		return responseCode;
 	}
 	
@@ -385,6 +345,44 @@ public class DBConnection
 		return inUse;
 	}
 	
+	/** 
+	 * known errors should not be a reason to report a dead state
+	 * 
+	 * <br><br><b>Usage:</b> clearFailures();
+	 * @param NA
+	 * @return NA
+	 */
+	public void clearFailures()
+	{
+		failuresInARow=0;
+	}
+	
+	public boolean inSQLServerCommunication()
+	{
+		return sqlserver;
+	}
+	
+	/** 
+	 * returns whether this connection is *probably* dead
+	 * 
+	 * <br><br><b>Usage:</b> isProbablyDead();
+	 * @param NA
+	 * @return boolean	Whether this connection is probably dead
+	 */
+	public boolean isProbablyDead()
+	{
+		try
+		{
+			if((myConnection==null)||(myConnection.isClosed())||(failuresInARow>2))
+				return true;
+			else
+				return false;
+		}
+		catch(SQLException e)
+		{
+			return true;
+		}
+	}
 	
 	/** 
 	 * returns whether this connection is *probably* locked up
@@ -395,10 +393,9 @@ public class DBConnection
 	 */
 	public boolean isProbablyLockedUp()
 	{
-		if(communicationLinkFailure)
-			return true;
-		
-		if((useTime<(System.currentTimeMillis()-60000))&&inUse) 
+		IQCalendar C=IQCalendar.getIQInstance();
+		C.add(IQCalendar.MINUTE,-2);
+		if(useTime.before(C)&&inUse) 
 			return true;
 		else
 			return false;

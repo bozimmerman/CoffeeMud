@@ -435,7 +435,7 @@ public class MOBloader
 			str="UPDATE CMCHAR SET"
 			+"  CMEMAL='"+pstats.getEmail()+"'"
 			+"  WHERE CMUSERID='"+mob.Name()+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -495,7 +495,7 @@ public class MOBloader
 			+"  CMCLAN='"+clan+"',"
 			+"  CMCLRO="+role+""
 			+"  WHERE CMUSERID='"+name+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -568,13 +568,13 @@ public class MOBloader
 			+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
 			+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
 			+"  WHERE CMUSERID='"+mob.Name()+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMCHAR SET"
 			+" CMDESC='"+mob.description()+"'"
-			+" WHERE CMUSERID='"+mob.Name()+"'");
+			+" WHERE CMUSERID='"+mob.Name()+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -640,7 +640,7 @@ public class MOBloader
 			String updateString=(String)V.elementAt(v);
 			try
 			{
-				D.update(updateString);
+				D.update(updateString,0);
 			}
 			catch(SQLException sqle)
 			{
@@ -687,7 +687,7 @@ public class MOBloader
 			String updateString=(String)V.elementAt(v);
 			try
 			{
-				D.update(updateString);
+				D.update(updateString,0);
 			}
 			catch(SQLException sqle)
 			{
@@ -705,7 +705,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
+			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -816,7 +816,7 @@ public class MOBloader
 			String updateString=(String)V.elementAt(v);
 			try
 			{
-				D.update(updateString);
+				D.update(updateString,0);
 			}
 			catch(SQLException sqle)
 			{
@@ -850,7 +850,7 @@ public class MOBloader
 			+"','"+mob.baseCharStats().getMyClassesStr()
 			+"','"+mob.baseCharStats().getMyRace().ID()
 			+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 			DBUpdate(mob);
 		}

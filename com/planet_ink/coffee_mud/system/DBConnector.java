@@ -130,9 +130,9 @@ public class DBConnector
 	 * @param SQLError	The error message being reported
 	 * @return NA
 	 */
-	public static void enQueueError(String SQLString, String SQLError)
+	public static void enQueueError(String SQLString, String SQLError, String count)
 		throws IOException
-	{ DBs.enQueueError(SQLString, SQLError);}
+	{ DBs.enQueueError(SQLString, SQLError,count);}
 	
 	
 	/** 

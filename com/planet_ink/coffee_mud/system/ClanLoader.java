@@ -72,7 +72,7 @@ public class ClanLoader
 				+"CMDNAT='"+C.getDonation()+"',"
 				+"CMSTAT="+C.getStatus()
 				+" WHERE CMCLID='"+C.ID()+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -110,7 +110,7 @@ public class ClanLoader
 			+"'"+C.getRecall()+"',"
 			+"'"+C.getDonation()+"',"
 			+""+C.getStatus()+")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -128,7 +128,7 @@ public class ClanLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'");
+			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)

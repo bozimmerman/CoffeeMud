@@ -155,12 +155,12 @@ public class DataLoader
 				for(int i=0;i<keys.size();i++)
 				{
 					D=DBConnector.DBFetch();
-					D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+((String)keys.elementAt(i))+"'");
+					D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+((String)keys.elementAt(i))+"'",0);
 					DBConnector.DBDone(D);
 				}
 			}
 			else
-				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
+				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -177,9 +177,9 @@ public class DataLoader
 		{
 			D=DBConnector.DBFetch();
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
-				D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"'");
+				D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"'",0);
 			else
-				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
+				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -194,7 +194,7 @@ public class DataLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'");
+			D.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -209,7 +209,7 @@ public class DataLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
+			D.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -233,7 +233,7 @@ public class DataLoader
 			 +"'"+raceID+"',"
 			 +"'"+data+" '"
 			 +")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -262,7 +262,7 @@ public class DataLoader
 			 +"'"+key+"',"
 			 +"'"+data+" '"
 			 +")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)

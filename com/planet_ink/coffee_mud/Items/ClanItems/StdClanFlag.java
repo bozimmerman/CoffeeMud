@@ -73,7 +73,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((clanID().length()>0)&&(msg.amITarget(myHost)))
+		if((clanID().length()>0)&&(msg.amITarget(this)))
 		{
 			if(!msg.source().getClanID().equals(clanID()))
 			{
@@ -168,7 +168,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		if(StdClanItem.stdOkMessage(this,msg))
 		{
 			if((clanID().length()>0)
-			&&(msg.amITarget(myHost))
+			&&(msg.amITarget(this))
 			&&(msg.targetMinor()==CMMsg.TYP_DROP))
 			{
 				Room R=msg.source().location();

@@ -415,7 +415,7 @@ public class RoomLoader
 					+thisItem.baseEnvStats().level()+","
 					+thisItem.baseEnvStats().ability()+","
 					+thisItem.baseEnvStats().height()+")";
-					D.update(sql);
+					D.update(sql,0);
 					DBConnector.DBDone(D);
 				}
 				catch(SQLException sqle)
@@ -435,7 +435,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
+			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -454,7 +454,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
+			D.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'",0);
 			DBConnector.DBDone(D);
 			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 			{
@@ -476,7 +476,7 @@ public class RoomLoader
 					+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
 					+"'"+((thisExit==null)?" ":thisExit.text())+" ',"
 					+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')";
-					D.update(str);
+					D.update(str,0);
 					DBConnector.DBDone(D);
 				}
 			}
@@ -524,7 +524,7 @@ public class RoomLoader
 			 +thisMOB.baseEnvStats().rejuv()+","
 			 +"'"+ride+"'"
 			 +")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -544,7 +544,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			str="DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -598,7 +598,7 @@ public class RoomLoader
 					+"CMDESC2='"+room.description()+" ',"
 					+"CMROTX='"+room.text()+" '"
 					+"WHERE CMROID='"+room.roomID()+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -620,39 +620,39 @@ public class RoomLoader
 			D.update("UPDATE CMROOM SET "
 					+"CMROID='"+room.roomID()+"', "
 					+"CMAREA='"+room.getArea().Name()+"' "
-					+"WHERE CMROID='"+oldID+"'");
+					+"WHERE CMROID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROCH SET "
 					+"CMROID='"+room.roomID()+"' "
-					+"WHERE CMROID='"+oldID+"'");
+					+"WHERE CMROID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 
 			D.update("UPDATE CMROEX SET "
 					+"CMROID='"+room.roomID()+"' "
-					+"WHERE CMROID='"+oldID+"'");
+					+"WHERE CMROID='"+oldID+"'",0);
 			
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROEX SET "
 					+"CMNRID='"+room.roomID()+"' "
-					+"WHERE CMNRID='"+oldID+"'");
+					+"WHERE CMNRID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
 			
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROIT SET "
 					+"CMROID='"+room.roomID()+"' "
-					+"WHERE CMROID='"+oldID+"'");
+					+"WHERE CMROID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMCHAR SET "
 					+"CMROID='"+room.roomID()+"' "
-					+"WHERE CMROID='"+oldID+"'");
+					+"WHERE CMROID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -693,7 +693,7 @@ public class RoomLoader
 			+"'"+A.description()+" ',"
 			+"'"+A.text()+" ',"
 			+A.getTechLevel()+")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -723,7 +723,7 @@ public class RoomLoader
 				+"CMROTX='"+A.text()+" ',"
 				+"CMTECH="+A.getTechLevel()+" "
 				+"WHERE CMAREA='"+keyName+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -745,7 +745,7 @@ public class RoomLoader
 			str="DELETE FROM CMROCH "
 				+"WHERE CMROID='"+room.roomID()+"' "
 				+"AND CMCHNM='"+keyName+"'";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -766,7 +766,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'");
+			D.update("DELETE FROM CMAREA WHERE CMAREA='"+A.Name()+"'",0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -800,7 +800,7 @@ public class RoomLoader
 			+"'"+room.displayText()+" ',"
 			+"'"+room.description()+" ',"
 			+"'"+room.text()+" ')";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -846,7 +846,7 @@ public class RoomLoader
 			DBUpdateItems(room);
 
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'");
+			D.update("DELETE FROM CMROOM WHERE CMROID='"+room.roomID()+"'",0);
 			DBConnector.DBDone(D);
 
 		}

@@ -22,7 +22,7 @@ import java.sql.*;
 */
 public class DBConnections
 {
-	private String DBClass="sun.jdbc.odbc.JdbcOdbcDriver";
+	private String DBClass="";
 	/** the odbc service*/
 	private String DBService="";
 	/** the odbc login user */
@@ -31,16 +31,22 @@ public class DBConnections
 	private String DBPass="";
 	/** number of connections to make*/
 	private int numConnections=0;
+	/** the disconnected flag */
+	private boolean disconnected=false;
 	/** the im in trouble flag*/
-	private boolean inTrouble=false;
+	private boolean lockedUp=false;
 	/** the number of times the system has failed to get a db*/
 	private int consecutiveFailures=0;
+	/** the number of times the system has failed a request */
+	private int consecutiveErrors=0;
 	/** Object to synchronize around on error handling*/
 	private Boolean fileSemaphore=new Boolean(true);
 	/** Object to synchronize around on error handling*/
 	private boolean errorQueingEnabled=false;
 	/** the database connnections */
 	private Vector Connections;
+	/** last time queued errors were tried */
+	private IQCalendar lastTriedQueued=IQCalendar.getIQInstance();
 	
 	/** 
 	 * Initialize this class.  Must be called at first,
@@ -60,8 +66,7 @@ public class DBConnections
 						 int NEWnumConnections,
 						 boolean DoErrorQueueing)
 	{
-		if(NEWDBClass.length()>0)
-			DBClass=NEWDBClass;
+		DBClass=NEWDBClass;
 		DBService=NEWDBService;
 		DBUser=NEWDBUser;
 		DBPass=NEWDBPass;
@@ -86,10 +91,12 @@ public class DBConnections
 			DBToUse=DBFetch();
 			try
 			{
-				Result=DBToUse.update(updateString);
+				Result=DBToUse.update(updateString,0);
 			}
 			catch(SQLException sqle)
-			{}
+			{
+				// queued by the connection for retry
+			}
 			if(Result<0)
 			{
 				Log.errOut("DBConnections",""+DBToUse.getLastError());
@@ -97,44 +104,7 @@ public class DBConnections
 		}
 		catch(Exception e)
 		{
-			Log.errOut("DBConnections",""+e);
-		}
-		if(DBToUse!=null)
-			DBDone(DBToUse);
-		return Result;
-	}
-	
-	/** 
-	 * 
-	 * <br><br><b>Usage: updateGroup(V);</b> 
-	 * @param Vector of strings to update with
-	 * @return int	the responseCode, or -1
-	 */
-	public int updateGroup(Vector V)
-	{
-		DBConnection DBToUse=null;
-		int Result=-1;
-		try
-		{
-			DBToUse=DBFetch();
-			for(int v=0;v<V.size();v++)
-			{
-				String updateString=(String)V.elementAt(v);
-				try
-				{
-					Result=DBToUse.update(updateString);
-				}
-				catch(SQLException sqle)
-				{}
-				if(Result<0)
-				{
-					Log.errOut("DBConnections",""+DBToUse.getLastError());
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			Log.errOut("DBConnections",""+e);
+			Log.errOut("DBCOnnections",""+e);
 		}
 		if(DBToUse!=null)
 			DBDone(DBToUse);
@@ -158,40 +128,75 @@ public class DBConnections
 								String DBPass, 
 								int numConnections)
 	{
+		Log.sysOut("DBConnections","Making database connections...");
+		lockedUp=true;
+		try
+		{
+			DBConnection DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
+			killConnections();
+			Connections=new Vector();
+			synchronized(Connections)
+			{
+				for(int c=0;c<numConnections;c++)
+				{
+					if(DBConnect.ready())
+						Connections.addElement(DBConnect);
+					if(c<numConnections-1)
+						DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
+				}
+			}
+			lockedUp=false;
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("DBConnections",""+sqle);
+			lockedUp=true;
+		}
+		Log.sysOut("DBConnections","Done making database connections.");		
+	}
+	
+	private void repairConnections(String DBClass,
+								   String DBService,
+								   String DBUser,
+								   String DBPass)
+	{
+		Log.errOut("DBConnections","Repairing connections...");	
 		try
 		{
 			synchronized(Connections)
 			{
-				while(Connections.size()>0)
+				lockedUp=true;
+				for(int c=0;c<Connections.size();c++)
 				{
-					((DBConnection)Connections.elementAt(0)).close();
-					Connections.removeElementAt(0);
+					DBConnection DBConnect=(DBConnection)Connections.elementAt(c);
+					if((!DBConnect.ready())||(DBConnect.isProbablyDead())||(DBConnect.isProbablyLockedUp()))
+					{
+						DBConnection DBConnect2 = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
+						Connections.setElementAt(DBConnect2,c);
+						Log.sysOut("DBConnections","Repaired one connection.");
+					}
 				}
-				Connections.clear();
-				for(int c=0;c<numConnections;c++)
-				{
-					DBConnection DBConnect = new DBConnection(this,DBClass,DBService,DBUser,DBPass);
-					Connections.addElement(DBConnect);
-				}
+				lockedUp=false;
 			}
 		}
 		catch(SQLException sqle)
 		{
-			Log.errOut("DBConnections",sqle);
-			inTrouble=true;
+			Log.errOut("DBConnections",""+sqle);
+			lockedUp=true;
 		}
+		Log.errOut("DBConnections","Done repairing connections.");		
 	}
 
-	public boolean deregisterDriver()
+	/** 
+	 * Return the number of connections made. 
+	 * 
+	 * <br><br><b>Usage: n=numConnectionsMade();</b> 
+	 * @param NA
+	 * @return numConnectionsMade	The number of connections
+	 */
+	public int numConnectionsMade()
 	{
-		try
-		{
-			return true;
-		}
-		catch(Exception ce)
-		{
-		}
-		return false;
+		return Connections.size();
 	}
 	
 	/** 
@@ -205,48 +210,7 @@ public class DBConnections
 	 */
 	public DBConnection DBFetch()	
 	{
-		DBConnection ThisDB=null;
-		while(ThisDB==null)
-		{
-			synchronized(Connections)
-			{
-				for(int i=0;i<Connections.size();i++)
-				{
-					ThisDB=(DBConnection)Connections.elementAt(i);
-					if(ThisDB.use(""))
-						break;
-					ThisDB=null;
-				}
-			}
-			
-			if(ThisDB==null)
-			{
-				if((consecutiveFailures++)>=100)
-				{
-					if(consecutiveFailures>100)
-					{
-						inTrouble=true;
-						consecutiveFailures=0;
-					}
-					else
-						fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
-				}
-				else
-				{
-					try
-					{
-						Thread.sleep(Math.round(Math.random()*1000));
-					}
-					catch(InterruptedException i)
-					{
-					}
-				}
-			}
-		}
-		
-		if(ThisDB!=null)
-			consecutiveFailures=0;
-		return ThisDB;
+		return DBFetchAny("",false);
 	}
 
 	/** 
@@ -258,38 +222,62 @@ public class DBConnections
 	 * @param SQL	The prepared statement SQL
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public DBConnection DBFetchPrepared(String SQL)	
+	public DBConnection DBFetchAny(String SQL, boolean prepared)
 	{
 		DBConnection ThisDB=null;
 		while(ThisDB==null)
 		{
-			synchronized(Connections)
+			boolean connectionFailure=false;
+			try
 			{
 				for(int i=0;i<Connections.size();i++)
 				{
 					ThisDB=(DBConnection)Connections.elementAt(i);
-					if(ThisDB.usePrepared(SQL))
+					if(((!prepared)&&ThisDB.use(SQL))
+					||(prepared&&ThisDB.usePrepared(SQL)))
 						break;
+					else
+					{
+						if((!ThisDB.ready())||(ThisDB.isProbablyDead())||(ThisDB.isProbablyLockedUp()))
+							connectionFailure=true;
+						ThisDB=null;
+					}
 				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x)
+			{
 			}
 			
 			if(ThisDB==null)
 			{
-				if((consecutiveFailures++)>=100)
+				if((consecutiveFailures++)>=50)
 				{
-					if(consecutiveFailures>100)
+					if(consecutiveFailures>50)
 					{
-						inTrouble=true;
+						lockedUp=true;
 						consecutiveFailures=0;
 					}
 					else
+					{
 						fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
+					}
 				}
 				else
+				if(connectionFailure)
+					repairConnections(DBClass,DBService,DBUser,DBPass);
+				else
 				{
+					if(consecutiveFailures==30)
+						Log.errOut("DBConnections","Serious failure obtaining DBConnection.");
+					else
+					if(consecutiveFailures==15)
+						Log.errOut("DBConnections","Moderate failure obtaining DBConnection.");
+					else
+					if(consecutiveFailures==5)
+						Log.errOut("DBConnections","Minor failure obtaining DBConnection.");
 					try
 					{
-						Thread.sleep(Math.round(Math.random()*1000));
+						Thread.sleep(Math.round(Math.random()*500));
 					}
 					catch(InterruptedException i)
 					{
@@ -299,8 +287,16 @@ public class DBConnections
 		}
 		
 		if(ThisDB!=null)
+		{
 			consecutiveFailures=0;
+			lockedUp=false;
+		}
 		return ThisDB;
+	}
+	
+	public DBConnection DBFetchPrepared(String SQL)	
+	{
+		return DBFetchAny(SQL,true);
 	}
 
 	/** 
@@ -338,25 +334,7 @@ public class DBConnections
 		}
 		catch(SQLException sqle)
 		{
-			if((sqle!=null)&&(sqle.getMessage()!=null))
-				Log.errOut("DBConnections",sqle);
-			return "";
-		}
-	}
-
-	public static String getResQuietly(ResultSet Results, String Field)
-	throws SQLException
-	{
-		try
-		{
-			String TVal=Results.getString(Field);
-			if(TVal==null) 
-				return "";
-			else
-				return TVal.trim();
-		}
-		catch(SQLException sqle)
-		{
+			Log.errOut("DBConnections",""+sqle);
 			return "";
 		}
 	}
@@ -373,19 +351,23 @@ public class DBConnections
 	 */
 	public static long getLongRes(ResultSet Results, String Field)
 	{
-		String Val=null;
 		try
 		{
-			Val=Results.getString(Field);
-			if((Val!=null)&&(Val.trim().length()>0))
-				return Long.parseLong(Val.trim());
+			String Val=Results.getString(Field);
+			if(Val!=null)
+			{
+				if(Val.indexOf(".")>=0)
+					return Math.round(Float.parseFloat(Val));
+				else
+					return Long.parseLong(Val);
+			}
 			else
 				return 0;
 
 		}
 		catch(SQLException sqle)
 		{
-			Log.errOut("DBConnections",sqle);
+			Log.errOut("DBConnections",""+sqle);
 			return 0;
 		}
 	}
@@ -412,9 +394,38 @@ public class DBConnections
 		}
 		catch(SQLException sqle)
 		{
-			Log.errOut("DBConnections",sqle);
+			Log.errOut("DBConnections",""+sqle);
 			return "";
 		}
+	}
+	
+	public static String getResQuietly(ResultSet Results, String Field)
+	throws SQLException
+	{
+		try
+		{
+			String TVal=Results.getString(Field);
+			if(TVal==null) 
+				return "";
+			else
+				return TVal.trim();
+		}
+		catch(SQLException sqle)
+		{
+			return "";
+		}
+	}
+
+	public boolean deregisterDriver()
+	{
+		try
+		{
+			return true;
+		}
+		catch(Exception ce)
+		{
+		}
+		return false;
 	}
 	
 	/** 
@@ -427,17 +438,20 @@ public class DBConnections
 	 */
 	public void killConnections()
 	{
-		while(Connections.size()>0)
+		synchronized(Connections)
 		{
-			DBConnection DB=(DBConnection)Connections.elementAt(0);
-			Connections.removeElement(DB);
-			try
+			while(Connections.size()>0)
 			{
-				DB.close();
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("DBConnections",sqle);
+				DBConnection DB=(DBConnection)Connections.elementAt(0);
+				Connections.removeElement(DB);
+				try
+				{
+					DB.close();
+				}
+				catch(SQLException sqle)
+				{
+					Log.errOut("DBConnections",""+sqle);
+				}
 			}
 		}
 	}
@@ -450,7 +464,7 @@ public class DBConnections
 	 */
 	public boolean amIOk()
 	{
-		return !inTrouble;
+		return (!lockedUp)&&(!disconnected);
 	}
 	
 	/** 
@@ -461,8 +475,7 @@ public class DBConnections
 	 * @param SQLError	The error message being reported
 	 * @return NA
 	 */
-	public void enQueueError(String SQLString, String SQLError)
-		throws IOException
+	public void enQueueError(String SQLString, String SQLError, String tries)
 	{
 		if(!errorQueingEnabled)
 		{
@@ -480,12 +493,12 @@ public class DBConnections
 			catch(FileNotFoundException fnfe)
 			{
 				Log.errOut("DBConnections","Could not open queue?!?!");
-				Log.errOut("DBConnections",IQCalendar.d2String(System.currentTimeMillis())+"\t"+SQLError+"\t"+SQLString);
+				Log.errOut("DBConnections",SQLString+"\t"+SQLError);
 			}
 					
 			if(out!=null)
 			{
-				out.println(SQLString+"\t!|!\t"+SQLError+"\t!|!\t"+IQCalendar.d2String(System.currentTimeMillis()));
+				out.println(SQLString+"\t!|!\t"+SQLError+"\t!|!\t"+tries);
 				out.close();
 			}
 			
@@ -504,7 +517,7 @@ public class DBConnections
 	{
 		Vector Queue=new Vector();
 		
-		if(inTrouble)
+		if((lockedUp)||(disconnected))
 		{
 			Log.sysOut("DBConnections","Database is in trouble.  Retry skipped.");
 			return;
@@ -559,51 +572,77 @@ public class DBConnections
 					}
 				}
 			}
-			
 			myFile.delete();
 		}
 		
 		// did we actually READ anything?
 		if(Queue.size()==0)
 		{
-			Log.sysOut("DBConnections","DB Error queue was not processed.  Good.");
+			Log.sysOut("DBConnections","DB Retry Queue is empty.  Good.");
 		}
 		else
 		{
+			int successes=0;
+			int unsuccesses=0;
 			while(Queue.size()>0)
 			{
 				String queueLine=(String)Queue.elementAt(0);
 				Queue.removeElementAt(0);
 				
 				int firstTab=queueLine.indexOf("\t!|!\t");
-				int secondTab=queueLine.indexOf("\t!|!\t",firstTab+1);
+				int secondTab=-1;
+				if(firstTab>0)
+					secondTab=queueLine.indexOf("\t!|!\t",firstTab+5);
 				if((firstTab>0)&&(secondTab>firstTab))
 				{
 					DBConnection DB=null;
-					try
+					String retrySQL=queueLine.substring(0,firstTab);
+					int oldAttempts=Util.s_int(queueLine.substring(secondTab+5));
+					if(oldAttempts>20)
 					{
-						DB=DBFetch();
-						String retrySQL=queueLine.substring(0,firstTab);
+						Log.errOut("DBConnections","Giving up on :"+retrySQL);
+						Log.errOut("DBConnections","Giving up because: "+queueLine.substring(firstTab+5,secondTab));
+					}
+					else
+					{
 						try
 						{
-							DB.update(retrySQL);
-							Log.sysOut("DBConnections","Successfully retried: "+queueLine);
+							DB=DBFetch();
+							try
+							{
+								DB.update(retrySQL,oldAttempts);
+								successes++;
+								//Log.sysOut("DBConnections","Successful retry: "+queueLine);
+							}
+							catch(SQLException sqle)
+							{
+								unsuccesses++;
+								//Log.errOut("DBConnections","Unsuccessfull retry: "+queueLine);
+								//DO NOT DO THIS AGAIN -- the UPDATE WILL GENERATE the ENQUE!!!
+								//enQueueError(retrySQL,""+sqle,oldDate);
+							}
 						}
-						catch(SQLException sqle)
+						catch(Exception e)
 						{
-							Log.errOut("DBConnections","Unsuccessfully retried line: "+queueLine);
+							unsuccesses++;
+							enQueueError(retrySQL,e.getMessage(),""+(oldAttempts+1));
+						}
+						if(DB!=null)
+						{
+							DB.clearFailures();
+							DBDone(DB);
+							try{Thread.sleep(1000);}catch(Exception e){}
 						}
 					}
-					catch(Exception e)
-					{
-							Log.errOut("DBConnections",e+", Unsuccessfully retried line: "+queueLine);
-					}
-					if(DB!=null)
-						DBDone(DB);
 				}
 				else
 					Log.errOut("DBConnections","Could not retry line: "+queueLine+"/"+firstTab+"/"+secondTab);
 			}
+			clearErrors();
+			if(unsuccesses>successes)
+				Log.errOut("DBConnections","Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
+			else
+				Log.sysOut("DBConnections","Finished running retry Que. Successes: "+successes+"/Failures: "+unsuccesses);
 		}
 	}
 	
@@ -641,7 +680,7 @@ public class DBConnections
 			}
 			catch(SQLException sqle)
 			{
-				Log.errOut("DBConnections",sqle);
+				Log.errOut("DBConnections",""+sqle);
 			}
 		}
 		catch(Exception e)
@@ -688,7 +727,7 @@ public class DBConnections
 		}
 		catch(SQLException sqle)
 		{
-			Log.errOut("DBConnections",sqle);
+			Log.errOut("DBConnections",""+sqle);
 		}
 		catch(Exception e)
 		{
@@ -709,20 +748,48 @@ public class DBConnections
 	public void listConnections(PrintStream out)
 	{
 		out.println("\nDatabase connections:");
-		if(inTrouble)
+		if((lockedUp)||(disconnected))
 			out.println("** Database is reporting a down status! **");
 		
 		for(int p=0;p<Connections.size();p++)
 		{
 			DBConnection DB=(DBConnection)Connections.elementAt(p);
+			String OKString="OK";
+			if((DB.isProbablyDead())&&(DB.isProbablyLockedUp()))
+				OKString="Completely dead"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+			else
+			if(DB.isProbablyDead())
+				OKString="Dead"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+			else
+			if(DB.isProbablyLockedUp())
+				OKString="Locked up"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
 			out.println(Integer.toString(p+1)
 						+". Connected="+DB.ready()
 						+", In use="+DB.inUse()
-						+", Status="+(DB.isProbablyLockedUp()?"Locked up.":"OK")
+						+", Status="+OKString
 						);
 		}
 		out.println("\n");
 	}
+	
+	public void reportError()
+	{
+		consecutiveErrors++;
+		double size=new Integer(Connections.size()).doubleValue();
+		double down=new Integer(consecutiveErrors).doubleValue();
+		if((down/size)>.25)
+		{
+			disconnected=true;
+			consecutiveErrors=0;
+		}
+	}
+	
+	public void clearErrors()
+	{
+		consecutiveErrors=0;
+		disconnected=false;
+	}
+	
 	
 	/** return a status string, or "" if everything is ok.
 	 * 
@@ -734,14 +801,38 @@ public class DBConnections
 	{
 		StringBuffer status=new StringBuffer("");
 		
-		if(inTrouble)
+		if(lockedUp)
 			status.append("#100 DBCONNECTIONS REPORTING A LOCKED STATE\n");
+		if(disconnected)
+			status.append("#101 DBCONNECTIONS REPORTING A DISCONNECTED STATE\n");
+		for(int c=0;c<Connections.size();c++)
+		{
+			DBConnection DBConnect=(DBConnection)Connections.elementAt(c);
+			if((!DBConnect.ready())||(DBConnect.isProbablyDead())||(DBConnect.isProbablyLockedUp()))
+			{
+				repairConnections(DBClass,DBService,DBUser,DBPass);
+				break;
+			}
+		}
+		double size=new Integer(Connections.size()).doubleValue();
+		double down=0.0;
 		for(int p=0;p<Connections.size();p++)
 		{
 			DBConnection DB=(DBConnection)Connections.elementAt(p);
+			if((!DB.ready())||(DB.isProbablyDead()))
+			{
+				status.append("#102-"+(p+1)+" DBCONNECTION IS REPORTING A DEAD STATE"+(DB.inSQLServerCommunication()?"(SERVER COMM)":""));
+				down+=1.0;
+			}
+			else
 			if(DB.isProbablyLockedUp())
-				status.append("#101-"+(p+1)+" DBCONNECTION IS REPORTING A LOCKED STATE");
+			{
+				status.append("#102-"+(p+1)+" DBCONNECTION IS REPORTING A LOCKED STATE "+(DB.inSQLServerCommunication()?"(SERVER COMM)":""));
+				down+=1.0;
+			}
 		}
+		if(((down/size)>0.25)||(lockedUp)||(disconnected))
+			fixConnections(DBClass,DBService,DBUser,DBPass,numConnections);
 		return status;
 	}
 }

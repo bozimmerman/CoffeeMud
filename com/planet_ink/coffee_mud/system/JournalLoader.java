@@ -150,7 +150,7 @@ public class JournalLoader
 			{
 				D=DBConnector.DBFetch();
 				String str="DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 			catch(SQLException sqle)
@@ -167,7 +167,7 @@ public class JournalLoader
 			{
 				D=DBConnector.DBFetch();
 				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+Journal+"'";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 			catch(SQLException sqle)
@@ -188,7 +188,7 @@ public class JournalLoader
 			{
 				D=DBConnector.DBFetch();
 				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 			catch(SQLException sqle)
@@ -223,7 +223,7 @@ public class JournalLoader
 			{
 				D=DBConnector.DBFetch();
 				String str="UPDATE CMJRNL SET CMDATE='"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 			catch(SQLException sqle)
@@ -257,7 +257,7 @@ public class JournalLoader
 				+"','"+to
 				+"','"+subject
 				+"','"+message+"');";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 			catch(SQLException sqle)

@@ -53,7 +53,7 @@ public class QuestLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
+			D.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'",0);
 			DBConnector.DBDone(D);
 			D=DBConnector.DBFetch();
 			str=
@@ -68,7 +68,7 @@ public class QuestLoader
 			 +"'"+Q.script()+" ',"
 			 +"'"+Q.getWinnerStr()+" '"
 			 +")";
-			D.update(str);
+			D.update(str,0);
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -86,7 +86,7 @@ public class QuestLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
+			D.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'",0);
 			DBConnector.DBDone(D);
 			for(int m=0;m<quests.size();m++)
 			{
@@ -104,7 +104,7 @@ public class QuestLoader
 				 +"'"+Q.script()+" ',"
 				 +"'"+Q.getWinnerStr()+" '"
 				 +")";
-				D.update(str);
+				D.update(str,0);
 				DBConnector.DBDone(D);
 			}
 		}
