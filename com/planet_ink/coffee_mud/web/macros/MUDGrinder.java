@@ -67,6 +67,18 @@ public class MUDGrinder extends StdWebMacro
 			map.rePlaceRooms();
 			return map.getHTMLTable(httpReq).toString();
 		}
+		else
+		if(parms.containsKey("EDITAREA"))
+		{
+			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			if(AREA==null) return "";
+			if(AREA.length()==0) return "";
+			Area A=CMMap.getArea(AREA);
+			if(A==null) return "";
+			String error=GrinderArea.modifyArea(httpReq,parms);
+			if((error!=null)&&(error.length()>0))
+				httpReq.getRequestParameters().put("ERRMSG",error);
+		}
 		return "";
 	}
 	

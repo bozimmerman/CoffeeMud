@@ -30,8 +30,15 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CLIMATES"))
 				{
 					int climate=A.climateType();
-					if(httpReq.getRequestParameters().get("CLIMATE")!=null)
+					if(httpReq.getRequestParameters().containsKey("CLIMATE"))
+					{
 						climate=Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"));
+						for(int i=1;;i++)
+							if(httpReq.getRequestParameters().containsKey("CLIMATE"+(new Integer(i).toString())))
+								climate=climate|Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"+(new Integer(i).toString())));
+							else
+								break;
+					}
 					for(int i=1;i<Area.NUM_CLIMATES;i++)
 					{
 						String climstr=Area.CLIMATE_DESCS[i];
@@ -101,7 +108,7 @@ public class AreaData extends StdWebMacro
 						String theclass=(String)theclasses.elementAt(i);
 						String theparm=(String)theparms.elementAt(i);
 						str.append("<TR><TD WIDTH=50%>");
-						str.append("<SELECT NAME=BEHAV"+(i+1)+">");
+						str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 						str.append("<OPTION VALUE=\"\">Delete!");
 						for(int b=0;b<CMClass.behaviors.size();b++)
 						{
@@ -113,11 +120,11 @@ public class AreaData extends StdWebMacro
 						}
 						str.append("</SELECT>");
 						str.append("</TD><TD WIDTH=50%>");
-						str.append("<INPUT TYPE=TEXT SIZE=20 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+						str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
 						str.append("</TD></TR>");
 					}
 					str.append("<TR><TD WIDTH=50%>");
-					str.append("<SELECT NAME=BEHAV"+(theclasses.size()+1)+">");
+					str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
 					str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 					for(int b=0;b<CMClass.behaviors.size();b++)
 					{
@@ -126,7 +133,7 @@ public class AreaData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					str.append("</TD><TD WIDTH=50%>");
-					str.append("<INPUT TYPE=TEXT SIZE=20 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
 					str.append("</TD></TR>");
 					str.append("</TABLE>");
 				}
@@ -167,7 +174,7 @@ public class AreaData extends StdWebMacro
 						String theclass=(String)theclasses.elementAt(i);
 						String theparm=(String)theparms.elementAt(i);
 						str.append("<TR><TD WIDTH=50%>");
-						str.append("<SELECT NAME=AFFECT"+(i+1)+">");
+						str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 						str.append("<OPTION VALUE=\"\">Delete!");
 						for(int b=0;b<CMClass.abilities.size();b++)
 						{
@@ -179,11 +186,11 @@ public class AreaData extends StdWebMacro
 						}
 						str.append("</SELECT>");
 						str.append("</TD><TD WIDTH=50%>");
-						str.append("<INPUT TYPE=TEXT SIZE=20 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+						str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
 						str.append("</TD></TR>");
 					}
 					str.append("<TR><TD WIDTH=50%>");
-					str.append("<SELECT NAME=AFFECT"+(theclasses.size()+1)+">");
+					str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 					str.append("<OPTION SELECTED VALUE=\"\">Select an Affect");
 					for(int b=0;b<CMClass.abilities.size();b++)
 					{
@@ -192,7 +199,7 @@ public class AreaData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					str.append("</TD><TD WIDTH=50%>");
-					str.append("<INPUT TYPE=TEXT SIZE=20 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
 					str.append("</TD></TR>");
 					str.append("</TABLE>");
 				}
@@ -201,6 +208,12 @@ public class AreaData extends StdWebMacro
 					String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
 					if((subOps==null)||(subOps.length()==0))
 						subOps=A.getSubOpList();
+					else
+					for(int i=1;;i++)
+						if(httpReq.getRequestParameters().containsKey("SUBOPS"+(new Integer(i).toString())))
+							subOps+=";"+(String)httpReq.getRequestParameters().get("SUBOPS"+(new Integer(i).toString()));
+						else
+							break;
 					Vector V=ExternalPlay.userList();
 					for(int v=0;v<V.size();v++)
 					{

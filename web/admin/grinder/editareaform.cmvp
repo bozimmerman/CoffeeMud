@@ -9,14 +9,40 @@
 	<title>CoffeeMUD MUDGrinder</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
-	
+		function EditBehavior(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddBehavior(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function EditAffect(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddAffect(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function ReShow()
+		{
+			document.AREAEDIT.action='editareaform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
 	//-->
 	</SCRIPT>
 </head>
 <BODY>
 <CENTER>
 <h3>Modify Area Data for '@AreaName@'.</H3>
-<P><BR>
+<P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
+<BR>
 <FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/editareadone.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">

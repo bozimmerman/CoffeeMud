@@ -243,8 +243,15 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				}
 				*/
 			}
-
-			requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
+			if(!requestParametersTable.containsKey(thisParamName.toUpperCase()))
+				requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
+			else
+			for(int i=1;;i++)
+				if(!requestParametersTable.containsKey(thisParamName.toUpperCase()+(new Integer(i).toString())))
+				{
+					requestParametersTable.put(thisParamName.toUpperCase()+(new Integer(i).toString()),thisParamValue);
+					break;
+				}
 		}
 
 		return requestParametersTable;
@@ -761,7 +768,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)
 		{
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
-			Log.errOut(getName(),e);
+			if(!(e instanceof java.net.SocketException))
+				Log.errOut(getName(),e);
 		}
 		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 				":" + status);
@@ -837,7 +845,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)
 		{
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
-			Log.errOut(getName(),e);
+			if(!(e instanceof java.net.SocketException))
+				Log.errOut(getName(),e);
 		}
 		return "";
 	}
