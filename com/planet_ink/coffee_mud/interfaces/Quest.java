@@ -26,10 +26,25 @@ public interface Quest extends Tickable
 	// will restart the waiting process
 	public void stopQuest();
 	
+	// these refer the objects designated during the quest
+	public int wasQuestMob(String name);
+	public int wasQuestItem(String name);
+	public int wasQuestObject(String name);
+	public boolean isQuestObject(String name, int i);
+	public String getQuestObjectName(int i);
+	public String getQuestMobName(int i);
+	public String getQuestItemName(int i);
+	
 	// if the quest has a winner, this is him.
-	public void declareWinner(MOB mob);
+	public void declareWinner(String mobName);
 	// retreive the list of previous winners
 	public Vector getWinners();
+	// retreive the list of previous winners as a string
+	public String getWinnerStr();
+	// was a previous winner
+	public boolean wasWinner(String name);
+	// set winners list from a ; delimited string
+	public void setWinners(String list);
 	
 	// for waiting...
 	public int minWait();

@@ -20,6 +20,7 @@ public interface ExternalSystem
 	public void DBUpdateMOB(MOB mob);
 	public void DBUpdateItems(Room room);
 	public void DBUpdateQuests(Vector quests);
+	public void DBUpdateQuest(Quest Q);
 	public void DBReadQuests(Host myHost);
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);

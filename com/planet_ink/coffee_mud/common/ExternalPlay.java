@@ -232,6 +232,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateFollowers(mob);
 	}
+	public static void DBUpdateQuest(Quest Q)
+	{
+		if(sysPlayer!=null) sysPlayer.DBUpdateQuest(Q);
+	}
 	public static void DBUpdateQuests(Vector quests)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateQuests(quests);

@@ -59,6 +59,9 @@ public class Scriptable extends StdBehavior
 		"GOLDAMT", //25
 		"OBJTYPE", // 26
 		"VAR", // 27
+		"QUESTWINNER", //28
+		"QUESTMOB", // 29
+		"QUESTOBJ" // 30
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -81,7 +84,8 @@ public class Scriptable extends StdBehavior
 		"MPFORCE", //18
 		"IF", //19
 		"MPSETVAR", //20
-		"MPENDQUEST" //21
+		"MPENDQUEST",//21
+		"MPQUESTWIN" //22
 	};
 
 	public Behavior newInstance()
@@ -511,6 +515,39 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 					returnable=(E.fetchAffect(arg2)!=null);
+				break;
+			}
+			case 28: // questwinner
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Quest Q=Quests.fetchQuest(arg2);
+				if(Q==null)
+					returnable=false;
+				else
+					returnable=Q.wasWinner(arg1);
+				break;
+			}
+			case 29: // questmob
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Quest Q=Quests.fetchQuest(arg2);
+				if(Q==null)
+					returnable=false;
+				else
+					returnable=(Q.wasQuestMob(arg1)>=0);
+				break;
+			}
+			case 30: // questitem
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Quest Q=Quests.fetchQuest(arg2);
+				if(Q==null)
+					returnable=false;
+				else
+					returnable=(Q.wasQuestItem(arg1)>=0);
 				break;
 			}
 			case 16: // hitprcnt
@@ -1080,7 +1117,7 @@ public class Scriptable extends StdBehavior
 					if(x>=0)
 					{
 						String mid=back.substring(0,x);
-						int y=mid.indexOf(",");
+						int y=mid.indexOf(" ");
 						Environmental E=null;
 						if(y>=0)
 						{
@@ -1094,6 +1131,44 @@ public class Scriptable extends StdBehavior
 							if(H!=null)
 								middle=(String)H.get(mid);
 							if(middle==null) middle="";
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			case '[':
+				{
+					middle="";
+					int x=back.indexOf("]");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x);
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=Util.s_int(mid.substring(0,y));
+							mid=mid.substring(y+1).trim();
+							Quest Q=Quests.fetchQuest(mid);
+							if(Q!=null)	middle=Q.getQuestItemName(num);
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
+			case '{':
+				{
+					middle="";
+					int x=back.indexOf("}");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x);
+						int y=mid.indexOf(" ");
+						if(y>0)
+						{
+							int num=Util.s_int(mid.substring(0,y));
+							mid=mid.substring(y+1).trim();
+							Quest Q=Quests.fetchQuest(mid);
+							if(Q!=null)	middle=Q.getQuestMobName(num);
 						}
 						back=back.substring(x+1);
 					}
@@ -1518,6 +1593,17 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
+				break;
+			}
+			case 22: //MPQUESTWIN
+			{
+				String whoName=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(s,1));
+				if(whoName.length()>0)
+				{
+					s=s.substring(s.indexOf(Util.getCleanBit(s,1))+Util.getCleanBit(s,1).length()).trim();
+					Quest Q=Quests.fetchQuest(s);
+					if(Q!=null) Q.declareWinner(whoName);
+				}
 				break;
 			}
 			default:

@@ -11,6 +11,7 @@ public class Quests implements Cloneable, Quest
 	protected int duration=450; // about 30 minutes
 	protected String parms="";
 	protected Vector stuff=new Vector();
+	protected Vector winners=new Vector();
 	protected int minWait=-1;
 	protected int maxWait=-1;							  
 	protected int waitRemaining=-1;
@@ -897,13 +898,58 @@ public class Quests implements Cloneable, Quest
 	public int waitRemaining(){return waitRemaining;}
 	
 	// if the quest has a winner, this is him.
-	public void declareWinner(MOB mob)
+	public void declareWinner(String name)
 	{
+		name=name.trim();
+		if(name.length()==0) 
+			return;
+		Vector V=getWinners();
+		if(!wasWinner(name))
+		{
+			V.addElement(name);
+			ExternalPlay.DBUpdateQuest(this);
+		}
+	}
+	public String getWinnerStr()
+	{
+		StringBuffer list=new StringBuffer("");
+		Vector V=getWinners();
+		for(int i=0;i<V.size();i++)
+			list.append(((String)V.elementAt(i))+";");
+		return list.toString();
+	}
+	public void setWinners(String list)
+	{
+		Vector V=getWinners();
+		V.clear();
+		list=list.trim();
+		int x=list.indexOf(";");
+		while(x>0)
+		{
+			String s=list.substring(0,x).trim();
+			list=list.substring(x+1).trim();
+			if(s.length()>0)
+				V.addElement(s);
+			x=list.indexOf(";");
+		}
+		if(list.trim().length()>0)
+			V.addElement(list.trim());
 	}
 	// retreive the list of previous winners
 	public Vector getWinners()
 	{
-		return new Vector();
+		return winners;
+	}
+	// was a previous winner
+	public boolean wasWinner(String name)
+	{
+		Vector V=getWinners();
+		for(int i=0;i<V.size();i++)
+		{
+			if(((String)V.elementAt(i)).equalsIgnoreCase(name))
+				return true;
+		}
+		return false;
 	}
 	
 	// informational
@@ -939,6 +985,94 @@ public class Quests implements Cloneable, Quest
 		return true;
 	}
 	
+	public int wasQuestMob(String name)
+	{
+		int num=1;
+		for(int i=0;i<stuff.size();i++)
+		{
+			Environmental E=(Environmental)stuff.elementAt(i);
+			if(E instanceof MOB)
+			{
+				if(E.name().equalsIgnoreCase(name))
+					return num;
+				num++;
+			}
+		}
+		return -1;
+	}
+	public int wasQuestItem(String name)
+	{
+		int num=1;
+		for(int i=0;i<stuff.size();i++)
+		{
+			Environmental E=(Environmental)stuff.elementAt(i);
+			if(E instanceof Item)
+			{
+				if(E.name().equalsIgnoreCase(name))
+					return num;
+				num++;
+			}
+		}
+		return -1;
+	}
+	public String getQuestObjectName(int i)
+	{
+		i=i-1; // starts counting at 1
+		if((i>=0)&&(i<stuff.size()))
+		{
+			Environmental E=(Environmental)stuff.elementAt(i);
+			return E.name();
+		}
+		return "";
+	}
+	public String getQuestMobName(int i)
+	{
+		int num=1;
+		for(int x=0;x<stuff.size();x++)
+		{
+			Environmental E=(Environmental)stuff.elementAt(x);
+			if(E instanceof MOB)
+			{
+				if(num==i) return E.name();
+				num++;
+			}
+		}
+		return "";
+	}
+	public String getQuestItemName(int i)
+	{
+		int num=1;
+		for(int x=0;x<stuff.size();x++)
+		{
+			Environmental E=(Environmental)stuff.elementAt(x);
+			if(E instanceof Item)
+			{
+				if(num==i) return E.name();
+				num++;
+			}
+		}
+		return "";
+	}
+	public int wasQuestObject(String name)
+	{
+		for(int i=0;i<stuff.size();i++)
+		{
+			Environmental E=(Environmental)stuff.elementAt(i);
+			if(E.name().equalsIgnoreCase(name))
+				return (i+1);
+		}
+		return -1;
+	}
+	public boolean isQuestObject(String name, int i)
+	{
+		if((i>=0)&&(i<stuff.size()))
+		{
+			Environmental E=(Environmental)stuff.elementAt(i);
+			if(E.name().equalsIgnoreCase(name))
+				return true;
+		}
+		return false;
+	}
 	private Vector parseScripts(String text)
 	{
 		if(text.toUpperCase().startsWith("LOAD="))

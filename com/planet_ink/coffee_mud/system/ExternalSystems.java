@@ -57,6 +57,10 @@ public class ExternalSystems implements ExternalSystem
 		RoomLoader.DBUpdateExits(room);
 	}
 	public void DBReadQuests(Host myHost){QuestLoader.DBRead(myHost);}
+	public void DBUpdateQuest(Quest Q)
+	{
+		QuestLoader.DBUpdateQuest(Q);
+	}
 	public void DBUpdateQuests(Vector quests)
 	{
 		QuestLoader.DBUpdateQuests(quests);
