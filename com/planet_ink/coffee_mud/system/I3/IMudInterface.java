@@ -328,7 +328,8 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(!ses.mob().amDead())
 					&&(ses.mob().envStats().level()>=channelLvl)
 					&&(ses.mob().location()!=null)
-					&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
+					&&(ses.mob().playerStats()!=null)
+					&&(!Util.isSet(ses.mob().playerStats().getChannelMask(),channelInt)))
 						whoV.addElement(ses.mob().name());
 				}
 				wkr.who=whoV;

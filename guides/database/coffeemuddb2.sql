@@ -50,6 +50,7 @@ CMLSIP varchar (100) NULL,
 CMCLAN varchar (100) NULL,
 CMCLRO integer NULL,
 CMEMAL varchar (255),
+CMPFIL text NULL,
 PRIMARY KEY (CMUSERID)
 );
 

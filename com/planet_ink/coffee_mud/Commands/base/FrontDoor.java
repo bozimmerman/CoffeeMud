@@ -126,7 +126,10 @@ public class FrontDoor
 		{
 			mob.session().print("password:");
 			String password=mob.session().blockingIn();
-			if((mob.password().equalsIgnoreCase(password))&&(mob.Name().trim().length()>0))
+			PlayerStats pstats=mob.playerStats();
+			if((pstats!=null)
+			&&(pstats.password().equalsIgnoreCase(password))
+			&&(mob.Name().trim().length()>0))
 			{
 				if(bannedName(mob.Name()))
 				{
@@ -134,7 +137,7 @@ public class FrontDoor
 					mob.session().setKillFlag(true);
 					return false;
 				}
-				if(((mob.getEmail()==null)||(mob.getEmail().length()==0))
+				if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
 				   &&(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
 				{
 					if(!Scoring.email(mob,null,true))
@@ -196,21 +199,24 @@ public class FrontDoor
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 					ExternalPlay.DBReadFollowers(mob,true);
 				}
-				ExternalPlay.DBUpdateIP(mob);
+				if((mob.session()!=null)&&(mob.playerStats()!=null))
+					mob.playerStats().setLastIP(mob.session().getAddress());
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
 					if((S!=null)
 					&&(S.mob()!=null)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-					&&((S.getFriends().containsKey(mob.Name())||S.getFriends().containsKey("All"))))
+					&&(S.mob().playerStats()!=null)
+					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}
 			}
 			else
 			{
 				Log.sysOut("FrontDoor","Failed login: "+mob.Name());
-				mob.setUserInfo("","");
+				mob.setName("");
+				mob.setPlayerStats(null);
 				mob.session().println("\n\rInvalid password.\n\r");
 				return false;
 			}
@@ -220,7 +226,8 @@ public class FrontDoor
 			if(!isOkName(login))
 			{
 				mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new users.\n\r  Choose another name (no spaces allowed)!\n\r");
-				mob.setUserInfo("","");
+				mob.setName("");
+				mob.setPlayerStats(null);
 			}
 			else
 			if(mob.session().confirm("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
@@ -236,6 +243,10 @@ public class FrontDoor
 						mob.session().println("\n\rYou must enter a password to continue.");
 				}
 
+				mob.setName(login);
+				mob.setPlayerStats(new DefaultPlayerStats());
+				mob.playerStats().setPassword(password);
+				
 				boolean emailReq=(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
 				while(true)
 				{
@@ -245,12 +256,11 @@ public class FrontDoor
 					if(((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
 					   ||(!emailReq))
 					{
-						mob.setEmail(newEmail);
+						mob.playerStats().setEmail(newEmail);
 						break;
 					}
 					mob.session().println("\n\rThat email address combination was invalid.\n\r");
 				}
-				mob.setUserInfo(login,password);
 				Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
 				mob.setBitmap(0);
@@ -470,8 +480,8 @@ public class FrontDoor
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);
-
-				ExternalPlay.DBUpdateIP(mob);
+				
+				mob.playerStats().setLastIP(mob.session().getAddress());
 				Log.sysOut("FrontDoor","Created user: "+mob.Name());
 				for(int s=0;s<Sessions.size();s++)
 				{
@@ -479,7 +489,8 @@ public class FrontDoor
 					if((S!=null)
 					&&(S.mob()!=null)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-					&&((S.getFriends().containsKey(mob.Name())||S.getFriends().containsKey("All"))))
+					&&(S.mob().playerStats()!=null)
+					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
 				return true;
@@ -493,6 +504,8 @@ public class FrontDoor
 	public static void showTheNews(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		if(mob.session()!=null)
 			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
 		Vector journal=ExternalPlay.DBReadJournal("CoffeeMud News");
@@ -505,7 +518,7 @@ public class FrontDoor
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
 			boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
-			if((last>mob.lastDateTime())
+			if((last>pstats.lastDateTime())
 			&&(to.equals("ALL")||mineAble))
 			{
 				buf.append("\n\r--------------------------------------\n\r");

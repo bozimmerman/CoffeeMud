@@ -32,7 +32,6 @@ public class ExternalSystems implements ExternalSystem
 		return ServiceEngine.deleteTick(E,tickID);
 	}
 
-	public void DBUpdateIP(MOB mob){ MOBloader.DBUpdateIP(mob);}
 	public void DBClanFill(String clan, Vector members, Vector roles)
 	{ MOBloader.DBClanFill(clan,members,roles);}
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
@@ -96,10 +95,6 @@ public class ExternalSystems implements ExternalSystem
 	public void DBUpdateRoom(Room room)
 	{
 		RoomLoader.DBUpdateRoom(room);
-	}
-	public String queryLastIP(String name)
-	{
-		return MOBloader.DBQueryLastIP(name);
 	}
 	public void DBUpdateMOB(MOB mob)
 	{

@@ -7,16 +7,6 @@ public class StdMOB implements MOB
 {
 	public String ID(){return "StdMOB";}
 	protected String Username="";
-	protected String Password="";
-	protected long LastDateTime=System.currentTimeMillis();
-	protected long lastUpdated=0;
-	protected int channelMask;
-	protected String email=null;
-	public String getEmail(){if(email==null) return ""; return email;}
-	public void setEmail(String newAdd){email=newAdd;}
-
-	private String colorStr=null;
-	private String prompt=null;
 
 	private String clanID=null;
 	private int clanRole=0;
@@ -26,6 +16,8 @@ public class StdMOB implements MOB
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	
+	protected PlayerStats playerStats=null;
 
 	protected boolean amDead=false;
 	protected Room location=null;
@@ -135,7 +127,6 @@ public class StdMOB implements MOB
 
 
 	protected MOB victim=null;
-	protected MOB replyTo=null;
 	protected MOB amFollowing=null;
 	protected MOB soulMate=null;
 	private double speeder=0.0;
@@ -152,10 +143,6 @@ public class StdMOB implements MOB
 	{
 		if(envStats().newName()!=null) return envStats().newName();
 		return Username;
-	}
-	public String password()
-	{
-		return Password;
 	}
 	public Environmental newInstance()
 	{
@@ -286,17 +273,6 @@ public class StdMOB implements MOB
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
-	public long lastUpdated(){return lastUpdated;}
-	public void setUpdated(long time){lastUpdated=time;}
-	public long lastDateTime(){return LastDateTime;}
-	public void setLastDateTime(long C){ LastDateTime=C;}
-	public void setUserInfo(String newUsername,
-							String newPassword)
-	{
-		Username=newUsername;
-		Password=newPassword;
-	}
-
 	public int maxCarry()
 	{
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
@@ -357,6 +333,13 @@ public class StdMOB implements MOB
 	public CharState curState(){return curState;}
 	public CharState maxState(){return maxState;}
 	public CharState baseState(){return baseState;}
+	public PlayerStats playerStats()
+	{
+		if((playerStats==null)&&(soulMate!=null))
+			return soulMate.playerStats();
+		return playerStats;
+	}
+	public void setPlayerStats(PlayerStats newStats){playerStats=newStats;}
 	public void setBaseState(CharState newState)
 	{
 		baseState=newState.cloneCharState();
@@ -386,15 +369,6 @@ public class StdMOB implements MOB
 		}
 		if(location()!=null)
 			location().affectCharState(this,maxState);
-	}
-
-	public void setChannelMask(int newMask)
-	{
-		channelMask=newMask;
-	}
-	public int getChannelMask()
-	{
-		return channelMask;
 	}
 
 	public boolean amDead()
@@ -465,22 +439,6 @@ public class StdMOB implements MOB
 	public void setClanID(String clan){clanID=clan;}
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
-
-	public MOB replyTo(){	return replyTo;	}
-	public void setReplyTo(MOB mob){	replyTo=mob;	}
-	public String getPrompt()
-	{
-		if((prompt==null)||(prompt.length()==0))
-			return Session.defaultPrompt;
-		else
-			return prompt;
-	}
-	public void setPrompt(String newPrompt){prompt=newPrompt;}
-	public String getColorStr(){
-		if(colorStr==null) return "";
-		return colorStr;
-	}
-	public void setColorStr(String newColors){colorStr=newColors;}
 
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
@@ -852,10 +810,6 @@ public class StdMOB implements MOB
 		return Util.decompressString(miscText);
 	}
 
-	public boolean isCorrectPass(String possiblePassword)
-	{
-		return Password.equals(possiblePassword);
-	}
 	public String healthText()
 	{
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
@@ -1659,15 +1613,18 @@ public class StdMOB implements MOB
 			else
 			if(Util.bset(targetMajor,affect.MASK_CHANNEL))
 			{
-				if(!Util.isSet(getChannelMask(),((affect.targetCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL)))
+				if((playerStats()!=null)
+				&&(!Util.isSet(playerStats().getChannelMask(),((affect.targetCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL))))
 					tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 
 			if((Util.bset(targetMajor,Affect.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{
-				if((affect.targetMinor()==Affect.TYP_SPEAK)&&(affect.source()!=null))
-					replyTo=affect.source();
+				if((affect.targetMinor()==Affect.TYP_SPEAK)
+				 &&(affect.source()!=null)
+				 &&(playerStats()!=null))
+					playerStats().setReplyTo(affect.source());
 				tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 			}
 			else
@@ -1709,7 +1666,8 @@ public class StdMOB implements MOB
 			else
 			if(Util.bset(othersMajor,affect.MASK_CHANNEL))
 			{
-				if(!Util.isSet(getChannelMask(),((affect.othersCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL)))
+				if((playerStats()!=null)
+				&&(!Util.isSet(playerStats().getChannelMask(),((affect.othersCode()-affect.MASK_CHANNEL)-Affect.TYP_CHANNEL))))
 					tell(affect.source(),affect.target(),affect.tool(),affect.othersMessage());
 			}
 			else

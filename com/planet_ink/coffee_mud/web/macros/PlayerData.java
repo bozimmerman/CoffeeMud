@@ -71,8 +71,12 @@ public class PlayerData extends StdWebMacro
 		{
 		case 0: str.append(M.Name()+", "); break;
 		case 1: str.append(M.description()+", "); break;
-		case 2: str.append(IQCalendar.d2String(M.lastDateTime())+", "); break;
-		case 3: str.append(M.getEmail()+", "); break;
+		case 2:  if(M.playerStats()!=null)
+					str.append(IQCalendar.d2String(M.playerStats().lastDateTime())+", "); 
+				 break;
+		case 3: if(M.playerStats()!=null)
+					str.append(M.playerStats().getEmail()+", "); 
+				break;
 		case 4: str.append(M.baseCharStats().getMyRace().name()+", "); break;
 		case 5: str.append(M.baseCharStats().getCurrentClass().name()+", "); break;
 		case 6: str.append(M.baseEnvStats().level()+", "); break;
@@ -127,7 +131,9 @@ public class PlayerData extends StdWebMacro
 		case 32: str.append(M.baseEnvStats().weight()+", "); break;
 		case 33: str.append(M.envStats().weight()+", "); break;
 		case 34: str.append(Util.capitalize(M.baseCharStats().genderName())+", "); break;
-		case 35: str.append(M.lastDateTime()+", "); break;
+		case 35: if(M.playerStats()!=null)
+					 str.append(M.playerStats().lastDateTime()+", "); 
+				 break;
 		case 36: str.append(M.curState().getHitPoints()+", "); break;
 		case 37: str.append(M.curState().getMana()+", "); break;
 		case 38: str.append(M.curState().getMovement()+", "); break;
@@ -138,7 +144,8 @@ public class PlayerData extends StdWebMacro
 		case 41: if(!M.isMonster())
 					 str.append(M.session().getAddress()+", ");
 				 else
-					 str.append(ExternalPlay.queryLastIP(M.Name())+", "); 
+				 if(M.playerStats()!=null)
+					 str.append(M.playerStats().lastIP()+", "); 
 				 break;
 		case 42:  str.append(M.getQuestPoint()+", "); break;
 		case 43: str.append(M.maxState().getHitPoints()+", "); break;

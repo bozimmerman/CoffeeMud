@@ -25,13 +25,11 @@ public interface ExternalSystem
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
 	public void DBReadMOB(MOB mob);
-	public void DBUpdateIP(MOB mob);
 	public void DBClanFill(String clan, Vector members, Vector roles);
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates);
 	public void DBUpdateClan(String name, String clan, int role);
 	public void DBUpdateEmail(MOB mob);
 	public void listUsers(MOB mob, int sortBy);
-	public String queryLastIP(String name);
 	public Vector userList();
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);

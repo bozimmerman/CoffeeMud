@@ -9,7 +9,6 @@ import java.util.*;
 public interface MOB
 	extends Environmental, Rider
 {
-
 	public static final int ATT_AUTOGOLD=1;
 	public static final int ATT_AUTOLOOT=2;
 	public static final int ATT_AUTOEXITS=4;
@@ -65,24 +64,13 @@ public interface MOB
 										   "NOTEACH",
 										   "AUTONOTIFY"};
 
-	/** When the USER last logged off */
-	public long lastDateTime();
-	public long lastUpdated();
-	public void setLastDateTime(long C);
-	public void setUpdated(long time);
-	/** User PASSWORD */
-	public String password();
-	/** update USER information */
-	public void setUserInfo(String newUsername, String newPassword);
-	public void setChannelMask(int newMask);
-	public int getChannelMask();
 	public int getBitmap();
 	public void setBitmap(int bitmap);
-	public String getEmail();
-	public void setEmail(String newAdd);
 
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
+	public PlayerStats playerStats();
+	public void setPlayerStats(PlayerStats newStats);
 	public CharStats baseCharStats();
 	public CharStats charStats();
 	public void recoverCharStats();
@@ -117,12 +105,6 @@ public interface MOB
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
 	public void setSession(Session newSession);
-	public void setReplyTo(MOB mob);
-	public MOB replyTo();
-	public String getColorStr();
-	public void setColorStr(String color);
-	public String getPrompt();
-	public void setPrompt(String prompt);
 
 	/** Whether a sessiob object is attached to this MOB */
 	public boolean isMonster();

@@ -172,7 +172,9 @@ public class SaveThread extends Thread
 						processed++;
 					}
 					else
-					if((mob.lastUpdated()==0)||(mob.lastUpdated()<mob.lastDateTime()))
+					if((mob.playerStats()!=null)
+					&&((mob.playerStats().lastUpdated()==0)
+					   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 					{
 						MOBloader.DBUpdate(mob);
 						processed++;

@@ -23,14 +23,11 @@ public class TelnetSession extends Thread implements Session
 	private boolean waiting=false;
 	private static final int SOTIMEOUT=300;
 	private Vector previousCmd=new Vector();
-	private String lastColorStr="";
 	private String[] clookup=null;
+	private String lastColorStr="";
 	private String lastStr=null;
 	private int spamStack=0;
 	private long lastOutput=0;
-	private Hashtable friends=null;
-	private Hashtable ignored=null;
-
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
 	private final static String hexStr="0123456789ABCDEF";
@@ -343,11 +340,14 @@ public class TelnetSession extends Thread implements Session
 		if(clookup==null)
 			clookup=CommonStrings.standardColorLookups();
 
-		if((mob()!=null)
-		&&(mob().getColorStr().length()>0)
-		&&(!mob().getColorStr().equals(lastColorStr)))
+		if(mob()==null) return clookup;
+		PlayerStats pstats=mob().playerStats();
+		if(pstats==null) return clookup;
+		
+		if((pstats.getColorStr().length()>0)
+		&&(!pstats.getColorStr().equals(lastColorStr)))
 		{
-			String changes=mob().getColorStr();
+			String changes=pstats.getColorStr();
 			lastColorStr=changes;
 			clookup=(String[])CommonStrings.standardColorLookups().clone();
 			int x=changes.indexOf("#");
@@ -445,82 +445,6 @@ public class TelnetSession extends Thread implements Session
 		return buf.toString();
 
 	}
-
-	public Hashtable getHashFrom(String str)
-	{
-		Hashtable h=new Hashtable();
-		if((str==null)||(str.length()==0)) return h;
-		int x=str.indexOf(";");
-		while(x>=0)
-		{
-			String fi=str.substring(0,x).trim();
-			if(fi.length()>0) h.put(fi,fi);
-			str=str.substring(x+1);
-			x=str.indexOf(";");
-		}
-		if(str.trim().length()>0)
-			h.put(str.trim(),str.trim());
-		return h;
-	}
-
-	public String getMyMsg(String name, String subject, String journal)
-	{
-		Vector V=JournalLoader.DBReadCached("PLAYER_FILTERS");
-		if(V==null) return "";
-		int index=JournalLoader.getFirstMsgIndex(V,name,null,subject);
-		if((index<0)||(index>=V.size()))
-			return "";
-		V=(Vector)V.elementAt(index);
-		if(V.size()>5)
-			return (String)V.elementAt(5);
-		return "";
-	}
-	
-	public Hashtable getFriends()
-	{
-		if((friends==null)&&(mob()!=null))
-			friends=getHashFrom(getMyMsg(mob().Name(),"FRIENDS","PLAYER_FILTERS"));
-		return friends;
-	}
-	public Hashtable getIgnored()
-	{
-		if((ignored==null)&&(mob()!=null))
-			ignored=getHashFrom(getMyMsg(mob().Name(),"IGNORED","PLAYER_FILTERS"));
-		return ignored;
-	}
-	
-	public void updatePrivateList(String name, String subject, String journal, String msg)
-	{
-		Vector V=JournalLoader.DBReadCached("PLAYER_FILTERS");
-		if(V!=null)
-		{
-			int index=JournalLoader.getFirstMsgIndex(V,name,null,subject);
-			if((index>=0)&&(index<V.size()))
-				JournalLoader.DBDelete(journal,index);
-		}
-		JournalLoader.DBWrite(journal,name,"ANY",subject,msg,-1);
-	}
-	public String getPrivateList(Hashtable h)
-	{
-		if((h==null)||(h.size()==0)) return "";
-		StringBuffer list=new StringBuffer("");
-		for(Enumeration e=h.elements();e.hasMoreElements();)
-			list.append(((String)e.nextElement())+";");
-		return list.toString();
-	}
-	
-	public void updateFriends()
-	{
-		if(mob()!=null)
-			updatePrivateList(mob().Name(),"FRIENDS","PLAYER_FILTERS",getPrivateList(getFriends()));
-	}
-	public void updateIgnored()
-	{
-		if(mob()!=null)
-			updatePrivateList(mob().Name(),"IGNORED","PLAYER_FILTERS",getPrivateList(getIgnored()));
-	}
-
-	
 	
 	public String filter(Environmental source,
 						 Environmental target,
@@ -1202,8 +1126,9 @@ public class TelnetSession extends Thread implements Session
 	public void showPrompt()
 	{
 		if(mob()==null) return;
+		if(mob().playerStats()==null) return;
 		StringBuffer buf=new StringBuffer("\n\r");
-		String prompt=mob().getPrompt();
+		String prompt=mob().playerStats().getPrompt();
 		int c=0;
 		while(c<prompt.length())
 			if((prompt.charAt(c)=='%')&&(c<(prompt.length()-1)))
@@ -1443,7 +1368,8 @@ public class TelnetSession extends Thread implements Session
 				if(mob.location()!=null)
 					mob.location().send(mob,msg);
 			}
-			mob.setLastDateTime(System.currentTimeMillis());
+			if(mob.playerStats()!=null)
+				mob.playerStats().setLastDateTime(System.currentTimeMillis());
 			Log.sysOut("Session","logout: "+mob.Name());
 			mob.removeFromGame();
 			mob.setSession(null);

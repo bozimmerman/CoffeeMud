@@ -27,6 +27,8 @@ public class Channels
 
 	public static void listChannels(MOB mob)
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		StringBuffer buf=new StringBuffer("Available channels: \n\r");
 		int col=0;
 		for(int x=0;x<channelNames.size();x++)
@@ -41,7 +43,7 @@ public class Channels
 				}
 				String channelName=(String)channelNames.elementAt(x);
 				String onoff="";
-				if(Util.isSet((int)mob.getChannelMask(),x))
+				if(Util.isSet((int)pstats.getChannelMask(),x))
 					onoff=" (OFF)";
 				buf.append(Util.padRight(channelName+onoff,24));
 			}
@@ -88,7 +90,8 @@ public class Channels
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
 			&&(ses.mob().location()!=null)
-			&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
+			&&(ses.mob().playerStats()!=null)
+			&&(!Util.isSet(ses.mob().playerStats().getChannelMask(),channelInt)))
 				buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)
@@ -240,6 +243,8 @@ public class Channels
 
 	public static void channel(MOB mob, Vector commands, boolean systemMsg)
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		FullMsg msg=null;
 		commands.removeElementAt(0);
@@ -247,9 +252,9 @@ public class Channels
 		int channelInt=getChannelInt(channelName);
 		int channelNum=getChannelNum(channelName);
 
-		if(Util.isSet(mob.getChannelMask(),channelInt))
+		if(Util.isSet(pstats.getChannelMask(),channelInt))
 		{
-			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
+			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
 			return;
 		}
@@ -301,7 +306,8 @@ public class Channels
 				&&(!M.amDead())
 				&&(M.location()!=null)
 				&&(M.envStats().level()>=lvl)
-				&&(!ses.getIgnored().containsKey(mob.Name()))
+				&&(M.playerStats()!=null)
+				&&(!M.playerStats().getIgnored().containsKey(mob.Name()))
 				&&(M.okAffect(M,msg)))
 				{
 					M.affect(M,msg);
@@ -323,6 +329,8 @@ public class Channels
 	}
 	public static void nochannel(MOB mob, Vector commands)
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
 
@@ -339,9 +347,9 @@ public class Channels
 			mob.tell("This channel is not yet available to you.");
 			return;
 		}
-		if(!Util.isSet(mob.getChannelMask(),channelNum))
+		if(!Util.isSet(pstats.getChannelMask(),channelNum))
 		{
-			mob.setChannelMask(mob.getChannelMask()|(1<<channelNum));
+			pstats.setChannelMask(pstats.getChannelMask()|(1<<channelNum));
 			mob.tell("The "+channelName+" channel has been turned off.  Use `"+channelName.toUpperCase()+"` to turn it back on.");
 		}
 		else
@@ -350,9 +358,9 @@ public class Channels
 	
 	public static void friends(MOB mob, Vector commands)
 	{
-		if(mob.isMonster()) return;
-		Session sess=mob.session();
-		Hashtable h=sess.getFriends();
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		Hashtable h=pstats.getFriends();
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
@@ -389,7 +397,6 @@ public class Channels
 				return;
 			}
 			h.put(M.Name(),M.Name());
-			sess.updateFriends();
 			mob.tell("The Player '"+M.Name()+"' has been added to your friends list.");
 		}
 		else
@@ -407,7 +414,6 @@ public class Channels
 				return;
 			}
 			h.remove(name);
-			sess.updateFriends();
 			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
 		}
 		else
@@ -433,9 +439,9 @@ public class Channels
 
 	public static void ignore(MOB mob, Vector commands)
 	{
-		if(mob.isMonster()) return;
-		Session sess=mob.session();
-		Hashtable h=sess.getIgnored();
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		Hashtable h=pstats.getIgnored();
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
@@ -469,7 +475,6 @@ public class Channels
 				return;
 			}
 			h.put(M.Name(),M.Name());
-			sess.updateIgnored();
 			mob.tell("The Player '"+M.Name()+"' has been added to your ignore list.");
 		}
 		else
@@ -487,7 +492,6 @@ public class Channels
 				return;
 			}
 			h.remove(name);
-			sess.updateIgnored();
 			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
 		}
 		else
@@ -499,12 +503,14 @@ public class Channels
 
 	public static void quiet(MOB mob)
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		boolean turnedoff=false;
 		for(int c=0;c<channelNames.size();c++)
 		{
-			if(!Util.isSet(mob.getChannelMask(),c))
+			if(!Util.isSet(pstats.getChannelMask(),c))
 			{
-				mob.setChannelMask(mob.getChannelMask()|(1<<c));
+				pstats.setChannelMask(pstats.getChannelMask()|(1<<c));
 				turnedoff=true;
 			}
 		}
@@ -513,19 +519,21 @@ public class Channels
 		else
 		{
 			mob.tell("All channels have been turned back on.");
-			mob.setChannelMask(0);
+			pstats.setChannelMask(0);
 		}
 	}
 
 	public static void auction(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		int channelInt=getChannelInt("AUCTION");
 		int channelNum=getChannelNum("AUCTION");
 
-		if(Util.isSet(mob.getChannelMask(),channelInt))
+		if(Util.isSet(pstats.getChannelMask(),channelInt))
 		{
-			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
+			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell("The AUCTION channel has been turned on.  Use `NOAUCTION` to turn it off again.");
 		}
 

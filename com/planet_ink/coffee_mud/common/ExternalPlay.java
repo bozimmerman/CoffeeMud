@@ -319,17 +319,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateRoom(room);
 	}
-	public static String queryLastIP(String name)
-	{
-		if(sysPlayer!=null) return sysPlayer.queryLastIP(name);
-		return "";
-	}
 	public static void DBUpdateMOB(MOB mob)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOB(mob);
 	}
-	public static void DBUpdateIP(MOB mob)
-	{  if(sysPlayer!=null) sysPlayer.DBUpdateIP(mob);}
 	public static void DBClanFill(String clan, Vector members, Vector roles)
 	{  if(sysPlayer!=null) sysPlayer.DBClanFill(clan,members,roles);}
 	public static void DBUpdateClan(String name, String clan, int role)

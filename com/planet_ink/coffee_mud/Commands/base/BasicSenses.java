@@ -123,12 +123,14 @@ public class BasicSenses
 
 	public static void password(MOB mob, Vector commands)
 	{
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		if(commands.size()<2)
 		{
 			mob.tell("Change your password to what?");
 			return;
 		}
-		mob.setUserInfo(mob.Name(),Util.combine(commands,1));
+		pstats.setPassword(Util.combine(commands,1));
 		mob.tell("Your password has been changed.");
 	}
 

@@ -3,7 +3,6 @@ import java.util.*;
 import java.io.IOException;
 public interface Session
 {
-	public static final String defaultPrompt="^N<^c%hhp %mm %vmv^N>";
 	public String[] clookup();
 	
 	public void onlyPrint(String msg);
@@ -73,11 +72,6 @@ public interface Session
 						 Environmental tool,
 						 String msg,
 						 boolean wrapOnly);
-
-	public Hashtable getFriends();
-	public void updateFriends();
-	public Hashtable getIgnored();
-	public void updateIgnored();
 
 	public void enque(int tickDown, Vector commands);
 	public Vector deque();

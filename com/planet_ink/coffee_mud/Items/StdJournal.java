@@ -48,8 +48,10 @@ public class StdJournal extends StdItem
 			if(!Sense.canBeSeenBy(this,mob))
 				mob.tell("You can't see that!");
 			else
-			if(!mob.isMonster())
+			if((!mob.isMonster())
+			&&(mob.playerStats()!=null))
 			{
+				long lastTime=mob.playerStats().lastDateTime();
 				if(!ExternalPlay.zapperCheck(getReadReq(),mob))
 				{
 					mob.tell("You are not allowed to read "+name()+".");
@@ -58,7 +60,6 @@ public class StdJournal extends StdItem
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
 					which=Util.s_int(affect.targetMessage());
-				long lastTime=mob.lastDateTime();
 				StringBuffer entry=DBRead(Name(),mob.Name(),which-1,lastTime);
 				boolean mineAble=false;
 				if(entry.charAt(0)=='#')

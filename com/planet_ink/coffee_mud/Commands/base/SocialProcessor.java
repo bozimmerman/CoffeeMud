@@ -65,7 +65,7 @@ public class SocialProcessor
 				}
 				else
 				{
-					boolean ignore=((!target.isMonster())&&(target.session().getIgnored().containsKey(mob.Name())));
+					boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().containsKey(mob.Name())));
 					FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^TYou tell "+target.name()+" '"+text+"'^?^.",Affect.MSG_TELL,"^T"+mob.name()+" tell(s) you '"+text+"'^?^.",Affect.NO_EFFECT,null);
 					if((mob.location().okAffect(mob,msg))
 					&&((ignore)||(target.okAffect(target,msg))))
@@ -84,7 +84,8 @@ public class SocialProcessor
 								}
 								msg.trailerMsgs().clear();
 							}
-							target.setReplyTo(mob);
+							if(target.playerStats()!=null)
+								target.playerStats().setReplyTo(mob);
 						}
 					}
 				}
@@ -292,22 +293,24 @@ public class SocialProcessor
 	public static void reply(MOB mob, Vector commands)
 	{
 		if(mob==null) return;
-		if(mob.replyTo()==null)
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		if(pstats.replyTo()==null)
 		{
 			mob.tell("No one has told you anything yet!");
 			return;
 		}
-		if((mob.replyTo().Name().indexOf("@")<0)
-		&&(!mob.replyTo().isMonster())
-		&&(CMMap.getPlayer(mob.replyTo().Name())==null))
+		if((pstats.replyTo().Name().indexOf("@")<0)
+		&&(!pstats.replyTo().isMonster())
+		&&(CMMap.getPlayer(pstats.replyTo().Name())==null))
 		{
-			mob.tell(mob.replyTo().Name()+" is no longer logged in.");
+			mob.tell(pstats.replyTo().Name()+" is no longer logged in.");
 			return;
 		}
-		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
-		if((mob.replyTo().session()!=null)
-		&&(mob.replyTo().session().afkFlag()))
-			mob.tell(mob.replyTo().name()+" is AFK at the moment.");
+		quickSay(mob,pstats.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
+		if((pstats.replyTo().session()!=null)
+		&&(pstats.replyTo().session().afkFlag()))
+			mob.tell(pstats.replyTo().name()+" is AFK at the moment.");
 	}
 
 	public static void tell(MOB mob, Vector commands)

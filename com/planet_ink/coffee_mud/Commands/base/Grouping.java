@@ -67,9 +67,9 @@ public class Grouping
 		Hashtable friends=null;
 		if((mobName!=null)
 		&&(mobName.equalsIgnoreCase("friends"))
-		&&(!mob.isMonster()))
+		&&(mob.playerStats()!=null))
 		{
-			friends=mob.session().getFriends();
+			friends=mob.playerStats().getFriends();
 			mobName=null;
 		}
 		

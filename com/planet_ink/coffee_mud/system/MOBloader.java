@@ -20,8 +20,12 @@ public class MOBloader
 			{
 				CharStats stats=mob.baseCharStats();
 				CharState state=mob.baseState();
+				PlayerStats pstats=new DefaultPlayerStats();
+				mob.setPlayerStats(pstats);
 				String username=DBConnections.getRes(R,"CMUSERID");
 				String password=DBConnections.getRes(R,"CMPASS");
+				mob.setName(username);
+				pstats.setPassword(password);
 				stats.setMyClasses(DBConnections.getRes(R,"CMCLAS"));
 				stats.setStat(CharStats.STRENGTH,Util.s_int(DBConnections.getRes(R,"CMSTRE")));
 				stats.setMyRace((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
@@ -59,9 +63,8 @@ public class MOBloader
 					roomID=roomID.substring(0,x);
 				}
 				mob.setStartRoom(CMMap.getRoom(roomID));
-				mob.setLastDateTime(Util.s_long(DBConnections.getRes(R,"CMDATE")));
-				mob.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
-				mob.setUserInfo(username,password);
+				pstats.setLastDateTime(Util.s_long(DBConnections.getRes(R,"CMDATE")));
+				pstats.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
@@ -69,13 +72,15 @@ public class MOBloader
 				mob.setLeigeID(DBConnections.getRes(R,"CMLEIG"));
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
-				mob.setPrompt(DBConnections.getRes(R,"CMPRPT"));
+				pstats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
 				String colorStr=DBConnections.getRes(R,"CMCOLR");
 				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
-					mob.setColorStr(colorStr);
+					pstats.setColorStr(colorStr);
+				pstats.setLastIP(DBConnections.getRes(R,"CMLSIP"));
 				mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
-				mob.setEmail(DBConnections.getRes(R,"CMEMAL"));
+				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
+				pstats.setFriendsIgnoreStr(DBConnections.getRes(R,"CMPFIL"));
 				found=true;
 			}
 			DBConnector.DBDone(D);
@@ -330,25 +335,6 @@ public class MOBloader
 		}
 	}
 
-	public static String DBQueryLastIP(String name)
-	{
-		DBConnection D=null;
-		String returnable="";
-		try
-		{
-			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
-			while(R.next())
-				returnable=DBConnections.getRes(R,"CMLSIP");
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
-		return returnable;
-	}
 	public static void vassals(MOB mob, String leigeID)
 	{
 		DBConnection D=null;
@@ -443,32 +429,10 @@ public class MOBloader
 
 	}
 
-	public static void DBUpdateIP(MOB mob)
-	{
-		if(mob.session()==null) return;
-
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="UPDATE CMCHAR SET"
-			+"  CMLSIP='"+mob.session().getAddress()+"'"
-			+"  WHERE CMUSERID='"+mob.Name()+"'";
-			D.update(str);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","UpdateIP:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
-	}
-
 	public static void DBUpdateEmail(MOB mob)
 	{
-		if(mob.session()==null) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 
 		DBConnection D=null;
 		String str=null;
@@ -476,7 +440,7 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			str="UPDATE CMCHAR SET"
-			+"  CMEMAL='"+mob.getEmail()+"'"
+			+"  CMEMAL='"+pstats.getEmail()+"'"
 			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
@@ -558,6 +522,9 @@ public class MOBloader
 			return;
 		}
 
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		
 		DBConnection D=null;
 		String strStartRoomID=(mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"";
 		String strOtherRoomID=(mob.location()!=null)?mob.location().roomID():"";
@@ -566,7 +533,7 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			str="UPDATE CMCHAR SET"
-			+"  CMPASS='"+mob.password()+"'"
+			+"  CMPASS='"+pstats.password()+"'"
 			+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
 			+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
 			+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
@@ -591,8 +558,8 @@ public class MOBloader
 			+", CMWIMP="+mob.getWimpHitPoint()
 			+", CMQUES="+mob.getQuestPoint()
 			+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
-			+", CMDATE='"+mob.lastDateTime()+"'"
-			+", CMCHAN="+mob.getChannelMask()
+			+", CMDATE='"+pstats.lastDateTime()+"'"
+			+", CMCHAN="+pstats.getChannelMask()
 			+", CMATTA="+mob.baseEnvStats().attackAdjustment()
 			+", CMAMOR="+mob.baseEnvStats().armor()
 			+", CMDAMG="+mob.baseEnvStats().damage()
@@ -600,11 +567,13 @@ public class MOBloader
 			+", CMLEIG='"+mob.getLeigeID()+"'"
 			+", CMHEIT="+mob.baseEnvStats().height()
 			+", CMWEIT="+mob.baseEnvStats().weight()
-			+", CMPRPT='"+mob.getPrompt()+"'"
-			+", CMCOLR='"+mob.getColorStr()+"'"
+			+", CMPRPT='"+pstats.getPrompt()+"'"
+			+", CMCOLR='"+pstats.getColorStr()+"'"
 			+", CMCLAN='"+mob.getClanID()+"'"
+			+", CMLSIP='"+pstats.lastIP()+"'"
 			+", CMCLRO="+mob.getClanRole()
-			+", CMEMAL='"+mob.getEmail()+"'"
+			+", CMEMAL='"+pstats.getEmail()+"'"
+			+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
 			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
@@ -623,7 +592,7 @@ public class MOBloader
 		}
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
-		mob.setUpdated(System.currentTimeMillis());
+		pstats.setUpdated(System.currentTimeMillis());
 	}
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{
@@ -817,6 +786,9 @@ public class MOBloader
 	public static void DBCreateCharacter(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		
 		DBConnection D=null;
 		String str=null;
 		try
@@ -831,7 +803,7 @@ public class MOBloader
 			+"CMGEND "
 			+") VALUES ('"
 			+mob.Name()
-			+"','"+mob.password()
+			+"','"+pstats.password()
 			+"','"+mob.baseCharStats().getMyClassesStr()
 			+"','"+mob.baseCharStats().getMyRace().ID()
 			+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');";
@@ -851,7 +823,14 @@ public class MOBloader
 	{
 		DBConnection D=null;
 		boolean returnable=false;
-		if(mob!=null) mob.setUserInfo("","");
+		
+		if(mob!=null)
+		{
+			if(mob.playerStats()==null)
+				mob.setPlayerStats(new DefaultPlayerStats());
+			mob.setName("");
+			mob.playerStats().setPassword("");
+		}
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -867,8 +846,9 @@ public class MOBloader
 					{
 						String password=DBConnector.getRes(R,"CMPASS");
 						String email=DBConnector.getRes(R,"CMEMAL");
-						mob.setUserInfo(username,password);
-						mob.setEmail(email);
+						mob.setName(username);
+						mob.playerStats().setPassword(password);
+						mob.playerStats().setEmail(email);
 					}
 					break;
 				}

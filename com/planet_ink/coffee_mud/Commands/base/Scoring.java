@@ -86,10 +86,13 @@ public class Scoring
 		throws IOException
 	{
 		if(mob.isMonster()) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		
 		mob.tell("^HThis will delete your player from the system FOREVER!");
 		String pwd=mob.session().prompt("If that's what you want, re-enter your password:","");
 		if(pwd.length()==0) return;
-		if(!pwd.equalsIgnoreCase(mob.password()))
+		if(!pwd.equalsIgnoreCase(pstats.password()))
 		{
 			mob.tell("Password incorrect.");
 			return;
@@ -665,12 +668,19 @@ public class Scoring
 	public static void prompt(MOB mob, Vector commands)
 	{
 		if(mob.session()==null) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+		
 		if(commands.size()==1)
-			mob.session().rawPrintln("Your prompt is currently set at:\n\r"+mob.getPrompt());
+			mob.session().rawPrintln("Your prompt is currently set at:\n\r"+pstats.getPrompt());
 		else
 		{
-			mob.setPrompt(Util.combine(commands,1));
-			mob.session().rawPrintln("Your prompt is currently now set at:\n\r"+mob.getPrompt());
+			String str=Util.combine(commands,1);
+			if(("DEFAULT").startsWith(str.toUpperCase()))
+				pstats.setPrompt("");
+			else
+				pstats.setPrompt(str);
+			mob.session().rawPrintln("Your prompt is currently now set at:\n\r"+pstats.getPrompt());
 		}
 	}
 
@@ -678,11 +688,13 @@ public class Scoring
 		throws IOException
 	{
 		if(mob.session()==null) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
 		String[] clookup=(String[])mob.session().clookup().clone();
 		if((commands.size()>1)
 		   &&("DEFAULT".startsWith(Util.combine(commands,1).toUpperCase())))
 		{
-			mob.setColorStr("");
+			pstats.setColorStr("");
 			mob.tell("Your colors have been changed back to default.");
 			return;
 		}
@@ -773,7 +785,7 @@ public class Scoring
 										break;
 									}
 						}
-						mob.setColorStr(newChanges);
+						pstats.setColorStr(newChanges);
 						clookup=(String[])mob.session().clookup().clone();
 					}
 				}
@@ -824,15 +836,16 @@ public class Scoring
 	public static boolean email(MOB mob, Vector commands, boolean confirmOnly)
 		throws IOException
 	{
-		if(mob.session()==null)
-			return true;
+		if(mob.session()==null)	return true;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return true;
 
-		if((mob.getEmail()==null)||(mob.getEmail().length()==0))
+		if((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
 			mob.session().println("\n\rYou have no email address on file for this character.");
 		else
 		{
 			if(confirmOnly) return true;
-			String change=mob.session().prompt("You currently have '"+mob.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
+			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
 			if(change.startsWith("N")) return false;
 		}
 		String newEmail=mob.session().prompt("New E-mail Address:");
@@ -848,7 +861,7 @@ public class Scoring
 			if(confirmEmail.length()==0) return false;
 			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
 		}
-		mob.setEmail(newEmail);
+		pstats.setEmail(newEmail);
 		ExternalPlay.DBUpdateEmail(mob);
 		return true;
 	}

@@ -47,7 +47,8 @@ public class Authenticate extends StdWebMacro
 			M.setName(TM.Name());
 			ExternalPlay.DBReadMOB(M);
 			ExternalPlay.DBReadFollowers(M,false);
-			M.setUpdated(M.lastDateTime());
+			if(M.playerStats()!=null)
+				M.playerStats().setUpdated(M.playerStats().lastDateTime());
 			M.recoverEnvStats();
 			M.recoverCharStats();
 		}
@@ -73,7 +74,9 @@ public class Authenticate extends StdWebMacro
 				{ subOp=true; break;}
 		}
 		httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
-		return mob.password().equalsIgnoreCase(password)&&(mob.Name().trim().length()>0);
+		return (mob.playerStats()!=null)
+			 &&(mob.playerStats().password().equalsIgnoreCase(password))
+			 &&(mob.Name().trim().length()>0);
 	}
 
 	private static char ABCeq(char C)
