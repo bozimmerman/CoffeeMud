@@ -179,7 +179,7 @@ public class Armorsmithing extends CommonSkill
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="You start mending "+building.name()+".";
+			startStr="<S-NAME> start(s) mending "+building.name()+".";
 			displayText="You are mending "+building.name();
 			verb="mending "+building.name();
 		}

@@ -74,11 +74,22 @@ public class Spell_WeaknessCold extends Spell
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURNING,"The cold biting wind <DAMAGE> <T-NAME>!");
 				else
+				if((room.getArea().weatherType(room)==Area.WEATHER_WINTER_COLD)
+				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
+					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURNING,"The biting cold <DAMAGE> <T-NAME>!");
+				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_SNOW)
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
 				{
 					int damage=Dice.roll(1,8,0);
 					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURNING,"The blistering snow <DAMAGE> <T-NAME>!");
+				}
+				else
+				if((room.getArea().weatherType(room)==Area.WEATHER_BLIZZARD)
+				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_COLD)))
+				{
+					int damage=Dice.roll(1,16,0);
+					ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURNING,"The blizzard <DAMAGE> <T-NAME>!");
 				}
 				else
 				if((room.getArea().weatherType(room)==Area.WEATHER_HAIL)
@@ -93,6 +104,24 @@ public class Spell_WeaknessCold extends Spell
 	}
 	
 
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&(affect.sourceMinor()==Affect.TYP_COLD))
+		{
+			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.5));
+			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+		}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

@@ -136,7 +136,7 @@ public class StdArmor extends StdItem implements Armor
 			||((rawProperLocationBitmap()&Item.ON_ARMS)>0)
 			||((rawProperLocationBitmap()&Item.ON_HANDS)>0)
 			||((rawProperLocationBitmap()&Item.ON_FEET)>0))
-				devianceAllowed=10;
+				devianceAllowed=20;
 			if(affect.source().envStats().height()<(envStats().height()-devianceAllowed))
 			{
 				affect.source().tell(name()+" doesn't fit you -- it's too big.");

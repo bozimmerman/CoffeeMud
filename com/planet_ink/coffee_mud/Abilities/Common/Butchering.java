@@ -36,9 +36,9 @@ public class Butchering extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((body!=null)&&(!aborted)&&(mob.location().isContent(body)))
+			if((body!=null)&&(!aborted))
 			{
-				if(failed)
+				if((failed)||(!mob.location().isContent(body)))
 				{
 					mob.tell("You messed up your butchering completely.");
 					body.destroyThis();

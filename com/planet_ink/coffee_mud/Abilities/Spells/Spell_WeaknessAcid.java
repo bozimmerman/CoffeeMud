@@ -41,6 +41,24 @@ public class Spell_WeaknessAcid extends Spell
 	}
 
 
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&(affect.sourceMinor()==Affect.TYP_ACID))
+		{
+			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.5));
+			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+		}
+		return true;
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,19 +78,6 @@ public class Spell_WeaknessAcid extends Spell
 	}
 
 
-	public boolean okAffect(Affect msg)
-	{
-		if((affecting()!=null)
-		&&(affecting() instanceof MOB)
-		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
-		&&(msg.amITarget(affecting()))
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Ability))
-		{
-		}
-		return true;
-	}
-	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

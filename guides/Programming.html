@@ -74,8 +74,10 @@ import com.planet_ink.coffee_mud.common.*;
 java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
 other packages in the CoffeeMud system should be imported, other than those 
 listed.</FONT> 
-<P><FONT size=4>A MOB class must extend either StdMOB or GenMob, StdShopKeeper 
-or GenShopKeeper, StdRideable or GenRideable depending on the basic 
+<P><FONT size=4>A MOB class must extend 
+either <STRONG>StdMOB</STRONG> or GenMob, <STRONG>StdShopKeeper</STRONG> or 
+GenShopKeeper, <STRONG>StdRideable</STRONG>          
+   or GenRideable depending on the basic 
 capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
@@ -142,7 +144,9 @@ commands "reset" the MOB, and "implement" the scores which are given in the
 several areas.&nbsp; "recoverEnvStats()", for instance, must be called whenever 
 a change is made to the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and 
 "MaxState".&nbsp; </FONT>
-<P><FONT size=4>Now, suppose we wanted to add an "Affect" or "Behavior" or "Ability" to your StdMOB.&nbsp; The 
+<P><FONT size=4>Now, suppose we wanted 
+to add an "Affect" or "Behavior" or "Ability" to your 
+<STRONG>StdMOB</STRONG>              .&nbsp; The 
 proper place for such a statement would be in the same above constructor, among 
 the other commands.&nbsp; Preferably before the several "recover" commands, but 
 after the several stat definitions.  Of course, all of this is unnecesssary for a new GenMOB object.</FONT>
@@ -163,7 +167,8 @@ combat, allows the MOB to Chat with other players, and&nbsp;to walk around
 in its area. The last behavior 
 gives the MOB the wisdom to use its Poison ability while in 
 combat.</FONT></P>
-<P><FONT size=4>If your MOB extends StdShopKeeper, you will need to add your inventory manually.  You will also
+<P><FONT size=4>If your MOB extends 
+<STRONG>StdShopKeeper</STRONG>    , you will need to add your inventory manually.  You will also
 need to specify the type of ShopKeeper.
 </FONT></P>
 <pre>
@@ -178,7 +183,7 @@ need to specify the type of ShopKeeper.
 </pre>
 <P><FONT size=4>You'll recall from the Archon's Guide that there are many different types of ShopKeepers, 
 including trainers, pet sellers, weaponsmiths, and others. </FONT>
-<P><FONT size=4>GenRideable MOBs will require a few other settings as well!</FONT></P>
+<P><FONT size=4><STRONG>StdRideable</STRONG> MOBs will require a few other settings as well!</FONT></P>
 <pre>
 		setRideBasis(Rideable.RIDEABLE_LAND);
 		setMobCapacity(2);
@@ -253,8 +258,11 @@ system.&nbsp; A custom MOB must import the following packages:</FONT></P>
 <P><FONT size=4>As well as any other java.*,&nbsp;&nbsp;sun.*, 
 or&nbsp;custom&nbsp;packages you may need.&nbsp; No other packages in the 
 CoffeeMud system should be imported, other than those listed.</FONT> 
-<P><FONT size=4>An Item&nbsp;class must extend either StdItem or GenItem, StdWeapon or GenWeapon, 
-StdRideable or GenRideable, StdArmor or GenArmor&nbsp;depending on the basic 
+<P><FONT size=4>An Item&nbsp;class must 
+extend either <STRONG>StdItem</STRONG> or GenItem, <STRONG>StdWeapon</STRONG> or 
+GenWeapon, <STRONG>StdRideable</STRONG> or GenRideable, 
+<STRONG>StdArmor</STRONG>           
+    or GenArmor&nbsp;depending on the basic 
 capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
 objects are more customizable at run-time, they also take a long time for the 
 system to load and build, and take up a lot of database disk space.&nbsp; For 
@@ -270,13 +278,18 @@ etc.</FONT>
 	{
 		super();
 
-		Username="a super sword";
-		setDescription("A long super duper sword!"); 
-		setDisplayText("Someone left their super sword here.");
-		setSecretIdentity(description());
+		Username=	
+	 
+	
 		
+
+		"asuper sword"; setDescription("A
+		long super duper sword!"); setDisplayText("Someone 
+		left their super sword here."); setSecretIdentity(description());
 		setMaterial(EnvResource.RESOURCE_STEEL);
+		
 		setBaseValue(500);
+		baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
 		baseEnvStats.setWeight(25);
 		baseEnvStats.setAttackAdjustment(10);
 		baseEnvStats.setDamage(15);
@@ -285,8 +298,10 @@ etc.</FONT>
 	
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>What is shown above is entirely sufficient for the creation of a StdWeapon.  The material, weight, attack
-and damage describe it completely.  However, what if we wanted a missile weapon?</FONT>
+<P><FONT size=4>What is shown above is 
+entirely sufficient for the creation of a <STRONG>StdWeapon</STRONG> . The material, weight, attack and damage 
+describe it completely. You'll even notice that            by  setting a disposition flag,
+we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon?</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewBow()
@@ -310,10 +325,14 @@ and damage describe it completely.  However, what if we wanted a missile weapon?
 	
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>You'll notice we added two new mathods, setRanges, and setAmmunitionType.  With the
-former, we specify that this is a ranged-only weapon, usable from range 1 (0=melee) to range 5.  The
-ammunition type specifies that it uses arrows. Other classes, however, have different 
-requirements altogether.  For instance, StdArmor:</FONT>
+<P><FONT size=4>You'll notice we added 
+two new mathods, setRanges, and setAmmunitionType. With the former, we specify 
+that this is a ranged-only weapon, usable from range 1 (0=melee) to range 5. The 
+ammunition type specifies that it uses arrows. Other classes, however, have 
+different requirements altogether. For instance, 
+<STRONG>StdArmor</STRONG>     
+            
+     :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewArmor()
@@ -336,9 +355,13 @@ requirements altogether.  For instance, StdArmor:</FONT>
 	
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>In this case, we made a bracer wearable on both left and right wrists.  If it were something that
-could only be worn on both wrists at the same time (like handcuffs), then the RawLogicalAnd value would have been
-true.  Now, a StdContainer:</FONT>
+<P><FONT size=4>In this case, we made a 
+bracer wearable on both left and right wrists. If it were something that could 
+only be worn on both wrists at the same time (like handcuffs), then the 
+RawLogicalAnd value would have been true. Now, a 
+<STRONG>StdContainer</STRONG>                   
+                   
+    :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewBag()
@@ -362,8 +385,12 @@ true.  Now, a StdContainer:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <P><FONT size=4>When setting the 
 capacity of a container, remember that it must also be able to hold its own 
-weight! Also, note the lids and locks flags have made this container lidless and lockless and always open.&nbsp; Of course, without a lock, setting a key would be
-silly!&nbsp;  Now, a StdDrink container:</FONT>
+weight! Also, note the lids and locks flags have made this container lidless and 
+lockless and always open.&nbsp; Of course, without a lock, setting a key would 
+be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG>   
+               
+                           
+     container:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewCup()
@@ -387,8 +414,11 @@ silly!&nbsp;  Now, a StdDrink container:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>The StdDrink created above is an enormous cup of milk!  You'll notice the capacity is 0, meaning 
-that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
+<P><FONT size=4>The 
+<STRONG>StdDrink</STRONG> created above is an enormous cup of milk! You'll 
+notice the capacity is 0, meaning that mundane objects cannot be stored in it. 
+Now, a <STRONG>StdFood</STRONG>                  
+           :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewFood()
@@ -408,7 +438,8 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>Now, the StdRideable resembles the MOB of the same name, and thus, has identical modifications.</FONT>
+<P><FONT size=4>Now, the 
+<STRONG>StdRideable</STRONG>   resembles the MOB of the same name, and thus, has identical modifications.</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewBed()
@@ -428,7 +459,8 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>A pile of money, aka StdCoins, is simplest of all:</FONT>
+<P><FONT size=4>A pile of money, aka 
+<STRONG>StdCoins</STRONG>     , is simplest of all:</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewMoney()
@@ -448,8 +480,10 @@ that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>    Notice that the base value of  the coins is 0, it's the Ability 
-score that does all the work.&nbsp; Now, to  a magical StdPill:</FONT>
+<P><FONT size=4>    Notice that the base 
+value of the coins is 0, it's the Ability score that does all the work.&nbsp; 
+Now, to a magical <STRONG>StdPill</STRONG>                  
+           :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewPill()
@@ -470,13 +504,22 @@ score that does all the work.&nbsp; Now, to  a magical StdPill:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>The spells cast on the eater are listed by their Class names, seperated
-by semicolons.  The secret identity is also trimmed out, since the system will handle
-that automatically.  Also notice that the StdPill resembles StdFood except for the addition
-of the setSpellList method.  In the exact same way, the StdPotion class resembles the
-StdDrink class except that it has an identical setSpellList method added to IT.  So, in
-the interests of saving a little sand for future generations, I would enumerate the 
-StdPotion.  We can, however, show off a StdScroll:</FONT>
+<P><FONT size=4>The spells cast on the 
+eater are listed by their Class names, seperated by semicolons. The secret 
+identity is also trimmed out, since the system will handle that automatically. 
+Also notice that the <STRONG>StdPill</STRONG> resembles <STRONG>StdFood</STRONG> 
+except for the addition of the setSpellList method. In the exact same way, the 
+<STRONG>StdPotion</STRONG> class resembles the <STRONG>StdDrink</STRONG> class 
+except that it has an identical setSpellList method added to IT. So, in the 
+interests of saving a little sand for future generations, I would enumerate the 
+<STRONG>StdPotion</STRONG>. We can, however, show off a 
+<STRONG>StdScroll</STRONG>            
+              
+             
+              
+               
+              
+        :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewScroll()
@@ -496,8 +539,10 @@ StdPotion.  We can, however, show off a StdScroll:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>Not too difficult, right?  Looks like the other two, but the spell setting
-method has a different name.  Now, let's look at a StdWand:</FONT>
+<P><FONT size=4>Not too difficult, 
+right? Looks like the other two, but the spell setting method has a different 
+name. Now, let's look at a <STRONG>StdWand</STRONG>             
+           :</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
 	public MyNewWand()
@@ -518,31 +563,41 @@ method has a different name.  Now, let's look at a StdWand:</FONT>
 	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
-<P><FONT size=4>In this case, we made use of the "uses remaining" field to set the number
-of charges for the wand.  The way the spell is set is also different.  A wand may only 
-have one spell, and the actual Ability object for the spell must be passed in, instead of
-just the class name as we did before.  You will find that this is also how the StdStaff 
-works.  The StdStaff resembles the StdWeapon we did above, except that the additional
+<P><FONT size=4>In this case, we made 
+use of the "uses remaining" field to set the number of charges for the wand. The 
+way the spell is set is also different. A wand may only have one spell, and the 
+actual Ability object for the spell must be passed in, instead of just the class 
+name as we did before. You will find that this is also how the 
+<STRONG>StdStaff</STRONG> works. The <STRONG>StdStaff</STRONG> resembles the 
+<STRONG>StdWeapon</STRONG>              
+                    
+                
+                   
+       we did above, except that the additional
 setSpell and setUsesRemaining calls become appropriate to the constructor.  </FONT>
+<P><FONT size=4>The next thing we will look at is adding 
+affects and behaviors to Items.&nbsp; Behavior addition (despite the fact that 
+there is really only one behavior that works with Items) will look familiar.  The only
+difference between this and the MOB example above is the fact that we are setting a
+parameter on the Behavior before adding it. 
+</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
 <pre>	
-	public MyNewWand()
-	{
-		super();
-
-		Username="a wand";
-		setDescription("A magic wand");
-		setDisplayText("Someone left their magic wand.");
-		setSecretIdentity("");
+		Behavior B=CMClass.getBehavior("Mobile");
+		B.setParms("min=1 max=20 chance=75/makes strange sounds");
+		addBehavior(B);
 		
-		setBaseValue(1000);
-		setMaterial(EnvResource.RESOURCE_OAK);
-		baseEnvStats.setWeight(1);
-		setSpell(CMClass.getAbility("Spell_Fireball"));
-		setUsesRemaining(50);
-		recoverEnvStats();
-	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>Adding normal affects as properties is also similar to mobs...</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+		Ability A=CMClass.getAbility("Prop_HaveResister");
+		A.setMiscText("fire acid 50%");
+		A.addNonUninvokableAffect(A);
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>The above affect will allow anyone who owns the item to
+resist fire and acid at 50%!</FONT></P>
 </BODY>
 </HTML>

@@ -41,6 +41,24 @@ public class Spell_WeaknessGas extends Spell
 	}
 
 
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+
+		if((affected==null)||(!(affected instanceof MOB)))
+			return true;
+
+		MOB mob=(MOB)affected;
+		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&(affect.sourceMinor()==Affect.TYP_GAS))
+		{
+			int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.5));
+			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+		}
+		return true;
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
