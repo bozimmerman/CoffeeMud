@@ -15,9 +15,10 @@ public interface Ability  extends Environmental
 	public static final int CHANT=8;
 	public static final int COMMON_SKILL=9;
 	public static final int DISEASE=10;
+	public static final int POISON=11;
 	public static final int ALL_CODES=31;
 	public static final String[] TYPE_DESCS={
-		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL","DISEASE"
+		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE","CHANT","COMMON SKILL","DISEASE","POISON"
 	};
 	
 	// domains
@@ -40,8 +41,6 @@ public interface Ability  extends Environmental
 	public static final int CAN_AREAS=4;
 	public static final int CAN_ROOMS=8;
 	public static final int CAN_EXITS=16;
-	
-	
 	
 	public static final int ALL_DOMAINS=(255<<5);
 	// the classification incorporates the above

@@ -13,8 +13,9 @@ public class ClassRaceNext extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String cclass=(String)httpReq.getRequestParameters().get("CLASS");
-		if(cclass.length()==0) return " @break@";
-		CharClass C=CMClass.getCharClass(cclass);
+		if(cclass.trim().length()==0) return " @break@";
+		CharClass C=CMClass.getCharClass(cclass.trim());
+		if(C==null) return " @break";
 		String last=(String)httpReq.getRequestParameters().get("RACE");
 		if(parms.containsKey("RESET"))
 		{	

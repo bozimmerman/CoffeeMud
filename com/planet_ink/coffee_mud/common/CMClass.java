@@ -304,7 +304,11 @@ public class CMClass extends ClassLoader
 			addH(tempH,abilities);
 			
 			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Diseases"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size=tempH.size();
+			size+=tempH.size();
+			addH(tempH,abilities);
+			
+			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Poisons"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempH.size();
 			addH(tempH,abilities);
 			
 			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");

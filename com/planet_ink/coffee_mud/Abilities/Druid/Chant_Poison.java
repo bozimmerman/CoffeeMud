@@ -37,12 +37,9 @@ public class Chant_Poison extends Chant
 				if(!msg.wasModified())
 				{
 					invoker=mob;
-					Ability A=CMClass.getAbility("Poison");
+					Ability A=CMClass.getAbility("Poison_Venom");
 					if(A!=null)
-					{
-						A.setAbilityCode(Drink.POISON_VENOM);
 						A.invoke(mob,target,true);
-					}
 				}
 			}
 		}

@@ -406,6 +406,23 @@ public class Help
 							V.addElement(A.ID());
 					}
 					theRest.append(fourColumns(V));
+					V=new Vector();
+					theRest=new StringBuffer("\n\rDiseases:\n\r");
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=(Ability)a.nextElement();
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))
+							V.addElement(A.ID());
+					}
+					theRest.append(fourColumns(V));
+					theRest=new StringBuffer("\n\rPoisons:\n\r");
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=(Ability)a.nextElement();
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.POISON))
+							V.addElement(A.ID());
+					}
+					theRest.append(fourColumns(V));
 					theRest.append("\n\r\n\rBehaviors:\n\r");
 					V=new Vector();
 					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)

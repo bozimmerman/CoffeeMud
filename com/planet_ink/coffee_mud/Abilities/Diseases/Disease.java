@@ -22,6 +22,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
+	protected MOB theMOB=null;
 	
 	public int abilityCode(){return 0;}
 	private boolean processing=false;
@@ -32,10 +33,12 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected boolean catchIt(Item item, Environmental target)
 	{
 		if(invoker!=null) return catchIt(invoker,target);
-		MOB M=CMClass.getMOB("StdMOB");
-		M.baseEnvStats().setLevel(5);
-		M.recoverEnvStats();
-		return catchIt(M,target);
+		if(theMOB==null)
+			theMOB=CMClass.getMOB("StdMOB");
+		theMOB.baseEnvStats().setLevel(item.envStats().level());
+		theMOB.recoverEnvStats();
+		theMOB.setName(item.name());
+		return catchIt(theMOB,target);
 	}
 	protected boolean catchIt(MOB mob, Environmental target)
 	{

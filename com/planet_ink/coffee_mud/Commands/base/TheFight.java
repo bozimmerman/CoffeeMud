@@ -210,12 +210,12 @@ public class TheFight
 	}
 
 	public static void postDamage(MOB attacker,
-						   MOB target,
-						   Environmental weapon,
-						   int damage,
-						   int messageCode,
-						   int damageType,
-						   String allDisplayMessage)
+								  MOB target,
+								  Environmental weapon,
+								  int damage,
+								  int messageCode,
+								  int damageType,
+								  String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		if(damage>=1024) damage=1023;

@@ -1750,7 +1750,7 @@ public class Import
 					 ||(str3.indexOf("WINE")>=0))
 					 {
 						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
-						I.baseEnvStats().setAbility(Drink.LIQUOR_BEER);
+						I.addAffect(CMClass.getAbility("Poison_Beer"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
@@ -1758,7 +1758,7 @@ public class Import
 					 if(str3.indexOf("FIREBREATHER")>=0)
 					 {
 						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
-						I.baseEnvStats().setAbility(Drink.LIQUOR_FIREBREATHER);
+						I.addAffect(CMClass.getAbility("Poison_Firebreather"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
@@ -1766,7 +1766,7 @@ public class Import
 					 if(str3.indexOf("LOCAL SPECIALTY")>=0)
 					 {
 						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
-						I.baseEnvStats().setAbility(Drink.LIQUOR_TEQUILA);
+						I.addAffect(CMClass.getAbility("Poison_Liquor"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
@@ -1774,7 +1774,7 @@ public class Import
 					 if(str3.indexOf("WHISKEY")>=0)
 					 {
 						((Drink)I).setLiquidType(EnvResource.RESOURCE_LIQUOR);
-						I.baseEnvStats().setAbility(Drink.LIQUOR_LIQUOR);
+						I.addAffect(CMClass.getAbility("Poison_Liquor"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
@@ -1782,7 +1782,7 @@ public class Import
 					 if((val4>0)||(str3.indexOf("POISON")>=0))
 					 {
 						((Drink)I).setLiquidType(EnvResource.RESOURCE_POISON);
-						I.baseEnvStats().setAbility(Drink.POISON_DRAINING);
+						I.addAffect(CMClass.getAbility("Poison"));
 						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }

@@ -21,7 +21,7 @@ public class Chant_NeutralizePoison extends Chant
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if((A!=null)&&(A.ID().toUpperCase().indexOf("POISON")>=0))
+			if((A!=null)&&(A.classificationCode()==Ability.POISON))
 				offenders.addElement(A);
 		}
 		return offenders;

@@ -43,7 +43,6 @@ public class Thief_Poison extends ThiefSkill
 				if(!msg.wasModified())
 				{
 					Ability A=CMClass.getAbility("Poison");
-					A.setAbilityCode(Drink.POISON_DRAINING);
 					A.invoke(mob,target,true);
 				}
 			}

@@ -38,7 +38,6 @@ public class Prayer_Poison extends Prayer
 				if(!msg.wasModified())
 				{
 					Ability A=CMClass.getAbility("Poison");
-					A.setAbilityCode(Drink.POISON_DRAINING);
 					A.invoke(mob,target,true);
 				}
 			}
