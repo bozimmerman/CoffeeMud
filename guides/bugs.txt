@@ -22,3 +22,5 @@ Also, the aggressive and all the other aggressive behaviors cease attacking afte
 Aggr mobs no attack each other when archon present.
 -------------------------------------------------
 With a ****non-archon****, trying to trigger a GIVE_PROG on a shopkeeper. > It just adds the item to inventory.
+-------------------------------------------------
+Allow MOBKILLER parm to accept equals for stuff.

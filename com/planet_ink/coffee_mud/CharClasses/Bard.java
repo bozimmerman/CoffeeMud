@@ -134,14 +134,6 @@ public class Bard extends StdCharClass
 				mob.tell("You need at least a 9 Charisma to become a Bard.");
 			return false;
 		}
-		if(!(mob.charStats().getMyRace().ID().equals("Human"))
-		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
-		{
-			if(!quiet)
-				mob.tell("You must be Human or Half Elf to be a Bard");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}

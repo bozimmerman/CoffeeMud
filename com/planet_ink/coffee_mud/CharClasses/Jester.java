@@ -142,11 +142,13 @@ public class Jester extends StdCharClass
 				mob.tell("You need at least a 9 Dexterity to become a Jester.");
 			return false;
 		}
-		if(!(mob.charStats().getMyRace().ID().equals("Human"))
+		if((!(mob.charStats().getMyRace().ID().equals("Human")))
+		&&(!(mob.charStats().getMyRace().ID().equals("Gnome")))
+		&&(!(mob.charStats().getMyRace().ID().equals("Halfling")))
 		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
 		{
 			if(!quiet)
-				mob.tell("You must be Human or Half Elf to be a Jester");
+				mob.tell("You must be Human, Gnome, Halfling, or Half Elf to be a Jester");
 			return false;
 		}
 
