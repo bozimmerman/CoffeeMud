@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -41,7 +42,7 @@ public class WingFlying extends StdAbility
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		if(flying)
+		if((!Sense.isSleeping(affected))&&(flying))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 		else
 			affectableStats.setDisposition(Util.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));

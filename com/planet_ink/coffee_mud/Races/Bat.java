@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +51,8 @@ public class Bat extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		if(!Sense.isSleeping(affected))
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

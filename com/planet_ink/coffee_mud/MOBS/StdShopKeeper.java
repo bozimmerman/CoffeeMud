@@ -351,13 +351,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		case DEAL_MAGIC:
 			return (thisThang instanceof MiscMagic);
 		case DEAL_WEAPONS:
-			return (thisThang instanceof Weapon);
+			return (thisThang instanceof Weapon)||(thisThang instanceof Ammunition);
 		case DEAL_GENERAL:
 			return ((thisThang instanceof Item)
 					&&(!(thisThang instanceof Armor))
 					&&(!(thisThang instanceof MiscMagic))
 					&&(!(thisThang instanceof ClanItem))
 					&&(!(thisThang instanceof Weapon))
+					&&(!(thisThang instanceof Ammunition))
 					&&(!(thisThang instanceof MOB))
 					&&(!(thisThang instanceof EnvResource))
 					&&(!(thisThang instanceof Ability)));

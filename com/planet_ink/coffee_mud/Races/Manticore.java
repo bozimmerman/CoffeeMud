@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +51,8 @@ public class Manticore extends GreatCat
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		if(!Sense.isSleeping(affected))
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
