@@ -34,7 +34,6 @@ public class Mime extends ActiveTicker
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting,affect);
-		MOB mob=affect.source();
 		if((affecting instanceof MOB)&&(!canFreelyBehaveNormal(affecting)))
 			return;
 		if(disabled) return;
@@ -46,7 +45,7 @@ public class Mime extends ActiveTicker
 	
 	public void fixSNameTo(Affect msg, MOB sMOB, Environmental ticking)
 	{
-		String src=msg.sourceMessage();
+		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();
 		String oth=msg.othersMessage();
 		//if(src!=null) src=Util.replaceAll(src,"<S-NAME>",ticking.name());

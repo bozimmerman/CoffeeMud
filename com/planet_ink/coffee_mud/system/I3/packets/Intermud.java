@@ -207,6 +207,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
         modified = Persistent.MODIFIED;
     }
 
+	public static NameServer getNameServer()
+	{
+		if(thread==null) return null;
+		if(thread.name_servers==null) return null;
+		if(thread.name_servers.size()==0) return null;
+        return (NameServer)thread.name_servers.elementAt(0);
+	}
+	
     private synchronized void connect() {
 		if(shutdown) return;
         attempts++;

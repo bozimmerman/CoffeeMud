@@ -60,7 +60,6 @@ public class ClanLoader
 	{
 		DBConnection D=null;
 		String str=null;
-		String sql=null;
 		try
 		{
 			D=DBConnector.DBFetch();

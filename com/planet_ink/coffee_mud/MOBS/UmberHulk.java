@@ -13,8 +13,7 @@ public class UmberHulk extends StdMOB
 	public UmberHulk()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
+		
 		Username="an Umber Hulk";
 		setDescription("An 8 foot tall, 5 foot wide mass of meanness just waiting to eat....");
 		setDisplayText("A huge Umber Hulk eyes you.");

@@ -16,7 +16,6 @@ public class RoomLoader
 	{
 		Hashtable hash=new Hashtable();
 		while(CMMap.numAreas()>0)CMMap.delArea(CMMap.getFirstArea());
-		Vector h=new Vector();
 		
 		DBConnection D=null;
 		try

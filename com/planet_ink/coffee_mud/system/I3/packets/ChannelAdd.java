@@ -39,9 +39,10 @@ public class ChannelAdd extends Packet  {
     }
 
     public String toString() {
+        NameServer n = Intermud.getNameServer();
 		String str=
 			 "({\"channel-add\",5,\"" + Server.getMudName() + "\",\"" +
-               sender_name + "\",0,0,\"" + channel + "\",0,})";
+               sender_name + "\",\""+n.name+"\",0,\"" + channel + "\",0,})";
 		return str;
     }
 }

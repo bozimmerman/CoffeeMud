@@ -59,7 +59,6 @@ public class LifeFountain extends StdDrink implements MiscMagic
 	{
 		if(affect.amITarget(this))
 		{
-			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_DRINK:
