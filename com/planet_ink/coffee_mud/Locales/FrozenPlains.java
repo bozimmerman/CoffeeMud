@@ -14,5 +14,10 @@ public class FrozenPlains extends Plains
 		domainCondition=Room.CONDITION_COLD;
 	}
 
+	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_BEEF),
+		new Integer(EnvResource.RESOURCE_FUR),
+		new Integer(EnvResource.RESOURCE_WOOL)};
+	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Plains.roomResources;}
 }
