@@ -112,6 +112,10 @@ public class Thief_TarAndFeather extends ThiefSkill
 			    I.envStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
 			    I.setRawLogicalAnd(true);
 			    I.addNonUninvokableEffect((Ability)this.copyOf());
+			    Behavior B=CMClass.getBehavior("Decay");
+			    long thetime=(long)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*3;
+			    B.setParms("notrigger=1 answer=dissolves! min="+thetime+" max="+thetime+" chance=100");
+			    I.addBehavior(B);
 			}
 		}
 		else

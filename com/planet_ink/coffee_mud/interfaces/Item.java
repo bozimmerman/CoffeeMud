@@ -177,6 +177,30 @@ public interface Item extends Environmental, Rider
 		"mouth",
 		"back"};
 	
+	public static final long[] wornCodes={
+	    INVENTORY,
+		ON_HEAD,
+		ON_NECK,
+		ON_TORSO,
+		ON_ARMS,
+		ON_LEFT_WRIST,
+		ON_RIGHT_WRIST,
+		ON_LEFT_FINGER,
+		ON_RIGHT_FINGER,
+		ON_FEET,
+		HELD,
+		WIELD,
+		ON_HANDS,
+		FLOATING_NEARBY,
+		ON_WAIST,
+		ON_LEGS,
+		ON_EYES,
+		ON_EARS,
+		ABOUT_BODY,
+		ON_MOUTH,
+		ON_BACK,
+	};
+	
 	/** If being worn, this code will show WHERE*/
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above
 	public boolean fitsOn(long wornCode);

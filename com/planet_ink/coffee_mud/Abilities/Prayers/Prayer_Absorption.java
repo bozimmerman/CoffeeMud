@@ -102,7 +102,7 @@ public class Prayer_Absorption extends Prayer
 				absorbed=(Ability)absorbed.copyOf();
 				absorbed.setBorrowed(mob,true);
 				mob.addAbility(absorbed);
-				beneficialAffect(mob,target,asLevel,0);
+				beneficialAffect(mob,mob,asLevel,0);
 			}
 		}
 		else

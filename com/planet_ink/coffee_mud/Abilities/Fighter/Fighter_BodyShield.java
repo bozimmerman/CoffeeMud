@@ -44,8 +44,9 @@ public class Fighter_BodyShield extends StdAbility
 
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&(Sense.aliveAwakeMobile(mob,true))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(!mob.amDead())
+		&&(!Sense.isSleeping(mob))
 		&&(msg.source()!=mob.getVictim())
 		&&(msg.source()!=mob)
 		&&((msg.value())>0)

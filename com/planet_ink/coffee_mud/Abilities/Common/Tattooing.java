@@ -85,16 +85,17 @@ public class Tattooing extends CommonSkill
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
+		long[] tattoable={Item.ON_ARMS,Item.ON_LEGS,Item.ON_HANDS,Item.ON_HEAD,Item.ON_FEET,Item.ON_LEFT_WRIST,Item.ON_RIGHT_WRIST,Item.ON_NECK,Item.ON_TORSO};
 		for(int i=0;i<Item.wornLocation.length;i++)
 		{
-		    if((Item.wornCodes[i]!=Item.FLOATING_NEARBY)
-		    &&(Item.wornCodes[i]!=Item.ABOUT_BODY)
-		    &&(Item.wornCodes[i]!=Item.INVENTORY))
-		    {
-			    if(Item.wornLocation[i].equalsIgnoreCase(Item.wornLocation[i]))
-			        partNum=i;
-			    allParts.append(", "+Util.capitalize(Item.wornLocation[i].toLowerCase()));
-		    }
+		    for(int ii=0;ii<tattoable.length;ii++)
+		        if(Item.wornCodes[i]==tattoable[ii])
+		        {
+				    if(Item.wornLocation[i].equalsIgnoreCase(part))
+				        partNum=i;
+				    allParts.append(", "+Util.capitalize(Item.wornLocation[i].toLowerCase()));
+				    break;
+			    }
 		}
 		if(partNum<0)
 		{
@@ -110,6 +111,11 @@ public class Tattooing extends CommonSkill
 		if(target.getWearPositions(wornCode)<=0)
 		{
 		    commonTell(mob,"That location is not available for tattooing.");
+		    return false;
+		}
+		if(target.freeWearPositions(wornCode)<=0)
+		{
+		    commonTell(mob,"That location is currently covered by something.");
 		    return false;
 		}
 		

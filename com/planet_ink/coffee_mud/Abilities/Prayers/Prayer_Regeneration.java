@@ -67,7 +67,6 @@ public class Prayer_Regeneration extends Prayer
 			mob.curState().recoverTick(mob,mob.maxState());
 			mob.curState().recoverTick(mob,mob.maxState());
 			mob.curState().recoverTick(mob,mob.maxState());
-			helpProfficiency(mob);
 		}
 		return super.tick(ticking,tickID);
 	}

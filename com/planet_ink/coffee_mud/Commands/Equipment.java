@@ -32,15 +32,22 @@ public class Equipment extends StdCommand
 		if(Sense.isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
 
+	    int numTattsDone=0;
+	    long wornCode=0;
+	    String header=null;
+	    int found=0;
+	    String wornName=null;
+	    Item thisItem=null;
+	    String tat=null;
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
-			long wornCode=Item.wornOrder[l];
-			String header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
+			wornCode=Item.wornOrder[l];
+			header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
 			header+=Util.SPACES.substring(0,26-header.length())+": ^!";
-			int found=0;
+			wornName=Item.wornLocation[l];
 			for(int i=0;i<mob.inventorySize();i++)
 			{
-				Item thisItem=mob.fetchInventory(i);
+				thisItem=mob.fetchInventory(i);
 				if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					found++;
@@ -53,6 +60,21 @@ public class Equipment extends StdCommand
 					else
 					if(seer==mob)
 						msg.append(header+"(something you can`t see)"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+				}
+			}
+			if(found<mob.getWearPositions(wornCode))
+			{
+			    numTattsDone=found;
+				for(int i=0;i<mob.numTattoos();i++)
+				{
+				    tat=mob.fetchTattoo(i);
+				    if((tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
+				    &&((++numTattsDone)<=mob.getWearPositions(wornCode)))
+				    {
+				        tat=tat.substring(wornName.length()+1);
+						if(tat.length()>53) tat=tat.substring(0,50)+"...";
+						msg.append(header+tat+tat+"^?\n\r");
+				    }
 				}
 			}
 			if((allPlaces)&&(wornCode!=Item.FLOATING_NEARBY))

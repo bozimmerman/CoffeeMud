@@ -93,6 +93,12 @@ public class Prop_Auction extends Property
 					{
 						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+bid+" gold.");
 						M.doCommand(V);
+						if(!Sense.canMove(highBidder))
+						{
+							highBidder.tell("You have won the auction, but are unable to pay or collect.  Please contact "+M.name()+" about this matter immediately.");
+							M.tell(highBidder.name()+" is unable to pay or collect at this time. Please contact "+highBidder.charStats().himher()+" immediately.");
+						}
+						else
 						if(MoneyUtils.totalMoney(highBidder)<bid)
 						{
 							highBidder.tell("You can no longer cover your bid.  Please contact "+M.name()+" about this matter immediately.");

@@ -123,6 +123,14 @@ public class ChannelSet
 		return "";
 	}
 
+	public static String getDefaultChannelName()
+	{
+		for(int c=0;c<channelNames.size();c++)
+			if(((String)channelMasks.elementAt(c)).toUpperCase().indexOf("DEFAULT")>=0)
+				return ((String)channelNames.elementAt(c)).toUpperCase();
+		return "";
+	}
+	
 	public static void unloadChannels()
 	{
 		numChannelsLoaded=0;

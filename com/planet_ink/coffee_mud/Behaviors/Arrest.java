@@ -862,10 +862,16 @@ public class Arrest extends StdBehavior
 			case Law.MOD_ISJAILROOM:
 				if((laws!=null)
 		        &&(V!=null)
-		        &&(V.size()>2)
+		        &&(V.size()>1)
 		        &&(hostObj instanceof Area)
 		        &&(V.elementAt(1) instanceof Room))
-				    return getRooms((Area)hostObj,laws.jailRooms()).contains(V.elementAt(1));
+				{
+				    Vector rooms=getRooms((Area)hostObj,laws.jailRooms());
+				    boolean answer=true;
+				    for(int i=1;i<V.size();i++)
+					    answer=answer&&rooms.contains(V.elementAt(i));
+				    return answer;
+				}
 				else
 				    return false;
 			case Law.MOD_CRIMEACCUSE:
@@ -1629,13 +1635,15 @@ public class Arrest extends StdBehavior
 					CommonMsgs.say(judge,W.criminal(),laws.getMessage(Law.MSG_PREVOFF),false,false);
 				if(laws.getMessage(Law.MSG_EXECUTE).length()>0)
 					CommonMsgs.say(judge,criminal,laws.getMessage(Law.MSG_EXECUTE),false,false);
+				String channel=ChannelSet.getDefaultChannelName();
+				if((channel.length()>0)&&(judge.location()!=null))
+					CommonMsgs.channel(judge,channel,W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 				W.setState(Law.STATE_EXECUTING);
 			}
 			return false;
 		}
 		return true;
 	}
-
 
 	public boolean fillOutWarrant(MOB mob,
 								Law laws,

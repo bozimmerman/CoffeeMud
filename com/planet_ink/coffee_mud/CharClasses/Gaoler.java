@@ -63,27 +63,30 @@ public class Gaoler extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 			CMAble.addCharAbilityMapping(ID(),1,"SmokeRings",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Cooking",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Butchering",false);
-			CMAble.addCharAbilityMapping(ID(),2,"Cooking",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Searching",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Blacksmithing",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Carpentry",false);
-			CMAble.addCharAbilityMapping(ID(),6,"LockSmith",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Warrants",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Hide",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Spell_Brainwash",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Skill_HandCuff",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Thief_TarAndFeather",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Skill_ArrestingSap",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Torturesmithing",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Skill_CollectBounty",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Arrest",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Behead",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Stoning",true);
-			CMAble.addCharAbilityMapping(ID(),18,"SlaveTrading",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Skill_Enslave",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_JailKey",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Amputation",false);
+			CMAble.addCharAbilityMapping(ID(),3,"BodyPiercing",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Searching",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Blacksmithing",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Carpentry",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Tattooing",false);
+			CMAble.addCharAbilityMapping(ID(),8,"LockSmith",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Skill_Hide",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_Brainwash",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Skill_HandCuff",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_Flay",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Skill_ArrestingSap",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Torturesmithing",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_CollectBounty",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Skill_Arrest",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Behead",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Stoning",true);
+			CMAble.addCharAbilityMapping(ID(),21,"SlaveTrading",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Skill_Enslave",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Skill_JailKey",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Amputation",false);
 		}
 	}
 

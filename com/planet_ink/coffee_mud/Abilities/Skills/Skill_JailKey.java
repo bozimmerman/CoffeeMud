@@ -29,7 +29,7 @@ public class Skill_JailKey extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}
 	public int quality(){return Ability.INDIFFERENT;}
-	private static final String[] triggerStrings = {"JKEY"};
+	private static final String[] triggerStrings = {"JAILKEY","JKEY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
@@ -97,7 +97,7 @@ public class Skill_JailKey extends StdAbility
 				if(!unlockThis.isLocked())
 					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and relock(s) "+unlockThis.name()+".");
 				else
-					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and lock(s) "+unlockThis.name()+".");
+					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> use(s) <S-HIS-HER> jailkey and unlock(s) "+unlockThis.name()+".");
 				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

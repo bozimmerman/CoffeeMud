@@ -323,9 +323,9 @@ public class Amputation extends StdAbility
 		return AL;
 	}
 
-	public static void amputate(Environmental target, Amputation A, String gone)
+	public static Item amputate(Environmental target, Amputation A, String gone)
 	{
-		if(A==null) return;
+		if(A==null) return null;
 		Race R=null;
 		if(target!=null)
 		{
@@ -349,42 +349,68 @@ public class Amputation extends StdAbility
 					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" falls off!^?");
 			}
 		}
-		Item limb=CMClass.getItem("GenLimb");
-		limb.setName("a "+gone);
-		limb.baseEnvStats().setAbility(1);
-		limb.setDisplayText("a bloody "+gone+" is sitting here.");
-		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
-		int material=EnvResource.RESOURCE_MEAT;
-		if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
-			for(int r=0;r<R.myResources().size();r++)
-			{
-				Item I=(Item)R.myResources().elementAt(r);
-				int mat=I.material()&EnvResource.MATERIAL_MASK;
-				if(((mat==EnvResource.MATERIAL_FLESH))
-				||(r==R.myResources().size()-1))
+		Item limb=null;
+		if(target instanceof MOB)
+		{
+		    MOB tmob=(MOB)target;
+		    for(int i=0;i<tmob.inventorySize();i++)
+		    {
+		        Item I=tmob.fetchInventory(i);
+		        if((I!=null)
+                &&(!I.amWearingAt(Item.INVENTORY))
+                &&(I.ID().endsWith("Limb"))
+				&&((I.name().toUpperCase().endsWith(gone.toUpperCase()))
+				||(I.rawSecretIdentity().toUpperCase().endsWith(gone.toUpperCase()))))
+		        {
+		            limb=I;
+		            I.unWear();
+		            tmob.recoverCharStats();
+		            tmob.recoverEnvStats();
+		            tmob.recoverMaxState();
+		            break;
+		        }
+		    }
+		}
+		if(limb==null)
+		{
+			limb=CMClass.getItem("GenLimb");
+			limb.setName("a "+gone);
+			limb.baseEnvStats().setAbility(1);
+			limb.setDisplayText("a bloody "+gone+" is sitting here.");
+			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+			int material=EnvResource.RESOURCE_MEAT;
+			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
+				for(int r=0;r<R.myResources().size();r++)
 				{
-					material=I.material();
-					break;
+					Item I=(Item)R.myResources().elementAt(r);
+					int mat=I.material()&EnvResource.MATERIAL_MASK;
+					if(((mat==EnvResource.MATERIAL_FLESH))
+					||(r==R.myResources().size()-1))
+					{
+						material=I.material();
+						break;
+					}
 				}
-			}
-		limb.setMaterial(material);
-		limb.baseEnvStats().setLevel(1);
-		limb.baseEnvStats().setWeight(5);
-		limb.recoverEnvStats();
+			limb.setMaterial(material);
+			limb.baseEnvStats().setLevel(1);
+			limb.baseEnvStats().setWeight(5);
+			limb.recoverEnvStats();
+		}
 		if(target!=null)
 		{
 			if(target instanceof MOB)
-				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				((MOB)target).location().bringItemHere(limb,Item.REFUSE_PLAYER_DROP);
 			else
 			if((target instanceof DeadBody)
 			&&(((Item)target).owner()!=null)
 			&&(((Item)target).owner() instanceof Room))
-				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				((Room)((Item)target).owner()).bringItemHere(limb,Item.REFUSE_PLAYER_DROP);
 		}
 		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
 		if(!theRest.contains(gone)) theRest.addElement(gone);
 		for(int i=0;i<theRest.size();i++)
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
+		return limb;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -400,9 +426,15 @@ public class Amputation extends StdAbility
 		else
 		if(commands.size()>1)
 		{
-			choice=(String)commands.lastElement();
-			commands.removeElementAt(commands.size()-1);
+			choice=Util.combine(commands,1);
+			while(commands.size()>1)
+			    commands.removeElementAt(1);
 		}
+		if(choice.toUpperCase().startsWith("RIGHT "))
+		    choice=choice.substring(6).trim();
+		else
+		if(choice.toUpperCase().startsWith("LEFT "))
+		    choice=choice.substring(5).trim();
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(!auto)
@@ -440,15 +472,10 @@ public class Amputation extends StdAbility
 				mob.tell("You are too far away to try that!");
 				return false;
 			}
-			if(!Sense.isBoundOrHeld(target))
+			if((!Sense.isBoundOrHeld(target))||(!Sense.isSleeping(target)))
 			{
-				mob.tell(target.charStats().HeShe()+" is not bound and would resist.");
+				mob.tell(target.charStats().HeShe()+" must be bound, and asleep on an operating bed before you can amputate.");
 				return false;
-			}
-			if(!Sense.isSleeping(target))
-			{
-			    mob.tell(target.name()+" needs to be lying down first.");
-			    return false;
 			}
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -479,7 +506,7 @@ public class Amputation extends StdAbility
 				if(gone==null)
 				{
 					if(!auto)
-						mob.tell("There is nothing left on "+target.name()+" called '"+gone+"'!");
+						mob.tell("There is nothing left on "+target.name()+" called '"+choice+"'!");
 					return false;
 				}
 			}
