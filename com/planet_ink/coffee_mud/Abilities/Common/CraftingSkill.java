@@ -64,7 +64,7 @@ public class CraftingSkill extends CommonSkill
 	            for(int v=0;v<V.size();v++)
 	            {
 	                V2=(Vector)V.elementAt(v);
-	                if((recipes.size()==0)||(((Vector)recipes.firstElement()).size()==V2.size()))
+	                if((recipes.size()==0)||(((Vector)recipes.lastElement()).size()<=V2.size()))
 	                    recipes.addElement(V2);
 	            }
 	        }

@@ -179,6 +179,31 @@ public class Resources
 		return V;
 	}
 	
+	public static StringBuffer getFileRaw(String filename)
+	{ return getFileRaw(filename,true);}
+	public static StringBuffer getFileRaw(String filename, boolean reportErrors)
+	{
+		StringBuffer buf=new StringBuffer("");
+		try
+		{
+			FileReader F=new FileReader(filename);
+			char c=' ';
+			while(F.ready())
+			{
+				c=(char)F.read();
+				if(c<0) break;
+				buf.append(c);
+			}
+			F.close();
+		}
+		catch(Exception e)
+		{
+			if(reportErrors)
+				Log.errOut("Resource",e.getMessage());
+			return null;
+		}
+		return buf;
+	}
 	public static StringBuffer getFile(String filename)
 	{ return getFile(filename,true);}
 	public static StringBuffer getFile(String filename, boolean reportErrors)
@@ -193,7 +218,10 @@ public class Resources
 			{
 				line=reader.readLine();
 				if(line!=null)
-					buf.append(line+"\n\r");
+				{
+					buf.append(line);
+					buf.append("\n");
+				}
 			}
 			F.close();
 		}
@@ -237,9 +265,24 @@ public class Resources
 		return buf;
 	}
 	
+	public static StringBuffer saveBufNormalize(StringBuffer myRsc)
+	{
+	    for(int i=0;i<myRsc.length();i++)
+	        if(myRsc.charAt(i)=='\n')
+	        {
+	    	    for(i=myRsc.length()-1;i>=0;i--)
+	    	        if(myRsc.charAt(i)=='\r')
+	    	            myRsc.deleteCharAt(i);
+	    	    return myRsc;
+	        }
+	    for(int i=0;i<myRsc.length();i++)
+	        if(myRsc.charAt(i)=='\r')
+	            myRsc.setCharAt(i,'\n');
+	    return myRsc;
+	}
+	
 	public static void saveFileResource(String filename)
 	{saveFileResource(filename,getFileResource(filename));}
-	
 	public static void saveFile(String filename, StringBuffer myRsc)
 	{
 		if(myRsc==null)
@@ -251,7 +294,7 @@ public class Resources
 		{
 			File F=new File(filename);
 			FileWriter FW=new FileWriter(F);
-			FW.write(myRsc.toString());
+			FW.write(saveBufNormalize(myRsc).toString());
 			FW.close();
 		}
 		catch(IOException e)
@@ -270,7 +313,7 @@ public class Resources
 		{
 			File F=new File("resources"+File.separatorChar+filename);
 			FileWriter FW=new FileWriter(F);
-			FW.write(myRsc.toString());
+			FW.write(saveBufNormalize(myRsc).toString());
 			FW.close();
 		}
 		catch(IOException e)

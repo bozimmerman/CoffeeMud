@@ -1,3 +1,4 @@
+FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,NUMRIDERS,CONTAINMASK,SPELL
 % cart	1	15	150	5	GenRideable		500	2	0
 small % carriage	5	25	250	10	GenRideable		500	4	0
 % storage cart	6	25	250	8	GenRideable	LOCK	1000	1	0
@@ -9,3 +10,4 @@ small % wagon	7	20	200	7	GenRideable		1500	3	0
 large % wagon	15	45	400	20	GenRideable		5000	8	0
 large % storage wagon	15	45	400	25	GenRideable	LOCK	12000	10	0
 large % carriage	15	45	450	23	GenRideable		4000	12	0
+% wheel barrel	1	15	30	10	GenContainer		200	0	0

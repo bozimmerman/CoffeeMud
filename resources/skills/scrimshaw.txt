@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity
 % Bundle	1	1	25	0	GenResource	BUNDLE
 % comb	1	5	1	1	GenItem		0
 % Table	6	30	50	20	GenRideable	TABLE	150

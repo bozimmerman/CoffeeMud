@@ -191,6 +191,15 @@ public class FrontLogin extends StdCommand
 		if(mob.session()==null)
 			return false;
 
+		int attempt=0;
+		if(commands!=null)
+	    for(int i=0;i<commands.size();i++)
+	        if(Util.isInteger((String)commands.elementAt(i)))
+			    attempt=Util.s_int((String)commands.elementAt(i));
+	        else
+	        if(((String)commands.elementAt(i)).equalsIgnoreCase("LAST"))
+	            attempt=Integer.MAX_VALUE;
+		        
 		String login=mob.session().prompt("name:^<USER^>");
 		if(login==null) return false;
 		login=login.trim();
@@ -323,12 +332,34 @@ public class FrontLogin extends StdCommand
 			}
 			else
 			{
+			    String name=mob.Name();
 				Log.sysOut("FrontDoor","Failed login: "+mob.Name());
 				mob.setName("");
 				mob.setPlayerStats(null);
 				mob.session().println("\n\rInvalid password.\n\r");
 				if(pendingLogins.containsKey(mob.Name().toUpperCase()))
 				   pendingLogins.remove(mob.Name().toUpperCase());
+				if((!mob.session().killFlag())
+				&&(pstats!=null)
+				&&(pstats.getEmail().length()>0)
+				&&(pstats.getEmail().indexOf("@")>0)
+				&&(attempt>2)
+				&&(CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).length()>0))
+				{
+				    if(mob.session().confirm("Would you like you have your password e-mailed to you (y/N)? ","N"))
+				    {
+				        if(SMTPclient.emailIfPossible(CommonStrings.getVar(CommonStrings.SYSTEM_SMTPSERVERNAME),
+				                				   "passwords@"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase(),
+				                				   "noreply@"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase(),
+				                				   pstats.getEmail(),
+				                				   "Password for "+name,
+				                				   "Your password for "+name+" at "+CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN)+" is: '"+pstats.password()+"'."))
+				            mob.session().println("Email sent.\n\r");
+				        else
+				            mob.session().println("Error sending email.\n\r");
+				        mob.session().setKillFlag(true);
+				    }
+				}
 				return false;
 			}
 		}

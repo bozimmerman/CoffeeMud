@@ -37,8 +37,8 @@ public class Shipwright extends CraftingSkill
 	private static final int RCP_VALUE=4;
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
-	//private static final int RCP_CAPACITY=7;
-	//private static final int RCP_ARMORDMG=8;
+	private static final int RCP_CAPACITY=7;
+	private static final int RCP_CONTAINMASK=8;
 	private static final int RCP_SPELL=9;
 
 
@@ -272,6 +272,8 @@ public class Shipwright extends CraftingSkill
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+			String capacity=(String)foundRecipe.elementAt(RCP_CAPACITY);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
@@ -301,6 +303,16 @@ public class Shipwright extends CraftingSkill
 				else
 				if(misctype.equalsIgnoreCase("BED"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+				if(Util.isInteger(capacity))
+					((Rideable)building).setRiderCapacity(Util.s_int(capacity));
+			    ((Container)building).setContainTypes(canContain);
+			    ((Container)building).setCapacity(building.baseEnvStats().weight()+250+(250*Util.s_int(capacity)));
+			}
+			else
+			if(building instanceof Container)
+			{
+			    ((Container)building).setContainTypes(canContain);
+			    ((Container)building).setCapacity(Util.s_int(capacity));
 			}
 			building.recoverEnvStats();
 			building.text();

@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armor,containmask,spell
 Designer % Sleeping Bag	35	30	15	100	GenRideable	ENTER	0	0	0		
 Designer % Tent	40	60	25	250	GenRideable	ENTER	5	0	0		
 Designer % Pillow	31	10	5	60	GenBoffWeapon	BASHING		0	0	Prop_NoDamage	

@@ -3729,14 +3729,13 @@ public class Import extends StdCommand
 			if(customBother.contains(filename))
 			   continue;
 
-			if(Resources.getFileResource(filename)!=null)
+			if(Resources.getFileRaw(filename,false)!=null)
 			{
 				if(!noPrompt)
-					if(!mob.session().confirm("External resource '"+filename+"' found, import (Y/n)?","Y"))
+					if(!mob.session().confirm("\n\rExternal resource '"+filename+"' found, import (Y/n)?","Y"))
 						continue;
 			}
-		    Resources.submitResource(filename,new StringBuffer(data));
-		    Resources.saveFileResource(filename);
+		    Resources.saveFileResource(filename,new StringBuffer(data));
 		}
 	}
 
@@ -3960,7 +3959,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import areas in '"+areaFileName+"'.");
 					continue;
 				}
-				
+				buf=Resources.getFileRaw(areaFileName);
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
@@ -4029,6 +4028,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import area in '"+areaFileName+"'.");
 					continue;
 				}
+				buf=Resources.getFileRaw(areaFileName);
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
@@ -4078,6 +4078,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import room in '"+areaFileName+"'.");
 					continue;
 				}
+				buf=Resources.getFileRaw(areaFileName);
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
 				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom,externalFiles);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
@@ -4126,6 +4127,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import mobs in '"+areaFileName+"' here.");
 					continue;
 				}
+				buf=Resources.getFileRaw(areaFileName);
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4164,6 +4166,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import players in '"+areaFileName+"' here.");
 					continue;
 				}
+				buf=Resources.getFileRaw(areaFileName);
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4240,6 +4243,7 @@ public class Import extends StdCommand
 					mob.tell("You are not allowed to import items in '"+areaFileName+"' here.");
 					continue;
 				}
+				buf=Resources.getFileRaw(areaFileName);
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();

@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armor,containmask,spell
 Pointy % Cap	2	10	2	2	GenArmor	HEAD	0	1	0	
 % Sombrero	6	20	3	8	GenArmor	HEAD	0	2	0	
 % Chef's Hat	10	30	8	2	GenArmor	HEAD	0	3	0	

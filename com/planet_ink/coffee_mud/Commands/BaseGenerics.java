@@ -943,6 +943,7 @@ public class BaseGenerics extends StdCommand
 				 	&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
 				 	    str.append(A.ID()+"\n\r");
 				}
+				mob.tell("\n\rCommon Skills:\n\r"+str.toString()+"\n\r");
 			}
 			else
 			if((newName.length()>0)

@@ -66,7 +66,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CLANTROPEXP=41;
 	public static final int SYSTEM_CLANTROPAREA=42;
 	public static final int SYSTEM_COLORSCHEME=43;
-	public static final int NUM_SYSTEM=44;
+	public static final int SYSTEM_SMTPSERVERNAME=44;
+	public static final int NUM_SYSTEM=45;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -241,6 +242,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
+		setVar(SYSTEM_SMTPSERVERNAME,page.getStr("SMTPSERVERNAME"));
 		CMColor.clookup=null;
 		
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))

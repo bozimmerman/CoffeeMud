@@ -35,8 +35,8 @@ public class Chopping extends GatheringSkill
 	public Chopping()
 	{
 		super();
-		displayText="You are chopping wood...";
-		verb="chopping";
+		displayText="You are looking for a good tree...";
+		verb="looking";
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -122,7 +122,7 @@ public class Chopping extends GatheringSkill
 		}
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
-		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) chopping wood.");
+		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) looking for a good tree to chop.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
