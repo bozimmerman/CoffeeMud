@@ -1,4 +1,5 @@
 LIST is only half done in the security stuff
+grinder is not done at all in the security stuff
 resist divination no protect from scry
 scry should not tell you if you are being scryed on
 preload shows spells being invoked on people
