@@ -1,4 +1,4 @@
-GenCharClasses -- zappercheck on quals 
-Some solution for variable eq on mobs -- use rejuv! 
-code something to coffeemudify all the beds 
 parse out all the commands into classes, so that access can be class based, and time req can be determined 
+code something to coffeemudify all the beds 
+GenCharClasses -- zappercheck on quals 
+Some solution for variable eq on mobs -- use rejuv! But how to edit?!

@@ -44,6 +44,7 @@ public class TelnetSession extends Thread implements Session
 	};
 
 	private boolean lastWasCR=false;
+	private boolean lastWasLF=false;
 
 	public long lastStart=System.currentTimeMillis();
 	public long lastStop=System.currentTimeMillis();
@@ -992,15 +993,17 @@ public class TelnetSession extends Thread implements Session
 				c=-1;
 				if (!lastWasCR)
 					rv = true;
-//				lastWasCR = false;
+				lastWasLF = true; 
+				lastWasCR = false;
 				break;
 			}
 			case 13:
 			{
-//				out.print("\n\r");
 				c=-1;
-				rv = true;
+				if(!lastWasLF)
+					rv = true;
 				lastWasCR = true;
+				lastWasLF = false;
 				break;
 			}
 			case 26:
@@ -1032,6 +1035,7 @@ public class TelnetSession extends Thread implements Session
 			default:
 			{
 				lastWasCR = false;
+				lastWasLF = false;
 				break;
 			}
 		}
