@@ -108,9 +108,17 @@ public class StdAbility implements Ability, Cloneable
 	public int adjustedLevel(MOB caster)
 	{
 		if(caster==null) return 1;
-		int adjLevel=CMAble.lowestQualifyingLevel(this.ID())
-					+CMAble.qualifyingClassLevel(caster,this)
-					-CMAble.qualifyingLevel(caster,this);
+		int lowestQualifyingLevel=CMAble.lowestQualifyingLevel(this.ID());
+		int adjLevel=lowestQualifyingLevel;
+		int qualifyingLevel=CMAble.qualifyingLevel(caster,this);
+		if((caster.isMonster())||(qualifyingLevel>=0))
+			adjLevel+=(CMAble.qualifyingClassLevel(caster,this)-qualifyingLevel);
+		else
+		{
+			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
+			if(adjLevel<lowestQualifyingLevel)
+				adjLevel=lowestQualifyingLevel;
+		}
 		if(adjLevel<1) return 1;
 		return adjLevel;
 	}
@@ -410,8 +418,13 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 
 			int manaConsumed=50;
-			int diff=CMAble.qualifyingClassLevel(mob,this)
-					 -CMAble.qualifyingLevel(mob,this);
+			int qualifyingLevel=CMAble.qualifyingLevel(mob,this);
+			
+			int diff=0;
+			if(qualifyingLevel<0)
+				diff=0;
+			else
+				diff=CMAble.qualifyingClassLevel(mob,this)-qualifyingLevel;
 
 			if(diff>0)
 			switch(diff)
