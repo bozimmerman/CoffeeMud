@@ -65,12 +65,12 @@ public class Stat extends BaseAbleLister
 
 	public boolean showTableStats(MOB mob, int days, int scale, String rest)
 	{
-		if(days>0) days--;
-		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis()-(days*(24*60*60*1000)));
-		ENDQ.set(Calendar.HOUR_OF_DAY,0);
-		ENDQ.set(Calendar.MINUTE,0);
-		ENDQ.set(Calendar.SECOND,0);
-		ENDQ.set(Calendar.MILLISECOND,0);
+		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis());
+		ENDQ.add(Calendar.DATE,-days);
+		ENDQ.set(Calendar.HOUR_OF_DAY,23);
+		ENDQ.set(Calendar.MINUTE,59);
+		ENDQ.set(Calendar.SECOND,59);
+		ENDQ.set(Calendar.MILLISECOND,999);
 		CoffeeTables.update();
 		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
@@ -100,12 +100,14 @@ public class Stat extends BaseAbleLister
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
-			curTime=curTime-(scale*(24*60*60*1000));
 			IQCalendar C2=new IQCalendar(curTime);
+			C2.add(Calendar.DATE,-(scale));
+			curTime=C2.getTimeInMillis();
 			C2.set(C.HOUR_OF_DAY,23);
 			C2.set(C.MINUTE,59);
 			C2.set(C.SECOND,59);
 			C2.set(C.MILLISECOND,999);
+			curTime=C2.getTimeInMillis();
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
@@ -128,7 +130,7 @@ public class Stat extends BaseAbleLister
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
-			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60));
+			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/scale/((long)(1000*60));
 			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
 			table.append(Util.padRight(new IQCalendar(curTime+1).d2DString()+" - "+new IQCalendar(lastCur-1).d2DString(),25)

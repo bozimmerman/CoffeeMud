@@ -38,17 +38,16 @@ public class CoffeeTableRows extends StdWebMacro
 		if(scale<=0) scale=1;
 		int days=Util.s_int(httpReq.getRequestParameter("DAYS"));
 		days=days*scale;
-		if(days>0) days--;
 		if(days<=0) days=0;
 		String code=httpReq.getRequestParameter("CODE");
 		if((code==null)||(code.length()==0)) code="*";
 		
-		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis()-(days*(24*60*60*1000)));
-		
-		ENDQ.set(Calendar.HOUR_OF_DAY,0);
-		ENDQ.set(Calendar.MINUTE,0);
-		ENDQ.set(Calendar.SECOND,0);
-		ENDQ.set(Calendar.MILLISECOND,0);
+		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis());
+		ENDQ.add(Calendar.DATE,-days);
+		ENDQ.set(Calendar.HOUR_OF_DAY,23);
+		ENDQ.set(Calendar.MINUTE,59);
+		ENDQ.set(Calendar.SECOND,59);
+		ENDQ.set(Calendar.MILLISECOND,000);
 		CoffeeTables.update();
 		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){return "";}
@@ -63,8 +62,9 @@ public class CoffeeTableRows extends StdWebMacro
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;
-			curTime=curTime-(scale*(24*60*60*1000));
 			IQCalendar C2=new IQCalendar(curTime);
+			C2.add(Calendar.DATE,-scale);
+			curTime=C2.getTimeInMillis();
 			C2.set(C.HOUR_OF_DAY,23);
 			C2.set(C.MINUTE,59);
 			C2.set(C.SECOND,59);

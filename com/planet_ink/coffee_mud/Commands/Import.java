@@ -2131,7 +2131,7 @@ public class Import extends StdCommand
 			if(circleFormat)
 				M.setMoney(Util.s_int(Util.getCleanBit(codeStr4,3)));
 			else
-				M.setMoney((2*M.baseEnvStats().level())+10);
+				M.setMoney(Dice.roll(1,M.baseEnvStats().level(),0)+Dice.roll(1,10,0));
 			M.baseEnvStats().setWeight(50);
 
 			switch(positionCode)

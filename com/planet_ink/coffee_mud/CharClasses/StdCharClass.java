@@ -560,7 +560,7 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.baseEnvStats().setArmor(getLevelArmor(mob));
 		mob.baseEnvStats().setDamage(getLevelDamage(mob));
 		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
-		mob.setMoney((level*2)+10);
+		mob.setMoney(Dice.roll(1,level,0)+Dice.roll(1,10,0));
 		return mob;
 	}
 
