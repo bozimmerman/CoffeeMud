@@ -20,6 +20,7 @@ public class Spell_TimeStop extends Spell
 
 		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ROOMS;
 		canTargetCode=0;
+		overrideMana=100;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

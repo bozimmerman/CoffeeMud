@@ -607,6 +607,9 @@ public class Spell_Wish extends Spell
 				if((C!=null)&&(!C.name().equals("Archon")))
 				{
 					CharClass oldC=mob.baseCharStats().getMyClass();
+					baseLoss+=1000;
+					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 					mob.baseCharStats().getMyClass().unLevel(mob);
 					StringBuffer str=new StringBuffer("");
 					for(int trait=0;trait<6;trait++)
@@ -659,6 +662,9 @@ public class Spell_Wish extends Spell
 						else
 						{
 							tm.addAbility(A);
+							baseLoss+=500;
+							mob.charStats().getMyClass().loseExperience(mob,baseLoss);
+							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 							mob.baseCharStats().getMyClass().unLevel(mob);
 						}
 						A=tm.fetchAbility(A.ID());
@@ -752,7 +758,9 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" NO IMMUN")>=0)
 			||(myWish.indexOf(" LOSE ")>=0)))
 			{
-				mob.baseCharStats().getMyClass().unLevel(mob);
+				baseLoss+=1000;
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
 				else
@@ -775,6 +783,9 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS ")>=0)
 			||(myWish.indexOf(" TO BE ")>=0)))
 			{
+				baseLoss+=500;
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				mob.charStats().getMyClass().loseExperience(mob,baseLoss);
 				mob.baseCharStats().getMyClass().unLevel(mob);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);

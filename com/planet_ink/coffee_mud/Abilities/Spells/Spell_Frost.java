@@ -59,7 +59,7 @@ public class Spell_Frost extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A ":"<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost errupts!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A ":"<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_COLD|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

@@ -23,6 +23,7 @@ public class Spell_Advancement extends Spell
 		
 
 		baseEnvStats().setLevel(15);
+		overrideMana=100;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -71,8 +72,6 @@ public class Spell_Advancement extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

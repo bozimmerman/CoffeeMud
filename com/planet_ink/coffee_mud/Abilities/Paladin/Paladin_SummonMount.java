@@ -48,8 +48,7 @@ public class Paladin_SummonMount extends StdAbility
 				||(mob.location()==null)
 				||(invoker==null)
 				||(invoker.location()==null)
-				||(mob.location()!=invoker.location()))
-				&&(invoker.riding()!=affected))
+				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
 					mob.delAffect(this);
 					mob.destroy();
