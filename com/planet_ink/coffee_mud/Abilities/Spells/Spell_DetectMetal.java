@@ -8,7 +8,6 @@ import java.util.*;
 
 public class Spell_DetectMetal extends Spell
 {
-	Room lastRoom=null;
 	public Spell_DetectMetal()
 	{
 		super();
@@ -41,150 +40,14 @@ public class Spell_DetectMetal extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		lastRoom=null;
 		super.unInvoke();
 		mob.tell(mob,null,"Your senses are no longer as metallic.");
 	}
-	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(I==null) return "";
-		if(I.location()==container)
-		{
-			if((I.material()==Item.METAL)&&(Sense.canBeSeenBy(I,mob)))
-				msg.append(I.name()+" is made of metal.\n\r");
-			else
-			if((I.material()==Item.MITHRIL)&&(Sense.canBeSeenBy(I,mob)))
-				msg.append(I.name()+" is made of mithril.\n\r");
-		}
-		else
-		if((I.location()!=null)&&(I.location().location()==container))
-			if(msg.toString().indexOf(I.location().name()+" contains some sort of metal.")<0)
-				msg.append(I.location().name()+" contains some sort of metal.\n\r");
-		return msg.toString();
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_METAL);
 	}
-	public String metalHere(MOB mob, Environmental E, Item container)
-	{
-		StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(Sense.canBeSeenBy(E,mob)))
-		{
-			for(int i=0;i<((Room)E).numItems();i++)
-			{
-				Item I=((Room)E).fetchItem(i);
-				metalCheck(mob,I,container,msg);
-			}
-		}
-		else
-		if((E instanceof Item)&&(Sense.canBeSeenBy(E,mob)))
-		{
-			metalCheck(mob,(Item)E,container,msg);
-			msg.append(metalHere(mob,((Item)E).myOwner(),(Item)E));
-		}
-		else
-		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))
-		{
-			for(int i=0;i<((MOB)E).inventorySize();i++)
-			{
-				Item I=((MOB)E).fetchInventory(i);
-				if(!I.amWearingAt(Item.INVENTORY))
-					metalCheck(mob,I,container,msg);
-			}
-			if(((MOB)E).getMoney()>0)
-				msg.append(E.name()+" is carrying some gold.");
-		}
-		return msg.toString();
-	}
-	public void messageTo(MOB mob)
-	{
-		String last="";
-		String dirs="";
-		for(int d=0;d<=Directions.NUM_DIRECTIONS;d++)
-		{
-			Room R=null;
-			Exit E=null;
-			if(d<Directions.NUM_DIRECTIONS)
-			{
-				R=mob.location().doors()[d];
-				E=mob.location().exits()[d];
-			}
-			else
-			{
-				R=mob.location();
-				E=CMClass.getExit("StdExit");
-			}
-			if((R!=null)&&(E!=null))
-			{
-				boolean metalFound=false;
-				if(metalHere(mob,R,null).length()>0)
-					metalFound=true;
-				else
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB M=R.fetchInhabitant(m);
-					if((M!=null)&&(M!=mob)&&(metalHere(mob,M,null).length()>0))
-					{ metalFound=true; break;}
-				}
-				
-				if(metalFound)
-				{
-					if(last.length()>0)
-						dirs+=", "+last;
-					if(d>=Directions.NUM_DIRECTIONS)
-						last="here";
-					else
-						last=Directions.getFromDirectionName(d);
-				}
-			}
-		}
-
-		if((dirs.length()!=0)||(last.length()!=0))
-		{
-			if(dirs.length()==0)
-				mob.tell("You sense metal vibrations coming from "+last+".");
-			else
-				mob.tell("You sense metal vibrations coming from "+dirs.substring(2)+", and "+last+".");
-		}
-	}
-	public boolean tick(int tickID)
-	{
-		if(!super.tick(tickID))
-			return false;
-		if((tickID==Host.MOB_TICK)
-		   &&(affected!=null)
-		   &&(affected instanceof MOB)
-		   &&(((MOB)affected).location()!=null)
-		   &&((lastRoom==null)||(((MOB)affected).location()!=lastRoom)))
-		{
-			lastRoom=((MOB)affected).location();
-			messageTo((MOB)affected);
-		}
-		return true;
-	}
-	
-
-	public void affect(Affect affect)
-	{
-		super.affect(affect);
-		if((affected!=null)
-		   &&(affected instanceof MOB)
-		   &&(affect.target()!=null)
-		   &&(affect.amISource((MOB)affected))
-		   &&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
-		{
-			if((affect.tool()!=null)&&(affect.tool().ID().equals(ID())))
-			{
-				String msg=metalHere((MOB)affected,affect.target(),null);
-				if(msg.length()>0)
-					((MOB)affected).tell(msg);
-			}
-			else
-			{
-				FullMsg msg=new FullMsg(affect.source(),affect.target(),this,affect.MSG_EXAMINESOMETHING,affect.NO_EFFECT,affect.NO_EFFECT,null);
-				affect.addTrailerMsg(msg);
-			}
-		}
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

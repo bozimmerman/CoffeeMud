@@ -22,6 +22,7 @@ public class Sense
 	public final static int CAN_SPEAK=8192;
 	public final static int CAN_BREATHE=16384;
 	public final static int CAN_SEE_VICTIM=32768;
+	public final static int CAN_SEE_METAL=65536;
 
 	public final static long ALLMASK=(int)Math.round((Integer.MAX_VALUE/2)-0.5);
 
@@ -57,6 +58,8 @@ public class Sense
 	{ return ((E.envStats().sensesMask()&CAN_SPEAK)==0); }
 	public static boolean canBreathe(Environmental E)
 	{ return ((E.envStats().sensesMask()&CAN_BREATHE)==0); }
+	public static boolean canSeeMetal(Environmental E)
+	{ return ((E.envStats().sensesMask()&CAN_SEE_METAL)==CAN_SEE_METAL); }
 
 	// dispositions
 	public final static int IS_SEEN=1;
@@ -232,11 +235,14 @@ public class Sense
 		&&(isInDark(((MOB)seer).location())))
 			Say.append(" (^rheat aura^?)");
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
-			Say.append(" (glowing ^wwhite^?)");
-		//if(isSitting(seen))
-		//	Say.append(" (sitting)");
-		//if(isSleeping(seen))
-		//	Say.append(" (sleeping)");
+			Say.append(" (^wmagical aura^?)");
+		if((Sense.canSeeMetal(seer))&&(seen instanceof Item))
+			if(((Item)seen).material()==Item.METAL)
+				Say.append(" (^wmetallic aura^?)");
+			else
+			if(((Item)seen).material()==Item.MITHRIL)
+				Say.append(" (^wmithril aura^?)");
+		
 		if(isFlying(seen))
 			Say.append(" (^pflying^?)");
 		if((isLight(seen))&&(seen instanceof Item))
