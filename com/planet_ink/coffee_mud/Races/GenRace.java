@@ -518,7 +518,7 @@ public class GenRace extends StdRace
 		case 6: return ""+heightVariance();
 		case 7: return ""+shortestFemale();
 		case 8: return ""+shortestMale();
-		case 9: return ""+availability();
+		case 9: return ""+availabilityCode();
 		case 10: return leaveStr();
 		case 11: return arriveStr();
 		case 12: return ((healthBuddy==null)?"":healthBuddy.ID());
