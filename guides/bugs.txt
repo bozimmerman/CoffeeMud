@@ -7,5 +7,4 @@
   why do wizards only get one spell per level after level 10, when clerics continue to get 2? especially considering that there are at least twice as many wizard spells....
 ! com.planet_ink.coffee_mud.Behaviors.Aggressive.startFight(Aggressive.java) (NULL POINTER)
 ! if you try to remove something from a container while overburdened, it won`t let you
-? com.planet_ink.coffee_mud.Abilities.Spells.Spell_Meld.invoke(Spell_Meld.java) GenShield class cast exception (melding with gloves)
  
