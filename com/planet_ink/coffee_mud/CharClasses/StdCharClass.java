@@ -105,7 +105,6 @@ public class StdCharClass implements CharClass
 		if(victim!=null)
 		{
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
-			//SocialProcessor.relativeLevelDiff(victim,mob);
 
 			if(levelDiff<(-levelLimit) )
 				theAmount=0.0;

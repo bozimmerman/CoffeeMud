@@ -23,7 +23,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)0.5;
+	public static final float HOST_VERSION_MINOR=(float)0.6;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -287,7 +287,10 @@ public class MUD extends Thread implements Host
 		{
 			if(page.getBoolean("RUNI3SERVER"))
 			{
-				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),commandProcessor.channels.iChannelsArray());
+				String playstate=page.getStr("I3STATE");
+				if((playstate==null)||(playstate.length()==0))
+					playstate="Open to the public";
+				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),playstate,commandProcessor.channels.iChannelsArray());
 				imserver=new Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;

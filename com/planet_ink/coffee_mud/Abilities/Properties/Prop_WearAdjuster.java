@@ -14,6 +14,7 @@ public class Prop_WearAdjuster extends Property
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
 	private CharState adjCharState=null;
+	private EnvStats  adjEnvStats=null;
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
@@ -55,8 +56,9 @@ public class Prop_WearAdjuster extends Property
 	{
 		super.setMiscText(newText);
 		this.adjCharStats=new DefaultCharStats();
+		this.adjEnvStats=new DefaultEnvStats();
 		this.adjCharState=new DefaultCharState();
-		int gotit=Prop_HaveAdjuster.setAdjustments(newText,baseEnvStats(),adjCharStats,adjCharState);
+		int gotit=Prop_HaveAdjuster.setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState);
 		gotClass=((gotit&1)==1);
 		gotRace=((gotit&2)==2);
 		gotSex=((gotit&4)==4);
@@ -99,7 +101,7 @@ public class Prop_WearAdjuster extends Property
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
 					lastMOB=(MOB)affectedMOB;
-					Prop_HaveAdjuster.envStuff(affectableStats,baseEnvStats());
+					Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
 				}
 				else
 				if((affectedMOB!=null)&&((affectedMOB!=myItem.owner())||(myItem.amWearingAt(Item.INVENTORY))))

@@ -10,7 +10,7 @@ public class Spell_Dragonfire extends Spell
 	public String ID() { return "Spell_Dragonfire"; }
 	public String name(){return "Dragonfire";}
 	public String displayText(){return "(Dragonfire)";}
-	public int maxRange(){return 4;}
+	public int maxRange(){return 3;}
 	public int quality(){return MALICIOUS;};
 	public Environmental newInstance(){	return new Spell_Dragonfire();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}

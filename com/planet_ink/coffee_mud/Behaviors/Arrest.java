@@ -602,7 +602,15 @@ public class Arrest extends StdBehavior
 									int curPoints=W.criminal.curState().getHitPoints();
 									double pct=Util.div(curPoints,W.criminal.maxState().getHitPoints());
 									A.setProfficiency((int)(100-Math.round(Util.mul(pct,50))));
-									A.invoke(officer,W.criminal,(curPoints<25));
+									if(!A.invoke(officer,W.criminal,(curPoints<25)))
+									{
+										A=CMClass.getAbility("Skill_Trip");
+										curPoints=W.criminal.curState().getHitPoints();
+										pct=Util.div(curPoints,W.criminal.maxState().getHitPoints());
+										A.setProfficiency((int)(100-Math.round(Util.mul(pct,50))));
+										if(!A.invoke(officer,W.criminal,(curPoints<25)))
+											ExternalPlay.postAttack(officer,W.criminal,officer.fetchWieldedItem());
+									}
 								}
 							}
 							if(Sense.isSitting(W.criminal)||(Sense.isSleeping(W.criminal)))

@@ -70,6 +70,8 @@ public class LockSmith extends CommonSkill
 							}
 							Exit exit2=mob.location().getPairedExit(dir);
 							Room room2=mob.location().getRoomInDir(dir);
+							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
+							((Exit)workingOn).recoverEnvStats();
 							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
 							((Exit)workingOn).setKeyName(((Key)building).getKey());
 							ExternalPlay.DBUpdateExits(mob.location());

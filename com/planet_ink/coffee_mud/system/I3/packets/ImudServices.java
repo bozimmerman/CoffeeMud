@@ -63,6 +63,10 @@ public interface ImudServices {
     public abstract String getMudName();
 
     /**
+     * @return the status of this mud
+     */
+	public abstract String getMudState();
+    /**
      * @return the player port for this mud
      */
     public abstract int getMudPort();

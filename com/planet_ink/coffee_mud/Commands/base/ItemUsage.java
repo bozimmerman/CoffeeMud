@@ -65,7 +65,7 @@ public class ItemUsage
 		boolean allFlag=false;
 		String preWord="";
 		if(possibleContainerID.equalsIgnoreCase("all")) allFlag=true;
-		if((commands.size()>2)&&(!allFlag))
+		if((commands.size()>3)&&(!allFlag))
 			preWord=(String)commands.elementAt(commands.size()-2);
 		
 		if(preWord.equalsIgnoreCase("all")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID;}

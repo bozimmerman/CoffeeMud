@@ -17,6 +17,7 @@ public class Prop_HaveAdjuster extends Property
 	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
 	private CharState adjCharState=null;
+	private EnvStats adjEnvStats=null;
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
@@ -100,23 +101,23 @@ public class Prop_HaveAdjuster extends Property
 		return "";
 	}
 
-	public static int setAdjustments(String newText, EnvStats baseEnvStats, CharStats adjCharStats, CharState adjCharState)
+	public static int setAdjustments(String newText, EnvStats adjEnvStats, CharStats adjCharStats, CharState adjCharState)
 	{
 		boolean gotClass=false;
 		boolean gotRace=false;
 		boolean gotSex=false;
 
-		baseEnvStats.setAbility(getVal(newText,"abi"));
-		baseEnvStats.setArmor(getVal(newText,"arm"));
-		baseEnvStats.setAttackAdjustment(getVal(newText,"att"));
-		baseEnvStats.setDamage(getVal(newText,"dam"));
-		baseEnvStats.setDisposition(getVal(newText,"dis"));
-		baseEnvStats.setLevel(getVal(newText,"lev"));
-		baseEnvStats.setRejuv(getVal(newText,"rej"));
-		baseEnvStats.setSensesMask(getVal(newText,"sen"));
-		baseEnvStats.setSpeed(getVal(newText,"spe"));
-		baseEnvStats.setWeight(getVal(newText,"wei"));
-		baseEnvStats.setHeight(getVal(newText,"hei"));
+		adjEnvStats.setAbility(getVal(newText,"abi"));
+		adjEnvStats.setArmor(getVal(newText,"arm"));
+		adjEnvStats.setAttackAdjustment(getVal(newText,"att"));
+		adjEnvStats.setDamage(getVal(newText,"dam"));
+		adjEnvStats.setDisposition(getVal(newText,"dis"));
+		adjEnvStats.setLevel(getVal(newText,"lev"));
+		adjEnvStats.setRejuv(getVal(newText,"rej"));
+		adjEnvStats.setSensesMask(getVal(newText,"sen"));
+		adjEnvStats.setSpeed(getVal(newText,"spe"));
+		adjEnvStats.setWeight(getVal(newText,"wei"));
+		adjEnvStats.setHeight(getVal(newText,"hei"));
 
 		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
 		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));
@@ -157,25 +158,26 @@ public class Prop_HaveAdjuster extends Property
 		super.setMiscText(newText);
 		this.adjCharStats=new DefaultCharStats();
 		this.adjCharState=new DefaultCharState();
-		int gotit=setAdjustments(newText,baseEnvStats(),adjCharStats,adjCharState);
+		this.adjEnvStats=new DefaultEnvStats();
+		int gotit=setAdjustments(newText,adjEnvStats,adjCharStats,adjCharState);
 		gotClass=((gotit&1)==1);
 		gotRace=((gotit&2)==2);
 		gotSex=((gotit&4)==4);
 	}
 
-	public static void envStuff(EnvStats affectableStats, EnvStats baseEnvStats)
+	public static void envStuff(EnvStats affectableStats, EnvStats adjEnvStats)
 	{
-		affectableStats.setAbility(affectableStats.ability()+baseEnvStats.ability());
-		affectableStats.setArmor(affectableStats.armor()+baseEnvStats.armor());
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+baseEnvStats.attackAdjustment());
-		affectableStats.setDamage(affectableStats.damage()+baseEnvStats.damage());
-		affectableStats.setDisposition(affectableStats.disposition()|baseEnvStats.disposition());
-		affectableStats.setLevel(affectableStats.level()+baseEnvStats.level());
-		affectableStats.setRejuv(affectableStats.rejuv()+baseEnvStats.rejuv());
-		affectableStats.setSensesMask(affectableStats.sensesMask()|baseEnvStats.sensesMask());
-		affectableStats.setSpeed(affectableStats.speed()+baseEnvStats.speed());
-		affectableStats.setWeight(affectableStats.weight()+baseEnvStats.weight());
-		affectableStats.setHeight(affectableStats.height()+baseEnvStats.height());
+		affectableStats.setAbility(affectableStats.ability()+adjEnvStats.ability());
+		affectableStats.setArmor(affectableStats.armor()+adjEnvStats.armor());
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjEnvStats.attackAdjustment());
+		affectableStats.setDamage(affectableStats.damage()+adjEnvStats.damage());
+		affectableStats.setDisposition(affectableStats.disposition()|adjEnvStats.disposition());
+		affectableStats.setLevel(affectableStats.level()+adjEnvStats.level());
+		affectableStats.setRejuv(affectableStats.rejuv()+adjEnvStats.rejuv());
+		affectableStats.setSensesMask(affectableStats.sensesMask()|adjEnvStats.sensesMask());
+		affectableStats.setSpeed(affectableStats.speed()+adjEnvStats.speed());
+		affectableStats.setWeight(affectableStats.weight()+adjEnvStats.weight());
+		affectableStats.setHeight(affectableStats.height()+adjEnvStats.height());
 	}
 
 	public static void addMe(MOB lastMOB, CharState adjCharState, Ability me)
@@ -248,7 +250,7 @@ public class Prop_HaveAdjuster extends Property
 					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
 					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
 					lastMOB=(MOB)affectedMOB;
-					envStuff(affectableStats,baseEnvStats());
+					envStuff(affectableStats,adjEnvStats);
 				}
 				else
 				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))

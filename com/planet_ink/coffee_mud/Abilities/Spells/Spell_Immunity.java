@@ -9,7 +9,7 @@ public class Spell_Immunity extends Spell
 {
 	public String ID() { return "Spell_Immunity"; }
 	public String name(){return "Immunity";}
-	public String displayText(){return "(immunity to "+immunityName+")";}
+	public String displayText(){return "(Immunity to "+immunityName+")";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Immunity();}

@@ -536,7 +536,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				super.affect(affect);
 				Vector V=getDepositedItems(mob.name());
 				StringBuffer msg=new StringBuffer("\n\r");
-				String c="^x[Item                ] ";
+				String c="^x[Item                                  ] ";
 				msg.append(c+c+"^^^N\n\r");
 				int colNum=0;
 				Coins coins=null;
@@ -551,7 +551,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					otherThanCoins=true;
 					String col=null;
-					col="["+Util.padRight(I.name(),20)+"] ";
+					col="["+Util.padRight(I.name(),38)+"] ";
 					if((++colNum)>2)
 					{
 						msg.append("\n\r");

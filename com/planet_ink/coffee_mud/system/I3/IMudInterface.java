@@ -12,6 +12,7 @@ public class IMudInterface implements ImudServices, Serializable
 {
 	public String version="CoffeeMud 3.0";
 	public String name="CoffeeMud";
+	public String i3state="Open to the public";
 	public int port=4444;
 	public String[][] channels={{"diku_chat","CHAT","0"},
 								{"diku_immortals","GOSSIP","32"},
@@ -89,9 +90,10 @@ public class IMudInterface implements ImudServices, Serializable
 
 														
 	
-	public IMudInterface (String Name, String Version, int Port, String[][] Channels)
+	public IMudInterface (String Name, String Version, int Port, String i3status, String[][] Channels)
 	{
 		if(Name!=null) name=Name;
+		if(i3status!=null) i3state=i3status;
 		if(Version!=null) version=Version;
 		if(Channels!=null) channels=Channels;
 		port=Port;
@@ -455,11 +457,20 @@ public class IMudInterface implements ImudServices, Serializable
 	}
 	
     /**
+     * @return the software name and version
+     */
+    public String getMudState()
+	{
+		return i3state;
+	}
+	
+    /**
      * @return the player port for this mud
      */
     public int getMudPort(){
 		return port;
 	}
+	
 
     /**
      * Given a local channel name, returns the level

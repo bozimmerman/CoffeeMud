@@ -128,6 +128,7 @@ public class WebHelper
 			s.append("<li class=\"cmPlayerListEntry");
 			MOB m = session.mob();
 			if ( (m!=null) && (m.name() != null) 
+				&&(Sense.isSeen(m))
 				&& (m.name().length() > 0) )
 			{
 				// jef: nb - only shows full sysops, not subops
