@@ -179,6 +179,17 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.resetRequestEncodedParameters();
 		}
 		else
+		if(parms.containsKey("EDITMOB"))
+		{
+			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			if(mob==null) return "@break@";
+			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			if(R==null) return "@break@";
+			String errMsg=GrinderMobs.editMob(httpReq,parms,R);
+			httpReq.getRequestParameters().put("ERRMSG",errMsg);
+			httpReq.resetRequestEncodedParameters();
+		}
+		else
 		if(parms.containsKey("DELROOM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));

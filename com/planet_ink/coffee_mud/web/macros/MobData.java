@@ -1,5 +1,571 @@
 package com.planet_ink.coffee_mud.web.macros;
+import java.util.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 
-public class MobData
+
+public class MobData extends StdWebMacro
 {
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+
+	public static int getShopCardinality(ShopKeeper E, Environmental O)
+	{
+		Vector V=E.getUniqueStoreInventory();
+		for(int i=0;i<V.size();i++)
+			if(O==(V.elementAt(i)))
+				return i;
+		return -1;
+	}
+	
+	public static String senses(Environmental E, 
+								boolean firstTime,
+								ExternalHTTPRequests httpReq, 
+								Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int d=0;d<EnvStats.sensesDescs.length;d++)
+		{
+			if(parms.containsKey(EnvStats.sensesDescs[d]))
+			{
+				String parm=(String)httpReq.getRequestParameters().get(EnvStats.sensesDescs[d]);
+				if(firstTime)
+					parm=(((E.baseEnvStats().sensesMask()&(1<<d))>0)?"on":"");
+				if((parm!=null)&&(parm.length()>0))
+					str.append("checked");
+			}
+		}
+		return str.toString();
+	}
+	
+	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("ABILITIES"))
+		{
+			Vector theclasses=new Vector();
+			Vector theparms=new Vector();
+			if(httpReq.getRequestParameters().containsKey("ABLES1"))
+			{
+				int num=1;
+				String behav=(String)httpReq.getRequestParameters().get("ABLES"+num);
+				while(behav!=null)
+				{
+					if(behav.length()>0)
+						theclasses.addElement(behav);
+					num++;
+					behav=(String)httpReq.getRequestParameters().get("ABLES"+num);
+				}
+			}
+			else
+			for(int a=0;a<E.numAbilities();a++)
+			{
+				Ability Able=E.fetchAbility(a);
+				if((Able!=null)&&(!Able.isBorrowed(E)))
+					theclasses.addElement(CMClass.className(Able));
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			Vector sortMeA=new Vector();
+			for(int r=0;r<CMClass.abilities.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				str.append("<TR><TD WIDTH=100%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=ABLES"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				for(int r=0;r<sortedA.length;r++)
+				{
+					String cnam=(String)sortedA[r];
+					str.append("<OPTION VALUE=\""+cnam+"\"");
+					if(theclass.equals(cnam))
+						str.append(" SELECTED");
+					str.append(">"+cnam);
+				}
+				str.append("</SELECT>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=100%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
+			for(int r=0;r<sortedA.length;r++)
+			{
+				String cnam=(String)sortedA[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+	
+	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("SHOPINVENTORY"))
+		{
+			Vector theclasses=new Vector();
+			Vector theparms=new Vector();
+			if(httpReq.getRequestParameters().containsKey("SHP1"))
+			{
+				int num=1;
+				String MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
+				String theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+				Vector inventory=E.getUniqueStoreInventory();
+				while((MATCHING!=null)&&(theparm!=null))
+				{
+					if(MATCHING==null)
+						break;
+					else
+					if(Util.s_int(MATCHING)>0)
+					{
+						Environmental O=(Environmental)inventory.elementAt(Util.s_int(MATCHING)-1);
+						if(O!=null)
+							theclasses.addElement(O);
+					}
+					else
+					if(MATCHING.indexOf("@")>0)
+					{
+						Environmental O=null;
+						for(int m=0;m<RoomData.mobs.size();m++)
+						{
+							MOB M2=(MOB)RoomData.mobs.elementAt(m);
+							if(MATCHING.equals(""+M2))
+							{	O=M2;	break;	}
+						}
+						if(O==null)
+							O=RoomData.getItemFromAnywhere(null,MATCHING);
+						if(O!=null)
+							theclasses.addElement(O);
+					}
+					else
+					{
+						Environmental O=null;
+						for(int m=0;m<CMClass.MOBs.size();m++)
+						{
+							MOB M2=(MOB)CMClass.MOBs.elementAt(m);
+							if(CMClass.className(M2).equals(MATCHING)&&(!M2.isGeneric()))
+							{	O=M2.copyOf(); break;	}
+						}
+						if(O==null)
+						for(int m=0;m<CMClass.abilities.size();m++)
+						{
+							Ability A2=(Ability)CMClass.abilities.elementAt(m);
+							if(CMClass.className(A2).equals(MATCHING))
+							{	O=A2.copyOf(); break;	}
+						}
+						if(O==null)
+							O=RoomData.getItemFromAnywhere(null,MATCHING);
+						if(O!=null)
+							theclasses.addElement(O);
+					}
+					theparms.addElement(theparm);
+					num++;
+					MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
+					theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+				}
+			}
+			else
+			{
+				Vector V=E.getUniqueStoreInventory();
+				Vector itemClasses=new Vector();
+				Vector mobClasses=new Vector();
+				for(int b=0;b<V.size();b++)
+				{
+					Environmental O=(Environmental)V.elementAt(b);
+					if(O instanceof Item) itemClasses.addElement(O);
+					if(O instanceof MOB) mobClasses.addElement(O);
+					theclasses.addElement(O);
+					theparms.addElement(""+E.numberInStock(O));
+				}
+				RoomData.contributeItems(itemClasses);
+				RoomData.contributeMOBs(mobClasses);
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<theclasses.size();i++)
+			{
+				Environmental O=(Environmental)theclasses.elementAt(i);
+				String theparm=(String)theparms.elementAt(i);
+				str.append("<TR><TD WIDTH=50%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				if(E.getUniqueStoreInventory().contains(O))
+					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.name()+" ("+CMClass.className(O)+")");
+				else
+				if(RoomData.items.contains(O))
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.name()+" ("+CMClass.className(O)+")");
+				else
+				if(RoomData.mobs.contains(O))
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.name()+" ("+CMClass.className(O)+")");
+				else
+					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(O)+"\">"+O.name()+" ("+CMClass.className(O)+")");
+				str.append("</SELECT>");
+				str.append("</TD><TD WIDTH=50%>Stock:");
+				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=50%>");
+			Vector sortMeA=new Vector();
+			for(int r=0;r<CMClass.abilities.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			for(int r=0;r<CMClass.MOBs.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.MOBs.elementAt(r)));
+			for(int r=0;r<CMClass.items.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.items.elementAt(r)));
+			for(int r=0;r<CMClass.weapons.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
+			for(int r=0;r<CMClass.armor.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.armor.elementAt(r)));
+			for(int r=0;r<CMClass.miscMagic.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
+			for(int r=0;r<sortedA.length;r++)
+			{
+				String cnam=(String)sortedA[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD><TD WIDTH=50%>Stock:");
+			str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+	
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	{
+		Hashtable parms=parseParms(parm);
+		Hashtable reqs=httpReq.getRequestParameters();
+		String last=(String)reqs.get("ROOM");
+		if(last==null) return " @break@";
+		String mobCode=(String)reqs.get("MOB");
+		if(mobCode==null) return "@break@";
+		
+		Room R=null;
+		for(int i=0;i<httpReq.cache().size();i++)
+		{
+			Object O=httpReq.cache().elementAt(i);
+			if((O instanceof Room)&&(((Room)O).ID().equals(last)))
+				R=(Room)O;
+		}
+		if(R==null)
+		{
+			R=CMMap.getRoom(last);
+			if(R==null)
+				return "No Room?!";
+			ExternalPlay.resetRoom(R);
+			httpReq.cache().addElement(R);
+		}
+		
+		MOB M=null;
+		if(mobCode.equals("NEW"))
+			M=CMClass.getMOB("GenMob");
+		else
+			M=R.fetchInhabitant(Util.s_int(mobCode)-1);
+		
+		if(M==null)
+			return "No MOB?!";
+		
+		MOB oldM=M;
+		// important generic<->non generic swap!
+		String newClassID=(String)reqs.get("CLASSES");
+		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
+			M=CMClass.getMOB(newClassID);
+		
+		if(M==null)
+			return "No MOB!!";
+		
+		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(mobCode.equals("NEW"));
+		boolean firstTime=(reqs.get("ACTION")==null)
+				||(!((String)reqs.get("ACTION")).equals("MODIFYMOB"))
+				||(changedClass);
+		
+		if((changedClass)&&(M.isGeneric()))
+			M.baseCharStats().getMyClass().buildMOB(M,Util.s_int((String)reqs.get("LEVEL")),M.getAlignment(),M.baseEnvStats().weight(),M.getWimpHitPoint(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+		
+		StringBuffer str=new StringBuffer("");
+		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+						  "LEVEL","ABILITY","REJUV","MISCTEXT",
+						  "RACE","GENDER","HEIGHT","WEIGHT",
+						  "SPEED","ATTACK","DAMAGE","ARMOR",
+						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
+						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC"};
+		for(int o=0;o<okparms.length;o++)
+		if(parms.containsKey(okparms[o]))
+		{
+			String old=(String)reqs.get(okparms[o]);
+			String oldold=old;
+			if(old==null) old="";
+			switch(o)
+			{
+			case 0: // name
+				if(firstTime) old=M.name();
+				str.append(old);
+				break;
+			case 1: // classes
+				{
+					if(firstTime) old=CMClass.className(M); 
+					Vector sortMe=new Vector();
+					for(int r=0;r<CMClass.MOBs.size();r++)
+						sortMe.addElement(CMClass.className(CMClass.MOBs.elementAt(r)));
+					Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+					for(int r=0;r<sorted.length;r++)
+					{
+						String cnam=(String)sorted[r];
+						str.append("<OPTION VALUE=\""+cnam+"\"");
+						if(old.equals(cnam))
+							str.append(" SELECTED");
+						str.append(">"+cnam);
+					}
+				}
+				break;
+			case 2: // displaytext
+				if(firstTime) old=M.displayText(); 
+				str.append(old);
+				break;
+			case 3: // description
+				if(firstTime) old=M.description(); 
+				str.append(old);
+				break;
+			case 4: // level
+				if(firstTime) old=""+M.baseEnvStats().level(); 
+				str.append(old);
+				break;
+			case 5: // ability;
+				if(firstTime) old=""+M.baseEnvStats().ability(); 
+				str.append(old);
+				break;
+			case 6: // rejuv;
+				if(firstTime) old=""+M.baseEnvStats().rejuv(); 
+				if(old.equals(""+Integer.MAX_VALUE))
+					str.append("0");
+				else
+					str.append(old);
+				break;
+			case 7: // misctext
+				if(firstTime) old=M.text(); 
+				str.append(old);
+				break;
+			case 8: // race
+				if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
+				for(int r=0;r<CMClass.races.size();r++)
+				{
+					Race R2=(Race)CMClass.races.elementAt(r);
+					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
+					if(R2.ID().equals(old))
+						str.append(" SELECTED");
+					str.append(">"+R2.name());
+				}
+				break;
+			case 9: // gender
+				if(firstTime) old=""+((char)M.baseCharStats().getStat(CharStats.GENDER));
+				if(old.toUpperCase().startsWith("M"))
+				{
+					str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
+					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+				}
+				else
+				if(old.toUpperCase().startsWith("F"))
+				{
+					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
+					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
+				}
+				else
+				{
+					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
+					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+				}
+				break;
+			case 10: // height
+				if(firstTime) old=""+M.baseEnvStats().height(); 
+				str.append(old);
+				break;
+			case 11: // weight
+				if(firstTime) old=""+M.baseEnvStats().weight(); 
+				str.append(old);
+				break;
+			case 12: // speed
+				if(firstTime) old=""+M.baseEnvStats().speed(); 
+				str.append(old);
+				break;
+			case 13: // attack
+				if(firstTime) old=""+M.baseEnvStats().attackAdjustment(); 
+				str.append(old);
+				break;
+			case 14: // damage
+				if(firstTime) old=""+M.baseEnvStats().damage(); 
+				str.append(old);
+				break;
+			case 15: // armor
+				if(firstTime) old=""+M.baseEnvStats().armor(); 
+				str.append(old);
+				break;
+			case 16: // alignment
+				if(firstTime) old=""+M.getAlignment();
+				if(Util.s_int(old)<350)
+				{
+					str.append("<OPTION SELECTED VALUE=0>Evil");
+					str.append("<OPTION VALUE=500>Neutral");
+					str.append("<OPTION VALUE=1000>Good");
+				}
+				else
+				if(Util.s_int(old)<650)
+				{
+					str.append("<OPTION VALUE=0>Evil");
+					str.append("<OPTION SELECTED VALUE=500>Neutral");
+					str.append("<OPTION VALUE=1000>Good");
+				}
+				else
+				{
+					str.append("<OPTION VALUE=0>Evil");
+					str.append("<OPTION VALUE=500>Neutral");
+					str.append("<OPTION SELECTED VALUE=1000>Good");
+				}
+				break;
+			case 17: // money
+				if(firstTime) old=""+M.getMoney();
+				str.append(old);
+				break;
+			case 18: // is rideable
+				if(M instanceof Rideable) return "true";
+				else return "false";
+			case 19: // rideable type
+				if((firstTime)&&(M instanceof Rideable))
+					old=""+((Rideable)M).rideBasis();
+				for(int r=0;r<Rideable.RIDEABLE_DESCS.length;r++)
+				{
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(r==Util.s_int(old))
+						str.append(" SELECTED");
+					str.append(">"+Rideable.RIDEABLE_DESCS[r]);
+				}
+				break;
+			case 20: // rideable capacity
+				if((firstTime)&&(M instanceof Rideable))
+					old=""+((Rideable)M).mobCapacity();
+				str.append(old);
+				break;
+			case 21: // is shopkeeper
+				if(M instanceof ShopKeeper) return "true";
+				else return "false";
+			case 22: // shopkeeper type
+				if((firstTime)&&(M instanceof ShopKeeper))
+					old=""+((ShopKeeper)M).whatIsSold();
+				for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
+				{
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(r==Util.s_int(old))
+						str.append(" SELECTED");
+					str.append(">"+ShopKeeper.SOLDCODES[r]);
+				}
+				break;
+			case 23:
+				if(M.isGeneric()) return "true";
+				else return "false";
+			}
+			if(firstTime)
+				reqs.put(okparms[o],old.equals("checked")?"on":old);
+				
+		}
+		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
+		str.append(MobData.senses(M,firstTime,httpReq,parms));
+		str.append(AreaData.affectsNBehaves(M,httpReq,parms));
+		str.append(MobData.abilities(M,httpReq,parms));
+		if(M instanceof ShopKeeper)
+			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
+		
+		if(parms.containsKey("ITEMLIST"))
+		{
+			Vector classes=new Vector();
+			Vector itemlist=null;
+			if(httpReq.getRequestParameters().containsKey("ITEM1"))
+			{
+				itemlist=RoomData.items;
+				for(int i=1;;i++)
+				{
+					String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+					if(MATCHING==null)
+						break;
+					else
+					{
+						Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
+						if(I2!=null)
+							classes.addElement(I2);
+					}
+				}
+			}
+			else
+			{
+				for(int m=0;m<M.inventorySize();m++)
+				{
+					Item I2=M.fetchInventory(m);
+					classes.addElement(I2);
+				}
+				itemlist=RoomData.contributeItems(classes);
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			for(int i=0;i<classes.size();i++)
+			{
+				Item I=(Item)classes.elementAt(i);
+				Item TI=null;
+				str.append("<TR>");
+				str.append("<TD WIDTH=90%>");
+				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				if(M.isMine(I))
+					str.append("<OPTION SELECTED VALUE=\""+(RoomData.getItemCardinality(M,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":"(worn/wielded)"));
+				else
+				if(itemlist.contains(I))
+					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+				else
+					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+				str.append("</SELECT>");
+				str.append("</TD>");
+				str.append("<TD WIDTH=10%>");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+(i+1)+"');\">");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+			str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME=ITEM"+(classes.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
+			for(int i=0;i<itemlist.size();i++)
+			{
+				Item I=(Item)itemlist.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			Vector sortMe=new Vector();
+			for(int r=0;r<CMClass.items.size();r++)
+				if(!((Item)CMClass.items.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.items.elementAt(r)));
+			for(int r=0;r<CMClass.weapons.size();r++)
+				if(!((Item)CMClass.weapons.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
+			for(int r=0;r<CMClass.armor.size();r++)
+				if(!((Item)CMClass.armor.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.armor.elementAt(r)));
+			for(int r=0;r<CMClass.miscMagic.size();r++)
+				if(!((Item)CMClass.miscMagic.elementAt(r)).isGeneric())
+					sortMe.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+			for(int i=0;i<sorted.length;i++)
+				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+			str.append("</SELECT>");
+			str.append("</TD>");
+			str.append("<TD WIDTH=10%>");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+			str.append("</TD></TR></TABLE>");
+		}
+		if(firstTime)
+			httpReq.resetRequestEncodedParameters();
+			
+		String strstr=str.toString();
+		if(strstr.endsWith(", "))
+			strstr=strstr.substring(0,strstr.length()-2);
+		return strstr;
+	}
 }

@@ -68,4 +68,39 @@ public interface EnvStats extends Cloneable
 	public void setHeight(int newHeight);
 
 	public EnvStats cloneStats();
+	
+	public static final String[] sensesDescs={"CANSEE",
+											  "CANSEEHIDDEN",
+											  "CANSEEINVISIBLE",
+											  "CANSEEEVIL",
+											  "CANSEEGOOD",
+											  "CANSEESNEAKERS",
+											  "CANSEEBONUS",
+											  "CANSEEDARK",
+											  "CANSEEINFRARED",
+											  "CANHEAR",
+											  "CANMOVE",
+											  "CANSMELL",
+											  "CANTASTE",
+											  "CANSPEAK",
+											  "CANBREATHE",
+											  "CANSEEVICTIM",
+											  "CANSEEMETAL"};
+	
+	public static final String[] dispositionsDescs={"ISSEEN",
+													"ISHIDDEN",
+													"ISINVISIBLE",
+													"ISEVIL",
+													"ISGOOD",
+													"ISSNEAKING",
+													"ISBONUS",
+													"ISDARK",
+													"ISINFRARED",
+													"ISSLEEPING",
+													"ISSITTING",
+													"ISFLYING",
+													"ISSWIMMING",
+													"ISLIGHT",
+													"ISCLIMBING",
+													"ISFALLING"};
 }

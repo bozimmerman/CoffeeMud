@@ -42,7 +42,7 @@ public class ItemData extends StdWebMacro
 		if(itemCode.equals("NEW"))
 			I=CMClass.getItem("GenItem");
 		else
-		if(mobNum!=null)
+		if((mobNum!=null)&&(mobNum.length()>0))
 		{
 			M=R.fetchInhabitant(Util.s_int(mobNum)-1);
 			if(M==null)

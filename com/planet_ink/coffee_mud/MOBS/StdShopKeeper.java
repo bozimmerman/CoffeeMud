@@ -7,7 +7,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	protected int whatISell=0;
 	private Vector storeInventory=new Vector();
-	private int initializedSpecialContentInventory=2;
 	protected Vector baseInventory=new Vector();
 	private Hashtable duplicateInventory=new Hashtable();
 
@@ -75,6 +74,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return storeInventory.size();
 	}
 
+	public void clearStoreInventory()
+	{
+		storeInventory.clear();
+		baseInventory.clear();
+		duplicateInventory.clear();
+	}
+	
 	public Vector getUniqueStoreInventory()
 	{
 		Vector V=new Vector();

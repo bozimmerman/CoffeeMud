@@ -167,7 +167,7 @@ public class Sense
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
-			if(isInDark(mob.location()))
+			if((mob.location()!=null)&&(isInDark(mob.location())))
 			{
 				if((isLight(seen))||(isLight(seer)))
 					return true;

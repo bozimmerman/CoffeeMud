@@ -9,35 +9,17 @@ public class ExitData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
-	
-	private static final String[] dispositions={"ISSEEN",
-												"ISHIDDEN",
-												"ISINVISIBLE",
-												"ISEVIL",
-												"ISGOOD",
-												"ISSNEAKING",
-												"ISBONUS",
-												"ISDARK",
-												"ISINFRARED",
-												"ISSLEEPING",
-												"ISSITTING",
-												"ISFLYING",
-												"ISSWIMMING",
-												"ISLIGHT",
-												"ISCLIMBING",
-												"ISFALLING"};
-	
 	public static String dispositions(Environmental E, 
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq, 
 									  Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int d=0;d<dispositions.length;d++)
+		for(int d=0;d<EnvStats.dispositionsDescs.length;d++)
 		{
-			if(parms.containsKey(dispositions[d]))
+			if(parms.containsKey(EnvStats.dispositionsDescs[d]))
 			{
-				String parm=(String)httpReq.getRequestParameters().get(dispositions[d]);
+				String parm=(String)httpReq.getRequestParameters().get(EnvStats.dispositionsDescs[d]);
 				if(firstTime)
 					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))

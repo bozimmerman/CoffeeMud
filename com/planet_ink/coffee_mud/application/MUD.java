@@ -181,8 +181,7 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD",getVer());
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
-		Log.sysOut("MUD","Starting...");
-		
+	
 		while (!serverIsRunning && isOK)
 		{
 		}
@@ -196,18 +195,12 @@ public class MUD extends Thread implements Host
 		{
 			if (loadWebCommonPropPage())
 			{
-				if(HTTPserver.loadWebMacros())
-				{
-					Log.sysOut("MUD","Attempting to start web servers");
-					webServerThread = new HTTPserver(this,"pub");
-					webServerThread.start();
-					adminServerThread = new HTTPserver(this,"admin");
-					adminServerThread.start();
-				}
-				else
-				{
-					Log.errOut("MUD","Unable to start web server - loadWebMacros() failed");
-				}
+				webServerThread = new HTTPserver(this,"pub");
+				webServerThread.start();
+				adminServerThread = new HTTPserver(this,"admin");
+				adminServerThread.start();
+				if(!HTTPserver.loadWebMacros())
+					Log.errOut("MUD","Unable to loadWebMacros");
 			}
 			else
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");

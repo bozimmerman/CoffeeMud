@@ -140,8 +140,7 @@ public class HTTPserver extends Thread
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			Log.sysOut(getName(),"CoffeeMud HTTPserver v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
-			Log.sysOut(getName(),"Written and (c) 2002 Jeff Kamenek");
+			Log.sysOut(getName(),"HTTPserver (c)2002 Jeff Kamenek");
 		}
 
 		return true;
@@ -205,7 +204,7 @@ public class HTTPserver extends Thread
 
 		if (page.getStr("ADMIN") != null && page.getStr("ADMIN").equalsIgnoreCase("true"))
 		{
-			Log.sysOut(getName(),"Admin mode");
+			//Log.sysOut(getName(),"Admin mode");
 			isAdminServer = true;
 		}
 		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)

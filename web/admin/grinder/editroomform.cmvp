@@ -11,7 +11,7 @@
 	<!--
 		function AddNewItem()
 		{
-			document.AREAEDIT.action='/grinder/additem.cmvp';
+			document.AREAEDIT.action='/grinder/addroomitem.cmvp';
 			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
 		}
@@ -23,7 +23,7 @@
 		function EditItem(ME)
 		{
 			document.AREAEDIT.ITEM.value=ME;
-			document.AREAEDIT.action='/grinder/edititem.cmvp';
+			document.AREAEDIT.action='/grinder/editroomitem.cmvp';
 			document.AREAEDIT.target='_top';
 			document.AREAEDIT.submit();
 		}

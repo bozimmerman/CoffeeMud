@@ -10,25 +10,9 @@ public class GrinderExits
 	{
 		E.baseEnvStats().setDisposition(0);
 		StringBuffer str=new StringBuffer("");
-		String[] dispositions={"ISSEEN",
-							   "ISHIDDEN",
-							   "ISINVISIBLE",
-							   "ISEVIL",
-							   "ISGOOD",
-							   "ISSNEAKING",
-							   "ISBONUS",
-							   "ISDARK",
-							   "ISINFRARED",
-							   "ISSLEEPING",
-							   "ISSITTING",
-							   "ISFLYING",
-							   "ISSWIMMING",
-							   "ISLIGHT",
-							   "ISCLIMBING",
-							   "ISFALLING"};
-		for(int d=0;d<dispositions.length;d++)
+		for(int d=0;d<EnvStats.dispositionsDescs.length;d++)
 		{
-			String parm=(String)httpReq.getRequestParameters().get(dispositions[d]);
+			String parm=(String)httpReq.getRequestParameters().get(EnvStats.dispositionsDescs[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|(1<<d));
 		}

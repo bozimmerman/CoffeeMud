@@ -45,6 +45,61 @@ public class RoomData extends StdWebMacro
 		return -1;
 	}
 	
+	public static Item getItemFromAnywhere(Object allitems, String MATCHING)
+	{
+		if(Util.s_int(MATCHING)>0)
+		{
+			Item I2=null;
+			if(allitems instanceof Room)
+				return ((Room)allitems).fetchItem(Util.s_int(MATCHING)-1);
+			else
+			if(allitems instanceof MOB)
+				return ((MOB)allitems).fetchInventory(Util.s_int(MATCHING)-1);
+			else
+			if((allitems instanceof Vector)
+			&&((Util.s_int(MATCHING)-1)<((Vector)allitems).size()))
+				return ((Item)((Vector)allitems).elementAt(Util.s_int(MATCHING)-1));
+		}
+		else
+		if(MATCHING.indexOf("@")>0)
+		{
+			for(int m=0;m<items.size();m++)
+			{
+				Item I2=(Item)items.elementAt(m);
+				if(MATCHING.equals(""+I2))
+					return I2;
+			}
+		}
+		else
+		{
+			for(int m=0;m<CMClass.items.size();m++)
+			{
+				Item I=(Item)CMClass.items.elementAt(m);
+				if(CMClass.className(I).equals(MATCHING))
+					return I;
+			}
+			for(int m=0;m<CMClass.armor.size();m++)
+			{
+				Item I=(Item)CMClass.armor.elementAt(m);
+				if(CMClass.className(I).equals(MATCHING))
+					return I;
+			}
+			for(int m=0;m<CMClass.weapons.size();m++)
+			{
+				Item I=(Item)CMClass.weapons.elementAt(m);
+				if(CMClass.className(I).equals(MATCHING))
+					return I;
+			}
+			for(int m=0;m<CMClass.miscMagic.size();m++)
+			{
+				Item I=(Item)CMClass.miscMagic.elementAt(m);
+				if(CMClass.className(I).equals(MATCHING))
+					return I;
+			}
+		}
+		return null;
+	}
+	
 	public static MOB getMOBAtCardinality(Room R, int here)
 	{
 		int card=0;
@@ -132,16 +187,19 @@ public class RoomData extends StdWebMacro
 	{
 		for(int i=0;i<inhabs.size();i++)
 		{
-			boolean found=false;
 			MOB M=(MOB)inhabs.elementAt(i);
-			for(int m=0;m<mobs.size();m++)
+			if(M.isGeneric())
 			{
-				MOB M2=(MOB)mobs.elementAt(m);
-				if(MOBSsame(M,M2))
-				{	found=true;	break;	}
+				boolean found=false;
+				for(int m=0;m<mobs.size();m++)
+				{
+					MOB M2=(MOB)mobs.elementAt(m);
+					if(MOBSsame(M,M2))
+					{	found=true;	break;	}
+				}
+				if(!found)
+					mobs.addElement((MOB)M.copyOf());
 			}
-			if(!found)
-				mobs.addElement((MOB)M.copyOf());
 		}
 		return mobs;
 	}
@@ -150,20 +208,23 @@ public class RoomData extends StdWebMacro
 	{
 		for(int i=0;i<inhabs.size();i++)
 		{
-			boolean found=false;
 			Item I=(Item)inhabs.elementAt(i);
-			for(int i2=0;i2<items.size();i2++)
+			if(I.isGeneric())
 			{
-				Item I2=(Item)items.elementAt(i2);
-				if(ItemsSame(I,I2))
-				{	found=true;	break;	}
-			}
-			if(!found)
-			{
-				Item I2=(Item)I.copyOf();
-				I.setContainer(null);
-				I.wearAt(Item.INVENTORY);
-				items.addElement(I.copyOf());
+				boolean found=false;
+				for(int i2=0;i2<items.size();i2++)
+				{
+					Item I2=(Item)items.elementAt(i2);
+					if(ItemsSame(I,I2))
+					{	found=true;	break;	}
+				}
+				if(!found)
+				{
+					Item I2=(Item)I.copyOf();
+					I.setContainer(null);
+					I.wearAt(Item.INVENTORY);
+					items.addElement(I.copyOf());
+				}
 			}
 		}
 		return items;
@@ -246,7 +307,8 @@ public class RoomData extends StdWebMacro
 					if(Util.s_int(MATCHING)>0)
 					{
 						MOB M2=getMOBAtCardinality(R,Util.s_int(MATCHING)-1);
-						classes.addElement(M2);
+						if(M2!=null)
+							classes.addElement(M2);
 					}
 					else
 					if(MATCHING.indexOf("@")>0)
@@ -316,7 +378,7 @@ public class RoomData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=\"CREATE NEW\" ONCLICK=\"AddNewMOB();\">");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDMOB VALUE=\"NEW\" ONCLICK=\"AddNewMOB();\">");
 			str.append("</TD></TR></TABLE>");
 		}
 
@@ -333,51 +395,10 @@ public class RoomData extends StdWebMacro
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.s_int(MATCHING)>0)
 					{
-						Item I2=R.fetchItem(Util.s_int(MATCHING)-1);
-						classes.addElement(I2);
-					}
-					else
-					if(MATCHING.indexOf("@")>0)
-					{
-						for(int m=0;m<itemlist.size();m++)
-						{
-							Item I2=(Item)itemlist.elementAt(m);
-							if(MATCHING.equals(""+I2))
-							{ classes.addElement(I2); break; }
-						}
-					}
-					else
-					{
-						boolean found=false;
-						for(int m=0;m<CMClass.items.size();m++)
-						{
-							Item I=(Item)CMClass.items.elementAt(m);
-							if(CMClass.className(I).equals(MATCHING))
-							{	classes.addElement(I); found=true; break;}
-						}
-						if(!found)
-						for(int m=0;m<CMClass.armor.size();m++)
-						{
-							Item I=(Item)CMClass.armor.elementAt(m);
-							if(CMClass.className(I).equals(MATCHING))
-							{	classes.addElement(I); found=true; break;}
-						}
-						if(!found)
-						for(int m=0;m<CMClass.weapons.size();m++)
-						{
-							Item I=(Item)CMClass.weapons.elementAt(m);
-							if(CMClass.className(I).equals(MATCHING))
-							{	classes.addElement(I); found=true; break;}
-						}
-						if(!found)
-						for(int m=0;m<CMClass.miscMagic.size();m++)
-						{
-							Item I=(Item)CMClass.miscMagic.elementAt(m);
-							if(CMClass.className(I).equals(MATCHING))
-							{	classes.addElement(I); found=true; break;}
-						}
+						Item I2=getItemFromAnywhere(R,MATCHING);
+						if(I2!=null)
+							classes.addElement(I2);
 					}
 				}
 			}
@@ -439,7 +460,7 @@ public class RoomData extends StdWebMacro
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
-			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"CREATE NEW\" ONCLICK=\"AddNewItem();\">");
+			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
 			str.append("</TD></TR></TABLE>");
 		}
 		
