@@ -27,7 +27,7 @@ public class SmokeRings extends CommonSkill
 	{
 		if(((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)))
-		&&(msg.targetMinor()==CMMsg.TYP_QUIETMOVEMENT)
+		&&(msg.targetMinor()==CMMsg.TYP_HANDS)
 		&&(msg.target() instanceof Light)
 		&&(msg.tool() instanceof Light)
 		&&(msg.target()==msg.tool())
