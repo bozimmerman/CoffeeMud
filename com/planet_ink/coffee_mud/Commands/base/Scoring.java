@@ -79,6 +79,7 @@ public class Scoring
 			deadMOB.session().setKillFlag(true);
 			deadMOB.session().setMob(null);
 		}
+		Log.sysOut("Scoring",deadMOB.name()+" has retired!");
 	}
 
 	public static void retire(MOB mob)

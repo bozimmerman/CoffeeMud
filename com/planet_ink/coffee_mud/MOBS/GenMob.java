@@ -11,7 +11,7 @@ public class GenMob extends StdMOB
 	{
 		super();
 		Username="a generic mob";
-		setDescription("He looks ordinary to me.");
+		setDescription("");
 		setDisplayText("A generic mob stands here.");
 
 		recoverMaxState();

@@ -553,16 +553,13 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			if(CMAble.qualifiesByLevel(mob,this))
-			{
-				Ability thisAbility=mob.fetchAffect(this.ID());
-				if(thisAbility!=null)
-					return false;
-				Ability thatAbility=(Ability)this.copyOf();
-				((StdAbility)thatAbility).canBeUninvoked=true;
-				mob.addAffect(thatAbility);
-				return true;
-			}
+			Ability thisAbility=mob.fetchAffect(this.ID());
+			if(thisAbility!=null)
+				return false;
+			Ability thatAbility=(Ability)this.copyOf();
+			((StdAbility)thatAbility).canBeUninvoked=true;
+			mob.addAffect(thatAbility);
+			return true;
 		}
 		return false;
 	}

@@ -10,17 +10,24 @@ public class Pregnancy extends StdAbility
 {
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
-	public String displayText(){
+	public String displayText()
+	{
 		int x=text().indexOf("/");
 		if(x>0)
 		{
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
-			long start=Util.s_long(text().substring(0,x));
+			long start=Util.s_long(text().substring(0,x));			
 			long end=Util.s_long(text().substring(x+1,y));
-			long months=((end-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days
-			months=months/30; // down to months
-			return "("+months+" months pregnant)";
+			long days=((System.currentTimeMillis()-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days;
+			long months=days/30;
+			if(days<1)
+				return "(<1 day pregnant)";
+			else
+			if(months<1)
+				return "("+days+" day(s) pregnant)";
+			else
+				return "("+months+" month(s) pregnant)";
 		}
 		return "";
 	}
@@ -50,46 +57,46 @@ public class Pregnancy extends StdAbility
 				if(y>x)
 				{
 					int z=text().indexOf("/",y+1);
-					String name=mob.name()+" jr.";
-					Vector races=new Vector();
-					races.addElement(mob.baseCharStats().getMyRace().ID());
-					char gender='F';
-					String sondat="daughter";
-					if(Dice.rollPercentage()>50){
-						gender='M';
-						sondat="son";
-					}
-					if(mob.session()!=null)
-					{
-						try{
-							String n=mob.session().prompt("What would you like to name your child? ","");
-							if(n.trim().length()!=0)
-								name=Util.capitalize(n);
-						}
-						catch(java.io.IOException e){};
-					}
-					String desc="The "+sondat+" of "+mob.name();
-					if(z>y)
-					{
-						races.addElement(text().substring(z+1));
-						desc+=" and "+text().substring(y+1,z);
-					}
-					desc+=".";
-					
 					long start=Util.s_long(text().substring(0,x));
 					long end=Util.s_long(text().substring(x+1,y));
-					long days=((end-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days
+					long days=((end-System.currentTimeMillis())/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days
 					long months=days/30; // down to months
 					labor=false;
 					if(days<7) // BIRTH!
 					{
 						if((Dice.rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
-							mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain.");
+							mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						labor=true;
 						ticksInLabor++;
 						if(ticksInLabor>45)
 						{
-							mob.location().show(mob,null,Affect.MSG_NOISE,"***** <S-NAME> GIVE(S) BIRTH ******");
+							String name=mob.name()+" jr.";
+							Vector races=new Vector();
+							races.addElement(mob.baseCharStats().getMyRace().ID());
+							char gender='F';
+							String sondat="daughter";
+							if(Dice.rollPercentage()>50){
+								gender='M';
+								sondat="son";
+							}
+							if(mob.session()!=null)
+							{
+								try{
+									String n=mob.session().prompt("What would you like to name your "+sondat+"? ","");
+									if(n.trim().length()!=0)
+										name=Util.capitalize(n);
+								}
+								catch(java.io.IOException e){};
+							}
+							String desc="The "+sondat+" of "+mob.name();
+							if(z>y)
+							{
+								races.addElement(text().substring(z+1));
+								desc+=" and "+text().substring(y+1,z);
+							}
+							desc+=".";
+					
+							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchAffect(ID());
 							Ability A2=mob.fetchAbility(ID());
 							if(A!=null) mob.delAffect(A);
@@ -102,7 +109,7 @@ public class Pregnancy extends StdAbility
 							babe.setClanID(mob.getClanID());
 							babe.setLeigeID(mob.getLeigeID());
 							babe.setDescription(desc);
-							babe.setDisplayText(name()+" is here");
+							babe.setDisplayText(name+" is here");
 							babe.setMoney(0);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.CHARISMA,10);
@@ -138,6 +145,7 @@ public class Pregnancy extends StdAbility
 						}
 						else
 							mob.tell("You are in labor!!");
+							
 					}
 					else
 					if((months<=1)&&(Dice.rollPercentage()<2))
@@ -159,7 +167,8 @@ public class Pregnancy extends StdAbility
 			return false;
 		boolean success=profficiencyCheck(0,auto);
 		long start=System.currentTimeMillis();
-		long end=start+((10)*(30)*Host.TICKS_PER_DAY*Host.TICK_TIME);
+		long add=((10)*(30)*Host.TICKS_PER_DAY*Host.TICK_TIME);
+		long end=start+add;
 		if(success)
 		{
 			setMiscText(start+"/"+end+"/"+mob.ID()+"/"+mob.charStats().getMyRace().ID());

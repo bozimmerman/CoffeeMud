@@ -1502,7 +1502,7 @@ public class Import
 				if(A!=null)
 					A.autoInvocation(M);
 			}
-			int rejuv=(int)Math.round(Util.div(60000,Host.TICK_TIME)*2.0);
+			int rejuv=(int)Math.round(Util.div((long)60000,Host.TICK_TIME)*2.0);
 			M.baseEnvStats().setRejuv(rejuv*M.baseEnvStats().level());
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
@@ -3473,7 +3473,7 @@ public class Import
 							R.addItem(I);
 							if(I.isGettable())
 							{
-								int rejuv=(int)Math.round(Util.div(60000,Host.TICK_TIME)*4.0);
+								int rejuv=(int)Math.round(Util.div((long)60000,Host.TICK_TIME)*4.0);
 								I.baseEnvStats().setRejuv(rejuv*I.baseEnvStats().level());
 							}
 							I.recoverEnvStats();

@@ -376,7 +376,7 @@ public class MobData extends StdWebMacro
 			if(reqs.get("LEVEL")!=null) level=Util.s_int((String)reqs.get("LEVEL"));
 			MOB M2=(MOB)M.copyOf();
 			M2.baseCharStats().getCurrentClass().buildMOB(M2,level,500,150,5,'M');
-			M.baseEnvStats().setRejuv((int)Math.round(Util.div(60000,Host.TICK_TIME)*2.0)*level);
+			M.baseEnvStats().setRejuv((int)Math.round(Util.div((long)60000,Host.TICK_TIME)*2.0)*level);
 			M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
 			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
 			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());

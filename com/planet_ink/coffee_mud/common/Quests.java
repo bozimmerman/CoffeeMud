@@ -991,7 +991,7 @@ public class Quests implements Cloneable, Quest
 	public boolean running(){return ticksRemaining>=0;}
 	public boolean waiting(){return waitRemaining>=0;}
 	public int ticksRemaining(){return ticksRemaining;}
-	public int minsRemaining(){return ticksRemaining*Host.TICK_TIME/60000;}
+	public int minsRemaining(){return new Long(ticksRemaining*Host.TICK_TIME/60000).intValue();}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Host.QUEST_TICK) 

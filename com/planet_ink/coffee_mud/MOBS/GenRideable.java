@@ -11,7 +11,7 @@ public class GenRideable extends StdRideable
 	{
 		super();
 		Username="a generic horse";
-		setDescription("He looks ordinary to me.");
+		setDescription("");
 		setDisplayText("A generic horse stands here.");
 
 		recoverMaxState();

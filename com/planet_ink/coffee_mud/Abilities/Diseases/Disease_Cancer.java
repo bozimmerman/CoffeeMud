@@ -17,7 +17,7 @@ public class Disease_Cancer extends Disease
 	public Environmental newInstance(){	return new Disease_Cancer();}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return Host.TICKS_PER_DAY;}
+	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_DAY).intValue();}
 	protected String DISEASE_DONE(){return "Your cancer is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}

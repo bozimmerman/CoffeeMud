@@ -16,7 +16,7 @@ public class Disease_Gangrene extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Gangrene();}
 
-	protected int DISEASE_TICKS(){return 100*Host.TICKS_PER_DAY;}
+	protected int DISEASE_TICKS(){return new Long(100*Host.TICKS_PER_DAY).intValue();}
 	protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
@@ -58,7 +58,7 @@ public class Disease_Gangrene extends Disease
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		int days=100-(getTickDownRemaining()/Host.TICKS_PER_DAY);
+		int days=100-(getTickDownRemaining()/new Long(Host.TICKS_PER_DAY).intValue());
 		if(days>0)
 		{
 			affectableState.setHitPoints(affectableState.getHitPoints()-(days*(affectableState.getHitPoints()/10)));

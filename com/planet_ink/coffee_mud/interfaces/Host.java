@@ -3,10 +3,10 @@ import java.util.Properties;
 
 public interface Host
 {
-	public final static int TICK_TIME=4000;
-	public final static int TIME_TICK_DELAY=10*60000; // 10 minutes, right now.
-	public final static int TIME_SAVE_DELAY=18; // 3 hours...
-	public final static int TICKS_PER_DAY=(TIME_TICK_DELAY*Area.A_FULL_DAY)/TICK_TIME;
+	public final static long TICK_TIME=4000;
+	public final static long TIME_TICK_DELAY=10*60000; // 10 minutes, right now.
+	public final static long TIME_SAVE_DELAY=18; // 3 hours...
+	public final static long TICKS_PER_DAY=(TIME_TICK_DELAY*Area.A_FULL_DAY)/TICK_TIME;
 
 	public static final int MOB_TICK=0;
 	public static final int ITEM_BEHAVIOR_TICK=1;

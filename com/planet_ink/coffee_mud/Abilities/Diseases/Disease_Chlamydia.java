@@ -16,8 +16,8 @@ public class Disease_Chlamydia extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Chlamydia();}
 
-	protected int DISEASE_TICKS(){return Host.TICKS_PER_DAY*10;}
-	protected int DISEASE_DELAY(){return Host.TICKS_PER_DAY;}
+	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_DAY*10).intValue();}
+	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_DAY).intValue();}
 	protected String DISEASE_DONE(){return "Your chlamydia clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}

@@ -17,7 +17,7 @@ public class Disease_Gonorrhea extends Disease
 	public Environmental newInstance(){	return new Disease_Gonorrhea();}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return Host.TICKS_PER_DAY;}
+	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_DAY).intValue();}
 	protected String DISEASE_DONE(){return "Your gonorrhea clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.";}

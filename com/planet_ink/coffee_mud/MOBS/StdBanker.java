@@ -8,7 +8,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 {
 	protected double coinInterest=0.008;
 	protected double itemInterest=-0.001;
-	protected static final Integer allDown=new Integer(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5);
+	protected static final Integer allDown=new Integer(new Long(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5).intValue());
 	protected static Hashtable bankTimes=new Hashtable();
 
 	public StdBanker()

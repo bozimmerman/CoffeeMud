@@ -9,24 +9,44 @@ public class Age extends StdAbility
 {
 	public String ID() { return "Age"; }
 	public String name(){ return "Age";}
-	public String displayText(){ return "(Aging)";}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Age();}
 	public boolean putInCommandlist(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public String accountForYourself(){return displayText();}
+	public String displayText()
 	{
-		super.affectEnvStats(affected,affectableStats);
+		long start=Util.s_long(text());			
+		long days=((System.currentTimeMillis()-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days;
+		long months=days/30;
+		if(days<1)
+			return "(<1 day old)";
+		else
+		if(months<1)
+			return "("+days+" day(s) old)";
+		else
+			return "("+months+" month(s) old)";
+	}
+	private boolean norecurse=false;
+
+	private void doThang()
+	{
 		if(affected==null) return;
 		if(text().length()==0) return;
 		long l=Util.s_long(text());
 		if(l==0) return;
+		if(norecurse) return;
+		norecurse=true;
+		
+		long day=60000; // one minute
+		day*=(long)60; // one hour
+		day*=(long)24; // on day
+		long ellapsed=(System.currentTimeMillis()-(long)l);
 		if(affected instanceof Item)
 		{
-			if((System.currentTimeMillis()-l)>(30*24*60*60*1000))
+			if(ellapsed>(long)(30*day))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if((R!=null)&&(affected instanceof CagedAnimal))
@@ -66,7 +86,7 @@ public class Age extends StdAbility
 		else
 		if(affected instanceof MOB)
 		{
-			if((System.currentTimeMillis()-l)>(60*24*60*60*1000))
+			if(ellapsed>(long)(60*day))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if(R!=null)
@@ -93,5 +113,18 @@ public class Age extends StdAbility
 				}
 			}
 		}
+		norecurse=false;
+	}
+	
+	public void affect(Environmental myHost, Affect msg)
+	{
+		super.affect(myHost,msg);
+		doThang();
+	}
+	
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		doThang();
 	}
 }

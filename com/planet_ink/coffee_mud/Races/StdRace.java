@@ -141,7 +141,7 @@ public class StdRace implements Race
 	{
 		// the sex rules
 		if(!(myHost instanceof MOB)) return;
-		
+
 		MOB myChar=(MOB)myHost;
 		if((affect.amITarget(myChar))
 		&&(affect.tool()!=null)
@@ -159,6 +159,8 @@ public class StdRace implements Race
 		   ||(affect.source().charStats().getMyRace().ID().equals("Human"))
 		   ||(affect.source().charStats().getMyRace().ID().equals(ID())))
 		&&(myChar.location()==affect.source().location())
+		&&(!myChar.amWearingSomethingHere(Item.ON_LEGS))
+		&&(!affect.source().amWearingSomethingHere(Item.ON_LEGS))
 		&&(!myChar.amWearingSomethingHere(Item.ON_WAIST))
 		&&(!affect.source().amWearingSomethingHere(Item.ON_WAIST)))
 		{
