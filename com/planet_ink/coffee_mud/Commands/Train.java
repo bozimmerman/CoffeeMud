@@ -220,23 +220,23 @@ public class Train extends StdCommand
 			break;
 		case 101:
 			mob.tell("You feel even healthier!");
-			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+10);
-			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+10);
-			mob.curState().setHitPoints(mob.curState().getHitPoints()+10);
+			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+20);
+			mob.maxState().setHitPoints(mob.maxState().getHitPoints()+20);
+			mob.curState().setHitPoints(mob.curState().getHitPoints()+20);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 102:
 			mob.tell("You feel more powerful!");
-			mob.baseState().setMana(mob.baseState().getMana()+20);
-			mob.maxState().setMana(mob.maxState().getMana()+20);
-			mob.curState().setMana(mob.curState().getMana()+20);
+			mob.baseState().setMana(mob.baseState().getMana()+40);
+			mob.maxState().setMana(mob.maxState().getMana()+40);
+			mob.curState().setMana(mob.curState().getMana()+40);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 103:
 			mob.tell("You feel more rested!");
-			mob.baseState().setMovement(mob.baseState().getMovement()+20);
-			mob.maxState().setMovement(mob.maxState().getMovement()+20);
-			mob.curState().setMovement(mob.curState().getMovement()+20);
+			mob.baseState().setMovement(mob.baseState().getMovement()+40);
+			mob.maxState().setMovement(mob.maxState().getMovement()+40);
+			mob.curState().setMovement(mob.curState().getMovement()+40);
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 104:

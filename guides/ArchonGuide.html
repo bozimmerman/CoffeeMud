@@ -1811,11 +1811,11 @@ everything listed under GenItem, plus two more:</P>
       adjustment parameters may be typed in, to give the pill an extra 
       "punch".&nbsp;&nbsp; These adjustment parameters are too numerous to list 
       here.&nbsp; I suggest you enter "help parameters", and look at the entry 
-      for "Prop_HaveAdjuster".   The parameters for GenSuperPill will appear the
-      same, though GenSuperPills can also boost experience using "expe+10" or "expe-20",
-      or reset a players recall room to their current room using "beacon+1".
-      &nbsp; Another important difference from Prop_HaveAdjuster is that the 
-      effects of a pill are PERMANENT!!!</TD></TR>
+      for "Prop_HaveAdjuster". The parameters for GenSuperPill will appear the 
+      same, though GenSuperPills can also boost experience using "expe+10" or 
+      "expe-20", or reset a players recall room to their current room using 
+      "beacon+1". &nbsp; Another important difference from Prop_HaveAdjuster is 
+      that the effects of a pill are PERMANENT!!!</TD></TR>
   <TR>
     <TD><EM>Nourishment/Eat</EM></TD>
     <TD>when eaten, how much nourishment does the 
@@ -1908,9 +1908,33 @@ different meaning:</P>
       for which this law book refers.&nbsp; The area named here must have the 
       Arrest or Conquerable behaviors for the law book to work 
   properly.</TD></TR></TABLE></P>
-<P><STRONG>The "GenClanItem", 
-"GenClanCommonContainer", "GenClanCommonItem", "GenClanContainer", 
-"GenClanFlag", "GenClanPamphlet", and "GenClanSpecialItem"</STRONG></STRONG></P>
+<P><STRONG>The 
+"GenPortal"</STRONG></STRONG></P>
+<P>A GenPortal is Rideable type item that can act as a 
+gateway between two rooms via the ENTER command. The item can be made gettable 
+or not, blended or not, having all the advantages of a standard item, while 
+still getting you from here to there like an Exit. The Rideable-specific fields 
+Rideable Type and MOBs Held are also unchangeable due to the specific nature of 
+the portal, although you will see them listed on the editor screens. </P>
+<P>Whenever a GenPortal is created, much like the 
+GenRideable above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Assigned Room IDs</EM></TD>
+    <TD>This field is the room ID of the room to which 
+      the portal will take you, or a list of rooms (seperated by semicolons) to 
+      which the portal might take you.</TD></TR></TABLE></P>
+<P><STRONG>The "GenClanItem", "GenClanCommonContainer", 
+"GenClanCommonItem", "GenClanContainer", "GenClanFlag", "GenClanPamphlet", and 
+"GenClanSpecialItem"</STRONG></STRONG></STRONG></P>
 <P>The above are all basis for the items created by the 
 Clan Crafting skill.&nbsp; The GenClanItem and GenClanContainer are standard 
 holdable items assignable to clans, usually for the purpose of use with the 
@@ -3161,13 +3185,13 @@ Adjustments</EM></TD>
       players who join this class.</TD></TR>
   <TR>
     <TD><EM>Class Abilities</EM></TD>
-    <TD>a list of abilities available to 
-      those who become this class.&nbsp; the profficiency given is the default 
-      profficiency which players/mobs of this class start out with. Also listed 
-      here is the class level at which the skill becomes available, whether it 
-      is automatically gained (true), or merely qualified for (false), whether 
-      it is a secret skill or not, and any miscellaneous parameters for this 
-      skill.</TD></TR></TABLE></P>
+    <TD>a list of abilities available to those who become 
+      this class.&nbsp; the profficiency given is the default profficiency which 
+      players/mobs of this class start out with. Also listed here is the class 
+      level at which the skill becomes available, whether it is automatically 
+      gained (true), or merely qualified for (false), whether it is a secret 
+      skill or not, and any miscellaneous parameters for this 
+  skill.</TD></TR></TABLE></P>
 <P><BR><BR><STRONG><FONT color=royalblue size=5>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</FONT></STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 
@@ -3303,7 +3327,12 @@ Wand_Nourishment</P>
 <UL>
   <LI>misc text - the&nbsp;name of the Area for which this 
   book operates.</LI></UL>
-<P class=MsoNormal><BR>Ring_Protection</P>
+<P class=MsoNormal>StdPortal</P>
+<UL>
+  <LI>misc text - A room ID, or a a semicoloon-delimited 
+  list of roomIDs that this portal leads to. For the return trip, a portal 
+  object would need to be in both rooms.</LI></UL>
+<P class=MsoNormal>Ring_Protection</P>
 <UL>
   <LI>
   <DIV class=MsoNormal>level - The type of protection 

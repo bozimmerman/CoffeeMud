@@ -1327,9 +1327,24 @@ public class StdMOB implements MOB
 						return false;
 					}
 					break;
+				case CMMsg.TYP_LEAVE:
+					if((isInCombat())&&(location()!=null))
+						for(int i=0;i<location().numInhabitants();i++)
+						{
+							MOB M=location().fetchInhabitant(i);
+							if((M!=null)
+							&&(M!=this)
+							&&(M.getVictim()==this)
+							&&(Sense.aliveAwakeMobile(M,true))
+							&&(Sense.canSenseMoving(mob,M)))
+							{
+								tell("Not while you are fighting!");
+								return false;
+							}
+						}
+					break;
 				case CMMsg.TYP_BUY:
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
-				case CMMsg.TYP_LEAVE:
 				case CMMsg.TYP_FILL:
 				case CMMsg.TYP_LIST:
 				case CMMsg.TYP_LOCK:

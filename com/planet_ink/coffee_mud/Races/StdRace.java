@@ -213,7 +213,10 @@ public class StdRace implements Race
 				naturalWeaponChoices.addElement(naturalWeapon);
 			}
 		}
-		return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
+		if(naturalWeaponChoices.size()>0)
+			return (Weapon)naturalWeaponChoices.elementAt(Dice.roll(1,naturalWeaponChoices.size(),-1));
+		else
+			return (Weapon)CMClass.getWeapon("Natural");
 	}
 	public Vector myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)

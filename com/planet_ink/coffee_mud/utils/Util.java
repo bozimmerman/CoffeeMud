@@ -275,6 +275,13 @@ public class Util
 		return s;
 	}
 	
+	public static void addToVector(Vector from, Vector to)
+	{
+		if(from!=null)
+		for(int i=0;i<from.size();i++)
+			to.addElement(from.elementAt(i));
+	}
+	
 	public static String toStringList(Hashtable V)
 	{
 		if((V==null)||(V.size()==0)){

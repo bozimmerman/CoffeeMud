@@ -2218,6 +2218,85 @@ public class CoffeeMaker
 		return mob;
 	}
 
+	public static int levelsFromAbility(Item savedI)
+	{ return savedI.baseEnvStats().ability()*5;}
+	
+	public static int levelsFromCaster(Item savedI, Ability CAST)
+	{
+		int level=0;
+		if(CAST!=null)
+		{
+			String ID=CAST.ID().toUpperCase();
+			Vector theSpells=new Vector();
+			String names=CAST.text();
+			int del=names.indexOf(";");
+			while(del>=0)
+			{
+				String thisOne=names.substring(0,del);
+				Ability A=(Ability)CMClass.getAbility(thisOne);
+				if(A!=null)	theSpells.addElement(A);
+				names=names.substring(del+1);
+				del=names.indexOf(";");
+			}
+			Ability A=(Ability)CMClass.getAbility(names);
+			if(A!=null) theSpells.addElement(A);
+			for(int v=0;v<theSpells.size();v++)
+			{
+				A=(Ability)theSpells.elementAt(v);
+				int mul=1;
+				if(A.quality()==Ability.MALICIOUS) mul=-1;
+				if(ID.indexOf("HAVE")>=0)
+					level+=(mul*CMAble.lowestQualifyingLevel(A.ID()));
+				else
+					level+=(mul*CMAble.lowestQualifyingLevel(A.ID())/2);
+			}
+		}
+		return level;
+	}
+	public static int levelsFromAdjuster(Item savedI, Ability ADJ)
+	{
+		int level=0;
+		if(ADJ!=null)
+		{
+			String newText=ADJ.text();
+			int ab=Util.getParmPlus(newText,"abi");
+			int arm=Util.getParmPlus(newText,"arm")*-1;
+			int att=Util.getParmPlus(newText,"att");
+			int dam=Util.getParmPlus(newText,"dam");
+			if(savedI instanceof Weapon)
+				level+=(arm*2);
+			else
+			if(savedI instanceof Armor)
+			{
+				level+=(att/2);
+				level+=(dam*3);
+			}
+			level+=ab*5;
+			
+			
+			int dis=Util.getParmPlus(newText,"dis");
+			if(dis!=0) level+=5;
+			int sen=Util.getParmPlus(newText,"sen");
+			if(sen!=0) level+=5;
+			level+=(int)Math.round(5.0*Util.getParmDoublePlus(newText,"spe"));
+			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+			{
+				int stat=Util.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
+				int max=Util.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				level+=(stat*5);
+				level+=(max*5);
+			}
+
+			int hit=Util.getParmPlus(newText,"hit");
+			int man=Util.getParmPlus(newText,"man");
+			int mv=Util.getParmPlus(newText,"mov");
+			level+=(hit/5);
+			level+=(man/5);
+			level+=(mv/5);
+		}
+		return level;
+	}
+	
 	public static Hashtable timsItemAdjustments(Item I,
 												int level,
 												int material,
@@ -2229,6 +2308,20 @@ public class CoffeeMaker
 	{
 		Hashtable vals=new Hashtable();
 		int materialvalue=EnvResource.RESOURCE_DATA[material&EnvResource.RESOURCE_MASK][1];
+		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
+		if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
+		if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
+		Ability RES=I.fetchEffect("Prop_WearResister");
+		if(RES==null) RES=I.fetchEffect("Prop_HaveResister");
+		Ability CAST=I.fetchEffect("Prop_WearSpellCast");
+		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast");
+		if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast2");
+		if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
+		if(CAST==null) CAST=I.fetchEffect("Prop_FightSpellCast");
+		level-=levelsFromAbility(I);
+		level-=levelsFromAdjuster(I,ADJ);
+		level-=levelsFromCaster(I,CAST);
+		
 		if(I instanceof Weapon)
 		{
 			int baseattack=0;

@@ -38,32 +38,33 @@ public class Look extends StdCommand
 			if(ID.equalsIgnoreCase("SELF"))
 				ID=mob.name();
 			Environmental thisThang=null;
-			int dirCode=Directions.getGoodDirectionCode(ID);
-			if(dirCode>=0)
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
+			if((thisThang==null)
+			&&(commands.size()>2)
+			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
 			{
-				Room room=mob.location().getRoomInDir(dirCode);
-				Exit exit=mob.location().getExitInDir(dirCode);
-				if((room!=null)&&(exit!=null))
-					thisThang=exit;
-				else
+				commands.removeElementAt(1);
+				String ID2=Util.combine(commands,1);
+				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
+				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
-					mob.tell("You don't see anything that way.");
+					mob.tell("That's not a container.");
 					return false;
 				}
 			}
-			if(dirCode<0)
+			int dirCode=-1;
+			if(thisThang==null)
 			{
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
-				if((thisThang==null)
-				&&(commands.size()>2)
-				&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
+				dirCode=Directions.getGoodDirectionCode(ID);
+				if(dirCode>=0)
 				{
-					commands.removeElementAt(1);
-					String ID2=Util.combine(commands,1);
-					thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
-					if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
+					Room room=mob.location().getRoomInDir(dirCode);
+					Exit exit=mob.location().getExitInDir(dirCode);
+					if((room!=null)&&(exit!=null))
+						thisThang=exit;
+					else
 					{
-						mob.tell("That's not a container.");
+						mob.tell("You don't see anything that way.");
 						return false;
 					}
 				}

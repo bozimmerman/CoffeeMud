@@ -520,6 +520,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Wand)
 		 ||(E instanceof Scroll)
 		 ||(E instanceof Pill)
+		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 		 ||(E instanceof Potion)
 		 ||(E instanceof Light)
 		 ||(E instanceof Key))
@@ -537,6 +538,12 @@ public class BaseGenerics extends StdCommand
 				||(E instanceof Pill)
 				||(E instanceof Potion))
 					mob.tell(showNumber+". Assigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
+				else
+				if(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
+				{
+					mob.tell(showNumber+". Assigned Room IDs: '"+E.readableText()+"'.");
+					ok=true;
+				}
 				else
 				if(E instanceof Wand)
 					mob.tell(showNumber+". Assigned Spell Name: '"+E.readableText()+"'.");
@@ -4157,6 +4164,8 @@ public class BaseGenerics extends StdCommand
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				if(CMClass.className(me).toUpperCase().endsWith("PORTAL"))
+					genReadable2(mob,me,++showNumber,showFlag);
 			}
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

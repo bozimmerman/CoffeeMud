@@ -81,13 +81,13 @@ public class Pregnancy extends StdAbility
 								try{
 									while(name.indexOf(" ")>=0)
 									{
-										n=mob.session().prompt("What would you like to name your "+sondat+"? ","").trim().toLowerCase();
+										String n=mob.session().prompt("What would you like to name your "+sondat+"? ","").trim().toLowerCase();
 										if(n.indexOf(" ")>=0)
 											mob.tell("Spaces are not allowed in names! Please enter another one.");
 										else
 										if(n.length()!=0)
 										{
-											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n))!=null)
+											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n)))
 												mob.tell("That name is already taken.  Please enter a different one.");
 											else
 												name=Util.capitalize(n);
@@ -288,7 +288,7 @@ public class Pregnancy extends StdAbility
 						// pregnant folk get fatigued more often.
 						mob.curState().adjFatigue(months*100,mob.maxState());
 						if((months<=1)&&(Dice.rollPercentage()==1))
-							mob.tell("Ouch! -- You had a labor pain!");
+							mob.tell("Oh! You had a contraction!");
 						else
 						if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");

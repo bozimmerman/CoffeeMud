@@ -578,5 +578,4 @@ public class StdRideable extends StdContainer implements Rideable
 			break;
 		}
 	}
-
 }

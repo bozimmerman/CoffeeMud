@@ -1,3 +1,4 @@
+FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,ARMORDMG,CONTAINMASK,SPELL
 % Bundle	1	1	25	0	GenResource	BUNDLE
 % Cup	1	10	8	1	GenWater		5		1
 % Bowl	1	10	8	1	GenContainer		5		1
@@ -55,5 +56,6 @@ Large % Shield	12	75	40	16	GenShield	HELD	1	13	0
 Large % Chest	15	100	45	45	GenContainer	LOCK	100		0
 % Chest of Drawers	20	100	45	45	GenContainer	LID	50		0
 % Wardrobe	15	75	70	60	GenContainer	LID	500		4096	Prop_NoPurge
+% Armor Rack	15	85	80	75	GenContainer		1000		4096	Prop_NoPurge
+% Weapon Rack	15	70	65	60	GenContainer		500		60	Prop_NoPurge
 % Wand	22	30	5	3	GenWand		0		0
-

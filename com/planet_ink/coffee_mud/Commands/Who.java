@@ -11,7 +11,15 @@ public class Who extends StdCommand
 	private String[] access={"WHO","WH"};
 	public String[] getAccessWords(){return access;}
 	
-	public static StringBuffer showWhoShort(MOB who)
+	protected static final String shortHead=
+		 "^x["
+		+Util.padRight("Race",12)+" "
+		+Util.padRight("Class",12)+" "
+		+Util.padRight("Level",7)
+		+"] Character name^.^N\n\r";
+		 
+	
+	public StringBuffer showWhoShort(MOB who)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");

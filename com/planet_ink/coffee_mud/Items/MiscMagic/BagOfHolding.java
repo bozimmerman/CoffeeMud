@@ -17,9 +17,8 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		setDescription("A nice silk sack to put your things in.");
 		secretIdentity="A Bag of Holding";
 		baseEnvStats().setLevel(1);
-		capacity=Integer.MAX_VALUE-1000;
-
-		baseGoldValue=10000;
+		capacity=1000;
+		baseGoldValue=25000;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 	}
@@ -27,6 +26,19 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 	public Environmental newInstance()
 	{
 		return new BagOfHolding();
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		if((msg.targetMinor()==CMMsg.TYP_PUT)
+		&&(msg.target() instanceof BagOfHolding)
+		&&(msg.tool() instanceof BagOfHolding))
+		{
+			((Item)msg.target()).destroy();
+			((Item)msg.tool()).destroy();
+			msg.source().tell("The bag implodes in your hands!");
+		}
 	}
 
 	public void recoverEnvStats()

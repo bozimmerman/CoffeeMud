@@ -12,6 +12,8 @@ public class CMMap
 	protected static Hashtable startRooms=new Hashtable();
 	protected static Hashtable deathRooms=new Hashtable();
 	protected static Hashtable bodyRooms=new Hashtable();
+	protected final static int QUADRANT_WIDTH=10;
+	protected static Vector space[][][]=new Vector[QUADRANT_WIDTH][QUADRANT_WIDTH][QUADRANT_WIDTH];
 
 	private static void theWorldChanged()
 	{
@@ -59,6 +61,85 @@ public class CMMap
 		return A;
 	}
 
+	public static boolean isObjectInSpace(SpaceObject O)
+	{
+		if(getQuadrant(O).contains(O)) return true;
+		return false;
+	}
+	
+	public static void delObjectInSpace(SpaceObject O)
+	{
+		getQuadrant(O).remove(O);
+	}
+	public static void addObjectToSpace(SpaceObject O)
+	{
+		getQuadrant(O).addElement(O);
+	}
+	public static void moveObjectInSpace(SpaceObject O, long[] toCoords)
+	{
+		delObjectInSpace(O);
+		O.setCoords(toCoords);
+		addObjectToSpace(O);
+	}
+	public static long getAbsoluteDistanceFrom(SpaceObject O1, SpaceObject O2)
+	{
+		return 0;
+	}
+	public static double[] getDirectionTo(SpaceObject O)
+	{
+		double[] dir=new double[2];
+		return dir;
+	}
+	public static long getRelativeVelocity(SpaceObject O)
+	{
+		return 0;
+	}
+	
+	public static int[] getQuadrantCode(SpaceObject O)
+	{
+		int where[]=new int[3];
+		where[0]=(int)(O.coordinates()[0]/SpaceObject.DISTANCE_QUADRANT);
+		if(where[0]>=QUADRANT_WIDTH) where[0]=QUADRANT_WIDTH-1;
+		where[1]=(int)(O.coordinates()[1]/SpaceObject.DISTANCE_QUADRANT);
+		if(where[1]>=QUADRANT_WIDTH) where[1]=QUADRANT_WIDTH-1;
+		where[2]=(int)(O.coordinates()[2]/SpaceObject.DISTANCE_QUADRANT);
+		if(where[2]>=QUADRANT_WIDTH) where[2]=QUADRANT_WIDTH-1;
+		return where;
+	}
+	
+	public static Vector getQuadrant(SpaceObject O)
+	{
+		return getQuadrant(getQuadrantCode(O));
+	}
+	
+	public static Vector getQuadrant(int[] n)
+	{ 
+		return getQuadrant(n[0],n[1],n[2]);
+	}
+	public static Vector getQuadrant(int x, int y, int z)
+	{ 
+		if(x>=QUADRANT_WIDTH) x=QUADRANT_WIDTH-1;
+		if(y>=QUADRANT_WIDTH) y=QUADRANT_WIDTH-1;
+		if(z>=QUADRANT_WIDTH) z=QUADRANT_WIDTH-1;
+		if(space[x][y][z]==null)
+			space[x][y][z]=new Vector();
+		return space[x][y][z];
+	}
+	
+	public static Vector getProximityObjects(SpaceObject O)
+	{
+		Vector proxSet=new Vector();
+		int where[]=getQuadrantCode(O);
+		Util.addToVector(space[where[0]][where[1]][where[2]],proxSet);
+		if(where[0]>0)Util.addToVector(space[where[0]-1][where[1]][where[2]],proxSet);
+		if(where[0]<(QUADRANT_WIDTH-1))Util.addToVector(space[where[0]+1][where[1]][where[2]],proxSet);
+		if(where[1]>0)Util.addToVector(space[where[0]][where[1]-1][where[2]],proxSet);
+		if(where[1]<(QUADRANT_WIDTH-1))Util.addToVector(space[where[0]][where[1]+1][where[2]],proxSet);
+		if(where[2]>0)Util.addToVector(space[where[0]][where[1]][where[2]-1],proxSet);
+		if(where[2]<(QUADRANT_WIDTH-1))Util.addToVector(space[where[0]][where[1]][where[2]+1],proxSet);
+		return proxSet;
+	}
+	
 	public static String createNewExit(Room from, Room room, int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];
@@ -429,6 +510,7 @@ public class CMMap
 		roomsList.clear();
 		deitiesList.clear();
 		playersList.clear();
+		space=new Vector[QUADRANT_WIDTH][QUADRANT_WIDTH][QUADRANT_WIDTH];
 		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();

@@ -306,8 +306,13 @@ public class StdCharClass implements CharClass, Cloneable
 		if(conStat>maxConStat) conStat=maxConStat;
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(conStat,2.0))-4;
-		if(newHitPointGain<=0) newHitPointGain=1;
-		newHitPointGain=newHitPointGain*adjuster;
+		if(newHitPointGain<=0)
+		{
+			if(conStat>=1)
+				newHitPointGain=adjuster;
+		}
+		else
+			newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
