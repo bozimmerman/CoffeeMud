@@ -9,8 +9,8 @@ import java.util.*;
 public class Song_Detection extends Song
 {
 	public String ID() { return "Song_Detection"; }
-	public String name(){ return "Detection";}
-	public String displayText(){ return "(Song of Detection)";}
+	public String name(){ return "Awareness";}
+	public String displayText(){ return "(Song of Awareness)";}
 	public int quality(){ return OK_OTHERS;}
 	public Environmental newInstance(){	return new Song_Detection();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

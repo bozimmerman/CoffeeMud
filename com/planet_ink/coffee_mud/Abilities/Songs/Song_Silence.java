@@ -9,8 +9,8 @@ import java.util.*;
 public class Song_Silence extends Song
 {
 	public String ID() { return "Song_Silence"; }
-	public String name(){ return "Silence";}
-	public String displayText(){ return "(Song of Silence)";}
+	public String name(){ return "Silencing";}
+	public String displayText(){ return "(Song of Silencing)";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean skipStandardSongTick(){return true;}
 	public Environmental newInstance(){	return new Song_Silence();}

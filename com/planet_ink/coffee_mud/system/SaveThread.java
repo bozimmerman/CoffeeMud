@@ -99,6 +99,7 @@ public class SaveThread extends Thread
 						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
 						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						S.setKillFlag(true);
 						S.interrupt();
 					}
 					else
@@ -115,6 +116,7 @@ public class SaveThread extends Thread
 					Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
 					Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 					Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					S.setKillFlag(true);
 					S.interrupt();
 				}
 			}

@@ -67,13 +67,19 @@ public class Skill_Disguise extends StdAbility
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(mob)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetCode()==Affect.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
+			String omsg=null;
+			if(msg.othersMessage()!=null)
+			{
+				omsg=Util.replaceAll(msg.othersMessage(),"<T-NAME>",mob.displayName());
+				omsg=Util.replaceAll(omsg,"<T-NAMESELF>",mob.displayName());
+			}
 			msg.modify(msg.source(),this,msg.tool(),
 					   msg.sourceCode(),msg.sourceMessage(),
 					   msg.targetCode(),msg.targetMessage(),
-					   msg.othersCode(),msg.othersMessage());
+					   msg.othersCode(),omsg);
 		}
 		return true;
 	}
@@ -85,7 +91,7 @@ public class Skill_Disguise extends StdAbility
 		MOB mob=(MOB)myHost;
 		if(msg.amITarget(this)
 		&&(Sense.canBeSeenBy(mob,msg.source()))
-		&&(msg.targetCode()==Affect.TYP_EXAMINESOMETHING)
+		&&(msg.targetMinor()==Affect.TYP_EXAMINESOMETHING)
 		&&((values[0]!=null)||(values[4]!=null)))
 		{
 			StringBuffer myDescription=new StringBuffer("");
@@ -110,11 +116,12 @@ public class Skill_Disguise extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
+		String validChoices="Weight, sex, race, height, name, level, class, or alignment";
 		if(commands.size()==0)
 		{
 			if(A==null)
 			{
-				mob.tell("Disguise what? Weight, sex, race, height, name, level, class, or alignment.");
+				mob.tell("Disguise what? "+validChoices+".");
 				return false;
 			}
 			else
@@ -131,7 +138,7 @@ public class Skill_Disguise extends StdAbility
 				which=i;
 		if(which<0)
 		{
-			mob.tell("Disguise what? '"+what+"' is not a valid choice.");
+			mob.tell("Disguise what? '"+what+"' is not a valid choice.  Valid choices are: "+validChoices+".");
 			return false;
 					 
 		}

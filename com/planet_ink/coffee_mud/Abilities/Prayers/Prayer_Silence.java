@@ -8,7 +8,7 @@ import java.util.*;
 public class Prayer_Silence extends Prayer
 {
 	public String ID() { return "Prayer_Silence"; }
-	public String name(){ return "Silence";}
+	public String name(){ return "Silent";}
 	public int quality(){ return MALICIOUS;}
 	public int holyQuality(){ return HOLY_EVIL;}
 	public String displayText(){ return "(Silenced)";}
