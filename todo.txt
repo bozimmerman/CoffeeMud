@@ -10,7 +10,6 @@ racial abilities (abilities tied to the race)
 property on abilities that describes what to say when already affected by it.
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs
-Construct (Secret Door) available to thief and thief subclasses only.
 constuct addition--peephole. a window on a door (sortof)
 ability to make windows in Construction, Masonry
 locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
