@@ -71,7 +71,9 @@ public class Spell_Summon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*2),auto);
+		int adjustment=target.envStats().level();
+		if(target.isMonster()) adjustment=adjustment*3;
+		boolean success=profficiencyCheck(-adjustment,auto);
 
 		if(success)
 		{

@@ -93,7 +93,7 @@ public class Spell_FloatingDisc extends Spell
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,mob.envStats().level()*20);
+				beneficialAffect(mob,target,mob.envStats().level()*30);
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();

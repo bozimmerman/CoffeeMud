@@ -64,7 +64,7 @@ public class CMClass
 		if(thisItem!=null)
 			thisItem=thisItem.newInstance();
 		
-		if((thisItem==null)&&(charClasses.size()>0))
+		if((thisItem==null)&&(charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
 		
 		return thisItem;
@@ -73,28 +73,28 @@ public class CMClass
 	public static Weapon getWeapon(String calledThis)
 	{
 		Weapon thisItem=(Weapon)getEnv(weapons,calledThis);
-		if((thisItem==null)&&(weapons.size()>0))
+		if((thisItem==null)&&(weapons.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Weapon '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Item getMiscMagic(String calledThis)
 	{
 		Item thisItem=(Item)getEnv(miscMagic,calledThis);
-		if((thisItem==null)&&(miscMagic.size()>0))
+		if((thisItem==null)&&(miscMagic.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown MiscMagic '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Armor getArmor(String calledThis)
 	{
 		Armor thisItem=(Armor)getEnv(armor,calledThis);
-		if((thisItem==null)&&(armor.size()>0))
+		if((thisItem==null)&&(armor.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Armor '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Item getStdItem(String calledThis)
 	{
 		Item thisItem=(Item)getEnv(items,calledThis);
-		if((thisItem==null)&&(items.size()>0))
+		if((thisItem==null)&&(items.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown StdItem '"+calledThis+"'.");
 		return thisItem;
 	}
@@ -129,21 +129,21 @@ public class CMClass
 		if(B!=null) 
 			B=B.newInstance();
 		else
-		if(behaviors.size()>0)
+		if((behaviors.size()>0)&&(calledThis.length()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Behavior '"+calledThis+"'.");
 		return B;
 	}
 	public static Room getLocale(String calledThis)
 	{
 		Room thisItem= (Room)getEnv(locales,calledThis);
-		if((thisItem==null)&&(locales.size()>0))
+		if((thisItem==null)&&(locales.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Locale '"+calledThis+"'.");
 		return thisItem;
 	}
 	public static Exit getExit(String calledThis)
 	{
 		Exit thisItem= (Exit)getEnv(exits,calledThis);
-		if((thisItem==null)&&(exits.size()>0))
+		if((thisItem==null)&&(exits.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Exit '"+calledThis+"'.");
 		return thisItem;
 	}
@@ -156,7 +156,7 @@ public class CMClass
 			if(className(mob).equalsIgnoreCase(calledThis))
 				return (MOB)mob.newInstance();
 		}
-		if(MOBs.size()>0)
+		if((MOBs.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown MOB '"+calledThis+"'.");
 		return null;
 	}
@@ -166,7 +166,7 @@ public class CMClass
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		else
-		if(abilities.size()>0)
+		if((abilities.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Ability '"+calledThis+"'.");
 		return A;
 	}

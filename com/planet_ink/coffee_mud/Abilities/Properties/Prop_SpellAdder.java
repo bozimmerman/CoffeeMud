@@ -127,10 +127,15 @@ public class Prop_SpellAdder extends Property
 		while(x<lastMOB.numAffects())
 		{
 			int y=lastMOB.numAffects();
-			String ID=(String)h.get(lastMOB.fetchAffect(x).ID());
-			if((ID!=null)&&(lastMOB.fetchAffect(x).invoker()==lastMOB))
-				lastMOB.fetchAffect(x).unInvoke();
-			if(y==lastMOB.numAffects()) x++;
+			Ability thisAffect=lastMOB.fetchAffect(x);
+			String ID=(String)h.get(thisAffect.ID());
+			if((ID!=null)&&(thisAffect.invoker()==lastMOB))
+			{
+				thisAffect.unInvoke();
+				x=0;
+			}
+			else
+				x++;
 		}
 		lastMOB=null;
 	}
