@@ -42,6 +42,7 @@ public class Fighter_Charge extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*affected.envStats().level()));
+		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
 		affectableStats.setArmor(affectableStats.armor()+(2*affected.envStats().level()));
 	}
 

@@ -57,7 +57,7 @@ public class Skill_Parry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
+					FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-70,false))
 					&&(mob.location().okMessage(mob,msg2)))
 					{

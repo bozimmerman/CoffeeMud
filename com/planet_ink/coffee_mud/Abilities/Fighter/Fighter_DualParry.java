@@ -50,7 +50,7 @@ public class Fighter_DualParry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
+					FullMsg msg2=new FullMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> parr(ys) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
 					if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-85,false))
 					&&(!lastTime)
 					&&(mob.location().okMessage(mob,msg2)))

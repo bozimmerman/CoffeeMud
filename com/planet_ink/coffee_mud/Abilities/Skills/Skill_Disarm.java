@@ -59,7 +59,7 @@ public class Skill_Disarm extends StdAbility
 		   &&((hisWeapon.fitsOn(Item.WIELD))
 			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))
 		{
-			if(mob.location().show(mob,mob.getVictim(),CMMsg.MSG_NOISYMOVEMENT,null))
+			if(mob.location().show(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,null))
 			{
 				FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
 				if(mob.location().okMessage(mob,msg))

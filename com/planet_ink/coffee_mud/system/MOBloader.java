@@ -50,7 +50,7 @@ public class MOBloader
 				mob.setWorshipCharID(DBConnections.getRes(R,"CMWORS"));
 				mob.setPractices(Util.s_int(DBConnections.getRes(R,"CMPRAC")));
 				mob.setTrains(Util.s_int(DBConnections.getRes(R,"CMTRAI")));
-				mob.setAgeHours(Long.parseLong(DBConnections.getRes(R,"CMAGEH")));
+				mob.setAgeHours(Util.s_long(DBConnections.getRes(R,"CMAGEH")));
 				mob.setMoney(Util.s_int(DBConnections.getRes(R,"CMGOLD")));
 				mob.setWimpHitPoint(Util.s_int(DBConnections.getRes(R,"CMWIMP")));
 				mob.setQuestPoint(Util.s_int(DBConnections.getRes(R,"CMQUES")));

@@ -33,6 +33,7 @@ public class JewelMaking extends CommonSkill
 	private static boolean mapped=false;
 	private boolean mending=false;
 	private boolean refitting=false;
+	private boolean fireRequired=true;
 
 	public JewelMaking()
 	{
@@ -47,14 +48,17 @@ public class JewelMaking extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
-			||(fire==null)
-			||(!Sense.isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			if(fireRequired)
 			{
-				messedUp=true;
-				unInvoke();
+				if((building==null)
+				||(fire==null)
+				||(!Sense.isOnFire(fire))
+				||(!mob.location().isContent(fire))
+				||(mob.isMine(fire)))
+				{
+					messedUp=true;
+					unInvoke();
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -165,6 +169,7 @@ public class JewelMaking extends CommonSkill
 		Vector recipes=loadRecipes();
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
+		fireRequired=true;
 		int completion=4;
 		String misctype="";
 		if(str.equalsIgnoreCase("list"))
@@ -306,12 +311,10 @@ public class JewelMaking extends CommonSkill
 		else
 		{
 			beingDone=null;
-			fire=getRequiredFire(mob);
 			building=null;
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			if(fire==null) return false;
 			int amount=-1;
 			if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
 			{
@@ -339,6 +342,14 @@ public class JewelMaking extends CommonSkill
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"jewel list\" for a list.");
 				return false;
 			}
+			misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			if(!misctype.equals("BUNDLE"))
+			{
+				fire=getRequiredFire(mob);
+				if(fire==null) return false;
+			}
+			else
+				fireRequired=false;
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
@@ -359,7 +370,6 @@ public class JewelMaking extends CommonSkill
 				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
 				return false;
 			}
-			misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			if(!misctype.equalsIgnoreCase("BUNDLE")) 
 			{
 				if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)

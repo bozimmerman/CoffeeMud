@@ -47,46 +47,44 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WildernessLore",false);
 			
-			CMAble.addCharAbilityMapping(ID(),2,"Ranger_FindWater",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Ranger_FindWater",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",false);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 			
-			CMAble.addCharAbilityMapping(ID(),6,"Chant_LocatePlants",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_LocatePlants",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 			
-			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Fighter_TrueShot",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 			
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_Farsight",false);
 			
-			CMAble.addCharAbilityMapping(ID(),10,"Ranger_Sneak",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
 			
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
 			
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_PointBlank",false);
 			
@@ -103,11 +101,11 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_BreatheWater",false);
 			
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
 			
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_FireWard",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Bury",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Fighter_FarShot",false);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);
@@ -122,7 +120,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_GasWard",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Sunray",false);
 			
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);

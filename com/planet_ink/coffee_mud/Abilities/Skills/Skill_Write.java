@@ -49,7 +49,11 @@ public class Skill_Write extends StdAbility
 		}
 
 		Item item=target;
-		if((item==null)||((item!=null)&&(!Sense.isReadable(item))))
+		if((item==null)
+		||((item.material()!=EnvResource.RESOURCE_PAPER)
+		   &&(item.material()!=EnvResource.RESOURCE_SILK)
+		   &&(item.material()!=EnvResource.RESOURCE_HEMP))
+		||((item!=null)&&(!Sense.isReadable(item))))
 		{
 			mob.tell("You can't write on that.");
 			return false;

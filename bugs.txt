@@ -1,5 +1,8 @@
+My Skeletons are Leveling... I'm a Necromancer!!!
 Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, ?Autosneak
 Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
+Test: Improved Shield Defence, Body Toss, Mounted Charge, Far Shot, Counter Attack
+Test: Gouge, AutoBash, Weapon Catch, Body Shield
 Default statistics page is not right
 
 Fighters:
@@ -9,18 +12,8 @@ Fragmentation   A critical shot enhancement for barbarians that only works with 
 (SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) Tactics  gives bonuses to combat in those terrains. Also allows a Barbarian to  HIDE in that type of terrain if he remains in a room of that type for more  than 2 minutes....  
 Improved Throwing  Barbarian does extra damage with hurled items.  
 Grab opponent  prevents them from changing range, allows one fewer attack from barbar  
-Bodytoss  take a grabbed opponent and chunk him 2 ranges out. Causes damage to him  based on your proficiency.  
 Piledrive  follows up a bodytoss with a powerful elbow attack. must have bodytoss to use.  
-Gouge blinds opponent for a lot longer than dirt. Harder to use.  
-Bodyshield allows you to take a PINNED opponent, and use him as a shield, with him  taking damage instead of you. Works 50% of time if your skill is 100%,  and both enemies are your level, 75% of time if your pinned opponenet  is 20 levels lower than you, or the other attacker is 20 levels lower  than you, and near 100% if both are 20 levels lower than you....  
-Weapon Catch  If you are disarmed, it will make a weaponcatch check. If it  succedes, you catch the weapon, losing one attack. Otherwise,  the weapon falls to the ground.  
-Shield Block - like dodge, but requires a shield
-Improved Shield Defence  grants extra bonuses when using shield.  
-AutoBashing  grants an extra BASH attack every round. Mana and Movement for each  autobash.  
-Mounted Charge  as the name implies. Barbarian Charge skill applied to mounted  warriors. Paladin skill.  
 Tactics  for fighters, gives allies bonus to hit.  
-Farshot  Allows the player to shoot at one range increment more than normal maximum range for the ranged weapon.  
-Counter Attack  Allows an extra attack aftuer a successfl Parry.  
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  

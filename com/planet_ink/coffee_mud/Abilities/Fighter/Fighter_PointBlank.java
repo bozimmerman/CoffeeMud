@@ -11,7 +11,7 @@ public class Fighter_PointBlank extends StdAbility
 	public String ID() { return "Fighter_PointBlank"; }
 	public String name(){ return "Point Blank Shot";}
 	public String displayText(){ return "";}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}

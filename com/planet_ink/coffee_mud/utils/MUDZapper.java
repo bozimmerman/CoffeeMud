@@ -858,7 +858,7 @@ public class MUDZapper
 				case 32: // -area
 					if(!areaCheck(V,'+',v+1,mob)) return false;
 					break;
-				case 34: // +item
+				case 33: // +item
 					if(!itemCheck(V,'+',v+1,mob)) return false;
 					break;
 				}
