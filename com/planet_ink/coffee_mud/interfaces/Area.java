@@ -102,5 +102,4 @@ public interface Area extends Environmental
 	public String getSubOpList();
 	public void setSubOpList(String list);
 	public Vector getSubOpVectorList();
-	
 }
