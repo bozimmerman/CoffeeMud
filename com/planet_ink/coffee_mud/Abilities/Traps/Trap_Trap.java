@@ -224,6 +224,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		MOB mob2=CMClass.getMOB("StdMOB");
 		mob2.setLocation(CMClass.getLocale("StdRoom"));
 		mob2.baseEnvStats().setLevel(affected.envStats().level());
+		mob2.recoverCharStats();
 		mob2.recoverEnvStats();
 		A.invoke(mob2,V,mob,true);
 	}
@@ -282,6 +283,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		sprung=true;
 		benefactor.setLocation(target.location());
 		benefactor.baseEnvStats().setLevel(target.envStats().level());
+		benefactor.recoverCharStats();
 		benefactor.recoverEnvStats();
 		if(invoker==null)
 			invoker=benefactor;

@@ -342,11 +342,10 @@ public class FrontDoor
 							newClass=null;
 					}
 				}
+				mob.baseEnvStats().setLevel(1);
 				mob.baseCharStats().setCurrentClass(newClass.ID());
 				mob.baseCharStats().setClassLevel(newClass.ID(),1);
-				mob.baseEnvStats().setLevel(1);
 				mob.baseEnvStats().setSensesMask(0);
-
 
 				mob.baseState().setHitPoints(20);
 				mob.baseState().setMovement(100);

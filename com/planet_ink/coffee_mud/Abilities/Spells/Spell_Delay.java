@@ -34,6 +34,7 @@ public class Spell_Delay extends Spell
 			newCaster.setDisplayText(" ");
 			newCaster.baseEnvStats().setLevel(invoker.envStats().level());
 			newCaster.recoverEnvStats();
+			newCaster.recoverCharStats();
 			newCaster.setLocation((Room)affected);
 			try
 			{

@@ -156,6 +156,8 @@ public class Prop_EnterAdjuster extends Property
 		}
 		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+getVal(readableText,"str"));
 		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+getVal(readableText,"wis"));
+		if(getVal(readableText,"lev")!=0)
+			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass().ID(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass().ID())+getVal(readableText,"lev"));
 
 		mob.baseState().setHitPoints(mob.curState().getHitPoints()+getVal(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+getVal(readableText,"hun"));

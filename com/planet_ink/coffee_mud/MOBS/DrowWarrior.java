@@ -45,7 +45,6 @@ public class DrowWarrior extends DrowElf
 		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
 		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
 		baseCharStats().setCurrentClass("Fighter");
-		baseCharStats().setClassLevel("Fighter",baseEnvStats().level());
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 

@@ -241,9 +241,9 @@ public class AbilityEvoker
 			return;
 		}
 
-		if(!teacherAbility.canBeTaughtBy(teacher,mob))
+		if(!teacherAbility.canBeTaughtBy(teacher,mob)) 
 			return;
-		if(!teacherAbility.canBePracticedBy(teacher,mob))
+		if(!teacherAbility.canBePracticedBy(teacher,mob)) 
 			return;
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(msg))

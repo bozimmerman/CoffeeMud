@@ -154,7 +154,7 @@ public class StdCharClass implements CharClass
 
 	public void unLevel(MOB mob)
 	{
-		if(mob.envStats().level()<2)
+		if(mob.baseEnvStats().level()<2)
 			return;
 		mob.tell("\n\r^ZYou've lost a level!!!^N");
 
@@ -186,6 +186,8 @@ public class StdCharClass implements CharClass
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
+		CharClass curClass=mob.baseCharStats().getCurrentClass();
+		mob.baseCharStats().setClassLevel(curClass.ID(),mob.baseCharStats().getClassLevel(curClass.ID())+adjuster);
 		int gained=mob.getExperience()-mob.getExpNextLevel();
 		if(gained<50) gained=50;
 
@@ -197,7 +199,7 @@ public class StdCharClass implements CharClass
 
 		StringBuffer theNews=new StringBuffer("");
 
-		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getCurrentClass().name()+".^N\n\r");
+		theNews.append("^HYou are now a level "+mob.baseCharStats().getClassLevel(curClass.ID())+" "+mob.charStats().getCurrentClass().name()+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
@@ -239,7 +241,6 @@ public class StdCharClass implements CharClass
 		if(!mob.isMonster()) return;
 
 		mob.setAlignment(500);
-		mob.baseEnvStats().setLevel(1);
 		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
 		mob.baseCharStats().setStat(CharStats.STRENGTH,11);
 		mob.baseCharStats().setStat(CharStats.WISDOM,10);
