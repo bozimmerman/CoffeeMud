@@ -27,6 +27,8 @@ public class Prop_SafePet extends Property
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)))
 		{
 			affect.source().tell("Ah, leave "+affected.name()+" alone.");
+			if(affected instanceof MOB)
+				((MOB)affected).makePeace();
 			return false;
 		}
 		return super.okAffect(affect);
