@@ -1,6 +1,1 @@
-ability to permasave a mpvar
-scriptable -- add ability adding, and container checking
-page that lists all the known Resources in a cool table with like name, type, base value, scarcity and list of loaded locales that have it?
-programmers guide to races addendum
-2 'take' bugs.... Take doesn't work if they are sitting down... It just drops the item into their inv. and 'take all MOBNAME' only takes one item... you need to keep typing it to take everything...
-finish dispursing swim, dragonbreath, flying, etc..
+Are there web macros to get and set player gold and inventory so this could happen automatically? If not, could they be added?

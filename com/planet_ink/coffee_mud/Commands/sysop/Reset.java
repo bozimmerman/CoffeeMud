@@ -208,6 +208,29 @@ public class Reset
 			mob.tell("Done.");
 		}
 		else
+		if(s.equalsIgnoreCase("bankdata"))
+		{
+			String bank=Util.combine(commands,1);
+			if(bank.length()==0){
+				mob.tell("Which bank?");
+				return;
+			}
+			int records=0;
+			Vector V=ExternalPlay.DBReadJournal(bank);
+			for(int v=0;v<V.size();v++)
+			{
+				Vector V2=(Vector)V.elementAt(v);
+				String name=(String)V2.elementAt(1);
+				String ID=(String)V2.elementAt(4);
+				String classID=((String)V2.elementAt(3));
+				String data=((String)V2.elementAt(5));
+				if(ID.equalsIgnoreCase("COINS")) classID="COINS";
+				Item I=(Item)CMClass.getItem("GenItem").copyOf();
+				ExternalPlay.DBCreateData(name,bank,""+I,classID+";"+data);
+			}
+			mob.tell(records+" records done.");
+		}
+		else
 		if(s.equalsIgnoreCase("mobstats"))
 		{
 			s="room";

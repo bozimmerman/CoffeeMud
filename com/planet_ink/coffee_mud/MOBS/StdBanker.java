@@ -58,10 +58,30 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public void addDepositInventory(String mob, Item thisThang)
 	{
-		String name=thisThang.Name();
+		String name=thisThang.ID();
 		if(thisThang instanceof Coins) name="COINS";
-		ExternalPlay.DBWriteJournal(bankChain(),mob,CMClass.className(thisThang),name,Generic.getPropertiesStr(thisThang,true),-1);
+		ExternalPlay.DBCreateData(mob,bankChain(),""+thisThang,name+";"+Generic.getPropertiesStr(thisThang,true));
 	}
+	
+	protected Item makeItem(String data)
+	{
+		int x=data.indexOf(";");
+		if(x<0) return null;
+		Item I=null;
+		if(data.substring(0,x).equals("COINS"))
+			I=CMClass.getItem("StdCoins");
+		else 
+			I=CMClass.getItem(data.substring(0,x));
+		if(I!=null)
+		{
+			Generic.setPropertiesStr(I,data.substring(x+1),true);
+			I.recoverEnvStats();
+			I.text();
+			return I;
+		}
+		return null;
+	}
+	
 	public void delDepositInventory(String mob, Item thisThang)
 	{
 		Vector V=getDepositInventory(mob);
@@ -69,24 +89,24 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			String fullName=((String)V2.elementAt(4));
-			if((money&&(fullName.equals("COINS")))
-			||((fullName.equals(thisThang.Name()))&&(((String)V2.elementAt(3)).equals(CMClass.className(thisThang)))))
+			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
 			{
-				ExternalPlay.DBDeleteJournal(((String)V2.elementAt(0)),Integer.MAX_VALUE);
+				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
+				break;
+			}
+				
+			Item I=makeItem((String)V2.elementAt(DATA_DATA));
+			if(I==null) continue;
+			if(thisThang.sameAs(I))
+			{
+				ExternalPlay.DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
 				break;
 			}
 		}
 	};
 	public void delAllDeposits(String mob)
 	{
-		Vector V=ExternalPlay.DBReadJournal(bankChain());
-		for(int v=V.size()-1;v>=0;v--)
-		{
-			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob))
-				ExternalPlay.DBDeleteJournal(((String)V2.elementAt(0)),Integer.MAX_VALUE);
-		}
+		ExternalPlay.DBDeleteData(mob,bankChain());
 	};
 	public int numberDeposited(String mob)
 	{
@@ -99,41 +119,32 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			Item I=CMClass.getItem(((String)V2.elementAt(3)));
-			if(I!=null)
-			{
-				Generic.setPropertiesStr(I,((String)V2.elementAt(5)),true);
-				I.recoverEnvStats();
-				I.text();
-				mine.addElement(I);
-			}
+			Item I=makeItem((String)V2.elementAt(DATA_DATA));
+			if(I!=null)	mine.addElement(I);
 		}
 		return mine;
 	}
 	public Vector getDepositInventory(String mob)
 	{
-		Vector V=ExternalPlay.DBReadJournal(bankChain());
-		Vector mine=new Vector();
-		for(int v=0;v<V.size();v++)
-		{
-			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob))
-				mine.addElement(V2);
-		}
-		return mine;
+		return ExternalPlay.DBReadData(mob,bankChain());
 	};
 	public Vector getAccountNames()
 	{
-		Vector V=ExternalPlay.DBReadJournal(bankChain());
+		Vector V=ExternalPlay.DBReadData(bankChain());
+		HashSet h=new HashSet();
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			mine.addElement(V2.elementAt(1));
+			if(!h.contains((String)V2.elementAt(DATA_USERID)))
+			{
+				h.add((String)V2.elementAt(DATA_USERID));
+				mine.addElement((String)V2.elementAt(DATA_USERID));
+			}
 		}
 		return mine;
 	}
-
+	
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);
@@ -141,22 +152,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			String fullName=((String)V2.elementAt(4));
-			if((money&&(fullName.equals("COINS")))
-			||(CoffeeUtensils.containsString(fullName,likeThis)))
-			{
-				Item I=CMClass.getItem(((String)V2.elementAt(3)));
-				if(I!=null)
-				{
-					Generic.setPropertiesStr(I,((String)V2.elementAt(5)),true);
-					I.recoverEnvStats();
-					I.text();
-					return I;
-				}
-			}
+			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
+				return makeItem((String)V2.elementAt(DATA_DATA));
+			
+			Item I=makeItem((String)V2.elementAt(DATA_DATA));
+			if(I==null) continue;
+			if(CoffeeUtensils.containsString(I.Name(),likeThis))
+				return I;
 		}
 		return null;
 	};
+
+
+
 	public void setCoinInterest(double interest){coinInterest=interest;};
 	public void setItemInterest(double interest){itemInterest=interest;};
 	public double getCoinInterest(){return coinInterest;};
@@ -184,12 +192,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(proceed)
 				{
-					Vector V=ExternalPlay.DBReadJournal(bankChain());
+					Vector V=ExternalPlay.DBReadData(bankChain());
 					Vector userNames=new Vector();
 					for(int v=0;v<V.size();v++)
 					{
 						Vector V2=(Vector)V.elementAt(v);
-						String name=(String)V2.elementAt(1);
+						String name=(String)V2.elementAt(0);
 						if(!userNames.contains(name))
 						{
 							if(!ExternalPlay.DBUserSearch(null,name))
@@ -219,8 +227,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								totalValue+=I.value();
 						}
 						int newBalance=0;
-						if(coinItem!=null)
-							newBalance=coinItem.numberOfCoins();
+						if(coinItem!=null) newBalance=coinItem.numberOfCoins();
 						newBalance+=(int)Math.round(Util.mul(newBalance,coinInterest));
 						if(totalValue>0)
 							newBalance+=(int)Math.round(Util.mul(totalValue,itemInterest));

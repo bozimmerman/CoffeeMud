@@ -40,14 +40,23 @@ public class DataLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' and CMSECT='"+section+"'");
+			ResultSet R=null;
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
+			else
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			while(R.next())
 			{
 				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMPLID"));
-				V.addElement(DBConnections.getRes(R,"CMSECT"));
-				V.addElement(DBConnections.getRes(R,"CMPKEY"));
-				V.addElement(DBConnections.getRes(R,"CMPDAT"));
+				String playerID2=DBConnections.getRes(R,"CMPLID");
+				String section2=DBConnections.getRes(R,"CMSECT");
+				if(section2.equalsIgnoreCase(section))
+				{
+					V.addElement(playerID2);
+					V.addElement(section2);
+					V.addElement(DBConnections.getRes(R,"CMPKEY"));
+					V.addElement(DBConnections.getRes(R,"CMPDAT"));
+				}
 				rows.addElement(V);
 			}
 			DBConnector.DBDone(D);
@@ -67,14 +76,24 @@ public class DataLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
+			ResultSet R=null;
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			else
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 			while(R.next())
 			{
 				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMPLID"));
-				V.addElement(DBConnections.getRes(R,"CMSECT"));
-				V.addElement(DBConnections.getRes(R,"CMPKEY"));
-				V.addElement(DBConnections.getRes(R,"CMPDAT"));
+				String playerID2=DBConnections.getRes(R,"CMPLID");
+				String section2=DBConnections.getRes(R,"CMSECT");
+				if((playerID2.equalsIgnoreCase(playerID))
+				&&(section2.equalsIgnoreCase(section)))
+				{
+					V.addElement(playerID2);
+					V.addElement(section2);
+					V.addElement(DBConnections.getRes(R,"CMPKEY"));
+					V.addElement(DBConnections.getRes(R,"CMPDAT"));
+				}
 				rows.addElement(V);
 			}
 			DBConnector.DBDone(D);
@@ -121,7 +140,27 @@ public class DataLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' and CMSECT='"+section+"'");
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+			{
+				D=DBConnector.DBFetch();
+				Vector keys=new Vector();
+				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
+				while(R.next())
+				{
+					String section2=DBConnections.getRes(R,"CMSECT");
+					if(section.equalsIgnoreCase(section2))
+						keys.addElement(DBConnections.getRes(R,"CMPKEY"));
+				}
+				DBConnector.DBDone(D);
+				for(int i=0;i<keys.size();i++)
+				{
+					D=DBConnector.DBFetch();
+					D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+((String)keys.elementAt(i))+"'");
+					DBConnector.DBDone(D);
+				}
+			}
+			else
+				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -132,11 +171,15 @@ public class DataLoader
 	}
 	public static void DBDelete(String playerID, String section, String key)
 	{
+		
 		DBConnection D=null;
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+				D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+key+"'");
+			else
+				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"' AND CMPKEY='"+key+"'");
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)

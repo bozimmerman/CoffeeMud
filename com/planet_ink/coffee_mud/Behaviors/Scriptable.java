@@ -129,7 +129,8 @@ public class Scriptable extends StdBehavior
 		"HASTATTOO", // 49
 		"ISSEASON", // 50
 		"ISWEATHER", // 51
-		"GSTAT" // 52
+		"GSTAT", // 52
+		"INCONTAINER" //53
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -167,7 +168,10 @@ public class Scriptable extends StdBehavior
 		"MPTATTOO", // 33
 		"BREAK", // 34
 		"MPGSET", // 35
-		"MPSAVEVAR" // 36
+		"MPSAVEVAR", // 36
+		"MPENABLE", // 37
+		"MPDISABLE", // 38
+		"MPLOADVAR" // 39
 	};
 
 	public Behavior newInstance()
@@ -1633,6 +1637,40 @@ public class Scriptable extends StdBehavior
 				returnable=simpleEval(""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
+			case 53: // incontainer
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E2=getArgumentItem(arg2,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E==null)
+					returnable=false;
+				else
+				if(E instanceof MOB)
+				{
+					if(arg2.length()==0)
+						returnable=(((MOB)E).riding()==null);
+					else
+					if(E2!=null)
+						returnable=(((MOB)E).riding()==E2);
+					else
+						returnable=false;
+				}
+				else
+				if(E instanceof Item)
+				{
+					if(arg2.length()==0)
+						returnable=(((Item)E).container()==null);
+					else
+					if(E2!=null)
+						returnable=(((Item)E).container()==E2);
+					else
+						returnable=false;
+				}
+				else
+					returnable=false;
+				break;
+			}
 			default:
 				Log.errOut("Scriptable","Unknown CMD -- "+monster.Name()+", "+evaluable);
 				return returnable;
@@ -2242,6 +2280,26 @@ public class Scriptable extends StdBehavior
 				{
 					String sex=CMClass.className(E).toLowerCase();
 					results.append(sex);
+				}
+				break;
+			}
+			case 53: // incontainer
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					if(E instanceof MOB)
+					{
+						if(((MOB)E).riding()!=null)
+							results.append(((MOB)E).riding().Name());
+					}
+					else
+					if(E instanceof Item)
+					{
+						if(((Item)E).riding()!=null)
+							results.append(((Item)E).container().Name());
+					}
 				}
 				break;
 			}
@@ -3187,10 +3245,33 @@ public class Scriptable extends StdBehavior
 			}
 			case 36: // mpsavevar
 			{
-				Environmental E=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
-				if((E!=null)&&(arg2.length()>0))
+				String arg1=Util.getCleanBit(s,1);
+				String arg2=Util.getCleanBit(s,2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(arg2.length()==0))
 				{
+					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
+					String val="";
+					if(H!=null)
+					{
+						val=(String)H.get(arg2);
+						if(val==null) val="";
+					}
+					ExternalPlay.DBDeleteData(E.Name(),"SCRIPTABLEVARS",arg2);
+					ExternalPlay.DBCreateData(E.Name(),"SCRIPTABLEVARS",arg2,val);
+				}
+				break;
+			}
+			case 39: // mploadvar
+			{
+				String arg1=Util.getCleanBit(s,1);
+				String arg2=Util.getCleanBit(s,2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(arg2.length()==0))
+				{
+					Vector V=ExternalPlay.DBReadData(E.Name(),"SCRIPTABLEVARS",arg2);
+					if((V!=null)&&(V.size()>3))
+						mpsetvar(E.Name(),arg2,(String)V.elementAt(3));
 				}
 				break;
 			}
@@ -3344,6 +3425,33 @@ public class Scriptable extends StdBehavior
 				vscript.addElement("FUNCTION_PROG ALARM_"+time);
 				vscript.addElement(parms);
 				que.insertElementAt(new ScriptableResponse(source,target,monster,primaryItem,secondaryItem,vscript,Util.s_int(time),msg),0);
+				break;
+			}
+			case 37: // mpenable
+			{
+				String cast=Util.getCleanBit(s,1);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
+				String p2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,4));
+				Ability A=null;
+				if(cast!=null) A=CMClass.getAbility(cast);
+				if((newTarget!=null)&&(A!=null)&&(newTarget instanceof MOB))
+				{
+					A.setProfficiency(Util.s_int(p2));
+					A.setMiscText(m2);
+					((MOB)newTarget).addAbility(A);
+				}
+				break;
+			}
+			case 38: // mpdisable
+			{
+				String cast=Util.getCleanBit(s,1);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+				{
+					Ability A=((MOB)newTarget).fetchAbility(cast);
+					if(A!=null)((MOB)newTarget).delAbility(A);
+				}
 				break;
 			}
 			default:

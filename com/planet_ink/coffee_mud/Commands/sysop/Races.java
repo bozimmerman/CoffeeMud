@@ -554,7 +554,7 @@ public class Races
 						StringBuffer str=new StringBuffer(A.ID()+";");
 						String level=mob.session().prompt("Enter the level of this skill (1): ","1");
 						str.append((""+Util.s_int(level))+";");
-						if(mob.session().confirm("Is this skill only qualified for (y/N)?","N"))
+						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
 							str.append("false;");
 						else
 							str.append("true;");

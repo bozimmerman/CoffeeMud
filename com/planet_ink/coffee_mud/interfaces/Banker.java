@@ -3,6 +3,11 @@ import java.util.*;
 
 public interface Banker extends ShopKeeper
 {
+	public final static int DATA_USERID=0;
+	public final static int DATA_BANK=1;
+	public final static int DATA_KEY=2;
+	public final static int DATA_DATA=3;
+	
 	public void addDepositInventory(String mob, Item thisThang);
 	public void delDepositInventory(String mob, Item thisThang);
 	public void delAllDeposits(String mob);

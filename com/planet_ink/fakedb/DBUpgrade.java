@@ -21,7 +21,7 @@ public class DBUpgrade
 	public static void main(String a[]) throws IOException
 	{
 		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
-		pl("(C) 2001 Bo Zimmerman");
+		pl("(C) 2003 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");

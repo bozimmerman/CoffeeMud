@@ -281,6 +281,16 @@ public class DBConnection
 		return R;
 	}
 	
+	public String catalog()
+	{
+		try{
+			return myConnection.getCatalog();
+		}
+		catch(Exception e){}
+		return "";
+	}
+	
+	
 	/** 
 	 * execute an sql update, returning the status
 	 * 

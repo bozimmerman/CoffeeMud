@@ -182,10 +182,8 @@ public class Connection implements java.sql.Connection
       log("setCatalog");
    }
    public String getCatalog() throws java.sql.SQLException
-   {
-      log("getCatalog");
-      return "FAKEDB";
-   }
+   { return "FAKEDB";  }
+   
    public void setTransactionIsolation(int level) throws java.sql.SQLException
    {
       log("setTransactionIsolation");
