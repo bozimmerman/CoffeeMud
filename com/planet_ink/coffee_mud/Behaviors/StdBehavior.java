@@ -40,6 +40,8 @@ public class StdBehavior implements Behavior
 	{
 
 	}
+	public boolean modifyBehavior(MOB mob, Object O)
+	{ return false; }
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;

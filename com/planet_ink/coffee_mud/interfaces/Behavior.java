@@ -20,6 +20,9 @@ public interface Behavior extends Cloneable, Tickable, MsgListener
 	
 	public void startBehavior(Environmental forMe);
 	
+	// misc method for modifying behaviors that are already ticking
+	public boolean modifyBehavior(MOB mob, Object O);
+	
 	public String getParms();
 	public void setParms(String parameters);
 	

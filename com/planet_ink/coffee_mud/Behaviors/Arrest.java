@@ -67,6 +67,24 @@ public class Arrest extends StdBehavior
 		public void setArrestingOfficer(MOB mob){ arrestingOfficer=mob;	}
 	}
 
+	public boolean modifyBehavior(MOB mob, Object O)
+	{
+		if(mob!=null)
+		{
+			if((O!=null)&&(O instanceof MOB))
+			{
+				MOB framed=(MOB)O;
+				ArrestWarrant W=null;
+				for(int i=0;(W=getWarrant(mob,i))!=null;i++)
+					if(W.criminal==mob) W.criminal=framed;
+				return true;
+			}
+			else
+				return (getWarrant(mob,0))!=null;
+		}
+		return super.modifyBehavior(mob,O);
+	}
+	
 	private Properties getLaws()
 	{
 		String lawName=getParms();

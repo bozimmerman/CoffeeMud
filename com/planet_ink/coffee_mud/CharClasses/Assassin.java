@@ -33,7 +33,7 @@ public class Assassin extends Thief
 	}
 	public String otherBonuses()
 	{
-		return "String resistance to all poisons at 21st level.";
+		return "Strong resistance to all poisons at 21st level.";
 	}
 	public Assassin()
 	{
@@ -44,7 +44,7 @@ public class Assassin extends Thief
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
@@ -55,7 +55,7 @@ public class Assassin extends Thief
 			
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
 			
-CMAble.addCharAbilityMapping(ID(),3,"Thief_Mark",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Thief_Mark",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_SneakAttack",false);
 			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
@@ -68,7 +68,7 @@ CMAble.addCharAbilityMapping(ID(),3,"Thief_Mark",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 			
-CMAble.addCharAbilityMapping(ID(),7,"Thief_MarkInvisibility",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Thief_MarkInvisibility",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Specialization_Natural",false);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
@@ -86,10 +86,10 @@ CMAble.addCharAbilityMapping(ID(),7,"Thief_MarkInvisibility",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Specialization_BluntWeapon",false);
 
-CMAble.addCharAbilityMapping(ID(),13,"Thief_AnalyzeMark",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_AnalyzeMark",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Observation",false);
 			
-CMAble.addCharAbilityMapping(ID(),14,"Thief_Assassinate",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_Assassinate",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 			
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Attack2",true);
@@ -115,7 +115,7 @@ CMAble.addCharAbilityMapping(ID(),14,"Thief_Assassinate",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Ambush",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",false);
 			
-CMAble.addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Thief_FrameMark",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);

@@ -36,7 +36,7 @@ public class Thief extends StdCharClass
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);

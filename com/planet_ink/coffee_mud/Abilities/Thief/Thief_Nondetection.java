@@ -19,21 +19,37 @@ public class Thief_Nondetection extends ThiefSkill
 	public boolean active=false;
 	
 	
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected==null)||(!(affected instanceof MOB)))
+			return super.okAffect(myHost,affect);
+
+		MOB mob=(MOB)affected;
+		if((!Sense.isHidden(mob))&&(active))
 		{
-			if((msg.amISource((MOB)affected))
-			&&((msg.sourceMinor()==Affect.TYP_ENTER)
-			   ||(msg.sourceMinor()==Affect.TYP_LEAVE)
-			   ||(msg.sourceMinor()==Affect.TYP_RECALL)))
+			active=false;
+			mob.recoverEnvStats();
+		}
+		else
+		if(affect.amISource(mob))
+		{
+			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
+				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
+				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
+				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
+				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
+			 &&(active)
+			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
+			 &&(affect.sourceMajor()>0))
 			{
 				active=false;
-				affected.recoverEnvStats();
+				mob.recoverEnvStats();
 			}
 		}
-		return super.okAffect(myHost,msg);
+		return super.okAffect(myHost,affect);
 	}
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
