@@ -10,9 +10,12 @@ public class ShopKeepers
 {
 	private ShopKeepers(){}
 	
-	private static MOB shopkeeper(Room here, MOB mob)
+	private static Vector shopkeepers(MOB mob)
 	{
+		if(mob==null) return null;
+		Room here=mob.location();
 		if(here==null) return null;
+		Vector V=new Vector();
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
@@ -20,11 +23,52 @@ public class ShopKeepers
 			&&(thisMOB!=mob)
 			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
 			&&(Sense.canBeSeenBy(thisMOB,mob)))
-				return thisMOB;
+				V.addElement(thisMOB);
 		}
-		return null;
+		return V;
 	}
 
+	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
+	{
+		commands.removeElementAt(0);
+		
+		Vector V=shopkeepers(mob);
+		if(V.size()==0) 
+		{
+			mob.tell(error);
+			return null;
+		}
+		if(V.size()>1)
+		{
+			if(commands.size()<2)
+			{
+				mob.tell(error);
+				return null;
+			}
+			MOB shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+				commands.removeElementAt(commands.size()-1);
+			else
+			{
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' here buying or selling.");
+				return null;
+			}
+			return shopkeeper;
+		}
+		else
+		{
+			MOB shopkeeper=(MOB)V.firstElement();
+			if(commands.size()>1)
+			{
+				shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+				if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+					commands.removeElementAt(commands.size()-1);
+			}
+			return shopkeeper;
+		}
+	}
+	
+	
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		String titleInName="";
@@ -49,34 +93,14 @@ public class ShopKeepers
 	
 	public static void sell(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"Sell what to whom?");
+		if(shopkeeper==null) return;
+		if(commands.size()==0)
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Sell what to whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
-				return;
-			}
-			commands.removeElementAt(commands.size()-1);
+			mob.tell("Sell what?");
+			return;
 		}
-		else
-		{
-			if(commands.size()<2)
-			{
-				mob.tell("Sell what?");
-				return;
-			}
-			commands.removeElementAt(0);
-		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -103,33 +127,12 @@ public class ShopKeepers
 
 	public static void value(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"Value what with whom?");
+		if(shopkeeper==null) return;
+		if(commands.size()==0)
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Value what with whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
-				return;
-			}
-			commands.removeElementAt(commands.size()-1);
-		}
-		else
-		{
-			if(commands.size()<2)
-			{
-				mob.tell("Value what?");
-				return;
-			}
-			commands.removeElementAt(0);
+			mob.tell("Value what?");
+			return;
 		}
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
@@ -156,32 +159,12 @@ public class ShopKeepers
 
 	public static void view(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"View what merchandise from whom?");
+		if(shopkeeper==null) return;
+		if(commands.size()==0)
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("View what merchandise from whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
-				return;
-			}
-		}
-		else
-		{
-			if(commands.size()<2)
-			{
-				mob.tell("View what merchandise?");
-				return;
-			}
-			commands.removeElementAt(0);
+			mob.tell("View what merchandise?");
+			return;
 		}
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
@@ -210,41 +193,15 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
-	public static MOB findShopkeeper(MOB mob, Vector commands, String error)
-	{
-	}
-	
-	
 	public static void buy(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"Buy what from whom?");
+		if(shopkeeper==null) return;
+		if(commands.size()==0)
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Buy what from whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
-				return;
-			}
+			mob.tell("Buy what?");
+			return;
 		}
-		else
-		{
-			if(commands.size()<2)
-			{
-				mob.tell("Buy what?");
-				return;
-			}
-			commands.removeElementAt(0);
-		}
-		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -277,32 +234,17 @@ public class ShopKeepers
 
 	public static void deposit(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"Deposit how much with whom?");
+		if(shopkeeper==null) return;
+		if(!(shopkeeper instanceof Banker))
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Deposit how much with whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' running a bank.");
-				return;
-			}
+			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
+			return;
 		}
-		else
+		if(commands.size()==0)
 		{
-			if(commands.size()<2)
-			{
-				mob.tell("Deposit what or how much?");
-				return;
-			}
-			commands.removeElementAt(0);
+			mob.tell("Deposit what or how much?");
+			return;
 		}
 		String thisName=Util.combine(commands,0);
 		Item thisThang=SocialProcessor.possibleGold(mob,thisName);
@@ -325,32 +267,17 @@ public class ShopKeepers
 	
 	public static void withdraw(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=parseShopkeeper(mob,commands,"Withdraw how much from whom?");
+		if(shopkeeper==null) return;
+		if(!(shopkeeper instanceof Banker))
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Withdraw how much from whom?");
-				return;
-			}
-			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' holding your money.");
-				return;
-			}
+			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
+			return;
 		}
-		else
+		if(commands.size()==0)
 		{
-			if(commands.size()<2)
-			{
-				mob.tell("Withdraw what or how much?");
-				return;
-			}
-			commands.removeElementAt(0);
+			mob.tell("Withdraw what or how much?");
+			return;
 		}
 		String str=(String)commands.firstElement();
 		if(((String)commands.lastElement()).equalsIgnoreCase("coins"))
@@ -410,39 +337,27 @@ public class ShopKeepers
 	
 	public static void list(MOB mob, Vector commands)
 	{
+		commands.removeElementAt(0);
 		Vector V=new Vector();
-		Room here=mob.location();
-		if(here==null) return;
-		for(int i=0;i<here.numInhabitants();i++)
+		if(commands.size()==0)	
+			V=shopkeepers(mob);
+		else
 		{
-			MOB thisMOB=here.fetchInhabitant(i);
-			if((thisMOB!=null)
-			&&(thisMOB!=mob)
-			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
-			&&(Sense.canBeSeenBy(thisMOB,mob)))
-				V.addElement(thisMOB);
-		}
-		if(V.size()==0)
-		{
-			if(commands.size()<2)
-			{
-				if(mob.isASysOp(mob.location()))
-					mob.tell("List what or from whom?");
-				else
-					mob.tell("List from whom?");
-				return;
-			}
-			commands.removeElementAt(0);
 			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
 			if((shopkeeper==null)||(CoffeeUtensils.getShopKeeper(shopkeeper)==null)||(!Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				if(mob.isASysOp(mob.location()))
+				{
 					Lister.list(mob,commands);
-				else
-					mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
-				return;
+					return;
+				}
 			}
 			V.addElement(shopkeeper);
+		}
+		if(V.size()==0)
+		{
+			mob.tell("You don't see anyone here buying or selling.");
+			return;
 		}
 		for(int i=0;i<V.size();i++)
 		{

@@ -42,7 +42,13 @@ public class ActiveTicker extends StdBehavior
 		if(x<0){ c='/'; x=parms.indexOf(c);}
 		if(x>0)
 		{
-			parms=parms.substring(0,x);
+			if((x+1)>parms.length())
+				return "";
+			parms=parms.substring(x+1);
+		}
+		else
+		{
+			return "";
 		}
 		return parms;
 	}
