@@ -1143,6 +1143,18 @@ public class StdMOB implements MOB
 							for(int s=0;s<numAttacks;s++)
 								ExternalPlay.postAttack(this,victim,weapon);
 							curState().expendEnergy(this,maxState,true);
+							if(weapon==null) // try to wield anything!
+								for(int i=0;i<inventory.size();i++)
+								{
+									Item thisItem=(Item)inventory.elementAt(i);
+									if((thisItem.canBeWornAt(Item.WIELD))
+									 &&(thisItem.canWear(this))
+									 &&(!thisItem.amWearingAt(Item.INVENTORY)))
+									{
+										thisItem.wearAt(Item.WIELD);
+										break;
+									}
+								}
 						}
 						if(!isMonster())
 						{

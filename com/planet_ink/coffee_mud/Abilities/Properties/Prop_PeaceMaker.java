@@ -29,9 +29,13 @@ public class Prop_PeaceMaker extends Property
 		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
 		{
 			if(affect.source()!=null)
+			{
 				affect.source().tell("Nah, you feel too peaceful here.");
+				if(affect.source().getVictim()!=null)
+					affect.source().getVictim().makePeace();
+				affect.source().makePeace();
+			}
 			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
-			affect.source().makePeace();
 			return false;
 		}
 		return super.okAffect(affect);

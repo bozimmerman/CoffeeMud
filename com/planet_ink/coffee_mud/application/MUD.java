@@ -221,8 +221,8 @@ public class MUD extends Thread implements Host
 		System.gc();
 		System.runFinalization();
 		try{Thread.sleep(500);}catch(Exception i){}
-		this.keepDown=keepItDown;
-		this.execExternalCommand=externalCommand;
+		keepDown=keepItDown;
+		execExternalCommand=externalCommand;
 		try
 		{
 			if(this.servsock!=null)

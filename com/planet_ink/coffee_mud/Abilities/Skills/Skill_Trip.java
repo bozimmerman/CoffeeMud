@@ -72,11 +72,14 @@ public class Skill_Trip extends StdAbility
 		MOB mob=(MOB)affected;
 		doneTicking=true;
 		super.unInvoke();
-		if(mob.location()!=null)
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-		else
-			mob.tell("You regain your feet.");
-		ExternalPlay.standIfNecessary(mob);
+		if(!mob.amDead())
+		{
+			if(mob.location()!=null)
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+			else
+				mob.tell("You regain your feet.");
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
