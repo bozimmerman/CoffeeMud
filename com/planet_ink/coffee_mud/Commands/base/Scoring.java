@@ -68,7 +68,8 @@ public class Scoring
 					if(str2.length()==0)
 						items.removeElement(item2);
 					else
-					if(str.equals(str2))
+					if((str.equals(str2))
+					&&(Sense.seenTheSameWay(mob,item,item2)))
 					{
 						reps++;
 						items.removeElement(item2);

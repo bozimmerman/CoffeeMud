@@ -1,5 +1,114 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 
-public class Thief_Snatch
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Thief_Snatch extends StdAbility
 {
+
+	public Thief_Snatch()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Weapon Snatch";
+		displayText="(in a dark realm of thievery)";
+		miscText="";
+
+		triggerStrings.addElement("SNATCH");
+
+		canBeUninvoked=true;
+		isAutoinvoked=false;
+
+		quality=Ability.MALICIOUS;
+
+		baseEnvStats().setLevel(11);
+
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Thief_Snatch();
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(!mob.isInCombat())
+		{
+			mob.tell("You must be in combat to do this!");
+			return false;
+		}
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		{
+			mob.tell("You are too far away to disarm!");
+			return false;
+		}
+		Item weapon=mob.fetchWieldedItem();
+		if(weapon==null)
+		{
+			mob.tell("You need a weapon to disarm someone!");
+			return false;
+		}
+		else
+		if(mob.amWearingSomethingHere(Item.HELD))
+		{
+			mob.tell("Your other hand needs to be free to do a weapon snatch.");
+			return false;
+		}
+		
+		Item hisItem=mob.getVictim().fetchWieldedItem();
+		if((hisItem!=null)
+		   ||(!(hisItem instanceof Weapon))
+		   ||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
+		{
+			mob.tell("He is not wielding a weapon!");
+			return false;
+		}
+		else
+		if(hisItem.rawLogicalAnd())
+		{
+			mob.tell("You can't snatch a two-handed weapon!");
+			return false;
+		}
+		Weapon hisWeapon=(Weapon)hisItem;
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		if(levelDiff>0) 
+			levelDiff=levelDiff*6;
+		else 
+			levelDiff=0;
+		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
+		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
+		if((success)
+		   &&(hisWeapon!=null)
+		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
+			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
+		{
+			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob.getVictim(),msg);
+				mob.location().show(mob,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> disarm(s) <T-NAMESELF>!");
+				if(hisWeapon.myOwner()==mob.location())
+				{
+					ExternalPlay.get(mob,null,hisWeapon,true);
+					if(hisWeapon.myOwner()==mob)
+					{
+						msg=new FullMsg(mob,hisWeapon,null,Affect.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
+						if(mob.location().okAffect(msg))
+							mob.location().send(mob,msg);
+					}
+				}
+			}
+		}
+		else
+			maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
+		return success;
+	}
 }

@@ -398,8 +398,7 @@ public class StdCharClass implements CharClass
 		int totalLevels=0;
 		
 		Hashtable beneficiaries=new Hashtable();
-		Hashtable followers=new Hashtable();
-		if(killer!=null) killer.getGroupMembers(followers);
+		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
 
 		for(int m=0;m<deathRoom.numInhabitants();m++)
 		{

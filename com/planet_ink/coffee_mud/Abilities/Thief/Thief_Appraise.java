@@ -1,14 +1,14 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Appraise extends StdAbility
+public class Thief_Appraise extends ThiefSkill
 {
 
-	public Skill_Appraise()
+	public Thief_Appraise()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -28,12 +28,12 @@ public class Skill_Appraise extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_Appraise();
+		return new Thief_Appraise();
 	}
 
 	public int classificationCode()
 	{
-		return Ability.SKILL;
+		return Ability.THIEF_SKILL;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

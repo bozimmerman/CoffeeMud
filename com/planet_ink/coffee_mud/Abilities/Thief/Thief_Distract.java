@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Distract extends StdAbility
+public class Thief_Distract extends ThiefSkill
 {
-	public Skill_Distract()
+	public Thief_Distract()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -29,7 +29,7 @@ public class Skill_Distract extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_Distract();
+		return new Thief_Distract();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

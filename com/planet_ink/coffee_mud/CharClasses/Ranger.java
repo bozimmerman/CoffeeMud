@@ -53,6 +53,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
@@ -66,8 +67,7 @@ public class Ranger extends StdCharClass
 				for(int v=0;v<V.size();v++)
 				{
 					String chant=(String)V.elementAt(v);
-					Ability Chant=CMClass.getAbility(chant);
-					if((Chant!=null)&&((Chant.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+					if(chant.startsWith("Chant_"))
 						CMAble.addCharAbilityMapping(ID(),level+4,chant,false);
 				}
 			}

@@ -1780,9 +1780,9 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void getGroupMembers(Hashtable list)
+	public Hashtable getGroupMembers(Hashtable list)
 	{
-		if(list==null) return;
+		if(list==null) return list;
 		if(list.get(this)==null) list.put(this,this);
 		if(amFollowing()!=null)
 			amFollowing().getGroupMembers(list);
@@ -1792,6 +1792,7 @@ public class StdMOB implements MOB
 			if((follower!=null)&&(list.get(follower)==null))
 				follower.getGroupMembers(list);
 		}
+		return list;
 	}
 
 	public boolean isEligibleMonster()

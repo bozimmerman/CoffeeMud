@@ -43,8 +43,7 @@ public class Grouping
 	
 	public void makePeaceInGroup(MOB mob)
 	{
-		Hashtable myGroup=new Hashtable();
-		mob.getGroupMembers(myGroup);
+		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
 		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
 		{
 			MOB mob2=(MOB)e.nextElement();
@@ -75,8 +74,7 @@ public class Grouping
 	public void group(MOB mob)
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Hashtable group=new Hashtable();
-		mob.getGroupMembers(group);
+		Hashtable group=mob.getGroupMembers(new Hashtable());
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
@@ -94,8 +92,7 @@ public class Grouping
 			return;
 		}
 
-		Hashtable group=new Hashtable();
-		mob.getGroupMembers(group);
+		Hashtable group=mob.getGroupMembers(new Hashtable());
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();

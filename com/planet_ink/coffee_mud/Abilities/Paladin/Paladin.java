@@ -47,8 +47,7 @@ public class Paladin extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			Hashtable h=new Hashtable();
-			((MOB)affected).getGroupMembers(h);
+			Hashtable h=((MOB)affected).getGroupMembers(new Hashtable());
 			for(Enumeration e=h.elements();e.hasMoreElements();)
 			{
 				MOB mob=(MOB)e.nextElement();

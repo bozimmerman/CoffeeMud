@@ -36,11 +36,11 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Cleave",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
@@ -50,6 +50,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),9,"Fighter_CritStrike",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_WeaponBreak",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Trip",true);

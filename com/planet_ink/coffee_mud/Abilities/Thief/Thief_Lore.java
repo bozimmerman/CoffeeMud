@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Lore extends StdAbility
+public class Thief_Lore extends ThiefSkill
 {
-	public Skill_Lore()
+	public Thief_Lore()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,7 +31,7 @@ public class Skill_Lore extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_Lore();
+		return new Thief_Lore();
 	}
 
 	public int classificationCode()

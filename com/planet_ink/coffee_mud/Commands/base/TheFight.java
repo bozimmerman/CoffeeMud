@@ -78,8 +78,7 @@ public class TheFight
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-		Hashtable h1=new Hashtable();
-		mob.getGroupMembers(h1);
+		Hashtable h1=mob.getGroupMembers(new Hashtable());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -96,10 +95,7 @@ public class TheFight
 	{
 		Hashtable h=null;
 		if(A.quality()!=Ability.MALICIOUS)
-		{
-			h=new Hashtable();
-			caster.getGroupMembers(h);
-		}
+			h=caster.getGroupMembers(new Hashtable());
 		else
 		if(caster.isInCombat())
 			h=allCombatants(caster);
@@ -115,8 +111,7 @@ public class TheFight
 		if(thisRoom==null) return null;
 		if(!mob.isInCombat()) return null;
 
-		Hashtable h1=new Hashtable();
-		mob.getGroupMembers(h1);
+		Hashtable h1=mob.getGroupMembers(new Hashtable());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);

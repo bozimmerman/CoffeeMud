@@ -231,6 +231,34 @@ public class Sense
 		return Say;
 	}
 
+	public static boolean seenTheSameWay(Environmental seer, Environmental seen1, Environmental seen2)
+	{
+		if((Sense.isEvil(seen1)!=Sense.isEvil(seen2))&&(Sense.canSeeEvil(seer)))
+			return false;
+		if((Sense.isGood(seen1)!=Sense.isGood(seen2))&&(Sense.canSeeGood(seer)))
+			return false;
+		if((Sense.isABonusItems(seen1)!=Sense.isABonusItems(seen2))&&(Sense.canSeeBonusItems(seer)))
+			return false;
+		if(Sense.isInvisible(seen1)!=Sense.isInvisible(seen2))
+			return false;
+		if(Sense.isSneaking(seen1)!=Sense.isSneaking(seen2))
+			return false;
+		if(Sense.isHidden(seen1)!=Sense.isHidden(seen2))
+			return false;
+		if(Sense.isFlying(seen1)!=Sense.isFlying(seen2))
+			return false;
+		if(Sense.isFalling(seen1)!=Sense.isFalling(seen2))
+			return false;
+		if(Sense.isLight(seen1)!=Sense.isLight(seen2))
+			return false;
+		if(Sense.isInfrared(seen1)!=Sense.isInfrared(seen2))
+			return false;
+		if(Sense.canSeeMetal(seer)&&(seen1 instanceof Item)&&(seen2 instanceof Item)
+			&&((((Item)seen1).material()&EnvResource.MATERIAL_MASK)!=(((Item)seen2).material()&EnvResource.MATERIAL_MASK)))
+		   return false;
+		return true;
+	}
+	
 	public final static int flag_arrives=0;
 	public final static int flag_leaves=1;
 	public final static int flag_is=2;

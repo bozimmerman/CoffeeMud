@@ -143,7 +143,7 @@ public interface MOB
 	public MOB fetchFollower(String ID);
 	public MOB amFollowing();
 	public void setFollowing(MOB mob);
-	public void getGroupMembers(Hashtable list);
+	public Hashtable getGroupMembers(Hashtable list);
 	public boolean isEligibleMonster();
 	
 	/** Manipulation of ability objects, which includes

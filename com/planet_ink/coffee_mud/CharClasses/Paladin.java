@@ -44,8 +44,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Paladin_SummonMount",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Paladin_SummonMount",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
@@ -74,6 +73,7 @@ public class Paladin extends StdCharClass
 				for(int v=0;v<V.size();v++)
 				{
 					String prayer=(String)V.elementAt(v);
+					if(prayer.startsWith("Prayer_"))
 						CMAble.addCharAbilityMapping(ID(),level+4,prayer,false);
 				}
 			}
