@@ -1,0 +1,114 @@
+*Created By: Wolfgang Richter
+*For Help E-mail: wrichter@att.net
+*This is the readme for the UNIX scripts, and some other basic UNIX things.
+*Version: TEST5
+*Please report ANYTHING (problems, bugs, solutions, fixes etc.) to: wrichter@att.net
+*Have fun!
+
+This is the new readme, for setting up CoffeeMud under Unix....
+
+Version of InstallUNIX.sh: TEST5
+
+Features:
+Auto Compile the source documentation, and the program itslef (CoffeeMud).
+Set-up custom MUD name in mudUNIX.sh (presently only works FIRST RUN OF SCRIPT - once name changed this will fail...yeah not too intelligent).
+Start MUD (at end of script).
+
+TODO:
+Make script better (smarter, more intelligent).
+Fix re-naming of MUD so it will work for anything...
+Build in/make a CoffeeMud.ini configurator.
+
+REQUIREMENTS:
+A system that can run Java (basically any system, the .sh scripts were made for UNIX based systems though...).
+A resident copy of SH (shell - usually found in /bin/ ... well it is ALWAYS found there....).
+J2SDK (which means JAVAC, JAVADOC etc. for compiling) - preferably from Sun (whose else is there....).
+
+***** WHAT YOU NEED TO KNOW/DO BEFORE BEGINNING:
+
+**** KNOW - 
+
+The path on your system to the J2SDK.  This means you have to find the base directory, example:
+	/opt/j2sdk/j2sdk1.4.2  
+
+Thats is ALL you need (well customize it for YOUR system).
+
+** DO NOT use a trailing slash!!!!!!!
+
+**** DO - 
+
+Ensure you have write permission to mudUNIX.sh.  If in doubt, run the following command (in whatever directory you put CoffeeMud into):
+
+chmod 766 mudUNIX.sh
+
+Thats it!
+
+***** END PRE-INSTRUCTIONS
+
+***** INSTRUCTIONS
+
+1. Bring up a console
+2. cd to whatever directory you unpacked CoffeeMud to
+3. make sure you can write to mudUNIX.sh (the chmod 766 above...)
+4. Do: 'sh InstallUNIX.sh' (without qoutes)
+5. Input the directory of JAVA
+6. Say y if you want to Compile JAVA Source Documentation, n if you don't
+7. Say y if you want to compile the main program, n if you don't
+8. Enter the name of your new MUD (this only works FIRST RUN...cannot use this to change MUD's name in the FUTURE)
+9. Say y if you want to start your MUD now..., n if you don't
+10. Hit enter after the nohup comes up
+11. 'telnet localhost 5555' (without qoutes - if you want to connect and see if your MUD is running now...)
+12. Congrats! Your done!
+13. Send input to me: wrichter@att.net (about scripts..) or Bo Zimmerman (about MUD) or the CoffeeMud Group on Yahoo (general help)
+
+***** END INSTRUCTIONS
+
+***** JAVA SOLUTIONS
+Following is some help on getting JAVA running on your system....
+
+First, go to http://www.sun.java.com/
+I suggest you get: Java 2 SDK, Standard Edition, v. 1.4.2 and NetBeans IDE 3.5.1 Software Cobundle for the Linux Operating System
+
+This gives you an IDE to edit source - MUD development, and the regular J2SDK (you may want just J2SDK if this is a server only)
+
+INSTRUCTIONS FROM SUN:
+
+ Prepare for installation.
+
+   1. Verify that your system meets or exceeds the recommended minimum hardware requirements:
+          * Pentium III processor, 500 MHz.
+          * 256 MBytes RAM.
+          * 365 MBytes free space. This number includes:
+                o 235 MBytes of permanent disk space needed to install the cobundle.
+                o 130 MBytes of temporary disk space needed for installation. The installer uses the /tmp or the /var/tmp directory for the temporary files.
+   2. Change to the directory where you downloaded the installer file.
+   3. Type: chmod 755 j2sdk-1_4_2-nb-3_5_1-bin-linux.bin
+      to change permissions on the installer file to allow execution. 
+
+Run the installer.
+
+   1. Type the following command from the directory where you placed the installation file:
+
+          ./j2sdk-1_4_2-nb-3_5_1-bin-linux.bin
+
+   2. Respond to each page of the install wizard.
+
+          You must agree to the license agreement.
+
+   3. When the installation is complete, you can review the log file and then delete the download file to recover disk space.
+
+The installer creates three subdirectories in this install directory:
+
+    * j2sdk1.4.2 - contains the Java 2 SDK, v. 1.4.2 software
+    * netbeans3.5.1 - contains the NetBeans IDE 3.5.1 software
+    * _uninst - contains the uninstall jar and custom uninstall script.
+
+Note: If you choose to install this cobundle into system-wide location such as /usr/local, you must first become root to gain the necessary permissions.
+
+**END INSTRUCTIONS FROM SUN
+
+That should get you on your way to running Java....
+
+***** END JAVA SOLUTIONS
+
+HAVE FUN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
