@@ -62,19 +62,20 @@ public class MUDZapper
 			zapCodes.put("+CONSTITUTION",new Integer(23));
 			zapCodes.put("+CHARISMA",new Integer(24));
 			zapCodes.put("-STR",new Integer(25));
-			zapCodes.put("-INT",new Integer(26));
-			zapCodes.put("-WIS",new Integer(27));
-			zapCodes.put("-DEX",new Integer(28));
-			zapCodes.put("-CON",new Integer(29));
-			zapCodes.put("-CHA",new Integer(30));
 			zapCodes.put("-STRENGTH",new Integer(25));
+			zapCodes.put("-INT",new Integer(26));
 			zapCodes.put("-INTELLIGENCE",new Integer(26));
+			zapCodes.put("-WIS",new Integer(27));
 			zapCodes.put("-WISDOM",new Integer(27));
+			zapCodes.put("-DEX",new Integer(28));
 			zapCodes.put("-DEXTERITY",new Integer(28));
+			zapCodes.put("-CON",new Integer(29));
 			zapCodes.put("-CONSTITUTION",new Integer(29));
+			zapCodes.put("-CHA",new Integer(30));
 			zapCodes.put("-CHARISMA",new Integer(30));
 			zapCodes.put("-AREA",new Integer(31));
 			zapCodes.put("+AREA",new Integer(32));
+			zapCodes.put("+ITEM",new Integer(33));
 		}
 		return zapCodes;
 	}
@@ -134,7 +135,8 @@ public class MUDZapper
 									+"-AREA (<WORD> in all areas) <BR>"
 									+"\"+my areaname\" etc.. (create exceptions to +area) <BR>"
 									+"+AREA (do not <WORD> any areas) <BR>"
-									+"\"-my areaname\" etc.. (create exceptions to -area)";
+									+"\"-my areaname\" etc.. (create exceptions to -area) <BR>"
+									+"+ITEM \"+item name\" etc... (<WORD> only those with an item name)";
 
 	public static String zapperInstructions(String CR, String word)
 	{
@@ -262,6 +264,21 @@ public class MUDZapper
 		return fromHere(V,plusMinus,fromHere,A.name());
 	}
 
+	public static boolean itemCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	{
+		if((mob==null)||(mob.location()==null)) return false;
+		for(int v=fromHere;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			if(str.length()==0) continue;
+			if(zapCodes.containsKey(str))
+				return false;
+			if(mob.fetchInventory(str)!=null)
+				return true;
+		}
+		return false;
+	}
+	
 	public static boolean fromHere(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
@@ -606,6 +623,20 @@ public class MUDZapper
 						buf.append(".  ");
 					}
 					break;
+				case 33: // +Item
+					{
+						buf.append("Requires the following item(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				}
 			else
 			{
@@ -826,6 +857,9 @@ public class MUDZapper
 					break;
 				case 32: // -area
 					if(!areaCheck(V,'+',v+1,mob)) return false;
+					break;
+				case 34: // +item
+					if(!itemCheck(V,'+',v+1,mob)) return false;
 					break;
 				}
 			else

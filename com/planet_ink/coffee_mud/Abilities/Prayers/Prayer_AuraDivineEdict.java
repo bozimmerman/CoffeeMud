@@ -65,12 +65,25 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.target().envStats().level()<invoker().envStats().level())
 		&&(getMsgFromAffect(msg.sourceMessage().toUpperCase()).equals(getMsgFromAffect(msg.sourceMessage()))))
 		{
-			noRecurse=true;
-			String oldLiege=((MOB)msg.target()).getLiegeID();
-			((MOB)msg.target()).setLiegeID(msg.source().Name());
-			msg.source().doCommand(Util.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage())));
-			((MOB)msg.target()).setLiegeID(oldLiege);
-			noRecurse=false;
+			Vector V=Util.parse("ORDER \""+msg.target().Name()+"\" "+getMsgFromAffect(msg.sourceMessage()));
+			Object O=EnglishParser.findCommand((MOB)msg.target(),(Vector)V.clone());
+			if((!((MOB)msg.target()).isMonster())
+			&&(CMClass.className(O).equalsIgnoreCase("DROP")
+			   ||CMClass.className(O).equalsIgnoreCase("SELL")
+			   ||CMClass.className(O).equalsIgnoreCase("GIVE")))
+			{
+			   msg.source().tell("The divine care not about such orders.");
+			   return false;
+			}
+			else
+			{
+				noRecurse=true;
+				String oldLiege=((MOB)msg.target()).getLiegeID();
+				((MOB)msg.target()).setLiegeID(msg.source().Name());
+				msg.source().doCommand(V);
+				((MOB)msg.target()).setLiegeID(oldLiege);
+				noRecurse=false;
+			}
 			return false;
 		}
 		noRecurse=false;

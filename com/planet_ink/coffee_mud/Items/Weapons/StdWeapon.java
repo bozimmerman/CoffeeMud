@@ -143,12 +143,18 @@ public class StdWeapon extends StdItem implements Weapon
 			}
 
 			if((subjectToWearAndTear())
-			&&(Dice.rollPercentage()<5)
+			&&(Dice.rollPercentage()==1)
 			&&(msg.source().rangeToTarget()==0)
-			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5))
+			&&(Dice.rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(Sense.isABonusItems(this)?20:0)))
 			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
+				if((usesRemaining()<10)
+				&&(owner()!=null)
+				&&(owner() instanceof MOB)
+				&&(usesRemaining()>0))
+					((MOB)owner()).tell(name()+" is nearly destroyed! ("+usesRemaining()+"%");
+				else
 				if((usesRemaining()<=0)
 				&&(owner()!=null)
 				&&(owner() instanceof MOB))

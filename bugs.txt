@@ -1,7 +1,4 @@
-fix pregnancy for crossbreeds
-ticket taker behavior
-Test: Crossbreed, ?Plant Choke, ?Plant Constriction
-Test: ?Plant Trap
+Test: ?Plant Choke, ?Plant Constriction, ?Plant Trap
 
 Desired stats=
 # of players
@@ -59,32 +56,43 @@ Farshot  Allows the player to shoot at one range increment more than normal maxi
 Counter Attack  Allows an extra attack after a successful Parry.  
 
 Delver
-Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
-Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
-//CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",false);
-//CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
-//CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",false);
-//CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",false);
-//CMAble.addCharAbilityMapping(ID(),25,"Chant_BrownMold",true);
-Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
-Boulderbash Causes a large rock to hurl itself at the enemy. 
-Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
-Summon Rock Golem 	
-Crystal growth 	creates crystaline items that have very low hardnesses, made of crystal (STONE), but similar to other recipes from Tailor, Armorsmith, and Weaponsmith. 
-Labrynth 	like plantmaze, but underground 
-Den 	creates a room off of a cave room. The room will be temporary (1 mud day per 5 levels), but accessible through normal means. 
-Stonewalking 	While in a cave, stone, or mountain -type room, the Delver is intangible and undetectable until he attacks or gets an item. 
-Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
-Tremor sense 	This chant enables the druid to sense any ground movement within 3 squares of his position. 
-Darkvision 	
-worms disease that damages opponent (from the inside out....uggghhh) 
-Echo Songs 	When cast on a bard, makes his songs extend to all adjacent (indoor) rooms. 
-Fungus Feet 	Makes target's feet break out in a very painful fungal growth. This brings the target to his knees (fights from a sitting position.) This disease lasts a considerable amount of time. Causes feet to fall off if not cured in 100/LVL mudhours. Duration should be fairly high, like 1 mudhour per level. 
-Deep darkness 	causes darkness. 
-Snatch light 	snuffs out light sources for duration of chant. 
-Fodder Signal 	a Faerie Fire that makes MOBs aggressive towards the target. 
-Unbreakable protects an item from damage for the duration of the spell. Gives item 100% resistance to spells/prayers/chants/songs as well. 
-Distant fungal growth
+1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
+2Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
+3//CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",false);
+4//CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
+5//CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",false);
+6//CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",false);
+7//CMAble.addCharAbilityMapping(ID(),25,"Chant_BrownMold",true);
+8Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
+9Boulderbash Causes a large rock to hurl itself at the enemy. 
+*Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
+1Summon Rock Golem 	
+2Crystal growth 	creates crystaline items that have very low hardnesses, made of crystal (STONE), but similar to other recipes from Tailor, Armorsmith, and Weaponsmith. 
+3Labrynth 	like plantmaze, but underground 
+4Den 	creates a room off of a cave room. The room will be temporary (1 mud day per 5 levels), but accessible through normal means. 
+5Stonewalking 	While in a cave, stone, or mountain -type room, the Delver is intangible and undetectable until he attacks or gets an item. 
+6Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
+7Tremor sense 	This chant enables the druid to sense any ground movement within 3 squares of his position. 
+8Darkvision 	
+9worms disease that damages opponent (from the inside out....uggghhh) 
+*Sacred Earth 	Prevents this room (and all adjacent) from yielding resources. Causes any who attempt such an act to gain a RUST CURSE. 
+1Fungus Feet 	Makes target's feet break out in a very painful fungal growth. This brings the target to his knees (fights from a sitting position.) This disease lasts a considerable amount of time. Causes feet to fall off if not cured in 100/LVL mudhours. Duration should be fairly high, like 1 mudhour per level. 
+2Deep darkness 	causes darkness. 
+3Snatch light 	snuffs out light sources for duration of chant. 
+4Fodder Signal 	a Faerie Fire that makes MOBs aggressive towards the target. 
+5Unbreakable protects an item from damage for the duration of the spell. Gives item 100% resistance to spells/prayers/chants/songs as well. 
+6Distant fungal growth
+7Mass Fungal Growth 	. Creates a fungus in a number of rooms equal to the druid's level in the area specified (or maybe just in this area), if there are that many valid rooms. 
+8Explosive Decompression 	This is a double-whammy of a spell. The delver creates a huge explosion (lots of fire damage) to everyone in the room. After the explosion, EVERYONE in the room suffers from lack of oxygen (choking.) The big boom causes an end to combat, as well (everyone is thrown off of their feet). After ExpDecon is cast, you may reengage in combat, but will be without air. 
+9Golemform 	The delver can shapeshift into a golem of varying levels. This ability should come around level 10 for the Stoneform, and then they should gain Metal, Quartz, Mithril, Diamond, Adamantite forms (every 4 levels).  Golems should be SLOW, and (except Diamond and Adamantite) unable to chant. 
+*Rockfeet 	Causes the earth around an opponent to encase his feet, immobilizing him. 
+1Rust Curse 	Causes all metal items on the target to start rusting at a pace of 1% per rand min=2 max=10 chance=20. Just equiped items rust. Duration of spell should be short enough that 100% items will probably survive a level 25 caster. 
+2Endure rust 	Causes the target to never have to worry about rust for the duration of the chant. Should protect against water-rust as well as chants. 
+3Tether 	This is a safety-harness. If a room/exit is an autodeath room, it will prevent that room from killing you, and send you to the room you just came from. Should be useable in all terrains. 
+4Rockthought Makes the target stubborn. Short duration, but must repeat the next action for the entire duration. For example...delver casts rockthought. Mage casts magic missile. Mage casts MM, casts MM, casts MM, casts MM. I think 1 combat round per 4 delver levels.... 
+5Cave fishing 	Causes a targetted ungettable water source inside a cave-type room to have resource FISH. 
+6Stone friend 	A charm spell that works against STONE/METAL golems, and against EARTH elementals. 
+7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
 time to re-balance the classes
 ability to wish for body parts, ability to wish for lower level items (making level lower)
@@ -93,4 +101,3 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 Blood should act as a cure light wounds to a vampire. that is...if a blood resource is drunk by a vampire, he should regain some hit points.
-Why do I need to stand to embroider? I would think it's easier to do it sitting down!

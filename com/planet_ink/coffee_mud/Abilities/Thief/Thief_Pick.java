@@ -17,7 +17,7 @@ public class Thief_Pick extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Pick();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int code=10;
+	public int code=5;
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}

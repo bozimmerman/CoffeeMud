@@ -30,7 +30,7 @@ public class Thief_Safecracking extends ThiefSkill
 		{
 			helpProfficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Pick");
-			A.setAbilityCode(10-(profficiency()/10));
+			A.setAbilityCode(5-(profficiency()/10));
 			if((msg.target()!=null)&&(Dice.rollPercentage()<profficiency()))
 			{
 				A=msg.target().fetchEffect("Spell_WizardLock");

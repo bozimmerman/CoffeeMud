@@ -79,7 +79,7 @@ public class Chant_PlantChoke extends Chant
 		if((aff instanceof MOB)&&(affected instanceof Item)
 		&&(((Item)affected).amWearingAt(Item.ON_NECK))
 		&&(((MOB)aff).isMine(affected)))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.CAN_NOT_BREATHE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

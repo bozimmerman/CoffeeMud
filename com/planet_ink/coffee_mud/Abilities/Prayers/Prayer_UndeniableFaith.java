@@ -16,7 +16,8 @@ public class Prayer_UndeniableFaith extends Prayer
 	public Environmental newInstance(){	return new Prayer_UndeniableFaith();}
 	protected int overrideMana(){return 100;}
 	private String godName="";
-
+	private static DVector convertStack=new DVector(2);
+		
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -96,6 +97,20 @@ public class Prayer_UndeniableFaith extends Prayer
 			if(!auto) mob.tell(target.name()+" can not be converted with this prayer.");
 			return false;
 		}
+		if(!auto)
+		{
+			if(convertStack.contains(target))
+			{
+				Long L=(Long)convertStack.elementAt(convertStack.getIndex(target),2);
+				if((System.currentTimeMillis()-L.longValue())>MudHost.TIME_MILIS_PER_MUDHOUR*5)
+					convertStack.removeElement(target);
+			}
+			if(convertStack.contains(target))
+			{
+				mob.tell(target.name()+" must wait to be undeniably faithful again.");
+				return false;
+			}
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -129,6 +144,7 @@ public class Prayer_UndeniableFaith extends Prayer
 						MUDFight.postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
 					beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY);
+					convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				}
 			}
 		}

@@ -230,9 +230,8 @@ public class Age extends StdAbility
 			if(((Item)affected).owner() instanceof Room)
 			{ if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) B.setParms(downBabyEmoter);}
 			else
-			if(((Item)affected).owner() instanceof MOB)
 			{
-				if(affected.description().toUpperCase().indexOf(((Item)affected).owner().name())<=0)
+				if(affected.description().toUpperCase().indexOf(((Item)affected).owner().name().toUpperCase())<=0)
 				{ if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) B.setParms(otherBabyEmoter);}
 				else
 				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}

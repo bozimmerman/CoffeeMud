@@ -158,7 +158,7 @@ public class StdArmor extends StdContainer implements Armor
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amITarget(owner()))
-		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
+		&&(Dice.rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(Sense.isABonusItems(this)?20:0)))
 		&&(subjectToWearAndTear())
 		&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 		{
@@ -192,6 +192,7 @@ public class StdArmor extends StdContainer implements Armor
 					break;
 				}
 			}
+			int oldUses=usesRemaining();
 			if(weaponType>=0)
 			{
 				switch(material()&EnvResource.MATERIAL_MASK)
@@ -426,6 +427,13 @@ public class StdArmor extends StdContainer implements Armor
 				}
 			}
 
+			if((usesRemaining()<10)
+			&&(oldUses!=usesRemaining())
+			&&(owner()!=null)
+			&&(owner() instanceof MOB)
+			&&(usesRemaining()>0))
+				((MOB)owner()).tell(name()+" is nearly destroyed! ("+usesRemaining()+"%)");
+			else
 			if((usesRemaining()<=0)
 			&&(owner()!=null)
 			&&(owner() instanceof MOB))

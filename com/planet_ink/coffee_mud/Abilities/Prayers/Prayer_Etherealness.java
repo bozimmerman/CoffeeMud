@@ -46,6 +46,17 @@ public class Prayer_Etherealness extends Prayer
 		{
 			switch(msg.sourceMinor())
 			{
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_LEAVE:
+				if((msg.tool() instanceof Exit)
+				&&(((Exit)msg.tool()).hasADoor())
+				&&(!((Exit)msg.tool()).isOpen())
+				&&(msg.source().inventorySize()>0))
+				{
+					msg.source().tell("Your corporeal equipment, suspended in your form, will not pass through the door.");
+					return false;
+				}
+				break;
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:
 			case CMMsg.TYP_DROP:
@@ -99,30 +110,7 @@ public class Prayer_Etherealness extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shimmer(s) and become(s) ethereal!");
-				Vector allInv=new Vector();
-				for(int i=0;i<target.inventorySize();i++)
-				{
-					Item I=(Item)target.fetchInventory(i);
-					if((Sense.isDroppable(I))
-					&&(I.container()==null)
-					&&(I.amWearingAt(Item.INVENTORY)||(Sense.isRemovable(I))))
-						allInv.addElement(I);
-				}
-				if(allInv.size()>0)
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"All of <S-YOUPOSS> equipment drop(s) to the ground!");
-				for(int i=0;i<allInv.size();i++)
-				{
-					Item I=(Item)allInv.elementAt(i);
-					if(I.amWearingAt(Item.INVENTORY))
-						CommonMsgs.drop(target,I,true,true);
-					else
-					{
-						CommonMsgs.remove(target,I,true);
-						CommonMsgs.drop(target,I,true,true);
-					}
-				}
-				mob.location().recoverRoomStats();
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,target,3);
 			}
 		}
 		else

@@ -16,6 +16,7 @@ public class Skill_Convert extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Convert();}
+	private static DVector convertStack=new DVector(2);
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -46,6 +47,20 @@ public class Skill_Convert extends StdAbility
 		{
 			mob.tell("You can't convert "+target.name()+".");
 			return false;
+		}
+		if(!auto)
+		{
+			if(convertStack.contains(target))
+			{
+				Long L=(Long)convertStack.elementAt(convertStack.getIndex(target),2);
+				if((System.currentTimeMillis()-L.longValue())>MudHost.TIME_MILIS_PER_MUDHOUR*5)
+					convertStack.removeElement(target);
+			}
+			if(convertStack.contains(target))
+			{
+				mob.tell(target.name()+" must wait to be converted again.");
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -92,6 +107,7 @@ public class Skill_Convert extends StdAbility
 				mob.location().send(target,msg2);
 				if(dRoom!=null)
 					dRoom.send(target,msg2);
+				convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				if(mob!=target)
 					MUDFight.postExperience(mob,null,null,200,false);
 			}
