@@ -1,6 +1,4 @@
 ^xThe Rules of CoffeeMud!^.^?^N
-^H1.^N While it is debatable whether anything as violent as a MUD can ever be considered "Family Friendly", swearing is nevertheless forbidden!
-^H2.^N Maintaining the illusion and the fantasy is vital! You must role-play!
-^H3.^N Exploitation of system problems is forbidden! If you find a bug, or a loophole in the gameplay, report it!
-
-
+^H1.^N No killing, stealing from, or otherwise harassing newbie players.
+^H2.^N Maintain the illusion of fantasy by role-playing your character.
+^H3.^N Exploitation of system any problems is forbidden! If you find a bug, or a loophole in the gameplay, report it with the BUG command!

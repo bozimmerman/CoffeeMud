@@ -26,7 +26,47 @@ public class Spell_Fear extends Spell
 	public String displayText(){return "(Afraid)";}
 	public int quality(){return MALICIOUS;};
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-
+	
+	public void unInvoke()
+	{
+	    MOB M=null;
+	    MOB oldI=invoker;
+	    if(affected instanceof MOB) M=(MOB)affected;
+	    super.unInvoke();
+	    if(M!=null)
+	    {
+	        if(!M.isMonster())
+		        CommonMsgs.stand(M,true);
+	        if((oldI!=M)&&(oldI!=null))
+		        M.tell(M,oldI,null,"You are no longer afraid of <T-NAMESELF>.");
+	        else
+	            M.tell("You are no longer afraid.");
+	    }
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+	    if((affected instanceof MOB)
+	    &&(invoker!=null)
+	    &&(invoker!=affected)
+	    &&((((MOB)affected).location()==null)
+            ||(!((MOB)affected).location().isInhabitant(invoker))))
+	    {
+	        unInvoke();
+	    }
+	    return super.tick(ticking,tickID);
+	}
+	
+	public void affectEnvStats(Environmental E, EnvStats stats)
+	{
+	    if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
+	    {
+	        stats.setArmor((int)Math.round(Util.mul(stats.armor(),0.90)));
+	        stats.setAttackAdjustment((int)Math.round(Util.mul(stats.attackAdjustment(),0.90)));
+	        stats.setDamage((int)Math.round(Util.mul(stats.damage(),0.90)));
+	    }
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
