@@ -216,6 +216,13 @@ public class TheFight
 		if(source!=null)
 		{
 			if((deadMoney>0)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
+			{
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to dismount to get gold off the body.");
+				else
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to disembark to get gold off the body.");
+				else
 				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 				{
 					MOB mob=(MOB)e.nextElement();
@@ -232,7 +239,15 @@ public class TheFight
 							ExternalPlay.get(mob,Body,C,false);
 					}
 				}
+			}
 			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+			{
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to dismount to loot the body.");
+				else
+				if((source.riding()!=null)&&(source.riding() instanceof MOB))
+					source.tell("You'll need to disembark to loot the body.");
+				else
 				for(int i=deathRoom.numItems()-1;i>=0;i--)
 				{
 					Item item=deathRoom.fetchItem(i);
@@ -242,6 +257,7 @@ public class TheFight
 					&&(Sense.canBeSeenBy(item,source)))
 						ExternalPlay.get(source,Body,item,false);
 				}
+			}
 			deathRoom.recoverRoomStats();
 		}
 	}

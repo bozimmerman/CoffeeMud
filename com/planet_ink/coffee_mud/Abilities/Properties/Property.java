@@ -133,6 +133,7 @@ public class Property implements Ability, Cloneable
 	public boolean appropriateToMyAlignment(int alignment){return true;}
 	public String accountForYourself(){return "";}
 	public int affectType(){return 0;}
+	public String requirements(){return "";}
 
 	public boolean canAffect(Environmental E)
 	{

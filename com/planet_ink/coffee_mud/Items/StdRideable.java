@@ -343,7 +343,8 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		}
-		if((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))&&(amRiding(affect.source())))
+		if((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
+		   &&(amRiding(affect.source())))
 		{
 			if(((affect.target()!=null)&&(affect.target() instanceof Item)&&(affect.target()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.target())))
 			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(affect.tool()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.tool())))

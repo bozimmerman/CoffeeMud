@@ -21,6 +21,7 @@ public class Common extends Language
 	{
 		return new Common();
 	}
+	public int profficiency(){return 100;}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		for(int a=0;a<mob.numAffects();a++)

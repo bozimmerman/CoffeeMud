@@ -21,6 +21,9 @@ public class Skill_Swim extends StdAbility
 		canTargetCode=0;
 		canAffectCode=Ability.CAN_MOBS;
 		
+		trainsRequired=0;
+		practicesRequired=2;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -18,6 +18,9 @@ public class Skill_Recall extends StdAbility
 		triggerStrings.addElement("RECALL");
 		triggerStrings.addElement("/");
 
+		trainsRequired=1;
+		practicesRequired=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

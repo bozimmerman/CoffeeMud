@@ -24,6 +24,9 @@ public class Skill_Climb extends StdAbility
 		canTargetCode=0;
 		canAffectCode=Ability.CAN_MOBS;
 		
+		trainsRequired=0;
+		practicesRequired=2;
+		
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();

@@ -22,6 +22,9 @@ public class Skill_Write extends StdAbility
 		canTargetCode=Ability.CAN_ITEMS;
 		canAffectCode=0;
 		
+		trainsRequired=0;
+		practicesRequired=3;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

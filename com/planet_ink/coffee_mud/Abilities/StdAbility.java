@@ -42,7 +42,7 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean unInvoked=false;
 	protected boolean putInCommandlist=true;
 	protected int trainsRequired=1;
-	protected int practicesRequired=1;
+	protected int practicesRequired=0;
 	protected int practicesToPractice=1;
 
 	protected int quality=Ability.INDIFFERENT;
@@ -636,6 +636,27 @@ public class StdAbility implements Ability, Cloneable
 		return false;
 	}
 
+	public String requirements()
+	{
+		String returnable="";
+		if(trainsRequired==1)
+			returnable="1 train";
+		else
+		if(trainsRequired>1)
+			returnable=trainsRequired+" trains";
+		if((returnable.length()>0)&&(practicesRequired>0))
+			returnable+=", ";
+		if(practicesRequired==1)
+			returnable+="1 practice";
+		else
+		if(practicesRequired>1)
+			returnable+=practicesRequired+" practices";
+		if(returnable.length()==0)
+			return "free!";
+		else
+			return returnable;
+	}
+	
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(student.getPractices()<practicesRequired)

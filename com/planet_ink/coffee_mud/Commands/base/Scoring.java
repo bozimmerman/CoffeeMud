@@ -441,18 +441,20 @@ public class Scoring
 				   &&(able.fetchAbility(thisAbility.ID())==null)
 				   &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
-					if((++col)>3)
+					if((++col)>2)
 					{
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "+Util.padRight(thisAbility.name(),(col==3)?19:20));
+					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
+					+Util.padRight(thisAbility.name(),19)+" "
+					+Util.padRight(thisAbility.requirements(),(col==2)?12:13));
 				}
 			}
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append("\n\r^N[^HLvl^?]                     [^HLvl^?]                     [^HLvl^?]\n\r");
+					msg.append("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
 				msg.append(thisLine);
 			}
 		}

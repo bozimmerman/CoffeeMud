@@ -112,6 +112,7 @@ public interface Ability  extends Environmental
 	public boolean canBeLearnedBy(MOB teacher, MOB student);
 	public void teach(MOB teacher, MOB student);
 	public void practice(MOB teacher, MOB student);
+	public String requirements();
 	public boolean qualifiesByLevel(MOB student);
 	public int qualifyingLevel(MOB student);
 	
