@@ -17,8 +17,15 @@ public class Skill_Dodge extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Skill_Dodge();}
+	private boolean doneThisRound=false;
 
-	boolean lastTime=false;
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+			doneThisRound=false;
+		return super.tick(tickID);
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -31,23 +38,21 @@ public class Skill_Dodge extends StdAbility
 		   &&(Sense.aliveAwakeMobile(mob,true))
 		   &&(affect.source().rangeToTarget()==0)
 		   &&(affect.tool()!=null)
+		   &&(!doneThisRound)
 		   &&(affect.tool() instanceof Weapon)
 		   &&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 		   &&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_THROWN))
 		{
 			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
-			&&(!lastTime)
 			&&(affect.source().getVictim()==mob)
 			&&(mob.location().okAffect(msg)))
 			{
-				lastTime=true;
+				doneThisRound=true;
 				mob.location().send(mob,msg);
 				helpProfficiency(mob);
 				return false;
 			}
-			else
-				lastTime=false;
 		}
 		return true;
 	}

@@ -145,7 +145,8 @@ public class TheFight
 		{
 			Affect affect=(Affect)addHere.trailerMsgs().elementAt(i);
 			if((affect.source()==target)
-			&&(affect.sourceMinor()==Affect.MSG_DEATH))
+			&&((affect.sourceMinor()==Affect.MSG_PANIC))
+			   ||(affect.sourceMinor()==Affect.MSG_DEATH))
 				return;
 		}
 		
@@ -186,6 +187,29 @@ public class TheFight
 		if(target.location().okAffect(msg))
 			target.location().send(attacker,msg);
 	}
+	public void postPanic(MOB mob, Affect addHere)
+	{
+		if(mob==null) return;
+		
+		// make sure he's not already dead, or with a pending death.
+		if(mob.amDead()) return;
+		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
+		for(int i=0;i<addHere.trailerMsgs().size();i++)
+		{
+			Affect affect=(Affect)addHere.trailerMsgs().elementAt(i);
+			if((affect.source()==mob)
+			&&((affect.sourceMinor()==Affect.MSG_PANIC))
+			   ||(affect.sourceMinor()==Affect.MSG_DEATH))
+				return;
+		}
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_PANIC,null);
+		if(addHere!=null)
+			addHere.addTrailerMsg(msg);
+		else
+		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+			mob.location().send(mob,msg);
+	}
+
 	public void postDamage(MOB attacker, 
 						   MOB target, 
 						   Environmental weapon, 

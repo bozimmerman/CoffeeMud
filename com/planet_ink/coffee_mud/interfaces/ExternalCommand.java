@@ -10,6 +10,7 @@ public interface ExternalCommand
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void justDie(MOB source, MOB target);
 	public void postDeath(MOB source, MOB target,Affect addHere);
+	public void postPanic(MOB mob, Affect affect);
 	public void drawIfNecessary(MOB mob);
 
 	// other actions

@@ -1325,6 +1325,9 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_PANIC:
+				ExternalPlay.flee(mob,"");
+				break;
 			case Affect.TYP_DEATH:
 				if((affect.tool()!=null)&&(affect.tool() instanceof MOB))
 					ExternalPlay.justDie((MOB)affect.tool(),this);
@@ -1449,20 +1452,22 @@ public class StdMOB implements MOB
 						ExternalPlay.postDeath(affect.source(),this,affect);
 					else
 					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
-						ExternalPlay.flee(this,"");
+						ExternalPlay.postPanic(this,affect);
 				}
 			}
 			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			{
-				if((!isInCombat())&&(location().isInhabitant((MOB)affect.source())))
+				if((!isInCombat())
+				&&(!amDead)
+				&&(location().isInhabitant((MOB)affect.source())))
 				{
 					establishRange(this,affect.source(),affect.tool());
 					setVictim(affect.source());
 				}
-				if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+				if((isInCombat())&&(!amDead))
 				{
-					if((isInCombat())&&(!amDead))
+					if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 					{
 						Weapon weapon=affect.source().myNaturalWeapon();
 						if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
@@ -1474,11 +1479,9 @@ public class StdMOB implements MOB
 							affect.tagModified(true);
 						}
 					}
-				}
-				else
-				{
-					// what is this?  a malicious, weapon attack not attached to hurt or weaponstrike!
-					if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
+					else
+					if((affect.tool()!=null)
+					&&(affect.tool() instanceof Weapon))
 						ExternalPlay.postWeaponDamage(affect.source(),this,(Weapon)affect.tool(),true);
 				}
 				ExternalPlay.standIfNecessary(this);

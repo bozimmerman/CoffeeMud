@@ -113,6 +113,10 @@ public class ExternalPlay
 		if(player!=null) player.look(mob,commands,quiet);
 	}
 	
+	public static void postPanic(MOB mob, Affect affect)
+	{
+		if(player!=null) player.postPanic(mob,affect);
+	}
 	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(player!=null) player.postWeaponDamage(source,target,weapon,success);

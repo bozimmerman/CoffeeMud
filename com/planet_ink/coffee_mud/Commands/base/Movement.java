@@ -277,7 +277,7 @@ public class Movement
 		}
 		return true;
 	}
-
+	
 	public void flee(MOB mob, String direction)
 	{
 		if((mob.location()==null)||(!mob.isInCombat()))
@@ -285,7 +285,7 @@ public class Movement
 			mob.tell("You can only flee while in combat.");
 			return;
 		}
-
+		
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{

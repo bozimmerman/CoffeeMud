@@ -16,8 +16,15 @@ public class Skill_Parry extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	private boolean doneThisRound=false;
+
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+			doneThisRound=false;
+		return super.tick(tickID);
+	}
 	
-	boolean lastTime=false;
 	public Environmental newInstance(){	return new Skill_Parry();}
 
 	public boolean okAffect(Affect affect)
@@ -30,6 +37,7 @@ public class Skill_Parry extends StdAbility
 		if(affect.amITarget(mob)
 		   &&(Sense.aliveAwakeMobile(mob,true))
 		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		   &&(!doneThisRound)
 		   &&(mob.rangeToTarget()==0))
 		{
 			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
@@ -51,16 +59,13 @@ public class Skill_Parry extends StdAbility
 				{
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-70,false))
-					&&(!lastTime)
 					&&(mob.location().okAffect(msg)))
 					{
-						lastTime=true;
+						doneThisRound=true;
 						mob.location().send(mob,msg);
 						helpProfficiency(mob);
 						return false;
 					}
-					else
-						lastTime=false;
 				}
 			}
 		}
