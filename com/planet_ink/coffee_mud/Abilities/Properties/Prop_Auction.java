@@ -100,11 +100,11 @@ public class Prop_Auction extends Property
 						}
 					}
 				}
-				setInvoker(null);
 				V=new Vector();
 				V.addElement("AUCTION");
 				V.addElement("CLOSE");
 				try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
+				setInvoker(null);
 				return false;
 			}
 			try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
