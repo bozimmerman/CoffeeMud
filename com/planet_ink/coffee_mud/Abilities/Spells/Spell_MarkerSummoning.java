@@ -24,11 +24,13 @@ public class Spell_MarkerSummoning extends Spell
 			{
 				Ability A=R.fetchAffect(a);
 				if((A!=null)
-				   &&(A.ID().equals(ID()))
-				   &&(A.invoker()==mob))
+				&&(A.invoker()==mob))
 				{
-					oldRoom=R;
-					break;
+					if(A.ID().equals("Spell_SummonMarker"))
+					{
+						oldRoom=R;
+						break;
+					}
 				}
 			}
 			if(oldRoom!=null) break;

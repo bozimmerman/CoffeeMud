@@ -19,7 +19,9 @@ public class Spell_ChainLightening extends Spell
 		if(h==null) h=new Hashtable();
 
 		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
-		Vector targets=new Vector((Collection)h.elements());
+		Vector targets=new Vector();
+		for(Enumeration e=h.elements();e.hasMoreElements();)
+			targets.addElement(e.nextElement());
 		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
@@ -45,13 +47,33 @@ public class Spell_ChainLightening extends Spell
 			for(int i=0;i<targets.size();i++)
 			{
 				MOB target=(MOB)targets.elementAt(i);
+				if(target.amDead()||(target.location()!=mob.location()))
+				{
+					int count=0;
+					for(int i2=0;i2<targets.size();i2++)
+					{
+						MOB M2=(MOB)targets.elementAt(i2);
+						if((!M2.amDead())
+						   &&(mob.location()!=null)
+						   &&(mob.location().isInhabitant(M2))
+						   &&(M2.location()==mob.location()))
+							 count++;
+					}
+					if(count<2) 
+						return true;
+					continue;
+				}
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
+				boolean oldAuto=auto;
+				if((target==mob)||(myGroup.contains(target)))
+				   auto=true;
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
+				auto=oldAuto;
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{
 					mob.location().send(mob,msg);

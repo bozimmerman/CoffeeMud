@@ -88,12 +88,10 @@ public class Spell_IncreaseGravity extends Spell
 				return false;
 			}
 		case Affect.TYP_LEAVE:
+		case Affect.TYP_FLEE:
 			{
-				if(msg.target()!=gravityRoom)
-				{
-					msg.source().tell("You feel too heavy to move.");
-					return false;
-				}
+				msg.source().tell("You feel too heavy to leave.");
+				return false;
 			}
 		}
 		return true;

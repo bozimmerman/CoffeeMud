@@ -47,8 +47,8 @@ public class Spell_MarkerPortal extends Spell
 			{
 				Ability A=R.fetchAffect(a);
 				if((A!=null)
-				   &&(A.ID().equals(ID()))
-				   &&(A.invoker()==mob))
+				&&(A.ID().equals("Spell_SummonMarker"))
+				&&(A.invoker()==mob))
 				{
 					newRoom=R;
 					break;

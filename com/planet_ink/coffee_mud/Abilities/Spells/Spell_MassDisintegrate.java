@@ -18,7 +18,7 @@ public class Spell_MassDisintegrate extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
-		if(h==null)
+		if((h==null)||(h.size()<0))
 		{
 			if(mob.location().numItems()==0)
 			{
@@ -43,7 +43,8 @@ public class Spell_MassDisintegrate extends Spell
 			MOB mob2=(MOB)e.nextElement();
 			avgLevel+=mob2.envStats().level();
 		}
-		avgLevel=avgLevel/h.size();
+		if(h.size()>0)
+			avgLevel=avgLevel/h.size();
 		
 		boolean success=false;
 		success=profficiencyCheck(-(avgLevel*2),auto);
@@ -54,7 +55,7 @@ public class Spell_MassDisintegrate extends Spell
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);
@@ -62,9 +63,7 @@ public class Spell_MassDisintegrate extends Spell
 					{
 						if(((MOB)target).curState().getHitPoints()>0)
 							ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
-						if(((MOB)target).amDead())
-							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
-						else
+						if(!((MOB)target).amDead())
 							return false;
 						mob.location().recoverRoomStats();
 					}

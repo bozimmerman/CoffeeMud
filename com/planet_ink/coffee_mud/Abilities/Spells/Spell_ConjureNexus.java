@@ -31,15 +31,18 @@ public class Spell_ConjureNexus extends Spell
 		for(int m=0;m<R.numInhabitants();m++)
 		{
 			MOB mob=(MOB)R.fetchInhabitant(m);
-			int oldHP=mob.curState().getHitPoints();
-			int oldMV=mob.curState().getMovement();
-			int oldHU=mob.curState().getHunger();
-			int oldTH=mob.curState().getThirst();
-			mob.curState().adjState(mob,mob.maxState());
-			mob.curState().setHitPoints(oldHP);
-			mob.curState().setMovement(oldMV);
-			mob.curState().setHunger(oldHU);
-			mob.curState().setThirst(oldTH);
+			if(mob!=null)
+			{
+				int oldHP=mob.curState().getHitPoints();
+				int oldMV=mob.curState().getMovement();
+				int oldHU=mob.curState().getHunger();
+				int oldTH=mob.curState().getThirst();
+				mob.curState().adjState(mob,mob.maxState());
+				mob.curState().setHitPoints(oldHP);
+				mob.curState().setMovement(oldMV);
+				mob.curState().setHunger(oldHU);
+				mob.curState().setThirst(oldTH);
+			}
 		}
 		return true;
 	}
