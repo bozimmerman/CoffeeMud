@@ -106,7 +106,7 @@ public class StdMOB implements MOB
 	public CharState baseState=new DefaultCharState();
 	private long lastTickedDateTime=0;
 	public long lastTickedDateTime(){return lastTickedDateTime;}
-	public void flagVariableEq(){lastTickedDateTime=-1;}
+	public void flagVariableEq(){lastTickedDateTime=-2;}
 
 	// mental characteristics
 	protected int Alignment=0;
@@ -519,12 +519,8 @@ public class StdMOB implements MOB
 		// will ensure no duplicate ticks, this obj, this id
 		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
-		{
-			// slap on the butt
-			if(lastTickedDateTime==-1) lastTickedDateTime=-2;
-			tick(this,MudHost.TICK_MOB); 
-			if(lastTickedDateTime==-2) lastTickedDateTime=-1;
-		}
+			tick(this,MudHost.TICK_MOB); // slap on the butt
+		
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
@@ -2282,8 +2278,7 @@ public class StdMOB implements MOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(pleaseDestroy)
-			return false;
+		if(pleaseDestroy) return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==MudHost.TICK_MOB)
 		{
@@ -2316,9 +2311,14 @@ public class StdMOB implements MOB
 			if(location()!=null)
 			{
 				// handle variable equipment!
-				if((lastTickedDateTime==-1)
+				if((lastTickedDateTime<0)
 				&&isMonster()&&location().getMobility()&&location().getArea().getMobility())
-					lastTickedDateTime=processVariableEquipment();
+				{
+					if(lastTickedDateTime==-1)
+						lastTickedDateTime=processVariableEquipment();
+					else
+						lastTickedDateTime++;
+				}
 				
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
