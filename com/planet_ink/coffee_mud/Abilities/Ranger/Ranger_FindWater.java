@@ -9,37 +9,22 @@ import java.util.*;
 
 public class Ranger_FindWater extends StdAbility
 {
+	public String ID() { return "Ranger_FindWater"; }
+	public String name(){ return "Find Water";}
+	public String displayText(){ return "(finding water)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"FINDWATER"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	
 	Room lastRoom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Ranger_FindWater()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Find Water";
-		displayText="(finding water)";
-		miscText="";
-		triggerStrings.addElement("FINDWATER");
-
-		baseEnvStats().setLevel(1);
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Ranger_FindWater();
-	}
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public Environmental newInstance(){	return new Ranger_FindWater();}
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

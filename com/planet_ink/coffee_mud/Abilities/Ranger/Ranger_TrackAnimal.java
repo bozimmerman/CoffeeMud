@@ -7,40 +7,24 @@ import java.util.*;
 
 public class Ranger_TrackAnimal extends StdAbility
 {
+	public String ID() { return "Ranger_TrackAnimal"; }
+	public String name(){ return "Track";}
+	private String displayText="(tracking an animal)";
+	public String displayText(){ return displayText;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"TRACKANIMAL"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	
 	private MOB trackingWhom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
 
-	public Ranger_TrackAnimal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Track Animal";
-		displayText="(tracking an animal)";
-		miscText="";
-		triggerStrings.addElement("TRACKANIMAL");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Ranger_TrackAnimal();
-	}
+	public Environmental newInstance(){	return new Ranger_TrackAnimal();}
 
 	public int nextDirectionFromHere(Room location)
 	{
