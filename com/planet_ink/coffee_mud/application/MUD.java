@@ -506,6 +506,9 @@ public class MUD extends Thread implements Host
 		offlineReason="Shutting down...Quests";
 		Quests.shutdown();
 
+		offlineReason="Shutting down...Saving players...";
+		saveThread.savePlayers();
+		if(S!=null)S.println("All users saved.");
 		offlineReason="Shutting down...Save Thread";
 		saveThread.shutdown();
 		saveThread.interrupt();
@@ -520,24 +523,7 @@ public class MUD extends Thread implements Host
 			if(S!=null)S.println("IMServer stopped.");
 		}
 
-		for(int s=0;s<Sessions.size();s++)
-		{
-			Session session=Sessions.elementAt(s);
-			try
-			{
-				offlineReason="Shutting down...Saving "+session.mob().Name();
-				MOBloader.DBUpdate(session.mob());
-				offlineReason="Shutting down...Saving followers of "+session.mob().Name();
-				MOBloader.DBUpdateFollowers(session.mob());
-				offlineReason="Shutting down...Done saving "+session.mob().Name();
-				offlineReason="Done saving mob "+session.mob().Name();
-			}
-			catch(java.lang.NullPointerException n){}
-		}
-		Log.sysOut("MUD","All users saved.");
-		if(S!=null)S.println("All users saved.");
-		offlineReason="Shutting down...Users saved";
-
+		offlineReason="Shutting down...Stopping sessions";
 		while(Sessions.size()>0)
 		{
 			Session S2=Sessions.elementAt(0);

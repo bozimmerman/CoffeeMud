@@ -189,6 +189,30 @@ public class SaveThread extends Thread
 		this.interrupt();
 	}
 
+	public int savePlayers()
+	{
+		int processed=0;
+		for(Enumeration p=CMMap.players();p.hasMoreElements();)
+		{
+			MOB mob=(MOB)p.nextElement();
+			if(!mob.isMonster())
+			{
+				MOBloader.DBUpdate(mob);
+				MOBloader.DBUpdateFollowers(mob);
+				processed++;
+			}
+			else
+			if((mob.playerStats()!=null)
+			&&((mob.playerStats().lastUpdated()==0)
+			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
+			{
+				MOBloader.DBUpdate(mob);
+				processed++;
+			}
+		}
+		return processed;
+	}
+	
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
@@ -205,30 +229,12 @@ public class SaveThread extends Thread
 				itemSweep();
 				checkHealth();
 				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
-				int processed=0;
 				lastStop=System.currentTimeMillis();
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				Thread.sleep(Host.TIME_TICK_DELAY);
 				lastStart=System.currentTimeMillis();
-				for(Enumeration p=CMMap.players();p.hasMoreElements();)
-				{
-					MOB mob=(MOB)p.nextElement();
-					if(!mob.isMonster())
-					{
-						MOBloader.DBUpdate(mob);
-						MOBloader.DBUpdateFollowers(mob);
-						processed++;
-					}
-					else
-					if((mob.playerStats()!=null)
-					&&((mob.playerStats().lastUpdated()==0)
-					   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
-					{
-						MOBloader.DBUpdate(mob);
-						processed++;
-					}
-				}
+				int processed=savePlayers();
 				//if(processed>0)
 				//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
 			}
