@@ -124,11 +124,11 @@ public class ServerThread extends Thread {
      */
     public void run() 
 	{
-
         if( boot_time != null ) {
             Log.errOut("I3Server","Illegal attempt to invoke run().");
 			return;
         }
+        
         try {
             listen_thread = new ListenThread(port);
         }

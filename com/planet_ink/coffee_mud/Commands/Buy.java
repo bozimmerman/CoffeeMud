@@ -78,6 +78,7 @@ public class Buy extends StdCommand
 				V.addElement(itemToDo);
 			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
 				break;
+			++addendum;
 		}
 		while((allFlag)&&(addendum<=maxToDo));
 		String forName="";
