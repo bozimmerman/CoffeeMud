@@ -23,14 +23,14 @@ public class Spell_WallOfIce extends Spell
 		displayText="(Wall of Ice)";
 
 
-		quality=Ability.INDIFFERENT;
+		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=1;
-		maxRange=3;
+		maxRange=10;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -103,9 +103,23 @@ public class Spell_WallOfIce extends Spell
 		}
 	}
 
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+		{
+			if((invoker!=null)
+			   &&(theWall!=null)
+			   &&(invoker.location()!=null)
+			   &&(!invoker.location().isContent(theWall)))
+				unInvoke();
+		}
+		return super.tick(tickID);
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!mob.isInCombat())
+		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
 			mob.tell("You really should be in ranged combat to cast this.");
 			return false;

@@ -45,7 +45,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Infravision",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_DetectUndead",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_ObscureSelf",false);
-CMAble.addCharAbilityMapping(ID(),2,"Spell_SummonSteed",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Spell_SummonSteed",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_ResistPoison",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Enlarge",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Light",false);
@@ -67,7 +67,7 @@ CMAble.addCharAbilityMapping(ID(),2,"Spell_SummonSteed",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_FakeFood",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_FakeSpring",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_Frost",false);
-CMAble.addCharAbilityMapping(ID(),4,"Spell_AcidArrow",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Spell_AcidArrow",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_DetectWater",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_ResistAcid",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_MageArmor",false);
@@ -78,7 +78,7 @@ CMAble.addCharAbilityMapping(ID(),4,"Spell_AcidArrow",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectMagic",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_FloatingDisc",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectGold",false);
-CMAble.addCharAbilityMapping(ID(),5,"Spell_WallOfStone",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_WallOfStone",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Spook",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ResistCold",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Mend",false);
@@ -91,8 +91,8 @@ CMAble.addCharAbilityMapping(ID(),5,"Spell_WallOfStone",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Meld",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_IllusoryWall",false);
-CMAble.addCharAbilityMapping(ID(),6,"Spell_FindFamiliar",false);
-CMAble.addCharAbilityMapping(ID(),6,"Spell_StinkingCloud",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Spell_FindFamiliar",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Spell_StinkingCloud",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_DetectInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_ResistElectricity",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_GraceOfTheCat",false);
@@ -114,7 +114,7 @@ CMAble.addCharAbilityMapping(ID(),6,"Spell_StinkingCloud",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Lightning",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_ResistDisease",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Shatter",false);
-CMAble.addCharAbilityMapping(ID(),8,"Spell_WallOfDarkness",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_WallOfDarkness",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Fear",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
 			// level 9
@@ -123,7 +123,7 @@ CMAble.addCharAbilityMapping(ID(),8,"Spell_WallOfDarkness",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_Mirage",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_ComprehendLangs",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_MagicMouth",false);
-CMAble.addCharAbilityMapping(ID(),9,"Spell_IceSheet",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Spell_IceSheet",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_Farsight",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_Flameshield",false);
 			// level 10
@@ -139,7 +139,7 @@ CMAble.addCharAbilityMapping(ID(),9,"Spell_IceSheet",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Claireaudience",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Feeblemind",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Stoneskin",false);
-CMAble.addCharAbilityMapping(ID(),11,"Spell_WallOfIce",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_WallOfIce",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_AcidFog",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_HeatMetal",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Spell_Weaken",false);
@@ -167,7 +167,7 @@ CMAble.addCharAbilityMapping(ID(),11,"Spell_WallOfIce",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_KnowValue",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Silence",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Earthquake",false);
-CMAble.addCharAbilityMapping(ID(),14,"Spell_WallOfAir",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Spell_WallOfAir",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_MassInvisibility",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Scribe",false);
 			// level 15
@@ -175,12 +175,12 @@ CMAble.addCharAbilityMapping(ID(),14,"Spell_WallOfAir",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_Ensnare",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_Hold",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_FakeWeapon",false);
-CMAble.addCharAbilityMapping(ID(),15,"Spell_Blink",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Spell_Blink",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_Polymorph",false);
 			// level 16
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Choke",false);
-CMAble.addCharAbilityMapping(ID(),16,"Spell_Dismissal",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Spell_Dismissal",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Skill_Meditation",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_MageClaws",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_FreeMovement",false);
@@ -189,7 +189,7 @@ CMAble.addCharAbilityMapping(ID(),16,"Spell_Dismissal",false);
 			// level 17
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ClarifyScroll",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_FoolsGold",false);
-CMAble.addCharAbilityMapping(ID(),17,"Spell_WallOfFire",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Spell_WallOfFire",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_Portal",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_RechargeWand",false);
 			// level 18
@@ -209,7 +209,7 @@ CMAble.addCharAbilityMapping(ID(),17,"Spell_WallOfFire",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_Nightmare",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_Cloudkill",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_Repulsion",false);
-CMAble.addCharAbilityMapping(ID(),20,"Spell_SummonEnemy",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Spell_SummonEnemy",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 			// level 21
 			CMAble.addCharAbilityMapping(ID(),21,"Spell_Command",false);
@@ -218,22 +218,22 @@ CMAble.addCharAbilityMapping(ID(),20,"Spell_SummonEnemy",false);
 			// level 22
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_Disenchant",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_MajorGlobe",false);
-CMAble.addCharAbilityMapping(ID(),22,"Spell_MeteorStorm",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Spell_MeteorStorm",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
 			// level 23
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Dragonfire",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_MindBlock",false);
-CMAble.addCharAbilityMapping(ID(),23,"Spell_WallOfForce",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Spell_WallOfForce",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_TimeStop",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_CombatPrecognition",false);
 			// level 24
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_Delay",false);
-CMAble.addCharAbilityMapping(ID(),24,"Spell_SummonFlyer",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Spell_SummonFlyer",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_Anchor",false);
 			// level 25
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_SpellTurning",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
-CMAble.addCharAbilityMapping(ID(),25,"Spell_DemonGate",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_DemonGate",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_PolymorphSelf",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Wish",false);
 		}

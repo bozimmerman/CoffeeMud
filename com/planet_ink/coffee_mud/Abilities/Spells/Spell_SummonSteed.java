@@ -17,7 +17,7 @@ public class Spell_SummonSteed extends Spell
 		// bring up their affected list.
 		displayText="(Summon Steed)";
 
-		quality=Ability.BENEFICIAL_SELF;
+		quality=Ability.OK_SELF;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

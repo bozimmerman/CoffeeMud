@@ -20,14 +20,14 @@ public class Spell_WallOfDarkness extends Spell
 		displayText="(Wall of Darkness)";
 
 
-		quality=Ability.INDIFFERENT;
+		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=1;
-		maxRange=3;
+		maxRange=10;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -69,7 +69,8 @@ public class Spell_WallOfDarkness extends Spell
 			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
 				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
-				ExternalPlay.remove(mob,(Weapon)affect.tool());
+				if(mob.isMonster())
+					ExternalPlay.remove(mob,(Weapon)affect.tool());
 				return false;
 			}
 		}
@@ -92,9 +93,22 @@ public class Spell_WallOfDarkness extends Spell
 		}
 	}
 
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+		{
+			if((invoker!=null)
+			   &&(theWall!=null)
+			   &&(invoker.location()!=null)
+			   &&(!invoker.location().isContent(theWall)))
+				unInvoke();
+		}
+		return super.tick(tickID);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!mob.isInCombat())
+		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
 			mob.tell("You really should be in ranged combat to cast this.");
 			return false;
