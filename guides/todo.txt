@@ -1,3 +1,17 @@
+When failure to use skill/spell only take away half the mana
+
+Guild chat channels.
+
+furniture includes healers, mages, teleporters..
+
+Ability to serve a place, not just a person.
+
+eggs that hatch
+
+fighter skill -- dual parry
+
+tents - enter, have mobs wander into?
+
 ability to save riding status in the database.
 
 Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.

@@ -40,4 +40,4 @@ SET JAVACPATH=D:\java\jdk1.4.0\bin\javac
 %JAVACPATH% com\planet_ink\coffee_mud\web\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\web\macros\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\web\macros\grinder\*.java
-%JAVACPATH% com\planet_ink\fakedb\*.java
+%JAVACPATH% -deprecation com\planet_ink\fakedb\*.java
