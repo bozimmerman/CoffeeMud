@@ -2416,7 +2416,8 @@ public class StdMOB implements MOB
 
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
-				curState().expendEnergy(this,maxState,false);
+				if(!isMonster())
+					curState().expendEnergy(this,maxState,false);
 				if((!Sense.canBreathe(this))&&(!Sense.isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CommonStrings.msp("choke.wav",10));
@@ -2576,12 +2577,20 @@ public class StdMOB implements MOB
 						    while((tage>baseCharStats.getStat(CharStats.AGE))
 						    &&((month>bmonth)||((month==bmonth)&&(day>=bday))))
 				            {
-						        if((month==bmonth)&&(day==bday))
-						            tell("Happy Birthday!");
-						        baseCharStats.setStat(CharStats.AGE,baseCharStats.getStat(CharStats.AGE)+1);
-						        recoverCharStats();
-						        recoverEnvStats();
-						        recoverMaxState();
+								if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
+								{
+							        if((month==bmonth)&&(day==bday))
+							            tell("Happy Birthday!");
+							        baseCharStats.setStat(CharStats.AGE,baseCharStats.getStat(CharStats.AGE)+1);
+							        recoverCharStats();
+							        recoverEnvStats();
+							        recoverMaxState();
+								}
+								else
+								{
+								    playerStats().getBirthday()[2]++;
+								    tage--;
+								}
 						    }
 							if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
 							{

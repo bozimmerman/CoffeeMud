@@ -230,7 +230,7 @@ public class DefaultCharState implements Cloneable, CharState
 
 	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement)
 	{
-		if((!mob.isMonster())&&(mob.location()!=null))
+		if(mob.location()!=null)
 		{
 			if(expendMovement)
 			{

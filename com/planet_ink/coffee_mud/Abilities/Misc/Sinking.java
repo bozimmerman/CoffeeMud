@@ -144,7 +144,8 @@ public class Sinking extends StdAbility
 				&&(A.profficiencyCheck(mob,25,(A.profficiency()>=75))
 				&&(mob.curState().getMovement()>0)))
 				{
-					if(mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
+					if((mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))
+					&&(!mob.isMonster()))
 					{
 						mob.curState().expendEnergy(mob,mob.maxState(),true);
 						return true;

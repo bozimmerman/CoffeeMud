@@ -138,7 +138,12 @@ public class DefaultPlayerStats implements PlayerStats
 	        birthday[1]=Dice.roll(1,C.getMonthsInYear(),0);
 	        birthday[0]=Dice.roll(1,C.getDaysInMonth(),0);
 	    }
-	    return R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2];
+        int month=C.getMonth();
+        int day=C.getDayOfMonth();
+        if((month<birthday[1])||((month==birthday[1])&&(birthday[0]<day)))
+		    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2])-1;
+        else
+		    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
 	}
 	
 	private String getPrivateList(HashSet h)

@@ -230,7 +230,8 @@ public class Go extends StdCommand
 		}
 		else
 		{
-			mob.curState().expendEnergy(mob,mob.maxState(),true);
+			if(!mob.isMonster())
+				mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState()))&&(!gotoAllowed))
 			{
 				mob.tell(getScr("Movement","tootired"));
