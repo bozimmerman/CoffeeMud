@@ -219,7 +219,7 @@ public class JournalLoader
 		}
 		catch(Exception sqle)
 		{
-			Log.errOut("JournalLoader",sqle);
+			Log.errOut("JournalLoader",sqle.getMessage());
 		}
 		if(D!=null) DBConnector.DBDone(D);
 		

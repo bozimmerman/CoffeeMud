@@ -85,7 +85,7 @@ public class SMTPserver extends Thread implements Tickable
 			Vector V=Util.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
-				journals=new DVector(4);
+				journals=new DVector(5);
 				for(int v=0;v<V.size();v++)
 				{
 					String s=((String)V.elementAt(v)).trim();
@@ -93,7 +93,7 @@ public class SMTPserver extends Thread implements Tickable
 					int x=s.indexOf("(");
 					if((x>0)&&(s.endsWith(")")))
 					{
-						parm=parm.substring(x+1,s.length()-1).trim();
+						parm=s.substring(x+1,s.length()-1).trim();
 						s=s.substring(0,x).trim();
 					}
 					if(!journals.contains(s))

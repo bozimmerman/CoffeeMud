@@ -122,21 +122,23 @@ public class ProcessSMTPrequest extends Thread
 							while(true)
 							{
 								String s2=lineR.readLine();
+								String s2u=s2.toUpperCase();
 								if(s2==null) break;
+								
 								if(startBuffering)
 									finalData.append(s2+cr);
 								else
 								if(s2.length()==0)
 									startBuffering=true;
 								else
-								if(s2.startsWith("Subject: "))
+								if(s2u.startsWith("SUBJECT: "))
 									subject=s2.substring(9).trim();
 								else
-								if(s2.startsWith("Content Type: ")||s2.startsWith("Content-type: ")||s2.startsWith("Content-Type: "))
+								if(s2u.startsWith("CONTENT TYPE: ")||s2u.startsWith("CONTENT-TYPE: "))
 								{
-									if(!s2.substring(14).toUpperCase().startsWith("TEXT/PLAIN"));
+									if(!s2u.substring(14).trim().startsWith("TEXT/PLAIN"));
 									{
-										replyData=("552 Message content type '"+s2.substring(14)+"' not accepted."+cr).getBytes();
+										replyData=("552 Message content type '"+s2u.substring(14).trim()+"' not accepted."+cr).getBytes();
 										subject=null;
 										break;
 									}
