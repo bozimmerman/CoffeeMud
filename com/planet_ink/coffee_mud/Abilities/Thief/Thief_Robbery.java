@@ -17,6 +17,26 @@ public class Thief_Robbery extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Robbery();}
 	public Vector mobs=new Vector();
+	private DVector lastOnes=new DVector(2);
+	private int timesPicked(MOB target)
+	{
+		int times=0;
+		for(int x=0;x<lastOnes.size();x++)
+		{
+			MOB M=(MOB)lastOnes.elementAt(x,1);
+			Integer I=(Integer)lastOnes.elementAt(x,2);
+			if(M==target)
+			{
+				times=I.intValue();
+				lastOnes.removeElement(M);
+				break;
+			}
+		}
+		if(lastOnes.size()>=50)
+			lastOnes.removeElementAt(0);
+		lastOnes.addElement(target,new Integer(times+1)); 
+		return times+1;
+	}
 
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
@@ -85,6 +105,8 @@ public class Thief_Robbery extends ThiefSkill
 		}
 
 		int discoverChance=(mob.charStats().getStat(CharStats.CHARISMA)-target.charStats().getStat(CharStats.WISDOM))*5;
+		int times=timesPicked(target);
+		if(times>5) discoverChance-=(20*(times-5));
 		if(!Sense.canBeSeenBy(mob,target))
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
@@ -129,6 +151,8 @@ public class Thief_Robbery extends ThiefSkill
 			int hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
+			else
+				str+=" <T-NAME> spots you!";
 
 			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))

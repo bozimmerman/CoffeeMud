@@ -10,6 +10,8 @@ public class DVector
 		if(dim<1) throw new java.lang.IndexOutOfBoundsException();
 		dimensions=dim;
 		stuff=new Vector[dimensions];
+		for(int i=0;i<dimensions;i++)
+			stuff[i]=new Vector();
 	}
 	
 	public void addElement(Object O)
@@ -56,7 +58,10 @@ public class DVector
 		return stuff[dim-1];
 	}
 	public boolean contains(Object O){return stuff[0].contains(O);}
-	public int size(){return stuff[0].size();}
+	public int size(){
+		if(stuff==null) return 0;
+		return stuff[0].size();
+	}
 	public void removeElementAt(int i)
 	{
 		for(int d=0;d<dimensions;d++)
@@ -68,7 +73,7 @@ public class DVector
 		{
 			for(int i=stuff[0].size()-1;i>=0;i--)
 			{
-				if(O.equals(stuff[0]))
+				if((O==stuff[0].elementAt(i))||(O.equals(stuff[0].elementAt(i))))
 				for(int d=0;d<dimensions;d++)
 					stuff[d].removeElementAt(i);
 			}

@@ -714,11 +714,15 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				Quest Q=Quests.fetchQuest(arg2);
 				if(Q==null)
 					returnable=false;
 				else
+				{
+					if(E!=null) arg1=E.Name();
 					returnable=Q.wasWinner(arg1);
+				}
 				break;
 			}
 			case 29: // questmob
@@ -2923,6 +2927,10 @@ public class Scriptable extends StdBehavior
 			case 22: //MPQUESTWIN
 			{
 				String whoName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				MOB M=null;
+				if(lastKnownLocation!=null)
+					M=lastKnownLocation.fetchInhabitant(whoName);
+				if(M!=null) whoName=M.Name();
 				if(whoName.length()>0)
 				{
 					s=Util.getCleanBit(s,2);

@@ -42,6 +42,7 @@ a behavior that watches the weather... in foul or cold weather, items of certain
 readables that can load text from a text file
 ability to have random formulaic weapons, armor.
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
+Allergies - nuff said
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
@@ -51,6 +52,7 @@ Electronic items which can be activated/deactivated, grant some affect, and use 
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
 
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
+Cavelier the knight, law enforcer - mounted bonuses, Mounted Combat 2 Mounted Combat 3 Vigilance....allows the character to be on guard moreso than others...can recover hp, mana, movement at sleeping rates while resting. a skill dealing with a lance like Joust or Mounted Charge.Horsemanship.Dragon Lore.Leadership.Reputation
 level and type and wear locations for weaponsmithing and armorsmithing
 possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
 LYING DOWN position?

@@ -1,3 +1,3 @@
-
+new help: repair, pet, str, int, wis, dex, con, chr, damage, glass blowing, jewel making, scroll, quest, questchat, questchats, home, house, homes
 
 
