@@ -7,35 +7,16 @@ import java.util.*;
 
 public class Paladin_SummonMount extends StdAbility
 {
-	public Paladin_SummonMount()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Call Mount";
-		displayText="(Mount)";
-		miscText="";
-
-		quality=Ability.OK_SELF;
-		triggerStrings.addElement("CALLMOUNT");
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_SummonMount();
-	}
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Paladin_SummonMount"; }
+	public String name(){ return "Call Mount";}
+	public String displayText() {return "(Mount)";}
+	private static final String[] triggerStrings = {"CALLMOUNT"};
+	public int quality(){return Ability.OK_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Paladin_SummonMount();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public void unInvoke()
 	{

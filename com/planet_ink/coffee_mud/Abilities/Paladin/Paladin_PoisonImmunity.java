@@ -7,32 +7,9 @@ import java.util.*;
 
 public class Paladin_PoisonImmunity extends Paladin
 {
-	public Paladin_PoisonImmunity()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Poison Immunity";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_PoisonImmunity();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Paladin_PoisonImmunity"; }
+	public String name(){ return "Poison Immunity";}
+	public Environmental newInstance(){	return new Paladin_PoisonImmunity();}
 
 	public boolean okAffect(Affect affect)
 	{

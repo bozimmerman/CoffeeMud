@@ -8,37 +8,18 @@ import java.util.*;
 
 public class Paladin extends StdAbility
 {
+	public String ID() { return "Paladin"; }
+	public String name(){ return "Paladin's Amazement";}
+	public String displayText(){return "";}
+	public int quality(){return Ability.OK_OTHERS;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	protected Vector paladinsGroup=null;
-	
-	public Paladin()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paladin's Amazement";
-		displayText="";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		quality=Ability.OK_OTHERS;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(18);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public Environmental newInstance(){	return new Paladin();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean tick(int tickID)
 	{

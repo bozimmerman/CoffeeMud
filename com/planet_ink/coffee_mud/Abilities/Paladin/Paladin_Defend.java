@@ -7,35 +7,16 @@ import java.util.*;
 
 public class Paladin_Defend extends StdAbility
 {
+	public String ID() { return "Paladin_Defend"; }
+	public String name(){ return "Defence";}
+	private static final String[] triggerStrings = {"DEFENCE"};
+	public int quality(){return Ability.OK_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Paladin_Defend();}
 	public boolean fullRound=false;
-	public Paladin_Defend()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Defence";
-		displayText="(Defence)";
-		miscText="";
-		triggerStrings.addElement("DEFENCE");
-
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(1);
-		canAffectCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_Defend();
-	}
 	
 	public boolean okAffect(Affect affect)
 	{

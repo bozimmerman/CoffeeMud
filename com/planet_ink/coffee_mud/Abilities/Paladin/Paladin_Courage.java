@@ -8,18 +8,14 @@ import java.util.*;
 
 public class Paladin_Courage extends Paladin
 {
+	public String ID() { return "Paladin_Courage"; }
+	public String name(){ return "Paladin's Courage";}
 	public Paladin_Courage()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paladin's Courage";
 		paladinsGroup=new Vector();
 	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_Courage();
-	}
+	public Environmental newInstance(){	return new Paladin_Courage();}
 
 	public boolean okAffect(Affect affect)
 	{

@@ -8,18 +8,14 @@ import java.util.*;
 
 public class Paladin_Aura extends Paladin
 {
+	public String ID() { return "Paladin_Aura"; }
+	public String name(){ return "Paladin's Aura";}
 	public Paladin_Aura()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paladin's Aura";
 		paladinsGroup=new Vector();
 	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_Aura();
-	}
+	public Environmental newInstance(){	return new Paladin_Aura();}
 
 	public boolean tick(int tickID)
 	{

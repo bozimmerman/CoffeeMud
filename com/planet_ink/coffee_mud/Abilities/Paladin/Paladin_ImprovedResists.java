@@ -7,33 +7,10 @@ import java.util.*;
 
 public class Paladin_ImprovedResists extends Paladin
 {
-	public Paladin_ImprovedResists()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paladin`s Resistance";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_ImprovedResists();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
+	public String ID() { return "Paladin_ImprovedResists"; }
+	public String name(){ return "Paladin`s Resistance";}
+	public Environmental newInstance(){	return new Paladin_ImprovedResists();}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

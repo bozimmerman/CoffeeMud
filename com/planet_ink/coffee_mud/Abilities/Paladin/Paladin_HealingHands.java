@@ -7,36 +7,15 @@ import java.util.*;
 
 public class Paladin_HealingHands extends StdAbility
 {
-	public Paladin_HealingHands()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Healing Hands";
-		displayText="(in the holy dominion of the gods)";
-		miscText="";
-		triggerStrings.addElement("HANDS");
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(1);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_HealingHands();
-	}
+	public String ID() { return "Paladin_HealingHands"; }
+	public String name(){ return "Healing Hands";}
+	private static final String[] triggerStrings = {"HANDS"};
+	public int quality(){return Ability.OK_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Paladin_HealingHands();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

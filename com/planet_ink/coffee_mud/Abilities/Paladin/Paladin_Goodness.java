@@ -8,19 +8,15 @@ import java.util.*;
 
 public class Paladin_Goodness extends Paladin
 {
+	public String ID() { return "Paladin_Goodness"; }
+	public String name(){ return "Paladin's Goodness";}
 	private boolean tickTock=false;
 	public Paladin_Goodness()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paladin's Goodness";
 		paladinsGroup=new Vector();
 	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_Goodness();
-	}
+	public Environmental newInstance(){	return new Paladin_Goodness();}
 
 	public boolean tick(int tickID)
 	{

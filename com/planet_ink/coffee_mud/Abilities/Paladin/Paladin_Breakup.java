@@ -7,29 +7,15 @@ import java.util.*;
 
 public class Paladin_Breakup extends StdAbility
 {
-	public Paladin_Breakup()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Breakup Fight";
-		baseEnvStats().setLevel(21);
-		quality=Ability.OK_OTHERS;
-		triggerStrings.addElement("BREAKUP");
-
-		baseEnvStats().setLevel(1);
-		
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paladin_Breakup();
-	}
+	public String ID() { return "Paladin_Breakup"; }
+	public String name(){ return "Breakup Fight";}
+	private static final String[] triggerStrings = {"BREAKUP"};
+	public int quality(){return Ability.OK_OTHERS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Paladin_Breakup();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
