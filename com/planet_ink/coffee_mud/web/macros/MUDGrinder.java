@@ -30,43 +30,54 @@ public class MUDGrinder extends StdWebMacro
 				GrinderRooms.createLonelyRoom(A,null,0,false);
 				A.clearMap();
 			}
-			GrinderMap map=new GrinderMap(A);
+			GrinderFlatMap map=null;
+			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
+			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
+				map=new GrinderMap(A);
+			else
+				map=new GrinderFlatMap(A);
 			map.rePlaceRooms();
 			return map.getHTMLTable(httpReq).toString();
 		}
-                else
-                if(parms.containsKey("AREATHUMBNAIL"))
-                {
-                  String AREA = httpReq.getRequestParameter("AREA");
-                  if (AREA == null)
-                    return "";
-                  if (AREA.length() == 0)
-                    return "";
-                  Area A = CMMap.getArea(AREA);
-                  if (A == null)
-                    return "";
-                  if (A.mapSize() == 0) {
-                    GrinderRooms.createLonelyRoom(A, null, 0, false);
-                    A.clearMap();
-                  }
-                  GrinderMap map = new GrinderMap(A);
-                  map.rePlaceRooms();
-                  String rS = httpReq.getRequestParameter("ROOMSIZE");
-                  int roomSize = 4;
-                  if (rS != null)
-                    roomSize = new Integer(rS).intValue();
-                  if (roomSize <= 4)
-                    return map.getHTMLMap(httpReq).toString();
-                  else
-                    return map.getHTMLMap(httpReq, roomSize).toString();
-                }
-                else
-                if(parms.containsKey("WORLDMAP"))
-                {
-                  GrinderMap map = new GrinderMap();
-                  map.rePlaceRooms();
-                  return map.getHTMLMap(httpReq).toString();
-                }
+        else
+        if(parms.containsKey("AREATHUMBNAIL"))
+        {
+			String AREA = httpReq.getRequestParameter("AREA");
+			if (AREA == null) return "";
+			if (AREA.length() == 0) return "";
+			Area A = CMMap.getArea(AREA);
+			if (A == null)  return "";
+			if (A.mapSize() == 0) 
+			{
+				GrinderRooms.createLonelyRoom(A, null, 0, false);
+				A.clearMap();
+			}
+			GrinderFlatMap map=null;
+			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
+			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
+				map=new GrinderMap(A);
+			else
+				map=new GrinderFlatMap(A);
+			map.rePlaceRooms();
+			String rS = httpReq.getRequestParameter("ROOMSIZE");
+			int roomSize = (rS!=null)?Util.s_int(rS):4;
+			if (roomSize <= 4)
+				return map.getHTMLMap(httpReq).toString();
+			else
+				return map.getHTMLMap(httpReq, roomSize).toString();
+        }
+        else
+        if(parms.containsKey("WORLDMAP"))
+        {
+			GrinderFlatMap map=null;
+			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
+			&&(httpReq.getRequestParameter("MAPSTYLE").length()>0))
+				map=new GrinderMap();
+			else
+				map=new GrinderFlatMap();
+			map.rePlaceRooms();
+			return map.getHTMLMap(httpReq).toString();
+        }
 		else
 		if(parms.containsKey("AREALIST"))
 		{

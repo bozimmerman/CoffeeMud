@@ -11,9 +11,9 @@ ability to view wear location, weapon class/type in VIEW command
 racial abilities (abilities tied to the race)
 encumbrance/ wearing heavy armor slow you down?
 property on abilities that describes what to say when already affected by it.
-like, I'd like some race specific questions to have during the character creation process
-Some solution for variable eq on mobs
-constuct addition--peephole. a window on a door (sortof)
+race specific questions to have during the character creation process -- stored where?
+Some solution for variable eq on mobs -- use rejuv!
+construct addition--peephole. a window on a door (sortof)
 ability to make windows in Construction, Masonry
 pour command as a reverse fill
 locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
@@ -23,8 +23,9 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 putting a change bag into a changebag should combine your notes.
 SMTP capability
+give rooms maximum weight saveable to db
+Bandage common skill Using cloth type materials, the player with this skill can bandage a severely wounded player, raising their HP.  Probably only about 5% HP per pound of cloth or less.  Only let the skill work on people less than about 30% of max HP.  Good for limping back to town for a cleric, but doesn't ruin the need for a cleric.  And it's another use for cloth. 
 on your back for wearing backpacks
-add floating num to resources -- whether the item will float
 ability to deposit in someone elses bank account
 add energy as a base material type -- update import
 autosneak thief skill
@@ -56,6 +57,7 @@ PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Allergies - nuff said
 missing resources: wax, flowers, plastic, rubber, ebony, ivory, nuts, bread, wafer/cracker, yew
 msx support
+some sort of emote/social channel?
 
 From Aereon:
 masonry tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
@@ -101,8 +103,6 @@ Ability absorbtion prayer.  Allows the casting mage to absorb an ability from a 
     3)  if the caster already has the ability, a small, albeit temporary increase to proficiency will result. 
     4)  caster may only have one absorbed ability at a time.  absorbing another replaces the previous absorbed ability.
 
-
-
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
@@ -115,5 +115,4 @@ Cavelier the knight, law enforcer - mounted bonuses, Mounted Combat 2 Mounted Co
 level and type and wear locations for weaponsmithing and armorsmithing
 possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
 LYING DOWN position?
-Z-level for the GrinderMap (elevation?) how the heck would THAT work...
 group formations as an alternative way of determining range

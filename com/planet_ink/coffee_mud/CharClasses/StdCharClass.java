@@ -249,7 +249,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),10.0);
 			double mobFactor=Util.div(Math.abs(500.0-new Integer(mob.getAlignment()).doubleValue()),1000.0)+0.5;
-			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor));
+			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor*0.50));
 
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));

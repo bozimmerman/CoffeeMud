@@ -20,10 +20,24 @@ public class Skill_Swim extends StdAbility
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 
+	public boolean placeToSwim(Room r2)
+	{
+		if((r2==null)
+		||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
+		&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(r2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
+		&&(r2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
+			return false;
+		return true;
+	}
+	public boolean placeToSwim(Environmental E)
+	{ return placeToSwim(CoffeeUtensils.roomLocation(E));}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		if(placeToSwim(affected))
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -34,25 +48,24 @@ public class Skill_Swim extends StdAbility
 			mob.tell("Swim where?");
 			return false;
 		}
-		Room r2=mob.location();
-		if((r2==null)
-		||((r2.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(r2.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(r2.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		&&(r2.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)))
+		if(!placeToSwim(mob.location()))
 		{
 			Room r=mob.location().getRoomInDir(dirCode);
-			if((r==null)||((r.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-						   &&(r.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-						   &&(r.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-						   &&(r.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
-						   ))
+			if(!placeToSwim(r))
 			{
 				mob.tell("There is no water to swim on that way.");
 				return false;
 			}
 		}
 
+		if((mob.riding()!=null)
+		&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_WATER)
+		&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_AIR))
+		{
+			mob.tell("You need to get off "+mob.riding().name()+" first!");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -67,15 +80,13 @@ public class Skill_Swim extends StdAbility
 			else
 			{
 				if(mob.fetchAffect(ID())==null)
-				{
-					mob.addAffect(this);
-					mob.recoverEnvStats();
-				}
+					addAffect(this);
+				mob.recoverEnvStats();
 
 				ExternalPlay.move(mob,dirCode,false,false);
-				mob.delAffect(this);
-				mob.recoverEnvStats();
 			}
+			mob.delAffect(this);
+			mob.recoverEnvStats();
 		}
 		return success;
 	}

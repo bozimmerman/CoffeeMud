@@ -448,7 +448,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
-					if((numberInStock(affect.tool()))>=maximumDuplicatesBought)
+					int numInStock=numberInStock(affect.tool());
+					if(((!(affect.tool() instanceof EnvResource))&&(numInStock>=maximumDuplicatesBought))
+					||(numInStock>=(maximumDuplicatesBought*100)))
 					{
 						ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
 						return false;
@@ -938,6 +940,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
 
+		if((product instanceof EnvResource)&&(numberInStock(product)!=0))
+			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div(((maximumDuplicatesBought*100)-numberInStock(product)),maximumDuplicatesBought*100)));
+		else
         if((!(product instanceof Ability)&&(numberInStock(product)!=0)))
 			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div((maximumDuplicatesBought-numberInStock(product)),maximumDuplicatesBought)));
 

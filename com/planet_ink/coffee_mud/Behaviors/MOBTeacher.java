@@ -41,7 +41,7 @@ public class MOBTeacher extends CombatAbilities
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+			if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>0)))
 			   ||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
 				addAbility(mob,A,pct,myAbles);
 		}
@@ -135,6 +135,8 @@ public class MOBTeacher extends CombatAbilities
 			return;
 		MOB monster=myMOB;
 		MOB mob=affect.source();
+		if(Util.bset(monster.getBitmap(),MOB.ATT_NOTEACH))
+			monster.setBitmap(Util.unsetb(monster.getBitmap(),MOB.ATT_NOTEACH));
 
 		if((!affect.amISource(monster))
 		&&(!mob.isMonster())

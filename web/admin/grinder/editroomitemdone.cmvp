@@ -5,8 +5,8 @@
 @MUDGrinder?EDITITEM@
 <HTML>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MAP>
-	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MENU>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editroomform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MAP>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@" NAME=MENU>
 </FRAMESET>
 </HTML>
 @endif@

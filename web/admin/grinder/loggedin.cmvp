@@ -56,8 +56,6 @@
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>View Server Log</FONT></a>
-	<BR>
-	<A href="javascript:Clicked('mapworld.cmvp')"><FONT COLOR=WHITE>Attempt A World Map</FONT></a>
 </TD></TR>
 </TABLE>
 <P>
@@ -84,7 +82,12 @@
 @else@
 <INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 @endif@
-</TD></TR></TABLE>
+</TD></TR>
+<TR><TD ALIGN=CENTER>
+<INPUT TYPE=CHECKBOX NAME=MAPSTYLE>
+<FONT COLOR=WHITE>Use Z-Level Mapping</FONT>
+</TD></TR>
+</TABLE>
 <P>
 <CENTER>
 <INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Log Out" ONCLICK="Clicked2('/index.cmvp');">

@@ -19,12 +19,14 @@
 <FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/modarea.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 <FONT COLOR=WHITE>Your new area '@AreaName@' has been successfully created.</FONT><P>
 <INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Continue">
 @else@
 <FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/loggedin.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 <FONT COLOR=RED>Your new area could not be created.  Go back and make sure
 that an area with the same name does not already exist.</FONT><P>
 <INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Continue">

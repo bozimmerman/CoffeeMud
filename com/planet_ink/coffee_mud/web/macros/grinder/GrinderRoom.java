@@ -7,7 +7,7 @@ public class GrinderRoom
 {
 	public int x=0;
 	public int y=0;
-        public int z=0;
+    public int z=0;
 	public String roomID="";
 	public Room room=null;
     public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS];

@@ -8,13 +8,18 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class GrinderFlatMap
 {
-    private Vector areaMap=null;
-	private Hashtable hashRooms=null;
-    public GrinderRoom[][] grid=null;
-    public int Xbound=0;
-    public int Ybound=0;
-	public Area area=null;
+    protected Vector areaMap=null;
+	protected Hashtable hashRooms=null;
+    private GrinderRoom[][] grid=null;
+    protected int Xbound=0;
+    protected int Ybound=0;
+	protected Area area=null;
+	protected boolean debug = false;
 
+	public GrinderFlatMap()
+	{
+	}
+	
 	public GrinderFlatMap(Area A)
 	{
 		area=A;
@@ -78,7 +83,7 @@ public class GrinderFlatMap
         rebuildGrid();
     }
 
-    private GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y)
+    protected GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y)
     {
         for(Enumeration e=processed.elements();e.hasMoreElements();)
         {
@@ -104,9 +109,9 @@ public class GrinderFlatMap
         return null;
     }
 
-    private final static int CLUSTERSIZE=3;
+    protected final static int CLUSTERSIZE=3;
 
-    private boolean isEmptyCluster(Hashtable processed, int x, int y)
+    protected boolean isEmptyCluster(Hashtable processed, int x, int y)
     {
         for(Enumeration e=processed.elements();e.hasMoreElements();)
         {
@@ -119,7 +124,7 @@ public class GrinderFlatMap
         return true;
     }
 
-    private void findEmptyCluster(Hashtable processed, Vector XY)
+    protected void findEmptyCluster(Hashtable processed, Vector XY)
     {
         int x=((Integer)XY.elementAt(0)).intValue();
         int y=((Integer)XY.elementAt(1)).intValue();
@@ -283,49 +288,7 @@ public class GrinderFlatMap
 							{
 							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR,httpReq)+"</TD>");
 							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 VALIGN=TOP ");
-							switch(GR.room.domainType())
-							{
-							case Room.DOMAIN_INDOORS_AIR:
-								buf.append("BGCOLOR=\"#FFFFFF\""); break;
-							case Room.DOMAIN_INDOORS_MAGIC:
-								buf.append("BGCOLOR=\"#996600\""); break;
-							case Room.DOMAIN_INDOORS_CAVE:
-								buf.append("BGCOLOR=\"#CC99FF\""); break;
-							case Room.DOMAIN_INDOORS_STONE:
-								buf.append("BGCOLOR=\"#CC00FF\""); break;
-							case Room.DOMAIN_INDOORS_UNDERWATER:
-								buf.append("BGCOLOR=\"#6666CC\""); break;
-							case Room.DOMAIN_INDOORS_WATERSURFACE:
-								buf.append("BGCOLOR=\"#3399CC\""); break;
-							case Room.DOMAIN_INDOORS_WOOD:
-								buf.append("BGCOLOR=\"#999900\""); break;
-							case Room.DOMAIN_OUTDOORS_AIR:
-								buf.append("BGCOLOR=\"#FFFFFF\""); break;
-							case Room.DOMAIN_OUTDOORS_CITY:
-								buf.append("BGCOLOR=\"#CCCCCC\""); break;
-							case Room.DOMAIN_OUTDOORS_DESERT:
-								buf.append("BGCOLOR=\"#FFFF66\""); break;
-							case Room.DOMAIN_OUTDOORS_HILLS:
-								buf.append("BGCOLOR=\"#99CC33\""); break;
-							case Room.DOMAIN_OUTDOORS_JUNGLE:
-								buf.append("BGCOLOR=\"#669966\""); break;
-							case Room.DOMAIN_OUTDOORS_MOUNTAINS:
-								buf.append("BGCOLOR=\"#996600\""); break;
-							case Room.DOMAIN_OUTDOORS_PLAINS:
-								buf.append("BGCOLOR=\"#00FF00\""); break;
-							case Room.DOMAIN_OUTDOORS_ROCKS:
-								buf.append("BGCOLOR=\"#996600\""); break;
-							case Room.DOMAIN_OUTDOORS_SWAMP:
-								buf.append("BGCOLOR=\"#006600\""); break;
-							case Room.DOMAIN_OUTDOORS_UNDERWATER:
-								buf.append("BGCOLOR=\"#6666CC\""); break;
-							case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-								buf.append("BGCOLOR=\"#3399CC\""); break;
-							case Room.DOMAIN_OUTDOORS_WOODS:
-								buf.append("BGCOLOR=\"#009900\""); break;
-							default:
-								buf.append("BGCOLOR=\"#CCCCFF\""); break;
-							}
+							buf.append(roomColorStyle(GR));
 							buf.append(">");
 							String roomID=GR.roomID;
 							if(roomID.startsWith(area.Name()+"#"))
@@ -383,7 +346,55 @@ public class GrinderFlatMap
 		return buf;
 	}
 
-	private GrinderRoom getRoomInDir(GrinderRoom room, int d)
+	
+	protected String roomColorStyle(GrinderRoom GR)
+	{
+		switch (GR.room.domainType()) 
+		{
+		case Room.DOMAIN_INDOORS_AIR:
+			return ("BGCOLOR=\"#FFFFFF\"");
+		case Room.DOMAIN_INDOORS_MAGIC:
+			return ("BGCOLOR=\"#996600\"");
+		case Room.DOMAIN_INDOORS_CAVE:
+			return ("BGCOLOR=\"#CC99FF\"");
+		case Room.DOMAIN_INDOORS_STONE:
+			return ("BGCOLOR=\"#CC00FF\"");
+		case Room.DOMAIN_INDOORS_UNDERWATER:
+			return ("BGCOLOR=\"#6666CC\"");
+		case Room.DOMAIN_INDOORS_WATERSURFACE:
+			return ("BGCOLOR=\"#3399CC\"");
+		case Room.DOMAIN_INDOORS_WOOD:
+			return ("BGCOLOR=\"#999900\"");
+		case Room.DOMAIN_OUTDOORS_AIR:
+			return ("BGCOLOR=\"#FFFFFF\"");
+		case Room.DOMAIN_OUTDOORS_CITY:
+			return ("BGCOLOR=\"#CCCCCC\"");
+		case Room.DOMAIN_OUTDOORS_DESERT:
+			return ("BGCOLOR=\"#FFFF66\"");
+		case Room.DOMAIN_OUTDOORS_HILLS:
+			return ("BGCOLOR=\"#99CC33\"");
+		case Room.DOMAIN_OUTDOORS_JUNGLE:
+			return ("BGCOLOR=\"#669966\"");
+		case Room.DOMAIN_OUTDOORS_MOUNTAINS:
+			return ("BGCOLOR=\"#996600\"");
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return ("BGCOLOR=\"#00FF00\"");
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			return ("BGCOLOR=\"#996600\"");
+		case Room.DOMAIN_OUTDOORS_SWAMP:
+			return ("BGCOLOR=\"#006600\"");
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return ("BGCOLOR=\"#6666CC\"");
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return ("BGCOLOR=\"#3399CC\"");
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			return ("BGCOLOR=\"#009900\"");
+		default:
+			return ("BGCOLOR=\"#CCCCFF\"");
+		}
+	}
+	
+	protected GrinderRoom getRoomInDir(GrinderRoom room, int d)
 	{
 	    switch(d)
 	    {
@@ -407,7 +418,7 @@ public class GrinderFlatMap
 		return null;
 	}
 
-	private int findRelGridDir(GrinderRoom room, String roomID)
+	protected int findRelGridDir(GrinderRoom room, String roomID)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -418,7 +429,7 @@ public class GrinderFlatMap
 		return -1;
 	}
 
-    private String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
+    protected String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
 	{
 	    GrinderDir dir=(GrinderDir)room.doors[d];
 	    String dirLetter=""+Directions.getDirectionName(d).toUpperCase().charAt(0);
@@ -553,4 +564,37 @@ public class GrinderFlatMap
             }
         }
     }
+	
+	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq) 
+	{
+		return getHTMLMap(httpReq, 4);
+	}
+
+	// this is much like getHTMLTable, but tiny rooms for world map viewing. No exits or ID's for now.
+	public StringBuffer getHTMLMap(ExternalHTTPRequests httpReq, int roomSize) 
+	{
+		StringBuffer buf = new StringBuffer("");
+		buf.append("<TABLE WIDTH=" + ( (Xbound + 1) * roomSize) +
+		           " BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+		for (int y = 0; y <= Ybound; y++) 
+		{
+			buf.append("<TR HEIGHT=" + roomSize + ">");
+			for (int x = 0; x <= Xbound; x++) 
+			{
+				GrinderRoom GR = grid[x][y];
+				if (GR == null) 
+					buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize +
+					           "><font size=1>&nbsp;</font></TD>");
+				  else 
+				  {
+					buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize + " ");
+					buf.append(roomColorStyle(GR));
+					buf.append("><font size=1>&nbsp;</font></TD>");
+				}
+			}
+			buf.append("</TR>");
+		}
+		buf.append("</TABLE>");
+		return buf;
+	}
 }

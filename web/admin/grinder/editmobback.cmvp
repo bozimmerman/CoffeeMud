@@ -4,8 +4,8 @@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <HTML>
 	<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MAP>
-		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MENU>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MAP>
+		<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu2.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&MAPSTYLE=@RequestParameterEncoded?MAPSTYLE@&ROOM=@RequestParameterEncoded?ROOM@&MOB=@RequestParameterEncoded?MOB@" NAME=MENU>
 	</FRAMESET>
 </HTML>
 @endif@
