@@ -6,8 +6,6 @@ FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,ARMORDMG,CONTAINMAS
 Puppet	1	10	5	1	GenItem		0		0
 Marionette	1	10	5	1	GenItem		0		0
 % Chopsticks	1	5	1	1	GenItem		0		0
-% Bookshelf	3	30	10	15	GenContainer		10		768
-% Scroll Case	3	30	10	10	GenContainer		3		256
 % Mug	1	10	8	1	GenWater		5		1
 % Plate	1	10	8	1	GenContainer		5		0
 % Pitcher	1	15	15	1	GenWater		15		1
@@ -16,7 +14,6 @@ Marionette	1	10	5	1	GenItem		0		0
 % Bucket	1	20	20	5	GenWater		15		0
 % Plaque	1	20	5	20	GenItem		0		0
 % pipe	1	10	1	2	GenPipe	SMOKE	2		8192
-Torch	15	15	5	10	GenLightSource		200		0
 Small % Table	1	15	30	15	GenRideable	TABLE	20		0
 Small % Desk	1	15	30	15	GenRideable	TABLE	20		0
 Small % Stool	1	15	10	3	GenChair	CHAIR	1		0
@@ -25,15 +22,18 @@ Small % Chair	1	15	15	5	GenChair	CHAIR	1		0
 Small % Bench	1	20	20	10	GenChair	CHAIR	2	 	0
 Small % Bed	1	25	30	15	GenBed	BED	1	 	0
 Small % Box	1	15	15	5	GenContainer		5	 	0
-a Pair of % Sabots	3	20	10	15	GenShoes	FEET	0	2	0
-a Pair of % Clogs	3	30	10	15	GenShoes	FEET	0	2	0
-% Quarterstaff	5	15	10	267	GenWeapon	STAFF	2	10	0
-% Staff	4	20	15	392	GenWeapon	STAFF	2	12	0
 % Club	2	15	10	200	GenWeapon	BLUNT	1	10	-20
 % Mace	3	20	20	528	GenWeapon	BLUNT	1	8	0
+% Bookshelf	3	30	10	15	GenContainer		10		768
+% Scroll Case	3	30	10	10	GenContainer		3		256
+a Pair of % Sabots	3	20	10	15	GenShoes	FEET	0	2	0
+a Pair of % Clogs	3	30	10	15	GenShoes	FEET	0	2	0
 Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
 % Shelf	3	30	10	10	GenContainer		50		0
 % Box	3	30	30	8	GenContainer		10		0
+% Staff	4	20	15	392	GenWeapon	STAFF	2	12	0
+% Jewelry Box	5	15	15	15	GenContainer	LID	5		0
+% Quarterstaff	5	15	10	267	GenWeapon	STAFF	2	10	0
 % Table	6	30	60	20	GenRideable	TABLE	50		0
 % Coffin	6	40	50	35	GenContainer		500		64	Prop_NoPurge
 % Potion Rack	6	30	30	8	GenContainer		100		2048	Prop_NoPurge
@@ -46,6 +46,8 @@ Small % Chest	6	50	20	20	GenContainer	LOCK	25		0
 % Ladder	6	40	20	10	GenRideable	LADDER	0		0
 % Shield	6	50	30	8	GenShield	HELD	1	10	0
 Large % Box	6	40	40	10	GenContainer	LID	50		0
+Small % Crib	8	50	20	60	GenContainer		20		0
+% Whipping Post	10	20	10	10	GenChair	CHAIR	1		0	Prop_RideSpellCast;Thief_Bind
 % Bar	12	30	60	20	GenRideable	TABLE	50		0
 Large % Table	12	45	90	30	GenRideable	TABLE	100		0
 Ornate % Chair	12	45	45	15	GenChair	CHAIR	1		0
@@ -53,9 +55,18 @@ Long % Bench	12	60	60	22	GenChair	CHAIR	6		0
 King sized % Bed	12	75	90	30	GenBed	BED	4		0
 % Chest	12	75	30	30	GenContainer	LOCK	50		0
 Large % Shield	12	75	40	16	GenShield	HELD	1	13	0
+% Crib	13	60	30	80	GenContainer		60		0
+Torch	15	15	5	10	GenLightSource		200		0
 Large % Chest	15	100	45	45	GenContainer	LOCK	100		0
-% Chest of Drawers	20	100	45	45	GenContainer	LID	50		0
 % Wardrobe	15	75	70	60	GenContainer	LID	500		4096	Prop_NoPurge
 % Armor Rack	15	85	80	75	GenContainer		1000		4096	Prop_NoPurge
 % Weapon Rack	15	70	65	60	GenContainer		500		60	Prop_NoPurge
+% China Cabinet	18	90	60	250	GenContainer	LOD	100		0
+% Stockade	18	100	50	50	GenChair	CHAIR	1		0	Prop_RideSpellCast;Thief_Bind
+Large % Crib	18	70	50	200	GenContainer		200		0
+% Chest of Drawers	20	100	45	45	GenContainer	LID	100		0
+% Gallows	20	150	200	500	GenRideable	TABLE	3		0	Prop_RideSpellCast;Thief_Bind;Spell_Choke
 % Wand	22	30	5	3	GenWand		0		0
+% Vanity	25	120	40	250	GenContainer	LOCK	50		0
+Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0
+% Torture Rack	30	200	200	1000	GenBed	BED	1		0	Prop_RideSpellCast;Spell_KnowPain
