@@ -298,7 +298,10 @@ public class Generic
 		}
 
 		if(E instanceof ClanItem)
+		{
 			text.append(XMLManager.convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
+			text.append(XMLManager.convertXMLtoTag("CITYPE",""+((ClanItem)E).ciType()));
+		}
 
 		if(E instanceof Item)
 		{
@@ -1509,7 +1512,10 @@ public class Generic
 		}
 
 		if(E instanceof ClanItem)
+		{
 			((ClanItem)E).setClanID(XMLManager.getValFromPieces(buf,"CLANID"));
+			((ClanItem)E).setCIType(XMLManager.getIntFromPieces(buf,"CITYPE"));
+		}
 
 		if(E instanceof Item)
 		{

@@ -32,6 +32,7 @@ public interface Item extends Environmental, Rider
 	public void stopTicking();
 	public void removeFromOwnerContainer();
 	public boolean savable();
+	public boolean amDestroyed();
 	
 	public int value();
 	public int baseGoldValue();

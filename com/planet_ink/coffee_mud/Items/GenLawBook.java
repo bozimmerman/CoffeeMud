@@ -28,12 +28,8 @@ public class GenLawBook extends GenReadable
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
-			if(!msg.source().isASysOp(msg.source().location()))
-			{
-				msg.source().tell("You are not allowed to write on "+name());
-				return false;
-			}
-			return true;
+			msg.source().tell("You are not allowed to write on "+name()+". Try reading it.");
+			return false;
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -67,6 +63,27 @@ public class GenLawBook extends GenReadable
 				int which=-1;
 				if(Util.s_long(msg.targetMessage())>0)
 					which=Util.s_int(msg.targetMessage());
+				
+				boolean allowedToModify=mob.isASysOp(null);
+				if(A.getMap().hasMoreElements())
+					allowedToModify=mob.isASysOp((Room)A.getMap().nextElement());
+				Vector V=new Vector();
+				V.addElement(new Integer(Law.MOD_RULINGCLAN));
+				if((!allowedToModify)
+				&&(B.modifyBehavior(A,mob,V))
+				&&(V.size()==1)
+				&&(V.firstElement() instanceof String))
+				{
+					String clanID=(String)V.elementAt(0);
+					if((clanID.length()>0)
+					&&(mob.getClanID().equals(clanID)))
+					{
+						Clan C=Clans.getClan(clanID);
+						if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANCANORDERCONQUERED)==1))
+							allowedToModify=true;
+					}
+				}
+				
 				try{
 					if(which<1)
 					{
@@ -112,11 +129,6 @@ public class GenLawBook extends GenReadable
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
 					return;
-				}
-				Behavior B=(Behavior)VB.firstElement();
-
-				if(!mob.isMonster())
-				{
 				}
 				return;
 			}

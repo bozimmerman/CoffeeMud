@@ -137,7 +137,6 @@ public class LockSmith extends CommonSkill
 		building=null;
 		boolean keyFlag=false;
 		workingOn=null;
-		boolean bundle=false;
 		messedUp=false;
 		int woodRequired=1;
 		boolean lboltlock=false;

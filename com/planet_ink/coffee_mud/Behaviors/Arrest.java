@@ -18,6 +18,8 @@ public class Arrest extends StdBehavior
 
 	protected static final long ONE_REAL_DAY=(long)1000*60*60*24;
 	protected static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
+	
+	protected String getLawParms(){ return getParms();}
 
 	protected class ArrestWarrant implements Cloneable, LegalWarrant
 	{
@@ -472,13 +474,16 @@ public class Arrest extends StdBehavior
 				return false;
 			case Law.MOD_SETNEWLAW:
 				laws.resetLaw();
-				if(getParms().equalsIgnoreCase("custom")
+				if(getLawParms().equalsIgnoreCase("custom")
 				&&(hostObj!=null))
 				{
 					ExternalPlay.DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
 					ExternalPlay.DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
 				}
 				break;
+			case Law.MOD_RULINGCLAN:
+			case Law.MOD_WARINFO:
+				return false;
 			}
 		}
 		return super.modifyBehavior(hostObj,mob,O);
@@ -494,7 +499,7 @@ public class Arrest extends StdBehavior
 
 	protected Law getLaws(Environmental what)
 	{
-		String lawName=getParms();
+		String lawName=getLawParms();
 
 		boolean modifiableLaw=false;
 		boolean modifiableNames=defaultModifiableNames();

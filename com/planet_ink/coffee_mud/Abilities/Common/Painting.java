@@ -75,7 +75,6 @@ public class Painting extends CommonSkill
 		String str=Util.combine(commands,0);
 		building=null;
 		messedUp=false;
-		boolean bundle=false;
 		Session S=mob.session();
 		if((S==null)&&(mob.amFollowing()!=null))
 			S=mob.amFollowing().session();

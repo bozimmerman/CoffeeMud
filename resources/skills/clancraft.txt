@@ -1,1 +1,5 @@
-name,type1/amt1,type2/amt2,level,ticks,exp,value,class,misc,capacity,armordmg,contain,spell
+name,type1/amt1,type2/amt2,citype,level,ticks,exp,value,class,misc,capacity,armordmg,contain,spell
+Flag %	COTTON/1	OAK/1	0	1	200	1000	1	GenClanItem						
+GuardBanner %	COTTON/1	OAK/1	1	1	40	100	5	GenClanItem						
+Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	500	5	GenClanItem						
+Book of the Laws %	OAK/100		0	10	100	1000	5	LawBook	AREA						

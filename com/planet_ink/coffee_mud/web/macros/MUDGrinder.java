@@ -121,7 +121,7 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			String error=GrinderAreas.modifyArea(httpReq,parms);
+			GrinderAreas.modifyArea(httpReq,parms);
 			AREA=httpReq.getRequestParameter("AREA");
 			Log.sysOut("Grinder",mob.Name()+" edited area "+A.Name());
 		}

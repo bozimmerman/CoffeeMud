@@ -73,6 +73,9 @@ public interface Law
 	public final static int MOD_ISOFFICER = 7;
 	public final static int MOD_ISJUDGE = 8;
 	public final static int MOD_SETNEWLAW=9;
+	public final static int MOD_RULINGCLAN=10;
+	public final static int MOD_WARINFO=11;
+	
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+

@@ -106,7 +106,6 @@ public class Smelting extends CommonSkill
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=4;
-		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" "+Util.padRight("Metal #1",20)+" Metal #2\n\r");

@@ -16,16 +16,17 @@ public class ClanCrafting extends CommonSkill
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_MATERIAL1=1;
 	private static final int RCP_MATERIAL2=2;
-	private static final int RCP_LEVEL=3;
-	private static final int RCP_TICKS=4;
-	private static final int RCP_EXP=5;
-	private static final int RCP_VALUE=6;
-	private static final int RCP_CLASSTYPE=7;
-	private static final int RCP_MISCTYPE=8;
-	private static final int RCP_CAPACITY=9;
-	private static final int RCP_ARMORDMG=10;
-	private static final int RCP_CONTAINMASK=11;
-	private static final int RCP_SPELL=12;
+	private static final int RCP_CITYPE=3;
+	private static final int RCP_LEVEL=4;
+	private static final int RCP_TICKS=5;
+	private static final int RCP_EXP=6;
+	private static final int RCP_VALUE=7;
+	private static final int RCP_CLASSTYPE=8;
+	private static final int RCP_MISCTYPE=9;
+	private static final int RCP_CAPACITY=10;
+	private static final int RCP_ARMORDMG=11;
+	private static final int RCP_CONTAINMASK=12;
+	private static final int RCP_SPELL=13;
 
 
 	private Item building=null;
@@ -293,7 +294,15 @@ public class ClanCrafting extends CommonSkill
 			return false;
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),C.name()).toLowerCase();
+		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+		String itemName=null;
+		if(!misctype.equalsIgnoreCase("area"))
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name()).toLowerCase();
+		else
+		{
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+mob.location().getArea().name()).toLowerCase();
+			building.setReadableText(mob.location().getArea().name());
+		}
 		if(itemName.endsWith("s"))
 			itemName="some "+itemName;
 		else
@@ -310,12 +319,16 @@ public class ClanCrafting extends CommonSkill
 		int hardness=EnvResource.RESOURCE_DATA[wood1.material()&EnvResource.RESOURCE_MASK][3]-6;
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		if(building instanceof ClanItem)
+		{
+			((ClanItem)building).setClanID(mob.getClanID());
+			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
+		}
 
 		if(spell.length()>0)
 		{

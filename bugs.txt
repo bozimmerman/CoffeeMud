@@ -1,42 +1,8 @@
+thisUser.addElement(((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name()); should check if the race exists.
+programmers guide needs updating
 look into genwater and emptyability
 prayer Feed the Dead--cast on an undead MOB, with a secondary target of a body, the undead will gain XP equal to 10*lvl of the body they consume, if body is of higher level than the undead. This way, a necromancer can make his undead more powerful (even his lowly skeletons) Should be around 10th level.
-1. Behavior: Conquest		
-	1. This behavior will make an area conquerable by a clan	
-		1. An area that is already controlled by a clan cannot be conquered without 
-		declaring WAR on that clan first.
-	2. Once per MUDhour, the conquest behavior will tick. At this time it checks 
-	several factors:	
-		1. It checks to see if any Clan has a higher number of total CONTROLPOINTS 
-		than the combined inhabitants of the area.
-		2. If one or more clans have exceded point 1, then the area is considered 
-		conquered by the clan with the highest value (in control points).
-	3. Earn taxes from players	
-		1. It would be nice to earn from MOBs as well, but I don't know how this could be done effectively.
-		2. MOBs are taxed too, but own no property, and don't break the law if they can't pay.
-	4. You should earn some XP each time you conquer an area (but only once per day per area).	
-		1. Experience earned this way is based on the HIGHEST level MOB in the area (maybe worth twice the amount of killing the highest MOB in the area).
-		2. This XP is given to ALL clan members who are in the area at the time of conquest. It is not clan XP.
-4. Attittude		
-	1. This is the populations overall attittude about their current leadership, and is controlled by the conquest behavior.	
-	2. Attittude is a score based on the number of MOBs in the area. Initially, a neutral attittude is set for a conquered area of 3*number of MOBs in the area. A high number is synomonous with revolution, while a low number indicates complacency.
-		1. A modifier of 5*(15-Governer's CHA) applies once a governor is assigned.
-	1. Only the governor with the highes level applies to any Governor checks.	
-			2. A modifier of (Highest Inhabitant LVL-Governor's LVL) applies, once a governor is selected.
-			3. A modifier of 25*(1-(CP/total inhabitant lvls)) is calculated every time the conquest behavior updates.
-			4. A modifier of +1 per MOB assigned a WORK task.
-			5. A modifier for other tasks may apply, as well as from skills/spells/prayers/chants/songs.
-			6. A modifier of +3 is applied every time an inhabitant is killed.
-	1. Bo---This is for realism (no one likes an unsafe neighborhood), and it creates instability in lower level areas, because the newbies keep killing off the smurfs, creating unrest.	
-		3. If the area gets to a negative score, the leader gains XP based on the number of MOBs in the area and how negative the score is every time the area updates. (never more than 100 XP). You only get this XP if you are logged on when the area updates.	
 Conquest Items   (Edit)	
-1. Clan Craft		
-	1. This common skill is gained whenever a character joins a clan. It is used for the creation of clan items. Clan items control the behaviors of conquest.	
-	2. Items created by a clan have a decay of 1 week. They all have a clan zapper, so you can only give them to someone in your clan.	
-		1. Or somebody that is in the party of a person in that clan. You need to be able to give them to charmed people, but not every joe on the street.
-1. oh, yeah. This is taken care of by the fact that the item MUST be worn/wielded in order to give it's effect.	
-2. Clan Banner		
-	1. This clan item makes a controlled citizen into a security officer. While he holds the banner, he generates 5*lvl in CPs for the clan who's banner he holds.	
-	2. Clan Level 1.	
 3. Clan pamphlet		
 	1. This clan item makes the MOB rebellious towards the current government (if it is run by a different clan than the pamphlet creator's clan). This MOB will generate 5 points of negative attitude during any checks, and may resist orders of the controlling clan.	
 	2. Clan Level 3	
@@ -79,13 +45,6 @@ Conquest Items   (Edit)
 		1. Clan Level 2
 	14. LEATHERWORKER'S TOOLS	
 		1. Clan Level 2
-5. Entertainer's Robes		
-	1. These robes decrease attitude by 3 points.	
-	2. Clan Level 3	
-6. Sabotage tools		
-	1. These tools increase the MOBs home area's ATTITUDE score by 5.	
-	2. When escorted to another region, the saboteur will attempt to STEAL other Clan Items. (Only Clan Items, and it IS a hostile act if he get's caught.)	
-	3. Clan Level 3	
 7. Tax Collector Hat		
 	1. This hat increases attitude by 2 points.	
 	2. Clan Level 1	
@@ -100,9 +59,6 @@ Conquest Items   (Edit)
 9. Clan Scales		
 	1. Level 1	
 	2. Makes the Mob the GoodExecutioner of the area.	
-10. Clan Flag		
-	1. A flag from your clan must be set on the ground in order for you to attempt to conquer an area.	
-	2. On the ground it should have a description of "A Flag is planted here." See clan logo.	
 11. Craft Aprons		
 	1. An apron is tied to a particular crafting skill. (Fletching, Armorsmith, 
 	Weaponsmith, Leatherworking, Tailor, Pottery, Jewel Making, Blacksmithing, 
@@ -116,19 +72,3 @@ Conquest Items   (Edit)
 		on the ground. NOTE: Weaponsmith is a hard skill to get to work, since it 
 		has prereqs to using (weapon specialization). On this skill, we may wish to 
 		give a mob all of the specializations at 0%...
-	
-Conquest Concepts   (Edit)	
-1. Inhabitant		
-	1. An inhabitant is any MOB native to that area.	
-2. Citizen		
-	1. A citizen is any INTELLIGENT, NON-UNDEAD, NON-GOLEM MOB that is an 
-	inhabitant of the area.	
-3. Control Points		
-	1. Control Points are the currency of conquest. A control point is equal 
-	to one MOBlevel. For example, a level 30 Fighter/28 Ranger is worth 58 control 
-	points (CPs). Some skills/affects can change the worth of a MOB for control 
-	purposes.	
-4. Clan Logo		
-	1. This is akin to the DESCRIPTION command for a character. Each clan can 
-	create a short logo (40 characters) to represent their clan. For example, 
-	"A Black Eagle" could be your logo.	

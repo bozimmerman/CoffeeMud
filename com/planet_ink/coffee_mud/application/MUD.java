@@ -455,7 +455,6 @@ public class MUD extends Thread implements Host
 					int numAtThisAddress=0;
 					long ConnectionWindow=(180*1000);
 					long LastConnectionDelay=(5*60*1000);
-					long lastTimeThisAddress=-1;
 					boolean anyAtThisAddress=false;
 					int maxAtThisAddress=6;
 					try{

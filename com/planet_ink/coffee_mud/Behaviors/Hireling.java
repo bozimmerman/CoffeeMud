@@ -13,23 +13,50 @@ public class Hireling extends StdBehavior
 	private Hashtable partials=new Hashtable();
 	private String workingFor="";
 	private long onTheJobUntil=0;
+	private int dex=-1;
+	private int dex2=-1;
+
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		dex=newParms.indexOf(";");
+		if(dex>=0)
+			dex2=newParms.indexOf(";",dex+1);
+		else
+			dex2=-1;
+	}
 
 	private int price()
 	{
 		int price=100;
-		if(getParms().indexOf(";")>=0)
-			price=Util.s_int(getParms().substring(0,getParms().indexOf(";")));
+		if(dex>=0)
+			price=Util.s_int(getParms().substring(0,dex));
 		return price;
 	}
 
 	private int minutes()
 	{
 		int mins=30;
-		if(getParms().indexOf(";")>=0)
-			mins=Util.s_int(getParms().substring(getParms().indexOf(";")+1));
+		if(dex>=0)
+		{
+			if(dex2>dex) 
+				mins = Util.s_int(getParms().substring(dex+1,dex2));
+			else
+				mins = Util.s_int(getParms().substring(dex + 1));
+		}
 		return mins;
 	}
 
+	private String zapper()
+	{
+		if(dex>=0)
+		{
+			if (dex2 > dex) 
+				return getParms().substring(dex2+1);
+		}
+		return "";
+	}
+        
 	public void allDone(MOB observer)
 	{
 		workingFor="";
@@ -113,14 +140,32 @@ public class Hireling extends StdBehavior
 
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
-		if((affecting instanceof MOB)
-		&&(msg.amISource((MOB)affecting))
-		&&((msg.targetMinor()==CMMsg.TYP_GIVE)
-		   ||(msg.targetMinor()==CMMsg.TYP_DROP))
-		&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
+		MOB source=msg.source();
+		if(affecting instanceof MOB)
 		{
-			ExternalPlay.quickSay((MOB)affecting,null,"I don't think so.",false,false);
-			return false;
+			MOB observer=(MOB)affecting;
+
+			if(msg.amITarget(observer)
+			&&(!msg.amISource(observer))
+			&&(msg.targetMinor() == CMMsg.TYP_GIVE)
+			&&(msg.tool() != null)
+			&&(!SaucerSupport.zapperCheck(zapper(),source))
+			&&(msg.tool()instanceof Coins))
+			{
+				ExternalPlay.quickSay(observer,null,"I wouldn't work for the likes of you.",false,false);
+				return false;
+			}
+			
+			if((observer.soulMate()==null)
+			&&(msg.amISource(observer))
+			&&((msg.targetMinor()==CMMsg.TYP_GIVE)||(msg.targetMinor()==CMMsg.TYP_DROP))
+			&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
+			{
+				if((msg.target() instanceof MOB)
+				&&(!((MOB)msg.target()).isASysOp(source.location())))
+					ExternalPlay.quickSay(observer,null,"I don't think so.",false,false);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -134,6 +179,7 @@ public class Hireling extends StdBehavior
 		super.executeMsg(affecting,msg);
 		MOB source=msg.source();
 		if(!canActAtAll(affecting)) return;
+		if(!(affecting instanceof MOB)) return;
 
 		MOB observer=(MOB)affecting;
 		if((msg.sourceMinor()==CMMsg.TYP_QUIT)
@@ -156,6 +202,20 @@ public class Hireling extends StdBehavior
 			{
 				ExternalPlay.quickSay(observer,msg.source(),"Suit yourself.  Goodbye.",false,false);
 				allDone(observer);
+			}
+			else
+			if(((msg.sourceMessage().toUpperCase().indexOf(" SKILLS") > 0))) 
+			{
+				StringBuffer skills = new StringBuffer("");
+				for (int a = 0; a < observer.numAbilities(); a++) 
+				{
+					Ability A = observer.fetchAbility(a);
+					if(A.profficiency() == 0)
+						A.setProfficiency(50 + observer.envStats().level() - CMAble.lowestQualifyingLevel(A.ID()));
+					skills.append(", " + A.name());
+				}
+				if(skills.length()>2)
+					ExternalPlay.quickSay(observer, source, "My skills include: " + skills.substring(2) + ".",false,false);
 			}
 		}
 		else

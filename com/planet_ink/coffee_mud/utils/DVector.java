@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.utils;
 import java.util.*;
 
-public class DVector
+public class DVector implements Cloneable
 {
 	private int dimensions=1;
 	private Vector[] stuff=null;
@@ -12,6 +12,30 @@ public class DVector
 		stuff=new Vector[dimensions];
 		for(int i=0;i<dimensions;i++)
 			stuff[i]=new Vector();
+	}
+	
+	public void clear()
+	{
+		if(stuff==null) return;
+		
+		synchronized(stuff)
+		{
+			for(int i=0;i<stuff.length;i++)
+				stuff[i].clear();
+		}
+	}
+	
+	public DVector copyOf()
+	{
+		try{
+			return (DVector)this.clone();
+		}
+		catch(CloneNotSupportedException e){}
+		{
+			DVector V=new DVector(dimensions);
+			V.stuff=stuff;
+			return V;
+		}
 	}
 	
 	public void addElement(Object O)
@@ -100,6 +124,14 @@ public class DVector
 		synchronized(stuff)
 		{
 			stuff[0].insertElementAt(O,here);
+		}
+	}
+	public void setElementAt(int index, int dim, Object O)
+	{
+		if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+			stuff[dim-1].setElementAt(O,index);
 		}
 	}
 	public void insertElementAt(int here, Object O, Object O1)
