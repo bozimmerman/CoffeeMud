@@ -280,7 +280,7 @@ public class SaucerSupport
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
-						if(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))
+						if(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
 							buf.append(C.name()+", ");
 					}
 					if(buf.toString().endsWith(", "))
@@ -295,7 +295,7 @@ public class SaucerSupport
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
 								buf.append(C.name()+" types, ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -493,7 +493,7 @@ public class SaucerSupport
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -508,7 +508,7 @@ public class SaucerSupport
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -570,7 +570,7 @@ public class SaucerSupport
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
-					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
+					if(str.startsWith("-"+Util.padRight(C.name(),4).toUpperCase().trim()))
 						buf.append("Disallows "+C.name()+".  ");
 				}
 				Vector cats=new Vector();
@@ -612,7 +612,7 @@ public class SaucerSupport
 		if(text.trim().length()==0) return true;
 		getZapCodes();
 		
-		String mobClass=mob.charStats().displayClassName().toUpperCase().substring(0,3);
+		String mobClass=Util.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
 		String mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
 		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
 		String mobRace=mob.charStats().getMyRace().name().toUpperCase();
@@ -642,7 +642,7 @@ public class SaucerSupport
 					if(!fromHere(V,'+',v+1,mobClass)) return false;
 					break;
 				case 1: // -baseclass
-					if((!fromHere(V,'+',v+1,mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3)))
+					if((!fromHere(V,'+',v+1,Util.padRight(mob.charStats().getCurrentClass().baseClass(),4).toUpperCase().trim()))
 					&&(!fromHere(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
@@ -702,14 +702,14 @@ public class SaucerSupport
 					{
 						boolean found=false;
 						for(int c=0;c<mob.charStats().numClasses();c++)
-							if(fromHere(V,'+',v+1,mob.charStats().getMyClass(c).name().toUpperCase().substring(0,3))) 
+							if(fromHere(V,'+',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim()))
 								found=true;
 						if(!found) return false;
 					}
 					break;
 				case 18: // +anyclass
 					for(int c=0;c<mob.charStats().numClasses();c++)
-						if(fromHere(V,'-',v+1,mob.charStats().getMyClass(c).name().toUpperCase().substring(0,3))) 
+						if(fromHere(V,'-',v+1,Util.padRight(mob.charStats().getMyClass(c).name(),4).toUpperCase().trim())) 
 							return false;
 					break;
 				case 19: // -str
