@@ -41,6 +41,7 @@ public class CMSecurity
 	public static final int SEC_BAN=27;
 	public static final int SEC_CMDSOCIALS=28;
 	public static final int SEC_CMDQUESTS=29;
+	public static final int SEC_ORDERPLAYERS=30;
 	
 	public static final String[] SEC_CODES={
 		"GOTO", "WIZI", "POOF", "POSS", "AT", "STAT",
@@ -49,7 +50,7 @@ public class CMSecurity
 		"KILLDEAD", "CMDMOBS", "TEACH", "RESET",
 		"IMPEXP", "WHERE", "ORDERMOBS", "CMDITEMS",
 		"CMDROOMS", "CMDEXITS", "CMDAREAS", "CMDUSERS",
-		"BOOT", "BAN", "CMDSOCIALS", "CMDQUESTS"
+		"BOOT", "BAN", "CMDSOCIALS", "CMDQUESTS", "ORDERPLAYERS"
 		};
 	
 	public static boolean isASysOp(MOB mob)
