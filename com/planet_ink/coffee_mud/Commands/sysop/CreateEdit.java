@@ -303,12 +303,24 @@ public class CreateEdit
 			{
 				if(!thang.isGeneric())
 				{
-					boolean showOnly=false;
-					Generic.genLevel(mob,thang,showOnly);
-					Generic.genAbility(mob,thang,showOnly);
-					Generic.genRejuv(mob,thang,showOnly);
-					Generic.genUses(mob,(Item)thang,showOnly);
-					Generic.genMiscText(mob,thang,showOnly);
+					int showFlag=-1;
+					boolean ok=false;
+					while(!ok)
+					{
+						int showNumber=0;
+						Generic.genLevel(mob,thang,++showNumber,showFlag);
+						Generic.genAbility(mob,thang,++showNumber,showFlag);
+						Generic.genRejuv(mob,thang,++showNumber,showFlag);
+						Generic.genUses(mob,(Item)thang,++showNumber,showFlag);
+						Generic.genMiscText(mob,thang,++showNumber,showFlag);
+						if(showFlag>0){ showFlag=-1; continue;}
+						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+						if(showFlag<=0) 
+						{
+							showFlag=-1;
+							ok=true;
+						}
+					}
 				}
 				else
 					Generic.genMiscSet(mob,thang);
@@ -321,11 +333,23 @@ public class CreateEdit
 			{
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
-					boolean showOnly=false;
-					Generic.genLevel(mob,thang,showOnly);
-					Generic.genAbility(mob,thang,showOnly);
-					Generic.genRejuv(mob,thang,showOnly);
-					Generic.genMiscText(mob,thang,showOnly);
+					int showFlag=-1;
+					boolean ok=false;
+					while(!ok)
+					{
+						int showNumber=0;
+						Generic.genLevel(mob,thang,++showNumber,showFlag);
+						Generic.genAbility(mob,thang,++showNumber,showFlag);
+						Generic.genRejuv(mob,thang,++showNumber,showFlag);
+						Generic.genMiscText(mob,thang,++showNumber,showFlag);
+						if(showFlag>0){ showFlag=-1; continue;}
+						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+						if(showFlag<=0) 
+						{
+							showFlag=-1;
+							ok=true;
+						}
+					}
 				}
 				else
 					Generic.genMiscSet(mob,thang);
@@ -342,7 +366,7 @@ public class CreateEdit
 				if(thang!=null)
 				{
 					boolean showOnly=false;
-					Generic.genMiscText(mob,thang,showOnly);
+					Generic.genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{

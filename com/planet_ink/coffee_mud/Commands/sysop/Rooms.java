@@ -163,13 +163,26 @@ public class Rooms
 		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
 		if(commands.size()==2)
 		{
-			Generic.genName(mob,myArea,showOnly);
-			Generic.genDescription(mob,myArea,showOnly);
-			Generic.genTechLevel(mob,myArea,showOnly);
-			Generic.genClimateType(mob,myArea,showOnly);
-			Generic.genSubOps(mob,myArea,showOnly);
-			Generic.genBehaviors(mob,myArea,showOnly);
-			Generic.genAffects(mob,myArea,showOnly);
+			int showFlag=-1;
+			boolean ok=false;
+			while(!ok)
+			{
+				int showNumber=0;
+				Generic.genName(mob,myArea,++showNumber,showFlag);
+				Generic.genDescription(mob,myArea,++showNumber,showFlag);
+				Generic.genTechLevel(mob,myArea,++showNumber,showFlag);
+				Generic.genClimateType(mob,myArea,++showNumber,showFlag);
+				Generic.genSubOps(mob,myArea,++showNumber,showFlag);
+				Generic.genBehaviors(mob,myArea,++showNumber,showFlag);
+				Generic.genAffects(mob,myArea,++showNumber,showFlag);
+				if(showFlag>0){ showFlag=-1; continue;}
+				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+				if(showFlag<=0) 
+				{
+					showFlag=-1;
+					ok=true;
+				}
+			}
 		}
 		else
 		{
@@ -247,13 +260,13 @@ public class Rooms
 			else
 			if(command.equalsIgnoreCase("AFFECTS"))
 			{
-				Generic.genAffects(mob,mob.location(),showOnly);
+				Generic.genAffects(mob,mob.location(),1,1);
 				myArea.recoverEnvStats();
 			}
 			else
 			if(command.equalsIgnoreCase("BEHAVIORS"))
 			{
-				Generic.genBehaviors(mob,mob.location(),showOnly);
+				Generic.genBehaviors(mob,mob.location(),1,1);
 				myArea.recoverEnvStats();
 			}
 			else
@@ -318,17 +331,31 @@ public class Rooms
 		}
 		if(commands.size()==2)
 		{
-			// too dangerous
-			//Generic.genRoomType(mob,mob.location());
-			Generic.genDisplayText(mob,mob.location(),showOnly);
-			Generic.genDescription(mob,mob.location(),showOnly);
-			if(mob.location() instanceof GridLocale)
+			int showFlag=-1;
+			boolean ok=false;
+			while(!ok)
 			{
-				Generic.genGridLocale(mob,(GridLocale)mob.location(),showOnly);
-				((GridLocale)mob.location()).buildGrid();
+				int showNumber=0;
+				// too dangerous
+				//Generic.genRoomType(mob,mob.location());
+				Generic.genDisplayText(mob,mob.location(),++showNumber,showFlag);
+				Generic.genDescription(mob,mob.location(),++showNumber,showFlag);
+				if(mob.location() instanceof GridLocale)
+				{
+					Generic.genGridLocaleX(mob,(GridLocale)mob.location(),++showNumber,showFlag);
+					Generic.genGridLocaleY(mob,(GridLocale)mob.location(),++showNumber,showFlag);
+					((GridLocale)mob.location()).buildGrid();
+				}
+				Generic.genBehaviors(mob,mob.location(),++showNumber,showFlag);
+				Generic.genAffects(mob,mob.location(),++showNumber,showFlag);
+				if(showFlag>0){ showFlag=-1; continue;}
+				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+				if(showFlag<=0) 
+				{
+					showFlag=-1;
+					ok=true;
+				}
 			}
-			Generic.genBehaviors(mob,mob.location(),showOnly);
-			Generic.genAffects(mob,mob.location(),showOnly);
 			ExternalPlay.DBUpdateRoom(mob.location());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 			return;
@@ -439,7 +466,7 @@ public class Rooms
 		else
 		if(command.equalsIgnoreCase("AFFECTS"))
 		{
-			Generic.genAffects(mob,mob.location(),showOnly);
+			Generic.genAffects(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			ExternalPlay.DBUpdateRoom(mob.location());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
@@ -447,7 +474,7 @@ public class Rooms
 		else
 		if(command.equalsIgnoreCase("BEHAVIORS"))
 		{
-			Generic.genBehaviors(mob,mob.location(),showOnly);
+			Generic.genBehaviors(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			ExternalPlay.DBUpdateRoom(mob.location());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"The very nature of reality changes.\n\r");

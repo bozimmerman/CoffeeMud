@@ -41,12 +41,12 @@ public class Spell_ElementalStorm extends Spell
 					 Weapon.TYPE_BURSTING,
 					 Weapon.TYPE_STRIKING,
 					 Weapon.TYPE_GASSING};
-		String[] ds={"a flame",
-					 "some frost",
-					 "drops of acid",
-					 "stream of water",
-					 "a spark",
-					 "a puff of gas"};
+		String[] ds={"A flame",
+					 "Some frost",
+					 "Drops of acid",
+					 "Stream of water",
+					 "A spark",
+					 "A puff of gas"};
 					 
 					 
 
@@ -62,9 +62,9 @@ public class Spell_ElementalStorm extends Spell
 					if(!msg.wasModified())
 					{
 						int damage = 0;
-						damage += Dice.roll(1,3,1);
+						damage += Dice.roll(1,3,0);
 						if(target.location()==mob.location())
-							ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+"<DAMAGE> <T-NAME>!^?");
+							ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|types[i],dames[i],"^S"+ds[i]+" <DAMAGE> <T-NAME>!^?");
 					}
 				}
 				if(target.amDead())
