@@ -16,6 +16,8 @@ public class StdAbility implements Ability, Cloneable
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
+	public int castingTime(){return 1;}
+	public int combatCastingTime(){return 1;}
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}

@@ -17,6 +17,8 @@ public class Property implements Ability, Cloneable
 	protected Environmental affected=null;
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+	public int castingTime(){return 0;}
+	public int combatCastingTime(){return 0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob){return -1;}

@@ -96,6 +96,8 @@ public interface Ability  extends Environmental
 	// the initial command word to activate this ability
 	// or its brethren (cast, trip, etc..)
 	public String[] triggerStrings();
+	public int castingTime();
+	public int combatCastingTime();
 
 	// when a mob uses an ability manually, this is the method
 	// to make it happen.
