@@ -28,13 +28,15 @@ public class Prayer_MassFreedom extends Prayer
 				{
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
+					int clas=A.classificationCode()&&Ability.ALL_CODES;
 					if((!Sense.aliveAwakeMobile(newMOB,true))
 					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okMessage(newMOB,msg)))
 					if((A.invoker()==null)
-					   ||((A.invoker()!=null)
-						  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
-							offenders.addElement(A);
+					||((clas!=Ability.SPELL)&&(clas!=Ability.CHANT)&&(clas!=Ability.PRAYER)&&(clas!=Ability.SONG))
+					||((A.invoker()!=null)
+					   &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
+					 	offenders.addElement(A);
 				}
 				catch(Exception e)
 				{}
