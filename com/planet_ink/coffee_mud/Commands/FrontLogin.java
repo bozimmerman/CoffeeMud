@@ -561,9 +561,8 @@ public class FrontLogin extends StdCommand
 				if(CMSecurity.isDisabled("CLASSES")
 				||mob.baseCharStats().getMyRace().classless())
 				{
-				    if((qualClasses.size()==1)
-				    &&mob.baseCharStats().getMyRace().classless())
-				        newClass=(CharClass)qualClasses.firstElement();
+				    if(qualClasses.size()>0)
+				        newClass=(CharClass)qualClasses.elementAt(Dice.roll(1,qualClasses.size(),-1));
 				    if(newClass==null)
 					    newClass=CMClass.getCharClass("PlayerClass");
 					if(newClass==null)
