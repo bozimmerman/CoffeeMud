@@ -58,6 +58,26 @@ public class Mount extends StdCommand
 				I.setRiding(null);
 				RI=I;
 			}
+			if(RI==null)
+			{
+			    MOB M=mob.location().fetchInhabitant((String)commands.firstElement());
+			    if(M!=null)
+			    {
+			        if(!Sense.canBeSeenBy(M,mob))
+			        {
+			            mob.tell("You don't see "+((String)commands.firstElement())+" here.");
+			            return false;
+			        }
+			        if((!Sense.isBound(M))&&(!M.willFollowOrdersOf(mob)))
+			        {
+			            mob.tell("Only the bound or servants can be mounted unwillingly.");
+			            return false;
+			        }
+			        RI=M;
+			        RI.setRiding(null);
+			        commands.removeElementAt(0);
+			    }
+			}
 		}
 		recipient=EnglishParser.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
 		if(recipient==null)

@@ -125,6 +125,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_CounterAttack",true);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Heroism",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Behead",0,"",false,true);
 			
 			CMAble.addCharAbilityMapping(ID(),30,"Fighter_CoupDeGrace",true);
 		}

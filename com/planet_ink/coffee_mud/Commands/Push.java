@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -19,7 +20,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Push extends StdCommand
+public class Push extends Go
 {
 	public Push(){}
 
@@ -30,9 +31,23 @@ public class Push extends StdCommand
 	{
 		String whatToOpen=Util.combine(commands,1);
 		Environmental openThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
-		if(dirCode>=0)
-			openThis=mob.location().getExitInDir(dirCode);
+		String dir="";
+		int dirCode=-1;
+		if(commands.size()>1)
+		{
+			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			if(dirCode>=0)
+			{
+			    dir=" "+Directions.getDirectionName(dir);
+			    commands.removeElementAt(commands.size()-1);
+			}
+		}
+		if(dir.length()==0)
+		{
+			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			if(dirCode>=0)
+				openThis=mob.location().getExitInDir(dirCode);
+		}
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
@@ -42,7 +57,7 @@ public class Push extends StdCommand
 			return false;
 		}
 		int malmask=(openThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
-		FullMsg msg=new FullMsg(mob,openThis,null,CMMsg.MSG_PUSH|malmask,"^F<S-NAME> push(es) <T-NAME>^?.");
+		FullMsg msg=new FullMsg(mob,openThis,null,CMMsg.MSG_PUSH|malmask,"^F<S-NAME> push(es) <T-NAME>"+dir+"^?.");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		return false;

@@ -23,10 +23,10 @@ import java.io.File;
    limitations under the License.
 */
 
-public class Torturesmith extends CraftingSkill
+public class Torturesmithing extends CraftingSkill
 {
-	public String ID() { return "Torturesmith"; }
-	public String name(){ return "Torturesmith";}
+	public String ID() { return "Torturesmithing"; }
+	public String name(){ return "Torturesmithing";}
 	private static final String[] triggerStrings = {"TORTURESMITH","TORTURESMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 

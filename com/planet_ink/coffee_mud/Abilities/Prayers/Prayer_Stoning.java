@@ -3,7 +3,9 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
+
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -24,7 +26,7 @@ public class Prayer_Stoning extends Prayer
 {
 	public String ID() { return "Prayer_Stoning"; }
 	public String name(){ return "Stoning";}
-	public int quality(){ return MALICIOUS;}
+	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -40,6 +42,20 @@ public class Prayer_Stoning extends Prayer
 	    Room R=mob.location();
 		if(R!=null)
 		{
+		    while(cits.size()<10)
+			{
+		        MOB M=CMClass.getMOB("LocalCitizen");
+		        if(M==null)
+		        {
+		            unInvoke();
+		            break;
+		        }
+		        else
+		        {
+		            cits.addElement(M);
+		            M.bringToLife(R,true);
+		        }
+			}
 			for(int i=0;i<cits.size();i++)
 			{
 			    MOB M=(MOB)cits.elementAt(i);
@@ -67,20 +83,6 @@ public class Prayer_Stoning extends Prayer
 			            R.show(M,mob,null,CMMsg.TYP_SPEAK,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
 			    }
 			}
-		    while(cits.size()<10)
-			{
-		        MOB M=CMClass.getMOB("LocalCitizen");
-		        if(M==null)
-		        {
-		            unInvoke();
-		            break;
-		        }
-		        else
-		        {
-		            cits.addElement(M);
-		            M.bringToLife(R,true);
-		        }
-			}
 		}
 		return true;
 	}
@@ -89,7 +91,22 @@ public class Prayer_Stoning extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-
+		Behavior B=null;
+		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		Vector warrants=new Vector();
+		if(B!=null)
+		{
+			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
+			warrants.addElement(target.Name());
+			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,warrants))
+				warrants.clear();
+		}
+		if(warrants.size()==0)
+		{
+		    mob.tell("You are not allowed to stone "+target.Name()+" at this time.");
+		    return false;
+		}
+		
 		if((!auto)&&(!Sense.isBound(target)))
 		{
 			mob.tell(target.name()+" must be bound first.");
@@ -111,7 +128,15 @@ public class Prayer_Stoning extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
+				{
 					success=maliciousAffect(mob,target,asLevel,0,-1);
+					for(int i=0;i<warrants.size();i++)
+					{
+						LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+						W.setCrime("pardoned");
+						W.setOffenses(0);
+					}
+				}
 			}
 		}
 		else

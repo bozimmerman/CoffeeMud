@@ -1740,13 +1740,36 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_REMOVE:
 			case CMMsg.TYP_LOCK:
 			case CMMsg.TYP_OPEN:
-			case CMMsg.TYP_PULL:
 			case CMMsg.TYP_PUT:
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
 				mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 				return false;
+			case CMMsg.TYP_PULL:
+			    if((!Sense.isBoundOrHeld(this))&&(!Sense.isSleeping(this)))
+			    {
+					mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
+					return false;
+			    }
+			    if(envStats().weight()>(mob.maxCarry()/2))
+			    {
+			        mob.tell(mob,this,null,"<T-NAME> is too big for you to pull.");
+			        return false;
+			    }
+			    break;
+			case CMMsg.TYP_PUSH:
+			    if((!Sense.isBoundOrHeld(this))&&(!Sense.isSleeping(this)))
+			    {
+					mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
+					return false;
+			    }
+			    if(envStats().weight()>mob.maxCarry())
+			    {
+			        mob.tell(mob,this,null,"<T-NAME> is too heavy for you to push.");
+			        return false;
+			    }
+			    break;
 			case CMMsg.TYP_MOUNT:
 			case CMMsg.TYP_DISMOUNT:
 				if(!(this instanceof Rideable))

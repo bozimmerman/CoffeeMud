@@ -47,7 +47,6 @@ Small % Chest	6	50	20	20	GenContainer	LOCK	25		0
 % Shield	6	50	30	8	GenShield	HELD	1	10	0	
 Large % Box	6	40	40	10	GenContainer	LID	65		0	
 Small % Crib	8	50	20	60	GenContainer		20		0	
-% Whipping Post	10	20	10	10	GenChair	CHAIR	1		0	Prop_RideSpellCast;Thief_Bind
 % Bar	12	30	60	20	GenRideable	TABLE	50		0	
 Large % Table	12	45	90	30	GenRideable	TABLE	100		0	
 Ornate % Chair	12	45	45	15	GenChair	CHAIR	5		0	
@@ -62,14 +61,11 @@ Large % Chest	15	100	45	45	GenContainer	LOCK	100		0
 % Armor Rack	15	85	80	75	GenContainer		1000		4096	Prop_NoPurge
 % Weapon Rack	15	70	65	60	GenContainer		500		60	Prop_NoPurge
 % China Cabinet	18	90	60	250	GenContainer	LOD	100		0	
-% Stockade	18	100	50	50	GenChair	CHAIR	1		0	Prop_RideSpellCast;Thief_Bind
 Large % Crib	18	70	50	200	GenContainer		200		0	
 % Chest of Drawers	20	100	45	45	GenContainer	LID	100		0	
-% Gallows	20	150	200	500	GenRideable	TABLE	3		0	Prop_RideSpellCast;Thief_Bind;Spell_Choke
 % Wand	22	30	5	3	GenWand		0		0	
 % Vanity	25	120	40	250	GenContainer	LOCK	50		0	
 Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0	
-% Torture Rack	30	200	200	1000	GenBed	BED	1		0	Prop_RideSpellCast;Spell_KnowPain
 % Armoire	9	80	50	40	GenContainer	LID	100	0	4096	
 % Hat Rack	2	20	5	10	GenContainer		10	0	4096	
 % Coat Rack	7	30	10	10	GenContainer		50	0	4096	

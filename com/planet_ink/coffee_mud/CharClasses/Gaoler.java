@@ -73,6 +73,10 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Sap",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Bind",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Enslave",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Behead",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Thief_TarAndFeather",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Stoning",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Torturesmithing",true);
 
 		}
 	}

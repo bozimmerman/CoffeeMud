@@ -28,7 +28,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"TARANDFEATHER","TAR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 100;}
@@ -66,11 +66,20 @@ public class Thief_TarAndFeather extends ThiefSkill
 			mob.tell(target.name()+" must be prone or bound first.");
 			return false;
 		}
+		for(int i=0;i<target.inventorySize();i++)
+		{
+		    Item I=target.fetchInventory(i);
+		    if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.FLOATING_NEARBY)))
+		    {
+			    mob.tell(target.name()+" must be undressed first.");
+			    return false;
+		    }
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> tar(s) and feather(s) <T-NAMESELF>!");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

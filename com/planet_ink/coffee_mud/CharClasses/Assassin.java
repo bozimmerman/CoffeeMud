@@ -92,6 +92,7 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),9,"Specialization_FlailedWeapon",false);
 			
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Thief_TarAndFeather",0,"",false,true);
 			
 			CMAble.addCharAbilityMapping(ID(),11,"Fighter_CritStrike",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",true);
