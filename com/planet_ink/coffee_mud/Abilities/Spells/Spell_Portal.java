@@ -81,7 +81,7 @@ public class Spell_Portal extends Spell
 				{
 					MOB follower=(MOB)f.nextElement();
 					FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a puff of smoke.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType,Affect.MSG_LEAVE,affectType,"<S-NAME> disappear(s) in a puff of smoke.");
+					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 					if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
 					{
 						if(follower.isInCombat())

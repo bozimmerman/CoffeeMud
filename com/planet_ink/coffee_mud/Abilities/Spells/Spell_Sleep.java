@@ -114,7 +114,7 @@ public class Spell_Sleep extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-50-((target.charStats().getIntelligence()*2)+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(-((target.charStats().getIntelligence()*2)),auto);
 
 		if(success)
 		{

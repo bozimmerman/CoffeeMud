@@ -27,6 +27,9 @@ public class Scavenger extends ActiveTicker
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
 			if(thisRoom.numItems()==0) return;
+			for(int i=0;i<thisRoom.numItems();i++)
+				if(thisRoom.fetchItem(i) instanceof DeadBody)
+					return;
 
 			Vector V=new Vector();
 			V.addElement(new String("GET"));

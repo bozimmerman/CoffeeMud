@@ -57,7 +57,7 @@ public class Skill_Parry extends StdAbility
 				{
 					if(profficiencyCheck(mob.charStats().getDexterity()-75,false))
 					{
-						affect.addTrailerMsg(new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!"));
+						mob.location().send(mob,new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!"));
 						helpProfficiency(mob);
 						return false;
 					}

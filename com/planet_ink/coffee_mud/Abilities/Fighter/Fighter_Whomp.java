@@ -116,7 +116,7 @@ public class Fighter_Whomp extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(-50-((target.charStats().getStrength()-mob.charStats().getStrength())+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(-((target.charStats().getStrength()-mob.charStats().getStrength())),auto)&&(auto||((mob.getVictim()!=null)&&(ExternalPlay.isHit(mob,mob.getVictim()))));
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -128,7 +128,7 @@ public class Fighter_Whomp extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				success=maliciousAffect(mob,target,3,-1);
+				success=maliciousAffect(mob,target,2,-1);
 			}
 		}
 		else

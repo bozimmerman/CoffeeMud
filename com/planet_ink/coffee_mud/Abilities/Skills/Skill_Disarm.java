@@ -61,16 +61,14 @@ public class Skill_Disarm extends StdAbility
 			return false;
 
 		Item weapon=mob.fetchWieldedItem();
-		int oldAtt=mob.envStats().attackAdjustment();
-		mob.envStats().setAttackAdjustment(oldAtt-25);
-		boolean success=profficiencyCheck(-(mob.getVictim().charStats().getStrength()*2),auto)&&(ExternalPlay.isHit(mob,mob.getVictim()));
-		mob.envStats().setAttackAdjustment(oldAtt);
+		boolean success=profficiencyCheck(-25,auto)&&(auto||(ExternalPlay.isHit(mob,mob.getVictim())));
 		if(success)
 		{
 			Item hisWeapon=mob.getVictim().fetchWieldedItem();
-			FullMsg msg=new FullMsg(mob,hisWeapon,null,Affect.MSG_DROP,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
+			mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
 			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
+				mob.location().send(mob.getVictim(),msg);
 		}
 		else
 			maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");

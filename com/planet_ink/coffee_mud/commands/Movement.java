@@ -19,18 +19,18 @@ public class Movement
 		}
 	}
 
-	public void move(MOB mob, int directionCode, boolean flee)
+	public boolean move(MOB mob, int directionCode, boolean flee)
 	{
-		if(directionCode<0) return;
-		if(mob==null) return;
+		if(directionCode<0) return false;
+		if(mob==null) return false;
 		Room thisRoom=mob.location();
-		if(thisRoom==null) return;
+		if(thisRoom==null) return false;
 		Room destRoom=thisRoom.doors()[directionCode];
 		Exit exit=thisRoom.exits()[directionCode];
 		if(destRoom==null)
 		{
 			mob.tell("You can't go that way.");
-			return;
+			return false;
 		}
 
 		Exit opExit=thisRoom.getReverseExit(directionCode);
@@ -45,29 +45,29 @@ public class Movement
 		if((exit==null)&&(!mob.isASysOp()))
 		{
 			mob.tell("You can't go that way.");
-			return;
+			return false;
 		}
 		else
 		if(exit==null)
 			thisRoom.show(mob,null,Affect.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
 		else
 		if((exit!=null)&&(!exit.okAffect(enterMsg)))
-			return;
+			return false;
 		else
 		if(!leaveMsg.target().okAffect(leaveMsg))
-			return;
+			return false;
 		else
 		if((opExit!=null)&&(!opExit.okAffect(leaveMsg)))
-			return;
+			return false;
 		else
 		if(!enterMsg.target().okAffect(enterMsg))
-			return;
+			return false;
 
 		mob.curState().expendEnergy(mob,mob.maxState(),true);
 		if(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState()))
 		{
 			mob.tell("You are too tired.");
-			return;
+			return false;
 		}
 
 		if(exit!=null) exit.affect(enterMsg);
@@ -93,6 +93,7 @@ public class Movement
 			else
 				follower.setFollowing(null);
 		}
+		return true;
 	}
 
 	public void flee(MOB mob, String direction)
@@ -128,13 +129,17 @@ public class Movement
 				return;
 			}
 		}
-		int lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
-		if(lostExperience<10) lostExperience=10;
-		mob.setExperience(mob.getExperience()-lostExperience);
-		mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
-		mob.makePeace();
+		int lostExperience=10;
+		if(mob.getVictim()!=null)
+			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
 		if(directionCode>=0)
-			move(mob,directionCode,true);
+			if (move(mob,directionCode,true))
+			{
+				mob.makePeace();
+				if(lostExperience<10) lostExperience=10;
+				mob.setExperience(mob.getExperience()-lostExperience);
+				mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
+			}
 	}
 
 	public void open(MOB mob, String whatToOpen)

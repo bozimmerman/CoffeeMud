@@ -52,6 +52,7 @@ public class CoffeeUtensils
 
 	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
 	{
+		if(srchStr.length()==0) return null;
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
@@ -112,6 +113,7 @@ public class CoffeeUtensils
 
 	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
 	{
+		if(srchStr.length()==0) return null;
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
@@ -170,6 +172,7 @@ public class CoffeeUtensils
 
 	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
+		if(srchStr.length()==0) return null;
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
@@ -230,6 +233,7 @@ public class CoffeeUtensils
 
 	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, boolean wornOnly, boolean unwornOnly, boolean exactOnly)
 	{
+		if(srchStr.length()==0) return null;
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;

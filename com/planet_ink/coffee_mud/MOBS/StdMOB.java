@@ -8,7 +8,7 @@ public class StdMOB implements MOB
 	protected String Username="";
 	protected String Password="";
 	protected Calendar LastDateTime=Calendar.getInstance();
-	protected long channelMask;
+	protected int channelMask;
 
 	protected CharStats baseCharStats=new DefaultCharStats();
 	protected CharStats charStats=new DefaultCharStats();
@@ -305,11 +305,11 @@ public class StdMOB implements MOB
 			location().affectCharState(this,maxState);
 	}
 
-	public void setChannelMask(long newMask)
+	public void setChannelMask(int newMask)
 	{
 		channelMask=newMask;
 	}
-	public long getChannelMask()
+	public int getChannelMask()
 	{
 		return channelMask;
 	}
@@ -1029,9 +1029,9 @@ public class StdMOB implements MOB
 			if(Util.bset(affect.othersCode(),Affect.MASK_MALICIOUS)&&(affect.target() instanceof MOB))
 				fightingFollowers((MOB)affect.target(),affect.source());
 
-			if(othersMajor==0)
+			if(Util.bset(othersMajor,affect.MASK_CHANNEL))
 			{
-				if(!Util.bset((int)getChannelMask(),affect.othersCode()))
+				if(!Util.isSet(getChannelMask(),(affect.othersCode()-affect.MASK_CHANNEL)))
 					tell(affect.source(),affect.target(),affect.othersMessage());
 			}
 			else
@@ -1106,18 +1106,21 @@ public class StdMOB implements MOB
 						Item weapon=this.fetchWieldedItem();
 						double curSpeed=Math.floor(speeder);
 						speeder+=envStats().speed();
-						int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
-						for(int s=0;s<numAttacks;s++)
-							ExternalPlay.postAttack(this,victim,weapon);
-						curState().expendEnergy(this,maxState,true);
+						if(Sense.aliveAwakeMobile(this,true))
+						{
+							int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
+							for(int s=0;s<numAttacks;s++)
+								ExternalPlay.postAttack(this,victim,weapon);
+							curState().expendEnergy(this,maxState,true);
+							if(weapon==null)
+								pleaseWieldSomething();
+						}
 						if(!isMonster())
 						{
 							MOB target=this.getVictim();
 							if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
 								session().print(target.name()+" "+ExternalPlay.mobCondition(target)+"\n\r\n\r");
 						}
-						if(weapon==null)
-							pleaseWieldSomething();
 					}
 					else
 						speeder=0.0;

@@ -75,7 +75,7 @@ public class Prayer_MassParalyze extends Prayer
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						success=maliciousAffect(mob,target,8,-1);
+						success=maliciousAffect(mob,target,7,-1);
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can't move!");
 					}
 					nothingDone=false;

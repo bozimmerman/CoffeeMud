@@ -1,5 +1,7 @@
 CoffeeMud is an all-Java server application 
-written by Bo Zimmerman, with help from Mike Rundell, and Lee Fox.
+(C) 2001 by Bo Zimmerman
+
+Special thanks to Mike Rundell and Lee H. Fox
 
 It is based on concepts borrowed from AD&D, and observed
 in such popular muds as ROM.

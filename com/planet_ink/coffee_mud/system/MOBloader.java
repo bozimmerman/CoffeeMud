@@ -51,7 +51,7 @@ public class MOBloader
 				mob.setStartRoom(CMMap.getRoom(DBConnections.getRes(R,"CMROID")));
 				Calendar lastDateTime=(Calendar)new IQCalendar();
 				lastDateTime=(Calendar)IQCalendar.string2Date(DBConnections.getRes(R,"CMDATE"));
-				mob.setChannelMask(DBConnections.getLongRes(R,"CMCHAN"));
+				mob.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
 				mob.setUserInfo(username,password,mob.lastDateTime());
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));

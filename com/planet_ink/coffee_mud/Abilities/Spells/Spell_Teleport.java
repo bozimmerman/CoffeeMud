@@ -111,7 +111,7 @@ public class Spell_Teleport extends Spell
 					if((follower.isMonster())||(follower==mob))
 					{
 						FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
-						FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType,"<S-NAME> disappear(s) in a puff of smoke.");
+						FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 						if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
 						{
 							if(follower.isInCombat())

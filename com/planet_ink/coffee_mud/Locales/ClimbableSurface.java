@@ -2,9 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Util;
-import com.planet_ink.coffee_mud.utils.Sense;
-import com.planet_ink.coffee_mud.utils.Directions;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 public class ClimbableSurface extends StdRoom
@@ -29,25 +27,12 @@ public class ClimbableSurface extends StdRoom
 
 		if(affect.amITarget(this)
 		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
-		&&(affect.source().fetchAffect("Falling")==null)&&(!Sense.isFlying(affect.source())))
+		&&(affect.source().fetchAffect("Falling")==null)
+		&&(!Sense.isClimbing(affect.source()))
+		&&(!Sense.isFlying(affect.source())))
 		{
-			MOB mob=affect.source();
-			if(mob.fetchAffect("Skill_Climb")!=null)
-			{
-				String direction=null;
-				if(mob.location()==doors[Directions.UP])
-					direction="down";
-				else
-				if(mob.location()==doors[Directions.DOWN])
-					direction="up";
-				if(direction!=null)
-					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to climb "+direction+".");
-			}
-			else
-			{
-				mob.tell("You need to climb that way, if you know how.");
-				return false;
-			}
+			affect.source().tell("You need to climb that way, if you know how.");
+			return false;
 		}
 		return true;
 	}
@@ -55,7 +40,6 @@ public class ClimbableSurface extends StdRoom
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
-
 
 		if((affect.target() instanceof Item)
 		   &&(!Sense.isFlying(affect.target())
@@ -73,9 +57,8 @@ public class ClimbableSurface extends StdRoom
 			MOB mob=affect.source();
 			if(this.isInhabitant(mob))
 			{
-				Ability c=mob.fetchAffect("Skill_Climb");
 				if((!Sense.isFlying(mob))
-				&&(c==null)
+				&&(!Sense.isClimbing(mob))
 				&&(doors()[Directions.DOWN]!=null)
 				&&(exits()[Directions.DOWN]!=null)
 				&&(exits()[Directions.DOWN].isOpen()))

@@ -159,8 +159,8 @@ public class TheFight
 				-(Math.round((new Integer(mob.charStats().getDexterity()).doubleValue()-9.0)*3.0))
 				+((mob.curState().getHunger()<1)?10:0)
 				+((mob.curState().getThirst()<1)?10:0)
-				+((Sense.isSitting(mob))?25:0)
-				+((Sense.isSleeping(mob))?25:0);
+				+((Sense.isSitting(mob))?15:0)
+				+((Sense.isSleeping(mob))?30:0);
 	}
 
 
@@ -688,46 +688,42 @@ public class TheFight
 		if(success)
 		{
             // calculate Base Damage (with Strength bonus)
-            int damageAmount = Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2);
+            double damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2)).doubleValue();
 
             // modify damage if target can not be seen
             if(!Sense.canBeSeenBy(target,source))
-                damageAmount /= 2;
+                damageAmount *=.5;
 
             // modify damage if target is sitting
-            if(Sense.isSitting(target))
-                damageAmount *=2;
-
             // modify damage if target is asleep
             if(Sense.isSleeping(target))
-                damageAmount *=5;
+                damageAmount *=1.5;
+			else
+            if(Sense.isSitting(target))
+                damageAmount *=1.2;
 
             // modify damage if source is hungry
 			if(source.curState().getHunger() < 1)
-            {
-                damageAmount *= 9;
-                damageAmount /= 10;
-            }
+                damageAmount *= .8;
 
             //modify damage if source is thirtsy
 			if(source.curState().getThirst() < 1)
-            {
-                damageAmount *= 9;
-                damageAmount /= 10;
-            }
+                damageAmount *= .9;
 
-			if(damageAmount<=0)
-				damageAmount=1;
+			if(damageAmount<1.0)
+				damageAmount=1.0;
+			
+			int damageInt=(int)Math.round(damageAmount);
 
 			String youSee=null;
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,
 									Affect.MSG_NOISYMOVEMENT,
-									hitString(weapon.weaponType(),damageAmount,weapon.name()));
+									hitString(weapon.weaponType(),damageInt,weapon.name()));
 			msg.tagModified(true);
 			source.location().send(source,msg);
-			msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageAmount,Affect.NO_EFFECT,null);
+			msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageInt,Affect.NO_EFFECT,null);
 			if(source.location().okAffect(msg))
 				source.location().send(source,msg);
 		}

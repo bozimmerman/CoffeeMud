@@ -55,21 +55,12 @@ public class Prayer_Blindness extends Prayer
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=5)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
-		else
-			levelDiff=0;
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 
 
-		boolean success=profficiencyCheck(-25-((target.charStats().getWisdom()*4)+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(-((target.charStats().getWisdom()*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

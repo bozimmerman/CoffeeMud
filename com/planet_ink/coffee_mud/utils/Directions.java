@@ -65,6 +65,9 @@ public class Directions
 	public static int getGoodDirectionCode(String theDir)
 	{
 		int code=-1;
+		if(theDir.length()==0) 
+			return code;
+		else
 		if(("UP").startsWith(theDir.toUpperCase()))
 			return UP;
 		else

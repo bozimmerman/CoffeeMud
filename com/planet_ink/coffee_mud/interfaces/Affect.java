@@ -43,13 +43,14 @@ public interface Affect
 	
 	// helpful seperator masks
 	public static final int MINOR_MASK=1023;
-	public static final int MAJOR_MASK=1046528;
+	public static final int MAJOR_MASK=2096128;////1046528
 	
 	// masks for all messages
 	public static final int MASK_HURT=512+1024;
 	public static final int MASK_MAGIC=131072;    // the magic mask!
 	public static final int MASK_DELICATE=262144; // for thief skills!
 	public static final int MASK_MALICIOUS=524288;// for attacking
+	public static final int MASK_CHANNEL=1048576; // for channel messages
 
 	// action types
 	public static final int ACT_GENERAL=1024;     // anything!

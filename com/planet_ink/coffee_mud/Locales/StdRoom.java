@@ -531,7 +531,11 @@ public class StdRoom
 			for(int i=0;i<msg.trailerMsgs().size();i++)
 			{
 				Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
-				if((affect!=msg)&&(okAffect(affect)))
+				if((affect!=msg)
+				&&((affect.target()==null)
+				   ||(!(affect.target() instanceof MOB))
+				   ||(!((MOB)affect.target()).amDead()))
+				&&(okAffect(affect)))
 					send(affect.source(),affect);
 			}
 		}

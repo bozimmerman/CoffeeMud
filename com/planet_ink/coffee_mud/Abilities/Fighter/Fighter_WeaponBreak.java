@@ -59,12 +59,7 @@ public class Fighter_WeaponBreak extends StdAbility
 
 		Item weapon=mob.fetchWieldedItem();
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		int oldAtt=mob.envStats().attackAdjustment();
-		mob.envStats().setAttackAdjustment(oldAtt-25);
-
-		boolean success=profficiencyCheck(-(mob.getVictim().charStats().getDexterity()*2),auto)&&(ExternalPlay.isHit(mob,mob.getVictim()));
-
-		mob.envStats().setAttackAdjustment(oldAtt);
+		boolean success=profficiencyCheck(-(mob.getVictim().charStats().getDexterity()*2),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
 		if((!success)||(hisWeapon.envStats().ability()>0)||(Sense.isABonusItems(hisWeapon)))
 		{
 			String str=auto?"":"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!";

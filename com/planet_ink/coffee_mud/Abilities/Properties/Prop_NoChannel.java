@@ -28,7 +28,7 @@ public class Prop_NoChannel extends Property
 			return false;
 
 
-		if((affect.othersMajor()==0)&&(affect.othersCode()>0))
+		if((affect.othersMajor()&affect.MASK_CHANNEL)>0)
 		{
 			affect.source().tell("This is a no-channel area.");
 			return false;

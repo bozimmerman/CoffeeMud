@@ -285,7 +285,10 @@ public class CommandProcessor
 					socialProcessor.cmdSay(mob,commands);
 					break;
 				case CommandSet.SHUTDOWN:
-					shutdown(mob, commands);
+					if(mob.isASysOp())
+						shutdown(mob, commands);
+					else
+						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.SCORE:
 					scoring.score(mob);

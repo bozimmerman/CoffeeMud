@@ -161,7 +161,10 @@ public class StdExit implements Exit
 				mob.tell("You can't fly.");
 				return false;
 			}
-			if((Sense.isClimbing(this))&&(!Sense.isClimbing(mob))&&(!Sense.isFlying(mob)))
+			if((Sense.isClimbing(this))
+			&&(mob.fetchAffect("Falling")==null)
+			&&(!Sense.isClimbing(mob))
+			&&(!Sense.isFlying(mob)))
 			{
 				mob.tell("You need to climb that way, if you know how.");
 				return false;

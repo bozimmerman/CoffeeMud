@@ -24,7 +24,7 @@ public class Channels
 			}
 			String channelName=(String)channelNames.elementAt(x);
 			String onoff="";
-			if(Util.bset((int)mob.getChannelMask(),x+1))
+			if(Util.isSet((int)mob.getChannelMask(),x))
 				onoff=" (OFF)";
 			buf.append(Util.padRight(channelName+onoff,24));
 		}
@@ -65,19 +65,20 @@ public class Channels
 		commands.removeElementAt(0);
 
 
-		long channelNum=0;
+		int channelNum=0;
 		int channelInt=0;
 		for(int c=0;c<channelNames.size();c++)
 		{
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 			{
 				channelNum=Math.round(Util.pow(2,c));
-				channelInt=c+1;
+				channelInt=c;
 				break;
 			}
 		}
 
-		if((mob.getChannelMask()&channelNum)==channelNum)
+Log.sysOut(mob.getChannelMask()+"/"+channelInt+"/"+Util.isSet(mob.getChannelMask(),channelInt)+"/"+Util.pow(2,channelInt));		
+		if(Util.isSet(mob.getChannelMask(),channelInt))
 		{
 			mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
 			mob.tell(channelName+" has been turned back on.");
@@ -91,7 +92,7 @@ public class Channels
 		}
 
 		String str=" "+channelName+"S '"+Util.combine(commands,0)+"'";
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"You"+str,Affect.NO_EFFECT,null,channelInt,mob.name()+str);
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"You"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,mob.name()+str);
 		if(mob.location().okAffect(msg))
 		{
 			for(int s=0;s<Sessions.size();s++)
@@ -111,28 +112,30 @@ public class Channels
 		commands.removeElementAt(0);
 
 
-		long channelNum=0;
+		int channelNum=0;
 		for(int c=0;c<channelNames.size();c++)
 		{
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
-				channelNum=Math.round(Math.pow(2.0,new Integer(c).doubleValue()));
+				channelNum=c;
 		}
-
-		if((mob.getChannelMask()&channelNum)==0)
-			mob.setChannelMask(mob.getChannelMask()|channelNum);
-		mob.tell("The "+channelName+" channel has been turned off.");
+Log.sysOut(mob.getChannelMask()+"/"+channelNum+"/"+Util.isSet(mob.getChannelMask(),channelNum)+"/"+Util.pow(2,channelNum));		
+		if(!Util.isSet(mob.getChannelMask(),channelNum))
+		{
+			mob.setChannelMask(mob.getChannelMask()|(Util.pow(2,channelNum)));
+			mob.tell("The "+channelName+" channel has been turned off.");
+		}
+		else
+			mob.tell("The "+channelName+" channel is already off.");
 	}
 
 	public void quiet(MOB mob)
 	{
-		long channelNum=0;
 		boolean turnedoff=false;
 		for(int c=0;c<channelNames.size();c++)
 		{
-			channelNum=Math.round(Math.pow(2.0,new Integer(c).doubleValue()));
-			if((mob.getChannelMask()&channelNum)==0)
+			if(!Util.isSet(mob.getChannelMask(),c))
 			{
-				mob.setChannelMask(mob.getChannelMask()|channelNum);
+				mob.setChannelMask(mob.getChannelMask()|(Util.pow(2,c)));
 				turnedoff=true;
 			}
 		}
@@ -140,16 +143,8 @@ public class Channels
 			mob.tell("All channels have been turned off.");
 		else
 		{
-			for(int c=0;c<channelNames.size();c++)
-			{
-				channelNum=Math.round(Math.pow(2.0,new Integer(c).doubleValue()));
-				String channelName=(String)channelNames.elementAt(c);
-				if((mob.getChannelMask()&channelNum)==channelNum)
-				{
-					mob.setChannelMask(mob.getChannelMask()&(mob.getChannelMask()-channelNum));
-					mob.tell(channelName+" has been turned back on.");
-				}
-			}
+			mob.tell("All channels have been turned back on.");
+			mob.setChannelMask(0);
 		}
 	}
 }

@@ -88,7 +88,7 @@ public class Spell_Gate extends Spell
 					if((follower.isMonster())||(follower==mob))
 					{
 						FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
-						FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType,Affect.MSG_LEAVE,affectType,"<S-NAME> disappear(s) in a burst of light.");
+						FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
 						if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
 						{
 							if(follower.isInCombat())

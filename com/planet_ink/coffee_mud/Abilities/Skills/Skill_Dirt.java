@@ -35,7 +35,7 @@ public class Skill_Dirt extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_Trip();
+		return new Skill_Dirt();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -94,7 +94,7 @@ public class Skill_Dirt extends StdAbility
 			mob.tell("There's no dirt here to kick!");
 			return false;
 		}
-		boolean success=profficiencyCheck(-(target.charStats().getDexterity()*4),auto);
+		boolean success=profficiencyCheck(-(target.charStats().getDexterity()*3),auto);
 
 		String str=null;
 		if(success)

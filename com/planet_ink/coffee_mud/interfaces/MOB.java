@@ -16,8 +16,8 @@ public interface MOB
 	public String password();
 	/** update USER information */
 	public void setUserInfo(String newUsername, String newPassword, Calendar newCalendar);
-	public void setChannelMask(long newMask);
-	public long getChannelMask();
+	public void setChannelMask(int newMask);
+	public int getChannelMask();
 	public boolean readSysopMsgs();
 	public void toggleReadSysopMsgs();
 	

@@ -100,6 +100,7 @@ public class CreateEdit
 			else
 			{
 				Room theRoom=null;
+				if(allWord.length()>0)
 				for(int m=0;m<CMMap.map.size();m++)
 				{
 					Room room=(Room)CMMap.map.elementAt(m);

@@ -1921,24 +1921,24 @@ public class Import
 						case 10: 	break;
 						case 11: 	break;
 						case 12:
-							adjuster.setMiscText(adjuster.text()+" man"+((val>=0)?("+"+val):(""+val)));
+							adjuster.setMiscText(adjuster.text()+" mana"+((val>=0)?("+"+val):(""+val)));
 							break;
 						case 13:
 							adjuster.setMiscText(adjuster.text()+" hit"+((val>=0)?("+"+val):(""+val)));
 							break;
 						case 14:
-							adjuster.setMiscText(adjuster.text()+" mov"+((val>=0)?("+"+val):(""+val)));
+							adjuster.setMiscText(adjuster.text()+" move"+((val>=0)?("+"+val):(""+val)));
 							break;
 						case 15: 	break;
 						case 16: 	break;
 						case 17:
-							adjuster.setMiscText(adjuster.text()+" arm"+((val>=0)?("+"+(val*10)):(""+(val*10))));
+							adjuster.setMiscText(adjuster.text()+" armor"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 18:
-							adjuster.setMiscText(adjuster.text()+" att"+((val>=0)?("+"+(val*5)):(""+(val*5))));
+							adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 19:
-							adjuster.setMiscText(adjuster.text()+" dam"+((val>=0)?("+"+(val)):(""+(val))));
+							adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
 							break;
 						case 20: // spells, but with a numeric value.. ?!?!
 							break;

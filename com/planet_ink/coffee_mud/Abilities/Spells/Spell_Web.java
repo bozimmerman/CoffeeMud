@@ -62,21 +62,12 @@ public class Spell_Web extends Spell
 				amountRemaining-=mob.charStats().getStrength();
 				if(amountRemaining<0)
 					unInvoke();
+				else
+					return false;
 			}
 		}
 		return super.okAffect(affect);
 	}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly put the mob into
-		// a sleeping state, so that nothing they do
-		// can get them out of it.
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_MOVE);
-	}
-
 
 	public void unInvoke()
 	{
