@@ -1,12 +1,19 @@
 ONCE_PROG
-	MPSETVAR $i ANTE $%LEVEL($i)%
-	MPSETVAR $i MAXBET '20'
-	MPSETVAR $i MAXBET '*$%LEVEL($i)%'
+	MPSETVAR $i BJANTE $%LEVEL($i)%
+	MPSETVAR $i BJMAXBET '20'
+	MPSETVAR $i BJMAXBET '*$%LEVEL($i)%'
 ~
 
 GREET_PROG 100
-	say "$n" Hello $n. I'm dealing blackjack.
-    say "$n" My ante is $<$i ANTE>. If you want to join in, give me $<$i ANTE> gold.
+	IF VAR($i BJANTE == '')
+		MPSETVAR $i BJANTE $%LEVEL($i)%
+		MPSETVAR $i BJMAXBET '20'
+		MPSETVAR $i BJMAXBET '*$%LEVEL($i)%'
+	ENDIF
+	IF ISPC($n) AND VAR($n MYBJVALS == '')
+		say "$n" Hello $n. I'm dealing blackjack.
+		say "$n" My ante is $<$i BJANTE>. If you want to join in, give me $<$i BJANTE> gold.
+	ENDIF
 ~
 
 FUNCTION_PROG RandomCard
@@ -107,8 +114,6 @@ FUNCTION_PROG GameWinOver
 
 FUNCTION_PROG GameTieOver
 	say "$n" $G
-	MPOLOAD $<$n TOTALBJBET>
-	give $<$n TOTALBJBET> $n
 	MPCALLFUNC GameOver
 ~
 
@@ -128,9 +133,9 @@ FUNCTION_PROG GameLoseOver
 GIVE_PROG coins
 	MPGSET $i MONEY 0
 	IF VAR($n MYBJVALS == '')
-		IF (GOLDAMT($o >= '$<$i ANTE>'))
-			IF (GOLDAMT($o > '$<$i MAXBET>'))
-				say "$n" I'm sorry, that is worth far too much for this table.  I will only wager as high as $<$i MAXBET>.
+		IF (GOLDAMT($o >= '$<$i BJANTE>'))
+			IF (GOLDAMT($o > '$<$i BJMAXBET>'))
+				say "$n" I'm sorry, that is worth far too much for this table.  I will only wager as high as $<$i BJMAXBET>.
 				give "$o" "$n"
 			ELSE
 				MPSETVAR $n DEALT ''
@@ -167,7 +172,7 @@ GIVE_PROG coins
 
 SPEECH_PROG hit
 	IF VAR($n MYBJVALS == '')
-		say "$n" You are not currently playing.  Ante up $<$i ANTE> gold and we'll start up a game.
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
 	ENDIF
 	
 	MPCALLFUNC DealOut $<$n MYBJVALS>
@@ -213,7 +218,7 @@ FUNCTION_PROG DoStay
 			IF VAR($n BJTOTAL < 17)
 				MPCALLFUNC DoStay
 			ELSE
-				MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  We have a tie.
+				MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
 			ENDIF
 		ELSE
 			MPCALLFUNC DealOut $<$n DEALERBJVALS>
@@ -228,13 +233,13 @@ FUNCTION_PROG DoStay
 					IF VAR($n BJTOTAL > '$<$n MYBJTOTAL>')
 						MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
 					ELSE
-						IF VAR($n BJTOTAL < '$<$n MYBJTOTAL>')
-							MPCALLFUNC DoStay
+						IF VAR($n BJTOTAL == '$<$n MYBJTOTAL>')
+							MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
 						ELSE
 							IF VAR($n BJTOTAL < 17)
 								MPCALLFUNC DoStay
 							ELSE
-								MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  We have a tie.
+								MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
 							ENDIF
 						ENDIF
 					ENDIF
@@ -246,7 +251,7 @@ FUNCTION_PROG DoStay
 
 SPEECH_PROG stay stand
 	IF VAR($n MYBJVALS == '')
-		say "$n" You are not currently playing.  Ante up $<$i ANTE> gold and we'll start up a game.
+		say "$n" You are not currently playing.  Ante up $<$i BJANTE> gold and we'll start up a game.
 	ENDIF
 	MPCALLFUNC DoStay	
 ~
@@ -277,7 +282,7 @@ ENDIF
 
 ~
 SPEECH_PROG ante
-    say "$n" My ante is $<$i ANTE>.
+    say "$n" My ante is $<$i BJANTE>.
 ~
 SPEECH_PROG cheat cheater cheating
 	say "$n" I do have to use a separate deck for each player, if that's what you mean.  Otherwise, I have no idea what you're talking about.

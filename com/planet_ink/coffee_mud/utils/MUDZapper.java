@@ -103,6 +103,8 @@ public class MUDZapper
 			zapCodes.put("+EFFECT",new Integer(42));
 			zapCodes.put("-EFFECTS",new Integer(43));
 			zapCodes.put("-EFFECT",new Integer(43));
+			zapCodes.put("-DEITY",new Integer(44));
+			zapCodes.put("+DEITY",new Integer(45));
 		}
 		return zapCodes;
 	}
@@ -143,6 +145,10 @@ public class MUDZapper
 									+"+Killers \"+Holy Avengers\" etc.. (create clan exceptions to -clan) <BR>"
 									+"+CLAN (do not <WORD> anyone, even non clan people) <BR>"
 									+"-Killers \"-Holy Avengers\" etc.. (create clan exceptions to +clan) <BR>"
+									+"-DEITY (<WORD> anyone, even no deity) <BR>"
+									+"+Apollo \"+Grothon The Great\" etc.. (create deity exceptions to -deity) <BR>"
+									+"+DEITY (do not <WORD> anyone, even non deity worshipping people) <BR>"
+									+"-Apollo \"-rothon The Great\" etc.. (create deity exceptions to +deity) <BR>"
 									+"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
 									+"+thief +mage +ranger (exceptions -anyclass, allow any levels) <BR>"
 									+"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
@@ -506,20 +512,6 @@ public class MUDZapper
 						buf.append(".  ");
 					}
 					break;
-				case 14: // -Clan
-					{
-						buf.append("Requires membership in the following clan(s): ");
-						for(int v2=v+1;v2<V.size();v2++)
-						{
-							String str2=(String)V.elementAt(v);
-							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
-								buf.append(str2+", ");
-						}
-						if(buf.toString().endsWith(", "))
-							buf=new StringBuffer(buf.substring(0,buf.length()-2));
-						buf.append(".  ");
-					}
-					break;
 				case 8: // +Tattoos
 					{
 						buf.append("Disallows the following tattoo(s): ");
@@ -534,9 +526,51 @@ public class MUDZapper
 						buf.append(".  ");
 					}
 					break;
+				case 14: // -Clan
+					{
+						buf.append("Requires membership in the following clan(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case 15: // +Clan
 					{
 						buf.append("Disallows the following clan(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 44: // -Deity
+					{
+						buf.append("Requires worshipping in the following deity(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 45: // +Deity
+					{
+						buf.append("Disallows the worshippers of: ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v);
@@ -916,6 +950,7 @@ public class MUDZapper
 					break;
 				case 7: // -Tattoos
 				case 14: // -Clan
+				case 44: // -Clan
 				case 43: // -Effect
 				case 9: // -Names
 				case 32: // -Area
@@ -933,6 +968,7 @@ public class MUDZapper
 					break;
 				case 8: // +Tattoos
 				case 15: // +Clan
+				case 45: // +Clan
 				case 42: // +Effect
 				case 16: // +Names
 				case 31: // +Area
@@ -1221,6 +1257,23 @@ public class MUDZapper
 						if(mob.getClanID().equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
 				break;
+			case 44: // -deity
+				{
+					if(mob.getWorshipCharID().length()==0) 
+						return false;
+					boolean found=false;
+					for(int v=1;v<V.size();v++)
+						if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 45: // +deity
+				if(mob.getWorshipCharID().length()>0) 
+					for(int v=1;v<V.size();v++)
+						if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				break;
 			case 43: // -effects
 				{
 					if(mob.numEffects()==0) 
@@ -1473,6 +1526,16 @@ public class MUDZapper
 				case 15: // +Clan
 					if((mob.getClanID().length()>0)
 					&&(fromHere(V,'-',v+1,mob.getClanID().toUpperCase())))
+						return false;
+					break;
+				case 44: // -Deity
+					if((mob.getWorshipCharID().length()==0)
+					||(!fromHere(V,'+',v+1,mob.getWorshipCharID().toUpperCase())))
+						return false;
+					break;
+				case 45: // +Deity
+					if((mob.getWorshipCharID().length()>0)
+					&&(fromHere(V,'-',v+1,mob.getWorshipCharID().toUpperCase())))
 						return false;
 					break;
 				case 16: // +names

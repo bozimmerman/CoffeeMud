@@ -187,6 +187,18 @@ the same keywords in them, unless they are a consume_prog p with different
 keyword lists but some of the same keywords – for example a consume_prog p apple 
 red juicy and a consume_prog p apple red poisoned.</P>
 <P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">damage_prog<O:P></O:P></SPAN></P>
+<P class=MsoNormal>Usage:<BR><EM>damage_prog </EM></P>
+<P class=MsoNormal>This type of mobprog is triggered whenever the scripted mob 
+is damaged, or the scripted item is used to deliver damage.&nbsp; The source and 
+target mobs will be as you expect.&nbsp; The seconday item will be the weapon 
+used to deliver the damage, if it was a physical item (spells are not 
+items).&nbsp; The string returned in $g will be the amount of damage taken.</P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><EM>damage_prog&nbsp;</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; This program will trigger when 
+damage is taken by a mob, or given by&nbsp;the scripted item.</SPAN></P>
+<P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">day_prog<o:p></O:P></SPAN></P>
 <P class=MsoNormal>Usage:<BR><EM>day_prog [list of integer day of the month]</EM></P>
 <P class=MsoNormal>This type of mobprog triggers once per 
@@ -1046,6 +1058,10 @@ value.</TD></TR>
     <TD>Returns the value of the given stat for the given 
       object, mob, or item.&nbsp; See MPSTAT in the section on Commands for more 
       information.</TD></TR>
+  <TR>
+    <TD>STRIN([string] [string])</TD>
+    <TD>Returns the word number (0..n) where the second string appears in the first.
+    This function deals in whole words only.</TD></TR>
   <TR>
     <TD>VAR([code] [variable name])</TD>
     <TD>Retturns the value of the given variable.&nbsp; 
@@ -2627,6 +2643,17 @@ to use gstat.</P>
 <P class=MsoNormal><EM>if stat($n 
 CHARISMA &gt; 10)<BR>&nbsp; mpecho The actor, if&nbsp;a 
 generic mob,&nbsp;has a charisma greater than 10.<BR>endif</EM></P>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">strin</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>strin(string string)</EM></P>
+<P class=MsoNormal>This function searches the first string 
+to see if the second string appears as a whole word within it.&nbsp; If so, this 
+function returns true.</P>
+<P class=MsoNormal>EXAMPLE:<BR><BR><EM>if strin('one two three 
+four'&nbsp; 'three')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The word three appears in the list of 
+words.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Since no 
+variables were used in the example, this is technically impossible.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>var(character variable == value)</EM></P>

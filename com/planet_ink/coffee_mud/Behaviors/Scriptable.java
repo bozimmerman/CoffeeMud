@@ -97,6 +97,7 @@ public class Scriptable extends StdBehavior
 		"WEAR_PROG", // 23
 		"REMOVE_PROG", // 24
 		"CONSUME_PROG", // 25
+		"DAMAGE_PROG", // 26
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -4816,6 +4817,17 @@ public class Scriptable extends StdBehavior
 					if((src==null)||(src.location()!=monster.location()))
 					   src=ded;
 					execute(affecting,src,ded,ded,defaultItem,null,script,null);
+					return;
+				}
+				break;
+			case 26: // damage prog
+				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+				&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
+				{
+					Item I=null;
+					if(msg.tool() instanceof Item)
+						I=(Item)msg.tool();
+					execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value());
 					return;
 				}
 				break;
