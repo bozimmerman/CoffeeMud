@@ -167,6 +167,11 @@ public class Grouping
 	{
 		if(tofollow!=null)
 		{
+			if(tofollow==mob)
+			{
+				nofollow(mob,true,false);
+				return;
+			}
 			if(mob.getGroupMembers(new Hashtable()).contains(tofollow))
 			{
 				if(!quiet)
@@ -196,14 +201,14 @@ public class Grouping
 			return;
 		}
 		MOB target=mob.location().fetchInhabitant(whomToFollow);
-		if(target==mob)
-		{
-			nofollow(mob,true,false);
-			return;
-		}
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("I don't see them here.");
+			return;
+		}
+		if(target.isMonster())
+		{
+			mob.tell("You cannot follow '"+target.name()+"'.");
 			return;
 		}
 		if((target.getBitmap()&MOB.ATT_NOFOLLOW)>0)

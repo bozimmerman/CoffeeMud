@@ -303,6 +303,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected Room getGridRoom(int x, int y)
 	{
+		if(subMap==null) subMap=new Room[size][size];
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
 		Room gc=CMClass.getLocale(getChildLocaleID());
 		gc.setID("");

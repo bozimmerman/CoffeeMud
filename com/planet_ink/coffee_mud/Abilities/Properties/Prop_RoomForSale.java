@@ -121,7 +121,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.setDispossessionTime(C);
 				}
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-				&&(!(I instanceof DeadBody))
 				&&(I.envStats().rejuv()!=0))
 				{
 					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
@@ -173,7 +172,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					updateItems=true;
 				}
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-				&&(!(I instanceof DeadBody))
 				&&(I.envStats().rejuv()!=0))
 				{
 					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);

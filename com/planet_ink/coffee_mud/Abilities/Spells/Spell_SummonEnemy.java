@@ -11,7 +11,7 @@ public class Spell_SummonEnemy extends Spell
 	public String name(){return "Summon Enemy";}
 	public String displayText(){return "(Enemy Summoning)";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_SummonMonster();}
+	public Environmental newInstance(){	return new Spell_SummonEnemy();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	
 	public void unInvoke()
