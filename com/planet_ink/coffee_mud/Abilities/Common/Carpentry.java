@@ -241,6 +241,13 @@ public class Carpentry extends CommonSkill
 				commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");
 				return false;
 			}
+			if(firstWood.material()==EnvResource.RESOURCE_BALSA)
+				woodRequired=woodRequired/2;
+			else
+			if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
+				woodRequired=woodRequired*2;
+			if(woodRequired<1) woodRequired=1;
+			
 			if(foundWood<woodRequired)
 			{
 				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -279,6 +286,7 @@ public class Carpentry extends CommonSkill
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-3;
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -339,14 +347,14 @@ public class Carpentry extends CommonSkill
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
-				building.baseEnvStats().setAttackAdjustment((abilityCode()-1));
-				building.baseEnvStats().setDamage(armordmg);
+				building.baseEnvStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
+				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{

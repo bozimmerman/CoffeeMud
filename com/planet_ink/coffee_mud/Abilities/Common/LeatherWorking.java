@@ -330,6 +330,7 @@ public class LeatherWorking extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
 			building.setMaterial(firstWood.material());
+			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-2;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+((multiplier-1)*3));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -337,7 +338,7 @@ public class LeatherWorking extends CommonSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()-1);
+				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
 				((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
@@ -345,13 +346,13 @@ public class LeatherWorking extends CommonSkill
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
-				building.baseEnvStats().setDamage(armordmg);
+				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				if(capacity>0)
 				{
