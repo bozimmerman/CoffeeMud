@@ -60,7 +60,9 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <TR><TD WIDTH="20%">&lt;S-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Source, otherwise 'Is'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;S-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Source, otherwise 'Has'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;S-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Source, otherwise the Name`s</TD></TR>
-<TR><TD WIDTH="20%">&lt;T-HIS-HER&gt;</TD><TD>Outputs 'Your' if Observer=Target, otherwise 'His'/'Her'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-HIMHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself'</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-HISHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Hisself'/'Herself'</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HIS-HER&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'His'/'Her'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;T-HIM-HER&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'Him'/'Her'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;T-NAME&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise the Name.</TD></TR>
 <TR><TD WIDTH="20%">&lt;T-NAMESELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Target, otherwise the Name</TD></TR>
@@ -68,6 +70,8 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <TR><TD WIDTH="20%">&lt;T-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Target, otherwise 'Is'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;T-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Target, otherwise 'Has'.</TD></TR>
 <TR><TD WIDTH="20%">&lt;T-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Target, otherwise the Name with an '`s'</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HIMHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself'</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HISHERSELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the 'Hisself'/'Herself'</TD></TR>
 </TABLE>
 <P align=left><FONT size=4>Occasionally, you will find color/font codes embedded in system strings.  For instance:
 </FONT>&nbsp;</P>
@@ -80,6 +84,10 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <TR><TD WIDTH="10%">^N</TD><TD>Normal</TD></TR>
 <TR><TD WIDTH="10%">^!</TD><TD>Bold</TD></TR>
 <TR><TD WIDTH="10%">^H</TD><TD>Highlight</TD></TR>
+<TR><TD WIDTH="10%">^_</TD><TD>Underline</TD></TR>
+<TR><TD WIDTH="10%">^*</TD><TD>Blink</TD></TR>
+<TR><TD WIDTH="10%">^/</TD><TD>Italics</TD></TR>
+<TR><TD WIDTH="10%">^^</TD><TD>Reset (turns off reverse)</TD></TR>
 <TR><TD WIDTH="10%">^F</TD><TD>Fight (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^S</TD><TD>Spell (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^E</TD><TD>Emote (not in use, yet)</TD></TR>
@@ -113,7 +121,7 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <TR><TD WIDTH="10%">^P</TD><TD>Dark Purple</TD></TR>
 </TABLE>
 <P align=left><FONT size=4>As you might have guessed, it is preferred that the system colors (the last
-8 codes) be used sparingly, in favor of the more customizable codes above.
+16 codes) be used sparingly, in favor of the more customizable codes above.
 </FONT>&nbsp;
   <P></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
@@ -184,7 +192,7 @@ name, displayText, description, etc, etc.</FONT></P>
 	{
 		super();
 
-		Username="anew mob"; 
+		setName("a new mob"); 
 		setDescription("It`s furry with 2 legs"); 
 		setDisplayText("My new mob is standing here.");
 		
@@ -354,9 +362,9 @@ a mob for good is even easier than creating one:
 <IMG src="images/sword.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 color=crimson><STRONG>Items:</STRONG></FONT></P>
-<P align=left><FONT size=4>A Custom MOB may or may not belong to any particular 
-package, though it is important that the NAME of the MOB be unique in the 
-system.&nbsp; A custom MOB must import the following packages:</FONT></P>
+<P align=left><FONT size=4>A Custom Item may or may not belong to any particular 
+package, though it is important that the NAME of the Item be unique in the 
+system.&nbsp; A custom Item must import the following packages:</FONT></P>
 <FONT size=3><PRE>
 	import java.util.*;
 	import com.planet_ink.coffee_mud.utils.*;
@@ -379,7 +387,7 @@ objects are more customizable at run-time, they also take a long time for the
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
-<P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
+<P><FONT size=4>Each Item must also have a custom "newInstance" method as shown 
 below.</FONT></P>
 <PRE>
 	public class MyNewSword extends StdWeapon 
@@ -402,11 +410,13 @@ etc.</FONT></P>
 	{
 		super();
 
-		Username="a super sword"; 
+		setName("a super sword"); 
 		setDescription("A long super duper sword!"); 
 		setDisplayText("Someone left their super sword here."); 
 		setSecretIdentity("");
 		setMaterial(EnvResource.RESOURCE_STEEL);
+		setWeaponType(Weapon.TYPE_SLASHING);
+		setWeaponClassigication(Weapon.CLASS_SWORD);
 		
 		setBaseValue(500);
 		baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
@@ -426,7 +436,7 @@ we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon
 	{
 		super();
 
-		Username="a super bow";
+		setName("a super bow");
 		setDescription("A long super duper bow!"); 
 		setDisplayText("Someone left their super bow here.");
 		setSecretIdentity("");
@@ -436,6 +446,8 @@ we have made the sword  glow!&nbsp;&nbsp;Now, what if we wanted a missile weapon
 		baseEnvStats.setWeight(15);
 		baseEnvStats.setAttackAdjustment(20);
 		baseEnvStats.setDamage(5);
+		setWeaponType(Weapon.TYPE_PIERCING);
+		setWeaponClassigication(Weapon.CLASS_RANGED);
 		setRanges(1,5);
 		setAmmunitionType("arrows");
 		recoverEnvStats();
@@ -453,7 +465,7 @@ different requirements altogether. For instance, <STRONG>StdArmor</STRONG>:</FON
 	{
 		super();
 
-		Username="a super bracer";
+		setName("a super bracer");
 		setDescription("A super duper bracer"); 
 		setDisplayText("Someone left their super bracer here.");
 		setSecretIdentity("");
@@ -477,7 +489,7 @@ RawLogicalAnd value would have been true. Now, a <STRONG>StdContainer</STRONG>:<
 	{
 		super();
 
-		Username="a super bag";
+		setName("a super bag");
 		setDescription("A super duper bag"); 
 		setDisplayText("Someone left their super bag here.");
 		setSecretIdentity("");
@@ -501,7 +513,7 @@ be silly!&nbsp; Now, a <STRONG>StdDrink</STRONG> container:</FONT></P>
 	{
 		super();
 
-		Username="a super cup";
+		setName("a super cup");
 		setDescription("A super duper cup"); 
 		setDisplayText("Someone left their super bag here.");
 		setSecretIdentity("");
@@ -526,7 +538,7 @@ Now, a <STRONG>StdFood</STRONG>:</FONT></P>
 	{
 		super();
 
-		Username="a super crumb";
+		setName("a super crumb");
 		setDescription("A super duper crumb");
 		setDisplayText("Someone left their super crumbs.");
 		setSecretIdentity("");
@@ -545,7 +557,7 @@ Now, a <STRONG>StdFood</STRONG>:</FONT></P>
 	{
 		super();
 
-		Username="a bed";
+		setName("a bed");
 		setDescription("A bed");
 		setDisplayText("A bed is here");
 		setSecretIdentity("");
@@ -563,7 +575,7 @@ Now, a <STRONG>StdFood</STRONG>:</FONT></P>
 	{
 		super();
 
-		Username="a pile of coins";
+		setName("a pile of coins");
 		setDescription("A pile of coins");
 		setDisplayText("Someone left their money here.");
 		setSecretIdentity("");
@@ -583,7 +595,7 @@ Now, to a magical <STRONG>StdPill</STRONG>:</FONT></P>
 	{
 		super();
 
-		Username="a super pill";
+		setName("a super pill");
 		setDescription("A super duper pill");
 		setDisplayText("Someone left their super pill.");
 		setSecretIdentity("");
@@ -611,13 +623,14 @@ interests of saving a little sand for future generations, I would enumerate the
 	{
 		super();
 
-		Username="a super scroll";
-		setDescription("A super duper scroll");
-		setDisplayText("Someone left their super scroll.");
+		setName("a super scroll");
+		setDescription("A super duper scroll"); 
+		setDisplayText("Someone	left their super scroll."); 
 		setSecretIdentity("");
-		
 		setBaseValue(100);
+		
 		setMaterial(EnvResource.RESOURCE_PAPER);
+		setUsesRemaining(50);
 		baseEnvStats.setWeight(1);
 		setScrollSpells("Spell_Sleep;Prayer_CureLightWounds");
 		recoverEnvStats();
@@ -631,7 +644,7 @@ name. Now, let's look at a <STRONG>StdWand</STRONG>:</FONT></P>
 	{
 		super();
 
-		Username="a wand";
+		setName("a wand");
 		setDescription("A magic wand");
 		setDisplayText("Someone left their magic wand.");
 		setSecretIdentity("");
@@ -933,6 +946,7 @@ color=blue><FONT>Behaviors</FONT>:</FONT></STRONG></FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P></EM></FONT>
-<P></P></P></TABLE>
+<P></P>
+<P></P></TABLE>
 </BODY>
 </HTML>
