@@ -1,4 +1,5 @@
 racial abilities (abilities tied to the race)
+running penalty (multiple and quick moves cost 25% more movement to do).
 Perhaps a little modification to have the mob act as a better assassin, 
 The ability to put numbers in front of the direction with doing a GO command for an ORDER.
 gen-wizard player editor
