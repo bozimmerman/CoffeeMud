@@ -23,7 +23,9 @@ public class Spell_WizardLock extends Spell
 			return false;
 
 		MOB mob=msg.source();
-		if((!msg.amITarget(affected))&&(msg.tool()!=affected))
+		if(((!msg.amITarget(affected))&&(msg.tool()!=affected))
+		||(msg.source()==invoker())
+		||(CoffeeUtensils.doesHavePriviledgesHere(mob,msg.source().location()))&&(text().toUpperCase().indexOf("MALICIOUS")<0))
 			return true;
 		else
 		switch(msg.targetMinor())
@@ -130,6 +132,13 @@ public class Spell_WizardLock extends Spell
 										exit.hasALock(),true,exit.defaultsLocked());
 					Room R=mob.location();
 					Room R2=null;
+					Ability lock=(Ability)copyOf();
+					lock.setMiscText("");
+					if(!CoffeeUtensils.doesHavePriviledgesHere(mob,R))
+						for(int a=0;a<R.numEffects();a++)
+							if((R.fetchEffect(a) instanceof LandTitle)
+							   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
+								lock.setMiscText("MALICIOUS");
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}

@@ -52,7 +52,7 @@ public class Whisper extends StdCommand
 			Rideable R=mob.riding();
 			if(R==null)
 			{
-				msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIMHERSELF> '"+combinedCommands+"'^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to himself^?");
+				msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> whisper(s) to <S-HIM-HERSELF> '"+combinedCommands+"'^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_QUIETMOVEMENT,"^T<S-NAME> whisper(s) to himself^?");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}

@@ -391,15 +391,9 @@ public final class IMC2Driver extends Thread {
        return false;
     }
 
-    final String escape2(String data)
-    {
-        data = Util.replaceAll(data, "\"", "\\\"");
-        return data;
-    }
-
     final String normal2(String data)
     {
-//        data = Util.replaceAll(data, "\\\"", "\"");
+        data = Util.replaceAll(data, "\\\"", "\"");
 		StringBuffer str=new StringBuffer(data);
 		for(int i=0;i<str.length()-1;i++)
 		{
@@ -858,6 +852,7 @@ public final class IMC2Driver extends Thread {
 	final public static String toIMCColours(String res)
 	{
 	    // ANSI color macros
+        res = Util.replaceAll(res, "\"", "\\\"");
 		StringBuffer str=new StringBuffer(res);
 		for(int i=0;i<str.length()-1;i++)
 		{

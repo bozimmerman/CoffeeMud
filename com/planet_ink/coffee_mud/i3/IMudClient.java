@@ -337,8 +337,8 @@ public class IMudClient implements I3Interface
 						message=CoffeeFilter.fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,msg.othersMessage(),false);
 					else
 						message=CoffeeFilter.fullOutFilter(null,CMClass.sampleMOB(),mob2,msg.target(),null,msg.sourceMessage(),false);
-					if(message.toUpperCase().startsWith(mob2.Name().toUpperCase()))
-						message=message.substring(mob.Name().length()).trim();
+					if(message.toUpperCase().startsWith((mob.Name()+"@"+imc2.imc_name).toUpperCase()))
+						message=message.substring((mob.Name()+"@"+imc2.imc_name).length()).trim();
 					emote=2;
 				}
 				emote=1;
