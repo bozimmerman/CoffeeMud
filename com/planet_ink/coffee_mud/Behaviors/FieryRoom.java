@@ -103,7 +103,7 @@ public class FieryRoom extends ActiveTicker {
         }
 
         private void dealDamage(MOB mob) {
-                ExternalPlay.postDamage(mob, mob, null, directDamage, Affect.MSG_OK_ACTION, Weapon.TYPE_BURNING,
+                MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MSG_OK_ACTION, Weapon.TYPE_BURNING,
                                         "The fire here <DAMAGE> <T-NAME>!");
         }
 
@@ -122,10 +122,10 @@ public class FieryRoom extends ActiveTicker {
                                 {
                                         // all these we'll make get hot and be dropped.
                                         int damage=Dice.roll(1,6,1);
-                                        ExternalPlay.postDamage(mob,mob,null,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,target.name()+" <DAMAGE> <T-NAME>!");
+                                        MUDFight.postDamage(mob,mob,null,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,target.name()+" <DAMAGE> <T-NAME>!");
                                         if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
                                         {
-                                                ExternalPlay.drop(mob,target,false,false);
+                                                CommonMsgs.drop(mob,target,false,false);
                                         }
                                         break;
                                 }
@@ -133,8 +133,8 @@ public class FieryRoom extends ActiveTicker {
                                 {
                                         Ability burn=CMClass.getAbility("Burning");
                                         if(burn!=null) {
-                                                mob.location().showHappens(Affect.MSG_OK_ACTION,target.Name()+" begins to burn!");
-                                                target.addAffect(burn);
+                                                mob.location().showHappens(CMMsg.MSG_OK_ACTION,target.Name()+" begins to burn!");
+                                                target.addEffect(burn);
                                                 target.recoverEnvStats();
                                         }
                                 }
