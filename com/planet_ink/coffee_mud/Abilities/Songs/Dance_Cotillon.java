@@ -19,32 +19,46 @@ public class Dance_Cotillon extends Dance
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if((referenceDance!=null)
-		&&(affected instanceof MOB)
-		&&(((MOB)affected).isInCombat()))
+		if((affected==invoker())&&(((MOB)invoker()).isInCombat()))
 		{
-			MOB M=(MOB)affected;
-			MOB V=M.getVictim().getVictim();
-			MOB oldLast=whichLast;
-			
-			whichLast=((Dance_Cotillon)referenceDance).whichLast;
-			if((whichLast==null)&&(V!=M))
+			if(whichLast==null) 
+				whichLast=(MOB)invoker();
+			else
 			{
-				if(M.location().show(M,null,M.getVictim(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> dance(s) into <O-YOUPOSS> way."))
+				MOB M=(MOB)affected;
+				boolean pass=false;
+				boolean found=false;
+				for(int i=0;i<M.location().numInhabitants();i++)
 				{
-					((Dance_Cotillon)referenceDance).whichLast=M;
-					M.getVictim().setVictim(M);
+					MOB M2=M.location().fetchInhabitant(i);
+					if(M2==whichLast)
+						found=true;
+					else
+					if((M2!=whichLast)
+					&&(found)
+					&&(M2.fetchAffect(ID())!=null)
+					&&(M2.isInCombat()))
+					{
+						whichLast=M2;
+						break;
+					}
+					if(i==(M.location().numInhabitants()-1))
+					{
+						if(pass)
+							return true;
+						else
+						{
+							pass=true;
+							i=-1;
+						}
+					}
 				}
+				if((whichLast!=null)
+				&&(M.isInCombat())
+				&&(M.getVictim().getVictim()!=whichLast)
+				&&(whichLast.location().show(whichLast,null,M.getVictim(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> dance(s) into <O-YOUPOSS> way.")))
+					M.getVictim().setVictim(whichLast);
 			}
-			else
-			if((whichLast==M)&&(V==M))
-				((Dance_Cotillon)referenceDance).whichLast=null;
-			else
-			if((whichLast==oldLast)&&(V==oldLast))
-				((Dance_Cotillon)referenceDance).whichLast=null;
-			else
-			if(whichLast==null)
-				((Dance_Cotillon)referenceDance).whichLast=V;
 		}
 		return true;
 	}

@@ -466,6 +466,8 @@ public class FrontDoor
 	public static void showTheNews(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
+		if(mob.session()!=null)
+			mob.session().setTermID((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0);
 		Vector journal=ExternalPlay.DBReadJournal("CoffeeMud News");
 		for(int which=0;which<journal.size();which++)
 		{
