@@ -988,8 +988,8 @@ everything listed under GenItem, plus a few more:</P>
   <TR>
     <TD><EM>Armor Protection</EM></TD>
     <TD>the base amount of protection provided when 
-      wearing this piece of armor.  Unline MOBS, the higher the number here,
-      the better for the wearer.</TD></TR>
+      wearing this piece of armor. Unline MOBS, the higher the number here, the 
+      better for the wearer.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>This number represents an adjustment to the armor 
@@ -1397,19 +1397,18 @@ include:</P>
       higher level, or "too tough" for a lower level.&nbsp;</TD></TR>
   <TR>
     <TD><EM>Attacks/Round</EM></TD>
-    <TD>this represents the number of attacks the 
-      creature receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
+    <TD>this represents the number of attacks the creature 
+      receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
   <TR>
-    <TD><EM>Attack 
-Adjustment</EM></TD>
+    <TD><EM>Attack Adjustment</EM></TD>
     <TD>this represents the MOBs ability to slay other 
       beings.&nbsp; At first level, this should be a 0.&nbsp; At 25th level, 
       this may be as much as 150-200.&nbsp; You should keep the default, either 
       way.</TD></TR>
   <TR>
     <TD><EM>Damage/Hit</EM></TD>
-    <TD>this represents the maximum amount of damage a 
-      MOB does when striking its opponents.&nbsp; At first level, 4-8 is 
+    <TD>this represents the maximum amount of damage a MOB 
+      does when striking its opponents.&nbsp; At first level, 4-8 is 
       plenty.&nbsp; At 25th level, 10-30 is a good range, depending upon the 
       monsters speed.&nbsp; Just keep the default.</TD></TR>
   <TR>
@@ -1427,8 +1426,8 @@ Adjustment</EM></TD>
       at default.</TD></TR>
   <TR>
     <TD><EM>Alignment </EM></TD>
-    <TD>aside from the creatures experience level, this 
-      is the most important determinate of whether a player gets experience for 
+    <TD>aside from the creatures experience level, this is 
+      the most important determinate of whether a player gets experience for 
       killing it.&nbsp; You should make the alignment reflect the creature’s 
       obvious disposition.&nbsp; Making children evil, or a good orc doesn't do 
       anyone any good.</TD></TR>
@@ -1515,8 +1514,7 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
     <TD>this is where you would "stock" your shopkeeper 
       with items that match their type.</TD></TR>
   <TR>
-    <TD><EM>Prejudice 
-Factors</EM></TD>
+    <TD><EM>Prejudice Factors</EM></TD>
     <TD>
       <P>This complicated field is where you can adjust the 
       prices the ShopKeeper sells from the programmed normal.&nbsp; An 
@@ -1532,8 +1530,8 @@ Factors</EM></TD>
       (like 0.3 or 0.75) will lower prices.&nbsp; Values of 0.0 are NOT 
       allowed.&nbsp; If you need to all but not allow buying and selling, a 
       value of 0.000000001 should do.&nbsp; </P>
-      <P>Each adjustment may also contain the name of one 
-      or more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
+      <P>Each adjustment may also contain the name of one or 
+      more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
       Racial Category is specified, then the adjustment will ONLY apply to that 
       race.&nbsp; The adjustments are read from left to right, so adjustments 
       without any racial categories should be listed LAST.&nbsp; In the above 
@@ -1544,8 +1542,8 @@ Factors</EM></TD>
       apply to a player will cancel evaluation of the rest of the 
       field!&nbsp;&nbsp; </P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
-<P>A Banker is a special type of ShopKeeper that holds 
-money and items in a special private account for players.&nbsp; Bankers can pay 
+<P>A Banker is a special type of ShopKeeper that holds money 
+and items in a special private account for players.&nbsp; Bankers can pay 
 interest on money left in the account, and charge interest on items left with 
 them.&nbsp; Whenever a GenBanker is created, much like the GenShopKeeper above, 
 you are presented with a list of properties to fill in.&nbsp; Pressing enter 
@@ -1566,9 +1564,9 @@ fields listed above under GenMob and GenShopKeeper, plus&nbsp;one&nbsp;more:</P>
 account.</TD></TR>
   <TR>
     <TD><EM>Item Interest</EM></TD>
-    <TD>This is the amount of interest paid (or CHARGED 
-      if negative) every game week (about once a real day) on items left in a 
-      users account.</TD></TR>
+    <TD>This is the amount of interest paid (or CHARGED if 
+      negative) every game week (about once a real day) on items left in a users 
+      account.</TD></TR>
   <TR>
     <TD><EM>Bank Name</EM></TD>
     <TD>This is a unique identifier for the bank chain. 
@@ -1611,10 +1609,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Cleric 
-    Requirements</EM></TD>
-    <TD>This field describes the requirements for a 
-      cleric to work for this deity. The value in this field include the 
-      following masks: 
+Requirements</EM></TD>
+    <TD>This field describes the requirements for a cleric 
+      to work for this deity. The value in this field include the following 
+      masks: 
       <P>
       <UL>
         <LI>+sysop (allow archons or area subops to bypass 
@@ -1623,10 +1621,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         check) 
         <LI>-class (disallow all classes) 
         <LI>-baseclass (disallow all base classes) 
-        <LI>+thief +bard +ranger etc.. (create exceptions 
-        to -class and -baseclass) 
-        <LI>-paladin -bard -mage etc.. (disallow only 
-        listed classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions to 
+        -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only listed 
+        classes) 
         <LI>-race (disallow all racial categories) 
         <LI>+elf +dwarf +human +half +gnome (create 
         exceptions to -race) 
@@ -1645,8 +1643,8 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>-level (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
-        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
-        (disallow only listed levels, put your level for 10) </LI></UL></TD></TR>
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 (disallow 
+        only listed levels, put your level for 10) </LI></UL></TD></TR>
   <LI>-tattoos (disallow all tattoos, even a lack of a 
   tatoo) 
   <LI>+mytatto +thistattoo +anytattoo etc.. (create 
@@ -1681,16 +1679,16 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         the player. For example: SAY "Allah is Great" 
         <LI>TIME [HOUR] - the other tasks must be performed 
         at the specified hour. For example: TIME 3 
-        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an 
-        item of the type must be placed in the specified container. For example: 
+        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item 
+        of the type must be placed in the specified container. For example: 
         PUTTHING dagger pit 
         <LI>BURNTHING [THING NAME] - an item of the type 
         given must be burnt or set afire. This is typically done with the 
         FIREBUILDING skill. For example: BURNTHING the ceremonial log 
         <LI>EAT [FOOD NAME] - the specified item must be 
         eaten. For example: EAT holy pie. 
-        <LI>DRINK [DRINK NAME] - the specified drink must 
-        be consumed. For example: DRINK holy fountain 
+        <LI>DRINK [DRINK NAME] - the specified drink must be 
+        consumed. For example: DRINK holy fountain 
         <LI>INROOM - the player must be in the specified 
         room number. For example: INROOM NewArea#123 
         <LI>RIDING - the player must be on the specified 
@@ -1711,15 +1709,14 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at 
         least the specified amount must be burnt, such as using the FIREBUILDING 
         skill. For instance: BURNVALUE "wooden statue" 
-        <LI>SITTING 0 - the player must be sitting (the 0 
-        is required!) 
+        <LI>SITTING 0 - the player must be sitting (the 0 is 
+        required!) 
         <LI>STANDING 0 - the player must be standing (the 0 
         is required!) 
         <LI>SLEEPING 0 - the player must be sleeping (the 0 
         is required!) </LI></UL></TD></TR>
   <TR>
-    <TD><EM>Worshipper 
-Ritual</EM></TD>
+    <TD><EM>Worshipper Ritual</EM></TD>
     <TD>For a worshipper to receive one of the blessings 
       of the deity, the player must perform a particular ritual consisting of 
       one or more actions. This field will list the tasks in the ritual which 
@@ -1727,8 +1724,8 @@ Ritual</EM></TD>
       field above. </TD></TR></TABLE></STRONG>
 <P><STRONG><BR></P><BR>Modifying MOBs</STRONG> 
 <P></P>
-<P>There are properties of&nbsp;mobs that can be modified 
-by the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
+<P>There are properties of&nbsp;mobs that can be modified by 
+the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
 be&nbsp;present in the room.&nbsp; The Archon can then issue the command "modify 
 goblin".&nbsp; If the item is a GenMob or GenUndead, then the same properties as 
 above will be presented.&nbsp; See Appendix B for more information.&nbsp; For 
@@ -1742,9 +1739,9 @@ all other MOBs, the following properties will be presented:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Level</EM></TD>
-    <TD>this is the level of the mob.&nbsp; Please see 
-      the Level entry under GenMob for more information.&nbsp; On some mobs, 
-      such as Dragons, this can have a profound impact.</TD></TR>
+    <TD>this is the level of the mob.&nbsp; Please see the 
+      Level entry under GenMob for more information.&nbsp; On some mobs, such as 
+      Dragons, this can have a profound impact.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>This number represents an adjustment to the base 
@@ -1769,8 +1766,7 @@ all other MOBs, the following properties will be presented:</P>
     <TD><EM>MiscText</EM></TD>
     <TD>For non-generic MOBs, this is a 
       completely&nbsp;unused field.</TD></TR></TABLE>
-<P><STRONG>Destroying MOBs</STRONG> 
-</P>
+<P><STRONG>Destroying MOBs</STRONG> </P>
 <P>To destroy a MOB&nbsp;that is in the same room as you, 
 you need only issue the destroy command.&nbsp;&nbsp;MOBs that have been set to 
 rejuv will not do so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in 
@@ -1787,18 +1783,17 @@ you wish to give to your new creature using the procedure described above under
 temporary control of your monster, allowing them to pick up the items you 
 created and wear or wield them as necessary.&nbsp; Another way is to "order" the 
 mob to pick up the items you created, and then "order" them again to wear or 
-wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are 
-exceptions, MOBs will be the primary beneficiary of Behaviors (see above under 
-Creating MOBs), and Items (and occasionally Rooms) will benefit from 
-Affects.&nbsp; Some of the useful Affects for Rooms are already described above 
-under Creating Rooms.&nbsp; For Generic Items, Prop_HaveAdjuster, 
-Prop_WearAdjuster, Prop_HaveZapper and others are commonly used.&nbsp; For 
-Generic MOBs, you will find many useful Behaviors which will add great depth to 
-your MUD.&nbsp; The MudChat behavior may be added to ANY Mob to add an extra 
-dimension. "Aggressive", "MOBTeacher", and "Mobile" are also extremely common 
-behaviors to give to your MOBs.&nbsp; It is highly recommended that any Archon 
-wishing to create a rich and wonderous universe spend time perusing the help 
-files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
+wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are exceptions, MOBs will be the 
+primary beneficiary of Behaviors (see above under Creating MOBs), and Items (and 
+occasionally Rooms) will benefit from Affects.&nbsp; Some of the useful Affects 
+for Rooms are already described above under Creating Rooms.&nbsp; For Generic 
+Items, Prop_HaveAdjuster, Prop_WearAdjuster, Prop_HaveZapper and others are 
+commonly used.&nbsp; For Generic MOBs, you will find many useful Behaviors which 
+will add great depth to your MUD.&nbsp; The MudChat behavior may be added to ANY 
+Mob to add an extra dimension. "Aggressive", "MOBTeacher", and "Mobile" are also 
+extremely common behaviors to give to your MOBs.&nbsp; It is highly recommended 
+that any Archon wishing to create a rich and wonderous universe spend time 
+perusing the help files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 
 which have had the Rejuv Ticks property set to some reasonable number, will not 
@@ -1810,8 +1805,9 @@ the items in the room, "save mobs" command to reset the mobs in the room, or
 or both, are exactly the way you want them to be when the system is 
 rebooted.&nbsp; Players in the room, including yourself and your followers, will 
 be ignored by the command to save the mobs.</P>
-<P class=MsoNormal><STRONG>Appendix A: 
-Special Items</STRONG></P>
+<P>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix A: Special Standard Items</FONT></STRONG></P>
 <P class=MsoNormal>Map</P>
 <UL>
   <LI>
@@ -1829,8 +1825,8 @@ Special Items</STRONG></P>
 LockableContainer, etc</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The name of the key 
-  which will open this container.</DIV></LI></UL>
+  <DIV class=MsoNormal>misc text - The name of the key which 
+  will open this container.</DIV></LI></UL>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
@@ -1883,10 +1879,9 @@ item)</P>
 Weapons)</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>ability - Equates to a 5 point 
-  attack bonus, and 1 point damage bonus for every ability point above 0.&nbsp; 
-  Makes the weapon magical. Negative ability points do the 
-opposite.</DIV></LI></UL>
+  <DIV class=MsoNormal>ability - Equates to a 5 point attack 
+  bonus, and 1 point damage bonus for every ability point above 0.&nbsp; Makes 
+  the weapon magical. Negative ability points do the opposite.</DIV></LI></UL>
 <P class=MsoNormal>ScrollSpell</P>
 <UL>
   <LI>
@@ -1932,8 +1927,10 @@ etc.</P>
   <LI>
   <DIV class=MsoNormal>usesRemaining - The number of types 
   the manual may be read before becomming ineffective.</DIV></LI></UL>
-<P class=MsoNormal><STRONG>Appendix B: 
-Special MOBs</STRONG></P>
+<P class=MsoNormal><STRONG><FONT 
+size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix B: Special Standard MOBs</FONT></STRONG></P>
 <P class=MsoNormal>Dragon</P>
 <DIV class=MsoNormal>
 <UL>
@@ -1957,57 +1954,2950 @@ Special MOBs</STRONG></P>
 <UL>
   <LI>misc text - Prejudice factors.&nbsp; See the field of 
   the same name under GenShopKeeper above!</LI></UL>
-<P class=MsoNormal><STRONG>Appendix C: Builder's FAQ</STRONG></P>
-<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into 
-Grid areas?</STRONG></FONT></P>
-<P align=left><FONT color=black><STRONG>A</STRONG>. Locale types like 
-MountainsGrid, WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all 
-contain rejuvinating mobs in them.&nbsp; However, two rules need to be followed 
-for this to work properly.&nbsp; The first is that you can only save mobs which 
-are in the parent Grid room itself.&nbsp; If you have SYSMSGS on, you can tell 
-which room this is because it is the only one with a valid room ID 
-("MyArea#123") in the description.&nbsp; The child rooms will have blank () room 
-IDs.&nbsp; Since no one ever actually walks into the parent Grid room, the only 
-way to get to it to deposit mobs is using the Archon GOTO command.&nbsp; The 
-second of the two rules is that you must give the mob the Mobile behavior.&nbsp; 
-The mobile behavior is specially coded so that it will take the mob to a random 
-room inside the grid the first time the mob tries to move.&nbsp; </FONT></P>
-<P align=left><STRONG><FONT color=#9400d3 size=4>Q. How does the CoffeeMud News 
-feature work?</FONT></STRONG></P>
-<P align=left><STRONG>A</STRONG>. Messages can be posted that will appear 
-automatically at login time for those who have not yet read them.&nbsp; This is 
-done by creating a "GenJournal" item and giving it the name "CoffeeMud 
-News".&nbsp; Any messages posted to such a journal will appear at login 
-time.&nbsp; This journal can either be made available to players, or restricted 
-to Archons as you like.</P>
-<P align=left><STRONG><FONT color=#9400d3 size=4>Q. How to Clans 
+<P><STRONG><FONT 
+size=5></FONT></STRONG>&nbsp;</P>
+<P><STRONG><FONT size=5>Appendix C: 
+Generic Weapons and Armor Guide</FONT></STRONG></P>
+<P align=left><U>Weapon 
+Groups</U>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+When building weapons, you must first select the group that the weapon falls 
+under.&nbsp; The weapon group affects which classes can use the weapon, as well 
+as what specializations enhance it’s use.&nbsp; Selecting more common weapon 
+groups, such as EDGED or SWORD can enable a weapon designer to place higher 
+level restrictions, if desired, on the weapon.&nbsp; This increase in levels is 
+suggested to be 2 additional levels, but not necessary to keep the game 
+balanced.&nbsp; Weapons within a group may deal any TYPE of damage, as discussed 
+later, but have general tendencies towards one or two types.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Weapons within a given category have certain general tendencies, as describe by 
+the table below.&nbsp; Any or all of these can be overridden for the purpose of 
+weapon design, these are just the basic type of weapons in that category.&nbsp; 
+For example, flailed weapons tend to be unwieldy (have a negative to attack), 
+but that doesn’t mean all flails are unwieldy.&nbsp; </P>
+<P>Similarly, the allowed materials are materials used 
+historically to make that type of weapon.&nbsp; If a weapon designer deigns to 
+make a weapon out of LAMPOIL, it is doable, just a little unorthodox.&nbsp; (You 
+would probably want to make the weapon out of GLASS, as that is the outer 
+delivery devise of a Molotov Cocktail.)&nbsp; Currently, weapon SIZE has no 
+effect on game play, but that may change at a later date.&nbsp; The BASE 
+MATERIAL of a weapon assumes that weapons are made from that general area, and 
+use material bonuses based on that type.&nbsp; If you create a weapon out of a 
+non-standard, ALLOWABLE MATERIAL, use the appropriate charts for determining 
+attack and damage bonuses after the level has been set.</P>
+<P>
+<P></P>
+<P align=left>
+<TABLE style="LEFT: 10px; TOP: 28408px" cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=91>
+      <P>&nbsp;
+      <P>
+      <P></P></TD>
+    <TD vAlign=top width=70>
+      <P>Base Damage type</P></TD>
+    <TD vAlign=top width=81>
+      <P>Base # Hands/ Base Reach</P></TD>
+    <TD vAlign=top width=58>
+      <P>Base Attack Bonus</P></TD>
+    <TD vAlign=top width=132>
+      <P>Size of Weapon</P></TD>
+    <TD vAlign=top width=160>
+      <P>Base Material/ Allowable Materials</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>FLAILED</P></TD>
+    <TD vAlign=top width=70>
+      <P>Blunt</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>-5</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight*3</P></TD>
+    <TD vAlign=top width=160>
+      <P>Wood/ M, W, R, L</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>BLUNT**</P></TD>
+    <TD vAlign=top width=70>
+      <P>Blunt</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight*2</P></TD>
+    <TD vAlign=top width=160>
+      <P>Wood / M, W, R, L, P</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>SWORD</P></TD>
+    <TD vAlign=top width=70>
+      <P>Slash</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight + 12</P></TD>
+    <TD vAlign=top width=160>
+      <P>Metal/ M, W, R, G, P</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>POLEARM</P></TD>
+    <TD vAlign=top width=70>
+      <P>Pierce</P></TD>
+    <TD vAlign=top width=81>
+      <P>2/1</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight*4 + 24</P></TD>
+    <TD vAlign=top width=160>
+      <P>Wood/ M, W, R, P</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>AXE</P></TD>
+    <TD vAlign=top width=70>
+      <P>Slash</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight + 6</P></TD>
+    <TD vAlign=top width=160>
+      <P>Metal/ M, W, R, G, P</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>HAMMER</P></TD>
+    <TD vAlign=top width=70>
+      <P>Blunt</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight +12</P></TD>
+    <TD vAlign=top width=160>
+      <P>Wood/ M, W, R, </P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>EDGED*</P></TD>
+    <TD vAlign=top width=70>
+      <P>Pierce</P></TD>
+    <TD vAlign=top width=81>
+      <P>1/0</P></TD>
+    <TD vAlign=top width=58>
+      <P>+10</P></TD>
+    <TD vAlign=top width=132>
+      <P>Weight*2</P></TD>
+    <TD vAlign=top width=160>
+      <P>Metal/ M, W, R, G, P</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=91>
+      <P>RANGED***</P></TD>
+    <TD vAlign=top width=70>
+      <P>Pierce</P></TD>
+    <TD vAlign=top width=81>
+      <P>2/1</P></TD>
+    <TD vAlign=top width=58>
+      <P>0</P></TD>
+    <TD vAlign=top width=132>
+      <P>SPECIAL</P></TD>
+    <TD vAlign=top width=160>
+      <P>Wood/M, W, R, L, G, P</P></TD></TR></TABLE></P>
+<P>*A Dagger is a type of EDGED weapon.</P>
+<P>**A Staff is a type of BLUNT weapon.</P>
+<P>***Includes both RANGED, and THROWN weapons.</P>
+<P>Allowed Materials: (M)etal/Mithril, (W)ooden, (R)ock, 
+(B)one, (L)eather, (G)lass, (P)recious.&nbsp; Disallowed:&nbsp; Flesh, 
+Vegetation, Liquid, Cloth, Paper
+<P><U>Determining Weapon Level</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Weapon creation can be done by the designer fixing the DAMAGE that a weapon 
+does, or by fixing the LEVEL required to use the weapon.&nbsp; To generate 
+weapons that do a specific amount of damage which are balanced with the 
+WEAPONSMITHING skills, use the following formula:</P>
+<P>Level= ((2*D)/(H+1) + (A-W)/5 +R)*((R/W)+2)+1</P>
+<P>where</P>
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands 
+required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of 
+weapon<BR>W=WEIGHT of weapon</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Round the final number down, to a minimum level of 1.&nbsp; Some general 
+criteria to follow for weapons to avoid creating ultra-powerful, low-level 
+weapons include:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Create the weapon for a HUMAN-sized character first.&nbsp; If you wish to scale 
+it up or down for different races, use the WEAPONS FOR GIANTS table after 
+setting the base level.&nbsp; A typical one-handed human weapon will weigh from 
+1-8 pounds, and a two handed weapon will typically weigh from 10 to 20 
+pounds.&nbsp; Using heavier/lighter weapons will create a strange, and possibly 
+unbalanced, result.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Melee weapons should not have a reach greater than 1.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Weight of weapons should include any incidental weight in using the item, such 
+as carrying case, ammunition, and other equipment generally assumed to be in use 
+with the item.&nbsp; For most RANGED weapons, this will add another 4 pounds to 
+the typical weight of the weapon.&nbsp; For melee weapons, the weight is 
+generally negligible.&nbsp; (Except, possibly for a Katana with a very ornate 
+scabbard.)</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Round the final number down, to a minimum level of 1.</P>
+<P>Some sample weapons and levels:
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 width=721 border=1>
+  
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Name</P></TD>
+    <TD vAlign=top width=70>
+      <P>Class</P></TD>
+    <TD vAlign=top width=78>
+      <P>DamType</P></TD>
+    <TD vAlign=top width=51>
+      <P>Level</P></TD>
+    <TD vAlign=top width=52>
+      <P>DAM</P></TD>
+    <TD vAlign=top width=46>
+      <P>ATT</P></TD>
+    <TD vAlign=top width=55>
+      <P>Hands</P></TD>
+    <TD vAlign=top width=55>
+      <P>Range</P></TD>
+    <TD vAlign=top width=53>
+      <P>Value</P></TD>
+    <TD vAlign=top width=42>
+      <P>Size</P></TD>
+    <TD vAlign=top width=39>
+      <P>WT</P></TD>
+    <TD vAlign=top width=69>
+      <P>Material</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Hand Ax</P></TD>
+    <TD vAlign=top width=70>
+      <P>Axe</P></TD>
+    <TD vAlign=top width=78>
+      <P>Slashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>1</P></TD>
+    <TD vAlign=top width=52>
+      <P>4</P></TD>
+    <TD vAlign=top width=46>
+      <P>-10</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>160</P></TD>
+    <TD vAlign=top width=42>
+      <P>14</P></TD>
+    <TD vAlign=top width=39>
+      <P>8</P></TD>
+    <TD vAlign=top width=69>
+      <P>Wooden</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Dagger</P></TD>
+    <TD vAlign=top width=70>
+      <P>Edged</P></TD>
+    <TD vAlign=top width=78>
+      <P>Piercing</P></TD>
+    <TD vAlign=top width=51>
+      <P>1</P></TD>
+    <TD vAlign=top width=52>
+      <P>2</P></TD>
+    <TD vAlign=top width=46>
+      <P>-5</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>90</P></TD>
+    <TD vAlign=top width=42>
+      <P>12</P></TD>
+    <TD vAlign=top width=39>
+      <P>6</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Short Sword</P></TD>
+    <TD vAlign=top width=70>
+      <P>Sword</P></TD>
+    <TD vAlign=top width=78>
+      <P>Slashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>1</P></TD>
+    <TD vAlign=top width=52>
+      <P>2</P></TD>
+    <TD vAlign=top width=46>
+      <P>0</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>147</P></TD>
+    <TD vAlign=top width=42>
+      <P>22</P></TD>
+    <TD vAlign=top width=39>
+      <P>10</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Voulge</P></TD>
+    <TD vAlign=top width=70>
+      <P>Polearm</P></TD>
+    <TD vAlign=top width=78>
+      <P>Slashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>9</P></TD>
+    <TD vAlign=top width=52>
+      <P>13</P></TD>
+    <TD vAlign=top width=46>
+      <P>-10</P></TD>
+    <TD vAlign=top width=55>
+      <P>2</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=53>
+      <P>1335</P></TD>
+    <TD vAlign=top width=42>
+      <P>96</P></TD>
+    <TD vAlign=top width=39>
+      <P>18</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Gladius</P></TD>
+    <TD vAlign=top width=70>
+      <P>Sword</P></TD>
+    <TD vAlign=top width=78>
+      <P>Piercing</P></TD>
+    <TD vAlign=top width=51>
+      <P>7</P></TD>
+    <TD vAlign=top width=52>
+      <P>4</P></TD>
+    <TD vAlign=top width=46>
+      <P>+5</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>150</P></TD>
+    <TD vAlign=top width=42>
+      <P>22</P></TD>
+    <TD vAlign=top width=39>
+      <P>10</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Grand Sceptre</P></TD>
+    <TD vAlign=top width=70>
+      <P>Blunt</P></TD>
+    <TD vAlign=top width=78>
+      <P>Bashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>12</P></TD>
+    <TD vAlign=top width=52>
+      <P>8</P></TD>
+    <TD vAlign=top width=46>
+      <P>+5</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>1600</P></TD>
+    <TD vAlign=top width=42>
+      <P>32</P></TD>
+    <TD vAlign=top width=39>
+      <P>16</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Executioner’s Axe</P></TD>
+    <TD vAlign=top width=70>
+      <P>Axe</P></TD>
+    <TD vAlign=top width=78>
+      <P>Slashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>13</P></TD>
+    <TD vAlign=top width=52>
+      <P>20</P></TD>
+    <TD vAlign=top width=46>
+      <P>-10</P></TD>
+    <TD vAlign=top width=55>
+      <P>2</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>2550</P></TD>
+    <TD vAlign=top width=42>
+      <P><B>72!
+      <P>
+      <P></B></P></TD>
+    <TD vAlign=top width=39>
+      <P>25</P></TD>
+    <TD vAlign=top width=69>
+      <P>Wooden</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Cat-o-nine tails</P></TD>
+    <TD vAlign=top width=70>
+      <P>Flail</P></TD>
+    <TD vAlign=top width=78>
+      <P>Bashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>17</P></TD>
+    <TD vAlign=top width=52>
+      <P>12</P></TD>
+    <TD vAlign=top width=46>
+      <P>-20</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>1152</P></TD>
+    <TD vAlign=top width=42>
+      <P>42</P></TD>
+    <TD vAlign=top width=39>
+      <P>14</P></TD>
+    <TD vAlign=top width=69>
+      <P>Leather</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Sledgehammer</P></TD>
+    <TD vAlign=top width=70>
+      <P>Hammer</P></TD>
+    <TD vAlign=top width=78>
+      <P>Bashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>10</P></TD>
+    <TD vAlign=top width=52>
+      <P>34</P></TD>
+    <TD vAlign=top width=46>
+      <P>-50</P></TD>
+    <TD vAlign=top width=55>
+      <P>2</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>2826</P></TD>
+    <TD vAlign=top width=42>
+      <P>52</P></TD>
+    <TD vAlign=top width=39>
+      <P>40</P></TD>
+    <TD vAlign=top width=69>
+      <P>Wooden</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Javelin</P></TD>
+    <TD vAlign=top width=70>
+      <P>Thrown</P></TD>
+    <TD vAlign=top width=78>
+      <P>Piercing</P></TD>
+    <TD vAlign=top width=51>
+      <P>9</P></TD>
+    <TD vAlign=top width=52>
+      <P>2</P></TD>
+    <TD vAlign=top width=46>
+      <P>0</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>2</P></TD>
+    <TD vAlign=top width=53>
+      <P>197</P></TD>
+    <TD vAlign=top width=42>
+      <P>76</P></TD>
+    <TD vAlign=top width=39>
+      <P>8</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=110>
+      <P>Katana</P></TD>
+    <TD vAlign=top width=70>
+      <P>Sword</P></TD>
+    <TD vAlign=top width=78>
+      <P>Slashing</P></TD>
+    <TD vAlign=top width=51>
+      <P>13</P></TD>
+    <TD vAlign=top width=52>
+      <P>7</P></TD>
+    <TD vAlign=top width=46>
+      <P>+10</P></TD>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=53>
+      <P>1760</P></TD>
+    <TD vAlign=top width=42>
+      <P><B>36!
+      <P>
+      <P></B></P></TD>
+    <TD vAlign=top width=39>
+      <P>16</P></TD>
+    <TD vAlign=top width=69>
+      <P>Metal</P></TD></TR></TABLE></P>
+<P>Notice:&nbsp; On the Executioner’s Axe, and the Katana, 
+the size does not correspond to the size formula given above.&nbsp; That’s OK, 
+since the size isn’t currently used, and since the weapon designer ultimately 
+has free reign over weapon design.&nbsp; Also, if you compare many of these 
+levels to that of the weaponsmithing skill, you will some discrepancies on the 
+levels.&nbsp; Weapon construction isn’t an exact science, as long as you get it 
+in the general range the game will remain balanced.</P>
+<P><U>Determining Weapon Damage</U>
+<P><STRONG></STRONG>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+If you wish to create a weapon based on the level of a MOB, you can use some 
+algebra and convert the equation into a damage equation to give you the 
+following formula:
+<P>D= ((L-1)/((R/W)+2) + (W-A)/5 -R)*((H+1)/2)
+<P>where
+<P>L=Level required to use weapon,<BR>H=number of hands required to 
+wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of 
+weapon<BR>W=WEIGHT of weapon
+<P>Round the final number down, to a minimum level of 1.</P>
+<P><U>Determining Weapon Cost</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+To compute the weapon’s base value use the following equation:
+<P>Cost of Item= 2*(W*20+(5*D+A+R*10)*D)/(H+1) + W*V
+<P>where
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands 
+required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of 
+weapon<BR>W=WEIGHT of weapon<BR>V=VALUE of the material the weapon is made from
+<P><U>Determining Weapon Damage Type</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Weapon Damage Type is entirely up to the weapon designer, but some guidelines 
+have already been provided for the basic weapon types.&nbsp; Here is a brief 
+description of the different damage types, and level modifiers for weapons with 
+these damage types:
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+NATURAL—All Natural weapons should be UnGettable.&nbsp; Natural weapons are 
+available for a creature to use in combat, such as a Manticore’s tail spikes; 
+but not actual weapons for adventurer’s to loot.&nbsp; Any GETTABLE Natural 
+weapon should have a level MODIFIER of at LEAST it’s DAMAGE rating.&nbsp; 
+Natural weapons would be favored by monks if they could get them.
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+SLASHING—Slashing weapons are fairly common and include things like Axes and 
+Swords.&nbsp; No special care needs to be considered when making a weapon deal 
+SLASHING damage.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+PIERCING—Piercing weapons are very common amongst the Polearm groups.&nbsp; No 
+special care needs to be considered when making a weapon deal PIERCING 
+damage.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+BASHING—Bashing weapons are common amongst Blunt and Hammer weapon groups.&nbsp; 
+No special care needs to be considered when making a weapon deal SLASHING 
+damage.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+BURNING—This is the damage type for all fire based attacks and spells.&nbsp; 
+Burning weapons tend to do more damage to cloth and leather armors, and overall 
+are more powerful than Slashing/Piercing/Bashing due to there infrequent use 
+amongst weapons.&nbsp; Add 2 levels to a weapon’s base LEVEL if it is of type 
+BURNING.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+BURSTING— This is the damage type for all Magic based attacks and spells. 
+Bursting are more powerful than Slashing/Piercing/Bashing due to there 
+infrequent use amongst weapons.&nbsp; Add 2 levels to a weapon’s base LEVEL if 
+it is of type BURSTING.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+SHOOT—This is the damage type of projectile missiles, such as Bows and 
+Guns.&nbsp; It is very similar in nature to PIERCING.&nbsp; No special care 
+needs to be considered when making a weapon deal SHOOT damage.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+FROSTING—This is the damage type for all Cold based attacks and spells.&nbsp; 
+Frosting weapons tend to be more powerful than Slashing/Piercing/Bashing due to 
+there infrequent use amongst weapons.&nbsp; Add 2 levels to a weapon’s base 
+LEVEL if it is of type FROSTING.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+GASSING—This is the damage type for all Gas based attacks and spells.&nbsp; 
+Gassing weapons tend to be more powerful than Slashing/Piercing/Bashing due to 
+there infrequent use amongst weapons.&nbsp; Add 2 levels to a weapon’s base 
+LEVEL if it is of type GASSING.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+MELTING—This is the damage type for all Acid based attacks and spells.&nbsp; 
+Melting weapons tend to do more damage to armors, and overall are more powerful 
+than Slashing/Piercing/Bashing due to there infrequent use amongst 
+weapons.&nbsp; Add 2 levels to a weapon’s base LEVEL if it is of type 
+MELTING.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+STRIKING—This is the damage type for all Electricity based attacks and 
+spells.&nbsp; Striking weapons tend to do more damage to cloth and leather 
+armors, and overall are more powerful than Slashing/Piercing/Bashing due to 
+there infrequent use amongst weapons.&nbsp; Add 2 levels to a weapon’s base 
+LEVEL if it is of type STRIKING.</P>
+<P><U>Creating Quick and Dirty Weapons</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+If you just want to guestimate a weapon’s level or damage, use the following 
+formulas.&nbsp; They aren’t very accurate, and can create radically overbalanced 
+weapons in the hands of players, but they are great for easy NON-GETTABLE MOB 
+weapons.
+<P>LEVEL=DAMAGE + (ATTACK/5)
+<P>or</P>
+<P>DAMAGE=LEVEL - (ATTACK/5)</P>
+<P><U>Weapons for Giants</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+If you wish to create weapons for large (or small) creatures, the weight of the 
+item will often get an unusually high bias, creating MASSIVE low level weapons 
+with lots of damage potential.&nbsp; Instead, create the weapon for a human 
+sized creature, and add the following modifiers.
+<P>WEAPONS FOR GIANTS
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=104>
+      <P>Weight Increase</P></TD>
+    <TD vAlign=top width=83>
+      <P>Level Increase</P></TD>
+    <TD vAlign=top width=101>
+      <P>Damage Increase</P></TD>
+    <TD vAlign=top width=101>
+      <P>Size Increase</P></TD>
+    <TD vAlign=top width=101>
+      <P>Range Increase</P></TD>
+    <TD vAlign=top width=101>
+      <P>Value Increase</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>-90%</P></TD>
+    <TD vAlign=top width=83>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>-3</P></TD>
+    <TD vAlign=top width=101>
+      <P>-50%</P></TD>
+    <TD vAlign=top width=101>
+      <P>-1</P></TD>
+    <TD vAlign=top width=101>
+      <P>+50%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>-50%</P></TD>
+    <TD vAlign=top width=83>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>-2</P></TD>
+    <TD vAlign=top width=101>
+      <P>-25%</P></TD>
+    <TD vAlign=top width=101>
+      <P>-1</P></TD>
+    <TD vAlign=top width=101>
+      <P>+20%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>-25%</P></TD>
+    <TD vAlign=top width=83>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>-1</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10%</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>+10%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>+25%</P></TD>
+    <TD vAlign=top width=83>
+      <P>+1</P></TD>
+    <TD vAlign=top width=101>
+      <P>+1</P></TD>
+    <TD vAlign=top width=101>
+      <P>+10%</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>+25%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>+50%</P></TD>
+    <TD vAlign=top width=83>
+      <P>+2</P></TD>
+    <TD vAlign=top width=101>
+      <P>+2</P></TD>
+    <TD vAlign=top width=101>
+      <P>+20%</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>+50%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>+100%</P></TD>
+    <TD vAlign=top width=83>
+      <P>+4</P></TD>
+    <TD vAlign=top width=101>
+      <P>+4</P></TD>
+    <TD vAlign=top width=101>
+      <P>+50%</P></TD>
+    <TD vAlign=top width=101>
+      <P>+1</P></TD>
+    <TD vAlign=top width=101>
+      <P>+75%</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=104>
+      <P>each additional +100%</P></TD>
+    <TD vAlign=top width=83>
+      <P>+4</P></TD>
+    <TD vAlign=top width=101>
+      <P>+4</P></TD>
+    <TD vAlign=top width=101>
+      <P>+50%</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=101>
+      <P>+25%</P></TD></TR></TABLE></P>
+<P><U>Armor</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Armor creation is, in many ways, much simpler than weapon creation.&nbsp; There 
+are three types of armor: Cloth, Leather, and Metal.&nbsp; Strange armors could 
+exist, but are variants of one of these three types.&nbsp; The armor values vary 
+by location, and by material.&nbsp; Shields are considered to be HELD METAL 
+armor.&nbsp; For a wooden shield, consider it as a HELD LEATHER armor for 
+the&nbsp;purposes of&nbsp;further discussion&nbsp;(though your material would 
+still be WOODEN).
+<P><U>Armor Points (Not the final Defensive value of the 
+armor)</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Different types of armor have different level values, since the less armored 
+classes would love to get that extra armor bonus at a lighter weight.&nbsp; To 
+keep the classes balanced, the use the following guideline for determining the 
+BASE POINT value of an armor piece.&nbsp; As you will see in the next section, 
+different WEAR locations will have different ARMOR VALUEs for the same type of 
+armor.&nbsp; A platemail breastplate is more protective than a platemail cuff.
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=55>
+      <P>Points</P></TD>
+    <TD vAlign=top width=56>
+      <P>Cloth Level</P></TD>
+    <TD vAlign=top width=64>
+      <P>Leather Level</P></TD>
+    <TD vAlign=top width=60>
+      <P>Metal Level</P></TD>
+    <TD vAlign=top width=355>
+      <P>Sample Armor Type</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>0</P></TD>
+    <TD vAlign=top width=56>
+      <P>0</P></TD>
+    <TD vAlign=top width=64>
+      <P>0</P></TD>
+    <TD vAlign=top width=60>
+      <P>0</P></TD>
+    <TD vAlign=top width=355>
+      <P>Simple clothes</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>1</P></TD>
+    <TD vAlign=top width=56>
+      <P>3</P></TD>
+    <TD vAlign=top width=64>
+      <P>0</P></TD>
+    <TD vAlign=top width=60>
+      <P>0</P></TD>
+    <TD vAlign=top width=355>
+      <P>Padded clothes</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>2</P></TD>
+    <TD vAlign=top width=56>
+      <P>7</P></TD>
+    <TD vAlign=top width=64>
+      <P>1</P></TD>
+    <TD vAlign=top width=60>
+      <P>0</P></TD>
+    <TD vAlign=top width=355>
+      <P>Leather armor</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>3</P></TD>
+    <TD vAlign=top width=56>
+      <P>12</P></TD>
+    <TD vAlign=top width=64>
+      <P>5</P></TD>
+    <TD vAlign=top width=60>
+      <P>0</P></TD>
+    <TD vAlign=top width=355>
+      <P>Hard Leather Armor</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>4</P></TD>
+    <TD vAlign=top width=56>
+      <P>18</P></TD>
+    <TD vAlign=top width=64>
+      <P>10</P></TD>
+    <TD vAlign=top width=60>
+      <P>1</P></TD>
+    <TD vAlign=top width=355>
+      <P>Studded Leather or Ring Mail</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>5</P></TD>
+    <TD vAlign=top width=56>
+      <P>25</P></TD>
+    <TD vAlign=top width=64>
+      <P>16</P></TD>
+    <TD vAlign=top width=60>
+      <P>3</P></TD>
+    <TD vAlign=top width=355>
+      <P>Scale Mail</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>6</P></TD>
+    <TD vAlign=top width=56>
+      <P>33</P></TD>
+    <TD vAlign=top width=64>
+      <P>23</P></TD>
+    <TD vAlign=top width=60>
+      <P>5</P></TD>
+    <TD vAlign=top width=355>
+      <P>Chain Mail</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>7</P></TD>
+    <TD vAlign=top width=56>
+      <P>42</P></TD>
+    <TD vAlign=top width=64>
+      <P>31</P></TD>
+    <TD vAlign=top width=60>
+      <P>8</P></TD>
+    <TD vAlign=top width=355>
+      <P>Banded</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>8</P></TD>
+    <TD vAlign=top width=56>
+      <P>52</P></TD>
+    <TD vAlign=top width=64>
+      <P>40</P></TD>
+    <TD vAlign=top width=60>
+      <P>12</P></TD>
+    <TD vAlign=top width=355>
+      <P>Plate</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>9</P></TD>
+    <TD vAlign=top width=56>
+      <P>62</P></TD>
+    <TD vAlign=top width=64>
+      <P>50</P></TD>
+    <TD vAlign=top width=60>
+      <P>17</P></TD>
+    <TD vAlign=top width=355>
+      <P>Field Plate</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>10</P></TD>
+    <TD vAlign=top width=56>
+      <P>72</P></TD>
+    <TD vAlign=top width=64>
+      <P>60</P></TD>
+    <TD vAlign=top width=60>
+      <P>23</P></TD>
+    <TD vAlign=top width=355>
+      <P>Full Plate</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>11</P></TD>
+    <TD vAlign=top width=56>
+      <P>82</P></TD>
+    <TD vAlign=top width=64>
+      <P>70</P></TD>
+    <TD vAlign=top width=60>
+      <P>30</P></TD>
+    <TD vAlign=top width=355>
+      <P>Dwarven Plate</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>12</P></TD>
+    <TD vAlign=top width=56>
+      <P>92</P></TD>
+    <TD vAlign=top width=64>
+      <P>80</P></TD>
+    <TD vAlign=top width=60>
+      <P>38</P></TD>
+    <TD vAlign=top width=355>
+      <P>?</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=55>
+      <P>13*</P></TD>
+    <TD vAlign=top width=56>
+      <P>102</P></TD>
+    <TD vAlign=top width=64>
+      <P>90</P></TD>
+    <TD vAlign=top width=60>
+      <P>47</P></TD>
+    <TD vAlign=top width=355>
+      <P>??</P></TD></TR></TABLE></P>
+<P>*Higher levels of armor are conceivable.&nbsp; Add 10 
+Levels per point above 13</P>
+<P><U>Armor Value (The Almost Final Defensive Value)</U>
+<P>
+<P></P>
+<P>Once you have determined it’s base points, then you will 
+determine it’s actual ARMOR VALUE, based upon it’s location, and it’s WEIGHT, 
+based upon location, point value, and material type.&nbsp; For example, a Banded 
+Shirt (7 points) would provide a total ARMOR VALUE of 21 (7*3), and weigh 63 
+(7*9) pounds.&nbsp;&nbsp; 
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=118>
+      <P>&nbsp;
+      <P>
+      <P></P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>Armor Value per Point</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>Cloth Weight per Point</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>Leather Weight per Point</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>Metal Weight per Point</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Head</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>2</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Neck</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Arms</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>4.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Wrist (2)</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Hands</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Torso</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>6</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>9</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Waist</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Legs</P></TD>
+    <TD align=middle>2</TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>4.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Feet</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>2</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Held</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>4.5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=118>
+      <P>Wield</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>1.5</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=118>
+      <P align=center>4.5</P></TD></TR></TABLE></P>
+<P>&nbsp;The armor weights are recommendations.&nbsp; If you 
+wish to create a lighter version of chain mail that gives the same armor 
+protection (like Elven Chainmail) go right ahead.&nbsp; It will not increase the 
+level, it will increase the COST of the armor.</P>
+<P><U>Armor Cost</U>
+<P>
+<P></P>
+<P>The formula for the cost of the armor is:
+<P>COST = (A*A + M) * ( S *S *A * A) / (2 * W)
+<P>where</P>
+<P>W = Weight of Armor<BR>A&nbsp; = Armor Points<BR>S&nbsp; = Special weight per 
+point of armor<BR>M = Material value</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+So our example of an iron Banded Shirt would cost 2173.5 (round up to 2174): 
+(7*7+20)*(9*9*7*7)/(2*63).
+<P>
+<P></P>
+<P><U>Final Armor Adjustments</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+After you have computed the Armor Value, consult the materials tables for any 
+bonuses that the material may give.&nbsp; This number is a bonus per Armor 
+Point.&nbsp; If a breast plate of full plate is made from Adamantite (armor 
+bonus of 4), it would gain 12 (4*3) points of protection, bringing it’s total 
+value from 30 (10*3) to 42. (30 + 12).&nbsp; Material modifiers do NOT affect 
+the level of the armor, even though it would have an effective Armor Point total 
+of 14, it would still be available at level 23!&nbsp; Consult the Material 
+Modifiers section below for an Armor Point reference.
+<P><U>Magic Modifiers</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Magic should be controlled by the type of MUD that is being run.&nbsp; If you 
+run a low-fantasy MUD, you may wish to increase the Level requirement for items 
+with magical properties.&nbsp; If you are on a high-fantasy MUD, you may wish to 
+decrease the Level requirements for items with magical properties.&nbsp; Magic 
+comes in at least seven forms:&nbsp; Magic Adjustment, <EM>PropFightSpellCast, 
+PropHaveSpellCast, PropWearSpellCast, PropHaveAdjustor, PropWearAdjuster, 
+PropHaveResistor, PropWearResistor</EM>.
+<P><U>Magic Adjustment</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This field is available on any item, weapon or armor.&nbsp; If the item can be 
+worn (but not used as a weapon), then every point of magic gives 1 point of 
+Armor Value.&nbsp; If the item can be used as a weapon, then it gives +2 to 
+Damage, and +10 to Attack per point of bonus.&nbsp; In either case, the magic 
+adjustment improves the item’s saving throws against attacks that damage it’s 
+condition.&nbsp; Having a Magic Adjustment greater than 0 makes the item magical 
+(and detectable as such).&nbsp; Every 1 point of magic adjustment is worth 5 
+additional levels to the base level of the item.
+<P><EM>PropFightSpellCast</EM>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This property will make a weapon discharge a spell affect with each successful 
+hit.&nbsp; As such, it is very powerful, and the weapon’s level should be 
+increased by twice the spell’s typical level.&nbsp; As with all spell effects, 
+use careful judgment when placing spells on items, and use your own discretion 
+for determining the final level adjustment.
+<P><EM>PropHaveSpellCast</EM>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+By simply having this item, the designated spell is cast on the owner.&nbsp; If 
+this is a positive effect, add the Spell effect’s typical level to the level of 
+the item (at least, depending on usefulness).&nbsp; If having a stone of 
+Invisibility (level 7) is enough to make you invisible, then the stone should 
+require at least a level 7 character (if it did nothing else).&nbsp; On 
+something as powerful as invisibility, you may wish to increase the level even 
+more.
+<P><EM>PropWearSpellCast</EM>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This property makes any worn/wielded item grant the effects of a spell.&nbsp; As 
+a general rule, the item’s level should be increased by half of the spell’s 
+typical level.&nbsp; Again, use your own discretion when creating items that may 
+be very powerful, such as stoneskin or invisibility.
+<P><EM>PropHaveAdjustor</EM>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This property makes an item that is in a MOBs possession gain certain 
+abilities.&nbsp; This is a very powerful effect, since a MOB could conceivably 
+carry a lot of these items.&nbsp; The level increase for items of this type 
+should be at least twice as high as those with the PropWearAdjustor affect.
+<P><EM>PropWearAdjustor</EM>
+<P>
+<P></P>
+<P>This property makes a worn/wielded item grant special 
+benefits to it’s owner.</P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>Level per Point</P></TD>
+    <TD vAlign=top width=468>
+      <P>Affect</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>5</P></TD>
+    <TD vAlign=top width=468>
+      <P>Str, Dex, Con, Int, Wis, Cha</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>1/5</P></TD>
+    <TD vAlign=top width=468>
+      <P>Hit Points, Mana Points</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>1/10</P></TD>
+    <TD vAlign=top width=468>
+      <P>Movement Points</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=468>
+      <P>Armor</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>½</P></TD>
+    <TD vAlign=top width=468>
+      <P>Attack</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>3</P></TD>
+    <TD vAlign=top width=468>
+      <P>Damage</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>2</P></TD>
+    <TD vAlign=top width=468>
+      <P>Disposition=(Good, Neutral, Evil)</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>10</P></TD>
+    <TD vAlign=top width=468>
+      <P>Level</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>?</P></TD>
+    <TD vAlign=top width=468>
+      <P>Rejuv, Hunger, Thirst, Experience</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>5</P></TD>
+    <TD vAlign=top width=468>
+      <P>Senses</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>Variable</P></TD>
+    <TD vAlign=top width=468>
+      <P>Race, Height, Weight, Gender</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=79>
+      <P align=center>5</P></TD>
+    <TD vAlign=top width=468>
+      <P>Speed</P></TD></TR></TABLE></P>
+<P><EM>PropHaveResistor</EM>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This property will give anyone possessing the item the said resistance 
+increase.&nbsp; This is a more powerful version of PropWearResistor.&nbsp; The 
+level increase for this property should be three times that of a 
+PropWearResistor.
+<P><EM>PropWearResistor</EM>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+This property allows an item worn/held/wielded to grant the owner bonuses to 
+various saving throws, or outright immunities to certain attacks.
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>Level per percentage of 
+    resistance</P></TD>
+    <TD vAlign=top width=444>
+      <P>Affect</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>1/5</P></TD>
+    <TD vAlign=top width=444>
+      <P>Gas, Fire, Electrical, Mind, Magic, Cold, Acid, 
+      Water, Evil (Undead), Justice (thief abilities and others)</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>½</P></TD>
+    <TD vAlign=top width=444>
+      <P>Weapons, Blunt, Pierce, Slash (reduces 
+    damage)</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>2</P></TD>
+    <TD vAlign=top width=444>
+      <P>Teleport Immunity (includes gate, summon, and 
+      others)</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>10</P></TD>
+    <TD vAlign=top width=444>
+      <P>Holy Immunity</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>10</P></TD>
+    <TD vAlign=top width=444>
+      <P>Disease Immunity</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=115>
+      <P align=center>10</P></TD>
+    <TD vAlign=top width=444>
+      <P>Poison Immunity</P></TD></TR></TABLE></P>
+<P><U></U>&nbsp;
+<P><U>Other Affects</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+There are many properties available in Coffeemud that enable unique item 
+creation.&nbsp; There are inhibiting properties such as the 
+<EM>PropWearZapper</EM> and <EM>PropHaveZapper</EM> that can be used to reduce 
+the level of the item (I would say as a general rule, for every race restricted, 
+reduce the level requirement by 2, and for every class restricted reduce the 
+level by 1.)&nbsp; Other spell affects may be negative, reducing the value of 
+the item.&nbsp; Still others may be difficult to determine their effects, 
+reducing the value of the item.&nbsp; Use your judgment, or request the system 
+owner’s advice for particularly complicated works of magic.
+<P align=left><U>Material Modifiers</U>&nbsp;</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+The Material that you use to create an item affects it’s overall effectiveness 
+without affecting it’s level.&nbsp; Make these modifications to the item AFTER 
+completing the previous formulas.&nbsp; If you use a non-standard material, do 
+not apply the actual material modifiers (other than value) to the item’s Attack, 
+Damage, or Armor values.&nbsp; A metal club is superior to a wooden club, but 
+using a better type of metal doesn’t increase the bluntness (or even relative 
+hardness) of the club significantly.&nbsp; ROCK is an exception to this 
+rule.</P>
+<P>ALLOWABLE MATERIALS
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Standard</P></TD>
+    <TD vAlign=top width=102>
+      <P>Actual</P></TD>
+    <TD vAlign=top width=104>
+      <P>Damage</P></TD>
+    <TD vAlign=top width=101>
+      <P>Attack</P></TD>
+    <TD vAlign=top width=90>
+      <P>Armor</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=104>
+      <P>-4</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=90>
+      <P>-3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>Precious**</P></TD>
+    <TD vAlign=top width=104>
+      <P>-4</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>-3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>Leather**</P></TD>
+    <TD vAlign=top width=104>
+      <P>-6</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>-4</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>Rock</P></TD>
+    <TD vAlign=top width=104>
+      <P>-2</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>-1</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>Glass</P></TD>
+    <TD vAlign=top width=104>
+      <P>-4</P></TD>
+    <TD vAlign=top width=101>
+      <P>-20</P></TD>
+    <TD vAlign=top width=90>
+      <P>-3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=102>
+      <P>*Other**</P></TD>
+    <TD vAlign=top width=104>
+      <P>-8</P></TD>
+    <TD vAlign=top width=101>
+      <P>-30</P></TD>
+    <TD vAlign=top width=90>
+      <P>-5</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>Metal/Mithril**</P></TD>
+    <TD vAlign=top width=104>
+      <P>+2</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=90>
+      <P>+3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>Precious**</P></TD>
+    <TD vAlign=top width=104>
+      <P>+2</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>0</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>Leather**</P></TD>
+    <TD vAlign=top width=104>
+      <P>-2</P></TD>
+    <TD vAlign=top width=101>
+      <P>0</P></TD>
+    <TD vAlign=top width=90>
+      <P>0</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>Rock</P></TD>
+    <TD vAlign=top width=104>
+      <P>+2</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>+2</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>Glass</P></TD>
+    <TD vAlign=top width=104>
+      <P>-2</P></TD>
+    <TD vAlign=top width=101>
+      <P>-10</P></TD>
+    <TD vAlign=top width=90>
+      <P>0</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=102>
+      <P>*Other**</P></TD>
+    <TD vAlign=top width=104>
+      <P>-6</P></TD>
+    <TD vAlign=top width=101>
+      <P>-30</P></TD>
+    <TD vAlign=top width=90>
+      <P>-3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Metal/Mithril</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+4</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Wooden</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+1</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Precious**</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+1</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Leather</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+1</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Rock</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+3</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>Glass</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>+1</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=105>
+      <P>Cloth</P></TD>
+    <TD vAlign=top width=102>
+      <P>*Other**</P></TD>
+    <TD vAlign=top width=104>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=101>
+      <P align=center>N/A</P></TD>
+    <TD vAlign=top width=90>
+      <P>-2</P></TD></TR></TABLE></P>
+<P>*Consider each on a case by case basis</P>
+<P>**DO NOT apply MATERIAL MODIFIERS to DAMAGE, ATTACK, and 
+ARMOR</P>
+<P><U>Material Indexes</U>
+<P>
+<P></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Once an item is completed, add any values from materials to the end result to 
+get the final values for the item.&nbsp; Note that CONDITION is a relative term 
+that determines ARMOR and WEAPON damage condition.&nbsp; Different types of 
+materials suffer differently from the various attack forms.&nbsp; A blank in 
+this area means that it resists damage normally, and wears at the standard rate 
+for all attacks against that type of material.&nbsp; A ‘+’ means that it holds 
+up better against all forms of attacks.&nbsp; A ‘-‘ means that it suffers more 
+damage from all forms of attacks.&nbsp; 
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+Mithril is a special type of METAL.&nbsp; Therefore, any item that can be made 
+from a metal, can also be made from a mithril.&nbsp; Mithril has different 
+resistance scores than metals, and has other special properties, so it is listed 
+as its own classification.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+If an item is created from a non-standard material, apply those modifiers 
+FIRST.&nbsp; If they don’t allow for a MATERIAL MODIFIER, then skip this 
+step.</P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Stone</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Limestone</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Flint</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Granite</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>2</P></TD>
+    <TD vAlign=top width=84>
+      <P>+10</P></TD>
+    <TD vAlign=top width=85>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P>+1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Obsidian</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>+10</P></TD>
+    <TD vAlign=top width=85>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P>+1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Marble</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>20</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Sand</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-40</P></TD>
+    <TD vAlign=top width=85>
+      <P>-8</P></TD>
+    <TD vAlign=top width=84>
+      <P>-4</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>----</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Coal</P></TD>
+    <TD vAlign=top width=84>
+      <P>ROCK</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-40</P></TD>
+    <TD vAlign=top width=85>
+      <P>-8</P></TD>
+    <TD vAlign=top width=84>
+      <P>-4</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>----</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Iron</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>20</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Lead</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Bronze</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Silver</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>30</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Gold</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>50</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Zinc</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Copper</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Tin</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>-20</P></TD>
+    <TD vAlign=top width=85>
+      <P>-4</P></TD>
+    <TD vAlign=top width=84>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>--</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Steel</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>150</P></TD>
+    <TD vAlign=top width=84>
+      <P>+20</P></TD>
+    <TD vAlign=top width=85>
+      <P>+4</P></TD>
+    <TD vAlign=top width=84>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>++</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Brass</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>120</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Platinum</P></TD>
+    <TD vAlign=top width=84>
+      <P>METAL</P></TD>
+    <TD vAlign=top width=84>
+      <P>80</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=89>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=82>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=83>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=89>
+      <P>Mithril</P></TD>
+    <TD vAlign=top width=84>
+      <P>MITHRIL</P></TD>
+    <TD vAlign=top width=82>
+      <P>200</P></TD>
+    <TD vAlign=top width=84>
+      <P>30</P></TD>
+    <TD vAlign=top width=85>
+      <P>6</P></TD>
+    <TD vAlign=top width=83>
+      <P>3</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=89>
+      <P>Adamantite</P></TD>
+    <TD vAlign=top width=84>
+      <P>MITHRIL</P></TD>
+    <TD vAlign=top width=82>
+      <P>500</P></TD>
+    <TD vAlign=top width=84>
+      <P>40</P></TD>
+    <TD vAlign=top width=85>
+      <P>8</P></TD>
+    <TD vAlign=top width=83>
+      <P>4</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=86>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Wood</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>2</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Pine</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>4</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Balsa</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-10</P></TD>
+    <TD vAlign=top width=85>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P>-1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Oak</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>5</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Maple</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Redwood</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>20</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Hickory</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>5</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Ironwood</P></TD>
+    <TD vAlign=top width=86>
+      <P>WOODEN</P></TD>
+    <TD vAlign=top width=84>
+      <P>25</P></TD>
+    <TD vAlign=top width=84>
+      <P>+10</P></TD>
+    <TD vAlign=top width=85>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P>+1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=87>
+      <P>Type</P></TD>
+    <TD vAlign=top width=83>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Scales</P></TD>
+    <TD vAlign=top width=87>
+      <P>LEATHER</P></TD>
+    <TD vAlign=top width=83>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>++</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Leather</P></TD>
+    <TD vAlign=top width=87>
+      <P>LEATHER</P></TD>
+    <TD vAlign=top width=83>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Fur</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>20</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>+1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Wool</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Feathers</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Cotton</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>5</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Hemp</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>4</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Silk</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>200</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Hide</P></TD>
+    <TD vAlign=top width=84>
+      <P>CLOTH</P></TD>
+    <TD vAlign=top width=84>
+      <P>4</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>ATTACK</P></TD>
+    <TD vAlign=top width=85>
+      <P>DAMAGE</P></TD>
+    <TD vAlign=top width=84>
+      <P>ARMOR</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Glass</P></TD>
+    <TD vAlign=top width=84>
+      <P>GLASS</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Clay</P></TD>
+    <TD vAlign=top width=84>
+      <P>GLASS</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>-20</P></TD>
+    <TD vAlign=top width=85>
+      <P>-4</P></TD>
+    <TD vAlign=top width=84>
+      <P>-2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>--</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>China</P></TD>
+    <TD vAlign=top width=84>
+      <P>GLASS</P></TD>
+    <TD vAlign=top width=84>
+      <P>30</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Crystal</P></TD>
+    <TD vAlign=top width=84>
+      <P>GLASS</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=85>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P>&nbsp;</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Bone</P></TD>
+    <TD vAlign=top width=84>
+      <P>GLASS</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P>+20</P></TD>
+    <TD vAlign=top width=85>
+      <P>+4</P></TD>
+    <TD vAlign=top width=84>
+      <P>+2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>++</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=84>
+      <P>Paper</P></TD>
+    <TD vAlign=top width=84>
+      <P>PAPER</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Material</P></TD>
+    <TD vAlign=top width=79>
+      <P>Type</P></TD>
+    <TD vAlign=top width=53>
+      <P>Value</P></TD>
+    <TD vAlign=top width=78>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Meat</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>4</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Beef</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>6</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Pork</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>8</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Poultry</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>3</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Mutton</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>4</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Fish</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>5</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=103>
+      <P>Eggs</P></TD>
+    <TD vAlign=top width=79>
+      <P>FLESH</P></TD>
+    <TD vAlign=top width=53>
+      <P>2</P></TD>
+    <TD vAlign=top width=78>
+      <P align=center>-</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Material</P></TD>
+    <TD vAlign=top width=85>
+      <P>Type</P></TD>
+    <TD vAlign=top width=78>
+      <P>Value</P></TD>
+    <TD vAlign=top width=83>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Wheat</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Corn</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Rice</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Carrots</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Tomatoes</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Peppers</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Greens</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Fruit</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Apples</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Berries</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Oranges</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Lemons</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Grapes</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>3</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Olives</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Potatoes</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Cactus</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Dates</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Seaweed</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Cocoa</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>4</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Barley</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Mushrooms</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Herbs</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Sugar</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>1</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Hops</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Coffeebeans</P></TD>
+    <TD vAlign=top width=85>
+      <P>Vegetation</P></TD>
+    <TD vAlign=top width=78>
+      <P>2</P></TD>
+    <TD vAlign=top width=83>
+      <P>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Material</P></TD>
+    <TD vAlign=top width=84>
+      <P>Type</P></TD>
+    <TD vAlign=top width=84>
+      <P>Value</P></TD>
+    <TD vAlign=top width=84>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Freshwater</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>0</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Saltwater</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>0</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Drinkable</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>0</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Milk</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>2</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Blood</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Lampoil</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Poison</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Liquor</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>10</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Honey</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>1</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>+</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=86>
+      <P>Coffee</P></TD>
+    <TD vAlign=top width=84>
+      <P>LIQUID</P></TD>
+    <TD vAlign=top width=84>
+      <P>0</P></TD>
+    <TD vAlign=top width=84>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P align=left>
+<TABLE cellSpacing=0 cellPadding=0 border=1>
+  
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Material</P></TD>
+    <TD vAlign=top width=92>
+      <P>Type</P></TD>
+    <TD vAlign=top width=74>
+      <P>Value</P></TD>
+    <TD vAlign=top width=83>
+      <P>Condition</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Jade</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>50</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Diamond</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>5000</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>++++</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Gem</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>1000</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>--</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Pearl</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>1000</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>-</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Opal</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>80</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Amethyst</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>300</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Garnet</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>70</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Aquamarine</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>50</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Topaz</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>200</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Amber</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>80</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR>
+  <TR>
+    <TD vAlign=top width=94>
+      <P>Crysoberyl</P></TD>
+    <TD vAlign=top width=92>
+      <P>PRECIOUS</P></TD>
+    <TD vAlign=top width=74>
+      <P>50</P></TD>
+    <TD vAlign=top width=83>
+      <P align=center>&nbsp;</P></TD></TR></TABLE></P>
+<P>
+<P></P>
+<P class=MsoNormal><STRONG><FONT 
+size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
+<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into Grid 
+areas?</STRONG></FONT></P>
+<P align=left><FONT color=black><STRONG>A</STRONG>. Locale types like MountainsGrid, WoodsGrid, 
+WoodsMaze, PlainsGrid, DesertMaze, etc.. can all contain rejuvinating mobs in 
+them.&nbsp; However, two rules need to be followed for this to work 
+properly.&nbsp; The first is that you can only save mobs which are in the parent 
+Grid room itself.&nbsp; If you have SYSMSGS on, you can tell which room this is 
+because it is the only one with a valid room ID ("MyArea#123") in the 
+description.&nbsp; The child rooms will have blank () room IDs.&nbsp; Since no 
+one ever actually walks into the parent Grid room, the only way to get to it to 
+deposit mobs is using the Archon GOTO command.&nbsp; The second of the two rules 
+is that you must give the mob the Mobile behavior.&nbsp; The mobile behavior is 
+specially coded so that it will take the mob to a random room inside the grid 
+the first time the mob tries to move.&nbsp; </FONT></P>
+<P align=left><STRONG><FONT 
+color=#9400d3 size=4>Q. How does the CoffeeMud News feature 
 work?</FONT></STRONG></P>
-<P align=left><STRONG>A.</STRONG> First, you need to make a StdClanMaster MOB 
-somewhere in the world to create clans. A player would see him, and use the 
-'clancreate' command to create their new clan.&nbsp;The StdClanMaster 
-then&nbsp;puts your clan into a pending state awaiting new members. You have to 
-get at least MINCLANMEMBERS amount of new members before it will activate you 
-(Set in the INI file). Activation means you will be visible in the listing, can 
-buy land, can have bank accounts, and can hire mobs, as well as have politics 
-with others</P>
-<P align=left>Once you've made your clan, people can 'clanapply' to the clan. Of 
-course, the person has to be at least level MINCLANLEVEL (Set in the INI file). 
-'clanapply' can be done even if you're the only one online. Clan bosses and 
-leaders will see new applicants in their 'clandetails' screen, at which point, 
-they can 'clanaccept' or 'clanreject' the player (regardless of online status). 
-Clan bosses can also 'clanassign' people roles, such as treasurer, leader, or 
-even boss. Clan bosses and leaders may, at any time, 'clanexile' a member - as 
-well as members can 'clanresign' </P>
-<P align=left>Once you're accepted into a clan, you can use the clantalk channel 
-to talk to your clan, as well as use the 'clanhome' spell and the 'clandonate' 
-command. The 'clanhome' location and the 'clandonate' location can be set by 
-bosses using the 'clanhomeset' and 'clandonateset' commands. Bosses and 
-treasurers may use 'clanbalance', 'clandeposit' or 'clanwithdraw' at any banker 
-to access an account with that chain. The great thing is, as long as there is at 
-least one ClanMaster in the world, if MINCLANMEMBERS don't at least login in 
-DAYSCLANDEATH days, then the clan will be purged automatically. </P>
-<P align=left><STRONG><FONT color=#9400d3 size=4>Q.</FONT></STRONG></P>
-<P align=left>A.</P>
-
+<P align=left><STRONG>A</STRONG>. 
+Messages can be posted that will appear automatically at login time for those 
+who have not yet read them.&nbsp; This is done by creating a "GenJournal" item 
+and giving it the name "CoffeeMud News".&nbsp; Any messages posted to such a 
+journal will appear at login time.&nbsp; This journal can either be made 
+available to players, or restricted to Archons as you like.</P>
+<P align=left><STRONG><FONT 
+color=#9400d3 size=4>Q. How to Clans 
+work?</FONT></STRONG></P>
+<P align=left><STRONG>A.</STRONG> First, 
+you need to make a StdClanMaster MOB somewhere in the world to create clans. A 
+player would see him, and use the 'clancreate' command to create their new 
+clan.&nbsp;The StdClanMaster then&nbsp;puts your clan into a pending state 
+awaiting new members. You have to get at least MINCLANMEMBERS amount of new 
+members before it will activate you (Set in the INI file). Activation means you 
+will be visible in the listing, can buy land, can have bank accounts, and can 
+hire mobs, as well as have politics with others</P>
+<P align=left>Once you've made your clan, people can 
+'clanapply' to the clan. Of course, the person has to be at least level 
+MINCLANLEVEL (Set in the INI file). 'clanapply' can be done even if you're the 
+only one online. Clan bosses and leaders will see new applicants in their 
+'clandetails' screen, at which point, they can 'clanaccept' or 'clanreject' the 
+player (regardless of online status). Clan bosses can also 'clanassign' people 
+roles, such as treasurer, leader, or even boss. Clan bosses and leaders may, at 
+any time, 'clanexile' a member - as well as members can 'clanresign' </P>
+<P align=left>Once you're accepted into a clan, you can use 
+the clantalk channel to talk to your clan, as well as use the 'clanhome' spell 
+and the 'clandonate' command. The 'clanhome' location and the 'clandonate' 
+location can be set by bosses using the 'clanhomeset' and 'clandonateset' 
+commands. Bosses and treasurers may use 'clanbalance', 'clandeposit' or 
+'clanwithdraw' at any banker to access an account with that chain. The great 
+thing is, as long as there is at least one ClanMaster in the world, if 
+MINCLANMEMBERS don't at least login in DAYSCLANDEATH days, then the clan will be 
+purged automatically. </P>
 </BODY>
 </HTML>
