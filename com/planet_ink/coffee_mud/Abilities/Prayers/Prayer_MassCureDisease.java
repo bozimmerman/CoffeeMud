@@ -74,7 +74,8 @@ public class Prayer_MassCureDisease extends Prayer
 								    Ability A=((Ability)offensiveAffects.elementAt(a));
 								    if(A instanceof DiseaseAffect)
 								    {
-								        if((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel))
+								        if((A.invoker()!=mob)
+								        &&((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel)))
 								            badOnes=true;
 								        else
 											A.unInvoke();

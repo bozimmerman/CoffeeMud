@@ -37,7 +37,7 @@ public class Disease_Migraines extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) terrible headaches.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
-	public int difficultyLevel(){return 7;}
+	public int difficultyLevel(){return 4;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -38,7 +38,7 @@ public class Disease_Lepresy extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
-	public int difficultyLevel(){return 6;}
+	public int difficultyLevel(){return 4;}
 
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{

@@ -30,7 +30,7 @@ public class Disease_Gangrene extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 7;}
+	public int difficultyLevel(){return 4;}
 
 	protected int DISEASE_TICKS(){return new Long(100*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected int DISEASE_DELAY(){return 5;}

@@ -30,7 +30,7 @@ public class Disease_Arthritis extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public int difficultyLevel(){return 6;}
+	public int difficultyLevel(){return 4;}
 
 	protected int DISEASE_TICKS(){return 999999;}
 	protected int DISEASE_DELAY(){return 50;}
