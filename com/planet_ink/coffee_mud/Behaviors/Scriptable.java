@@ -39,13 +39,15 @@ public class Scriptable extends ActiveTicker
 			int y=text.indexOf("~");
 			if(y<0)
 			{
-				V.addElement(text);
+				if(text.length()>0)
+					V.addElement(text);
 				text="";
 			}
 			else
 			{
-				V.addElement(text.substring(0,y));
-				text=text.substring(y+1);
+				if(text.substring(0,y).trim().length()>0)
+					V.addElement(text.substring(0,y).trim());
+				text=text.substring(y+1).trim();
 			}
 		}
 		for(int v=0;v<V.size();v++)
@@ -54,7 +56,7 @@ public class Scriptable extends ActiveTicker
 			Vector script=new Vector();
 			while(s.length()>0)
 			{
-				int y=s.indexOf("|");
+				int y=s.indexOf(";");
 				String cmd="";
 				if(y<0)
 				{
@@ -66,7 +68,8 @@ public class Scriptable extends ActiveTicker
 				else
 				{
 					cmd=s.substring(0,y).trim();
-					script.addElement(cmd);
+					if(cmd.length()>0)
+						script.addElement(cmd);
 					s=s.substring(y+1).trim();
 				}
 				V.setElementAt(script,v);

@@ -1,4 +1,3 @@
-Add retainer capabilities to hireling
 Damn Scriptable Behavior
 the shopkeepers give way to much money for items. It is too lucrative
 ability to know of any new messages in carried or stationary journals at login
@@ -27,6 +26,7 @@ can sit at tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 Infection: Hitpoints are recovered at 1/2 rate. 
+Can we have a new feature? Prop_changeTimeDay targets: items
 add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
