@@ -153,14 +153,7 @@ public class Spell_IncreaseGravity extends Spell
 			{
 				mob.location().send(mob,msg);
 				theGravityRoom=mob.location();
-				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-				{
-					mob.location().addNonUninvokableEffect((Ability)copyOf());
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
-				}
-				else
-					beneficialAffect(mob,mob.location(),adjustedLevel(mob));
+				beneficialAffect(mob,mob.location(),adjustedLevel(mob));
 			}
 		}
 		else

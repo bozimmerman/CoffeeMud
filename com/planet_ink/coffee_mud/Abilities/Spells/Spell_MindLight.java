@@ -89,14 +89,7 @@ public class Spell_MindLight extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-				{
-					mob.location().addNonUninvokableEffect(this);
-					CMClass.DBEngine().DBUpdateRoom(mob.location());
-				}
-				else
-					beneficialAffect(mob,mob.location(),0);
+				beneficialAffect(mob,mob.location(),0);
 				mob.location().recoverRoomStats();
 			}
 		}

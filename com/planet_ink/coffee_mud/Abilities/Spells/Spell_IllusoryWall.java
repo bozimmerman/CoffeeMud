@@ -58,16 +58,7 @@ public class Spell_IllusoryWall extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((CoffeeUtensils.doesOwnThisProperty(mob,room))
-				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room)))
-				||(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
-				{
-					exit.addNonUninvokableEffect(this);
-					CMClass.DBEngine().DBUpdateExits(mob.location());
-				}
-				else
-					beneficialAffect(mob,exit,0);
+				beneficialAffect(mob,exit,0);
 			}
 		}
 
