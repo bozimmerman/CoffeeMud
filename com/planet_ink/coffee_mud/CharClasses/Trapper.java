@@ -112,6 +112,7 @@ public class Trapper extends Thief
 		&&(msg.tool()!=null)
 		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(myChar.location()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(myChar.isMine(msg.tool())))
 		{
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
