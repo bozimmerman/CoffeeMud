@@ -27,6 +27,8 @@ public class CoffeeUtensils
 	public static boolean containsString(String toSrchStr, String srchStr)
 	{
 		if(srchStr.equalsIgnoreCase("all")) return true;
+		if(srchStr.endsWith("$")&&(toSrchStr.toUpperCase().endsWith(srchStr.toUpperCase().substring(0,srchStr.length()-1))))
+		   return true;
 		int x=toSrchStr.toUpperCase().indexOf(srchStr.toUpperCase());
 		if(x<0) return false;
 

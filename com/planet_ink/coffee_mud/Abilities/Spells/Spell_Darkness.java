@@ -48,8 +48,10 @@ public class Spell_Darkness extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.showHappens(Affect.MSG_OK_VISUAL, "The darkness starts to fade.");
 		super.unInvoke();
+		room.recoverRoomStats();
+		room.recoverRoomStats();
+		room.showHappens(Affect.MSG_OK_VISUAL, "The darkness starts to fade.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

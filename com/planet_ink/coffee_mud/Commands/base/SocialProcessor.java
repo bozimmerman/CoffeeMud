@@ -11,6 +11,8 @@ public class SocialProcessor
 
 	public Item possibleGold(MOB mob, String itemID)
 	{
+		if(itemID.toUpperCase().trim().endsWith(" COINS"))
+			itemID=itemID.substring(0,itemID.length()-6);
 		int gold=Util.s_int(itemID);
 		if(gold>0)
 		{

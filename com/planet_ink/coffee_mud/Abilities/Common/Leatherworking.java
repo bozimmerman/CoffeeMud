@@ -206,7 +206,7 @@ public class LeatherWorking extends CommonSkill
 						break;
 					}
 					else
-					if(((level+3)<=(mob.envStats().level()))
+					if(((level+5)<=(mob.envStats().level()))
 					&&(("hard "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
 					{
 						multiplier=2;
@@ -215,7 +215,7 @@ public class LeatherWorking extends CommonSkill
 						break;
 					}
 					else
-					if(((level+6)<=(mob.envStats().level()))
+					if(((level+11)<=(mob.envStats().level()))
 					&&(("studded "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
 					{
 						multiplier=3;

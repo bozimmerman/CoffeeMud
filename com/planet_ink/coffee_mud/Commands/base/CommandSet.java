@@ -180,6 +180,7 @@ public class CommandSet extends Hashtable
 		put("DOWN",new Integer(DOWN));
 			put("D",new Integer(DOWN));
 		put("DRINK",new Integer(DRINK));
+			put("DR",new Integer(DRINK));
 		put("DROP",new Integer(DROP));
 			put("DRO",new Integer(DROP));
 		put("DUMPFILE",new Integer(DUMPFILE));

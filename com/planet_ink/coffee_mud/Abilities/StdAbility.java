@@ -433,12 +433,11 @@ public class StdAbility implements Ability, Cloneable
 
 	public void helpProfficiency(MOB mob)
 	{
-
-		Ability A=(Ability)mob.fetchAbility(this.ID());
+		Ability A=(Ability)mob.fetchAbility(ID());
 		if(A==null) return;
 		if(A.profficiency()<100)
 		{
-			if(Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random())>=A.profficiency())
+			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{
 				// very important, since these can be autoinvoked affects (copies)!
 				A.setProfficiency(A.profficiency()+1);

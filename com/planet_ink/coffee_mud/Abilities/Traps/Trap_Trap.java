@@ -234,7 +234,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			CMMap.addRoom(myPitUp);
 		}
 		myPit.bringMobHere(mob,false);
-		if(mob.fetchAffect("Spell_FeatherFall")!=null)
+		if(mob.envStats().weight()<5)
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{

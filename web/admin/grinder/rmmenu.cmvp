@@ -31,7 +31,7 @@
 <B>Room: @RequestParameter?ROOM@ (@RoomName@)</B>
 <BR>
 <INPUT TYPE=BUTTON NAME=EDITROOM VALUE="Edit Room" ONCLICK="Clicked('/grinder/editroom.cmvp');">
-<INPUT TYPE=BUTTON NAME=DELROOM VALUE="Delete Room" ONCLICK="Clicked('/grinder/deleteroom.cmvp');">
+<INPUT TYPE=BUTTON NAME=DELROOM VALUE="Delete Room" ONCLICK="if(confirm('Are you sure you want to delete this room?'))Clicked('/grinder/deleteroom.cmvp');">
 <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 </FORM>
 </BODY>

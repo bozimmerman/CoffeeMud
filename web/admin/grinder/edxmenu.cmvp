@@ -31,7 +31,7 @@
 <B>@RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@) to @RequestParameter?LINKSTO@</B>
 <BR>
 <INPUT TYPE=BUTTON NAME=EDITEXIT VALUE="Edit Exit" ONCLICK="Clicked('editexit.cmvp');">
-<INPUT TYPE=BUTTON NAME=DELEXIT VALUE="Delete Exit" ONCLICK="Clicked('delexit.cmvp');">
+<INPUT TYPE=BUTTON NAME=DELEXIT VALUE="Delete Exit" ONCLICK="if(confirm('Are you sure you want to delete this exit?'))Clicked('delexit.cmvp');">
 <INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 </BODY>
 </HTML>

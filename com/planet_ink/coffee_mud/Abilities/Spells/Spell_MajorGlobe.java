@@ -99,9 +99,9 @@ public class Spell_MajorGlobe extends Spell
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
 			}
-			else
-				beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s).");
 		}
+		else
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a great anti-magic globe, but fail(s).");
 
 		return success;
 	}

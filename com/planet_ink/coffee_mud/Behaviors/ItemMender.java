@@ -73,11 +73,10 @@ public class ItemMender extends StdBehavior
 		
 		if((source!=observer)
 		&&(affect.amITarget(observer))
-		&&(Sense.canBeSeenBy(source,observer))
-		&&(Sense.canBeSeenBy(observer,source))
 		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&(!source.isASysOp(source.location()))
 		&&(affect.tool()!=null)
-		&&(!(affect.tool() instanceof Item)))
+		&&(affect.tool() instanceof Item))
 		{
 			source.setMoney(source.getMoney()-cost((Item)affect.tool()));
 			((Item)affect.tool()).setUsesRemaining(100);

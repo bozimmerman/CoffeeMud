@@ -33,6 +33,38 @@ public class Chant_Goodberry extends Chant
 		return new Chant_Goodberry();
 	}
 
+	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
+	{
+		if((newTarget!=null)
+		&&(newTarget instanceof Food)
+		&&(!(newTarget instanceof Pill))
+		&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
+		&&(newTarget.container()==originaltarget.container())
+		&&(newTarget.name().equals(originaltarget.name())))
+		{
+			Pill newItem=(Pill)CMClass.getItem("GenPill");
+			newItem.setName(newTarget.name());
+			newItem.setDisplayText(newTarget.displayText());
+			newItem.setDescription(newTarget.description());
+			newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
+			newItem.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
+			newItem.setSpellList(";Prayer_CureLight;");
+			newItem.recoverEnvStats();
+			newItem.setMiscText(newItem.text());
+			Item location=newTarget.container();
+			newTarget.destroyThis();
+			if(owner instanceof MOB)
+				((MOB)owner).addInventory(newItem);
+			else
+			if(owner instanceof Room)
+				((Room)owner).addItemRefuse(newItem);
+			newItem.setContainer(location);
+			return true;
+		}
+		return false;
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
@@ -60,38 +92,28 @@ public class Chant_Goodberry extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> begin to glow!");
-				for(int i=0;i<mob.inventorySize();i++)
-				{
-					Item newTarget=mob.fetchInventory(i);
-					if((newTarget!=null)
-					&&(newTarget instanceof Food)
-					&&(!(newTarget instanceof Pill))
-					&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
-					&&(newTarget.container()==target.container())
-					&&(newTarget.name().equals(target.name())))
+				if(owner instanceof MOB)
+					for(int i=0;i<((MOB)owner).inventorySize();i++)
 					{
-						Pill newItem=(Pill)CMClass.getItem("GenPill");
-						newItem.setName(newTarget.name());
-						newItem.setDisplayText(newTarget.displayText());
-						newItem.setDescription(newTarget.description());
-						newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
-						newItem.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
-						newItem.setSpellList(";Prayer_CureLight;");
-						newItem.recoverEnvStats();
-						newItem.setMiscText(newItem.text());
-						Item location=newTarget.container();
-						newTarget.destroyThis();
-						if(owner instanceof MOB)
-							((MOB)owner).addInventory(newItem);
-						else
-						if(owner instanceof Room)
-							((Room)owner).addItemRefuse(newItem);
-						newItem.setContainer(location);
-						if((--numAffected)==0)
-							break;
-						i=-1;
+						Item newTarget=((MOB)owner).fetchInventory(i);
+						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
+						{
+							if((--numAffected)==0)
+								break;
+							i=-1;
+						}
 					}
-				}
+				if(owner instanceof Room)
+					for(int i=0;i<((Room)owner).numItems();i++)
+					{
+						Item newTarget=((Room)owner).fetchItem(i);
+						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
+						{
+							if((--numAffected)==0)
+								break;
+							i=-1;
+						}
+					}
 			}
 		}
 		else

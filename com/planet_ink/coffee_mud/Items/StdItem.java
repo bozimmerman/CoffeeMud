@@ -427,7 +427,13 @@ public class StdItem implements Item
 	
 	public boolean savable(){return true;}
 	
-
+	protected String possessionTimeLeftString()
+	{
+		if(possessionTime()==null)
+			return "N/A";
+		return ""+(possessionTime().getTimeInMillis()-IQCalendar.getInstance().getTimeInMillis());
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -705,7 +711,7 @@ public class StdItem implements Item
 				if(Sense.canBeSeenBy(this,mob))
 				{
 					if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
-						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rMisc  :'"+text()+"\n\r"+description()+"\n\r");
+						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+possessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)
 						mob.tell("You don't see anything special about "+this.name());

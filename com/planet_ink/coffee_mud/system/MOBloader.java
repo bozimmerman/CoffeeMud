@@ -182,6 +182,7 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR");
+			if(R!=null)
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
@@ -211,6 +212,7 @@ public class MOBloader
 			head.append(Util.padRight("Lvl",4)+" ");
 			head.append(Util.padRight("Last",18));
 			head.append("] Character name\n\r");
+			if(R!=null)
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
@@ -250,6 +252,7 @@ public class MOBloader
 			head.append(Util.padRight("Lvl",4)+" ");
 			head.append(Util.padRight("Exp/Lvl",17));
 			head.append("] Character name\n\r");
+			if(R!=null)
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");

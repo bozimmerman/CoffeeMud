@@ -40,7 +40,7 @@
 </TD><TD ALIGN=CENTER>
 <INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 </TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="Clicked('areagone.cmvp');">
+<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
 </TD>
 </TR></TABLE>
 @else@

@@ -64,6 +64,8 @@ public class Scoring
 				if(R!=null)
 					R.showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
 			}
+			mob.session().setKillFlag(true);
+			mob.session().setMob(null);
 		}
 		else
 			mob.tell("Whew.  Close one.");

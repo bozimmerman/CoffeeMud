@@ -1014,8 +1014,6 @@ public class TelnetSession extends Thread implements Session
 						}
 					}
 					status=Session.STATUS_LOGOUT2;
-					if(mob!=null)
-						Log.sysOut("Session","logout: "+mob.name());
 				}
 				else
 				{
@@ -1063,6 +1061,7 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
+			Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();
 			mob.setSession(null);
 			mob=null;
