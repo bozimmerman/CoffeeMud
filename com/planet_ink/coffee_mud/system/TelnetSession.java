@@ -426,6 +426,8 @@ public class TelnetSession extends Thread implements Session
 		print(Message);
 		String input=blockingIn();
 		if(input==null) return "";
+		if(input.endsWith('\\')) 
+			return input.substring(0,input.length()-1);
 		return input;
 	}
 
