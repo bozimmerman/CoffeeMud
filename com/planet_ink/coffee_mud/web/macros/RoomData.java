@@ -406,12 +406,19 @@ public class RoomData extends StdWebMacro
 				MOB M=(MOB)moblist.elementAt(i);
 				str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
 			}
-			for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+			StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
+			if(mlist==null)
 			{
-				MOB M=(MOB)m.nextElement();
-				if(!M.isGeneric())
-				str.append("<OPTION VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
+				mlist=new StringBuffer("");
+				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+				{
+					MOB M=(MOB)m.nextElement();
+					if(!M.isGeneric())
+						mlist.append("<OPTION VALUE=\""+M.ID()+"\">"+M.Name()+" ("+M.ID()+")");
+				}
+				Resources.submitResource("MUDGRINDER-MOBLIST",mlist);
 			}
+			str.append(mlist);
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
@@ -477,9 +484,10 @@ public class RoomData extends StdWebMacro
 				Item I=(Item)itemlist.elementAt(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
-			Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMLIST");
-			if(sorted==null)
+			StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");
+			if(ilist==null)
 			{
+				ilist=new StringBuffer("");
 				Vector sortMe=new Vector();
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
 				{
@@ -501,11 +509,12 @@ public class RoomData extends StdWebMacro
 					Item I=(Item)i.nextElement();
 					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
 				}
-				sorted=(Object[])(new TreeSet(sortMe)).toArray();
-				Resources.submitResource("MUDGRINDER-ITEMLIST",sorted);
+				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				for(int i=0;i<sorted.length;i++)
+					ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+				Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);
 			}
-			for(int i=0;i<sorted.length;i++)
-				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+			str.append(ilist);
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");

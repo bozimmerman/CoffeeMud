@@ -246,9 +246,22 @@ public class MobData extends StdWebMacro
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=50%>");
-			Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-STORESTUFF");
-			if(sortedA==null)
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
+			for(int i=0;i<RoomData.items.size();i++)
 			{
+				Item I=(Item)RoomData.items.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+			}
+			for(int i=0;i<RoomData.mobs.size();i++)
+			{
+				MOB I=(MOB)RoomData.mobs.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
+			}
+			StringBuffer bufA=(StringBuffer)Resources.getResource("MUDGRINDER-STORESTUFF");
+			if(bufA==null)
+			{
+				bufA=new StringBuffer("");
 				Vector sortMeA=new Vector();
 				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					sortMeA.addElement(CMClass.className(a.nextElement()));
@@ -262,26 +275,15 @@ public class MobData extends StdWebMacro
 					sortMeA.addElement(CMClass.className(i.nextElement()));
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
 					sortMeA.addElement(CMClass.className(i.nextElement()));
-				sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
-				Resources.submitResource("MUDGRINDER-STORESTUFF",sortedA);
+				Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+				for(int r=0;r<sortedA.length;r++)
+				{
+					String cnam=(String)sortedA[r];
+					bufA.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
+				Resources.submitResource("MUDGRINDER-STORESTUFF",bufA);
 			}
-			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
-			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
-			for(int i=0;i<RoomData.items.size();i++)
-			{
-				Item I=(Item)RoomData.items.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-			}
-			for(int i=0;i<RoomData.mobs.size();i++)
-			{
-				MOB I=(MOB)RoomData.mobs.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-			}
-			for(int r=0;r<sortedA.length;r++)
-			{
-				String cnam=(String)sortedA[r];
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
-			}
+			str.append(bufA);
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>Stock:");
 			str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
@@ -692,9 +694,10 @@ public class MobData extends StdWebMacro
 				Item I=(Item)itemlist.elementAt(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
-			Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-MOBPOSS");
-			if(sorted==null)
+			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");
+			if(mposs==null)
 			{
+				mposs=new StringBuffer("");
 				Vector sortMe=new Vector();
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
 				{
@@ -716,11 +719,12 @@ public class MobData extends StdWebMacro
 					Item I=(Item)i.nextElement();
 					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
 				}
-				sorted=(Object[])(new TreeSet(sortMe)).toArray();
-				Resources.submitResource("MUDGRINDER-POSS",sorted);
+				Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				for(int i=0;i<sorted.length;i++)
+					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+				Resources.submitResource("MUDGRINDER-POSS",mposs);
 			}
-			for(int i=0;i<sorted.length;i++)
-				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
+			str.append(mposs);
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");

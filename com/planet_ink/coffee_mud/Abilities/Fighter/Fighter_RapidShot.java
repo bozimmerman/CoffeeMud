@@ -12,7 +12,7 @@ public class Fighter_RapidShot extends StdAbility
 	public String name(){ return "Rapid Shot";}
 	public String displayText(){ return "";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	protected int canAffectCode(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}

@@ -45,15 +45,6 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-			Object[] sortedB=null;
-			Vector sortMeB=new Vector();
-			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
-			{
-				Behavior B=(Behavior)b.nextElement();
-				if(B.canImprove(E))
-					sortMeB.addElement(CMClass.className(B));
-			}
-			sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -70,6 +61,16 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
+			
+			Object[] sortedB=null;
+			Vector sortMeB=new Vector();
+			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+			{
+				Behavior B=(Behavior)b.nextElement();
+				if(B.canImprove(E))
+					sortMeB.addElement(CMClass.className(B));
+			}
+			sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
 			{
 				String cnam=(String)sortedB[r];

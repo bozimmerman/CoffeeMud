@@ -11,7 +11,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 	public String name(){ return "Return Projectile";}
 	public String displayText(){ return "";}
 	public int quality(){return Ability.OK_SELF;}
-	protected int canAffectCode(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
