@@ -120,7 +120,7 @@ public class Scrapping extends CommonSkill
 		}
 
 		LandTitle t=CoffeeUtensils.getLandTitle(mob.location());
-		if((t!=null)&&(t.landOwner().length()>0)&&(!t.landOwner().equals(mob.Name())))
+		if((t!=null)&&(!CoffeeUtensils.doesOwnThisProperty(mob,mob.location())))
 		{
 			mob.tell("You are not allowed to scrap anything here.");
 			return false;

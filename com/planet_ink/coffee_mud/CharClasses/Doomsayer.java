@@ -37,6 +37,8 @@ public class Doomsayer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Ember",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_CurseFlames",false);
 
@@ -99,7 +101,7 @@ public class Doomsayer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_CurseMinds",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_HealUndead",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Doomspout",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);

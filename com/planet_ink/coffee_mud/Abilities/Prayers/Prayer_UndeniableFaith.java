@@ -22,7 +22,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		MOB M=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			M.tell("Your undeniable faith is finally subsided.");
+			M.tell("Your compelled faith is finally subsided.");
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -81,19 +81,19 @@ public class Prayer_UndeniableFaith extends Prayer
 		if((mob.getWorshipCharID().length()==0)
 		||(CMMap.getDeity(mob.getWorshipCharID())==null))
 		{
-			mob.tell("You must worship a god to use this prayer.");
+			if(!auto) mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
 		Deity D=CMMap.getDeity(mob.getWorshipCharID());
 		if((target.getWorshipCharID().length()>0)
 		&&(CMMap.getDeity(target.getWorshipCharID())!=null))
 		{
-			mob.tell(target.name()+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
+			if(!auto) mob.tell(target.name()+" worships "+target.getWorshipCharID()+", and may not be converted with this prayer.");
 			return false;
 		}
-		if(Sense.isAnimalIntelligence(target)||Sense.isGolem(target)||(D==null))
+		if((Sense.isAnimalIntelligence(target)||Sense.isGolem(target)||(D==null)))
 		{
-			mob.tell(target.name()+" can not be converted with this prayer.");
+			if(!auto) mob.tell(target.name()+" can not be converted with this prayer.");
 			return false;
 		}
 
@@ -109,19 +109,18 @@ public class Prayer_UndeniableFaith extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
-			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVES!!!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
+			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
 			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
 			&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
 				mob.location().send(mob,msg3);
 				if((msg.value()<=0)&&(msg3.value()<=0))
 				{
-					mob.location().send(mob,msg2);
+					target.location().send(target,msg2);
 					target.setWorshipCharID(godName);
 					if(mob!=target)
 						MUDFight.postExperience(mob,target,null,25,false);

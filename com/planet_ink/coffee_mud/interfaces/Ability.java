@@ -74,8 +74,8 @@ public interface Ability  extends Environmental
 	public static final int FLAG_PARALYZING=2048;
 	public static final int FLAG_MOONSUMMONING=4096;
 	public static final int FLAG_HEALING=16384;
-	//public static final int FLAG_=32768;
-	//public static final int FLAG_=65536;
+	public static final int FLAG_CURSE=32768;
+	public static final int FLAG_BLESSING=65536;
 	public long flags();
 	// these are flags which deliver slightly more
 	// specific information about this ability.

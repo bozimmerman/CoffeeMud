@@ -486,6 +486,8 @@ public class CoffeeUtensils
 		if(title.landOwner()==null) return false;
 		if(title.landOwner().length()==0) return false;
 		if(title.landOwner().equals(mob.Name())) return true;
+		if((title.landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
+		   return true;
 		if(title.landOwner().equals(mob.getClanID()))
 		{
 			Clan C=Clans.getClan(mob.getClanID());

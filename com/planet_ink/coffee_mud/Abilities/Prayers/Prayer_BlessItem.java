@@ -13,7 +13,7 @@ public class Prayer_BlessItem extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
 	public Environmental newInstance(){	return new Prayer_BlessItem();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -79,7 +79,7 @@ public class Prayer_BlessItem extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Prayer_Bless.endIt(target,0);
+				Prayer_Bless.endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
 				beneficialAffect(mob,target,0);
 				target.recoverEnvStats();
 				mob.recoverEnvStats();

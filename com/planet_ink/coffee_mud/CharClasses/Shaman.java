@@ -34,6 +34,8 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);

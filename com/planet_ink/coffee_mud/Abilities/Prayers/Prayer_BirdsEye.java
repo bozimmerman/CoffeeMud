@@ -36,7 +36,7 @@ public class Prayer_BirdsEye extends Prayer
 						str.append(CMMap.getExtendedRoomID((Room)set.elementAt(i))+";");
 					I.setMiscText(str.toString());
 					I.baseEnvStats().setDisposition(EnvStats.IS_GLOWING);
-					msg=new FullMsg(mob,I,CMMsg.MSG_EXAMINESOMETHING,null);
+					msg=new FullMsg(mob,I,CMMsg.MSG_READSOMETHING,null);
 					mob.addInventory(I);
 					mob.location().send(mob,msg);
 					I.destroy();

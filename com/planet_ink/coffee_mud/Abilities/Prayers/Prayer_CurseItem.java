@@ -11,7 +11,7 @@ public class Prayer_CurseItem extends Prayer
 	public String name(){ return "Curse Item";}
 	public String displayText(){ return "(Cursed)";}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_CurseItem();}
@@ -119,7 +119,7 @@ public class Prayer_CurseItem extends Prayer
 					mob.location().send(mob,msg2);
 				if(msg.value()<=0)
 				{
-					Prayer_Curse.endIt(target,0);
+					Prayer_Curse.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,0,-1);
 					target.recoverEnvStats();
 					mob.recoverEnvStats();

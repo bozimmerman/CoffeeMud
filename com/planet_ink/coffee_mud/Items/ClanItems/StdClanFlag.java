@@ -137,7 +137,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 						T=CoffeeUtensils.getLandTitle(R);
 					}
 					if((T==null)
-					||((!T.landOwner().equals(clanID()))&&(!T.landOwner().equals(msg.source().Name()))))
+					||((!T.landOwner().equals(clanID()))
+					   &&((!T.landOwner().equals(msg.source().getLeigeID()))||(!msg.source().isMarriedToLeige()))
+					   &&(!T.landOwner().equals(msg.source().Name()))))
 					{
 						if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 						if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();

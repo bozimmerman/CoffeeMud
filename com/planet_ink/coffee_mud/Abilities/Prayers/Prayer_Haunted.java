@@ -58,7 +58,7 @@ public class Prayer_Haunted extends Prayer
 			{
 				Prayer_AnimateGhost.makeGhostFrom(R,B,null,level);	
 				B.destroy();
-				level+=2;
+				level+=5;
 				numDone++;
 			}
 		}

@@ -13,7 +13,7 @@ public class Prayer_Vampirism extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	public Environmental newInstance(){	return new Prayer_Vampirism();}
 
 	public void unInvoke()

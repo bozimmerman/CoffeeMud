@@ -11,7 +11,7 @@ public class Prayer_Curse extends Prayer
 	public String name(){ return "Curse";}
 	public String displayText(){ return "(Cursed)";}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_Curse();}
@@ -67,45 +67,29 @@ public class Prayer_Curse extends Prayer
 		return target;
 	}
 
+	public static void endLowerBlessings(Environmental target, int level)
+	{
+		Vector V=Sense.flaggedAffects(target,Ability.FLAG_BLESSING);
+		for(int v=0;v<V.size();v++)
+		{
+			Ability A=(Ability)V.elementAt(v);
+			if(CMAble.lowestQualifyingLevel(A.ID())<=level)
+				A.unInvoke();
+		}
+	}
 	public static boolean isBlessed(Item item)
 	{
-		if(item.fetchEffect("Prayer_Bless")!=null)
-			return true;
-		if(item.fetchEffect("Prayer_HolyAura")!=null)
-			return true;
-		if(item.fetchEffect("Prayer_BlessItem")!=null)
-			return true;
-		if(item.fetchEffect("Prayer_HolyWord")!=null)
-			return true;
-		return false;
+		return Sense.flaggedAffects(item,Ability.FLAG_BLESSING).size()>0;
 	}
 
-	public static void endIt(Environmental target, int level)
+	public static void endLowerCurses(Environmental target, int level)
 	{
-		for(int a=target.numEffects()-1;a>=0;a--)
+		Vector V=Sense.flaggedAffects(target,Ability.FLAG_CURSE);
+		for(int v=0;v<V.size();v++)
 		{
-			Ability A=target.fetchEffect(a);
-			if(A!=null)
-			{
-				if(A instanceof Prayer_Bless)
-					A.unInvoke();
-				if(A instanceof Prayer_BlessItem)
-					A.unInvoke();
-				if(A instanceof Prayer_Sanctuary)
-					A.unInvoke();
-				if((A instanceof Prayer_HolyAura)&&(level>0))
-					A.unInvoke();
-				if((A instanceof Prayer_HolyWord)&&(level>1))
-					A.unInvoke();
-				if((A instanceof Prayer_UnholyWord)&&(level!=2))
-					A.unInvoke();
-				if((A instanceof Prayer_Curse)&&(level!=0))
-					A.unInvoke();
-				if((A instanceof Prayer_CurseItem)&&(level!=0))
-					A.unInvoke();
-				if((A instanceof Prayer_GreatCurse)&&(level!=1))
-					A.unInvoke();
-			}
+			Ability A=(Ability)V.elementAt(v);
+			if(CMAble.lowestQualifyingLevel(A.ID())<level)
+				A.unInvoke();
 		}
 	}
 
@@ -134,10 +118,10 @@ public class Prayer_Curse extends Prayer
 					Item I=getSomething(mob,true);
 					if(I!=null)
 					{
-						endIt(I,0);
+						endLowerBlessings(I,CMAble.lowestQualifyingLevel(ID()));
 						I.recoverEnvStats();
 					}
-					endIt(target,0);
+					endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,0,-1);
 					target.recoverEnvStats();
 				}

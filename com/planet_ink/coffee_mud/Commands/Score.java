@@ -51,7 +51,12 @@ public class Score extends Affect
 		if(mob.charStats().getStat(CharStats.GENDER)=='F') genderName="female";
 		msg.append("You are a ^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getLeigeID().length()>0)
-			msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
+		{
+			if(mob.isMarriedToLeige())
+				msg.append(" who is married to ^H"+mob.getLeigeID()+"^?");
+			else
+				msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
+		}
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");

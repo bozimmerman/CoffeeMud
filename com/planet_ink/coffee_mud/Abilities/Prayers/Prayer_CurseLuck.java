@@ -11,7 +11,7 @@ public class Prayer_CurseLuck extends Prayer
 	public String name(){return "Curse Luck";}
 	public String displayText(){return "(Cursed Luck)";}
 	public int quality(){return MALICIOUS;};
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_CurseLuck();}
 	private HashSet permProts=new HashSet();
@@ -32,21 +32,21 @@ public class Prayer_CurseLuck extends Prayer
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.SAVE_WATER,-100000);
-		affectableStats.setStat(CharStats.SAVE_UNDEAD,-100000);
-		affectableStats.setStat(CharStats.SAVE_TRAPS,-100000);
-		affectableStats.setStat(CharStats.SAVE_POISON,-100000);
-		affectableStats.setStat(CharStats.SAVE_PARALYSIS,-100000);
-		affectableStats.setStat(CharStats.SAVE_MIND,-100000);
-		affectableStats.setStat(CharStats.SAVE_MAGIC,-100000);
-		affectableStats.setStat(CharStats.SAVE_JUSTICE,-100000);
-		affectableStats.setStat(CharStats.SAVE_GENERAL,-100000);
-		affectableStats.setStat(CharStats.SAVE_GAS,-100000);
-		affectableStats.setStat(CharStats.SAVE_FIRE,-100000);
-		affectableStats.setStat(CharStats.SAVE_ELECTRIC,-100000);
-		affectableStats.setStat(CharStats.SAVE_DISEASE,-100000);
-		affectableStats.setStat(CharStats.SAVE_COLD,-100000);
-		affectableStats.setStat(CharStats.SAVE_ACID,-100000);
+		affectableStats.setStat(CharStats.SAVE_WATER,-100);
+		affectableStats.setStat(CharStats.SAVE_UNDEAD,-100);
+		affectableStats.setStat(CharStats.SAVE_TRAPS,-100);
+		affectableStats.setStat(CharStats.SAVE_POISON,-100);
+		affectableStats.setStat(CharStats.SAVE_PARALYSIS,-100);
+		affectableStats.setStat(CharStats.SAVE_MIND,-100);
+		affectableStats.setStat(CharStats.SAVE_MAGIC,-100);
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,-100);
+		affectableStats.setStat(CharStats.SAVE_GENERAL,-100);
+		affectableStats.setStat(CharStats.SAVE_GAS,-100);
+		affectableStats.setStat(CharStats.SAVE_FIRE,-100);
+		affectableStats.setStat(CharStats.SAVE_ELECTRIC,-100);
+		affectableStats.setStat(CharStats.SAVE_DISEASE,-100);
+		affectableStats.setStat(CharStats.SAVE_COLD,-100);
+		affectableStats.setStat(CharStats.SAVE_ACID,-100);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)

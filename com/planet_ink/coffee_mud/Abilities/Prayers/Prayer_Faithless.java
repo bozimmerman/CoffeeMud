@@ -19,14 +19,14 @@ public class Prayer_Faithless extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(target.charStats().getCurrentClass().baseClass().equals("Cleric"))
+		if((!auto)&&(target.charStats().getCurrentClass().baseClass().equals("Cleric")))
 		{
 			mob.tell(target.name()+" can not be affected by this prayer.");
 			return false;
 		}
 		if(Sense.isAnimalIntelligence(target)||Sense.isGolem(target))
 		{
-			mob.tell(target.name()+" can not be affected by this prayer.");
+			if(!auto)mob.tell(target.name()+" can not be affected by this prayer.");
 			return false;
 		}
 
@@ -44,8 +44,8 @@ public class Prayer_Faithless extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to lose faith!^?");
-			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_REBUKE,"<S-NAME> LOSES FAITH!!!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to lose faith!^?");
+			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_REBUKE,"<S-NAME> LOSE(S) FAITH!!!");
 			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))

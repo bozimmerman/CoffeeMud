@@ -1058,7 +1058,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						roomsHandling.addElement(V2.elementAt(v));
 					Item I=CMClass.getItem("GenTitle");
 					((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
-					if(((LandTitle)I).landOwner().equals(name))
+					if((((LandTitle)I).landOwner().equals(name))
+					   ||(((LandTitle)I).landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
 					{
 						if(!I.Name().endsWith(" (Copy)"))
 							I.setName(I.Name()+" (Copy)");
@@ -1081,7 +1082,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 							else
 								continue;
-							if(L2.landOwner().equals(name))
+							if((L2.landOwner().equals(name))
+							||(L2.landOwner().equals(mob.getLeigeID())&&(mob.isMarriedToLeige())))
 							{ skipThisOne=false; break;}
 							if(L2.landOwner().length()>0)
 								skipThisOne=true;

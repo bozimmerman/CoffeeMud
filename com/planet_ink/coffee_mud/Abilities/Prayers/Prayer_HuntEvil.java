@@ -13,7 +13,7 @@ public class Prayer_HuntEvil extends Prayer
 	public String name(){ return "Hunt Evil";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_TRACKING;}
 	public String displayText(){return "(Hunting Evil)";}
-	protected String word="evil";
+	protected String word(){return "evil";}
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
@@ -90,7 +90,7 @@ public class Prayer_HuntEvil extends Prayer
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already trying to hunt "+word+".");
+			mob.tell("You are already trying to hunt "+word()+".");
 			return false;
 		}
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
@@ -111,6 +111,17 @@ public class Prayer_HuntEvil extends Prayer
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
+		for(int i=0;i<1000;i++)
+		{
+			Room R=mob.location().getArea().getRandomRoom();
+			if((gameHere(R)!=null)&&(!rooms.contains(R)))
+			{
+				rooms.addElement(R);
+				break;
+			}
+		}
+		
+		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -119,12 +130,24 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			if(Sense.canAccess(mob,R))
-				if(gameHere(R)!=null)
+			for(int i=0;i<1000;i++)
+			{
+				Room R=CMMap.getRandomRoom();
+				if((gameHere(R)!=null)&&(!rooms.contains(R)))
+				{
 					rooms.addElement(R);
+					break;
+				}
+			}
+			if(rooms.size()<=0)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(Sense.canAccess(mob,R))
+					if(gameHere(R)!=null)
+						rooms.addElement(R);
+			}
 		}
 
 		if(rooms.size()>0)
@@ -141,7 +164,7 @@ public class Prayer_HuntEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for the trail to "+word+".^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for the trail to "+word()+".^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -154,7 +177,7 @@ public class Prayer_HuntEvil extends Prayer
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for the trail to "+word+", but nothing happens.");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for the trail to "+word()+", but nothing happens.");
 
 
 		// return whether it worked

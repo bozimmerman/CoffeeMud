@@ -352,7 +352,16 @@ public class StdMOB implements MOB
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-
+	public boolean isMarriedToLeige()
+	{
+		if(getLeigeID().length()==0) return false;
+		if(getLeigeID().equals(Name())) return false;
+		MOB M=CMMap.getLoadPlayer(getLeigeID());
+		if(M==null){ setLeigeID(""); return false;}
+		if(M.getLeigeID().equals(getLeigeID()))
+			return true;
+		return false;
+	}
 	public CharState curState(){return curState;}
 	public CharState maxState(){return maxState;}
 	public CharState baseState(){return baseState;}
@@ -1140,7 +1149,10 @@ public class StdMOB implements MOB
 						}
 						if((getLeigeID().length()>0)&&(target.Name().equals(getLeigeID())))
 						{
-							tell("You are serving '"+getLeigeID()+"'!");
+							if(isMarriedToLeige())
+								tell("You are married to '"+getLeigeID()+"'!");
+							else
+								tell("You are serving '"+getLeigeID()+"'!");
 							return false;
 						}
 						establishRange(this,(MOB)msg.target(),msg.tool());
@@ -1388,6 +1400,15 @@ public class StdMOB implements MOB
 								tell(msg.target().name()+" does not serve you, and you do not serve "+msg.target().name()+".");
 								return false;
 							}
+							else
+							if((msg.target() instanceof MOB)
+							&&(((MOB)msg.target()).getLeigeID().equals(Name()))
+							&&(getLeigeID().equals(msg.target().Name()))
+							&&(((MOB)msg.target()).isMarriedToLeige()))
+							{
+								tell("You cannot rebuke "+msg.target().name()+".  You must get an annulment or a divorce.");
+								return false;
+							}
 						}
 						else
 						if(getLeigeID().length()==0)
@@ -1420,6 +1441,12 @@ public class StdMOB implements MOB
 					if(getLeigeID().length()>0)
 					{
 						tell("You are already serving '"+getLeigeID()+"'.");
+						return false;
+					}
+					if((msg.target() instanceof MOB)
+					&&(((MOB)msg.target()).getLeigeID().equals(Name())))
+					{
+						tell("You can not serve each other!");
 						return false;
 					}
 					break;
@@ -1787,7 +1814,9 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_REBUKE:
 				if(((msg.target()==null)&&(getLeigeID().length()>0))
-				||((msg.target()!=null)&&(msg.target().Name().equals(getLeigeID()))))
+				||((msg.target()!=null)
+				   &&(msg.target().Name().equals(getLeigeID()))
+				   &&(!isMarriedToLeige())))
 					setLeigeID("");
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
@@ -1966,7 +1995,8 @@ public class StdMOB implements MOB
 				}
 				else
 				if((msg.targetMinor()==CMMsg.TYP_REBUKE)
-				&&(msg.source().Name().equals(getLeigeID())))
+				&&(msg.source().Name().equals(getLeigeID())
+				&&(!isMarriedToLeige())))
 					setLeigeID("");
 				else
 				if(Util.bset(targetMajor,CMMsg.MASK_CHANNEL))

@@ -142,6 +142,7 @@ public interface MOB
 	// misc characteristics
 	public String getWorshipCharID();
 	public String getLeigeID();
+	public boolean isMarriedToLeige();
 	public Deity getMyDeity();
 	public String getClanID();
 	public void setClanID(String clan);

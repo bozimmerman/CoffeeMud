@@ -56,7 +56,7 @@ public class Prayer_BoneMoon extends Prayer
 			{
 				Prayer_AnimateSkeleton.makeSkeletonFrom(R,B,null,level);	
 				B.destroy();
-				level++;
+				level+=3;
 			}
 		}
 		return super.tick(ticking,tickID);

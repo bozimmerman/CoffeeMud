@@ -22,7 +22,7 @@ public class Prayer_HolyShield extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setStat(CharStats.SAVE_UNDEAD,100000);
+		affectableStats.setStat(CharStats.SAVE_UNDEAD,100);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)

@@ -10,7 +10,7 @@ public class Prayer_CurseMinds extends Prayer
 	public String ID() { return "Prayer_CurseMinds"; }
 	public String name(){ return "Curse Minds";}
 	public int quality(){ return MALICIOUS;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	public String displayText(){ return "(Cursed Mind)";}
 	public Environmental newInstance(){	return new Prayer_CurseMinds();}
 

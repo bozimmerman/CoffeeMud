@@ -67,7 +67,6 @@ public class CommonSkill extends StdAbility
 			else
 			if((tickUp%4)==0)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
-
 			tickUp++;
 		}
 		return super.tick(ticking,tickID);

@@ -13,7 +13,7 @@ public class Prayer_HolyWord extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return INDIFFERENT;}
-	public long flags(){return Ability.FLAG_HOLY;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
 	public Environmental newInstance(){	return new Prayer_HolyWord();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -94,11 +94,12 @@ public class Prayer_HolyWord extends Prayer
 							{
 								FullMsg msg2=new FullMsg(target,I,null,CMMsg.MASK_GENERAL|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 								target.location().send(target,msg2);
-								Prayer_Bless.endIt(I,2);
+								Prayer_Bless.endLowerCurses(I,CMAble.lowestQualifyingLevel(ID()));
 								I.recoverEnvStats();
 								I=Prayer_Bless.getSomething(target,true);
 							}
-							Prayer_Bless.endIt(target,2);
+							Prayer_Bless.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
+							Prayer_Bless.endLowerCurses(target,CMAble.lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,0);
 							target.recoverEnvStats();
 						}

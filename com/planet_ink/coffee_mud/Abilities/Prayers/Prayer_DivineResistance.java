@@ -24,21 +24,21 @@ public class Prayer_DivineResistance extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setStat(CharStats.SAVE_WATER,100000);
-		affectableStats.setStat(CharStats.SAVE_UNDEAD,100000);
-		affectableStats.setStat(CharStats.SAVE_TRAPS,100000);
-		affectableStats.setStat(CharStats.SAVE_POISON,100000);
-		affectableStats.setStat(CharStats.SAVE_PARALYSIS,100000);
-		affectableStats.setStat(CharStats.SAVE_MIND,100000);
-		affectableStats.setStat(CharStats.SAVE_MAGIC,100000);
-		affectableStats.setStat(CharStats.SAVE_JUSTICE,100000);
-		affectableStats.setStat(CharStats.SAVE_GENERAL,100000);
-		affectableStats.setStat(CharStats.SAVE_GAS,100000);
-		affectableStats.setStat(CharStats.SAVE_FIRE,100000);
-		affectableStats.setStat(CharStats.SAVE_ELECTRIC,100000);
-		affectableStats.setStat(CharStats.SAVE_DISEASE,100000);
-		affectableStats.setStat(CharStats.SAVE_COLD,100000);
-		affectableStats.setStat(CharStats.SAVE_ACID,100000);
+		affectableStats.setStat(CharStats.SAVE_WATER,100);
+		affectableStats.setStat(CharStats.SAVE_UNDEAD,100);
+		affectableStats.setStat(CharStats.SAVE_TRAPS,100);
+		affectableStats.setStat(CharStats.SAVE_POISON,100);
+		affectableStats.setStat(CharStats.SAVE_PARALYSIS,100);
+		affectableStats.setStat(CharStats.SAVE_MIND,100);
+		affectableStats.setStat(CharStats.SAVE_MAGIC,100);
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,100);
+		affectableStats.setStat(CharStats.SAVE_GENERAL,100);
+		affectableStats.setStat(CharStats.SAVE_GAS,100);
+		affectableStats.setStat(CharStats.SAVE_FIRE,100);
+		affectableStats.setStat(CharStats.SAVE_ELECTRIC,100);
+		affectableStats.setStat(CharStats.SAVE_DISEASE,100);
+		affectableStats.setStat(CharStats.SAVE_COLD,100);
+		affectableStats.setStat(CharStats.SAVE_ACID,100);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)

@@ -10,8 +10,8 @@ public interface Banker extends ShopKeeper
 	
 	public void addDepositInventory(String mob, Item thisThang);
 	public void addDepositInventory(MOB mob, Item thisThang);
-	public void delDepositInventory(String mob, Item thisThang);
-	public void delDepositInventory(MOB mob, Item thisThang);
+	public boolean delDepositInventory(String mob, Item thisThang);
+	public boolean delDepositInventory(MOB mob, Item thisThang);
 	public void delAllDeposits(String mob);
 	public int numberDeposited(String mob);
 	public Vector getAccountNames();

@@ -65,10 +65,10 @@ public class Prayer_GreatCurse extends Prayer
 					Item I=Prayer_Curse.getSomething(mob,true);
 					if(I!=null)
 					{
-						Prayer_Curse.endIt(I,1);
+						Prayer_Curse.endLowerBlessings(I,CMAble.lowestQualifyingLevel(ID()));
 						I.recoverEnvStats();
 					}
-					Prayer_Curse.endIt(target,1);
+					Prayer_Curse.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,0,-1);
 				}
 			}

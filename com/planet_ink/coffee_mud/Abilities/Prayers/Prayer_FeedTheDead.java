@@ -31,6 +31,7 @@ public class Prayer_FeedTheDead extends Prayer
 				mob.tell("You cannot feed "+amount+" experience.");
 				return false;
 			}
+			commands.removeElementAt(commands.size()-1);
 		}
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

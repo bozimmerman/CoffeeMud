@@ -28,6 +28,8 @@ public class Missionary extends Cleric
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Marry",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
@@ -56,6 +58,7 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Revival",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AiryForm",false);
 
@@ -77,7 +80,6 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Etherealness",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",true);

@@ -11,7 +11,6 @@ public class Prayer_DivinePerspective extends Prayer
 	public String displayText(){return "(Perspective)";}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.OK_SELF;}
-	protected int overrideMana(){return 100;}
 	public Environmental newInstance(){	return new Prayer_DivinePerspective();}
 	public String mobName="";
 	public boolean noRecurse=false;
@@ -84,7 +83,7 @@ public class Prayer_DivinePerspective extends Prayer
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
-				beneficialAffect(mob,target,5);
+				beneficialAffect(mob,target,10);
 			}
 
 		}

@@ -1,20 +1,12 @@
 Comprehend languages no longer translates TELLs in other languages.
 Try out Artisans
-Test: ?holy day,  ?aura of intolerance, Vampirism, Cannibalism, ?Forgive, ?Divine Perspective
-Test: Infuse Holiness, Infuse Unholiness, Sense Traps, Hunt Evil, Hunt Good, Conviction
-Test: Benediction, Maladiction, Blood Hearth, Blessed Hearth, Guardian Hearth, Deaths Door
+Test: ?Vampirism, Cannibalism, ?Forgive,
+Test: Infuse Holiness, Infuse Unholiness, ?Sense Traps, Conviction
+Test: Benediction, Maladiction, Blood Hearth, Blessed Hearth, Guardian Hearth,
 Test: Consecrate Land, Desecrate Land, Neutralize Land, Condemnation, Heresy
-Test: Faithless, Preserve Body, Tithe, Daily Bread, Righteous Indignation
-Test: Feed The Dead, Behemoth, Position, Birds Eye, Bone Moon, Haunted
-
-Divine ally 		1. This prayer group (Holy/Divine/Unholy) summons a being of appropriate nature to assist the cleric. The being will require some sort of payment for each action it does, but should have various skill sets. Minor allies would have thiefness, moderate allies would have fighterness, and Major allies would have Mageness. Each casting requires something from the cleric. For minor it requires 1 gemresource. For moderate it requires 25lb metal resource (must be bundled). For Major, it requires an item of opposing alignment (or any alignment). (For example to summon a major holy ally, you must have an item with an EVIL aura, or EVIL zapper, to sacrifice.) 
-Peace ritual 		1. This prayer takes time to cast (like 5 minutes). It reduces a clan that is as war with the cleric's clan to HOSTILE. While casting this prayer, a CLANTALK to the enemy clan goes off every 30 seconds stating WHO is trying to affect their clan, WHERE exactly they are (room name, area name), and what clan. If the casting cleric is interrupted, in anyway, during the casting of this ritual, it is instantly terminated. (Tells, Gossips, etc shouldn't stop it...but SOCIALS targetting him should. Obviously attacking him will.) 
-Marry/Divorce/Annul 1. Marriage is described better elsewhere. Annul, if done without a certain amount of time after the wedding, will return all property to previous owners. Divorce always splits 50-50. 
-Revival 			1. Mass Convert, plus bonuses for those who already believe in same god (-int, -wis, +cha, +str) 
-Doomspout 			1. Makes the target a raving spouter of doom messages. This is a contageous disease! 
-Divine Armament		1. Causes random bits of level-worthy armor or weapons to appear within one room of the caster. 
-Create Idol 		1. Creates an idol to the caster's god (or the unholy gods). idol is gen resource.  anyone who uses idol as a resource causes a curse.
-Clerics - need more skills in general, and more unique skills especially.
+Test: ?Faithless, Tithe, ?Daily Bread, Righteous Indignation
+Test: ??Birds Eye, Haunted, Peace Ritual, Unholy Armament, Create Idol, Doomspout
+Test: Revival, Marry, Annul, Divorce
 
 Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
 Druids of all kinds suffer double duration on all crafting skills -- need a flag

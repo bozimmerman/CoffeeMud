@@ -38,6 +38,8 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Annul",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Divorce",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
@@ -46,7 +48,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),3,"Specialization_EdgedWeapon",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_UnholyArmament",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Specialization_FlailedWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
@@ -105,7 +107,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Haunted",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_BackStab",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_HealUndead",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_CreateIdol",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_SunCurse",0,"",false,false);

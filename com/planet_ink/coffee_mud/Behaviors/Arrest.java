@@ -509,11 +509,13 @@ public class Arrest extends StdBehavior
 					boolean didSomething=false;
 					if((V!=null)&&(V.elementAt(1) instanceof String))
 					{
+						String name=(String)V.elementAt(1);
 						V.clear();
 						for(int i=0;i<laws.warrants().size();i++)
 						{
 							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-							if((isStillACrime(W))&&(EnglishParser.containsString(W.criminal().name(),(String)V.elementAt(1))))
+							if((isStillACrime(W))
+							&&(EnglishParser.containsString(W.criminal().name(),name)))
 							{
 								didSomething=true;
 								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+(long)10);

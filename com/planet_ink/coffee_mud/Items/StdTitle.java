@@ -169,6 +169,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
 		&&((msg.source().Name().equals(landOwner()))
+			||(msg.source().getLeigeID().equals(landOwner())&&msg.source().isMarriedToLeige())
 			||((msg.source().getClanID().equals(landOwner()))))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)

@@ -13,7 +13,7 @@ public class Prayer_UnholyWord extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return INDIFFERENT;}
-	public long flags(){return Ability.FLAG_UNHOLY;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	public Environmental newInstance(){	return new Prayer_UnholyWord();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -89,10 +89,10 @@ public class Prayer_UnholyWord extends Prayer
 							Item I=Prayer_Curse.getSomething(mob,true);
 							if(I!=null)
 							{
-								Prayer_Curse.endIt(I,2);
+								Prayer_Curse.endLowerBlessings(I,CMAble.lowestQualifyingLevel(ID()));
 								I.recoverEnvStats();
 							}
-							Prayer_Curse.endIt(target,2);
+							Prayer_Curse.endLowerBlessings(target,CMAble.lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,0);
 							target.recoverEnvStats();
 						}

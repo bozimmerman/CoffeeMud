@@ -498,6 +498,8 @@ public class CommonStrings extends Scriptable
 		else return "pure goodness";
 
 	}
+	private static String lastStr="";
+	private static long lastRes=0;
 	public static void resistanceMsgs(CMMsg msg, MOB source, MOB target)
 	{
 		if(msg.value()>0) return;
@@ -519,6 +521,7 @@ public class CommonStrings extends Scriptable
 		    if(msg.tool() instanceof Ability)
 				tool=((Ability)msg.tool()).name();
 		}
+		
 		String tackOn=null;
 		switch(msg.targetMinor())
 		{
@@ -536,7 +539,13 @@ public class CommonStrings extends Scriptable
 		case CMMsg.TYP_PARALYZE: tackOn="<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart; break;
 		}
 		if(tackOn!=null)
-			msg.addTrailerMsg(new FullMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
+		{
+			String newStr=target+"/"+source+"/"+tool;
+			if(!newStr.equals(lastStr)||((System.currentTimeMillis()-lastRes)>250))
+				msg.addTrailerMsg(new FullMsg(target,source,CMMsg.MSG_OK_ACTION,tackOn));
+			lastStr=newStr;
+			lastRes=System.currentTimeMillis();
+		}
 		msg.setValue(msg.value()+1);
 	}
 

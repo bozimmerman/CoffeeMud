@@ -49,12 +49,12 @@ public class Prayer_RemoveCurse extends Prayer
 						I.setRemovable(true);
 						I.setDroppable(true);
 					}
-					Prayer_Bless.endIt(I,2);
+					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob));
 					I.recoverEnvStats();
 					lastI=I;
 					I=Prayer_Bless.getSomething(target,true);
 				}
-				Prayer_Bless.endIt(target,2);
+				Prayer_Bless.endLowerCurses(target,adjustedLevel(mob));
 				target.recoverEnvStats();
 			}
 		}
