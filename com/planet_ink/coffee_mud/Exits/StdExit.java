@@ -239,7 +239,7 @@ public class StdExit implements Exit
 			}
 			else
 			{
-				if(isLocked())
+				if(isLocked()&&hasALock())
 				{
 					mob.tell("The "+doorName()+" is locked.");
 					return false;

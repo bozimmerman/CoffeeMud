@@ -1,0 +1,710 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
+<TITLE></TITLE>
+</HEAD>
+<BODY>
+<P style="TEXT-ALIGN: center" align=center><STRONG><SPAN 
+style="FONT-SIZE: 18pt"><FONT 
+size=7>Scripting in CoffeeMud 4.3</FONT></SPAN></STRONG></P>
+<P style="TEXT-ALIGN: center" align=left><STRONG><IMG 
+src="images/mug.jpg"></STRONG></P>
+<P><STRONG><STRONG><FONT color=royalblue size=6>Introduction to 
+Scripting</FONT></STRONG>&nbsp;</STRONG></P>
+<P><STRONG>Scripting is the ability to makes something behave proactively, or 
+respond to game stimuli, in a way specified by the game builders.&nbsp; A Script 
+is the set of commands written by the builders to perform this function.&nbsp; 
+I</STRONG><STRONG>n CoffeeMud, any object may be scripted.&nbsp; This means 
+that&nbsp;rooms, areas, items, and especially MOBs can be 
+scripted.&nbsp;</STRONG></P>
+<P><STRONG>Scripting is accomplished through the Scriptable 
+Behavior.&nbsp;&nbsp;Giving an object this&nbsp;behavior makes it capable of 
+running scripts on its behalf.&nbsp; The parameters of the Scriptable behavior 
+define the&nbsp;source of the script itself.&nbsp;&nbsp;</STRONG></P>
+<P><STRONG>The most common parameter for the Scriptable behavior is the LOAD 
+command, which specifies a text file containing the script.&nbsp; The syntax for 
+this is as follows:</STRONG></P>
+<P><STRONG><EM>load=path/file name</EM></STRONG></P>
+<P><STRONG>The starting path for the Scriptable behavior is the resources 
+directory in your CoffeeMud package.&nbsp; Any further paths will branch from 
+that directory.&nbsp; The file specified is&nbsp;a text file containing the 
+script.</STRONG></P>
+<P><STRONG>A less common&nbsp;way to specify a script for the Scriptable 
+behavior is to enter the script itself into the parameter.&nbsp;&nbsp; Scripts 
+entered in this way differ significantly from scripts entered into text files 
+for the LOAD command in one significant sense: Every line of a script entered in 
+this way must be terminated by a semicolon.&nbsp; Here is an 
+example.</STRONG></P>
+<P><STRONG><EM>RAND_PROG 50;bounce;say "hi!";~;</EM>&nbsp;</STRONG></P>
+<P><STRONG>Scripts which are entered into text files for the LOAD parameter have 
+their lines terminated by carriage returns (ENTER) instead of semicolons.&nbsp; 
+The script&nbsp;syntax&nbsp;is, in all other ways, identical.</STRONG></P>
+<P><STRONG>Those who are familiar with the mobprog scripting language in other 
+mud codebases will have no trouble picking up on the CoffeeMud scripting 
+language.&nbsp; In fact, most of your existing scripts will probably work 
+without requireing changes.</STRONG></P>
+<P><STRONG><FONT color=royalblue size=6> Script 
+Structure</FONT></STRONG></P>
+<P><STRONG>The CoffeeMud scripting language is an "event-based" 
+language<STRONG>.&nbsp;&nbsp; Each script&nbsp;may contain one or more event 
+"triggers".&nbsp; Each trigger defines the conditions of its occurrance on a 
+single line.&nbsp;&nbsp;This line is followed by&nbsp;commands underneath it 
+which are executed only when the trigger event occurs.&nbsp; 
+</STRONG></STRONG><STRONG>Each event trigger/command grouping is terminated by a 
+~ character, which should appear on a line by itself.&nbsp;&nbsp; 
+</STRONG><STRONG>Putting this together, we have a high level syntax that looks 
+like this:</STRONG></P>
+<P><STRONG><EM>EVENT_TRIGGER&nbsp; parameter1 parameter2 
+...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR></STRONG><STRONG><EM>~ANOTHER_EVENT_TRIGGER&nbsp; parameter1 parameter2 
+...<BR>command1<BR>command2<BR>...<BR>commandN</EM><BR><EM>~</EM></STRONG></P>
+<P><STRONG>etc.</STRONG></P>
+<P><STRONG><FONT color=royalblue size=6>Scripting Events</FONT></STRONG></P>
+<P><STRONG>Below are a list of the valid event triggers, 
+along with their parameters, and a description of the events or circumstances 
+under which the events occur.&nbsp; These docs borrow heavily from the nicely 
+written MOBPROG Tutorial at </STRONG><A 
+href="http://aoc.pandapub.com/home.shtml"><STRONG>http://aoc.pandapub.com/home.shtml</STRONG></A><STRONG>.</STRONG>             
+            
+</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>all_greet_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>greet_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of mobprog checks a percentage chance every 
+time someone enters the room that the mob is currently in. If the random number 
+generated between 1 and 100 is equal to or below the percentage of the 
+greet_prog, the prog is triggered. Note that greet_progs are triggered by both 
+players and mobs, and a mob in a maze can actually sometimes end up triggering 
+itself! This type of mobprog has all sorts of uses, ranging from giving in-zone 
+quest information to people entering the room, creating aggressive progs, etc. 
+It is a good idea to use the if isqueued function in greet_progs to cut down on 
+spam when multiple players enter the room at the same time.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:<BR><EM><BR>greet_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+25% of the time when someone </STRONG><STRONG>enters the room where the mob 
+currently is.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>greet_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+100% of the time when someone </STRONG><STRONG>enters the room where the mob 
+currently is. This means </STRONG><STRONG>every time.)</STRONG></P>
+<P class=MsoNormal><STRONG>SPECIAL NOTES: You’ll probably want to do a large 
+number of if checks in greet_progs, specifically in the difference between mobs 
+and player characters. Note that greet_progs will trigger&nbsp;even if a person 
+is sneaking, though the mob must have detect invisibility to see invisible 
+people, infravision to see people in the dark, sense sneaking to see sneakers, 
+and will not see people if blinded.</STRONG><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>&nbsp;<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>act_prog<BR><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mask_prog</SPAN></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>act_prog [trigger 
+message]<BR>act_prog p [trigger message]&nbsp;<o:p></O:P></STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog will trigger when the mob sees a 
+certain string of text. When the 'p' is inserted into the trigger line, the 
+string of text must be precise, while if it is not, any of the words in the list 
+can trigger the mobprog. This type of mobprog has many uses, one of which is 
+communication between mobs. There are a few socials which create a message only 
+to the person performing them and to the one receiving them.&nbsp; You can use 
+these and act_progs to safely have mobs trigger each other, without people 
+seeing what is going on. Other uses include triggering off of people fleeing, 
+moving out of the room, etc. The possibilities are endless.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>act_prog wolf dog coyote</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger whenever 
+the mob sees a segment of text containing any of the words wolf, dog, or<SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>coyote. If the string contains more than 
+one of these, the prog will be triggered multiple times.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>act_prog p A wolf howls at the moon.</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
+when it sees this precise message. Note that punctuation is important here as 
+well.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one act_prog 
+on a mob, but you shouldn’t have multiple act_progs that trigger off of the same 
+message.</STRONG></P>
+<P class=MsoNormal><STRONG>SPECIAL NOTES: ANSI colors on objects don’t seem to 
+work well with act_progs, so avoid using ANSI colors in anything that may be 
+part of your act_prog trigger. Variables are not used in act_progs, so do not 
+try to use them; it won’t work.</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>bribe_prog</STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>bribe_prog [integer money 
+value]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered when a value of 
+money is given to the mob. If the amount of money is equal to or more than the 
+integer money value of the bribe_prog, the prog will go off. If it is less than 
+the value of the bribe_prog, it will not go off. This type of prog is normally 
+used for in-zone quests, perhaps bribing guards to let a prisoner free or 
+bribing a bartender to give you some information. It can also be used for 
+larger, special mob behavior, such as a ferryman who will move a player to 
+another spot in the world for a fee.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>bribe_prog 1</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This bribe_prog will 
+trigger whenever the mob is given an amount of gold equal to or greater than 1 
+coin. Of course, this means that the prog will be triggered if any amount of 
+money is given to the mob at all.)<BR 
+style="mso-special-character: line-break"><BR 
+style="mso-special-character: line-break"><EM>bribe_prog 500</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This bribe_prog will 
+trigger if someone gives the mob an&nbsp;<SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>amount of money equal to or greater than 500 coins.)</STRONG></P>
+<P class=MsoNormal><STRONG>&nbsp;MULTIPLE PROGS: You can have multiple 
+bribe_progs on the same mob. However, these must be listed in order from largest 
+gold amount to smallest gold amount. So if you have a bribe_prog 250 and a 
+bribe_prog 100, the 250 must be listed first, and then the 100. If you don’t do 
+this your larger sum bribe_progs will never be triggered.</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>consume_prog<?XML:NAMESPACE 
+PREFIX = O /><O:P></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>consume_prog [keyword 
+list]<BR>consume_prog p [keyword list]<BR>consume_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;eating or drinking from an object. If the object&nbsp;used&nbsp;by the 
+mob matches the keywords of the consume_prog, the prog is triggered. If there is 
+a ‘p’ placed before the keyword list, the keywords of the object must exactly 
+match that of the consume_prog. If there is not, then any object with any of the 
+keywords in the list in it will trigger it. If a consume_prog all is used, then 
+the consume_prog will trigger from any object at all being&nbsp;used by&nbsp;the 
+mob. This type of prog is usually used for in-zone quests and special mob 
+behavior, and has a variety of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>consume_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object eaten by the mob has any of the keywords orange, apple, or banana. This 
+means that it would be triggered by&nbsp;eating a banana, an apple pie, or even 
+an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>consume_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;eaten by&nbsp;the </STRONG><STRONG>mob has the exact keywords apple 
+pie delicious. The prog would not be triggered by eating an object with keywords 
+red apple or blackberry pie or anything except the exact order and wording of 
+the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>consume_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
+object is ate or drank by the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one 
+consume_prog on a mob. Generally it is best not to have consume_progs with the 
+same keywords in them, unless they are a consume_prog p with different keyword 
+lists but some of the same keywords – for example a consume_prog p apple red 
+juicy and a consume_prog p apple red poisoned. </STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>day_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>day_prog [list of integer day of the 
+month]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>          
+                
+               
+              
+   This type of mobprog triggers once per mud day, on the 
+days of the month listed.&nbsp; This allows you to have a script which triggers very infrequently indeed.&nbsp; There 
+are 30 days per month in CoffeeMud.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>day_prog 20</EM><SPAN 
+style="mso-spacerun: yes"><EM>&nbsp;21 22</EM>&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if day 
+of the month is 20, 21, or 22. </STRONG><STRONG>   
+)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>day_prog 10</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>  (This will trigger 
+on the 10th day of every month </STRONG><STRONG>     
+             
+.)</STRONG><STRONG>&nbsp;</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>death_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>death_prog</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This mobprog type triggers on the mob’s death.&nbsp; 
+The death_prog has a wide range of uses. The death_prog is queued just before 
+the mob dies, so it is considered to be the mob’s last gasp.&nbsp; At the end of 
+the death-prog, however, the mob dies. Even if the mob sets its hit points to 
+full, it will die. Other than that, the mob can mpjunk equipment it has, mpgoto 
+a new room to die, unlock a door, load an object of some kind, 
+etc.<BR><BR>MULTIPLE PROGS: 
+You can have multiple death_progs on the same 
+mob.&nbsp;&nbsp;</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>delay_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>delay_prog [integer, minimum number of ticks] [integer, 
+maximum number of 
+ticks]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>         
+                
+              
+                
+             
+ This kind of mobprog&nbsp;triggers after a random number of ticks have elapsed.&nbsp; The 
+number of random ticks is between the two integers provided.&nbsp; This trigger is used to take some 
+of the load off of rand_prog type programs. </STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>delay_prog 10 20</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This delay_prog will be triggered 
+after 10-20 ticks have elapsed</STRONG><STRONG>.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>delay_prog 1 11</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This delay_prog will be triggered 
+after 1-11 ticks have 
+elapsed.</STRONG><STRONG>)</STRONG><STRONG>&nbsp;</STRONG></P><STRONG>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>drop_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>drop_prog [keyword 
+list]<BR>drop_prog p [keyword list]<BR>drop_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;dropping an object. If the object&nbsp;dropped by&nbsp;the mob matches 
+the keywords of the drop_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the drop_prog. If there is not, then any object with any of the keywords in the 
+list in it will trigger it. If a drop_prog all is used, then the drop_prog will 
+trigger from any object at all being&nbsp;dropped by&nbsp;the mob. This type of 
+prog is usually used for in-zone quests and special mob behavior, and has a 
+variety of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>drop_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN> (This will trigger if 
+the object dropped by the mob has any of the keywords orange, apple, or banana. 
+This means that it would be triggered by dropping a banana, an apple pie, or even 
+an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>drop_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;dropped by&nbsp;the </STRONG><STRONG>  mob has the 
+exact keywords apple pie delicious. The prog would not be triggered by&nbsp;dropping an object 
+with keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>drop_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
+object is&nbsp;dropped by&nbsp;the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one drop_prog 
+on a mob. Generally it is best not to have drop_progs with the same keywords in 
+them, unless they are a drop_prog p with different keyword lists but some of the 
+same keywords – for example a drop_prog p apple red juicy and a drop_prog p 
+apple red poisoned. </STRONG></P>          
+<o:p></O:P></STRONG>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>entry_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>entry_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of prog checks a percentage chance every 
+time the mob moves into a new room. If the random number generated is equal to 
+or below the percentage of the entry_prog when the mob steps into a new room, 
+then the prog is triggered. This prog has a variety of uses, for instance, you 
+can use it in conjunction with the inroom function to make sure a mob stays in 
+the same room or never oversteps a boundary, or to have the mob attack players 
+as it enters the room. There are many possibilities.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:<BR><EM><BR>entry_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 25% of 
+the time when the mob enters a<SPAN style="mso-spacerun: yes"> 
+</SPAN>room.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>entry_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 100%, or 
+every time, the mob enters a room.)</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>exit_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>exit_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of prog checks a percentage chance every 
+time&nbsp;a mob moves out of a&nbsp;the room the scripted mob is in. If the 
+random number generated is equal to or below the percentage of the exit_prog 
+when the mob steps&nbsp;out of the&nbsp;room, then the prog is triggered. This 
+prog has a variety of uses, for instance, you can use it in conjunction with the 
+inroom function to make sure&nbsp;other mobs stay&nbsp;in the same room or never 
+oversteps a boundary, or to have the mob attack remaining players when one 
+leaves. There are many possibilities.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:<BR><EM><BR>exit_prog 25</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 25% of 
+the time when a mob leaves the room.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>exit_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 100%, or 
+every time, a mob leaves the room.)</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>fight_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>fight_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of mobprog checks a percentage chance every 
+round of combat that the mob is in. If the random number generated between 1 and 
+100 is equal to or less than the percentage of the fight_prog, then it will be 
+triggered. This type of mobprog is generally used to have the mob do certain 
+things in combat, for instance, cast spells or use skills. Sometimes it is used 
+to ensure a mob doesn’t fight at all, or to perform special, more complicated 
+actions in combat.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>fight_prog 10</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 10% of 
+the time each round of combat the mob is in. That means that it is probable that 
+this mobprog will go off every 10 rounds or so, although it is not guaranteed to 
+do so.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>fight_prog 75</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger 75% of 
+the time each combat round. That means it’s a safe bet that the trigger will go 
+off 3 out of every 4 rounds.)</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>function_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR><EM>function_prog [string name of the 
+function]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>         
+              
+             
+          This type 
+of prog provides a named placeholder for the series of commands that follows.&nbsp; This type of 
+mobprog is never independently triggered, but instead relys on one of the 
+commands, MPCALLFUNC, to trigger it manually.&nbsp; The usefullness of doing this will become 
+apparant in the&nbsp;discussion of MPCALLFUNC.&nbsp;</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:<BR><EM><BR>function_prog&nbsp;Destroy Everyone</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>     
+(This will trigger only when called by MPCALLFUNC)</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>get_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>get_prog [keyword 
+list]<BR>get_prog p [keyword list]<BR>get_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;getting an object. If the object picked up&nbsp;by the mob matches the 
+keywords of the get_prog, the prog is triggered. If there is a ‘p’ placed before 
+the keyword list, the keywords of the object must exactly match that of the 
+get_prog. If there is not, then any object with any of the keywords in the list 
+in it will trigger it. If a get_prog all is used, then the get_prog will trigger 
+from any object at all being&nbsp;picked up by&nbsp;the mob. This type of prog 
+is usually used for in-zone quests and special mob behavior, and has a variety 
+of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>get_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>  (This will trigger 
+if the object picked up&nbsp;by the mob has any of the keywords orange, 
+apple, or banana. This means that it would be triggered by&nbsp;getting a banana, an apple 
+pie, or even an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>get_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;picked up by&nbsp;the </STRONG><STRONG> mob has the exact 
+keywords apple pie delicious. The prog would not be triggered by getting an object 
+with keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>get_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
+object is&nbsp;picked up by&nbsp;the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one get_prog 
+on a mob. Generally it is best not to have get_progs with the same keywords in 
+them, unless they are a get_prog p with different keyword lists but some of the 
+same keywords – for example a get_prog p apple red juicy and a get_prog p apple 
+red poisoned. </STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>give_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>give_prog [keyword 
+list]<BR>give_prog p [keyword list]<BR>give_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the mob being 
+given an object. If the object given to the mob matches the keywords of the 
+give_prog, the prog is triggered. If there is a ‘p’ placed before the keyword 
+list, the keywords of the object must exactly match that of the give_prog. If 
+there is not, then any object with any of the keywords in the list in it will 
+trigger it. If a give_prog all is used, then the give_prog will trigger from any 
+object at all being given to the mob. This type of prog is usually used for 
+in-zone quests and special mob behavior, and has a variety of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>give_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object given to the mob has any of the keywords orange, apple, or banana. This 
+means that it would be triggered by being given a banana, an apple pie, or even 
+an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG>&nbsp;<EM>give_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object given to the </STRONG><STRONG>mob has the exact keywords apple pie 
+delicious. The prog would not be triggered by being given an object with 
+keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>give_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
+object is given to the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>         
+                
+      MULTIPLE PROGS: You can have more than one give_prog 
+on a mob. Generally it is best not to have give_progs with the same keywords 
+in them, unless they are a give_prog p with different keyword lists but some of 
+the same keywords – for example a give_prog p apple red juicy and a 
+give_prog p apple red poisoned.</STRONG></P>
+<P class=MsoNormal><STRONG>SPECIAL NOTES: More often than not, you’ll want to 
+remember to have the mob use the mpjunk command to get rid of the object given 
+so people cannot steal the item back and use it again. It does depend on what 
+you are doing of course, but it is something to keep in mind. It is also not a 
+bad idea to have a give_prog all to have the mob drop items other than the ones 
+it will accept in other give_progs.</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>greet_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>greet_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of mobprog checks a percentage chance every 
+time someone enters the room that the mob is currently in. If the random number 
+generated between 1 and 100 is equal to or below the percentage of the 
+greet_prog, the prog is triggered. Note that greet_progs are triggered by both 
+players and mobs, and a mob in a maze can actually sometimes end up triggering 
+itself! This type of mobprog has all sorts of uses, ranging from giving in-zone 
+quest information to people entering the room, creating aggressive progs, etc. 
+It is a good idea to use the if isqueued function in greet_progs to cut down on 
+spam when multiple players enter the room at the same time.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:<BR></STRONG><STRONG><BR><EM>greet_prog 
+25</EM><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will 
+be triggered 25% of the time when someone </STRONG><STRONG>enters the room where 
+the mob currently is.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>greet_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This prog will be triggered 
+100% of the time when someone </STRONG><STRONG>enters the room where the mob 
+currently is. This means </STRONG><STRONG>every time.)</STRONG></P>
+<P class=MsoNormal><STRONG>SPECIAL NOTES: You’ll probably want to do a large 
+number of if checks in greet_progs, specifically in the difference between mobs 
+and player characters. Note that greet_progs will trigger&nbsp;except if a 
+person is sneaking.&nbsp; Also, the mob must have detect invisibility to see 
+invisible people, infravision to see people in the dark, and will not see people 
+if blinded.</STRONG><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>&nbsp;<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>hitprcnt_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>hitprcnt_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This type of mobprog checks every round of combat to 
+see if the mob’s hit points are equal to or under the percentage given to the 
+hitprcnt_prog. This type of prog is used mainly to have the mob do something at 
+a certain percentage of hit points. Keep in mind, however, that this prog will 
+trigger EVERY round of combat in which the mob’s hit points are under the 
+percentage. So if you want the mob to do only one thing, you will have to set up 
+the mobprog that way with if checks.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>hitprcnt_prog 50</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if 
+the mob’s hit points are 50% or under </STRONG><STRONG>every round of 
+combat.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>hitprcnt_prog 100</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+mob’s hit points are 100% or under </STRONG><STRONG>every round of combat. This 
+means, more or less, every round of combat the mob will ever be 
+in.)</STRONG><STRONG>&nbsp;</STRONG></P>
+
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>once_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG> once_prog</STRONG></EM></P>
+<P class=MsoNormal><STRONG>        
+            
+               
+          This type of mobprog 
+is triggered&nbsp;immediately by the script engine under all circumstances, but is never triggered again.&nbsp; This makes 
+it useful&nbsp;for doing&nbsp;initiazation&nbsp;or other tasks which only need to be done once after the mud boots.&nbsp;This 
+type of prog is usually used for in-zone quests and special mob behavior, 
+and has a variety of usesmmediately by the script once it is loaded, and 
+never .</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>   once_prog&nbsp;</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>     
+             
+               
+ (This will once, right away)</STRONG></P>
+<P class=MsoNormal><STRONG>         
+                
+               
+         MULTIPLE PROGS: You can have&nbsp;only one&nbsp;once_prog on 
+a mob. </STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>quest_time_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>quest_time_prog [quest name] [number of minutes 
+remaining]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>         
+                
+              
+          This kind of mobprog&nbsp;triggers only&nbsp;if the 
+script is part of an official Quest, and only if the number of 
+minutes remaining in the quest is equal to the number of minutes specified.&nbsp; This 
+is used as part of a quest plot line, to allow the mobs to give warnings about 
+a quest that is running out of time.&nbsp; </STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>quest_time_prog 'my quest' 20</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+quest_time_prog will be triggered on the final 20th minute 
+of the quest 'my quest'</STRONG><STRONG>.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>quest_time_prog 'that quest'&nbsp;1</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+quest_time_prog will be triggered on the final minute 
+of the quest 'that 
+quest'.</STRONG><STRONG>)</STRONG><STRONG>&nbsp;</STRONG></P><STRONG>
+
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>put_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>put_prog [keyword 
+list]<BR>put_prog p [keyword list]<BR>put_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;putting something in a container. If the&nbsp;container being used&nbsp;by the mob matches 
+the keywords of the put_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the put_prog. If there is not, then any container with any of the keywords in the 
+list in it will trigger it. If a put_prog all is used, then the put_prog will 
+trigger from any container at all being&nbsp;used by&nbsp;the mob. This type of prog 
+is usually used for in-zone quests and special mob behavior, and has a variety 
+of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>put_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if 
+the container&nbsp;used&nbsp;by the mob has any of the keywords orange, apple, or banana. 
+This means that it would be triggered by putting something into a banana, an apple 
+pie, or even an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>put_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This 
+will trigger if the container 
+used up by&nbsp;the </STRONG><STRONG>mob has the exact keywords 
+apple pie delicious. The prog would not be triggered by putting anything into a&nbsp;container 
+with keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>put_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN> (This will trigger if 
+any container is&nbsp;used by&nbsp;the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one put_prog 
+on a mob. Generally it is best not to have put_progs with the same keywords in 
+them, unless they are a put_prog p with different keyword lists but some of the 
+same keywords – for example a put_prog p apple red juicy and a put_prog p apple 
+red poisoned. </STRONG></P><o:p></O:P></STRONG>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>rand_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>rand_prog [integer 
+percentage]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>This kind of mobprog checks a percentage chance every 
+tick. If the random number generated between 1 and 100 is equal to or below the 
+percentage of the rand_prog, then it will be triggered. This type of mobprog can 
+be triggered at any time, so long as the mob is alive, including while it is 
+sleeping or fighting. They are very useful for setting up certain elements of 
+your zone, or for giving personality to your mobs, such as having a blacksmith 
+who pounds out a sword. This kind of mobprog ONLY goes off when a player is in 
+the same zone that your mob is in. </STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>rand_prog 20</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This rand_prog will be 
+triggered 20% of each tick</STRONG><STRONG>.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>rand_prog 75</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This rand_prog will be 
+triggered 75% of each 
+tick.</STRONG><STRONG>)</STRONG><STRONG>&nbsp;<o:p></O:P></STRONG></P>
+<P class=MsoNormal><STRONG>SPECIAL NOTES: While using rand_progs seems really 
+easy, having a lot of them&nbsp;</STRONG><STRONG>can slow down your zone. Having 
+extremely long rand_progs on many, many mobs is generally not a good idea. If 
+possible, consider other options, and only use rand_progs that go off at a high 
+rate on mobs that will perform the rand_prog once and then never again, either 
+because they have some sort of internal check, or because they go and mppurge 
+themselves afterwards.</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>remove_prog<O:P></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>remove_prog [keyword 
+list]<BR>remove_prog p [keyword list]<BR>remove_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;removing an object. If the object removed&nbsp;&nbsp;by the mob matches 
+the keywords of the remove_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the remove_prog. If there is not, then any object with any of the keywords in 
+the list in it will trigger it. If a remove_prog all is used, then the 
+remove_prog will trigger from any object at all being&nbsp;removed by&nbsp;the 
+mob. This type of prog is usually used for in-zone quests and special mob 
+behavior, and has a variety of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>remove_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object&nbsp;removed&nbsp;by the mob has any of the keywords orange, apple, or 
+banana. This means that it would be triggered by&nbsp;removing a banana, an 
+apple pie, or even an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>remove_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if the 
+object removed by the </STRONG><STRONG>mob has the exact keywords apple pie 
+delicious. The prog would not be triggered by removing an object with keywords 
+red apple or blackberry pie or anything except the exact order and wording of 
+the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>remove_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger if any 
+object is&nbsp;removed by&nbsp;the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one 
+remove_prog on a mob. Generally it is best not to have remove_progs with the 
+same keywords in them, unless they are a remove_prog p with different keyword 
+lists but some of the same keywords – for example a remove_prog p apple red 
+juicy and a remove_prog p apple red poisoned. </STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>speech_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>speech_prog [trigger 
+message]<BR></STRONG><STRONG>speech_prog p [trigger message]</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by someone saying 
+the trigger line, be it mob or player. If a 'p' is inserted in the prog as 
+above, the line spoken must exactly match the trigger message; if it is not, 
+then any of the keywords listed will trigger the mobprog. This type of mobprog 
+is useful for setting up internal quests, giving out background information to 
+people exploring your zone, or setting up passwords that must be spoken. This 
+type of prog can also be used to have a mob trigger itself if you want to have 
+multiple connected progs – see complex progs for details. Note that this kind of 
+mobprog is only triggered by someone using the say command.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>speech_prog dog wolf coyote</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
+whenever dog, wolf, </STRONG><STRONG>or coyote is said in the room with the mob. 
+If more than one of the keywords is spoken in the same line, the prog will 
+trigger more than once.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>speech_prog p The dog barks at the cat</EM>.<SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>(This will trigger the prog 
+only if the </STRONG><STRONG>exact expression is said. Note that punctuation 
+counts, although you don't *have* to use it.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one 
+speech_prog on a mob. It is generally not a good idea to have more than one 
+speech_prog be triggered by the same expression.</STRONG></P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>time_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><STRONG><EM>time_prog [list of hours in the 
+day]</EM></STRONG></P>
+<P class=MsoNormal><STRONG>          
+                
+               
+              
+         This type of mobprog triggers 
+once per mud hour, on the hours of the&nbsp;day listed.&nbsp; This allows you to have a script which 
+triggers&nbsp;infrequently.&nbsp; There are&nbsp;16&nbsp;hours per day (0-15)&nbsp;in CoffeeMud.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>time_prog 10</EM><SPAN 
+style="mso-spacerun: yes"><EM>&nbsp;1 2</EM>&nbsp;&nbsp;&nbsp; </SPAN> (This will trigger 
+if&nbsp;hour of the&nbsp;day is 10, 1, or 2. </STRONG><STRONG>   
+)</STRONG></P>
+<P class=MsoNormal><STRONG><EM> time_prog&nbsp;3</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>    (This 
+will trigger on the&nbsp;3rd&nbsp;hour of every month </STRONG><STRONG>     
+             
+.)</STRONG><STRONG>&nbsp;</STRONG></P><o:p></O:P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>wear_prog<o:p></O:P></STRONG></SPAN></P>
+<P class=MsoNormal><STRONG>Usage:<BR></STRONG><EM><STRONG>wear_prog [keyword 
+list]<BR>wear_prog p [keyword list]<BR>wear_prog all</STRONG></EM></P>
+<P class=MsoNormal><STRONG>This type of mobprog is triggered by the 
+mob&nbsp;wearing, wielding, or holding an item. If the object&nbsp;worn&nbsp;by the mob matches 
+the keywords of the wear_prog, the prog is triggered. If there is a ‘p’ placed 
+before the keyword list, the keywords of the object must exactly match that of 
+the wear_prog. If there is not, then any object with any of the keywords in the 
+list in it will trigger it. If a wear_prog all is used, then the wear_prog will 
+trigger from any object at all worn by&nbsp;the mob. This type of prog 
+is usually used for in-zone quests and special mob behavior, and has a variety 
+of uses.</STRONG></P>
+<P class=MsoNormal><STRONG>EXAMPLES:</STRONG></P>
+<P class=MsoNormal><STRONG><EM>wear_prog orange apple banana</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>    (This 
+will trigger if the object&nbsp;worn&nbsp;by the mob has any of the keywords orange, 
+apple, or banana. This means that it would be triggered by&nbsp;wearing a banana, an apple 
+pie, or even an orange shield.)</STRONG></P>
+<P class=MsoNormal><STRONG><EM>wear_prog p apple pie delicious</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN> (This will trigger if 
+the object&nbsp;worn by&nbsp;the </STRONG><STRONG> mob has the exact 
+keywords apple pie delicious. The prog would not be triggered by wearing an object 
+with keywords red apple or blackberry pie or anything except the exact order and 
+wording of the keyword list.)<SPAN 
+style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+</SPAN></STRONG></P>
+<P class=MsoNormal><STRONG><EM>wear_prog all</EM><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN> (This will trigger if 
+any object is&nbsp;worn by&nbsp;the mob.)</STRONG></P>
+<P class=MsoNormal><STRONG>MULTIPLE PROGS: You can have more than one wear_prog 
+on a mob. Generally it is best not to have wear_progs with the same keywords in 
+them, unless they are a wear_prog p with different keyword lists but some of the 
+same keywords – for example a wear_prog p apple red juicy and a wear_prog p apple 
+red poisoned. </STRONG></P>
+<P class=MsoNormal><STRONG></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG></STRONG>&nbsp;</P>
+</BODY>
+</HTML>

@@ -1681,6 +1681,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_GIVE:
 				if(msg.tool()==null) return false;
 				if(!(msg.tool() instanceof Item)) return false;
+				if(msg.source().isASysOp(location())) return true;
 				if(getWearPositions(Item.ON_ARMS)==0)
 				{
 					msg.source().tell(name()+" is unable to accept that from you.");

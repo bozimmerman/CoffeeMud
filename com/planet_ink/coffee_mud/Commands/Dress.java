@@ -41,36 +41,62 @@ public class Dress extends StdCommand
 				mob.tell("I don't see "+what+" here.");
 				return false;
 			}
-			if(!item.amWearingAt(Item.INVENTORY))
+			if(mob.isASysOp(mob.location()))
 			{
-				mob.tell("You might want to remove that first.");
-				return false;
-			}
-			if(target.isInCombat())
-			{
-				mob.tell("Not while "+target.name()+" is in combat!");
-				return false;
-			}
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
-			if(mob.location().okMessage(mob,msg))
-			{
-				if(CommonMsgs.drop(mob,item,true,false))
+				mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
+				item.unWear();
+				target.giveItem(item);
+				item.wearIfPossible(target);
+				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Item.INVENTORY))&&(target.isMonster()))
 				{
-					msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
-					if(mob.location().okMessage(mob,msg))
+					if(item.rawLogicalAnd())
+						item.wearAt(item.rawProperLocationBitmap());
+					else
 					{
-						mob.location().send(mob,msg);
-						msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
+						for(int i=0;i<20;i++)
+						{
+							long wornCode=1<<i;
+							if(item.fitsOn(wornCode)&&(wornCode!=Item.HELD))
+							{ item.wearAt(wornCode); break;}
+						}
+						if(item.amWearingAt(Item.INVENTORY))
+							item.wearAt(Item.HELD);
+					}
+				}
+			}
+			else
+			{
+				if(!item.amWearingAt(Item.INVENTORY))
+				{
+					mob.tell("You might want to remove that first.");
+					return false;
+				}
+				if(target.isInCombat())
+				{
+					mob.tell("Not while "+target.name()+" is in combat!");
+					return false;
+				}
+				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
+				if(mob.location().okMessage(mob,msg))
+				{
+					if(CommonMsgs.drop(mob,item,true,false))
+					{
+						msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_GET,null);
 						if(mob.location().okMessage(mob,msg))
 						{
 							mob.location().send(mob,msg);
-							mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
+							msg=new FullMsg(target,item,null,CMMsg.MASK_GENERAL|CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,CMMsg.MSG_WEAR,null);
+							if(mob.location().okMessage(mob,msg))
+							{
+								mob.location().send(mob,msg);
+								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
+							}
+							else
+								mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
 						}
 						else
-							mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
+							mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
 					}
-					else
-						mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
 				}
 			}
 		}
