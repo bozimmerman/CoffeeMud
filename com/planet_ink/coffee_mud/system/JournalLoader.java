@@ -7,6 +7,33 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class JournalLoader
 {
+	public static synchronized int DBCount(String Journal, String from, String to)
+	{
+		int ct=0;
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+			while(R.next())
+			{
+				if((from!=null)&&(!from.equalsIgnoreCase(DBConnections.getRes(R,"CMFROM"))))
+				   continue;
+				if((to!=null)&&(!to.equalsIgnoreCase(DBConnections.getRes(R,"CMTONM"))))
+				   continue;
+				ct++;
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return ct;
+		}
+		return ct;
+	}
+	
 	public static synchronized Vector DBRead(String Journal)
 	{
 		Vector journal=new Vector();

@@ -26,6 +26,7 @@ public interface MudHost
 	public final static int TICK_QUEST=13;
 	public final static int TICK_CLAN=14;
 	public final static int TICK_CLANITEM=15;
+	public final static int TICK_EMAIL=16;
 
 	public final static int MAX_TICK_CLIENTS=32;
 

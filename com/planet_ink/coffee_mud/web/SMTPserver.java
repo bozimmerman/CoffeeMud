@@ -6,22 +6,26 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 
-public class SMTPserver extends Thread
+public class SMTPserver extends Thread implements Tickable
 {
+	public String ID(){return "SMTPserver";}
+	public String name(){return "SMTPserver";}
+	public long tickStatus=STATUS_NOT;
+	public long getTickStatus(){return tickStatus;}
+	
 	public INI page=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
-	public static final float HOST_VERSION_MINOR=(float)0.3;
+	public static final float HOST_VERSION_MINOR=(float)0.0;
 	public static Hashtable webMacros=null;
 	public static INI iniPage=null;
 	public ServerSocket servsock=null;
 	public boolean isOK = false;
 	private MudHost mud;
-	private String serverDir = null;
 	private static boolean displayedBlurb=false;
 	private static String domain="coffeemud";
-	private static Vector relayIn=new Vector();
-	private static Vector relayOut=new Vector();
+	private static String mailbox=null;
+	private static DVector journals=null;
 											 
 	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
@@ -37,10 +41,8 @@ public class SMTPserver extends Thread
 	}
 
 	public MudHost getMUD()	{return mud;}
-	public String getServerDir() {return serverDir;}
 	public String domainName(){return domain;}
-	public Vector getRelayInSet(){return relayIn;}
-	public Vector getRelayOutSet(){return relayOut;}
+	public String mailboxName(){return mailbox;}
 
 	public Properties getCommonPropPage()
 	{
@@ -61,44 +63,94 @@ public class SMTPserver extends Thread
 			return false;
 		}
 
-		if (page.getStr("PORT").length()==0)
+		if (page.getStr("SMTPPORT").trim().length()==0)
 		{
-			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
+			Log.errOut(getName(),"ERROR: required parameter missing: SMTPPORT");
 			return false;
 		}
-		if (page.getStr("DOMAIN").length()==0)
+		if (page.getStr("DOMAIN").trim().length()==0)
 		{
 			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
 			return false;
 		}
 		domain=page.getStr("DOMAIN");
-
-		if (page.getStr("BASEDIRECTORY").length()==0)
+		mailbox=page.getStr("MAILBOX");
+		if(mailbox==null) mailbox="";
+		else mailbox=mailbox.trim();
+		
+		String journalStr=page.getStr("JOURNALS");
+		if((journalStr==null)||(journalStr.length()>0))
 		{
-			serverDir = new String ("web" + File.separatorChar + "smtp");
+			Vector V=Util.parseCommas(journalStr,true);
+			if(V.size()>0)
+			{
+				journals=new DVector(3);
+				for(int v=0;v<V.size();v++)
+				{
+					String s=((String)V.elementAt(v)).trim();
+					String parm="";
+					int x=s.indexOf("(");
+					if((x>0)&&(s.endsWith(")")))
+					{
+						parm=parm.substring(x+1,s.length()-1).trim();
+						s=s.substring(0,x).trim();
+					}
+					if(!journals.contains(s))
+					{
+						boolean forward=(parm.toUpperCase().startsWith("FORWARD ")||parm.toUpperCase().endsWith(" FORWARD")||(parm.toUpperCase().indexOf(" FORWARD ")>=0));
+						journals.addElement(s,new Boolean(parm),parm);
+					}
+				}
+			}
 		}
-		else
-		{
-			serverDir = page.getStr("BASEDIRECTORY");
-		}
-
-		// don't want any trailing / chars
-		serverDir = FileGrabber.fixDirName(serverDir);
 
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
 			Log.sysOut(getName(),"SMTPserver (C)2004 Bo Zimmerman");
 		}
+		if(mailbox.length()==0)
+			Log.sysOut(getName(),"Player mail box system is disabled.");
 
 		return true;
+	}
+	
+	public boolean isAnEmailJournal(String journal)
+	{
+		if(journals==null) return false;
+		for(int i=0;i<journals.size();i++)
+		{
+			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
+				return true;
+		}
+		return false;
+	}
+	public boolean isAForwardingJournal(String journal)
+	{
+		if(journals==null) return false;
+		for(int i=0;i<journals.size();i++)
+		{
+			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
+				return ((Boolean)journals.elementAt(i,2)).booleanValue();
+		}
+		return false;
+	}
+	public String getJournalCriteria(String journal)
+	{
+		if(journals==null) return "";
+		for(int i=0;i<journals.size();i++)
+		{
+			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
+				return (String)journals.elementAt(i,3);;
+		}
+		return "";
 	}
 
 	private boolean loadPropPage()
 	{
 		if (page==null || !page.loaded)
 		{
-			String fn = "web" + File.separatorChar + "smtp.ini";
+			String fn = "web" + File.separatorChar + "email.ini";
 			page=new INI(getCommonPropPage(), fn);
 			if(!page.loaded)
 			{
@@ -106,7 +158,6 @@ public class SMTPserver extends Thread
 				return false;
 			}
 		}
-
 		return true;
 	}
 
@@ -146,9 +197,9 @@ public class SMTPserver extends Thread
 
 		try
 		{
-			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
+			servsock=new ServerSocket(page.getInt("SMTPPORT"), q_len, bindAddr);
 
-			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
+			Log.sysOut(getName(),"Started on port: "+page.getInt("SMTPPORT"));
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 
@@ -159,8 +210,8 @@ public class SMTPserver extends Thread
 			{
 				sock=servsock.accept();
 
-				//ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
-				//W.equals(W); // this prevents an initialized by never used error
+				ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
+				W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
 				//  if succeeds - no need to .start() it here
 				sock = null;
@@ -206,8 +257,13 @@ public class SMTPserver extends Thread
 	}
 
 	public void shutdown()	{shutdown(null);}
-
-
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		tickStatus=STATUS_START;
+		// this is where it should attempt any mail forwarding
+		tickStatus=STATUS_NOT;
+		return true;
+	}
 
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does
@@ -231,12 +287,12 @@ public class SMTPserver extends Thread
 
 	public int getPort()
 	{
-		return page.getInt("PORT");
+		return page.getInt("SMTPPORT");
 	}
 
 	public String getPortStr()
 	{
-		return page.getStr("PORT");
+		return page.getStr("SMTPPORT");
 	}
 	public int getMaxMsgs()
 	{

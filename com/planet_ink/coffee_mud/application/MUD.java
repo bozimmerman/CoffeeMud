@@ -27,6 +27,7 @@ public class MUD extends Thread implements MudHost
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
     public static EspressoServer espserver=null;
+	public static SMTPserver smtpServerThread=null;
 	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
 	public static Vector autoblocked=new Vector();
@@ -240,7 +241,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 
-		if (page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
+		if(page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
 		{
 			webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub");
 			webServerThread.start();
@@ -252,6 +253,14 @@ public class MUD extends Thread implements MudHost
 		}
 		else
 			CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
+
+		
+		if(page.getStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
+		{
+			smtpServerThread = new SMTPserver((MudHost)mudThreads.firstElement());
+			smtpServerThread.start();
+			CMClass.ThreadEngine().startTickDown(smtpServerThread,MudHost.TICK_EMAIL,20);
+		}
 
         if(page.getBoolean("RUNESPRESSOSERVER"))
         {
@@ -631,6 +640,12 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)S.println("All users logged off");
 		Log.sysOut("MUD","All users logged off.");
 
+		if(smtpServerThread!=null)
+		{
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...waiting for smtp complete.");
+			while(smtpServerThread.getTickStatus()!=Tickable.STATUS_NOT){try{Thread.sleep(10);}catch(Exception e){}}
+		}
+		
 		if(S!=null)S.print("Stopping all threads...");
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
 		CMClass.ThreadEngine().shutdownAll();
@@ -660,6 +675,14 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)S.println("All resources unloaded");
 
 
+		if(smtpServerThread!=null)
+		{
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...smtp server");
+			smtpServerThread.shutdown(S);
+			smtpServerThread = null;
+			Log.sysOut("MUD","SMTP Server stopped.");
+			if(S!=null)S.println("SMTP Server stopped");
+		}
 		if(webServerThread!=null)
 		{
 			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...pub webserver");

@@ -1,4 +1,6 @@
 SMTP Server
+put email forwarding
+figure out mailing lists
 
 
 

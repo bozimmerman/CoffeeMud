@@ -91,6 +91,36 @@ public class DataLoader
 		// log comment 
 		return rows;
 	}
+	
+	public static int DBCount(String playerID, String section)
+	{
+		DBConnection D=null;
+		int rows=0;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=null;
+			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
+			else
+				R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'");
+			while(R.next())
+			{
+				String playerID2=DBConnections.getRes(R,"CMPLID");
+				String section2=DBConnections.getRes(R,"CMSECT");
+				if(section2.equalsIgnoreCase(section))
+					rows++;
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		// log comment 
+		return rows;
+	}
+	
 	public static Vector DBRead(String playerID, String section, String key)
 	{
 		DBConnection D=null;

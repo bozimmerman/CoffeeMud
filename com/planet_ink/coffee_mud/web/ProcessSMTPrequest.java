@@ -40,43 +40,118 @@ public class ProcessSMTPrequest extends Thread
 		if(x>0)
 		{
 			
-			name=s.substring(0,x);
-			String domain=s.substring(x+1);
+			String domain=s.substring(x+1).trim();
 			if(!domain.toUpperCase().endsWith(server.domainName().toUpperCase()))
-			   return null;
+			{
+				if(server.mailboxName().length()>0)
+				{
+					name=CMClass.DBEngine().DBEmailSearch(s);
+					if(name!=null) return name;
+				}
+				return null;
+			}
 		}
-		return CMClass.DBEngine().DBUserSearch(null,name)?name:null;
+		if(server.isAnEmailJournal(name))
+			return name;
+		if((server.mailboxName().length()>0)
+		&&(CMClass.DBEngine().DBUserSearch(null,name)))
+			return name;
+		return null;
 	}
 	
 	
 	public void run()
 	{
-		BufferedReader sin = null;
+		DataInputStream sin = null;
 		DataOutputStream sout = null;
+		int failures=0;
 
 		byte[] replyData = null;
 
 		try
 		{
 			sout = new DataOutputStream(sock.getOutputStream());
-			sin=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			sin=new DataInputStream(sock.getInputStream());
 			sout.write(("220 ESMTP "+server.domainName()+" "+server.ServerVersionString+"; "+new IQCalendar().d2String()+cr).getBytes());
 			boolean quitFlag=false;
 			boolean dataMode=false;
 			while(!quitFlag)
 			{
 				sock.setSoTimeout(5*60*1000);
-				String s=sin.readLine();
+				String s=null;
+				char lastc=(char)-1;
+				char c=(char)-1;
+				while(!quitFlag)
+				{
+					StringBuffer input=new StringBuffer("");
+					lastc=c;
+					c=(char)sin.read();
+					if(c<0)	throw new IOException("reset by peer");
+					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
+					{	s=input.substring(0,input.length()-1); break;}
+					input.append((char)c);
+				}
 				if(dataMode)
 				{
 					if(s.equals("."))
 					{
+						dataMode=false;
 						/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
 						if(data.length()>=server.getMaxMsgSize())
-							replyData=("552 Message exceeds size limit.").getBytes();
+							replyData=("552 Message exceeds size limit."+cr).getBytes();
 						else
-							replyData=("250 Message accepted for delivery.").getBytes();
-						dataMode=false;
+						{
+							replyData=("250 Message accepted for delivery."+cr).getBytes();
+							boolean startBuffering=false;
+							StringBuffer finalData=new StringBuffer("");
+							String subject=null;
+							try
+							{
+								BufferedReader lineR=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(data.toString().getBytes())));
+								while(true)
+								{
+									String s2=lineR.readLine();
+									if(startBuffering)
+										finalData.append(s2+cr);
+									else
+									if(s2.length()==0)
+										startBuffering=true;
+									else
+									if(s2.startsWith("Subject: "))
+										subject=s2.substring(9).trim();
+									else
+									if(s2.startsWith("Content Type: "))
+									{
+										if(!s2.substring(14).toUpperCase().startsWith("TEXT/PLAIN"));
+										{
+											replyData=("552 Message content type '"+s2.substring(14)+"' not accepted."+cr).getBytes();
+											subject=null;
+											break;
+										}
+									}
+								}
+							}
+							catch(IOException e){}
+							
+							if((finalData.length()>0)&&(subject!=null))
+								for(int i=0;i<to.size();i++)
+									if(server.isAnEmailJournal((String)to.elementAt(i)))
+									{
+										CMClass.DBEngine().DBWriteJournal((String)to.elementAt(i),
+																		  from,
+																		  "ALL",
+																		  subject,
+																		  finalData.toString(),-1);
+									}
+									else
+									{
+										CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
+																		  from,
+																		  (String)to.elementAt(i),
+																		  subject,
+																		  finalData.toString(),-1);
+									}
+						}
 					}
 					else
 					{
@@ -318,7 +393,15 @@ public class ProcessSMTPrequest extends Thread
 							{
 								String name=validLocalAccount(parm);
 								if(name==null)
-									replyData=("551 Requested action not taken: User is not local."+cr).getBytes();
+								{
+									if((++failures)==3)
+									{
+										replyData=("421 Quit Fishing!"+cr).getBytes();
+										quitFlag=true;
+									}
+									else
+										replyData=("551 Requested action not taken: User is not local."+cr).getBytes();
+								}
 								else
 								{
 									replyData=("250 OK "+name+cr).getBytes();
@@ -418,12 +501,48 @@ public class ProcessSMTPrequest extends Thread
 								{
 									String name=validLocalAccount(parm);
 									if(name==null)
-										replyData=("553 Requested action not taken: User is not local."+cr).getBytes();
+									{
+										if((++failures)==3)
+										{
+											replyData=("421 Quit Fishing!"+cr).getBytes();
+											quitFlag=true;
+										}
+										else
+											replyData=("553 Requested action not taken: User is not local."+cr).getBytes();
+									}
 									else
 									{
-										replyData=("250 OK "+name+cr).getBytes();
-										if(to==null) to=new Vector();
-										to.addElement(name);
+										if(server.isAnEmailJournal(name))
+										{
+											boolean jerror=false;
+											if(server.getJournalCriteria(name).length()>0)
+											{
+												MOB M=CMMap.getPlayer(from);
+												if((M==null)||(!MUDZapper.zapperCheck(server.getJournalCriteria(name),M)))
+												{
+													replyData=("552 User '"+from+"' may not send emails to '"+name+"'."+cr).getBytes();
+													jerror=true;
+												}
+											}
+											
+											if(!jerror)
+											{
+												replyData=("250 OK "+name+cr).getBytes();
+												if(to==null) to=new Vector();
+												if(!to.contains(name))
+													to.addElement(name);
+											}
+										}
+										else
+										if(CMClass.DBEngine().DBCountJournal(server.mailboxName(),null,name)>=server.getMaxMsgs())
+											replyData=("552 Mailbox '"+name+"' is full."+cr).getBytes();
+										else
+										{
+											replyData=("250 OK "+name+cr).getBytes();
+											if(to==null) to=new Vector();
+											if(!to.contains(name))
+												to.addElement(name);
+										}
 									}
 								}
 							}
@@ -448,7 +567,7 @@ public class ProcessSMTPrequest extends Thread
 		{
 			try
 			{
-				sout.write(("421 You're taking too long.  I'm outa here.").getBytes());
+				sout.write(("421 You're taking too long.  I'm outa here."+cr).getBytes());
 				sout.flush();
 			}
 			catch(Exception e)

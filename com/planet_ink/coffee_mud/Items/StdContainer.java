@@ -450,20 +450,26 @@ public class StdContainer extends StdItem implements Container
 		int weight=thisContainer.envStats().weight();
 		if(owner()==null) return weight;
 		if(owner() instanceof MOB)
-			for(int i=0;i<((MOB)owner()).inventorySize();i++)
+		{
+			MOB M=(MOB)owner();
+			for(int i=0;i<M.inventorySize();i++)
 			{
-				Item thisItem=((MOB)owner()).fetchInventory(i);
+				Item thisItem=M.fetchInventory(i);
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 					weight+=recursiveWeight(thisItem);
 			}
+		}
 		else
 		if(owner() instanceof Room)
-			for(int i=0;i<((Room)owner()).numItems();i++)
+		{
+			Room R=(Room)owner();
+			for(int i=0;i<R.numItems();i++)
 			{
-				Item thisItem=((Room)owner()).fetchItem(i);
+				Item thisItem=R.fetchItem(i);
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 					weight+=recursiveWeight(thisItem);
 			}
+		}
 
 		return weight;
 	}

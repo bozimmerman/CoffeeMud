@@ -69,7 +69,7 @@ public class Snoop extends StdCommand
 			}
 		}
 		if(SnoopOn==null)
-			mob.tell("You can't find to snoop on by that name.");
+			mob.tell("You can't find anyone to snoop on by that name.");
 		else
 		{
 			Vector snoop=new Vector();

@@ -28,6 +28,7 @@ public interface DatabaseEngine
 	public void DBDeleteClan(Clan C);
 	public void DBCreateClan(Clan C);
 	public void DBUpdateEmail(MOB mob);
+	public String DBEmailSearch(String email);
 	public Vector getUserList();
 	public Vector userList();
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
@@ -37,12 +38,14 @@ public interface DatabaseEngine
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
 	public Vector DBReadJournal(String Journal);
+	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);
 	public Vector DBReadData(String playerID, String section);
+	public int DBCountData(String playerID, String section);
 	public Vector DBReadData(String playerID, String section, String key);
 	public Vector DBReadData(String section);
 	public void DBDeleteData(String playerID, String section);

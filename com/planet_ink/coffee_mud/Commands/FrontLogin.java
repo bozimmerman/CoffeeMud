@@ -71,7 +71,7 @@ public class FrontLogin extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
-			if((" YOU SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST MESSIAH ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
+			if((" YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST MESSIAH ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
 				return false;
 		}
 		Vector V2=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_BADNAMES),true);

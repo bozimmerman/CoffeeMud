@@ -849,4 +849,37 @@ public class MOBloader
 		return returnable;
 	}
 
+	public static String DBEmailSearch(String email)
+	{
+		DBConnection D=null;
+		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		{
+			MOB M=(MOB)e.nextElement();
+			if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email)))
+				return M.Name();
+		}
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR");
+			if(R!=null)
+			while(R.next())
+			{
+				String username=DBConnector.getRes(R,"CMUSERID");
+				String temail=DBConnector.getRes(R,"CMEMAL");
+				if(temail.equalsIgnoreCase(email))
+				{
+					R.close();
+					DBConnector.DBDone(D);
+					return username;
+				}
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		return null;
+	}
 }
