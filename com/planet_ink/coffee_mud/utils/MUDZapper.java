@@ -686,7 +686,7 @@ public class MUDZapper
 		getZapCodes();
 
 		String mobClass=Util.padRight(mob.charStats().displayClassName(),4).toUpperCase().trim();
-		String mobRaceCat=mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
+		String mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
 		if(!mob.charStats().getMyRace().name().equals(mob.charStats().raceName()))
 		{
 			Race R=CMClass.getRace(mob.charStats().raceName());
