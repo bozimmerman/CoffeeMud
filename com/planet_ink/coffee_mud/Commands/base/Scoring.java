@@ -295,12 +295,12 @@ public class Scoring
 
 	public static void gods(MOB mob, Vector commands)
 	{
-		String str=Util.combine(commands,0).toUpperCase();
+		String str=Util.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer(str);
 		if(str.length()==0)
 			msg.append("\n\r^HThe known deities:^? \n\r");
 		else
-			msg.append("\n\r^HThe known '"+str+"' deities:&? \n\r");
+			msg.append("\n\r^HThe known '"+str+"' deities:^? \n\r");
 		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();

@@ -76,7 +76,7 @@ public class Lister
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(list,24));
+				lines.append(Util.padRight(list,24)+" ");
 			}
 		}
 		lines.append("\n\r");
@@ -120,7 +120,46 @@ public class Lister
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(list,24));
+				lines.append(Util.padRight(list,24)+" ");
+			}
+		}
+		lines.append("\n\r");
+		return lines;
+	}
+	public static StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
+	{
+		StringBuffer lines=new StringBuffer("");
+		if(!these.hasMoreElements()) return lines;
+		int column=0;
+		for(Enumeration e=these;e.hasMoreElements();)
+		{
+			Object thisThang=e.nextElement();
+			String list=null;
+			if(thisThang instanceof String)
+				list=(String)thisThang;
+			else
+				list=CMClass.className(thisThang);
+			if(ofType>=0)
+			{
+				if((thisThang!=null)&&(thisThang instanceof Ability))
+				{
+					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
+						list=null;
+				}
+			}
+			if((likeRoom!=null)&&(thisThang instanceof Room))
+			{
+				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
+				   list=null;
+			}
+			if(list!=null)
+			{
+				if(++column>2)
+				{
+					lines.append("\n\r");
+					column=1;
+				}
+				lines.append(Util.padRight(list,37)+" ");
 			}
 		}
 		lines.append("\n\r");
@@ -680,7 +719,7 @@ public class Lister
 			mob.tell(listThreads(mob).toString());
 		else
 		if("RESOURCES".startsWith(listThis))
-			s.rawPrintln(reallyList(Resources.findResourceKeys("")).toString());
+			s.rawPrintln(reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString());
 		else
 			s.rawPrintln("Can't list those, try ITEMS, POISONS, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
 	}

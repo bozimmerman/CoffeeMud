@@ -3042,8 +3042,8 @@ public class Scriptable extends StdBehavior
 	protected Vector getScripts()
 	{
 		Vector scripts=null;
-		if(getParms().length()>30)
-			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms().hashCode());
+		if(getParms().length()>100)
+			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode());
 		else
 			scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms());
 		if(scripts==null)
@@ -3051,8 +3051,8 @@ public class Scriptable extends StdBehavior
 			String script=getParms();
 			script=Util.replaceAll(script,"`","'");
 			scripts=parseScripts(script);
-			if(getParms().length()>30)
-				Resources.submitResource("PARSED SCRIPTS: "+getParms().hashCode(),scripts);
+			if(getParms().length()>100)
+				Resources.submitResource("PARSED SCRIPTS: "+getParms().substring(0,100)+getParms().length()+getParms().hashCode(),scripts);
 			else
 				Resources.submitResource("PARSED SCRIPTS: "+getParms(),scripts);
 		}

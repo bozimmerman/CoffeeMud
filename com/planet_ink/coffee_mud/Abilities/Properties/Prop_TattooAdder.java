@@ -29,7 +29,7 @@ public class Prop_TattooAdder extends Property
 			tattooCode= Affect.TYP_EAT;
 		else
 		if(affected instanceof MOB)
-			tattooCode= Affect.TYP_SPEAK;
+			tattooCode= Affect.TYP_DEATH;
 		else
 		if(affected instanceof Weapon)
 			tattooCode= Affect.TYP_WEAPONATTACK;
@@ -54,9 +54,9 @@ public class Prop_TattooAdder extends Property
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((tattooCode()>=0)
-		   &&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
-		   &&(affect.amITarget(affected)||(affect.tool()==affected))
-		   &&(text().length()>0))
+		&&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
+		&&(affect.amITarget(affected)||((affect.tool()==affected)&&(tattooCode()!=Affect.TYP_DEATH)))
+		&&(text().length()>0))
 		{
 			String tattooName=text();
 			boolean tattooMinus=tattooName.startsWith("-");
