@@ -9,6 +9,7 @@ public class Prop_HaveResister extends Property
 {
 	private Item myItem=null;
 	private MOB lastMOB=null;
+	private CharStats adjCharStats=null;
 
 	public Prop_HaveResister()
 	{
@@ -23,39 +24,129 @@ public class Prop_HaveResister extends Property
 		BOB.setMiscText(text());
 		return BOB;
 	}
+	
+	public boolean isBorrowed(Environmental toMe)
+	{
+		if(toMe instanceof MOB)
+			return true;
+		return borrowed;
+	}
 
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
+		ensureStarted();
 		if(affectedMOB!=null)
 		{
 			if(affectedMOB instanceof Item)
 			{
 				myItem=(Item)affectedMOB;
-				if((myItem.myOwner()!=null)&&(myItem.myOwner() instanceof MOB))
-					lastMOB=(MOB)myItem.myOwner();
-				else
-					lastMOB=null;
+				if(myItem.myOwner() instanceof MOB)
+				{
+					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
+					if(myItem.myOwner() !=null)
+					{
+						lastMOB=(MOB)myItem.myOwner();
+						if(!isAffectedBy(lastMOB,this))
+							addMe(lastMOB,this);
+					}
+				}
 			}
 			else
-				lastMOB=null;
+			if(affectedMOB instanceof MOB)
+			{
+				if((myItem.myOwner() instanceof MOB)
+				   &&(myItem.myOwner()==affectedMOB))
+				{
+					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
+					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
+					lastMOB=(MOB)affectedMOB;
+				}
+				else
+				if((affectedMOB!=null)&&(affectedMOB!=myItem.myOwner()))
+				{
+					removeMyAffectFromLastMob(this,(MOB)affectedMOB);
+				}
+			}
 		}
-		else
-			lastMOB=null;
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
 
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		this.adjCharStats=new DefaultCharStats();
+		setAdjustments(this,adjCharStats);
+	}
+	
+	public static void removeMyAffectFromLastMob(Ability me, MOB mylastMOB)
+	{
+		int x=0;
+		while(x<mylastMOB.numAffects())
+		{
+			Ability aff=mylastMOB.fetchAffect(x);
+			if((aff!=null)&&(aff==me))
+				mylastMOB.delAffect(aff);
+			else
+				x++;
+		}
+		mylastMOB.recoverCharStats();
+	}
+
+	private void ensureStarted()
+	{
+		if(adjCharStats==null)
+			setMiscText(text());
+	}
+	
+	public static void adjCharStats(CharStats affectedStats,
+									CharStats adjCharStats)
+	{
+		affectedStats.setStat(CharStats.SAVE_MAGIC,affectedStats.getStat(CharStats.SAVE_MAGIC)+adjCharStats.getStat(CharStats.SAVE_MAGIC));
+		affectedStats.setStat(CharStats.SAVE_GAS,affectedStats.getStat(CharStats.SAVE_GAS)+adjCharStats.getStat(CharStats.SAVE_GAS));
+		affectedStats.setStat(CharStats.SAVE_FIRE,affectedStats.getStat(CharStats.SAVE_FIRE)+adjCharStats.getStat(CharStats.SAVE_FIRE));
+		affectedStats.setStat(CharStats.SAVE_ELECTRIC,affectedStats.getStat(CharStats.SAVE_ELECTRIC)+adjCharStats.getStat(CharStats.SAVE_ELECTRIC));
+		affectedStats.setStat(CharStats.SAVE_MIND,affectedStats.getStat(CharStats.SAVE_MIND)+adjCharStats.getStat(CharStats.SAVE_MIND));
+		affectedStats.setStat(CharStats.SAVE_JUSTICE,affectedStats.getStat(CharStats.SAVE_JUSTICE)+adjCharStats.getStat(CharStats.SAVE_JUSTICE));
+		affectedStats.setStat(CharStats.SAVE_COLD,affectedStats.getStat(CharStats.SAVE_COLD)+adjCharStats.getStat(CharStats.SAVE_COLD));
+		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)+adjCharStats.getStat(CharStats.SAVE_ACID));
+		affectedStats.setStat(CharStats.SAVE_WATER,affectedStats.getStat(CharStats.SAVE_WATER)+adjCharStats.getStat(CharStats.SAVE_WATER));
+		affectedStats.setStat(CharStats.SAVE_UNDEAD,affectedStats.getStat(CharStats.SAVE_UNDEAD)+adjCharStats.getStat(CharStats.SAVE_UNDEAD));
+		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
+		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
+	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	{
+		ensureStarted();
+		if((affectedMOB!=null)
+		   &&(lastMOB==affectedMOB))
+			adjCharStats(affectedStats,adjCharStats);
+		super.affectCharStats(affectedMOB,affectedStats);
+	}
+	
+	public static void addMe(MOB lastMOB, Ability me)
+	{
+		lastMOB.addNonUninvokableAffect(me);
+		lastMOB.recoverCharStats();
+	}
 	public static boolean checkProtection(Ability me, String protType)
 	{
+		int prot=getProtection(me,protType);
+		if(prot==0) return false;
+		if(prot<5) prot=5;
+		if(prot>95) prot=95;
+		if(Dice.rollPercentage()<prot)
+			return true;
+		return false;
+	}
+	
+	public static int getProtection(Ability me, String protType)
+	{
 		int z=me.text().toUpperCase().indexOf(protType.toUpperCase());
-		if(z<0) return false;
+		if(z<0) return 0;
 		int x=me.text().indexOf("%",z+protType.length());
 		if(x<0)
-		{
-			if(Dice.rollPercentage()<50)
-				return true;
-			else
-				return false;
-		}
+			return 50;
 		else
 		{
 			int mul=1;
@@ -65,16 +156,30 @@ public class Prop_HaveResister extends Property
 				if(Character.isDigit(me.text().charAt(x)))
 					tot+=Util.s_int(""+me.text().charAt(x))*mul;
 				else
+				{
+					if(me.text().charAt(x)=='-')
+						mul=mul*-1;
 					x=-1;
+				}
 				mul=mul*10;
 			}
-			if(tot>100) tot=95;
-			if(tot<5) tot=5;
-			if(Dice.rollPercentage()<tot)
-				return true;
-			else
-				return false;
+			return tot;
 		}
+	}
+	public static void setAdjustments(Ability me, CharStats adjCharStats)
+	{
+		adjCharStats.setStat(CharStats.SAVE_MAGIC,getProtection(me,"magic"));
+		adjCharStats.setStat(CharStats.SAVE_GAS,getProtection(me,"gas"));
+		adjCharStats.setStat(CharStats.SAVE_FIRE,getProtection(me,"fire"));
+		adjCharStats.setStat(CharStats.SAVE_ELECTRIC,getProtection(me,"elec"));
+		adjCharStats.setStat(CharStats.SAVE_MIND,getProtection(me,"mind"));
+		adjCharStats.setStat(CharStats.SAVE_JUSTICE,getProtection(me,"justice"));
+		adjCharStats.setStat(CharStats.SAVE_COLD,getProtection(me,"cold"));
+		adjCharStats.setStat(CharStats.SAVE_ACID,getProtection(me,"acid"));
+		adjCharStats.setStat(CharStats.SAVE_WATER,getProtection(me,"water"));
+		adjCharStats.setStat(CharStats.SAVE_UNDEAD,getProtection(me,"evil"));
+		adjCharStats.setStat(CharStats.SAVE_POISON,getProtection(me,"poison"));
+		adjCharStats.setStat(CharStats.SAVE_PARALYSIS,getProtection(me,"paralyze"));
 	}
 
 	public static void resistAffect(Affect affect, MOB mob, Ability me)
@@ -83,7 +188,8 @@ public class Prop_HaveResister extends Property
 		if(mob.amDead()) return;
 		if(!affect.amITarget(mob)) return;
 
-		if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(affect.tool()!=null)&&(affect.tool() instanceof Weapon))
 		{
 			int recovery=affect.targetCode()-Affect.MASK_HURT;
 			recovery=(int)Math.round(Util.mul(recovery,Math.random()));
@@ -91,75 +197,15 @@ public class Prop_HaveResister extends Property
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
 				mob.curState().adjHitPoints(recovery,mob.maxState());
 			else
-			if(affect.tool()!=null)
 			{
-				if(affect.tool() instanceof Weapon)
-				{
-					Weapon W=(Weapon)affect.tool();
-					if(((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
-					 ||((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")))
-					 ||((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash"))))
-						mob.curState().adjHitPoints(recovery,mob.maxState());
-				}
+				Weapon W=(Weapon)affect.tool();
+				if(((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
+				 ||((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")))
+				 ||((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash"))))
+					mob.curState().adjHitPoints(recovery,mob.maxState());
 			}
 			return;
 		}
-
-
-		if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			switch(affect.targetMinor())
-			{
-			case Affect.TYP_CAST_SPELL:
-				if(Prop_HaveResister.checkProtection(me,"magic"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_GAS:
-				if(Prop_HaveResister.checkProtection(me,"gas"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_FIRE:
-				if(Prop_HaveResister.checkProtection(me,"fire"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_ELECTRIC:
-				if(Prop_HaveResister.checkProtection(me,"elec"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_MIND:
-				if(Prop_HaveResister.checkProtection(me,"mind"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_JUSTICE:
-				if(Prop_HaveResister.checkProtection(me,"justice"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_COLD:
-				if(Prop_HaveResister.checkProtection(me,"cold"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_ACID:
-				if(Prop_HaveResister.checkProtection(me,"acid"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_WATER:
-				if(Prop_HaveResister.checkProtection(me,"water"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_UNDEAD:
-				if(Prop_HaveResister.checkProtection(me,"evil"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_POISON:
-				if(Prop_HaveResister.checkProtection(me,"poison"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			case Affect.TYP_PARALYZE:
-				if(Prop_HaveResister.checkProtection(me,"paralyze"))
-					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-				break;
-			default:
-				break;
-			}
 	}
 
 	public String accountForYourself()

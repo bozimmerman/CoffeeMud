@@ -8,6 +8,7 @@ public class Prop_WearResister extends Property
 {
 	private Item myItem=null;
 	private MOB lastMOB=null;
+	private CharStats adjCharStats=null;
 
 	public Prop_WearResister()
 	{
@@ -29,25 +30,72 @@ public class Prop_WearResister extends Property
 		return id;
 	}
 
+	private void ensureStarted()
+	{
+		if(adjCharStats==null)
+			setMiscText(text());
+	}
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		this.adjCharStats=new DefaultCharStats();
+		Prop_HaveResister.setAdjustments(this,adjCharStats);
+	}
+	public boolean isBorrowed(Environmental toMe)
+	{
+		if(toMe instanceof MOB)
+			return true;
+		return borrowed;
+	}
+
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
+		ensureStarted();
 		if(affectedMOB!=null)
 		{
 			if(affectedMOB instanceof Item)
 			{
 				myItem=(Item)affectedMOB;
-				if((myItem.myOwner()!=null)
-				&&(myItem.myOwner() instanceof MOB))
-					lastMOB=(MOB)myItem.myOwner();
-				else
-					lastMOB=null;
+				if((!myItem.amWearingAt(Item.INVENTORY))
+				   &&(myItem.myOwner() instanceof MOB))
+				{
+					if((lastMOB!=null)&&(myItem.myOwner()!=lastMOB))
+					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
+					if(myItem.myOwner() !=null)
+					{
+						lastMOB=(MOB)myItem.myOwner();
+						if(!isAffectedBy(lastMOB,this))
+							Prop_HaveResister.addMe(lastMOB,this);
+					}
+				}
 			}
 			else
-				lastMOB=null;
+			if(affectedMOB instanceof MOB)
+			{
+				if((!myItem.amWearingAt(Item.INVENTORY))
+				   &&(myItem.myOwner() instanceof MOB)
+				   &&(myItem.myOwner()==affectedMOB))
+				{
+					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
+					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
+					lastMOB=(MOB)affectedMOB;
+				}
+				else
+				if((affectedMOB!=null)&&(affectedMOB!=myItem.myOwner()))
+				{
+					Prop_HaveResister.removeMyAffectFromLastMob(this,(MOB)affectedMOB);
+				}
+			}
 		}
-		else
-			lastMOB=null;
 		super.affectEnvStats(affectedMOB,affectableStats);
+	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	{
+		ensureStarted();
+		if((affectedMOB!=null)
+		   &&(lastMOB==affectedMOB))
+			Prop_HaveResister.adjCharStats(affectedStats,adjCharStats);
+		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
 	public boolean okAffect(Affect affect)
