@@ -10,7 +10,6 @@ public class Prop_RestrictSpells extends Property
 	public String ID() { return "Prop_RestrictSpells"; }
 	public String name(){ return "Specific Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	private CharStats adjCharStats=null;
 	public Environmental newInstance(){	return new Prop_RestrictSpells();}
 
 	public boolean okAffect(Affect affect)

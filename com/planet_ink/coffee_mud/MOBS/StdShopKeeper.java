@@ -826,6 +826,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								item2.setContainer(item);
 								storeInventory.addElement(item2);
 							}
+							else
+								storeInventory.addElement(item2);
 						}
 						item.setContainer(null);
 					}

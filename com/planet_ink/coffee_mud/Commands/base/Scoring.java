@@ -320,6 +320,41 @@ public class Scoring
 			msg.append(getQualifiedAbilities(mob,Ability.SONG,-1,"\n\r^HSongs:^? "));
 		if((qual.length()==0)||(qual.equalsIgnoreCase("LANGS"))||(qual.equalsIgnoreCase("LANG"))||(qual.equalsIgnoreCase("LANGUAGES")))
 			msg.append(getQualifiedAbilities(mob,Ability.LANGUAGE,-1,"\n\r^HLanguages:^? "));
+		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+		&&(mob!=null)
+		&&((qual.length()==0)
+			||(qual.equalsIgnoreCase("CLASS"))
+			||(qual.equalsIgnoreCase("CLASSES"))))
+		{
+			int col=0;
+			StringBuffer msg2=new StringBuffer("");
+			for(int c=0;c<CMClass.charClasses.size();c++)
+			{
+				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				StringBuffer thisLine=new StringBuffer("");
+				if(C.playerSelectable()
+				&&(mob.charStats().getCurrentClass()!=C)
+				&&(C.qualifiesForThisClass(mob,true)))
+				{
+					if((++col)>2)
+					{
+						thisLine.append("\n\r");
+						col=1;
+					}
+					thisLine.append("^N[^H"+Util.padRight(""+1,3)+"^?] "
+					+Util.padRight(C.name(),19)+" "
+					+Util.padRight("1 train",(col==2)?12:13));
+				}
+				if(thisLine.length()>0)
+				{
+					if(msg2.length()==0)
+						msg2.append("\n\r^HClasses:^? \n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
+					msg2.append(thisLine);
+				}
+			}
+			msg.append(msg2.toString());
+		}
+		
 		if(msg.length()==0)
 			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
@@ -462,6 +497,8 @@ public class Scoring
 		}
 		if(msg.length()==0)
 			msg.append("^!None!^?");
+		else
+			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can gain.");
 		return msg;
 	}
 
