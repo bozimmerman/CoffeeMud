@@ -22,12 +22,22 @@ public class Prayer_SanctifyRoom extends Prayer
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		if((msg.sourceMinor()==CMMsg.TYP_GET)
-		&&((text().length()==0)
-		   ||((R.fetchInhabitant(text())!=null)&&(R.fetchInhabitant(text()).Name().equalsIgnoreCase(text())))))
+		if(msg.targetMinor()==CMMsg.TYP_GET)
 		{
-			msg.source().tell("You feel your muscles unwilling to cooperate.");
-			return false;
+			boolean inRoom=false;
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB M=R.fetchInhabitant(i);
+				if(CoffeeUtensils.doesOwnThisProperty(M,R))
+				{ inRoom=true; break;}
+				if((text().length()>0)&&(M.Name().equals(text())))
+				{ inRoom=true; break;}
+			}
+			if(!inRoom)
+			{
+				msg.source().tell("You feel your muscles unwilling to cooperate.");
+				return false;
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}

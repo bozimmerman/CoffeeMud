@@ -521,4 +521,16 @@ public interface EnvResource extends Item
 	{RESOURCE_CATFISH,		6,	1,	1,	1000},	
 	{RESOURCE_BAMBOO,		15,	10,	4,	120},	
 	};
+	
+	
+	public static final int[] FISHES={
+	RESOURCE_FISH,
+	RESOURCE_SALMON,
+	RESOURCE_CARP,
+	RESOURCE_TROUT,
+	RESOURCE_SHRIMP,
+	RESOURCE_TUNA,
+	RESOURCE_CATFISH
+	};
+	
 }

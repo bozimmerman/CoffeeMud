@@ -207,9 +207,12 @@ public class UnderWater extends StdRoom implements Drink
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_SEAWEED),
 		new Integer(EnvResource.RESOURCE_FISH),
+		new Integer(EnvResource.RESOURCE_CATFISH),
+		new Integer(EnvResource.RESOURCE_SALMON),
+		new Integer(EnvResource.RESOURCE_CARP),
+		new Integer(EnvResource.RESOURCE_TROUT),
 		new Integer(EnvResource.RESOURCE_SAND),
 		new Integer(EnvResource.RESOURCE_CLAY),
-		new Integer(EnvResource.RESOURCE_PEARL),
 		new Integer(EnvResource.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return UnderWater.roomResources;}

@@ -57,6 +57,13 @@ public class CaveRoom extends StdRoom
 		new Integer(EnvResource.RESOURCE_MITHRIL),
 		new Integer(EnvResource.RESOURCE_MUSHROOMS),
 		new Integer(EnvResource.RESOURCE_GEM),
+		new Integer(EnvResource.RESOURCE_PERIDOT),
+		new Integer(EnvResource.RESOURCE_DIAMOND),
+		new Integer(EnvResource.RESOURCE_LAPIS),
+		new Integer(EnvResource.RESOURCE_BLOODSTONE),
+		new Integer(EnvResource.RESOURCE_MOONSTONE),
+		new Integer(EnvResource.RESOURCE_ALEXANDRITE),
+		new Integer(EnvResource.RESOURCE_GEM),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_CRYSTAL),
 		new Integer(EnvResource.RESOURCE_PLATINUM)};

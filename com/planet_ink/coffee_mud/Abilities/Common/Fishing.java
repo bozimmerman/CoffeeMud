@@ -76,11 +76,20 @@ public class Fishing extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location()!=null)&&(mob.location().resourceChoices()!=null))
-			if(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_FISH)))
+		{
+			boolean found=false;
+			for(int i=0;i<EnvResource.FISHES.length;i++)
+				if(mob.location().myResource()==i)
+					found=true;
+				else
+				if(mob.location().resourceChoices().contains(new Integer(i)))
+					found=true;
+			if(!found)
 			{
 				commonTell(mob,"This fishing doesn't look too good around here.");
 				return false;
 			}
+		}
 		verb="fishing";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -33,10 +33,18 @@ public class Mountains extends StdRoom
 		new Integer(EnvResource.RESOURCE_HERBS),
 		new Integer(EnvResource.RESOURCE_OPAL),
 		new Integer(EnvResource.RESOURCE_TOPAZ),
+		new Integer(EnvResource.RESOURCE_BASALT),
+		new Integer(EnvResource.RESOURCE_SHALE),
+		new Integer(EnvResource.RESOURCE_PUMICE),
+		new Integer(EnvResource.RESOURCE_SANDSTONE),
+		new Integer(EnvResource.RESOURCE_SOAPSTONE),
 		new Integer(EnvResource.RESOURCE_AQUAMARINE),
 		new Integer(EnvResource.RESOURCE_CRYSOBERYL),
+		new Integer(EnvResource.RESOURCE_ONYX),
+		new Integer(EnvResource.RESOURCE_TURQUIOSE),
 		new Integer(EnvResource.RESOURCE_DIAMOND),
 		new Integer(EnvResource.RESOURCE_CRYSTAL),
+		new Integer(EnvResource.RESOURCE_QUARTZ),
 		new Integer(EnvResource.RESOURCE_PLATINUM)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Mountains.roomResources;}

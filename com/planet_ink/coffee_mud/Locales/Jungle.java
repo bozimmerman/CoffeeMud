@@ -39,7 +39,13 @@ public class Jungle extends StdRoom
 		}
 		super.executeMsg(myHost,msg);
 	}
+	
 	public static final Integer[] resourceList={
+		new Integer(EnvResource.RESOURCE_PLUMS),
+		new Integer(EnvResource.RESOURCE_PINEAPPLES),
+		new Integer(EnvResource.RESOURCE_COCONUTS),
+		new Integer(EnvResource.RESOURCE_BANANAS),
+		new Integer(EnvResource.RESOURCE_LIMES),
 		new Integer(EnvResource.RESOURCE_JADE),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_HEMP),

@@ -21,5 +21,5 @@ public class EndlessOcean extends StdGrid
 		return new EndlessOcean();
 	}
 	public String getChildLocaleID(){return "SaltWaterSurface";}
-	public Vector resourceChoices(){return UnderWater.roomResources;}
+	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 }
