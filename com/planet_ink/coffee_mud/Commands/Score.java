@@ -39,8 +39,7 @@ public class Score extends Affect
 			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
 		else
 			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
-		//if(mob.image().length()>0) msg.append("^<ScoreImg '"+mob.image()+"'^>^N\n\r");
-		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\"http://coffeemud.homeip.net/images/\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
+		//if(mob.image().length()>0) msg.append("^<IMAGE '"+mob.image()+"' URL=\""+CommonStrings.getVar(CommonStrings.SYSTEM_IMAGEURL)+"\" ALIGN=RIGHT H=70 W=70^>^N\n\r");
 		msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		if(classLevel<mob.envStats().level())
 		{

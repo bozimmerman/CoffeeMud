@@ -1940,7 +1940,7 @@ public class StdMOB implements MOB
 						&&(isInCombat()))
 							MUDFight.postPanic(this,msg);
 						else
-						if((Util.div(maxState().getHitPoints(),curState().getHitPoints())>=2.5)
+						if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(curState().getHitPoints(),maxState().getHitPoints())*100.0))
 						&&(!Sense.isGolem(this))
 						&&(fetchEffect("Injury")==null))
 						{

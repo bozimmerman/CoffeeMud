@@ -98,7 +98,12 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_JOURNALLIMIT=27;
 	public static final int SYSTEMI_TICKSPERMUDMONTH=28;
 	public static final int SYSTEMI_MUDTHEME=29;
-	public static final int NUMI_SYSTEM=30;
+	public static final int SYSTEMI_INJPCTCHANCE=30;
+	public static final int SYSTEMI_INJPCTHP=31;
+	public static final int SYSTEMI_INJPCTHPAMP=32;
+	public static final int SYSTEMI_INJPCTCHANCEAMP=33;
+	public static final int SYSTEMI_INJMULTIPLIER=34;
+	public static final int NUMI_SYSTEM=35;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -274,6 +279,23 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
 		setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
 		setIntVar(SYSTEMI_MUDTHEME,page.getStr("MUDTHEME"));
+		Vector V=Util.parseCommas(page.getStr("INJURYSYSTEM"),true);
+		if(V.size()!=5)
+		{
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,100);
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTHP,40);
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,10);
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,100);
+		    CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,4);
+		}
+		else
+		{
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCE,Util.s_int((String)V.elementAt(0)));
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTHP,Util.s_int((String)V.elementAt(1)));
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTHPAMP,Util.s_int((String)V.elementAt(2)));
+		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,Util.s_int((String)V.elementAt(3)));
+		    CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,Util.s_int((String)V.elementAt(4)));
+		}
 		
 		Directions.ReInitialize(page.getInt("DIRECTIONS"));
 		

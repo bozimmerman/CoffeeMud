@@ -115,6 +115,11 @@ public class Possess extends StdCommand
 			return false;
 		}
 
+		if((!CMSecurity.isASysOp(mob))&&(CMSecurity.isASysOp(target)))
+		{
+			mob.tell("You may not possess '"+MOBname+"'.");
+			return false;
+		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> get(s) a far away look, then seem(s) to fall limp.");
 
 		Session s=mob.session();

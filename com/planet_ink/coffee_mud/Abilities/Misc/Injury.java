@@ -42,17 +42,20 @@ public class Injury extends StdAbility
 		StringBuffer buf=new StringBuffer("");
 		Object[] O=null;
 		Vector V=null;
-		if(injuries!=null)
-		for(int i=0;i<Race.BODY_PARTS;i++)
-		{
-		    V=injuries[i];
-		    if(V!=null)
-		    for(int i2=0;i2<V.size();i2++)
-			{
-			    O=(Object[])V.elementAt(i2);
-				buf.append(", "+((String)O[0]).toLowerCase()+" ("+((Integer)O[1]).intValue()+"%)");
-			}
+		try{
+			if(injuries!=null)
+				for(int i=0;i<Race.BODY_PARTS;i++)
+				{
+				    V=injuries[i];
+				    if(V!=null)
+				    for(int i2=0;i2<V.size();i2++)
+					{
+					    O=(Object[])V.elementAt(i2);
+						buf.append(", "+((String)O[0]).toLowerCase()+" ("+((Integer)O[1]).intValue()+"%)");
+					}
+				}
 		}
+		catch(Exception e){}
 		if(buf.length()==0) return "";
 		return "(Injuries:"+buf.substring(1)+")";
 	}
@@ -73,68 +76,6 @@ public class Injury extends StdAbility
 	    super.unInvoke();
 	    if((E instanceof MOB)&&(canBeUninvoked())&&(!((MOB)E).amDead()))
 	        ((MOB)E).tell("Your injuries are healed.");
-	}
-	
-	public void setMiscText(String text)
-	{
-		injuries=new Vector[Race.BODY_PARTS];
-		Vector V=null;
-		Vector semiList=Util.parseSemicolons(text(),true);
-		for(int v=0;v<semiList.size();v++)
-		{
-			String s=(String)semiList.elementAt(v);
-			V=Util.parse(s);
-			int amount=0;
-			String leftRight="";
-			if((V.size()>1)&&(Util.isNumber((String)V.lastElement())))
-			{ 
-			    amount=Util.s_int((String)V.lastElement()); 
-				V.removeElementAt(V.size()-1);
-			}
-			if((V.size()>1)
-			&&(((String)V.firstElement()).equalsIgnoreCase("left")
-		        ||((String)V.firstElement()).equalsIgnoreCase("left")))
-			{ 
-			    leftRight=((String)V.firstElement())+" "; 
-				V.removeElementAt(0);
-			}
-			s=Util.combine(V,0);
-			int code=-1;
-			for(int r=0;r<Race.BODYPARTSTR.length;r++)
-				if(Race.BODYPARTSTR[r].equalsIgnoreCase(s))
-				{ 
-				    code=r; 
-				    break;
-				}
-			if((code>=0)&&(amount>0))
-		    {
-			    if(injuries[code]==null) 
-			        injuries[code]=new Vector();
-			    Object[] data=new Object[2];
-			    data[0]=(leftRight.toUpperCase()+" "+Race.BODYPARTSTR[code]).trim().toLowerCase();
-			    data[1]=new Integer(amount);
-			    injuries[code].addElement(data);
-		    }
-		}
-	}
-	
-	public String text()
-	{
-		StringBuffer buf=new StringBuffer("");
-		Object[] O=null;
-		Vector V=null;
-		if(injuries!=null)
-		for(int i=0;i<Race.BODY_PARTS;i++)
-		{
-		    V=injuries[i];
-		    if(V!=null)
-			    for(int i2=0;i<V.size();i2++)
-				{
-				    O=(Object[])V.elementAt(i2);
-					buf.append(((String)O[0]).toLowerCase()+" "+((Integer)O[1]).intValue());
-				}
-		}
-		return buf.toString();
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -232,8 +173,9 @@ public class Injury extends StdAbility
 	    &&(msg.value()>0)
 	    &&(affected instanceof MOB)
 	    &&(msg.targetMessage()!=null)
-	    &&(Util.div(((MOB)affected).maxState().getHitPoints(),((MOB)affected).curState().getHitPoints())>=2.5)
-	    &&(msg.targetMessage().indexOf("<DAMAGE>")>=0))
+	    &&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHP)>=(int)Math.round(Util.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
+	    &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
+	    &&(Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCE)))
 	    {
 	        MOB mob=(MOB)affected;
 	        Amputation A=(Amputation)mob.fetchEffect("Amputation");
@@ -272,11 +214,10 @@ public class Injury extends StdAbility
 					&&(remains.contains(lastLoc)))
 						chosenOne=remains.indexOf(lastLoc);
 					else
-					if((text().length()>0)
-					&&(text().startsWith(msg.source().Name()+"/"))
-					&&(remains.contains(text().substring(msg.source().Name().length()+2))))
+					if((text().startsWith(msg.source().Name()+"/"))
+					&&(remains.contains(text().substring(msg.source().Name().length()+1))))
 					{
-						chosenOne=remains.indexOf(text().substring(msg.source().Name().length()+2));
+						chosenOne=remains.indexOf(text().substring(msg.source().Name().length()+1));
 						setMiscText("");
 					}
 					else
@@ -291,7 +232,8 @@ public class Injury extends StdAbility
 					    }
 					}
 					int BodyPct=(int)Math.round(Util.div(msg.value(),mob.maxState().getHitPoints())*100.0);
-					int LimbPct=BodyPct*4;
+					int LimbPct=BodyPct*CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJMULTIPLIER);
+					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
 						if((" "+((String)remains.elementAt(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
@@ -331,9 +273,9 @@ public class Injury extends StdAbility
 						            O[1]=new Integer(100);
 						        if((((Integer)O[1]).intValue()>=100)
 								||((BodyPct>5)
-									&&((msg.tool() instanceof Electronics)||(BodyPct>10))))
+									&&((msg.tool() instanceof Electronics)||(BodyPct>=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTHPAMP)))))
 								{
-								    boolean proceed=true;
+								    boolean proceed=Dice.rollPercentage()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_INJPCTCHANCEAMP);
 								    if(msg.tool() instanceof Weapon)
 									{
 										switch(((Weapon)msg.tool()).weaponType())

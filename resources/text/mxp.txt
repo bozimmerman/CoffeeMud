@@ -30,12 +30,6 @@
 <!ELEMENT MENU '<SEND>'>
 <!ELEMENT CLAN '<SEND HREF="CLAN &text;" hint="Click for info.|CLAN &text;">' >
 <!-- ********************************************************************* -->
-<!-- image related tags -->
-<!-- ZMUD does not support downloading from ports other than 80, so keep the -->
-<!-- image tags commented out unless you are running your public coffeemud web -->
-<!-- server on port 80. -->
-<!-- <!ELEMENT ScoreImg '<IMAGE "&name;" URL="http://coffeemud.homeip.net/images/" ALIGN=RIGHT H=70 W=70>' EMPTY ATT='name'> -->
-<!ELEMENT ScoreImg '' ATT='name'>
 <GAUGE hp Max=maxhp color=green Caption="Hit Points">
 <GAUGE mana Max=maxmana color=yellow Caption="Mana">
 <GAUGE move Max=maxmove color=white Caption="Movement">
