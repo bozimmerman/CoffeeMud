@@ -529,6 +529,13 @@ public class StdMOB implements MOB
 
 	public boolean okAffect(Affect affect)
 	{
+		// sneaking exception
+		if((Sense.isSneaking(affect.source()))
+		 &&((affect.targetMinor()==Affect.TYP_LEAVE)||(affect.targetMinor()==Affect.TYP_ENTER))
+		 &&(!Sense.canSeeSneakers(this))
+		 &&(this!=affect.source()))
+			return true;
+		
 		if(charStats!=null)
 		{
 			if(charStats().getMyClass()!=null)
@@ -786,6 +793,14 @@ public class StdMOB implements MOB
 
 	public void affect(Affect affect)
 	{
+		
+		// sneaking exception
+		if((Sense.isSneaking(affect.source()))
+		 &&((affect.targetMinor()==Affect.TYP_LEAVE)||(affect.targetMinor()==Affect.TYP_ENTER))
+		 &&(!Sense.canSeeSneakers(this))
+		 &&(this!=affect.source()))
+			return;
+		
 		if(charStats!=null)
 		{
 			if(charStats().getMyClass()!=null)

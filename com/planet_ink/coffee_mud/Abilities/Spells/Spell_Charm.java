@@ -148,13 +148,13 @@ public class Spell_Charm extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"<S-NAME> smile(s) and wink(s) at <T-NAMESELF>";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,str+".");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,str+".");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND);
+					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
 					if(success);
 					{
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> follow(s) <S-NAME>!");

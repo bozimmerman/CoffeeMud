@@ -76,8 +76,8 @@ public class Prayer_MassFreedom extends Prayer
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							((Ability)offensiveAffects.elementAt(a)).unInvoke();
 						nothingDone=false;
-						if(old>target.numAffects())
-							target.tell("You feel less constricted!");
+						if((old>target.numAffects())&&(target.location()!=null))
+							target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}
 				}
 			}

@@ -77,7 +77,7 @@ public class Prayer_Freedom extends Prayer
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,null,"<S-NAME> pray(s) over <T-NAMESELF>, but nothing happens.");
+			this.beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) over <T-NAMESELF>, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

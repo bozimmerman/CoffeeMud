@@ -40,7 +40,7 @@ public class Prayer_Anger extends Prayer
 			if(mob.location().fetchInhabitant(i).isInCombat())
 				someoneIsFighting=true;
 
-		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>1))
+		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -51,23 +51,28 @@ public class Prayer_Anger extends Prayer
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)
-					if((!mob.location().fetchInhabitant(i).isInCombat())
-					&&(mob.location().fetchInhabitant(i)!=mob))
+				{
+					MOB inhab=mob.location().fetchInhabitant(i);
+					if((inhab!=null)&&(inhab!=mob)&&(!inhab.isInCombat()))
 					{
 						int tries=0;
 						MOB target=null;
 						while((tries<100)&&(target==null))
 						{
-							target=mob.location().fetchInhabitant((int)Math.round(Math.random()*mob.location().numInhabitants()));
+							int which=(int)Math.round(Math.random()*new Integer(mob.location().numInhabitants()).doubleValue());
+							target=mob.location().fetchInhabitant(which);
+							if(target==inhab) target=null;
 							if(target==mob) target=null;
 							tries++;
 						}
-						if(target!=null)
+						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
+						if((target!=null)&&(mob.location().okAffect(amsg)))
 						{
 							mob.location().fetchInhabitant(i).tell("You feel angry.");
-							mob.setVictim(target);
+							inhab.setVictim(target);
 						}
 					}
+				}
 			}
 		}
 		else

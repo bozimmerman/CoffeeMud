@@ -39,11 +39,10 @@ public class Spell_Deafness extends Spell
 		return new Spell_Deafness();
 	}
 
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		super.affectCharStats(affected,affectableStats);
-		affectableStats.setIntelligence(1);
-		affectableStats.setWisdom(1);
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_HEAR);
 	}
 
 
