@@ -77,7 +77,7 @@ public class Chant_AcidRain extends Chant
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid rain starts pouring from the sky!");
-					maliciousAffect(mob,target,0,-1);
+					maliciousAffect(mob,target,10,-1);
 				}
 			}
 		}

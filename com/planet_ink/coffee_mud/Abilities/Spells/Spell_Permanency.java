@@ -65,8 +65,7 @@ public class Spell_Permanency extends Spell
 					mob.maxState().setMana(mob.maxState().getMana()-100);
 					target.text();
 					if((target instanceof Room)
-					&&((CoffeeUtensils.doesOwnThisProperty(mob,(Room)target))
-						||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),(Room)target)))))
+					&&(CoffeeUtensils.doesOwnThisProperty(mob,(Room)target)))
 						CMClass.DBEngine().DBUpdateRoom((Room)target);
 					else
 					if(target instanceof Exit)
@@ -77,9 +76,7 @@ public class Spell_Permanency extends Spell
 							if(R.getExitInDir(d)==target)
 							{ R2=R.getRoomInDir(d); break;}
 						if((CoffeeUtensils.doesOwnThisProperty(mob,R))
-						||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
-						||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
-						||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+						||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2))))
 							CMClass.DBEngine().DBUpdateExits(R);
 					}
 					mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");

@@ -65,7 +65,7 @@ public class Spell_TeleportationWard extends Spell
 				boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 				boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 				boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
-				if(((!shere)&&(!summon)&&(teleport)))
+				if((!shere)&&(!summon)&&(teleport)&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),R)))
 				{
 					if((msg.source().location()!=null)&&(msg.source().location()!=R))
 						msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magical energy fizzles and is absorbed into the air!");
@@ -115,8 +115,7 @@ public class Spell_TeleportationWard extends Spell
 			{
 				mob.location().send(mob,msg);
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

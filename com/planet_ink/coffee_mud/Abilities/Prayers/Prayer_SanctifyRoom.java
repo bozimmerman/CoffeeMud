@@ -29,10 +29,13 @@ public class Prayer_SanctifyRoom extends Prayer
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if(CoffeeUtensils.doesOwnThisProperty(M,R))
+				if(CoffeeUtensils.doesHavePriviledgesHere(M,R))
 				{ inRoom=true; break;}
 				if((text().length()>0)&&(M.Name().equals(text())))
 				{ inRoom=true; break;}
+				if((text().length()>0)&&(M.getClanID().equals(text())))
+				{ inRoom=true; break;}
+				
 			}
 			if(!inRoom)
 			{
@@ -66,8 +69,7 @@ public class Prayer_SanctifyRoom extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

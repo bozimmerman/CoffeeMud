@@ -28,7 +28,7 @@ public class Prayer_BloodHearth extends Prayer
 		{
 			HashSet H=msg.source().getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
+				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
 				{
 					msg.setValue(msg.value()*10);
 					break;
@@ -60,8 +60,7 @@ public class Prayer_BloodHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

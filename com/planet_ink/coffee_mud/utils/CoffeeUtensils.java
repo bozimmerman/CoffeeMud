@@ -706,6 +706,22 @@ public class CoffeeUtensils
 		return null;
 	}
 
+	public static boolean doesHavePriviledgesHere(MOB mob, Room room)
+	{
+		LandTitle title=getLandTitle(room);
+		if(title==null) return false;
+		if(title.landOwner()==null) return false;
+		if(title.landOwner().length()==0) return false;
+		if(title.landOwner().equals(mob.Name())) return true;
+		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
+			return true;
+		if(title.landOwner().equals(mob.getClanID()))
+			return true;
+		if(mob.amFollowing()!=null) 
+			return doesHavePriviledgesHere(mob.amFollowing(),room);
+		return false;
+	}
+	
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		LandTitle title=getLandTitle(room);
@@ -721,9 +737,11 @@ public class CoffeeUtensils
 			if((C!=null)&&(C.allowedToDoThis(mob,Clan.FUNC_CLANPROPERTYOWNER)>=0))
 				return true;
 		}
+		if(mob.amFollowing()!=null) 
+			return doesOwnThisProperty(mob.amFollowing(),room);
 		return false;
 	}
-
+	
 	public static boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;

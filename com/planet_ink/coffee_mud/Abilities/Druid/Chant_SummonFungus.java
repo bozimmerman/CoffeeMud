@@ -96,8 +96,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if((CoffeeUtensils.doesOwnThisProperty(mob,room))
-		||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))))
+		if(CoffeeUtensils.doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.name());

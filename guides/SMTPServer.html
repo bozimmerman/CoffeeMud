@@ -148,7 +148,22 @@ options are: </P>
   <LI><STRONG>JOURNALDAYS</STRONG>=          
            xx (e.g. 90) This is the 
   number of maximum number of days a message will remain in an smtp server managed 
-  JOURNAL before being deleted. </LI></UL> 
+  JOURNAL before being deleted. </LI>
+  <LI><STRONG>SUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now subscribed)</EM> This is the 
+  title of the response your SMTP server will automatically send to users who subscribe to 
+  a journal by sending an email to the journal with "subscribe" as the title.</LI>
+  <LI><STRONG>SUBSCRIBEDMSG</STRONG>=xx <EM>(e.g. You are now subscribed to &lt;NAME&gt;)</EM> This is the 
+  body of the response your SMTP server will automatically send to users who subscribe to 
+  a journal by sending an email to the journal with "subscribe" as the title.  You may use
+  the code &lt;NAME&gt; as a placeholder for your journals name.</LI>
+  <LI><STRONG>UNSUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now unsubscribed)</EM> This is the 
+  title of the response your SMTP server will automatically send to users who unsubscribe to 
+  a journal by sending an email to the journal with "unsubscribe" as the title.</LI>
+  <LI><STRONG>UNSUBSCRIBEDMSG</STRONG>=xx <EM>(e.g. You are now unsubscribed from &lt;NAME&gt;)</EM> This is the 
+  body of the response your SMTP server will automatically send to users who unsubscribe to 
+  a journal by sending an email to the journal with "unsubscribe" as the title.  You may use
+  the code &lt;NAME&gt; as a placeholder for your journals name.</LI>
+  </UL> 
   <P>          
                  
                  

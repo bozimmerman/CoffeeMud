@@ -56,8 +56,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		if((CoffeeUtensils.doesOwnThisProperty(mob,room))
-		||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))))
+		if(CoffeeUtensils.doesOwnThisProperty(mob,room))
 		{
 			newChant.setInvoker(mob);
 			newChant.setMiscText(mob.name());

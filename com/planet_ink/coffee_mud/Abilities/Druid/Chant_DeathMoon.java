@@ -107,7 +107,7 @@ public class Chant_DeathMoon extends Chant
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The Death Moon Rises!");
-					beneficialAffect(mob,target,0);
+					beneficialAffect(mob,target,10);
 				}
 			}
 		}

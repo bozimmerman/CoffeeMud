@@ -28,7 +28,7 @@ public class Prayer_BlessedHearth extends Prayer
 		{
 			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
+				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
 				{
 					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,"The blessed powers block the unholy magic from <S-NAMESELF>.");
 					return false;
@@ -40,7 +40,7 @@ public class Prayer_BlessedHearth extends Prayer
 		{
 			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
+				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
 				{
 					msg.setValue(msg.value()/10);
 					break;
@@ -72,8 +72,7 @@ public class Prayer_BlessedHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

@@ -611,8 +611,7 @@ public class Masonry extends CraftingSkill
 			woodRequired=idata[0][FOUND_AMT];
 		}
 
-		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
-		   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
+		boolean canBuild=CoffeeUtensils.doesOwnThisProperty(mob,mob.location());
 		if(!canBuild)
 		{
 			if((dir>=0)
@@ -620,8 +619,7 @@ public class Masonry extends CraftingSkill
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,R))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,R)))
 					canBuild=true;
 			}
 		}

@@ -82,8 +82,7 @@ public class Spell_FakeSpring extends Spell
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
-				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
-				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);

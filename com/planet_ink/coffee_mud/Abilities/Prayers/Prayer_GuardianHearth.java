@@ -38,7 +38,7 @@ public class Prayer_GuardianHearth extends Prayer
 		{
 			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
+				if(CoffeeUtensils.doesHavePriviledgesHere((MOB)e.next(),R))
 				{
 					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,"The guardian hearth protect(s) <S-NAME>!");
 					break;
@@ -70,8 +70,7 @@ public class Prayer_GuardianHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)target))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

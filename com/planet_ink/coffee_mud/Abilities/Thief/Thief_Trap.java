@@ -123,8 +123,7 @@ public class Thief_Trap extends ThiefSkill
 				mob.tell("You have completed your task.");
 				boolean permanent=false;
 				if((trapThis instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)trapThis)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)trapThis))))))
+				&&(CoffeeUtensils.doesOwnThisProperty(mob,((Room)trapThis))))
 					permanent=true;
 				else
 				if(trapThis instanceof Exit)
@@ -135,9 +134,7 @@ public class Thief_Trap extends ThiefSkill
 						if(R.getExitInDir(d)==trapThis)
 						{ R2=R.getRoomInDir(d); break;}
 					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
-					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
-					||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2))))
 						permanent=true;
 				}
 				if(permanent)

@@ -135,9 +135,7 @@ public class Spell_WizardLock extends Spell
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
 					if((CoffeeUtensils.doesOwnThisProperty(mob,R))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
-					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
-					||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2))))
 					{
 						target.addNonUninvokableEffect((Ability)copyOf());
 						CMClass.DBEngine().DBUpdateExits(R);
