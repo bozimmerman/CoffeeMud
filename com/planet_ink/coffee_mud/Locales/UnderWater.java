@@ -91,9 +91,16 @@ public class UnderWater extends StdRoom implements Drink
 		if((msg.source().playerStats()!=null)
 		&&(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
 		&&(msg.source().soulMate()==null)
-		&&(msg.source().playerStats().getHygiene()>0)
+		&&(msg.source().playerStats().getHygiene()>100)
 		&&(msg.source().riding()==null))
-		    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
+		{
+		    if((room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+		    ||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
+		    else
+		    if(!Sense.isFlying(msg.source()))
+			    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
+		}
 
 		if(Sense.isSleeping(room))
 			return;

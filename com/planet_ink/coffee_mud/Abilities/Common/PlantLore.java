@@ -68,7 +68,7 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						MUDTracker.getRadiantRooms(room,V,true,true,false,null,2);
+						MUDTracker.getRadiantRooms(room,V,true,true,false,true,false,null,2);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);

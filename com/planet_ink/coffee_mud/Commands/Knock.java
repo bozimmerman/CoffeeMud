@@ -73,7 +73,7 @@ public class Knock extends StdCommand
 				{
 					Vector V=new Vector();
 					V.addElement(mob.location());
-					MUDTracker.getRadiantRooms(R,V,true,false,false,null,5);
+					MUDTracker.getRadiantRooms(R,V,true,false,false,false,false,null,5);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{

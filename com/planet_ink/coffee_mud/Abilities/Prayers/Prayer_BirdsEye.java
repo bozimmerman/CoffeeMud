@@ -45,7 +45,7 @@ public class Prayer_BirdsEye extends Prayer
 				if(I!=null)
 				{
 					Vector set=new Vector();
-					MUDTracker.getRadiantRooms(mob.location(),set,false,false,true,null,2);
+					MUDTracker.getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2);
 					StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
 						str.append(CMMap.getExtendedRoomID((Room)set.elementAt(i))+";");

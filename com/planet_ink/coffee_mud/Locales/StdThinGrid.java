@@ -24,7 +24,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
 	
-	public final static long EXPIRATION=60000;
+	public final static long EXPIRATION=300000;
 	
 	protected Vector descriptions=new Vector();
 	protected Vector displayTexts=new Vector();
@@ -37,7 +37,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected final DVector rooms=new DVector(4);
 	protected static boolean tickStarted=false;
-	protected static Ability watcher=null;
 
 	public StdThinGrid()
 	{
@@ -183,9 +182,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					R.addEffect((Ability)fetchEffect(a).copyOf());
 				for(int b=0;b<numBehaviors();b++)
 					R.addBehavior(fetchBehavior(b).copyOf());
-				if(watcher==null)
-					watcher=new ThinGridChildWatch();
-				R.addNonUninvokableEffect(watcher);
 				rooms.addElement(R,new Integer(x),new Integer(y),new Long(System.currentTimeMillis()));
 				CMMap.addRoom(R);
 			}
@@ -617,120 +613,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		tickStarted=true;
 		ThinGridVacuum TGV=new ThinGridVacuum();
 		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_MOB,30);
-	}
-	
-	protected static class ThinGridChildWatch implements Ability
-	{
-		public String ID() { return "ThinGridChildWatch"; }
-		public String name(){ return "a Thin Child Watching Property";}
-		public String Name(){return name();}
-		public String description(){return "";}
-		public String displayText(){return "";}
-		protected Environmental affected=null;
-		protected int canAffectCode(){return 0;}
-		protected int canTargetCode(){return 0;}
-		public int castingTime(){return 0;}
-		public int combatCastingTime(){return 0;}
-		public int abilityCode(){return 0;}
-		public void setAbilityCode(int newCode){}
-		public int adjustedLevel(MOB mob, int asLevel){return -1;}
-		public boolean bubbleAffect(){return false;}
-		public long flags(){return 0;}
-		public long getTickStatus(){return Tickable.STATUS_NOT;}
-		public int usageType(){return 0;}
-		public void setName(String newName){}
-		public void setDescription(String newDescription){}
-		public void setDisplayText(String newDisplayText){}
-		public Vector externalFiles(){return null;}
-		public MOB invoker(){return null;}
-		public void setInvoker(MOB mob){}
-		public static final String[] empty={};
-		public String[] triggerStrings(){return empty;}
-		public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
-		public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
-		public boolean autoInvocation(MOB mob){return false;}
-		public void unInvoke(){}
-		public boolean canBeUninvoked(){return false;}
-		public boolean isAutoInvoked(){return true;}
-		public boolean isNowAnAutoEffect(){return true;}
-		public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
-		public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
-		public boolean canBeLearnedBy(MOB teacher, MOB student){return false;}
-		public void teach(MOB teacher, MOB student){}
-		public void practice(MOB teacher, MOB student){}
-		public int maxRange(){return Integer.MAX_VALUE;}
-		public int minRange(){return Integer.MIN_VALUE;}
-		public int profficiency(){return 0;}
-		public void setProfficiency(int newProfficiency){}
-		public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
-		public void helpProfficiency(MOB mob){}
-		public Environmental affecting(){return affected;}
-		public void setAffectedOne(Environmental being){affected=being;}
-		public boolean putInCommandlist(){return false;}
-		public int quality(){return Ability.INDIFFERENT;}
-		public int classificationCode(){ return Ability.PROPERTY;}
-		public boolean isBorrowed(Environmental toMe){ return true;	}
-		public void setBorrowed(Environmental toMe, boolean truefalse){}
-		protected static final EnvStats envStats=new DefaultEnvStats();
-		public EnvStats envStats(){return envStats;}
-		public EnvStats baseEnvStats(){return envStats;}
-		public void recoverEnvStats(){}
-		public void setBaseEnvStats(EnvStats newBaseEnvStats){}
-		public void startTickDown(MOB mob, Environmental E, int tickID){E.addNonUninvokableEffect(this);}
-		public Environmental newInstance(){ return this;}
-		private static final String[] CODES={};
-		public String[] getStatCodes(){return CODES;}
-		public String getStat(String code){ return "";}
-		public void setStat(String code, String val){}
-		public boolean sameAs(Environmental E){ return (E instanceof ThinGridChildWatch);}
-		public Environmental copyOf(){ return this;}
-		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-		public void setMiscText(String newMiscText){}
-		public String text(){ return "";}
-		public boolean appropriateToMyAlignment(int alignment){return true;}
-		public String accountForYourself(){return "";}
-		public int affectType(){return 0;}
-		public String requirements(){return "";}
-		public String image(){return "";}
-		public void setImage(String newImage){}
-		public boolean canAffect(Environmental E){	return false;}
-		public boolean canTarget(Environmental E){ return false;}
-		public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
-		public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
-		public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
-		public void executeMsg(Environmental myHost, CMMsg msg)
-		{
-			if((msg.target() instanceof Room)
-			&&((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
-			   ||(msg.targetMinor()==CMMsg.TYP_ENTER))
-			&&(((Room)msg.target()).getGridParent() instanceof StdThinGrid))
-			{
-				Room R=(Room)msg.target();
-				StdThinGrid STG=((StdThinGrid)R.getGridParent());
-				int x=STG.getChildX(R);
-				int y=STG.getChildY(R);
-				if((x>=0)&&(x<STG.xSize())&&(y>=0)&&(y<STG.ySize()))
-					STG.fillExitsOfGridRoom(R,x,y);
-			}
-		}
-		public boolean okMessage(Environmental myHost, CMMsg msg){return true;}
-		public boolean tick(Tickable ticking, int tickID){ return true;	}
-		public void makeLongLasting(){}
-		public void makeNonUninvokable(){}
-		private static final int[] cost=new int[3];
-		public int[] usageCost(MOB mob){return cost;}
-		public void addEffect(Ability to){}
-		public void addNonUninvokableEffect(Ability to){}
-		public void delEffect(Ability to){}
-		public int numEffects(){ return 0;}
-		public Ability fetchEffect(int index){return null;}
-		public Ability fetchEffect(String ID){return null;}
-		public void addBehavior(Behavior to){}
-		public void delBehavior(Behavior to){}
-		public int numBehaviors(){return 0;}
-		public Behavior fetchBehavior(int index){return null;}
-		public Behavior fetchBehavior(String ID){return null;}
-		public boolean isGeneric(){return false;}
 	}
 	
 	protected static class ThinGridVacuum implements Tickable

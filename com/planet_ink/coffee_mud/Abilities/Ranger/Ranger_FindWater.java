@@ -267,7 +267,7 @@ public class Ranger_FindWater extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,false,false,false,false,100);
 
 		if((success)&&(theTrail!=null))
 		{

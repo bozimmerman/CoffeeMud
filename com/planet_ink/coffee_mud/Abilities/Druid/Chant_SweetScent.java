@@ -40,7 +40,7 @@ public class Chant_SweetScent extends Chant
 			{
 				Room room=(Room)I.owner();
 				Vector rooms=new Vector();
-				MUDTracker.getRadiantRooms(room,rooms,true,true,false,null,10);
+				MUDTracker.getRadiantRooms(room,rooms,true,false,false,false,false,null,10);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB M=room.fetchInhabitant(i);

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -39,6 +40,7 @@ public class Patroller extends ActiveTicker
 		super();
 		minTicks=5; maxTicks=10; chance=100;
 		rideOk=false;
+		diameter=20;
 		tickReset();
 	}
 	public void setParms(String newParms)
@@ -163,6 +165,7 @@ public class Patroller extends ActiveTicker
 			{
 				if(CMMap.getExtendedRoomID(thisRoom).toUpperCase().endsWith(nxt.toUpperCase()))
 				{
+				    correction=null;
 				    step++;
 				    return true;
 				}
@@ -173,6 +176,7 @@ public class Patroller extends ActiveTicker
 					if((R!=null)
 					&&(CMMap.getExtendedRoomID(R).toUpperCase().endsWith(nxt.toUpperCase())))
 					{
+					    correction=null;
 						thatRoom=R;
 						direction=d;
 						break;
@@ -190,10 +194,35 @@ public class Patroller extends ActiveTicker
 			    if(R==null) R=CMMap.getRoom(thisRoom.getArea()+"#"+nxt);
 			    if(R!=null)
 			    {
+			        boolean airOk=(Sense.isFlying((Environmental)ticking)
+				        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
+			        boolean waterOk=(Sense.isSwimming((Environmental)ticking)
+					        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_WATER)));
+			        
+			        if(R instanceof GridLocale)
+			        {
+			            boolean GridLocaleFixed=false;
+			            if(correction!=null)
+			            {
+			                for(int r=0;r<correction.size();r++)
+			                    if(((GridLocale)R).isMyChild((Room)correction.elementAt(r)))
+			                    {
+						            GridLocaleFixed=true;
+			                        R=(Room)correction.elementAt(r);
+			                        break;
+			                    }
+			            }
+			            if(!GridLocaleFixed)
+			            {
+			                correction=null;
+				            R=((GridLocale)R).getRandomChild();
+			            }
+			        }
+			        destinationRoomForThisStep=R;
 			        direction=-1;
 			        if(correction!=null)
 			        {
-			            direction=MUDTracker.radiatesFromDir(thisRoom,correction);
+			            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
 			            if(direction<0) 
 			                correction=null;
 			            else
@@ -201,9 +230,11 @@ public class Patroller extends ActiveTicker
 			        }
 					if((direction<0)||(thatRoom==null))
 			        {
-			            correction=new Vector();
-			            MUDTracker.getRadiantRooms(R,correction,false,false,true,thisRoom,diameter);
-			            direction=MUDTracker.radiatesFromDir(thisRoom,correction);
+			            correction=MUDTracker.findBastardTheBestWay(thisRoom,Util.makeVector(R),ticking instanceof Item,false,!airOk,!waterOk,diameter);
+			            if(correction!=null)
+				            direction=MUDTracker.trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);
+			            else
+			                direction=-1;
 			            if(direction>=0)
 			                thatRoom=thisRoom.getRoomInDir(direction);
 			            else
@@ -212,11 +243,14 @@ public class Patroller extends ActiveTicker
 					if((direction<0)||(thatRoom==null))
 					{
 					    step=0;
-					    return true;
+						return true;
 					}
 			    }
 			    else
+			    {
+			        Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" is utterly unknown!");
 					return true;
+			    }
 			}
 			else
 			    correction=null;

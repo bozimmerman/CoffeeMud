@@ -194,7 +194,7 @@ public class Chant_FindMate extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=MUDTracker.findBastardTheBestWay(mob.location(),rooms,true,false,true,true,50);
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{

@@ -1002,6 +1002,16 @@ public class StdRoom
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		Room nextRoom=rawDoors()[direction];
+		if((nextRoom==null)
+		&&(getGridParent() instanceof StdThinGrid))
+		{
+			StdThinGrid STG=((StdThinGrid)this.getGridParent());
+			int x=STG.getChildX(this);
+			int y=STG.getChildY(this);
+			if((x>=0)&&(x<STG.xSize())&&(y>=0)&&(y<STG.ySize()))
+				STG.fillExitsOfGridRoom(this,x,y);
+		}
+		    
 		if(nextRoom instanceof GridLocale)
 		{
 			Room realRoom=((GridLocale)nextRoom).getAltRoomFrom(this,direction);
@@ -1628,5 +1638,15 @@ public class StdRoom
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 				return false;
 		return true;
+	}
+	public boolean isSameRoom(Object O)
+	{
+	    if(O==this) return true;
+	    if(O instanceof Room)
+	    {
+	        if(CMMap.getExtendedRoomID(this).equals(CMMap.getExtendedRoomID((Room)O)))
+	            return true;
+	    }
+	    return false;
 	}
 }

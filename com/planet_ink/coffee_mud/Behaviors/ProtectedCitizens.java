@@ -157,7 +157,7 @@ public class ProtectedCitizens extends ActiveTicker
 			assMOBS=new Vector();
 			assisters.put(mob,assMOBS);
 		}
-		MUDTracker.getRadiantRooms(thisRoom,rooms,true,true,false,null,radius);
+		MUDTracker.getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius);
 		for(int a=0;a<assMOBS.size();a++)
 		{
 			MOB M=(MOB)assMOBS.elementAt(a);

@@ -33,7 +33,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 			return false;
 
 		Vector V=new Vector();
-		MUDTracker.getRadiantRooms(mob.location(),V,false,false,true,null,adjustedLevel(mob,asLevel));
+		MUDTracker.getRadiantRooms(mob.location(),V,true,true,true,true,true,null,adjustedLevel(mob,asLevel));
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Room R=(Room)V.elementAt(v);

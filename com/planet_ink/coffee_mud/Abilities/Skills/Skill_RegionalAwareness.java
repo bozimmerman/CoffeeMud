@@ -83,7 +83,7 @@ public class Skill_RegionalAwareness extends StdAbility
 				Room[][] rmap=new Room[diameter][diameter];
 				Vector rooms=new Vector();
 				HashSet closedPaths=new HashSet();
-				MUDTracker.getRadiantRooms(mob.location(),rooms,true,false,true,null,diameter);
+				MUDTracker.getRadiantRooms(mob.location(),rooms,true,false,true,true,false,null,diameter);
 				rmap[diameter/2][diameter/2]=mob.location();
 				map[diameter/2][diameter/2]='*';
 				for(int i=0;i<rooms.size();i++)

@@ -39,7 +39,7 @@ public class TrailTo extends StdCommand
 			confirm=true;
 		}
 		Vector set=new Vector();
-		MUDTracker.getRadiantRooms(R1,set,false,false,true,null,Integer.MAX_VALUE);
+		MUDTracker.getRadiantRooms(R1,set,false,false,true,false,false,null,Integer.MAX_VALUE);
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
@@ -119,7 +119,7 @@ public class TrailTo extends StdCommand
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
 		if(set.size()==0)
-			MUDTracker.getRadiantRooms(R1,set,false,false,true,R2,Integer.MAX_VALUE);
+			MUDTracker.getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

@@ -41,7 +41,7 @@ public class Prayer_Position extends Prayer
 	public String trailTo(Room R1, Room R2)
 	{
 		Vector set=new Vector();
-		MUDTracker.getRadiantRooms(R1,set,false,false,true,R2,Integer.MAX_VALUE);
+		MUDTracker.getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

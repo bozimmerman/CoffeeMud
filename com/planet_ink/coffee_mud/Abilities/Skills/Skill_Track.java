@@ -161,7 +161,7 @@ public class Skill_Track extends StdAbility
 		if((msg.amISource(mob))
 		&&(msg.amITarget(mob.location()))
 		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
-			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -245,7 +245,7 @@ public class Skill_Track extends StdAbility
 			if((cacheCode==1)&&(rooms.size()==1))
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
 			if(theTrail==null)
-				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false);
+				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,false,false,200);
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}

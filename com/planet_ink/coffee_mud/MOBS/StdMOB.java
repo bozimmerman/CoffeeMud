@@ -2117,7 +2117,9 @@ public class StdMOB implements MOB
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
-					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),this));
+					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
+					if(eq.length() > 0)
+					    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
 					tell(myDescription.toString());
 				}
 				break;
@@ -2319,7 +2321,9 @@ public class StdMOB implements MOB
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
-					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+CommonMsgs.getEquipment(msg.source(),this));
+					StringBuffer eq=CommonMsgs.getEquipment(msg.source(),this);
+					if(eq.length() > 0)
+					    myDescription.append(charStats().HeShe()+" is wearing:\n\r"+eq.toString());
 					mob.tell(myDescription.toString());
 				}
 				else

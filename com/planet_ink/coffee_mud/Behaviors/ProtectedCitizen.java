@@ -133,7 +133,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();
-		MUDTracker.getRadiantRooms(thisRoom,V,true,!wander,false,null,radius);
+		MUDTracker.getRadiantRooms(thisRoom,V,true,!wander,false,false,false,null,radius);
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);

@@ -75,8 +75,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			MUDTracker.getRadiantRooms(room1,rooms,true,true,false,null,10);
-			MUDTracker.getRadiantRooms(room2,rooms,true,true,false,null,10);
+			MUDTracker.getRadiantRooms(room1,rooms,true,true,false,false,false,null,10);
+			MUDTracker.getRadiantRooms(room2,rooms,true,true,false,false,false,null,10);
 			Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
