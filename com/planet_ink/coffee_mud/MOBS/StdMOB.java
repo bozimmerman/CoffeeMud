@@ -13,7 +13,6 @@ public class StdMOB implements MOB
 
 	private String colorStr=null;
 	private String prompt=null;
-	protected int termID = 0;	//0:plain, 1:ansi
 
 	private String clanID=null;
 	private int clanRole=0;
@@ -80,7 +79,7 @@ public class StdMOB implements MOB
 	{
 		attributesBitmap=newVal;
 		if(mySession!=null)
-			mySession.setTermID(((attributesBitmap&MOB.ATT_ANSI)>0)?1:0);
+			mySession.setTermID((Util.bset(attributesBitmap,MOB.ATT_ANSI))?1:0);
 	}
 
 	protected int minuteCounter=0;
@@ -210,7 +209,7 @@ public class StdMOB implements MOB
 		{
 			Behavior B=E.fetchBehavior(i);
 			if(B!=null)
-				behaviors.addElement(B);
+				behaviors.addElement((Behavior)B.copyOf());
 		}
 
 	}
@@ -398,40 +397,33 @@ public class StdMOB implements MOB
 				location().show(this,null,Affect.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
 		}
 		setFollowing(null);
-		if(!isMonster())
-		{
-			for(int f=numFollowers()-1;f>=0;f--)
-			{
-				MOB follower=fetchFollower(f);
-				if(follower!=null)
-				{
-					if(!follower.isMonster())
-					{
-						follower.setFollowing(null);
-						delFollower(follower);
-					}
-					else
-					if(follower.location()!=null)
-					{
-						follower.killMeDead(false);
-						addFollower(follower);
-					}
-				}
-			}
-		}
-		else
+		Vector oldFollowers=new Vector();
 		while(numFollowers()>0)
 		{
 			MOB follower=fetchFollower(0);
 			if(follower!=null)
 			{
+				if(follower.isMonster())
+					oldFollowers.addElement(follower);
 				follower.setFollowing(null);
 				delFollower(follower);
 			}
 		}
-			
 		if(!isMonster())
+		{
+			for(int f=0;f<oldFollowers.size();f++)
+			{
+				MOB follower=(MOB)oldFollowers.elementAt(f);
+				if(follower.location()!=null)
+				{
+					MOB newFol=(MOB)follower.copyOf();
+					newFol.baseEnvStats().setRejuv(0);
+					follower.killMeDead(false);
+					addFollower(newFol);
+				}
+			}
 			session().setKillFlag(true);
+		}
 	}
 
 	public String getClanID(){return ((clanID==null)?"":clanID);}
@@ -2270,16 +2262,6 @@ public class StdMOB implements MOB
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
 			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
-	}
-	public int getTermID()
-	{
-		return termID;
-	}
-	public void setTermID(int tid)
-	{
-		termID = tid != 0 ? 1 : 0;
-		if(mySession!=null)
-			mySession.setTermID(tid);
 	}
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){

@@ -338,21 +338,15 @@ public class MOBloader
 		Room location=mob.location();
 		if(location==null)
 			location=mob.getStartRoom();
-		if(mob.numFollowers()>0)
+		for(int f=0;f>mob.numFollowers();f++)
 		{
-			for(int f=0;f>mob.numFollowers();f++)
+			MOB follower=mob.fetchFollower(f);
+			if((follower!=null)&&(follower.isMonster()))
 			{
-				MOB follower=mob.fetchFollower(f);
-				if((follower!=null)&&(follower.isMonster()))
-				{
-					if(location==null) location=follower.getStartRoom();
-					if(follower.baseState().getHitPoints()<1)
-						follower.bringToLife(location,true);
-					else
-						follower.bringToLife(location,false);
-					follower.setFollowing(mob);
-					location.showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
-				}
+				if(location==null) location=follower.getStartRoom();
+				follower.bringToLife(location,false);
+				follower.setFollowing(mob);
+				location.showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 			}
 		}
 		DBConnection D=null;
