@@ -1206,11 +1206,11 @@ public class TelnetSession extends Thread implements Session
 								  buf.append(mob().location().roomID());
 							  c++; break; }
 				case 'e': {	  MOB victim=mob().getVictim();
-							  if((mob().isInCombat())&&(victim!=null))
+							  if((mob().isInCombat())&&(victim!=null)&&(Sense.canBeSeenBy(victim,mob)))
 								  buf.append(victim.name());
 							  c++; break; }
 				case 'E': {	  MOB victim=mob().getVictim();
-							  if((mob().isInCombat())&&(victim!=null))
+							  if((mob().isInCombat())&&(victim!=null)&&(Sense.canBeSeenBy(victim,mob)))
 								  buf.append(victim.charStats().getMyRace().healthText(victim)+"\n\r");
 							  c++; break; }
 				case 'B': { buf.append("\n\r"); c++; break;}

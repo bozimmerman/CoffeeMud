@@ -80,6 +80,12 @@ public interface Clan extends Cloneable, Tickable
 	
 	public int allowedToDoThis(MOB mob, int function);
 	
+	public final static int VSTAT_STARTED=0;
+	public final static int VSTAT_FAILED=1;
+	public final static int VSTAT_PASSED=2;
+	
+	public Enumeration votes();
+	
 	public int getSize();
 
 	public String getName();

@@ -74,7 +74,7 @@ public class Wainwrighting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
+						commonEmote(mob,"<S-NAME> mess(es) up building "+building.name()+".");
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
@@ -143,7 +143,7 @@ public class Wainwrighting extends CommonSkill
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"list\" as your parameter for a list.");
+			commonTell(mob,"You don't know how to build a '"+recipeName+"'.  Try \"list\" as your parameter for a list.");
 			return false;
 		}
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
@@ -191,9 +191,9 @@ public class Wainwrighting extends CommonSkill
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) carving "+building.name()+".";
-		displayText="You are carving "+building.name();
-		verb="carving "+building.name();
+		startStr="<S-NAME> start(s) building "+building.name()+".";
+		displayText="You are building "+building.name();
+		verb="building "+building.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

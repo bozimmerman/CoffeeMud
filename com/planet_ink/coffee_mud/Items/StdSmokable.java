@@ -9,6 +9,7 @@ public class StdSmokable extends StdContainer implements Light
 	public String ID(){	return "StdSmokable";}
 	protected boolean lit=false;
 	protected long puffTicks=30000/Host.TICK_TIME;
+	protected int baseDuration=200;
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
 	protected boolean goesOutInTheRain=true;
@@ -29,8 +30,8 @@ public class StdSmokable extends StdContainer implements Light
 		recoverEnvStats();
 	}
 
-	public void setDuration(int duration){durationTicks=duration;}
-	public int getDuration(){return durationTicks;}
+	public void setDuration(int duration){baseDuration=duration;}
+	public int getDuration(){return baseDuration;}
 	public boolean destroyedWhenBurnedOut(){return this.destroyedWhenBurnedOut;}
 	public boolean goesOutInTheRain(){return this.goesOutInTheRain;}
 	public boolean isLit(){return lit;}
@@ -54,7 +55,7 @@ public class StdSmokable extends StdContainer implements Light
 			if(capacity>0)
 			{
 				if(getContents().size()>0)
-					durationTicks=200;
+					durationTicks=baseDuration;
 				else
 					durationTicks=0;
 			}

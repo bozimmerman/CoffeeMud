@@ -203,6 +203,7 @@ public class CommandSet extends Hashtable
 	public static final int STAT=190;
 	public static final int WIZEMOTE=191;
 	public static final int POUR=192;
+	public static final int CLANQUAL=193;
 
 	private CommandSet()
 	{
@@ -255,6 +256,7 @@ public class CommandSet extends Hashtable
 		put("CLANHOMESET",new Integer(CLANHOMESET));
 		put("CLANLIST",new Integer(CLANLIST));
 		put("CLANPREMISE",new Integer(CLANPREMISE));
+		put("CLANQUAL",new Integer(CLANQUAL));
 		put("CLANREJECT",new Integer(CLANREJECT));
 		put("CLANRESIGN",new Integer(CLANRESIGN));
 		put("COLORSET",new Integer(COLORSET));

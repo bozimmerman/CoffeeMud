@@ -302,6 +302,9 @@ public class ServiceEngine
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotal"))
 			return ""+SaveThread.milliTotal;
 		else
+		if(itemCode.equalsIgnoreCase("saveThreadStatus"))
+			return ""+SaveThread.status;
+		else
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTime"))
 			return Util.returnTime(SaveThread.milliTotal,0);
 		else

@@ -8,5 +8,5 @@
 % Engagement Ring	1	50	1	150	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	PRECIOUS
 % Choker	1	20	2	50	GenArmor	NECK	0	0	
 % Crown	5	100	10	150	GenArmor	HEAD	0	0	
-% Tierra	5	80	10	200	GenArmor	HEAD	0	0	
+% Tiara	5	80	10	200	GenArmor	HEAD	0	0	
 % Monocle	5	30	1	20	GenArmor	EYES	0	0	!GLASS

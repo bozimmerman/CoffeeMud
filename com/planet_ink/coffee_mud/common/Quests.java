@@ -719,7 +719,7 @@ public class Quests implements Cloneable, Quest
 							||(CoffeeUtensils.containsString(M2.name(),mobName))
 							||(CoffeeUtensils.containsString(M2.displayText(),mobName))
 							||(CoffeeUtensils.containsString(M2.description(),mobName)))
-								choices.addElement(M2);
+								choices.addElement(M2.copyOf());
 						}
 						if(choices.size()==0)
 						{
@@ -774,7 +774,7 @@ public class Quests implements Cloneable, Quest
 							||(CoffeeUtensils.containsString(I2.name(),itemName))
 							||(CoffeeUtensils.containsString(I2.displayText(),itemName))
 							||(CoffeeUtensils.containsString(I2.description(),itemName)))
-								choices.addElement(I2);
+								choices.addElement(I2.copyOf());
 						}
 						if(choices.size()==0)
 						{
@@ -1367,7 +1367,7 @@ public class Quests implements Cloneable, Quest
 			int y=-1;
 			int yy=0;
 			while(yy<text.length())
-				if(text.charAt(yy)==';'){y=yy;break;}
+				if((text.charAt(yy)==';')&&((yy<=0)||(text.charAt(yy-1)!='\\'))) {y=yy;break;}
 				else
 				if(text.charAt(yy)=='\n'){y=yy;break;}
 				else
@@ -1386,7 +1386,7 @@ public class Quests implements Cloneable, Quest
 			}
 			if((cmd.length()>0)&&(!cmd.startsWith("#")))
 			{
-				script.addElement(cmd);
+				script.addElement(Util.replaceAll(cmd,"\\;",";"));
 			}
 		}
 		return script;

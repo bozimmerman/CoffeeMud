@@ -36,7 +36,7 @@ The most active object has been '<FONT COLOR=#CCFFFF>@SystemInfo?topObjectClient
 That object has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topObjectMillisTimePlusAverage@</FONT>.<BR>
 <BR>
 <FONT COLOR=#CCFFFF><B>Save Thread report:</B></FONT><BR>
-The Save Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?saveThreadMilliTotalTimePlusAverage@</FONT>.<BR>
+The Save Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?saveThreadMilliTotalTimePlusAverage@</FONT> (@SystemInfo?saveThreadStatus@).<BR>
 <BR>
 <FONT COLOR=#CCFFFF><B>Session report:</B></FONT><BR>
 There are <FONT COLOR=#CCFFFF>@NumPlayers?ALL@</FONT> ticking players logged on.<BR>

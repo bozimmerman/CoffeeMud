@@ -130,7 +130,8 @@ public class Scriptable extends StdBehavior
 		"ISSEASON", // 50
 		"ISWEATHER", // 51
 		"GSTAT", // 52
-		"INCONTAINER" //53
+		"INCONTAINER", //53
+		"ISALIVE" // 54
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -302,8 +303,7 @@ public class Scriptable extends StdBehavior
 				int y=-1;
 				int yy=0;
 				while(yy<s.length())
-					if((s.charAt(yy)==';')
-					&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
+					if((s.charAt(yy)==';')&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
 					else
 					if(s.charAt(yy)=='\n'){y=yy;break;}
 					else
@@ -690,6 +690,16 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("neutral");
+				break;
+			}
+			case 54: // isalive
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+					returnable=true;
+				else
+					returnable=false;
 				break;
 			}
 			case 10: // isfight
@@ -1829,6 +1839,16 @@ public class Scriptable extends StdBehavior
 			case 11: // isimmort
 				results.append("[unimplemented function]");
 				break;
+			case 54: // isalive
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+					results.append(((MOB)E).healthText());
+				else
+					results.append(E.name()+" is dead.");
+				break;
+			}
 			case 10: // isfight
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);

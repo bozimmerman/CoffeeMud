@@ -13,14 +13,16 @@ public class SaveThread extends Thread
 	public long lastStop=0;
 	public static long milliTotal=0;
 	public static long tickTotal=0;
+	public static String status="";
 
 	public SaveThread()
 	{
 		super("SaveThread");
 	}
-
+	
 	public void itemSweep()
 	{
+		status="sweeping";
 		long itemKillTime=System.currentTimeMillis();
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -32,7 +34,11 @@ public class SaveThread extends Thread
 				if((A!=null)&&(A instanceof LandTitle))
 					T=(LandTitle)A;
 			}
-			if(T!=null)	T.updateLot(R,T);
+			if(T!=null){
+				status="updating title in "+R.roomID();
+				T.updateLot(R,T);
+				status="sweeping";
+			}
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
@@ -40,7 +46,9 @@ public class SaveThread extends Thread
 				{
 					if(itemKillTime>I.dispossessionTime())
 					{
+						status="destroying "+I.Name();
 						I.destroy();
+						status="sweeping";
 						i=i-1;
 					}
 				}
@@ -52,6 +60,7 @@ public class SaveThread extends Thread
 	{
 		long lastDateTime=System.currentTimeMillis();
 		lastDateTime-=(20*IQCalendar.MILI_MINUTE);
+		status="checking";
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -64,14 +73,18 @@ public class SaveThread extends Thread
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
-					if(!ticked){
+					if(!ticked)
+					{
+						status="destroying unticked mob "+mob.name();
 						mob.destroy();
 						R.delInhabitant(mob);
+						status="checking";
 					}
 				}
 			}
 		}
 
+		status="checking tick groups.";
 		Vector tryToKill=new Vector();
 		for(Enumeration v=ServiceEngine.tickGroups();v.hasMoreElements();)
 		{
@@ -115,6 +128,7 @@ public class SaveThread extends Thread
 				tryToKill.addElement(almostTock);
 			}
 		}
+		status="killing tick groups.";
 		for(int x=0;x<tryToKill.size();x++)
 		{
 			Tick almostTock=(Tick)tryToKill.elementAt(x);
@@ -130,6 +144,7 @@ public class SaveThread extends Thread
 			}
 		}
 
+		status="checking sessions.";
 		for(int s=0;s<Sessions.size();s++)
 		{
 			TelnetSession S=(TelnetSession)Sessions.elementAt(s);
@@ -158,11 +173,13 @@ public class SaveThread extends Thread
 						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						status="killing session ";
 						S.setKillFlag(true);
 						S.interrupt();
 						try{Thread.sleep(500);}catch(Exception e){}
 						S.interrupt();
 						Sessions.removeElement(S);
+						status="checking sessions.";
 					}
 					else
 					if(time>check)
@@ -178,15 +195,18 @@ public class SaveThread extends Thread
 					Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 					Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 					Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					status="killing session ";
 					S.setKillFlag(true);
 					S.interrupt();
 					try{Thread.sleep(500);}catch(Exception e){}
 					S.interrupt();
 					Sessions.removeElement(S);
+					status="checking sessions.";
 				}
 			}
 		}
 
+		status="checking database health";
 		StringBuffer ok=DBConnector.errorStatus();
 		if(ok.length()!=0)
 			Log.errOut("Save Thread","DB: "+ok);
@@ -207,7 +227,9 @@ public class SaveThread extends Thread
 			MOB mob=(MOB)p.nextElement();
 			if(!mob.isMonster())
 			{
+				status="saving "+mob.Name();
 				MOBloader.DBUpdate(mob);
+				status="saving followers of "+mob.Name();
 				MOBloader.DBUpdateFollowers(mob);
 				processed++;
 			}
@@ -216,6 +238,7 @@ public class SaveThread extends Thread
 			&&((mob.playerStats().lastUpdated()==0)
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
+				status="just saving "+mob.Name();
 				MOBloader.DBUpdate(mob);
 				processed++;
 			}
@@ -238,10 +261,12 @@ public class SaveThread extends Thread
 			{
 				itemSweep();
 				checkHealth();
+				status="ticking the first area for time";
 				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
 				lastStop=System.currentTimeMillis();
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
+				status="sleeping";
 				Thread.sleep(Host.TIME_TICK_DELAY);
 				lastStart=System.currentTimeMillis();
 				int processed=savePlayers();

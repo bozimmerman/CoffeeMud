@@ -14,7 +14,7 @@ public class Poison_Alcohol extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Alcohol();}
 	
-	protected int POISON_TICKS(){return 35;}
+	protected int POISON_TICKS(){return 65;}
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "You feel sober again.";}
 	protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}

@@ -220,11 +220,17 @@ public class CommandProcessor
 		case CommandSet.CLANPREMISE:
 			ClanCommands.clanpremise(mob,commands);
 			break;
+		case CommandSet.CLANQUAL:
+			ClanCommands.clanqual(mob,commands);
+			break;
 		case CommandSet.CLANREJECT:
 			ClanCommands.clanreject(mob,commands);
 			break;
 		case CommandSet.CLANRESIGN:
 			ClanCommands.clanresign(mob,commands);
+			break;
+		case CommandSet.CLANVOTE:
+			ClanCommands.clanvote(mob,commands);
 			break;
 		case CommandSet.CONSIDER:
 			SocialProcessor.consider(mob,commands);

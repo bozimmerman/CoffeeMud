@@ -14,6 +14,7 @@ public class Poison_Firebreather extends Poison_Liquor
 	private static final String[] triggerStrings = {"LIQUORFIRE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Firebreather();}
+	protected int POISON_TICKS(){return 35;}
 	
 	public void unInvoke()
 	{
