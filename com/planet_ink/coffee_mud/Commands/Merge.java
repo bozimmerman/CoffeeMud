@@ -462,7 +462,7 @@ public class Merge extends StdCommand
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
+	public boolean canBeOrdered(){return false;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"MERGE");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

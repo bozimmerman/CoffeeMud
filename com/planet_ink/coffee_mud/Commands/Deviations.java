@@ -11,7 +11,7 @@ public class Deviations extends StdCommand
 	private String[] access={"DEVIATIONS"};
 	public String[] getAccessWords(){return access;}
 	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
+	public boolean canBeOrdered(){return false;}
 
 	private void fillCheckDeviations(Room R, String type, Vector check)
 	{
