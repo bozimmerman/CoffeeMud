@@ -37,6 +37,18 @@ public class StdDrink extends StdContainer implements Drink
 	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
 	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+	
+	public boolean containsDrink()
+	{
+		if((liquidRemaining()<1)
+		||
+		 ((myOwner()!=null)
+		&&(myOwner() instanceof Room)
+		&&(((Room)myOwner()).getArea()!=null)
+		&&(((Room)myOwner()).getArea().weatherType((Room)myOwner())==Area.WEATHER_DROUGHT)))
+			return true;
+		return false;
+	}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -50,11 +62,12 @@ public class StdDrink extends StdContainer implements Drink
 				case Affect.TYP_DRINK:
 					if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
 					{
-						if(amountOfLiquidRemaining<=0)
+						if(!containsDrink())
 						{
 							mob.tell(name()+" is empty.");
 							return false;
 						}
+							
 						return true;
 					}
 					else
@@ -65,7 +78,7 @@ public class StdDrink extends StdContainer implements Drink
 				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
-						if(amountOfLiquidRemaining>=amountOfLiquidHeld)
+						if(liquidRemaining()>=amountOfLiquidHeld)
 						{
 							mob.tell(name()+" is full.");
 							return false;
@@ -73,7 +86,7 @@ public class StdDrink extends StdContainer implements Drink
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							Drink thePuddle=(Drink)affect.tool();
-							if(thePuddle.liquidRemaining()<1)
+							if(!thePuddle.containsDrink())
 							{
 								mob.tell(thePuddle.name()+" is empty.");
 								return false;

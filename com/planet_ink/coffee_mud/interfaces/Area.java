@@ -24,6 +24,7 @@ public interface Area extends Environmental
 	public final static int CLIMATE_WINDY=4;
 	public final static int CLIMASK_HOT=8;
 	public final static int CLIMASK_DRY=16;
+	public final static int NUM_CLIMATES=6;
 	
 	public final static int A_FULL_DAY=16; // groups of 10 minutes, so 2 hours, 40 minutes=24 hours.
 	public final static int DAYS_IN_MONTH=30; // number of days in a month
@@ -34,11 +35,17 @@ public interface Area extends Environmental
 	public final static int TIME_DUSK=2;
 	public final static int TIME_NIGHT=3;
 	
+	public final static int SEASON_SPRING=0;
+	public final static int SEASON_SUMMER=1;
+	public final static int SEASON_FALL=2;
+	public final static int SEASON_WINTER=3;
+	
 	public int weatherType(Room room);
 	public int nextWeatherType(Room room);
 	public String weatherDescription(Room room);
 	public String nextWeatherDescription(Room room);
 	public int climateType();
+	public int getSeasonCode();
 	
 	public void setClimateType(int newClimateType);
 	public String getWeatherDescription();

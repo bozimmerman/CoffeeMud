@@ -9,4 +9,6 @@ public interface Drink extends Item
 	public void setThirstQuenched(int amount);
 	public void setLiquidHeld(int amount);
 	public void setLiquidRemaining(int amount);
+	
+	public boolean containsDrink();
 }
