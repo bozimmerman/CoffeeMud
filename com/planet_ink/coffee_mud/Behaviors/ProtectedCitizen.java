@@ -34,7 +34,7 @@ public class ProtectedCitizen extends ActiveTicker
 		super.setParms(parms);
 		cityguard=null;
 		zapper=null;
-		wander=parms.toUpperCase().indexOf("WANDER");
+		wander=parms.toUpperCase().indexOf("WANDER")>=0;
 		radius=Util.getParmInt(parms,"radius",radius);
 		maxAssistance=Util.getParmInt(parms,"maxassists",maxAssistance);
 		claims=null;

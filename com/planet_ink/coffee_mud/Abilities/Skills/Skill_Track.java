@@ -156,14 +156,9 @@ public class Skill_Track extends StdAbility
 			return false;
 		Room thisRoom=mob.location();
 
-		boolean stoppedTracking=false;
-		for(int a=mob.numAffects()-1;a>=0;a--)
-		{
-			Ability A=mob.fetchAffect(a);
-			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_TRACKING)))
-			{ stoppedTracking=true; A.unInvoke();}
-		}
-		if(stoppedTracking)
+		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
+		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
 			if(commands.size()==0) return true;

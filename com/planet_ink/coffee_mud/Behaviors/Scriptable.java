@@ -764,16 +764,7 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-				{
-					Ability charm=null;
-					for(int a=0;a<E.numAffects();a++)
-					{
-						Ability A=E.fetchAffect(a);
-						if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_CHARMING)))
-						{ charm=A; break;}
-					}
-					returnable=(charm!=null);
-				}
+					returnable=Sense.flaggedAffects(E,Ability.FLAG_CHARMING).size()>0;
 				break;
 			}
 			case 15: // isfollow
@@ -2001,14 +1992,9 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E!=null)
 				{
-					Ability charm=null;
-					for(int a=0;a<E.numAffects();a++)
-					{
-						Ability A=E.fetchAffect(a);
-						if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_CHARMING)))
-						{ charm=A; break;}
-					}
-					if(charm!=null) results.append(charm.name());										
+					Vector V=Sense.flaggedAffects(E,Ability.FLAG_CHARMING);
+					for(int v=0;v<V.size();v++)
+						results.append((((Ability)V.elementAt(v)).name())+" ");
 				}
 				break;
 			}

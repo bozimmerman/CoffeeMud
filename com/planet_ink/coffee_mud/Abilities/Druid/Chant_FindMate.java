@@ -141,14 +141,9 @@ public class Chant_FindMate extends Chant
 			return false;
 		}
 		
-		boolean stoppedTracking=false;
-		for(int a=target.numAffects()-1;a>=0;a--)
-		{
-			Ability A=target.fetchAffect(a);
-			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_TRACKING)))
-			{ stoppedTracking=true; A.unInvoke();}
-		}
-		if(stoppedTracking)
+		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
+		if(V.size()>0)
 		{
 			target.tell("You stop tracking.");
 			return true;

@@ -13,19 +13,6 @@ public class Prayer_RemoveParalysis extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_RemoveParalysis();}
 
-	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
-	{
-		Vector offenders=new Vector();
-		for(int a=0;a<fromMe.numAffects();a++)
-		{
-			Ability A=fromMe.fetchAffect(a);
-			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_PARALYZING)))
-				offenders.addElement(A);
-		}
-		return offenders;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -35,7 +22,7 @@ public class Prayer_RemoveParalysis extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(mob,target);
+		Vector offensiveAffects=Sense.flaggedAffects(target,Ability.FLAG_PARALYZING);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{

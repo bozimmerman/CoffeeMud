@@ -64,14 +64,10 @@ public class Chant_BlueMoon extends Chant
 	{
 		if(R==null) return false;
 		if(R.getArea().canSeeTheMoon(R)) return true;
-		for(int a=0;a<R.numAffects();a++)
-		{
-			Ability A=R.fetchAffect(a);
-			if((A!=null)
-			&&(A!=Acheck)
-			&&(Util.bset(A.flags(),Ability.FLAG_MOONSUMMONING)))
+		Vector V=Sense.flaggedAffects(R,Ability.FLAG_MOONSUMMONING);
+		for(int v=0;v<V.size();v++)
+			if(V.elementAt(v)!=Acheck) 
 				return true;
-		}
 		return false;
 	}
 

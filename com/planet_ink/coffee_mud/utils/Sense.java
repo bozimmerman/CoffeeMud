@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.utils;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import java.util.Vector;
 
 
 public class Sense
@@ -71,15 +72,8 @@ public class Sense
 	public static boolean isATrackingMonster(Environmental E)
 	{
 		if(E==null) return false;
-		for(int a=0;a<E.numAffects();a++)
-		{
-			Ability A=E.fetchAffect(a);
-			if((A!=null)
-			&&(Util.bset(A.flags(),Ability.FLAG_TRACKING))
-			&&(E instanceof MOB)
-			&&(((MOB)E).isMonster()))
-				return true;
-		}
+		if((E instanceof MOB)&&(((MOB)E).isMonster()))
+			return flaggedAffects(E,Ability.FLAG_TRACKING).size()>0;
 		return false;
 	}
 	
@@ -175,13 +169,7 @@ public class Sense
 		if(E==null) return false;
 		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND) 
 			return true;
-		for(int a=0;a<E.numAffects();a++)
-		{
-			Ability A=E.fetchAffect(a);
-			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_BINDING)))
-			   return true;
-		}
-		return false;
+		return flaggedAffects(E,Ability.FLAG_BINDING).size()>0;
 	}
 	public static boolean isOnFire(Environmental seen)
 	{
@@ -417,16 +405,47 @@ public class Sense
 		return (E!=null)&&(E.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
 	}
 	
+	
 	public static boolean isMobile(Environmental E)
+	{ return flaggedBehaviors(E,Behavior.FLAG_MOBILITY).size()>0;}
+	
+	public static Vector flaggedBehaviors(Environmental E, long flag)
 	{
-		if(E==null) return false;
-		for(int b=0;b<E.numBehaviors();b++)
-		{
-			Behavior B=E.fetchBehavior(b);
-			if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
-				return true;
-		}
-		return false;
+		Vector V=new Vector();
+		if(E!=null)
+			for(int b=0;b<E.numBehaviors();b++)
+			{
+				Behavior B=E.fetchBehavior(b);
+				if((B!=null)&&(Util.bset(B.flags(),flag)))
+				{ V.addElement(B);}
+			}
+		return V;
+	}
+	
+	public static Vector flaggedAffects(Environmental E, long flag)
+	{
+		Vector V=new Vector();
+		if(E!=null)
+			for(int a=0;a<E.numAffects();a++)
+			{
+				Ability A=E.fetchAffect(a);
+				if((A!=null)&&(Util.bset(A.flags(),flag)))
+				{ V.addElement(A);}
+			}
+		return V;
+	}
+	
+	public static Vector flaggedAbilities(MOB E, long flag)
+	{
+		Vector V=new Vector();
+		if(E!=null)
+			for(int a=0;a<E.numAbilities();a++)
+			{
+				Ability A=E.fetchAbility(a);
+				if((A!=null)&&(Util.bset(A.flags(),flag)))
+				{ V.addElement(A);}
+			}
+		return V;
 	}
 	
 	public static boolean canAccess(MOB mob, Area A)

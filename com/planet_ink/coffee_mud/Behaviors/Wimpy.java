@@ -53,18 +53,16 @@ public class Wimpy extends StdBehavior
 					if((veryWimpy)&&(!monster.isInCombat()))
 					{
 						Room oldRoom=monster.location();
+						Vector V=Sense.flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
 						Behavior B=null;
-						for(int b=0;b<monster.numBehaviors();b++)
+						for(int b=0;b<V.size();b++)
 						{
-							B=monster.fetchBehavior(b);
-							if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
-							{
-								int tries=0;
-								while(((++tries)<100)&&(oldRoom==monster.location()))
-									B.tick(monster,Host.MOB_TICK);
-								if(oldRoom!=monster.location())
-									return true;
-							}
+							B=(Behavior)V.elementAt(b);
+							int tries=0;
+							while(((++tries)<100)&&(oldRoom==monster.location()))
+								B.tick(monster,Host.MOB_TICK);
+							if(oldRoom!=monster.location())
+								return true;
 						}
 						if(oldRoom==monster)
 							SaucerSupport.beMobile(monster,false,false,false,false,null);

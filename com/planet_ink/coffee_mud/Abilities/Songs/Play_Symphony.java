@@ -671,13 +671,8 @@ public class Play_Symphony extends Play
 		case CODE_REMOVESPELLTYPE:
 			{
 				MOB M=(MOB)affected;
-				for(int a=0;a<M.numAffects();a++)
-				{
-					Ability A=M.fetchAffect(a);
-					if((A!=null)
-					&&(Util.bset(A.flags(),toDoVal)))
-					{	A.unInvoke(); break;}
-				}
+				Vector V=Sense.flaggedAffects(M,toDoVal);
+				for(int v=0;v<V.size();v++){((Ability)V.elementAt(v)).unInvoke(); break;}
 				return true;
 			}
 		case CODE_SPEEDCOMMONSKILLS:
