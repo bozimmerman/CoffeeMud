@@ -98,14 +98,14 @@ public class ExternalPlay
 	{
 		if(player!=null) player.doCommand(mob,commands);
 	}
-	public static String shortAlignmentStr(MOB mob)
+	public static String shortAlignmentStr(int al)
 	{
-		if(player!=null) return player.shortAlignmentStr(mob);
+		if(player!=null) return player.shortAlignmentStr(al);
 		return "";
 	}
-	public static String alignmentStr(MOB mob)
+	public static String alignmentStr(int al)
 	{
-		if(player!=null) return player.alignmentStr(mob);
+		if(player!=null) return player.alignmentStr(al);
 		return "";
 	}
 	public static StringBuffer getInventory(MOB seer, MOB mob)

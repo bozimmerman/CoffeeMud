@@ -88,13 +88,13 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.doCommand(mob,commands);
 	}
-	public String shortAlignmentStr(MOB mob)
+	public String shortAlignmentStr(int al)
 	{
-		return processor.scoring.shortAlignmentStr(mob);
+		return processor.scoring.shortAlignmentStr(al);
 	}
-	public String alignmentStr(MOB mob)
+	public String alignmentStr(int al)
 	{
-		return processor.scoring.alignmentStr(mob);
+		return processor.scoring.alignmentStr(al);
 	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{
