@@ -59,6 +59,16 @@ public class Prayer_Plague extends Prayer
 			if(Dice.rollPercentage()>(affect.source().charStats().getConstitution()*4))
 				maliciousAffect(invoker,affect.source(),48,-1);
 		}
+		else
+		if(affect.amISource(mob)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(!affect.amITarget(mob))&&(invoker!=affect.target())
+		   &&((Util.bset(affect.sourceCode(),Affect.ACT_MOVE))
+		   ||(Util.bset(affect.sourceCode(),Affect.ACT_MOUTH)
+		   ||(Util.bset(affect.sourceCode(),Affect.ACT_HANDS)))))
+		{
+			MOB target=(MOB)affect.target();
+			if(Dice.rollPercentage()>(target.charStats().getConstitution()*4))
+				maliciousAffect(invoker,target,48,-1);
+		}
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)

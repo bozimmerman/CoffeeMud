@@ -21,7 +21,7 @@ X Look for inside-outside Locales --- (done, looks ok on spot check)
 ! Plague should be contageous
 ! Choke can't kill you?!
 ? Fix the Grinder for Tim.
-! You can't buy field plate in New Thalos.
+c You can't buy field plate in New Thalos.
 ! No disarm for melded weapons, weaponbreak, heat metal, or grease drops
 ! Max limit for text on the EQ command!
 X The bar S. of midgaard has a sky -- area file SAYS it does.
