@@ -2989,13 +2989,14 @@ called AFTER all other preliminary checks have been made.</FONT></P><PRE>      i
       else
          levelDiff=0;
       int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
-      boolean success=profficiencyCheck(adjustment,auto);
+      boolean success=profficiencyCheck(mob,adjustment,auto);
 </PRE>
 <P></P>
 <P align=left><FONT size=4>The 
 profficiency check method called at the end here will determine of the user of 
 the skill has passed their profficiency check.&nbsp; The first parameter of this 
-method is either a positive (or helpful) adjustment, or a negative (not helpful) 
+method is the invoking mob, followed by either a positive (or helpful) 
+adjustment, or a negative (not helpful) 
 adjustment.&nbsp; The second parameter is the auto flag mentioned above, to 
 allow overrides of the normal profficiency.&nbsp; In the case of Trip, we 
 calculate an adjustment based both on level and the dexterity of the 
@@ -3132,7 +3133,7 @@ domains include: </FONT></P>
       if(!super.invoke(mob,commands,givenTarget,auto))
          return false;
 
-      boolean success=profficiencyCheck(0,auto);
+      boolean success=profficiencyCheck(mob,0,auto);
       if(success)
       {
          FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"&lt;T-NAME&gt; feel(s) cooly protected.":"^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?");
@@ -3181,7 +3182,7 @@ public class Prayer_Anger extends Prayer
       if(!super.invoke(mob,commands,givenTarget,auto))
          return false;
 
-      boolean success=profficiencyCheck(0,auto);
+      boolean success=profficiencyCheck(mob,0,auto);
 
       boolean someoneIsFighting=false;
       for(int i=0;i&lt;mob.location().numInhabitants();i++)
@@ -3249,7 +3250,7 @@ public class Chant_AlterTime extends Chant
       if(!super.invoke(mob,commands,givenTarget,auto))
          return false;
 
-      boolean success=profficiencyCheck(0,auto);
+      boolean success=profficiencyCheck(mob,0,auto);
       if(success)
       {
          // it worked, so build a copy of this ability,
