@@ -165,6 +165,9 @@ public class Monk extends StdCharClass
 		affectableStats.setStat(CharStats.SAVE_MIND,
 			affectableStats.getStat(CharStats.SAVE_MIND)
 			+(affectableStats.getClassLevel(this)*2));
+		affectableStats.setStat(CharStats.SAVE_TRAPS,
+			affectableStats.getStat(CharStats.SAVE_TRAPS)
+			+(affectableStats.getClassLevel(this)*2));
 	}
 	public void level(MOB mob)
 	{
@@ -183,18 +186,6 @@ public class Monk extends StdCharClass
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
 		MOB myChar=(MOB)myHost;
-		if(affect.amITarget(myChar)
-		   &&((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Trap))
-		{
-			if(Dice.rollPercentage()<(2*myChar.charStats().getClassLevel(this)))
-			{
-				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) the trap!");
-				return false;
-			}
-		}
-		else
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.tool()!=null)

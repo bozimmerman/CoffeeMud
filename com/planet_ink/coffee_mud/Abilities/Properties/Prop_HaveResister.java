@@ -46,6 +46,7 @@ public class Prop_HaveResister extends Property
 		affectedStats.setStat(CharStats.SAVE_DISEASE,affectedStats.getStat(CharStats.SAVE_DISEASE)+adjCharStats.getStat(CharStats.SAVE_DISEASE));
 		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
 		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
+		affectedStats.setStat(CharStats.SAVE_TRAPS,affectedStats.getStat(CharStats.SAVE_TRAPS)+adjCharStats.getStat(CharStats.SAVE_TRAPS));
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
@@ -107,6 +108,7 @@ public class Prop_HaveResister extends Property
 		adjCharStats.setStat(CharStats.SAVE_DISEASE,getProtection(me,"disease"));
 		adjCharStats.setStat(CharStats.SAVE_POISON,getProtection(me,"poison"));
 		adjCharStats.setStat(CharStats.SAVE_PARALYSIS,getProtection(me,"paralyze"));
+		adjCharStats.setStat(CharStats.SAVE_TRAPS,getProtection(me,"traps"));
 	}
 
 	public static void resistAffect(Affect affect, MOB mob, Ability me)

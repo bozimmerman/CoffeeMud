@@ -710,6 +710,8 @@ public class Spell_Wish extends Spell
 					foundAttribute=CharStats.SAVE_ACID;
 				if(myWish.indexOf(" SPELL ")>=0)
 					foundAttribute=CharStats.SAVE_MAGIC;
+				if(myWish.indexOf(" TRAPS ")>=0)
+					foundAttribute=CharStats.SAVE_TRAPS;
 				if(myWish.indexOf(" SPELLS ")>=0)
 					foundAttribute=CharStats.SAVE_MAGIC;
 				if(myWish.indexOf(" SONGS")>=0)

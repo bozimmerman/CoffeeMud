@@ -10,3 +10,4 @@ I can't open a backpack in combat? Why not?
 on illusory wall, SENSE INVISIBLE won't let you see the exit.
 buying a pet, if you can't have another follower, don't allow the purchase
 if a pet is sleeping and you recall, you lose the pet
+Reimplement SysOpModLocale

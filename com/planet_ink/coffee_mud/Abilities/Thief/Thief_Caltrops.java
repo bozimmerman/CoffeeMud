@@ -33,7 +33,10 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 
 	public void spring(MOB mob)
 	{
-		ExternalPlay.postDamage(invoker(),mob,null,Dice.roll(1,5,0),Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) some caltrops on the floor.");
+		else
+			ExternalPlay.postDamage(invoker(),mob,null,Dice.roll(1,5,0),Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"The caltrops on the ground <DAMAGE> <T-NAME>.");
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 	

@@ -40,7 +40,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if(target instanceof MOB)
 			{
 				MOB targetMOB=(MOB)target;
-				if(Dice.rollPercentage()>targetMOB.charStats().getStat(CharStats.SAVE_DISEASE))
+				if(Dice.rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
 				{
 					targetMOB.location().show(targetMOB,null,Affect.MSG_OK_VISUAL,DISEASE_START());
 					maliciousAffect(diseased,target,DISEASE_TICKS(),-1);
@@ -97,7 +97,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(affect.target()!=null)
 			&&(affect.target() instanceof MOB)
 			&&(affect.target()!=affect.source())
-			&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getStat(CharStats.SAVE_DISEASE)+70)))
+			&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getSave(CharStats.SAVE_DISEASE)+70)))
 				catchIt(mob,affect.target());
 			else
 			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))

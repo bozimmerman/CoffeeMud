@@ -40,15 +40,32 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void gas(MOB mob)
 	{
-		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <O-NAME>!");
-		if(mob.envStats().level()>15)
-		{
-			mob.location().showHappens(Affect.MSG_OK_ACTION,"The room fills with gas!");
-			for(int i=0;i<mob.location().numInhabitants();i++)
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a gas trap set in <T-NAME>.");
+		else
+		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
+			if(mob.envStats().level()>15)
 			{
-				MOB target=mob.location().fetchInhabitant(i);
-				if(target==null) break;
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"The room fills with gas!");
+				for(int i=0;i<mob.location().numInhabitants();i++)
+				{
+					MOB target=mob.location().fetchInhabitant(i);
+					if(target==null) break;
 
+					int dmg=Dice.roll(target.envStats().level(),10,1);
+					FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
+					if(target.location().okAffect(target,msg))
+					{
+						target.location().send(target,msg);
+						if(msg.wasModified())
+							dmg=(int)Math.round(Util.div(dmg,2.0));
+						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+					}
+				}
+			}
+			else
+			{
+				MOB target=mob;
 				int dmg=Dice.roll(target.envStats().level(),10,1);
 				FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
 				if(target.location().okAffect(target,msg))
@@ -56,85 +73,86 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.wasModified())
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(target,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
 			}
-		}
+	}
+
+	public void needle(MOB mob)
+	{
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a needle trap set in <T-NAME>.");
 		else
+		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <T-NAME>!"))
 		{
 			MOB target=mob;
-			int dmg=Dice.roll(target.envStats().level(),10,1);
-			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
+			int dmg=Dice.roll(target.envStats().level(),5,1);
+			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
 			if(target.location().okAffect(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				ExternalPlay.postDamage(target,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+
+				Ability P=CMClass.getAbility("Poison");
+				P.invoke(invoker,target,true);
 			}
-		}
-	}
-
-	public void needle(MOB mob)
-	{
-		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <O-NAME>!");
-		MOB target=mob;
-		int dmg=Dice.roll(target.envStats().level(),5,1);
-		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
-		if(target.location().okAffect(target,msg))
-		{
-			target.location().send(target,msg);
-			if(msg.wasModified())
-				dmg=(int)Math.round(Util.div(dmg,2.0));
-			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
-
-			Ability P=CMClass.getAbility("Poison");
-			P.invoke(invoker,target,true);
 		}
 	}
 
 	public void blade(MOB mob)
 	{
-		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <O-NAME>!");
-		MOB target=mob;
-		int dmg=Dice.roll(target.envStats().level(),2,0);
-		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
-		if(target.location().okAffect(target,msg))
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a blade trap set in <T-NAME>.");
+		else
+		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <T-NAME>!"))
 		{
-			target.location().send(target,msg);
-			if(msg.wasModified())
-				dmg=(int)Math.round(Util.div(dmg,2.0));
-			Ability P=CMClass.getAbility("Poison");
-			P.invoke(invoker,target,true);
-			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+			MOB target=mob;
+			int dmg=Dice.roll(target.envStats().level(),2,0);
+			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
+			if(target.location().okAffect(target,msg))
+			{
+				target.location().send(target,msg);
+				if(msg.wasModified())
+					dmg=(int)Math.round(Util.div(dmg,2.0));
+				Ability P=CMClass.getAbility("Poison");
+				P.invoke(invoker,target,true);
+				ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+			}
 		}
 	}
 
 	public void victimOfSpell(MOB mob)
 	{
-		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <O-NAME>!");
-		String spell=text();
-		int x=spell.indexOf(";");
-		Vector V=new Vector();
-		V.addElement(mob.name());
-		if(x>0)
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a magic trap set in <T-NAME>.");
+		else
+		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
 		{
-			V=Util.parse(spell.substring(x+1));
-			V.insertElementAt(mob.name(),0);
-			spell=spell.substring(0,x);
+			String spell=text();
+			int x=spell.indexOf(";");
+			Vector V=new Vector();
+			V.addElement(mob.name());
+			if(x>0)
+			{
+				V=Util.parse(spell.substring(x+1));
+				V.insertElementAt(mob.name(),0);
+				spell=spell.substring(0,x);
+			}
+			Ability A=CMClass.findAbility(spell);
+			if(A==null)
+			{
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,"But nothing happened...");
+				return;
+			}
+			MOB mob2=CMClass.getMOB("StdMOB");
+			mob2.setLocation(CMClass.getLocale("StdRoom"));
+			mob2.baseEnvStats().setLevel(affected.envStats().level());
+			mob2.recoverCharStats();
+			mob2.recoverEnvStats();
+			A.invoke(mob2,V,mob,true);
 		}
-		Ability A=CMClass.findAbility(spell);
-		if(A==null)
-		{
-			mob.location().showHappens(Affect.MSG_OK_VISUAL,"But nothing happened...");
-			return;
-		}
-		MOB mob2=CMClass.getMOB("StdMOB");
-		mob2.setLocation(CMClass.getLocale("StdRoom"));
-		mob2.baseEnvStats().setLevel(affected.envStats().level());
-		mob2.recoverCharStats();
-		mob2.recoverEnvStats();
-		A.invoke(mob2,V,mob,true);
 	}
 
 	public void fallInPit(MOB mob)
@@ -145,40 +163,45 @@ public class Trap_Trap extends StdAbility implements Trap
 			return;
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!");
-		if(myPit==null)
-		{
-			myPitUp=CMClass.getLocale("ClimbableSurface");
-			myPitUp.setArea(mob.location().getArea());
-			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
-			myPitUp.setDisplayText("Inside a dark pit");
-			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
-			myPitUp.rawDoors()[Directions.UP]=mob.location();
-			myPitUp.recoverEnvStats();
-
-			myPit=CMClass.getLocale("StdRoom");
-			myPit.setArea(mob.location().getArea());
-			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
-			myPit.setDisplayText("Inside a dark pit");
-			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
-			myPit.rawExits()[Directions.UP]=CMClass.getExit("StdOpenDoorway");
-			myPit.rawDoors()[Directions.UP]=myPitUp;
-			myPitUp.recoverEnvStats();
-
-			CMMap.addRoom(myPit);
-			CMMap.addRoom(myPitUp);
-		}
-		myPit.bringMobHere(mob,false);
-		if(mob.envStats().weight()<5)
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a trap door beneath <S-HIS-HER> feet.");
 		else
+		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-			int damage=Dice.roll(mob.envStats().level(),3,1);
-			ExternalPlay.postDamage(mob,mob,this,damage,Affect.NO_EFFECT,-1,null);
+			if(myPit==null)
+			{
+				myPitUp=CMClass.getLocale("ClimbableSurface");
+				myPitUp.setArea(mob.location().getArea());
+				myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
+				myPitUp.setDisplayText("Inside a dark pit");
+				myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
+				myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
+				myPitUp.rawDoors()[Directions.UP]=mob.location();
+				myPitUp.recoverEnvStats();
+
+				myPit=CMClass.getLocale("StdRoom");
+				myPit.setArea(mob.location().getArea());
+				myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
+				myPit.setDisplayText("Inside a dark pit");
+				myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
+				myPit.rawExits()[Directions.UP]=CMClass.getExit("StdOpenDoorway");
+				myPit.rawDoors()[Directions.UP]=myPitUp;
+				myPitUp.recoverEnvStats();
+
+				CMMap.addRoom(myPit);
+				CMMap.addRoom(myPitUp);
+			}
+			myPit.bringMobHere(mob,false);
+			if(mob.envStats().weight()<5)
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
+			else
+			{
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
+				int damage=Dice.roll(mob.envStats().level(),3,1);
+				ExternalPlay.postDamage(mob,mob,this,damage,Affect.NO_EFFECT,-1,null);
+			}
+			ExternalPlay.look(mob,null,true);
 		}
-		ExternalPlay.look(mob,null,true);
 	}
 
 	public int classificationCode()

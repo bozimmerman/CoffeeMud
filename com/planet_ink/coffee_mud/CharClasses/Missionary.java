@@ -120,7 +120,8 @@ public class Missionary extends Cleric
 		CharStats.SAVE_PARALYSIS,
 		CharStats.SAVE_POISON,
 		CharStats.SAVE_UNDEAD,
-		CharStats.SAVE_WATER};
+		CharStats.SAVE_WATER,
+		CharStats.SAVE_TRAPS};
 		
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

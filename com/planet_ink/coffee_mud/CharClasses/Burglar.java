@@ -35,7 +35,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",true);
 			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
-CMAble.addCharAbilityMapping(ID(),4,"Fighter_Intimidate",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Fighter_Intimidate",false);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_Haggle",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);

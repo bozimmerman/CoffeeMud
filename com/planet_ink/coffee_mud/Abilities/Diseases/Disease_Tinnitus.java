@@ -35,7 +35,7 @@ public class Disease_Tinnitus extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			if(Dice.rollPercentage()>mob.charStats().getStat(CharStats.SAVE_DISEASE))
+			if(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE))
 				ringing=true;
 			else
 				ringing=false;

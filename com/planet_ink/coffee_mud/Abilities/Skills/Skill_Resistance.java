@@ -49,6 +49,9 @@ public class Skill_Resistance extends StdAbility
 		if(newText.equalsIgnoreCase("magic"))
 			resistanceCode=CharStats.SAVE_MAGIC;
 		else
+		if(newText.equalsIgnoreCase("traps"))
+			resistanceCode=CharStats.SAVE_TRAPS;
+		else
 		if(newText.equalsIgnoreCase("justice"))
 			resistanceCode=CharStats.SAVE_JUSTICE;
 		else
@@ -81,6 +84,7 @@ public class Skill_Resistance extends StdAbility
 			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+amount);
 			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+amount);
 			affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+amount);
+			affectableStats.setStat(CharStats.SAVE_TRAPS,affectableStats.getStat(CharStats.SAVE_TRAPS)+amount);
 			affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+amount);
 			affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+amount);
 			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+amount);

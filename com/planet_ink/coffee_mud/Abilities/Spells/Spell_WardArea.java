@@ -63,23 +63,28 @@ public class Spell_WardArea extends Spell implements Trap
 			return;
 		if((shooter==null)||(parameters==null))
 			return;
-		MOB newCaster=CMClass.getMOB("StdMOB");
-		newCaster.setName("the thin air");
-		newCaster.setDescription(" ");
-		newCaster.setDisplayText(" ");
-		newCaster.baseEnvStats().setLevel(invoker.envStats().level());
-		newCaster.recoverEnvStats();
-		newCaster.recoverCharStats();
-		if(invoker()!=null)
-			newCaster.setLeigeID(invoker().name());
-		newCaster.setLocation((Room)affected);
-		try
+		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
+			mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> avoid(s) a magical ward trap.");
+		else
 		{
-			shooter.invoke(newCaster,parameters,mob,true);
+			MOB newCaster=CMClass.getMOB("StdMOB");
+			newCaster.setName("the thin air");
+			newCaster.setDescription(" ");
+			newCaster.setDisplayText(" ");
+			newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+			newCaster.recoverEnvStats();
+			newCaster.recoverCharStats();
+			if(invoker()!=null)
+				newCaster.setLeigeID(invoker().name());
+			newCaster.setLocation((Room)affected);
+			try
+			{
+				shooter.invoke(newCaster,parameters,mob,true);
+			}
+			catch(Exception e){Log.errOut("WARD/"+Util.combine(parameters,0),e);}
+			newCaster.setLocation(null);
+			newCaster.destroy();
 		}
-		catch(Exception e){Log.errOut("WARD/"+Util.combine(parameters,0),e);}
-		newCaster.setLocation(null);
-		newCaster.destroy();
 		unInvoke();
 		sprung=true;
 	}

@@ -72,7 +72,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				ExternalPlay.quickSay(mob,target,say,false,false);
 				if((target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				{
-					if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
+					if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 					{
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 						maliciousAffect(invoker,target,0,-1);

@@ -31,7 +31,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 			if(mob.location()==null) return false;
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
-				if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
+				if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 					maliciousAffect(invoker,target,88,-1);
