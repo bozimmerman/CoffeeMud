@@ -29,6 +29,7 @@ public class Spell_FleshStone extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public Item statue=null;
+	private boolean recurse=false;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==MudHost.TICK_MOB)
@@ -126,14 +127,16 @@ public class Spell_FleshStone extends Spell
 	public void unInvoke()
 	{
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if((affected==null)||(!(affected instanceof MOB))||(recurse))
 			return;
+		recurse=true;
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(statue!=null) statue.destroy();
+			if(statue!=null)
+				statue.destroy();
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> flesh returns to normal.");
 			mob.curState().setHitPoints(1);
@@ -143,6 +146,7 @@ public class Spell_FleshStone extends Spell
 			mob.curState().setThirst(0);
 			CommonMsgs.stand(mob,true);
 		}
+		recurse=false;
 	}
 
 
