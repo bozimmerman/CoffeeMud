@@ -7,32 +7,15 @@ import java.util.*;
 
 public class Fighter_Sweep extends StdAbility
 {
-	public Fighter_Sweep()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sweep";
-		displayText="(the great kick of the warrior)";
-		miscText="";
-
-		triggerStrings.addElement("SWEEP");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(2);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Sweep();
-	}
+	public String ID() { return "Fighter_Sweep"; }
+	public String name(){ return "Sweep";}
+	private static final String[] triggerStrings = {"SWEEP"};
+	public int quality(){return Ability.MALICIOUS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Fighter_Sweep();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

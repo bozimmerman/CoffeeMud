@@ -7,36 +7,16 @@ import java.util.*;
 
 public class Fighter_BlindFighting extends StdAbility
 {
-
-	public Fighter_BlindFighting()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blind Fighting";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(10);
-		quality=Ability.BENEFICIAL_SELF;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_BlindFighting();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_BlindFighting"; }
+	public String name(){ return "Blind Fighting";}
+	public String displayText(){ return "";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_BlindFighting();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

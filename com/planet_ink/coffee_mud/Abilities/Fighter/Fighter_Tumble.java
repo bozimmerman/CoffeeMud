@@ -8,38 +8,16 @@ import java.util.*;
 public class Fighter_Tumble extends StdAbility
 {
 	public int hits=0;
-
-	public Fighter_Tumble()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Tumble";
-		displayText="(Tumbling)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		triggerStrings.addElement("TUMBLE");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Tumble();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_Tumble"; }
+	public String name(){ return "Tumble";}
+	public String displayText(){ return "(Tumbling)";}
+	private static final String[] triggerStrings = {"TUMBLE"};
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Fighter_Tumble();}
+	public int classificationCode(){ return Ability.SKILL; }
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

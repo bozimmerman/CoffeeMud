@@ -8,35 +8,16 @@ import java.util.*;
 
 public class Fighter_RapidShot extends StdAbility
 {
-	public Fighter_RapidShot()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Rapid Shot";
-		displayText="";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_RapidShot();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_RapidShot"; }
+	public String name(){ return "Rapid Shot";}
+	public String displayText(){ return "";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.BENEFICIAL_SELF;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_RapidShot();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean tick(int tickID)
 	{

@@ -7,35 +7,16 @@ import java.util.*;
 
 public class Fighter_WeaponBreak extends StdAbility
 {
-
-	public Fighter_WeaponBreak()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Weapon Break";
-		displayText="(the great power of the warrior)";
-		miscText="";
-
-		triggerStrings.addElement("BREAK");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(14);
-
-		minRange=0;
-		maxRange=1;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_WeaponBreak();
-	}
+	public String ID() { return "Fighter_WeaponBreak"; }
+	public String name(){ return "Weapon Break";}
+	private static final String[] triggerStrings = {"BREAK"};
+	public int quality(){return Ability.MALICIOUS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int maxRange(){return 1;}
+	public Environmental newInstance(){	return new Fighter_WeaponBreak();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -8,36 +8,16 @@ import java.util.*;
 
 public class Fighter_Endurance extends StdAbility
 {
-	public Fighter_Endurance()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Endurance";
-		displayText="";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(19);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Endurance();
-	}
-
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_Endurance"; }
+	public String name(){ return "Endurance";}
+	public String displayText(){ return "";}
+	public int quality(){return Ability.OK_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_Endurance();}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean tick(int tickID)
 	{

@@ -7,31 +7,16 @@ import java.util.*;
 
 public class Fighter_Whomp extends StdAbility
 {
-	public Fighter_Whomp()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Whomp";
-		displayText="(knocked out)";
-		miscText="";
-
-		triggerStrings.addElement("WHOMP");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.MALICIOUS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Whomp();
-	}
+	public String ID() { return "Fighter_Whomp"; }
+	public String name(){ return "Whomp";}
+	public String displayText(){return "(knocked out)";}
+	private static final String[] triggerStrings = {"WHOMP"};
+	public int quality(){return Ability.MALICIOUS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Fighter_Whomp();	}
+	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean okAffect(Affect affect)
 	{

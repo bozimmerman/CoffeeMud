@@ -7,32 +7,15 @@ import java.util.*;
 
 public class Fighter_Kick extends StdAbility
 {
-	public Fighter_Kick()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Kick";
-		displayText="(the great kick of the warrior)";
-		miscText="";
-
-		triggerStrings.addElement("KICK");
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(2);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Kick();
-	}
+	public String ID() { return "Fighter_Kick"; }
+	public String name(){ return "Kick";}
+	private static final String[] triggerStrings = {"KICK"};
+	public int quality(){return Ability.MALICIOUS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Fighter_Kick();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

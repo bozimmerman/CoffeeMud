@@ -7,39 +7,18 @@ import java.util.*;
 
 public class Fighter_Berzerk extends StdAbility
 {
+	public String ID() { return "Fighter_Berzerk"; }
+	public String name(){ return "Berzerk";}
+	public String displayText(){ return "(Berzerk)";}
+	private static final String[] triggerStrings = {"BERZERK"};
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Fighter_Berzerk();}
+	public int classificationCode(){ return Ability.SKILL;}
+	
 	public int hpAdjustment=0;
-
-	public Fighter_Berzerk()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Berzerk";
-		displayText="(Berzerk)";
-		miscText="";
-
-		triggerStrings.addElement("BERZERK");
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Berzerk();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

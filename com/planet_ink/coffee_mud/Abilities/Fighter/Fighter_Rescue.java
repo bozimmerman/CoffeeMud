@@ -7,37 +7,15 @@ import java.util.*;
 
 public class Fighter_Rescue extends StdAbility
 {
-	public Fighter_Rescue()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Rescue";
-		displayText="(Rescued)";
-		miscText="";
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		triggerStrings.addElement("RESCUE");
-		triggerStrings.addElement("RES");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(5);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_Rescue();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_Rescue"; }
+	public String name(){ return "Rescue";}
+	private static final String[] triggerStrings = {"RESCUE","RES"};
+	public int quality(){return Ability.OK_OTHERS;}
+	public String[] triggerStrings(){return triggerStrings;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Fighter_Rescue();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

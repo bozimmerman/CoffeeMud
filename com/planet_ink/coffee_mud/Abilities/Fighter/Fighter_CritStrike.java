@@ -8,36 +8,16 @@ import java.util.*;
 public class Fighter_CritStrike extends StdAbility
 {
 	private int oldDamage=0;
-
-	public Fighter_CritStrike()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Critical Strike";
-		displayText="";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(9);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Fighter_CritStrike();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Fighter_CritStrike"; }
+	public String name(){ return "Critical Strike";}
+	public String displayText(){ return "";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_CritStrike();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean okAffect(Affect affect)
 	{
