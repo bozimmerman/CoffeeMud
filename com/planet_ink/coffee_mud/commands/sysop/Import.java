@@ -2268,7 +2268,6 @@ public class Import
 										reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
 								}
 						}
-Log.sysOut("BLAH",reLinkTable.size()+"");						
 						while(true)
 						{
 							Room foundOne=null;
