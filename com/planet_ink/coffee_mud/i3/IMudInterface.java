@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.i3.packets.*;
 
 public class IMudInterface implements ImudServices, Serializable
 {
-	public String version="CoffeeMud 4.1";
+	public String version="CoffeeMud vX.X";
 	public String name="CoffeeMud";
 	public String i3state="Open to the public";
 	public int port=5555;

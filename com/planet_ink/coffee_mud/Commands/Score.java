@@ -4,29 +4,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Score extends StdCommand
+public class Score extends Affect
 {
 	public Score(){}
 
 	private String[] access={"SCORE","SC"};
 	public String[] getAccessWords(){return access;}
-
-
-	public StringBuffer getAffects(MOB affected)
-	{
-		StringBuffer msg=new StringBuffer("");
-		for(int a=0;a<affected.numEffects();a++)
-		{
-			Ability thisAffect=affected.fetchEffect(a);
-			if((thisAffect!=null)&&(thisAffect.displayText().length()>0))
-				msg.append("\n\r^S"+thisAffect.displayText());
-		}
-		if(msg.length()==0)
-			msg.append("Nothing!");
-		else
-			msg.append("^?");
-		return msg;
-	}
 
 	public StringBuffer getScore(MOB mob)
 	{
@@ -145,8 +128,7 @@ public class Score extends StdCommand
 			msg.append("^!You are hungry.^?\n\r");
 		if(mob.curState().getThirst()<1)
 			msg.append("^!You are thirsty.^?\n\r");
-		msg.append("\n\r^!You are affected by:^? "+getAffects(mob)+"\n\r");
-
+		msg.append(getAffects(mob));
 		return msg;
 	}
 

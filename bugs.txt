@@ -1,6 +1,3 @@
-whois should give an error if bad name given
-deposit requirement prices seem high
-affects list removed from score, put in columns
 chants/spells/etc should have parm to stop listing at specified level, update help
 Courante Dance doesn't seem to give party members extra attacks.
 code something to examine all items and make sure they aren't overboard.

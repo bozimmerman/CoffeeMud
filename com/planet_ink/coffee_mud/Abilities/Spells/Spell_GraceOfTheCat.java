@@ -9,7 +9,7 @@ public class Spell_GraceOfTheCat extends Spell
 {
 	public String ID() { return "Spell_GraceOfTheCat"; }
 	public String name(){return "Grace Of The Cat";}
-	public String displayText(){return "(Grace Of The Cat spell)";}
+	public String displayText(){return "(Grace Of The Cat)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){ return new Spell_GraceOfTheCat();}

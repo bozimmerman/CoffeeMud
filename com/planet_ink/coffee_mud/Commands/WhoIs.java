@@ -42,7 +42,7 @@ public class WhoIs extends BaseWho
 				msg.append(showWhoShort(mob2));
 		}
 		if((mobName!=null)&&(msg.length()==0))
-			msg.append("That person doesn't appear to be online.\n\r");
+			mob.tell("That person doesn't appear to be online.\n\r");
 		else
 		{
 			StringBuffer head=new StringBuffer("");

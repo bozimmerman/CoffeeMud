@@ -9,7 +9,7 @@ public class Spell_AlternateReality extends Spell
 {
 	public String ID() { return "Spell_AlternateReality"; }
 	public String name(){return "Alternate Reality";}
-	public String displayText(){return "(Alternate Reality spell)";}
+	public String displayText(){return "(Alternate Reality)";}
 	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_AlternateReality();}

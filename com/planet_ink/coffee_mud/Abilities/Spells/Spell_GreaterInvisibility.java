@@ -9,7 +9,7 @@ public class Spell_GreaterInvisibility extends Spell
 {
 	public String ID() { return "Spell_GreaterInvisibility"; }
 	public String name(){return "Greater Invisibility";}
-	public String displayText(){return "(Greater Invisibility spell)";}
+	public String displayText(){return "(Greater Invisibility)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_GreaterInvisibility();}
