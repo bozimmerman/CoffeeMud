@@ -304,9 +304,21 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 		
-		extraCmds=loadHashListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"));
-		if(extraCmds.size()>0)
-		Log.sysOut("MUD","XCommands loaded  : "+extraCmds.size());
+		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"));
+		if(cmds.size()>1)
+		{
+			Log.sysOut("MUD","XCommands loaded  : "+cmds.size());
+			for(int c=0;c<cmds.size();c++)
+			{
+				Command C=(Command)cmds.elementAt(c);
+				Vector wordList=C.getAccessWords();
+				for(int w=0;w<wordList.size();w++)
+				{
+					String word=(String)wordList.elementAt(w);
+					extraCmds.put(word.trim().toUpperCase(),C);
+				}
+			}
+		}
 		return true;
 	}
 

@@ -37,7 +37,12 @@ public class CommandProcessor
 		if(commands.size()==0) return;
 		if(mob.location()==null) return;
 
-		Integer commandCodeObj=(Integer)commandSet.get(((String)commands.elementAt(0)).toUpperCase());
+		String firstWord=((String)commands.elementAt(0)).toUpperCase();
+		Command C=CMClass.findExtraCommand(firstWord);
+		if((C!=null)&&(!C.execute(mob,commands)))
+			return;
+		
+		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
 		if(commandCodeObj!=null)
 		{
 			int commandCode=commandCodeObj.intValue();
