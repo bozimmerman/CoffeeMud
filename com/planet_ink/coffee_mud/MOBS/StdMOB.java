@@ -969,7 +969,8 @@ public class StdMOB implements MOB
 		&&(affect.target()!=null)
 		&&(affect.target()!=this)
 		&&(!Util.bset(affect.sourceCode(),Affect.ACT_GENERAL))
-		&&(affect.target() instanceof MOB))
+		&&(affect.target() instanceof MOB)
+		&&(location()==((MOB)affect.target()).location()))
 		{
 			MOB target=(MOB)affect.target();
 			// and now, the consequences of range
