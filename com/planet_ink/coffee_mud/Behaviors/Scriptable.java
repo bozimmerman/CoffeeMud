@@ -16,6 +16,10 @@ public class Scriptable extends StdBehavior
 	private static final Hashtable methH=new Hashtable();
 	private static final Hashtable progH=new Hashtable();
 	private Vector oncesDone=new Vector();
+	private Hashtable delayTargetTimes=new Hashtable();
+	private Hashtable delayProgCounters=new Hashtable();
+	private Hashtable lastTimeProgsDone=new Hashtable();
+	private Hashtable lastDayProgsDone=new Hashtable();
 
 	private static final String[] progs={
 		"GREET_PROG", //1
@@ -30,7 +34,10 @@ public class Scriptable extends StdBehavior
 		"DEATH_PROG", //10
 		"HITPRCNT_PROG", //11
 		"MASK_PROG", //12
-		"QUEST_TIME_PROG" // 13
+		"QUEST_TIME_PROG", // 13
+		"TIME_PROG", // 14
+		"DAY_PROG", // 15
+		"DELAY_PROG" // 16
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -69,7 +76,9 @@ public class Scriptable extends StdBehavior
 		"NUMRACESINAREA", // 34
 		"NUMRACES", // 35
 		"ISHERE", // 36
-		"INLOCALE" // 37
+		"INLOCALE", // 37
+		"ISTIME", // 38
+		"ISDAY" // 39
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -830,6 +839,43 @@ public class Scriptable extends StdBehavior
 						return returnable;
 					}
 				}
+				break;
+			}
+			case 38: // istime
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				if(monster.location()==null)
+					returnable=false;
+				else
+				if(("daytime").startsWith(arg1.toLowerCase())
+				&&(monster.location().getArea().getTODCode()==Area.TIME_DAY))
+					returnable=true;
+				else
+				if(("dawn").startsWith(arg1.toLowerCase())
+				&&(monster.location().getArea().getTODCode()==Area.TIME_DAWN))
+					returnable=true;
+				else
+				if(("dusk").startsWith(arg1.toLowerCase())
+				&&(monster.location().getArea().getTODCode()==Area.TIME_DUSK))
+					returnable=true;
+				else
+				if(("nighttime").startsWith(arg1.toLowerCase())
+				&&(monster.location().getArea().getTODCode()==Area.TIME_NIGHT))
+					returnable=true;
+				else
+				if((monster.location().getArea().getTODCode()==Util.s_int(arg1)))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 39: // isday
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				if((monster.location()!=null)&&(monster.location().getArea().getDayOfMonth()==Util.s_int(arg1)))
+					returnable=true;
+				else
+					returnable=false;
 				break;
 			}
 			case 36: // ishere
@@ -2174,6 +2220,34 @@ public class Scriptable extends StdBehavior
 							execute(mob,mob,mob,null,null,script);
 					}
 					break;
+				case 16: // delay_prog
+					if(!mob.amDead())
+					{
+						int targetTick=-1;
+						if(delayTargetTimes.containsKey(new Integer(v)))
+							targetTick=((Integer)delayTargetTimes.get(new Integer(v))).intValue();
+						else
+						{
+							int low=Util.s_int(Util.getCleanBit(trigger,1));
+							int high=Util.s_int(Util.getCleanBit(trigger,2));
+							if(high<low) high=low;
+							targetTick=Dice.roll(1,high-low+1,low-1);
+							delayTargetTimes.put(new Integer(v),new Integer(targetTick));
+						}
+						int delayProgCounter=0;
+						if(delayProgCounters.containsKey(new Integer(v)))
+							delayProgCounter=((Integer)delayProgCounters.get(new Integer(v))).intValue();
+						else
+							delayProgCounters.put(new Integer(v),new Integer(0));
+						if(delayProgCounter==targetTick)
+						{
+							execute(mob,mob,mob,null,null,script);
+							delayProgCounter=-1;
+						}
+						delayProgCounters.remove(new Integer(v));
+						delayProgCounters.put(new Integer(v),new Integer(delayProgCounter+1));
+					}
+					break;
 				case 7: // fightProg
 					if((mob.isInCombat())&&(!mob.amDead()))
 					{
@@ -2190,13 +2264,65 @@ public class Scriptable extends StdBehavior
 							execute(mob.getVictim(),mob,mob,null,null,script);
 					}
 					break;
-				case 6: // onceprog
+				case 6: // once_prog
 					if(!oncesDone.contains(script))
 					{
 						oncesDone.addElement(script);
 						execute(mob,mob,mob,null,null,script);
 					}
 					break;
+				case 14: // time_prog
+					if((mob.location()!=null)
+					&&(!mob.amDead()))
+					{
+						int lastTimeProgDone=-1;
+						if(lastTimeProgsDone.containsKey(new Integer(v)))
+							lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(v))).intValue();
+						int time=mob.location().getArea().getTimeOfDay();
+						if(lastTimeProgDone!=time)
+						{
+							boolean done=false;
+							for(int i=1;Util.getCleanBit(trigger,i).length()>0;i++)
+							{
+								if(time==Util.s_int(Util.getCleanBit(trigger,i)))
+								{
+									done=true;
+									execute(mob,mob,mob,null,null,script);
+									lastTimeProgsDone.remove(new Integer(v));
+									lastTimeProgsDone.put(new Integer(v),new Integer(time));
+									break;
+								}
+							}
+							if(!done)
+								lastDayProgsDone.remove(new Integer(v));
+						}
+					}
+				case 15: // day_prog
+					if((mob.location()!=null)
+					&&(!mob.amDead()))
+					{
+						int lastDayProgDone=-1;
+						if(lastDayProgsDone.containsKey(new Integer(v)))
+							lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(v))).intValue();
+						int day=mob.location().getArea().getDayOfMonth();
+						if(lastDayProgDone!=day)
+						{
+							boolean done=false;
+							for(int i=1;Util.getCleanBit(trigger,i).length()>0;i++)
+							{
+								if(day==Util.s_int(Util.getCleanBit(trigger,i)))
+								{
+									done=true;
+									execute(mob,mob,mob,null,null,script);
+									lastDayProgsDone.remove(new Integer(v));
+									lastDayProgsDone.put(new Integer(v),new Integer(day));
+									break;
+								}
+							}
+							if(!done)
+								lastDayProgsDone.remove(new Integer(v));
+						}
+					}
 				case 13: // questtimeprog
 					if(!oncesDone.contains(script))
 					{

@@ -976,6 +976,7 @@ public class StdArea implements Area
 		}
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
+		affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

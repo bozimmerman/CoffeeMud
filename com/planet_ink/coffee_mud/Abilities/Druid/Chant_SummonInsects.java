@@ -82,14 +82,11 @@ public class Chant_SummonInsects extends Chant
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.MASK_GENERAL:0),null);
 				if((mob.location().okAffect(mob,msg))
-				   &&(mob.location().okAffect(mob,msg2))
 				   &&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
-					mob.location().send(mob,msg2);
-					if((!msg.wasModified())&&(!msg2.wasModified())&&(target.location()==mob.location()))
+					if((!msg.wasModified())&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
 						success=maliciousAffect(mob,target,(mob.envStats().level()*10),-1);

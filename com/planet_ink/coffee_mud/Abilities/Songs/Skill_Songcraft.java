@@ -31,6 +31,8 @@ public class Skill_Songcraft extends StdAbility
 		&&(!msg.amISource(mob))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().length()>0)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==craftType())
 		&&(!lastID.equalsIgnoreCase(msg.tool().ID()))
 		&&(mob.location()!=null)

@@ -32,10 +32,10 @@ public class Spell_StinkingCloud extends Spell
 			if((!vic.amDead())&&(vic.location()!=null)&&(Sense.canSmell(vic)))
 			{
 				if((vic.curState().getHunger()<=0))
-					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_ACID,-1,"<T-NAME> dry heave(s) in the stinking cloud.");
+					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_GAS,-1,"<T-NAME> dry heave(s) in the stinking cloud.");
 				else
 				{
-					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_ACID,-1,"<T-NAME> heave(s) all over the place!");
+					ExternalPlay.postDamage(invoker,vic,this,vic.envStats().level(),Affect.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
 					vic.curState().adjHunger(-500,vic.maxState());
 				}
 			}

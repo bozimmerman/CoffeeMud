@@ -29,6 +29,8 @@ public class Skill_Spellcraft extends StdAbility
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==Affect.TYP_CAST_SPELL)
 		&&(!msg.amISource(mob))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().length()>0)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==craftType())

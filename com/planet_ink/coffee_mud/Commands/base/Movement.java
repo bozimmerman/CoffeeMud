@@ -68,11 +68,13 @@ public class Movement extends Scriptable
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Exit e=mob.location().getExitInDir(d);
-			if((e!=null)&&(mob.location().getRoomInDir(d)!=null))
+			Room r=mob.location().getRoomInDir(d);
+			if((e!=null)&&(r!=null))
 			{
 				if((Sense.canBeSeenBy(e,mob))
 				&&((e.displayName().equalsIgnoreCase(enterWhat))
 				||(e.displayText().equalsIgnoreCase(enterWhat))
+				||(r.displayText().equalsIgnoreCase(enterWhat))
 				||(e.description().equalsIgnoreCase(enterWhat))))
 				{
 					dir=d; break;
@@ -83,11 +85,13 @@ public class Movement extends Scriptable
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Exit e=mob.location().getExitInDir(d);
-			if((e!=null)&&(mob.location().getRoomInDir(d)!=null))
+			Room r=mob.location().getRoomInDir(d);
+			if((e!=null)&&(r!=null))
 			{
 				if((Sense.canBeSeenBy(e,mob))
 				&&(((CoffeeUtensils.containsString(e.displayName().toUpperCase(),enterWhat))
 				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),enterWhat))
+				||(CoffeeUtensils.containsString(r.displayText().toUpperCase(),enterWhat))
 				||(CoffeeUtensils.containsString(e.description().toUpperCase(),enterWhat)))))
 				{
 					dir=d; break;

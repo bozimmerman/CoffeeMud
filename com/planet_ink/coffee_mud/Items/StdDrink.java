@@ -162,6 +162,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
 					amountOfLiquidRemaining+=amountToTake;
+					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
+						destroyThis();
 				}
 				break;
 			default:
