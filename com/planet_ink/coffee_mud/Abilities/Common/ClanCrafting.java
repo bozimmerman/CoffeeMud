@@ -27,6 +27,7 @@ public class ClanCrafting extends CommonSkill
 	private static final int RCP_ARMORDMG=11;
 	private static final int RCP_CONTAINMASK=12;
 	private static final int RCP_SPELL=13;
+	private static final int RCP_REQUIREDSKILL=14;
 
 
 	private Item building=null;
@@ -277,6 +278,16 @@ public class ClanCrafting extends CommonSkill
 		{
 			commonTell(mob,"You need "+amt2+" pounds of "+mat1+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
+		}
+		String reqskill=(String)foundRecipe.elementAt(this.RCP_REQUIREDSKILL);
+		if(reqskill.trim().length()>0)
+		{
+			Ability A=CMClass.findAbility(reqskill.trim());
+			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
+			{
+				commonTell(mob,"You need to know "+A.name()+" to craft this item.");
+				return false;
+			}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -179,11 +179,13 @@ public class StdJournal extends StdItem
 	{
 		StringBuffer buf=new StringBuffer("");
 		Vector journal=ExternalPlay.DBReadJournal(Journal);
+		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append("#\n\r "+Util.padRight("#",5)
+					   +((shortFormat)?"":""
 					   +Util.padRight("From",11)
-					   +Util.padRight("To",11)
+					   +Util.padRight("To",11))
 					   +Util.padRight("Date",20)
 					   +"Subject\n\r");
 			buf.append("-------------------------------------------------------------------------\n\r");
@@ -211,8 +213,9 @@ public class StdJournal extends StdItem
 					else
 						buf.append(" ");
 					buf.append(Util.padRight((j+1)+"",3)+") "
+							   +((shortFormat)?"":""
 							   +Util.padRight(from,10)+" "
-							   +Util.padRight(to,10)+" "
+							   +Util.padRight(to,10)+" ")
 							   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
 							   +Util.padRight(subject,25)+"\n\r");
 				}

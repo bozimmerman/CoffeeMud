@@ -24,6 +24,11 @@ public class Spell_Duplicate extends Spell
 			mob.tell("You'll need to pick it up first.");
 			return false;
 		}
+		if(target instanceof ClanItem)
+		{
+			mob.tell("Clan items can not be duplicated.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -347,6 +347,43 @@ public class Clans implements Clan, Tickable
 				        +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_APPLICANT,true,true),16)+":^.^N "+crewList(Clan.POS_APPLICANT)+"\n\r");
 			}
 		}
+		Vector control=null;
+		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		{
+			Area A=(Area)e.nextElement();
+			Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+			if((V!=null)&&(V.size()>0)&&(V.firstElement() instanceof Behavior))
+			{
+				Behavior B=(Behavior)V.firstElement();
+				V.clear();
+				V.addElement(new Integer(Law.MOD_RULINGCLAN));
+				if(B.modifyBehavior(A,mob,V)
+				&&(V.size()>0)
+				&&(V.firstElement() instanceof String)
+				&&(((String)V.firstElement()).equals(ID())))
+				{
+					if(control==null) control=new Vector();
+					control.addElement(A.name());
+				}
+			}
+		}
+		if(control!=null)
+		{
+			msg.append("-----------------------------------------------------------------\n\r");
+			msg.append("^xClan Controlled Areas:^.^N \n\r");
+			Collections.sort((List)control);
+			int col=0;
+			for(int i=0;i<control.size();i++)
+			{
+				if((++col)>3)
+				{
+					msg.append("\n\r");
+					col=1;
+				}
+				msg.append(Util.padRight((String)control.elementAt(i),23)+"^N");
+			}
+			msg.append("\n\r");
+		}
 		return msg.toString();
 	}
 

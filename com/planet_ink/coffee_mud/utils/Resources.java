@@ -90,27 +90,28 @@ public class Resources
 	{
 		Vector V=new Vector();
 		
-		String str="";
+		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<buf.length()-1;i++)
 		{
 			if(((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
 			   ||((buf.charAt(i)=='\r')&&(buf.charAt(i+1)=='\n')))
 			{
 				i++;
-				V.addElement(str);
-				str="";
+				V.addElement(str.toString());
+				str.setLength(0);
 			}
+			else
 			if(((buf.charAt(i)=='\r'))
 			||((buf.charAt(i)=='\n')))
 			{
-				V.addElement(str);
-				str="";
+				V.addElement(str.toString());
+				str.setLength(0);
 			}
 			else
-				str+=buf.charAt(i);
+				str.append(buf.charAt(i));
 		}
 		if(str.length()>0)
-			V.addElement(str);
+			V.addElement(str.toString());
 		return V;
 	}
 	

@@ -1428,6 +1428,21 @@ public class StdArea implements Area
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
+			Vector V=Sense.flaggedBehaviors(this,Behavior.FLAG_LEGALBEHAVIOR);
+			if((V!=null)&&(V.size()>0)&&(V.firstElement() instanceof Behavior))
+			{
+				Behavior B=(Behavior)V.firstElement();
+				V.clear();
+				V.addElement(new Integer(Law.MOD_RULINGCLAN));
+				if(B.modifyBehavior(this,CMClass.sampleMOB(),V)
+				&&(V.size()>0)
+				&&(V.firstElement() instanceof String))
+				{
+					Clan C=Clans.getClan(((String)V.firstElement()));
+					if(C!=null)
+						s.append("Controlled by  : "+C.typeName()+" "+C.name()+"\n\r");
+				}
+			}
 			s.append("Level range    : "+statData[Area.AREASTAT_MINLEVEL]+" to "+statData[Area.AREASTAT_MAXLEVEL]+"\n\r");
 			s.append("Average level  : "+statData[Area.AREASTAT_AVGLEVEL]+"\n\r");
 			s.append("Median level   : "+statData[Area.AREASTAT_MEDLEVEL]+"\n\r");

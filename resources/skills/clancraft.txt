@@ -1,34 +1,33 @@
-name,type1/amt1,type2/amt2,citype,level,ticks,exp,value,class,misc,capacity,armordmg,contain,spell
-Flag %	COTTON/1	OAK/1	0	1	200	1000	0	GenClanFlag					
-GuardBanner %	COTTON/1	OAK/1	1	1	40	100	0	GenClanItem					
-Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	500	0	GenClanItem					
-Book of the Laws %	OAK/100		0	10	100	1000	0	GenLawBook	AREA				
-Pamphlet %	OAK/1		3	5	20	250	0	GenClanPamphlet					
-Miners Pick %	OAK/5	IRON/10	4	1	10	50	0	GenClanCommonItem	Mining				
-Foragers Basket %	VINE/20		4	1	10	50	0	GenClanCommonContainer	Foraging	30		0		
-Lumberjacks Saw %	OAK/10	IRON/5	4	1	10	50	0	GenClanCommonItem	Chopping				
-Diggers Shovel %	OAK/10	IRON/5	4	1	10	50	0	GenClanCommonItem	Digging				
-Tanners Knife %	OAK/1	IRON/3	4	1	10	50	0	GenClanCommonItem	Butchering				
-Fishers Pole %	OAK/10	 	4	1	10	50	0	GenClanCommonItem	Fishing				
-Hunters Snare %	OAK/10	 	4	1	10	50	0	GenClanCommonItem	Hunting				
-Farmers Tiller %	OAK/10	 	4	10	10	50	0	GenClanCommonItem	Farming				
-Tailors Needle %	IRON/5	 	5	2	20	50	0	GenClanCommonItem	Tailoring				
-Weaponsmiths Hammer %	IRON/10	 	5	2	20	50	0	GenClanCommonItem	Weaponsmithing				
-Armorsmiths Anvil %	IRON/50	 	5	2	20	50	0	GenClanCommonItem	Armorsmithing				
-Leatherworkers Tools %	IRON/6	 	5	2	20	50	0	GenClanCommonItem	Leatherworking				
-Blacksmiths Hammer %	IRON/7	 	5	2	20	50	0	GenClanCommonItem	Blacksmithing				
-Wainwrights Tools %	IRON/8	 	5	2	20	50	0	GenClanCommonItem	Wainwrighting				
-Potters Wheel %	OAK/20	 	5	2	20	50	0	GenClanCommonItem	Pottery				
-Jewellers Tools %	IRON/10	 	5	2	20	50	0	GenClanCommonItem	JewelMaking				
-Scrimshawers Blade %	IRON/5	 	5	2	20	50	0	GenClanCommonItem	ScrimShaw				
-Papermakers Tools %	IRON/10	 	5	5	20	50	0	GenClanCommonItem	PaperMaking				
-Carpenters Hammer %	IRON/10	OAK/5	5	2	20	50	0	GenClanCommonItem	Carpentry				
-Firebuilders Flint %	FLINT/1	 	5	2	20	50	0	GenClanCommonItem	FireBuilding				
-Fletchers Tools %	IRON/10	 	5	2	20	50	0	GenClanCommonItem	Fletching				
-Glassblowers Tools %	IRON/5	 	5	2	20	50	0	GenClanCommonItem	GlassBlowing				
-Sculptors Hammer %	IRON/20	 	5	2	20	50	0	GenClanCommonItem	Sculpting				
-Shipwrights Tools %	IRON/10	 	5	5	20	50	0	GenClanCommonItem	ShipWrighting				
-Weavers Loom %	OAK/5	 	5	2	20	50	0	GenClanCommonItem	Weaving				
-Executioners Scales %	IRON/20		6	5	50	100	0	GenClanSpecialItem					
-Scavengers Sticker %	OAK/20	IRON/1 	7	1	20	50	0	GenClanSpecialItem	
-Tax Collectors Clipboard %	OAK/10	GOLD/1 	9	5	30	500	0	GenClanSpecialItem	
+Flag %	COTTON/1	OAK/1	0	1	200	1000	0	GenClanFlag						
+GuardBanner %	COTTON/1	OAK/1	1	1	40	100	0	GenClanItem						
+Judges Gavel %	MITHRIL/2	OAK/5	2	1	100	500	0	GenClanItem						
+Book of the Laws %	OAK/100		0	10	100	1000	0	GenLawBook	AREA					
+Pamphlet %	PINE/5		3	5	20	250	0	GenClanPamphlet						
+Miners Pick %	OAK/5	IRON/10	4	1	10	50	0	GenClanCommonItem	Mining					Mining
+Foragers Basket %	VINE/20		4	1	10	50	0	GenClanCommonContainer	Foraging	30		0		Foraging
+Lumberjacks Saw %	OAK/10	IRON/5	4	1	10	50	0	GenClanCommonItem	Chopping					Chopping
+Diggers Shovel %	PINE/10	IRON/5	4	1	10	50	0	GenClanCommonItem	Digging					Digging
+Tanners Knife %	OAK/1	IRON/3	4	1	10	50	0	GenClanCommonItem	Butchering					Butchering
+Fishers Pole %	HICKORY/10	 	4	1	10	50	0	GenClanCommonItem	Fishing					Fishing
+Hunters Snare %	REDWOOD/10	 	4	1	10	50	0	GenClanCommonItem	Hunting					Hunting
+Farmers Tiller %	BALSA/10	 	4	10	10	50	0	GenClanCommonItem	Farming					Farming
+Tailors Needle %	COPPER/5	 	5	2	20	50	0	GenClanCommonItem	Tailoring					Tailoring
+Weaponsmiths Hammer %	GRANITE/10	 	5	2	20	50	0	GenClanCommonItem	Weaponsmithing					Weaponsmithing
+Armorsmiths Anvil %	IRON/50	 	5	2	20	50	0	GenClanCommonItem	Armorsmithing					Armorsmithing
+Leatherworkers Tools %	IRON/6	 	5	2	20	50	0	GenClanCommonItem	Leatherworking					LeatherWorking
+Blacksmiths Hammer %	OBSIDIAN/8	 	5	2	20	50	0	GenClanCommonItem	Blacksmithing					Blacksmithing
+Wainwrights Tools %	IRON/8	 	5	2	20	50	0	GenClanCommonItem	Wainwrighting					Wainwrighting
+Potters Wheel %	MAPLE/20	 	5	2	20	50	0	GenClanCommonItem	Pottery					Pottery
+Jewellers Tools %	SILVER/10	 	5	2	20	50	0	GenClanCommonItem	JewelMaking					JewelMaking
+Scrimshawers Blade %	IRON/5	 	5	2	20	50	0	GenClanCommonItem	ScrimShaw					ScrimShaw
+Papermakers Tools %	IRON/10	 	5	5	20	50	0	GenClanCommonItem	PaperMaking					PaperMaking
+Carpenters Hammer %	STONE/10	OAK/5	5	2	20	50	0	GenClanCommonItem	Carpentry					Carpentry
+Firebuilders Flint %	FLINT/1	 	5	2	20	50	0	GenClanCommonItem	FireBuilding					FireBuilding
+Fletchers Tools %	BRONZE/20	 	5	2	20	50	0	GenClanCommonItem	Fletching					Fletching
+Glassblowers Tools %	TIN/5	 	5	2	20	50	0	GenClanCommonItem	GlassBlowing					GlassBlowing
+Sculptors Hammer %	BRASS/20	 	5	2	20	50	0	GenClanCommonItem	Sculpting					Sculpting
+Shipwrights Tools %	LEAD/10	 	5	5	20	50	0	GenClanCommonItem	ShipWrighting					Shipwright
+Weavers Loom %	OAK/5	 	5	2	20	50	0	GenClanCommonItem	Weaving					Weaving
+Executioners Scales %	BRONZE/20		6	5	50	100	0	GenClanSpecialItem						
+Scavengers Sticker %	MAPLE/20	IRON/1 	7	1	20	50	0	GenClanSpecialItem						
+Tax Collectors Clipboard %	IRONWOOD/20	GOLD/1 	9	5	30	500	0	GenClanSpecialItem						

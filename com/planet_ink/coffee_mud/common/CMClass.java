@@ -78,6 +78,7 @@ public class CMClass extends ClassLoader
 		return thisItem;
 	}
 	public static Item sampleItem(){if(items.size()>0) return (Item)items.firstElement();	return null;}
+	public static MOB sampleMOB(){if(MOBs.size()>0) return (MOB)MOBs.firstElement();	return null;}
 	
 	public static Command findExtraCommand(String word, boolean exactOnly)
 	{
