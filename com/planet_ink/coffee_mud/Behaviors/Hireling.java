@@ -111,6 +111,20 @@ public class Hireling extends StdBehavior
 		return true;
 	}
 
+	public boolean okAffect(Environmental affecting, Affect affect)
+	{
+		if((affecting instanceof MOB)
+		&&(affect.amISource((MOB)affecting))
+		&&((affect.targetMinor()==Affect.TYP_GIVE)
+		   ||(affect.targetMinor()==Affect.TYP_DROP))
+		&&((affect.target() instanceof Coins)||(affect.tool() instanceof Coins)))
+		{
+			ExternalPlay.quickSay((MOB)affecting,null,"I don't think so.",false,false);
+			return false;
+		}
+		return true;
+	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
