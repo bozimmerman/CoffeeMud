@@ -46,6 +46,9 @@ public class Skill_Revoke extends StdAbility
 		if(whatToRevoke.equalsIgnoreCase("room"))
 		   target=mob.location();
 		else
+		if(whatToRevoke.equalsIgnoreCase("self"))
+		    target=mob;
+		else
 		{
 			int dir=Directions.getGoodDirectionCode(whatToRevoke);
 			if(dir>=0)

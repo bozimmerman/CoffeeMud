@@ -47,7 +47,7 @@ public class Poison_Rotten extends Poison
 	protected String POISON_START()
 	{
 	    if(affected instanceof Food)
-		    return "^G<S-NAME> <S-HAS-HAVE> eaten rotten "+affected.name()+"!^?";
+		    return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
 	    else
 		    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}

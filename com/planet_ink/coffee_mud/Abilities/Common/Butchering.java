@@ -36,16 +36,6 @@ public class Butchering extends CommonSkill
 		verb="skinning and butchering";
 	}
 
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if((body!=null)
-		&&(affected instanceof MOB)
-		&&(((MOB)affected).location()!=null)
-		&&((!((MOB)affected).location().isContent(body)))
-		&&((!((MOB)affected).isMine(body))))
-			unInvoke();
-		return super.tick(ticking,tickID);
-	}
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -55,11 +45,8 @@ public class Butchering extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((body!=null)&&(!aborted))
 				{
-					if((failed)||(!mob.location().isContent(body)))
-					{
+					if(failed)
 						commonTell(mob,"You messed up your butchering completely.");
-						body.destroy();
-					}
 					else
 					{
 						mob.location().show(mob,null,body,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
@@ -75,8 +62,6 @@ public class Butchering extends CommonSkill
 									diseases.addElement(A);
 							}
 						}
-						body.emptyPlease();
-						body.destroy();
 						for(int y=0;y<abilityCode();y++)
 						{
 							for(int i=0;i<resources.size();i++)
@@ -149,6 +134,8 @@ public class Butchering extends CommonSkill
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);
+			body.emptyPlease();
+			body.destroy();
 		}
 		return true;
 	}
