@@ -502,12 +502,19 @@ public class Create extends BaseGenerics
 					}
 					else
 					if((E!=null)&&(E instanceof Area))
-						mob.tell("To create a new Area, you must first create a new room, then give that new room a new Area name.");
+					{
+						commands=new Vector();
+						commands.addElement("CREATE");
+						commands.addElement("AREA");
+						commands.addElement(lastWord);
+						commands.addElement(allWord);
+						execute(mob,commands);
+					}
 					else
-						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, or ROOM.");
+						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, RACE, CLASS or ROOM.");
 				}
 				else
-					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, or ROOM.");
+					mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, MOB, RACE, CLASS, or ROOM.");
 			}
 		}
 		return false;

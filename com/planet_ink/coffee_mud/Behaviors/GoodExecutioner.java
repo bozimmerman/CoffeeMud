@@ -17,6 +17,13 @@ public class GoodExecutioner  extends StdBehavior
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{
+		if(M==null) return false;
+		for(int b=0;b<M.numBehaviors();b++)
+		{
+			Behavior B=M.fetchBehavior(b);
+			if((B!=null)&&(B.grantsAggressivenessTo(M)))
+				return true;
+		}
 		return (((M.getAlignment()<350)&&(M.isMonster()))
 		||((M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 		   &&(M.isMonster())));
@@ -33,9 +40,7 @@ public class GoodExecutioner  extends StdBehavior
 		if(!canFreelyBehaveNormal(affecting)) return;
 		MOB observer=(MOB)affecting;
 		// base 90% chance not to be executed
-		if(((source.getAlignment()<350)&&(source.isMonster()))
-		||((source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
-		   &&(source.isMonster())))
+		if((source.isMonster())&&(source!=observer)&&(grantsAggressivenessTo(source)))
 		{
 			String reason="EVIL";
 			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))

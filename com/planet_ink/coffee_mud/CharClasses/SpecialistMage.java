@@ -75,10 +75,11 @@ public class SpecialistMage extends Mage
 		&&(myChar.isMine(msg.tool())))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			   &&(domain==opposed())
-			   &&(!CMAble.getDefaultGain(ID(),true,msg.tool().ID())))
+			&&(domain==opposed())
+			&&(!CMAble.getDefaultGain(ID(),true,msg.tool().ID())))
 			{
-				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)/2))
+				if(Dice.rollPercentage()>
+				   (myChar.charStats().getStat(CharStats.INTELLIGENCE)*((myChar.charStats().getCurrentClass()==this)?1:2)))
 				{
 					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fizzle(s) a spell.");
 					return false;

@@ -270,6 +270,8 @@ public class Pregnancy extends StdAbility
 					labor=false;
 					if(days<7) // BIRTH!
 					{
+						if(Sense.isSleeping(mob))
+							mob.enqueCommand(Util.parse("WAKE"),0);
 						if((Dice.rollPercentage()>50)&&(mob.charStats().getStat(CharStats.INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						labor=true;
@@ -298,7 +300,10 @@ public class Pregnancy extends StdAbility
 											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n)))
 												mob.tell("That name is already taken.  Please enter a different one.");
 											else
+											if(mob.session().confirm("If the name '"+Util.capitalize(n)+"' correct (y/N)?","N"))
 												name=Util.capitalize(n);
+											else
+												name=" ";
 										}
 									}
 								}
@@ -378,7 +383,11 @@ public class Pregnancy extends StdAbility
 						// pregnant folk get fatigued more often.
 						mob.curState().adjFatigue(months*100,mob.maxState());
 						if((months<=1)&&(Dice.rollPercentage()==1))
+						{
+							if(Sense.isSleeping(mob))
+								mob.enqueCommand(Util.parse("WAKE"),0);
 							mob.tell("Oh! You had a contraction!");
+						}
 						else
 						if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");

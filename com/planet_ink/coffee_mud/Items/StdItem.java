@@ -541,6 +541,14 @@ public class StdItem implements Item
 		case CMMsg.TYP_DEATH:
 		case CMMsg.TYP_NOISE:
 			return true;
+		case CMMsg.TYP_SIT:
+		case CMMsg.TYP_SLEEP:
+		case CMMsg.TYP_MOUNT:
+		case CMMsg.TYP_DISMOUNT:
+		case CMMsg.TYP_ENTER:
+			if(this instanceof Rideable)
+				return true;
+			break;
 		case CMMsg.TYP_HOLD:
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;

@@ -115,7 +115,7 @@ public class StdCharClass implements CharClass, Cloneable
 		{
 			boolean found=false;
 			for(int s=0;s<set.length;s++)
-				if(set[0]==i) found=true;
+				if(set[s]==i) found=true;
 			if(!found) H.add(new Integer(i));
 		}
 		return H;

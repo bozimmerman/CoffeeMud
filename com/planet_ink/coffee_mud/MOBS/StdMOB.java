@@ -1658,10 +1658,16 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_UNLOCK:
 			case CMMsg.TYP_WEAR:
 			case CMMsg.TYP_WIELD:
-			case CMMsg.TYP_MOUNT:
-			case CMMsg.TYP_DISMOUNT:
 				mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 				return false;
+			case CMMsg.TYP_MOUNT:
+			case CMMsg.TYP_DISMOUNT:
+				if(!(this instanceof Rideable))
+				{
+					mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
+					return false;
+				}
+				break;
 			case CMMsg.TYP_GIVE:
 				if(msg.tool()==null) return false;
 				if(!(msg.tool() instanceof Item)) return false;

@@ -258,6 +258,8 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		if(!super.okMessage(myHost,msg))
+			return false;
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_ADVANCE:

@@ -99,6 +99,9 @@ public class Age extends StdAbility
 		&&(((MOB)affected).location().isInhabitant((MOB)affected))
 		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
 		{
+			if((((MOB)affected).getLiegeID().length()==0)&&(!((MOB)affected).amFollowing().getLiegeID().equals(affected.Name())))
+				((MOB)affected).setLiegeID(((MOB)affected).amFollowing().Name());
+			((MOB)affected).setBitmap(Util.unsetb(((MOB)affected).getBitmap(),MOB.ATT_AUTOASSIST));
 			if((ellapsed>(long)(60*day))
 			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
@@ -177,12 +180,16 @@ public class Age extends StdAbility
 					newMan.baseCharStats().setMyClasses(";Apprentice");
 					newMan.baseCharStats().setMyLevels(";1");
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
+					for(int i=0;i<babe.inventorySize();i++)
+						newMan.giveItem((Item)babe.fetchInventory(i));
 					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getMyRace().outfit());
 					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
+					newMan.playerStats().setUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();
 					newMan.recoverEnvStats();
 					newMan.recoverMaxState();

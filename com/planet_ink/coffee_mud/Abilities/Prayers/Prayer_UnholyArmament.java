@@ -33,6 +33,12 @@ public class Prayer_UnholyArmament extends Prayer
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		
+		if(mob.isInCombat())
+		{
+			mob.tell("Not during combat!");
+			return false;
+		}
 
 		long pos=-1;
 		for(int i=0;i<checkOrder.length;i++)

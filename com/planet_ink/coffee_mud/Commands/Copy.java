@@ -99,7 +99,7 @@ public class Copy extends StdCommand
 				}
 			}
 			else
-			if(E instanceof Item)
+			if((E instanceof Item)&&(!(E instanceof ArchonOnly)))
 			{
 				Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
