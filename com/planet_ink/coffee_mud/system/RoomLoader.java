@@ -150,24 +150,64 @@ public class RoomLoader
 				currentRecordPos=R.getRow();
 				String roomID=DBConnections.getRes(R,"CMROID");
 				int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
-				thisRoom=(Room)hash.get(roomID);
-				if(thisRoom==null)
-					Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
+				if(roomID.endsWith(")")
+				&&(roomID.indexOf("#(")>0)
+				&&(direction>255))
+				{
+					thisRoom=(Room)hash.get(roomID.substring(0,roomID.indexOf("#(")));
+					if(thisRoom==null)
+						Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
+					else
+					if(!(thisRoom instanceof GridLocale))
+						Log.errOut("Room","Not GridLocale, tried "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
+					else
+					{
+						String nextRoomID=DBConnections.getRes(R,"CMNRID");
+						if(nextRoomID.endsWith(")")
+						&&(nextRoomID.indexOf("#(")>0))
+							newRoom=(Room)hash.get(nextRoomID.substring(0,nextRoomID.indexOf("#(")));
+						else
+							newRoom=(Room)hash.get(nextRoomID);
+						if(newRoom==null)
+							Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type inner, direction: "+direction);
+						else
+						{
+							CMMap.CrossExit CE=new CMMap.CrossExit();
+							int len=thisRoom.roomID().length()+2;
+							int comma=roomID.indexOf(',',len);
+							if(comma>0)
+							{
+								CE.x=Util.s_int(roomID.substring(len,comma));
+								CE.y=Util.s_int(roomID.substring(comma+1,roomID.length()-1));
+								CE.destRoomID=nextRoomID;
+								CE.out=(direction&256)==256;
+								CE.dir=direction%255;
+								((GridLocale)thisRoom).addOuterExit(CE);
+							}
+						}
+					}
+				}
 				else
 				{
-					String exitID=DBConnections.getRes(R,"CMEXID");
-					String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
-					String nextRoomID=DBConnections.getRes(R,"CMNRID");
-					Exit newExit=CMClass.getExit(exitID);
-					newRoom=(Room)hash.get(nextRoomID);
-
-					if((newExit==null)&&(newRoom==null))
-						Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
+					thisRoom=(Room)hash.get(roomID);
+					if(thisRoom==null)
+						Log.errOut("Room","Couldn't set "+Directions.getDirectionName(direction)+" exit for unknown room '"+roomID+"'");
 					else
-					if(newExit!=null)
-						newExit.setMiscText(exitMiscText);
-					thisRoom.rawDoors()[direction]=newRoom;
-					thisRoom.rawExits()[direction]=newExit;
+					{
+						String exitID=DBConnections.getRes(R,"CMEXID");
+						String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
+						String nextRoomID=DBConnections.getRes(R,"CMNRID");
+						newRoom=(Room)hash.get(nextRoomID);
+						Exit newExit=CMClass.getExit(exitID);
+						if((newExit==null)&&(newRoom==null))
+							Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
+						else
+						if(newExit!=null)
+							newExit.setMiscText(exitMiscText);
+						
+						thisRoom.rawDoors()[direction]=newRoom;
+						thisRoom.rawExits()[direction]=newExit;
+					}
 				}
 				if((currentRecordPos%updateBreak)==0)
 					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Loading Exits ("+currentRecordPos+" of "+recordCount+")");
@@ -544,6 +584,34 @@ public class RoomLoader
 				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')");
 			}
 		}
+		if(room instanceof GridLocale)
+		{
+			Vector exits=((GridLocale)room).outerExits();
+			HashSet done=new HashSet();
+			for(int v=0;v<exits.size();v++)
+			{
+				CMMap.CrossExit CE=(CMMap.CrossExit)exits.elementAt(v);
+				int dir=CE.dir|(CE.out?256:512);
+				if(!done.contains(room.roomID()+"#("+CE.x+","+CE.y+")-"+dir))
+				{
+					done.add(room.roomID()+"#("+CE.x+","+CE.y+")-"+dir);
+					DBConnector.update(
+					"INSERT INTO CMROEX ("
+					+"CMROID, "
+					+"CMDIRE, "
+					+"CMEXID, "
+					+"CMEXTX, "
+					+"CMNRID"
+					+") values ("
+					+"'"+room.roomID()+"#("+CE.x+","+CE.y+")',"
+					+dir+","
+					+"'',"
+					+"'',"
+					+"'"+CE.destRoomID+"')");
+				}
+				
+			}
+		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
@@ -681,6 +749,24 @@ public class RoomLoader
 		"UPDATE CMROEX SET "
 		+"CMROID='"+room.roomID()+"' "
 		+"WHERE CMROID='"+oldID+"'");
+		
+		if(room instanceof GridLocale)
+		{
+			Vector V=((GridLocale)room).outerExits();
+			for(int d=0;d<V.size();d++)
+			{
+				CMMap.CrossExit CE=(CMMap.CrossExit)V.elementAt(d);
+				DBConnector.update(
+				"UPDATE CMROEX SET "
+				+"CMROID='"+room.roomID()+"#("+CE.x+","+CE.y+")' "
+				+"WHERE CMROID='"+oldID+"#("+CE.x+","+CE.y+")'");
+				
+				DBConnector.update(
+				"UPDATE CMROEX SET "
+				+"CMNRID='"+room.roomID()+"#("+CE.x+","+CE.y+")' "
+				+"WHERE CMNRID='"+oldID+"#("+CE.x+","+CE.y+")'");
+			}
+		}
 
 		DBConnector.update(
 		"UPDATE CMROEX SET "

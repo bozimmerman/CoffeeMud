@@ -86,16 +86,15 @@ public class StdGrid extends StdRoom implements GridLocale
 		int opDirection=Directions.getOpDirectionCode(direction);
 		
 		getBuiltGrid();
-		Vector V=outerExits();
 		Room[][] grid=null;
-		if(V.size()>0)
+		if(gridexits.size()>0)
 		{
 			grid=getBuiltGrid();
 			String roomID=CMMap.getExtendedRoomID(loc);
 			if(grid!=null)
-				for(int d=0;d<V.size();d++)
+				for(int d=0;d<gridexits.size();d++)
 				{
-					CMMap.CrossExit EX=(CMMap.CrossExit)V.elementAt(d);
+					CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize())
@@ -162,28 +161,75 @@ public class StdGrid extends StdRoom implements GridLocale
 				V.addElement(subMap[x][y]);
 		return V;
 	}
-	protected static void halfLink(Room room, Room loc, int dirCode, Exit o)
+	protected void halfLink(Room room, 
+							Room loc, 
+							int dirCode, 
+							Exit o)
 	{
 		if(room==null) return;
 		if(loc==null) return;
-		if(room.rawDoors()[dirCode]!=null) return;
+		if(room.rawDoors()[dirCode]!=null)
+		{
+			if(room.rawDoors()[dirCode].getGridParent()==null)
+				return;
+			if(room.rawDoors()[dirCode].getGridParent().isMyChild(room.rawDoors()[dirCode]))
+				return;
+			room.rawDoors()[dirCode]=null;
+		}
 		if(o==null) o=(Exit)CMClass.getExit("Open");
-		room.rawDoors()[dirCode]=loc;
+		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
 	}
 
-	protected static void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
+	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
+	{
+		if((subMap!=null)&&(room.getGridParent()==this))
+		for(int d=0;d<gridexits.size();d++)
+		{
+			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
+			try{
+				if((EX.out)&&(EX.dir==dir)
+				&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xSize())&&(EX.y<ySize())
+				&&(subMap[EX.x][EX.y]==room))
+				{
+					Room R=CMMap.getRoom(EX.destRoomID);
+					if(R!=null) return R;
+				}
+			}catch(Exception e){}
+		}
+		return defaultRoom;
+	}
+	
+	protected void linkRoom(Room room, 
+							Room loc, 
+							int dirCode, 
+							Exit o, 
+							Exit ao)
 	{
 		if(loc==null) return;
 		if(room==null) return;
 		int opCode=Directions.getOpDirectionCode(dirCode);
-		if(room.rawDoors()[dirCode]!=null) return;
+		if(room.rawDoors()[dirCode]!=null)
+		{
+			if(room.rawDoors()[dirCode].getGridParent()==null)
+				return;
+			if(room.rawDoors()[dirCode].getGridParent().isMyChild(room.rawDoors()[dirCode]))
+				return;
+			room.rawDoors()[dirCode]=null;
+		}
 		if(o==null) o=(Exit)CMClass.getExit("Open");
-		room.rawDoors()[dirCode]=loc;
+		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
 		room.rawExits()[dirCode]=o;
-		if(loc.rawDoors()[opCode]!=null) return;
+		if(loc.rawDoors()[dirCode]!=null)
+		{
+			if(loc.rawDoors()[opCode].getGridParent()==null)
+				return;
+			if(loc.rawDoors()[opCode].getGridParent().isMyChild(loc.rawDoors()[opCode]))
+				return;
+			loc.rawDoors()[opCode]=null;
+		}
 		if(ao==null) ao=(Exit)CMClass.getExit("Open");
-		loc.rawDoors()[opCode]=room;
+		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
 		loc.rawExits()[opCode]=ao;
 	}
 
