@@ -51,13 +51,22 @@ public class Chant extends StdAbility
 			return false;
 
 		if((!auto)
+		&&(!mob.isMonster())
 		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
-		&&(!appropriateToMyAlignment(mob.getAlignment()))
 		&&(mob.isMine(this))
 		&&(Dice.rollPercentage()<50))
 		{
-			mob.tell("Extreme emotions disrupt your chant.");
-			return false;
+			if(!appropriateToMyAlignment(mob.getAlignment()))
+			{
+				mob.tell("Extreme emotions disrupt your chant.");
+				return false;
+			}
+			else
+			if(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
+			{
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+				return false;
+			}
 		}
 		return true;
 	}

@@ -13,13 +13,13 @@ public class TimsItemTable extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		long endTime=System.currentTimeMillis()+(1000*60*5);
+		long endTime=System.currentTimeMillis()+(1000*60*10);
 		int min=Util.s_int((httpReq.getRequestParameter("MIN")));
 		if(min>0)
 			endTime=System.currentTimeMillis()+(1000*60*((long)min));
 		
 		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
-		str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
+		str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
 		Vector onesDone=new Vector();
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
@@ -87,6 +87,7 @@ public class TimsItemTable extends StdWebMacro
 	public String addRow(Item I)
 	{
 		StringBuffer row=new StringBuffer("");
+		int lvl=I.envStats().level();
 		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
 		if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
 		if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
@@ -100,8 +101,23 @@ public class TimsItemTable extends StdWebMacro
 		if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul=-1;}
 		row.append("<TR>");
 		row.append("<TD>"+I.name()+"</TD>");
-		row.append("<TD>"+I.baseEnvStats().level()+"</TD>");
-		row.append("<TD>"+timsLevelCalculator(I,ADJ,RES,CAST,castMul)+"</TD>");
+		row.append("<TD>"+lvl+"</TD>");
+		int tlvl=timsLevelCalculator(I,ADJ,RES,CAST,castMul);
+		row.append("<TD>"+tlvl+"</TD>");
+		int diff=tlvl-lvl; if(diff<0) diff=diff*-1;
+		row.append("<TD>"+diff+"</TD>");
+		int pct=0;
+		if((lvl<0)&&(tlvl>=0)) pct=(int)Math.round(Util.div(tlvl+(lvl*-1),1)*100.0);
+		else
+		if((tlvl<=0)&&(lvl>0)) pct=(int)Math.round(Util.div((tlvl-lvl),-1)*100.0);
+		else
+		if((tlvl<0)&&(lvl==0)) pct=(int)Math.round(Util.div(tlvl,-1)*100.0);
+		else
+		if(lvl==0) pct=(int)Math.round(Util.div(tlvl,1)*100.0);
+		else
+			pct=(int)Math.round(Util.div(tlvl,lvl)*100.0);
+		row.append("<TD>"+pct+"%</TD>");
+		
 		if(!(I instanceof Weapon))
 			row.append("<TD>"+I.baseEnvStats().armor()+"</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>");
 		else
@@ -129,6 +145,8 @@ public class TimsItemTable extends StdWebMacro
 		int level=0;
 		Item savedI=(Item)I.copyOf();
 		savedI.recoverEnvStats();
+		I=(Item)I.copyOf();
+		I.recoverEnvStats();
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
@@ -144,7 +162,7 @@ public class TimsItemTable extends StdWebMacro
 		{
 			int lastFight=Integer.MAX_VALUE;
 			int newFight=Integer.MIN_VALUE;
-			while(level<500)
+			while(level<200)
 			{
 				vals=CoffeeMaker.timsItemAdjustments(I,
 													level,
@@ -161,6 +179,9 @@ public class TimsItemTable extends StdWebMacro
 				if(curFight==((newDam+newAtt)/2))
 					break;
 				else
+				if(curFight==(((newDam+newAtt)/2)+1))
+					break;
+				else
 				if((newFight>curFight)
 				&&(lastFight<curFight))
 				{
@@ -174,7 +195,7 @@ public class TimsItemTable extends StdWebMacro
 		{
 			int lastArm=Integer.MAX_VALUE;
 			int newArm=Integer.MIN_VALUE;
-			while(level<500)
+			while(level<200)
 			{
 				vals=CoffeeMaker.timsItemAdjustments(I,
 													level,
@@ -187,6 +208,9 @@ public class TimsItemTable extends StdWebMacro
 				lastArm=newArm;
 				newArm=Util.s_int((String)vals.get("ARMOR"));
 				if(newArm==curArmor)
+					break;
+				else
+				if(newArm==curArmor-1)
 					break;
 				else
 				if((newArm>curArmor)

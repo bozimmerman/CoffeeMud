@@ -111,6 +111,7 @@ public class Prayer extends StdAbility
 		if(!super.invoke(mob,commands,target,auto))
 			return false;
 		if((!auto)
+		&&(!mob.isMonster())
 		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
 		&&(mob.isMine(this))
 		&&(!appropriateToMyAlignment(mob.getAlignment())))

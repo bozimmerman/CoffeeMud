@@ -13,6 +13,7 @@ public class Spell_ClanHome extends Spell
 	public Environmental newInstance(){return new Spell_ClanHome();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
+	protected boolean exemptFromArmorReq(){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
