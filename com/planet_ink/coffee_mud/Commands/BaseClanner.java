@@ -86,28 +86,6 @@ public class BaseClanner extends StdCommand
 		CommonMsgs.channel(mob,"CLANTALK",msg,true);
 	}
 
-	public static void addClanHomeSpell(MOB M)
-	{
-		if(M.fetchAbility("Spell_ClanHome")==null)
-		{
-			M.addAbility(CMClass.findAbility("Spell_ClanHome"));
-			(M.fetchAbility("Spell_ClanHome")).setProfficiency(50);
-		}
-		if(M.fetchAbility("Spell_ClanDonate")==null)
-		{
-			M.addAbility(CMClass.findAbility("Spell_ClanDonate"));
-			(M.fetchAbility("Spell_ClanDonate")).setProfficiency(100);
-		}
-		CMClass.DBEngine().DBUpdateMOB(M);
-	}
-
-	public static void delClanHomeSpell(MOB mob)
-	{
-		mob.delAbility(mob.fetchAbility("Spell_ClanHome"));
-		mob.delAbility(mob.fetchAbility("Spell_ClanDonate"));
-		CMClass.DBEngine().DBUpdateMOB(mob);
-	}
-
 	public static int getIntFromRole(int roleType)
 	{
 		switch(roleType)

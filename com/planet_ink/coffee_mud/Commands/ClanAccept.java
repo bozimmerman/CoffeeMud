@@ -68,8 +68,8 @@ public class ClanAccept extends BaseClanner
 								CMClass.DBEngine().DBUpdateClanMembership(qual, mob.getClanID(), Clan.POS_MEMBER);
 								mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
 								M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
-								addClanHomeSpell(M);
-								CMClass.DBEngine().DBUpdateMOB(M);
+								if(!C.addClanHomeSpell(M))
+									CMClass.DBEngine().DBUpdateMOB(M);
 								return false;
 							}
 						}

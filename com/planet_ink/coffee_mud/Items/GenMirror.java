@@ -8,6 +8,7 @@ import java.util.*;
 public class GenMirror extends GenItem
 {
 	public String ID(){	return "GenMirror";}
+	private boolean oncePerRound=false;
 	public GenMirror()
 	{
 		super();
@@ -29,4 +30,29 @@ public class GenMirror extends GenItem
 	{
 		return new GenMirror();
 	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Item.INVENTORY)))
+			return super.okMessage(myHost,msg);
+
+		MOB mob=(MOB)owner;
+		if((msg.amITarget(mob))
+		&&(!oncePerRound)
+		&&(msg.tool() instanceof Ability)
+		&&((msg.tool().ID().equals("Spell_FleshStone"))
+			||(msg.tool().ID().equals("Prayer_FleshRock")))
+		&&(!mob.amDead())
+		&&(mob!=msg.source()))
+		{
+			oncePerRound=true;
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" reflects the vicious magic!");
+			Ability A=(Ability)msg.tool();
+			A.invoke(mob,msg.source(),true);
+			return false;
+		}
+		else
+			oncePerRound=false;
+		return super.okMessage(myHost,msg);
+	}
+
 }

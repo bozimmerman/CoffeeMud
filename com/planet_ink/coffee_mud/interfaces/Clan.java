@@ -149,6 +149,9 @@ public interface Clan extends Cloneable, Tickable
 	public int getType();
 	public String typeName();
 
+	public boolean delClanHomeSpell(MOB mob);
+	public boolean addClanHomeSpell(MOB M);
+	
 	/** Retrieves this Clan's basic story. 
 	  * This is to make the Clan's more RP based and so we can
 	  * provide up-to-date information on Clans on the web server.

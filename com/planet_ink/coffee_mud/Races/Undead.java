@@ -117,6 +117,22 @@ public class Undead extends StdRace
 		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
 	}
+	public DeadBody getCorpse(MOB mob, Room room)
+	{
+		DeadBody body=getCorpse(mob,room);
+		if((body!=null)&&(mob!=null))
+		{
+			if((mob.Name().toUpperCase().indexOf("DRACULA")>=0)
+			||(mob.Name().toUpperCase().indexOf("VAMPIRE")>=0))
+				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
+			else
+			if((mob.Name().toUpperCase().indexOf("GHOUL")>=0)
+			||(mob.Name().toUpperCase().indexOf("GHAST")>=0))
+				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+			   
+		}
+		return body;
+	}
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

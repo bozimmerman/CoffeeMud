@@ -71,7 +71,7 @@ public class ClanCreate extends BaseClanner
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
 								CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
-								addClanHomeSpell(mob);
+								newClan.addClanHomeSpell(mob);
 								clanAnnounce(mob, "Your new "+newClan.typeName()+" is online and can now accept applicants.");
 							}
 						}

@@ -288,6 +288,47 @@ public class Clans implements Clan, Tickable
 		CMClass.DBEngine().DBUpdateClan(this);
 	}
 
+	public boolean addClanHomeSpell(MOB M)
+	{
+		boolean did=false;
+		if(M.getClanID().equals(ID())&&(M.getClanRole()!=Clan.POS_APPLICANT))
+		{
+			if(M.fetchAbility("Spell_ClanHome")==null)
+			{
+				M.addAbility(CMClass.findAbility("Spell_ClanHome"));
+				(M.fetchAbility("Spell_ClanHome")).setProfficiency(50);
+				did=true;
+			}
+			if(M.fetchAbility("Spell_ClanDonate")==null)
+			{
+				M.addAbility(CMClass.findAbility("Spell_ClanDonate"));
+				(M.fetchAbility("Spell_ClanDonate")).setProfficiency(100);
+				did=true;
+			}
+			if(did)
+				CMClass.DBEngine().DBUpdateMOB(M);
+		}
+		return did;
+	}
+
+	public boolean delClanHomeSpell(MOB mob)
+	{
+		boolean did=false;
+		if(mob.fetchAbility("Spell_ClanHome")!=null)
+		{
+			did=true;
+			mob.delAbility(mob.fetchAbility("Spell_ClanHome"));
+		}
+		if(mob.fetchAbility("Spell_ClanDonate")!=null)
+		{
+			did=true;
+			mob.delAbility(mob.fetchAbility("Spell_ClanDonate"));
+		}
+		if(did)
+			CMClass.DBEngine().DBUpdateMOB(mob);
+		return did;
+	}
+
 	public void destroyClan()
 	{
 		DVector members=getMemberList();
@@ -368,6 +409,8 @@ public class Clans implements Clan, Tickable
 		if((mob.getClanID().equalsIgnoreCase(ID()))
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
+			if(mob.getClanID().equalsIgnoreCase(ID()))
+				addClanHomeSpell(mob);
 			msg.append("-----------------------------------------------------------------\n\r"
 			          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_MEMBER,true,true),16)
 					  +":^.^N "+crewList(Clan.POS_MEMBER)+"\n\r");
