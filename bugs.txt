@@ -1,7 +1,7 @@
-bat is not xferred into the room
 Finish Scripting doc
-mutable body parts, with ability to grant powers
 add days of week, months, and years to scripts How about Today is Goktok, the 1st day of Malbar, the year 5000 after ascension
-document real estate, space ship selling, genairlock
+get rid of ship <new> syntax -- won't work! Install ship battery
 n of 11656 door is not there in margate, 11752 should have been no_mob
 make diff levels of drunk, and disease_hangover
+mutable body parts, with ability to grant powers
+document real estate, space ship selling, genairlock

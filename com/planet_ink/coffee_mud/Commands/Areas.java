@@ -18,7 +18,7 @@ public class Areas extends StdCommand
 		{
 			Area A=(Area)a.nextElement();
 			if(Sense.canAccess(mob,A))
-				if(Sense.isHidden(A))
+				if(!Sense.isHidden(A))
 					areasVec.addElement(" "+A.name());
 				else
 					areasVec.addElement("("+A.name()+")");

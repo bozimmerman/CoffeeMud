@@ -69,73 +69,102 @@ public class Where extends StdCommand
 					r=mob.location().getArea().getMap();
 					who=who.substring(5).trim();
 				}
+				boolean mobOnly=false;
+				boolean itemOnly=false;
+				boolean roomOnly=false;
+				if((who.toUpperCase().startsWith("ROOM "))
+				||(who.toUpperCase().startsWith("ROOMS ")))
+				{
+					roomOnly=true;
+					who=who.substring(5).trim();
+				}
+				else
+				if((who.toUpperCase().startsWith("ITEM "))
+				||(who.toUpperCase().startsWith("ITEMS ")))
+				{
+					itemOnly=true;
+					who=who.substring(5).trim();
+				}
+				else
+				if((who.toUpperCase().startsWith("MOB "))
+				||(who.toUpperCase().startsWith("MOBS ")))
+				{
+					mobOnly=true;
+					who=who.substring(4).trim();
+				}
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE")))
 					{
-						if(EnglishParser.containsString(R.displayText(),who)
-						||EnglishParser.containsString(R.description(),who))
-						{
-							lines.append("^!"+Util.padRight("*",17)+"^?| ");
-							lines.append(R.roomTitle());
-							lines.append(" ("+R.roomID()+")");
-							lines.append("\n\r");
-						}
-						for(int i=0;i<R.numItems();i++)
-						{
-							Item I=R.fetchItem(i);
-							if((EnglishParser.containsString(I.name(),who))
-							||(EnglishParser.containsString(I.displayText(),who))
-							||(EnglishParser.containsString(I.description(),who)))
+						if((!mobOnly)&&(!itemOnly))
+							if(EnglishParser.containsString(R.displayText(),who)
+							||EnglishParser.containsString(R.description(),who))
 							{
-								lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+								lines.append("^!"+Util.padRight("*",17)+"^?| ");
 								lines.append(R.roomTitle());
 								lines.append(" ("+R.roomID()+")");
 								lines.append("\n\r");
 							}
-						}
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							MOB M=R.fetchInhabitant(m);
-							if((EnglishParser.containsString(M.name(),who))
-							||(EnglishParser.containsString(M.displayText(),who))
-							||(EnglishParser.containsString(M.description(),who)))
+						if((!mobOnly)&&(!roomOnly))
+							for(int i=0;i<R.numItems();i++)
 							{
-								lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
-								lines.append(R.roomTitle());
-								lines.append(" ("+R.roomID()+")");
-								lines.append("\n\r");
-							}
-							for(int i=0;i<M.inventorySize();i++)
-							{
-								Item I=M.fetchInventory(i);
+								Item I=R.fetchItem(i);
 								if((EnglishParser.containsString(I.name(),who))
 								||(EnglishParser.containsString(I.displayText(),who))
 								||(EnglishParser.containsString(I.description(),who)))
 								{
 									lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
-									lines.append("INV: "+M.name());
+									lines.append(R.roomTitle());
 									lines.append(" ("+R.roomID()+")");
 									lines.append("\n\r");
-									break;
 								}
 							}
-							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
-							Vector V=(SK!=null)?SK.getUniqueStoreInventory():null;
-							if(V!=null)
-							for(int i=0;i<V.size();i++)
-							{
-								Environmental E=(Environmental)V.elementAt(i);
-								if((EnglishParser.containsString(E.name(),who))
-								||(EnglishParser.containsString(E.displayText(),who))
-								||(EnglishParser.containsString(E.description(),who)))
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if((!itemOnly)&&(!roomOnly))
+								if((EnglishParser.containsString(M.name(),who))
+								||(EnglishParser.containsString(M.displayText(),who))
+								||(EnglishParser.containsString(M.description(),who)))
 								{
-									lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
-									lines.append("SHOP: "+M.name());
+									lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+									lines.append(R.roomTitle());
 									lines.append(" ("+R.roomID()+")");
 									lines.append("\n\r");
-									break;
+								}
+							if((!mobOnly)&&(!roomOnly))
+							{
+								for(int i=0;i<M.inventorySize();i++)
+								{
+									Item I=M.fetchInventory(i);
+									if((EnglishParser.containsString(I.name(),who))
+									||(EnglishParser.containsString(I.displayText(),who))
+									||(EnglishParser.containsString(I.description(),who)))
+									{
+										lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+										lines.append("INV: "+M.name());
+										lines.append(" ("+R.roomID()+")");
+										lines.append("\n\r");
+										break;
+									}
+								}
+								ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+								Vector V=(SK!=null)?SK.getUniqueStoreInventory():null;
+								if(V!=null)
+								for(int i=0;i<V.size();i++)
+								{
+									Environmental E=(Environmental)V.elementAt(i);
+									if((EnglishParser.containsString(E.name(),who))
+									||(EnglishParser.containsString(E.displayText(),who))
+									||(EnglishParser.containsString(E.description(),who)))
+									{
+										lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+										lines.append("SHOP: "+M.name());
+										lines.append(" ("+R.roomID()+")");
+										lines.append("\n\r");
+										break;
+									}
 								}
 							}
 						}

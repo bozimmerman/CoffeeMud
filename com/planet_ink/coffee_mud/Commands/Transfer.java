@@ -72,7 +72,7 @@ public class Transfer extends At
 		}
 
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,1));
-		if(cmd.equals("here")||cmd.equals("."))
+		if(cmd.toString().equalsIgnoreCase("here")||cmd.toString().equalsIgnoreCase("."))
 			room=mob.location();
 		else
 			room=findRoomLiberally(mob,cmd);
