@@ -4,17 +4,17 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_Earthquake extends Prayer
+public class Prayer_Tremor extends Prayer
 {
-	public String ID() { return "Prayer_Earthquake"; }
-	public String name(){ return "Earthquake";}
-	public String displayText(){return "(Earthquake)";}
+	public String ID() { return "Prayer_Tremor"; }
+	public String name(){ return "Tremor";}
+	public String displayText(){return "(Tremor)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int holyQuality(){ return HOLY_NEUTRAL;}
-	public Environmental newInstance(){	return new Prayer_Earthquake();}
+	public Environmental newInstance(){	return new Prayer_Tremor();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -90,11 +90,11 @@ public class Prayer_Earthquake extends Prayer
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						success=maliciousAffect(mob,target,10,-1);
+						success=maliciousAffect(mob,target,7,-1);
 						if(success)
 						{
 							if(target.location()==mob.location())
-								ExternalPlay.postDamage(mob,target,this,20,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+								ExternalPlay.postDamage(mob,target,this,10,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 						}
 					}
 				}

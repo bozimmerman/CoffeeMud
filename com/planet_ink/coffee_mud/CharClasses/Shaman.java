@@ -82,7 +82,7 @@ CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
 			
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Rockskin",true);
 			
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Earthquake",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Tremor",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 			
