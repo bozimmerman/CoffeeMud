@@ -41,6 +41,8 @@
 #        $?      Are variables where ? is a case sensitive letter.
 #                 $r is rest of sentence, $n is its name, $t is target's name.
 #                 They may appear anywhere in the response, multiple times.
+#         ~      Separates one or more responses on a line.  May be followed by
+#                 one of operators: ", :, or !.
 #        
 #Some special notes:
 #	#,',",weights, and the first (,[,or { must be in column one.

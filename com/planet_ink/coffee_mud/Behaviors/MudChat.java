@@ -228,48 +228,52 @@ public class MudChat extends StdBehavior
 
 		if(selection!=null)
 		{
-			String finalCommand=selection.substring(1).trim();
-			if(finalCommand.trim().length()==0)
-				return;
-			else
-			if(finalCommand.startsWith(":"))
+			Vector selections=Util.parseSquiggleDelimited(selection.substring(1).trim(),true);
+			for(int v=0;v<selections.size();v++)
 			{
-				finalCommand="emote "+finalCommand.substring(1).trim();
-				if(source!=null)
-					finalCommand=Util.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
-			}
-			else
-			if(finalCommand.startsWith("!"))
-				finalCommand=finalCommand.substring(1).trim();
-			else
-			if(finalCommand.startsWith("\""))
-				finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
-			else
-			if(target!=null)
-				finalCommand="sayto \""+target.name()+"\" "+finalCommand.trim();
-
-			if(finalCommand.indexOf("$r")>=0)
-				finalCommand=Util.replaceAll(finalCommand,"$r",rest);
-			if((target!=null)&&(finalCommand.indexOf("$t")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
-			if((source!=null)&&(finalCommand.indexOf("$n")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
-			if(finalCommand.indexOf("$$")>=0)
-				finalCommand=Util.replaceAll(finalCommand,"$$","$");
-
-			Vector V=Util.parse(finalCommand);
-			V.insertElementAt(new Integer(RESPONSE_DELAY),0);
-			for(int f=0;f<responseQue.size();f++)
-			{
-				Vector V1=(Vector)responseQue.elementAt(f);
-				if(Util.combine(V1,1).equalsIgnoreCase(finalCommand))
+				String finalCommand=(String)selections.elementAt(v);
+				if(finalCommand.trim().length()==0)
+					return;
+				else
+				if(finalCommand.startsWith(":"))
 				{
-					V=null;
-					break;
+					finalCommand="emote "+finalCommand.substring(1).trim();
+					if(source!=null)
+						finalCommand=Util.replaceAll(finalCommand," her "," "+source.charStats().hisher()+" ");
 				}
+				else
+				if(finalCommand.startsWith("!"))
+					finalCommand=finalCommand.substring(1).trim();
+				else
+				if(finalCommand.startsWith("\""))
+					finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
+				else
+				if(target!=null)
+					finalCommand="sayto \""+target.name()+"\" "+finalCommand.trim();
+
+				if(finalCommand.indexOf("$r")>=0)
+					finalCommand=Util.replaceAll(finalCommand,"$r",rest);
+				if((target!=null)&&(finalCommand.indexOf("$t")>=0))
+					finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
+				if((source!=null)&&(finalCommand.indexOf("$n")>=0))
+					finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
+				if(finalCommand.indexOf("$$")>=0)
+					finalCommand=Util.replaceAll(finalCommand,"$$","$");
+
+				Vector V=Util.parse(finalCommand);
+				V.insertElementAt(new Integer(RESPONSE_DELAY),0);
+				for(int f=0;f<responseQue.size();f++)
+				{
+					Vector V1=(Vector)responseQue.elementAt(f);
+					if(Util.combine(V1,1).equalsIgnoreCase(finalCommand))
+					{
+						V=null;
+						break;
+					}
+				}
+				if(V!=null)
+					responseQue.addElement(V);
 			}
-			if(V!=null)
-				responseQue.addElement(V);
 		}
 	}
 
