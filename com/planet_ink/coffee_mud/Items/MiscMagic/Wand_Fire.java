@@ -74,7 +74,7 @@ public class Wand_Fire extends StdWand
 					}
 				}
 			}
-			break;
+			return;
 		default:
 			break;
 		}

@@ -50,7 +50,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 			   &&(mob.location().isInhabitant((MOB)msg.target())))
 			{
 				MOB target=(MOB)msg.target();
-				int x=msg.targetMessage().toUpperCase().indexOf("'LEVEL UP'");
+				int x=msg.targetMessage().toUpperCase().indexOf("LEVEL UP");
 				if(x>=0)
 				{
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
@@ -69,7 +69,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 					}
 				}
 			}
-			break;
+			return;
 		default:
 			break;
 		}
