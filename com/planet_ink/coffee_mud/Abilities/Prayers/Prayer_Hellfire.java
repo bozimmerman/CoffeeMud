@@ -17,6 +17,7 @@ public class Prayer_Hellfire extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -37,6 +38,7 @@ public class Prayer_Hellfire extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),adjustedLevel(mob));
+					if(undead) harming=harming/2;
 					if(target.getAlignment()>650)
 						ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURNING,"The unholy HELLFIRE <DAMAGE> <T-NAME>!");
 				}

@@ -17,6 +17,7 @@ public class Prayer_Harm extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -29,7 +30,7 @@ public class Prayer_Harm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CommonStrings.msp("spelldam2.wav",40));
+			FullMsg msg=new FullMsg(mob,target,this,(undead?0:Affect.MASK_MALICIOUS)|affectType(auto),(auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?")+CommonStrings.msp("spelldam2.wav",40));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

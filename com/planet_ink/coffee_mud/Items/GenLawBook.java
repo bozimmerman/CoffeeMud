@@ -83,7 +83,7 @@ public class GenLawBook extends GenReadable
 					{
 					case 1:
 						if(mob.session()!=null)
-							mob.session().colorOnlyPrintln(getFromTOC("P1"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
+							mob.tell(Util.replaceAll(getFromTOC("P1"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")),"<AREA>",A.name()));
 						break;
 					case 2:	doOfficersAndJudges(A,B,theLaw,mob); break;
 					case 3:	doVictimsOfCrime(A,B,theLaw,mob); break;
@@ -140,8 +140,8 @@ public class GenLawBook extends GenReadable
 				Resources.submitResource("LAWBOOKTOC",lawProps);
 			}
 			String s=(String)lawProps.get(tag);
-			if(s==null) return "";
-			return s;
+			if(s==null) return "\n\r";
+			return s+"\n\r";
 		}
 		catch(Exception e)
 		{
@@ -166,9 +166,15 @@ public class GenLawBook extends GenReadable
 		if((bits==null)||(bits.length<Law.BIT_NUMBITS))
 			return "Not illegal.";
 		String flags=bits[Law.BIT_CRIMEFLAGS]+" "+bits[Law.BIT_CRIMELOCS].trim();
-		return Util.padRight(bits[Law.BIT_CRIMENAME],19)
-			   +((flags.length()==0)?"":" ("+Util.padRight(flags,24)+")")
-			   +": "+bits[Law.BIT_SENTENCE];
+		return Util.padRight(bits[Law.BIT_CRIMENAME],19)+" "
+			   +Util.padRight(((flags.length()==0)?"":flags),24)+" "
+			   +bits[Law.BIT_SENTENCE];
+	}
+	public String shortLawHeader()
+	{
+		return Util.padRight("Crime",19)+" "
+			+Util.padRight("Flags",24)+" "
+			+"Sentence";
 	}
 
 	
@@ -191,7 +197,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return oldLaw;
-		mob.session().colorOnlyPrintln(getFromTOC("MODLAW"));
+		mob.tell(getFromTOC("MODLAW"));
 		if(oldLaw==null)
 		{
 			if(mob.session().confirm("This is not presently a crime, would you like to make it one (Y/n)?","Y"))
@@ -341,15 +347,16 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
+			str.append(Util.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
 				String crime=Util.combine((Vector)theLaw.otherCrimes().elementAt(x),0);
 				String[] set=(String[])theLaw.otherBits().elementAt(x);
-				str.append(Util.padRight(""+(x+1)+". Words: "+crime,20)+": "+shortLawDesc(set)+"\n\r");
+				str.append(Util.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
 			str.append("A. ADD A NEW ONE\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
@@ -435,10 +442,11 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P9"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P9"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
+			str.append(Util.padRight("#  Ability",20)+" "+shortLawHeader()+"\n\r");
 			Hashtable filteredTable=new Hashtable();
 			for(Enumeration e=theLaw.abilityCrimes().keys();e.hasMoreElements();)
 			{
@@ -455,7 +463,7 @@ public class GenLawBook extends GenReadable
 				String key=(String)e.nextElement();
 				String[] set=(String[])filteredTable.get(key);
 				Ability AB=CMClass.getAbility(key);
-				str.append(Util.padRight(""+(highest+1)+". "+AB.name(),20)+": "+shortLawDesc(set)+"\n\r");
+				str.append(Util.padRight(""+(highest+1)+". "+AB.name(),20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -543,10 +551,11 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P8"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P8"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
+			str.append(Util.padRight("#  Affect",20)+" "+shortLawHeader()+"\n\r");
 			Hashtable filteredTable=new Hashtable();
 			for(Enumeration e=theLaw.abilityCrimes().keys();e.hasMoreElements();)
 			{
@@ -563,7 +572,7 @@ public class GenLawBook extends GenReadable
 				String key=(String)e.nextElement();
 				String[] set=(String[])filteredTable.get(key);
 				Ability AB=CMClass.getAbility(key);
-				str.append(Util.padRight(""+(highest+1)+". "+AB.name(),20)+": "+shortLawDesc(set)+"\n\r");
+				str.append(Util.padRight(""+(highest+1)+". "+AB.name(),20)+" "+shortLawDesc(set)+"\n\r");
 				highest++;
 			}
 			str.append("A. ADD A NEW ONE\n\r");
@@ -651,15 +660,16 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P6"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P6"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. ASSAULT          : "+shortLawDesc((String[])theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
-			str.append("2. MURDER           : "+shortLawDesc((String[])theLaw.basicCrimes().get("MURDER"))+"\n\r");
-			str.append("3. NUDITY           : "+shortLawDesc((String[])theLaw.basicCrimes().get("NUDITY"))+"\n\r");
-			str.append("4. ARMED            : "+shortLawDesc((String[])theLaw.basicCrimes().get("ARMED"))+"\n\r");
-			str.append("5. RESISTING ARREST : "+shortLawDesc((String[])theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
+			str.append(Util.padRight("#  Law Name",20)+" "+shortLawHeader()+"\n\r");
+			str.append("1. ASSAULT           "+shortLawDesc((String[])theLaw.basicCrimes().get("ASSAULT"))+"\n\r");
+			str.append("2. MURDER            "+shortLawDesc((String[])theLaw.basicCrimes().get("MURDER"))+"\n\r");
+			str.append("3. NUDITY            "+shortLawDesc((String[])theLaw.basicCrimes().get("NUDITY"))+"\n\r");
+			str.append("4. ARMED             "+shortLawDesc((String[])theLaw.basicCrimes().get("ARMED"))+"\n\r");
+			str.append("5. RESISTING ARREST  "+shortLawDesc((String[])theLaw.basicCrimes().get("RESISTINGARREST"))+"\n\r");
 			str.append("\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
 			if(!theLaw.hasModifiableLaws())
@@ -703,7 +713,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P5"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P5"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
@@ -791,7 +801,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P4"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P4"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
@@ -879,7 +889,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P7"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		while(true)
 		{
 			mob.tell("1. Trespassers : "+SaucerSupport.zapperDesc(theLaw.getInternalStr("TRESPASSERS")));
@@ -932,7 +942,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		mob.tell(getFromTOC("P3"+(theLaw.hasModifiableLaws()?"MOD":"")));
 		mob.tell("Protected victims: "+SaucerSupport.zapperDesc(theLaw.getInternalStr("PROTECTED")));
 		if(theLaw.hasModifiableLaws())
 		{
@@ -956,7 +966,7 @@ public class GenLawBook extends GenReadable
 		throws IOException
 	{
 		if(mob.session()==null) return;
-		mob.session().colorOnlyPrintln(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
+		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		StringBuffer duhOfficers=new StringBuffer("");
 		for(Enumeration e=A.getMap();e.hasMoreElements();)

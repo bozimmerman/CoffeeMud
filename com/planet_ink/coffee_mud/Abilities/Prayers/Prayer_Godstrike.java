@@ -17,6 +17,7 @@ public class Prayer_Godstrike extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		boolean undead=target.charStats().getMyRace().racialCategory().equals("Undead");
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -37,6 +38,7 @@ public class Prayer_Godstrike extends Prayer
 				if(!msg.wasModified())
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),adjustedLevel(mob));
+					if(undead) harming=harming*2;
 					if(target.getAlignment()<350)
 						ExternalPlay.postDamage(mob,target,this,harming,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
 				}

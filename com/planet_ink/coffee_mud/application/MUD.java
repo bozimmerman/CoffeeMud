@@ -203,7 +203,9 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));

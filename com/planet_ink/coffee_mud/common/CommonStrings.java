@@ -49,7 +49,9 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_CLANENCHCOST=18;
 	public static final int SYSTEMI_BASEMAXSTAT=19;
 	public static final int SYSTEMI_MANAMINCOST=20;
-	public static final int NUMI_SYSTEM=21;
+	public static final int SYSTEMI_MINMOVETIME=21;
+	public static final int SYSTEMI_MANACONSUMETIME=22;
+	public static final int NUMI_SYSTEM=23;
 	  
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;

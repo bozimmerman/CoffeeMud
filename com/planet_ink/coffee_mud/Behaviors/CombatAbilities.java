@@ -174,10 +174,15 @@ public class CombatAbilities extends StdBehavior
 		{
 			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
 			{
-				if((Math.random()>Util.div(mob.curState().getMana(),mob.maxState().getMana()))
-				   ||(mob.curState().getMana()<tryThisOne.usageCost(mob)[0]))
-					return true;
-				mob.curState().adjMana(5,mob.maxState());
+				if ( (Math.random() > Util.div(mob.curState().getMana(), mob.maxState().getMana()))
+                || (mob.curState().getMana() < tryThisOne.usageCost(mob)[0])) 
+				{
+                   if (Dice.rollPercentage() > 30)
+                        return true;
+                   else
+                        mob.curState().setMana(tryThisOne.usageCost(mob)[0]+mob.curState().getMana());
+				   mob.curState().adjMana(5,mob.maxState());
+				}
 			}
 			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
 			{

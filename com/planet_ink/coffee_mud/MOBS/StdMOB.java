@@ -90,6 +90,7 @@ public class StdMOB implements MOB
 	protected int minuteCounter=0;
 	private long lastMoveTime=0;
 	private int movesSinceTick=0;
+	private int manaConsumeCounter=Dice.roll(1,10,0);
 	
 	// the core state values
 	public CharState curState=new DefaultCharState();
@@ -2104,6 +2105,14 @@ public class StdMOB implements MOB
 					}
 				}
 			}
+			
+			Vector expenseAffects=null;
+			if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME)>0)
+			&&((--manaConsumeCounter)<=0))
+			{
+				expenseAffects=new Vector();
+				manaConsumeCounter=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACONSUMETIME);
+			}
 
 			int a=0;
 			while(a<numAffects())
@@ -2115,12 +2124,46 @@ public class StdMOB implements MOB
 					int s=affects.size();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
+					else
+					if((expenseAffects!=null)
+					&&(!A.isAutoInvoked())
+					&&(A.canBeUninvoked())
+					&&(A.displayText().length()>0)
+                    &&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+						||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+						||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+						||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+					&&(A.usageCost(this)[0]>0))
+						expenseAffects.addElement(A);
+						
 					if(affects.size()==s)
 						a++;
 				}
 				else
 					a++;
 			}
+
+            if((expenseAffects!=null)&&(expenseAffects.size()>0))
+            {
+                int basePrice=1;
+                if(fetchAffect("Prop_MagicBurn1")!=null)
+					basePrice=2;  // No way to make a prop that actually increases mana spent
+				
+                // 1 per tick per level per affect.  +1 to the affects so that way it's about
+                // 3 cost = 1 regen... :)
+                int reallyEat=(basePrice*envStats().level())*(expenseAffects.size()+1);
+                while(curState().getMana()<reallyEat)
+                {
+                    location().show(this,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
+                    //pick one and kill it
+                    Ability A=(Ability)expenseAffects.elementAt(Dice.roll(1,expenseAffects.size(),-1));
+                    A.unInvoke();
+                    expenseAffects.remove(A);
+                    reallyEat=(basePrice*envStats().level())*expenseAffects.size();
+                }
+                if(reallyEat>0)
+                    curState().adjMana( -reallyEat, maxState());
+            }
 
 			for(int b=0;b<numBehaviors();b++)
 			{
