@@ -13,6 +13,39 @@ public class GrinderArea
 		Area A=CMMap.getArea(last);
 		if(A==null) return "Old Area not defined!";
 		
+		boolean redoAllMyDamnRooms=false;
+		Vector allMyDamnRooms=null;
+		
+		// class!
+		String className=(String)httpReq.getRequestParameters().get("CLASS");
+		if((className==null)||(className.length()==0))
+			return "Please select a class type for this area.";
+		if(className!=CMClass.className(A))
+		{
+			allMyDamnRooms=A.getMyMap();
+			Area oldA=A;
+			A=CMClass.getAreaType(className);
+			if(A==null)
+				return "The class you chose does not exist.  Choose another.";
+			CMMap.delArea(oldA);
+			CMMap.addArea(A);
+			redoAllMyDamnRooms=true;
+		}
+		
+		// name
+		String name=(String)httpReq.getRequestParameters().get("NAME");
+		if((name==null)||(name.length()==0))
+			return "Please enter a name for this area.";
+		if(!name.equalsIgnoreCase(A.name()))
+		{
+			if(CMMap.getArea(name)!=null)
+				return "The name you chose is already in use.  Please enter another.";
+			allMyDamnRooms=A.getMyMap();
+			ExternalPlay.DBDeleteArea(A);
+			A.setName(name);
+			redoAllMyDamnRooms=true;
+		}
+		
 		// climate
 		if(httpReq.getRequestParameters().containsKey("CLIMATE"))
 		{
@@ -24,22 +57,6 @@ public class GrinderArea
 					break;
 			A.setClimateType(climate);
 		}
-
-		// name
-		String name=(String)httpReq.getRequestParameters().get("NAME");
-		if((name==null)||(name.length()==0))
-			return "Please enter a name for this area.";
-		if((!name.equalsIgnoreCase(A.name()))&&(CMMap.getArea(name)!=null))
-		   return "The name you chose is already in use.  Please enter another.";
-		A.setName(name);
-		
-		// class?!
-		String className=(String)httpReq.getRequestParameters().get("CLASS");
-		if((className==null)||(className.length()==0))
-			return "Please select a class type for this area.";
-		if(CMClass.getAreaType(className)==null)
-			return "The class you chose does not exist.  Choose another.";
-		/*** set new class?! */
 
 		// modify subop list
 		String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
