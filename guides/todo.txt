@@ -54,6 +54,18 @@
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana 
 on each room mapped.
 
+Deadly weak-bridge exit.  If too much weight, you fall and die.
+
+Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check
+for most, or Balance skill for thieves.  
+
+Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
+skill available all for help.
+
+Sap skill for thieves to knock someone out who can't see them.
+
+Binding skill for thieves to bind someone who is asleep (knocked out).
+
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
 Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)

@@ -38,6 +38,17 @@ public class Human extends StdRace
 		Armor p1=CMClass.getArmor("GenPants");
 		wearOutfit(mob,s1,s2,p1);
 	}
+	public void startRacing(MOB mob, boolean verifyOnly)
+	{
+		super.startRacing(mob,verifyOnly);
+		Ability A=CMClass.getAbility("Chop");
+		if(A!=null)
+		{
+			A.setProfficiency(50);
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+		}
+	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 	public String healthText(MOB mob)

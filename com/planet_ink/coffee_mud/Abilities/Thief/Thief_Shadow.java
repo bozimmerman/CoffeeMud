@@ -188,6 +188,11 @@ public class Thief_Shadow extends ThiefSkill
 			mob.tell("You cannot shadow someone while part of a group.");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
 		if(Sense.canBeSeenBy(mob,target))
 		{
 			mob.tell(target.name()+" is watching you too closely.");

@@ -104,7 +104,12 @@ public class Digging extends CommonSkill
 		}
 		int duration=60-mob.envStats().level();
 		if(duration<25) duration=25;
-		beneficialAffect(mob,mob,duration);
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,duration);
+		}
 		return true;
 	}
 }

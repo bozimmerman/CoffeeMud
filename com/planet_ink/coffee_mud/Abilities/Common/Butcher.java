@@ -71,11 +71,16 @@ public class Butcher extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		body=(DeadBody)I;
-		verb="skinning and butchering "+I.name();
-		int duration=(I.envStats().weight()/10);
-		if(duration<5) duration=5;
-		beneficialAffect(mob,mob,duration);
+		FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) butchering <T-NAME>.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			body=(DeadBody)I;
+			verb="skinning and butchering "+I.name();
+			int duration=(I.envStats().weight()/10);
+			if(duration<5) duration=5;
+			beneficialAffect(mob,mob,duration);
+		}
 		return true;
 	}
 }

@@ -39,7 +39,7 @@ public class Chop extends CommonSkill
 				{
 					mob.tell("You have a good tree for "+foundShortName+".");
 					displayText="You are chopping up "+foundShortName;
-					verb="foraging for "+foundShortName;
+					verb="chopping "+foundShortName;
 				}
 				else
 				{
@@ -83,7 +83,7 @@ public class Chop extends CommonSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		verb="foraging";
+		verb="chopping";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -96,7 +96,12 @@ public class Chop extends CommonSkill
 		}
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
-		beneficialAffect(mob,mob,duration);
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) chopping wood.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,duration);
+		}
 		return true;
 	}
 }

@@ -52,9 +52,6 @@ public class CommonSkill extends StdAbility
 			if(tickDown==4)
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");
 			else
-			if(tickUp==0)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> begin(s) "+verb+".");
-			else
 			if((tickUp%4)==0)
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
 			

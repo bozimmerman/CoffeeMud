@@ -36,6 +36,13 @@ public class Elf extends StdRace
 			if(mob.isMonster())
 				A.invoke(mob,mob,true);
 		}
+		A=CMClass.getAbility("Forage");
+		if(A!=null)
+		{
+			A.setProfficiency(50);
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -165,7 +165,12 @@ public class FireBuilding extends CommonSkill
 			break;
 		}
 		if(completion<4) completion=4;
-		beneficialAffect(mob,mob,completion);
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,completion);
+		}
 		return true;
 	}
 

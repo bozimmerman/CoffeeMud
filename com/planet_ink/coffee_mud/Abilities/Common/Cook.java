@@ -127,7 +127,12 @@ public class Cook extends CommonSkill
 		burnt=!profficiencyCheck(0,auto);
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
-		beneficialAffect(mob,mob,duration);
+		FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) cooking something in a <T-NAME>.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,duration);
+		}
 		return true;
 	}
 }

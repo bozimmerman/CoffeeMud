@@ -36,6 +36,13 @@ public class Gnome extends StdRace
 			if((mob.isMonster())&&(!verifyOnly))
 				A.invoke(mob,mob,true);
 		}
+		A=CMClass.getAbility("Digging");
+		if(A!=null)
+		{
+			A.setProfficiency(50);
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

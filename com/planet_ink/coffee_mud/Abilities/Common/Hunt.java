@@ -94,6 +94,7 @@ public class Hunt extends CommonSkill
 				if(found!=null)
 				{
 					mob.tell("You have found some "+foundShortName+" tracks!");
+					mob.tell("You need to find the "+foundShortName+" nearby before the trail goes cold!");
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 				}
@@ -165,7 +166,12 @@ public class Hunt extends CommonSkill
 			found.bringToLife(room);
 		}
 		int duration=10+(mob.envStats().level()/4);
-		beneficialAffect(mob,mob,duration);
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) hunting.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,duration);
+		}
 		return true;
 	}
 }
