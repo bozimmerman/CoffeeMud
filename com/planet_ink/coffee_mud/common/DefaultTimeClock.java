@@ -243,7 +243,7 @@ public class DefaultTimeClock implements TimeClock
 				setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
 				setYear(XMLManager.getIntFromPieces(V,"YEAR"));
 			}
-			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_TICK_DELAY)
+			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_MILIS_PER_MUDHOUR)
 				tickTock(1);
 		}
 		return true;

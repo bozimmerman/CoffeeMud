@@ -227,13 +227,13 @@ public class UtiliThread extends Thread
 					milliTotal+=(lastStop-lastStart);
 					tickTotal++;
 					status="sleeping";
-					Thread.sleep(MudHost.TIME_TICK_DELAY);
+					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
 					lastStart=System.currentTimeMillis();
 				}
 				else
 				{
 					status="sleeping";
-					Thread.sleep(MudHost.TIME_TICK_DELAY*10);
+					Thread.sleep(MudHost.TIME_UTILTHREAD_SLEEP);
 				}
 			}
 			catch(InterruptedException ioe)

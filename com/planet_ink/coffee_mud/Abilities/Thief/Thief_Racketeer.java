@@ -68,7 +68,7 @@ public class Thief_Racketeer extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,new Long(((MudHost.TIME_TICK_DELAY*TimeClock.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,target,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*TimeClock.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
 				Coins C=(Coins)CMClass.getItem("StdCoins");
 				C.setNumberOfCoins(amount);
 				C.recoverEnvStats();

@@ -495,6 +495,17 @@ public class MOBloader
 
 	public static void DBUpdate(MOB mob)
 	{
+		DBUpdateJustMOB(mob);
+		if((mob.Name().length()==0)
+		||(mob.playerStats()==null))
+			return;
+		DBUpdateItems(mob);
+		DBUpdateAbilities(mob);
+		mob.playerStats().setUpdated(System.currentTimeMillis());
+	}
+	
+	public static void DBUpdateJustMOB(MOB mob)
+	{
 		if(mob.Name().length()==0)
 		{
 			DBCreateCharacter(mob);
@@ -556,11 +567,8 @@ public class MOBloader
 		"UPDATE CMCHAR SET"
 		+" CMDESC='"+mob.description()+"'"
 		+" WHERE CMUSERID='"+mob.Name()+"'");
-		
-		DBUpdateItems(mob);
-		DBUpdateAbilities(mob);
-		pstats.setUpdated(System.currentTimeMillis());
 	}
+	
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{
 		Vector done=new Vector();

@@ -117,8 +117,7 @@ public class Prayer_Vampirism extends Prayer
 			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState());
 			M.curState().adjHunger(-2,M.maxState());
 			if((M.isMonster())
-			&&((M.curState().getThirst()<0)||(M.curState().getHunger()<0))
-			&&(Dice.rollPercentage()<10)
+			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))
 			&&(Sense.aliveAwakeMobile(M,true)))
 			{
 				DeadBody B=null;
@@ -159,6 +158,7 @@ public class Prayer_Vampirism extends Prayer
 					if(A!=null) A.invoke(M,Util.parse(B.Name()),B,true);
 				}
 				else
+				if(Dice.rollPercentage()<10)
 				{
 					MOB M2=M.location().fetchInhabitant(Dice.roll(1,M.location().numInhabitants(),-1));
 					if((M2!=null)&&(M2!=M)&&(raceWithBlood(M2.charStats().getMyRace())))

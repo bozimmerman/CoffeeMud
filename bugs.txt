@@ -1,4 +1,5 @@
 Comprehend languages no longer translates TELLs in other languages.
+
 Try out Artisans
 Test: ?Vampirism, Cannibalism, ?Forgive,
 Test: Infuse Holiness, Infuse Unholiness, ?Sense Traps, Conviction

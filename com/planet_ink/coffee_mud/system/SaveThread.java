@@ -50,9 +50,16 @@ public class SaveThread extends Thread
 			if(!mob.isMonster())
 			{
 				status="saving "+mob.Name();
-				MOBloader.DBUpdate(mob);
-				status="saving followers of "+mob.Name();
+				MOBloader.DBUpdateJustMOB(mob);
+				if((mob.Name().length()==0)||(mob.playerStats()==null))
+					continue;
+				status="saving "+mob.Name()+", "+mob.inventorySize()+"items";
+				MOBloader.DBUpdateItems(mob);
+				status="saving "+mob.Name()+", "+mob.numLearnedAbilities()+"abilities";
+				MOBloader.DBUpdateAbilities(mob);
+				status="saving "+mob.numFollowers()+" followers of "+mob.Name();
 				MOBloader.DBUpdateFollowers(mob);
+				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
 			else
@@ -61,7 +68,14 @@ public class SaveThread extends Thread
 			   ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
 			{
 				status="just saving "+mob.Name();
-				MOBloader.DBUpdate(mob);
+				MOBloader.DBUpdateJustMOB(mob);
+				if((mob.Name().length()==0)||(mob.playerStats()==null))
+					continue;
+				status="just saving "+mob.Name()+", "+mob.inventorySize()+" items";
+				MOBloader.DBUpdateItems(mob);
+				status="just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities";
+				MOBloader.DBUpdateAbilities(mob);
+				mob.playerStats().setUpdated(System.currentTimeMillis());
 				processed++;
 			}
 		}
@@ -185,7 +199,7 @@ public class SaveThread extends Thread
 						milliTotal+=(lastStop-lastStart);
 						tickTotal++;
 						status="sleeping";
-						Thread.sleep(MudHost.TIME_TICK_DELAY);
+						Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 						lastStart=System.currentTimeMillis();
 						savePlayers();
 						//if(processed>0)
@@ -195,7 +209,7 @@ public class SaveThread extends Thread
 				else
 				{
 					status="sleeping";
-					Thread.sleep(MudHost.TIME_TICK_DELAY*10);
+					Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 				}
 			}
 			catch(InterruptedException ioe)
