@@ -1318,6 +1318,7 @@ public class StdMOB implements MOB
 					{
 						Item weapon=this.fetchWieldedItem();
 						if(weapon==null) // try to wield anything!
+						{
 							for(int i=0;i<inventorySize();i++)
 							{
 								Item thisItem=fetchInventory(i);
@@ -1331,15 +1332,22 @@ public class StdMOB implements MOB
 									break;
 								}
 							}
-						double curSpeed=Math.floor(speeder);
-						speeder+=envStats().speed();
-						if(Sense.aliveAwakeMobile(this,true))
+						}
+						if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
+						   ||(rangeToTarget()<=minRange(weapon)))
 						{
-							int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
-							for(int s=0;s<numAttacks;s++)
-								if((s==0)||(!Sense.isSitting(this)))
-									ExternalPlay.postAttack(this,victim,weapon);
-							curState().expendEnergy(this,maxState,true);
+							double curSpeed=Math.floor(speeder);
+							speeder+=envStats().speed();
+							if(Sense.aliveAwakeMobile(this,true))
+							{
+								int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
+								for(int s=0;s<numAttacks;s++)
+									if((!amDead())
+									&&(curState().getHitPoints()>0)
+									&&((s==0)||(!Sense.isSitting(this))))
+										ExternalPlay.postAttack(this,victim,weapon);
+								curState().expendEnergy(this,maxState,true);
+							}
 						}
 						if(!isMonster())
 						{

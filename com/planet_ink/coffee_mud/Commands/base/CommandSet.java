@@ -121,6 +121,7 @@ public class CommandSet extends Hashtable
 	public static final int GOTO=109;
 	public static final int WIZINV=110;
 	public static final int WEATHER=111;
+	public static final int AUTOMELEE=112;
 
 	public CommandSet()
 	{
@@ -135,6 +136,7 @@ public class CommandSet extends Hashtable
 		put("AUTOLOOT",new Integer(AUTOLOOT));
 		put("AUTOGOLD",new Integer(AUTOGOLD));
 		put("AUTOEXITS",new Integer(AUTOEXITS));
+		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("PUSH",new Integer(PUSH));
 		put("PULL",new Integer(PULL));

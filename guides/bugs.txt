@@ -1,4 +1,10 @@
 Have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad. (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
-! torches should go out in the rain
-! check amDead before issueing more attacks for a MOB?
-fireball only affects one enemy at a time
+! fireball only affects one enemy at a time -- yes, and it should
+change import so that we get some default journals, along with the parchments!
+change import so we get some arrows that dont exist yet!
+at max/min range to genweapon definitions, dammit!
+
+
+
+
+

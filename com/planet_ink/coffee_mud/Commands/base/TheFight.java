@@ -454,6 +454,20 @@ public class TheFight
 		}
 	}
 
+	public void autoMelee(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOMELEE);
+			mob.tell("Automelee has been turned off.  You will no longer enter melee combat.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOMELEE);
+			mob.tell("Automelee has been turned back on.  You will now enter melee combat normally.");
+		}
+	}
+
 
 	public String standardHitString(int weaponType, int weaponClass, int damageAmount, String weaponName)
 	{

@@ -75,6 +75,9 @@ public class CommandProcessor
 				case CommandSet.AREAS:
 					scoring.areas(mob);
 					break;
+				case CommandSet.AUTOMELEE:
+					theFight.autoMelee(mob);
+					break;
 				case CommandSet.AUTOASSIST:
 					theFight.autoAssist(mob);
 					break;

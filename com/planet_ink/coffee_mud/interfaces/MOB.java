@@ -27,6 +27,7 @@ public interface MOB
 	public static final int ATT_AUTOASSIST=8;
 	public static final int ATT_ANSI=16;
 	public static final int ATT_SYSOPMSGS=32;
+	public static final int ATT_AUTOMELEE=64;
 	
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
