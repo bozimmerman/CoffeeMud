@@ -1883,7 +1883,13 @@ public class StdMOB implements MOB
 						MUDFight.justDie(null,this);
 					tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 					if((!isMonster())&&(soulMate()==null))
+					{
 						CoffeeTables.bump(this,CoffeeTables.STAT_DEATHS);
+						if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
+							CommonMsgs.channel("WIZINFO","",Name()+" was just killed by "+msg.tool().Name()+".",true);
+						else
+							CommonMsgs.channel("WIZINFO","",Name()+" has just died.",true);
+					}
 				}
 				break;
 			case CMMsg.TYP_REBUKE:

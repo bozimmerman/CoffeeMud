@@ -1,12 +1,22 @@
-Expanding on your death thoughts, I think when players die, it would be nice to have a channel, like Wizinfo, that players can see, that  states Bob has been killed by a Water Snake
-add that silly group ranging thing
-?Shapeshifting into a cow lets people see the WIZ channel?!
-look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
-spraypaint is the command, which doesn't seem to want to unload/reload.
+GridTest#0 I made into a 5x5 WoodsGrid, and linked to it's east another 
+5x5 WoodsGrid. 
+
+I then created a single WoodRoom and deleted all exits to it so it was an 
+unlinked room. 
+
+Then, from the far southwest corner of GridTest#0 I did a 'link GridTest#2 
+south' which created the link to the single room. 
+
+Reboot, and now the grid room is not linked to the WoodRoom anymore. 
+The single WoodRoom still has a link to the grid though, to the correct child room (GridTest#0#(0,4)).
+
 abyss/portal change
+look into a mob with a limiteditems(1) prop .. kill the mob, get the sword.
 prop to give each mob a unique death message
-items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
+add that silly group ranging thing
 wind affects throws
+?Shapeshifting into a cow lets people see the WIZ channel?!
+items to wear on customized body parts.  Use default Amputation, compined with Limb items which, when worn, give parts back.
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 Install ship battery
 ability to deposit a container and its contents.

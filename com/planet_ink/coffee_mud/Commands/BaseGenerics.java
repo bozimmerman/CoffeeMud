@@ -23,7 +23,7 @@ import java.io.IOException;
 */
 public class BaseGenerics extends StdCommand
 {
-	private static final long maxLength=65535;
+	private static final long maxLength=Long.MAX_VALUE;
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
 
