@@ -675,6 +675,7 @@ public class StdArea implements Area
 			{
 				int coldChance=0;
 				int fluChance=0;
+				int rustChance=0;
 				switch(weatherType(null))
 				{
 				case Area.WEATHER_BLIZZARD:
@@ -682,54 +683,94 @@ public class StdArea implements Area
 				case Area.WEATHER_SNOW:
 					coldChance=99;
 					fluChance=25;
+					rustChance=5;
 					break;
 				case Area.WEATHER_HAIL:
 					coldChance=50;
+					rustChance=5;
 					break;
 				case Area.WEATHER_THUNDERSTORM:
 				case Area.WEATHER_RAIN:
 					coldChance=25;
+					rustChance=5;
 					break;
 				case Area.WEATHER_WINTER_COLD:
 					coldChance=75;
 					fluChance=10;
 					break;
 				}
-				if(coldChance>0)
+				if((coldChance>0)||(rustChance>0))
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(S.mob().location().getArea()==this)
+					&&(!S.mob().isMonster())
 					&&(weatherType(S.mob().location())!=Area.WEATHER_CLEAR))
 					{
 						MOB M=S.mob();
-						long coveredPlaces=0;
-						for(int i=0;i<M.inventorySize();i++)
+						if(Dice.rollPercentage()<coldChance)
 						{
-							Item I=M.fetchInventory(i);
-							if(I==null)	continue;
-							if(I.amWearingAt(Item.ON_FEET))
-								coveredPlaces=coveredPlaces|Item.ON_FEET;
-							else
-							if(I.amWearingAt(Item.ABOUT_BODY))
-								coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
-							else
-							if(I.amWearingAt(Item.ON_TORSO))
-								coveredPlaces=coveredPlaces|Item.ON_TORSO;
-							else
-							if(I.amWearingAt(Item.ON_LEGS))
-								coveredPlaces=coveredPlaces|Item.ON_LEGS;
-						}
-						if(coveredPlaces!=(Item.ON_FEET|Item.ON_TORSO|Item.ON_LEGS))
-						{
-							if(Dice.rollPercentage()<coldChance)
+							long coveredPlaces=0;
+							for(int i=0;i<M.inventorySize();i++)
+							{
+								Item I=M.fetchInventory(i);
+								if(I==null)	continue;
+								if(I.amWearingAt(Item.ON_FEET))
+									coveredPlaces=coveredPlaces|Item.ON_FEET;
+								else
+								if(I.amWearingAt(Item.ABOUT_BODY))
+									coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
+								else
+								if(I.amWearingAt(Item.ON_TORSO))
+									coveredPlaces=coveredPlaces|Item.ON_TORSO;
+								else
+								if(I.amWearingAt(Item.ON_LEGS))
+									coveredPlaces=coveredPlaces|Item.ON_LEGS;
+							}
+							if(coveredPlaces!=(Item.ON_FEET|Item.ON_TORSO|Item.ON_LEGS))
 							{
 								Ability COLD=CMClass.getAbility("Disease_Cold");
 								if(Dice.rollPercentage()<fluChance)
 									COLD=CMClass.getAbility("Disease_Flu");
 								COLD.invoke(M,M,true);
+							}
+						}
+						else
+						if(Dice.rollPercentage()<rustChance)
+						{
+							String weatherDesc=Area.WEATHER_DESCS[weatherType(null)].toLowerCase();
+							Vector rustThese=new Vector();
+							for(int i=0;i<M.inventorySize();i++)
+							{
+								Item I=M.fetchInventory(i);
+								if(I==null)	continue;
+								if((!I.amWearingAt(Item.INVENTORY))
+								&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+								&&(I.subjectToWearAndTear())
+								&&((Dice.rollPercentage()>I.envStats().ability()*25)))
+									rustThese.addElement(I);
+								else
+								if(I.amWearingAt(Item.ABOUT_BODY)
+								&&(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)))
+								{	rustThese.clear();	break;	}
+							}
+							for(int i=0;i<rustThese.size();i++)
+							{
+								Item I=(Item)rustThese.elementAt(i);
+								M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
+								I.setUsesRemaining(I.usesRemaining()-1);
+								if(I.usesRemaining()<=0)
+								{
+									if(M.location()!=null)
+									{
+										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
+										if(M.location().okAffect(msg))
+											M.location().send(M,msg);
+									}
+									I.destroyThis();
+								}
 							}
 						}
 					}

@@ -4,7 +4,7 @@ import java.util.*;
 
 public abstract class Scriptable
 {
-	protected static String getScr(String which, String num)
+	public static String getScr(String which, String num)
 	{
 		ResourceBundle scripts=Scripts.load(which);
 		if(scripts==null) return "";
@@ -12,14 +12,14 @@ public abstract class Scriptable
 			return (String)scripts.getString(num);
 		return "";
 	}
-	protected static String getScr(String which, String num, String replaceX)
+	public static String getScr(String which, String num, String replaceX)
 	{
 		String msg=getScr(which,num);
 		if(msg.length()>0)
 			msg=Util.replaceAll(msg,"@x1",replaceX);
 		return msg;
 	}
-	protected static String getScr(String which, String num, String replaceX, String replaceX2)
+	public static String getScr(String which, String num, String replaceX, String replaceX2)
 	{
 		String msg=getScr(which,num);
 		if(msg.length()>0)
@@ -29,7 +29,7 @@ public abstract class Scriptable
 		}
 		return msg;
 	}
-	protected static String getScr(String which, String num, 
+	public static String getScr(String which, String num, 
 								   String replaceX, 
 								   String replaceX2, 
 								   String replaceX3)
@@ -44,3 +44,4 @@ public abstract class Scriptable
 		return msg;
 	}
 }
+

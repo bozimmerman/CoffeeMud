@@ -15,11 +15,12 @@ public class Masonry extends CommonSkill
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_ROOF=1;
-	private final static int BUILD_DEMOLISH=2;
-	private final static int BUILD_TITLE=3;
-	private final static int BUILD_DESC=4;
-	private final static String[] names={"Wall","Roof","Demolish","Title","Description"};
-	private final static int[] woodReq={250,500,0,0,0};
+	private final static int BUILD_ARCH=2;
+	private final static int BUILD_DEMOLISH=3;
+	private final static int BUILD_TITLE=4;
+	private final static int BUILD_DESC=5;
+	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description"};
+	private final static int[] woodReq={250,500,200,0,0,0};
 
 	private Room room=null;
 	private int dir=-1;
@@ -54,6 +55,9 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_WALL:
 						commonTell(mob,"You've ruined the wall!");
+						break;
+					case BUILD_ARCH:
+						commonTell(mob,"You've ruined the archway!");
 						break;
 					case BUILD_TITLE:
 						commonTell(mob,"You've ruined the titling!");
@@ -124,6 +128,23 @@ public class Masonry extends CommonSkill
 							R.getArea().fillInAreaRoom(R);
 							ExternalPlay.DBUpdateRoom(R);
 							ExternalPlay.DBUpdateExits(R);
+						}
+						break;
+					case BUILD_ARCH:
+						{
+							Exit x=CMClass.getExit("GenExit");
+							Exit x2=CMClass.getExit("GenExit");
+							x.setName("an archway");
+							x.setDescription("A majestic archway towers above you.");
+							x2.setName("an archway");
+							x2.setDescription("A majestic archway towers above you.");
+							room.rawExits()[dir]=x;
+							if(room.rawDoors()[dir]!=null)
+							{
+								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+							}
+							ExternalPlay.DBUpdateExits(room);
 						}
 						break;
 					case BUILD_WALL:
@@ -238,7 +259,7 @@ public class Masonry extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
-			for(int r=0;r<5;r++)
+			for(int r=0;r<6;r++)
 				buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
 			commonTell(mob,buf.toString());
 			return true;
@@ -255,7 +276,7 @@ public class Masonry extends CommonSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<5;r++)
+		for(int r=0;r<6;r++)
 		{
 			if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
 				doingCode=r;
@@ -271,7 +292,9 @@ public class Masonry extends CommonSkill
 		   dir=-1;
 		else
 		if(((dir<0)||(dir>3))
-		   &&(doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_DESC)&&(doingCode!=BUILD_TITLE))
+		   &&(doingCode!=BUILD_ROOF)
+		   &&(doingCode!=BUILD_DESC)
+		   &&(doingCode!=BUILD_TITLE))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
 			return false;
@@ -381,6 +404,9 @@ public class Masonry extends CommonSkill
 			break;
 		case BUILD_WALL:
 			verb="building the "+Directions.getDirectionName(dir)+" wall";
+			break;
+		case BUILD_ARCH:
+			verb="building the "+Directions.getDirectionName(dir)+" archway";
 			break;
 		case BUILD_TITLE:
 			verb="giving this place a title";

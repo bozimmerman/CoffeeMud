@@ -1,24 +1,17 @@
-new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
-add fountain, pit to the mason skill.
-add Arch to mason, that modifies an open passageway with a Majestic Arch
-possible to have NE SE SW NW directions?
-rain/snow/swim causes some metals to rust (take minute damage).
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
-Amnesia as a disease
-prop_reflecting to reflect spell damage back to the caster, put on shield items
-eggs that hatch
 haggle skill to lower prices HAGGLE 300 item
 WHISPER command to talk to everyone at a table only LISTEN should counter it.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
-Infection: Hitpoints are recovered at 1/2 rate. 
 Can we have a new feature? Prop_changeTimeDay targets: items
 add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
-Behavior & Skill libido - Property Pregnancy, Property Aging 
+possible to have NE SE SW NW directions?
+Behavior & Skill libido - Property Pregnancy (with eggs for some), Property Aging 
+trashcan property that can be added to items to destroy unwanted items.
 Auto quests, quests, questbox (Behavior)
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
 ReligiousHelper—Aids other MOBs of given religion
@@ -29,13 +22,13 @@ When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 random monster property class which reads stats from a resource file
 Taxidermy
+ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
 Assassin: Assassinate skill to auto-kill, lose something else though
 Prancers: Dancing bards who get special ability
+
+//****** next version ********************************************************
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at casting time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
-trashcan behavior that can be added to items to destroy unwanted items.
-ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
-
+Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
 1)	Waypoints—A Land Based auto-travelling system.  Any area that has a Prop_WayPoint can be accessed from another Prop_WayPoint Area, provided the character has the TRAVELLER skill, and has learned each of those way points.  The computer will determine (approx) the shortest route from WayPoint A to WayPoint B.  If the path becomes blocked or someone attacks the TRAVELLER, then the traveling stops in that room.  Note: You can only initiate the TRAVELLER skill from a WayPoint.
 2)	Seapoints—A sea based auto-travelling system.
-add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.

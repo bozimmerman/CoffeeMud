@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.Vector;
 
 public class Property implements Ability, Cloneable
@@ -115,6 +116,141 @@ public class Property implements Ability, Cloneable
 			return this.newInstance();
 		}
 	}
+	public int getParmVal(String text, String key, int defaultValue)
+	{
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
+					x++;
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						return Util.s_int(text.substring(0,x));
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return defaultValue;
+	}
+	
+	public static int getVal(String text, String key)
+	{
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
+					x++;
+				if(x<text.length())
+				{
+					char pm=text.charAt(x);
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						if(pm=='+')
+							return Util.s_int(text.substring(0,x));
+						else
+							return -Util.s_int(text.substring(0,x));
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return 0;
+	}
+
+	public static String getStr(String text, String key)
+	{
+		String oldText=text;
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+					x++;
+				if(x<text.length())
+				{
+					while((x<text.length())&&(!Character.isLetter(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						oldText=oldText.substring(x);
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isLetter(text.charAt(x))))
+							x++;
+						return oldText.substring(0,x).trim();
+					}
+
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return "";
+	}
+
+	public String getParmStr(String text, String key, String defaultValue)
+	{
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+					x++;
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isLetterOrDigit(text.charAt(x))))
+							x++;
+						return text.substring(0,x).trim();
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return defaultValue;
+	}
+	
 	public void setMiscText(String newMiscText)
 	{ miscText=newMiscText;}
 	public String text()
