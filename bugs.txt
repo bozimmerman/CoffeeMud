@@ -1,5 +1,4 @@
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
-Update the database for the ammunition change
 Ability to buy space ship areas, and add them to shopkeepers
 Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
