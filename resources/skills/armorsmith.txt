@@ -166,6 +166,6 @@ Embossed % Gorget	23	145	10	500	GenArmor	NECK	0	5	0
 % Fullplate Greaves	23	145	20	1000	GenArmor	FEET	0	5	0	
 % Fullplate Sabottons	23	145	20	1000	GenArmor	FEET	0	5	0	
 % Fullplate Shirt	23	145	60	3000	GenArmor	TORSO	0	30	0	
-% Knuckles 	6	50	4	32	GenArmor	HANDS	0	2	0	
+% Knuckles	6	50	4	32	GenArmor	HANDS	0	2	0	
 Small % Shield	7	55	15	187	GenShield	HELD	0	5	0	
 Large % Shield	25	145	30	1500	GenShield	HELD	0	10	0	

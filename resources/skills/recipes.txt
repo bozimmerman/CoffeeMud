@@ -73,7 +73,7 @@ potato bread	FOOD		0	POTATOES	1	Dough	2
 wheat bread	FOOD		0	WHEAT	1	Dough	2										
 bread	FOOD		0	Dough	1												
 corn bread	FOOD		0	CORN	2	Dough	1										
-focacia	FOOD		0	Bread	1	OLIVES	1	Cheese	1								
+focaccia	FOOD		0	Bread	1	OLIVES	1	Cheese	1								
 % pizza	FOOD		0	Dough	2	TOMATOES	1	Cheese	1	MEAT	-1	BEEF	-1				
 cheese pizza	FOOD		0	Dough	2	TOMATOES	1	Cheese	1								
 caesar salad	FOOD		0	GREENS	2	EGGS	1	OLIVES	-1								
