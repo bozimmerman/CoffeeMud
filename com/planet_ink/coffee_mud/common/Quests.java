@@ -945,7 +945,7 @@ public class Quests implements Cloneable, Quest
 				if(E instanceof MOB)
 				{
 					MOB M=(MOB)E;
-					CoffeeUtensils.wanderAway(M,true);
+					CoffeeUtensils.wanderAway(M,true,false);
 					if(M.getStartRoom()!=null)
 					{
 						if(M.location()!=null)

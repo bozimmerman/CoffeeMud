@@ -83,6 +83,8 @@ public class Scriptable extends StdBehavior
 		"NUMBER", // 40
 		"EVAL", // 41
 		"RANDNUM", // 42
+		"ROOMMOB", // 43
+		"ROOMITEM" // 44
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -933,6 +935,47 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				break;
 			}
+			case 43: // roommob
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				Environmental which=null;
+				if(lastKnownLocation!=null)
+					lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				if(which==null)
+					returnable=false;
+				else
+					returnable=(CoffeeUtensils.containsString(which.name(),arg2)
+								||CoffeeUtensils.containsString(which.Name(),arg2)
+								||CoffeeUtensils.containsString(which.displayText(),arg2));
+				break;
+			}
+			case 44: // roomitem
+			if(lastKnownLocation!=null)
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				Environmental which=null;
+				int ct=0;
+				if(lastKnownLocation!=null)
+				for(int i=0;i<lastKnownLocation.numItems();i++)
+				{
+					Item I=lastKnownLocation.fetchItem(i);
+					if((I!=null)&&(I.container()==null))
+					{
+						if(ct==Util.s_int(arg1))
+						{ which=I; break;}
+						ct++;
+					}
+				}
+				if(which==null)
+					returnable=false;
+				else
+					returnable=(CoffeeUtensils.containsString(which.name(),arg2)
+								||CoffeeUtensils.containsString(which.Name(),arg2)
+								||CoffeeUtensils.containsString(which.displayText(),arg2));
+				break;
+			}
 			case 36: // ishere
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -1771,6 +1814,36 @@ public class Scriptable extends StdBehavior
 					results.append("evening");
 				break;
 			}
+			case 43: // roommob
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				Environmental which=null;
+				if(lastKnownLocation!=null)
+					lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				if(which!=null)
+					results.append(which.name());
+				break;
+			}
+			case 44: // roomitem
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				Environmental which=null;
+				int ct=0;
+				if(lastKnownLocation!=null)
+				for(int i=0;i<lastKnownLocation.numItems();i++)
+				{
+					Item I=lastKnownLocation.fetchItem(i);
+					if((I!=null)&&(I.container()==null))
+					{
+						if(ct==Util.s_int(arg1))
+						{ which=I; break;}
+						ct++;
+					}
+				}
+				if(which!=null)
+					results.append(which.name());
+				break;
+			}
 			case 36: // ishere
 			{
 				if(lastKnownLocation!=null)
@@ -2095,6 +2168,32 @@ public class Scriptable extends StdBehavior
 				if(secondaryItem!=null)
 					middle=secondaryItem.name();
 				break;
+			case 'l':
+				if(room!=null)
+				{
+					StringBuffer str=new StringBuffer("");
+					for(int i=0;i<room.numInhabitants();i++)
+					{
+						MOB M=room.fetchInhabitant(i);
+						if((M!=null)&&(M!=monster)&&(Sense.canBeSeenBy(M,monster)))
+						   str.append("\""+M.name()+"\" ");
+					}
+					middle=str.toString();
+					break;
+				}
+			case 'L':
+				if(room!=null)
+				{
+					StringBuffer str=new StringBuffer("");
+					for(int i=0;i<room.numItems();i++)
+					{
+						Item I=room.fetchItem(i);
+						if((I!=null)&&(I.container()==null)&&(Sense.canBeSeenBy(I,monster)))
+						   str.append("\""+I.name()+"\" ");
+					}
+					middle=str.toString();
+					break;
+				}
 			case '<':
 				{
 					int x=back.indexOf(">");

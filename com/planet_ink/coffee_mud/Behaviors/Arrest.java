@@ -245,11 +245,7 @@ public class Arrest extends StdBehavior
 		&&(officer.getStartRoom()==officer.location()))
 			return;
 		if(officer.isMonster())
-		{
-			CoffeeUtensils.wanderAway(officer,true);
-			if(officer.getStartRoom()!=null)
-				officer.getStartRoom().bringMobHere(officer,false);
-		}
+			CoffeeUtensils.wanderAway(officer,true,true);
 	}
 
 	public MOB getAWitnessHere(Room R)

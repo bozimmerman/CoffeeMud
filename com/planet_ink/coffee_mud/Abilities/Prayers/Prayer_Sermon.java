@@ -29,7 +29,7 @@ public class Prayer_Sermon extends Prayer
 			ExternalPlay.follow(mob,null,false);
 			ExternalPlay.standIfNecessary(mob);
 			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				CoffeeUtensils.wanderAway(mob,true);
+				CoffeeUtensils.wanderAway(mob,true,true);
 		}
 	}
 

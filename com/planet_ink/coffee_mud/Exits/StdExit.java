@@ -257,6 +257,7 @@ public class StdExit implements Exit
 		case Affect.TYP_DELICATE_HANDS_ACT:
 		case Affect.TYP_JUSTICE:
 		case Affect.TYP_CAST_SPELL:
+		case Affect.TYP_SPEAK:
 			return true;
 		case Affect.TYP_PULL:
 			if((isOpen())||(!hasADoor()))

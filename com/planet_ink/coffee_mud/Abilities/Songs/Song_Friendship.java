@@ -38,7 +38,7 @@ public class Song_Friendship extends Song
 			{
 				ExternalPlay.standIfNecessary(mob);
 				if((mob.isMonster())&&(!Sense.isMobile(mob)))
-					CoffeeUtensils.wanderAway(mob,true);
+					CoffeeUtensils.wanderAway(mob,true,true);
 			}
 		}
 		else

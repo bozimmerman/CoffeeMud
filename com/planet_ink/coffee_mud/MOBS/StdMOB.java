@@ -1039,18 +1039,28 @@ public class StdMOB implements MOB
 				if(!Sense.aliveAwakeMobile(this,false))
 					return false;
 
+				
 				if((Sense.isSitting(this))&&
 				  (affect.sourceMinor()!=Affect.TYP_SITMOVE)&&
-				  (affect.targetCode()!=Affect.MSG_OK_VISUAL)&&
-				  (((affect.target()!=null)
-				    &&(((!(affect.target() instanceof Item))
-				      ||(!this.isMine(affect.target())))))
-				  ||((affect.tool()!=null)
-				    &&(((!(affect.tool() instanceof Item))
-				      ||(!this.isMine(affect.tool())))))))
+				  (affect.targetCode()!=Affect.MSG_OK_VISUAL))
 				{
-					tell("You need to stand up!");
-					return false;
+					boolean treachable=
+						(affect.target()==null)
+						||(!(affect.target() instanceof Item))
+						||(isMine(affect.target()))
+						||(((Item)affect.target()).owner()==riding())
+						||(((Item)affect.target()).container()==riding());
+					boolean oreachable=
+						(affect.tool()==null)
+						||(!(affect.tool() instanceof Item))
+						||(isMine(affect.tool()))
+						||(((Item)affect.tool()).owner()==riding())
+						||(((Item)affect.tool()).container()==riding());
+					if((!treachable)||(!oreachable))
+					{
+						tell("You need to stand up!");
+						return false;
+					}
 				}
 			}
 

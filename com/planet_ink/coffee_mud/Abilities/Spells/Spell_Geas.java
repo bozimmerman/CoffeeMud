@@ -41,10 +41,7 @@ public class Spell_Geas extends Spell
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
 			&&(mob.location()!=mob.getStartRoom()))
-			{
-				CoffeeUtensils.wanderAway(mob,true);
-				mob.getStartRoom().bringMobHere(mob,false);
-			}
+				CoffeeUtensils.wanderAway(mob,true,true);
 		}
 	}
 
@@ -69,7 +66,7 @@ public class Spell_Geas extends Spell
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
-			CoffeeUtensils.wanderAway(mob,false);
+			CoffeeUtensils.wanderAway(mob,false,true);
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -67,7 +67,7 @@ public class Spell_Charm extends Spell
 			ExternalPlay.follow(mob,null,false);
 			ExternalPlay.standIfNecessary(mob);
 			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				CoffeeUtensils.wanderAway(mob,true);
+				CoffeeUtensils.wanderAway(mob,true,true);
 		}
 	}
 
