@@ -104,7 +104,7 @@ public class Spell_MagicMouth extends Spell
 			mob.tell("You must specify:\n\r 1. What object you want the spell cast on.\n\r 2. Whether it is triggered by TOUCH, HOLD, WIELD, WEAR, or someone ENTERing the same room. \n\r 3. The message you wish the object to impart. ");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)));
+		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,((String)commands.elementAt(0)),Item.WORN_REQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

@@ -316,7 +316,7 @@ public class Cook extends CommonSkill
 		fire=null;
 		finalRecipe=null;
 		finalAmount=0;
-		Item target=getTarget(mob,null,givenTarget,commands);
+		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

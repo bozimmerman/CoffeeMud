@@ -40,7 +40,7 @@ public class Thief_Pick extends ThiefSkill
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
-			unlockThis=getTarget(mob,mob.location(),givenTarget,commands);
+			unlockThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(unlockThis==null) return false;
 
 		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).hasALock()))

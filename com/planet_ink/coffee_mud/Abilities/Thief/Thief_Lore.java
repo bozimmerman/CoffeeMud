@@ -41,7 +41,7 @@ public class Thief_Lore extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -87,7 +87,7 @@ public class Scriptable extends ActiveTicker
 			Room r=(Room)CMMap.getRoom(m);
 			if((CoffeeUtensils.containsString(r.name(),thisName))
 			||(r.ID().endsWith("#"+thisName))
-			||(r.fetchFromRoomFavorMOBs(null,thisName)!=null))
+			||(r.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
 			{
 				if((imHere!=null)&&(imHere.getArea().name().equals(r.getArea().name())))
 					inAreaRoom=r;
@@ -494,7 +494,7 @@ public class Scriptable extends ActiveTicker
 				if(lastKnownLocation!=null)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(7).trim());
-					Environmental E=lastKnownLocation.fetchFromRoomFavorItems(null,s);
+					Environmental E=lastKnownLocation.fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
 					if(E!=null)
 					{
 						if(E instanceof MOB)

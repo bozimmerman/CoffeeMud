@@ -56,7 +56,7 @@ public class Spell_Shatter extends Spell
 		}
 		
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		
 		if(target==null) return false;
 

@@ -37,7 +37,7 @@ public class Skill_Revoke extends StdAbility
 
 		String whatToRevoke=Util.combine(commands,0);
 
-		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke);
+		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Item.WORN_REQ_ANY);
 
 		if((whatToRevoke.length()==0)
 		&&(mob.location().numAffects()>0))

@@ -243,7 +243,7 @@ public class CoffeeUtensils
 		return null;
 	}
 
-	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, boolean wornOnly, boolean unwornOnly, boolean exactOnly)
+	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;
 		srchStr=srchStr.toUpperCase();
@@ -277,7 +277,7 @@ public class CoffeeUtensils
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
 					if((thisThang.location()==goodLocation)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.name().equalsIgnoreCase(srchStr))))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
@@ -296,7 +296,7 @@ public class CoffeeUtensils
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 
 					if((thisThang.location()==goodLocation)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -312,7 +312,7 @@ public class CoffeeUtensils
 					boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
 					if((thisThang.location()==goodLocation)
 					&&(thisThang.displayText().length()>0)
-					&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
+					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;

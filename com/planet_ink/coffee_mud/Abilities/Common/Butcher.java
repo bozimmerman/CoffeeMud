@@ -56,7 +56,7 @@ public class Butcher extends CommonSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		body=null;
-		Item I=getTarget(mob,mob.location(),givenTarget,commands);
+		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(I==null) return false;
 		if(!(I instanceof DeadBody))
 		{

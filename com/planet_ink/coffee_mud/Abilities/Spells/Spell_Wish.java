@@ -134,12 +134,12 @@ public class Spell_Wish extends Spell
 			objectWish=objectWish.toLowerCase().trim();
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish);
+			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			for(int m=0;m<CMMap.numRooms();m++)
 			{
 				Room room=CMMap.getRoom(m);
-				E=room.fetchFromRoomFavorMOBs(null,objectWish);
+				E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 				foundThang=maybeAdd(E,thangsFound,foundThang);
 			}
 			for(int r=0;r<CMMap.numRooms();r++)
@@ -200,7 +200,7 @@ public class Spell_Wish extends Spell
 			
 			// anything else may refer to another person or item
 			String possName=((String)wishV.elementAt(0)).trim();
-			Environmental target=mob.location().fetchFromRoomFavorMOBs(null,possName);
+			Environmental target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
 			if((target==null) 
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))

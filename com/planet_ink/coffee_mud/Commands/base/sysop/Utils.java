@@ -17,7 +17,7 @@ public class Utils
 			return;
 		}
 		String name=Util.combine(commands,2);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,name);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORN_REQ_UNWORNONLY);
 		if(E==null)
 			for(int m=0;m<CMMap.numRooms();m++)
 			{

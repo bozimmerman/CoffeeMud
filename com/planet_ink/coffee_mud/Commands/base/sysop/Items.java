@@ -19,7 +19,7 @@ public class Items
 
 		String itemID=((String)commands.elementAt(2));
 
-		Item deadItem=(Item)mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID);
+		Item deadItem=(Item)mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID,Item.WORN_REQ_ANY);
 		if(deadItem==null)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
@@ -48,7 +48,7 @@ public class Items
 		if(commands.size()>4)
 			restStr=Util.combine(commands,4);
 
-		Item modItem=(Item)mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID);
+		Item modItem=(Item)mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID,Item.WORN_REQ_ANY);
 		if(modItem==null)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");

@@ -40,7 +40,7 @@ public class Thief_Trap extends ThiefSkill
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
-			unlockThis=this.getTarget(mob,mob.location(),givenTarget,commands);
+			unlockThis=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(unlockThis==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -26,7 +26,7 @@ public class Prayer_Resurrect extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item body=this.getTarget(mob,mob.location(),givenTarget,commands);
+		Item body=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(body==null) return false;
 		if(!(body instanceof DeadBody))
 		{

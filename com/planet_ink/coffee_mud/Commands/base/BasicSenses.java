@@ -31,7 +31,7 @@ public class BasicSenses
 				}
 			}
 			if(dirCode<0)
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID);
+				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
 			if(thisThang!=null)
 			{
 				String name="at <T-NAMESELF>.";

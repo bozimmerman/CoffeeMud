@@ -751,8 +751,8 @@ public class StdRoom
 
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,false,true,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,false,true,false);
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public void addItem(Item item)
@@ -783,13 +783,14 @@ public class StdRoom
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName)
+	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornReqCode)
 	{
+		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,true);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,false);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
 		
@@ -799,39 +800,40 @@ public class StdRoom
 		&&(found.displayText().length()==0)
 		&&(thingName.indexOf(".")<0))
 		{
-			Environmental visibleItem=fetchFromRoomFavorItems(null,thingName+".2");
+			Environmental visibleItem=fetchFromRoomFavorItems(null,thingName+".2",wornReqCode);
 			if(visibleItem!=null)
 				found=visibleItem;
 		}
 		return found;
 	}
 
-	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
+	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode)
 	{
+		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null)	found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,true);
+		if(found==null)	found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
-		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,false);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
 		return found;
 	}
 
-	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName)
+	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode)
 	{
 		Environmental found=null;
-		if(mob!=null)
+		if((mob!=null)&&(wornReqCode!=Item.WORN_REQ_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
 		if(found==null)
 		{
-			found=fetchFromRoomFavorItems(goodLocation, thingName);
+			found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
 			else
 				found=null;
 		}
-		if((mob!=null)&&(found==null))
+		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORN_REQ_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
 		return found;
 	}

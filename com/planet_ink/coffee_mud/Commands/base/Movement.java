@@ -330,7 +330,7 @@ public class Movement
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
+			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
 		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
 		{
@@ -357,7 +357,7 @@ public class Movement
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
 		if(unlockThis==null)
-			unlockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTounlock);
+			unlockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTounlock,Item.WORN_REQ_ANY);
 
 		if((unlockThis==null)||(!Sense.canBeSeenBy(unlockThis,mob)))
 		{
@@ -384,7 +384,7 @@ public class Movement
 		if(dirCode>=0)
 			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)
-			closeThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToClose);
+			closeThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToClose,Item.WORN_REQ_ANY);
 
 		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
 		{
@@ -453,7 +453,7 @@ public class Movement
 		if(dirCode>=0)
 			lockThis=mob.location().getExitInDir(dirCode);
 		if(lockThis==null)
-			lockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTolock);
+			lockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTolock,Item.WORN_REQ_ANY);
 
 		if((lockThis==null)||(!Sense.canBeSeenBy(lockThis,mob)))
 		{
@@ -477,7 +477,7 @@ public class Movement
 		}
 		if(commands.size()<=1){ sit(mob); return;}
 		String possibleRideable=Util.combine(commands,1);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
 		{
 			mob.tell("You don't see '"+possibleRideable+"' here.");
@@ -506,7 +506,7 @@ public class Movement
 		}
 		if(commands.size()<=1){ sleep(mob); return;}
 		String possibleRideable=Util.combine(commands,1);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
 		{
 			mob.tell("You don't see '"+possibleRideable+"' here.");
@@ -600,7 +600,7 @@ public class Movement
 		if(recipient==null)
 			recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
 		if(recipient==null)
-			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0));
+			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0),Item.WORN_REQ_UNWORNONLY);
 		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
 		{
 			mob.tell("I don't see "+Util.combine(commands,0)+" here.");

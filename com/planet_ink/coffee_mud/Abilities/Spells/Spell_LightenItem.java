@@ -60,7 +60,7 @@ public class Spell_LightenItem extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null)
 		{
 			String str=Util.combine(commands,0).toUpperCase();

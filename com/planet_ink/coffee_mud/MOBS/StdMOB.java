@@ -1688,20 +1688,20 @@ public class StdMOB implements MOB
 	}
 	public Item fetchInventory(String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,false,false,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,false,false,false);
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchCarried(Item goodLocation, String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,false,true,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,false,true,false);
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
 	public Item fetchWornItem(String itemName)
 	{
-		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,true,false,true);
-		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,true,false,false);
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
 		return item;
 	}
 	public void addFollower(MOB follower)

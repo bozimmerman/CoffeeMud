@@ -311,7 +311,7 @@ public class SysOpSkills
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORN_REQ_UNWORNONLY);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)

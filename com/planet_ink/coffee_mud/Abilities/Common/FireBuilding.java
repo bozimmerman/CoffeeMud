@@ -94,7 +94,7 @@ public class FireBuilding extends CommonSkill
 		}
 		else
 		{
-			lighting=getTarget(mob,mob.location(),givenTarget,commands);
+			lighting=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 			if(lighting==null) return false;
 			if((!lighting.isGettable())||(lighting.displayText().length()==0))
 			{

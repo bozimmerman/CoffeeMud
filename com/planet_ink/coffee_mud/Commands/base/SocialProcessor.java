@@ -85,7 +85,7 @@ public class SocialProcessor
 		if(commands.size()>2)
 		{
 			String possibleTarget=(String)commands.elementAt(1);
-			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget);
+			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
 			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
 			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
@@ -164,7 +164,7 @@ public class SocialProcessor
 		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
 			targetStr=(String)commands.elementAt(1);
 
-		Environmental Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr);
+		Environmental Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Item.WORN_REQ_ANY);
 		if((Target!=null)&&(!Sense.canBeSeenBy(Target,mob)))
 		   Target=null;
 

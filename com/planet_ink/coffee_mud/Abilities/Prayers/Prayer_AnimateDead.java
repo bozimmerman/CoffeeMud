@@ -33,7 +33,7 @@ public class Prayer_AnimateDead extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(target==mob)

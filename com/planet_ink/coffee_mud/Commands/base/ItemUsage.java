@@ -7,13 +7,13 @@ import java.io.*;
 import java.util.*;
 public class ItemUsage
 {
-	public Item possibleContainer(MOB mob, Vector commands)
+	public Item possibleContainer(MOB mob, Vector commands, int wornReqCode)
 	{
 		if(commands.size()==1)
 			return null;
 
 		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID);
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang).isAContainer()))
@@ -119,7 +119,7 @@ public class ItemUsage
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Item container=possibleContainer(mob,commands);
+		Item container=possibleContainer(mob,commands,Item.WORN_REQ_ANY);
 		String whatToGet=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -130,9 +130,9 @@ public class ItemUsage
 		{
 			Environmental getThis=null;
 			if((container!=null)&&(mob.isMine(container)))
-			   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr);
+			   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 			else
-			   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr);
+			   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 
 			if((getThis==null)
 			||(!(getThis instanceof Item))
@@ -180,7 +180,7 @@ public class ItemUsage
 		}
 		commands.removeElementAt(0);
 
-		Item container=possibleContainer(mob,commands);
+		Item container=possibleContainer(mob,commands,Item.WORN_REQ_UNWORNONLY);
 		whatToDrop=Util.combine(commands,0);
 
 		boolean doneSomething=false;
@@ -245,7 +245,7 @@ public class ItemUsage
 			return;
 		}
 
-		Environmental container=possibleContainer(mob,commands);
+		Environmental container=possibleContainer(mob,commands,Item.WORN_REQ_ANY);
 		if((container==null)||((container!=null)&&(!Sense.canBeSeenBy(container,mob))))
 		{
 			mob.tell("I don't see a "+(String)commands.elementAt(commands.size()-1)+" here.");
@@ -264,7 +264,7 @@ public class ItemUsage
 			if(putThis!=null)
 				allFlag=false;
 			else
-				putThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToPut+addendumStr);
+				putThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToPut+addendumStr,Item.WORN_REQ_UNWORNONLY);
 			if((putThis==null)||((putThis!=null)&&(!Sense.canBeSeenBy(putThis,mob))))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToPut)<=0))
@@ -320,7 +320,7 @@ public class ItemUsage
 		else
 		{
 			String thingToFillFrom=(String)commands.elementAt(commands.size()-1);
-			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom);
+			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORN_REQ_ANY);
 			if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
 			{
 				mob.tell("I don't see a "+thingToFillFrom+" here.");
@@ -337,7 +337,7 @@ public class ItemUsage
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		do
 		{
-			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr);
+			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
 			if((fillThis==null)||((fillThis!=null)&&(!Sense.canBeSeenBy(fillThis,mob))))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToFill)<=0))
@@ -547,7 +547,7 @@ public class ItemUsage
 			thisThang=mob.location();
 		else
 		{
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
 			if((thisThang==null)
 			||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
@@ -614,10 +614,10 @@ public class ItemUsage
 		}
 		commands.removeElementAt(0);
 
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(commands.size()-1));
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(commands.size()-1),Item.WORN_REQ_ANY);
 		String theRest=null;
 		if(thisThang==null)
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
 		else
 		{
 			commands.removeElementAt(commands.size()-1);
@@ -680,7 +680,7 @@ public class ItemUsage
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
+			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
 		if(openThis==null)
 		{
@@ -700,7 +700,7 @@ public class ItemUsage
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
+			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
 		if(openThis==null)
 		{

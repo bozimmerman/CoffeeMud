@@ -122,7 +122,7 @@ public class StdAbility implements Ability, Cloneable
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORN_REQ_UNWORNONLY);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -161,7 +161,7 @@ public class StdAbility implements Ability, Cloneable
 		return target;
 	}
 
-	public Environmental getAnyTarget(MOB mob, Vector commands, Environmental givenTarget)
+	public Environmental getAnyTarget(MOB mob, Vector commands, Environmental givenTarget, int wornReqCode)
 	{
 		String targetName=Util.combine(commands,0);
 		Environmental target=null;
@@ -172,9 +172,9 @@ public class StdAbility implements Ability, Cloneable
 			target=mob.getVictim();
 		else
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,targetName);
+			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornReqCode);
 			if(target==null)
-				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName);
+				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
 		}
 		if(target!=null) targetName=target.name();
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
@@ -197,7 +197,7 @@ public class StdAbility implements Ability, Cloneable
 		return target;
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands)
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, int wornReqCode)
 	{
 		String targetName=Util.combine(commands,0);
 
@@ -206,11 +206,11 @@ public class StdAbility implements Ability, Cloneable
 			target=givenTarget;
 		
 		if(location!=null)
-			target=location.fetchFromRoomFavorItems(null,targetName);
+			target=location.fetchFromRoomFavorItems(null,targetName,wornReqCode);
 		if(target==null)
 		{
 			if(location!=null)
-				target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName);
+				target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
 			else
 				target=mob.fetchCarried(null,targetName);
 		}

@@ -128,7 +128,7 @@ public class Chant_WhisperWard extends Chant
 		if(itemName.equalsIgnoreCase("room"))
 			target=mob.location();
 		else
-			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName);
+			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Item.WORN_REQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

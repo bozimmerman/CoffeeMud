@@ -42,7 +42,7 @@ public class Spell_AnimateItem extends Spell
 		}
 		Vector V=new Vector();
 		V.addElement((String)commands.elementAt(0));
-		Item target=getTarget(mob,mob.location(),givenTarget,V);
+		Item target=getTarget(mob,mob.location(),givenTarget,V,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

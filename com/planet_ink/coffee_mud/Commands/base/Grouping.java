@@ -120,10 +120,10 @@ public class Grouping
 	{
 		if(tofollow!=null)
 		{
-			if(mob.amFollowing()==tofollow)
+			if(mob.getGroupMembers(new Hashtable()).contains(tofollow))
 			{
 				if(!quiet)
-					mob.tell("You are already following "+tofollow.name()+"!");
+					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
 				return;
 			}
 			nofollow(mob,false,false);

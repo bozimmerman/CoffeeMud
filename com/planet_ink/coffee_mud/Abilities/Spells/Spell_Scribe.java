@@ -41,7 +41,7 @@ public class Spell_Scribe extends Spell
 			mob.tell("Scribe which spell onto what?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement());
+		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_UNWORNONLY);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");

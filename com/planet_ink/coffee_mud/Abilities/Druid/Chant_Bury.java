@@ -36,7 +36,7 @@ public class Chant_Bury extends Chant
 			mob.tell("This chant does not work in the city.");
 			return false;
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!(target instanceof DeadBody))

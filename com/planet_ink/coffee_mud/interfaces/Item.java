@@ -3,6 +3,10 @@ import java.util.Calendar;
 
 public interface Item extends Environmental
 {
+	public static int WORN_REQ_WORNONLY=0;
+	public static int WORN_REQ_UNWORNONLY=1;
+	public static int WORN_REQ_ANY=2;
+	
 	/** Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
 	 * point to the container object*/

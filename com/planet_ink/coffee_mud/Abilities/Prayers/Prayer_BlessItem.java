@@ -90,7 +90,7 @@ public class Prayer_BlessItem extends Prayer
 		}
 		
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

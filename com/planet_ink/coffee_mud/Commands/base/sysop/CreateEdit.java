@@ -83,7 +83,7 @@ public class CreateEdit
 		else
 		{
 			String allWord=Util.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord);
+			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);
@@ -251,7 +251,7 @@ public class CreateEdit
 		else
 		{
 			String allWord=Util.combine(commands,1);
-			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord);
+			Environmental thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Item.WORN_REQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				if(!thang.isGeneric())
