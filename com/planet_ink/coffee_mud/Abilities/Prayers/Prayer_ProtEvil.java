@@ -47,15 +47,12 @@ public class Prayer_ProtEvil extends Prayer
 			if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
 			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Prayer))
+			&&(affect.tool() instanceof Ability)
+			&&(!Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_HOLY))
+			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				Prayer bob=(Prayer)affect.tool();
-				if((!Util.bset(bob.flags(),Ability.FLAG_HOLY))
-				&&(Util.bset(bob.flags(),Ability.FLAG_UNHOLY)))
-				{
-					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
-					return false;
-				}
+				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+				return false;
 			}
 
 		}

@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
-import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -58,15 +57,12 @@ public class Paladin_Aura extends Paladin
 			if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 			&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
 			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Prayer))
+			&&(affect.tool() instanceof Ability)
+			&&(!Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_HOLY))
+			&&(Util.bset(((Ability)affect.tool()).flags(),Ability.FLAG_UNHOLY)))
 			{
-				Prayer bob=(Prayer)affect.tool();
-				if((!Util.bset(bob.flags(),Ability.FLAG_HOLY))
-				&&(Util.bset(bob.flags(),Ability.FLAG_UNHOLY)))
-				{
-					affect.source().location().show((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
-					return false;
-				}
+				affect.source().location().show((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+				return false;
 			}
 			if(((affect.targetMinor()==Affect.TYP_POISON)||(affect.targetMinor()==Affect.TYP_DISEASE))
 			&&(profficiencyCheck(0,false)))
