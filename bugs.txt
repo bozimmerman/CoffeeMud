@@ -1,7 +1,6 @@
 preload shows spells being invoked on people
 document real estate and space ship selling, document genairlock?
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change
-Add Prop_HaveDmgAbsorb
 Finish Scripting doc
 mutable body parts, with ability to grant powers
 add days of week, months, and years to scripts
