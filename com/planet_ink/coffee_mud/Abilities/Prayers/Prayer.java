@@ -101,5 +101,6 @@ public class Prayer extends StdAbility
 			mob.tell("The evil nature of "+name()+" disrupts your prayer.");
 		else
 			mob.tell("The goodness of "+name()+" disrupts your prayer.");
+		return false;
 	}
 }
