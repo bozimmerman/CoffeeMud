@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.File;
 
@@ -152,7 +153,12 @@ public class Fletching extends CraftingSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
+			int toggler=1;
+			int toggleTop=2;
+			StringBuffer buf=new StringBuffer("");
+			for(int r=0;r<toggleTop;r++)
+				buf.append(Util.padRight("Item",27)+" Lvl "+Util.padRight("Wood",5)+" ");
+			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -162,7 +168,10 @@ public class Fletching extends CraftingSkill
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
+					{
+						buf.append(Util.padRight(item,27)+" "+Util.padRight(""+level,3)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
+						if(++toggler>toggleTop) toggler=1;
+					}
 				}
 			}
 			commonTell(mob,buf.toString());
