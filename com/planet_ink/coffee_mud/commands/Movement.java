@@ -131,15 +131,16 @@ public class Movement
 		}
 		int lostExperience=10;
 		if(mob.getVictim()!=null)
+		{
 			lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
-		if(directionCode>=0)
-			if (move(mob,directionCode,true))
-			{
-				mob.makePeace();
-				if(lostExperience<10) lostExperience=10;
-				mob.setExperience(mob.getExperience()-lostExperience);
-				mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
-			}
+			if(lostExperience<10) lostExperience=10;
+		}
+		if(((directionCode>=0)&&(move(mob,directionCode,true)))||(direction.equals("NOWHERE")))
+		{
+			mob.makePeace();
+			mob.setExperience(mob.getExperience()-lostExperience);
+			mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
+		}
 	}
 
 	public void open(MOB mob, String whatToOpen)

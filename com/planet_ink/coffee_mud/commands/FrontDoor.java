@@ -200,6 +200,7 @@ public class FrontDoor
 						if(!mob.session().confirm("^BIs ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
 							newRace=null;
 				}
+				mob.baseCharStats().setMyRace(newRace);
 				
 				String Gender="";
 				while(Gender.length()==0)
@@ -245,8 +246,6 @@ public class FrontDoor
 							mayCont=false;
 					}
 				}
-				mob.baseCharStats().setMyRace(newRace);
-
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
 
 				mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
