@@ -59,7 +59,7 @@ public class Skill_Distract extends StdAbility
 			if(affect.amISource(invoker)
 			&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,mob,Affect.TYP_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
+				invoker.location().show(invoker,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> distract(s) <T-NAME>.");
 				return false;
 			}
 		}
