@@ -315,7 +315,7 @@ public class Export extends StdCommand
 					str.append(((CharClass)o).classParms());
 			}
 			str.append("</CUSTOM>");
-			xml=str.toString()+xml;
+			xml+=str.toString();
 		}
 		reallyExport(mob,fileName,xml);
 		return false;

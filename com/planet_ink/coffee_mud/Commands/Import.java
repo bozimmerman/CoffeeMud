@@ -4059,8 +4059,8 @@ public class Import extends StdCommand
 				Vector mobs=new Vector();
 				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
-				//if(error.length()==0)
-				//	error=CoffeeMaker.addPLAYERsFromXML(buf.toString(),mobs,mob.session());
+				if(error.length()==0)
+					error=CoffeeMaker.addPLAYERsFromXML(buf.toString(),mobs,mob.session());
 				if(mob.session()!=null)	
 					mob.session().rawPrintln("!");
 				if(error.length()>0)
@@ -4074,21 +4074,23 @@ public class Import extends StdCommand
 					for(int m=0;m<mobs.size();m++)
 					{
 						MOB M=(MOB)mobs.elementAt(m);
-						if(M.playerStats()!=null)
+						if(CMClass.DBEngine().DBUserSearch(null,M.Name()))
 						{
-							M.playerStats().setLastDateTime(System.currentTimeMillis());
-							M.playerStats().setUpdated(System.currentTimeMillis());
+							if(!prompt)
+							{
+								mob.tell("Player '"+M.Name()+"' already exists.  Skipping.");
+								continue;
+							}
+							else
+							if(!mob.session().confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y"))
+								continue;
+							else
+								CoffeeUtensils.obliteratePlayer(CMMap.getLoadPlayer(M.Name()),false);
 						}
-						M.recoverCharStats();
-						M.recoverEnvStats();
-						M.recoverMaxState();
-						M.resetToMaxState();
+						if(M.playerStats()!=null)
+							M.playerStats().setUpdated(System.currentTimeMillis());
 						CMClass.DBEngine().DBCreateCharacter(M);
-						if(CMMap.getPlayer(M.Name())==null)
-							CMMap.addPlayer(M);
-
-						if(mob.session()!=null)
-							M.playerStats().setLastIP(mob.session().getAddress());
+						CMMap.addPlayer(M);
 						Log.sysOut("Import","Imported user: "+M.Name());
 						for(int s=0;s<Sessions.size();s++)
 						{

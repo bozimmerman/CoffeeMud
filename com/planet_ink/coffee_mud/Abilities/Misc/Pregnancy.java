@@ -225,7 +225,7 @@ public class Pregnancy extends StdAbility
 			else
 				first=race2;
 			String second=(first.equals(race1)?race2:race1);
-			String halfRace=first+second;
+			String halfRace=(race1.compareToIgnoreCase(race2)<0)?race1+race2:race2+race1;
 			Race testR=CMClass.getRace(halfRace);
 			Race FIRSTR=CMClass.getRace(first);
 			Race SECONDR=CMClass.getRace(second);

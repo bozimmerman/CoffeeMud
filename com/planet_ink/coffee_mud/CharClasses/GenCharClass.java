@@ -71,17 +71,9 @@ public class GenCharClass extends StdCharClass
 
 	public CharClass copyOf()
 	{
-		try
-		{
-			GenCharClass E=(GenCharClass)this.clone();
-			E.cloneFix(this);
-			return E;
-
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return this;
-		}
+		GenCharClass E=new GenCharClass();
+		E.setClassParms(classParms());
+		return E;
 	}
 
 	public boolean loaded(){return true;}

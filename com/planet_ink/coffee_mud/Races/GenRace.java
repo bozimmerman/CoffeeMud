@@ -31,7 +31,7 @@ public class GenRace extends StdRace
 	public String racialCategory(){return racialCategory;}
 	public boolean isGeneric(){return true;}
 
-	//                   an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	//                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
@@ -60,16 +60,9 @@ public class GenRace extends StdRace
 	
 	public Race copyOf()
 	{
-		try
-		{
-			GenRace E=(GenRace)this.clone();
-			return E;
-
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return this;
-		}
+		GenRace E=new GenRace();
+		E.setRacialParms(racialParms());
+		return E;
 	}
 	public Weapon myNaturalWeapon()
 	{ 

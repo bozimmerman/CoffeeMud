@@ -274,6 +274,7 @@ public class CoffeeMaker
 			{
 				abilitystr.append("<ABLTY>");
 				abilitystr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
+				abilitystr.append(XMLManager.convertXMLtoTag("APROF",""+A.profficiency()));
 				abilitystr.append(XMLManager.convertXMLtoTag("ADATA",getPropertiesStr(A,true)));
 				abilitystr.append("</ABLTY>");
 			}
@@ -714,7 +715,8 @@ public class CoffeeMaker
 				Race R=CMClass.getRace("GenRace");
 				if(R!=null)
 				{
-					R.setRacialParms(ablk.value);
+					R=R.copyOf();
+					R.setRacialParms("<RACE>"+ablk.value+"</RACE>");
 					if(!R.ID().equals("GenRace"))
 						custom.addElement(R);
 				}
@@ -725,7 +727,8 @@ public class CoffeeMaker
 				CharClass C=CMClass.getCharClass("GenCharClass");
 				if(C!=null)
 				{
-					C.setClassParms(ablk.value);
+					C=C.copyOf();
+					C.setClassParms("<CCLASS>"+ablk.value+"</CCLASS>");
 					if(!C.ID().equals("GenCharClass"))
 						custom.addElement(C);
 				}
@@ -1054,7 +1057,7 @@ public class CoffeeMaker
 										 Session S)
 	{
 		Vector xml=XMLManager.parseAllXML(xmlBuffer);
-		if(xml==null) return unpackErr("MOBs","null 'xml'");
+		if(xml==null) return unpackErr("Items","null 'xml'");
 		Vector iV=XMLManager.getRealContentsFromPieces(xml,"ITEMS");
 		if(iV==null) return unpackErr("Items","null 'iV'");
 		for(int i=0;i<iV.size();i++)
@@ -1423,7 +1426,11 @@ public class CoffeeMaker
 					Log.errOut("CoffeeMaker","Error parsing 'ABLTY DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
 					return;
 				}
-				newOne.setProfficiency(100);
+				String proff=XMLManager.getValFromPieces(ablk.contents,"APROF");
+				if(proff.length()>0)
+					newOne.setProfficiency(Util.s_int(proff));
+				else
+					newOne.setProfficiency(100);
 				setPropertiesStr(newOne,adat,true);
 				if(M.fetchAbility(newOne.ID())==null)
 				{
@@ -1891,22 +1898,13 @@ public class CoffeeMaker
 		str.append(XMLManager.convertXMLtoTag("PFIL",pfxml.toString()));
 		str.append(XMLManager.convertXMLtoTag("SAVE",mob.baseCharStats().getSavesStr()));
 		str.append(XMLManager.convertXMLtoTag("DESC",mob.description()));
+		
 		str.append(getExtraEnvPropertiesStr(mob));
-		StringBuffer ablestr=new StringBuffer("");
-		for(int a=0;a<mob.numEffects();a++)
-		{
-			Ability A=mob.fetchEffect(a);
-			if((A!=null)&&(!A.isBorrowed(mob)))
-			{
-				ablestr.append("<ABLE>");
-				ablestr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
-				ablestr.append(XMLManager.convertXMLtoTag("APROFF",A.profficiency()));
-				ablestr.append(XMLManager.convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
-				ablestr.append("</ABLE>");
-			}
-		}
-		str.append(XMLManager.convertXMLtoTag("ABILITIES",ablestr.toString()));
+		
+		str.append(getGenMobAbilities(mob));
+		
 		str.append(getGenMobInventory(mob));
+		
 		StringBuffer fols=new StringBuffer("");
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -1933,6 +1931,123 @@ public class CoffeeMaker
 		}
 		return str.toString();
 	}
+
+	public static String addPLAYERsFromXML(String xmlBuffer,
+											Vector addHere,
+											Session S)
+	{
+		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		if(xml==null) return unpackErr("PLAYERs","null 'xml'");
+		Vector mV=XMLManager.getRealContentsFromPieces(xml,"PLAYERS");
+		if(mV==null) return unpackErr("PLAYERs","null 'mV'");
+		for(int m=0;m<mV.size();m++)
+		{
+			XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+			if((!mblk.tag.equalsIgnoreCase("PLAYER"))||(mblk.contents==null))
+				return unpackErr("PLAYERs","bad 'mblk'");
+			MOB mob=CMClass.getMOB("StdMOB");
+			mob.setPlayerStats(new DefaultPlayerStats());
+			mob.setName(XMLManager.getValFromPieces(mblk.contents,"NAME"));
+			mob.playerStats().setPassword(XMLManager.getValFromPieces(mblk.contents,"PASS"));
+			mob.baseCharStats().setMyClasses(XMLManager.getValFromPieces(mblk.contents,"CLASS"));
+			mob.baseCharStats().setMyLevels(XMLManager.getValFromPieces(mblk.contents,"LVL"));
+			int level=0;
+			for(int i=0;i<mob.baseCharStats().numClasses();i++)
+				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
+			mob.baseEnvStats().setLevel(level);
+			mob.baseCharStats().setStat(CharStats.STRENGTH,XMLManager.getIntFromPieces(mblk.contents,"STR"));
+			mob.baseCharStats().setMyRace(CMClass.getRace(XMLManager.getValFromPieces(mblk.contents,"RACE")));
+			mob.baseCharStats().setStat(CharStats.DEXTERITY,XMLManager.getIntFromPieces(mblk.contents,"DEX"));
+			mob.baseCharStats().setStat(CharStats.CONSTITUTION,XMLManager.getIntFromPieces(mblk.contents,"CON"));
+			mob.baseCharStats().setStat(CharStats.GENDER,(int)XMLManager.getValFromPieces(mblk.contents,"GEND").charAt(0));
+			mob.baseCharStats().setStat(CharStats.WISDOM,XMLManager.getIntFromPieces(mblk.contents,"WIS"));
+			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,XMLManager.getIntFromPieces(mblk.contents,"INT"));
+			mob.baseCharStats().setStat(CharStats.CHARISMA,XMLManager.getIntFromPieces(mblk.contents,"CHA"));
+			mob.baseState().setHitPoints(XMLManager.getIntFromPieces(mblk.contents,"HIT"));
+			mob.baseState().setMana(XMLManager.getIntFromPieces(mblk.contents,"MANA"));
+			mob.baseState().setMovement(XMLManager.getIntFromPieces(mblk.contents,"MOVE"));
+			mob.setAlignment(XMLManager.getIntFromPieces(mblk.contents,"ALIG"));
+			mob.setExperience(XMLManager.getIntFromPieces(mblk.contents,"EXP"));
+			mob.setExpNextLevel(XMLManager.getIntFromPieces(mblk.contents,"EXLV"));
+			mob.setWorshipCharID(XMLManager.getValFromPieces(mblk.contents,"WORS"));
+			mob.setPractices(XMLManager.getIntFromPieces(mblk.contents,"PRAC"));
+			mob.setTrains(XMLManager.getIntFromPieces(mblk.contents,"TRAI"));
+			mob.setAgeHours(XMLManager.getIntFromPieces(mblk.contents,"AGEH"));
+			mob.setWimpHitPoint(XMLManager.getIntFromPieces(mblk.contents,"WIMP"));
+			mob.setQuestPoint(XMLManager.getIntFromPieces(mblk.contents,"QUES"));
+			String roomID=XMLManager.getValFromPieces(mblk.contents,"ROID");
+			if(roomID==null) roomID="";
+			int x=roomID.indexOf("||");
+			if(x>=0)
+			{
+				mob.setLocation(CMMap.getRoom(roomID.substring(x+2)));
+				roomID=roomID.substring(0,x);
+			}
+			mob.setStartRoom(CMMap.getRoom(roomID));
+			mob.playerStats().setLastDateTime(XMLManager.getLongFromPieces(mblk.contents,"DATE"));
+			mob.playerStats().setChannelMask(XMLManager.getIntFromPieces(mblk.contents,"CHAN"));
+			mob.baseEnvStats().setAttackAdjustment(XMLManager.getIntFromPieces(mblk.contents,"ATTA"));
+			mob.baseEnvStats().setArmor(XMLManager.getIntFromPieces(mblk.contents,"AMOR"));
+			mob.baseEnvStats().setDamage(XMLManager.getIntFromPieces(mblk.contents,"DAMG"));
+			mob.setBitmap(XMLManager.getIntFromPieces(mblk.contents,"BTMP"));
+			mob.setLiegeID(XMLManager.getValFromPieces(mblk.contents,"LEIG"));
+			mob.baseEnvStats().setHeight(XMLManager.getIntFromPieces(mblk.contents,"HEIT"));
+			mob.baseEnvStats().setWeight(XMLManager.getIntFromPieces(mblk.contents,"WEIT"));
+			mob.playerStats().setPrompt(XMLManager.getValFromPieces(mblk.contents,"PRPT"));
+			String colorStr=XMLManager.getValFromPieces(mblk.contents,"COLR");
+			if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
+				mob.playerStats().setColorStr(colorStr);
+			mob.setClanID(XMLManager.getValFromPieces(mblk.contents,"CLAN"));
+			mob.playerStats().setLastIP(XMLManager.getValFromPieces(mblk.contents,"LSIP"));
+			mob.setClanRole(XMLManager.getIntFromPieces(mblk.contents,"CLRO"));
+			mob.playerStats().setEmail(XMLManager.getValFromPieces(mblk.contents,"EMAL"));
+			String buf=XMLManager.getValFromPieces(mblk.contents,"CMPFIL");
+			mob.playerStats().setFriendsIgnoreStr(buf);
+			Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
+			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
+			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
+			V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"EDUS"),true);
+			while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
+			for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
+			mob.baseCharStats().setSaves(XMLManager.getValFromPieces(mblk.contents,"SAVE"));
+			mob.setDescription(XMLManager.getValFromPieces(mblk.contents,"DESC"));
+			
+			setExtraEnvProperties(mob,mblk.contents);
+			
+			setGenMobAbilities(mob,mblk.contents);
+			
+			setGenMobInventory(mob,mblk.contents);
+			
+			Vector iV=XMLManager.getRealContentsFromPieces(mblk.contents,"FOLLOWERS");
+			if(iV==null) return unpackErr("PFols","null 'iV'");
+			for(int i=0;i<iV.size();i++)
+			{
+				XMLManager.XMLpiece fblk=(XMLManager.XMLpiece)iV.elementAt(i);
+				if((!fblk.tag.equalsIgnoreCase("FOLLOWER"))||(fblk.contents==null))
+					return unpackErr("PFols","??"+fblk.tag);
+				String mobClass=XMLManager.getValFromPieces(fblk.contents,"FCLAS");
+				MOB newFollower=CMClass.getMOB(mobClass);
+				if(newFollower==null) return unpackErr("PFols","null 'iClass': "+mobClass);
+				newFollower.baseEnvStats().setLevel(XMLManager.getIntFromPieces(fblk.contents,"FLEVL"));
+				newFollower.baseEnvStats().setAbility(XMLManager.getIntFromPieces(fblk.contents,"FABLE"));
+				newFollower.setMiscText(XMLManager.getValFromPieces(fblk.contents,"FTEXT"));
+				newFollower.recoverCharStats();
+				newFollower.recoverEnvStats();
+				newFollower.recoverMaxState();
+				newFollower.resetToMaxState();
+				mob.addFollower(newFollower);
+			}
+			
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+			mob.recoverMaxState();
+			mob.resetToMaxState();
+			addHere.addElement(mob);
+		}
+		return "";
+	}
+
+
 
 	private static String getExtraEnvPropertiesStr(Environmental E)
 	{
@@ -2170,7 +2285,8 @@ public class CoffeeMaker
 			if(code.toUpperCase().startsWith(GENITEMCODES[i])) return i;
 		return -1;
 	}
-	public static String getGenItemStat(Item I, String code){
+	public static String getGenItemStat(Item I, String code)
+	{
 		switch(getGenItemCodeNum(code))
 		{
 		case 0: return I.ID();
@@ -2259,7 +2375,8 @@ public class CoffeeMaker
 			if(code.toUpperCase().startsWith(GENMOBCODES[i])) return i;
 		return -1;
 	}
-	public static String getGenMobStat(MOB M, String code){
+	public static String getGenMobStat(MOB M, String code)
+	{
 		switch(getGenMobCodeNum(code))
 		{
 		case 0: return CMClass.className(M);
