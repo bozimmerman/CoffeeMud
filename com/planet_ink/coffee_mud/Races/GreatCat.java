@@ -19,6 +19,7 @@ public class GreatCat extends StdRace
 		// pounds
 		lightestWeight=100;
 		weightVariance=60;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK;
 	}
 	public boolean playerSelectable(){return false;}
 

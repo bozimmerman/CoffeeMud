@@ -17,6 +17,7 @@ public class Bat extends StdRace
 		heightVariance=2;
 		lightestWeight=2;
 		weightVariance=0;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD;
 	}
 	public boolean playerSelectable(){return false;}
 

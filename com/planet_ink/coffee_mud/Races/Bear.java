@@ -17,6 +17,7 @@ public class Bear extends StdRace
 		heightVariance=10;
 		lightestWeight=350;
 		weightVariance=10;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

@@ -19,6 +19,7 @@ public class Goblin extends StdRace
 		// pounds
 		lightestWeight=70;
 		weightVariance=50;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

@@ -18,6 +18,7 @@ public class Snake extends StdRace
 		// pounds
 		lightestWeight=5;
 		weightVariance=15;
+		forbiddenWornBits=Integer.MAX_VALUE;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

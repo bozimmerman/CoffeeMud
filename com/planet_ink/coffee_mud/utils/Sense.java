@@ -300,7 +300,7 @@ public class Sense
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)
 		{
-			if(wornCode==(Util.pow(2,wornNum)))
+			if(wornCode==(1<<wornNum))
 				return Item.wornLocation[wornNum+1];
 		}
 		return "";

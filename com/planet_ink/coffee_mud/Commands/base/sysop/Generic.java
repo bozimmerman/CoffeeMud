@@ -1520,7 +1520,7 @@ public class Generic
 			int maxCode=1;
 			for(int l=0;l<16;l++)
 			{
-				int wornCode=new Double(Math.pow(2.0,new Integer(l).doubleValue())).intValue();
+				int wornCode=1<<l;
 				if(Sense.wornLocation(wornCode).length()>0)
 				{
 					String header=(l+2)+": ("+Sense.wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
@@ -1535,7 +1535,7 @@ public class Generic
 					E.setRawLogicalAnd(!E.rawLogicalAnd());
 				else
 				{
-					int wornCode=new Double(Math.pow(2.0,new Integer(codeVal-2).doubleValue())).intValue();
+					int wornCode=1<<(codeVal-2);
 					if((E.rawProperLocationBitmap()&wornCode)==wornCode)
 						E.setRawProperLocationBitmap(E.rawProperLocationBitmap()-wornCode);
 					else

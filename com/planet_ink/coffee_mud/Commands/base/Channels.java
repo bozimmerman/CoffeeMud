@@ -71,7 +71,7 @@ public class Channels
 		{
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
 			{
-				channelNum=Math.round(Util.pow(2,c));
+				channelNum=1<<c;
 				channelInt=c;
 				break;
 			}
@@ -119,7 +119,7 @@ public class Channels
 		}
 		if(!Util.isSet(mob.getChannelMask(),channelNum))
 		{
-			mob.setChannelMask(mob.getChannelMask()|(Util.pow(2,channelNum)));
+			mob.setChannelMask(mob.getChannelMask()|(1<<channelNum));
 			mob.tell("The "+channelName+" channel has been turned off.");
 		}
 		else
@@ -133,7 +133,7 @@ public class Channels
 		{
 			if(!Util.isSet(mob.getChannelMask(),c))
 			{
-				mob.setChannelMask(mob.getChannelMask()|(Util.pow(2,c)));
+				mob.setChannelMask(mob.getChannelMask()|(1<<c));
 				turnedoff=true;
 			}
 		}

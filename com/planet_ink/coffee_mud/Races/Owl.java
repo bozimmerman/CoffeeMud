@@ -17,6 +17,7 @@ public class Owl extends StdRace
 		heightVariance=5;
 		lightestWeight=5;
 		weightVariance=5;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -19,6 +19,7 @@ public class Troll extends StdRace
 		// pounds
 		lightestWeight=200;
 		weightVariance=100;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

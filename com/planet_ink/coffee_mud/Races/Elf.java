@@ -19,6 +19,7 @@ public class Elf extends StdRace
 		// pounds
 		lightestWeight=80;
 		weightVariance=80;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return true;}
 

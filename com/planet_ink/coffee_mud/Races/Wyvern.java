@@ -18,6 +18,7 @@ public class Wyvern extends StdRace
 		// pounds
 		lightestWeight=1500;
 		weightVariance=500;
+		forbiddenWornBits=Item.HELD|Item.WIELD|Item.ON_WAIST;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

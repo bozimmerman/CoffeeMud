@@ -19,6 +19,7 @@ public class Giant extends StdRace
 		// pounds
 		lightestWeight=300;
 		weightVariance=200;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

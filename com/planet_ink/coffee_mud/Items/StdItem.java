@@ -169,7 +169,7 @@ public class StdItem implements Item
 		if(canWear(mob))
 			for(int i=0;i<20;i++)
 			{
-				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
+				long wornCode=1<<i;
 				if((this.canBeWornAt(wornCode))&&(!mob.amWearingSomethingHere(wornCode)))
 				{
 					wearAt(wornCode);
@@ -217,12 +217,12 @@ public class StdItem implements Item
 		long couldHaveBeenWornAt=-1;
 		if(properWornBitmap==0)
 			return couldHaveBeenWornAt;
-
+		
 		if(!wornLogicalAnd)
 		{
 			for(int i=0;i<20;i++)
 			{
-				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
+				long wornCode=1<<i;
 				if(canBeWornAt(wornCode))
 				{
 					couldHaveBeenWornAt=wornCode;
@@ -236,7 +236,7 @@ public class StdItem implements Item
 		{
 			for(int i=0;i<20;i++)
 			{
-				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
+				long wornCode=1<<i;
 				if((canBeWornAt(wornCode))&&(mob.amWearingSomethingHere(wornCode)))
 					return wornCode;
 			}
@@ -479,7 +479,7 @@ public class StdItem implements Item
 				mob.tell("Your hands are full.");
 				return false;
 			}
-			if(!mob.charStats().getMyRace().canWear(this,Item.HELD))
+			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to hold "+name()+".");
 				return false;
@@ -511,7 +511,7 @@ public class StdItem implements Item
 					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
 				return false;
 			}
-			if(!mob.charStats().getMyRace().canWear(this,Integer.MAX_VALUE))
+			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wear "+name()+".");
 				return false;
@@ -547,7 +547,7 @@ public class StdItem implements Item
 				mob.tell("You can't wield "+name()+", your hands are full.");
 				return false;
 			}
-			if(!mob.charStats().getMyRace().canWear(this,Item.WIELD))
+			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wield "+name()+".");
 				return false;

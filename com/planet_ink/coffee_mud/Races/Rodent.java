@@ -19,6 +19,7 @@ public class Rodent extends StdRace
 		// pounds
 		lightestWeight=1;
 		weightVariance=5;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD;
 	}
 	public boolean playerSelectable(){return false;}
 

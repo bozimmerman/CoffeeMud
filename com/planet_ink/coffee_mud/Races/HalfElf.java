@@ -19,6 +19,7 @@ public class HalfElf extends StdRace
 		// pounds
 		lightestWeight=90;
 		weightVariance=90;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return true;}
 

@@ -413,7 +413,7 @@ public class Scoring
 		boolean foundButUnseen=false;
 		for(int l=0;l<16;l++)
 		{
-			int wornCode=new Double(Math.pow(new Integer(2).doubleValue(),new Integer(l).doubleValue())).intValue();
+			int wornCode=1<<l;
 			String header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
 			header+=Util.SPACES.substring(0,26-header.length())+": ^B";
 			for(int i=0;i<mob.inventorySize();i++)

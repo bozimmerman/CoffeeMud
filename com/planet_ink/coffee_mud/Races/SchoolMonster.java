@@ -19,6 +19,7 @@ public class SchoolMonster extends StdRace
 		// pounds
 		lightestWeight=60;
 		weightVariance=60;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

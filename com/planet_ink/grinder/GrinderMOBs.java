@@ -472,7 +472,7 @@ public class GrinderMOBs extends Dialog {
                         int wc=((Integer)g.wornCodes.elementAt(e)).intValue();
                         for(int y=0;y<30;y++)
                         {
-                            int bit=(int)Math.round(Math.pow(2.0,new Double(y).doubleValue()));
+                            int bit=1<<y;
                             if(((wc&bit)==bit)&&(y<(worn.getItemCount()-2)))
                                 wornCodes[v]=y+2;
                         }
@@ -610,7 +610,7 @@ public class GrinderMOBs extends Dialog {
                     {
                         x--;
                         x--;
-                        int bit=(int)Math.round(Math.pow(2.0,new Double(x).doubleValue()));
+                        int bit=1<<x;
                         g.wornCodes.addElement(new Integer(bit));
                     }
                 }

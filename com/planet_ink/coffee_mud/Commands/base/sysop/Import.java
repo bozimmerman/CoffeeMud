@@ -116,10 +116,10 @@ public class Import
 				}
 				else
 				if(Character.isUpperCase(s.charAt(z)))
-					num=num|(Util.pow(2,((int)s.charAt(z))-((int)'A')));
+					num=num|(1<<((int)s.charAt(z))-((int)'A'));
 				else
 				if(Character.isLowerCase(s.charAt(z)))
-					num=num|(Util.pow(2,26+(((int)s.charAt(z))-((int)'a'))));
+					num=num|(1<<(26+(((int)s.charAt(z))-((int)'a'))));
 
 			if(otherStyle)
 				return num;

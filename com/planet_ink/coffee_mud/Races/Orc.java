@@ -19,6 +19,7 @@ public class Orc extends StdRace
 		// pounds
 		lightestWeight=150;
 		weightVariance=100;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -33,12 +34,6 @@ public class Orc extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,12);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,7);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(190+weightModifier);
 	}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{

@@ -20,6 +20,7 @@ public class Human extends StdRace
 		// pounds
 		lightestWeight=100;
 		weightVariance=100;
+		forbiddenWornBits=0;
 	}
 
 	public boolean playerSelectable(){return true;}

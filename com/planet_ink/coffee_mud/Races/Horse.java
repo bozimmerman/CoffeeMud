@@ -12,6 +12,14 @@ public class Horse extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=60;
+		shortestFemale=60;
+		heightVariance=12;
+		// pounds
+		lightestWeight=350;
+		weightVariance=100;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -21,12 +29,6 @@ public class Horse extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,18);
 		affectableStats.setStat(CharStats.DEXTERITY,6);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(420+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{

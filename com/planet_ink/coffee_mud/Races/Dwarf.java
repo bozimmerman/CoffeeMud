@@ -19,6 +19,7 @@ public class Dwarf extends StdRace
 		// pounds
 		lightestWeight=150;
 		weightVariance=100;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return true;}
 

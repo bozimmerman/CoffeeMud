@@ -19,6 +19,7 @@ public class Gnome extends StdRace
 		// pounds
 		lightestWeight=60;
 		weightVariance=50;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return true;}
 

@@ -8,6 +8,7 @@ public interface Race
 	public void startRacing(MOB mob, boolean verifyOnly);
 	public void setHeightWeight(EnvStats stats, char gender);
 	public void outfit(MOB mob);
+	public boolean canWear(Item item);
 	public Weapon myNaturalWeapon();
 	public String healthText(MOB mob);
 	public DeadBody getCorpse(MOB mob, Room room);

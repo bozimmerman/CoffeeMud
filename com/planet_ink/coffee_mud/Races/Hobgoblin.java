@@ -19,6 +19,7 @@ public class Hobgoblin extends StdRace
 		// pounds
 		lightestWeight=90;
 		weightVariance=50;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

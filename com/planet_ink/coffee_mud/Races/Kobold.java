@@ -12,6 +12,14 @@ public class Kobold extends StdRace
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name=myID;
+		// inches
+		shortestMale=45;
+		shortestFemale=40;
+		heightVariance=6;
+		// pounds
+		lightestWeight=50;
+		weightVariance=50;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 
@@ -47,12 +55,6 @@ public class Kobold extends StdRace
 			if(mob.isMonster())
 				A.invoke(mob,mob,true);
 		}
-	}
-	public void setWeight(MOB mob)
-	{
-		Random randomizer = new Random(System.currentTimeMillis());
-		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
-		mob.baseEnvStats().setWeight(30+weightModifier);
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

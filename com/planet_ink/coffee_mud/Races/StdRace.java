@@ -19,6 +19,7 @@ public class StdRace implements Race
 	protected int heightVariance=5;
 	protected int lightestWeight=60;
 	protected int weightVariance=10;
+	protected long forbiddenWornBits=0;
 	
 	public String ID()
 	{
@@ -172,6 +173,17 @@ public class StdRace implements Race
  		else
 			stats.setHeight(shortestFemale+heightModifier);
 	}
+	
+	public boolean canWear(Item item)
+	{
+		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))
+			return false;
+		else
+		if((!item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&(Integer.MAX_VALUE-forbiddenWornBits))==0))
+			return false;
+		return true;
+	}
+	
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");

@@ -19,6 +19,7 @@ public class Doll extends StdRace
 		// pounds
 		lightestWeight=10;
 		weightVariance=20;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return false;}
 

@@ -19,6 +19,7 @@ public class Halfling extends StdRace
 		// pounds
 		lightestWeight=80;
 		weightVariance=50;
+		forbiddenWornBits=0;
 	}
 	public boolean playerSelectable(){return true;}
 

@@ -455,7 +455,7 @@ public class GrinderItems extends Dialog {
                 logicalAnd.setState(g.logicalAnd);
                 for(int i=0;i<30;i++)
                 {
-                    int bit=(int)Math.round(Math.pow(2.0,new Double(i).doubleValue()));
+                    int bit=1<<i;
                     if((g.properLocationBitmap&bit)==bit)
                         properWornBitmap.select(i+1);
                 }
@@ -550,7 +550,7 @@ public class GrinderItems extends Dialog {
             g.properLocationBitmap=0;
             for(int i=0;i<30;i++)
             {
-                int bit=(int)Math.round(Math.pow(2.0,new Double(i).doubleValue()));
+                int bit=1<<i;
                 if(i<(properWornBitmap.getItemCount()-1))
                     if(properWornBitmap.isIndexSelected(i+1))
                         g.properLocationBitmap+=bit;

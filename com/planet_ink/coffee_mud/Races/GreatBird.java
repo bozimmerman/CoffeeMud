@@ -17,6 +17,7 @@ public class GreatBird extends StdRace
 		heightVariance=10;
 		lightestWeight=20;
 		weightVariance=10;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
