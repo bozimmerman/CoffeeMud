@@ -16,9 +16,7 @@ Amnesia as a disease
 eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
 can sit at tables and have conversation heard only at the table.
-playerdeath ini file entry, to make death permanent.
 racial abilities (abilities tied to the race)
-on death, lose a level.
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
 Leprecy: take more physical damage in combat. 
@@ -30,7 +28,6 @@ an ability to tell how many HP a MOB has
 ability to resist WHOMP
 Thief--Bonus for stealing, based on TARGET level.  about 1/6 the XP as for killing.
 Bard--Bonus XP from groups (similar 
-COUPDEGRACE:  A fighter, or high level thief, may attempt a Coup de Grace against a tripped, whomped or sleeping opponent.  They get to do MAX damage as if a BACKSTAB where performed (if they have backstab).  This is the only special effect (instant max damage against fallen foe).  I realize that people already take more damage when fallen, which is what makes this skill particularly deadly.
 gen-wizard player editor
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide

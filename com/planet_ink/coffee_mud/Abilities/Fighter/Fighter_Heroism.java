@@ -1,5 +1,29 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
 
-public class Fighter_Heroism
+public class Fighter_Heroism extends StdAbility
 {
+	public String ID() { return "Fighter_Heroism"; }
+	public String name(){ return "Heroism";}
+	public String displayText(){ return "";}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_Heroism();}
+	public int classificationCode(){ return Ability.SKILL;}
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,
+								(affectableStats.getStat(CharStats.CHARISMA)/4)
+								+(affectableStats.getStat(CharStats.STRENGTH)/4)
+								+(adjustedLevel(affected)/2));
+	}
 }

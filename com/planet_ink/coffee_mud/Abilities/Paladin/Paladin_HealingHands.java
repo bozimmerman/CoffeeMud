@@ -16,6 +16,8 @@ public class Paladin_HealingHands extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Paladin_HealingHands();}
+	protected long lastDone=0;
+													 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -33,6 +35,14 @@ public class Paladin_HealingHands extends StdAbility
 			mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
+		
+		long now=Calendar.getInstance().getTime().getTime();
+		if((now-lastDone)<1000)
+		{
+			mob.tell("You need a second to regather your strength.");
+			return false;
+		}
+		lastDone=now;
 
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

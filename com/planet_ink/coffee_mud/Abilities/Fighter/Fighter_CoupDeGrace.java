@@ -30,11 +30,22 @@ public class Fighter_CoupDeGrace extends StdAbility
 			mob.tell("You are too far away to try that!");
 			return false;
 		}
-		Weapon w=mob.fetchWieldedItem();
-		if((!auto)&&(w==null))
+		Item w=mob.fetchWieldedItem();
+		Weapon ww=null;
+		if(!auto)
 		{
-			mob.tell("You need a weapon to break someone elses!");
-			return false;
+			if((w==null)||(!(w instanceof Weapon)))
+			{
+				mob.tell("You cannot coup de grace without a weapon!");
+				return false;
+			}
+			ww=(Weapon)w;
+			if((ww.weaponClassification()!=Weapon.TYPE_SLASHING)
+			&&(ww.weaponClassification()!=Weapon.TYPE_PIERCING))
+			{
+				mob.tell("You cannot coup de grace with a "+ww.name()+"!");
+				return false;
+			}
 		}
 		if(!Sense.isSleeping(mob.getVictim()))
 		{
@@ -42,6 +53,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			return false;
 		}
 
+		int dmg=mob.getVictim().curState().getHitPoints();
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -50,23 +62,25 @@ public class Fighter_CoupDeGrace extends StdAbility
 			levelDiff=levelDiff*5;
 		else 
 			levelDiff=0;
-		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.DEXTERITY)*2));
+		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.CONSTITUTION)*2));
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
 		if(success)
 		{
-			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace against <T-NAME>!";
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
+				if(dmg<50)
+					mob.getVictim().curState().setHitPoints(0);
+				ExternalPlay.postDamage(mob,mob.getVictim(),ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!");
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
 		{
 			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace and fail(s)!";
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,str);
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}

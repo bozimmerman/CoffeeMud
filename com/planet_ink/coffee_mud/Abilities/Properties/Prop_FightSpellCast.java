@@ -67,6 +67,7 @@ public class Prop_FightSpellCast extends Property
 			if((mob.isInCombat())
 			&&(mob.location()!=null)
 			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			&&((affect.targetCode()-Affect.MASK_HURT)>0)
 			&&(!mob.amDead()))
 			{
 				if((myItem instanceof Weapon)

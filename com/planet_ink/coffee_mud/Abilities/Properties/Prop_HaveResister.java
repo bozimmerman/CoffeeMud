@@ -184,7 +184,9 @@ public class Prop_HaveResister extends Property
 		if(!affect.amITarget(mob)) return;
 
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)&&(affect.tool() instanceof Weapon))
+		&&((affect.targetCode()-Affect.MASK_HURT)>0)
+		&&(affect.tool()!=null)
+		   &&(affect.tool() instanceof Weapon))
 		{
 			int recovery=affect.targetCode()-Affect.MASK_HURT;
 			recovery=(int)Math.round(Util.mul(recovery,Math.random()));

@@ -32,6 +32,7 @@ public class Fighter_Roll extends StdAbility
 		if(affect.amITarget(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&((affect.targetCode()-Affect.MASK_HURT)>0)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)

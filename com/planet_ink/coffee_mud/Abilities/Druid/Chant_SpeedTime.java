@@ -27,7 +27,7 @@ public class Chant_SpeedTime extends Chant
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				for(int i=0;i<adjustedLevel(mob)/2;i++)
+				for(int i=0;i<(adjustedLevel(mob)/2);i++)
 					ExternalPlay.tickAllTickers(mob.location());
 				mob.location().show(mob,null,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}

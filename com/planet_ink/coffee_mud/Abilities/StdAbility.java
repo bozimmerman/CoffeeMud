@@ -42,7 +42,7 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean canBeUninvoked=true;
 	protected boolean unInvoked=false;
 	protected int tickDown=-1;
-	private long lastProfHelp=0;
+	protected long lastProfHelp=0;
 	
 	public StdAbility()
 	{
@@ -101,7 +101,9 @@ public class StdAbility implements Ability, Cloneable
 	public int adjustedLevel(MOB caster)
 	{
 		if(caster==null) return 1;
-		int adjLevel=1+(CMAble.qualifyingClassLevel(caster,this)-CMAble.qualifyingLevel(caster,this));
+		int adjLevel=CMAble.lowestQualifyingLevel(this.ID())
+					 +CMAble.qualifyingClassLevel(caster,this)
+					 -CMAble.qualifyingLevel(caster,this);
 		if(adjLevel<1) return 1;
 		return adjLevel;
 	}
@@ -399,7 +401,9 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 
 			int manaConsumed=50;
-			int diff=adjustedLevel(mob)-1;
+			int diff=CMAble.qualifyingClassLevel(mob,this)
+					 -CMAble.qualifyingLevel(mob,this);
+			
 			if(diff>0)
 			switch(diff)
 			{

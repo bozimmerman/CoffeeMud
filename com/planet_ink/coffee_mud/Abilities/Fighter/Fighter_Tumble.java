@@ -40,7 +40,9 @@ public class Fighter_Tumble extends StdAbility
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((affect.amITarget(mob))
+		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&((affect.targetCode()-Affect.MASK_HURT)>0))
 		{
 			if((affect.tool()!=null)
 			&&(!mob.amDead())

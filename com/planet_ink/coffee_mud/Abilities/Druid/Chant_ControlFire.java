@@ -65,7 +65,7 @@ public class Chant_ControlFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0));
+                int numDice = (int)Math.round(Util.div(adjustedLevel(mob),2.0))+1;
 				int damage = Dice.roll(numDice, 6, 20);
 				if((!msg.wasModified())||(msg2.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));

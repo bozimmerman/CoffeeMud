@@ -160,6 +160,7 @@ public class StdArmor extends StdContainer implements Armor
 			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Weapon)
+			&&((affect.targetCode()-Affect.MASK_HURT)>0)
 			&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 			{
 				Weapon tool=(Weapon)affect.tool();

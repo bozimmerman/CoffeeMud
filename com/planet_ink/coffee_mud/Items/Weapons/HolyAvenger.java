@@ -72,6 +72,7 @@ public class HolyAvenger extends TwoHandedSword
 		super.affect(affect);
 		if((affect.source().location()!=null)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&((affect.targetCode()-Affect.MASK_HURT)>0)
 		&&(affect.tool()==this)
 		&&(affect.target() instanceof MOB)
 		&&(!((MOB)affect.target()).amDead())

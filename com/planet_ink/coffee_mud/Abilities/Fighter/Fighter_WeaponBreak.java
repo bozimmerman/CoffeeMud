@@ -73,12 +73,7 @@ public class Fighter_WeaponBreak extends StdAbility
 			}
 		}
 		else
-		{
-			String str=auto?"":"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!";
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
+			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
 		return success;
 	}
 
