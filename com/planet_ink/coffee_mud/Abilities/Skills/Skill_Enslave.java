@@ -36,8 +36,15 @@ public class Skill_Enslave extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
+	
+	//TODO: add eating drinking hunger, starvation
+	//TODO: damage taken by a slave may bring reprisal against master?
+	//TODO: whippings cause them to do common skills faster, but may bring reprisal
+	
 
+	public MOB master=null;
 	public EnglishParser.geasStep STEP=null;
+	private int masterAnger=0;
 
 	public void unInvoke()
 	{
@@ -52,13 +59,13 @@ public class Skill_Enslave extends StdAbility
 				mob.tell("You have completed your masters task.");
 			else
 				mob.tell("You have been released from your masters task.");
-
 			if((mob.isMonster())
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
 			&&(mob.location()!=mob.getStartRoom()))
 				MUDTracker.wanderAway(mob,true,true);
 		}
+		STEP=null;
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -70,17 +77,85 @@ public class Skill_Enslave extends StdAbility
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
+		{
+		    masterAnger+=1000;
 			MUDFight.postPanic(mob,msg);
+		}
+		else
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		&&(STEP!=null)
 		&&(msg.sourceMessage()!=null)
-		&&((msg.target()==null)||(msg.target() instanceof MOB))
 		&&(msg.sourceMessage().length()>0))
 		{
-			int start=msg.sourceMessage().indexOf("'");
-			int end=msg.sourceMessage().lastIndexOf("'");
-			if((start>0)&&(end>(start+1)))
-				STEP.sayResponse(msg.source(),(MOB)msg.target(),msg.sourceMessage().substring(start+1,end));
+			if(STEP!=null)
+			{
+				if((msg.target()==null)||(msg.target() instanceof MOB))
+				{
+					int start=msg.sourceMessage().indexOf("'");
+					int end=msg.sourceMessage().lastIndexOf("'");
+					if((start>0)&&(end>(start+1)))
+					{
+					    String response=msg.sourceMessage().substring(start+1,end);
+					    if((msg.target()==mob)
+					    &&(msg.source().Name().equals(mob.getLiegeID())))
+					    {
+					        Vector V=Util.parse(response.toUpperCase());
+					        if(V.contains("STOP")||V.contains("CANCEL"))
+					        {
+					            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+					            return;
+					        }
+					    }
+						STEP.sayResponse(msg.source(),(MOB)msg.target(),response);
+					}
+				}
+			}
+			else
+			if((msg.amITarget(mob))&&(mob.getLiegeID().length()>0))
+			{
+			    if((msg.tool()==null)
+			    ||((msg.tool() instanceof Ability)
+			    	&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+			    	&&(mob.fetchAbility(msg.tool().ID())!=null)))
+		    	{
+				    if(!msg.source().Name().equals(mob.getLiegeID()))
+				    {
+						int start=msg.sourceMessage().indexOf("'");
+						int end=msg.sourceMessage().lastIndexOf("'");
+						if((start>0)&&(end>(start+1)))
+						{
+						    String response=msg.sourceMessage().substring(start+1,end);
+						    if((response.toUpperCase().startsWith("I COMMAND YOU TO "))
+						    ||(response.toUpperCase().startsWith("I ORDER YOU TO ")))
+					            CommonMsgs.say(mob,msg.source(),"I don't take orders from you. ",false,false);
+						}
+				    }
+				    else
+				    {
+						int start=msg.sourceMessage().indexOf("'");
+						int end=msg.sourceMessage().lastIndexOf("'");
+						if((start>0)&&(end>(start+1)))
+						{
+						    String response=msg.sourceMessage().substring(start+1,end);
+						    if(response.toUpperCase().startsWith("I COMMAND YOU TO "))
+						        response=response.substring(("I COMMAND YOU TO ").length());
+						    else
+						    if(response.toUpperCase().startsWith("I ORDER YOU TO "))
+						        response=response.substring(("I ORDER YOU TO ").length());
+						    else
+						    {
+					            CommonMsgs.say(mob,msg.source(),"Master, please begin your instruction with the words 'I command you to '.  You can also tell me to 'stop' or 'cancel' any order you give.",false,false);
+					            return;
+						    }
+							STEP=EnglishParser.processRequest(msg.source(),mob,response);
+				            CommonMsgs.say(mob,msg.source(),"Yes master.",false,false);
+						}
+					}
+		    	}
+			    else
+		        if((msg.tool() instanceof Ability)
+				&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE))
+		            CommonMsgs.say(mob,msg.source(),"I don't understand your words.",false,false);
+			}
 		}
 	}
 
@@ -88,16 +163,23 @@ public class Skill_Enslave extends StdAbility
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		if((tickID==MudHost.TICK_MOB)&&(STEP!=null))
+		if(tickID==MudHost.TICK_MOB)
 		{
-			if((STEP.que!=null)&&(STEP.que.size()==0))
-			{
-				if(((MOB)ticking).isInCombat())
-					return true; // let them finish fighting.
-				unInvoke();
-				return !canBeUninvoked();
-			}
-			if(STEP.que!=null)	STEP.step();
+			MOB mob=(MOB)ticking;
+			if(!mob.getLiegeID().equals(text()))
+			    mob.setLiegeID(text());
+		    if(STEP!=null)
+		    {
+				if((STEP.que!=null)&&(STEP.que.size()==0))
+				{
+					if(mob.isInCombat())
+						return true; // let them finish fighting.
+					unInvoke();
+					return !canBeUninvoked();
+				}
+				if((STEP!=null)&&(STEP.que!=null))
+				    STEP.step();
+		    }
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -111,16 +193,16 @@ public class Skill_Enslave extends StdAbility
 			return false;
 		}
 
-		if(commands.size()<2)
+		if(commands.size()<1)
 		{
-			mob.tell("You need to specify a target creature.");
+			mob.tell("You need to specify a target to enslave.");
 			return false;
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
-			mob.tell(target.name()+" is too stupid to understand your instructions!");
+			mob.tell(target.name()+" would be too stupid to understand your instructions!");
 			return false;
 		}
 
@@ -137,7 +219,7 @@ public class Skill_Enslave extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				Ability A=(Ability)copyOf();
-				A.setMiscText(Util.combine(commands,0));
+				A.setMiscText(mob.Name());
 				target.addNonUninvokableEffect(A);
 			}
 		}

@@ -42,6 +42,7 @@ public class Archon extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"AnimalTraining",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Domesticating",false);
 			CMAble.addCharAbilityMapping(ID(),1,"InstrumentMaking",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Enslave",false);
 			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Scrapping",false);
 			

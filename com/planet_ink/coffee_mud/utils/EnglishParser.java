@@ -35,7 +35,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	}
 
 	// these should be checked after pmap prelim check.
-	protected static String[] universalStarters={
+	protected static final String[] universalStarters={
 		"go ",
 		"go and ",
 		"i want you to ",
@@ -46,7 +46,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		"to ",
 	    "you are ordered to "};
 
-	protected static String[] responseStarters={
+	protected static final String[] responseStarters={
 		"try at the",
 		"its at the",
 		"it`s at the",
@@ -100,7 +100,7 @@ public class EnglishParser extends Scriptable implements Tickable
 	//%k skill command word
 	//%r room name
 	// * match anything
-	protected static String[][] pmap={
+	protected static final String[][] pmap={
 		// below is killing
 		{"kill %m","mobfind %m;kill %m"},
 		{"find and kill %m","mobfind %m;kill %m"},
@@ -209,29 +209,52 @@ public class EnglishParser extends Scriptable implements Tickable
 		{"why %*","say You want me to answer why? I don't know why!"}
 	};
 
-	private static Vector findMatch(MOB mob, Vector req)
+	private static Object[] fpmap=null;
+	
+	private static Vector findMatch(MOB mob, Vector prereq)
 	{
 		Vector possibilities=new Vector();
 		Hashtable map=new Hashtable();
-		for(int p=0;p<pmap.length;p++)
+		if(fpmap==null)
 		{
-			Vector chk=Util.parse(pmap[p][0]);
-			int ci=0,ri=0;
-			boolean reject=false;
-			while((!reject)&&(ci<chk.size())&&(ri<req.size()))
+		    fpmap=new Object[pmap.length];
+			for(int p=0;p<pmap.length;p++)
+				fpmap[p]=Util.toStringArray(Util.parse(pmap[p][0]));
+		}
+		String[] chk=null;
+		String[] req=Util.toStringArray(prereq);
+		boolean reject=false;
+		int ci=0,ri=0;
+		Object[] commands=new Object[req.length];
+		Social[] socials=new Social[req.length];
+		for(int i=0;i<req.length;i++)
+		{
+		    socials[i]=Socials.FetchSocial(req[i],true);
+		    commands[i]=findCommand(mob,Util.makeVector(req[i].toUpperCase()));
+		}
+		for(int p=0;p<fpmap.length;p++)
+		{
+			chk=(String[])fpmap[p];
+			ci=0;ri=0;
+			reject=false;
+			while((!reject)&&(ci<chk.length)&&(ri<req.length))
 			{
-				if(chk.elementAt(ci).equals(req.elementAt(ri)))
-				{ ci++; ri++; reject=false; continue;}
-				if(((String)chk.elementAt(ci)).startsWith("%"))
+				if(chk[ci].equals(req[ri]))
+				{ 
+				    ci++; ri++; 
+				    reject=false;
+				}
+				else
+				if(chk[ci].charAt(0)=='%')
 				{
-					switch(((String)chk.elementAt(ci)).charAt(1))
+					switch(chk[ci].charAt(1))
 					{
 					case 's':
-						if(Socials.FetchSocial((String)req.elementAt(ri),true)==null)
+						if(socials[ri]==null)
 							reject=true;
 						else
 						{
-							map.put("%s",req.elementAt(ri));
+							map.put("%s",req[ri]);
 							reject=false;
 							ci++;
 							ri++;
@@ -242,38 +265,37 @@ public class EnglishParser extends Scriptable implements Tickable
 					case '*':
 					case 'r':
 					case 'i':
-						String code=(String)chk.elementAt(ci);
-						int remain=chk.size()-ci;
-						String str=(String)req.elementAt(ri);
+						String code=chk[ci];
+						int remain=chk.length-ci;
+						String str=req[ri];
 						ri++;
 						ci++;
 						reject=false;
-						while(ri<=(req.size()-remain))
+						while(ri<=(req.length-remain))
 						{
 							String nxt="";
-							if(ci<chk.size())
+							if(ci<chk.length)
 							{
-								nxt=(String)chk.elementAt(ci);
+								nxt=chk[ci];
 								if(nxt.startsWith("%"))
 									nxt="";
 							}
 							if((nxt.length()>0)
-							&&(ri<req.size())
-							&&(req.elementAt(ri).equals(nxt)))
+							&&(ri<req.length)
+							&&(req[ri].equals(nxt)))
 							   break;
-							if(ri<req.size())
-								str=str+" "+((String)req.elementAt(ri));
+							if(ri<req.length)
+								str=str+" "+req[ri];
 							ri++;
 						}
 						map.put(code,str);
 						break;
 					case 'k':
-						Object O=findCommand(mob,Util.makeVector(((String)req.elementAt(ri)).toUpperCase()));
-						if(O==null)
+						if(commands[ri]==null)
 						   reject=true;
 						else
 						{
-							map.put("%k",req.elementAt(ri));
+							map.put("%k",req[ri]);
 							reject=false;
 							ci++;
 							ri++;
@@ -286,7 +308,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				else
 					reject=true;
 			}
-			if((reject)||(ci!=chk.size())||(ri!=req.size()))
+			if((reject)||(ci!=chk.length)||(ri!=req.length))
 			{
 				map.clear();
 				continue;
@@ -350,6 +372,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		{
 			req=Util.combine(REQ,0);
 			boolean doneSomething=true;
+			boolean didAnything=false;
 			while(doneSomething)
 			{
 				doneSomething=false;
@@ -357,11 +380,15 @@ public class EnglishParser extends Scriptable implements Tickable
 					if(req.startsWith(universalStarters[i]))
 					{
 						doneSomething=true;
+						didAnything=true;
 						req=req.substring(universalStarters.length).trim();
 					}
 			}
-			REQ=Util.parse(req);
-			poss=findMatch(me,REQ);
+			if(didAnything)
+			{
+				REQ=Util.parse(req);
+				poss=findMatch(me,REQ);
+			}
 		}
 		if(CMSecurity.isDebugging("GEAS"))
 			Log.debugOut("GEAS","POSSTOTAL-"+poss.size());
@@ -374,14 +401,20 @@ public class EnglishParser extends Scriptable implements Tickable
 			Vector itemList=new Vector();
 			Vector mobList=new Vector();
 			Vector roomStuff=new Vector();
+			ShopKeeper SK=null;
+			MOB M=null;
+			MOB M2=null;
+			Room R=null;
+			Item I=null;
+			Vector inven=null;
 			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				R=(Room)e.nextElement();
 				roomStuff.addElement(R.roomTitle());
 				roomStuff.addElement(R.roomDescription());
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.fetchItem(i);
+					I=R.fetchItem(i);
 					if((I!=null)&&(!itemList.contains(I.name())))
 					{
 					   itemList.addElement(I.name());
@@ -390,7 +423,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 				for(Enumeration p=CMMap.players();p.hasMoreElements();)
 				{
-					MOB M=(MOB)p.nextElement();
+					M=(MOB)p.nextElement();
 					if((M!=null)&&(!mobList.contains(M.name())))
 					{
 					   mobList.addElement(M.name());
@@ -399,28 +432,31 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 				for(int m=0;m<R.numInhabitants();m++)
 				{
-					MOB M=R.fetchInhabitant(m);
+					M=R.fetchInhabitant(m);
 					if((M!=null)&&(!mobList.contains(M.name())))
 					{
 					   mobList.addElement(M.name());
 					   mobList.addElement(M.displayText());
 					   for(int i=0;i<M.inventorySize();i++)
 					   {
-							Item I=M.fetchInventory(i);
+							I=M.fetchInventory(i);
 							if((I!=null)&&(!itemList.contains(I.name())))
 							{
 							   itemList.addElement(I.name());
 							   itemList.addElement(I.displayText());
 							}
 					   }
-					   if(CoffeeUtensils.getShopKeeper(M)!=null)
+					   SK=CoffeeUtensils.getShopKeeper(M);
+					   if((SK!=null)
+					   &&(SK.whatIsSold()!=ShopKeeper.DEAL_CLANDSELLER)
+					   &&(SK.whatIsSold()!=ShopKeeper.DEAL_LANDSELLER))
 					   {
-						   Vector inven=CoffeeUtensils.getShopKeeper(M).getUniqueStoreInventory();
+						   inven=SK.getUniqueStoreInventory();
 						   for(int a=0;a<inven.size();a++)
 						   {
 							   if(inven.elementAt(a) instanceof Item)
 							   {
-									Item I=(Item)inven.elementAt(a);
+									I=(Item)inven.elementAt(a);
 									if((I!=null)&&(!itemList.contains(I.name())))
 									{
 									   itemList.addElement(I.name());
@@ -430,7 +466,7 @@ public class EnglishParser extends Scriptable implements Tickable
 							   else
 							   if(inven.elementAt(a) instanceof MOB)
 							   {
-									MOB M2=(MOB)inven.elementAt(a);
+									M2=(MOB)inven.elementAt(a);
 									if((M2!=null)&&(!mobList.contains(M2.name())))
 									{
 										mobList.addElement(M2.name());
