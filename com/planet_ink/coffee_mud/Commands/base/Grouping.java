@@ -185,7 +185,7 @@ public class Grouping
 		if((target!=null)
 		&&((mob.isASysOp(mob.location()))
 		||(target.amFollowing()==mob)
-		||(target.getWorshipCharID().equals(mob.name()))))
+		||(target.getLeigeID().equals(mob.name()))))
 		   canFollow=true;
 		
 		if((target==null)

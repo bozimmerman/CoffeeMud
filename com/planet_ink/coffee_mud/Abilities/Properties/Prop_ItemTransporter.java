@@ -228,7 +228,10 @@ public class Prop_ItemTransporter extends Property
 						Item item=(Item)itemsToMove.elementAt(i);
 						if((item.location()==null)||(item.location()==container))
 							item.setLocation(nextDestination);
-						mob.addInventory(item);
+						if(mob instanceof ShopKeeper)
+							((ShopKeeper)mob).addStoreInventory(item);
+						else
+							mob.addInventory(item);
 					}
 			}
 		}

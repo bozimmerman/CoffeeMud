@@ -89,12 +89,15 @@ public class StdMOB implements MOB
 	// mental characteristics
 	protected int Alignment=0;
 	protected String WorshipCharID="";
+	protected String LeigeID="";
 	protected int WimpHitPoint=0;
 	protected int QuestPoint=0;
+	public String getLeigeID(){return LeigeID;}
 	public String getWorshipCharID(){return WorshipCharID;}
 	public int getAlignment(){return Alignment;}
 	public int getWimpHitPoint(){return WimpHitPoint;}
 	public int getQuestPoint(){return QuestPoint;}
+	public void setLeigeID(String newVal){LeigeID=newVal;}
 	public void setAlignment(int newVal)
 	{
 		if(newVal<0) newVal=0;
@@ -785,9 +788,9 @@ public class StdMOB implements MOB
 						tell("You like "+amFollowing().charStats().himher()+" too much.");
 						return false;
 					}
-					if((WorshipCharID.length()>0)&&(target.name().equals(WorshipCharID)))
+					if((getLeigeID().length()>0)&&(target.name().equals(getLeigeID())))
 					{
-						tell("You are serving '"+WorshipCharID+"'!");
+						tell("You are serving '"+getLeigeID()+"'!");
 						return false;
 					}
 					establishRange(this,(MOB)affect.target(),affect.tool());
@@ -937,15 +940,15 @@ public class StdMOB implements MOB
 						return false;
 					}
 					else
-					if((!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getWorshipCharID().equals(name()))))
-					&&(!affect.target().name().equals(getWorshipCharID())))
+					if((!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getLeigeID().equals(name()))))
+					&&(!affect.target().name().equals(getLeigeID())))
 					{
 						tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
 						return false;
 					}
 				}
 				else
-				if(getWorshipCharID().length()==0)
+				if(getLeigeID().length()==0)
 				{
 					tell("You aren't serving anyone!");
 					return false;
@@ -963,9 +966,9 @@ public class StdMOB implements MOB
 					tell(affect.target().name()+" can't hear you!");
 					return false;
 				}
-				if(WorshipCharID.length()>0)
+				if(getLeigeID().length()>0)
 				{
-					tell("You are already serving '"+WorshipCharID+"'.");
+					tell("You are already serving '"+getLeigeID()+"'.");
 					return false;
 				}
 				break;
@@ -1202,15 +1205,15 @@ public class StdMOB implements MOB
 			switch(affect.sourceMinor())
 			{
 			case Affect.TYP_REBUKE:
-				if(((affect.target()==null)&&(WorshipCharID.length()>0))
-				||((affect.target()!=null)&&(affect.target().name().equals(WorshipCharID))))
-					WorshipCharID="";
+				if(((affect.target()==null)&&(getLeigeID().length()>0))
+				||((affect.target()!=null)&&(affect.target().name().equals(getLeigeID()))))
+					setLeigeID("");
 				
 				tell(this,affect.target(),affect.sourceMessage());
 				break;
 			case Affect.TYP_SERVE:
 				if(affect.target()!=null)
-					WorshipCharID=affect.target().name();
+					setLeigeID(affect.target().name());
 				tell(this,affect.target(),affect.sourceMessage());
 				break;
 			case Affect.TYP_EXAMINESOMETHING:
@@ -1372,8 +1375,8 @@ public class StdMOB implements MOB
 			}
 			else
 			if((affect.targetMinor()==Affect.TYP_REBUKE)
-			&&(affect.source().name().equals(WorshipCharID)))
-				WorshipCharID="";
+			&&(affect.source().name().equals(getLeigeID())))
+				setLeigeID("");
 			
 			int targetMajor=affect.targetMajor();
 			if((Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))

@@ -101,6 +101,8 @@ public interface MOB
 	
 	// misc characteristics
 	public String getWorshipCharID();
+	public String getLeigeID();
+	public void setLeigeID(String newVal);
 	public int getAlignment();
 	public int getWimpHitPoint();
 	public int getQuestPoint();

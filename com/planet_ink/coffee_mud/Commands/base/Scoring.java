@@ -130,8 +130,8 @@ public class Scoring
 
 		msg.append("You are ^H"+mob.name()+"^? the level ^B"+mob.envStats().level()+" "+mob.charStats().getMyClass().name()+"^?.\n\r");
 		msg.append("You are a ^B"+((mob.charStats().getStat(CharStats.GENDER)=='M')?"male":"female")+" "+mob.charStats().getMyRace().name() + "^?");
-		if(mob.getWorshipCharID().length()>0)
-			msg.append(" who serves ^H"+mob.getWorshipCharID()+"^?");
+		if(mob.getLeigeID().length()>0)
+			msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
 		msg.append(".\n\r");
 		msg.append("\n\rYour stats are: \n\r^B"+mob.charStats().getStats(mob.charStats().getMyClass().maxStat())+"^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");

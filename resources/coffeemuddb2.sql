@@ -42,6 +42,8 @@ CMCHAN integer NULL,
 CMATTA integer NULL,
 CMAMOR integer NULL,
 CMDAMG integer NULL,
+CMBTMP integer NULL,
+CMLEIG varchar (50) NULL
 PRIMARY KEY (CMUSERID)
 );
 

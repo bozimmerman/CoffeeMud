@@ -117,9 +117,9 @@ public class StdCharClass implements CharClass
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
-		if((homage!=null)&&(mob.getWorshipCharID().length()>0)&&(amount>2))
+		if((homage!=null)&&(mob.getLeigeID().length()>0)&&(amount>2))
 		{
-			MOB sire=(MOB)CMMap.MOBs.get(mob.getWorshipCharID());
+			MOB sire=(MOB)CMMap.MOBs.get(mob.getLeigeID());
 			if(sire!=null)
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));

@@ -584,7 +584,7 @@ public class SocialProcessor
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
 		if(target==null)
 		{
-			if(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID()))
+			if(!Util.combine(commands,1).equalsIgnoreCase(mob.getLeigeID()))
 			{
 				mob.tell("There's nobody here called '"+Util.combine(commands,1)+"' and you aren't serving '"+Util.combine(commands,1)+"'.");
 				return;
@@ -595,7 +595,7 @@ public class SocialProcessor
 		if(target!=null)
 			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) <T-NAMESELF>.");
 		else
-			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getWorshipCharID()+".");
+			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLeigeID()+".");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
