@@ -83,7 +83,7 @@ public class GrinderAreas
 		String oldName=null;
 		
 		// class!
-		String className=(String)httpReq.getRequestParameters().get("CLASS");
+		String className=(String)httpReq.getRequestParameters().get("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.className(A)))

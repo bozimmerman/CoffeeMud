@@ -11,6 +11,71 @@ public class RoomData extends StdWebMacro
 	private static Vector mobs=new Vector();
 	private static Vector items=new Vector(); 
 	
+	
+	public static boolean MOBSsame(MOB M, MOB M2)
+	{
+		if((CMClass.className(M).equals(CMClass.className(M2)))
+		&&(M.baseEnvStats().level()==M2.baseEnvStats().level())
+		&&(M.baseEnvStats().ability()==M2.baseEnvStats().ability())
+		&&(M.name().equals(M2.name()))
+		&&(M.baseEnvStats().rejuv()==M2.baseEnvStats().rejuv()))
+		{
+			if(!M.text().equals(M2.text()))
+			{
+				String buf1=M.text();
+				String buf2=M2.text();
+				try{
+					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
+					{
+						if(buf1.charAt(l)!=buf2.charAt(l2))
+							return false;
+						if(buf1.charAt(l)=='@')
+						{
+							while(buf1.charAt(++l)!='<');
+							while(buf2.charAt(++l2)!='<');
+						}
+					}
+				} catch(Exception e){return false;}
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public static boolean ItemsSame(Item I, Item I2)
+	{
+		if((CMClass.className(I).equals(CMClass.className(I2)))
+		&&(I.baseEnvStats().level()==I2.baseEnvStats().level())
+		&&(I.baseEnvStats().ability()==I2.baseEnvStats().ability())
+		&&(I.baseEnvStats().rejuv()==I2.baseEnvStats().rejuv())
+		&&(I.usesRemaining()==I2.usesRemaining())
+		&&(I.name().equals(I2.name()))
+		&&(I.baseEnvStats().height()==I2.baseEnvStats().height()))
+		{
+			if(!I.text().equals(I2.text()))
+			{
+				String buf1=I.text();
+				String buf2=I2.text();
+				try{
+					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
+					{
+						if(buf1.charAt(l)!=buf2.charAt(l2))
+							return false;
+						if(buf1.charAt(l)=='@')
+						{
+							while(buf1.charAt(++l)!='<');
+							while(buf2.charAt(++l2)!='<');
+						}
+					}
+				} catch(Exception e){return false;}
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public static Vector contributeMOBs(Vector inhabs)
 	{
 		for(int i=0;i<inhabs.size();i++)
@@ -20,11 +85,7 @@ public class RoomData extends StdWebMacro
 			for(int m=0;m<mobs.size();m++)
 			{
 				MOB M2=(MOB)mobs.elementAt(m);
-				if((CMClass.className(M).equals(CMClass.className(M2)))
-				&&(M.baseEnvStats().level()==M2.baseEnvStats().level())
-				&&(M.baseEnvStats().ability()==M2.baseEnvStats().ability())
-				&&(M.baseEnvStats().rejuv()==M2.baseEnvStats().rejuv())
-				&&(M.text().equals(M2.text())))
+				if(MOBSsame(M,M2))
 				{	found=true;	break;	}
 			}
 			if(!found)
@@ -42,13 +103,7 @@ public class RoomData extends StdWebMacro
 			for(int i2=0;i2<items.size();i2++)
 			{
 				Item I2=(Item)items.elementAt(i2);
-				if((CMClass.className(I).equals(CMClass.className(I2)))
-				&&(I.baseEnvStats().level()==I2.baseEnvStats().level())
-				&&(I.baseEnvStats().ability()==I2.baseEnvStats().ability())
-				&&(I.baseEnvStats().rejuv()==I2.baseEnvStats().rejuv())
-				&&(I.usesRemaining()==I2.usesRemaining())
-				&&(I.baseEnvStats().height()==I2.baseEnvStats().height())
-				&&(I.text().equals(I2.text())))
+				if(ItemsSame(I,I2))
 				{	found=true;	break;	}
 			}
 			if(!found)
@@ -150,11 +205,7 @@ public class RoomData extends StdWebMacro
 				{
 					MOB M2=(MOB)moblist.elementAt(b);
 					str.append("<OPTION VALUE=\""+M2+"\"");
-					if((CMClass.className(M).equals(CMClass.className(M2)))
-					&&(M.baseEnvStats().level()==M2.baseEnvStats().level())
-					&&(M.baseEnvStats().ability()==M2.baseEnvStats().ability())
-					&&(M.baseEnvStats().rejuv()==M2.baseEnvStats().rejuv())
-					&&(M.text().equals(M2.text())))
+					if(MOBSsame(M,M2))
 					{
 						TM=M2;
 						str.append(" SELECTED");
@@ -222,13 +273,7 @@ public class RoomData extends StdWebMacro
 				{
 					Item I2=(Item)itemlist.elementAt(b);
 					str.append("<OPTION VALUE=\""+I2+"\"");
-					if((CMClass.className(I).equals(CMClass.className(I2)))
-					&&(I.baseEnvStats().level()==I2.baseEnvStats().level())
-					&&(I.baseEnvStats().ability()==I2.baseEnvStats().ability())
-					&&(I.baseEnvStats().rejuv()==I2.baseEnvStats().rejuv())
-					&&(I.usesRemaining()==I2.usesRemaining())
-					&&(I.baseEnvStats().height()==I2.baseEnvStats().height())
-					&&(I.text().equals(I2.text())))
+					if(ItemsSame(I,I2))
 					{
 						TI=I2;
 						str.append(" SELECTED");
