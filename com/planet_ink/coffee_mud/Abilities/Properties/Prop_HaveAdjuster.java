@@ -127,6 +127,7 @@ public class Prop_HaveAdjuster extends Property
 		baseEnvStats.setSensesMask(getVal(newText,"sen"));
 		baseEnvStats.setSpeed(getVal(newText,"spe"));
 		baseEnvStats.setWeight(getVal(newText,"wei"));
+		baseEnvStats.setHeight(getVal(newText,"hei"));
 
 		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
 		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));

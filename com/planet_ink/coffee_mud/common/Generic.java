@@ -516,7 +516,7 @@ public class Generic
 				for(int r=0;r<rooms.size();r++)
 				{
 					Room room=(Room)rooms.elementAt(r);
-					if(room!=null)
+					if((room!=null)&&(room.ID()!=null))
 						buf.append(getRoomXML(room,true));
 				}
 				buf.append("</AROOMS>");
@@ -554,7 +554,7 @@ public class Generic
 		{
 			Room door=room.rawDoors()[e];
 			Exit exit=room.rawExits()[e];
-			if((door!=null)||(exit!=null))
+			if(((door!=null)&&(door.ID().length()>0))||((door==null)&&(exit!=null)))
 			{
 				buf.append("<REXIT>");
 				buf.append(XMLManager.convertXMLtoTag("XDIRE",e));

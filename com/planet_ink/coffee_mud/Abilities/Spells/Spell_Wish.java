@@ -232,7 +232,7 @@ public class Spell_Wish extends Spell
 			&&(!((MOB)target).isMonster())
 			&&(!mob.mayIFight((MOB)target)))
 			{
-				mob.tell("You cannot cast wish on "+mob.name()+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
+				mob.tell("You cannot cast wish on "+target.name()+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
 				return false;
 			}
 			
@@ -594,7 +594,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.baseCharStats().getMyClass().unLevel(mob);
 					((MOB)target).baseCharStats().setMyClass(C);
-					((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
+					//((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now a "+C.name()+"!");
@@ -655,6 +655,8 @@ public class Spell_Wish extends Spell
 				foundAttribute=CharStats.STRENGTH;
 			if(myWish.indexOf(" INTELLIGEN")>=0)
 				foundAttribute=CharStats.INTELLIGENCE;
+			if(myWish.indexOf(" SMART")>=0)
+				foundAttribute=CharStats.INTELLIGENCE;
 			if(myWish.indexOf(" WISE")>=0)
 				foundAttribute=CharStats.WISDOM;
 			if(myWish.indexOf(" FAST")>=0)
@@ -713,7 +715,7 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" EVIL")>=0)
 					foundAttribute=CharStats.SAVE_UNDEAD;
 			}
-			if((foundAttribute>0)
+			if((foundAttribute>=0)
 			&&(target instanceof MOB)
 			&&((myWish.indexOf(" LESS ")>=0)
 			||(myWish.indexOf(" LOWER ")>=0)
@@ -728,11 +730,12 @@ public class Spell_Wish extends Spell
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-1);
 				else
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)-33);
+				mob.recoverCharStats();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
 			
-			if((foundAttribute>0)
+			if((foundAttribute>=0)
 			&&(target instanceof MOB)
 			&&((myWish.indexOf(" MORE ")>=0)
 			||(myWish.indexOf(" HIGHER ")>=0)
@@ -749,6 +752,7 @@ public class Spell_Wish extends Spell
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+1);
 				else
 					mob.baseCharStats().setStat(foundAttribute,mob.baseCharStats().getStat(foundAttribute)+33);
+				mob.recoverCharStats();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}

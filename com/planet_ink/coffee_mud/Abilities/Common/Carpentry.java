@@ -22,6 +22,7 @@ public class Carpentry extends CommonSkill
 	private Item building=null;
 	private Item key=null;
 	private boolean mending=false;
+	private boolean refitting=false;
 	private boolean messedUp=false;
 	public Carpentry()
 	{
@@ -82,12 +83,21 @@ public class Carpentry extends CommonSkill
 						if(mending)
 							mob.tell("You completely mess up mending "+building.name()+".");
 						else
+						if(refitting)
+							mob.tell("You completely mess up refitting "+building.name()+".");
+						else
 							mob.tell("You completely mess up carving "+building.name()+".");
 					}
 					else
 					{
 						if(mending)
 							building.setUsesRemaining(100);
+						else
+						if(refitting)
+						{
+							building.baseEnvStats().setHeight(0);
+							building.recoverEnvStats();
+						}
 						else
 						{
 							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
@@ -111,7 +121,7 @@ public class Carpentry extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Carve what? Enter \"carve list\" for a list, or \"carve mend <item>\".");
+			mob.tell("Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, or \"carve mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -166,6 +176,38 @@ public class Carpentry extends CommonSkill
 			startStr="<S-NAME> start(s) mending "+building.name()+".";
 			displayText="You are mending "+building.name();
 			verb="mending "+building.name();
+		}
+		else
+		if(str.equalsIgnoreCase("refit"))
+		{
+			building=null;
+			mending=false;
+			refitting=false;
+			messedUp=false;
+			Vector newCommands=Util.parse(Util.combine(commands,1));
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
+			if(building==null) return false;
+			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+			{
+				mob.tell("That's not made of wood.  You don't know how to refit it.");
+				return false;
+			}
+			if(!(building instanceof Armor))
+		    {
+				mob.tell("You don't know how to refit that sort of thing.");
+				return false;
+			}
+			if(((Item)building).envStats().height()==0)
+			{
+				mob.tell(building.name()+" is already the right size.");
+				return false;
+			}
+			refitting=true;
+			if(!super.invoke(mob,commands,givenTarget,auto))
+				return false;
+			startStr="<S-NAME> start(s) refitting "+building.name()+".";
+			displayText="You are refitting "+building.name();
+			verb="refitting "+building.name();
 		}
 		else
 		{

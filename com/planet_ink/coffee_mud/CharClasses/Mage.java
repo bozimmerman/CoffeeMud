@@ -51,6 +51,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_SummonSteed",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_ResistPoison",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Enlarge",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Spell_Shrink",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Light",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Clog",false);
 			// level 3
@@ -109,6 +110,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_LightSensitivity",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Tourettes",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_ManaBurn",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Spell_Refit",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_ResistFire",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_DetectHidden",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_PassDoor",false);

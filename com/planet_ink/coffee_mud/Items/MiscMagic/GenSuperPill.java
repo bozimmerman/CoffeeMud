@@ -118,6 +118,7 @@ public class GenSuperPill extends GenPill
 		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|getVal(readableText,"sen"));
 		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+getVal(readableText,"spe"));
 		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+getVal(readableText,"wei"));
+		mob.baseEnvStats().setHeight(mob.baseEnvStats().weight()+getVal(readableText,"hei"));
 
 		mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+getVal(readableText,"cha"));
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+getVal(readableText,"con"));

@@ -239,10 +239,16 @@ public class SysOpSkills
 		Room room=null;
 		if(commands.size()<2)
 		{
-			mob.tell("Go where?  You need the Room ID or a player name!");
+			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		commands.removeElementAt(0);
+		boolean chariot=false;
+		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
+		{
+		   chariot=true;
+		   commands.removeElement(commands.lastElement());
+		}
 		Room curRoom=mob.location();
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
 
@@ -279,11 +285,64 @@ public class SysOpSkills
 							break;
 						}
 					}
+				if(room==null)
+				{
+					Vector candidates=new Vector();
+					MOB target=null;
+					for(int m=0;m<CMMap.numRooms();m++)
+					{
+						Room room2=CMMap.getRoom(m);
+						target=room2.fetchInhabitant(cmd.toString());
+						if(target!=null)
+							candidates.addElement(target);
+					}
+					if(candidates.size()>0)
+					{
+						target=(MOB)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+						room=target.location();
+					}
+				}
+				if(room==null)
+				{
+					for(int a=0;a<CMMap.numAreas();a++)
+					{
+						Area A=CMMap.getArea(a);
+						if((CoffeeUtensils.containsString(A.name(),cmd.toString().toUpperCase()))
+						&&(A.getMyMap().size()>0))
+						{
+							room=(Room)A.getMyMap().elementAt(Dice.roll(1,A.getMyMap().size(),-1));
+							break;
+						}
+					}
+				}
+				if(room==null)
+				{
+					String areaName=cmd.toString().toUpperCase();
+					for(int m=0;m<CMMap.numRooms();m++)
+					{
+						Room room2=CMMap.getRoom(m);
+						if(CoffeeUtensils.containsString(room2.displayText().toUpperCase(),areaName))
+						{
+						   room=room2;
+						   break;
+						}
+					}
+					if(room==null)
+					for(int m=0;m<CMMap.numRooms();m++)
+					{
+						Room room2=CMMap.getRoom(m);
+						if(CoffeeUtensils.containsString(room2.description().toUpperCase(),areaName))
+						{
+						   room=room2;
+						   break;
+						}
+					}
+				}
 			}
 		}
 		if(room==null)
 		{
-			mob.tell("Go where?  You need the Room ID or a player name!");
+			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
 		if(!mob.isASysOp(room))
@@ -298,7 +357,13 @@ public class SysOpSkills
 		else
 		{
 			room.bringMobHere(mob,true);
-			mob.tell("Done.");
+			if(chariot)
+			{
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> ride(s) in on a flaming chariot.");
+				ExternalPlay.look(mob,null,true);
+			}
+			else
+				mob.tell("Done.");
 			return true;
 		}
 	}

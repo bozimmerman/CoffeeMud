@@ -149,7 +149,7 @@ public class StdExit implements Exit
 		case Affect.TYP_OK_ACTION:
 			return true;
 		case Affect.TYP_ENTER:
-			if((hasADoor)&&(!isOpen))
+			if((hasADoor)&&(!isOpen)&&(affect.source().envStats().height()>=0))
 			{
 				if((!Sense.canBeSeenBy(this,affect.source()))
 				&&(Sense.canSee(affect.source()))

@@ -21,7 +21,10 @@ public class Grouping
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			if((thisSession.mob()!=null)&&(!thisSession.killFlag())&&((mobName==null)||(thisSession.mob().name().toUpperCase().startsWith(mobName.toUpperCase()))))
+			if((thisSession.mob()!=null)
+			   &&(!thisSession.killFlag())
+			   &&((Sense.isSeen(thisSession.mob())||(mob.isASysOp(null))))
+			   &&((mobName==null)||(thisSession.mob().name().toUpperCase().startsWith(mobName.toUpperCase()))))
 			{
 				msg.append(showWho(thisSession.mob(),true));
 			}

@@ -440,6 +440,13 @@ public class CommandProcessor
 				case CommandSet.TEACH:
 					abilityEvoker.teach(mob,commands);
 					break;
+				case CommandSet.TICKTOCK:
+					if(mob.isASysOp(null))
+					{
+						mob.tell("..tick..tock..");
+						myHost.speedTime();
+					}
+					break;
 				case CommandSet.TIME:
 					basicSenses.time(mob,commands);
 					break;
@@ -759,7 +766,7 @@ public class CommandProcessor
 		if(helpStr.length()==0)
 		{
 			thisTag=Resources.getFileResource("arc_help.txt");
-			if(thisTag!=null)
+			if((thisTag!=null)&&(helpStr.equalsIgnoreCase("more")))
 			{
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)

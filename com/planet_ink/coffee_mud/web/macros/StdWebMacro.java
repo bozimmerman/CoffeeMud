@@ -20,6 +20,7 @@ public class StdWebMacro implements WebMacro
 	{
 		if(s!=null)
 		{
+			s=new StringBuffer(s.toString());
 			int x=s.toString().indexOf("\n\r");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
 			x=s.toString().indexOf("\r\n");

@@ -12,7 +12,7 @@ public class Spell_PassDoor extends Spell
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Pass Door";
-		displayText="Translucent";
+		displayText="(Translucent)";
 		
 		canBeUninvoked=true;
 		isAutoinvoked=false;

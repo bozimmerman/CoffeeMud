@@ -138,6 +138,7 @@ public class CommandSet extends Hashtable
 	public static final int TYPO=126;
 	public static final int IDEA=127;
 	public static final int GAIN=128;
+	public static final int TICKTOCK=129;
 
 	public CommandSet()
 	{
@@ -159,6 +160,7 @@ public class CommandSet extends Hashtable
 		put("BUG",new Integer(BUG));
 		put("BUY",new Integer(BUY));
 		put("CLOSE",new Integer(CLOSE));
+			put("C",new Integer(CLOSE));
 			put("CL",new Integer(CLOSE));
 			put("CLO",new Integer(CLOSE));
 		put("CHANNELS",new Integer(CHANNELS));
@@ -191,6 +193,8 @@ public class CommandSet extends Hashtable
 			put("E",new Integer(EAST));
 		put("EAT",new Integer(EAT));
 		put("EMOTE",new Integer(EMOTE));
+		put("ENTER",new Integer(ENTER));
+			put("EN",new Integer(ENTER));
 		put("EQUIPMENT",new Integer(EQUIPMENT));
 			put("EQ",new Integer(EQUIPMENT));
 			put("EQUIP",new Integer(EQUIPMENT));
@@ -204,8 +208,10 @@ public class CommandSet extends Hashtable
 		put("FLEE",new Integer(FLEE));
 		put("FOLLOW",new Integer(FOLLOW));
 			put("FOL",new Integer(FOLLOW));
+			put("F",new Integer(FOLLOW));
 		put("GAIN",new Integer(GAIN));
 		put("GET",new Integer(GET));
+			put("G",new Integer(GET));
 		put("GIVE",new Integer(GIVE));
 		put("GO",new Integer(GO));
 			put("RUN",new Integer(GO));
@@ -214,8 +220,10 @@ public class CommandSet extends Hashtable
 		put("GROUP",new Integer(GROUP));
 			put("GR",new Integer(GROUP));
 		put("GTELL",new Integer(GTELL));
+			put("GT",new Integer(GTELL));
 		put("HELP",new Integer(HELP));
 		put("HOLD",new Integer(HOLD));
+			put("H",new Integer(HOLD));
 		put("IDEA",new Integer(IDEA));
 		put("IMPORT",new Integer(IMPORT));
 		put("INVENTORY",new Integer(INVENTORY));
@@ -237,6 +245,7 @@ public class CommandSet extends Hashtable
 		put("MOUNT",new Integer(MOUNT));
 			put("BOARD",new Integer(MOUNT));
 			put("RIDE",new Integer(MOUNT));
+			put("M",new Integer(MOUNT));
 		put("NOANSI",new Integer(NOANSI));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
@@ -244,6 +253,7 @@ public class CommandSet extends Hashtable
 			put("NOFOL",new Integer(NOFOLLOW));
 		put("OPEN",new Integer(OPEN));
 			put("OP",new Integer(OPEN));
+			put("O",new Integer(OPEN));
 		put("ORDER",new Integer(ORDER));
 		put("OUTFIT",new Integer(OUTFIT));
 		put("PASSWORD",new Integer(PASSWORD));
@@ -255,8 +265,10 @@ public class CommandSet extends Hashtable
 		put("PRAYERS",new Integer(PRAYERS));
 		put("!",new Integer(PREVIOUS_CMD));
 		put("PUT",new Integer(PUT));
+			put("P",new Integer(PUT));
 		put("QUALIFY",new Integer(QUALIFY));
 			put("QUAL",new Integer(QUALIFY));
+			put("Q",new Integer(QUALIFY));
 		put("QUIET",new Integer(QUIET));
 		put("QUIT",new Integer(QUIT));
 		put("READ",new Integer(READ));
@@ -265,6 +277,7 @@ public class CommandSet extends Hashtable
 			put("REM",new Integer(REMOVE));
 		put("REPLY",new Integer(REPLY));
 			put("REP",new Integer(REPLY));
+			put("R",new Integer(REPLY));
 		put("REPORT",new Integer(REPORT));
 		put("RESET",new Integer(RESET));
 		put("REST",new Integer(SIT));
@@ -297,6 +310,8 @@ public class CommandSet extends Hashtable
 		put("TEACH",new Integer(TEACH));
 			put("TEA",new Integer(TEACH));
 		put("TELL",new Integer(TELL));
+			put("T",new Integer(TELL));
+		put("TICKTOCK",new Integer(TICKTOCK));
 		put("TIME",new Integer(TIME));
 			put("DATE",new Integer(TIME));
 		put("TOPICS",new Integer(TOPICS));
@@ -310,6 +325,7 @@ public class CommandSet extends Hashtable
 			put("U",new Integer(UP));
 		put("VALUE",new Integer(VALUE));
 			put("VAL",new Integer(VALUE));
+			put("V",new Integer(VALUE));
 		put("VASSALS",new Integer(VASSALS));
 		put("VER",new Integer(VER));
 		put("WAKE",new Integer(WAKE));
@@ -326,7 +342,7 @@ public class CommandSet extends Hashtable
 		put("WIZINV",new Integer(WIZINV));
 		put("XML",new Integer(XML));
 		put("YELL",new Integer(YELL));
-		put("ENTER",new Integer(ENTER));
+			put("Y",new Integer(YELL));
 	}
 
 

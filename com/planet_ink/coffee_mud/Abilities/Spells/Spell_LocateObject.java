@@ -68,7 +68,7 @@ public class Spell_LocateObject extends Spell
 				{
 					Room room=CMMap.getRoom(m);
 					Environmental item=room.fetchItem(null,what);
-					if(item!=null)
+					if((item!=null)&&(Sense.canSee(item)))
 					{
 						String str=item.name()+" is in a place called '"+room.displayText()+"'.";
 						if(mob.isASysOp(null))
@@ -84,7 +84,7 @@ public class Spell_LocateObject extends Spell
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(inhab instanceof ShopKeeper))
 							item=((ShopKeeper)inhab).getStock(what);
-						if(item!=null)
+						if((item!=null)&&(Sense.canSee(item)))
 						{
 							if((levelFind==0)
 							 ||(item.envStats().level()<=levelFind))

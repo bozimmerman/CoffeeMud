@@ -456,16 +456,22 @@ public class Generic
 			mob.session().println("2) Is Droppable  : "+E.isDroppable());
 			mob.session().println("3) Is Removable  : "+E.isRemovable());
 			mob.session().println("4) Is Trapped    : "+E.isTrapped());
+			mob.session().println("5) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE)>0)?"true":"false"));
 			if(E instanceof Weapon)
-				mob.session().println("5) Is Two-Handed : "+E.rawLogicalAnd());
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","12345\n","\n").toUpperCase();
+				mob.session().println("6) Is Two-Handed : "+E.rawLogicalAnd());
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","123456\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
 			case '1': E.setGettable(!E.isGettable()); break;
 			case '2': E.setDroppable(!E.isDroppable()); break;
 			case '3': E.setRemovable(!E.isRemovable()); break;
 			case '4': E.setTrapped(!E.isTrapped()); break;
-			case '5': if(E instanceof Weapon) 
+			case '5': if((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE)>0)
+						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.CAN_SEE);
+					  else
+						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|EnvStats.CAN_SEE);
+					  break;
+			case '6': if(E instanceof Weapon) 
 						  E.setRawLogicalAnd(!E.rawLogicalAnd()); 
 					  break;
 			}
@@ -642,13 +648,13 @@ public class Generic
 		if(genGenericPrompt(mob,"Has a door",E.hasADoor()))
 		{
 			HasDoor=true;
-			Open=false;
 			DefaultsClosed=genGenericPrompt(mob,"Defaults closed",E.defaultsClosed());
+			Open=!DefaultsClosed;
 			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
 			{
 				HasLock=true;
-				Locked=true;
 				DefaultsLocked=genGenericPrompt(mob,"Defaults locked",E.defaultsLocked());
+				Locked=DefaultsLocked;
 			}
 			else
 			{
@@ -830,7 +836,6 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rMagical Ability: '"+E.baseEnvStats().ability()+"'.");
-		String newLevelStr=mob.session().prompt("Enter a new one (0=no magic)\n\r:","");
 		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
 	}
 

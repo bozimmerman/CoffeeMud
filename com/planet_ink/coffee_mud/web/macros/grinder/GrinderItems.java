@@ -56,7 +56,7 @@ public class GrinderItems
 						  "ISPILL","ISSUPERPILL","ISPOTION","LIQUIDTYPES","AMMOTYPE",
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
-						  "ISLIGHTSOURCE","DURATION"};
+						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -316,6 +316,13 @@ public class GrinderItems
 			case 59:
 				if(I instanceof Light)
 					((Light)I).setDuration(Util.s_int(old));
+				break;
+			case 60:
+				if(old.equals("on"))
+					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.CAN_SEE);
+				else
+				if((I.baseEnvStats().sensesMask()&EnvStats.CAN_SEE)>0)
+					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()-EnvStats.CAN_SEE);
 				break;
 			}
 		}

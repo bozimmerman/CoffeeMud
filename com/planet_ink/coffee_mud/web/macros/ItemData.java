@@ -86,7 +86,7 @@ public class ItemData extends StdWebMacro
 							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
-							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN"};
+							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -556,6 +556,14 @@ public class ItemData extends StdWebMacro
 				case 63: // being worn
 					if(firstTime) 
 						old=I.amWearingAt(Item.INVENTORY)?"":"checked"; 
+					else 
+					if(old.equals("on")) 
+						old="checked";
+					str.append(old);
+					break;
+				case 64: // non-locatable
+					if(firstTime) 
+						old=Sense.canSee(I)?"":"checked"; 
 					else 
 					if(old.equals("on")) 
 						old="checked";

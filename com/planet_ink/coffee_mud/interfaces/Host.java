@@ -30,4 +30,5 @@ public interface Host
 	public String gameStatusStr();
 	public String ServerVersionString();
 	public Properties getCommonPropPage();
+	public void speedTime();
 }

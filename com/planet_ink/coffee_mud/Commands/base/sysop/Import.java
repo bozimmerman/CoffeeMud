@@ -1471,9 +1471,9 @@ public class Import
 			M.resetToMaxState();
 			M.text();
 			if(OfThisID.startsWith("#"))
-				doneMOBS.put(OfThisID.substring(1),M);
+				doneMOBS.put(OfThisID.substring(1),M.copyOf());
 			else
-				doneMOBS.put(OfThisID,M);
+				doneMOBS.put(OfThisID,M.copyOf());
 			return M;
 		}
 		return null;
