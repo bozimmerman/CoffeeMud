@@ -197,7 +197,6 @@ public class IMudInterface implements ImudServices, Serializable
 					return;
 				int channelInt=ChannelSet.getChannelInt(channelName);
 				if(channelInt<0) return;
-				String mask=getLocalMask(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
 					String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
@@ -317,7 +316,6 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
 				int channelInt=ChannelSet.getChannelInt(wk.channel);
-				String mask=getChannelMask(wk.channel);
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)
 				{

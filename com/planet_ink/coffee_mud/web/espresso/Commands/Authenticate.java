@@ -125,7 +125,6 @@ public class Authenticate
       return false;
     }
     boolean subOp = false;
-    boolean sysop = mob.isASysOp(null);
     for (Enumeration a = CMMap.areas(); a.hasMoreElements(); ) {
       Area A = (Area) a.nextElement();
       if (A.amISubOp(mob.Name())) {

@@ -1,3 +1,4 @@
+RCP_FINALNAME,RCP_LEVEL,RCP_TICKS,RCP_WOOD,RCP_VALUE,RCP_CLASSTYPE,RCP_AMMOTYPE,RCP_AMOCAPACITY,RCP_ARMORDMG,RCP_MAXRANGE,RCP_EXTRAREQ,RCP_SPELL
 Blowgun	5	20	5	99	GenSling	darts	1	2	2
 Staff-Sling	9	40	10	275	GenSling	bullets	10	4	4	LEATHER
 Sling	1	30	0	15	GenSling	bullets	50	2	2	LEATHER
@@ -8,8 +9,15 @@ Composite Long Bow	20	150	20	1248	GenBow	arrows	20	16	6
 Simple Crossbow	1	150	20	395	GenBow	bolts	2	6	2
 Heavy Crossbow	16	170	25	1400	GenBow	bolts	1	20	4
 Quiver of 50 Arrows	5	40	5	25	GenItem	arrows	50			METAL
+Quiver of 100 Arrows	5	60	10	25	GenItem	arrows	100			METAL
+Quiver of 200 Arrows	5	80	20	25	GenItem	arrows	200			METAL
+Quiver of 500 Arrows	5	100	50	25	GenItem	arrows	500			METAL
 Pack of 50 Bolts	5	30	2	25	GenItem	bolts	50			METAL
+Pack of 100 Bolts	5	40	5	25	GenItem	bolts	100			METAL
+Pack of 500 Bolts	5	60	20	25	GenItem	bolts	500			METAL
 Pack of 50 Bullets	1	20	0	5	GenItem	bullets	50			STONE
+Pack of 100 Bullets	1	40	0	10	GenItem	bullets	100			STONE
+Pack of 500 Bullets	1	60	0	50	GenItem	bullets	500			STONE
 Pack of 5 Blow-Darts	1	30	2	25	GenItem	darts	5			METAL
 Short War Bow	25	120	12	1456	GenBow	arrows	20	24	3
 Long War Bow	35	160	18	2779	GenBow	arrows	20	32	5

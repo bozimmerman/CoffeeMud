@@ -159,7 +159,7 @@ public class SMTPserver extends Thread
 			{
 				sock=servsock.accept();
 
-				ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
+				//ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
 				//W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
 				//  if succeeds - no need to .start() it here

@@ -60,7 +60,6 @@ public class Thief_Mug extends ThiefSkill
 					str="<S-NAME> attempt(s) to mug <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 				}
 
-			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			FullMsg msg=new FullMsg(mob,target,this,code,str,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT|CMMsg.MASK_MALICIOUS,str,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 			{

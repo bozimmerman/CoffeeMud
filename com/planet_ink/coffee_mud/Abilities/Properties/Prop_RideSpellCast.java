@@ -121,7 +121,6 @@ public class Prop_RideSpellCast extends Property
 		if(affected instanceof Rideable)
 		{
 			Rideable RI=(Rideable)affected;
-			Item myItem=(Item)affectedMOB;
 			for(int r=0;r<RI.numRiders();r++)
 			{
 				Rider R=RI.fetchRider(r);

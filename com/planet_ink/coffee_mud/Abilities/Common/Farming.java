@@ -174,7 +174,7 @@ public class Farming extends CommonSkill
 
 		mine.destroy();
 		if((profficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
-			found=(Item)makeResource(code,false);
+			found=(Item)CoffeeUtensils.makeResource(code,false);
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");

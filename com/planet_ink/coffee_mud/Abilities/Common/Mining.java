@@ -95,7 +95,7 @@ public class Mining extends CommonSkill
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 		{
-			found=(Item)makeResource(resourceType,false);
+			found=(Item)CoffeeUtensils.makeResource(resourceType,false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

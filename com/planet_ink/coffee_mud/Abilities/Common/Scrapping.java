@@ -158,7 +158,7 @@ public class Scrapping extends CommonSkill
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
 		messedUp=!profficiencyCheck(mob,0,auto);
-		found=makeItemResource(I.material());
+		found=CoffeeUtensils.makeItemResource(I.material());
 		foundShortName="nothing";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
