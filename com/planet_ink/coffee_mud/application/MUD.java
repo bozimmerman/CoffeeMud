@@ -664,7 +664,13 @@ public class MUD extends Thread implements Host
 	}
 	public String getPortStr()
 	{
-		return ""+port;
+		StringBuffer str=new StringBuffer("");
+		for(int m=0;m<mudThreads.size();m++)
+		{
+			Host mud=(Host)mudThreads.elementAt(m);
+			str.append(" "+mud.getPort());
+		}
+		return str.toString().trim();
 	}
 
 	public String ServerVersionString()
