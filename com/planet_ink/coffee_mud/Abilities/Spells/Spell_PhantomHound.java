@@ -157,8 +157,11 @@ public class Spell_PhantomHound extends Spell
 				beast.location().showOthers(beast,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
-				victim.setVictim(beast);
-				beast.setVictim(victim);
+				if(victim!=null)
+				{
+					victim.setVictim(beast);
+					beast.setVictim(victim);
+				}
 				pointsLeft=130;
 				beneficialAffect(mob,beast,0);
 			}

@@ -2290,6 +2290,7 @@ public class StdMOB implements MOB
 			{
 				tickStatus=Tickable.STATUS_DEAD;
 				if(isMonster())
+				{
 					if((envStats().rejuv()<Integer.MAX_VALUE)
 					&&(baseEnvStats().rejuv()>0))
 					{
@@ -2308,6 +2309,7 @@ public class StdMOB implements MOB
 						lastTickedDateTime=System.currentTimeMillis();
 						return false;
 					}
+				}
 				tickStatus=Tickable.STATUS_END;
 			}
 			else
