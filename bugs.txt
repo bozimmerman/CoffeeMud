@@ -1,3 +1,13 @@
+Is it not possible to unload and reload command classes
+4.) in 4.6.1, ive suddenly lost my changes to the default prompt 
+colors.  the code ive always used is still in place, but all of the 
+sudden the prompt is all one color for new characters.  is there a new 
+place that i can change this?
+5.)  one of my races has 4 arms and 4 hands, yet no matter which weapon 
+is equipped, it seems to always be attacking with it's natural weapon.  
+how do i specify to use the equipped weapon instead?
+6.) is it just me or do the time and weather messages still print for 
+players that are inside caves and underground?
 3  ) Tehl       heh, ever since mudschool was moved players over level 5
 have been able to get in. i dunno if its supposed to be like that or not but
 im standing in a room in mudschool now while im writing this so um.... just
@@ -17,7 +27,7 @@ him anymore.
 10 ) Tehl       ack? heh, i found a mob with no name :) its in atlantis
 north from where the neptune dude is
 with no inventory, you don't see your gold
-dusts
+dusts -- make sure throw knows what it is throwing
 mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 Install ship battery
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.

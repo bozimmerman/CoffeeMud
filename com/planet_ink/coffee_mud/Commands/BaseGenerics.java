@@ -136,7 +136,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Archive file name: '"+E.getArchivePath()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt("Enter a new one (null=default)\n\r:","");
+		if(newName.equalsIgnoreCase("null"))
+			E.setArchivePath("");
+		else
 		if(newName.length()>0)
 			E.setArchivePath(newName);
 		else
@@ -556,7 +559,10 @@ public class BaseGenerics extends StdCommand
 			E.setReadable(false);
 			mob.tell(showNumber+". Assigned Key Item: '"+E.keyName()+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newName=mob.session().prompt("Enter something new\n\r:","");
+			String newName=mob.session().prompt("Enter something new (null=blank)\n\r:","");
+			if(newName.equalsIgnoreCase("null"))
+				E.setKeyName("");
+			else
 			if(newName.length()>0)
 				E.setKeyName(newName);
 			else
@@ -1327,7 +1333,7 @@ public class BaseGenerics extends StdCommand
 			if((showFlag>0)&&(showFlag!=showNumber)) return;
 			mob.tell(showNumber+". Misc Text: '"+E.text()+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			String newText=mob.session().prompt("Re-enter now ('null'=='')\n\r:","");
+			String newText=mob.session().prompt("Re-enter now (null=blank)\n\r:","");
 			if(newText.equalsIgnoreCase("NULL"))
 				E.setMiscText("");
 			else
@@ -1828,7 +1834,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Secret Identity: '"+E.rawSecretIdentity()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new identity\n\r:","");
+		String newValue=mob.session().prompt("Enter a new identity (null=blank)\n\r:","");
+		if(newValue.equalsIgnoreCase("null"))
+			E.setSecretIdentity("");
+		else
 		if(newValue.length()>0)
 			E.setSecretIdentity(newValue);
 		else
@@ -2434,7 +2443,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Prejudice: '"+E.prejudiceFactors()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string\n\r:","");
+		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		if(newValue.equalsIgnoreCase("null"))
+			E.setPrejudiceFactors("");
+		else
 		if(newValue.length()>0)
 			E.setPrejudiceFactors(newValue);
 		else
@@ -2447,7 +2459,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Budget: '"+E.budget()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string\n\r:","");
+		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		if(newValue.equalsIgnoreCase("null"))
+			E.setBudget("");
+		else
 		if(newValue.length()>0)
 			E.setBudget(newValue);
 		else
@@ -2460,7 +2475,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Devaluation rate(s): '"+E.devalueRate()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newValue=mob.session().prompt("Enter a new string\n\r:","");
+		String newValue=mob.session().prompt("Enter a new string (null=default)\n\r:","");
+		if(newValue.equalsIgnoreCase("null"))
+			E.setDevalueRate("");
+		else
 		if(newValue.length()>0)
 			E.setDevalueRate(newValue);
 		else

@@ -241,7 +241,7 @@ public class Poison_Alcohol extends Poison
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();
-		if((givenTarget instanceof MOB)&&(auto)&&(givenTarget.fetchEffect(ID())!=null))
+		if((givenTarget instanceof MOB)&&(auto))
 		{
 			Vector found=new Vector();
 			Vector remove=new Vector();
