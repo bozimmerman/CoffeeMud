@@ -44,6 +44,7 @@ public interface ShopKeeper extends Environmental
 	public final static int DEAL_INNKEEPER=24;
 	public final static int DEAL_SHIPSELLER=25;
 	public final static int DEAL_CSHIPSELLER=26;
+	public final static int DEAL_SLAVES=27;
 	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
@@ -51,7 +52,7 @@ public interface ShopKeeper extends Environmental
 		"CASTER","JEWELLERY","POTIONS","BANKER","LAND",
 		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
 	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
-		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", "CLAN SHIP SELLER"};
+		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", "CLAN SHIP SELLER", "SLAVES"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);

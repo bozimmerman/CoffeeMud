@@ -922,7 +922,8 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			student.tell("You do not have enough training sessions.");
 			return false;
 		}
-		if(Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
 			student.tell("You are refusing training at this time.");
@@ -941,9 +942,15 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
-		if(qLevel>(student.charStats().getStat(CharStats.INTELLIGENCE)+15))
+		if(student.charStats().getStat(CharStats.INTELLIGENCE)<2)
 		{
 			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
+			student.tell("You are too stupid to learn '"+name()+"'.");
+			return false;
+		}
+		if(qLevel>(student.charStats().getStat(CharStats.INTELLIGENCE)+15))
+		{
+			teacher.tell(student.name()+" is not smart enough to learn '"+name()+"'.");
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
 			return false;
 		}
@@ -990,7 +997,8 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			student.tell(teacher.name()+" is refusing to teach right now.");
 			return false;
 		}
-		if(Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		if((Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		&&((!student.isMonster())||(!student.willFollowOrdersOf(teacher))))
 		{
 			teacher.tell(student.name()+" is refusing training at this time.");
 			student.tell("You are refusing training at this time.");

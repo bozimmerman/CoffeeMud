@@ -37,14 +37,16 @@ public class Skill_Enslave extends StdAbility
 	public boolean isAutoInvoked(){return false;}
 	public int classificationCode(){return Ability.PROPERTY;}
 	
-	//TODO: add eating drinking hunger, starvation
-	//TODO: damage taken by a slave may bring reprisal against master?
-	//TODO: whippings cause them to do common skills faster, but may bring reprisal
-	
-
-	public MOB master=null;
-	public EnglishParser.geasStep STEP=null;
+	private MOB myMaster=null;
+	private EnglishParser.geasStep STEP=null;
 	private int masterAnger=0;
+	private int speedDown=0;
+	private final static int HUNGERTICKMAX=4;
+	private final static int SPEEDMAX=2;
+	private int hungerTickDown=HUNGERTICKMAX;
+	private Room lastRoom=null;
+	
+	//TODO: slavetrading shopkeepers that add enslave, and set startroom to null
 
 	public void unInvoke()
 	{
@@ -68,17 +70,30 @@ public class Skill_Enslave extends StdAbility
 		STEP=null;
 	}
 
+	public void setMiscText(String txt)
+	{
+	    myMaster=null;
+	    super.setMiscText(txt);
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		if((msg.amITarget(mob))
+		&&(msg.tool()!=null)
+		&&(msg.tool().ID().equals("Social"))
+		&&(msg.tool().Name().equals("WHIP <T-NAME>")
+			||msg.tool().Name().equals("BEAT <T-NAME>")))
+		    speedDown=SPEEDMAX;
+		else
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0))
 		{
-		    masterAnger+=1000;
+		    masterAnger+=10;
 			MUDFight.postPanic(mob,msg);
 		}
 		else
@@ -157,6 +172,23 @@ public class Skill_Enslave extends StdAbility
 		            CommonMsgs.say(mob,msg.source(),"I don't understand your words.",false,false);
 			}
 		}
+		else
+		if((mob.location()!=null)&&(myMaster!=null))
+		{
+			Room room=mob.location();
+			if((room!=lastRoom)
+			&&(CoffeeUtensils.doesOwnThisProperty(myMaster,room))
+			&&(room.isInhabitant(mob)))
+			{
+				lastRoom=room;
+				mob.baseEnvStats().setRejuv(0);
+				mob.setStartRoom(room);
+			}
+		}
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource(mob.amFollowing()))))
+			mob.setFollowing(null);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -166,8 +198,76 @@ public class Skill_Enslave extends StdAbility
 		if(tickID==MudHost.TICK_MOB)
 		{
 			MOB mob=(MOB)ticking;
+			if((speedDown>-500)&&((--speedDown)<=0))
+			{
+			    for(int a=mob.numEffects()-1;a>=0;a--)
+			    {
+			        Ability A=mob.fetchEffect(a);
+			        if((A!=null)&&(A.classificationCode()==Ability.COMMON_SKILL))
+			            if(!A.tick(ticking,tickID))
+			                mob.delEffect(A);
+			    }
+			}
+		    if((--hungerTickDown)<=0)
+		    {
+		        hungerTickDown=HUNGERTICKMAX;
+		        mob.curState().expendEnergy(mob,mob.maxState(),false);
+		        if((!mob.isInCombat())&&(Dice.rollPercentage()>(masterAnger/10)))
+		        {
+		            if(myMaster==null) myMaster=CMMap.getPlayer(text());
+		            if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
+		            {
+		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
+		                MUDFight.postAttack(mob,myMaster,mob.fetchWieldedItem());
+		            }
+		            else
+		            if(Dice.rollPercentage()<50)
+		            {
+		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> escape(s) <T-NAMESELF>!");
+		                MUDTracker.beMobile(mob,true,true,false,false,null);
+		            }
+		        }
+	            if(mob.curState().getHunger()<=0)
+	            {
+	                Food f=null;
+	                for(int i=0;i<mob.inventorySize();i++)
+	                {
+	                    Item I=mob.fetchInventory(i);
+	                    if(I instanceof Food)
+	                    { f=(Food)I; break;}
+	                }
+	                if(f==null)
+		                CommonMsgs.say(mob,null,"I am hungry.",false,false);  
+	                else
+	                {
+	                    Command C=CMClass.getCommand("Eat");
+	                    try{C.execute(mob,Util.parse("EAT \""+f.Name()+"$\""));}catch(Exception e){}
+	                }
+	            }
+	            if(mob.curState().getThirst()<=0)
+	            {
+	                Drink d=null;
+	                for(int i=0;i<mob.inventorySize();i++)
+	                {
+	                    Item I=mob.fetchInventory(i);
+	                    if(I instanceof Drink)
+	                    { d=(Drink)I; break;}
+	                }
+	                if(d==null)
+	                    CommonMsgs.say(mob,null,"I am thirsty.",false,false);
+	                else
+	                {
+	                    Command C=CMClass.getCommand("Drink");
+	                    try{C.execute(mob,Util.parse("DRINK \""+d.Name()+"$\""));}catch(Exception e){}
+	                }
+	            }
+		    }
 			if(!mob.getLiegeID().equals(text()))
+			{
 			    mob.setLiegeID(text());
+	            if(myMaster==null) myMaster=CMMap.getPlayer(text());
+	            if(myMaster!=null) mob.setClanID(myMaster.getClanID());
+			}
 		    if(STEP!=null)
 		    {
 				if((STEP.que!=null)&&(STEP.que.size()==0))
@@ -204,6 +304,12 @@ public class Skill_Enslave extends StdAbility
 		{
 			mob.tell(target.name()+" would be too stupid to understand your instructions!");
 			return false;
+		}
+		
+		if(!Sense.isBound(target))
+		{
+		    mob.tell(target.name()+" must be bound first.");
+		    return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

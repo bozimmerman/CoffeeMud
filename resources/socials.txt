@@ -475,7 +475,7 @@ mo	POINT SELF	You point at yourself, obviously very confused.	<S-NAME> points at
 ss	GROWL	Grrrrrrrrrr...	<S-NAME> growls.		
 oo	SCUFF	You scuff your foot sheepishly.	<S-NAME> scuffs <S-HIS-HER> foot in the dirt, looking very sheepish.		
 ww	FLIRT SELF	You flirt with yourself -- what ARE you trying to gain!?!?!?	<S-NAME> flirts with <S-HIM-HERSELF>, wonder what <S-HE-SHE> is trying to accomplish?		
-ov	WHIP <T-NAME>	You flick your whip across <T-HIM-HER> bare back.	<S-NAME> flicks <S-HIS-HER> whip across <T-NAMESELF>'s bare back.	<S-NAME> flicks a whip across your back... the pain.. the pleasure..	Sorry, friend, I can't see that person here.
+ov	WHIP <T-NAME>	You flick your whip across <T-HIS-HER> bare back.	<S-NAME> flicks <S-HIS-HER> whip across <T-NAMESELF>'s bare back.	<S-NAME> flicks a whip across your back... the pain.. the pleasure..	Sorry, friend, I can't see that person here.
 ov	FBEG	You kneel down and beg forgiveness.	<S-NAME> pleads for forgviness on <S-HIS-HER> knees.		
 ww	TANK SELF	No one will tank for you, eh?!? WELL, YOU'LL SHOW THEM!  (right?)	In dazzling chivalry, <S-NAME> offers to tank-- for <S-HIM-HERSELF>!		
 ww	BOAST <T-NAME>	You boast to <T-NAMESELF> of all your great deeds.	<S-NAME> boasts to <T-NAMESELF>.	Once again, <S-NAME> boasts to you, what a bloated ego!	Your ego takes a blow.  They've already left.

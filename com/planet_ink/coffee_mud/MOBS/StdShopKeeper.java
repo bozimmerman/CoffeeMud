@@ -199,7 +199,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		case DEAL_WEAPONS:
 			return "Weapons";
 		case DEAL_PETS:
-			return "Pets";
+			return "Pets and Animals";
 		case DEAL_LEATHER:
 			return "Leather";
 		case DEAL_INVENTORYONLY:
@@ -242,6 +242,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Ships";
 		case DEAL_CSHIPSELLER:
 			return "Clan Ships";
+		case DEAL_SLAVES:
+		    return "Slaves";
 		default:
 			return "... I have no idea WHAT I sell";
 		}
@@ -367,7 +369,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
 					&&(!(thisThang instanceof EnvResource)));
 		case DEAL_PETS:
-			return (thisThang instanceof MOB);
+			return ((thisThang instanceof MOB)&&(Sense.isAnimalIntelligence((MOB)thisThang)));
+		case DEAL_SLAVES:
+			return ((thisThang instanceof MOB)&&(!Sense.isAnimalIntelligence((MOB)thisThang)));
 		case DEAL_INVENTORYONLY:
 			return (inBaseInventory(thisThang));
 		case DEAL_INNKEEPER:
@@ -900,7 +904,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(msg.tool() instanceof MOB)
 					{
-						storeInventory.addElement(((MOB)msg.tool()).copyOf());
+					    MOB newMOB=(MOB)msg.tool().copyOf();
+					    newMOB.setStartRoom(null);
+					    Ability A=newMOB.fetchEffect("Skill_Enslave");
+					    if(A!=null) A.setMiscText("");
+					    newMOB.setLiegeID("");
+					    newMOB.setClanID("");
+						storeInventory.addElement(newMOB);
 						((MOB)msg.tool()).setFollowing(null);
 						if((((MOB)msg.tool()).baseEnvStats().rejuv()>0)
 						&&(((MOB)msg.tool()).baseEnvStats().rejuv()<Integer.MAX_VALUE)
@@ -1029,13 +1039,35 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof MOB)
 					{
-						((MOB)product).baseEnvStats().setRejuv(Integer.MAX_VALUE);
+						MOB newMOB=(MOB)product;
+						newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 						product.recoverEnvStats();
 						product.setMiscText(product.text());
+						Ability slaveA=null;
+						if(whatISell==ShopKeeper.DEAL_SLAVES)
+						{
+						    slaveA=newMOB.fetchEffect("Skill_Enslave");
+						    if(slaveA!=null) slaveA.setMiscText("");
+						    else
+						    if(!Sense.isAnimalIntelligence(newMOB))
+						    {
+						        slaveA=CMClass.getAbility("Skill_Enslave");
+						        if(slaveA!=null)
+						            newMOB.addNonUninvokableEffect(slaveA);
+						    }
+						}
 						((MOB)product).bringToLife(location(),true);
-						CommonMsgs.follow((MOB)product,mobFor,false);
-						if(((MOB)product).amFollowing()==null)
-							mobFor.tell("You cannot accept any more followers!");
+					    if(slaveA!=null)
+					    {
+						    newMOB.setLiegeID("");
+						    newMOB.setClanID("");
+						    newMOB.setStartRoom(null);
+					        slaveA.setMiscText(mobFor.Name());
+				            newMOB.text();
+					    }
+						CommonMsgs.follow(newMOB,mobFor,false);
+						if(newMOB.amFollowing()==null)
+							mobFor.tell("You cannot accept seem to accept this follower!");
 					}
 					else
 					if(product instanceof Ability)
