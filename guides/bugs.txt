@@ -1,1 +1,3 @@
 ?autogold when blind
+Can't attack the permanently invisible?
+
