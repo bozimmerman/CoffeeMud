@@ -27,6 +27,7 @@ public class StdItem implements Item
 	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
 	protected long dispossessionTime=0;
+	protected long tickStatus=Tickable.STATUS_NOT;
 
 	protected Vector affects=null;
 	protected Vector behaviors=null;
@@ -367,16 +368,18 @@ public class StdItem implements Item
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
+	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed)
 			return false;
-
+		tickStatus=Tickable.STATUS_START;
 		if(tickID==Host.ITEM_BEHAVIOR_TICK)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
 			{
+				tickStatus=Tickable.STATUS_BEHAVIOR+b;
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
 					B.tick(ticking,tickID);
@@ -391,6 +394,7 @@ public class StdItem implements Item
 				if(A!=null)
 				{
 					int s=numAffects();
+					tickStatus=Tickable.STATUS_AFFECT+a;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(numAffects()==s)
@@ -400,6 +404,7 @@ public class StdItem implements Item
 					a++;
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 

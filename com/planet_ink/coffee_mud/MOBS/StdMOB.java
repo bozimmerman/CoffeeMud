@@ -30,6 +30,8 @@ public class StdMOB implements MOB
 	protected String displayText="";
 	protected byte[] miscText=null;
 
+	protected long tickStatus=Tickable.STATUS_NOT;
+	
 	/* instantiated item types word, contained, owned*/
 	protected Vector inventory=new Vector();
 
@@ -1767,17 +1769,19 @@ public class StdMOB implements MOB
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 
 	public int movesSinceLastTick(){return movesSinceTick;}
+	public long getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(pleaseDestroy)
 			return false;
-
+		tickStatus=Tickable.STATUS_START;
 		if(tickID==Host.MOB_TICK)
 		{
 			movesSinceTick=0;
 			if(amDead)
 			{
+				tickStatus=Tickable.STATUS_DEAD;
 				if(isMonster())
 					if((envStats().rejuv()<Integer.MAX_VALUE)
 					&&(baseEnvStats().rejuv()>0))
@@ -1791,13 +1795,17 @@ public class StdMOB implements MOB
 					}
 					else
 					{
+						tickStatus=Tickable.STATUS_END;
 						destroy();
+						tickStatus=Tickable.STATUS_NOT;
 						return false;
 					}
+				tickStatus=Tickable.STATUS_END;
 			}
 			else
 			if(location()!=null)
 			{
+				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
 				curState().expendEnergy(this,maxState,false);
 				if(!Sense.canBreathe(this))
@@ -1807,6 +1815,7 @@ public class StdMOB implements MOB
 				}
 				if(isInCombat())
 				{
+					tickStatus=Tickable.STATUS_FIGHT;
 					peaceTime=0;
 					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW))
 					 	ExternalPlay.drawIfNecessary(this,false);
@@ -1867,6 +1876,7 @@ public class StdMOB implements MOB
 					&&(Sense.aliveAwakeMobile(this,true)))
 						ExternalPlay.sheathIfPossible(this);
 				}
+				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
 				{
 					if(Sense.isSleeping(this))
@@ -1906,6 +1916,7 @@ public class StdMOB implements MOB
 				Ability A=fetchAffect(a);
 				if(A!=null)
 				{
+					tickStatus=Tickable.STATUS_AFFECT+a;
 					int s=affects.size();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
@@ -1919,12 +1930,17 @@ public class StdMOB implements MOB
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
+				tickStatus=Tickable.STATUS_BEHAVIOR+b;
 				if(B!=null) B.tick(ticking,tickID);
 			}
 
+			tickStatus=Tickable.STATUS_CLASS;
 			charStats().getCurrentClass().tick(ticking,tickID);
+			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
+			tickStatus=Tickable.STATUS_END;
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;
 	}

@@ -50,7 +50,6 @@ public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgL
 	public String getStat(String code);
 	public void setStat(String code, String val);
 	public boolean sameAs(Environmental E);
-		
 
 	/** Manipulation of affect objects, which includes
 	 * spells, traits, skills, etc.*/

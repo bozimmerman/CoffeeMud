@@ -22,6 +22,7 @@ public class Property implements Ability, Cloneable
 	public int adjustedLevel(MOB mob){return -1;}
 	public boolean bubbleAffect(){return false;}
 	public long flags(){return 0;}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}

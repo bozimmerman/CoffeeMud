@@ -216,6 +216,7 @@ public class StdRace implements Race
 	public void level(MOB mob)
 	{
 	}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{

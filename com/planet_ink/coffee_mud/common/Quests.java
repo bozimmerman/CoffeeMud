@@ -1091,13 +1091,16 @@ public class Quests implements Cloneable, Quest
 	public boolean waiting(){return waitRemaining>=0;}
 	public int ticksRemaining(){return ticksRemaining;}
 	public int minsRemaining(){return new Long(ticksRemaining*Host.TICK_TIME/60000).intValue();}
+	private long tickStatus=Tickable.STATUS_NOT;
+	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Host.QUEST_TICK)
 			return false;
-
+		tickStatus=Tickable.STATUS_START;
 		if(running())
 		{
+			tickStatus=Tickable.STATUS_ALIVE;
 			ticksRemaining--;
 			if(ticksRemaining<0)
 			{
@@ -1106,9 +1109,11 @@ public class Quests implements Cloneable, Quest
 					return false;
 				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 			}
+			tickStatus=Tickable.STATUS_END;
 		}
 		else
 		{
+			tickStatus=Tickable.STATUS_DEAD;
 			waitRemaining--;
 			if(waitRemaining<0)
 			{
@@ -1116,6 +1121,7 @@ public class Quests implements Cloneable, Quest
 				startQuest();
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 

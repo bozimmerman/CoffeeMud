@@ -26,6 +26,7 @@ public class StdRoom
 	protected int domainCondition=Room.CONDITION_NORMAL;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 	protected boolean mobility=true;
+	protected long tickStatus=Tickable.STATUS_NOT;
 
 	// base move points and thirst points per round
 	protected int baseThirst=1;
@@ -477,13 +478,16 @@ public class StdRoom
 		}
 	}
 
+	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		tickStatus=Tickable.STATUS_START;
 		if(tickID==Host.ROOM_BEHAVIOR_TICK)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
 			{
+				tickStatus=Tickable.STATUS_BEHAVIOR+b;
 				Behavior B=fetchBehavior(b);
 				if(B!=null) B.tick(ticking,tickID);
 			}
@@ -497,6 +501,7 @@ public class StdRoom
 				if(A!=null)
 				{
 					int s=numAffects();
+					tickStatus=Tickable.STATUS_AFFECT+a;
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(numAffects()==s)
@@ -506,6 +511,7 @@ public class StdRoom
 					a++;
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 

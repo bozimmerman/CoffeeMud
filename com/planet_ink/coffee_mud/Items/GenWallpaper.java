@@ -117,6 +117,7 @@ public class GenWallpaper implements Item
 		text.append(XMLManager.convertXMLtoTag("READ",readableText()));
 		return text.toString();
 	}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed) return false;

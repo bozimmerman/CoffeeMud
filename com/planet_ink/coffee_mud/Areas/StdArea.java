@@ -17,6 +17,7 @@ public class StdArea implements Area
 	protected int techLevel=0;
 	protected Vector myRooms=null;
 	protected boolean mobility=true;
+	protected long tickStatus=Tickable.STATUS_NOT;
 
 	protected static int year=1;
 	protected static int month=1;
@@ -688,13 +689,16 @@ public class StdArea implements Area
 		}
 	}
 
+	public long getTickStatus(){ return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(stopTicking) return false;
+		tickStatus=Tickable.STATUS_START;
 		if(tickID==Host.AREA_TICK)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
+				tickStatus=Tickable.STATUS_BEHAVIOR+b;
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
 					B.tick(ticking,tickID);
@@ -706,6 +710,7 @@ public class StdArea implements Area
 				Ability A=fetchAffect(a);
 				if(A!=null)
 				{
+					tickStatus=Tickable.STATUS_AFFECT+a;
 					int s=affects.size();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
@@ -715,6 +720,7 @@ public class StdArea implements Area
 				else
 					a++;
 			}
+			tickStatus=Tickable.STATUS_WEATHER;
 			weatherTick();
 			if(weatherTicker==1)
 			{
@@ -830,6 +836,7 @@ public class StdArea implements Area
 				}
 			}
 		}
+		tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 

@@ -35,6 +35,7 @@ public class Social implements Environmental
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}
 	public boolean targetable(){return name().endsWith(" <T-NAME>");}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
 	public boolean invoke(MOB mob,
 						  Vector commands,

@@ -72,6 +72,7 @@ public class VeryAggressive extends Aggressive
 						MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
+						&&(Sense.canSenseMoving(inhab,mob))
 						&&(SaucerSupport.zapperCheck(zapStr,inhab))
 						&&((zapStr.length()==0)
 						   ||((inhab.envStats().level()<(mob.envStats().level()+15))

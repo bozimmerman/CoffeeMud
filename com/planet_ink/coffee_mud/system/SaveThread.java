@@ -48,6 +48,64 @@ public class SaveThread extends Thread
 		}
 	}
 
+	public String tickCodeWord(Tickable obj)
+	{
+		long code=obj.getTickStatus();
+		if(obj instanceof Environmental)
+		{
+			if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
+			{
+				long b=(code-Tickable.STATUS_BEHAVIOR);
+				String codeWord="Behavior #"+b;
+				if((b>=0)&&(b<((Environmental)obj).numBehaviors()))
+					codeWord+=" ("+(((Environmental)obj).fetchBehavior((int)b)).name();
+				return codeWord;
+			}
+			else
+			if(Util.bset(code,Tickable.STATUS_AFFECT))
+			{
+				long b=(code-Tickable.STATUS_AFFECT);
+				String codeWord="Affect #"+b;
+				if((b>=0)&&(b<((Environmental)obj).numAffects()))
+					codeWord+=" ("+(((Environmental)obj).fetchAffect((int)b)).name();
+				return codeWord;
+			}
+		}
+		String codeWord=null;
+		if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
+		   codeWord="Behavior?!";
+		else
+		if(Util.bset(code,Tickable.STATUS_AFFECT))
+		   codeWord="Affect?!";
+		else
+		switch((int)code)
+		{
+		case (int)Tickable.STATUS_ALIVE:
+			codeWord="Alive"; break;
+		case (int)Tickable.STATUS_CLASS:
+			codeWord="Class"; break;
+		case (int)Tickable.STATUS_DEAD:
+			codeWord="Dead"; break;
+		case (int)Tickable.STATUS_END:
+			codeWord="End"; break;
+		case (int)Tickable.STATUS_FIGHT:
+			codeWord="Fighting"; break;
+		case (int)Tickable.STATUS_NOT:
+			codeWord="!"; break;
+		case (int)Tickable.STATUS_OTHER:
+			codeWord="Other"; break;
+		case (int)Tickable.STATUS_RACE:
+			codeWord="Race"; break;
+		case (int)Tickable.STATUS_START:
+			codeWord="Start"; break;
+		case (int)Tickable.STATUS_WEATHER:
+			codeWord="Weather"; break;
+		default:
+			codeWord="?"; break;
+		}
+		return codeWord;
+	}
+	
 	public void checkHealth()
 	{
 		long lastDateTime=System.currentTimeMillis();
@@ -61,7 +119,7 @@ public class SaveThread extends Thread
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
+					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
 				}
 			}
 		}
@@ -76,24 +134,33 @@ public class SaveThread extends Thread
 				TockClient client=almostTock.lastClient;
 				if(client!=null)
 				{
-					StringBuffer str=null;
-					if(client instanceof Environmental)
-						str=new StringBuffer("Dead tick group! Last serviced: "+client.clientObject.name()+" ("+((Environmental)client).ID()+"), tickID "+client.tickID);
+					if(client.clientObject==null)
+						Log.errOut("SaveThread","Dead tick group! Last serviced: NULL, tickID "+client.tickID);
 					else
-						str=new StringBuffer("Dead tick group! Last serviced: "+client.clientObject.name()+", tickID "+client.tickID);
-					if((client instanceof MOB)&&(((MOB)client).location()!=null))
-						Log.errOut("SaveThread",str.toString()+" in "+((MOB)client).location().roomID());
-					else
-					if((client instanceof Item)&&(((Item)client).owner()!=null)&&(((Item)client).owner() instanceof Room))
-						Log.errOut("SaveThread",str.toString()+" in "+((Room)((Item)client).owner()).roomID());
-					else
-					if((client instanceof Item)&&(((Item)client).owner()!=null)&&(((Item)client).owner() instanceof MOB))
-						Log.errOut("SaveThread",str.toString()+" owned by "+((MOB)((Item)client).owner()).name());
-					else
-					if(client instanceof Room)
-						Log.errOut("SaveThread",str.toString()+" is "+((Room)client).roomID());
-					else
-						Log.errOut("SaveThread",str.toString());
+					{
+						StringBuffer str=null;
+						Tickable obj=client.clientObject;
+						long code=client.clientObject.getTickStatus();
+						String codeWord=tickCodeWord(obj);
+						if(obj instanceof Environmental)
+							str=new StringBuffer("Dead tick group! Last serviced: "+obj.name()+" ("+((Environmental)obj).ID()+"), Status="+code+" ("+codeWord+"), tickID "+client.tickID);
+						else
+							str=new StringBuffer("Dead tick group! Last serviced: "+obj.name()+", Status="+code+" ("+codeWord+"), tickID "+client.tickID);
+					
+						if((obj instanceof MOB)&&(((MOB)obj).location()!=null))
+							Log.errOut("SaveThread",str.toString()+" in "+((MOB)obj).location().roomID());
+						else
+						if((obj instanceof Item)&&(((Item)obj).owner()!=null)&&(((Item)obj).owner() instanceof Room))
+							Log.errOut("SaveThread",str.toString()+" in "+((Room)((Item)obj).owner()).roomID());
+						else
+						if((obj instanceof Item)&&(((Item)obj).owner()!=null)&&(((Item)obj).owner() instanceof MOB))
+							Log.errOut("SaveThread",str.toString()+" owned by "+((MOB)((Item)obj).owner()).name());
+						else
+						if(obj instanceof Room)
+							Log.errOut("SaveThread",str.toString()+" is "+((Room)obj).roomID());
+						else
+							Log.errOut("SaveThread",str.toString());
+					}
 				}
 				else
 					Log.errOut("SaveThread","Dead tick group! No further information.");

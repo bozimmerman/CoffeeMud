@@ -53,6 +53,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){
 		return true;
 	}

@@ -8,6 +8,7 @@ public class EnglishParser implements Tickable
 	private EnglishParser(){};
 	public String ID(){return "EnglishParser";}
 	public String name(){return "THE English Parser";}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		return true;

@@ -33,6 +33,7 @@ public class StdExit implements Exit
 	public String closedText(){return "a closed door";}
 	public String closeWord(){return "close";}
 	public String openWord(){return "open";}
+	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	
 	public void setName(String newName){}
 	public String name()
