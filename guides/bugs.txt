@@ -1,1 +1,2 @@
 GAES still isn't done
+Remove error msgs from resources for time.txt, i3info, banned.ini

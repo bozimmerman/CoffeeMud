@@ -229,6 +229,11 @@ public class Intermud implements Runnable, Persistent, Serializable {
                  ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
                  "\""+intermud.getMudState()+"\",\"bo@zimmers.net\",([" +
                  "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
+			/* for my amusement
+			({"startup-req-3",5,"TESTMUD",0,"TESTMUD",0,*gjs,0,0,27766,0,0,","3","3",
+			"CoffeeMud","OK","bo@zimmers.net",(["who":1,]),([]),})
+			({"channel-listen",5,"diku_chat",0,"TESTMUD",0,"diku_chat",1,})			
+			*/
             connected = true;
             input_thread = new Thread(this);
             input_thread.setName("Intermud");

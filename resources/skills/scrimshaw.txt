@@ -1,11 +1,14 @@
-% comb	1	5	1	1	GenItem		0	
-% Table	6	30	50	20	GenRideable	TABLE	150	
-% Stool	6	30	10	6	GenChair	CHAIR	1	
-% Chair	6	30	15	10	GenChair	CHAIR	1	
+% comb	1	5	1	1	GenItem		0
+% Table	6	30	50	20	GenRideable	TABLE	150
+% Stool	6	30	10	6	GenChair	CHAIR	1
+% Chair	6	30	15	10	GenChair	CHAIR	1
 % Bench	6	40	30	15	GenChair	CHAIR	4	10
-% Bed	6	50	70	20	GenBed	BED	2	
-% Statue	12	22	100	100	GenItem	STATUE	0	
-% Figurine	3	40	30	25	GenItem	STATUE	0	
-% Sword	3	20	6	25	GenWeapon	PIERCE	8	
-% Knife	1	10	2	5	GenWeapon	PIERCE	3	
-% Spear	3	20	6	25	GenSpear	PIERCE	6	
+% Bed	6	50	70	20	GenBed	BED	2
+% Statue	12	22	100	100	GenItem	STATUE	0
+% Figurine	3	40	30	25	GenItem	STATUE	0
+% Sword	14	20	6	326	GenWeapon	PIERCE	8
+% Knife	6	10	2	47	GenWeapon	PIERCE	3
+% Spear	10	20	6	186	GenSpear	PIERCE	6
+% Short sword	5	20	4	49	GenWeapon	PIERCE	3
+% Club	1	10	10	30	GenWeapon	BLUNT	2
+

@@ -206,6 +206,7 @@ public class FrontDoor
 					Session S=Sessions.elementAt(s);
 					if((S!=null)
 					&&(S.mob()!=null)
+					&&(S.mob()!=mob)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
