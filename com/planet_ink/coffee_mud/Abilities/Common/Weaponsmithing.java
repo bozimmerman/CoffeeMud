@@ -26,6 +26,7 @@ public class Weaponsmithing extends CommonSkill
 	private static final int RCP_HANDS=10;
 	private static final int RCP_MAXRANGE=11;
 	private static final int RCP_EXTRAREQ=12;
+	private static final int RCP_SPELL=13;
 
 	private Item building=null;
 	private Item fire=null;
@@ -343,6 +344,19 @@ public class Weaponsmithing extends CommonSkill
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			if(spell.length()>0)
+			{
+				String parm="";
+				if(spell.indexOf(";")>0)
+				{ 
+					parm=spell.substring(spell.indexOf(";")+1);
+					spell=spell.substring(0,spell.indexOf(";"));
+				}
+				Ability A=CMClass.getAbility(spell);
+				A.setMiscText(parm);
+				if(A!=null)	building.addNonUninvokableAffect(A);
+			}
 			if(building instanceof Weapon)
 			{
 				Weapon w=(Weapon)building;

@@ -1092,18 +1092,15 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		if(E.baseEnvStats().ability()==0) E.baseEnvStats().setAbility(11);
-		int set[]=Dice.getHPBreakup(E.baseEnvStats().level(),E.baseEnvStats().ability());
-		mob.tell(showNumber+". Hit Points : '"+set[0]+"d"+set[1]+((set[2]<0)?"":"+")+set[2]+"'.");
+		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
+		mob.tell(showNumber+". Hit Points/Level Modifier (hp=((level*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String str=mob.session().prompt("Enter a new value\n\r:","");
-		int i=str.indexOf("d");
-		if(i<0)
-		{
+		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
+		int newLevel=Util.s_int(newLevelStr);
+		if((newLevel!=0)||(newLevelStr.equals("0")))
+			E.baseEnvStats().setAbility(newLevel);
+		else
 			mob.tell("(no change)");
-			return;
-		}
-		E.baseEnvStats().setAbility(Dice.getHPCode(str));
 	}
 
 	public static void genValue(MOB mob, Item E, int showNumber, int showFlag)

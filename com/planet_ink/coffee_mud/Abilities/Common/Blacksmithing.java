@@ -22,6 +22,7 @@ public class Blacksmithing extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
+	private static final int RCP_SPELL=9;
 
 	private Item building=null;
 	private Item fire=null;
@@ -200,6 +201,19 @@ public class Blacksmithing extends CommonSkill
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		if(spell.length()>0)
+		{
+			String parm="";
+			if(spell.indexOf(";")>0)
+			{ 
+				parm=spell.substring(spell.indexOf(";")+1);
+				spell=spell.substring(0,spell.indexOf(";"));
+			}
+			Ability A=CMClass.getAbility(spell);
+			A.setMiscText(parm);
+			if(A!=null)	building.addNonUninvokableAffect(A);
+		}
 		if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 		{
 			try

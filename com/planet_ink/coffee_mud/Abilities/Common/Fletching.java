@@ -24,6 +24,7 @@ public class Fletching extends CommonSkill
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_MAXRANGE=9;
 	private static final int RCP_EXTRAREQ=10;
+	private static final int RCP_SPELL=11;
 
 	private Item building=null;
 	private boolean messedUp=false;
@@ -271,6 +272,19 @@ public class Fletching extends CommonSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_AMOCAPACITY));
 			int maxrange=Util.s_int((String)foundRecipe.elementAt(RCP_MAXRANGE));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			if(spell.length()>0)
+			{
+				String parm="";
+				if(spell.indexOf(";")>0)
+				{ 
+					parm=spell.substring(spell.indexOf(";")+1);
+					spell=spell.substring(0,spell.indexOf(";"));
+				}
+				Ability A=CMClass.getAbility(spell);
+				A.setMiscText(parm);
+				if(A!=null)	building.addNonUninvokableAffect(A);
+			}
 			if(building instanceof Weapon)
 			{
 				if(ammotype.length()>0)

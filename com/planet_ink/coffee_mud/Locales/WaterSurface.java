@@ -92,6 +92,7 @@ public class WaterSurface extends StdRoom implements Drink
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
 		   &&(affect.amITarget(this))
+		   &&(!Sense.isFalling(affect.source()))
 		   &&(!Sense.isWaterWorthy(affect.source())))
 		{
 			MOB mob=affect.source();

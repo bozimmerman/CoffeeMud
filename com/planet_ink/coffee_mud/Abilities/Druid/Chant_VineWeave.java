@@ -25,6 +25,7 @@ public class Chant_VineWeave extends Chant
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_CONTAINMASK=9;
+	private static final int RCP_SPELL=10;
 
 	protected static Vector loadList(StringBuffer str)
 	{
@@ -172,6 +173,19 @@ public class Chant_VineWeave extends Chant
 				int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 				int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 				int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+				String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+				if(spell.length()>0)
+				{
+					String parm="";
+					if(spell.indexOf(";")>0)
+					{ 
+						parm=spell.substring(spell.indexOf(";")+1);
+						spell=spell.substring(0,spell.indexOf(";"));
+					}
+					Ability A=CMClass.getAbility(spell);
+					A.setMiscText(parm);
+					if(A!=null)	building.addNonUninvokableAffect(A);
+				}
 				if(building instanceof Weapon)
 				{
 					((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);

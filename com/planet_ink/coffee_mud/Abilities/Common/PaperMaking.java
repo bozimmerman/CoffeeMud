@@ -21,6 +21,7 @@ public class PaperMaking extends CommonSkill
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_WOODTYPE=6;
 	private static final int RCP_CAPACITY=7;
+	private static final int RCP_SPELL=9;
 
 	private Item building=null;
 	private boolean messedUp=false;
@@ -196,6 +197,19 @@ public class PaperMaking extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
 			building.setMaterial(firstWood.material());
+			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			if(spell.length()>0)
+			{
+				String parm="";
+				if(spell.indexOf(";")>0)
+				{ 
+					parm=spell.substring(spell.indexOf(";")+1);
+					spell=spell.substring(0,spell.indexOf(";"));
+				}
+				Ability A=CMClass.getAbility(spell);
+				A.setMiscText(parm);
+				if(A!=null)	building.addNonUninvokableAffect(A);
+			}
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(materialType==EnvResource.MATERIAL_WOODEN)
 				building.setMaterial(EnvResource.RESOURCE_PAPER);

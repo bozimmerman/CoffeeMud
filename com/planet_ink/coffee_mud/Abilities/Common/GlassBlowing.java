@@ -21,6 +21,7 @@ public class GlassBlowing extends CommonSkill
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
+	private static final int RCP_SPELL=8;
 
 	private Item building=null;
 	private Item fire=null;
@@ -191,6 +192,12 @@ public class GlassBlowing extends CommonSkill
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		if(spell.length()>0)
+		{
+			Ability A=CMClass.getAbility(spell);
+			if(A!=null)	building.addNonUninvokableAffect(A);
+		}
 		if(building instanceof Container)
 		{
 			if(capacity>0)

@@ -2917,7 +2917,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 23: //MPSTARTQUEST
 			{
-				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(10).trim());
+				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(12).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.startQuest();
 				else

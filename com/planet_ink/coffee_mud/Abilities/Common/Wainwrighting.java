@@ -23,6 +23,7 @@ public class Wainwrighting extends CommonSkill
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_NUMRIDERS=8;
 	private static final int RCP_CONTAINMASK=9;
+	private static final int RCP_SPELL=10;
 
 	private Item building=null;
 	private Item key=null;
@@ -204,6 +205,19 @@ public class Wainwrighting extends CommonSkill
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 		int riders=Util.s_int((String)foundRecipe.elementAt(RCP_NUMRIDERS));
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		if(spell.length()>0)
+		{
+			String parm="";
+			if(spell.indexOf(";")>0)
+			{ 
+				parm=spell.substring(spell.indexOf(";")+1);
+				spell=spell.substring(0,spell.indexOf(";"));
+			}
+			Ability A=CMClass.getAbility(spell);
+			A.setMiscText(parm);
+			if(A!=null)	building.addNonUninvokableAffect(A);
+		}
 		key=null;
 		if(building instanceof Rideable)
 		{

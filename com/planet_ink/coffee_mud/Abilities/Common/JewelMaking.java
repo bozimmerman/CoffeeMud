@@ -23,6 +23,7 @@ public class JewelMaking extends CommonSkill
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
 	private static final int RCP_EXTRAREQ=9;
+	private static final int RCP_SPELL=10;
 
 	private Item building=null;
 	private Item fire=null;
@@ -226,7 +227,19 @@ public class JewelMaking extends CommonSkill
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		//int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
-
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		if(spell.length()>0)
+		{
+			String parm="";
+			if(spell.indexOf(";")>0)
+			{ 
+				parm=spell.substring(spell.indexOf(";")+1);
+				spell=spell.substring(0,spell.indexOf(";"));
+			}
+			Ability A=CMClass.getAbility(spell);
+			A.setMiscText(parm);
+			if(A!=null)	building.addNonUninvokableAffect(A);
+		}
 		if(building instanceof Armor)
 		{
 			((Armor)building).baseEnvStats().setArmor(armordmg);

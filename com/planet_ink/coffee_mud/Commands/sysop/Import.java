@@ -770,6 +770,35 @@ public class Import
 		}
 	}
 
+	public static int getDRoll(String str)
+	{
+		int i=str.indexOf("d");
+		if(i<0) return 11;
+		int roll=Util.s_int(str.substring(0,i).trim());
+		str=str.substring(i+1).trim();
+
+		i=str.indexOf("+");
+		int dice=0;
+		int plus=0;
+		if(i<0)
+		{
+			i=str.indexOf("-");
+			if(i<0)
+				dice=Util.s_int(str.trim());
+			else
+			{
+				dice=Util.s_int(str.substring(0,i).trim());
+				plus=Util.s_int(str.substring(i));
+			}
+		}
+		else
+		{
+			dice=Util.s_int(str.substring(0,i).trim());
+			plus=Util.s_int(str.substring(i+1));
+		}
+		return (roll*dice)+plus;
+	}
+	
 	private static MOB getMOB(String OfThisID,
 					  Room putInRoom,
 					  MOB mob,
@@ -1071,10 +1100,14 @@ public class Import
 				M.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr2,0)));
 				if(M.baseEnvStats().level()==0)
 					M.baseEnvStats().setLevel(1);
+				int baseHP=11;
 				if(circleFormat)
-					M.baseEnvStats().setAbility(Dice.getHPCode(Util.getBit(codeStr2,2)));
+					baseHP=getDRoll(Util.getBit(codeStr2,2));
 				else
-					M.baseEnvStats().setAbility(Dice.getHPCode(Util.getBit(codeStr2,3)));
+					baseHP=getDRoll(Util.getBit(codeStr2,3));
+				baseHP=baseHP-(M.baseEnvStats().level()*M.baseEnvStats().level());
+				baseHP=baseHP/M.baseEnvStats().level();
+				M.baseEnvStats().setAbility(baseHP);
 				
 				if(circleFormat)
 				{

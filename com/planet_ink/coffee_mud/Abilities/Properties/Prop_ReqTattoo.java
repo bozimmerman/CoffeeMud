@@ -40,6 +40,7 @@ public class Prop_ReqTattoo extends Property
 	{
 		if((affected!=null)
 		&&(affect.target()!=null)
+		&&(!Sense.isFalling(affect.source()))
 		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER))
