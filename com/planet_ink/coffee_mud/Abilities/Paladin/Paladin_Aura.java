@@ -26,12 +26,18 @@ public class Paladin_Aura extends Paladin
 		if(!super.tick(tickID)) return false;
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
-			MOB mob=(MOB)paladinsGroup.elementAt(i);
-			if((mob.getAlignment()<350)
-			&&(profficiencyCheck(0,false)))
+			try
 			{
-				int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The aura around <S-NAME> <DAMAGE> <T-NAME>!");
+				MOB mob=(MOB)paladinsGroup.elementAt(i);
+				if((mob.getAlignment()<350)
+				&&(profficiencyCheck(0,false)))
+				{
+					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+					ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The aura around <S-NAME> <DAMAGE> <T-NAME>!");
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException e)
+			{
 			}
 		}
 		return true;

@@ -11,7 +11,6 @@ public class RaceID extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("RACE");
 		if(last==null) return " @break@";
 		if(last.length()>0)

@@ -572,7 +572,6 @@ public class StdMOB implements MOB
 			if(A!=null) A.unInvoke();
 		}
 		setLocation(null);
-		int fol=0;
 		while(numFollowers()>0)
 		{
 			MOB follower=fetchFollower(0);

@@ -57,10 +57,16 @@ public class Paladin extends StdAbility
 			}
 			for(int i=paladinsGroup.size()-1;i>=0;i--)
 			{
-				MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if((!h.contains(mob))
-				||(mob.location()!=invoker.location()))
-					paladinsGroup.removeElement(mob);
+				try
+				{
+					MOB mob=(MOB)paladinsGroup.elementAt(i);
+					if((!h.contains(mob))
+					||(mob.location()!=invoker.location()))
+						paladinsGroup.removeElement(mob);
+				}
+				catch(java.lang.ArrayIndexOutOfBoundsException e)
+				{
+				}
 			}
 		}
 		if(Dice.rollPercentage()==1) 

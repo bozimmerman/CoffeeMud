@@ -62,7 +62,6 @@ public class Paladin_Defend extends StdAbility
 		super.affect(affect);
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return;
-		MOB mob=(MOB)affected;
 		if((affect.amITarget(affected))
 		&&((affect.targetCode()&Affect.MASK_HURT)>0)
 		&&(affect.tool()!=null)

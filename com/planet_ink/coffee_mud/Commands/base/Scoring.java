@@ -120,8 +120,6 @@ public class Scoring
 	}
 	public StringBuffer getScore(MOB mob)
 	{
-		TheFight theFight=new TheFight();
-
 		int adjustedAttack=mob.adjustedAttackBonus();
 		int adjustedArmor=(-mob.adjustedArmor())+50;
 
@@ -268,7 +266,6 @@ public class Scoring
 
 	public void spells(MOB mob, Vector commands)
 	{
-		StringBuffer msg=new StringBuffer("");
 		String qual=Util.combine(commands,1).toUpperCase();
 		int domain=-1;
 		String domainName="";
