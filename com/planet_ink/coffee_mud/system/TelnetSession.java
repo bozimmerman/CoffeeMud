@@ -31,15 +31,33 @@ public class TelnetSession extends Thread implements Session
 	private int termID = 0;	//0 = NOANSI, 1 = ANSI
 	public int currentColor=(int)'N';
 	public int lastColor=-1;
-	
-	
+	private final static int HISHER=0;
+	private final static int HIMHER=1;
+	private final static int NAME=2;
+	private final static int NAMESELF=3;
+	private final static int HESHE=4;
+	private final static int ISARE=5;
+	private final static int HASHAVE=6;
+	private final static int YOUPOSS=7;
+	private static Hashtable tagTable=null;
 
 	private static int sessionCounter=0;
 	public TelnetSession(Socket s, String introTextStr)
 	{
 		super("TelnetSession."+sessionCounter);
 		++sessionCounter;
-	
+		if(tagTable==null)
+		{
+			tagTable=new Hashtable();
+			tagTable.put("-HIS-HER",new Integer(HISHER));
+			tagTable.put("-HIM-HER",new Integer(HIMHER));
+			tagTable.put("-NAME",new Integer(NAME));
+			tagTable.put("-NAMESELF",new Integer(NAMESELF));
+			tagTable.put("-HE-SHE",new Integer(HESHE));
+			tagTable.put("-IS-ARE",new Integer(ISARE));
+			tagTable.put("-HAS-HAVE",new Integer(HASHAVE));
+			tagTable.put("-YOUPOSS",new Integer(YOUPOSS));
+		}
 		sock=s;
 		try
 		{
@@ -548,6 +566,8 @@ public class TelnetSession extends Thread implements Session
 				case '<':
 					if(!wrapOnly)
 					{
+						// supported here <?-HIS-HER>, <?-HIM-HER>, <?-NAME>,
+						// <?-NAMESELF>, <?-HE-SHE>, <?-IS-ARE>, <?-HAS-HAVE>
 						//int endDex=loop;
 						StringBuffer cmd=new StringBuffer("");
 						int ldex=loop+1;
@@ -562,82 +582,126 @@ public class TelnetSession extends Thread implements Session
 							if(Character.toUpperCase(cmd.charAt(0))=='T')
 								regarding=target;
 							String replacement=null;
-							if((cmd.length()==6)&&(cmd.charAt(2)=='N'))
+							Integer I=(Integer)tagTable.get(cmd.substring(1));
+							if(I!=null)
+							switch(I.intValue())
 							{
-								if(regarding==null)
-									replacement="";
-								else
-								if(mob==regarding)
-									replacement="you";
-								else
-								if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
-									replacement=((regarding instanceof MOB)?"someone":"something");
-								else
-									replacement=regarding.name();
-							}
-							else
-							if((cmd.length()==10)&&(cmd.charAt(2)=='N')&&(cmd.charAt(9)=='F'))
-							{
-								if(regarding==null)
-									replacement="";
-								else
-								if((source==target)&&(mob==regarding))
-									replacement="yourself";
-								else
-								if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
-									replacement=((regarding instanceof MOB)?"someone":"something");
-								else
-								if(mob==regarding)
-									replacement="you";
-								else
-								if(source==target)
-									replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
-								else
-									replacement=regarding.name();
-							}
-							else
-							if((cmd.length()==9)&&(cmd.charAt(4)=='S'))
-							{
-								if(regarding==null)
-									replacement="";
-								else
-								if(mob==regarding)
-									replacement="your";
-								else
-								if(regarding instanceof MOB)
-									replacement=((MOB)regarding).charStats().hisher();
-								else
-									replacement="its";
+							case NAME:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="you";
+									else
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
+										replacement=((regarding instanceof MOB)?"someone":"something");
+									else
+										replacement=regarding.name();
+								}
+								break;
+							case NAMESELF:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if((source==target)&&(mob==regarding))
+										replacement="yourself";
+									else
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
+										replacement=((regarding instanceof MOB)?"someone":"something");
+									else
+									if(mob==regarding)
+										replacement="you";
+									else
+									if(source==target)
+										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
+									else
+										replacement=regarding.name();
+								}
+								break;
+							case YOUPOSS:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="your";
+									else
+									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
+										replacement=((regarding instanceof MOB)?"someone's":"something's");
+									else
+										replacement=regarding.name()+"'s";
+								}
+								break;
+							case HISHER:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="your";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().hisher();
+									else
+										replacement="its";
 	
-							}
-							else
-							if((cmd.length()==9)&&(cmd.charAt(4)=='M'))
-							{
-								if(regarding==null)
-									replacement="";
-								else
-								if(mob==regarding)
-									replacement="you";
-								else
-								if(regarding instanceof MOB)
-									replacement=((MOB)regarding).charStats().himher();
-								else
-									replacement="it";
+								}
+								break;
+							case HIMHER:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="you";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().himher();
+									else
+										replacement="it";
 	
-							}
-							else
-							if((cmd.length()==8)&&(cmd.charAt(4)=='-'))
-							{
-								if(regarding==null)
-									replacement="";
-								else
-								if(mob==regarding)
-									replacement="you";
-								else
-								if(regarding instanceof MOB)
-									replacement=((MOB)regarding).charStats().heshe();
-								else
-									replacement="its";
+								}
+								break;
+							case HESHE:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="you";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().heshe();
+									else
+										replacement="its";
+								}
+								break;
+							case ISARE:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="are";
+									else
+									if(regarding instanceof MOB)
+										replacement="its";
+								}
+								break;
+							case HASHAVE:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(mob==regarding)
+										replacement="have";
+									else
+									if(regarding instanceof MOB)
+										replacement="has";
+								}
+								break;
 							}
 							if(replacement!=null)
 							{

@@ -9,6 +9,8 @@ public class CommonSkill extends StdAbility
 {
 	public Room activityRoom=null;
 	public boolean aborted=false;
+	public int tickUp=0;
+	public String verb="working";
 
 	public CommonSkill()
 	{
@@ -40,6 +42,42 @@ public class CommonSkill extends StdAbility
 		return Ability.COMMON_SKILL;
 	}
 
+	public boolean tick(int tickID)
+	{
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
+		{
+			MOB mob=(MOB)affected;
+			if((mob.isInCombat())||(mob.location()!=activityRoom))
+			{aborted=true; unInvoke(); return false;}
+			if(tickDown<4)
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb);
+			else
+			if(tickUp==0)
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> begin(s) "+verb);
+			else
+			if((tickUp%4)==0)
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb);
+			
+			tickUp++;	
+		}
+		return super.tick(tickID);
+	}
+
+	public void unInvoke()
+	{
+		super.unInvoke();
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if(aborted)
+				mob.tell("You stop "+verb);
+			else
+				mob.tell("You are done "+verb);
+			
+		}
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat())
