@@ -69,9 +69,9 @@ public class StdLawBook extends StdItem
 					return;
 				}
 				Vector VB=new Vector();
-				Environmental legalO=CoffeeUtensils.getLegalObject(A);
+				Area A2=CoffeeUtensils.getLegalObject(A);
 				VB.addElement(new Integer(Law.MOD_LEGALINFO));
-				B.modifyBehavior(legalO,mob,VB);
+				B.modifyBehavior(A2,mob,VB);
 				Law theLaw=(Law)VB.firstElement();
 
 				int which=-1;
@@ -84,7 +84,7 @@ public class StdLawBook extends StdItem
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
 				if((!allowedToModify)
-				&&(B.modifyBehavior(legalO,mob,V))
+				&&(B.modifyBehavior(A2,mob,V))
 				&&(V.size()==1)
 				&&(V.firstElement() instanceof String))
 				{
@@ -99,7 +99,7 @@ public class StdLawBook extends StdItem
 				}
 
 				if((allowedToModify)&&(!theLaw.lawIsActivated()))
-					changeTheLaw(legalO,B,mob,theLaw,"ACTIVATED","TRUE");
+					changeTheLaw(A2,B,mob,theLaw,"ACTIVATED","TRUE");
 
 				try{
 					if(which<1)
@@ -119,7 +119,7 @@ public class StdLawBook extends StdItem
 						if(mob.session()!=null)
 							mob.tell(Util.replaceAll(getFromTOC("P1"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")),"<AREA>",A.name()));
 						break;
-					case 2:	doOfficersAndJudges(A,B,legalO,theLaw,mob); break;
+					case 2:	doOfficersAndJudges(A,B,A2,theLaw,mob); break;
 					case 3:	doVictimsOfCrime(A,B,theLaw,mob); break;
 					case 4: doJailPolicy(A,B,theLaw,mob); break;
 					case 5: doParoleAndRelease(A,B,theLaw,mob); break;
@@ -140,8 +140,8 @@ public class StdLawBook extends StdItem
 			try
 			{
 				Area A=CMMap.getArea(readableText());
-				Environmental E=CoffeeUtensils.getLegalObject(A);
-				if(E==null)
+				Area A2=CoffeeUtensils.getLegalObject(A);
+				if(A2==null)
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
 					return;

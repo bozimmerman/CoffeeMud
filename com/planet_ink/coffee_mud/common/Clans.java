@@ -91,18 +91,18 @@ public class Clans implements Clan, Tickable
 			{
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				Environmental E=CoffeeUtensils.getLegalObject(A);
-				boolean response=B.modifyBehavior(E,CMClass.sampleMOB(),V);
+				Area A2=CoffeeUtensils.getLegalObject(A);
+				boolean response=B.modifyBehavior(A2,CMClass.sampleMOB(),V);
 				if(response
-				&&(!done.contains(E))
+				&&(!done.contains(A2))
 				&&(V.size()==1)
 				&&(V.firstElement() instanceof String)
 				&&(((String)V.firstElement()).equals(ID())))
 				{
-				    done.add(E);
+				    done.add(A2);
 					V.clear();
 					V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
-					if((B.modifyBehavior(E,CMClass.sampleMOB(),V))
+					if((B.modifyBehavior(A2,CMClass.sampleMOB(),V))
 					&&(V.size()==1)
 					&&(V.firstElement() instanceof Integer))
 						points+=((Integer)V.firstElement()).longValue();
@@ -441,10 +441,10 @@ public class Clans implements Clan, Tickable
 			Behavior B=CoffeeUtensils.getLegalBehavior(A);
 			if(B!=null)
 			{
-			    Environmental E=CoffeeUtensils.getLegalObject(A);
+			    Area A2=CoffeeUtensils.getLegalObject(A);
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(E,mob,V)
+				if(B.modifyBehavior(A2,mob,V)
 				&&(V.size()>0)
 				&&(V.firstElement() instanceof String)
 				&&(((String)V.firstElement()).equals(ID()))

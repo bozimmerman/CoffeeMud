@@ -102,6 +102,7 @@ public class Arrest extends StdBehavior
 		private Vector otherBits=new Vector();
 		private Hashtable abilityCrimes=new Hashtable();
 		private Hashtable basicCrimes=new Hashtable();
+		private Hashtable taxLaws=new Hashtable();
 
 		private Vector chitChat=new Vector();
 		private Vector chitChat2=new Vector();
@@ -140,6 +141,7 @@ public class Arrest extends StdBehavior
 		public Vector otherBits() { return otherBits;}
 		public Hashtable abilityCrimes(){ return abilityCrimes;}
 		public Hashtable basicCrimes(){ return basicCrimes;}
+		public Hashtable taxLaws(){return taxLaws;}
 
 		public boolean hasModifiableNames(){return namesModifiable;}
 		public boolean hasModifiableLaws(){return lawsModifiable;}
@@ -283,6 +285,18 @@ public class Arrest extends StdBehavior
 			jailRooms=Util.parseSemicolons(getInternalStr("JAIL"),true);
 			releaseRooms=Util.parseSemicolons(getInternalStr("RELEASEROOM"),true);
 
+			taxLaws.clear();
+			String taxLaw=getInternalStr("PROPERTYTAX");
+			if(taxLaw.length()>0) taxLaws.put("PROPERTYTAX",taxLaw);
+			taxLaw=getInternalStr("TAXEVASION");
+			if(taxLaw.length()>0) taxLaws.put("TAXEVASION",getInternalBits(taxLaw));
+			taxLaw=getInternalStr("TREASURY");
+			if(taxLaw.length()>0) taxLaws.put("TREASURY",taxLaw);
+			taxLaw=getInternalStr("PROPERTYROB");
+			if(taxLaw.length()>0) taxLaws.put("PROPERTYROB",getInternalBits(taxLaw));
+			taxLaw=getInternalStr("SALESTAX");
+			if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
+			
 			basicCrimes.clear();
 			String basicLaw=getInternalStr("MURDER");
 			if(basicLaw.length()>0) basicCrimes.put("MURDER",getInternalBits(basicLaw));
@@ -585,6 +599,39 @@ public class Arrest extends StdBehavior
 					return true;
 				}
 				return false;
+			case Law.MOD_CRIMEACCUSE:
+				if((laws!=null)
+		        &&(V!=null)
+		        &&(V.size()>2)
+		        &&(V.elementAt(1) instanceof MOB))
+				{
+					MOB victim=(MOB)V.elementAt(1);
+					String[] info=null;
+					for(int v=2;v<V.size();v++)
+					{
+						String brokenLaw=(String)V.elementAt(v);
+						if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
+						else
+						if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+						else
+						if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
+					}
+					if(info==null) return false;
+					fillOutWarrant(mob,
+									laws,
+									(Area)hostObj,
+									(victim==mob)?null:victim,
+									info[Law.BIT_CRIMELOCS],
+									info[Law.BIT_CRIMEFLAGS],
+									info[Law.BIT_CRIMENAME],
+									info[Law.BIT_SENTENCE],
+									info[Law.BIT_WARNMSG]);
+					return true;
+				}
+			    return false;
 			}
 		}
 		return super.modifyBehavior(hostObj,mob,O);
@@ -1329,18 +1376,16 @@ public class Arrest extends StdBehavior
 		// any special circumstances?
 		if(crimeFlags.trim().length()>0)
 		{
-			Vector V=Util.parse(crimeFlags);
+			Vector V=Util.parse(crimeFlags.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
-				String str=((String)V.elementAt(v)).toUpperCase();
+				String str=(String)V.elementAt(v);
 				if(str.endsWith("WITNESS")&&(str.length()<9))
 				{
-					if((witness!=null)&&(witness.location()==mob.location()))
-					{
-						if(str.startsWith("!"))	return false;
-					}
-					else
-						if(!str.startsWith("!")) return false;
+					if((!str.startsWith("!"))
+					&&(witness!=null)
+					&&(witness.location()!=mob.location()))
+					   return false;
 				}
 				else
 				if(str.endsWith("COMBAT")&&(str.length()<8))

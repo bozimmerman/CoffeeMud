@@ -94,6 +94,7 @@ public interface Law
 	public final static int MOD_GETWARRANTSOF=13;
 	public final static int MOD_ADDWARRANT=14;
 	public final static int MOD_DELWARRANT=15;
+	public final static int MOD_CRIMEACCUSE=16;
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+
@@ -138,6 +139,11 @@ public interface Law
 		"ARMED=\n"+
 		"ASSAULT=;;assaulting <T-NAME>;jail4;Assault is a hideous offense.\n"+
 		"MURDER=;;murdering <T-NAME>;death;Murder is a barbarous offense.\n"+
+		"PROPERTYROB=;;robbing the property of <T-NAME>;jail3;Robbery violates our high moral code.\n"+
+		"TAXEVASION=;;evading taxes;jail1;Paying taxes and dieing are our solemn duties to the state.\n"+
+		"TREASURY=\n"+
+		"PROPERTYTAX=0\n"+
+		"SALESTAX=0\n"+
 		"THIEF_SWIPE=;;robbing <T-NAME>;jail2;Swiping violates our high moral code.\n"+
 		"THIEF_STEAL=;;robbing <T-NAME>;jail3;Stealing violates our high moral code.\n"+
 		"THIEF_TRAP=!home;;setting traps in city limits;jail3;Trapping puts us all in mortal danger.\n"+
@@ -159,6 +165,7 @@ public interface Law
 		public Vector otherBits();
 		public Hashtable abilityCrimes();
 		public Hashtable basicCrimes();
+		public Hashtable taxLaws();
 		public Vector chitChat();
 		public Vector chitChat2();
 		public Vector jailRooms();

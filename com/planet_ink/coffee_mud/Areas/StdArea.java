@@ -599,10 +599,10 @@ public class StdArea implements Area
 			Behavior B=CoffeeUtensils.getLegalBehavior(this);
 			if(B!=null)
 			{
-			    Environmental E=CoffeeUtensils.getLegalObject(this);
+			    Area A2=CoffeeUtensils.getLegalObject(this);
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(E,CMClass.sampleMOB(),V)
+				if(B.modifyBehavior(A2,CMClass.sampleMOB(),V)
 				&&(V.size()>0)
 				&&(V.firstElement() instanceof String))
 				{

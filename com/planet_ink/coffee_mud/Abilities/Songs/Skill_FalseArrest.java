@@ -48,14 +48,14 @@ public class Skill_FalseArrest extends BardSkill
 		}
 
 		Behavior B=null;
-		Environmental E=null;
+		Area A2=null;
 		if(mob.location()!=null)
 		{
 			B=CoffeeUtensils.getLegalBehavior(mob.location());
 			if((B==null)||(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,new Integer(Law.MOD_HASWARRANT))))
 				B=null;
 			else
-				E=CoffeeUtensils.getLegalObject(mob.location());
+				A2=CoffeeUtensils.getLegalObject(mob.location());
 		}
 
 		if(B==null)
@@ -68,12 +68,12 @@ public class Skill_FalseArrest extends BardSkill
 				if((B!=null)
 				&&(B.modifyBehavior(CoffeeUtensils.getLegalObject(A),target,new Integer(Law.MOD_HASWARRANT))))
 				{
-					E=CoffeeUtensils.getLegalObject(A);
+					A2=CoffeeUtensils.getLegalObject(A);
 					break;
 				}
 			}
 			B=null;
-			E=null;
+			A2=null;
 		}
 
 		if(B==null)
@@ -99,7 +99,7 @@ public class Skill_FalseArrest extends BardSkill
 			Vector V=new Vector();
 			V.addElement(new Integer(Law.MOD_ARREST));
 			V.addElement(mob);
-			if(!B.modifyBehavior(E,target,V))
+			if(!B.modifyBehavior(A2,target,V))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");
 				return false;

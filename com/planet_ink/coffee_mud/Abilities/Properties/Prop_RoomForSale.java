@@ -92,29 +92,65 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public void setLandPropertyID(String landID){}
 
+	
+	public static boolean robberyCheck(LandTitle A, CMMsg msg)
+	{
+		if(msg.targetMinor()==CMMsg.TYP_GET)
+		{
+			if((msg.target() instanceof Item)
+			&&(((Item)msg.target()).owner() ==msg.source().location())
+			&&(!Util.bset(msg.sourceMajor(),CMMsg.MASK_GENERAL))
+			&&(A.landOwner().length()>0)
+			&&(msg.source().location()!=null)
+		    &&(msg.othersMessage()!=null)
+		    &&(msg.othersMessage().length()>0)
+			&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),msg.source().location())))
+		    {
+			    Room R=msg.source().location();
+				Behavior B=CoffeeUtensils.getLegalBehavior(R);
+				if(B!=null)
+				{
+				    for(int m=0;m<R.numInhabitants();m++)
+				    {
+				        MOB M=R.fetchInhabitant(m);
+				        if(CoffeeUtensils.doesHavePriviledgesHere(M,R))
+				            return true;
+				    }
+					Vector V=new Vector();
+					V.addElement(new Integer(Law.MOD_CRIMEACCUSE));
+					MOB D=null;
+				    Clan C=Clans.getClan(A.landOwner());
+				    if(C!=null)
+				    {
+				        DVector DV=C.getMemberList();
+				        int newPos=-1;
+						for(int i=0;i<DV.size();i++)
+							if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
+							{    
+							    D=CMMap.getLoadPlayer((String)DV.elementAt(i,1));
+							    if(D!=null)
+							        break;
+							}
+				    }
+				    else
+				        D=CMMap.getLoadPlayer(A.landOwner());
+				    if(D==null) return true;
+					V.addElement(D);//victim first
+					V.addElement("PROPERTYROB");
+					V.addElement("THIEF_ROBBERY");
+					B.modifyBehavior(CoffeeUtensils.getLegalObject(R),msg.source(),V);
+				}
+		    }
+			return true;
+        }
+		return false;
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((msg.targetMinor()==CMMsg.TYP_GET)
-		&&(msg.target() instanceof Item)
-		&&(((Item)msg.target()).owner() instanceof Room)
-		&&(landOwner().length()>0)
-		&&(msg.source().location()!=null)
-		&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),msg.source().location())))
-        {
-		    Room R=msg.source().location();
-			Behavior B=CoffeeUtensils.getLegalBehavior(R);
-			if(B!=null)
-			{
-			    for(int m=0;m<R.numInhabitants();m++)
-			    {
-			        MOB M=R.fetchInhabitant(m);
-			        if(CoffeeUtensils.doesHavePriviledgesHere(M,R))
-			            return;
-			    }
-			    
-			}
-        }
+		if(Prop_RoomForSale.robberyCheck(this,msg))
+		    return;
 		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))

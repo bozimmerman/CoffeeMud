@@ -89,26 +89,24 @@ public class CoffeeUtensils
 		if(V.size()>0) return (Behavior)V.firstElement();
 		return getLegalBehavior(R.getArea());
 	}
-	public static Environmental getLegalObject(Area A)
+	public static Area getLegalObject(Area A)
 	{
 		if(A==null) return null;
 		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return A;
-	    Environmental E=null;
 	    Area A2=null;
+	    Area A3=null;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
 		    A2=(Area)e.nextElement();
-		    E=getLegalObject(A2);
-		    if(E!=null) return E;
+		    A3=getLegalObject(A2);
+		    if(A3!=null) return A3;
 		}
-		return E;
+		return A3;
 	}
-	public static Environmental getLegalObject(Room R)
+	public static Area getLegalObject(Room R)
 	{
 		if(R==null) return null;
-		Vector V=Sense.flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()>0) return R;
 		return getLegalObject(R.getArea());
 	}
 
