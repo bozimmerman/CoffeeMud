@@ -5,9 +5,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Druid_Hunger extends Chant
+public class Chant_Hunger extends Chant
 {
-	public Druid_Hunger()
+	public Chant_Hunger()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,7 +31,7 @@ public class Druid_Hunger extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_Hunger();
+		return new Chant_Hunger();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -6,10 +6,10 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Druid_Moonbeam extends Chant
+public class Chant_Moonbeam extends Chant
 {
 
-	public Druid_Moonbeam()
+	public Chant_Moonbeam()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -30,7 +30,7 @@ public class Druid_Moonbeam extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_Moonbeam();
+		return new Chant_Moonbeam();
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -54,14 +54,14 @@ public class Druid_Moonbeam extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		if(mob.fetchAffect(this.ID())!=null)
 		{
 			mob.tell("The moonbeam is already with you.");
 			return false;
 		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 
 		boolean success=profficiencyCheck(0,auto);
 

@@ -19,7 +19,7 @@ public class Spell_WaterBreathing extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
+		quality=Ability.OK_OTHERS;
 
 		baseEnvStats().setLevel(4);
 

@@ -13,8 +13,8 @@ public class Chant_ResistLightning extends Chant
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Electricity";
-		displayText="(Resist Electricity)";
+		name="Resist Lightning";
+		displayText="(Resist Lightning)";
 		miscText="";
 
 		canBeUninvoked=true;

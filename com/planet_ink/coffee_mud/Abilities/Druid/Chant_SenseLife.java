@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Druid_SenseLife extends Chant
+public class Chant_SenseLife extends Chant
 {
 	private Room lastRoom=null;
-	public Druid_SenseLife()
+	public Chant_SenseLife()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -20,7 +20,7 @@ public class Druid_SenseLife extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_SenseLife();
+		return new Chant_SenseLife();
 	}
 
 	public void unInvoke()
@@ -87,6 +87,12 @@ public class Druid_SenseLife extends Chant
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		MOB target=mob;
+		if(mob.fetchAffect(this.ID())!=null)
+		{
+			mob.tell("You are already sensing life.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

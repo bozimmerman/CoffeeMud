@@ -7,14 +7,15 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import java.util.*;
 
 
-public class Druid_LocateAnimals extends Chant
+public class Chant_LocateAnimals extends Chant
 {
 	Room lastRoom=null;
+	private MOB trackingWhom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Druid_LocateAnimals()
+	public Chant_LocateAnimals()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,7 +32,7 @@ public class Druid_LocateAnimals extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_LocateAnimals();
+		return new Chant_LocateAnimals();
 	}
 	public int nextDirectionFromHere(Room location)
 	{
@@ -244,13 +245,13 @@ public class Druid_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> chant(s) for the animals.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> chant(s) for the animals.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
 				displayText="(seeking "+trackingWhom.name()+")";
-				Druid_LocateAnimals newOne=(Druid_LocateAnimals)this.copyOf();
+				Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();

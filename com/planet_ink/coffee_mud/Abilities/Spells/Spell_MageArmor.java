@@ -20,7 +20,7 @@ public class Spell_MageArmor extends Spell
 		displayText="(Mage Armor)";
 
 
-		quality=Ability.BENEFICIAL_OTHERS;
+		quality=Ability.BENEFICIAL_SELF;
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
@@ -61,6 +61,11 @@ public class Spell_MageArmor extends Spell
 		MOB target=mob;
 		if(target==null) return false;
 
+		if(mob.fetchAffect(this.ID())!=null)
+		{
+			mob.tell("You are already wearing mage armor.");
+			return false;
+		}
 
 		if(target.amWearingSomethingHere(Item.ON_TORSO))
 		{

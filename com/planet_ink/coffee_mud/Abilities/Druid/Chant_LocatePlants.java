@@ -7,14 +7,14 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import java.util.*;
 
 
-public class Druid_LocatePlants extends Chant
+public class Chant_LocatePlants extends Chant
 {
 	Room lastRoom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Druid_LocatePlants()
+	public Chant_LocatePlants()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,7 +31,7 @@ public class Druid_LocatePlants extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_LocatePlants();
+		return new Chant_LocatePlants();
 	}
 	public void unInvoke()
 	{
@@ -235,11 +235,11 @@ public class Druid_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,auto?"<S-NAME> begin(s) to sense plant life!":"<S-NAME> chant(s) for a route to plant life.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> begin(s) to sense plant life!":"<S-NAME> chant(s) for a route to plant life.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				Druid_LocatePlants newOne=(Druid_LocatePlants)this.copyOf();
+				Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();

@@ -319,6 +319,7 @@ public class StdMOB implements MOB
 	public void recoverMaxState()
 	{
 		maxState=baseState.cloneCharState();
+		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
 		for(int a=0;a<numAffects();a++)
 		{

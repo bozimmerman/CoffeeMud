@@ -5,12 +5,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Druid_SummonWater extends Chant
+public class Chant_SummonWater extends Chant
 {
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
 
-	public Druid_SummonWater()
+	public Chant_SummonWater()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -22,7 +22,7 @@ public class Druid_SummonWater extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_SummonWater();
+		return new Chant_SummonWater();
 	}
 
 	public void unInvoke()
@@ -42,9 +42,20 @@ public class Druid_SummonWater extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((mob.location().domainType()&Room.INDOORS)>0)
+		{
+			mob.tell("You must be outdoors for this chant to work.");
+			return false;
+		}
+		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		{
+			mob.tell("This magic will not work here.");
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
+		
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

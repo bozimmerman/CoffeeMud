@@ -76,7 +76,7 @@ public class Spell_HeatMetal extends Spell
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Item.INVENTORY))
-			   &&((item.material()&EnvResource.MATERIAL_METAL)>0)
+			   &&((item.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 			   &&(item.location()==null)
 			   &&(!mob.amDead()))
 			{

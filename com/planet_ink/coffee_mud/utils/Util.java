@@ -148,6 +148,14 @@ public class Util
 		return slong;
 	}
 	
+	public static String combine(Vector commands, int startAt, int endAt)
+	{
+		StringBuffer Combined=new StringBuffer("");
+		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+			Combined.append((String)commands.elementAt(commandIndex)+" ");
+		return Combined.toString().trim();
+	}
+	
 	public static String combine(Vector commands, int startAt)
 	{
 		StringBuffer Combined=new StringBuffer("");

@@ -6,10 +6,10 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Druid_PredictWeather extends Chant
+public class Chant_PredictWeather extends Chant
 {
 	String lastPrediction="";
-	public Druid_PredictWeather()
+	public Chant_PredictWeather()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -29,7 +29,7 @@ public class Druid_PredictWeather extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_PredictWeather();
+		return new Chant_PredictWeather();
 	}
 	
 	public void unInvoke()
@@ -64,14 +64,20 @@ public class Druid_PredictWeather extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		if(mob.fetchAffect(this.ID())!=null)
 		{
 			mob.tell("You are already detecting weather.");
 			return false;
 		}
+
+		if((mob.location().domainType()&Room.INDOORS)>0)
+		{
+			mob.tell("You must be outdoors for this chant to work.");
+			return false;
+		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 
 		boolean success=profficiencyCheck(0,auto);
 
