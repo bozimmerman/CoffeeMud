@@ -11,6 +11,8 @@ add another thing to report: report affects, to show what spells are cast on the
 Have rooms generate their resources instead of skills
 be able to stat eq, and stat inv
 Is there anything at this time one can do to an indoor room to allow ridables into it?  For such indoor areas as a blacksmith shop where horses get re-shoed, or a stable.
+sculpt statue of the great Alramus That syntax no longer works, which is a great shame, since mobs cannot be scripted to make statues for people, not can hireling mobs make statues.
+
 SMTP Server
 
 Some solution for variable eq on mobs -- use rejuv! 

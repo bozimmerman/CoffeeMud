@@ -426,8 +426,8 @@ public class StdRideable extends StdContainer implements Rideable
 				{
 					if((msg.tool()!=null)&&(msg.tool() instanceof Exit))
 					   E=(Exit)msg.tool();
-					boolean ok=(!((targetRoom.domainType()&Room.INDOORS)>0)
-								||((targetRoom.maxRange()>4)&&((E==null)||(!E.hasADoor()))));
+					boolean ok=((targetRoom.domainType()&Room.INDOORS)==0)
+								||(targetRoom.maxRange()>4);
 					switch(rideBasis)
 					{
 					case Rideable.RIDEABLE_LAND:
