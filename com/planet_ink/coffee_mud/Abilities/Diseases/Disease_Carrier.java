@@ -30,6 +30,7 @@ public class Disease_Carrier extends Disease
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
+	public int difficultyLevel(){return 0;}
 
 	protected int DISEASE_TICKS(){return 999999;}
 	protected int DISEASE_DELAY(){return 50;}

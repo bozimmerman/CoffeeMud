@@ -37,6 +37,7 @@ public class Disease_Narcolepsy extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) sleepy.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sleepy...";}
 	public int abilityCode(){return 0;}
+	public int difficultyLevel(){return 6;}
 	protected int attDown=1;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -120,9 +120,9 @@ public class ChannelSet
 	    if(i>=ChannelSet.getNumChannels())
 	        return false;
 		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
-		&&(M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
+		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
 		    return false;
-		
+
 		if((!M.amDead())
 		&&(M.location()!=null)
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))

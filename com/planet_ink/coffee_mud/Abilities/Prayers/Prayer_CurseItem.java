@@ -130,7 +130,7 @@ public class Prayer_CurseItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> <T-IS-ARE> cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
 			if((mob.location().okMessage(mob,msg))&&((mobTarget==null)||(mob.location().okMessage(mob,msg2))))
 			{

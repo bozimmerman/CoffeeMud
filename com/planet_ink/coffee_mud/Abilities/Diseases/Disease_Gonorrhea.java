@@ -30,6 +30,7 @@ public class Disease_Gonorrhea extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
+	public int difficultyLevel(){return 1;}
 
 	protected int DISEASE_TICKS(){return 99999;}
 	protected int DISEASE_DELAY(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}

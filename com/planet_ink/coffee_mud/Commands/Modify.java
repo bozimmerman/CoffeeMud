@@ -564,12 +564,13 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(commands.size()<4)
+		if(commands.size()<3)
 		{
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+
 		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
@@ -577,11 +578,24 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-
+		
 		Exit thisExit=mob.location().rawExits()[direction];
 		if(thisExit==null)
 		{
 			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
+
+		if(thisExit.isGeneric())
+		{
+			modifyGenExit(mob,thisExit);
+			return;
+		}
+		
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -600,6 +614,7 @@ public class Modify extends BaseGenerics
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
+		
 
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -615,6 +630,7 @@ public class Modify extends BaseGenerics
 				}
 			}
 		}
+		
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
 		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");

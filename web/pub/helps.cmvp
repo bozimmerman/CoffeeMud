@@ -24,7 +24,7 @@
 	@back@
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=LTGREEN ALIGN=CENTER><H2>CoffeeMud 4.6 Help Topics</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#66FF33 ALIGN=CENTER><H2>CoffeeMud 4.6 Help Topics</H2></TD></TR>
 	@HelpTopics?reset@
 	@loop@
 	<TR>

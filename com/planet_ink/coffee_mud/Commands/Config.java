@@ -23,7 +23,7 @@ public class Config extends StdCommand
 {
 	public Config(){}
 
-	private String[] access={"CONFIG"};
+	private String[] access={"CONFIG","AUTO"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException

@@ -37,6 +37,7 @@ public class Disease_Pneumonia extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with pneumonia.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> shake(s) feverishly.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int difficultyLevel(){return 3;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

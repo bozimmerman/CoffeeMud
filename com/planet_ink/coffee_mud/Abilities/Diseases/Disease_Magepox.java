@@ -37,6 +37,7 @@ public class Disease_Magepox extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) new mystical sores appear on <S-HIS-HER> body.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int difficultyLevel(){return 9;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -62,8 +62,23 @@ public class Prayer_CureDisease extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				boolean badOnes=false;
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+				{
+				    Ability A=((Ability)offensiveAffects.elementAt(a));
+				    if(A instanceof DiseaseAffect)
+				    {
+				        if((((DiseaseAffect)A).difficultyLevel()*10)>adjustedLevel(mob,asLevel))
+				            badOnes=true;
+				        else
+							A.unInvoke();
+				    }
+				    else
+				        A.unInvoke();
+				        
+				}
+				if(badOnes)
+				    mob.tell(mob,target,null,"<T-NAME> had diseases too powerful for this magic.");
 				if(!Sense.stillAffectedBy(target,offensiveAffects,false))
 					target.tell("You feel much better!");
 			}

@@ -40,6 +40,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
 
+	public int difficultyLevel(){return 0;}
 	public int abilityCode(){return 0;}
 	private boolean processing=false;
 

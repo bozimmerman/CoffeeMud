@@ -37,6 +37,7 @@ public class Disease_Plague extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) seriously ill!^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_PROXIMITY|DiseaseAffect.SPREAD_CONTACT|DiseaseAffect.SPREAD_STD;}
+	public int difficultyLevel(){return 0;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

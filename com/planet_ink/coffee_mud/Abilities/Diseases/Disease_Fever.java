@@ -30,6 +30,7 @@ public class Disease_Fever extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
+	public int difficultyLevel(){return 1;}
 
 	protected int DISEASE_TICKS(){return 15;}
 	protected int DISEASE_DELAY(){return 3;}

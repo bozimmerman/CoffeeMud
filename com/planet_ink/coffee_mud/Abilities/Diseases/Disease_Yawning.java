@@ -37,6 +37,7 @@ public class Disease_Yawning extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> feel(s) really tired.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int difficultyLevel(){return 0;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

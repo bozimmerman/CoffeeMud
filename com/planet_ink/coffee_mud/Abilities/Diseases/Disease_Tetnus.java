@@ -37,6 +37,7 @@ public class Disease_Tetnus extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int difficultyLevel(){return 0;}
 	protected int dexDown=1;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -37,6 +37,7 @@ public class Disease_Smiles extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> start(s) smiling.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> smile(s) happily.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
+	public int difficultyLevel(){return 2;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

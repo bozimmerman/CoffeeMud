@@ -37,6 +37,7 @@ public class Disease_Tinnitus extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
+	public int difficultyLevel(){return 5;}
 
 	protected boolean ringing=false;
 

@@ -37,6 +37,7 @@ public class Disease_Vampirism extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int difficultyLevel(){return 9;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

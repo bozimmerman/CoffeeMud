@@ -28,7 +28,7 @@
 		</FORM>
 	@else@
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=LTGREEN ALIGN=CENTER><H3>Available Channels</H32></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#66FF33 ALIGN=CENTER><H3>Available Channels</H32></TD></TR>
 		@AddRequestParameter?CHANNELBACK=@@RequestParameter?CHANNEL@@ @
 			@ChannelNext?RESET@
 			@loop@
