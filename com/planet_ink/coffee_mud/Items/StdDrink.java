@@ -70,6 +70,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 			switch(affect.targetMinor())
 			{
 				case Affect.TYP_DRINK:
+					if((this instanceof Potion)&&(affect.othersMessage()==null)&&(affect.sourceMessage()==null))
+						return true;
 					if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
 					{
 						if(!containsDrink())
