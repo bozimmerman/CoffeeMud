@@ -13,6 +13,9 @@ import com.planet_ink.coffee_mud.exceptions.*;
 // largely based on info from the relevant RFCs
 //  and http://www.jmarshall.com/easy/http/
 
+// TODO / NOT IMPLEMENTED:
+// POST!
+
 // although this technically doesn't *need* to be a thread,
 //  (ie. it only runs once, responding to request)
 //  if it wasn't one the webserver would get bogged down every time
@@ -23,11 +26,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private Socket sock;
 
 	private static int instanceCnt = 0;
-	
+
 	private String command = null;
 	private String request = null;
 	private String requestMain = null;
-	
+
 	private String requestParametersEncoded = null;	// I keep the encoded form
 	// I've called it Table to distinguish it from Encoded string...
 	private Hashtable requestParametersTable = null;
@@ -37,6 +40,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private final static String mimePrefix = "MIME";
 
 	private boolean headersOnly = false;
+
 	private boolean isAdminServer = false;
 
 	// these are all the HTTP states this class can return
@@ -54,7 +58,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	// not sure which order is expected - I think the first
 	private final static String cr = "\r\n";
-//	private final static String cr = "\n\r";
+	//private final static String cr = "\n\r";
 
 	private String status = S_500;
 	private String statusExtra = "...";
@@ -63,12 +67,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public boolean virtualPage;
 
 
-	
+
 	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page, boolean a_isAdminServer)
 	{
 		// thread name contains both an instance counter and the client's IP address
 		//  (too long)
-//		super( new String("HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() ));
+		//		super( new String("HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() ));
 		// thread name contains just the instance counter (faster)
 		//  and short enough to use in log
 		super( "HTTPrq-"+a_webServer.getPartialName()+ instanceCnt++ );
@@ -76,7 +80,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		webServer = a_webServer;
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
-		
+
 		if (page != null && sock != null)
 			this.start();
 	}
@@ -84,8 +88,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
-	
-	
+
+
 	public String getMimeType(String a_extension)
 	{
 		String lookFor = new String (mimePrefix + a_extension);
@@ -108,7 +112,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				statusExtra = "Empty request";
 				return false;
 			}
-			
+
 
 			// should always be uppercase, but I allow for mixed-case anyway
 			// only handles GET & HEAD requests, not POSTS
@@ -125,7 +129,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				return false;
 			}
 
-			
+
 			try
 			{
 				request = inTok.nextToken();
@@ -153,9 +157,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						requestParametersEncoded = request.substring(p+1);
 				}
 
+
 			}
 			requestMain = URLDecoder.decode(requestMain);
-			
+
 			return true;
 		}
 		catch (Exception e)
@@ -170,25 +175,19 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	{
 		// have we already parsed the parameters?
 		if (requestParametersTable != null)
-		{
-			// yep
 			return requestParametersTable;
-		}
-		
+
 		requestParametersTable = new Hashtable();
 
 		// do we have any parameters to parse?
 		if (requestParametersEncoded == null)
-		{
-			// nope
 			return requestParametersTable;
-		}
-		
+
 		String pStr = new String(requestParametersEncoded);
 		String thisParam;
 		String thisParamName;
 		String thisParamValue;
-		
+
 		while (pStr != null)
 		{
 			int p = pStr.indexOf("&");
@@ -225,9 +224,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 			requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
 		}
-		
+
 		return requestParametersTable;
-		
+
 	}
 
 	public String getRequestEncodedParameters()
@@ -280,8 +279,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return -1;
 	}
-	
 
+
+	// OK - this parser is getting a bit ugly now;
+	//  I'm probably gonna replace it soon
 	private byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
 		if((webServer.webMacros==null)
@@ -326,12 +327,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 									ldex+=s3.length();
 								}
 							}
-																					 
+
 						}
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 							return ("").getBytes();
-						else
 						if(foundMacro.equalsIgnoreCase("back"))
 							s.replace(i,i+6, "[back without loop]" );
 						else
@@ -349,8 +349,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 							{
 								try
 								{
-
-									String q=W.runMacro(this,parms);
+									String q;
+									if (!isAdminServer && W.isAdminMacro())
+									{
+										Log.errOut(getName(), "Non-admin cannot access admin macro '" + W.name() + "'; client IP: " + sock.getInetAddress());
+										q = "[error]";
+									}
+									else
+										q=W.runMacro(this,parms);
 									if (q != null)
 										s.replace(i,i+l+2, q );
 									else
@@ -381,12 +387,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			throw new HTTPRedirectException(redirectTo);
 		}
-		
 
-		
+
+
 		return s.toString().getBytes();
 	}
-	
+
 
 	// if the client's browser does not support or honour 3xx redirects,
 	//  then this attached page attempts to use javascript to redirect
@@ -394,7 +400,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	//  if *that* doesn't work, we present the user with a link to click.
 	// the page is also marked as uncacheable with an invalid expiry date
 	//
-	// *** this will be replaced by a template page in the near future *** 
+	// *** this will be replaced by a template page in the near future ***
 	//     (when I can be bothered doing it that is)
 	public String makeRedirectPage(String url)
 	{
@@ -405,31 +411,30 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				+"</head><body>"
 				+"<br>Redirecting in 2 seconds; if redirection does not work, "
 				+"<a href=\"" + url + "\">click here!</a><br></body></html>";
-	}	
-	
+	}
+
 	public void run()
 	{
 		String hdrRedirectTo = null;
 
 
 		BufferedReader sin = null;
-//		PrintWriter sout;
 		DataOutputStream sout = null;
-		
+
 		byte[] replyData = null;
-		
+
 		status = S_200;
 
 		try
-		{	
-//			sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
+		{
+			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
 			sout = new DataOutputStream(sock.getOutputStream());
 			sin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			String inLine = sin.readLine();
 
 			GrabbedFile requestedFile;
 			headersOnly = false;
-			
+
 			virtualPage = false;
 			boolean processOK = process(inLine);
 
@@ -437,7 +442,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				String filename = new String(requestMain);
 				requestedFile = webServer.pageGrabber.grabFile(filename);
-				
+
 				switch (requestedFile.state)
 				{
 					case GrabbedFile.OK:
@@ -471,7 +476,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						processOK = false;
 						break;
 
-//					case GrabbedFile.INTERNAL_ERROR:
+					//case GrabbedFile.INTERNAL_ERROR:
 					default:
 						status = S_500;
 						statusExtra = "An internal error occured.";
@@ -479,7 +484,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						break;
 				}
 
-				
+
 				if (processOK)
 				{
 					String exten;
@@ -498,9 +503,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					try
 					{
 						DataInputStream fileIn = new DataInputStream( new BufferedInputStream( new FileInputStream(requestedFile.file) ) );
-//						replyData = new byte [ requestedFile.length() ];
 						replyData = new byte [ fileIn.available() ];
-						
+
 						fileIn.readFully(replyData);
 						fileIn.close();
 						fileIn = null;
@@ -517,20 +521,20 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			// build error page
 			if (!processOK || replyData == null)
 			{
-//				mimetype = new String("text/html");
+				//mimetype = new String("text/html");
 				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
-			
+
 				if (mimetype.length() == 0)
 					mimetype = new String("application/octet-stream");	// default to raw binary
-					
+
 				// try to get an error page from the template directory
 				//  if it doesn't exist, make a simple error page and return that
 				try
 				{
-//					requestedFile = new File("web" + File.separatorChar + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
-///					requestedFile = new File(webServer.getServerTemplateDir() + File.separatorChar + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
+					//requestedFile = new File("web" + File.separatorChar + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
+					///requestedFile = new File(webServer.getServerTemplateDir() + File.separatorChar + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
 					requestedFile = webServer.templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
-					
+
 					if (requestedFile.state == GrabbedFile.OK)
 					{
 						virtualPage = true;
@@ -555,10 +559,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					mimetype = new String("text/html");
 					replyData = WebHelper.makeErrorPage(status,statusExtra);
 				}
-				
+
 			}
 
-						
+
 			if (virtualPage)
 			{
 				try
@@ -567,14 +571,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				}
 				catch (HTTPRedirectException e)
 				{
-//					status = S_302;
 					status = S_303;
-//					status = S_307;
 					hdrRedirectTo = e.getMessage();
-//					headersOnly = true;
-					// write over existing page
 					replyData = makeRedirectPage(hdrRedirectTo).getBytes();
-					
+
 				}
 			}
 
@@ -588,10 +588,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if (hdrRedirectTo != null)
 			{
 				sout.writeBytes("Location: " + hdrRedirectTo + cr);
-//Log.sysOut(getName(), "dbg Redirect=" +  hdrRedirectTo) ;
 			}
-			
-			
+
+
 			sout.writeBytes("Server: " + HTTPserver.ServerVersionString + cr);
 			sout.writeBytes("MIME-Version: 1.0" + cr);
 			sout.writeBytes("Content-Type: " + mimetype + cr);
@@ -609,22 +608,17 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					sout.write(replyData);
 				}
 			}
-			
+
 		}
 		catch (Exception e)
 		{
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
 		}
-/*
-		Log.sysOut(getName(), "IP=" +  sock.getInetAddress().toString());
-		Log.sysOut(getName(), "Request='" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) + "'");
-		Log.sysOut(getName(), "Replied='" + status + "'" );
-*/
-		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) + 
+		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 				":" + status);
-		
+
 		try
-		{	
+		{
 			if (sin != null)
 			{
 				sin.close();
@@ -632,9 +626,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 		catch (Exception e)	{}
-		
+
 		try
-		{	
+		{
 			if (sout != null)
 			{
 				sout.flush();
@@ -645,7 +639,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)	{}
 
 		try
-		{	
+		{
 			if (sock != null)
 			{
 				sock.close();
@@ -657,11 +651,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public String getHTTPclientIP()
 	{
 		if (sock != null)
-		{
-//			return sock.getInetAddress().toString();
-			// no reverse DNS (just dotted quad)
 			return sock.getInetAddress().getHostAddress();
-		}
 		return "[NOT CONNECTED]";
 	}
 
