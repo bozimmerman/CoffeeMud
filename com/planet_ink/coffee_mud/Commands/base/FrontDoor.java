@@ -191,7 +191,7 @@ public class FrontDoor
 				Race newRace=null;
 				while(newRace==null)
 				{
-					mob.session().print("\n\r^BPlease choose from the following races (?):^N\n\r");
+					mob.session().print("\n\r^!Please choose from the following races (?):^N\n\r");
 					mob.session().print(listOfRaces.toString());
 					String raceStr=mob.session().prompt("\n\r: ","");
 					if(raceStr.trim().equalsIgnoreCase("?"))
@@ -227,7 +227,7 @@ public class FrontDoor
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newRace.ID().toUpperCase());
 							if(str!=null) mob.tell("\n\r"+str.toString()+"\n\r");
-							if(!mob.session().confirm("^BIs ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
+							if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
 								newRace=null;
 						}
 					}
@@ -236,7 +236,7 @@ public class FrontDoor
 
 				String Gender="";
 				while(Gender.length()==0)
-					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
+					Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
 
 				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
@@ -278,7 +278,7 @@ public class FrontDoor
 						
 						mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
-						if(!mob.session().confirm("^BWould you like to re-roll (y/N)?^N","N"))
+						if(!mob.session().confirm("^!Would you like to re-roll (y/N)?^N","N"))
 							mayCont=false;
 					}
 				}
@@ -287,7 +287,7 @@ public class FrontDoor
 				CharClass newClass=null;
 				while(newClass==null)
 				{
-					mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
+					mob.session().print("\n\r^!Please choose from the following Classes:\n\r");
 					mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 					String ClassStr=mob.session().prompt("\n\r: ","");
 					if(ClassStr.trim().equalsIgnoreCase("?"))

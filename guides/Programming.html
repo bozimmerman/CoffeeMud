@@ -72,23 +72,23 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <P align=left><FONT size=4>Occasionally, you will find color/font codes embedded in system strings.  For instance:
 </FONT>&nbsp;</P>
 <PRE>
-			msg.append("^BYou are thirsty.^?\n\r");
+			msg.append("^!You are thirsty.^?\n\r");
 </PRE>
 <P align=left><FONT size=4>These codes, defined in the system.TelnetSession class, are as follows:
 </FONT>&nbsp;</P>
 <TABLE WIDTH="50%" BORDER=1>
 <TR><TD WIDTH="10%">^N</TD><TD>Normal</TD></TR>
-<TR><TD WIDTH="10%">^B</TD><TD>Bold</TD></TR>
+<TR><TD WIDTH="10%">^!</TD><TD>Bold</TD></TR>
 <TR><TD WIDTH="10%">^H</TD><TD>Highlight</TD></TR>
 <TR><TD WIDTH="10%">^F</TD><TD>Fight (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^S</TD><TD>Spell (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^E</TD><TD>Emote (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^T</TD><TD>Talk (not in use, yet)</TD></TR>
 <TR><TD WIDTH="10%">^Q</TD><TD>Channel (not in use, yet)</TD></TR>
-<TR><TD WIDTH="10%">^X</TD><TD>Important message 1</TD></TR>
-<TR><TD WIDTH="10%">^Y</TD><TD>Important message 2</TD></TR>
+<TR><TD WIDTH="10%">^x</TD><TD>Important message 1</TD></TR>
+<TR><TD WIDTH="10%">^X</TD><TD>Important message 2</TD></TR>
 <TR><TD WIDTH="10%">^Z</TD><TD>Important message 3</TD></TR>
-<TR><TD WIDTH="10%">^R</TD><TD>Room Title</TD></TR>
+<TR><TD WIDTH="10%">^O</TD><TD>Room Title</TD></TR>
 <TR><TD WIDTH="10%">^L</TD><TD>Room Description</TD></TR>
 <TR><TD WIDTH="10%">^D</TD><TD>Direction</TD></TR>
 <TR><TD WIDTH="10%">^d</TD><TD>Door</TD></TR>
@@ -104,6 +104,13 @@ text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
 <TR><TD WIDTH="10%">^y</TD><TD>Yellow</TD></TR>
 <TR><TD WIDTH="10%">^c</TD><TD>Cyan</TD></TR>
 <TR><TD WIDTH="10%">^p</TD><TD>Purple</TD></TR>
+<TR><TD WIDTH="10%">^W</TD><TD>Dark White</TD></TR>
+<TR><TD WIDTH="10%">^G</TD><TD>Dark Green</TD></TR>
+<TR><TD WIDTH="10%">^B</TD><TD>Dark Brown</TD></TR>
+<TR><TD WIDTH="10%">^R</TD><TD>Dark Red</TD></TR>
+<TR><TD WIDTH="10%">^Y</TD><TD>Dark Yellow</TD></TR>
+<TR><TD WIDTH="10%">^C</TD><TD>Dark Cyan</TD></TR>
+<TR><TD WIDTH="10%">^P</TD><TD>Dark Purple</TD></TR>
 </TABLE>
 <P align=left><FONT size=4>As you might have guessed, it is preferred that the system colors (the last
 8 codes) be used sparingly, in favor of the more customizable codes above.

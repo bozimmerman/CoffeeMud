@@ -156,10 +156,10 @@ public class StdCharClass implements CharClass
 		mob.setExperience(mob.getExperience()+amount);
 		if(homage==null) homage="";
 		if(amount>1)
-			mob.tell("^BYou gain ^H"+amount+"^? experience points"+homage+".^N");
+			mob.tell("^!You gain ^H"+amount+"^? experience points"+homage+".^N");
 		else
 		if(amount>0)
-			mob.tell("^BYou gain ^H"+amount+"^? experience point"+homage+".^N");
+			mob.tell("^!You gain ^H"+amount+"^? experience point"+homage+".^N");
 			
 		while(mob.getExperience()>=mob.getExpNextLevel())
 			level(mob);
@@ -212,25 +212,25 @@ public class StdCharClass implements CharClass
 		newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		theNews.append("^BYou have gained ^H"+newHitPointGain+"^B hit " + 
+		theNews.append("^!You have gained ^H"+newHitPointGain+"^! hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
 		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*6);
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
-		theNews.append(mvGain+"^B move " + (mvGain!=1?"points":"point") + ", ^H");
+		theNews.append(mvGain+"^! move " + (mvGain!=1?"points":"point") + ", ^H");
 
 		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
-		theNews.append(attGain+"^B attack " + (attGain!=1?"points":"point") + ", ^H");
+		theNews.append(attGain+"^! attack " + (attGain!=1?"points":"point") + ", ^H");
 
 		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*manaMultiplier);
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
-		theNews.append(manaGain+"^B " + (manaGain!=1?"points":"point") + " of mana,");
+		theNews.append(manaGain+"^! " + (manaGain!=1?"points":"point") + " of mana,");
 		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%levelsPerBonusDamage)==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
 		else
@@ -320,25 +320,25 @@ public class StdCharClass implements CharClass
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 		{
-			mob.tell("^XYou have ****LOST A LEVEL****^N\n\r\n\r");
+			mob.tell("^xYou have ****LOST A LEVEL****^N\n\r\n\r");
 			unLevel(mob);
 		}
 	}
 	public void level(MOB mob)
 	{
-		StringBuffer theNews=new StringBuffer("^XYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
+		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+bonusPracLevel;
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append("^H" + practiceGain+"^B practice " +
+		theNews.append("^H" + practiceGain+"^! practice " +
 			( practiceGain != 1? "sessions" : "session" ) + ", ");
 
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^B training point.\n\r^N");
+		theNews.append("and ^H"+trainGain+"^! training point.\n\r^N");
 
 		mob.tell(theNews.toString());
 		

@@ -545,13 +545,13 @@ public class StdRoom
 		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 		{
 			if(myArea!=null)
-				Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
-			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
+				Say.append("^!Area  :^N("+myArea.name()+")"+"\n\r");
+			Say.append("^!Locale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}
 		if((Sense.canBeSeenBy(this,mob))||((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0))
 		{
-			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
+			Say.append("^O" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			if((!careAboutBrief)||((mob.getBitmap()&MOB.ATT_BRIEF)==0))
 				Say.append("^L" + description()+"^N\n\r\n\r");
 		}

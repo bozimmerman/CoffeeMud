@@ -1,13 +1,13 @@
 \n\r\n\r^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.^N
 
-^YDwarf   :^? Dwarves are shorter than humans, but much stockier, and enjoy sporting beards (including the women).
+^XDwarf   :^? Dwarves are shorter than humans, but much stockier, and enjoy sporting beards (including the women).
 
-^YElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.
+^XElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.
 
-^YGnome   :^? Gnomes are curious and quick-witted folk, resembling small dwarves.
+^XGnome   :^? Gnomes are curious and quick-witted folk, resembling small dwarves.
 
-^YHalf Elf:^? Half Elves are a mixture of humans and elves, possessing human drive and elven grace.
+^XHalf Elf:^? Half Elves are a mixture of humans and elves, possessing human drive and elven grace.
 
-^YHalfling:^? Halflings are a very short fur-footed folk, noted for their quick hands and round, full stomachs.
+^XHalfling:^? Halflings are a very short fur-footed folk, noted for their quick hands and round, full stomachs.
 
-^YHuman   :^? Just like you and me!  Humans are versatile and successful adventurers!
+^XHuman   :^? Just like you and me!  Humans are versatile and successful adventurers!

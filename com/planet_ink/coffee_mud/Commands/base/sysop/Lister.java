@@ -123,7 +123,7 @@ public class Lister
 
 	public StringBuffer listSessions(MOB mob)
 	{
-		StringBuffer lines=new StringBuffer("^X");
+		StringBuffer lines=new StringBuffer("^x");
 		lines.append(Util.padRight("Status",9)+"| ");
 		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");
@@ -136,11 +136,11 @@ public class Lister
 			if (thisSession.mob() != null)
 			{
 				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ");
-				lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+				lines.append("^!"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
 				if ( thisSession.mob().location() != null )
 					lines.append(Util.padRight(thisSession.mob().location().ID(),17)+"| ");
 				else
-					lines.append("^B"+Util.padRight("(no location)",17)+"^?| ");
+					lines.append("^!"+Util.padRight("(no location)",17)+"^?| ");
 			}
 			else
 			{
@@ -189,7 +189,7 @@ public class Lister
 
 	public StringBuffer listThreads(MOB mob)
 	{
-		StringBuffer lines=new StringBuffer("^XStatus|Name                 ^?\n\r");
+		StringBuffer lines=new StringBuffer("^xStatus|Name                 ^?\n\r");
 		try
 		{
 			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
@@ -231,7 +231,7 @@ public class Lister
 	
 	public void where(MOB mob, Vector commands)
 	{
-		StringBuffer lines=new StringBuffer("^X");
+		StringBuffer lines=new StringBuffer("^x");
 		lines.append(Util.padRight("Name",17)+"| ");
 		lines.append(Util.padRight("Location",17)+"^?\n\r");
 		String who=Util.combine(commands,1);
@@ -244,14 +244,14 @@ public class Lister
 				{
 					if(mob.isASysOp(thisSession.mob().location()))
 					{
-						lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
 						if(thisSession.mob().location() != null )
 						{
 							lines.append(thisSession.mob().location().displayText());
 							lines.append(" ("+thisSession.mob().location().ID()+")");
 						}
 						else
-							lines.append("^B(no location)^?");
+							lines.append("^!(no location)^?");
 						lines.append("\n\r");
 					}
 				}
@@ -276,7 +276,7 @@ public class Lister
 					if((CoffeeUtensils.containsString(M.name(),who))
 					||(CoffeeUtensils.containsString(M.displayText(),who)))
 					{
-						lines.append("^B"+Util.padRight(M.name(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
 						lines.append(R.displayText());
 						lines.append(" ("+R.ID()+")");
 						lines.append("\n\r");

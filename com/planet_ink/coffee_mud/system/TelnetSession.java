@@ -434,7 +434,7 @@ public class TelnetSession extends Thread implements Session
 				clookup=new String[256];
 				// N B H - normal bold highlight
 				clookup[(int)'N']="\033[0;37m";
-				clookup[(int)'B']="\033[1;37m";
+				clookup[(int)'!']="\033[1;37m";
 				clookup[(int)'H']="\033[1;36m";
 				// F S - NOT IN USE! fight spell
 				clookup[(int)'F']="\033[1;31m";
@@ -444,11 +444,11 @@ public class TelnetSession extends Thread implements Session
 				clookup[(int)'T']="\033[1;32m";
 				clookup[(int)'Q']="\033[0;36;44m";
 				// X Y Z - important messages
-				clookup[(int)'X']="\033[1;36;44m";
-				clookup[(int)'Y']="\033[1;33;44m";
+				clookup[(int)'x']="\033[1;36;44m";
+				clookup[(int)'X']="\033[1;33;44m";
 				clookup[(int)'Z']="\033[1;33;41m";
 				//  R L D d - roomtitle roomdesc(look) Direction door
-				clookup[(int)'R']="\033[1;32m";
+				clookup[(int)'O']="\033[1;32m";
 				clookup[(int)'L']="\033[0;32m";
 				clookup[(int)'D']="\033[1;36;44m";
 				clookup[(int)'d']="\033[0;32m";
@@ -467,6 +467,13 @@ public class TelnetSession extends Thread implements Session
 				clookup[(int)'y']="\033[1;33m";
 				clookup[(int)'c']="\033[1;36m";
 				clookup[(int)'p']="\033[1;35m";
+				clookup[(int)'W']="\033[0;37m";
+				clookup[(int)'G']="\033[0;32m";
+				clookup[(int)'B']="\033[0;34m";
+				clookup[(int)'R']="\033[0;31m";
+				clookup[(int)'Y']="\033[0;33m";
+				clookup[(int)'C']="\033[0;36m";
+				clookup[(int)'P']="\033[0;35m";
 			}
 			if (c != currentColor)
 			{

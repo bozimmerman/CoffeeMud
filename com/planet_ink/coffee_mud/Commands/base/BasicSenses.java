@@ -369,7 +369,7 @@ public class BasicSenses
 			else
 			{
 				mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
-				mob.tell("^BANSI^N ^Hcolour^N enabled.\n\r");
+				mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
 			}
 		}
 	}

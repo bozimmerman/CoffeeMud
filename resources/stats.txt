@@ -1,14 +1,14 @@
 
 ^yYour stats below reflect your physical and mental gifts.  They can be boosted through the use of ^HTraining points^?, which are granted at first level, and are gained at a rate of one per level.  These training points are also needed to gain new spells and abilities which your class qualifies for, but does not get at first level.^N
 
-^ZStrength:^? Physical strength and fighting prowess is reflected in strength.  The limit is ^B18^? for all classes except Fighter, Paladin, and Ranger.
+^ZStrength:^? Physical strength and fighting prowess is reflected in strength.  The limit is ^!18^? for all classes except Fighter, Paladin, and Ranger.
 
-^ZDexterity:^? Agility and the ability to dodge blows is reflected in Dexterity.  The limit is ^B18^? for all classes except Thieves and Rangers.
+^ZDexterity:^? Agility and the ability to dodge blows is reflected in Dexterity.  The limit is ^!18^? for all classes except Thieves and Rangers.
 
-^ZConstitution:^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.  The limit is ^B18^? for all classes except Druid.
+^ZConstitution:^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.  The limit is ^!18^? for all classes except Druid.
 
-^ZIntelligence:^? Memory and concentration, and the ability to gain greater profficiency in skills and spells through practice are reflected in Intelligence.  The limit is ^B18^? for all classes except Mages.
+^ZIntelligence:^? Memory and concentration, and the ability to gain greater profficiency in skills and spells through practice are reflected in Intelligence.  The limit is ^!18^? for all classes except Mages.
 
-^ZWisdom:^? Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom.  The limit is ^B18^? for all classes except Clerics and Paladins.
+^ZWisdom:^? Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom.  The limit is ^!18^? for all classes except Clerics and Paladins.
 
-^ZCharisma:^? Grace, charm, and the ability to get better prices from merchants is reflected in Charisma.  The limit is ^B18^? for all classes except Bards.
+^ZCharisma:^? Grace, charm, and the ability to get better prices from merchants is reflected in Charisma.  The limit is ^!18^? for all classes except Bards.
