@@ -19,8 +19,8 @@ Large % Pillow	10	10	5	27	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
 % Mitts	5	10	5	10	GenArmor	HANDS	0	1	0	Prop_WearResister(cold 5%)
 % Gloves	6	10	2	20	GenArmor	HANDS	0	1	0
 % Cestus	8	20	2	5	GenArmor	HANDS	0	1	0	Prop_WearAdjuster(att+5)
-Improved % Cestus	21	40	7	65	GenArmor	HANDS	0	2	0	prop_WearAdjuster(att+15)
-Heavy % Cestus	26	80	10	250	GenArmor	HANDS	0	2	0	prop_WearAdjuster(att+30)
+Improved % Cestus	21	40	7	65	GenArmor	HANDS	0	2	0	Prop_WearAdjuster(att+15)
+Heavy % Cestus	26	80	10	250	GenArmor	HANDS	0	2	0	Prop_WearAdjuster(att+30)
 % Bonnet	1	10	2	2	GenArmor	HEAD	0	0	0
 Pointy % Cap	2	10	2	2	GenArmor	HEAD	0	1	0
 % Headband	2	20	2	2	GenArmor	HEAD	0	1	0

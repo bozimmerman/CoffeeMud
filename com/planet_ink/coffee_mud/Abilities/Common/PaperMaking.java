@@ -185,8 +185,11 @@ public class PaperMaking extends CraftingSkill
 					spell=spell.substring(0,spell.indexOf(";"));
 				}
 				Ability A=CMClass.getAbility(spell);
-				A.setMiscText(parm);
-				if(A!=null)	building.addNonUninvokableEffect(A);
+				if(A!=null)
+				{
+					A.setMiscText(parm);
+					building.addNonUninvokableEffect(A);
+				}
 			}
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)

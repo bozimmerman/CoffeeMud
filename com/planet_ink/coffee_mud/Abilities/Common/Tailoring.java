@@ -304,8 +304,11 @@ public class Tailoring extends CraftingSkill
 					spell=spell.substring(0,spell.indexOf(";"));
 				}
 				Ability A=CMClass.getAbility(spell);
-				A.setMiscText(parm);
-				if(A!=null)	building.addNonUninvokableEffect(A);
+				if(A!=null)
+				{
+					A.setMiscText(parm);
+					building.addNonUninvokableEffect(A);
+				}
 			}
 			if(building instanceof Weapon)
 			{

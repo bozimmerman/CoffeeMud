@@ -12,5 +12,4 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
-POP3 Server
-POP3 Client
+
