@@ -20,9 +20,6 @@ public class Spell_Ventriloquate extends Spell
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Mage",1);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

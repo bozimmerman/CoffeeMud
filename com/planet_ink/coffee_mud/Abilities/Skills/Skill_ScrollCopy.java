@@ -24,7 +24,6 @@ public class Skill_ScrollCopy extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Mage",1);
 		recoverEnvStats();
 	}
 

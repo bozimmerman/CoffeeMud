@@ -22,8 +22,6 @@ public class Song_Revelation extends Song
 
 		baseEnvStats().setLevel(10);
 
-		addQualifyingClass("Bard",10);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

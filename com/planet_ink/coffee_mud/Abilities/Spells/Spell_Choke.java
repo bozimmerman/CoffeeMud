@@ -26,9 +26,6 @@ public class Spell_Choke extends Spell
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Mage",16);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -25,8 +25,6 @@ public class Song_Mana extends Song
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Bard",16);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

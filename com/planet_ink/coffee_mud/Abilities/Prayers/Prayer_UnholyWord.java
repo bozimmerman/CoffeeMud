@@ -16,8 +16,6 @@ public class Prayer_UnholyWord extends Prayer
 		baseEnvStats().setLevel(23);
 		holyQuality=Prayer.HOLY_EVIL;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

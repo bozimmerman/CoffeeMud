@@ -25,8 +25,6 @@ public class Song_Friendship extends Song
 
 		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Bard",19);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

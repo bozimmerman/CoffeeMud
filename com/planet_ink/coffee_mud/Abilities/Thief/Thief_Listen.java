@@ -23,7 +23,6 @@ public class Thief_Listen extends ThiefSkill
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Thief",11);
 		recoverEnvStats();
 	}
 

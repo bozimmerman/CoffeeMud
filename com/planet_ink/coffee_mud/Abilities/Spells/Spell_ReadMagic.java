@@ -21,11 +21,6 @@ public class Spell_ReadMagic extends Spell
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Mage",1);
-		addQualifyingClass("Thief",16);
-		addQualifyingClass("Bard",16);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

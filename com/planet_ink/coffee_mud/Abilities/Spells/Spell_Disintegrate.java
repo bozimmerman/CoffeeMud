@@ -22,9 +22,6 @@ public class Spell_Disintegrate extends Spell
 
 		baseEnvStats().setLevel(25);
 
-		addQualifyingClass("Mage",25);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

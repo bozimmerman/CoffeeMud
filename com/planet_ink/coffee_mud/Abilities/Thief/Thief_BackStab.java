@@ -25,7 +25,6 @@ public class Thief_BackStab extends ThiefSkill
 
 		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Thief",7);
 		recoverEnvStats();
 	}
 

@@ -23,8 +23,6 @@ public class Skill_Swim extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		for(int c=0;c<CMClass.charClasses.size();c++)
-			addQualifyingClass(((CharClass)CMClass.charClasses.elementAt(c)).ID(),1);
 		recoverEnvStats();
 	}
 

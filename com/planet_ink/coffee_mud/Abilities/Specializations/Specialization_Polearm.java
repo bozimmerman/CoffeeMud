@@ -22,9 +22,6 @@ public class Specialization_Polearm extends Specialization_Weapon
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Fighter",1);
-		addQualifyingClass("Ranger",1);
-		addQualifyingClass("Paladin",1);
 		recoverEnvStats();
 	}
 

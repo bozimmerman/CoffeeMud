@@ -22,9 +22,6 @@ public class Specialization_FlailedWeapon extends Specialization_Weapon
 		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_FLAILED;
 
-		addQualifyingClass("Fighter",1);
-		addQualifyingClass("Ranger",1);
-		addQualifyingClass("Paladin",1);
 		recoverEnvStats();
 	}
 

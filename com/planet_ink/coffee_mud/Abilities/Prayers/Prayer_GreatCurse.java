@@ -16,9 +16,6 @@ public class Prayer_GreatCurse extends Prayer
 		quality=Ability.MALICIOUS;
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(15);
-		addQualifyingClass("Archon",baseEnvStats().level());
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

@@ -25,8 +25,6 @@ public class Song_Inebriation extends Song
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Bard",11);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

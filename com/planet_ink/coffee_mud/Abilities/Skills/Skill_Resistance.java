@@ -28,7 +28,6 @@ public class Skill_Resistance extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Archon",1);
 		recoverEnvStats();
 	}
 

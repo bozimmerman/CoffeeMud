@@ -24,9 +24,6 @@ public class Spell_MassInvisibility extends Spell
 
 		baseEnvStats().setLevel(14);
 
-		addQualifyingClass("Mage",14);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

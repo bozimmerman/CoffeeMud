@@ -23,10 +23,6 @@ public class Skill_Revoke extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Ranger",5);
-		addQualifyingClass("Paladin",5);
-		addQualifyingClass("Cleric",1);
-		addQualifyingClass("Mage",1);
 		recoverEnvStats();
 	}
 

@@ -24,8 +24,6 @@ public class Song_Dexterity extends Song
 		baseEnvStats().setLevel(14);
 		quality=Ability.BENEFICIAL_OTHERS;
 
-		addQualifyingClass("Bard",14);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

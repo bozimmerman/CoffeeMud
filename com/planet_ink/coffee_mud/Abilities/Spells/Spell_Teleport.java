@@ -20,9 +20,6 @@ public class Spell_Teleport extends Spell
 
 		baseEnvStats().setLevel(10);
 
-		addQualifyingClass("Mage",10);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

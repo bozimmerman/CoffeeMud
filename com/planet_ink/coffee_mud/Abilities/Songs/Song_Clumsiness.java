@@ -24,8 +24,6 @@ public class Song_Clumsiness extends Song
 
 		baseEnvStats().setLevel(6);
 
-		addQualifyingClass("Bard",6);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -17,8 +17,6 @@ public class Prayer_CreateWater extends Prayer
 		name="Create Water";
 		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

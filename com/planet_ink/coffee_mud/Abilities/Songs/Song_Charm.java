@@ -22,8 +22,6 @@ public class Song_Charm extends Song
 
 		baseEnvStats().setLevel(4);
 
-		addQualifyingClass("Bard",4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

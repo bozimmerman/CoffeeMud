@@ -17,8 +17,6 @@ public class Prayer_MassFreedom extends Prayer
 		quality=Ability.OK_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

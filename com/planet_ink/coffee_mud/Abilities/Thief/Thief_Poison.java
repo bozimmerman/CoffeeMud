@@ -26,7 +26,6 @@ public class Thief_Poison extends ThiefSkill
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Thief",16);
 		recoverEnvStats();
 	}
 

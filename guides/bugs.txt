@@ -13,4 +13,6 @@
 ! com.planet_ink.coffee_mud.Locales.StdRoom.okAffect(StdRoom.java) (0>=0)
 ! com.planet_ink.coffee_mud.Locales.StdRoom.reallyReallySend(StdRoom.java) 3>=3
 ? com.planet_ink.coffee_mud.Abilities.Spells.Spell_Meld.invoke(Spell_Meld.java) GenShield class cast exception (melding with gloves)
+  i am convinced observe does not work....='(
+  back to feeblemind...I is not letting me target dead people with it, so that leaves (dead) cats and successful casting to try.
   

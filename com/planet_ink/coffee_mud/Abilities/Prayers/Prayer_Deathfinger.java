@@ -17,8 +17,6 @@ public class Prayer_Deathfinger extends Prayer
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(25);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

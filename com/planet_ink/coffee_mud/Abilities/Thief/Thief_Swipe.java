@@ -25,8 +25,6 @@ public class Thief_Swipe extends ThiefSkill
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Thief",1);
-		addQualifyingClass("Bard",19);
 		recoverEnvStats();
 	}
 

@@ -22,8 +22,6 @@ public class Song_Protection extends Song
 		baseEnvStats().setLevel(15);
 		quality=Ability.BENEFICIAL_OTHERS;
 
-		addQualifyingClass("Bard",15);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

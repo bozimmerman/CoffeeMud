@@ -18,8 +18,6 @@ public class Prayer_SenseMagic extends Prayer
 
 		baseEnvStats().setLevel(10);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

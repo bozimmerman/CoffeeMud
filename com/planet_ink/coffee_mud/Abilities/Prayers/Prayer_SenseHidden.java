@@ -18,8 +18,6 @@ public class Prayer_SenseHidden extends Prayer
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

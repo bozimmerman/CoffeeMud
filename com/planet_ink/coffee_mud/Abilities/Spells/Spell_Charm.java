@@ -24,10 +24,6 @@ public class Spell_Charm extends Spell
 
 		baseEnvStats().setLevel(6);
 
-		addQualifyingClass("Mage",6);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-		addQualifyingClass("Thief",24);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

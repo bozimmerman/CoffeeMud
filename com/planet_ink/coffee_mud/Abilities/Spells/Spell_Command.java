@@ -24,9 +24,6 @@ public class Spell_Command extends Spell
 
 		baseEnvStats().setLevel(21);
 
-		addQualifyingClass("Mage",21);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

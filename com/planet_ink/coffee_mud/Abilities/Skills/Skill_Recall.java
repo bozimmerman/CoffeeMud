@@ -22,8 +22,6 @@ public class Skill_Recall extends StdAbility
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(1);
-		for(int c=0;c<CMClass.charClasses.size();c++)
-			addQualifyingClass(((CharClass)CMClass.charClasses.elementAt(c)).ID(),1);
 		recoverEnvStats();
 	}
 

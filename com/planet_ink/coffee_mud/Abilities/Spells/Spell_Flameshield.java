@@ -19,8 +19,6 @@ public class Spell_Flameshield extends Spell
 		baseEnvStats().setLevel(9);
 		quality=Ability.BENEFICIAL_OTHERS;
 
-		addQualifyingClass("Mage",baseEnvStats().level());
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

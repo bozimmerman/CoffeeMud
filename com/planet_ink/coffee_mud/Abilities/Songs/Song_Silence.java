@@ -25,8 +25,6 @@ public class Song_Silence extends Song
 
 		baseEnvStats().setLevel(13);
 
-		addQualifyingClass("Bard",13);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

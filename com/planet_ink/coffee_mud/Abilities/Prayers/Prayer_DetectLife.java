@@ -14,8 +14,6 @@ public class Prayer_DetectLife extends Prayer
 		name="Detect Life";
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

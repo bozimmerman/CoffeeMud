@@ -24,8 +24,6 @@ public class Song_Death extends Song
 
 		baseEnvStats().setLevel(24);
 
-		addQualifyingClass("Bard",24);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

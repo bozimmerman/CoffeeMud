@@ -17,8 +17,6 @@ public class Prayer_Curse extends Prayer
 		baseEnvStats().setLevel(7);
 		holyQuality=Prayer.HOLY_EVIL;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

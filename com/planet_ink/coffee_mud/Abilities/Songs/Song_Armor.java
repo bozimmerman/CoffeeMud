@@ -23,8 +23,6 @@ public class Song_Armor extends Song
 
 		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Bard",5);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

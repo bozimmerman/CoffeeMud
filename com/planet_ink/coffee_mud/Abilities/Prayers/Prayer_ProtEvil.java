@@ -18,8 +18,6 @@ public class Prayer_ProtEvil extends Prayer
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(4);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

@@ -17,8 +17,6 @@ public class Prayer_Godstrike extends Prayer
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
