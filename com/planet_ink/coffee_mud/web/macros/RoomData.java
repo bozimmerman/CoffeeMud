@@ -206,13 +206,17 @@ public class RoomData extends StdWebMacro
 			String className=(String)httpReq.getRequestParameters().get("CLASSES");
 			if((className==null)||(className.length()==0))
 				className=CMClass.className(R);
+			Vector sortMe=new Vector();
 			for(int r=0;r<CMClass.locales.size();r++)
+				sortMe.addElement(CMClass.className(CMClass.locales.elementAt(r)));
+			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+			for(int r=0;r<sorted.length;r++)
 			{
-				Room cnam=(Room)CMClass.locales.elementAt(r);
-				str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-				if(className.equalsIgnoreCase(CMClass.className(cnam)))
+				String cnam=(String)sorted[r];
+				str.append("<OPTION VALUE=\""+cnam+"\"");
+				if(className.equals(cnam))
 					str.append(" SELECTED");
-				str.append(">"+CMClass.className(cnam));
+				str.append(">"+cnam);
 			}
 		}
 				

@@ -1,4 +1,7 @@
-package fakedb;
+package com.planet_ink.fakedb;
+/** Tiny (nearly) fake DB
+  * (c) 2001 Thomas Neumann
+  */
 
 class ResultSet implements java.sql.ResultSet
 {
@@ -34,13 +37,8 @@ class ResultSet implements java.sql.ResultSet
          if (!iter.hasNext()) return false;
          if ((conditionIndex<0)&&(conditionValue!=null)) {
             String key=(String)iter.next();
-            if ((key.startsWith(conditionValue))
-			&&((key.length()<=conditionValue.length())
-				||(key.charAt(conditionValue.length())=='\n')
-			    ||(key.charAt(conditionValue.length())=='\r')))
-	            return relation.getRecord(nullIndicators,values,(Backend.RecordInfo)relation.index.get(key));
-			else
-				continue;
+            if(!key.startsWith(conditionValue+"\n")) continue;
+	        return relation.getRecord(nullIndicators,values,(Backend.RecordInfo)relation.index.get(key));
          } else {
             if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) return false;
             if (conditionIndex>=0) {

@@ -1,4 +1,8 @@
-package fakedb;
+package com.planet_ink.fakedb;
+
+/** Tiny (nearly) fake DB
+  * (c) 2001 Thomas Neumann
+  */
 
 import java.io.*;
 import java.util.*;
@@ -230,18 +234,13 @@ class Backend
             byte[] mark=new byte[1]; mark[0]=(byte)'*';
             if (key<0) {
                for (Iterator iter=index.keySet().iterator();iter.hasNext();) {
-                  String current=(String)iter.next();
-				if ((current.startsWith(value))
-				&&((current.length()<=value.length())
-					||(current.charAt(value.length())=='\n')
-				    ||(current.charAt(value.length())=='\r')))
-				{
+	                String current=(String)iter.next();
+					if(!current.startsWith(value)) continue;
 					RecordInfo info=(RecordInfo)index.get(current);
 					file.seek(info.offset);
 					file.write(mark);
 					count++;
 					iter.remove();
-				}
                }
             } else {
                boolean[] nullIndicators=new boolean[attributes.length];
@@ -270,22 +269,17 @@ class Backend
             if (key<0) {
                for (Iterator iter=index.keySet().iterator();iter.hasNext();) {
                   String current=(String)iter.next();
-				if ((current.startsWith(value))
-				&&((current.length()<=value.length())
-					||(current.charAt(value.length())=='\n')
-				    ||(current.charAt(value.length())=='\r')))
-				{
-					RecordInfo info=(RecordInfo)index.get(current);
-					getRecord(nullIndicators,values,info);
-					for (int sub=0;sub<attributes.length;sub++) {
-					   nullIndicators[attributes[sub]]=false;
-					   values[attributes[sub]]=newValues[sub];
-					}
-					insertRecord(current,nullIndicators,values);
-					file.seek(info.offset);
-					file.write(mark);
-					count++;
+				if(!current.startsWith(value)) continue;
+				RecordInfo info=(RecordInfo)index.get(current);
+				getRecord(nullIndicators,values,info);
+				for (int sub=0;sub<attributes.length;sub++) {
+				   nullIndicators[attributes[sub]]=false;
+				   values[attributes[sub]]=newValues[sub];
 				}
+				insertRecord(current,nullIndicators,values);
+				file.seek(info.offset);
+				file.write(mark);
+				count++;
                }
             } else {
                for (Iterator iter=index.keySet().iterator();iter.hasNext();) {

@@ -30,7 +30,7 @@ public class Prop_SpellAdder extends Property
 		Vector theSpells=new Vector();
 		String names=spellHolder.text();
 		int del=names.indexOf(";");
-		while(del>0)
+		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
 			Ability A=(Ability)CMClass.getAbility(thisOne);

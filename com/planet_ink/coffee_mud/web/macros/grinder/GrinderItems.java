@@ -97,12 +97,11 @@ public class GrinderItems
 				break;
 			case 9: // is generic
 				break;
-			case 10: // readable text
-				I.setReadableText(old);
-				I.setReadable(old.length()>0);
-				break;
-			case 11: // isreadable
+			case 10: // isreadable
 				I.setReadable(old.equals("on"));
+				break;
+			case 11: // readable text
+				I.setReadableText(old);
 				break;
 			case 12: // is drink
 				break;
@@ -183,7 +182,7 @@ public class GrinderItems
 				I.setTrapped(old.equals("on"));
 				break;
 			case 34: // readable spells
-				if((I instanceof Pill)||(I instanceof Potion))
+				if(((I instanceof Pill)||(I instanceof Scroll)||(I instanceof Potion))&&(CMClass.className(I).indexOf("SuperPill")<0))
 				{
 					if(httpReq.getRequestParameters().containsKey("READABLESPELLS"))
 					{
@@ -199,6 +198,8 @@ public class GrinderItems
 						((Pill)I).setSpellList(old);
 					if(I instanceof Potion)
 						((Potion)I).setSpellList(old);
+					if(I instanceof Scroll)
+						((Scroll)I).setScrollText(old);
 				}
 				break;
 			case 35: // is wand
@@ -240,15 +241,15 @@ public class GrinderItems
 			case 44: // is potion
 				break;
 			case 45: // liquid types
-				if(I instanceof Drink)
+				if((I instanceof Drink)&&(!(I instanceof Potion)))
 					((Drink)I).setLiquidType(Util.s_int(old));
 				break;
 			case 46: // ammo types
-				if(I instanceof Weapon)
+				if((I instanceof Weapon)&&(!(I instanceof Wand)))
 					((Weapon)I).setAmmunitionType(old);
 				break;
 			case 47: // ammo capacity
-				if(I instanceof Weapon)
+				if((I instanceof Weapon)&&(!(I instanceof Wand)))
 				{
 					((Weapon)I).setAmmoCapacity(Util.s_int(old));
 					((Weapon)I).setAmmoRemaining(Util.s_int(old));
@@ -274,10 +275,13 @@ public class GrinderItems
 				break;
 			case 53: // has a lock
 				if(I instanceof Container)
-					((Container)I).setLidsNLocks(old.equals("on"),!old.equals("on"),old.equals("on"),old.equals("on"));
+				{
+					boolean hasALid=((Container)I).hasALid();
+					((Container)I).setLidsNLocks(hasALid||old.equals("on"),!(hasALid||old.equals("on")),old.equals("on"),old.equals("on"));
+				}
 				break;
 			case 54: // key code
-				if(I instanceof Container)
+				if((I instanceof Container)&&(((Container)I).hasALock()))
 					((Container)I).setKeyName(old);
 				break;
 			case 55: // is wallpaper
@@ -303,7 +307,6 @@ public class GrinderItems
 				break;
 			}
 		}
-		
 		if(I.isGeneric())
 		{
 			String error=GrinderExits.dispositions(I,httpReq,parms);

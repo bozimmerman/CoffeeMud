@@ -1,4 +1,7 @@
-package fakedb;
+package com.planet_ink.fakedb;
+/** Tiny (nearly) fake DB
+  * (c) 2001 Thomas Neumann
+  */
 
 import java.util.Properties;
 import java.lang.ref.WeakReference;
@@ -73,6 +76,20 @@ public class Connection implements java.sql.Connection
    { return prepareCall(sql); }
    public java.sql.CallableStatement prepareCall(String sql,int a,int b,int c) throws java.sql.SQLException
    { return prepareCall(sql); }
+   public int getHoldability()
+   {  return ResultSet.HOLD_CURSORS_OVER_COMMIT;  }
+   public java.sql.Savepoint setSavepoint()
+	   throws java.sql.SQLException
+   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   public java.sql.Savepoint setSavepoint(String S)
+	   throws java.sql.SQLException
+   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   public void rollback(java.sql.Savepoint saved)
+	   throws java.sql.SQLException
+   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   public void releaseSavepoint(java.sql.Savepoint saved)
+	   throws java.sql.SQLException
+   {  throw new java.sql.SQLException("Savepoints not supported");  }
 
    public String nativeSQL(String sql) throws java.sql.SQLException
    {

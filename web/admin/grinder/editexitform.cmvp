@@ -64,8 +64,7 @@
 	</SELECT>
 	</TD>
 </TR>
-@ExitData?ISGENERIC@
-@if?CheckReqParm?ISGENERIC=true@
+@if?ExitData?ISGENERIC@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Exit Name:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ExitData?NAME@"></TD>
@@ -90,7 +89,7 @@
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MISCTEXT SIZE=60 VALUE="@ExitData?MISCTEXT@"></TD>
 </TR>
 @endif@
-@if?CheckReqParm?ISGENERIC=true@
+@if?ExitData?ISGENERIC@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Exit Flags:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2>

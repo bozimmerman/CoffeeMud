@@ -14,7 +14,7 @@ public class GenExit extends StdExit
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a walkway";
 		description="An ordinary looking way from here to there.";
-		displayText="an open exit";
+		displayText="";
 		closedText="a closed exit";
 		doorName="exit";
 		openName="open";

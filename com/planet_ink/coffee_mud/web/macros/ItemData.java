@@ -12,13 +12,14 @@ public class ItemData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ROOM");
+		Hashtable reqs=httpReq.getRequestParameters();
+		String last=(String)reqs.get("ROOM");
 		if(last==null) return " @break@";
-		String itemCode=(String)httpReq.getRequestParameters().get("ITEM");
+		String itemCode=(String)reqs.get("ITEM");
 		if(itemCode==null) return "@break@";
 		int itemNum=Util.s_int(itemCode);
 		
-		String mobNum=(String)httpReq.getRequestParameters().get("MOB");
+		String mobNum=(String)reqs.get("MOB");
 		
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
@@ -54,20 +55,19 @@ public class ItemData extends StdWebMacro
 		if(I==null)
 			return "No Item?!";
 		
-		boolean classChanged=(((String)httpReq.getRequestParameters().get("CLASSCHANGED")!=null)
-							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
-		
 		Item oldI=I;
 		// important generic<->non generic swap!
-		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
-		boolean firstTime=(newClassID==null);
+		String newClassID=(String)reqs.get("CLASSES");
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
+		
+		boolean firstTime=(reqs.get("ACTION")==null)
+				||(!((String)reqs.get("ACTION")).equals("MODIFYITEM"))
+				||(((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
 
 		if(I!=null)
 		{
 			StringBuffer str=new StringBuffer("");
-			boolean resetIfNecessary=false;
 			String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 							  "LEVEL","ABILITY","REJUV","MISCTEXT",
 							  "MATERIALS","ISGENERIC","ISFOOD","NOURISHMENT",
@@ -82,13 +82,12 @@ public class ItemData extends StdWebMacro
 							  "ISPOTION","LIQUIDTYPES","AMMOTYPE","AMMOCAP",
 							  "READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
-							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION"};
+							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
+							  "ISUNTWOHANDED","ISCOIN","ISSCROLL"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
-				String old=(String)httpReq.getRequestParameters().get(okparms[o]);
-				if(classChanged&&(itemCode.equals("NEW")))
-				   firstTime=true;
+				String old=(String)reqs.get(okparms[o]);
 				String oldold=old;
 				if(old==null) old="";
 				switch(o)
@@ -100,37 +99,23 @@ public class ItemData extends StdWebMacro
 				case 1: // classes
 					{
 						if(firstTime) old=CMClass.className(I); 
+						Vector sortMe=new Vector();
 						for(int r=0;r<CMClass.items.size();r++)
-						{
-							Item cnam=(Item)CMClass.items.elementAt(r);
-							str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-							if(old.equalsIgnoreCase(CMClass.className(cnam)))
-								str.append(" SELECTED");
-							str.append(">"+CMClass.className(cnam));
-						}
+							sortMe.addElement(CMClass.className(CMClass.items.elementAt(r)));
 						for(int r=0;r<CMClass.weapons.size();r++)
-						{
-							Item cnam=(Item)CMClass.weapons.elementAt(r);
-							str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-							if(old.equalsIgnoreCase(CMClass.className(cnam)))
-								str.append(" SELECTED");
-							str.append(">"+CMClass.className(cnam));
-						}
+							sortMe.addElement(CMClass.className(CMClass.weapons.elementAt(r)));
 						for(int r=0;r<CMClass.armor.size();r++)
-						{
-							Item cnam=(Item)CMClass.armor.elementAt(r);
-							str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-							if(old.equalsIgnoreCase(CMClass.className(cnam)))
-								str.append(" SELECTED");
-							str.append(">"+CMClass.className(cnam));
-						}
+							sortMe.addElement(CMClass.className(CMClass.armor.elementAt(r)));
 						for(int r=0;r<CMClass.miscMagic.size();r++)
+							sortMe.addElement(CMClass.className(CMClass.miscMagic.elementAt(r)));
+						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						for(int r=0;r<sorted.length;r++)
 						{
-							Item cnam=(Item)CMClass.miscMagic.elementAt(r);
-							str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-							if(old.equalsIgnoreCase(CMClass.className(cnam)))
+							String cnam=(String)sorted[r];
+							str.append("<OPTION VALUE=\""+cnam+"\"");
+							if(old.equals(cnam))
 								str.append(" SELECTED");
-							str.append(">"+CMClass.className(cnam));
+							str.append(">"+cnam);
 						}
 					}
 					break;
@@ -212,12 +197,12 @@ public class ItemData extends StdWebMacro
 					break;
 				case 19: // worn data
 					long climate=I.rawWornCode();
-					if(httpReq.getRequestParameters().containsKey("WORNDATA"))
+					if(reqs.containsKey("WORNDATA"))
 					{
-						climate=Util.s_int((String)httpReq.getRequestParameters().get("WORNDATA"));
+						climate=Util.s_int((String)reqs.get("WORNDATA"));
 						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("WORNDATA"+(new Integer(i).toString())))
-								climate=climate|Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"+(new Integer(i).toString())));
+							if(reqs.containsKey("WORNDATA"+(new Integer(i).toString())))
+								climate=climate|Util.s_int((String)reqs.get("WORNDATA"+(new Integer(i).toString())));
 							else
 								break;
 					}
@@ -320,26 +305,35 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 34: // readable spells
-					if(I instanceof Potion)
-						old=";"+((Potion)I).getSpellList();
-					if(I instanceof Pill)
-						old=";"+((Pill)I).getSpellList();
-					if(httpReq.getRequestParameters().containsKey("READABLESPELLS"))
 					{
-						old=";"+(String)httpReq.getRequestParameters().get("READABLESPELLS");
-						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("READABLESPELLS"+(new Integer(i).toString())))
-								old+=";"+(String)httpReq.getRequestParameters().get("READABLESPELLS"+(new Integer(i).toString()));
-							else
-								break;
-					}
-					old=old.toUpperCase()+";";
-					for(int i=1;i<CMClass.abilities.size();i++)
-					{
-						Ability A2=(Ability)CMClass.abilities.elementAt(i);
-						str.append("<OPTION VALUE=\""+A2.ID()+"\"");
-						if(old.indexOf(";"+A2.ID().toUpperCase()+";")>=0) str.append(" SELECTED");
-						str.append(">"+A2.name());
+						if(I instanceof Potion)
+							old=";"+((Potion)I).getSpellList();
+						if(I instanceof Pill)
+							old=";"+((Pill)I).getSpellList();
+						if(I instanceof Scroll)
+							old=";"+((Scroll)I).getScrollText();
+						if(reqs.containsKey("READABLESPELLS"))
+						{
+							old=";"+(String)reqs.get("READABLESPELLS");
+							for(int i=1;;i++)
+								if(reqs.containsKey("READABLESPELLS"+(new Integer(i).toString())))
+									old+=";"+(String)reqs.get("READABLESPELLS"+(new Integer(i).toString()));
+								else
+									break;
+						}
+						old=old.toUpperCase()+";";
+						Vector sortMe=new Vector();
+						for(int r=0;r<CMClass.abilities.size();r++)
+							sortMe.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						for(int r=0;r<sorted.length;r++)
+						{
+							String cnam=(String)sorted[r];
+							str.append("<OPTION VALUE=\""+cnam+"\"");
+							if(old.indexOf(";"+cnam.toUpperCase()+";")>=0) 
+								str.append(" SELECTED");
+							str.append(">"+cnam);
+						}
 					}
 					break;
 				case 35: // is wand
@@ -362,12 +356,12 @@ public class ItemData extends StdWebMacro
 					else return "false";
 				case 40: // map areas
 					String mask=";"+I.readableText();
-					if(httpReq.getRequestParameters().containsKey("MAPAREAS"))
+					if(reqs.containsKey("MAPAREAS"))
 					{
-						mask=";"+(String)httpReq.getRequestParameters().get("MAPAREAS");
+						mask=";"+(String)reqs.get("MAPAREAS");
 						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("MAPAREAS"+(new Integer(i).toString())))
-								mask+=";"+(String)httpReq.getRequestParameters().get("MAPAREAS"+(new Integer(i).toString()));
+							if(reqs.containsKey("MAPAREAS"+(new Integer(i).toString())))
+								mask+=";"+(String)reqs.get("MAPAREAS"+(new Integer(i).toString()));
 							else
 								break;
 					}
@@ -422,18 +416,24 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 48: // readable spell
-					if((firstTime)&&(I instanceof Wand))
-						old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-					for(int r=0;r<CMClass.abilities.size();r++)
 					{
-						Ability A=(Ability)CMClass.abilities.elementAt(r);
-						str.append("<OPTION VALUE=\""+A.ID()+"\"");
-						if(old.equals(A.ID()))
-							str.append(" SELECTED");
-						str.append(">"+A.name());
+						if((firstTime)&&(I instanceof Wand))
+							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
+						Vector sortMe=new Vector();
+						for(int r=0;r<CMClass.abilities.size();r++)
+							sortMe.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						for(int r=0;r<sorted.length;r++)
+						{
+							String cnam=(String)sorted[r];
+							str.append("<OPTION VALUE=\""+cnam+"\"");
+							if(old.equals(cnam))
+								str.append(" SELECTED");
+							str.append(">"+cnam);
+						}
 					}
 					break;
-				case 49: // is map
+				case 49: // is rideable
 					if(I instanceof Rideable) return "true";
 					else return "false";
 				case 50: // rideable type
@@ -447,7 +447,7 @@ public class ItemData extends StdWebMacro
 						str.append(">"+Rideable.RIDEABLE_DESCS[r]);
 					}
 					break;
-				case 51: // ammo capacity
+				case 51: // rideable capacity
 					if((firstTime)&&(I instanceof Rideable))
 						old=""+((Rideable)I).mobCapacity();
 					str.append(old);
@@ -459,8 +459,6 @@ public class ItemData extends StdWebMacro
 					if(old.equals("on")) 
 						old="checked";
 					str.append(old);
-					resetIfNecessary=true;
-					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
 					break;
 				case 53: // has a lock
 					if((firstTime)&&(I instanceof Container))
@@ -469,8 +467,6 @@ public class ItemData extends StdWebMacro
 					if(old.equals("on")) 
 						old="checked";
 					str.append(old);
-					resetIfNecessary=true;
-					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
 					break;
 				case 54: // key code
 					if((firstTime)&&(I instanceof Container))
@@ -535,18 +531,34 @@ public class ItemData extends StdWebMacro
 						old=""+((Light)I).getDuration();
 					str.append(old);
 					break;
+				case 60: // is two handed
+					if(firstTime) 
+						old=I.rawLogicalAnd()?"":"checked"; 
+					else 
+					{
+						old=(String)reqs.get("ISTWOHANDED");
+						oldold=old;
+						if(old==null) old="";
+						if(old.equals("")) 
+							old="checked";
+					}
+					str.append(old);
+					break;
+				case 61:
+					if(I instanceof Coins) return "true";
+					else return "false";
+				case 62:
+					if(I instanceof Scroll) return "true";
+					else return "false";
 				}
-				if((oldold==null)&&(!firstTime))
-				{
-					resetIfNecessary=true;
-					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
-				}
+				if(firstTime)
+					reqs.put(okparms[o],old.equals("checked")?"on":old);
 				
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(I,httpReq,parms));
 		
-			if(resetIfNecessary)
+			if(firstTime)
 				httpReq.resetRequestEncodedParameters();
 			
 			String strstr=str.toString();

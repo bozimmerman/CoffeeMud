@@ -45,6 +45,10 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			Vector sortMeB=new Vector();
+			for(int r=0;r<CMClass.behaviors.size();r++)
+				sortMeB.addElement(CMClass.className(CMClass.behaviors.elementAt(r)));
+			Object[] sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -52,13 +56,13 @@ public class AreaData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int b=0;b<CMClass.behaviors.size();b++)
+				for(int r=0;r<sortedB.length;r++)
 				{
-					Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
-					str.append("<OPTION VALUE=\""+CMClass.className(B)+"\"");
-					if(CMClass.className(B).equals(theclass))
+					String cnam=(String)sortedB[r];
+					str.append("<OPTION VALUE=\""+cnam+"\"");
+					if(theclass.equals(cnam))
 						str.append(" SELECTED");
-					str.append(">"+CMClass.className(B));
+					str.append(">"+cnam);
 				}
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
@@ -68,10 +72,10 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
-			for(int b=0;b<CMClass.behaviors.size();b++)
+			for(int r=0;r<sortedB.length;r++)
 			{
-				Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
-				str.append("<OPTION VALUE=\""+CMClass.className(B)+"\">"+CMClass.className(B));
+				String cnam=(String)sortedB[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
@@ -111,6 +115,10 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			Vector sortMeA=new Vector();
+			for(int r=0;r<CMClass.abilities.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -118,13 +126,13 @@ public class AreaData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int b=0;b<CMClass.abilities.size();b++)
+				for(int r=0;r<sortedA.length;r++)
 				{
-					Ability B=(Ability)CMClass.abilities.elementAt(b);
-					str.append("<OPTION VALUE=\""+CMClass.className(B)+"\"");
-					if(CMClass.className(B).equals(theclass))
+					String cnam=(String)sortedA[r];
+					str.append("<OPTION VALUE=\""+cnam+"\"");
+					if(theclass.equals(cnam))
 						str.append(" SELECTED");
-					str.append(">"+CMClass.className(B));
+					str.append(">"+cnam);
 				}
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
@@ -134,10 +142,10 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Affect");
-			for(int b=0;b<CMClass.abilities.size();b++)
+			for(int r=0;r<sortedA.length;r++)
 			{
-				Ability B=(Ability)CMClass.abilities.elementAt(b);
-				str.append("<OPTION VALUE=\""+CMClass.className(B)+"\">"+CMClass.className(B));
+				String cnam=(String)sortedA[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
@@ -199,13 +207,17 @@ public class AreaData extends StdWebMacro
 					String className=(String)httpReq.getRequestParameters().get("CLASS");
 					if((className==null)||(className.length()==0))
 						className=CMClass.className(A);
-					for(int a=0;a<CMClass.areaTypes.size();a++)
+					Vector sortMeA=new Vector();
+					for(int r=0;r<CMClass.areaTypes.size();r++)
+						sortMeA.addElement(CMClass.className(CMClass.areaTypes.elementAt(r)));
+					Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+					for(int r=0;r<sortedA.length;r++)
 					{
-						Area cnam=(Area)CMClass.areaTypes.elementAt(a);
-						str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
-						if(className.equalsIgnoreCase(CMClass.className(cnam)))
+						String cnam=(String)sortedA[r];
+						str.append("<OPTION VALUE=\""+cnam+"\"");
+						if(className.equals(cnam))
 							str.append(" SELECTED");
-						str.append(">"+CMClass.className(cnam));
+						str.append(">"+cnam);
 					}
 				}
 				if(parms.containsKey("TESTSTUFF"))

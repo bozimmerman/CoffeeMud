@@ -661,6 +661,7 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR");
+			if(R==null) R=D.query("SELECT * FROM CMCHAR");
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");

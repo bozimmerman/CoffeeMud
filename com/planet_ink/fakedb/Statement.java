@@ -1,4 +1,7 @@
-package fakedb;
+package com.planet_ink.fakedb;
+/** Tiny (nearly) fake DB
+  * (c) 2001 Thomas Neumann
+  */
 
 public class Statement implements java.sql.Statement
 {

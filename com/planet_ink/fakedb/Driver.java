@@ -1,4 +1,4 @@
-package fakedb;
+package com.planet_ink.fakedb;
 
 import java.util.Properties;
 

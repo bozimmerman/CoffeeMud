@@ -78,7 +78,7 @@ public class StdPotion extends StdDrink implements Potion
 
 		Vector theSpells=new Vector();
 		int del=names.indexOf(";");
-		while(del>0)
+		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
 			if((thisOne.length()>0)&&(!thisOne.equals(";"))&&(!thisOne.equals("DRUNK")))

@@ -180,7 +180,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		Vector theSpells=new Vector();
 		me.setSpellList(theSpells);
 		int del=names.indexOf(";");
-		while(del>0)
+		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
 			if((thisOne.length()>0)&&(!thisOne.equals(";")))

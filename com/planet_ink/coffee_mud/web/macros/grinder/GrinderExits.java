@@ -54,7 +54,8 @@ public class GrinderExits
 						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS"," MISCTEXT","ISGENERIC"};
+						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
+						  " MISCTEXT","ISGENERIC"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -185,7 +186,7 @@ public class GrinderExits
 				E.setClassRestricted(false);
 		}
 				
-									 
+		ExternalPlay.DBUpdateExits(R);					 
 		return "";
 	}
 	public static String delExit(Room R, int dir)
