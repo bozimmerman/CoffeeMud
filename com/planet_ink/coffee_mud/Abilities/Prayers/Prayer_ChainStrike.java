@@ -42,7 +42,7 @@ public class Prayer_ChainStrike extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of lightning.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of electricity erupts!":"^S<S-NAME> "+prayForWord(mob)+" to send down a thunderous crack of electricity.^?");
 			while(damage>0)
 			for(int i=0;i<targets.size();i++)
 			{
@@ -85,7 +85,7 @@ public class Prayer_ChainStrike extends Prayer
 						dmg = (int)Math.round(Util.div(dmg,2.0));
 					if(target.location()==mob.location())
 					{
-						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
 						damage = (int)Math.round(Util.div(damage,2.0));
 						if(damage<5){ damage=0; break;}
 					}

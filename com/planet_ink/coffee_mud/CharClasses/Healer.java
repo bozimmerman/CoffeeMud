@@ -89,7 +89,7 @@ public class Healer extends Cleric
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
 			
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrection",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
 			
 		}
 	}
@@ -151,7 +151,7 @@ public class Healer extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Healer.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=9)
+		if(mob.baseCharStats().getStat(CharStats.CHARISMA)<=9)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Healer.");

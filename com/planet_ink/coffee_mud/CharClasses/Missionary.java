@@ -50,7 +50,7 @@ public class Missionary extends Cleric
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
 			
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_LightningStrike",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",true);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 			
