@@ -3547,7 +3547,7 @@ public class Scriptable extends StdBehavior
 						if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
 							dmg=E.curState().getHitPoints()-1;
 						if(dmg>0)
-							ExternalPlay.postDamage(E,E,null,dmg,Affect.NO_EFFECT,-1,null);
+							ExternalPlay.postDamage(E,E,null,dmg,Affect.MSG_OK_VISUAL,-1,null);
 					}
 				}
 				break;

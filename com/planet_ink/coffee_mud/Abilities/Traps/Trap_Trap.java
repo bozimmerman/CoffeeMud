@@ -211,7 +211,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 				int damage=Dice.roll(mob.envStats().level(),3,1);
-				ExternalPlay.postDamage(invoker(),mob,this,damage,Affect.NO_EFFECT,-1,null);
+				ExternalPlay.postDamage(invoker(),mob,this,damage,Affect.MSG_OK_VISUAL,-1,null);
 			}
 			ExternalPlay.look(mob,null,true);
 		}

@@ -23,7 +23,7 @@ public class Trap_DeepPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),15,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.NO_EFFECT,-1,null);
+			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
 		}
 		ExternalPlay.look(target,null,true);
 	}

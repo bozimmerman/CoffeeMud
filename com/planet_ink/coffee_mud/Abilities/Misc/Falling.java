@@ -71,7 +71,7 @@ public class Falling extends StdAbility
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the water."+CommonStrings.msp("splat.wav",50));
 		else
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground."+CommonStrings.msp("splat.wav",50));
-		ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
+		ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.MSG_OK_VISUAL,-1,null);
 		mob.delAffect(this);
 		return false;
 	}

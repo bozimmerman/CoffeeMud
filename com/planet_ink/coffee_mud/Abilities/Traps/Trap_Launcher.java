@@ -73,7 +73,7 @@ public class Trap_Launcher extends StdTrap
 			{
 				super.spring(target);
 				int damage=Dice.roll(trapLevel(),dam,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.NO_EFFECT,-1,null);
+				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,-1,null);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

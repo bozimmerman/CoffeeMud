@@ -29,7 +29,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 		{
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
-			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.NO_EFFECT,-1,null);
+			ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,-1,null);
 			target.location().showHappens(Affect.MSG_OK_VISUAL,"Acid starts pouring into the room!");
 		}
 		ExternalPlay.look(target,null,true);

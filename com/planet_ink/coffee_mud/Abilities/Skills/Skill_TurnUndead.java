@@ -60,7 +60,7 @@ public class Skill_TurnUndead extends StdAbility
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
-						ExternalPlay.postDamage(mob,target,this,target.curState().getHitPoints(),Affect.NO_EFFECT,-1,null);
+						ExternalPlay.postDamage(mob,target,this,target.curState().getHitPoints(),Affect.MSG_OK_VISUAL,-1,null);
 					}
 					else
 					{

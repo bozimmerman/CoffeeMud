@@ -146,7 +146,7 @@ public class Burning extends StdAbility
 				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is on fire!");
 				break;
 			}
-			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.NO_EFFECT,Weapon.TYPE_BURNING,null);
+			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;
