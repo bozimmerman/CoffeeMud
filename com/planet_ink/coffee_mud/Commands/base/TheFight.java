@@ -525,7 +525,10 @@ public class TheFight
 			if((item.amWearingAt(Item.HELD))
 			&&(item instanceof Weapon)
 			&&(item.canBeWornAt(Item.WIELD)))
-				ItemUsage.wield(mob,item,false);
+			{
+				if(ItemUsage.remove(mob,item,true))
+					ItemUsage.wield(mob,item,false);
+			}
 		
 			if(item.amWearingAt(Item.WIELD))
 				ExternalPlay.postAttack(mob,(MOB)target,item);
