@@ -3,6 +3,7 @@
 create destroy link modify
 list unlink save sysmsgs
 take unloadhelp dumpfile
+reset
 ^HModules^N  
 import xml
 
