@@ -120,7 +120,7 @@ public class Sense
 	{
 		if(isSneaking(sensed)&&(!canSeeSneakers(sensor)))
 		   return false;
-		return (canBeHeardBy(sensed,sendor)||canBeSeenBy(sensed,sensor));
+		return (canBeHeardBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
 	}
 
 	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
