@@ -101,6 +101,9 @@ public class SaveThread extends Thread
 						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 						S.setKillFlag(true);
 						S.interrupt();
+						try{Thread.sleep(500);}catch(Exception e){}
+						S.stop();
+						Sessions.removeElement(S);
 					}
 					else
 					if(time>check)
@@ -118,6 +121,9 @@ public class SaveThread extends Thread
 					Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					S.setKillFlag(true);
 					S.interrupt();
+					try{Thread.sleep(500);}catch(Exception e){}
+					S.stop();
+					Sessions.removeElement(S);
 				}
 			}
 		}
