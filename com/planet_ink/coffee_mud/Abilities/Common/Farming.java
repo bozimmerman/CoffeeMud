@@ -27,9 +27,8 @@ public class Farming extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(tickID==MudHost.TICK_MOB))
+System.out.println(affected.name()+"/"+invoker().name()+"/"+tickUp+"/"+found);		
+		if((affected!=null)&&(affected instanceof Room))
 		{
 			MOB mob=(MOB)invoker();
 			if(tickUp==6)
@@ -46,12 +45,13 @@ public class Farming extends CommonSkill
 
 	public void unInvoke()
 	{
+		boolean isaborted=aborted;
 		Environmental aff=affected;
 		if(canBeUninvoked())
 		{
 			if((affected!=null)&&(affected==room))
 			{
-				if((found!=null)&&(!aborted))
+				if((found!=null)&&(!isaborted))
 				{
 					int amount=Dice.roll(1,20,0)*(abilityCode());
 					String s="s";
@@ -70,10 +70,12 @@ public class Farming extends CommonSkill
 		   &&(aff!=null)
 		   &&(aff instanceof MOB)
 		   &&(aff!=room)
+		   &&(!isaborted)
 		   &&(room!=null))
 		{
 			Farming F=((Farming)copyOf());
 			F.unInvoked=false;
+			F.tickUp=0;
 			F.tickDown=50;
 			F.startTickDown(invoker,room,50);
 		}

@@ -47,6 +47,20 @@ public class Engraving extends CommonSkill
 		super.unInvoke();
 	}
 
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("Skill_Write")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned how to write.");
+			student.tell("You need to learn how to write before you can learn "+name()+".");
+			return false;
+		}
+
+		return true;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -64,6 +78,13 @@ public class Engraving extends CommonSkill
 		else
 			commands.remove(commands.firstElement());
 
+		Ability write=mob.fetchAbility("Skill_Write");
+		if(write==null)
+		{
+			commonTell(mob,"You must know how to write to engrave.");
+			return false;
+		}
+		
 		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
@@ -82,7 +103,8 @@ public class Engraving extends CommonSkill
 		verb="engraving on "+target.name();
 		displayText="You are "+verb;
 		found=target;
-		if(!profficiencyCheck(mob,0,auto)) writing="";
+		if((!profficiencyCheck(mob,0,auto))||(!write.profficiencyCheck(mob,0,auto)))
+			writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_HANDS,"<S-NAME> start(s) engraving on <T-NAME>.");

@@ -1,10 +1,5 @@
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 Skills:
-	when you look at someone you should see missing body parts.
-	Add a tail to the summoning spell. You are summoned by so and so.
-	Sad, but engraving should also require a successful write roll.
-	With farming, you don't seem to ever get any fail message.
-	Dragon scales should (if they dont already) give you better armor than normal scales.
 	Make it so that beast masters can somehow target a baby someone else is holding with speed aging so that the parent can keep holding it the entire time.
 	cooperative building would be cool. 
 	repulsion should be level based. As you get to be a higher level mage, it should start pushing enemies back to a range of 5 or 6 or even
@@ -37,7 +32,7 @@ Misc:
   2. Add an option for Weather  
   3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
-fix healer
+fix healer?
 Flea Powder! Something just to cure fleas.
 racial affects
 Install ship battery
