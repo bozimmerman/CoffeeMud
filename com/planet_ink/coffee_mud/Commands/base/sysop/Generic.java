@@ -907,6 +907,15 @@ public class Generic
 		E.baseEnvStats().setDamage(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().damage()));
 	}
 
+	void genBanker(MOB mob, Banker E)
+		throws IOException
+	{
+		mob.tell("\n\rCoin Interest: '"+((int)Math.round(E.getCoinInterest()*1000.0))+"'/1000th % per day.");
+		E.setCoinInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
+		mob.tell("\n\rItem Interest: '"+((int)Math.round(E.getCoinInterest()*1000.0))+"'/1000th % per day.");
+		E.setItemInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
+	}
+
 	void genSpeed(MOB mob, Environmental E)
 		throws IOException
 	{
@@ -2006,6 +2015,8 @@ public class Generic
 			genBehaviors(mob,me);
 			genAffects(mob,me);
 			genShopkeeper(mob,me);
+			if(me instanceof Banker)
+				genBanker(mob,(Banker)me);
 			genDisposition(mob,me);
 			genSensesMask(mob,me);
 			ok=true;

@@ -274,6 +274,11 @@ public class Generic
 			}
 			text.append(XMLManager.convertXMLtoTag("ABLTYS",abilitystr.toString()));
 
+			if(E instanceof Banker)
+			{
+				text.append(XMLManager.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
+				text.append(XMLManager.convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
+			}
 			if(E instanceof ShopKeeper)
 			{
 				text.append(XMLManager.convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
@@ -910,6 +915,12 @@ public class Generic
 				}
 			}
 
+			if(E instanceof Banker)
+			{
+				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"COININT"));
+				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"ITEMINT"));
+			}
+			
 			if(E instanceof ShopKeeper)
 			{
 				ShopKeeper shopmob=(ShopKeeper)E;

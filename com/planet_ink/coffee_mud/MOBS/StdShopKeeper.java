@@ -156,6 +156,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Training in skills/spells/prayers/songs";
 		case CASTER:
 			return "Caster of spells/prayers";
+		case ALCHEMIST:
+			return "Potions";
+		case JEWELLER:
+			return "Precious stones and jewellery";
+		case BANKER:
+			return "My services as a Banker.";
 		default:
 			return "I have no idea WHAT I sell.";
 		}
@@ -224,29 +230,41 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		if(thisThang==null)
 			return false;
-		if(whatISell==ANYTHING)
+		switch(whatISell)
+		{
+		case ANYTHING:
 			return true;
-		else
-		if((whatISell==ARMOR)&&(thisThang instanceof Armor))
-			return true;
-		else
-		if((whatISell==MAGIC)&&(thisThang instanceof MiscMagic))
-			return true;
-		else
-		if((whatISell==WEAPONS)&&(thisThang instanceof Weapon))
-			return true;
-		else
-		if((whatISell==GENERAL)&&(thisThang instanceof Item)&&(!(thisThang instanceof Armor))&&(!(thisThang instanceof MiscMagic))&&(!(thisThang instanceof Weapon))&&(!(thisThang instanceof MOB))&&(!(thisThang instanceof Ability)))
-			return true;
-		else
-		if((whatISell==LEATHER)&&(thisThang instanceof Item)&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER))
-			return true;
-		else
-		if((whatISell==PETS)&&(thisThang instanceof MOB))
-			return true;
-		else
-		if((whatISell==ONLYBASEINVENTORY)&&(inBaseInventory(thisThang)))
-			return true;
+		case ARMOR:
+			return (thisThang instanceof Armor);
+		case MAGIC:
+			return (thisThang instanceof MiscMagic);
+		case WEAPONS:
+			return (thisThang instanceof Weapon);
+		case GENERAL:
+			return ((thisThang instanceof Item)
+					&&(!(thisThang instanceof Armor))
+					&&(!(thisThang instanceof MiscMagic))
+					&&(!(thisThang instanceof Weapon))
+					&&(!(thisThang instanceof MOB))
+					&&(!(thisThang instanceof Ability)));
+		case LEATHER:
+			return ((thisThang instanceof Item)
+					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER));
+		case PETS:
+			return (thisThang instanceof MOB);
+		case ONLYBASEINVENTORY:
+			return (inBaseInventory(thisThang));
+		case JEWELLER:
+			return ((thisThang instanceof Item)
+					&&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
+					||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+					||((Item)thisThang).canBeWornAt(Item.ON_EARS)
+					||((Item)thisThang).canBeWornAt(Item.ON_NECK)
+					||((Item)thisThang).canBeWornAt(Item.ON_RIGHT_FINGER)
+					||((Item)thisThang).canBeWornAt(Item.ON_LEFT_FINGER)));
+		case ALCHEMIST:
+			return (thisThang instanceof Potion);
+		}
 
 		return false;
 	}
@@ -336,7 +354,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_GIVE:
 				if(!mob.isASysOp(mob.location()))
 				{
-					mob.tell("The Shopkeeper is not accepting charity.");
+					mob.tell(mob.charStats().HeShe()+" is not accepting charity.");
 					return false;
 				}
 				else

@@ -220,7 +220,7 @@ public class XMLManager
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
 	 * 
-  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
+  	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
 	 * @return String Information from XML block
@@ -239,7 +239,7 @@ public class XMLManager
 	 * Return the data value within a given XML block
 	 * <TAG>Data</TAG>
 	 * 
-  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
+  	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
 	 * @return String Information from XML block
@@ -249,6 +249,19 @@ public class XMLManager
 		return s_int(getValFromPieces(V,tag));
 	}
 	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+  	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
+	 * @param Blob String to search
+	 * @param Tag Tag to search for
+	 * @return String Information from XML block
+	 */
+	public static double getDoubleFromPieces(Vector V, String tag)
+	{
+		return Util.s_double(getValFromPieces(V,tag));
+	}
 	private static int findCompetingTag(String buf, String tag)
 	{
 		if((buf==null)||(buf.length()==0)) return -1;

@@ -67,14 +67,14 @@ public class JournalLoader
 		}
 		return journal;
 	}
-	
+
 	public static synchronized void DBDelete(String Journal, int which)
 	{
-		Vector journal=DBRead(Journal);
-		if(journal==null) return;
 		DBConnection D=null;
 		if(which<0)
 		{
+			Vector journal=DBRead(Journal);
+			if(journal==null) return;
 			try
 			{
 				D=DBConnector.DBFetch();
@@ -90,7 +90,26 @@ public class JournalLoader
 			}
 		}
 		else
+		if(which==Integer.MAX_VALUE)
 		{
+			try
+			{
+				D=DBConnector.DBFetch();
+				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+Journal+"'";
+				D.update(str);
+				DBConnector.DBDone(D);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("Journal",sqle);
+				if(D!=null) DBConnector.DBDone(D);
+				return;
+			}
+		}
+		else
+		{
+			Vector journal=DBRead(Journal);
+			if(journal==null) return;
 			if(which>=journal.size()) return;
 			Vector entry=(Vector)journal.elementAt(which);
 			String oldkey=(String)entry.elementAt(0);
@@ -155,7 +174,7 @@ public class JournalLoader
 				+"CMSUBJ, "
 				+"CMMSGT "
 				+") VALUES ('"
-				+Journal+from+date
+				+(Journal+from+date+Math.random())
 				+"','"+Journal
 				+"','"+from
 				+"',"+date
