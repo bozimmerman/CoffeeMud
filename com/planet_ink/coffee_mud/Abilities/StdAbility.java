@@ -175,7 +175,7 @@ public class StdAbility implements Ability, Cloneable
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell("You can't do that to '"+targetName+"'.");
+						mob.tell(target,null,null,"You can't do that to <S-NAME>.");
 					return null;
 				}
 			}
@@ -203,7 +203,7 @@ public class StdAbility implements Ability, Cloneable
 				if(target==mob)
 					mob.tell("You are already affected by "+name()+".");
 				else
-					mob.tell(target.name()+" is already affected by "+name()+".");
+					mob.tell(target,null,null,"<S-NAME> is already affected by "+name()+".");
 			}
 			return null;
 		}
@@ -240,7 +240,7 @@ public class StdAbility implements Ability, Cloneable
 			if(target==mob)
 				mob.tell("You are already affected by "+name()+".");
 			else
-				mob.tell(targetName+" is already affected by "+name()+".");
+				mob.tell(mob,target,null,"<T-NAME> is already affected by "+name()+".");
 			return null;
 		}
 		return target;
