@@ -137,7 +137,7 @@ public class MovingRoom extends ActiveTicker
 			repWord=incoming.substring(1,i)+aRoom.displayText()+incoming.substring(i+9);
 		} else if (incoming.indexOf("$traveldir")>0) {
 			i = incoming.indexOf("$traveldir");
-			int pos=listOfRooms.indexOf(aRoom.roomID());
+			int pos=listOfRooms.indexOf(CMMap.getExtendedRoomID(aRoom));
 			boolean revDirName=false;
 			if (((pos==0)||(pos==listOfRooms.size()-1))&&(currentStatus==1))
 				revDirName=true;

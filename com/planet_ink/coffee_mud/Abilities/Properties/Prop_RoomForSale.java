@@ -57,7 +57,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public String landRoomID(){
 		if((affected!=null)&&(affected instanceof Room))
-			return ((Room)affected).roomID();
+			return CMMap.getExtendedRoomID(((Room)affected));
 		return "";
 	}
 
@@ -113,8 +113,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				I=CMClass.getItem("GenWallpaper");
 				I.setReadable(true);
 				I.setName("id");
-				I.setReadableText("This room is "+R.roomID());
-				I.setDescription("This room is "+R.roomID());
+				I.setReadableText("This room is "+CMMap.getExtendedRoomID(R));
+				I.setDescription("This room is "+CMMap.getExtendedRoomID(R));
 				R.addItem(I);
 				ExternalPlay.DBUpdateItems(R);
 			}

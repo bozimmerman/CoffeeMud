@@ -59,7 +59,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	public String landRoomID(){
 		if((affected!=null)&&(affected instanceof Room))
-			return ((Room)affected).roomID();
+			return CMMap.getExtendedRoomID((Room)affected);
 		return "";
 	}
 

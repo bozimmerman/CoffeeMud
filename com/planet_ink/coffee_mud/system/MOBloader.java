@@ -475,8 +475,8 @@ public class MOBloader
 		if(pstats==null) return;
 		
 		DBConnection D=null;
-		String strStartRoomID=(mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"";
-		String strOtherRoomID=(mob.location()!=null)?mob.location().roomID():"";
+		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
+		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
 		String str=null;
 		try
 		{

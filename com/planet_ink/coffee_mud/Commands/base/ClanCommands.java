@@ -388,7 +388,7 @@ public class ClanCommands
 				{
 					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
 					{
-						C.setRecall(R.roomID());
+						C.setRecall(CMMap.getExtendedRoomID(R));
 						C.update();
 						mob.tell("Your clan home is now set to "+R.displayText()+".");
 						clanAnnounce(mob, "Your clan home is now set to "+R.displayText()+".");
@@ -448,7 +448,7 @@ public class ClanCommands
 				{
 					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
 					{
-						C.setDonation(R.roomID());
+						C.setDonation(CMMap.getExtendedRoomID(R));
 						C.update();
 						mob.tell("Your clan donation is now set to "+R.displayText()+".");
 						clanAnnounce(mob, "Your clan donation is now set to "+R.displayText()+".");

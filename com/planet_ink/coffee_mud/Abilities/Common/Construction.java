@@ -21,8 +21,8 @@ public class Construction extends CommonSkill
 	private final static int BUILD_DEMOLISH=5;
 	private final static int BUILD_TITLE=6;
 	private final static int BUILD_DESC=7;
-	private final static int BUILD_STAIRS=8;
-	private final static int BUILD_SECRETDOOR=9;
+	private final static int BUILD_SECRETDOOR=8;
+	private final static int BUILD_STAIRS=9;
 
 	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Stairs","Secret Door"};
 	private final static int[] woodReq={100,125,350,50,50,0,0,0,350,200};

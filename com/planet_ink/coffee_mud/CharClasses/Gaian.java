@@ -68,7 +68,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Root",true);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_PlantPass",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_KillerVine",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_KillerVine",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Herbalism",false);
@@ -78,7 +78,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantBed",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_SummonSeed",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_Shillelagh",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_Shillelagh",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",true);
@@ -93,14 +93,14 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_ControlPlant",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",true);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_PlantSnare",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_PlantSnare",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_VampireVine",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",true);
@@ -109,7 +109,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Treehouse",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_TapGrapevine",true);

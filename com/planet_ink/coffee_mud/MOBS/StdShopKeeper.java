@@ -983,7 +983,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					for(int v=0;v<V2.size();v++)
 						roomsHandling.addElement(V2.elementAt(v));
 					Item I=CMClass.getItem("GenTitle");
-					((LandTitle)I).setLandRoomID(R.roomID());
+					((LandTitle)I).setLandRoomID(CMMap.getExtendedRoomID(R));
 					if(((LandTitle)I).landOwner().equals(name))
 					{
 						if(!I.Name().endsWith(" (Copy)"))

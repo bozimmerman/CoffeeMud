@@ -98,9 +98,9 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",true);
 
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_AntTrain",true);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_Bloodhound",true);

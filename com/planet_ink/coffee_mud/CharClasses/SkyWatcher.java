@@ -54,7 +54,7 @@ public class SkyWatcher extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),5,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_SummonFire",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Chant_ControlFire",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_ControlFire",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_CalmWind",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Sunray",true);
@@ -63,10 +63,10 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_LightningWard",true);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Dehydrate",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Chant_ColdWard",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_ColdWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_WindGust",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_FireWard",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_FireWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_Whisperward",true);
@@ -77,14 +77,14 @@ public class SkyWatcher extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_Dirt",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_WindShape",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Chant_AcidWard",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_AcidWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_GroveWalk",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_BlueMoon",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_RedMoon",true);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_CalmWeather",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_SongWard",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_SongWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Herbalism",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonHeat",true);
@@ -103,7 +103,7 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonMoon",true);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonWind",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_PrayerWard",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_PrayerWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Blindfighting",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_DistantWindColor",true);
@@ -111,7 +111,7 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Shapelessness",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SpellWard",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SpellWard",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_Meditation",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);

@@ -110,7 +110,7 @@ public class Chant_Treehouse extends Chant
 				mob.location().rawExits()[Directions.UP]=CMClass.getExit("ClimbableExit");
 				newRoom.rawDoors()[Directions.DOWN]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
-				A.setMiscText(mob.location().roomID());
+				A.setMiscText(CMMap.getExtendedRoomID(mob.location()));
 				Exit E=CMClass.getExit("ClimbableExit");
 				E.addNonUninvokableAffect(A);
 				newRoom.rawExits()[Directions.DOWN]=E;
@@ -125,7 +125,7 @@ public class Chant_Treehouse extends Chant
 					{
 						newRoom.rawDoors()[d]=R;
 						A=CMClass.getAbility("Prop_RoomView");
-						A.setMiscText(R.roomID());
+						A.setMiscText(CMMap.getExtendedRoomID(R));
 						E=CMClass.getExit("Impassable");
 						E.addNonUninvokableAffect(A);
 						newRoom.rawExits()[d]=E;

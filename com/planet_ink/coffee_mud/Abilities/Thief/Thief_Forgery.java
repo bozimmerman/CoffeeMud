@@ -54,7 +54,7 @@ public class Thief_Forgery extends ThiefSkill
 		if(room!=null)
 		{
 			Item I=CMClass.getItem("StdTitle");
-			((LandTitle)I).setLandRoomID(room.roomID());
+			((LandTitle)I).setLandRoomID(CMMap.getExtendedRoomID(room));
 			newName=I.name();
 			newDescription=I.description();
 			newDisplay=I.displayText();

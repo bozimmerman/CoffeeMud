@@ -342,7 +342,7 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+room.roomID()+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
+				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else

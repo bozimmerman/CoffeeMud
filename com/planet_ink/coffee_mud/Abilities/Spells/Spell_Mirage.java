@@ -105,7 +105,7 @@ public class Spell_Mirage extends Spell
 					newRoom=((Room)affected).getArea().getRandomRoom();
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
 					{
-						A.setMiscText(newRoom.roomID());
+						A.setMiscText(CMMap.getExtendedRoomID(newRoom));
 						mob.location().addNonUninvokableAffect(A);
 					}
 				}

@@ -35,7 +35,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom().roomID();
+							return CMMap.getExtendedRoomID(M.getStartRoom());
 					}
 				}
 			}
@@ -52,7 +52,7 @@ public class Spell_Cogniportive extends Spell
 						{
 							ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
 							if(S.doIHaveThisInStock(me.Name(),null))
-								return M.getStartRoom().roomID();
+								return CMMap.getExtendedRoomID(M.getStartRoom());
 						}
 					}
 				}
@@ -71,7 +71,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom().roomID();
+							return CMMap.getExtendedRoomID(M.getStartRoom());
 					}
 				}
 			}
@@ -80,7 +80,7 @@ public class Spell_Cogniportive extends Spell
 			{
 				Room R=(Room)r.nextElement();
 				if((R!=null)&&(R.fetchItem(null,me.Name())!=null))
-				   return R.roomID();
+				   return CMMap.getExtendedRoomID(R);
 			}
 		}
 		return "";
