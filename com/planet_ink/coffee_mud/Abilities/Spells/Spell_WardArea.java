@@ -17,6 +17,14 @@ public class Spell_WardArea extends Spell implements Trap
 	public Environmental newInstance(){	return new Spell_WardArea();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
+	
+	public MOB theInvoker()
+	{
+		if(invoker()!=null) return invoker();
+		if(text().length()>0)
+			invoker=(MOB)CMMap.getPlayer(text());
+		return invoker();
+	}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
@@ -104,9 +112,7 @@ public class Spell_WardArea extends Spell implements Trap
 		&&(!affect.amISource(invoker())))
 		{
 			if(affect.targetMinor()==Affect.TYP_LEAVE)
-			{
 				spring(affect.source());
-			}
 		}
 	}
 
@@ -177,6 +183,7 @@ public class Spell_WardArea extends Spell implements Trap
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				setMiscText(mob.Name());
 				if((ExternalPlay.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 					mob.location().addNonUninvokableAffect((Ability)copyOf());
