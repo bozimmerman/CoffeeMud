@@ -131,8 +131,6 @@ public class FullMsg implements Affect
 	{
 		return myAgent;
 	}
-	public void setTarget(Environmental target)
-	{	myTarget=target;}
 	public Environmental target()
 	{
 		return myTarget;

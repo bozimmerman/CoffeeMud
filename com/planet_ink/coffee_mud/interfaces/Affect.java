@@ -31,7 +31,6 @@ public interface Affect extends Cloneable
 	public boolean wasModified();
 	public void tagModified(boolean newStatus);
 
-	public void setTarget(Environmental target);
 	public void modify(MOB source,
 						Environmental target,
 						Environmental tool,
