@@ -49,7 +49,7 @@ DEATH_PROG
 	else
 		QUESTCHAT At least I got to see the city safe before I died.
 	endif
-	MPENDQUEST gobwar
+	mpendquest gobwar
 ~
 
 ALL_GREET_PROG 100

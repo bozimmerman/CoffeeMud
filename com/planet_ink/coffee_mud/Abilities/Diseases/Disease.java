@@ -68,6 +68,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 						targetMOB.setFollowing(following);
 					return doMe;
 				}
+				else
+				    spreadImmunity(targetMOB);
 			}
 			else
 			{
@@ -97,18 +99,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 			if(canBeUninvoked())
 			{
 				if(!mob.amDead())
-				{
-					Ability A=mob.fetchEffect("TemporaryImmunity");
-					if(A==null)
-					{
-						A=CMClass.getAbility("TemporaryImmunity");
-						A.setBorrowed(mob,true);
-						A.makeLongLasting();
-						mob.addEffect(A);
-						A.makeLongLasting();
-					}
-					A.setMiscText("+"+ID());
-				}
+				    spreadImmunity(mob);
 				mob.tell(mob,null,this,DISEASE_DONE());
 			}
 		}
@@ -225,6 +216,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 					R.show(target,null,CMMsg.MSG_OK_VISUAL,DISEASE_START());
 				    success=maliciousAffect(mob,target,asLevel,DISEASE_TICKS(),-1);
 				}
+				else
+				    spreadImmunity(target);
 			}
 			if(auto)
 			{

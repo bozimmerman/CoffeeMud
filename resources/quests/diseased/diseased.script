@@ -27,7 +27,7 @@ ALL_GREET_PROG 99
 DEATH_PROG 99
 	wake
 	QUESTCHAT I'm dead now.  Forget the whole quest thing.
-	mpquestend diseased
+	mpendquest diseased
 ~
 
 RAND_PROG 90

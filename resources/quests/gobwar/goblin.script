@@ -2,7 +2,7 @@ QUEST_TIME_PROG gobwar 5
 	IF EVAL('$%ISHERE()%' == 'Midgaard') and EVAL($%NUMRACESINAREA(Goblin)% > 0)
 		QUESTCHAT Victory! 
 		QUESTCHAT The goblins return to their mountains with booty from the city.
-		MPENDQUEST gobwar
+		mpendquest gobwar
 	ENDIF
 ~
 

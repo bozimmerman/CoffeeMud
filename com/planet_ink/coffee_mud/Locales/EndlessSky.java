@@ -51,6 +51,11 @@ public class EndlessSky extends StdGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		InTheAir.airAffects(this,msg);
+	}
 	public String getChildLocaleID(){return "InTheAir";}
 
 	public Room findMyCenter(int d)

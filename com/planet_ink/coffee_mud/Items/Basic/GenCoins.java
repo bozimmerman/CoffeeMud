@@ -38,7 +38,7 @@ public class GenCoins extends GenItem implements Coins
 		setDescription("");
 	}
 	
-	public String name()
+	public String Name()
 	{
         return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}

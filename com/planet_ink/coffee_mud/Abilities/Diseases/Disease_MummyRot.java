@@ -70,18 +70,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			if(canBeUninvoked())
 			{
 				if(!mob.amDead())
-				{
-					Ability A=mob.fetchEffect("TemporaryImmunity");
-					if(A==null)
-					{
-						A=CMClass.getAbility("TemporaryImmunity");
-						A.setBorrowed(mob,true);
-						A.makeLongLasting();
-						mob.addEffect(A);
-						A.makeLongLasting();
-					}
-					A.setMiscText("+"+ID());
-				}
+				    spreadImmunity(mob);
 				mob.tell("The rot is cured.");
 			}
 		}
@@ -129,6 +118,8 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 					conDown=1;
 					success=maliciousAffect(mob,target,asLevel,0,-1);
 				}
+				else
+				    spreadImmunity(target);
 			}
 		}
 		else

@@ -39,18 +39,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-			{
-				Ability A=mob.fetchEffect("TemporaryImmunity");
-				if(A==null)
-				{
-					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,true);
-					A.makeLongLasting();
-					mob.addEffect(A);
-					A.makeLongLasting();
-				}
-				A.setMiscText("+"+ID());
-			}
+			    spreadImmunity(mob);
 			mob.tell("The contagion fades.");
 		}
 		super.unInvoke();
@@ -92,6 +81,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 			if(target.fetchEffect(ID())!=null)
 				((Ability)thisOne.copyOf()).invoke(target,target,true,0);
 		}
+		else
+		    spreadImmunity(target);
 		return true;
 	}
 
@@ -120,6 +111,8 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 					success=maliciousAffect(mob,target,asLevel,0,-1);
+				else
+				    spreadImmunity(target);
 			}
 		}
 		else

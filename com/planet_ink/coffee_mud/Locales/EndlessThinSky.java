@@ -51,6 +51,11 @@ public class EndlessThinSky extends StdThinGrid
 
 		return InTheAir.isOkAirAffect(this,msg);
 	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		InTheAir.airAffects(this,msg);
+	}
 	public String getChildLocaleID(){return "InTheAir";}
 
 	protected void fillExitsOfGridRoom(Room R, int x, int y)

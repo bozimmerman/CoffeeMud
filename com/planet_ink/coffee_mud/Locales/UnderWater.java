@@ -164,15 +164,6 @@ public class UnderWater extends StdRoom implements Drink
 			makeSink((Environmental)needToFall.elementAt(i),room,avg);
 	}
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		switch(UnderWater.isOkUnderWaterAffect(this,msg))
-		{
-		case -1: return false;
-		case 1: return true;
-		}
-		return super.okMessage(myHost,msg);
-	}
 	public static int isOkUnderWaterAffect(Room room, CMMsg msg)
 	{
 		if(Sense.isSleeping(room))
@@ -214,6 +205,15 @@ public class UnderWater extends StdRoom implements Drink
 			return 1;
 		}
 		return 0;
+	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		switch(UnderWater.isOkUnderWaterAffect(this,msg))
+		{
+		case -1: return false;
+		case 1: return true;
+		}
+		return super.okMessage(myHost,msg);
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

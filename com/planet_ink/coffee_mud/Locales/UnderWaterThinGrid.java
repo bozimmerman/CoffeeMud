@@ -54,6 +54,20 @@ public class UnderWaterThinGrid extends StdThinGrid
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		switch(UnderWater.isOkUnderWaterAffect(this,msg))
+		{
+		case -1: return false;
+		case 1: return true;
+		}
+		return super.okMessage(myHost,msg);
+	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
+	}
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);

@@ -1380,6 +1380,7 @@ public class Quests implements Cloneable, Quest
 
 	// informational
 	public boolean running(){return ticksRemaining>=0;}
+	public boolean stopping(){return stoppingQuest;}
 	public boolean waiting(){return waitRemaining>=0;}
 	public int ticksRemaining(){return ticksRemaining;}
 	public int minsRemaining(){return new Long(ticksRemaining*MudHost.TICK_TIME/60000).intValue();}

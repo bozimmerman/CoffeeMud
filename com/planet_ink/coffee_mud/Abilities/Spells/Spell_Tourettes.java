@@ -46,16 +46,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				Ability A=mob.fetchEffect("TemporaryImmunity");
-				if(A==null)
-				{
-					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,true);
-					A.makeLongLasting();
-					mob.addEffect(A);
-					A.makeLongLasting();
-				}
-				A.setMiscText("+"+ID());
+			    spreadImmunity(mob);
 				mob.tell("You feel more polite.");
 			}
 	}
@@ -123,6 +114,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 						maliciousAffect(invoker,target,0,0,-1);
 					}
+					else
+					    spreadImmunity(target);
 				}
 			}
 		}
@@ -169,6 +162,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 					maliciousAffect(mob,target,asLevel,0,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) different somehow...");
 				}
+				else
+				    spreadImmunity(target);
 			}
 		}
 		else

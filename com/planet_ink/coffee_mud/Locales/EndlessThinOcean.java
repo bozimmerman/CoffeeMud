@@ -33,6 +33,20 @@ public class EndlessThinOcean extends StdThinGrid
 		domainCondition=Room.CONDITION_WET;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
+	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		switch(WaterSurface.isOkWaterSurfaceAffect(this,msg))
+		{
+		case -1: return false;
+		case 1: return true;
+		}
+		return super.okMessage(myHost,msg);
+	}
 	public String getChildLocaleID(){return "SaltWaterThinSurface";}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 	protected void fillExitsOfGridRoom(Room R, int x, int y)

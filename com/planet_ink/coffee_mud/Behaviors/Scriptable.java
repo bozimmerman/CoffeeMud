@@ -5531,8 +5531,12 @@ public class Scriptable extends StdBehavior
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					trigger=trigger.substring(10).trim();
-					int t=Util.s_int(trigger);
-					if((((Coins)msg.tool()).getNumberOfCoins()>=t)
+					double t=0.0;
+					if(Util.isDouble(trigger))
+					    t=Util.s_double(trigger);
+					else
+					    t=new Integer(Util.s_int(trigger)).doubleValue();
+					if((((Coins)msg.tool()).getTotalValue()>=t)
 					||(trigger.equalsIgnoreCase("ALL")))
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
@@ -5840,7 +5844,7 @@ public class Scriptable extends StdBehavior
 				if(!oncesDone.contains(script))
 				{
 					Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
-					if((Q!=null)&&(Q.running()))
+					if((Q!=null)&&(Q.running())&&(!Q.stopping()))
 					{
 						int time=Util.s_int(Util.getCleanBit(trigger,2));
 						if(time>=Q.minsRemaining())

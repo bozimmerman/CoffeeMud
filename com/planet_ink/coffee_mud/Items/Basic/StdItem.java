@@ -61,7 +61,7 @@ public class StdItem implements Item
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return name;
+		return Name();
 	}
 	public String image(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}

@@ -823,6 +823,22 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		return ok;
 	}
 
+	public void spreadImmunity(MOB mob)
+	{
+	    if((mob==null)||(mob.fetchEffect(ID())!=null))
+	        return;
+		Ability A=mob.fetchEffect("TemporaryImmunity");
+		if(A==null)
+		{
+			A=CMClass.getAbility("TemporaryImmunity");
+			A.setBorrowed(mob,true);
+			A.makeLongLasting();
+			mob.addEffect(A);
+			A.makeLongLasting();
+		}
+		A.setMiscText("+"+ID());
+	}
+	
 	public boolean autoInvocation(MOB mob)
 	{
 		if(isAutoInvoked())

@@ -69,16 +69,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
-				Ability A=mob.fetchEffect("TemporaryImmunity");
-				if(A==null)
-				{
-					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,true);
-					A.makeLongLasting();
-					mob.addEffect(A);
-					A.makeLongLasting();
-				}
-				A.setMiscText("+"+ID());
+			    spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> worms disease is cured.");
 			}
 	}
@@ -111,6 +102,8 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 					maliciousAffect(mob,target,asLevel,688,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) very sick in the stomach!");
 				}
+				else
+				    spreadImmunity(target);
 			}
 		}
 		else

@@ -86,16 +86,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Item.ON_FEET)>0))
 			{
-				Ability A=mob.fetchEffect("TemporaryImmunity");
-				if(A==null)
-				{
-					A=CMClass.getAbility("TemporaryImmunity");
-					A.setBorrowed(mob,true);
-					A.makeLongLasting();
-					mob.addEffect(A);
-					A.makeLongLasting();
-				}
-				A.setMiscText("+"+ID());
+			    spreadImmunity(mob);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The fungus on <S-YOUPOSS> feet dies and falls off.");
 			}
 	}
@@ -134,6 +125,8 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 					maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE/2,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A fungus sprouts up between <S-YOUPOSS> toes!");
 				}
+				else
+				    spreadImmunity(target);
 			}
 		}
 		else

@@ -47,6 +47,20 @@ public class UnderWaterGrid extends StdGrid
 
 	public String getChildLocaleID(){return "UnderWater";}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		switch(UnderWater.isOkUnderWaterAffect(this,msg))
+		{
+		case -1: return false;
+		case 1: return true;
+		}
+		return super.okMessage(myHost,msg);
+	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		UnderWater.sinkAffects(this,msg);
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -38,7 +38,7 @@ public class StdCoins extends StdItem implements Coins
 		recoverEnvStats();
 	}
 
-	public String name()
+	public String Name()
 	{
         return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
