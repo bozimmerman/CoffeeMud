@@ -16,7 +16,7 @@ public class HTTPserver extends Thread
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
-	public final static String ServerVersionString = "CoffeeMUD-HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+	public final static String ServerVersionString = "HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 	
 	public boolean isOK = false;
 	

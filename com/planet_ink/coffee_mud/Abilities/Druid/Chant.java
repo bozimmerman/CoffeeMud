@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Druid extends StdAbility
+public class Chant extends StdAbility
 {
 	protected int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-	public Druid()
+	public Chant()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -26,12 +26,12 @@ public class Druid extends StdAbility
 
 	public int classificationCode()
 	{
-		return Ability.PRAYER;
+		return Ability.CHANT;
 	}
 
 	public Environmental newInstance()
 	{
-		return new Druid();
+		return new Chant();
 	}
 
 	public boolean appropriateToMyAlignment(int alignment)

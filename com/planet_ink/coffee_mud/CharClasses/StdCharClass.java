@@ -40,6 +40,8 @@ public class StdCharClass implements CharClass
 	}
 
 	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
+	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}
+	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass, boolean autoInvoke)
 	{
 		A=(Ability)A.copyOf();
 		if(mob.fetchAbility(A.ID())==null)
@@ -48,7 +50,8 @@ public class StdCharClass implements CharClass
 			A.setProfficiency(profficiency);
 			A.setMiscText(defaultParm);
 			mob.addAbility(A);
-			A.autoInvocation(mob);
+			if(autoInvoke)
+				A.autoInvocation(mob);
 		}
 	}
 

@@ -31,7 +31,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_ShapeShift",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 		}
 	}
 
