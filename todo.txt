@@ -1,7 +1,5 @@
 Misc/Architecture:
 =================
-smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
-putting a change bag into a changebag should combine your notes.
 ability to deposit in someone elses bank account
 MOTD It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
 tread water for water surfaces with water beneath
@@ -133,7 +131,7 @@ Master Armorsmith
 	DwarvenFieldPlate, with added bonus to STR and protection
 Knowledge <common skill>
 	Ability to peruse the recipe file.
-Smoking
+Smoke Rings
 	Ability to make smoke rings.
 Sexual Techniques
 	Gives mana bonuses following sex with someone who has this skill.

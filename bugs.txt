@@ -1,3 +1,3 @@
-set range at 0 after combat -- how did he leave combat?
-pipes should not prevent speaking
+set range at 0 after combat -- how did he leave combat? flee?
+second attack often follows the dead person
 

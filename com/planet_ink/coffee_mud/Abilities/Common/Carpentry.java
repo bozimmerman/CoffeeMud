@@ -406,7 +406,8 @@ public class Carpentry extends CommonSkill
 			if(building instanceof Light)
 			{
 				((Light)building).setDuration(capacity);
-				if(building instanceof Container)
+				if((building instanceof Container)
+				&&(!misctype.equals("SMOKE")))
 					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();

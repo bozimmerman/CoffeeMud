@@ -9,7 +9,7 @@ public class CommonSkill extends StdAbility
 {
 	public String ID() { return "CommonSkill"; }
 	public String name(){ return "Common Skill";}
-	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
+	private static final String[] triggerStrings = empty;
 	public String[] triggerStrings(){return triggerStrings;}
 
 	public int quality(){return Ability.INDIFFERENT;}

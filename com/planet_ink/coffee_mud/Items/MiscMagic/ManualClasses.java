@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Items.StdItem;
 import java.util.*;
 
 
-public class ManualClasses extends StdItem implements MiscMagic
+public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 {
 	public String ID(){	return "ManualClasses";}
 	public ManualClasses()

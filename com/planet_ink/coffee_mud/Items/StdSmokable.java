@@ -97,10 +97,11 @@ public class StdSmokable extends StdContainer implements Light
 		&&(isLit())
 		&&(owner()!=null))
 		{
-			if((--durationTicks)>0)
+			if(((--durationTicks)>0)&&(!destroyed))
 			{
 				if(((durationTicks%puffTicks)==0)
-				&&(owner() instanceof MOB))
+				&&(owner() instanceof MOB)
+				&&(!amWearingAt(Item.INVENTORY)))
 				{
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)
@@ -136,7 +137,6 @@ public class StdSmokable extends StdContainer implements Light
 				}
 				light(false);
 				setDuration(0);
-				setDescription("It looks all used up.");
 			}
 		}
 		return false;
