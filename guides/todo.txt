@@ -1,9 +1,7 @@
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
-haggle skill to lower prices HAGGLE 300 item
-WHISPER command to talk to everyone at a table only LISTEN should counter it.
-racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
+racial abilities (abilities tied to the race)
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 gen-wizard player editor
 possible to have NE SE SW NW directions?
@@ -15,7 +13,6 @@ Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a ma
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 random monster property class which reads stats from a resource file
-Taxidermy
 ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
 Assassin: Assassinate skill to auto-kill, lose something else though
 Prancers: Dancing bards who get special ability
