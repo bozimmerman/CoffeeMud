@@ -16,7 +16,7 @@ public class Disease_Anthrax extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Infection();}
 
-	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_DAY*10).intValue();}
+	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_MUDDAY*10).intValue();}
 	protected int DISEASE_DELAY(){return 15;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}

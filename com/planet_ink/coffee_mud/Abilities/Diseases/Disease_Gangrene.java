@@ -16,20 +16,27 @@ public class Disease_Gangrene extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Gangrene();}
 
-	protected int DISEASE_TICKS(){return new Long(100*Host.TICKS_PER_DAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(100*Host.TICKS_PER_MUDDAY).intValue();}
 	protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) like <S-HE-SHE> <S-HAS-HAVE> gangrous wounds.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> wince(s) in pain.";}
 	public int abilityCode(){return 0;}
+	private int tickUpToDay=0;
+	private int daysSick=0;
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
-
+		tickUpToDay++;
+		if(tickUpToDay==Host.TICKS_PER_MUDDAY)
+		{
+			daysSick++;
+			tickUpToDay=0;
+		}
 		MOB mob=(MOB)affected;
 		if(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())
 		{ unInvoke(); return false;}
@@ -58,10 +65,9 @@ public class Disease_Gangrene extends Disease
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		int days=100-(getTickDownRemaining()/new Long(Host.TICKS_PER_DAY).intValue());
-		if(days>0)
+		if(daysSick>0)
 		{
-			affectableState.setHitPoints(affectableState.getHitPoints()-(days*(affectableState.getHitPoints()/10)));
+			affectableState.setHitPoints(affectableState.getHitPoints()-(daysSick*(affectableState.getHitPoints()/10)));
 			if(affectableState.getHitPoints()<=0)
 			{
 				MOB diseaser=invoker;

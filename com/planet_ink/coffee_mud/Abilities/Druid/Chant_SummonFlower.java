@@ -32,7 +32,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			if(littlePlants.fetchBehavior("Decay")==null)
 			{
 				Behavior B=CMClass.getBehavior("Decay");
-				B.setParms("min="+Host.TICKS_PER_DAY+" max="+Host.TICKS_PER_DAY+" chance=100");
+				B.setParms("min="+Host.TICKS_PER_MUDDAY+" max="+Host.TICKS_PER_MUDDAY+" chance=100");
 				littlePlants.addBehavior(B);
 				B.affect(myHost,affect);
 			}

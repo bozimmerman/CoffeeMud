@@ -592,8 +592,8 @@ public class StdAbility implements Ability, Cloneable
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
 				
-				if(tickAdjustmentFromStandard>(Host.TICKS_PER_DAY/2))
-					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_DAY/2);
+				if(tickAdjustmentFromStandard>(Host.TICKS_PER_MUDDAY/2))
+					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_MUDDAY/2);
 
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
@@ -655,8 +655,8 @@ public class StdAbility implements Ability, Cloneable
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
-				if(tickAdjustmentFromStandard>(Host.TICKS_PER_DAY/2))
-					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_DAY/2);
+				if(tickAdjustmentFromStandard>(Host.TICKS_PER_MUDDAY/2))
+					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_MUDDAY/2);
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}

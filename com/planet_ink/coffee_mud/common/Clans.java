@@ -174,7 +174,7 @@ public class Clans implements Clan, Tickable
 	}
 	public static void addElement(Clan C)
 	{
-		ExternalPlay.startTickDown(C,Host.CLAN_TICK,(int)Host.TICKS_PER_DAY);
+		ExternalPlay.startTickDown(C,Host.CLAN_TICK,(int)Host.TICKS_PER_MUDDAY);
 		all.addElement(C);
 	}
 	public static void removeElementAt(int x)
@@ -404,7 +404,7 @@ public class Clans implements Clan, Tickable
 				Log.errOut("Unable to tick "+C.name()+"!");
 				return true;
 			}
-			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME;
+			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
 			for(int j=0;j<members.size();j++)
 			{
 				long lastLogin=((Long)lastDates.elementAt(j)).longValue();

@@ -92,7 +92,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(affect.tool()==myShopkeeper)
 		&&(affect.target()==this))
-			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,(int)Host.TICKS_PER_DAY);
+			ExternalPlay.startTickDown(this,Host.ITEM_BOUNCEBACK,(int)Host.TICKS_PER_MUDDAY);
 		return true;
 	}
 }

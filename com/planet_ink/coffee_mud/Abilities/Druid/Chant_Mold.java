@@ -69,7 +69,7 @@ public class Chant_Mold extends Chant
 							A.setInvoker(mob);
 							target.addNonUninvokableAffect(A);
 						}
-						maliciousAffect(mob,target,(int)(Host.TICKS_PER_DAY*3),-1);
+						maliciousAffect(mob,target,(int)(Host.TICKS_PER_MUDDAY*3),-1);
 					}
 					else
 					if(target instanceof MOB)
@@ -84,7 +84,7 @@ public class Chant_Mold extends Chant
 								A.setInvoker(mob);
 								I.addNonUninvokableAffect(A);
 							}
-							maliciousAffect(mob,I,(int)(Host.TICKS_PER_DAY*3),-1);
+							maliciousAffect(mob,I,(int)(Host.TICKS_PER_MUDDAY*3),-1);
 						}
 					}
 				}

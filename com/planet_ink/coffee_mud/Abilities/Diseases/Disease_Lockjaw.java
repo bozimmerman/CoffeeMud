@@ -17,7 +17,7 @@ public class Disease_Lockjaw extends Disease
 	public Environmental newInstance(){	return new Disease_Lockjaw();}
 
 	protected int DISEASE_TICKS(){return 9999999;}
-	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_DAY).intValue();}
+	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_MUDDAY).intValue();}
 	protected String DISEASE_DONE(){return "Your lockjaw is cured.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lockjaw!^?";}
 	protected String DISEASE_AFFECT(){return "";}

@@ -16,7 +16,7 @@ public class Disease_Magepox extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Magepox();}
 
-	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_DAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_MUDDAY).intValue();}
 	protected int DISEASE_DELAY(){return 15;}
 	protected String DISEASE_DONE(){return "Your magepox clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with the Magepox.^?";}

@@ -1,1 +1,10 @@
 make drunkenness longer
+prop_spelladder doesn't work?!
+clan vote system
+clan politics:
+	dictatorship - class boss assigns everyone, does everything
+	oligarchy - no leaders, bosses vote on everything, clan does nothing
+	republic - no bosses, leaders vote on everything, clan votes on leaders
+	democracy - no bosses, no leaders, clan votes on everything
+mpalarm should check if the mob is stil alive
+

@@ -483,8 +483,8 @@ public class MobData extends StdWebMacro
 		{
 			int level=M.baseEnvStats().level();
 			if(httpReq.isRequestParameter("LEVEL")) level=Util.s_int(httpReq.getRequestParameter("LEVEL"));
-			long rejuv=Host.TICKS_PER_MIN+Host.TICKS_PER_MIN+(level*Host.TICKS_PER_MIN/2);
-			if(rejuv>(Host.TICKS_PER_MIN*20)) rejuv=(Host.TICKS_PER_MIN*20);
+			long rejuv=Host.TICKS_PER_RLMIN+Host.TICKS_PER_RLMIN+(level*Host.TICKS_PER_RLMIN/2);
+			if(rejuv>(Host.TICKS_PER_RLMIN*20)) rejuv=(Host.TICKS_PER_RLMIN*20);
 			M.baseEnvStats().setRejuv((int)rejuv);
 			M.baseEnvStats().setSpeed(M.baseCharStats().getCurrentClass().getLevelSpeed(M));
 			M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));

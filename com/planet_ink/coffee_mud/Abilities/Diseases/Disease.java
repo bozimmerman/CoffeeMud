@@ -176,7 +176,9 @@ public class Disease extends StdAbility implements DiseaseAffect
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_HANDS|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),"");
+			MOB mvictim=mob.getVictim();
+			MOB tvictim=target.getVictim();
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_HANDS|Affect.MASK_MALICIOUS|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),"");
 			if(target.location().okAffect(target,msg))
 			{
 			    target.location().send(target,msg);
@@ -185,6 +187,10 @@ public class Disease extends StdAbility implements DiseaseAffect
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,DISEASE_START());
 				    success=maliciousAffect(mob,target,DISEASE_TICKS(),-1);
 				}
+				if((mvictim!=target)&&(mob.getVictim()==target))
+					mob.setVictim(mvictim);
+				if((tvictim!=mob)&&(target.getVictim()==mob))
+					target.setVictim(tvictim);
 			}
 		}
         return success;

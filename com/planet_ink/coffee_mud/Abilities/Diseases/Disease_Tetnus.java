@@ -16,8 +16,8 @@ public class Disease_Tetnus extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Tetnus();}
 
-	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_DAY*6).intValue();}
-	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_DAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(Host.TICKS_PER_MUDDAY*6).intValue();}
+	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_MUDDAY).intValue();}
 	protected String DISEASE_DONE(){return "Your tetnus clears up!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting slower...";}
