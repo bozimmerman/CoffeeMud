@@ -197,7 +197,7 @@ public class Quests implements Cloneable, Quest
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
-							Log.sysOut("Quests","Quest '"+name()+"', !mob '"+p+"'.");
+							//Log.sysOut("Quests","Quest '"+name()+"', !mob '"+p+"'.");
 							error=true; break;
 						}
 						else
@@ -263,7 +263,7 @@ public class Quests implements Cloneable, Quest
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
-							Log.sysOut("Quests","Quest '"+name()+"', !item '"+p+"'.");
+							//Log.sysOut("Quests","Quest '"+name()+"', !item '"+p+"'.");
 							error=true; break;
 						}
 						else
@@ -451,7 +451,7 @@ public class Quests implements Cloneable, Quest
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
-							Log.sysOut("Quests","Quest '"+name()+"', !mob '"+mobName+"'.");
+							//Log.sysOut("Quests","Quest '"+name()+"', !mob '"+mobName+"'.");
 							error=true; break;
 						}
 						else
@@ -530,7 +530,7 @@ public class Quests implements Cloneable, Quest
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
-							Log.sysOut("Quests","Quest '"+name()+"', !item '"+itemName+"'.");
+							//Log.sysOut("Quests","Quest '"+name()+"', !item '"+itemName+"'.");
 							error=true; break;
 						}
 						else

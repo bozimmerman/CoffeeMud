@@ -20,7 +20,7 @@ public class StdContainer extends StdItem implements Container
 		super();
 		setName("a container");
 		setDisplayText("a nondescript container sits here.");
-		setDescription("I'll bet you could put stuff in it!");
+		setDescription("I`ll bet you could put stuff in it!");
 		capacity=25;
 		baseGoldValue=10;
 		recoverEnvStats();

@@ -2360,7 +2360,7 @@ public class Import
 							if(Util.isSet(codeBits,23))
 								caster.setMiscText(caster.text()+("Prayer_Plague")+";");
 							if(Util.isSet(codeBits,24))
-								caster.setMiscText(caster.text()+("Prop_SafePet")+";");
+								caster.setMiscText(caster.text()+("Spell_Awe")+";");
 							if(Util.isSet(codeBits,25))
 								sense=sense|EnvStats.CAN_SEE_DARK;
 							if(Util.isSet(codeBits,26))
@@ -3366,12 +3366,13 @@ public class Import
 									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 									{
 										Exit E3=R2.rawExits()[d];
-										if(E3!=null)
-											if(R.roomID().endsWith(E3.temporaryDoorLink()))
-											{
-												opExit=E3;
-												R2.rawDoors()[d]=R;
-											}
+										if((E3!=null)
+										&&(E3.temporaryDoorLink().length()>0)
+										&&(R.roomID().endsWith(E3.temporaryDoorLink())))
+										{
+											opExit=E3;
+											R2.rawDoors()[d]=R;
+										}
 									}
 									if(opExit==null)
 										if((prompt)&&

@@ -317,22 +317,28 @@ public class SysOpSkills
 			switch(lvl % 6)
 			{
 			case 0:
-				mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+1);
+				if(mob.baseCharStats().getStat(CharStats.STRENGTH)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.STRENGTH)+5)
+					mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+1);
 				break;
 			case 1:
-				mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
+				if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.DEXTERITY)+5)
+					mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
 				break;
 			case 2:
-				mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+1);
+				if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.INTELLIGENCE))
+					mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+1);
 				break;
 			case 3:
-				mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+1);
+				if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.CONSTITUTION))
+					mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+1);
 				break;
 			case 4:
-				mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+1);
+				if(mob.baseCharStats().getStat(CharStats.CHARISMA)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.CHARISMA))
+					mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+1);
 				break;
 			case 5:
-				mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+1);
+				if(mob.baseCharStats().getStat(CharStats.WISDOM)<mob.baseCharStats().getCurrentClass().getMaxStat(CharStats.WISDOM))
+					mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+1);
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
@@ -528,9 +534,9 @@ public class SysOpSkills
 
 		MOB avgMob=null;
 		if(C!=null)
-			avgMob=AverageClassMOB(mob, level,C, 300);
+			avgMob=AverageClassMOB(mob, level,C, 100);
 		else
-			avgMob=AverageAllClassMOB(mob,level, 20, 50);
+			avgMob=AverageAllClassMOB(mob,level, 20, 40);
 
 		mob.session().println("\n\r");
 

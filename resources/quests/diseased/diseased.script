@@ -5,6 +5,8 @@ ONCE_PROG
 ~
 
 QUEST_TIME_PROG diseased -1
+	wake
+	QUESTCHAT I'm dead now.  Forget the whole quest thing.
 	mpsetvar $i DISEASED ''
 	mpsetvar * DISEASED ''
 ~
@@ -20,6 +22,7 @@ ALL_GREET_PROG 99
 ~
 
 DEATH_PROG 99
+	wake
 	QUESTCHAT I'm dead now.  Forget the whole quest thing.
 	mpquestend diseased
 ~
@@ -27,6 +30,7 @@ DEATH_PROG 99
 RAND_PROG 90
 	if !affected($i Disease_Plague)
 		mpsetvar $i DISEASED $r
+		wake
 		say "$<$i DISEASED>" You saved me!
 		if !QUESTWINNER('$<$i DISEASED>' diseased)
 			mpexp '$<$i DISEASED>' 1000
