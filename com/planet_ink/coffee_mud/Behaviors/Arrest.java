@@ -180,9 +180,12 @@ public class Arrest extends StdBehavior
 		return null;
 	}
 	
-	public MOB getWitness(MOB mob)
+	public MOB getWitness(Area A, MOB mob)
 	{
 		Room R=mob.location();
+		
+		if((A!=null)&&(R.getArea()!=A)) 
+			return null;
 		MOB M=getAWitnessHere(R);
 		if(M!=null) return M;
 		
@@ -207,6 +210,7 @@ public class Arrest extends StdBehavior
 	}
 	
 	public void fillOutWarrant(MOB mob, 
+							   Area myArea, 
 							   Environmental target, 
 							   String crimeLocs,
 							   String crime,
@@ -214,9 +218,11 @@ public class Arrest extends StdBehavior
 	{
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
+		if((myArea!=null)&&(mob.location().getArea()!=myArea)) 
+			return;
 
 		// is there a witness
-		MOB witness=getWitness(mob);
+		MOB witness=getWitness(myArea,mob);
 		if(witness==null) return;
 		
 		// is there a victim (if necessary)
@@ -299,6 +305,8 @@ public class Arrest extends StdBehavior
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting, affect);
+		if(!(affecting instanceof Area)) return;
+		Area myArea=(Area)affecting;
 		
 		if(laws==null) laws=getLaws();
 		if(affect.source()==null) return;
@@ -313,6 +321,7 @@ public class Arrest extends StdBehavior
 				if((W.victim!=null)&&(W.victim==affect.source()))
 				{
 					fillOutWarrant(W.criminal,
+								   myArea,
 								   W.victim,
 								   getBit(info,BIT_CRIMELOCS),
 								   getBit(info,BIT_CRIMENAME),
@@ -337,6 +346,7 @@ public class Arrest extends StdBehavior
 			String info=(String)laws.get(affect.tool().ID().toUpperCase());
 			if((info!=null)&&(info.length()>0))
 				fillOutWarrant(affect.source(),
+							   myArea,
 							   affect.target(),
 							   getBit(info,BIT_CRIMELOCS),
 							   getBit(info,BIT_CRIMENAME),
@@ -349,6 +359,7 @@ public class Arrest extends StdBehavior
 			String info=(String)laws.get("ASSAULT");
 			if((info!=null)&&(info.length()>0))
 				fillOutWarrant(affect.source(),
+							   myArea,
 							   affect.target(),
 							   getBit(info,BIT_CRIMELOCS),
 							   getBit(info,BIT_CRIMENAME),
@@ -366,6 +377,7 @@ public class Arrest extends StdBehavior
 				{
 					String info=(String)otherBits.elementAt(i);
 					fillOutWarrant(affect.source(),
+								   myArea,
 								   affect.target(),
 								   getBit(info,BIT_CRIMELOCS),
 								   getBit(info,BIT_CRIMENAME),
@@ -392,10 +404,12 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 	
-	public boolean isElligibleOfficer(MOB M)
+	public boolean isElligibleOfficer(MOB M, Area myArea)
 	{
-		if(M.isMonster())
+		if((M.isMonster())&&(M.location()!=null))
 		{
+			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
+			
 			for(int i=0;i<officerNames.size();i++)
 				if(CoffeeUtensils.containsString(M.displayText(),(String)officerNames.elementAt(i)))
 				{
@@ -416,33 +430,36 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 	
-	public MOB getElligibleOfficerHere(Room R, MOB criminal, MOB victim)
+	public MOB getElligibleOfficerHere(Area myArea, Room R, MOB criminal, MOB victim)
 	{
 		if(R==null) return null;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
 			if((M!=criminal)
+			   &&(M.location()!=null)
+			   &&(M.location().getArea()==myArea)
 			   &&((victim==null)||(M!=victim))
-			   &&(isElligibleOfficer(M))
+			   &&(isElligibleOfficer(M,myArea))
 			   &&(Sense.canBeSeenBy(criminal,M)))
 				return M;
 		}
 		return null;
 	}
 	
-	public MOB getElligibleOfficer(MOB criminal, MOB victim)
+	public MOB getElligibleOfficer(Area myArea, MOB criminal, MOB victim)
 	{
 		Room R=criminal.location();
 		if(R==null) return null;
-		MOB M=getElligibleOfficerHere(R,criminal,victim);
+		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
+		MOB M=getElligibleOfficerHere(myArea,R,criminal,victim);
 		if(M!=null) return M;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Room R2=R.getRoomInDir(d);
 			if(R2!=null)
 			{
-				M=getElligibleOfficerHere(R2,criminal,victim);
+				M=getElligibleOfficerHere(myArea,R2,criminal,victim);
 				if(M!=null)
 				{
 					int direction=Directions.getOpDirectionCode(d);
@@ -500,6 +517,8 @@ public class Arrest extends StdBehavior
 
 		if(tickID!=Host.AREA_TICK) return;
 		if(laws==null) laws=getLaws();
+		if(!(ticking instanceof Area)) return;
+		Area myArea=(Area)ticking;
 		
 		Hashtable handled=new Hashtable();
 		for(int w=warrants.size()-1;w>=0;w--)
@@ -527,7 +546,7 @@ public class Arrest extends StdBehavior
 						if((officer==null)||(!W.criminal.location().isInhabitant(officer)))
 						   officer=null;
 						if(officer==null)
-							officer=getElligibleOfficer(W.criminal,W.victim);
+							officer=getElligibleOfficer(myArea,W.criminal,W.victim);
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))

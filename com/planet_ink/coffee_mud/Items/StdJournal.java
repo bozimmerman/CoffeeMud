@@ -30,7 +30,7 @@ public class StdJournal extends StdItem
 		case Affect.TYP_WRITE:
 			if(affect.source().envStats().level()<envStats().level())
 			{
-				mob.tell("You are not allowed to write on "+name());
+				affect.source().tell("You are not allowed to write on "+name());
 				return false;
 			}
 			return true;
