@@ -49,7 +49,7 @@ public class Grouping
 			head.append(Util.padRight("Race",12)+" ");
 			head.append(Util.padRight("Class",12)+" ");
 			head.append(Util.padRight("Level",7));
-			head.append("] Character name^N^.\n\r");
+			head.append("] Character name^.^N\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
 	}
@@ -97,7 +97,7 @@ public class Grouping
 			head.append(Util.padRight("Race",12)+" ");
 			head.append(Util.padRight("Class",12)+" ");
 			head.append(Util.padRight("Level",7));
-			head.append("] Character name^N^.\n\r");
+			head.append("] Character name^.^N\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
 	}
