@@ -48,6 +48,7 @@ public class Spell_Scry extends Spell
 		else
 		if((affected instanceof MOB)
 		&&(invoker!=null)
+		&&(affect.source() != invoker)
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
 		&&(affect.othersCode()!=Affect.NO_EFFECT)
 		&&(affect.othersMessage()!=null))

@@ -230,7 +230,6 @@ public class StdRoom
 
 	public void affect(Affect affect)
 	{
-		
 		getArea().affect(affect);
 		
 		if(affect.amITarget(this))

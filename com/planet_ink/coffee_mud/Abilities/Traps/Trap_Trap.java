@@ -215,6 +215,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(myPit==null)
 		{
 			myPitUp=CMClass.getLocale("ClimbableSurface");
+			myPitUp.setArea(mob.location().getArea());
 			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|Sense.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
 			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
@@ -223,6 +224,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPitUp.recoverEnvStats();
 
 			myPit=CMClass.getLocale("StdRoom");
+			myPit.setArea(mob.location().getArea());
 			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|Sense.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");
 			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");

@@ -207,7 +207,9 @@ public class MUD extends Thread implements Host
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
 			String id=page.getStr("START");
 			if(id.length()==0) id="START";
+			Area newArea=ExternalPlay.DBCreateArea("New Area","StdArea");
 			Room room=CMClass.getLocale("StdRoom");
+			room.setArea(newArea);
 			room.setID(id);
 			room.setDisplayText("New Room");
 			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");

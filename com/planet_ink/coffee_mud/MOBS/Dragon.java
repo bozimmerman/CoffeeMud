@@ -147,6 +147,7 @@ public class Dragon extends StdMOB
 			if(Stomach!=null)
 			{
 				Stomach.setName("Dragon Stomach");
+				Stomach.setArea(location().getArea());
 				Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 			}
 		}

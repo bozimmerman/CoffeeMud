@@ -89,6 +89,7 @@ public class Spell_Shelter extends Spell
 			previousLocation=thisRoom;
 			shelter=CMClass.getLocale("MagicShelter");
 			Room newRoom=shelter;
+			shelter.setArea(mob.location().getArea());
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB follower=(MOB)f.nextElement();
