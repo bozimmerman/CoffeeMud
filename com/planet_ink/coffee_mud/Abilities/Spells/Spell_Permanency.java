@@ -86,7 +86,7 @@ public class Spell_Permanency extends Spell
 				{
 					Ability A=target.fetchAffect(a);
 					if((A.invoker()==mob)
-					 &&(!A.isAnAutoEffect())
+					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
 					 &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY)

@@ -49,7 +49,8 @@ public class StdAbility implements Ability, Cloneable
 			return false;
 	}
 
-	public boolean isAnAutoEffect()
+	public boolean isAutoInvoked(){return isAutoinvoked;}
+	public boolean isNowAnAutoEffect()
 	{ return isAnAutoEffect; }
 	public boolean isBorrowed(Environmental toMe)
 	{ return borrowed;	}

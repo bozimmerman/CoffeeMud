@@ -10,7 +10,7 @@ public class AbilityData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	// valid parms include help, ranges, quality, target, alignment, domain, 
-	// qualifyQ, 
+	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -91,6 +91,13 @@ public class AbilityData extends StdWebMacro
 						break;
 					}
 				}
+				if(parms.containsKey("AUTO"))
+				{
+					if(A.isAutoInvoked())
+						str.append("Automatic, ");
+					else
+						str.append("Requires invocation, ");
+				}
 				if(parms.containsKey("TARGET"))
 				{
 					switch(A.quality())
@@ -113,38 +120,43 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ALIGNMENT"))
 				{
-					if((!A.appropriateToMyAlignment(0))
-					&&(!A.appropriateToMyAlignment(500))
-					&&(A.appropriateToMyAlignment(1000)))
-					   str.append("Good, ");
+					boolean notgood=(!A.appropriateToMyAlignment(1000));
+					boolean notneutral=(!A.appropriateToMyAlignment(500));
+					boolean notevil=(!A.appropriateToMyAlignment(0));
+					boolean good=!notgood;
+					boolean neutral=!notneutral;
+					boolean evil=!notevil;
+					
+					if(good&&neutral&&evil)
+						str.append("Unaligned/Doesn't matter, ");
 					else
-					if((!A.appropriateToMyAlignment(0))
-					&&(A.appropriateToMyAlignment(500))
-					&&(!A.appropriateToMyAlignment(1000)))
+					if(neutral&&notgood&&notevil)
 					   str.append("Neutral, ");
 					else
-					if((A.appropriateToMyAlignment(0))
-					&&(!A.appropriateToMyAlignment(500))
-					&&(!A.appropriateToMyAlignment(1000)))
-					   str.append("Evil, ");
+					if(good&&notevil)
+					   str.append("Good, ");
 					else
-						str.append("Unaligned/Doesn't matter, ");
+					if(evil&&notgood)
+					   str.append("Evil, ");
 				}
 				if(parms.containsKey("DOMAIN"))
 				{
-					String thang="";
+					StringBuffer thang=new StringBuffer("");
 					if((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 					{
 						int domain=A.classificationCode()&Ability.ALL_DOMAINS;
 						domain=domain>>5;
-						thang=Ability.DOMAIN_DESCS[domain];
+						thang.append(Ability.DOMAIN_DESCS[domain].toLowerCase());
 					}
 					else
-						thang=Ability.TYPE_DESCS[A.classificationCode()&Ability.ALL_CODES];
+						thang.append(Ability.TYPE_DESCS[A.classificationCode()&Ability.ALL_CODES].toLowerCase());
 					if(thang.length()>0)
 					{
-						thang=Character.toUpperCase(thang.charAt(0))+thang.substring(1).toLowerCase();
-						str.append(thang+", ");
+						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
+						
+						int x=thang.toString().indexOf("/");
+						if(x>0) thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
+						str.append(thang.toString()+", ");
 					}
 				}
 				if(parms.containsKey("QUALIFYQ")&&(httpReq.getRequestParameters().get("CLASS")!=null))

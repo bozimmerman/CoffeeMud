@@ -53,7 +53,7 @@ public class Prayer_Contagion extends Prayer
 			   &&(A.quality()==Ability.MALICIOUS)
 			   &&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 				  ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			   &&(!A.isAnAutoEffect()))
+			   &&(!A.isAutoInvoked()))
 				choices.addElement(A);
 		}
 		if(choices.size()==0) return true;

@@ -48,7 +48,7 @@ public class Prayer_Nullification extends Prayer
 					for(int a=0;a<target.numAffects();a++)
 					{
 						Ability A=(Ability)target.fetchAffect(a);
-						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAnAutoEffect())
+						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 						&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)))

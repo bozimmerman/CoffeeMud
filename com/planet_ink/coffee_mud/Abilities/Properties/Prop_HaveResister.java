@@ -50,7 +50,7 @@ public class Prop_HaveResister extends Property
 					if(myItem.myOwner() !=null)
 					{
 						lastMOB=(MOB)myItem.myOwner();
-						if(!isAffectedBy(lastMOB,this))
+						if(!lastMOB.isMine(this))
 							addMe(lastMOB,this);
 					}
 				}

@@ -23,6 +23,7 @@ public class AbilityNext extends StdWebMacro
 		{
 			boolean okToShow=true;
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			int classType=A.classificationCode()&Ability.ALL_CODES;
 			String className=(String)httpReq.getRequestParameters().get("CLASS");
 			if((className!=null)&&(className.length()>0))
 			{
@@ -36,21 +37,29 @@ public class AbilityNext extends StdWebMacro
 						okToShow=false;
 				}
 			}
-			int classType=A.classificationCode()&Ability.ALL_CODES;
-			if(parms.containsKey("DOMAIN")&&(classType==Ability.SPELL))
+			if(okToShow)
 			{
-				String domain=(String)parms.get("DOMAIN");
-				if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[A.classificationCode()&Ability.ALL_DOMAINS]))
-				   okToShow=false;
-			}
-			else
-			{
-				boolean containsOne=false;
-				for(int i=0;i<Ability.TYPE_DESCS.length;i++)
-					if(parms.containsKey(Ability.TYPE_DESCS[i]))
-					{ containsOne=true; break;}
-				if(containsOne&&(!parms.containsKey(Ability.TYPE_DESCS[classType])))
-					okToShow=false;
+				String ableType=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
+				if((ableType!=null)&&(ableType.length()>0))
+					parms.put(ableType,ableType);
+				String domainType=(String)httpReq.getRequestParameters().get("DOMAIN");
+				if((domainType!=null)&&(domainType.length()>0))
+					parms.put("DOMAIN",domainType);
+				if(parms.containsKey("DOMAIN")&&(classType==Ability.SPELL))
+				{
+					String domain=(String)parms.get("DOMAIN");
+					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[A.classificationCode()&Ability.ALL_DOMAINS]))
+					   okToShow=false;
+				}
+				else
+				{
+					boolean containsOne=false;
+					for(int i=0;i<Ability.TYPE_DESCS.length;i++)
+						if(parms.containsKey(Ability.TYPE_DESCS[i]))
+						{ containsOne=true; break;}
+					if(containsOne&&(!parms.containsKey(Ability.TYPE_DESCS[classType])))
+						okToShow=false;
+				}
 			}
 			if(okToShow)
 			{

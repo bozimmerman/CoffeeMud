@@ -86,7 +86,7 @@ public class Spell_LowerResists extends Spell
 				for(int a=0;a<target.numAffects();a++)
 				{
 					Ability A=target.fetchAffect(a);
-					if((!A.isAnAutoEffect())
+					if((!A.isAutoInvoked())
 					&&(A.canBeUninvoked())
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ABJURATION))
 					{

@@ -864,7 +864,7 @@ public class StdMOB implements MOB
 				{
 					if((affect.tool()==null)
 					||(!(affect.tool() instanceof Ability))
-					||(!((Ability)affect.tool()).isAnAutoEffect()))
+					||(!((Ability)affect.tool()).isNowAnAutoEffect()))
 					{
 						if(Sense.isSleeping(this))
 						{
@@ -1990,6 +1990,7 @@ public class StdMOB implements MOB
 		if(env instanceof Ability)
 		{
 			if(abilities.contains(env)) return true;
+			if(affects.contains(env)) return true;
 			return false;
 		}
 		return false;

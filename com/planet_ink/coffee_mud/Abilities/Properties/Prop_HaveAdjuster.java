@@ -242,7 +242,7 @@ public class Prop_HaveAdjuster extends Property
 					if(myItem.myOwner() !=null)
 					{
 						lastMOB=(MOB)myItem.myOwner();
-						if(!isAffectedBy(lastMOB,this))
+						if(!lastMOB.isMine(this))
 							addMe(lastMOB,adjCharState,this);
 					}
 				}

@@ -50,16 +50,15 @@ public class Prayer extends StdAbility
 
 	public boolean appropriateToMyAlignment(int alignment)
 	{
-		if((holyQuality==Prayer.HOLY_NEUTRAL)
-		   &&((alignment>650)||(alignment<350)))
-			return false;
+		if((holyQuality==Prayer.HOLY_EVIL)&&(alignment<350))
+			return true;
 		else
-		if((holyQuality==Prayer.HOLY_EVIL)&&(alignment>650))
-			return false;
+		if((holyQuality==Prayer.HOLY_GOOD)&&(alignment>650))
+			return true;
 		else
-		if((holyQuality==Prayer.HOLY_GOOD)&&(alignment<350))
-			return false;
-		return true;
+		if((holyQuality==Prayer.HOLY_NEUTRAL)&&(alignment<350)&&(alignment>650))
+			return true;
+		return false;
 	}
 	public void helpProfficiency(MOB mob)
 	{

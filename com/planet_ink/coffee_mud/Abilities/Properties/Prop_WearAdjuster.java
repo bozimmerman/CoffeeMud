@@ -93,7 +93,7 @@ public class Prop_WearAdjuster extends Property
 					if(myItem.myOwner() !=null)
 					{
 						lastMOB=(MOB)myItem.myOwner();
-						if(!isAffectedBy(lastMOB,this))
+						if(!lastMOB.isMine(this))
 							Prop_HaveAdjuster.addMe(lastMOB,adjCharState,this);
 					}
 				}

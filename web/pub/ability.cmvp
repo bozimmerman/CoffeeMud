@@ -11,6 +11,8 @@
 	<TD><FONT SIZE=-1>@AbilityData?target@</FONT></TD></TR>
 <TR><TD VALIGN=TOP><FONT SIZE=-1><B>Range</B></FONT></TD>
 	<TD><FONT SIZE=-1>@AbilityData?ranges@</FONT></TD></TR>
+<TR><TD VALIGN=TOP><FONT SIZE=-1><B>Invocation</B></FONT></TD>
+	<TD><FONT SIZE=-1>@AbilityData?auto@</FONT></TD></TR>
 <TR><TD VALIGN=TOP><FONT SIZE=-1><B>Alignment</B></FONT></TD>
 	<TD><FONT SIZE=-1>@AbilityData?alignment@</FONT></TD></TR>
 </TABLE>

@@ -611,6 +611,28 @@ public class CommandProcessor
 		doTopics(mob,arcHelpFile,"AHELP", "ARCHON TOPICS");
 	}
 
+	private StringBuffer fourColumns(Vector reverseList)
+	{
+		StringBuffer topicBuffer=new StringBuffer("");
+		int col=0;
+		for(int i=0;i<reverseList.size();i++)
+		{
+			if((++col)>4)
+			{
+				topicBuffer.append("\n\r");
+				col=1;
+			}
+			if(((String)reverseList.elementAt(i)).length()>18)
+			{
+				topicBuffer.append(Util.padRight((String)reverseList.elementAt(i),(18*2)+1)+" ");
+				++col;
+			}
+			else
+				topicBuffer.append(Util.padRight((String)reverseList.elementAt(i),18)+" ");
+		}
+		return topicBuffer;
+	}
+	
 	private void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
 		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
@@ -630,22 +652,7 @@ public class CommandProcessor
 
 			Collections.sort((List)reverseList);
 			topicBuffer=new StringBuffer("Help topics: \n\r\n\r");
-			int col=0;
-			for(int i=0;i<reverseList.size();i++)
-			{
-				if((++col)>4)
-				{
-					topicBuffer.append("\n\r");
-					col=1;
-				}
-				if(((String)reverseList.elementAt(i)).length()>19)
-				{
-					topicBuffer.append(Util.padRight((String)reverseList.elementAt(i),(19*2)+1)+" ");
-					++col;
-				}
-				else
-					topicBuffer.append(Util.padRight((String)reverseList.elementAt(i),19)+" ");
-			}
+			topicBuffer.append(fourColumns(reverseList));
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}
@@ -686,6 +693,9 @@ public class CommandProcessor
 		if(thisTag==null) thisTag=rHelpFile.getProperty("SPELL_"+helpStr);
 		if(thisTag==null) thisTag=rHelpFile.getProperty("PRAYER_"+helpStr);
 		if(thisTag==null) thisTag=rHelpFile.getProperty("SONG_"+helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("CHANT_"+helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("PROP_"+helpStr);
+		if(thisTag==null) thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr);
 
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<25))
 		{
@@ -728,7 +738,36 @@ public class CommandProcessor
 		}
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
+		{
 			thisTag=Resources.getFileResource("arc_help.txt");
+			if(thisTag!=null)
+			{
+				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
+				if(theRest==null)
+				{
+					Vector V=new Vector();
+					theRest=new StringBuffer("\n\rProperties:\n\r");
+					for(int a=0;a<CMClass.abilities.size();a++)
+					{
+						Ability A=(Ability)CMClass.abilities.elementAt(a);
+						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PROPERTY))
+							V.addElement(A.ID());
+					}
+					theRest.append(fourColumns(V));
+					theRest.append("\n\r\n\rBehaviors:\n\r");
+					V=new Vector();
+					for(int b=0;b<CMClass.behaviors.size();b++)
+					{
+						Behavior B=(Behavior)CMClass.behaviors.elementAt(b);
+						if(B!=null) V.addElement(B.ID());
+					}
+					theRest.append(fourColumns(V)+"\n\r");
+					Resources.submitResource("arc_help.therest",theRest);
+				}
+				thisTag=new StringBuffer(thisTag.toString());
+				thisTag.append(theRest);
+			}
+		}
 		else
 			thisTag=getHelpText(helpStr,arcHelpFile);
 		if(thisTag==null)

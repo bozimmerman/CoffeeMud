@@ -80,7 +80,8 @@ public interface Ability  extends Environmental
 	// this method should be called WHENEVER an ability is 
 	// added to a MOB for the first time.
 	public boolean autoInvocation(MOB mob);
-	public boolean isAnAutoEffect();
+	public boolean isAutoInvoked();
+	public boolean isNowAnAutoEffect();
 	
 	// a borrowed ability is one derived from some other source
 	// than the mobs knowledge, such as a magic item, or 

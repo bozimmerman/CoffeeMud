@@ -34,7 +34,8 @@ public class Property implements Ability, Cloneable
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}
-	public boolean isAnAutoEffect(){return true;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean isNowAnAutoEffect(){return true;}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
@@ -66,18 +67,6 @@ public class Property implements Ability, Cloneable
 	public String ID()
 	{
 		return myID;
-	}
-
-	public static boolean isAffectedBy(MOB mob,Ability me)
-	{
-		if((mob==null)||(me==null)) return false;
-		for(int a=0;a<mob.numAffects();a++)
-		{
-			Ability aff=mob.fetchAffect(a);
-			if((aff!=null)&&(aff==me))
-				return true;
-		}
-		return false;
 	}
 
 	public String name(){ return name;}
