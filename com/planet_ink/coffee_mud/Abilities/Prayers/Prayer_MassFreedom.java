@@ -71,11 +71,10 @@ public class Prayer_MassFreedom extends Prayer
 						// and add it to the affects list of the
 						// affected MOB.  Then tell everyone else
 						// what happened.
-						int old=target.numEffects();
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
 							((Ability)offensiveAffects.elementAt(a)).unInvoke();
 						nothingDone=false;
-						if((old>target.numEffects())&&(target.location()!=null))
+						if((!Sense.stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}
 				}

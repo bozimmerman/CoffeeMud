@@ -16,6 +16,30 @@ public class CoffeeUtensils
 		return true;
 	}
 	
+	public static String niceCommaList(Vector V, boolean andTOrF)
+	{
+		String id="";
+		for(int v=0;v<V.size();v++)
+		{
+			String s=null;
+			if(V.elementAt(v) instanceof Environmental)
+				s=((Environmental)V.elementAt(v)).name();
+			else
+			if(V.elementAt(v) instanceof String)
+				s=(String)V.elementAt(v);
+			else
+				continue;
+			if(V.size()==1)
+				id+=s;
+			else
+			if(v==(V.size()-1))
+				id+=((andTOrF)?"and ":"or ")+s;
+			else
+				id+=s+", ";
+		}
+		return id;
+	}
+	
 	public static int getMaterialCode(String s)
 	{
 		for(int i=0;i<EnvResource.MATERIAL_DESCS.length;i++)

@@ -65,6 +65,25 @@ public class Amputation extends StdAbility
 												{-1},//tail
 												{-1}//wing
 												};
+
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(affected,msg.source()))
+		&&(affected instanceof MOB))
+		{
+			String s=CoffeeUtensils.niceCommaList(missingLimbNameSet(),true);
+			if(s.length()>0)
+				msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
+											  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is missing "+((MOB)affected).charStats().hisher()+" "+s+".\n\r",
+											  CMMsg.NO_EFFECT,null,
+											  CMMsg.NO_EFFECT,null));
+		}
+		super.executeMsg(host,msg);
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -409,6 +428,8 @@ public class Amputation extends StdAbility
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(target.location().okMessage(target,msg))
 			{
+				MOB vic=target.getVictim();
+				MOB vic2=mob.getVictim();
 			    target.location().send(target,msg);
 				if(msg.value()<=0)
 				{
@@ -419,6 +440,8 @@ public class Amputation extends StdAbility
 					target.recoverEnvStats();
 					target.recoverMaxState();
 					target.confirmWearability();
+					target.setVictim(vic);
+					mob.setVictim(vic2);
 				}
 			}
 			else

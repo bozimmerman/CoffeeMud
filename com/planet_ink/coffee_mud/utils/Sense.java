@@ -669,4 +669,20 @@ public class Sense
 		}
 		return "";
 	}
+	
+	public static boolean stillAffectedBy(Environmental obj, Vector oneOf, boolean anyTallF)
+	{
+		for(int a=oneOf.size()-1;a>=0;a--)
+			if(obj.fetchEffect(((Ability)oneOf.elementAt(a)).ID())==null)
+			{
+				if(!anyTallF) 
+					return false;
+			}
+			else
+			{
+				if(anyTallF) 
+					return true;
+			}
+		return !anyTallF;
+	}
 }

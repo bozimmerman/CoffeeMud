@@ -48,7 +48,6 @@ public class Chant_NeutralizePoison extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int old=target.numEffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
 				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==EnvResource.RESOURCE_POISON))
@@ -56,14 +55,12 @@ public class Chant_NeutralizePoison extends Chant
 					((Drink)target).setLiquidHeld(EnvResource.RESOURCE_FRESHWATER);
 					target.baseEnvStats().setAbility(0);
 				}
-				if(old>target.numEffects())
+				if((!Sense.stillAffectedBy(target,offensiveAffects,false))
+				&&(target instanceof MOB))
 				{
-					if(target instanceof MOB)
-					{
-						((MOB)target).tell("You feel much better!");
-						((MOB)target).recoverCharStats();
-						((MOB)target).recoverMaxState();
-					}
+					((MOB)target).tell("You feel much better!");
+					((MOB)target).recoverCharStats();
+					((MOB)target).recoverMaxState();
 				}
 				target.recoverEnvStats();
 			}

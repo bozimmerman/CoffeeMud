@@ -12,9 +12,10 @@ public class DiseaseCure extends StdAbility
 	public String name(){ return "A Cure";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public String displayText(){ return "";}
-	protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
+	private boolean processing=false;
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -31,6 +32,47 @@ public class DiseaseCure extends StdAbility
 		return offenders;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if(affected==null) return;
+		if(affected instanceof Item)
+		{
+			if(!processing)
+			{
+				Item myItem=(Item)affected;
+				if(myItem.owner()==null) return;
+				processing=true;
+				if(msg.amITarget(myItem))
+					switch(msg.sourceMinor())
+					{
+					case CMMsg.TYP_DRINK:
+						if(myItem instanceof Drink)
+						{
+							invoke(msg.source(),null,msg.source(),true);
+							myItem.destroy();
+						}
+						break;
+					case CMMsg.TYP_EAT:
+						if(myItem instanceof Food)
+						{
+							invoke(msg.source(),null,msg.source(),true);
+							myItem.destroy();
+						}
+						break;
+					case CMMsg.TYP_WEAR:
+						if(myItem.rawProperLocationBitmap()!=Item.HELD)
+						{
+							invoke(msg.source(),null,msg.source(),true);
+							myItem.destroy();
+						}
+						break;
+					}
+			}
+			processing=false;
+		}
+		super.executeMsg(myHost,msg);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -52,11 +94,10 @@ public class DiseaseCure extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int old=target.numEffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
-				if((old>target.numEffects())&&(target.location()!=null))
-					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> feel(s) much better.");
+				if((!Sense.stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) much better.");
 			}
 		}
 

@@ -37,6 +37,7 @@ Misc:
   2. Add an option for Weather  
   3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
+fix healer
 Flea Powder! Something just to cure fleas.
 racial affects
 Install ship battery

@@ -53,10 +53,9 @@ public class Prayer_MassCureDisease extends Prayer
 							Vector offensiveAffects=returnOffensiveAffects(target);
 							if(offensiveAffects.size()>0)
 							{
-								int old=target.numEffects();
 								for(int a=offensiveAffects.size()-1;a>=0;a--)
 									((Ability)offensiveAffects.elementAt(a)).unInvoke();
-								if(old>target.numEffects())
+								if(!Sense.stillAffectedBy(target,offensiveAffects,false))
 									target.tell("You feel much better!");
 							}
 						}

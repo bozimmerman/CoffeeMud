@@ -20,6 +20,7 @@ public class Util
 			str.append(Byte.toString(bytes[b])+";");
 		return str.toString();
 	}
+	
 	public static byte[] fromByteList(String str)
 	{
 		Vector V=parseSemicolons(str,true);

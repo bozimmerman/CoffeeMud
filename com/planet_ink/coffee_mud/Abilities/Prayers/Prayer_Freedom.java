@@ -65,10 +65,9 @@ public class Prayer_Freedom extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int old=target.numEffects();
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 					((Ability)offensiveAffects.elementAt(a)).unInvoke();
-				if(old>target.numEffects())
+				if(!Sense.stillAffectedBy(target,offensiveAffects,false))
 					target.tell("You feel less constricted!");
 			}
 		}
