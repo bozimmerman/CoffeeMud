@@ -1091,8 +1091,7 @@ public class Arrest extends StdBehavior
 						
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(Sense.canBeSeenBy(W.criminal,officer)))
+						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							if(W.criminal.curState().getMovement()<20)
 								W.criminal.curState().setMovement(20);
@@ -1125,8 +1124,7 @@ public class Arrest extends StdBehavior
 						MOB officer=W.arrestingOfficer;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(Sense.canBeSeenBy(W.criminal,officer)))
+						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
 							if(judge==null)
@@ -1173,8 +1171,7 @@ public class Arrest extends StdBehavior
 						MOB officer=W.arrestingOfficer;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(Sense.canBeSeenBy(W.criminal,officer)))
+						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
 							if(judge==null)
