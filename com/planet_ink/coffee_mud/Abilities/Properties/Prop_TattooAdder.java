@@ -51,35 +51,68 @@ public class Prop_TattooAdder extends Property
 		return tattooCode;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void applyTattooCodes(MOB mob, boolean addOnly, boolean subOnly)
 	{
-		if((tattooCode()>=0)
-		&&((msg.targetMinor()==tattooCode())||(msg.sourceMinor()==tattooCode()))
-		&&(msg.amITarget(affected)||((msg.tool()==affected)&&(tattooCode()!=CMMsg.TYP_DEATH)))
-		&&(text().length()>0))
+		String tattooName=text();
+		if(tattooName.length()==0) return;
+		
+		boolean tattooPlus=true;
+		boolean tattooMinus=false;
+		
+		
+		if(tattooName.startsWith("+-")||tattooName.startsWith("-+"))
 		{
-			String tattooName=text();
-			boolean tattooMinus=tattooName.startsWith("-");
-			if(tattooMinus)
-				tattooName=tattooName.substring(1);
+			tattooMinus=true;
+			tattooName=tattooName.substring(2);
+		}
+		else
+		if(tattooName.startsWith("+"))
+			tattooName=tattooName.substring(1);
+		else
+		if(tattooName.startsWith("-"))
+		{
+			tattooPlus=false;
+			tattooMinus=true;
+			tattooName=tattooName.substring(1);
+		}
+		
+		if(addOnly) tattooMinus=false;
+		if(subOnly) tattooPlus=false;
 
-			if(msg.source().fetchTattoo(tattooName)!=null)
+		if(mob.fetchTattoo(tattooName)!=null)
+		{
+			if(tattooMinus)
 			{
-				if(tattooMinus)
-				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
-					msg.source().delTattoo(tattooName);
-				}
-			}
-			else
-			{
-				if(!tattooMinus)
-				{
-					msg.source().location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
-					msg.source().addTattoo(tattooName);
-				}
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
+				mob.delTattoo(tattooName);
 			}
 		}
+		else
+		{
+			if(tattooPlus)
+			{
+				mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+				mob.addTattoo(tattooName);
+			}
+		}
+	}
+	
+	
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((tattooCode()==CMMsg.TYP_DEATH)&&(msg.sourceMinor()==tattooCode()))
+		{
+			if((msg.tool()==affected)&&(msg.source()!=affected))
+				applyTattooCodes(msg.source(),false,true);
+			else
+			if((msg.source()==this)&&(msg.tool() instanceof MOB)&&(msg.tool()!=affected))
+				applyTattooCodes((MOB)msg.tool(),true,false);
+		}
+		else
+		if(((msg.targetMinor()==tattooCode())||(msg.sourceMinor()==tattooCode()))
+		&&(tattooCode()>=0)
+		&&(msg.amITarget(affected)||(msg.tool()==affected)))
+			applyTattooCodes(msg.source(),false,false);
 		super.executeMsg(myHost,msg);
 	}
 }
