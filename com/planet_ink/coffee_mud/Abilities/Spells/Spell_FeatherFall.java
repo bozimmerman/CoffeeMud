@@ -23,7 +23,7 @@ public class Spell_FeatherFall extends Spell
 
 	public int mobWeight(MOB mob)
 	{
-		int weight=mob.baseEnvStats().weight();
+		int weight=mob.baseWeight();
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);

@@ -77,6 +77,7 @@ public interface MOB
 	public void setBaseCharStats(CharStats newBaseCharStats);
 	public String displayText(MOB viewer);
 	public int maxCarry();
+	public int baseWeight();
 	public String healthText();
 
 	/** Combat and death */

@@ -15,20 +15,20 @@ public class Prayer_AnimateVampire extends Prayer
 	public Environmental newInstance(){	return new Prayer_AnimateVampire();}
 
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(msg.amISource(mob)
-			   &&(msg.sourceMinor()==Affect.TYP_DEATH))
+			&&(msg.sourceMinor()==Affect.TYP_DEATH))
 			{
 				Ability A=CMClass.getAbility("Disease_Vampirism");
 				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
 					A.invoke(mob,mob,true);
 			}
 		}
-		return super.okAffect(myHost,msg);
+		super.affect(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -1316,7 +1316,7 @@ public class Arrest extends StdBehavior
 									if(!A.invoke(officer,W.criminal,(curPoints<=25)))
 									{
 										A=CMClass.getAbility("Skill_Trip");
-										A.setAbilityCode(10);
+										A.setAbilityCode(30);
 										if(!A.invoke(officer,W.criminal,(curPoints<=50)))
 											ExternalPlay.postAttack(officer,W.criminal,officer.fetchWieldedItem());
 									}

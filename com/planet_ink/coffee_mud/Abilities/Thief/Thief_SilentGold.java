@@ -17,10 +17,9 @@ public class Thief_SilentGold extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_SilentGold();}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(myHost,affect))
-			return false;
+		super.affect(myHost,affect);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((affect.sourceMinor()==Affect.TYP_DEATH)
@@ -49,7 +48,6 @@ public class Thief_SilentGold extends ThiefSkill
 				if(victim!=null) mob.setVictim(victim);
 			}
 		}
-		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

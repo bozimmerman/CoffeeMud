@@ -47,9 +47,9 @@ public class Fighter_AtemiStrike extends StdAbility
 			return false;
 		}
 
-		if((!auto)&&(mob.envStats().weight()<(target.envStats().weight()-100)))
+		if((!auto)&&(mob.baseWeight()<(mob.baseWeight()/2)))
 		{
-			mob.tell(target.name()+" is way to big to strike!");
+			mob.tell(target.name()+" is too big to strike!");
 			return false;
 		}
 

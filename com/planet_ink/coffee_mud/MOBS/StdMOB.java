@@ -282,14 +282,17 @@ public class StdMOB implements MOB
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
+	public int baseWeight()
+	{
+		if(charStats().getMyRace()==baseCharStats().getMyRace())
+			return baseEnvStats().weight();
+		else
+			return charStats().getMyRace().getMaxWeight();
+	}
 	public int maxCarry()
 	{
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
-		double bodyWeight=0.0;
-		if(charStats().getMyRace()==baseCharStats().getMyRace())
-			bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
-		else
-			bodyWeight=new Integer(charStats().getMyRace().getMaxWeight()).doubleValue();
+		double bodyWeight=new Integer(baseWeight()).doubleValue();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
 	public int maxFollowers()
@@ -971,264 +974,265 @@ public class StdMOB implements MOB
 		}
 
 		MOB mob=affect.source();
-		if((affect.sourceCode()!=Affect.NO_EFFECT)
-		&&(affect.amISource(this))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL)))
+		if((affect.sourceCode()!=Affect.NO_EFFECT)&&(affect.amISource(this)))
 		{
-			int srcMajor=affect.sourceMajor();
-
-			if(amDead())
+			if((affect.sourceMinor()==Affect.TYP_DEATH)
+			&&(!isMonster())
+			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
+			&&(baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
 			{
-				tell("You are DEAD!");
+				curState().setHitPoints(1);
+				if((affect.tool()!=null)
+				&&(affect.tool()!=this)
+				&&(affect.tool() instanceof MOB))
+				   ((MOB)affect.tool()).tell(name()+" is immortal, and can not die.");
+				tell("You are immortal, and can not die.");
 				return false;
 			}
-
-			if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
+			
+			if(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			{
-				if((affect.target()!=this)&&(affect.target()!=null)&&(affect.target() instanceof MOB))
-				{
-					MOB target=(MOB)affect.target();
-					if((amFollowing()!=null)&&(target==amFollowing()))
-					{
-						tell("You like "+amFollowing().charStats().himher()+" too much.");
-						return false;
-					}
-					if((getLeigeID().length()>0)&&(target.Name().equals(getLeigeID())))
-					{
-						tell("You are serving '"+getLeigeID()+"'!");
-						return false;
-					}
-					establishRange(this,(MOB)affect.target(),affect.tool());
-				}
-			}
+				int srcMajor=affect.sourceMajor();
 
-
-			if(Util.bset(srcMajor,Affect.MASK_EYES))
-			{
-				if(Sense.isSleeping(this))
+				if(amDead())
 				{
-					tell("Not while you are sleeping.");
+					tell("You are DEAD!");
 					return false;
 				}
-				if(!(affect.target() instanceof Room))
-					if(!Sense.canBeSeenBy(affect.target(),this))
+
+				if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
+				{
+					if((affect.target()!=this)&&(affect.target()!=null)&&(affect.target() instanceof MOB))
 					{
-						if(affect.target() instanceof Item)
-							tell("You don't see "+affect.target().name()+" here.");
-						else
-							tell("You can't see that!");
+						MOB target=(MOB)affect.target();
+						if((amFollowing()!=null)&&(target==amFollowing()))
+						{
+							tell("You like "+amFollowing().charStats().himher()+" too much.");
+							return false;
+						}
+						if((getLeigeID().length()>0)&&(target.Name().equals(getLeigeID())))
+						{
+							tell("You are serving '"+getLeigeID()+"'!");
+							return false;
+						}
+						establishRange(this,(MOB)affect.target(),affect.tool());
+					}
+				}
+
+
+				if(Util.bset(srcMajor,Affect.MASK_EYES))
+				{
+					if(Sense.isSleeping(this))
+					{
+						tell("Not while you are sleeping.");
 						return false;
 					}
-			}
-			if(Util.bset(srcMajor,Affect.MASK_MOUTH))
-			{
-				if(!Sense.aliveAwakeMobile(this,false))
-					return false;
-				if(Util.bset(srcMajor,Affect.MASK_SOUND))
+					if(!(affect.target() instanceof Room))
+						if(!Sense.canBeSeenBy(affect.target(),this))
+						{
+							if(affect.target() instanceof Item)
+								tell("You don't see "+affect.target().name()+" here.");
+							else
+								tell("You can't see that!");
+							return false;
+						}
+				}
+				if(Util.bset(srcMajor,Affect.MASK_MOUTH))
 				{
-					if((affect.tool()==null)
-					||(!(affect.tool() instanceof Ability))
-					||(!((Ability)affect.tool()).isNowAnAutoEffect()))
+					if(!Sense.aliveAwakeMobile(this,false))
+						return false;
+					if(Util.bset(srcMajor,Affect.MASK_SOUND))
 					{
-						if(Sense.isSleeping(this))
+						if((affect.tool()==null)
+						||(!(affect.tool() instanceof Ability))
+						||(!((Ability)affect.tool()).isNowAnAutoEffect()))
 						{
-							tell("Not while you are sleeping.");
+							if(Sense.isSleeping(this))
+							{
+								tell("Not while you are sleeping.");
+								return false;
+							}
+							if(!Sense.canSpeak(this))
+							{
+								tell("You can't make sounds!");
+								return false;
+							}
+							if(Sense.isAnimalIntelligence(this))
+							{
+								tell("You aren't smart enough to speak.");
+								return false;
+							}
+						}
+					}
+					else
+					{
+						if((!Sense.canBeSeenBy(affect.target(),this))
+						&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
+						{
+							mob.tell("You don't see '"+affect.target().name()+"' here.");
 							return false;
 						}
-						if(!Sense.canSpeak(this))
+						if(!Sense.canTaste(this))
 						{
-							tell("You can't make sounds!");
-							return false;
-						}
-						if(Sense.isAnimalIntelligence(this))
-						{
-							tell("You aren't smart enough to speak.");
+							tell("You can't eat or drink!");
 							return false;
 						}
 					}
 				}
-				else
+				if(Util.bset(srcMajor,Affect.MASK_HANDS))
 				{
 					if((!Sense.canBeSeenBy(affect.target(),this))
-					&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
+					&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
+					&&(!(isInCombat()&&(affect.target()==victim))))
 					{
 						mob.tell("You don't see '"+affect.target().name()+"' here.");
 						return false;
 					}
-					if(!Sense.canTaste(this))
+					if(!Sense.aliveAwakeMobile(this,false))
+						return false;
+				
+					if((Sense.isSitting(this))
+					&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
+					&&(affect.targetCode()!=Affect.MSG_OK_VISUAL)
+					&&((affect.sourceMessage()!=null)||(affect.othersMessage()!=null))
+					&&((!CoffeeUtensils.reachableItem(this,affect.target()))
+					||(!CoffeeUtensils.reachableItem(this,affect.tool()))))
 					{
-						tell("You can't eat or drink!");
+						tell("You need to stand up!");
 						return false;
 					}
 				}
-			}
-			if(Util.bset(srcMajor,Affect.MASK_HANDS))
-			{
-				if((!Sense.canBeSeenBy(affect.target(),this))
-				&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
-				&&(!(isInCombat()&&(affect.target()==victim))))
-				{
-					mob.tell("You don't see '"+affect.target().name()+"' here.");
-					return false;
-				}
-				if(!Sense.aliveAwakeMobile(this,false))
-					return false;
-			
-				if((Sense.isSitting(this))
-				&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
-				&&(affect.targetCode()!=Affect.MSG_OK_VISUAL)
-				&&((affect.sourceMessage()!=null)||(affect.othersMessage()!=null))
-				&&((!CoffeeUtensils.reachableItem(this,affect.target()))
-				||(!CoffeeUtensils.reachableItem(this,affect.tool()))))
-				{
-					tell("You need to stand up!");
-					return false;
-				}
-			}
 
-			if(Util.bset(srcMajor,Affect.MASK_MOVE))
-			{
-				boolean sitting=Sense.isSitting(this);
-				if((sitting)
-				&&((affect.sourceMinor()==Affect.TYP_LEAVE)
-				||(affect.sourceMinor()==Affect.TYP_ENTER)))
-					sitting=false;
+				if(Util.bset(srcMajor,Affect.MASK_MOVE))
+				{
+					boolean sitting=Sense.isSitting(this);
+					if((sitting)
+					&&((affect.sourceMinor()==Affect.TYP_LEAVE)
+					||(affect.sourceMinor()==Affect.TYP_ENTER)))
+						sitting=false;
 
-				if(((Sense.isSleeping(this))||(sitting))
-				&&(affect.sourceMinor()!=Affect.TYP_STAND)
-				&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
-				&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
-				{
-					tell("You need to stand up!");
-					return false;
-				}
-				if(!Sense.canMove(this))
-				{
-					tell("You can't move!");
-					return false;
-				}
-			}
-
-			switch(affect.sourceMinor())
-			{
-			case Affect.TYP_DEATH:
-				if((!isMonster())
-				&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
-				&&(baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
-				{
-					curState().setHitPoints(1);
-					if((affect.tool()!=null)
-					&&(affect.tool()!=this)
-					&&(affect.tool() instanceof MOB))
-					   ((MOB)affect.tool()).tell(name()+" is immortal, and can not die.");
-					mob.tell("You are immortal, and can not die.");
-					return false;
-				}
-				break;
-			case Affect.TYP_ENTER:
-				movesSinceTick++;
-				break;
-			case Affect.TYP_JUSTICE:
-				if((affect.target()!=null)
-				&&(isInCombat())
-				&&(affect.target() instanceof Item))
-				{
-					tell("Not while you are fighting!");
-					return false;
-				}
-				break;
-			case Affect.TYP_OPEN:
-			case Affect.TYP_CLOSE:
-				if(isInCombat())
-				{
-					if((affect.target()!=null)
-					&&((affect.target() instanceof Exit)||(affect.source().isMine(affect.target()))))
-						break;
-					tell("Not while you are fighting!");
-					return false;
-				}
-				break;
-			case Affect.TYP_BUY:
-			case Affect.TYP_DELICATE_HANDS_ACT:
-			case Affect.TYP_LEAVE:
-			case Affect.TYP_FILL:
-			case Affect.TYP_LIST:
-			case Affect.TYP_LOCK:
-			case Affect.TYP_SIT:
-			case Affect.TYP_SLEEP:
-			case Affect.TYP_UNLOCK:
-			case Affect.TYP_VALUE:
-			case Affect.TYP_SELL:
-			case Affect.TYP_VIEW:
-			case Affect.TYP_READSOMETHING:
-				if(isInCombat())
-				{
-					tell("Not while you are fighting!");
-					return false;
-				}
-				break;
-			case Affect.TYP_REBUKE:
-				if((affect.target()==null)||(!(affect.target() instanceof Deity)))
-				{
-					if(affect.target()!=null)
+					if(((Sense.isSleeping(this))||(sitting))
+					&&(affect.sourceMinor()!=Affect.TYP_STAND)
+					&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
+					&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
 					{
-						if(!Sense.canBeHeardBy(this,affect.target()))
+						tell("You need to stand up!");
+						return false;
+					}
+					if(!Sense.canMove(this))
+					{
+						tell("You can't move!");
+						return false;
+					}
+				}
+
+				switch(affect.sourceMinor())
+				{
+				case Affect.TYP_ENTER:
+					movesSinceTick++;
+					break;
+				case Affect.TYP_JUSTICE:
+					if((affect.target()!=null)
+					&&(isInCombat())
+					&&(affect.target() instanceof Item))
+					{
+						tell("Not while you are fighting!");
+						return false;
+					}
+					break;
+				case Affect.TYP_OPEN:
+				case Affect.TYP_CLOSE:
+					if(isInCombat())
+					{
+						if((affect.target()!=null)
+						&&((affect.target() instanceof Exit)||(affect.source().isMine(affect.target()))))
+							break;
+						tell("Not while you are fighting!");
+						return false;
+					}
+					break;
+				case Affect.TYP_BUY:
+				case Affect.TYP_DELICATE_HANDS_ACT:
+				case Affect.TYP_LEAVE:
+				case Affect.TYP_FILL:
+				case Affect.TYP_LIST:
+				case Affect.TYP_LOCK:
+				case Affect.TYP_SIT:
+				case Affect.TYP_SLEEP:
+				case Affect.TYP_UNLOCK:
+				case Affect.TYP_VALUE:
+				case Affect.TYP_SELL:
+				case Affect.TYP_VIEW:
+				case Affect.TYP_READSOMETHING:
+					if(isInCombat())
+					{
+						tell("Not while you are fighting!");
+						return false;
+					}
+					break;
+				case Affect.TYP_REBUKE:
+					if((affect.target()==null)||(!(affect.target() instanceof Deity)))
+					{
+						if(affect.target()!=null)
 						{
-							tell(affect.target().name()+" can't hear you!");
-							return false;
+							if(!Sense.canBeHeardBy(this,affect.target()))
+							{
+								tell(affect.target().name()+" can't hear you!");
+								return false;
+							}
+							else
+							if((!((affect.target() instanceof MOB)
+							&&(((MOB)affect.target()).getLeigeID().equals(Name()))))
+							&&(!affect.target().Name().equals(getLeigeID())))
+							{
+								tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
+								return false;
+							}
 						}
 						else
-						if((!((affect.target() instanceof MOB)
-						&&(((MOB)affect.target()).getLeigeID().equals(Name()))))
-						&&(!affect.target().Name().equals(getLeigeID())))
+						if(getLeigeID().length()==0)
 						{
-							tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
+							tell("You aren't serving anyone!");
 							return false;
 						}
 					}
 					else
-					if(getLeigeID().length()==0)
+					if(getWorshipCharID().length()==0)
 					{
-						tell("You aren't serving anyone!");
+						tell("You aren't worshipping anyone!");
 						return false;
 					}
-				}
-				else
-				if(getWorshipCharID().length()==0)
-				{
-					tell("You aren't worshipping anyone!");
-					return false;
-				}
-				break;
-			case Affect.TYP_SERVE:
-				if(affect.target()==null) return false;
-				if(affect.target()==this)
-				{
-					tell("You can't serve yourself!");
-					return false;
-				}
-				if(affect.target() instanceof Deity)
 					break;
-				if(!Sense.canBeHeardBy(this,affect.target()))
-				{
-					tell(affect.target().name()+" can't hear you!");
-					return false;
+				case Affect.TYP_SERVE:
+					if(affect.target()==null) return false;
+					if(affect.target()==this)
+					{
+						tell("You can't serve yourself!");
+						return false;
+					}
+					if(affect.target() instanceof Deity)
+						break;
+					if(!Sense.canBeHeardBy(this,affect.target()))
+					{
+						tell(affect.target().name()+" can't hear you!");
+						return false;
+					}
+					if(getLeigeID().length()>0)
+					{
+						tell("You are already serving '"+getLeigeID()+"'.");
+						return false;
+					}
+					break;
+				case Affect.TYP_CAST_SPELL:
+					if(charStats().getStat(CharStats.INTELLIGENCE)<5)
+					{
+						tell("You aren't smart enough to do magic.");
+						return false;
+					}
+					break;
+				default:
+					break;
 				}
-				if(getLeigeID().length()>0)
-				{
-					tell("You are already serving '"+getLeigeID()+"'.");
-					return false;
-				}
-				break;
-			case Affect.TYP_CAST_SPELL:
-				if(charStats().getStat(CharStats.INTELLIGENCE)<5)
-				{
-					tell("You aren't smart enough to do magic.");
-					return false;
-				}
-				break;
-			default:
-				break;
 			}
 		}
 

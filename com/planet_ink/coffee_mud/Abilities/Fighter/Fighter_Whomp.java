@@ -93,9 +93,9 @@ public class Fighter_Whomp extends StdAbility
 			return false;
 		}
 
-		if((!auto)&&(mob.envStats().weight()<(target.envStats().weight()-100)))
+		if((!auto)&&(mob.baseWeight()<(target.baseWeight()-250)))
 		{
-			mob.tell(target.name()+" is way to big to knock out!");
+			mob.tell(target.name()+" is way too big to knock out!");
 			return false;
 		}
 

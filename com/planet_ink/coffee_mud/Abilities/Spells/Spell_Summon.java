@@ -70,15 +70,22 @@ public class Spell_Summon extends Spell
 				Room newRoom=mob.location();
 				FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
 				FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
-				if(oldRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
+				if(oldRoom.okAffect(follower,leaveMsg))
 				{
-					follower.makePeace();
-					oldRoom.send(follower,leaveMsg);
-					newRoom.bringMobHere(follower,false);
-					newRoom.send(follower,enterMsg);
-					follower.tell("\n\r\n\r");
-					ExternalPlay.look(follower,null,true);
+					if(newRoom.okAffect(follower,enterMsg))
+					{
+						follower.makePeace();
+						oldRoom.send(follower,leaveMsg);
+						newRoom.bringMobHere(follower,false);
+						newRoom.send(follower,enterMsg);
+						follower.tell("\n\r\n\r");
+						ExternalPlay.look(follower,null,true);
+					}
+					else
+						mob.tell("Some powerful magic stifles the spell.");
 				}
+				else
+					mob.tell("Some powerful magic stifles the spell.");
 			}
 
 		}

@@ -13,13 +13,14 @@ public class Prop_StatTrainer extends Property
 	public Environmental newInstance(){	return new Prop_StatTrainer();}
 	private static final int[] all25={25,25,25,25,25,25};
 	private int[] stats=all25;
+	private boolean noteach=false;
 
 	public String accountForYourself()
 	{ return "Stats Trainer";	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if(Util.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH))
+		if((!noteach)&&(Util.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH)))
 			affectedMOB.setBitmap(Util.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
 		for(int i=0;i<stats.length;i++)
 			affectableStats.setStat(i,stats[i]);
@@ -29,6 +30,8 @@ public class Prop_StatTrainer extends Property
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 		{
+			if(newMiscText.toUpperCase().indexOf("NOTEACH")>=0)
+				noteach=true;
 			stats=new int[CharStats.NUM_BASE_STATS];
 			stats[CharStats.STRENGTH]=super.getParmVal(newMiscText,"STR",25);
 			stats[CharStats.INTELLIGENCE]=super.getParmVal(newMiscText,"INT",25);

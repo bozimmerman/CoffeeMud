@@ -129,7 +129,6 @@ public class Skill_HandCuff extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

@@ -159,8 +159,11 @@ public class TheFight
 			Affect.MSG_DEATH,null);
 		if(addHere!=null)
 		{
-			addHere.addTrailerMsg(msg);
-			addHere.addTrailerMsg(msg2);
+			if((deathRoom==null)||(deathRoom.okAffect(target,msg2)))
+			{
+				addHere.addTrailerMsg(msg);
+				addHere.addTrailerMsg(msg2);
+			}
 		}
 		else
 		if((deathRoom!=null)&&(deathRoom.okAffect(target,msg)))

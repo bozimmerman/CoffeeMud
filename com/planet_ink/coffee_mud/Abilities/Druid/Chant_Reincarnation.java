@@ -66,13 +66,12 @@ public class Chant_Reincarnation extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Environmental myHost, Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(myHost,msg))
-			return false;
+		super.affect(myHost,msg);
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return;
 		MOB mob=(MOB)affected;
 		if((msg.sourceMinor()==Affect.TYP_DEATH)
 		   &&(msg.amISource(mob)))
@@ -82,8 +81,9 @@ public class Chant_Reincarnation extends Chant
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
+			msg.source().recoverCharStats();
+			msg.source().recoverEnvStats();
 		}
-		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

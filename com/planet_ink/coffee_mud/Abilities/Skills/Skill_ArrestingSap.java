@@ -90,6 +90,14 @@ public class Skill_ArrestingSap extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		if(!auto)
+		{
+			if(mob.baseWeight()<(target.baseWeight()-450))
+			{
+				mob.tell(target.name()+" is way to big to knock out!");
+				return false;
+			}
+		}
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
 		if(levelDiff>0)
 			levelDiff=levelDiff*3;
@@ -98,8 +106,7 @@ public class Skill_ArrestingSap extends StdAbility
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STRENGTH));
 		
 		// now see if it worked
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+target.adjustedArmor()));
-		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
+		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -94,9 +94,9 @@ public class Thief_Sap extends ThiefSkill
 				return false;
 			}
 
-			if(mob.envStats().weight()<(target.envStats().weight()-100))
+			if(mob.baseWeight()<(target.baseWeight()-100))
 			{
-				mob.tell(target.name()+" is way to big to knock out!");
+				mob.tell(target.name()+" is too big to knock out!");
 				return false;
 			}
 		}

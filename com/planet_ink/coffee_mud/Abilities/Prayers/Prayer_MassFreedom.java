@@ -29,6 +29,7 @@ public class Prayer_MassFreedom extends Prayer
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
+					   ||(Util.bset(A.flags(),Ability.FLAG_BINDING))
 					   ||(!A.okAffect(newMOB,msg)))
 					if((A.invoker()==null)
 					   ||((A.invoker()!=null)

@@ -39,7 +39,7 @@ public class Chant_Shapelessness extends Chant
 
 	public int mobWeight(MOB mob)
 	{
-		int weight=mob.baseEnvStats().weight();
+		int weight=mob.baseWeight();;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);

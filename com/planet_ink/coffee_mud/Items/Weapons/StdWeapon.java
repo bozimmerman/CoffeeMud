@@ -125,7 +125,7 @@ public class StdWeapon extends StdItem implements Weapon
 				else
 				if((hurt>100)
 				&&((this instanceof Electronics)
-				   ||(hurt>(tmob.maxState().getHitPoints()/20))))
+				   ||(hurt>(tmob.maxState().getHitPoints()/10))))
 				{
 					switch(weaponType())
 					{

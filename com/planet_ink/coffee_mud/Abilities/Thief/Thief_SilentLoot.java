@@ -18,10 +18,9 @@ public class Thief_SilentLoot extends ThiefSkill
 	private Item item=null;
 	public Environmental newInstance(){	return new Thief_SilentLoot();	}
 
-	public boolean okAffect(Environmental myHost, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(myHost,affect))
-			return false;
+		super.affect(myHost,affect);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((affect.sourceMinor()==Affect.TYP_DEATH)
@@ -51,7 +50,6 @@ public class Thief_SilentLoot extends ThiefSkill
 				}
 			}
 		}
-		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

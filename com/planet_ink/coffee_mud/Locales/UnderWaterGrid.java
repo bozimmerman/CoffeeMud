@@ -20,6 +20,13 @@ public class UnderWaterGrid extends StdGrid
 		setDisplayText("Under the water");
 		setDescription("");
 		baseThirst=0;
+		xsize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		ysize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		if((xsize==0)||(ysize==0))
+		{
+			xsize=3;
+			ysize=3;
+		}
 	}
 
 	public Environmental newInstance()
