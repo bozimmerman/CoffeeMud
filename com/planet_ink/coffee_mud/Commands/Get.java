@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -95,6 +96,36 @@ public class Get extends BaseItemParser
 		return null;
 	}
 
+	protected Environmental unbundle(Item I)
+	{
+		if((I instanceof EnvResource)
+		&&(I.container()==null)
+		&&(!Sense.isOnFire(I))
+		&&(!Sense.enchanted(I)))
+		{
+			if(I.baseEnvStats().weight()>1)
+			{
+			    Environmental owner=I.owner();
+				I.baseEnvStats().setWeight(I.baseEnvStats().weight());
+				I.destroy();
+				Environmental E=null;
+				for(int x=0;x<I.baseEnvStats().weight();x++)
+				{
+					E=CoffeeUtensils.makeResource(I.material(),-1,true);
+					if(E instanceof Item)
+					{
+					    if(owner instanceof Room)
+							((Room)owner).addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
+					    else
+					    if(owner instanceof MOB)
+					        ((MOB)owner).addInventory((Item)E);
+					}
+				}
+				return E;
+			}
+		}
+		return null;
+	}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -133,7 +164,6 @@ public class Get extends BaseItemParser
 			containerName=(String)commands.lastElement();
 		Vector containers=possibleContainers(mob,commands,Item.WORN_REQ_ANY);
 		int c=0;
-		
 
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)
@@ -142,6 +172,37 @@ public class Get extends BaseItemParser
 		{
 			maxToGet=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
+			if(containers.size()==0)
+			{
+				int fromDex=-1;
+				for(int i=1;i<commands.size();i++)
+				    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+				    {	fromDex=i; break;}
+				if(fromDex>0)
+				{
+				    String fromWhatName=Util.combine(commands,fromDex+1);
+				    while(commands.size()>fromDex)
+				        commands.removeElementAt(fromDex);
+				    Environmental fromWhat=mob.location().fetchFromMOBRoomFavorsItems(mob,null,fromWhatName,Item.WORN_REQ_UNWORNONLY);
+				    if((fromWhat==null)
+				    ||(!Sense.canBeSeenBy(fromWhat,mob)))
+				    {
+				        mob.tell("You don't see '"+fromWhatName+"' here.");
+				        return false;
+				    }
+				    
+				    Environmental toWhat=null;
+				    if(fromWhat instanceof Item)
+					    toWhat=unbundle((Item)fromWhat);
+				    if(toWhat==null)
+				    {
+				        mob.tell("You can't get anything from "+fromWhat.name()+".");
+				        return false;
+				    }
+				    if(commands.size()==1)
+				        commands.addElement(toWhat.name());
+				}
+			}
 		}
 
 		String whatToGet=Util.combine(commands,0);

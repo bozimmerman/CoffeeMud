@@ -98,19 +98,6 @@ public class CommonSkill extends StdAbility
 		super.unInvoke();
 	}
 
-	protected boolean enchanted(Item I)
-	{
-		for(int i=0;i<I.numEffects();i++)
-		{
-			Ability A=I.fetchEffect(i);
-			if((A!=null)
-			&&(A.classificationCode()!=Ability.PROPERTY))
-				return true;
-		}
-		return false;
-	}
-	
-	
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))

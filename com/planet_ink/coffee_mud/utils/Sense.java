@@ -685,6 +685,19 @@ public class Sense
 		
 	}
 	
+	public static boolean enchanted(Item I)
+	{
+		for(int i=0;i<I.numEffects();i++)
+		{
+			Ability A=I.fetchEffect(i);
+			if((A!=null)
+			&&(A.classificationCode()!=Ability.PROPERTY))
+				return true;
+		}
+		return false;
+	}
+	
+	
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)
