@@ -12,6 +12,11 @@ public class Prop_WearZapper extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_WearZapper BOB=new Prop_WearZapper();	BOB.setMiscText(text()); return BOB;}
 
+	public String accountForYourself()
+	{
+		return "Wearing restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+	}
+
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))

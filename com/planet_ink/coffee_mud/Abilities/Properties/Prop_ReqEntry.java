@@ -12,6 +12,11 @@ public class Prop_ReqEntry extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	Prop_ReqEntry newOne=new Prop_ReqEntry(); newOne.setMiscText(text());return newOne;}
 
+	public String accountForYourself()
+	{
+		return "Entry restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+	}
+
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;

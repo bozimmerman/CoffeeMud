@@ -305,6 +305,23 @@ public class Generic
 				text.append(XMLManager.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
 				text.append(XMLManager.convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
 			}
+			if(E instanceof Diety)
+			{
+				text.append(XMLManager.convertXMLtoTag("CLEREQ",((Diety)E).getClericRequirements()));
+				text.append(XMLManager.convertXMLtoTag("WORREQ",((Diety)E).getWorshipRequirements()));
+
+				itemstr=new StringBuffer("");
+				for(int b=0;b<((Diety)E).numBlessings();b++)
+				{
+					Ability A=((Diety)E).fetchBlessing(b);
+					if(A==null) continue;
+					itemstr.append("<BLESS>");
+					itemstr.append(XMLManager.convertXMLtoTag("BLCLASS",CMClass.className(A)));
+					itemstr.append(XMLManager.convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
+					itemstr.append("</BLESS>");
+				}
+				text.append(XMLManager.convertXMLtoTag("BLESSINGS",itemstr.toString()));
+			}
 			if(E instanceof ShopKeeper)
 			{
 				text.append(XMLManager.convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
@@ -1088,6 +1105,9 @@ public class Generic
 				for(int b=0;b<V.size();b++)
 					((ShopKeeper)E).delStoreInventory(((Environmental)V.elementAt(b)));
 			}
+			if(E instanceof Diety)
+				while(((Diety)E).numBlessings()>0)
+					((Diety)E).delBlessing(((Diety)E).fetchBlessing(0));
 		}
 		while(E.numAffects()>0)
 		{
@@ -1269,6 +1289,40 @@ public class Generic
 				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"ITEMINT"));
 			}
 			
+			if(E instanceof Diety)
+			{
+				Diety godmob=(Diety)E;
+				godmob.setClericRequirements(XMLManager.getValFromPieces(buf,"CLEREQ"));
+				godmob.setWorshipRequirements(XMLManager.getValFromPieces(buf,"WORREQ"));
+				
+				V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
+				if(V==null)
+				{
+					Log.errOut("Generic","Error parsing 'BLESSINGS' of "+E.ID()+".  Load aborted");
+					return;
+				}
+				else
+				{
+					for(int i=0;i<V.size();i++)
+					{
+						XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
+						if((!ablk.tag.equalsIgnoreCase("BLESS"))||(ablk.contents==null))
+						{
+							Log.errOut("Generic","Error parsing 'BLESS' of "+E.ID()+".  Load aborted");
+							return;
+						}
+						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"BLCLASS"));
+						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"BLDATA");
+						if((adat==null)||(newOne==null))
+						{
+							Log.errOut("Generic","Error parsing 'BLESS DATA' of "+CMClass.className(newOne)+".  Load aborted");
+							return;
+						}
+						setPropertiesStr(newOne,adat,true);
+						godmob.addBlessing(newOne);
+					}
+				}
+			}
 			if(E instanceof ShopKeeper)
 			{
 				ShopKeeper shopmob=(ShopKeeper)E;

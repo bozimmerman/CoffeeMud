@@ -19,19 +19,32 @@ public class Skill_Convert extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
-		
-		if(target.isMonster())
+		if(commands.size()==0)
 		{
-			mob.tell("You can't convert "+target.name()+".");
+			mob.tell("You must specify either a diety to convert yourself to, or a player to convert to your religeon.");
 			return false;
 		}
 		
-		Diety D=mob.getMyDiety();
+		MOB target=mob;
+		Diety D=CMMap.getDiety(Util.combine(commands,0));
 		if(D==null)
 		{
-			mob.tell("A faithless one cannot convert anyone.");
+			D=mob.getMyDiety();
+			target=getTarget(mob,commands,givenTarget);
+			if(target==null)
+			{
+				mob.tell("You've also never heard of a diety called '"+Util.combine(commands,0)+"'.");
+				return false;
+			}
+			if(D==null)
+			{
+				mob.tell("A faithless one cannot convert "+target.name()+".");
+				return false;
+			}
+		}
+		if(target.isMonster())
+		{
+			mob.tell("You can't convert "+target.name()+".");
 			return false;
 		}
 		

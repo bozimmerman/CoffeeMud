@@ -8,6 +8,7 @@ public class StdDiety extends StdMOB implements Diety
 	protected int xpwrath=100;
 	protected String clericReqs="";
 	protected String worshipReqs="";
+	protected Vector blessings=new Vector();
 	
 	public StdDiety()
 	{
@@ -100,4 +101,43 @@ public class StdDiety extends StdMOB implements Diety
 		}
 	}
 	
+	public void addBlessing(Ability to)
+	{
+		if(to==null) return;
+		for(int a=0;a<numBlessings();a++)
+		{
+			Ability A=fetchBlessing(a);
+			if((A!=null)&&(A.ID().equals(to.ID())))
+				return;
+		}
+		blessings.addElement(to);
+	}
+	public void delBlessing(Ability to)
+	{
+		blessings.removeElement(to);
+	}
+	public int numBlessings()
+	{
+		return blessings.size();
+	}
+	public Ability fetchBlessing(int index)
+	{
+		try
+		{
+			return (Ability)blessings.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return null;
+	}
+	public Ability fetchBlessing(String ID)
+	{
+		for(int a=0;a<numBlessings();a++)
+		{
+			Ability A=fetchBlessing(a);
+			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
+				return A;
+		}
+		return (Ability)CoffeeUtensils.fetchEnvironmental(blessings,ID,false);
+	}
+
 }

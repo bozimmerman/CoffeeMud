@@ -10,7 +10,31 @@ public class AbilityHelper
 	private AbilityHelper(){}
 	protected final static int TRACK_ATTEMPTS=25;
 	protected final static int TRACK_DEPTH=500;
+	private static Hashtable zapCodes=new Hashtable();
 
+	private static Hashtable getZapCodes()
+	{
+		if(zapCodes.size()==0)
+		{
+			zapCodes.put("-CLASS",new Integer(0));
+			zapCodes.put("-CLASSES",new Integer(0));
+			zapCodes.put("-BASECLASS",new Integer(1));
+			zapCodes.put("-BASECLASSES",new Integer(1));
+			zapCodes.put("-RACE",new Integer(2));
+			zapCodes.put("-RACES",new Integer(2));
+			zapCodes.put("-ALIGNMENT",new Integer(3));
+			zapCodes.put("-ALIGNMENTS",new Integer(3));
+			zapCodes.put("-ALIGN",new Integer(3));
+			zapCodes.put("-GENDER",new Integer(4));
+			zapCodes.put("-GENDERS",new Integer(4));
+			zapCodes.put("-LEVEL",new Integer(5));
+			zapCodes.put("-LEVELS",new Integer(5));
+			zapCodes.put("-CLASSLEVEL",new Integer(6));
+			zapCodes.put("-CLASSLEVELS",new Integer(6));
+		}
+		return zapCodes;
+	}
+	
 	private static boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
 	{
 		int x=0;
@@ -66,11 +90,157 @@ public class AbilityHelper
 		return false;
 	}
 	
+	public static boolean fromHere(Vector V, int fromHere, String find)
+	{
+		for(int v=fromHere;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			if(str.equals("+"+find)) return true;
+		}
+		return false;
+	}
+
+	public static StringBuffer levelHelp(String str, int c, String append)
+	{
+		if(str.startsWith(c+">="))
+			return new StringBuffer(append+"levels greater than or equal to "+str.substring(3).trim()+".");
+		else
+		if(str.startsWith(c+"<="))
+			return new StringBuffer(append+"levels less than or equal to "+str.substring(3).trim()+".");
+		else
+		if(str.startsWith(c+">"))
+			return new StringBuffer(append+"levels greater than "+str.substring(2).trim()+".");
+		else
+		if(str.startsWith(c+"<"))
+			return new StringBuffer(append+"levels less than "+str.substring(2).trim()+".");
+		else
+		if(str.startsWith(c+"="))
+			return new StringBuffer(append+"level "+str.substring(2).trim()+" players.");
+		return new StringBuffer("");
+	}
+	
+	public static String zapperDesc(String text)
+	{
+		if(text.trim().length()==0) return "Anyone";
+		StringBuffer buf=new StringBuffer("");
+		getZapCodes();
+		Vector V=Util.parse(text.toUpperCase());
+		for(int v=0;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			if(zapCodes.containsKey(str))
+				switch(((Integer)zapCodes.get(str)).intValue())
+				{
+				case 0: // -class
+					if(buf.length()==0) buf.append("Only ");
+					for(int c=0;c<CMClass.charClasses.size();c++)
+					{
+						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						if(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))
+							buf.append(C.name()+", ");
+					}
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				case 1: // -baseclass
+					if(buf.length()==0) buf.append("Only ");
+					for(int c=0;c<CMClass.charClasses.size();c++)
+					{
+						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						if((C.ID().equals(C.baseClass())
+						&&(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))))
+							buf.append(C.name()+" types, ");
+					}
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				case 2: // -Race
+					if(buf.length()==0) buf.append("Only ");
+					for(int c=0;c<CMClass.races.size();c++)
+					{
+						Race C=(Race)CMClass.races.elementAt(c);
+						if(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))
+							buf.append(C.name()+", ");
+					}
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				case 3: // -Alignment
+					if(buf.length()==0) buf.append("Only ");
+					for(int c=0;c<=1000;c+=500)
+					{
+						String C=CommonStrings.shortAlignmentStr(c);
+						if(fromHere(V,v+1,C.toUpperCase().substring(0,3)))
+							buf.append(C+", ");
+					}
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				case 4: // -Gender
+					if(buf.length()==0) buf.append("Only ");
+					if(fromHere(V,v+1,"MALE"))
+						buf.append("Male, ");
+					if(fromHere(V,v+1,"FEMALE"))
+						buf.append("Female, ");
+					if(fromHere(V,v+1,"FEMALE"))
+						buf.append("Neuter");
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				case 5: // -Levels
+					for(int v2=v+1;v2<V.size();v2++)
+						buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only "));
+					break;
+				case 6: // -ClassLevels
+					for(int v2=v+1;v2<V.size();v2++)
+						buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only class "));
+					break;
+				}
+			else
+			{
+				for(int c=0;c<CMClass.charClasses.size();c++)
+				{
+					CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
+						buf.append("Disallows "+C.name()+".  ");
+				}
+				for(int c=0;c<CMClass.races.size();c++)
+				{
+					Race C=(Race)CMClass.races.elementAt(c);
+					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
+						buf.append("Disallows "+C.name()+".  ");
+				}
+				for(int c=0;c<=1000;c+=500)
+				{
+					String C=CommonStrings.shortAlignmentStr(c);
+					if(str.startsWith("-"+C.toUpperCase().substring(0,3)))
+					   buf.append("Disallows "+C+".  ");
+				}
+				if(str.startsWith("-MALE"))
+					buf.append("Disallows Males.  ");
+				if(str.startsWith("-FEMALE"))
+					buf.append("Disallows Females.  ");
+				if(str.startsWith("-NEUTER"))
+					buf.append("Allows only Males and Females.  ");
+				buf.append(levelHelp(str,'-',"Disallows "));
+			}
+		}
+		
+		if(buf.length()==0) buf.append("Anyone.");
+		return buf.toString();
+	}
+	
 	public static boolean zapperCheck(String text, MOB mob)
 	{
 		if(mob==null) return true;
 		if(mob.charStats()==null) return true;
 		if(text.trim().length()==0) return true;
+		getZapCodes();
 		
 		String mobClass=mob.charStats().getCurrentClass().name().toUpperCase().substring(0,3);
 		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
@@ -80,128 +250,53 @@ public class AbilityHelper
 		int level=mob.envStats().level();
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		
-		text=text.toUpperCase();
-		
+		Vector V=Util.parse(text.toUpperCase());
 		if(mob.isASysOp(mob.location()))
+		for(int v=0;v<V.size();v++)
 		{
-			if(text.toUpperCase().indexOf("+SYSOP")>=0)
-			{
-				return true;
-			}
-			if(text.toUpperCase().indexOf("-SYSOP")>=0)
-			{
-				return false;
-			}
+			String str=(String)V.elementAt(v);
+			if(str.equals("+SYSOP")) return true;
+			else
+			if(str.equals("-SYSOP")) return false;
 		}
-		
-		// do class first
-		int x=text.indexOf("-CLAS");
-		if(x>=0)
+		for(int v=0;v<V.size();v++)
 		{
-			if(text.indexOf("+"+mobClass)<x)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(text.indexOf("-"+mobClass)>=0)
-			{
-				return false;
-			}
-		}
-
-		// now base class
-		x=text.indexOf("-BASECLAS");
-		if(x>=0)
-		{
-			if(text.indexOf("+"+mobBaseClass)<x)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(text.indexOf("-"+mobBaseClass)>=0)
-			{
-				return false;
-			}
-		}
-
-		// now race
-		x=text.indexOf("-RACE");
-		if(x>=0)
-		{
-			if(text.indexOf("+"+mobRace)<x)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(text.indexOf("-"+mobRace)>=0)
-			{
-				return false;
-			}
-		}
-
-		// and now alignments
-		x=text.indexOf("-ALIG");
-		if(x>=0)
-		{
-
-			if(text.indexOf("+"+mobAlign)<x)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(text.indexOf("-"+mobAlign)>=0)
-			{
-				return false;
-			}
-		}
-		
-		x=text.indexOf("-GENDER");
-		if(x>=0)
-		{
-			if(text.indexOf("+"+mobGender)<x)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(text.indexOf("-"+mobGender)>=0)
-			{
-				return false;
-			}
-		}
-		
-		x=text.indexOf("-LEVELS");
-		if(x>=0)
-		{
-			if(!levelCheck(text,'+',x+6,level))
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if(levelCheck(text,'-',0,level))
-			{
-				return false;
-			}
-		}
-
-		x=text.indexOf("-CLASSLEVEL");
-		if(x>=0)
-		{
-			if(!levelCheck(text,'+',x+6,classLevel))
-			{
-				return false;
-			}
+			String str=(String)V.elementAt(v);
+			if(zapCodes.containsKey(str))
+				switch(((Integer)zapCodes.get(str)).intValue())
+				{
+				case 0: // -class
+					if(!fromHere(V,v+1,mobClass)) return false;
+					break;
+				case 1: // -baseclass
+					if(!fromHere(V,v+1,mobBaseClass)) return false;
+					break;
+				case 2: // -Race
+					if(!fromHere(V,v+1,mobRace)) return false;
+					break;
+				case 3: // -Alignment
+					if(!fromHere(V,v+1,mobAlign)) return false;
+					break;
+				case 4: // -Gender
+					if(!fromHere(V,v+1,mobGender)) return false;
+					break;
+				case 5: // -Levels
+					if(!levelCheck(Util.combine(V,v+1),'+',0,level)) return false;
+					break;
+				case 6: // -ClassLevels
+					if(!levelCheck(Util.combine(V,v+1),'+',0,classLevel)) return false;
+					break;
+				}
+			else
+			if(str.startsWith("-"+mobClass)) return false;
+			else
+			if(str.startsWith("-"+mobRace)) return false;
+			else
+			if(str.startsWith("-"+mobAlign)) return false;
+			else
+			if(str.startsWith("-"+mobGender)) return false;
+			else
+			if(levelCheck(str,'-',0,level)) return false;
 		}
 		return true;
 	}

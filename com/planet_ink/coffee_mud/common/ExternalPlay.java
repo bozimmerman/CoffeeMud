@@ -108,6 +108,11 @@ public class ExternalPlay
 		if(player!=null) return player.wear(mob,item,quiet);
 		return false;
 	}
+	public static String zapperDesc(String text)
+	{
+		if(player!=null) return player.zapperDesc(text);
+		return "";
+	}
 	public static boolean zapperCheck(String text, MOB mob)
 	{
 		if(player!=null) return player.zapperCheck(text,mob);
