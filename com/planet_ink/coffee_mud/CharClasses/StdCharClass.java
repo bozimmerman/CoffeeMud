@@ -236,6 +236,7 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
+		if(affectableStats.getCurrentClass()==this)
 		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
 	}
