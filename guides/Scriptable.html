@@ -1473,34 +1473,55 @@ this command. You don’t want to give out awards for every little thing
 characters do, nor do you want to give large awards for menial tasks. You also 
 will, of course, not want to make it so a mob can accidentally give the same 
 award over and over endlessly, or something equally abusable.</P>
+<P class=MsoNormal><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpforce<?XML:NAMESPACE 
+PREFIX = O /><O:P></O:P></SPAN></P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>Usage: <BR><EM>mpforce [target] [command]</EM> </P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>This command forces the victim to do the designated command. 
+The target can be a character variable or a keyword of a mob.&nbsp; This command 
+has a lot of uses, but is mostly use in combat to do particularly nasty things, 
+like force the player to heal the mob, etc. It can also be used to trigger other 
+mobs by forcing them to perform a specific action which triggers an 
+act_prog.</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal>EXAMPLES:</P>
+<P class=MsoNormal><O:P></O:P></P>
+<P class=MsoNormal><EM>mpforce $n flee<BR>mpforce&nbsp;$i sleep<BR>mpforce 
+guardtwo poke self<BR>mpforce $n cast "heal serious" $i</EM> </P>
+<P class=MsoNormal><EM><O:P></O:P></EM></P>
+<P class=MsoNormal>SPECIAL NOTES: Remember that whatever you force something to 
+do, it needs to be typed out exactly as if they were typing the command 
+themselves. That means if you want a player, for example, to be forced to cast 
+‘heal serious’ on your mob, you need to make sure you observe the double-quote 
+rule for word groupings, as opposed to the single quote rule for mobprog 
+commands.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpforce<o:p></O:P></SPAN></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpplayerclass</SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mpforce [target] [command]</EM> </P>
+<P class=MsoNormal>Usage: <BR><EM>mpplayerclass [target] [char class id] ([level]&nbsp;[char 
+class id] [level]</EM>&nbsp;...)</P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal>This command forces the victim to do the 
-designated command. The target can be a character variable or a keyword of a 
-mob.&nbsp; This command has a lot of uses, but is mostly use in combat to do 
-particularly nasty things, like force the player to heal the mob, etc. It can 
-also be used to trigger other mobs by forcing them to perform a specific action 
-which triggers an act_prog.</P>
+<P class=MsoNormal>This command allows you to change the 
+current character class of a player, to add new character classes to a player, 
+and to modify specific class levels all with one command.&nbsp; The first 
+parameter is the player or mobs code.&nbsp; The next parameter must be a valid 
+character class id, such as Fighter or Necromancer.&nbsp; This will instantly 
+set that class as the targets current class, adding it if necessary.&nbsp; This 
+may be optionally followed by a level integer, which will change the class level 
+of that current class.&nbsp; The level parm may then be followed by another 
+character class id, which will change the players current class again, and may 
+be followed again by a level integer to change the new current character class 
+level, and so on.</P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>EXAMPLES:</P>
 <P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><EM>mpforce $n 
-flee<BR>mpforce&nbsp;$i sleep<BR>mpforce guardtwo poke self<BR>mpforce 
-$n cast "heal serious" $i</EM> </P>
-<P class=MsoNormal><EM><o:p></O:P></EM></P>
-<P class=MsoNormal>SPECIAL NOTES: Remember that whatever 
-you force something to do, it needs to be typed out exactly as if they were 
-typing the command themselves. That means if you want a player, for example, to 
-be forced to cast ‘heal serious’ on your mob, you need to make sure you observe 
-the double-quote rule for word groupings, as opposed to the single quote rule 
-for mobprog commands.</P>
-<P class=MsoNormal><o:p></O:P></P>
-<P class=MsoNormal><o:p></O:P></P>
+<P class=MsoNormal><EM>mpplayerclass 
+$n Fighter<BR>mpplayerclass $n Thief 20<BR>mpplayerclass guardtwo Fighter 10<BR>mpplayerclass $n Thief 
+20 Fighter 10 Mage 5</EM><EM><o:p></O:P></EM></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpgoto<o:p></O:P></SPAN></P>
 <P class=MsoNormal><o:p></O:P></P>
@@ -1813,10 +1834,11 @@ be either a mob code to denote that mobs clan, or a clan name. Valid variables
 for setting are: ACCEPTANCE,&nbsp;DONATEROOM, EXP, GOVT, MORGUE, POLITICS, 
 PREMISE, RECALL,&nbsp;STATUS, TAXES, TROPHIES. 
 <P class=MsoNormal><o:p></O:P></P>
-<P>EXAMPLES:<BR><BR><EM>mpsetclandata&nbsp;'Groovy Clan' EXP 0<BR>mpecho Groovy 
-Clans experience is now gone!</EM><EM><BR>mpset 
-$n&nbsp;PREMISE my premise is new.<BR>mpecho Whoever $n is, their clan now has a 
-new premise!</EM></P>
+<P>EXAMPLES:<BR><BR><EM>mpsetclandata&nbsp;'Groovy Clan' 
+EXP 0<BR>mpecho Groovy Clans experience is now 
+gone!</EM><EM><BR>mpset 
+$n&nbsp;PREMISE my premise is new.<BR>mpecho Whoever $n is, 
+their clan now has a new premise!</EM></P>
 <P></P>
 <P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal><o:p></O:P></P>
