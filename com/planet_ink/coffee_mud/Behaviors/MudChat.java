@@ -44,9 +44,8 @@ public class MudChat extends StdBehavior
 		loadChatData("chat.dat");
 	}
 
-  private static synchronized void loadChatData(String resourceName)
-  {
-		Log.sysOut("MudChat","Load resource file :"+resourceName);
+	private static synchronized void loadChatData(String resourceName)
+	{
 		StringBuffer rsc=Resources.getFileResource(resourceName);
 		Vector currentChatGroup=new Vector();
 		Vector otherChatGroup;
@@ -87,8 +86,6 @@ public class MudChat extends StdBehavior
 				otherChatGroup=includeChatData(str.substring(1).trim());
 				for(int v1=1;v1<otherChatGroup.size();v1++)
 					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
-for(int i=1;i<currentChatGroup.size();i++)
-	System.out.println(i+")"+(String)((Vector)currentChatGroup.elementAt(i)).firstElement());
 				break;
 			case '0':
 			case '1':
