@@ -57,12 +57,7 @@ public class ClanLoader
 
 	public static void DBUpdate(Clan C)
 	{
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="UPDATE CMCLAN SET "
+		String str="UPDATE CMCLAN SET "
 				+"CMDESC='"+C.getPremise()+"',"
 				+"CMACPT='"+C.getAcceptanceSettings()+"',"
 				+"CMPOLI='"+C.getPolitics()+"',"
@@ -70,27 +65,13 @@ public class ClanLoader
 				+"CMDNAT='"+C.getDonation()+"',"
 				+"CMSTAT="+C.getStatus()
 				+" WHERE CMCLID='"+C.ID()+"'";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Clan",str);
-			Log.errOut("Clan",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-			return;
-		}
+		DBConnector.update(str);
 	}
 
 	public static void DBCreate(Clan C)
 	{
 		if(C.ID().length()==0) return;
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="INSERT INTO CMCLAN ("
+		String str="INSERT INTO CMCLAN ("
 			+"CMCLID,"
 			+"CMTYPE,"
 			+"CMDESC,"
@@ -108,32 +89,12 @@ public class ClanLoader
 			+"'"+C.getRecall()+"',"
 			+"'"+C.getDonation()+"',"
 			+""+C.getStatus()+")";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Clan",str);
-			Log.errOut("Clan",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-			return;
-		}
+			DBConnector.update(str);
 	}
 
 	public static void DBDelete(Clan C)
 	{
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Clan","Delete"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'");
 	}
 
 }

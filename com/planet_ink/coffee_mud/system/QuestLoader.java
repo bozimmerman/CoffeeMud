@@ -48,71 +48,39 @@ public class QuestLoader
 	public static void DBUpdateQuest(Quest Q)
 	{
 		if(Q==null) return;
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'",0);
-			DBConnector.DBDone(D);
-			D=DBConnector.DBFetch();
-			str=
-			 "INSERT INTO CMQUESTS ("
-			 +"CMQUESID, "
-			 +"CMQUTYPE, "
-			 +"CMQSCRPT, "
-			 +"CMQWINNS "
-			 +") values ("
-			 +"'"+Q.name()+"',"
-			 +"'"+CMClass.className(Q)+"',"
-			 +"'"+Q.script()+" ',"
-			 +"'"+Q.getWinnerStr()+" '"
-			 +")";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Quest",str);
-			Log.errOut("Quest","DBUpdateQuest"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+Q.name()+"'");
+		DBConnector.update(
+		"INSERT INTO CMQUESTS ("
+		+"CMQUESID, "
+		+"CMQUTYPE, "
+		+"CMQSCRPT, "
+		+"CMQWINNS "
+		+") values ("
+		+"'"+Q.name()+"',"
+		+"'"+CMClass.className(Q)+"',"
+		+"'"+Q.script()+" ',"
+		+"'"+Q.getWinnerStr()+" '"
+		+")");
 	}
 	public static void DBUpdateQuests(Vector quests)
 	{
 		if(quests==null) quests=new Vector();
-		DBConnection D=null;
-		String str=null;
-		try
+		DBConnector.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
+		for(int m=0;m<quests.size();m++)
 		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'",0);
-			DBConnector.DBDone(D);
-			for(int m=0;m<quests.size();m++)
-			{
-				Quest Q=(Quest)quests.elementAt(m);
-				D=DBConnector.DBFetch();
-				str=
-				 "INSERT INTO CMQUESTS ("
-				 +"CMQUESID, "
-				 +"CMQUTYPE, "
-				 +"CMQSCRPT, "
-				 +"CMQWINNS "
-				 +") values ("
-				 +"'"+Q.name()+"',"
-				 +"'"+CMClass.className(Q)+"',"
-				 +"'"+Q.script()+" ',"
-				 +"'"+Q.getWinnerStr()+" '"
-				 +")";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Quest",str);
-			Log.errOut("Quest","DBUpdateQuests"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			Quest Q=(Quest)quests.elementAt(m);
+			DBConnector.update(
+			"INSERT INTO CMQUESTS ("
+			+"CMQUESID, "
+			+"CMQUTYPE, "
+			+"CMQSCRPT, "
+			+"CMQWINNS "
+			+") values ("
+			+"'"+Q.name()+"',"
+			+"'"+CMClass.className(Q)+"',"
+			+"'"+Q.script()+" ',"
+			+"'"+Q.getWinnerStr()+" '"
+			+")");
 		}
 	}
 

@@ -50,7 +50,7 @@ public class DataLoader
 			}
 			DBConnector.DBDone(D);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("DataLoader",sqle);
 			if(D!=null) DBConnector.DBDone(D);
@@ -167,8 +167,6 @@ public class DataLoader
 			D=DBConnector.DBFetch();
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
 			{
-				DBConnector.DBDone(D);
-				D=DBConnector.DBFetch();
 				Vector keys=new Vector();
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
 				while(R.next())
@@ -186,7 +184,6 @@ public class DataLoader
 			}
 			else
 				D.update("DELETE FROM CMPDAT WHERE CMPLID='"+playerID+"' AND CMSECT='"+section+"'",0);
-			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
@@ -215,126 +212,51 @@ public class DataLoader
 	}
 	public static void DBDeleteRace(String raceID)
 	{
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'");
 	}
 	public static void DBDeleteClass(String classID)
 	{
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
 	}
 	public static void DBDelete(String section)
 	{
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
 	}
 	public static void DBCreateRace(String raceID, String data)
 	{
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str=
-			 "INSERT INTO CMGRAC ("
-			 +"CMRCID, "
-			 +"CMRDAT "
-			 +") values ("
-			 +"'"+raceID+"',"
-			 +"'"+data+" '"
-			 +")";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",str);
-			Log.errOut("DataLoader","DBCreateRace"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		 "INSERT INTO CMGRAC ("
+		 +"CMRCID, "
+		 +"CMRDAT "
+		 +") values ("
+		 +"'"+raceID+"',"
+		 +"'"+data+" '"
+		 +")");
 	}
 	public static void DBCreateClass(String classID, String data)
 	{
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str=
-			 "INSERT INTO CMCCAC ("
-			 +"CMCCID, "
-			 +"CMCDAT "
-			 +") values ("
-			 +"'"+classID+"',"
-			 +"'"+data+" '"
-			 +")";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",str);
-			Log.errOut("DataLoader","DBCreateClass"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		 "INSERT INTO CMCCAC ("
+		 +"CMCCID, "
+		 +"CMCDAT "
+		 +") values ("
+		 +"'"+classID+"',"
+		 +"'"+data+" '"
+		 +")");
 	}
 	public static void DBCreate(String player, String section, String key, String data)
 	{
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str=
-			 "INSERT INTO CMPDAT ("
-			 +"CMPLID, "
-			 +"CMSECT, "
-			 +"CMPKEY, "
-			 +"CMPDAT "
-			 +") values ("
-			 +"'"+player+"',"
-			 +"'"+section+"',"
-			 +"'"+key+"',"
-			 +"'"+data+" '"
-			 +")";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("DataLoader",str);
-			Log.errOut("DataLoader","DBCreate"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		 "INSERT INTO CMPDAT ("
+		 +"CMPLID, "
+		 +"CMSECT, "
+		 +"CMPKEY, "
+		 +"CMPDAT "
+		 +") values ("
+		 +"'"+player+"',"
+		 +"'"+section+"',"
+		 +"'"+key+"',"
+		 +"'"+data+" '"
+		 +")");
 	}
 }

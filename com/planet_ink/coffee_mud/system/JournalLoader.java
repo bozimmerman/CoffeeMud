@@ -160,41 +160,16 @@ public class JournalLoader
 	
 	public static synchronized void DBDelete(String Journal, int which)
 	{
-		DBConnection D=null;
 		if(which<0)
 		{
 			Vector journal=DBRead(Journal);
 			if(journal==null) return;
-			try
-			{
-				D=DBConnector.DBFetch();
-				String str="DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
-				return;
-			}
+			DBConnector.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
 		else
 		if(which==Integer.MAX_VALUE)
 		{
-			try
-			{
-				D=DBConnector.DBFetch();
-				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+Journal+"'";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
-				return;
-			}
+			DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+Journal+"'");
 		}
 		else
 		{
@@ -203,19 +178,7 @@ public class JournalLoader
 			if(which>=journal.size()) return;
 			Vector entry=(Vector)journal.elementAt(which);
 			String oldkey=(String)entry.elementAt(0);
-			try
-			{
-				D=DBConnector.DBFetch();
-				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
-				return;
-			}
+			DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 		}
 	}
 	
@@ -240,54 +203,27 @@ public class JournalLoader
 			String oldkey=(String)entry.elementAt(0);
 			String oldmsg=(String)entry.elementAt(5);
 			message=oldmsg+"%0D---------------------------------------------%0DReply from: "+from+"%0D"+message;
-			DBConnection D=null;
-			try
-			{
-				D=DBConnector.DBFetch();
-				String str="UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Journal",sqle);
-				if(D!=null) DBConnector.DBDone(D);
-				return;
-			}
+			DBConnector.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
 		}
 		else
 		{
-			DBConnection D=null;
-			String str=null;
-			try
-			{
-				D=DBConnector.DBFetch();
-
-				str="INSERT INTO CMJRNL ("
-				+"CMJKEY, "
-				+"CMJRNL, "
-				+"CMFROM, "
-				+"CMDATE, "
-				+"CMTONM, "
-				+"CMSUBJ, "
-				+"CMMSGT "
-				+") VALUES ('"
-				+(Journal+from+date+Math.random())
-				+"','"+Journal
-				+"','"+from
-				+"','"+date
-				+"','"+to
-				+"','"+subject
-				+"','"+message+"');";
-				D.update(str,0);
-				DBConnector.DBDone(D);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("Journal",str);
-				Log.errOut("Journal","Create:"+sqle);
-				if(D!=null) DBConnector.DBDone(D);
-			}
+			DBConnector.update(
+			"INSERT INTO CMJRNL ("
+			+"CMJKEY, "
+			+"CMJRNL, "
+			+"CMFROM, "
+			+"CMDATE, "
+			+"CMTONM, "
+			+"CMSUBJ, "
+			+"CMMSGT "
+			+") VALUES ('"
+			+(Journal+from+date+Math.random())
+			+"','"+Journal
+			+"','"+from
+			+"','"+date
+			+"','"+to
+			+"','"+subject
+			+"','"+message+"');");
 		}
 	}
 }

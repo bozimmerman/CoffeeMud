@@ -448,23 +448,10 @@ public class MOBloader
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
 
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="UPDATE CMCHAR SET"
-			+"  CMEMAL='"+pstats.getEmail()+"'"
-			+"  WHERE CMUSERID='"+mob.Name()+"'";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","UpdateEmail:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		"UPDATE CMCHAR SET"
+		+"  CMEMAL='"+pstats.getEmail()+"'"
+		+"  WHERE CMUSERID='"+mob.Name()+"'");
 	}
 
 
@@ -489,19 +476,16 @@ public class MOBloader
 				else
 					lastDates.addElement(new Long(lastDateTime));
 			}
-			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 	}
 
 	public static void DBUpdateClan(String name, String clan, int role)
 	{
-		DBConnection D=null;
-		String str=null;
 		MOB M=CMMap.getPlayer(name);
 		if(M!=null)
 		{
@@ -509,22 +493,11 @@ public class MOBloader
 			M.setClanRole(role);
 		}
 
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="UPDATE CMCHAR SET"
-			+"  CMCLAN='"+clan+"',"
-			+"  CMCLRO="+role+""
-			+"  WHERE CMUSERID='"+name+"'";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","UpdateIP:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		"UPDATE CMCHAR SET"
+		+"  CMCLAN='"+clan+"',"
+		+"  CMCLRO="+role+""
+		+"  WHERE CMUSERID='"+name+"'");
 	}
 
 	public static void DBUpdate(MOB mob)
@@ -538,72 +511,59 @@ public class MOBloader
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
 
-		DBConnection D=null;
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			str="UPDATE CMCHAR SET"
-			+"  CMPASS='"+pstats.password()+"'"
-			+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
-			+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
-			+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
-			+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
-			+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
-			+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"'"
-			+", CMWISD="+mob.baseCharStats().getStat(CharStats.WISDOM)
-			+", CMINTE="+mob.baseCharStats().getStat(CharStats.INTELLIGENCE)
-			+", CMCHAR="+mob.baseCharStats().getStat(CharStats.CHARISMA)
-			+", CMHITP="+mob.baseState().getHitPoints()
-			+", CMLEVL='"+mob.baseCharStats().getMyLevelsStr()+"'"
-			+", CMMANA="+mob.baseState().getMana()
-			+", CMMOVE="+mob.baseState().getMovement()
-			+", CMALIG="+mob.getAlignment()
-			+", CMEXPE="+mob.getExperience()
-			+", CMEXLV="+mob.getExpNextLevel()
-			+", CMWORS='"+mob.getWorshipCharID()+"'"
-			+", CMPRAC="+mob.getPractices()
-			+", CMTRAI="+mob.getTrains()
-			+", CMAGEH="+mob.getAgeHours()
-			+", CMGOLD="+mob.getMoney()
-			+", CMWIMP="+mob.getWimpHitPoint()
-			+", CMQUES="+mob.getQuestPoint()
-			+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
-			+", CMDATE='"+pstats.lastDateTime()+"'"
-			+", CMCHAN="+pstats.getChannelMask()
-			+", CMATTA="+mob.baseEnvStats().attackAdjustment()
-			+", CMAMOR="+mob.baseEnvStats().armor()
-			+", CMDAMG="+mob.baseEnvStats().damage()
-			+", CMBTMP="+mob.getBitmap()
-			+", CMLEIG='"+mob.getLeigeID()+"'"
-			+", CMHEIT="+mob.baseEnvStats().height()
-			+", CMWEIT="+mob.baseEnvStats().weight()
-			+", CMPRPT='"+pstats.getPrompt()+"'"
-			+", CMCOLR='"+pstats.getColorStr()+"'"
-			+", CMCLAN='"+mob.getClanID()+"'"
-			+", CMLSIP='"+pstats.lastIP()+"'"
-			+", CMCLRO="+mob.getClanRole()
-			+", CMEMAL='"+pstats.getEmail()+"'"
-			+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
-			+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
-			+"  WHERE CMUSERID='"+mob.Name()+"'";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-
-			D=DBConnector.DBFetch();
-			D.update("UPDATE CMCHAR SET"
-			+" CMDESC='"+mob.description()+"'"
-			+" WHERE CMUSERID='"+mob.Name()+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","UpdateStats:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		"UPDATE CMCHAR SET"
+		+"  CMPASS='"+pstats.password()+"'"
+		+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
+		+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
+		+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
+		+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
+		+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
+		+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"'"
+		+", CMWISD="+mob.baseCharStats().getStat(CharStats.WISDOM)
+		+", CMINTE="+mob.baseCharStats().getStat(CharStats.INTELLIGENCE)
+		+", CMCHAR="+mob.baseCharStats().getStat(CharStats.CHARISMA)
+		+", CMHITP="+mob.baseState().getHitPoints()
+		+", CMLEVL='"+mob.baseCharStats().getMyLevelsStr()+"'"
+		+", CMMANA="+mob.baseState().getMana()
+		+", CMMOVE="+mob.baseState().getMovement()
+		+", CMALIG="+mob.getAlignment()
+		+", CMEXPE="+mob.getExperience()
+		+", CMEXLV="+mob.getExpNextLevel()
+		+", CMWORS='"+mob.getWorshipCharID()+"'"
+		+", CMPRAC="+mob.getPractices()
+		+", CMTRAI="+mob.getTrains()
+		+", CMAGEH="+mob.getAgeHours()
+		+", CMGOLD="+mob.getMoney()
+		+", CMWIMP="+mob.getWimpHitPoint()
+		+", CMQUES="+mob.getQuestPoint()
+		+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
+		+", CMDATE='"+pstats.lastDateTime()+"'"
+		+", CMCHAN="+pstats.getChannelMask()
+		+", CMATTA="+mob.baseEnvStats().attackAdjustment()
+		+", CMAMOR="+mob.baseEnvStats().armor()
+		+", CMDAMG="+mob.baseEnvStats().damage()
+		+", CMBTMP="+mob.getBitmap()
+		+", CMLEIG='"+mob.getLeigeID()+"'"
+		+", CMHEIT="+mob.baseEnvStats().height()
+		+", CMWEIT="+mob.baseEnvStats().weight()
+		+", CMPRPT='"+pstats.getPrompt()+"'"
+		+", CMCOLR='"+pstats.getColorStr()+"'"
+		+", CMCLAN='"+mob.getClanID()+"'"
+		+", CMLSIP='"+pstats.lastIP()+"'"
+		+", CMCLRO="+mob.getClanRole()
+		+", CMEMAL='"+pstats.getEmail()+"'"
+		+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
+		+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
+		+"  WHERE CMUSERID='"+mob.Name()+"'");
+		
+		DBConnector.update(
+		"UPDATE CMCHAR SET"
+		+" CMDESC='"+mob.description()+"'"
+		+" WHERE CMUSERID='"+mob.Name()+"'");
+		
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
 		pstats.setUpdated(System.currentTimeMillis());
@@ -651,48 +611,20 @@ public class MOBloader
 	public static void DBUpdateItems(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'",0);
-			try{Thread.sleep(2*mob.inventorySize());}catch(Exception e){}
-			DBConnector.DBDone(D);
-		}
-		catch(Throwable t)
-		{
-			Log.errOut("MOB","UpdateItems"+t);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
+		try{Thread.sleep(mob.inventorySize());}catch(Exception e){}
 		Vector V=new Vector();
 		if(mob.inventorySize()>0)
 			DBUpdateContents(mob,V);
 		for(int v=0;v<V.size();v++)
-		{
-			String updateString=(String)V.elementAt(v);
-			D=null;
-			try
-			{
-				D=DBConnector.DBFetch();
-				D.update(updateString,0);
-				try{Thread.sleep(100);}catch(Exception e){}
-				DBConnector.DBDone(D);
-			}
-			catch(Throwable t)
-			{
-				Log.errOut("MOB","UpdateItems"+t+"//"+updateString);
-				if(D!=null) DBConnector.DBDone(D);
-			}
-		}
+			DBConnector.update((String)V.elementAt(v));
 	}
 
 	public static void DBUpdateFollowers(MOB mob)
 	{
-
 		if((mob==null)||(mob.Name().length()==0))
 			return;
 		Vector V=new Vector();
-		DBConnection D=DBConnector.DBFetch();
 		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -719,36 +651,14 @@ public class MOBloader
 			}
 		}
 		for(int v=0;v<V.size();v++)
-		{
-			String updateString=(String)V.elementAt(v);
-			try
-			{
-				D.update(updateString,0);
-			}
-			catch(SQLException sqle)
-			{
-				Log.errOut("MOB","UpdateFollowers"+sqle+"//"+updateString);
-			}
-		}
-		DBConnector.DBDone(D);
+			DBConnector.update((String)V.elementAt(v));
 	}
 
 	public static void DBDelete(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
 		CommonMsgs.channel("WIZINFO","",mob.Name()+" has just been deleted.",true);
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'",0);
-			DBConnector.DBDone(D);
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("MOB","DBDelete"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 		while(mob.inventorySize()>0)
 		{
 			Item thisItem=mob.fetchInventory(0);
@@ -780,20 +690,7 @@ public class MOBloader
 	public static void DBUpdateAbilities(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-		DBConnection D=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'",0);
-			try{Thread.sleep(2*mob.numLearnedAbilities());}catch(Exception e){}
-			DBConnector.DBDone(D);
-		}
-		catch(Throwable t)
-		{
-			Log.errOut("MOB","DBUpdateAbilities: "+t);
-			if(D!=null) DBConnector.DBDone(D);
-		}
-		D=null;
+		DBConnector.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
 		HashSet H=new HashSet();
 		Vector V=new Vector();
 		for(int a=0;a<mob.numLearnedAbilities();a++)
@@ -861,26 +758,7 @@ public class MOBloader
 			}
 		}
 		for(int v=0;v<V.size();v++)
-		{
-			String updateString=(String)V.elementAt(v);
-			try
-			{
-				D=DBConnector.DBFetch();
-				D.update(updateString,0);
-				try{Thread.sleep(100);}catch(Exception e){}
-				DBConnector.DBDone(D);
-				D=null;
-			}
-			catch(Throwable t)
-			{
-				Log.errOut("MOB","UpdateAbilities"+t+"//"+updateString);
-				if(D!=null)
-				{
-					DBConnector.DBDone(D);
-					D=null;
-				}
-			}
-		}
+			DBConnector.update((String)V.elementAt(v));
 	}
 
 	public static void DBCreateCharacter(MOB mob)
@@ -889,34 +767,19 @@ public class MOBloader
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
 
-		DBConnection D=null;
-		String str=null;
-		try
-		{
-			D=DBConnector.DBFetch();
-
-			str="INSERT INTO CMCHAR ("
-			+"CMUSERID, "
-			+"CMPASS, "
-			+"CMCLAS, "
-			+"CMRACE, "
-			+"CMGEND "
-			+") VALUES ('"
-			+mob.Name()
-			+"','"+pstats.password()
-			+"','"+mob.baseCharStats().getMyClassesStr()
-			+"','"+mob.baseCharStats().getMyRace().ID()
-			+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');";
-			D.update(str,0);
-			DBConnector.DBDone(D);
-			DBUpdate(mob);
-		}
-		catch(Exception sqle)
-		{
-			Log.errOut("MOB",str);
-			Log.errOut("MOB","Create:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
-		}
+		DBConnector.update(
+		"INSERT INTO CMCHAR ("
+		+"CMUSERID, "
+		+"CMPASS, "
+		+"CMCLAS, "
+		+"CMRACE, "
+		+"CMGEND "
+		+") VALUES ('"
+		+mob.Name()
+		+"','"+pstats.password()
+		+"','"+mob.baseCharStats().getMyClassesStr()
+		+"','"+mob.baseCharStats().getMyRace().ID()
+		+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');");
 	}
 
 	public static boolean DBUserSearch(MOB mob, String Login)
@@ -935,7 +798,7 @@ public class MOBloader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCHAR");
-			if(R==null) R=D.query("SELECT * FROM CMCHAR");
+			if(R!=null)
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
@@ -953,13 +816,12 @@ public class MOBloader
 					break;
 				}
 			}
-			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("MOB",sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(D!=null) DBConnector.DBDone(D);
 		return returnable;
 	}
 
