@@ -68,6 +68,37 @@ public class Property implements Ability, Cloneable
 	public Environmental newInstance()
 	{ return new Property();}
 	
+	private static final String[] CODES={"CLASS","TEXT"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return text();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setMiscText(val); break;
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof Property)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 	private void cloneFix(Ability E){}
 	
 	public Environmental copyOf()

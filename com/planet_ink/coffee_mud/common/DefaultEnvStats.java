@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 public class DefaultEnvStats implements Cloneable, EnvStats
 {
@@ -52,4 +53,54 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 			return new DefaultEnvStats();
 		}
 	}
+	private final static String[] CODES={
+		"SENSES","DISPOSITION","LEVEL",
+		"ABILITY","REJUV","WEIGHT","HEIGHT",
+		"ARMOR","DAMAGE","ATTACK"};
+	public String[] getCodes(){return CODES;}
+	private int getCodeNum(String code)
+	{
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(EnvStats E){
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+			   return false;
+		return true;
+	}
+	
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code)){
+		case 0: setSensesMask(Util.s_int(val)); break;
+		case 1: setDisposition(Util.s_int(val)); break;
+		case 2: setLevel(Util.s_int(val)); break;
+		case 3: setAbility(Util.s_int(val)); break;
+		case 4: setRejuv(Util.s_int(val)); break;
+		case 5: setWeight(Util.s_int(val)); break;
+		case 6: setHeight(Util.s_int(val)); break;
+		case 7: setArmor(Util.s_int(val)); break;
+		case 8: setDamage(Util.s_int(val)); break;
+		case 9: setAttackAdjustment(Util.s_int(val)); break;
+		}
+	}
+	public String getStat(String code)
+	{
+		switch(getCodeNum(code)){
+		case 0: return ""+sensesMask();
+		case 1: return ""+disposition();
+		case 2: return ""+level();
+		case 3: return ""+ability();
+		case 4: return ""+rejuv();
+		case 5: return ""+weight();
+		case 6: return ""+height();
+		case 7: return ""+armor();
+		case 8: return ""+damage();
+		case 9: return ""+attackAdjustment();
+		default: return "";
+		}
+	}
+	
 }

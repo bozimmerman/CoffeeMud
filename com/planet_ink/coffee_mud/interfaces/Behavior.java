@@ -45,6 +45,12 @@ public interface Behavior extends Cloneable
 	 */
 	public boolean okAffect(Environmental oking, Affect affect);
 	
+	/** quick and easy access to the basic values in this object */
+	public String[] getStatCodes();
+	public String getStat(String code);
+	public void setStat(String code, String val);
+	public boolean sameAs(Behavior  B);
+	
 	/**
 	 * this method allows any environmental object
 	 * to behave according to a timed response.  by

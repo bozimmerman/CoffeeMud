@@ -142,4 +142,35 @@ public class StdBehavior implements Behavior
 	public void tick(Environmental ticking, int tickID)
 	{
 	}
+	private static final String[] CODES={"CLASS","TEXT"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return getParms();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setParms(val); break;
+		}
+	}
+	public boolean sameAs(Behavior E)
+	{
+		if(!(E instanceof Behavior)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

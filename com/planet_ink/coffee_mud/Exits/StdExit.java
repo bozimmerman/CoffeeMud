@@ -646,4 +646,35 @@ public class StdExit implements Exit
 	}
 	public int openDelayTicks()	{ return openDelayTicks;}
 	public void setOpenDelayTicks(int numTicks){openDelayTicks=numTicks;}
+	private static final String[] CODES={"CLASS","TEXT"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return text();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setMiscText(val); break;
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdExit)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

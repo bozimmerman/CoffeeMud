@@ -240,4 +240,42 @@ public class GenWallpaper implements Item
 	public Behavior fetchBehavior(int index){return null;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
+	
+	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return name();
+		case 2: return description();
+		case 3: return ""+isReadable();
+		case 4: return readableText();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setName(val); break;
+		case 2: setDescription(val); break;
+		case 3: setReadable(Util.s_bool(val)); break;
+		case 4: setReadableText(val); break;
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenWallpaper)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

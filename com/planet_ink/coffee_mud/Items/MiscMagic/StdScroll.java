@@ -240,4 +240,39 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public void setSpellList(Vector newOne){theSpells=newOne;}
 	public boolean isReadableScroll(){return readableScroll;}
 	public void setReadableScroll(boolean isTrue){readableScroll=isTrue;}
+	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return ""+baseEnvStats().ability();
+		case 2: return ""+baseEnvStats().level();
+		case 3: return text();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: baseEnvStats().setLevel(Util.s_int(val)); break;
+		case 2: baseEnvStats().setAbility(Util.s_int(val)); break;
+		case 3: setMiscText(val); break;
+		}
+	}
+	public String[] getStatCodes(){return CODES;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdScroll)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

@@ -67,6 +67,11 @@ public interface EnvStats extends Cloneable
 	public void setSensesMask(int newMask);
 	public void setReplacementName(String newName);
 	public void setHeight(int newHeight);
+	
+	public String[] getCodes();
+	public void setStat(String code, String val);
+	public String getStat(String code);
+	public boolean sameAs(EnvStats E);
 
 	public EnvStats cloneStats();
 	

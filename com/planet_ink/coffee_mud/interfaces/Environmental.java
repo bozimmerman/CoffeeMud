@@ -45,6 +45,12 @@ public interface Environmental extends Cloneable
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState);
 
+	/** quick and easy access to the basic values in this object */
+	public String[] getStatCodes();
+	public String getStat(String code);
+	public void setStat(String code, String val);
+	public boolean sameAs(Environmental E);
+		
 
 	/** Manipulation of affect objects, which includes
 	 * spells, traits, skills, etc.*/

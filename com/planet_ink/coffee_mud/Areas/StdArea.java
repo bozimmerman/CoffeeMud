@@ -1171,4 +1171,41 @@ public class StdArea implements Area
 		return subOps;
 	}
 
+	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
+	public String[] getStatCodes(){return CODES;}
+	private int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return ""+climateType();
+		case 2: return description();
+		case 3: return text();
+		case 4: return ""+getTechLevel();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setClimateType(Util.s_int(val)); break;
+		case 2: setDescription(val); break;
+		case 3: setMiscText(val); break;
+		case 4: setTechLevel(Util.s_int(val)); break;	
+		}
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof StdArea)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }
