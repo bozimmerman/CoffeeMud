@@ -69,6 +69,7 @@ public class StdCharClass implements CharClass, Cloneable
 			CMAble.addCharAbilityMapping("All",1,"Embroidering",false);
 			CMAble.addCharAbilityMapping("All",1,"Engraving",false);
 			CMAble.addCharAbilityMapping("All",10,"Farming",false);
+			CMAble.addCharAbilityMapping("All",1,"Costuming",false);
 			CMAble.addCharAbilityMapping("All",1,"FireBuilding",false);
 			CMAble.addCharAbilityMapping("All",1,"Fishing",false);
 			CMAble.addCharAbilityMapping("All",1,"Fletching",false);
@@ -82,6 +83,8 @@ public class StdCharClass implements CharClass, Cloneable
 			CMAble.addCharAbilityMapping("All",15,"LockSmith",false);
 			CMAble.addCharAbilityMapping("All",10,"Masonry",false);
 			CMAble.addCharAbilityMapping("All",30,"MasterTailoring",false);
+			CMAble.addCharAbilityMapping("All",30,"MasterCostuming",false);
+			CMAble.addCharAbilityMapping("All",30,"MasterLeatherWorking",false);
 			CMAble.addCharAbilityMapping("All",30,"MasterWeaponsmithing",false);
 			CMAble.addCharAbilityMapping("All",30,"MasterArmorsmithing",false);
 			CMAble.addCharAbilityMapping("All",20,"Merchant",false);

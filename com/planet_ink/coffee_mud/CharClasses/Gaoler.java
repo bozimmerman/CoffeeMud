@@ -92,6 +92,8 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),30,"MasterArmorsmithing",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"MasterTailoring",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"MasterWeaponsmithing",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),30,"MasterCostuming",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),30,"MasterLeatherWorking",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Chopping",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Digging",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Drilling",0,"",false,true);
@@ -130,6 +132,7 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),30,"Taxidermy",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Merchant",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Scrapping",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),30,"Costuming",0,"",false,true);
 		}
 	}
 

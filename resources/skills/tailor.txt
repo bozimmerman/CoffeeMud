@@ -1,101 +1,74 @@
-name,level,ticks,wood,value,class,misc,capacity,armordmg,containermask,spell
-% Cushion	5	10	5	5	GenRideable	CHAIR	0	0	0
-% Sleeping Bag	5	30	15	10	GenRideable	ENTER	0	0	0
-% Tent	10	60	25	25	GenRideable	ENTER	5	0	0
-% Bundle	1	1	25	0	GenResource	BUNDLE
+% Cushion	5	10	5	5	GenRideable	CHAIR	0	0	0	
+% Sleeping Bag	5	30	15	10	GenRideable	ENTER	0	0	0	
+% Tent	10	60	25	25	GenRideable	ENTER	5	0	0	
+% Bundle	1	1	25	0	GenResource	BUNDLE				
 % Pillow	1	10	5	1	GenBoffWeapon	BASHING		0	0	Prop_NoDamage
 Large % Pillow	10	10	5	27	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
-% Armbands	3	30	1	18	GenArmor	ARMS	0	1	0
-% Sleeves	7	20	3	1	GenArmor	ARMS	0	2	0
-% Pauldrons	11	30	5	9	GenArmor	ARMS	0	3	0
-% Housecoat	2	30	10	30	GenArmor	BODY	5	0	0
-% Blanket	5	10	15	9	GenArmor	BODY	0	0	0
-% Sheet	5	10	5	3	GenArmor	BODY	0	0	0
-% Apron	8	30	6	50	GenArmor	BODY	20	9	0
-% Poncho	11	30	14	60	GenArmor	BODY	0	13	0
-% Trenchcoat	25	30	27	141	GenArmor	BODY	20	22	0
-% Slippers	1	10	5	5	GenArmor	FEET	0	0	0
-% Socks	1	10	2	2	GenArmor	FEET	0	0	0
-% Mitts	5	10	5	10	GenArmor	HANDS	0	1	0	Prop_WearResister(cold 5%)
-% Gloves	6	10	2	20	GenArmor	HANDS	0	1	0
-% Cestus	8	20	2	5	GenArmor	HANDS	0	1	0	Prop_WearAdjuster(att+5)
-Improved % Cestus	21	40	7	65	GenArmor	HANDS	0	2	0	Prop_WearAdjuster(att+15)
-Heavy % Cestus	26	80	10	250	GenArmor	HANDS	0	2	0	Prop_WearAdjuster(att+30)
-% Bonnet	1	10	2	2	GenArmor	HEAD	0	0	0
-Pointy % Cap	2	10	2	2	GenArmor	HEAD	0	1	0
-% Headband	2	20	2	2	GenArmor	HEAD	0	1	0
-% Sombrero	6	20	3	8	GenArmor	HEAD	0	2	0
-% Hood	7	20	2	2	GenArmor	HEAD	0	2	0
-% Chef's Hat	10	30	8	2	GenArmor	HEAD	0	3	0
-% Coxcomb	12	20	3	2	GenArmor	HEAD	0	3	0
-% Turban	17	25	8	2	GenArmor	HEAD	0	4	0
-% Fedora	18	20	4	2	GenArmor	HEAD	0	4	0
-% Skullcap	25	20	5	2	GenArmor	HEAD	0	5	0
-% Wimple	18	30	6	27	GenArmor	HEAD&&NECK	0	6	0
-% Cuff	7	20	1	1	GenArmor	LEFT WRIST||RIGHT WRIST	0	1	0
-% Vambrace	16	30	5	5	GenArmor	LEFT WRIST||RIGHT WRIST	0	2	0
-% Bandana	6	20	2	5	GenArmor	LEFT WRIST||RIGHT WRIST||NECK||HEAD	0	1	0
-% Tights	1	10	5	12	GenArmor	LEGS	0	0	0
-% Hose	1	10	3	13	GenArmor	LEGS	0	0	0
-% Loinclothe	2	10	2	6	GenArmor	LEGS	0	2	0
-% Peplum	2	10	1	4	GenArmor	LEGS	0	1	0
-% Leggings	2	20	3	2	GenArmor	LEGS	0	2	0
-% Skirt	2	20	3	8	GenArmor	LEGS	0	2	0
-% Pants	3	30	3	10	GenArmor	LEGS	5	2	0
-Split % Skirt	6	30	3	12	GenArmor	LEGS	0	3	0
-% Kilt	7	80	3	24	GenArmor	LEGS	0	4	0
-% Petticoat	10	40	8	12	GenArmor	LEGS	0	5	0
-% Pantaloons	11	30	5	16	GenArmor	LEGS	0	6	0
-% Breechclout	12	10	2	10	GenArmor	LEGS	0	6	0
-% Chausses	17	20	6	10	GenArmor	LEGS	0	7	0
-% Trousers	18	30	6	4	GenArmor	LEGS	0	8	0
-Great % Kilt	24	100	8	96	GenArmor	LEGS	0	10	0
-% Breeches	25	30	6	16	GenArmor	LEGS	0	9	0
-% Shawl	1	10	2	16	GenArmor	NECK	0	0	0
-% Mantle	5	20	3	5	GenArmor	NECK	0	1	0
-% Cloak	5	30	3	7	GenArmor	NECK	0	1	0
-% Choker	6	20	2	1	GenArmor	NECK	0	1	0
-% Cape	6	20	2	7	GenArmor	NECK	0	1	0
-% Collar	6	10	2	1	GenArmor	NECK	0	1	0
-% Boa	11	10	16	12	GenArmor	NECK	0	2	0
-% Riding Cloak	13	30	12	60	GenArmor	NECK	0	2	0
-% Scarf	15	10	8	6	GenArmor	NECK	0	2	0
-% Cravat	16	10	5	6	GenArmor	NECK	0	2	0
-% Tie	17	15	3	6	GenArmor	NECK	0	2	0
-% Rabat	18	20	2	6	GenArmor	NECK	0	2	0
-Heavy % Cloak	29	45	15	120	GenArmor	NECK	0	3	0
-Hooded % Cloak	29	45	15	120	GenCloak	NECK||HEAD	0	3	0
-% Jabot	30	20	12	6	GenArmor	NECK	0	3	0
-% Bikini	1	20	2	15	GenArmor	TORSO&&WAIST	0	0	0
-% Sun Dress	2	16	4	15	GenArmor	TORSO&&WAIST&&LEGS	0	2	0
-% Shirt	2	20	5	6	GenArmor	TORSO	0	3	0
-% Blouse	2	24	4	22	GenArmor	TORSO	0	3	0
-Strapless % Dress	3	20	2	18	GenArmor	TORSO&&WAIST&&LEGS	0	2	0
-% Gown	3	80	3	60	GenArmor	TORSO	0	3	0
-% Halter	3	20	2	13	GenArmor	TORSO	0	2	0
-% Nightshirt	5	30	4	9	GenArmor	TORSO	0	4	0
-% Bodice	6	30	8	18	GenArmor	TORSO	0	5	0
-% Smock	6	20	8	36	GenArmor	TORSO	0	6	0
-% Corset	7	30	5	40	GenArmor	TORSO	0	6	0
-% Pinafore	7	40	6	22	GenArmor	TORSO	0	6	0
-% Vest	7	30	6	27	GenArmor	TORSO	0	6	0
-% Waistcoat	11	20	8	27	GenArmor	TORSO	0	8	0
-% Tunic	12	30	9	36	GenArmor	TORSO	0	9	0
-% Jerkin	12	40	9	40	GenArmor	TORSO	0	9	0
-% Jacket	13	50	6	18	GenArmor	TORSO	5	9	0
-% Hauberk	18	60	12	27	GenArmor	TORSO	0	12	0
-% Coat	19	80	10	54	GenArmor	TORSO	5	10	0
-Sleeveless % Doublet	24	60	16	45	GenArmor	TORSO	0	13	0
-% Mandelion	25	60	15	72	GenArmor	TORSO	0	15	0
-% Doublet	13	80	14	67	GenArmor	TORSO&&ARMS	20	12	0
-% Kimono	13	60	6	112	GenArmor	TORSO&&ARMS	10	12	0
-% Robes	19	30	12	48	GenArmor	TORSO&&ARMS	40	16	0
-% Smoking Jacket	26	80	20	96	GenArmor	TORSO&&ARMS	5	20	0
-% Caftan	12	40	18	160	GenArmor	TORSO&&ARMS&&LEGS	0	18	0
-% Habit	18	40	24	324	GenArmor	TORSO&&ARMS&&LEGS	0	24	0
-% Nightgown	2	30	5	432	GenArmor	TORSO&&LEGS	0	5	0
-% Overalls	8	40	9	62	GenArmor	TORSO&&LEGS	5	10	0
-% Frock	11	30	14	112	GenArmor	TORSO&&LEGS	0	15	0
-% Pajamas	20	30	9	175	GenArmor	TORSO&&LEGS	0	20	0
-% Gi	24	30	23	112	GenArmor	TORSO&&LEGS	0	25	0
-% Belt	7	10	2	2	GenArmor	WAIST	25	1	8
+% Armbands	3	30	1	18	GenArmor	ARMS	0	1	0	
+% Sleeves	7	20	3	1	GenArmor	ARMS	0	2	0	
+% Pauldrons	11	30	5	9	GenArmor	ARMS	0	3	0	
+% Housecoat	2	30	10	30	GenArmor	BODY	5	0	0	
+% Blanket	5	10	15	9	GenArmor	BODY	0	0	0	
+% Sheet	5	10	5	3	GenArmor	BODY	0	0	0	
+% Apron	8	30	6	50	GenArmor	BODY	20	9	0	
+% Poncho	11	30	14	60	GenArmor	BODY	0	13	0	
+% Trenchcoat	25	30	27	141	GenArmor	BODY	20	22	0	
+% Slippers	1	10	5	5	GenArmor	FEET	0	0	0	
+% Socks	1	10	2	2	GenArmor	FEET	0	0	0	
+% Mitts	5	10	5	10	GenArmor	HANDS	0	1	0	Prop_WearResister;cold 5%
+% Gloves	6	10	2	20	GenArmor	HANDS	0	1	0	
+% Cestus	8	20	2	5	GenArmor	HANDS	0	1	0	Prop_WearAdjuster;att+5
+Improved % Cestus	21	40	7	65	GenArmor	HANDS	0	2	0	prop_WearAdjuster;att+15
+Heavy % Cestus	26	80	10	250	GenArmor	HANDS	0	2	0	prop_WearAdjuster;att+30
+% Bonnet	1	10	2	2	GenArmor	HEAD	0	0	0	
+% Headband	2	20	2	2	GenArmor	HEAD	0	1	0	
+% Hood	7	20	2	2	GenArmor	HEAD	0	2	0	
+% Skullcap	25	20	5	2	GenArmor	HEAD	0	5	0	
+% Cuff	7	20	1	1	GenArmor	LEFT WRIST||RIGHT WRIST	0	1	0	
+% Vambrace	16	30	5	5	GenArmor	LEFT WRIST||RIGHT WRIST	0	2	0	
+% Hose	1	10	3	13	GenArmor	LEGS	0	0	0	
+% Loinclothe	2	10	2	6	GenArmor	LEGS	0	2	0	
+% Leggings	2	20	3	2	GenArmor	LEGS	0	2	0	
+% Skirt	2	20	3	8	GenArmor	LEGS	0	2	0	
+% Pants	3	30	3	10	GenArmor	LEGS	5	2	0	
+Split % Skirt	6	30	3	12	GenArmor	LEGS	0	3	0	
+% Petticoat	10	40	8	12	GenArmor	LEGS	0	5	0	
+% Pantaloons	11	30	5	16	GenArmor	LEGS	0	6	0	
+% Breechclout	12	10	2	10	GenArmor	LEGS	0	6	0	
+% Chausses	17	20	6	10	GenArmor	LEGS	0	7	0	
+% Trousers	18	30	6	4	GenArmor	LEGS	0	8	0	
+% Breeches	25	30	6	16	GenArmor	LEGS	0	9	0	
+% Shawl	1	10	2	16	GenArmor	NECK	0	0	0	
+% Mantle	5	20	3	5	GenArmor	NECK	0	1	0	
+% Cloak	5	30	3	7	GenArmor	NECK	0	1	0	
+% Choker	6	20	2	1	GenArmor	NECK	0	1	0	
+% Cape	6	20	2	7	GenArmor	NECK	0	1	0	
+% Collar	6	10	2	1	GenArmor	NECK	0	1	0	
+% Riding Cloak	13	30	12	60	GenArmor	NECK	0	2	0	
+% Scarf	15	10	8	6	GenArmor	NECK	0	2	0	
+Heavy % Cloak	29	45	15	120	GenArmor	NECK	0	3	0	
+% Sun Dress	2	16	4	15	GenArmor	TORSO	0	2	0	
+% Shirt	2	20	5	6	GenArmor	TORSO	0	3	0	
+% Blouse	2	24	4	22	GenArmor	TORSO	0	3	0	
+Strapless % Dress	3	20	2	18	GenArmor	TORSO	0	2	0	
+% Gown	3	80	3	60	GenArmor	TORSO	0	3	0	
+% Halter	3	20	2	13	GenArmor	TORSO	0	2	0	
+% Nightshirt	5	30	4	9	GenArmor	TORSO	0	4	0	
+% Bodice	6	30	8	18	GenArmor	TORSO	0	5	0	
+% Smock	6	20	8	36	GenArmor	TORSO	0	6	0	
+% Corset	7	30	5	40	GenArmor	TORSO	0	6	0	
+% Pinafore	7	40	6	22	GenArmor	TORSO	0	6	0	
+% Vest	7	30	6	27	GenArmor	TORSO	0	6	0	
+% Waistcoat	11	20	8	27	GenArmor	TORSO	0	8	0	
+% Tunic	12	30	9	36	GenArmor	TORSO	0	9	0	
+% Jerkin	12	40	9	40	GenArmor	TORSO	0	9	0	
+% Jacket	13	50	6	18	GenArmor	TORSO	5	9	0	
+% Hauberk	18	60	12	27	GenArmor	TORSO	0	12	0	
+% Coat	19	80	10	54	GenArmor	TORSO	5	10	0	
+Sleeveless % Doublet	24	60	16	45	GenArmor	TORSO	0	13	0	
+% Mandelion	25	60	15	72	GenArmor	TORSO	0	15	0	
+% Doublet	13	80	14	67	GenArmor	TORSO&&ARMS	20	12	0	
+% Robes	19	30	12	48	GenArmor	TORSO&&ARMS	40	16	0	
+% Nightgown	2	30	5	432	GenArmor	TORSO&&LEGS	0	5	0	
+% Frock	11	30	14	112	GenArmor	TORSO&&LEGS	0	15	0	
+% Belt	7	10	2	2	GenArmor	WAIST	25	1	8	

@@ -1,4 +1,4 @@
-name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
+name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell										
 % Slippers	1	10	3	5	GenArmor	FEET	0	2	0	
 % Socks	1	10	2	2	GenArmor	FEET	0	2	0	
 % Stockings	3	20	1	10	GenArmor	FEET	0	2	0	
@@ -16,3 +16,4 @@ High Heeled % Boots	16	50	10	75	GenArmor	FEET	0	4	0
 % Riding Boots	17	40	8	50	GenArmor	FEET	0	4	0	
 % Stiletto Heels	17	40	5	50	GenArmor	FEET	0	4	0	
 % Pumps	18	25	4	30	GenArmor	FEET	0	4	0	
+% Baby Booties	0	20	2	10	GenArmor	FEET	0	0	0	

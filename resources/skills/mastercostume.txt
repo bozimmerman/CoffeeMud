@@ -1,0 +1,38 @@
+Designer Pointy % Cap	33	10	2	36	GenArmor	HEAD	0	6	0	
+Designer % Sombrero	42	20	3	73	GenArmor	HEAD	0	7	0	
+Designer % Chef's Hat	52	30	8	256	GenArmor	HEAD	0	8	0	
+Designer % Coxcomb	52	20	3	96	GenArmor	HEAD	0	8	0	
+Designer % Turban	62	25	8	324	GenArmor	HEAD	0	9	0	
+Designer % Fedora	62	20	4	162	GenArmor	HEAD	0	9	0	
+Designer % Wimple	52	30	6	192	GenArmor	HEAD&&NECK	0	12	0	
+Designer % Bandana	33	20	2	72	GenArmor	LEFT WRIST||RIGHT WRIST||NECK||HEAD	0	3	0	
+Designer % Tights	33	10	5	90	GenArmor	LEGS	0	12	0	
+Designer % Peplum	42	10	1	21	GenArmor	LEGS	0	13	0	
+Designer % Kilt	52	80	3	96	GenArmor	LEGS	0	16	0	
+Designer % Great Kilt	82	100	8	484	GenArmor	LEGS	0	22	0	
+Designer % Cape	52	20	2	64	GenArmor	NECK	0	4	0	
+Designer % Boa	69	10	16	800	GenArmor	NECK	0	5	0	
+Designer % Cravat	72	10	5	250	GenArmor	NECK	0	5	0	
+Designer % Tie	72	15	3	150	GenArmor	NECK	0	5	0	
+Designer % Rabat	72	20	2	100	GenArmor	NECK	0	5	0	
+Designer % Jabot	91	20	12	864	GenArmor	NECK	0	6	0	
+Designer % Bikini	38	20	2	1036	GenArmor	TORSO	0	18	0	Prop_WearAdjuster(CHA+1)
+Designer % Kimono	53	60	6	168	GenArmor	TORSO&&ARMS	10	30	0	
+Designer % Smoking Jacket	73	80	20	1000	GenArmor	TORSO&&ARMS	5	40	0	
+Designer % Caftan	42	40	18	441	GenArmor	TORSO&&ARMS&&LEGS	0	42	0	
+Designer % Habit	52	40	24	768	GenArmor	TORSO&&ARMS&&LEGS	0	48	0	
+Designer % Overalls	34	40	9	162	GenArmor	TORSO&&LEGS	5	30	0	
+Designer % Pajamas	52	30	9	288	GenArmor	TORSO&&LEGS	0	40	0	
+Designer % Gi	62	30	23	931	GenArmor	TORSO&&LEGS	0	45	0	
+Designer % Children's Tunic	0	30	2	12	GenArmor	TORSO	0	0	0	
+Designer % Children's Dress	0	30	2	15	GenArmor	TORSO&&LEGS	0	0	0	
+Designer % Children's Pants	0	20	2	15	GenArmor	LEGS	0	0	0	
+Designer % Kid's Shirt	0	30	2	10	GenArmor	TORSO	0	0	0	
+Designer % Children's Coat	0	40	4	20	GenArmor	BODY	0	0	0	
+Designer % Children's Mitts	0	5	1	5	GenArmor	HANDS	0	0	0	
+Designer % Children's Hat	0	10	1	5	GenArmor	HEAD	0	0	0	
+Designer % Children's Scarf	0	5	1	5	GenArmor	NECK	0	0	0	
+Designer % Children's Long Sleeve Shirt	0	40	3	15	GenArmor	TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST	0	0	0	
+Designer % Onesie	0	10	1	8	GenArmor	TORSO&&LEGS	0	0	0	
+Designer % Long-Sleeve Onesie	0	15	1	13	GenArmor	TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST&&LEGS	0	0	0	
+Designer % Diaper	0	5	1	2	GenArmor	WAIST	0	0	0	

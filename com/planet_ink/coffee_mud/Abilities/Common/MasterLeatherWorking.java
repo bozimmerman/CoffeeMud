@@ -296,7 +296,7 @@ public class MasterLeatherWorking extends CraftingSkill
 						break;
 					}
 					else
-					if((level+35)<=(mob.envStats().level()))
+					if((level+35)<=(mob.envStats().level())
 					&&(recipeName.toUpperCase().indexOf("MASTERWORK")>=0))
 					{
 						multiplier=7;

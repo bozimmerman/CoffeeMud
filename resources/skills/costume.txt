@@ -1,0 +1,38 @@
+Pointy % Cap	2	10	2	2	GenArmor	HEAD	0	1	0	
+% Sombrero	6	20	3	8	GenArmor	HEAD	0	2	0	
+% Chef's Hat	10	30	8	2	GenArmor	HEAD	0	3	0	
+% Coxcomb	12	20	3	2	GenArmor	HEAD	0	3	0	
+% Turban	17	25	8	2	GenArmor	HEAD	0	4	0	
+% Fedora	18	20	4	2	GenArmor	HEAD	0	4	0	
+% Wimple	18	30	6	27	GenArmor	HEAD&&NECK	0	6	0	
+% Bandana	6	20	2	5	GenArmor	LEFT WRIST||RIGHT WRIST||NECK||HEAD	0	1	0	
+% Tights	1	10	5	12	GenArmor	LEGS	0	0	0	
+% Peplum	2	10	1	4	GenArmor	LEGS	0	1	0	
+% Kilt	7	80	3	24	GenArmor	LEGS	0	4	0	
+Great % Kilt	24	100	8	96	GenArmor	LEGS	0	10	0	
+% Cape	6	20	2	7	GenArmor	NECK	0	1	0	
+% Boa	11	10	16	12	GenArmor	NECK	0	2	0	
+% Cravat	16	10	5	6	GenArmor	NECK	0	2	0	
+% Tie	17	15	3	6	GenArmor	NECK	0	2	0	
+% Rabat	18	20	2	6	GenArmor	NECK	0	2	0	
+% Jabot	30	20	12	6	GenArmor	NECK	0	3	0	
+% Bikini	1	20	2	15	GenArmor	TORSO	0	0	0	
+% Kimono	13	60	6	112	GenArmor	TORSO&&ARMS	10	12	0	
+% Smoking Jacket	26	80	20	96	GenArmor	TORSO&&ARMS	5	20	0	
+% Caftan	12	40	18	160	GenArmor	TORSO&&ARMS&&LEGS	0	18	0	
+% Habit	18	40	24	324	GenArmor	TORSO&&ARMS&&LEGS	0	24	0	
+% Overalls	8	40	9	62	GenArmor	TORSO&&LEGS	5	10	0	
+% Pajamas	20	30	9	175	GenArmor	TORSO&&LEGS	0	20	0	
+% Gi	24	30	23	112	GenArmor	TORSO&&LEGS	0	25	0	
+% Children's Tunic	0	30	2	12	GenArmor	TORSO	0	0	0	
+% Children's Dress	0	30	2	15	GenArmor	TORSO&&LEGS	0	0	0	
+% Children's Pants	0	20	2	15	GenArmor	LEGS	0	0	0	
+% Kid's Shirt	0	30	2	10	GenArmor	TORSO	0	0	0	
+% Children's Coat	0	40	4	20	GenArmor	BODY	0	0	0	
+% Children's Mitts	0	5	1	5	GenArmor	HANDS	0	0	0	
+% Children's Hat	0	10	1	5	GenArmor	HEAD	0	0	0	
+% Children's Scarf	0	5	1	5	GenArmor	NECK	0	0	0	
+% Children's Long Sleeve Shirt	0	40	3	15	GenArmor	TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST	0	0	0	
+% Onesie	0	10	1	8	GenArmor	TORSO&&LEGS	0	0	0	
+% Long-Sleeve Onesie	0	15	1	13	GenArmor	TORSO&&ARMS&&LEFT WRIST&&RIGHT WRIST&&LEGS	0	0	0	
+% Diaper	0	5	1	2	GenArmor	WAIST	0	0	0	
