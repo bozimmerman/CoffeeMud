@@ -143,6 +143,13 @@ public class SaveThread extends Thread
 						check=check*15;
 					if(S.getStatus()==Session.STATUS_LOGIN)
 						check=check*5;
+					if((S.previousCMD()!=null)
+					&&(S.previousCMD().size()>0)
+					&&(((String)S.previousCMD().firstElement()).equalsIgnoreCase("IMPORT")
+					   ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
+					{
+						check=check*10;
+					}
 					if(time>(check*10))
 					{
 						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);

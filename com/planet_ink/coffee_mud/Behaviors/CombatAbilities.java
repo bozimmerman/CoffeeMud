@@ -48,9 +48,13 @@ public class CombatAbilities extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(ticking==null) return true;
+		if(tickID!=Host.MOB_TICK)
+		{
+			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
+			return true;
+		}
 		MOB mob=(MOB)ticking;
 
-		if(tickID!=Host.MOB_TICK) return true;
 		if(!canActAtAll(mob)) return true;
 		if(!mob.isInCombat()) return true;
 		MOB victim=mob.getVictim();

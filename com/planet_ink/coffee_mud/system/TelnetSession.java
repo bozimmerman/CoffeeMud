@@ -562,7 +562,7 @@ public class TelnetSession extends Thread implements Session
 					}
 					break;
 				case '(':
-					if(!wrapOnly)
+					if((!wrapOnly)&&(loop<(buf.length()-1)))
 					{
 						char c2=Character.toUpperCase(buf.charAt(loop+1));
 						if(((loop<buf.length()-2)&&(buf.charAt(loop+2)==')')&&(c2=='S'))

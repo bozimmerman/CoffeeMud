@@ -32,6 +32,7 @@ apply languages to writing as well. Should be simple, right? ha!
 Room descriptions varying by the time of day.
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
 Conquest Area behavior
+animate golem spell
 Scalp - Barbarian(5), Templar(10), Assassin (10), or Thief(20)
 DEPRESSION.  -10 to Attack, Gets hungry faster (10% or so), reduced saves vs Justice (-20%), Reduced chance of pregnancy/fertility.  People who get depressed generally have less enthusiasm about everything (fighting, sex, personal property...it's all pointless anyways) and tend to eat more.  (Thereby getting FAT.)
 YAWNS.  if you get too fatigued, you may get this disease, which is contagious.  No effect other than the occassionally yawning.

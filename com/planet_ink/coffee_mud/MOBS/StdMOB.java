@@ -2280,12 +2280,7 @@ public class StdMOB implements MOB
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(B.ID().equals(to.ID())))
-				return;
-		}
+		if(fetchBehavior(to.ID())!=null) return;
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}

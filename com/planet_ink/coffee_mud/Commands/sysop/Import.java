@@ -44,29 +44,44 @@ public class Import
 			else
 				areaName=removeAtAts(lineAfter).trim();
 		}
+		if(areaName.toUpperCase().startsWith("NAME "))
+		{
+			boolean justdoit=true;
+			if((areaName.length()>=41)
+			&&(areaName.charAt(12)=='{')
+			&&(areaName.charAt(21)!=' ')
+			&&(areaName.charAt(40)==' '))
+			{
+				areaName=areaName.substring(21,41).trim();
+				justdoit=false;
+			}
+			if(justdoit)
+				areaName=areaName.substring(5).trim();
+		}
+		
 		return Util.safetyFilter(areaName);
 	}
 	private static final String[][] colors={
-		{"ash","^c"},
-		{"black","^W"},
-		{"blood","^R"},
-		{"blue","^B"},
-		{"brown","^Y"},
-		{"cyan","^c"},
-		{"green","^g"},
-		{"grey","^W"},
-		{"pea","^G"},
-		{"purple","^P"},
-		{"red","^r"},
-		{"smurf","^b"},
-		{"teal","^C"},
-		{"violet","^p"},
-		{"white","^w"},
-		{"yellow","^y"},
-		{"misc","^N"},
-		{"roomname","^O"},
-		{"roomdesc","^L"},
-		{"monster","^M"}
+		{((char)27)+"ash"+((char)27),"^c"},
+		{((char)27)+"black"+((char)27),"^W"},
+		{((char)27)+"blood"+((char)27),"^R"},
+		{((char)27)+"blue"+((char)27),"^B"},
+		{((char)27)+"brown"+((char)27),"^Y"},
+		{((char)27)+"cyan"+((char)27),"^c"},
+		{((char)27)+"green"+((char)27),"^g"},
+		{((char)27)+"grey"+((char)27),"^W"},
+		{((char)27)+"pea"+((char)27),"^G"},
+		{((char)27)+"purple"+((char)27),"^P"},
+		{((char)27)+"red"+((char)27),"^r"},
+		{((char)27)+"smurf"+((char)27),"^b"},
+		{((char)27)+"teal"+((char)27),"^C"},
+		{((char)27)+"violet"+((char)27),"^p"},
+		{((char)27)+"white"+((char)27),"^w"},
+		{((char)27)+"yellow"+((char)27),"^y"},
+		{((char)27)+"misc"+((char)27),"^N"},
+		{((char)27)+"roomname"+((char)27),"^O"},
+		{((char)27)+"roomdesc"+((char)27),"^L"},
+		{((char)27)+"monster"+((char)27),"^M"}
 	};
 	
 	private static String removeAtAts(String str)
@@ -188,12 +203,22 @@ public class Import
 		
 		if(s.indexOf("^")>=0)	s=Util.replaceAll(s,"^","^^");
 		
-		if(s.indexOf(""+((char)27))>=0)
+		if((s.indexOf(""+((char)27))>=0)
+		||(s.indexOf("&")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
-				s=Util.replaceAll(s,((char)27)+colors[s1][0]+((char)27),colors[s1][1]);
+				s=Util.replaceAll(s,colors[s1][0],colors[s1][1]);
 		}
 		
+		int x=s.indexOf("@eng");
+		if(x>=0)
+		{
+			int y=s.indexOf("@rus",x);
+			if(y<x) y=s.indexOf("@ger",x);
+			if(y<x) y=s.indexOf("@spa",x);
+			if(y<x) y=s.length();
+			s=s.substring(x+4,y);
+		}
 		return s.trim();
 	}
 
@@ -252,6 +277,8 @@ public class Import
 			else
 			if(word.startsWith("ARMOR")) i=1;
 			else
+			if(word.startsWith("ENHANCED ARMOR")) i=212;
+			else
 			if(word.startsWith("BLESS")) i=3;
 			else
 			if(word.startsWith("BLINDNE")) i=4;
@@ -270,6 +297,8 @@ public class Import
 			else
 			if(word.startsWith("CAUSE LI")) i=62;
 			else
+			if(word.startsWith("CAUSE SE")) i=222;
+			else
 			if(word.startsWith("CHANGE SE")) i=82;
 			else
 			if(word.startsWith("CHARM PER")) i=7;
@@ -278,7 +307,7 @@ public class Import
 			else
 			if(word.startsWith("COLO")) i=10;
 			else
-			if(word.startsWith("COLO")) i=10;
+			if(word.startsWith("RESERVED")) i=223;
 			else
 			if(word.startsWith("FIREBA")) i=26;
 			else
@@ -416,11 +445,35 @@ public class Import
 			else
 			if(word.startsWith("REJUV")) i=209;
 			else
+			if(word.startsWith("PLAGUE")) i=213;
+			else
 			if(word.startsWith("HEAT M")) i=210;
 			else
 			if(word.startsWith("HIGH EXP")) i=26;
 			else
 			if(word.startsWith("FARSIGHT")) i=211;
+			else
+			if(word.startsWith("SLOW")) i=214;
+			else
+			if(word.startsWith("WEB")) i=215;
+			else
+			if(word.startsWith("CONFUSE")) i=216;
+			else
+			if(word.startsWith("SENSE LI")) i=217;
+			else
+			if(word.startsWith("MYSTERIOUS DR")) i=218;
+			else
+			if(word.startsWith("MIND LIGHT")) i=219;
+			else
+			if(word.startsWith("ACUTE VIS")) i=44;
+			else
+			if(word.startsWith("CALM")) i=220;
+			else
+			if(word.startsWith("DETECT G")) i=221;
+			else
+			if(word.startsWith("DEMONFIRE")) i=27;
+			else
+			if(word.startsWith("BARK SKIN")) i=224;
 			else
 			{
 				Log.sysOut("Unknown spell: "+word);
@@ -452,7 +505,7 @@ public class Import
 		case 18: return "Prayer_SenseEvil";
 		case 19: return "Spell_DetectInvisible";
 		case 20: return "Spell_DetectMagic";
-		case 21: return "Thief_DetectTraps"; // detect poison actually
+		case 21: return "Spell_DetectPoison";
 		case 22: return "Prayer_DispelEvil";
 		case 23: return "Spell_Earthquake";
 		case 24: return "Spell_EnchantWeapon";
@@ -521,6 +574,19 @@ public class Import
 		case 209: return "Prayer_Restoration";
 		case 210: return "Spell_HeatMetal";
 		case 211: return "Spell_Farsight";
+		case 212: return "Spell_MageArmor";
+		case 213: return "Prayer_Plague";
+		case 214: return "Spell_Slow";
+		case 215: return "Spell_Web";
+		case 216: return "Spell_Confusion";
+		case 217: return "Spell_DetectSentience";
+		case 218: return "Spell_Nightmare";
+		case 219: return "Spell_MindLight";
+		case 220: return "Prayer_Calm";
+		case 221: return "Prayer_SenseGood";
+		case 222: return "Prayer_CauseSerious";
+		case 223: return "";
+		case 224: return "Chant_Barkskin";
 		default:
 			Log.sysOut("Unknown spell num: "+i);
 			break;
@@ -559,27 +625,32 @@ public class Import
 					useThisOne=areaData;
 				}
 				else
-				if(s.startsWith("HELPS"))
-				{
-					wasUsingThisOne=null;
-					useThisOne=helpsToEat;
-				}
-				else
-				if(s.startsWith("MOBILES"))
+				if((s.startsWith("MOBILE"))
+				||(s.startsWith("MOBOLD")))
 				{
 					wasUsingThisOne=mobData;
 					useThisOne=mobData;
 				}
 				else
-				if(s.startsWith("OBJECTS"))
+				if((s.startsWith("OBJECT"))
+				||(s.startsWith("OBJOLD")))
 				{
 					wasUsingThisOne=objectData;
 					useThisOne=objectData;
 				}
 				else
+				if((s.startsWith("OLIMITS"))
+				||(s.startsWith("OMPROGS"))
+				||(s.startsWith("HELPS"))
+				||(s.startsWith("PRACTICERS")))
+				{
+					wasUsingThisOne=null;
+					useThisOne=helpsToEat;
+				}
+				else
 				if(s.startsWith("MOBPROG"))
 				{
-					wasUsingThisOne=objectData;
+					wasUsingThisOne=null;
 					useThisOne=mobProgData;
 				}
 				else
@@ -589,7 +660,7 @@ public class Import
 					useThisOne=mobProgData;
 				}
 				else
-				if(s.startsWith("ROOMS"))
+				if(s.startsWith("ROOM"))
 				{
 					wasUsingThisOne=roomData;
 					useThisOne=roomData;
@@ -634,6 +705,9 @@ public class Import
 				if((s.equals("")||s.equals("~"))&&(useThisOne==socialData))
 					okString=true;
 				else
+				if(useThisOne==mobProgData)
+					okString=true;
+				else
 				{
 					//useThisOne=null;
 					Log.sysOut("Import","Suspect line: "+s);
@@ -652,7 +726,7 @@ public class Import
 			}
 		}
 		if(helpsToEat.size()>0)
-			Log.sysOut("Import","Ate "+helpsToEat.size()+" help lines.");
+			Log.sysOut("Import","Ate "+helpsToEat.size()+" unsupported lines.");
 	}
 
 	private static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
@@ -1410,6 +1484,23 @@ public class Import
 			for(int mp=0;mp<mobProgData.size();mp++)
 			{
 				String s=(String)mobProgData.elementAt(mp);
+				String rest=null;
+				if(s.startsWith("#")&&(s.length()>1)&&(Util.isNumber(""+s.charAt(1))))
+				{
+					s="M "+s.substring(1);
+					rest="";
+					while(s.indexOf("~")<=0)
+					{
+						mp++;
+						if(mp<mobProgData.size())
+						{
+							rest+=(String)mobProgData.elementAt(mp);
+							s=(String)mobProgData.elementAt(mp);
+						}
+						else
+							break;
+					}
+				}
 				if(s.startsWith("M "))
 				{
 					String MOBID=Util.getBit(s,1);
@@ -1446,6 +1537,9 @@ public class Import
 					if(mobprg.equals("CRIER.PRG"))
 					{
 					}
+					else
+					if(rest!=null)
+						continue;
 					else
 					{
 						try{
@@ -1488,6 +1582,11 @@ public class Import
 					}
 				}
 				else
+				if(s.startsWith("O "))
+				{
+					// also unsupported
+				}
+				else
 				if((s.startsWith("#M"))||(s.startsWith("S")))
 				{
 				}
@@ -1512,7 +1611,8 @@ public class Import
 						continue;
 
 					String special=Util.getBit(s,2).toUpperCase().trim();
-					if(special.equals("SPEC_CAST_MAGE"))
+					if((special.equals("SPEC_CAST_MAGE"))
+					||(special.equals("SPEC_CAST_SENESCHAL")))
 						M.addBehavior(CMClass.getBehavior("Mageness"));
 					else
 					if(special.equals("SPEC_THIEF"))
@@ -1520,6 +1620,16 @@ public class Import
 					else
 					if(special.equals("SPEC_EXECUTIONER"))
 						M.addBehavior(CMClass.getBehavior("GoodExecutioner"));
+					else
+					if(special.startsWith("SPEC_ASSASSIN"))
+					{
+						Behavior B=M.fetchBehavior("Aggressive");
+						if(B==null)B=M.fetchBehavior("MobileAggressive");
+						if(B==null)B=M.fetchBehavior("VeryAggressive");
+						if(B==null)B=CMClass.getBehavior("Aggressive");
+						B.setParms(B.getParms()+" MOBKILLER ");
+						M.addBehavior(B);
+					}
 					else
 					if(special.equals("SPEC_CAST_ADEPT"))
 						M.addBehavior(CMClass.getBehavior("Healer"));
@@ -1549,7 +1659,8 @@ public class Import
 						M.baseCharStats().getMyRace().startRacing(M,false);
 					}
 					else
-					if(special.equals("SPEC_GUARD"))
+					if((special.equals("SPEC_GUARD"))
+					||(special.equals("SPEC_SPECIAL_GUARD")))
 						M.addBehavior(CMClass.getBehavior("GoodGuardian"));
 					else
 					if(special.equals("SPEC_FIDO"))
@@ -1699,7 +1810,7 @@ public class Import
 			String objectName=Util.safetyFilter(eatLineSquiggle(objV));
 			String objectDisplay=Util.safetyFilter(eatLineSquiggle(objV));
 			String objectDescription="";
-			if((nextLine(objV).indexOf("~")>=0)||(!Character.isDigit(nextLine(objV).charAt(0))))
+			if((nextLine(objV).indexOf("~")>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
 				objectDescription=Util.safetyFilter(eatLineSquiggle(objV));
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
@@ -2614,6 +2725,9 @@ public class Import
 		Hashtable doneItems=new Hashtable();
 		Hashtable doneRooms=new Hashtable();
 		Hashtable doneMOBS=new Hashtable();
+		Vector nextResetData=new Vector();
+		Hashtable laterLinks=new Hashtable();
+		boolean multiArea=false;
 
 		commands.removeElementAt(0);
 
@@ -2652,6 +2766,7 @@ public class Import
 		Vector mobData=new Vector();
 		Vector objectData=new Vector();
 
+		multiArea=commands.size()>0;
 		for(int areaFile=0;areaFile<commands.size();areaFile++)
 		{
 		Vector areaData=new Vector();
@@ -3060,15 +3175,35 @@ public class Import
 		if((roomData.size()==0)||(areaData.size()==0))
 		{
 			if(!didSocials)
-				mob.tell("Missing data! It is very unlikely this is an .are file.");
-			return;
+			{
+				if(multiArea)
+				{
+					mob.tell("No data in "+areaFileName);
+					if((prompt)&&(mob.session()!=null))
+					{
+						try{
+						if(!mob.session().confirm("Would you like to continue (y/N)","N"))
+							return;
+						}catch(Exception e){}
+					}
+					continue;
+				}
+				else
+				{
+					mob.tell("Missing data! It is very unlikely this is an .are file.");
+					return;
+				}
+			}
 		}
 		String areaName=getAreaName(areaData);
 		if((areaName==null)||((areaName!=null)&&(areaName.length()==0)))
 		{
 			if(!didSocials)
 				mob.tell("#AREA tag not found!");
-			return;
+			if(multiArea)
+				continue;
+			else
+				return;
 		}
 
 		try
@@ -3131,8 +3266,20 @@ public class Import
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
 				R.setRoomID(plainRoomID);
-				R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
-				R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
+				if((roomV.size()>2)
+				&&(((String)roomV.elementAt(0)).trim().equals("~"))
+				&&(((String)roomV.elementAt(1)).trim().equals("~")))
+				{
+					String s=eatLineSquiggle(roomV);
+					s=eatLineSquiggle(roomV);
+					R.setDisplayText("Emptiness...");
+					R.setDescription("");
+				}
+				else
+				{
+					R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
+					R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
+				}
 				R.setArea(A);
 				String codeLine=eatNextLine(roomV);
 				if((!R.roomID().startsWith("#"))
@@ -3414,7 +3561,7 @@ public class Import
 											 hasLock,defaultsLocked,defaultsLocked);
 						}
 						E.setDisplayText(descStr);
-						String name=((nameStr.indexOf(" ")<=0)?nameStr:(nameStr.substring(0,nameStr.indexOf(" ")))).trim();
+						String name=Util.getBit(nameStr,0).trim();
 						if(name.equalsIgnoreCase("SECRET"))
 						{
 							name="secret door";
@@ -3423,7 +3570,7 @@ public class Import
 						}
 
 						if(name.length()>0)
-							name=Util.startWithAorAn(name);
+							E.setName(Util.startWithAorAn(name));
 						else
 						{
 							if(E.hasADoor())
@@ -3465,7 +3612,7 @@ public class Import
 											continue;
 									linkRoom=R2;
 									if(opExit!=null) opExit.setTemporaryDoorLink("");
-									if((!doneRooms.containsValue(linkRoom)))
+									if((!doneRooms.containsValue(linkRoom))&&(!doneRooms.contains(linkRoom)))
 										ExternalPlay.DBUpdateExits(linkRoom);
 									break;
 								}
@@ -3478,11 +3625,23 @@ public class Import
 						}
 						R.rawDoors()[dirCode]=linkRoom;
 						if((linkRoom==null)&&(linkRoomID>=0))
-							returnAnError(mob,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName);
+						{
+							if(multiArea)
+								laterLinks.put((R.roomID()+"/"+dirCode),"#"+linkRoomID);
+							else
+								returnAnError(mob,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName);
+						}
+					}
+					else
+					if(nextLine.toUpperCase().startsWith("M"))
+					{
+						// mana heal rate
+						// not important enough to generate an error from
 					}
 					else
 					if(nextLine.toUpperCase().startsWith("H"))
 					{
+						// hit point heal rate
 						// not important enough to generate an error from
 					}
 					else
@@ -3495,6 +3654,9 @@ public class Import
 			Hashtable containerHash=new Hashtable();
 			MOB M=null;
 			Room R=null;
+			for(int nrd=0;nrd<nextResetData.size();nrd++)
+				resetData.addElement(nextResetData.elementAt(nrd));
+			nextResetData.clear();
 			while(resetData.size()>0)
 			{
 				mob.session().print(".");
@@ -3509,12 +3671,20 @@ public class Import
 					String roomID=Util.getBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no room) on line: "+s+", area="+areaName);
+					}
 					else
 					{
 						M=getMOB("#"+mobID,R,mob,Util.copyVector(mobData),Util.copyVector(mobProgData),Util.copyVector(specialData),Util.copyVector(shopData),doneMOBS,areaFileName);
 						if(M==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+						}
 						else
 							M.bringToLife(R,true);
 
@@ -3524,13 +3694,21 @@ public class Import
 				if(s.startsWith("G "))
 				{
 					if(M==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+					}
 					else
 					{
 						String itemID=Util.getBit(s,2);
 						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 						if(I==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+						}
 						else
 						{
 							I.recoverEnvStats();
@@ -3598,13 +3776,21 @@ public class Import
 				if(s.startsWith("E "))
 				{
 					if(M==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+					}
 					else
 					{
 						String itemID=Util.getBit(s,2);
 						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 						if(I==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+						}
 						else
 						{
 							M.addInventory(I);
@@ -3626,12 +3812,20 @@ public class Import
 					String roomID=Util.getBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no room) on line: "+s+"/"+roomID+"/"+roomID.length()+", area="+areaName);
+					}
 					else
 					{
 						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 						if(I==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+						}
 						else
 						{
 							R.addItem(I);
@@ -3653,15 +3847,27 @@ public class Import
 					String containerID=Util.getBit(s,4);
 					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 					if(I==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+					}
 					else
 					{
 						Container C=(Container)containerHash.get(containerID);
 						if(C==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no container) on line: "+s+", area="+areaName);
+						}
 						else
 						if(C.owner()==null)
+						{
+							if(multiArea) nextResetData.addElement(s);
+							else
 							returnAnError(mob,"Reset error (no container owner) on line: "+s+", area="+areaName);
+						}
 						else
 						if(C.owner() instanceof Room)
 						{
@@ -3694,7 +3900,11 @@ public class Import
 					int dirCode=getBitMask(s,3);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
+						else
 						returnAnError(mob,"Reset error (no room) on line: "+s+", area="+areaName);
+					}
 					else
 					{
 						switch(dirCode)
@@ -3711,41 +3921,46 @@ public class Import
 						if(dirCode<Directions.NUM_DIRECTIONS)
 						{
 							Exit E=R.rawExits()[dirCode];
-							int lockBit=getBitMask(s,4);
-							boolean HasDoor=E.hasADoor();
-							boolean HasLock=E.hasALock();
-							boolean DefaultsClosed=E.defaultsClosed();
-							boolean DefaultsLocked=E.defaultsLocked();
-							boolean Open=E.isOpen();
-							boolean Locked=E.isLocked();
-							switch(lockBit)
+							if(E==null)
+								returnAnError(mob,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName);
+							else
 							{
-							case 0:
-								HasDoor=true;
-								Locked=false;
-								DefaultsLocked=false;
-								Open=true;
-								DefaultsClosed=false;
-								break;
-							case 1:
-								HasDoor=true;
-								Locked=false;
-								DefaultsLocked=false;
-								Open=false;
-								DefaultsClosed=true;
-								break;
-							case 2:
-								HasDoor=true;
-								Locked=true;
-								DefaultsLocked=true;
-								Open=false;
-								DefaultsClosed=true;
-								break;
-							default:
-								returnAnError(mob,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName);
-								break;
+								int lockBit=getBitMask(s,4);
+								boolean HasDoor=E.hasADoor();
+								boolean HasLock=E.hasALock();
+								boolean DefaultsClosed=E.defaultsClosed();
+								boolean DefaultsLocked=E.defaultsLocked();
+								boolean Open=E.isOpen();
+								boolean Locked=E.isLocked();
+								switch(lockBit)
+								{
+								case 0:
+									HasDoor=true;
+									Locked=false;
+									DefaultsLocked=false;
+									Open=true;
+									DefaultsClosed=false;
+									break;
+								case 1:
+									HasDoor=true;
+									Locked=false;
+									DefaultsLocked=false;
+									Open=false;
+									DefaultsClosed=true;
+									break;
+								case 2:
+									HasDoor=true;
+									Locked=true;
+									DefaultsLocked=true;
+									Open=false;
+									DefaultsClosed=true;
+									break;
+								default:
+									returnAnError(mob,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName);
+									break;
+								}
+								E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
 							}
-							E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
 						}
 					}
 				}
@@ -3847,7 +4062,11 @@ public class Import
 							ExternalPlay.DBUpdateExits(sourceRoom);
 					}
 				}
-			mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
+			
+			if(newRooms.size()==0)
+				mob.session().println("\nDone? No Room!\n\r");
+			else
+				mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
 		}
 		catch(Exception e)
 		{
@@ -3856,6 +4075,16 @@ public class Import
 			return;
 		}
 		}
+		
+		if(nextResetData.size()>0)
+		{
+			StringBuffer nrf=new StringBuffer("Import bad resets:\n\r");
+			for(int nrd=0;nrd<nextResetData.size();nrd++)
+				nrf.append(((String)nextResetData.elementAt(nrd))+"\n\r");
+			mob.session().print(nrf.toString());
+			Log.errOut("Import",nrf.toString());
+		}
+		
 		mob.session().print("\n\nSaving all areas imported...");
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
@@ -3868,6 +4097,49 @@ public class Import
 			saveRoom.recoverRoomStats();
 			mob.session().print(".");
 		}
+		
+		if(laterLinks.size()>0)
+		{
+			for(Enumeration e=laterLinks.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				String dcode=(String)laterLinks.get(key);
+				String roomID="";
+				String dirID="";
+				int x=key.lastIndexOf("/");
+				if(x>=0)
+				{
+					roomID=key.substring(0,x);
+					dirID=key.substring(x+1);
+				}
+				else
+					continue;
+				
+				Room R1=findRoomSomewhere(roomID,"NOAREA",doneRooms);
+				if(R1!=null)
+				{
+					int dir=Util.s_int(dirID);
+					Room RR=null;
+					Exit RE=null;
+					if(dir<Directions.NUM_DIRECTIONS)
+					{
+						RR=R1.rawDoors()[dir];
+						RE=R1.rawExits()[dir];
+					}
+					Room TR=findRoomSomewhere(dcode,"NOAREA",doneRooms);
+					if((RR==null)&&(TR==null))
+						returnAnError(mob,"Room "+R1.roomID()+" links to unknown room "+dcode+" in direction "+Directions.getDirectionName(dir)+".");
+					else
+					if(RR==null)
+					{
+						R1.rawDoors()[dir]=TR;
+						if(RE!=null) RE.setTemporaryDoorLink("");
+						ExternalPlay.DBUpdateExits(R1);
+					}
+				}
+			}
+		}
+		
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			Room saveRoom=(Room)e.nextElement();

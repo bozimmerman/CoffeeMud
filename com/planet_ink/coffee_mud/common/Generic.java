@@ -1210,7 +1210,7 @@ public class Generic
 				Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
 				if((adat==null)||(newOne==null))
 				{
-					Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setProfficiency(100);
@@ -1248,7 +1248,7 @@ public class Generic
 				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
 				if((idat==null)||(newOne==null))
 				{
-					Log.errOut("Generic","Error parsing 'ITEM DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'ITEM DATA' of "+M.name()+" ("+M.ID()+").  Load aborted");
 					return;
 				}
 				int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
@@ -1453,7 +1453,7 @@ public class Generic
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"BLDATA");
 						if((adat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'BLESS DATA' of "+CMClass.className(newOne)+".  Load aborted");
+							Log.errOut("Generic","Error parsing 'BLESS DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						setPropertiesStr(newOne,adat,true);
@@ -1488,11 +1488,14 @@ public class Generic
 						}
 						String itemi=XMLManager.getValFromPieces(iblk.contents,"SICLASS");
 						int numStock=XMLManager.getIntFromPieces(iblk.contents,"SISTOCK");
-						Environmental newOne=CMClass.getUnknown(itemi);
+						Environmental newOne=null;
 						Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"SIDATA");
+						if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
+							newOne=CMClass.getMOB(itemi);
+						if(newOne==null) newOne=CMClass.getUnknown(itemi);
 						if((idat==null)||(newOne==null))
 						{
-							Log.errOut("Generic","Error parsing 'SHOP DATA' of "+CMClass.className(newOne)+".  Load aborted");
+							Log.errOut("Generic","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 							return;
 						}
 						if(newOne instanceof Item)
@@ -1620,7 +1623,7 @@ public class Generic
 		Vector V=XMLManager.getRealContentsFromPieces(buf,"BEHAVES");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'BEHAVES' of "+E.ID()+".  Load aborted");
+			Log.errOut("Generic","Error parsing 'BEHAVES' of "+E.name()+" ("+E.ID()+").  Load aborted");
 			return;
 		}
 		else
@@ -1630,14 +1633,14 @@ public class Generic
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!ablk.tag.equalsIgnoreCase("BHAVE"))||(ablk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'BHAVE' of "+E.ID()+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'BHAVE' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				Behavior newOne=CMClass.getBehavior(XMLManager.getValFromPieces(ablk.contents,"BCLASS"));
 				String bparms=XMLManager.getValFromPieces(ablk.contents,"BPARMS");
 				if(newOne==null)
 				{
-					Log.errOut("Generic","Error parsing 'BHAVE DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'BHAVE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setParms(restoreAngleBrackets(bparms));
@@ -1648,7 +1651,7 @@ public class Generic
 		V=XMLManager.getRealContentsFromPieces(buf,"AFFECS");
 		if(V==null)
 		{
-			Log.errOut("Generic","Error parsing 'AFFECS' of "+E.ID()+".  Load aborted");
+			Log.errOut("Generic","Error parsing 'AFFECS' of "+E.name()+" ("+E.ID()+").  Load aborted");
 			return;
 		}
 		else
@@ -1658,14 +1661,14 @@ public class Generic
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);
 				if((!ablk.tag.equalsIgnoreCase("AFF"))||(ablk.contents==null))
 				{
-					Log.errOut("Generic","Error parsing 'AFF' of "+E.ID()+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'AFF' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
 				String aparms=XMLManager.getValFromPieces(ablk.contents,"ATEXT");
 				if(newOne==null)
 				{
-					Log.errOut("Generic","Error parsing 'AFF DATA' of "+CMClass.className(newOne)+".  Load aborted");
+					Log.errOut("Generic","Error parsing 'AFF DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
 					return;
 				}
 				newOne.setMiscText(restoreAngleBrackets(aparms));

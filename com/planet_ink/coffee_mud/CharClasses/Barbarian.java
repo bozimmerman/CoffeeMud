@@ -116,9 +116,10 @@ public class Barbarian extends StdCharClass
 		   &&(affect.tool() instanceof Weapon)
 		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
-			int recovery=(affect.targetCode()-Affect.MASK_HURT)-(myChar.charStats().getClassLevel(this)/5);
+			int recovery=affect.targetCode()-Affect.MASK_HURT;
+			recovery=recovery-(myChar.charStats().getClassLevel(this)/5);
 			if(recovery<=0) recovery=0;
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),Affect.MASK_HURT+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
 		else
 		if((affect.amITarget(myChar))

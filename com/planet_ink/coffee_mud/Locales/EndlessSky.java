@@ -90,36 +90,39 @@ public class EndlessSky extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		Exit ox=CMClass.getExit("Open");
-		subMap=new Room[xsize][ysize];
-		for(int x=0;x<subMap.length;x++)
-			for(int y=0;y<subMap[x].length;y++)
-			{
-				Room newRoom=(Room)getGridRoom(x,y);
-				if(newRoom!=null)
+		synchronized(alts)
+		{
+			Exit ox=CMClass.getExit("Open");
+			subMap=new Room[xsize][ysize];
+			for(int x=0;x<subMap.length;x++)
+				for(int y=0;y<subMap[x].length;y++)
 				{
-					subMap[x][y]=newRoom;
-					if((y>0)&&(subMap[x][y-1]!=null))
+					Room newRoom=(Room)getGridRoom(x,y);
+					if(newRoom!=null)
 					{
-						linkRoom(newRoom,subMap[x][y-1],Directions.NORTH,ox,ox);
-						linkRoom(newRoom,subMap[x][y-1],Directions.UP,ox,ox);
-					}
+						subMap[x][y]=newRoom;
+						if((y>0)&&(subMap[x][y-1]!=null))
+						{
+							linkRoom(newRoom,subMap[x][y-1],Directions.NORTH,ox,ox);
+							linkRoom(newRoom,subMap[x][y-1],Directions.UP,ox,ox);
+						}
 
-					if((x>0)&&(subMap[x-1][y]!=null))
-						linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
-					CMMap.addRoom(newRoom);
+						if((x>0)&&(subMap[x-1][y]!=null))
+							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
+						CMMap.addRoom(newRoom);
+					}
 				}
-			}
-		buildFinalLinks();
-		if((subMap[0][0]!=null)
-		&&(subMap[0][0].rawDoors()[Directions.UP]==null)
-		&&(xsize>1))
-			linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
-		for(int y=0;y<subMap[0].length;y++)
-			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);
-		for(int x=0;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
-		for(int x=1;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
+			buildFinalLinks();
+			if((subMap[0][0]!=null)
+			&&(subMap[0][0].rawDoors()[Directions.UP]==null)
+			&&(xsize>1))
+				linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
+			for(int y=0;y<subMap[0].length;y++)
+				linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);
+			for(int x=0;x<subMap.length;x++)
+				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
+			for(int x=1;x<subMap.length;x++)
+				linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
+		}
 	}
 }

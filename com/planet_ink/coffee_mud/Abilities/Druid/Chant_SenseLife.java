@@ -8,8 +8,8 @@ import java.util.*;
 public class Chant_SenseLife extends Chant
 {
 	public String ID() { return "Chant_SenseLife"; }
-	public String name(){ return "Life Echos";}
-	public String displayText(){return "(Life Echos)";}
+	public String name(){ return "Life Echoes";}
+	public String displayText(){return "(Life Echoes)";}
 	private Room lastRoom=null;
 	public Environmental newInstance(){	return new Chant_SenseLife();}
 
@@ -86,7 +86,7 @@ public class Chant_SenseLife extends Chant
 		
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			target.tell("You are already sensing life echos.");
+			target.tell("You are already sensing life echoes.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -227,9 +227,14 @@ public class Help
 				name=name.substring(7);
 			}
 			else
+			if(name.startsWith("DANCE_"))
+			{
+				type=Ability.SONG;
+				name=name.substring(6);
+			}
+			else
 			if((name.startsWith("SONG_"))
-			||(name.startsWith("PLAY_"))
-			||(name.startsWith("DANCE_")))
+			||(name.startsWith("PLAY_")))
 			{
 				type=Ability.SONG;
 				name=name.substring(5);

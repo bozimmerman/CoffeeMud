@@ -1,0 +1,10 @@
+offhand weapons don't get their spell affect from magic item
+arrest -- don't allow assault and murder for same person
+arrest -- allow fighting of the cityguard, not a crime?!
+test combatabilities wand use... interesting
+test mobeater behavior
+!importing genrideable as item in shopkeeping inv
+fix the mob autolooting thing
+check desc length for db
+split doesn't respect all group members
+combat prowess, that's not a bad idea... drop the players overall attack value and keep it the same for both attacks when using two weapons. 

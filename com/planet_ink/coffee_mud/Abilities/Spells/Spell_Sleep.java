@@ -56,7 +56,8 @@ public class Spell_Sleep extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			mob.tell("You feel less drowsy.");
+			if((!mob.amDead())&&(mob.location()!=null))
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem so drowsy any more.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
