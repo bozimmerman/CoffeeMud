@@ -7,6 +7,19 @@ import java.io.*;
 
 public class CoffeeUtensils
 {
+	public static ShopKeeper getShopKeeper(MOB mob)
+	{
+		if(mob==null) return null;
+		if(mob instanceof ShopKeeper) return (ShopKeeper)mob;
+		for(int a=0;a<mob.numAffects();a++)
+		{
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(A instanceof ShopKeeper))
+				return (ShopKeeper)A;
+		}
+		return null;
+	}
+	
 	public static Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -479,5 +492,8 @@ public class CoffeeUtensils
 			return 5;
 		return score;
 	}
+	
+	
+
 }
 

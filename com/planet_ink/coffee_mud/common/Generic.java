@@ -944,9 +944,9 @@ public class Generic
 					Item item=M.fetchInventory(i);
 					buf.append(getUniqueItemXML(item,type,found));
 				}
-				if(M instanceof ShopKeeper)
+				if(CoffeeUtensils.getShopKeeper(M)!=null)
 				{
-					Vector V=((ShopKeeper)M).getUniqueStoreInventory();
+					Vector V=CoffeeUtensils.getShopKeeper(M).getUniqueStoreInventory();
 					for(int v=0;v<V.size();v++)
 					{
 						Environmental E=(Environmental)V.elementAt(v);

@@ -50,8 +50,6 @@ public interface ShopKeeper extends Environmental
 	public int numberInStock(Environmental likeThis);
 	public Environmental getStock(String name, MOB mob);
 	public Environmental removeStock(String name, MOB mob);
-	public Coins makeNote(int value, Environmental owner, Item container);
-	public Item makeChange(MOB banker, MOB customer, int value);
 	public String prejudiceFactors();
 	public void setPrejudiceFactors(String factors);
 }

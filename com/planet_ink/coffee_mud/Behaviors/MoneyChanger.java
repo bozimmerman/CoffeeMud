@@ -69,8 +69,7 @@ public class MoneyChanger extends StdBehavior
 			observer.recoverEnvStats();
 			if(value>0)
 			{
-				Banker B=(Banker)CMClass.getMOB("StdBanker");
-				B.makeChange(observer,source,value);
+				Money.makeChange(observer,source,value);
 				FullMsg newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
 				affect.addTrailerMsg(newMsg);
 			}

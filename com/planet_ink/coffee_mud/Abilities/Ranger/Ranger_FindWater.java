@@ -186,10 +186,10 @@ public class Ranger_FindWater extends StdAbility
 				if(msg2.length()>0)
 					return E.name()+" is carrying some liquids.";
 			}
-			if(E instanceof ShopKeeper)
+			if(CoffeeUtensils.getShopKeeper((MOB)E)!=null)
 			{
 				StringBuffer msg2=new StringBuffer("");
-				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
+				Vector V=CoffeeUtensils.getShopKeeper((MOB)E).getUniqueStoreInventory();
 				for(int v=0;v<V.size();v++)
 				{
 					Environmental E2=(Environmental)V.elementAt(v);

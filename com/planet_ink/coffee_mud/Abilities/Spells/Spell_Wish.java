@@ -143,9 +143,9 @@ public class Spell_Wish extends Spell
 					{
 						E=mob2.fetchInventory(objectWish);
 						foundThang=maybeAdd(E,thangsFound,foundThang);
-						if(mob2 instanceof ShopKeeper)
+						if(CoffeeUtensils.getShopKeeper(mob2)!=null)
 						{
-							E=((ShopKeeper)mob2).getStock(objectWish,mob);
+							E=CoffeeUtensils.getShopKeeper(mob2).getStock(objectWish,mob);
 							foundThang=maybeAdd(E,thangsFound,foundThang);
 						}
 					}

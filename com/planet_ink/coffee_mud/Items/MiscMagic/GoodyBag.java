@@ -35,13 +35,13 @@ public class GoodyBag extends BagOfEndlessness
 		I.recoverEnvStats();
 	}
 	
-	public void addMoney(ShopKeeper mob, int value)
+	public void addMoney(int value)
 	{
 		Container I=(Container)CMClass.getItem("GenContainer");
 		I.setCapacity(1);
 		I.setContainTypes(Container.CONTAIN_COINS);
 		putInBag(I);
-		Coins money=mob.makeNote(value,this.owner(),I);
+		Coins money=Money.makeNote(value,this.owner(),I);
 		I.setName(money.name()+" sleeve");
 		I.setDisplayText(money.name()+" sleeve has been left here.");
 		I.recoverEnvStats();
@@ -55,25 +55,24 @@ public class GoodyBag extends BagOfEndlessness
 			if(getContents().size()==0)
 			{
 				putInBag(CMClass.getItem("QuestPoint"));
-				ShopKeeper mob=(ShopKeeper)CMClass.getMOB("StdShopKeeper");
-				addMoney(mob,10);
-				addMoney(mob,100);
-				addMoney(mob,500);
-				addMoney(mob,1000);
-				addMoney(mob,5000);
-				addMoney(mob,10000);
-				addMoney(mob,100000);
-				addMoney(mob,1000000);
-				addMoney(mob,10000000);
-				mob.makeNote(10,this.owner(),this);
-				mob.makeNote(100,this.owner(),this);
-				mob.makeNote(500,this.owner(),this);
-				mob.makeNote(1000,this.owner(),this);
-				mob.makeNote(5000,this.owner(),this);
-				mob.makeNote(10000,this.owner(),this);
-				mob.makeNote(100000,this.owner(),this);
-				mob.makeNote(1000000,this.owner(),this);
-				mob.makeNote(10000000,this.owner(),this);
+				addMoney(10);
+				addMoney(100);
+				addMoney(500);
+				addMoney(1000);
+				addMoney(5000);
+				addMoney(10000);
+				addMoney(100000);
+				addMoney(1000000);
+				addMoney(10000000);
+				Money.makeNote(10,this.owner(),this);
+				Money.makeNote(100,this.owner(),this);
+				Money.makeNote(500,this.owner(),this);
+				Money.makeNote(1000,this.owner(),this);
+				Money.makeNote(5000,this.owner(),this);
+				Money.makeNote(10000,this.owner(),this);
+				Money.makeNote(100000,this.owner(),this);
+				Money.makeNote(1000000,this.owner(),this);
+				Money.makeNote(10000000,this.owner(),this);
 				Item I=CMClass.getItem("GenSuperPill");
 				I.setName("a training pill");
 				I.setDisplayText("A small round pill has been left here.");

@@ -4202,9 +4202,9 @@ public class Import
 							if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore)))
 								savemobs=true;
 						}
-						if(M instanceof ShopKeeper)
+						if(CoffeeUtensils.getShopKeeper(M)!=null)
 						{
-							Vector V=((ShopKeeper)M).getUniqueStoreInventory();
+							Vector V=CoffeeUtensils.getShopKeeper(M).getUniqueStoreInventory();
 							for(int i=0;i<V.size();i++)
 							{
 								if(V.elementAt(i) instanceof Item)

@@ -7,7 +7,6 @@ Merchant common skill
 Druid Subclasses
 Bard Subclasses
 
-
 //****** next version ********************************************************
 Space ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

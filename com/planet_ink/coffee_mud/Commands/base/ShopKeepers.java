@@ -16,7 +16,10 @@ public class ShopKeepers
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
-			if((thisMOB!=null)&&(thisMOB instanceof ShopKeeper)&&(Sense.canBeSeenBy(thisMOB,mob)))
+			if((thisMOB!=null)
+			&&(thisMOB!=mob)
+			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
+			&&(Sense.canBeSeenBy(thisMOB,mob)))
 				return thisMOB;
 		}
 		return null;
@@ -56,7 +59,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
@@ -110,7 +113,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
@@ -163,7 +166,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
@@ -185,18 +188,18 @@ public class ShopKeepers
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
-		if(!(shopkeeper instanceof ShopKeeper))
+		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
 			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return;
 		}
 		do
 		{
-			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName,mob);
+			Environmental thisThang=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(thisName,mob);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
-					mob.tell("There doesn't appear to be any for sale.  Try LIST.");
+					mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any for sale.  Try LIST.");
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VIEW,null);
@@ -207,6 +210,11 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
+	public static MOB findShopkeeper(MOB mob, Vector commands, String error)
+	{
+	}
+	
+	
 	public static void buy(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
@@ -219,7 +227,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
@@ -236,23 +244,25 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 		}
+		
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
-		if(!(shopkeeper instanceof ShopKeeper))
+		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.name()+" is not a shop keeper!");
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return;
 		}
+		
 		do
 		{
-			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName,mob);
+			Environmental thisThang=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(thisName,mob);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
-					mob.tell("There doesn't appear to be any for sale.  Try LIST.");
+					mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any for sale.  Try LIST.");
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>.");
@@ -262,6 +272,8 @@ public class ShopKeepers
 			doneSomething=true;
 		}while(allFlag);
 	}
+	
+	
 
 	public static void deposit(MOB mob, Vector commands)
 	{
@@ -308,6 +320,8 @@ public class ShopKeepers
 			return;
 		mob.location().send(mob,newMsg);
 	}
+	
+
 	
 	public static void withdraw(MOB mob, Vector commands)
 	{
@@ -392,10 +406,23 @@ public class ShopKeepers
 		mob.location().send(mob,newMsg);
 	}
 	
+	
+	
 	public static void list(MOB mob, Vector commands)
 	{
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		Vector V=new Vector();
+		Room here=mob.location();
+		if(here==null) return;
+		for(int i=0;i<here.numInhabitants();i++)
+		{
+			MOB thisMOB=here.fetchInhabitant(i);
+			if((thisMOB!=null)
+			&&(thisMOB!=mob)
+			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
+			&&(Sense.canBeSeenBy(thisMOB,mob)))
+				V.addElement(thisMOB);
+		}
+		if(V.size()==0)
 		{
 			if(commands.size()<2)
 			{
@@ -406,8 +433,8 @@ public class ShopKeepers
 				return;
 			}
 			commands.removeElementAt(0);
-			shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper==null)||(!(shopkeeper instanceof ShopKeeper))||(!Sense.canBeSeenBy(shopkeeper,mob)))
+			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
+			if((shopkeeper==null)||(CoffeeUtensils.getShopKeeper(shopkeeper)==null)||(!Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				if(mob.isASysOp(mob.location()))
 					Lister.list(mob,commands);
@@ -415,11 +442,16 @@ public class ShopKeepers
 					mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
 				return;
 			}
+			V.addElement(shopkeeper);
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,null,Affect.MSG_LIST,null);
-		if(!mob.location().okAffect(mob,newMsg))
-			return;
-		mob.location().send(mob,newMsg);
+		for(int i=0;i<V.size();i++)
+		{
+			MOB shopkeeper=(MOB)V.elementAt(i);
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,Affect.MSG_LIST,null);
+			if(!mob.location().okAffect(mob,newMsg))
+				return;
+			mob.location().send(mob,newMsg);
+		}
 	}
 
 	

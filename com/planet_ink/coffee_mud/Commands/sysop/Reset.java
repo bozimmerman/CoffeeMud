@@ -122,9 +122,10 @@ public class Reset
 							}
 						}
 					}
-					if(M instanceof ShopKeeper)
+					ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+					if(SK!=null)
 					{
-						Vector V=((ShopKeeper)M).getUniqueStoreInventory();
+						Vector V=SK.getUniqueStoreInventory();
 						for(int i=V.size()-1;i>=0;i--)
 						{
 							Environmental E=(Environmental)V.elementAt(i);
@@ -134,7 +135,7 @@ public class Reset
 								str=mob.session().prompt(" - "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 								if(str.equalsIgnoreCase("delete"))
 								{
-									((ShopKeeper)M).delStoreInventory(I);
+									SK.delStoreInventory(I);
 									somethingDone=true;
 									mob.tell(" - deleted");
 								}
@@ -144,12 +145,12 @@ public class Reset
 								{
 									if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
 									{
-										int numInStock=((ShopKeeper)M).numberInStock(I);
+										int numInStock=SK.numberInStock(I);
 										I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
 										somethingDone=true;
 										mob.tell(" - Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
-										((ShopKeeper)M).delStoreInventory(I);
-										((ShopKeeper)M).addStoreInventory(I,numInStock);
+										SK.delStoreInventory(I);
+										SK.addStoreInventory(I,numInStock);
 										break;
 									}
 								}

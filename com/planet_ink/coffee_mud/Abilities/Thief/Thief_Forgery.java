@@ -93,11 +93,10 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			ShopKeeper M=(ShopKeeper)CMClass.getMOB("StdShopKeeper");
 			int[] coins={5,10,50,100,500,1000,5000,10000,100000,1000000,10000000};
 			for(int i=0;i<coins.length;i++)
 			{
-				Item note=M.makeNote(coins[i],null,null);
+				Item note=Money.makeNote(coins[i],null,null);
 				if(CoffeeUtensils.containsString(note.name(),forgeWhat))
 				{
 					newName=note.name();

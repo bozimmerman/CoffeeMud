@@ -260,8 +260,8 @@ public class Scriptable extends StdBehavior
 					if(M!=null)
 					{
 						E=M.fetchInventory(null,thisName);
-						if((M instanceof ShopKeeper)&&(E==null))
-							E=((ShopKeeper)M).getStock(thisName,null);
+						if((CoffeeUtensils.getShopKeeper(M)!=null)&&(E==null))
+							E=CoffeeUtensils.getShopKeeper(M).getStock(thisName,null);
 					}
 				}
 			}

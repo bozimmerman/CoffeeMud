@@ -32,7 +32,7 @@ public class Thief_Racketeer extends ThiefSkill
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
 		}
-		if(!(target instanceof ShopKeeper))
+		if(CoffeeUtensils.getShopKeeper(target)==null)
 		{
 			mob.tell("You can't get protection money from "+target.name()+".");
 			return false;

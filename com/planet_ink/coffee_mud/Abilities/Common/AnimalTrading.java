@@ -29,7 +29,7 @@ public class AnimalTrading extends CommonSkill
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
 			if((thisMOB!=null)
-			&&(thisMOB instanceof ShopKeeper)
+			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
 			&&(Sense.canBeSeenBy(thisMOB,mob)))
 				return thisMOB;
 		}
@@ -50,7 +50,7 @@ public class AnimalTrading extends CommonSkill
 				return false;
 			}
 			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				commands.removeElementAt(commands.size()-1);
 			else
 			{
