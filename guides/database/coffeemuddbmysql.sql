@@ -160,7 +160,7 @@ CREATE TABLE CMROOM (
 	CMROID char (50) NULL ,
 	CMLOID char (50) NULL ,
 	CMAREA char (50) NULL ,
-	CMDESC1 char (50) NULL ,
+	CMDESC1 char (255) NULL ,
 	CMDESC2 text NULL ,
 	CMROTX text NULL 
 );

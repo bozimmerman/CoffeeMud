@@ -28,9 +28,7 @@ public class ClanLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCLAN");
-			R.last();
-			recordCount=R.getRow();
-			R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			while(R.next())
 			{
 				currentRecordPos=R.getRow();

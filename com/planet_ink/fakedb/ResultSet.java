@@ -387,12 +387,14 @@ class ResultSet implements java.sql.ResultSet
    public boolean first() { return false; }
    public boolean previous() {  return false;  }
    public boolean isFirst() { return false; }
+   private boolean afterLast=false;
    public boolean last() 
    { 
 	   try{
 		   while(next());
 	   }
 	   catch(java.sql.SQLException sqle){}
+	   afterLast=true;
 	   return true;
    }
    public boolean isLast() { return false; }
@@ -407,9 +409,9 @@ class ResultSet implements java.sql.ResultSet
       }
 	  currentRow=0;
    }
-   public boolean isBeforeFirst() { return false; }
-   public void afterLast() throws java.sql.SQLException { throw new java.sql.SQLException(); }
-   public boolean isAfterLast() { return false; }
+   public boolean isBeforeFirst() { return (currentRow==0); }
+   public void afterLast(){ last(); }
+   public boolean isAfterLast(){return afterLast;}
    public boolean absolute(int i) { return true; }
    public boolean relative(int i) { return false; }
    public boolean rowDeleted() { return false; }

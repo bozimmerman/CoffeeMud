@@ -123,7 +123,7 @@ public class DBConnection
 			{
 				myPreparedStatement=null;
 				sqlserver=true;
-				myStatement=myConnection.createStatement();
+				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
 			}
 			catch(SQLException e)
 			{

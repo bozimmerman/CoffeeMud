@@ -144,7 +144,7 @@ CREATE TABLE CMROOM (
 	CMROID varchar(50) NOT NULL ,
 	CMLOID varchar(50) NULL ,
 	CMAREA varchar(50) NULL ,
-	CMDESC1 varchar(50) NULL ,
+	CMDESC1 varchar(255) NULL ,
 	CMDESC2 text NULL ,
 	CMROTX text NULL 
 );

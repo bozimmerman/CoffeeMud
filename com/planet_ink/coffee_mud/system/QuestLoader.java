@@ -20,7 +20,7 @@ public class QuestLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMQUESTS");
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=1;
 			while(R.next())
 			{

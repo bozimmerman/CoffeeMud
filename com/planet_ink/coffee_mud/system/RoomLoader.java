@@ -22,7 +22,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMAREA");
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -61,7 +61,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROOM");
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -122,7 +122,7 @@ public class RoomLoader
 			ResultSet R=D.query("SELECT * FROM CMROEX");
 			Room thisRoom=null;
 			Room newRoom=null;
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -229,7 +229,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -288,7 +288,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
-			R.last(); recordCount=R.getRow(); R.beforeFirst();
+			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{

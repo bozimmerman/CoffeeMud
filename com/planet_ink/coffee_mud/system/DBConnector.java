@@ -17,6 +17,21 @@ public class DBConnector
 		DBs=new DBConnections(NEWDBClass,NEWDBService,NEWDBUser,NEWDBPass,NEWnumConnections,DoErrorQueueing);
 	}
 	
+	public static int getRecordCount(DBConnection D, ResultSet R)
+	{
+		int recordCount=0;
+		try
+		{
+			R.last(); 
+			recordCount=R.getRow(); 
+			R.beforeFirst();
+		}
+		catch(Exception e)
+		{
+		}
+		return recordCount;
+	}
+	
 	public static boolean deregisterDriver()
 	{ 
 		if(DBs!=null) return DBs.deregisterDriver();
