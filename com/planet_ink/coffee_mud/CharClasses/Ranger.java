@@ -59,14 +59,14 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
 			
 			// qualify for all spells
-			Mage m=new Mage(); // make sure a mage is available
 			for(int level=1;level<22;level++)
 			{
-				Vector V=CMAble.getLevelListings(m.ID(),level);
+				Vector V=CMAble.getLevelListings("Mage",level);
 				for(int v=0;v<V.size();v++)
 				{
 					String spell=(String)V.elementAt(v);
-					if(spell.startsWith("Spell_"))
+					Ability Spell=CMClass.getAbility(spell);
+					if((Spell!=null)&&((Spell.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 						CMAble.addCharAbilityMapping(ID(),level+4,spell,false);
 				}
 			}

@@ -51,6 +51,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Distract",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Search",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Thief_Surrender",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_DetectInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_Poison",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ReadMagic",false);
