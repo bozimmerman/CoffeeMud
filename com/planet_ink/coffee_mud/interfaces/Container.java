@@ -12,4 +12,16 @@ public interface Container extends Item
 	public Vector getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
+	public boolean canContain(Environmental E);
+	public long containTypes();
+	public void setContainTypes(long containTypes);
+	
+	public static final int CONTAIN_ANYTHING=0;
+	public static final int CONTAIN_LIQUID=1;
+	public static final int CONTAIN_COINS=2;
+	public static final int CONTAIN_SWORDS=4;
+	public static final int CONTAIN_DAGGERS=8;
+	public static final int CONTAIN_OTHERWEAPONS=16;
+	public static final int CONTAIN_ONEHANDWEAPONS=32;
+	public static final String[] CONTAIN_DESCS={"ANYTHING","LIQUID","COINS","SWORDS","DAGGERS","OTHER WEAPONS","ONE-HANDED WEAPONS"};
 }

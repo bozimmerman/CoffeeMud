@@ -64,7 +64,7 @@ public class Movement
 			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORN_REQ_UNWORNONLY);
 			if((getThis!=null)&&(getThis instanceof Rideable))
 			{
-				mount(mob,commands);
+				sit(mob,commands);
 				return;
 			}
 			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");

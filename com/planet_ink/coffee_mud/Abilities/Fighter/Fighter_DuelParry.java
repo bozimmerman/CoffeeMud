@@ -40,10 +40,15 @@ public class Fighter_DuelParry extends StdAbility
 				&&(attackerWeapon!=null)
 				&&(myOtherWeapon instanceof Weapon)
 				&&(attackerWeapon instanceof Weapon)
+				&&(!myOtherWeapon.rawLogicalAnd())
 				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
+				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
+				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_THROWN)
 				&&(((Weapon)myOtherWeapon).weaponClassification()!=Weapon.CLASS_NATURAL)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
-				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_NATURAL))
+				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_NATURAL)
+				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
+				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+attackerWeapon.name()+" attack with "+myOtherWeapon.name()+"!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-85,false))

@@ -31,6 +31,7 @@ public class AlignHelper extends StdBehavior
 
 		if((source!=observer)
 		&&(target!=observer)
+		&&(source!=target)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer))

@@ -35,7 +35,8 @@ public class Disease_Pneumonia extends Disease
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=Dice.roll(4,invoker.envStats().level()+1,1);
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_DISEASE,-1,null);
-			catchIt(mob);
+			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
+			A.catchIt(mob);
 			return true;
 		}
 		return false;

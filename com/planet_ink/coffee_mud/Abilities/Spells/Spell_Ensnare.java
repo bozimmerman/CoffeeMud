@@ -10,7 +10,7 @@ public class Spell_Ensnare extends Spell
 	public String ID() { return "Spell_Ensnare"; }
 	public String name(){return "Ensnare";}
 	public String displayText(){return "(Ensnared)";}
-	public int maxRange(){return 2;}
+	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}

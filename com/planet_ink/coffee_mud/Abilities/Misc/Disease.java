@@ -68,7 +68,7 @@ public class Disease extends StdAbility
 				if(!msg.wasModified())
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,DISEASE_START());
-				    success=maliciousAffect(mob,target,DISEASE_TICKS(),-1);
+				    success=maliciousAffect(mob,target,DISEASE_TICKS()+target.envStats().level(),-1);
 				}
 			}
 		}

@@ -44,8 +44,7 @@ public class Disease_Cold extends Disease
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=Dice.roll(2,invoker.envStats().level(),1);
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_DISEASE,-1,null);
-			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
-			A.catchIt(mob);
+			catchIt(mob);
 			return true;
 		}
 		return false;

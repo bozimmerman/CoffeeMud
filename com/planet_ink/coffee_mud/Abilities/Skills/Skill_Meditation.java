@@ -123,7 +123,7 @@ public class Skill_Meditation extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to meditate, but loses concentration.");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to meditate, but lose(s) concentration.");
 
 		// return whether it worked
 		return success;

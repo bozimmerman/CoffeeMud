@@ -8,6 +8,7 @@ import java.util.*;
 public class StdArmor extends StdContainer implements Armor
 {
 	public String ID(){	return "StdArmor";}
+	int sheath=0;
 	public StdArmor()
 	{
 		super();

@@ -17,7 +17,7 @@ public class Disease_Flu extends Disease
 	public Environmental newInstance(){	return new Disease_Flu();}
 	public int classificationCode(){return Ability.SKILL;}
 
-	protected int DISEASE_TICKS(){return 35;}
+	protected int DISEASE_TICKS(){return 45;}
 	protected int DISEASE_DELAY(){return 5;}
 	protected String DISEASE_DONE(){return "Your flu clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}

@@ -86,7 +86,7 @@ public class ItemData extends StdWebMacro
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
 							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-							  "ISKEY"};
+							  "ISKEY", "CONTENTTYPES"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -199,6 +199,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 19: // worn data
+					{
 					long climate=I.rawProperLocationBitmap();
 					if(reqs.containsKey("WORNDATA"))
 					{
@@ -216,6 +217,7 @@ public class ItemData extends StdWebMacro
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);
+					}
 					}
 					break;
 				case 20: // height
@@ -352,6 +354,7 @@ public class ItemData extends StdWebMacro
 					if(I instanceof com.planet_ink.coffee_mud.interfaces.Map) return "true";
 					else return "false";
 				case 40: // map areas
+					{
 					String mask=";"+I.readableText();
 					if(reqs.containsKey("MAPAREAS"))
 					{
@@ -369,6 +372,7 @@ public class ItemData extends StdWebMacro
 						str.append("<OPTION VALUE=\""+A2.name()+"\"");
 						if(mask.indexOf(";"+A2.name().toUpperCase()+";")>=0) str.append(" SELECTED");
 						str.append(">"+A2.name());
+					}
 					}
 					break;
 				case 41: // is readable
@@ -566,6 +570,33 @@ public class ItemData extends StdWebMacro
 				case 65: // is key
 					if(I instanceof Key) return "true";
 					else return "false";
+				case 66: // content types
+					if(I instanceof Container)
+					{
+						long contains=((Container)I).containTypes();
+						if(reqs.containsKey("CONTENTTYPES"))
+						{
+							contains=Util.s_long((String)reqs.get("CONTENTTYPES"));
+							if(contains>0)
+							for(int i=1;;i++)
+								if(reqs.containsKey("CONTENTTYPES"+(new Integer(i).toString())))
+									contains=contains|Util.s_int((String)reqs.get("CONTENTTYPES"+(new Integer(i).toString())));
+								else
+									break;
+						}
+						str.append("<OPTION VALUE=0");
+						if(contains==0) str.append(" SELECTED");
+						str.append(">"+Container.CONTAIN_DESCS[0]);
+						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+						{
+							String constr=Container.CONTAIN_DESCS[i];
+							int mask=Util.pow(2,i-1);
+							str.append("<OPTION VALUE="+mask);
+							if((contains&mask)>0) str.append(" SELECTED");
+							str.append(">"+constr);
+						}
+					}
+					break;
 				}
 				if(firstTime)
 					reqs.put(okparms[o],old.equals("checked")?"on":old);

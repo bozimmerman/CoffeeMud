@@ -31,7 +31,7 @@ public class Spell_AcidFog extends Spell
 			else
 			if((!vic.amDead())&&(vic.location()!=null))
 			{
-				int damage=(int)Math.round(Util.div(vic.envStats().level(),2));
+				int damage=vic.envStats().level();
 				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
 			}
 		}

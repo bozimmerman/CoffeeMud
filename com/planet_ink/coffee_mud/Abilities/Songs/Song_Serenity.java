@@ -21,7 +21,10 @@ public class Song_Serenity extends Song
 		if(!(affected instanceof MOB)) return true;
 		if(!Sense.canBeHeardBy(invoker,affected)) return true;
 
-		if((Util.bset(msg.targetCode(),Affect.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
+		if((Util.bset(msg.targetCode(),Affect.MASK_MALICIOUS))
+		   &&(msg.amISource((MOB)affected))
+		   &&(msg.target()!=null)
+		   &&(affected!=msg.target()))
 		{
 			msg.source().makePeace();
 			msg.source().tell("You feel too peaceful to fight.");

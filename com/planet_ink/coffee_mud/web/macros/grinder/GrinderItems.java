@@ -55,7 +55,7 @@ public class GrinderItems
 						  "ISPILL","ISSUPERPILL","ISPOTION","LIQUIDTYPES","AMMOTYPE",
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
-						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE"};
+						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -321,6 +321,21 @@ public class GrinderItems
 				else
 				if((I.baseEnvStats().sensesMask()&EnvStats.CAN_SEE)>0)
 					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()-EnvStats.CAN_SEE);
+				break;
+			case 61: // is key
+				break;
+			case 62: // content types
+				if((I instanceof Container)&&(reqs.containsKey("CONTENTTYPES")))
+				{
+					long content=Util.s_long((String)reqs.get("CONTENTTYPES"));
+					if(content>0)
+					for(int i=1;;i++)
+						if(reqs.containsKey("CONTENTTYPES"+(new Integer(i).toString())))
+							content=content|Util.s_int((String)reqs.get("CONTENTTYPES"+(new Integer(i).toString())));
+						else
+							break;
+					((Container)I).setContainTypes(content);
+				}
 				break;
 			}
 		}

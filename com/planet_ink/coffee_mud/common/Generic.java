@@ -208,7 +208,10 @@ public class Generic
 			+XMLManager.convertXMLtoTag("WORNL",item.rawLogicalAnd())
 			+XMLManager.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
 			if(E instanceof Container)
+			{
 				text.append(XMLManager.convertXMLtoTag("CAPA",((Container)item).capacity()));
+				text.append(XMLManager.convertXMLtoTag("CONT",((Container)item).containTypes()));
+			}
 			if(E instanceof Weapon)
 				text.append(XMLManager.convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
 		}
@@ -789,7 +792,11 @@ public class Generic
 			item.setMaterial(XMLManager.getIntFromPieces(buf,"MTRAL"));
 			//item.setUsesRemaining(Util.s_int(XMLManager.returnXMLValue(buf,"USES")));
 			if(item instanceof Container)
+			{
 				((Container)item).setCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
+				((Container)item).setContainTypes(XMLManager.getLongFromPieces(buf,"CONT"));
+				
+			}
 			if(item instanceof Weapon)
 				((Weapon)item).setAmmoCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
 			item.setRawLogicalAnd(XMLManager.getBoolFromPieces(buf,"WORNL"));

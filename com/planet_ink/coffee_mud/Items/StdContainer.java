@@ -13,6 +13,7 @@ public class StdContainer extends StdItem implements Container
 	protected boolean isOpen=true;
 	protected boolean hasALid=false;
 	protected int capacity=0;
+	protected long containType=0;
 
 	public StdContainer()
 	{
@@ -30,7 +31,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		return new StdContainer();
 	}
-
+	
 	public int capacity()
 	{
 		return capacity;
@@ -80,6 +81,18 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(capacity>0)
 					{
+						if(!canContain(newitem))
+						{
+							mob.tell("You can't put "+newitem.name()+" in "+name()+".");
+							return false;
+						}
+						else
+						if(newitem.envStats().weight()>capacity)
+						{
+							mob.tell(newitem.name()+" won't fit in "+name()+".");
+							return false;
+						}
+						else
 						if((recursiveWeight(this)+newitem.envStats().weight())>capacity)
 						{
 							mob.tell(name()+" is full.");
@@ -389,6 +402,51 @@ public class StdContainer extends StdItem implements Container
 		return weight;
 	}
 
+	public long containTypes(){return containType;}
+	public void setContainTypes(long containTypes){containType=containTypes;}
+	public boolean canContain(Environmental E)
+	{ 
+		if (!(E instanceof Item)) return false;
+		if(containType==0) return true;
+		for(int i=0;i<20;i++)
+			if(Util.isSet((int)containType,i))
+				switch(Util.pow(2,i))
+				{
+				case CONTAIN_LIQUID:
+					if((((Item)E).material()&EnvResource.MATERIAL_LIQUID)>0)
+						return true;
+					break;
+				case CONTAIN_COINS:
+					if(E instanceof Coins)
+						return true;
+					break;
+				case CONTAIN_SWORDS:
+					if((E instanceof Weapon)
+					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_SWORD))
+						return true;
+					break;
+				case CONTAIN_DAGGERS:
+					if((E instanceof Weapon)
+					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_DAGGER))
+						return true;
+					break;
+				case CONTAIN_OTHERWEAPONS:
+					if((E instanceof Weapon)
+					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)
+					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_DAGGER))
+						return true;
+					break;
+				case CONTAIN_ONEHANDWEAPONS:
+					if((E instanceof Weapon)
+					&&(((Weapon)E).rawLogicalAnd()==false))
+						return true;
+					break;
+				}
+		return false;
+	}
+		
+
+	
 
 	public boolean isLocked(){return isLocked;}
 	public boolean hasALock(){return hasALock;}

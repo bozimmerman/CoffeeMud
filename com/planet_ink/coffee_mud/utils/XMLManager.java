@@ -21,6 +21,21 @@ public class XMLManager
 	}
 	
 	/**
+	 * Returns the long value of a string without crashing
+ 	 * 
+	 * <br><br><b>Usage:</b> int num=s_long(CMD.substring(14));
+	 * @param LONG Long value of string
+	 * @return long Long value of the string
+	 */
+	private  static long s_long(String LONG)
+	{
+		long slong=0;
+		try{ slong=Long.parseLong(LONG); }
+		catch(java.lang.NumberFormatException e){ return 0;}
+		return slong;
+	}
+	
+	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
   	 * <br><br><b>Usage:</b> Data+=XMLoTag("MODELOBJECTONE",VA.ModelObjectOne);
@@ -223,7 +238,7 @@ public class XMLManager
   	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
-	 * @return String Information from XML block
+	 * @return boolean Information from XML block
 	 */
 	public static boolean getBoolFromPieces(Vector V, String tag)
 	{
@@ -242,11 +257,26 @@ public class XMLManager
   	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
-	 * @return String Information from XML block
+	 * @return int Information from XML block
 	 */
 	public static int getIntFromPieces(Vector V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
+	}
+	
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+  	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
+	 * @param Blob String to search
+	 * @param Tag Tag to search for
+	 * @return long Information from XML block
+	 */
+	public static long getLongFromPieces(Vector V, String tag)
+	{
+		return s_long(getValFromPieces(V,tag));
 	}
 	
 	/**
@@ -256,12 +286,14 @@ public class XMLManager
   	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
 	 * @param Blob String to search
 	 * @param Tag Tag to search for
-	 * @return String Information from XML block
+	 * @return double Information from XML block
 	 */
 	public static double getDoubleFromPieces(Vector V, String tag)
 	{
 		return Util.s_double(getValFromPieces(V,tag));
 	}
+	
+	
 	private static int findCompetingTag(String buf, String tag)
 	{
 		if((buf==null)||(buf.length()==0)) return -1;

@@ -213,6 +213,7 @@ public class JewelMaking extends CommonSkill
 			&&((--woodDestroyed)>=0))
 				I.destroyThis();
 		}
+		if(firstOther!=null) firstOther.destroyThis();
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{

@@ -17,10 +17,10 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public StdDrink()
 	{
 		super();
-
 		name="a cup";
 		baseEnvStats.setWeight(10);
 		capacity=0;
+		containType=Container.CONTAIN_LIQUID;
 		displayText="a cup sits here.";
 		description="A small wooden cup with a lid.";
 		baseGoldValue=5;

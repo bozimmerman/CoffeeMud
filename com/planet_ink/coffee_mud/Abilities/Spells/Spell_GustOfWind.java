@@ -94,6 +94,7 @@ public class Spell_GustOfWind extends Spell
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
 							target.setAtRange(target.rangeToTarget()+1);
+							
 						mob.location().send(mob,msg);
 						if((!Sense.isFlying(target))
 						&&(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level())))
@@ -102,8 +103,9 @@ public class Spell_GustOfWind extends Spell
 							doneTicking=false;
 							success=maliciousAffect(mob,target,2,-1);
 						}
-						if(target.getVictim()!=null)
-							target.getVictim().setAtRange(target.rangeToTarget());
+						victim=target.getVictim();
+						if(victim!=null)
+							victim.setAtRange(target.rangeToTarget());
 					}
 				}
 			}
