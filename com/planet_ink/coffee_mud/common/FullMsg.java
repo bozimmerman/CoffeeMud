@@ -191,10 +191,6 @@ public class FullMsg implements Affect
 		if((target()!=null)
 		   &&(target()==thisOne))
 			return true;
-		if((thisOne instanceof Room)
-		   &&(target() instanceof GridLocaleChild)
-		   &&(thisOne==((GridLocaleChild)target()).parent()))
-			return true;
 		return false;
 
 	}

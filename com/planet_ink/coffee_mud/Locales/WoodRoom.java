@@ -18,4 +18,11 @@ public class WoodRoom extends StdRoom
 	{
 		return new WoodRoom();
 	}
+	public static boolean isOkAffect(Room room, Affect affect)
+	{
+		return true;
+	}
+	public static void doAffect(Room room, Affect affect)
+	{
+	}
 }

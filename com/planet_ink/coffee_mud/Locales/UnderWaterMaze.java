@@ -28,17 +28,4 @@ public class UnderWaterMaze extends Maze
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
-
-	public boolean okAffect(Affect affect)
-	{
-		if(!super.okAffect(affect))
-			return false;
-		if((affect.targetMinor()==affect.TYP_FIRE)
-		||(affect.targetMinor()==affect.TYP_GAS))
-		{
-			affect.source().tell("That won't work underwater.");
-			return false;
-		}
-		return true;
-	}
 }

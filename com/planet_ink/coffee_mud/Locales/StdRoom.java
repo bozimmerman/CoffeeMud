@@ -224,7 +224,30 @@ public class StdRoom
 				if(!thisExit.okAffect(affect))
 					return false;
 		}
-		return true;
+		switch(domainType)
+		{
+		case Room.DOMAIN_OUTDOORS_AIR:
+			return InTheAir.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			return UnderWater.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return WaterSurface.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			return Woods.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			return Mountains.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return Plains.isOkAffect(this,affect);
+		case Room.DOMAIN_INDOORS_WOOD:
+			return WoodRoom.isOkAffect(this,affect);
+		case Room.DOMAIN_INDOORS_STONE:
+			return StoneRoom.isOkAffect(this,affect);
+		case Room.DOMAIN_INDOORS_CAVE:
+			return CaveRoom.isOkAffect(this,affect);
+		case Room.DOMAIN_OUTDOORS_CITY:
+		default:
+			return true; // thats me!
+		}
 	}
 
 	public void affect(Affect affect)
@@ -305,6 +328,30 @@ public class StdRoom
 				A.affect(affect);
 		}
 		
+		switch(domainType)
+		{
+		case Room.DOMAIN_OUTDOORS_AIR:
+			InTheAir.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			UnderWater.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			WaterSurface.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			Woods.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			Mountains.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			Plains.doAffect(this,affect); break;
+		case Room.DOMAIN_INDOORS_WOOD:
+			WoodRoom.doAffect(this,affect); break;
+		case Room.DOMAIN_INDOORS_STONE:
+			StoneRoom.doAffect(this,affect); break;
+		case Room.DOMAIN_INDOORS_CAVE:
+			CaveRoom.doAffect(this,affect); break;
+		case Room.DOMAIN_OUTDOORS_CITY:
+		default:
+			break;
+		}
 	}
 
 	public void startItemRejuv()

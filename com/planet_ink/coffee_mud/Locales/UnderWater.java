@@ -32,10 +32,8 @@ public class UnderWater extends StdRoom
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
-	public boolean okAffect(Affect affect)
+	public static boolean isOkAffect(Room room, Affect affect)
 	{
-		if(!super.okAffect(affect))
-			return false;
 		if((affect.targetMinor()==affect.TYP_FIRE)
 		||(affect.targetMinor()==affect.TYP_GAS))
 		{
@@ -43,7 +41,7 @@ public class UnderWater extends StdRoom
 			return false;
 		}
 
-		if(affect.amITarget(this)
+		if(affect.amITarget(room)
 		   &&(Util.bset(affect.sourceMajor(),Affect.AFF_MOVEDON))
 		   &&(!Sense.isSwimming(affect.source()))
 		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
@@ -63,5 +61,8 @@ public class UnderWater extends StdRoom
 				}
 		}
 		return true;
+	}
+	public static void doAffect(Room room, Affect affect)
+	{
 	}
 }

@@ -22,9 +22,13 @@ public class InTheAir extends StdRoom
 		return new InTheAir();
 	}
 
+	public static void doAffect(Room room, Affect affect)
+	{
+	}
 	public static boolean isOkAffect(Room room, Affect affect)
 	{
-		if((affect.targetMinor()==affect.TYP_ENTER)&&(affect.amITarget(room)))
+		if((affect.targetMinor()==affect.TYP_ENTER)
+		&&(affect.amITarget(room)))
 		{
 			MOB mob=affect.source();
 			if((!Sense.isFlying(mob))
@@ -94,11 +98,5 @@ public class InTheAir extends StdRoom
 			falling.invoke(null,null,E,true);
 		}
 		return true;
-	}
-	public boolean okAffect(Affect affect)
-	{
-		if(!super.okAffect(affect))
-			return false;
-		return isOkAffect(this,affect);
 	}
 }

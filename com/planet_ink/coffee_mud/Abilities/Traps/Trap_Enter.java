@@ -24,7 +24,8 @@ public class Trap_Enter extends Trap_Trap
 			return false;
 
 		   if((affect.amITarget(affected))
-		   ||((affect.tool()!=null)&&(affect.tool()==affected)))
+			||((affect.target() instanceof GridLocaleChild)&&(affected==((GridLocaleChild)affect.target()).parent()))
+			||((affect.tool()!=null)&&(affect.tool()==affected)))
 		{
 			if((affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_LEAVE)

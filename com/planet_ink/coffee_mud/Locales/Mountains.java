@@ -18,4 +18,11 @@ public class Mountains extends StdRoom
 	{
 		return new Mountains();
 	}
+	public static boolean isOkAffect(Room room, Affect affect)
+	{
+		return true;
+	}
+	public static void doAffect(Room room, Affect affect)
+	{
+	}
 }

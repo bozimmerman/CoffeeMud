@@ -37,7 +37,8 @@ public class Follower extends StdBehavior
 
 
 		if((direction<0)
-		&&(affect.target()==((MOB)affecting).location())
+		&&((affect.amITarget(((MOB)affecting).location()))
+			||((affect.target() instanceof GridLocaleChild)&&((((MOB)affecting).location())==((GridLocaleChild)affect.target()).parent())))
 		&&(Sense.canBeSeenBy(mob,affecting))
 		&&(affect.othersMessage()!=null)
 		&&((affect.targetMinor()==Affect.TYP_LEAVE)

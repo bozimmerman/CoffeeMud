@@ -18,4 +18,11 @@ public class Plains extends StdRoom
 	{
 		return new Plains();
 	}
+	public static boolean isOkAffect(Room room, Affect affect)
+	{
+		return true;
+	}
+	public static void doAffect(Room room, Affect affect)
+	{
+	}
 }

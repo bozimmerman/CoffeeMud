@@ -25,7 +25,8 @@ public class Prop_RoomNoMOB extends Property
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
+		   &&((affect.amITarget(affected))
+			||((affect.target() instanceof GridLocaleChild)&&(affected==((GridLocaleChild)affect.target()).parent())))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			if((affect.source().isMonster())&&(affect.source().amFollowing()==null))
