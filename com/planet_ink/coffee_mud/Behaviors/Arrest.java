@@ -1329,6 +1329,18 @@ public class Arrest extends StdBehavior
 		return true;
 	}
 
+	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
+	{
+		if((M.isASysOp(M.location())||(isTheJudge(laws,M))))
+			return true;
+		return false;
+	}
+
+	protected boolean theLawIsEnabled(Law laws)
+	{
+		return true;
+	}
+	
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting, affect);
@@ -1336,12 +1348,12 @@ public class Arrest extends StdBehavior
 		Area myArea=(Area)affecting;
 		Law laws=getLaws(affecting);
 		if(affect.source()==null) return;
+		if(!theLawIsEnabled(laws)) return;
 
 		// the archons pardon
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
 		&&(affect.sourceMessage()!=null)
-		&&(affect.source().isASysOp(affect.source().location())
-		   ||(isTheJudge(laws,affect.source()))))
+		&&(isAnUltimateAuthorityHere(affect.source(),laws)))
 		{
 			int x=affect.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
 			if(x>0)
@@ -1603,6 +1615,12 @@ public class Arrest extends StdBehavior
 		if(!(ticking instanceof Area)) return true;
 		Area myArea=(Area)ticking;
 		Law laws=getLaws(myArea);
+		if(!theLawIsEnabled(laws))
+		{
+			laws.warrants().clear();
+			laws.oldWarrants().clear();
+			return true;
+		}
 
 
 		HashSet handled=new HashSet();
