@@ -35,7 +35,7 @@ public class Cheetah extends StdMOB
 		baseEnvStats().setLevel(3);
 		baseEnvStats().setArmor(60);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),18,3));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

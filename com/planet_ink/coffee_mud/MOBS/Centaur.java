@@ -30,7 +30,7 @@ public class Centaur extends StdMOB
 		baseEnvStats().setLevel(4);
 		baseEnvStats().setArmor(0);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 10)*baseEnvStats().level()) + 5);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Mobile"));
 

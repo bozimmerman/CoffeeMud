@@ -31,11 +31,11 @@ public class LargeBat extends StdMOB
 		baseEnvStats().setDamage(5);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(80);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 1);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -35,7 +35,7 @@ public class WildEagle extends StdMOB
 		baseEnvStats().setArmor(60);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 4);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

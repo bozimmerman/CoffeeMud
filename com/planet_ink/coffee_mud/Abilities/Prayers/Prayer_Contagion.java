@@ -86,7 +86,7 @@ public class Prayer_Contagion extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"<S-NAME> prays(s) at <T-NAMESELF> for unholy contagion.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"<S-NAME> pray(s) at <T-NAMESELF> for unholy contagion.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

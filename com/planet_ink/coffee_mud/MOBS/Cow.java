@@ -19,12 +19,12 @@ public class Cow extends StdMOB implements Drink
 		baseEnvStats().setDamage(1);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Cow"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),4,1));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -28,7 +28,7 @@ public class Ape extends StdMOB
 		baseEnvStats().setLevel(6);
 		baseEnvStats().setArmor(50);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 5);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -31,9 +31,7 @@ public class Skeleton extends Undead
 		baseEnvStats().setArmor(70);
 		baseEnvStats().setSpeed(1.0);
 
-		int hitPoints = 0;
-		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
-		baseState.setHitPoints(hitPoints);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -589,8 +589,8 @@ public class StdAbility implements Ability, Cloneable
 		{
 			if(yourAbility.profficiency()<25)
 			{
-				teacher.tell("You are not profficient enough to teach '"+ID()+"'");
-				student.tell(teacher.name()+" is not profficient enough to teach '"+ID()+"'.");
+				teacher.tell("You are not profficient enough to teach '"+name()+"'");
+				student.tell(teacher.name()+" is not profficient enough to teach '"+name()+"'.");
 				return false;
 			}
 			return true;

@@ -36,12 +36,7 @@ public class Troll extends StdMOB
 		baseEnvStats().setSpeed(3.0);
 		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 
-		int hitPoints = 0;
-		for(int i = 0; i < 7; i++)
-			hitPoints += Math.abs(randomizer.nextInt()) % 10 + 1;
-		hitPoints+=6;
-
-		baseState.setHitPoints(hitPoints);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

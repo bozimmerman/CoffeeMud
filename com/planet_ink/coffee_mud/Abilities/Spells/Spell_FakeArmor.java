@@ -136,7 +136,7 @@ public class Spell_FakeArmor extends Spell
 					armor.setRawProperLocationBitmap(Item.ON_FEET);
 					break;
 				}
-				armor.setDisplayText(name()+" sits here"); 
+				armor.setDisplayText(armor.name()+" sits here"); 
 				armor.setDescription("looks like your size!");
 				armor.baseEnvStats().setWeight(0);
 				armor.recoverEnvStats();

@@ -84,6 +84,7 @@ public class Skill_TurnUndead extends StdAbility
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
 						target.makePeace();
 						ExternalPlay.follow(target,mob,false);
+						ExternalPlay.makePeaceInGroup(mob);
 					}
 					else
 					if((mob.envStats().level()-target.envStats().level())>6)

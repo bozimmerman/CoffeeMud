@@ -35,7 +35,7 @@ public class BlackBear extends StdMOB
 		baseEnvStats().setLevel(3);
 		baseEnvStats().setArmor(70);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 3);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

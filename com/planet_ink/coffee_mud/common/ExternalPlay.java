@@ -42,6 +42,11 @@ public class ExternalPlay
 		if(player!=null) return player.getToEvoke(mob,commands);
 		return null;
 	}
+	public static void makePeaceInGroup(MOB mob)
+	{
+		if(player!=null) player.makePeaceInGroup(mob);
+	}
+	
 	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{
 		if(player!=null) return player.niceLister(mob,items,useName);

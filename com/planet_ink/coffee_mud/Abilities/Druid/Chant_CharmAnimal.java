@@ -119,7 +119,10 @@ public class Chant_CharmAnimal extends Chant
 				{
 					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
 					if(success)
+					{
 						ExternalPlay.follow(target,mob,false);
+						ExternalPlay.makePeaceInGroup(mob);
+					}
 				}
 			}
 		}

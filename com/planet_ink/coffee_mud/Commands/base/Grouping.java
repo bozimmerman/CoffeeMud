@@ -40,6 +40,19 @@ public class Grouping
 		}
 	}
 
+	
+	public void makePeaceInGroup(MOB mob)
+	{
+		Hashtable myGroup=new Hashtable();
+		mob.getGroupMembers(myGroup);
+		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
+		{
+			MOB mob2=(MOB)e.nextElement();
+			if(mob2.isInCombat()&&(myGroup.contains(mob2.getVictim())))
+				mob2.makePeace();
+		}
+	}
+	
 	public StringBuffer showWho(MOB who, boolean shortForm)
 	{
 		StringBuffer msg=new StringBuffer("");

@@ -36,7 +36,7 @@ public class Wyvern extends StdMOB
 		baseEnvStats().setArmor(30);
         baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 9);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
         addBehavior(CMClass.getBehavior("Aggressive"));
 

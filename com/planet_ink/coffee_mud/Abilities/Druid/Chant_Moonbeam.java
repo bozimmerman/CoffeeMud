@@ -64,14 +64,14 @@ public class Chant_Moonbeam extends Chant
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> chants(s), causing a moonbeam to follow <S-HIM-HER> around!");
+		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,0);
 		}
 		else
-			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chants(s) for a moonbeam, but fail(s).");
+			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");
 
 		return success;
 	}

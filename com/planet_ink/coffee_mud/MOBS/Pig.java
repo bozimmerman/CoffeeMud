@@ -28,7 +28,7 @@ public class Pig extends StdMOB
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(30);
 
-		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 12) + 2);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -46,7 +46,7 @@ public class Vagrant extends StdBehavior
 		MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{
-			if(Dice.rollPercentage()>50)
+			if((Dice.rollPercentage()>50)||(mob.isInCombat()))
 			{
 				ExternalPlay.standIfNecessary(mob);
 				wakeForTicks=Dice.roll(1,30,0);

@@ -71,7 +71,7 @@ public class Spell_LightenItem extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(name()+" is already light!");
+			mob.tell(target.name()+" is already light!");
 			return false;
 		}
 

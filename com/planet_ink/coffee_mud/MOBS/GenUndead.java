@@ -25,7 +25,7 @@ public class GenUndead extends GenMob
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(50);
 
-		baseState.setHitPoints((10*baseEnvStats().level())+(int)Math.round(Math.random()*baseEnvStats().level()*baseEnvStats().ability()));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -30,7 +30,7 @@ public class Parakeet extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("SongBird"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() %2)*baseEnvStats().level()) + 1);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

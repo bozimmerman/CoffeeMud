@@ -28,7 +28,7 @@ public class Monkey extends StdMOB
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(30);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 5);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

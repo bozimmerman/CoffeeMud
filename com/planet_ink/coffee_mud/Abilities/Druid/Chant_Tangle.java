@@ -91,24 +91,7 @@ public class Chant_Tangle extends Chant
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		
-		thePlants=null;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I!=null)
-			&&(I.secretIdentity().equals(mob.name()))
-			&&(I.myOwner()!=null)
-			&&(I.myOwner() instanceof Room))
-			{
-				Ability A=I.fetchAffect("Chant_SummonPlants");
-				if((A!=null)&&(A.invoker()==mob))
-				{
-					thePlants=I;
-					break;
-				}
-			}
-		}
-		
+		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(thePlants==null)
 		{
 			mob.tell("There doesn't appear to be any plants here you can control!");

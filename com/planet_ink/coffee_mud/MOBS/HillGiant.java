@@ -30,7 +30,7 @@ public class HillGiant extends StdMOB
 		baseEnvStats().setLevel(12);
 		baseEnvStats().setArmor(0);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 12, 1));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

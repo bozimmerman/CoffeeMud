@@ -34,7 +34,7 @@ public class Bugbear extends StdMOB
 		baseEnvStats().setLevel(3);
 		baseEnvStats().setArmor(40);
 
-		baseState.setHitPoints(((int)Math.round((Math.random()*12)+1))*3+1);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

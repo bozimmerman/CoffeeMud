@@ -11,7 +11,7 @@ public class Chant_Shillelagh extends Chant
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sillelagh";
+		name="Shillelagh";
 		displayText="(Blessed)";
 		quality=Ability.INDIFFERENT;
 

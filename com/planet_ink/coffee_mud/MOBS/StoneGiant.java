@@ -30,7 +30,7 @@ public class StoneGiant extends StdMOB
 		baseEnvStats().setLevel(14);
 		baseEnvStats().setArmor(0);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 16);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

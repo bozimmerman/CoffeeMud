@@ -32,7 +32,7 @@ public class FireGiant extends StdMOB
 		baseEnvStats().setLevel(15);
 		baseEnvStats().setArmor(-10);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 17);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

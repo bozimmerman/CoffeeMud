@@ -26,12 +26,12 @@ public class Rattlesnake extends StdMOB
 		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
 
 		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(10);
 
 		baseCharStats().setMyRace(CMClass.getRace("Snake"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 6) + 2);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

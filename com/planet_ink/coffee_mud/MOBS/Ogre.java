@@ -33,12 +33,7 @@ public class Ogre extends StdMOB
 		baseEnvStats().setArmor(50);
 		baseEnvStats().setSpeed(3.0);
 
-		int hitPoints = 0;
-		for(int i = 0; i < 4; i++)
-			hitPoints += Math.abs(randomizer.nextInt()) % 16 + 1;
-		hitPoints++;
-
-		baseState.setHitPoints(hitPoints);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -33,7 +33,7 @@ public class DrowElf extends StdMOB
 		setDescription("a " + sex + " Drow Fighter");
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
 
-		baseState.setHitPoints(25 + (baseEnvStats.level() * 2) + (randomizer.nextInt() % 15));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney((int)Math.round(Util.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
 		baseEnvStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
 

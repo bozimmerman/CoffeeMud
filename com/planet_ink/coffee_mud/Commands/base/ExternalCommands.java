@@ -40,6 +40,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.postAttack(attacker,target,weapon);
 	}
+	public void makePeaceInGroup(MOB mob)
+	{
+		processor.grouping.makePeaceInGroup(mob);
+	}
 	public Ability getToEvoke(MOB mob, Vector commands)
 	{
 		return processor.abilityEvoker.getToEvoke(mob,commands);

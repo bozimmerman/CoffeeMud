@@ -687,7 +687,7 @@ public class TelnetSession extends Thread implements Session
 										replacement="are";
 									else
 									if(regarding instanceof MOB)
-										replacement="its";
+										replacement="is";
 								}
 								break;
 							case HASHAVE:

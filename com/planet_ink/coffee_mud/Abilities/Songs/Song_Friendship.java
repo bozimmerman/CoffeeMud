@@ -118,6 +118,7 @@ public class Song_Friendship extends Song
 												follower.addAffect((Ability)newOne.copyOf());
 											else
 												follower.addAffect(newOne);
+											ExternalPlay.makePeaceInGroup(mob);
 										}
 									}
 								}

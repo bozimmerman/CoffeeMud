@@ -139,7 +139,10 @@ public class Spell_Enthrall extends Spell
 				{
 					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
 					if(success)
+					{
 						ExternalPlay.follow(target,mob,false);
+						ExternalPlay.makePeaceInGroup(mob);
+					}
 				}
 			}
 		}

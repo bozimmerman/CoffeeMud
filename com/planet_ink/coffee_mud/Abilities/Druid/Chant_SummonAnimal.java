@@ -49,6 +49,7 @@ public class Chant_SummonAnimal extends Chant
 			Exit opExit=mob.location().getPairedExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
+			&&((room.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)
 			&&((exit!=null)&&(exit.isOpen()))
 			&&(opExit!=null)&&(opExit.isOpen()))
 				choices.addElement(new Integer(d));
@@ -97,50 +98,52 @@ public class Chant_SummonAnimal extends Chant
 		MOB newMOB=null;
 		
 		while(newMOB==null)
-		switch(Dice.rollPercentage())
 		{
-		case 1: newMOB=(MOB)CMClass.getMOB("BlackBear"); break;
-		case 2: newMOB=(MOB)CMClass.getMOB("BrownBear"); break;
-		case 3: newMOB=(MOB)CMClass.getMOB("Buck"); break;
-		case 4: newMOB=(MOB)CMClass.getMOB("Buffalo"); break;
-		case 5: newMOB=(MOB)CMClass.getMOB("Bull"); break;
-		case 6: newMOB=(MOB)CMClass.getMOB("Cat"); break;
-		case 7: newMOB=(MOB)CMClass.getMOB("Cheetah"); break;
-		case 8: newMOB=(MOB)CMClass.getMOB("Chicken"); break;
-		case 9: newMOB=(MOB)CMClass.getMOB("Cobra"); break;
-		case 10: newMOB=(MOB)CMClass.getMOB("CommonBat"); break;
-		case 11: newMOB=(MOB)CMClass.getMOB("Cow"); break;
-		case 12: newMOB=(MOB)CMClass.getMOB("Deer"); break;
-		case 13: newMOB=(MOB)CMClass.getMOB("Doe"); break;
-		case 14: newMOB=(MOB)CMClass.getMOB("Dog"); break;
-		case 15: newMOB=(MOB)CMClass.getMOB("Falcon"); break;
-		case 16: newMOB=(MOB)CMClass.getMOB("GardenSnake"); break;
-		case 17: newMOB=(MOB)CMClass.getMOB("GiantBat"); break;
-		case 18: newMOB=(MOB)CMClass.getMOB("GiantScorpion"); break;
-		case 19: newMOB=(MOB)CMClass.getMOB("Jaguar"); break;
-		case 20: newMOB=(MOB)CMClass.getMOB("LargeBat"); break;
-		case 21: newMOB=(MOB)CMClass.getMOB("Lizard"); break;
-		case 22: newMOB=(MOB)CMClass.getMOB("Panther"); break;
-		case 23: newMOB=(MOB)CMClass.getMOB("Parakeet"); break;
-		case 24: newMOB=(MOB)CMClass.getMOB("Pig"); break;
-		case 25: newMOB=(MOB)CMClass.getMOB("Python"); break;
-		case 26: newMOB=(MOB)CMClass.getMOB("Rattlesnake"); break;
-		case 27: newMOB=(MOB)CMClass.getMOB("Sheep"); break;
-		case 28: newMOB=(MOB)CMClass.getMOB("Tiger"); break;
-		case 29: newMOB=(MOB)CMClass.getMOB("WildEagle"); break;
-		case 30: newMOB=(MOB)CMClass.getMOB("Wolf"); break;
-		case 31: newMOB=(MOB)CMClass.getMOB("Ape"); break;
-		case 32: newMOB=(MOB)CMClass.getMOB("Chimp"); break;
-		case 33: newMOB=(MOB)CMClass.getMOB("Duck"); break;
-		case 34: newMOB=(MOB)CMClass.getMOB("Kitten"); break;
-		case 35: newMOB=(MOB)CMClass.getMOB("Monkey"); break;
-		case 36: newMOB=(MOB)CMClass.getMOB("Mouse"); break;
-		case 37: newMOB=(MOB)CMClass.getMOB("Puppy"); break;
-		case 38: newMOB=(MOB)CMClass.getMOB("Rabbit"); break;
-		case 39: newMOB=(MOB)CMClass.getMOB("Rat"); break;
-		case 40: newMOB=(MOB)CMClass.getMOB("Turtle"); break;
-		case 41: newMOB=(MOB)CMClass.getMOB("Raven"); break;
-		default: continue;
+			switch(Dice.rollPercentage())
+			{
+			case 1: newMOB=(MOB)CMClass.getMOB("BlackBear"); break;
+			case 2: newMOB=(MOB)CMClass.getMOB("BrownBear"); break;
+			case 3: newMOB=(MOB)CMClass.getMOB("Buck"); break;
+			case 4: newMOB=(MOB)CMClass.getMOB("Buffalo"); break;
+			case 5: newMOB=(MOB)CMClass.getMOB("Bull"); break;
+			case 6: newMOB=(MOB)CMClass.getMOB("Cat"); break;
+			case 7: newMOB=(MOB)CMClass.getMOB("Cheetah"); break;
+			case 8: newMOB=(MOB)CMClass.getMOB("Chicken"); break;
+			case 9: newMOB=(MOB)CMClass.getMOB("Cobra"); break;
+			case 10: newMOB=(MOB)CMClass.getMOB("CommonBat"); break;
+			case 11: newMOB=(MOB)CMClass.getMOB("Cow"); break;
+			case 12: newMOB=(MOB)CMClass.getMOB("Deer"); break;
+			case 13: newMOB=(MOB)CMClass.getMOB("Doe"); break;
+			case 14: newMOB=(MOB)CMClass.getMOB("Dog"); break;
+			case 15: newMOB=(MOB)CMClass.getMOB("Falcon"); break;
+			case 16: newMOB=(MOB)CMClass.getMOB("GardenSnake"); break;
+			case 17: newMOB=(MOB)CMClass.getMOB("GiantBat"); break;
+			case 18: newMOB=(MOB)CMClass.getMOB("GiantScorpion"); break;
+			case 19: newMOB=(MOB)CMClass.getMOB("Jaguar"); break;
+			case 20: newMOB=(MOB)CMClass.getMOB("LargeBat"); break;
+			case 21: newMOB=(MOB)CMClass.getMOB("Lizard"); break;
+			case 22: newMOB=(MOB)CMClass.getMOB("Panther"); break;
+			case 23: newMOB=(MOB)CMClass.getMOB("Parakeet"); break;
+			case 24: newMOB=(MOB)CMClass.getMOB("Pig"); break;
+			case 25: newMOB=(MOB)CMClass.getMOB("Python"); break;
+			case 26: newMOB=(MOB)CMClass.getMOB("Rattlesnake"); break;
+			case 27: newMOB=(MOB)CMClass.getMOB("Sheep"); break;
+			case 28: newMOB=(MOB)CMClass.getMOB("Tiger"); break;
+			case 29: newMOB=(MOB)CMClass.getMOB("WildEagle"); break;
+			case 30: newMOB=(MOB)CMClass.getMOB("Wolf"); break;
+			case 31: newMOB=(MOB)CMClass.getMOB("Ape"); break;
+			case 32: newMOB=(MOB)CMClass.getMOB("Chimp"); break;
+			case 33: newMOB=(MOB)CMClass.getMOB("Duck"); break;
+			case 34: newMOB=(MOB)CMClass.getMOB("Kitten"); break;
+			case 35: newMOB=(MOB)CMClass.getMOB("Monkey"); break;
+			case 36: newMOB=(MOB)CMClass.getMOB("Mouse"); break;
+			case 37: newMOB=(MOB)CMClass.getMOB("Puppy"); break;
+			case 38: newMOB=(MOB)CMClass.getMOB("Rabbit"); break;
+			case 39: newMOB=(MOB)CMClass.getMOB("Rat"); break;
+			case 40: newMOB=(MOB)CMClass.getMOB("Turtle"); break;
+			case 41: newMOB=(MOB)CMClass.getMOB("Raven"); break;
+			default: break;
+			}
 		}
 
 		newMOB.setLocation(caster.location());

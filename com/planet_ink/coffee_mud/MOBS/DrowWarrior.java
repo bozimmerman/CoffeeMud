@@ -31,7 +31,7 @@ public class DrowWarrior extends DrowElf
 
         equipDrow();
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
 		baseCharStats.setStat(CharStats.GENDER,(int)'M');

@@ -28,7 +28,7 @@ public class Mouse extends StdMOB
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(60);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 10)*baseEnvStats().level()) + 1);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

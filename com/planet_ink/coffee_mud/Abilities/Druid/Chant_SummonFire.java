@@ -66,8 +66,8 @@ public class Chant_SummonFire extends Chant
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");
 				I.baseEnvStats().setWeight(50);
-				I.setName("a magical campire");
-				I.setDisplayText("A roaring magical campire has been built here.");
+				I.setName("a magical campfire");
+				I.setDisplayText("A roaring magical campfire has been built here.");
 				I.setDescription("It consists of magically burning flames, consuming no fuel.");
 				I.recoverEnvStats();
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);

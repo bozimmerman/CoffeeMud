@@ -45,7 +45,7 @@ public class Chant_Goodberry extends Chant
 
 		if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
 		{
-			mob.tell(name()+" is not berries.");
+			mob.tell(target.name()+" is not berries.");
 			return false;
 		}
 		
@@ -65,7 +65,8 @@ public class Chant_Goodberry extends Chant
 					newItem.setDescription(target.description());
 					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
 					newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
-					newItem.setSpellList(";Prayer_CureLightWounds;");
+					newItem.setSpellList(";Prayer_CureLight;");
+					newItem.recoverEnvStats();
 					newItem.setMiscText(newItem.text());
 					Item location=target.location();
 					target.destroyThis();
@@ -83,6 +84,8 @@ public class Chant_Goodberry extends Chant
 						target=((Room)owner).fetchItem(location,newItem.name());
 					}
 					if(target==null) break;
+					if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
+						break;
 				}
 			}
 		}

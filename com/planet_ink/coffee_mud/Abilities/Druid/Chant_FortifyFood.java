@@ -43,13 +43,13 @@ public class Chant_FortifyFood extends Chant
 
 		if(!(target instanceof Food))
 		{
-			mob.tell(name()+" is not edible.");
+			mob.tell(target.name()+" is not edible.");
 			return false;
 		}
 		
 		if(((Food)target).nourishment()>1000)
 		{
-			mob.tell(name()+" is already well fortified.");
+			mob.tell(target.name()+" is already well fortified.");
 			return false;
 		}
 

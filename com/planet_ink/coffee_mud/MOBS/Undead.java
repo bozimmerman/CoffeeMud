@@ -31,11 +31,7 @@ public class Undead extends StdMOB
 		baseEnvStats().setDisposition(0); // disable infrared stuff
 		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
 
-		int hitPoints = 0;
-		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
-		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
-
-		baseState.setHitPoints(hitPoints);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addAbility(CMClass.getAbility("Skill_AllBreathing"));
 

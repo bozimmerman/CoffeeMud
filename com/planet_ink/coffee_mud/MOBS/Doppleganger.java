@@ -39,7 +39,7 @@ public class Doppleganger extends StdMOB
 		baseEnvStats().setLevel(6);
 		baseEnvStats().setArmor(20);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,5));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Mobile"));
 		addBehavior(CMClass.getBehavior("MudChat"));

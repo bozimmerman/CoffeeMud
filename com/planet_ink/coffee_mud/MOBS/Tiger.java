@@ -32,7 +32,7 @@ public class Tiger extends StdMOB
 		baseEnvStats().setLevel(5);
 		baseEnvStats().setArmor(60);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 10);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

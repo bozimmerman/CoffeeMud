@@ -34,7 +34,7 @@ public class Orc extends StdMOB
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(50);
 
-		baseState.setHitPoints(10+(int)Math.round(Math.random()*10.0));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

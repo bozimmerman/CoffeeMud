@@ -31,7 +31,7 @@ public class InvisibleStalker extends StdMOB
 		baseEnvStats().setArmor(0);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 4);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 		addBehavior(CMClass.getBehavior("Mobile"));

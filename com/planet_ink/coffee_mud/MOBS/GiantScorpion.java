@@ -35,7 +35,7 @@ public class GiantScorpion extends StdMOB
 		baseEnvStats().setLevel(5);
 		baseEnvStats().setArmor(30);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 9);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
         addBehavior(CMClass.getBehavior("Mobile"));
 

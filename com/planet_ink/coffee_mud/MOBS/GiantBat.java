@@ -33,7 +33,7 @@ public class GiantBat extends StdMOB
 		baseEnvStats().setArmor(80);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 8)*baseEnvStats().level()) + 4);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

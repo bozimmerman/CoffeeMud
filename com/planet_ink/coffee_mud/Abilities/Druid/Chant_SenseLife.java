@@ -13,6 +13,7 @@ public class Chant_SenseLife extends Chant
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Sense Life";
+		displayText="(Sense Life)";
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();

@@ -20,15 +20,11 @@ public class Zombie extends Undead
 		baseEnvStats.setWeight(30);
 
 		baseEnvStats().setDamage(8);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(80);
 		baseEnvStats().setSpeed(1.0);
 
-		int hitPoints = 0;
-		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
-		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
-
-		baseState.setHitPoints(hitPoints);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -20,12 +20,12 @@ public class Bull extends StdMOB
 		baseEnvStats().setDamage(10);
 		baseEnvStats().setSpeed(2.0);
 		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(7);
 		baseEnvStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Cow"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),6,1));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

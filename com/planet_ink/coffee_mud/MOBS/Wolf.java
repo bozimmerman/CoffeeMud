@@ -31,10 +31,10 @@ public class Wolf extends StdMOB
 		baseEnvStats().setDamage(6);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
+		baseEnvStats().setLevel(4);
 		baseEnvStats().setArmor(70);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 10)*baseEnvStats().level()) + 9);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -63,7 +63,7 @@ public class Goblin extends StdMOB
 		baseEnvStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));
 		baseEnvStats().setLevel(1 + Math.abs(randomizer.nextInt() % 3));
 		baseEnvStats().setAbility(goblinType);
-		baseState.setHitPoints(10+(int)Math.round(Math.random()*10.0));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		Weapon m=null;
 		Armor c=null;

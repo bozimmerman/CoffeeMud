@@ -33,7 +33,7 @@ public class Duck extends StdMOB
 
 		baseCharStats().setMyRace(CMClass.getRace("WaterFowl"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 6) + 2);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

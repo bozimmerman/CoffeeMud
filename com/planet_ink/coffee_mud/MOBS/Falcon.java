@@ -35,7 +35,7 @@ public class Falcon extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 1);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();

@@ -40,7 +40,7 @@ public class Minotaur extends StdMOB
 		baseEnvStats().setLevel(6);
 		baseEnvStats().setArmor(60);
 
-		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 20)*baseEnvStats().level()) + 10);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 

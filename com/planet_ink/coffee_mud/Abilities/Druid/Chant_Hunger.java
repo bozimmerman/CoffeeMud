@@ -60,7 +60,7 @@ public class Chant_Hunger extends Chant
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					target.curState().adjHunger(-150 - (mob.envStats().level() * 5),target.maxState());
+					target.curState().adjHunger(-(150+(mob.envStats().level()) * 5),target.maxState());
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly hungry!");
 				}
 			}

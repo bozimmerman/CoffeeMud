@@ -45,6 +45,9 @@ public class Thiefness extends CombatAbilities
 		{
 			tickDown=2;
 			MOB victim=null;
+			if(mob.isInCombat())
+				victim=mob.getVictim();
+			else
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
 				MOB potentialVictim=mob.location().fetchInhabitant(i);

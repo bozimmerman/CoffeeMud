@@ -97,7 +97,7 @@ public class Druid_MyPlants extends StdAbility
 				Vector V=myPlantRooms(mob);
 				for(int v=0;v<V.size();v++)
 				{
-					Room R=CMMap.getRoom(v);
+					Room R=(Room)V.elementAt(v);
 					if(R!=null)
 					{
 						int i=0;

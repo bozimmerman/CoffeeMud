@@ -54,7 +54,7 @@ public class Spell_Enlarge extends Spell
 		}
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(name()+" is already HUGE!");
+			mob.tell(target.name()+" is already HUGE!");
 			return false;
 		}
 

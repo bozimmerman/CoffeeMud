@@ -28,7 +28,7 @@ public class Lizard extends StdMOB
 
 		baseCharStats().setMyRace(CMClass.getRace("Lizard"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 4) + 2);
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
