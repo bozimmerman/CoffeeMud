@@ -20,6 +20,26 @@ public interface EnvStats extends Cloneable
 	public final static int CAN_NOT_BREATHE=16384;
 	public final static int CAN_SEE_VICTIM=32768;
 	public final static int CAN_SEE_METAL=65536;
+	
+	// sensemask stuff not applicable to mobs
+	public final static int SENSE_UNLOCATABLE=1;
+	public final static int SENSE_ITEMNOMINRANGE=2;
+	public final static int SENSE_ITEMNOMAXRANGE=4;
+	public final static int SENSE_UNUSEDMASK4=8;
+	public final static int SENSE_UNUSEDMASK5=16;
+	public final static int SENSE_UNUSEDMASK6=32;
+	public final static int SENSE_UNUSEDMASK7=64;
+	public final static int SENSE_UNUSEDMASK8=128;
+	public final static int SENSE_UNUSEDMASK9=256;
+	public final static int SENSE_UNUSEDMASK10=512;
+	public final static int SENSE_UNUSEDMASK11=1024;
+	public final static int SENSE_UNUSEDMASK12=2048;
+	public final static int SENSE_UNUSEDMASK13=4096;
+	public final static int SENSE_UNUSEDMASK14=8192;
+	public final static int SENSE_UNUSEDMASK15=16384;
+	public final static int SENSE_UNUSEDMASK16=32768;
+	public final static int SENSE_UNUSEDMASK17=65536;
+	
 
 	public final static long ALLMASK=Integer.MAX_VALUE;
 	

@@ -670,7 +670,7 @@ public class BaseGenerics extends StdCommand
 			mob.session().println(showNumber+". A) Is Gettable   : "+E.isGettable());
 			mob.session().println("    B) Is Droppable  : "+E.isDroppable());
 			mob.session().println("    C) Is Removable  : "+E.isRemovable());
-			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.CAN_NOT_SEE)>0)?"true":"false"));
+			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
 			if(E instanceof Weapon)
 				mob.session().println("    E) Is Two-Handed : "+E.rawLogicalAnd());
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -680,10 +680,10 @@ public class BaseGenerics extends StdCommand
 			case 'A': E.setGettable(!E.isGettable()); break;
 			case 'B': E.setDroppable(!E.isDroppable()); break;
 			case 'C': E.setRemovable(!E.isRemovable()); break;
-			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.CAN_NOT_SEE)>0)
-						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.CAN_NOT_SEE);
+			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
+						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 					  else
-						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|EnvStats.CAN_NOT_SEE);
+						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 					  break;
 			case 'E': if(E instanceof Weapon)
 						  E.setRawLogicalAnd(!E.rawLogicalAnd());

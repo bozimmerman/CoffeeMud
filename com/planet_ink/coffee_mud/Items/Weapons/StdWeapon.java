@@ -296,8 +296,20 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,name());
 	}
-	public int minRange(){return minRange;}
-	public int maxRange(){return maxRange;}
+	public int minRange()
+	{
+		if(Util.isSet(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMINRANGE))
+			return 0;
+		else
+			return minRange;
+	}
+	public int maxRange()
+	{
+		if(Util.isSet(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
+			return 100;
+		else
+			return maxRange;
+	}
 	public void setRanges(int min, int max){minRange=min;maxRange=max;}
 	public boolean requiresAmmunition()
 	{

@@ -69,6 +69,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Fighter_Whomp",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack3",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Fighter_PointBlank",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Tumble",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_SizeOpponent",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Fighter_Berzerk",false);

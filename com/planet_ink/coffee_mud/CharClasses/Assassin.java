@@ -94,7 +94,6 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Observation",false);
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Assassinate",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 			
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_TrueShot",false);
@@ -113,6 +112,7 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),19,"Specialization_Polearm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Trap",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Fighter_PointBlank",false);
 			
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_AxKick",false);
 			
@@ -123,6 +123,7 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_Cleave",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_PointBlank",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);

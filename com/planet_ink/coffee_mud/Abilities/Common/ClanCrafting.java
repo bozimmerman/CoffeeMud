@@ -338,7 +338,7 @@ public class ClanCrafting extends CommonSkill
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		if(building instanceof ClanItem)
 		{
-			building.baseEnvStats().setSensesMask(EnvStats.CAN_NOT_SEE);
+			building.baseEnvStats().setSensesMask(EnvStats.SENSE_UNLOCATABLE);
 			((ClanItem)building).setClanID(mob.getClanID());
 			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)

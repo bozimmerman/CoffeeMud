@@ -343,10 +343,10 @@ public class GrinderItems
 				break;
 			case 60:
 				if(old.equals("on"))
-					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.CAN_NOT_SEE);
+					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 				else
-				if((I.baseEnvStats().sensesMask()&EnvStats.CAN_NOT_SEE)>0)
-					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()-EnvStats.CAN_NOT_SEE);
+				if((I.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
+					I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 				break;
 			case 61: // is key
 				break;

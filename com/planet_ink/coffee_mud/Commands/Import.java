@@ -3058,7 +3058,7 @@ public class Import extends StdCommand
 					I.setMaterial(EnvResource.RESOURCE_GLASS);
 
 			if(Util.isSet(extraFlag,20))
-				I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.CAN_NOT_SEE);
+				I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
 
 			//if(Util.isSet(extraFlag,22))
 			//nothing is unidentifiable

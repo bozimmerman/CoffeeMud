@@ -6,6 +6,10 @@ translate sen and dis for props and superpills
 get item, get item, get item, get item that will check encumbrance, but get all item will not?'
 Point Blank Shot allows use of a bow at point blank (0) range
 Drilling
+If you put a flag under water, it will eventually disappear.
+After unsuccessfully hiding from one shadowstrike, I attempted another, and it let me. I thought you had to be hidden from the enemy to attempt shadowstrike
+armor in a floating disc gives full protective value, as if you were wearing it.
+burglar should GAIN contract hit at level 30
 
 
 code something to fix sheaths and weapon belts
