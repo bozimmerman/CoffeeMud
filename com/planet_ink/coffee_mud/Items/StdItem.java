@@ -465,7 +465,7 @@ public class StdItem implements Item
 		case Affect.TYP_HOLD:
 			if(!canBeWornAt(Item.HELD))
 			{
-				StringBuffer msg=new StringBuffer("You can't hold that. ");
+				StringBuffer msg=new StringBuffer("You can't hold "+name()+".");
 				if(canBeWornAt(Item.WIELD))
 					msg.append("Try WIELDing it.");
 				else
@@ -479,6 +479,11 @@ public class StdItem implements Item
 				mob.tell("Your hands are full.");
 				return false;
 			}
+			if(!mob.charStats().getMyRace().canWear(this,Item.HELD))
+			{
+				mob.tell("You lack the anatomy to hold "+name()+".");
+				return false;
+			}
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
@@ -488,12 +493,12 @@ public class StdItem implements Item
 		case Affect.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
-				mob.tell("You can't wear that. ");
+				mob.tell("You can't wear "+name()+".");
 				return false;
 			}
 			if(!amWearingAt(Item.INVENTORY))
 			{
-				mob.tell("You are already wearing that.");
+				mob.tell("You are already wearing "+name()+".");
 				return false;
 			}
 			if(!canWear(mob))
@@ -506,6 +511,11 @@ public class StdItem implements Item
 					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
 				return false;
 			}
+			if(!mob.charStats().getMyRace().canWear(this,Integer.MAX_VALUE))
+			{
+				mob.tell("You lack the anatomy to wear "+name()+".");
+				return false;
+			}
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
@@ -515,7 +525,7 @@ public class StdItem implements Item
 		case Affect.TYP_WIELD:
 			if(!canBeWornAt(Item.WIELD))
 			{
-				mob.tell("You can't wield that as a weapon.");
+				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
 			}
 			if(amWearingAt(Item.WIELD))
@@ -533,7 +543,13 @@ public class StdItem implements Item
 				return false;
 			}
 			if(!canWear(mob))
-			{	mob.tell("You can't wield that, your hands are full.");
+			{	
+				mob.tell("You can't wield "+name()+", your hands are full.");
+				return false;
+			}
+			if(!mob.charStats().getMyRace().canWear(this,Item.WIELD))
+			{
+				mob.tell("You lack the anatomy to wield "+name()+".");
 				return false;
 			}
 			if(envStats().level()>mob.envStats().level())
