@@ -1,10 +1,6 @@
-Friends ALL doesn`t autonotify you when people log on.
-it has asked me for my email everytime i log on for about a week now. I keep puting it in, but then it asks for it again whenever i try and log on again.
-rangers don`t get woodland hide.
 I have turned on Silent AutoGold but Muse can see me loot corpses anyway
 Zenthlas I have noticed that sometimes that if you kill something... and it repops it can`t be trageted again
 destroy for players - player version does an action, like tears, or throws down, or rips, depending on item material.
-Prop_TattooAdder does this also: +-ToothFairySlayer if a player fights the affected and the player dies, a given tattoo is removed from the player
 ARCHON commands to CAGE and UNCAGE mobs
 Finish Taxidermy
 ability to MLOAD and OLOAD from a cmare file
