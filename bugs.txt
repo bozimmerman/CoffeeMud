@@ -1,0 +1,5 @@
+do a get on an ungettable in a container... youll see the bug
+ake the class editor for players more flexible in the future..
+light thing is happening (pikel can't see anything (not blind), and ivan can w/ infravision'
+Castle Sengir#31429 has a strange door to the w
+cleric stands up too much on quake

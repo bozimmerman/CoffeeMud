@@ -284,6 +284,180 @@ public class Lister
 
 	}
 
+	public static StringBuffer listLinkages(MOB mob)
+	{
+		StringBuffer buf=new StringBuffer("Links: \n\r");
+		Vector areaLinkGroups=new Vector();
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		{
+			Area A=(Area)a.nextElement();
+			buf.append(A.name()+"\t"+A.numberOfIDedRooms()+" rooms\t");
+			if(!A.getMap().hasMoreElements())
+			{
+				buf.append("\n\r");
+				continue;
+			}
+			Vector linkedGroups=new Vector();
+			int numMobs=0;
+			int totalAlignment=0;
+			int totalLevels=0;
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if(R.roomID().length()>0)
+				{
+					Vector myVec=null;
+					Vector clearVec=null;
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						Room R2=R.rawDoors()[d];
+						if(R2!=null)
+						{
+							for(int g=0;g<linkedGroups.size();g++)
+							{
+								Vector G=(Vector)linkedGroups.elementAt(g);
+								if(G.size()==0)
+									clearVec=G;
+								else
+								if(G.contains(R2))
+								{
+									if(myVec==null)
+									{
+										myVec=G;
+										myVec.addElement(R);
+									}
+									else
+									if(myVec!=G)
+									{
+										for(int g2=0;g2<myVec.size();g2++)
+											G.addElement(myVec.elementAt(g2));
+										myVec.clear();
+										clearVec=myVec;
+										myVec=G;
+									}
+								}
+							}
+						}
+					}
+					if(myVec==null)
+					{
+						if(clearVec!=null)
+							clearVec.addElement(R);
+						else
+						{
+							clearVec=new Vector();
+							clearVec.addElement(R);
+							linkedGroups.addElement(clearVec);
+						}
+					}
+				}
+				for(int g=linkedGroups.size()-1;g>=0;g--)
+				{
+					if(((Vector)linkedGroups.elementAt(g)).size()==0)
+						linkedGroups.removeElementAt(g);
+				}
+				
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((M!=null)
+					&&(M.isMonster())
+					&&(M.getStartRoom()!=null)
+					&&(M.getStartRoom().getArea()==R.getArea()))
+					{
+						numMobs++;
+						totalAlignment+=M.getAlignment();
+						totalLevels+=M.envStats().level();
+					}
+				}
+				
+			}
+			StringBuffer ext=new StringBuffer("links ");
+			Vector myVec=null;
+			Vector clearVec=null;
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R2=R.rawDoors()[d];
+					if((R2!=null)&&(R2.getArea()!=R.getArea()))
+					{
+						ext.append(Directions.getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
+						for(int g=0;g<areaLinkGroups.size();g++)
+						{
+							Vector G=(Vector)areaLinkGroups.elementAt(g);
+							if(G.size()==0)
+								clearVec=G;
+							else
+							if(G.contains(R2.getArea()))
+							{
+								if(myVec==null)
+								{
+									myVec=G;
+									myVec.addElement(R.getArea());
+								}
+								else
+								if(myVec!=G)
+								{
+									for(int g2=0;g2<myVec.size();g2++)
+										G.addElement(myVec.elementAt(g2));
+									myVec.clear();
+									clearVec=myVec;
+									myVec=G;
+								}
+							}
+						}
+					}
+				}
+			}
+			if(myVec==null)
+			{
+				if(clearVec!=null)
+					clearVec.addElement(A);
+				else
+				{
+					clearVec=new Vector();
+					clearVec.addElement(A);
+					areaLinkGroups.addElement(clearVec);
+				}
+			}
+			if(numMobs>0)
+				buf.append(numMobs+" mobs\t"+(totalLevels/numMobs)+" avg levels\t"+(totalAlignment/numMobs)+" avg alignment");
+			if(linkedGroups.size()>0)
+			{
+				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
+				for(Enumeration r=linkedGroups.elements();r.hasMoreElements();)
+					buf.append(((Vector)r.nextElement()).size()+" ");
+			}
+			buf.append("\t"+ext.toString()+"\n\r");
+		}
+		buf.append("There were "+areaLinkGroups.size()+" area groups:");
+		for(int g=areaLinkGroups.size()-1;g>=0;g--)
+		{
+			if(((Vector)areaLinkGroups.elementAt(g)).size()==0)
+				areaLinkGroups.removeElementAt(g);
+		}
+		StringBuffer unlinkedGroups=new StringBuffer("");
+		for(Enumeration r=areaLinkGroups.elements();r.hasMoreElements();)
+		{
+			Vector V=(Vector)r.nextElement();
+			buf.append(V.size()+" ");
+			if(V.size()<4)
+			{
+				for(int v=0;v<V.size();v++)
+					unlinkedGroups.append(((Area)V.firstElement()).name()+"\t");
+				unlinkedGroups.append("|\t");
+			}
+			
+		}
+		buf.append("\n\r");
+		buf.append("Small Group Areas:\t"+unlinkedGroups.toString());
+		Log.sysOut("Lister",buf.toString());
+		return buf;
+	}
+	
+	
 	public static StringBuffer journalList(String journal)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -711,6 +885,9 @@ public class Lister
 		else
 		if("SESSIONS".startsWith(listThis))
 			mob.tell(listSessions(mob).toString());
+		else
+		if("LINKAGES".startsWith(listThis))
+			mob.tell(listLinkages(mob).toString());
 		else
 		if("REPORTS".startsWith(listThis))
 			mob.tell(listReports(mob).toString());

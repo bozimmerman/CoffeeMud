@@ -573,7 +573,7 @@ public class StdCharClass implements CharClass, Cloneable
 			{
 				beneficiaries.put(mob,mob);
 				totalLevels+=mob.envStats().level();
-				expAmount+=10;
+				expAmount+=25;
 			}
 		}
 		if(beneficiaries.size()>0)

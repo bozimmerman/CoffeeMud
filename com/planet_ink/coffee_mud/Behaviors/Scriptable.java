@@ -73,7 +73,9 @@ public class Scriptable extends StdBehavior
 		"TIME_PROG", // 14
 		"DAY_PROG", // 15
 		"DELAY_PROG", // 16
-		"FUNCTION_PROG" // 17
+		"FUNCTION_PROG", // 17
+		"ACT_PROG", // 18
+		"BRIBE_PROG" // 19
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -159,7 +161,8 @@ public class Scriptable extends StdBehavior
 		"MPAFFECT", // 30
 		"MPBEHAVE", // 31
 		"MPUNBEHAVE",  //32
-		"MPTATTOO" // 33
+		"MPTATTOO", // 33
+		"BREAK" // 34
 	};
 
 	public Behavior newInstance()
@@ -487,9 +490,33 @@ public class Scriptable extends StdBehavior
 				String ps=(String)formatCheck.elementAt(i-1);
 				ps=ps.substring(0,ps.length()-1);
 				if(ps.length()==0) ps=" ";
-				String os=(String)formatCheck.elementAt(i+1);
-				os=os+")";
 				formatCheck.setElementAt(ps,i-1);
+				
+				String os=null;
+				if((((String)formatCheck.elementAt(i+1)).startsWith("'")
+				   ||((String)formatCheck.elementAt(i+1)).startsWith("`")))
+				{
+					os="";
+					while((i<(formatCheck.size()-1))
+					&&((!((String)formatCheck.elementAt(i+1)).endsWith("'"))
+					&&(!((String)formatCheck.elementAt(i+1)).endsWith("`"))))
+					{
+						os+=((String)formatCheck.elementAt(i+1))+" ";
+						formatCheck.removeElementAt(i+1);
+					}
+					os=(os+((String)formatCheck.elementAt(i+1))).trim();
+				}
+				else
+				if((i==(formatCheck.size()-3))
+				&&(((String)formatCheck.lastElement()).indexOf("(")<0))
+				{
+					os=((String)formatCheck.elementAt(i+1))
+					+" "+((String)formatCheck.elementAt(i+2));
+					formatCheck.removeElementAt(i+2);
+				}
+				else
+					os=(String)formatCheck.elementAt(i+1);
+				os=os+")";
 				formatCheck.setElementAt(os,i+1);
 				i+=2;
 			}
@@ -2507,6 +2534,8 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 50: // break;
+				return;
 			case 1: // mpasound
 			{
 				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(8).trim());
@@ -3309,6 +3338,23 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+			case 19: // bribe_prog
+				if((affect.targetMinor()==Affect.TYP_GIVE)
+				&&(affect.amITarget(monster))
+				&&(!affect.amISource(monster))
+				&&(affect.tool() instanceof Coins)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(10).trim();
+					int t=Util.s_int(trigger);
+					if((((Coins)affect.tool()).numberOfCoins()>=t)
+					||(trigger.equalsIgnoreCase("ALL")))
+					{
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2,null));
+						return;
+					}
+				}
+				break;
 			case 8: // entry_prog
 				if((affect.targetMinor()==Affect.TYP_ENTER)
 				&&(affect.amISource(monster))
@@ -3348,6 +3394,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 12: // mask prog
+			case 18: // mask prog
 				if(!affect.amISource(monster))
 				{
 					boolean doIt=false;

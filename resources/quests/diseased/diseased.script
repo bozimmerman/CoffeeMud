@@ -6,7 +6,10 @@ ONCE_PROG
 
 QUEST_TIME_PROG diseased -1
 	wake
-	QUESTCHAT I'm dead now.  Forget the whole quest thing.
+	if affected($i Disease_Plague)
+		QUESTCHAT I'm dead now.  Forget the whole quest thing.
+	endif
+	mpunaffect $i 
 	mpsetvar $i DISEASED ''
 	mpsetvar * DISEASED ''
 ~

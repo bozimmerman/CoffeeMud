@@ -57,7 +57,7 @@ public class Spell_DetectMagic extends Spell
 				}
 			}
 			if((msg2==null)&&(Sense.isABonusItems(affect.target())))
-				msg2=affect.target()+" is enchanted";
+				msg2=affect.target().name()+" is enchanted";
 			if(msg2!=null)
 			{
 				FullMsg msg3=new FullMsg(affect.source(),affect.target(),this,

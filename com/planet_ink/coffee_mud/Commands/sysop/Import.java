@@ -190,7 +190,7 @@ public class Import
 
 	private static int getBitMask(String str, int which)
 	{
-		String s=Util.getBit(str,which);
+		String s=Util.getCleanBit(str,which);
 		if(s.length()==0)
 			return 0;
 		int x=s.indexOf("|");
@@ -1448,14 +1448,14 @@ public class Import
 			int sexCode=1;
 			if(Util.numBits(codeStr2)>=4)
 			{
-				M.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr2,0)));
+				M.baseEnvStats().setLevel(Util.s_int(Util.getCleanBit(codeStr2,0)));
 				if(M.baseEnvStats().level()==0)
 					M.baseEnvStats().setLevel(1);
 				int baseHP=11;
 				if(circleFormat)
-					baseHP=getDRoll(Util.getBit(codeStr2,2));
+					baseHP=getDRoll(Util.getCleanBit(codeStr2,2));
 				else
-					baseHP=getDRoll(Util.getBit(codeStr2,3));
+					baseHP=getDRoll(Util.getCleanBit(codeStr2,3));
 				baseHP=baseHP-10;
 				baseHP=baseHP-((int)Math.round(Util.mul(M.baseEnvStats().level()*M.baseEnvStats().level(),0.85)));
 				baseHP=baseHP/M.baseEnvStats().level();
@@ -1463,31 +1463,31 @@ public class Import
 				
 				if(circleFormat)
 				{
-					if(Util.getBit(codeStr4,2).toUpperCase().equals("MALE"))
+					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("MALE"))
 						sexCode=1;
 					else
-					if(Util.getBit(codeStr4,2).toUpperCase().equals("FEMALE"))
+					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("FEMALE"))
 						sexCode=2;
 					else
-					if(Util.getBit(codeStr4,2).toUpperCase().equals("EITHER"))
+					if(Util.getCleanBit(codeStr4,2).toUpperCase().equals("EITHER"))
 						sexCode=(Dice.rollPercentage()>50)?1:2;
 					else
 						sexCode=3;
 
-					if(Util.getBit(codeStr4,0).trim().startsWith("STAND"))
+					if(Util.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
 						positionCode=8;
 					else
-					if(Util.getBit(codeStr4,0).trim().startsWith("SIT"))
+					if(Util.getCleanBit(codeStr4,0).trim().startsWith("SIT"))
 						positionCode=5;
 					else
-					if(Util.getBit(codeStr4,0).trim().startsWith("SLEEP"))
+					if(Util.getCleanBit(codeStr4,0).trim().startsWith("SLEEP"))
 						positionCode=1;
 
 				}
 				else
 				{
-					positionCode=Util.s_int(Util.getBit(codeStr4,0));
-					sexCode=Util.s_int(Util.getBit(codeStr4,2));
+					positionCode=Util.s_int(Util.getCleanBit(codeStr4,0));
+					sexCode=Util.s_int(Util.getCleanBit(codeStr4,2));
 				}
 				if(Dice.rollPercentage()>75)
 					M.addBehavior(CMClass.getBehavior("MudChat"));
@@ -1495,7 +1495,7 @@ public class Import
 			else
 			{
 				M.baseEnvStats().setAbility(11);
-				int baseLevel=Util.s_int(Util.getBit(codeStr2,0));
+				int baseLevel=Util.s_int(Util.getCleanBit(codeStr2,0));
 				while(baseLevel>25)
 					baseLevel=(int)Math.round(Util.div(baseLevel,2.0));
 			}
@@ -1509,7 +1509,7 @@ public class Import
 			M.baseEnvStats().setAttackAdjustment(CMClass.getCharClass("StdCharClass").getLevelAttack(M));
 			M.baseEnvStats().setDamage(CMClass.getCharClass("StdCharClass").getLevelDamage(M));
 			if(circleFormat)
-				M.setMoney(Util.s_int(Util.getBit(codeStr4,3)));
+				M.setMoney(Util.s_int(Util.getCleanBit(codeStr4,3)));
 			else
 				M.setMoney((2*M.baseEnvStats().level())+10);
 			M.baseEnvStats().setWeight(50);
@@ -1542,7 +1542,7 @@ public class Import
 				int off=getBitMask(codeStr3,0);
 				int imm=getBitMask(codeStr3,1);
 				int res=getBitMask(codeStr3,2);
-				int size=Util.s_int(Util.getBit(codeStr5,2));
+				int size=Util.s_int(Util.getCleanBit(codeStr5,2));
 				switch(size)
 				{
 				case 0: M.baseEnvStats().setWeight(1); break;
@@ -2465,12 +2465,12 @@ public class Import
 			}
 			if(Util.numBits(codeStr3)>2)
 			{
-				I.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr3,0)));
-				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 10);
+				I.baseEnvStats().setLevel(Util.s_int(Util.getCleanBit(codeStr3,0)));
+				I.baseEnvStats().setWeight(Util.s_int(Util.getCleanBit(codeStr3,1)) / 10);
 				if(I.baseEnvStats().weight()<1) I.baseEnvStats().setWeight(1);
 				if(I instanceof Rideable)
-					I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) * 10);
-				I.setBaseValue(Util.s_int(Util.getBit(codeStr3,2)));
+					I.baseEnvStats().setWeight(Util.s_int(Util.getCleanBit(codeStr3,1)) * 10);
+				I.setBaseValue(Util.s_int(Util.getCleanBit(codeStr3,2)));
 			}
 			else
 			{
@@ -2704,8 +2704,8 @@ public class Import
 						returnAnError(mob,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
 					else
 					{
-						int num=Util.s_int(Util.getBit(codesLine,0));
-						int val=Util.s_int(Util.getBit(codesLine,1));
+						int num=Util.s_int(Util.getCleanBit(codesLine,0));
+						int val=Util.s_int(Util.getCleanBit(codesLine,1));
 						switch(num)
 						{
 						case 1:
@@ -3623,6 +3623,7 @@ public class Import
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
 			Hashtable petShops=new Hashtable();
+
 			for(int r=0;r<roomData.size();r++)
 			{
 				Vector roomV=null;
@@ -3648,6 +3649,7 @@ public class Import
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
 				R.setRoomID(plainRoomID);
+
 				if((roomV.size()>2)
 				&&(((String)roomV.elementAt(0)).trim().equals("~"))
 				&&(((String)roomV.elementAt(1)).trim().equals("~")))
@@ -3831,7 +3833,7 @@ public class Import
 
 				lastRoom=R;
 			}
-
+			
 			// begin second pass through rooms
 			// handle exits, mobs, objects, etc.
 			for(int r=0;r<roomData.size();r++)
@@ -3877,18 +3879,18 @@ public class Import
 					else
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
-						int dirCode=Util.s_int(Util.getBit(nextLine,0).substring(1).trim());
+						int dirCode=Util.s_int(Util.getCleanBit(nextLine,0).substring(1).trim());
 						String descStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
 						switch(dirCode)
 						{
-						case 0: dirCode=0; break;
-						case 1: dirCode=2; break;
-						case 2: dirCode=1; break;
-						case 3: dirCode=3; break;
-						case 4: dirCode=4; break;
-						case 5: dirCode=5; break;
+						case 0: dirCode=Directions.NORTH; break;
+						case 1: dirCode=Directions.EAST; break;
+						case 2: dirCode=Directions.SOUTH; break;
+						case 3: dirCode=Directions.WEST; break;
+						case 4: dirCode=Directions.UP; break;
+						case 5: dirCode=Directions.DOWN; break;
 						case 6:
 						case 7:
 						case 8:
@@ -3920,9 +3922,9 @@ public class Import
 							returnAnError(mob,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName);
 							continue;
 						}
-						int exitFlag=( Util.s_int(Util.getBit(codeStr,0)) & 31);
-						int doorState=Util.s_int(Util.getBit(codeStr,1));
-						int linkRoomID=Util.s_int(Util.getBit(codeStr,2));
+						int exitFlag=( Util.s_int(Util.getCleanBit(codeStr,0)) & 31);
+						int doorState=Util.s_int(Util.getCleanBit(codeStr,1));
+						int linkRoomID=Util.s_int(Util.getCleanBit(codeStr,2));
 						Exit E=CMClass.getExit("GenExit");
 						Room linkRoom=findRoomSomewhere(""+linkRoomID,areaName,doneRooms);
 						if(linkRoomID>=0)
@@ -4104,8 +4106,8 @@ public class Import
 				else
 				if(s.startsWith("M "))
 				{
-					String mobID=Util.getBit(s,2);
-					String roomID=Util.getBit(s,4);
+					String mobID=Util.getCleanBit(s,2);
+					String roomID=Util.getCleanBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
@@ -4140,7 +4142,7 @@ public class Import
 					}
 					else
 					{
-						String itemID=Util.getBit(s,2);
+						String itemID=Util.getCleanBit(s,2);
 						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 						if(I==null)
 						{
@@ -4153,7 +4155,7 @@ public class Import
 							I.recoverEnvStats();
 							if(M instanceof ShopKeeper)
 							{
-								int num=Util.s_int(Util.getBit(s,3));
+								int num=Util.s_int(Util.getCleanBit(s,3));
 								if(num<0) num=100;
 								((ShopKeeper)M).addStoreInventory(I,num);
 								if((I instanceof Light)&&(!((ShopKeeper)M).doIHaveThisInStock("OilFlask",null)))
@@ -4212,6 +4214,49 @@ public class Import
 					}
 				}
 				else
+				if(s.startsWith("EC "))
+				{
+					String roomID=Util.getCleanBit(s,1);
+					String mobID=Util.getCleanBit(s,2);
+					int x=roomID.lastIndexOf("#");
+					if(x>=0) roomID=roomID.substring(x);
+					Room R2=findRoomSomewhere(roomID,areaName,doneRooms);
+					MOB M2=null;
+					if(R2!=null)
+						M2=R2.fetchInhabitant(mobID);
+					if((R2==null)||(M2==null))
+					{
+						if(multiArea) 
+							nextResetData.addElement(s);
+						else
+							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+					}
+					else
+					{
+						String itemID=Util.getCleanBit(s,5);
+						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+						if(I==null)
+						{
+							if(multiArea) 
+								nextResetData.addElement(s);
+							else
+								returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+						}
+						else
+						{
+							M2.addInventory(I);
+							I.wearIfPossible(M2);
+							I.recoverEnvStats();
+							M2.recoverCharStats();
+							M2.recoverEnvStats();
+							M2.recoverMaxState();
+							M2.text();
+							if(I instanceof Container)
+								containerHash.put(itemID,I);
+						}
+					}
+				}
+				else
 				if(s.startsWith("E "))
 				{
 					if(M==null)
@@ -4222,13 +4267,19 @@ public class Import
 					}
 					else
 					{
-						String itemID=Util.getBit(s,2);
+						String itemID=Util.getCleanBit(s,2);
 						Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
 						if(I==null)
 						{
-							if(multiArea) nextResetData.addElement(s);
+							if(multiArea)
+							{
+								if(M.location()!=null)
+									nextResetData.addElement("EC '"+M.location().roomID()+"' '"+M.Name()+"' "+s);
+								else
+									nextResetData.addElement(s);
+							}
 							else
-							returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
+								returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
 						}
 						else
 						{
@@ -4247,8 +4298,8 @@ public class Import
 				else
 				if(s.startsWith("O "))
 				{
-					String itemID=Util.getBit(s,2);
-					String roomID=Util.getBit(s,4);
+					String itemID=Util.getCleanBit(s,2);
+					String roomID=Util.getCleanBit(s,4);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
@@ -4285,9 +4336,10 @@ public class Import
 				else
 				if(s.startsWith("P "))
 				{
-					String itemID=Util.getBit(s,2);
-					String containerID=Util.getBit(s,4);
+					String itemID=Util.getCleanBit(s,2);
+					String containerID=Util.getCleanBit(s,4);
 					Item I=getItem("#"+itemID,mob,areaName,Util.copyVector(objectData),Util.copyVector(objProgData),doneItems);
+					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{
 						if(multiArea) nextResetData.addElement(s);
@@ -4295,50 +4347,47 @@ public class Import
 						returnAnError(mob,"Reset error (no item) on line: "+s+", area="+areaName);
 					}
 					else
+					if(C==null)
 					{
-						Container C=(Container)containerHash.get(containerID);
-						if(C==null)
-						{
-							if(multiArea) nextResetData.addElement(s);
-							else
-							returnAnError(mob,"Reset error (no container) on line: "+s+", area="+areaName);
-						}
+						if(multiArea) nextResetData.addElement(s);
 						else
-						if(C.owner()==null)
-						{
-							if(multiArea) nextResetData.addElement(s);
-							else
-							returnAnError(mob,"Reset error (no container owner) on line: "+s+", area="+areaName);
-						}
+						returnAnError(mob,"Reset error (no container) on line: "+s+", area="+areaName);
+					}
+					else
+					if(C.owner()==null)
+					{
+						if(multiArea) nextResetData.addElement(s);
 						else
-						if(C.owner() instanceof Room)
-						{
-							Room RR=(Room)C.owner();
-							RR.addItem(I);
-							I.setContainer(C);
-							if(I.isGettable())
-								I.baseEnvStats().setRejuv(1000);
-							I.recoverEnvStats();
-							if(I instanceof Container)
-								containerHash.put(itemID,I);
-						}
-						else
-						if(C.owner() instanceof MOB)
-						{
-							MOB MM=(MOB)C.owner();
-							MM.addInventory(I);
-							I.setContainer(C);
-							M.text();
-							I.recoverEnvStats();
-							if(I instanceof Container)
-								containerHash.put(itemID,I);
-						}
+						returnAnError(mob,"Reset error (no container owner) on line: "+s+", area="+areaName);
+					}
+					else
+					if(C.owner() instanceof Room)
+					{
+						Room RR=(Room)C.owner();
+						RR.addItem(I);
+						I.setContainer(C);
+						if(I.isGettable())
+							I.baseEnvStats().setRejuv(1000);
+						I.recoverEnvStats();
+						if(I instanceof Container)
+							containerHash.put(itemID,I);
+					}
+					else
+					if(C.owner() instanceof MOB)
+					{
+						MOB MM=(MOB)C.owner();
+						MM.addInventory(I);
+						I.setContainer(C);
+						M.text();
+						I.recoverEnvStats();
+						if(I instanceof Container)
+							containerHash.put(itemID,I);
 					}
 				}
 				else
 				if(s.startsWith("D "))
 				{
-					String roomID=Util.getBit(s,2);
+					String roomID=Util.getCleanBit(s,2);
 					int dirCode=getBitMask(s,3);
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
@@ -4351,12 +4400,25 @@ public class Import
 					{
 						switch(dirCode)
 						{
-						case 0: dirCode=0; break;
-						case 1: dirCode=2; break;
-						case 2: dirCode=1; break;
-						case 3: dirCode=3; break;
-						case 4: dirCode=4; break;
-						case 5: dirCode=5; break;
+						case 0: dirCode=Directions.NORTH; break;
+						case 1: dirCode=Directions.EAST; break;
+						case 2: dirCode=Directions.SOUTH; break;
+						case 3: dirCode=Directions.WEST; break;
+						case 4: dirCode=Directions.UP; break;
+						case 5: dirCode=Directions.DOWN; break;
+						case 6:
+						case 7:
+						case 8:
+						case 9:
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if((R.rawExits()[d]!=null)
+								&&(!R.rawExits()[d].hasADoor()))
+								{
+									dirCode=d;
+									break;
+								}
+							break;
+						case 10: dirCode=Directions.GATE; break;
 						default:
 							returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName);
 						}

@@ -66,6 +66,7 @@ public class Spell_LocateObject extends Spell
 						if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
 							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
 						if((item!=null)&&
+						   (item instanceof Item)&&
 						   ((Sense.canSee(item))||(mob.isASysOp(room))))
 						{
 							if((levelFind==0)
