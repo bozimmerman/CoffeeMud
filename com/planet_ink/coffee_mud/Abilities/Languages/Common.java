@@ -12,7 +12,7 @@ public class Common extends Language
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Common";
-		CMAble.addCharAbilityMapping("All",1,ID(),true);
+		CMAble.addCharAbilityMapping("All",1,ID(),100,true);
 	}
 	public Environmental newInstance()
 	{

@@ -1,6 +1,5 @@
-Have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad. (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
-if you have automelee turned off, and you wish to cast a friendly spell on an ally outside of combat, you can not close range to cast it.
-
+The guildmaster teaches you 'Dwarven'.  The guildmaster says 'But you already know 'Dwarven'.' to you.
+Make the out of charges message different from the failure message.
 
 
 

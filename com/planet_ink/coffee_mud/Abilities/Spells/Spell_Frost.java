@@ -27,7 +27,7 @@ public class Spell_Frost extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(4);
-
+		maxRange=1;
 		recoverEnvStats();
 	}
 

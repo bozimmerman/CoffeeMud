@@ -23,7 +23,10 @@ remove rawness from Meat).
 
 Two-handed fighting
 
+
 Convert some properties to work with the new areas. Prop_NOMOB, etc..
+
+exp from sac/des also based on level of the body.  Set body levels based on char level.
 
 Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
@@ -39,6 +42,8 @@ Entry type would accept "ENTER" commands from MOBs, and drag all followers along
 Following thing would be automatic, if an Exit and Direction extensions are used.
 
 Add last-call to list users.
+
+be able to drink or fill waterskin from freshwater locales
 
 PlayerKill flag
 
