@@ -1,7 +1,8 @@
 Bard Subclasses
 Finish WebServer.html macro help files update
 Programming.html update
-Leatherwork scan, Armorsmith..
+Leatherwork scan, Armorsmith..  to show non-perfect stuff
+itemidentifier should also do appraise, and analyze item.
 
 //****** next version ********************************************************
 friends list, for filter who
