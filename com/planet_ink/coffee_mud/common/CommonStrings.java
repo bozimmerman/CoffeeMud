@@ -206,7 +206,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_PREJUDICE,page.getStr("PREJUDICE"));
 		setVar(SYSTEM_BUDGET,page.getStr("BUDGET"));
 		setVar(SYSTEM_DEVALUERATE,page.getStr("DEVALUERATE"));
-		setIntVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
+		setVar(SYSTEM_INVRESETRATE,page.getStr("INVRESETRATE"));
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else

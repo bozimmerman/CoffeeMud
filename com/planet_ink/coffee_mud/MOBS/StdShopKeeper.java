@@ -26,12 +26,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Vector baseInventory=new Vector();
 	protected Hashtable duplicateInventory=new Hashtable();
 	protected Hashtable prices=new Hashtable();
-	protected int invResetRate=-1;
+	protected int invResetRate=0;
 	protected int invResetTickDown=0;
 	protected String budget="";
-	protected long budgetRemaining=Integer.MAX_VALUE/2;
-	protected long budgetMax=Integer.MAX_VALUE/2;
-	protected int budgetTickDown=0;
+	protected long budgetRemaining=Long.MAX_VALUE/2;
+	protected long budgetMax=Long.MAX_VALUE/2;
+	protected int budgetTickDown=2;
 	protected String devalueRate="";
 
 	private final static Hashtable titleSets=new Hashtable();
@@ -448,18 +448,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return false;
 		if((tickID==MudHost.TICK_MOB)&&(isGeneric()))
 		{
-			if(invResetRate()<0)
-				invResetRate=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
-			else
-			if(invResetTickDown<=0)
+			if(invResetTickDown==0)
+			{
 				invResetTickDown=invResetRate();
+				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
+			}
 			else
 			if((--invResetTickDown)<=0)
 			{
-				Vector INV=getUniqueStoreInventory();
-				for(int b=0;b<INV.size();b++)
-					delStoreInventory(((Environmental)INV.elementAt(b)));
+				if(storeInventory!=null)storeInventory.clear();
+				if(baseInventory!=null)baseInventory.clear();
+				if(duplicateInventory!=null) duplicateInventory.clear();
+				if(prices!=null) prices.clear();
+				if(titleSets!=null) titleSets.clear();
 				invResetTickDown=invResetRate();
+				if(invResetTickDown==0) invResetTickDown=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_INVRESETRATE));
+				if(invResetTickDown==0) invResetTickDown=Integer.MAX_VALUE;
 				String newText=CoffeeMaker.getGenMOBTextUnpacked(this,text());
 				if(newText!=null)
 				{
@@ -474,8 +479,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			if((--budgetTickDown)<=0)
 			{
-				budgetTickDown=Integer.MAX_VALUE;
-				budgetRemaining=Integer.MAX_VALUE/2;
+				budgetTickDown=100;
+				budgetRemaining=Long.MAX_VALUE/2;
 				String s=budget();
 				if(s.length()==0) s=CommonStrings.getVar(CommonStrings.SYSTEM_BUDGET);
 				Vector V=Util.parse(s.trim().toUpperCase());
@@ -485,9 +490,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						budgetRemaining=0;
 					else
 					{
-						budgetRemaining=Util.s_int((String)V.firstElement());
+						budgetRemaining=Util.s_long((String)V.firstElement());
 						if(budgetRemaining==0)
-							budgetRemaining=Integer.MAX_VALUE/2;
+							budgetRemaining=Long.MAX_VALUE/2;
 					}
 					s="DAY";
 					if(V.size()>1) s=((String)V.lastElement()).toUpperCase();
@@ -496,6 +501,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(location()!=null)
 					{
+						if(s.startsWith("HOUR"))
+							budgetTickDown=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/location().getArea().getTimeObj().getHoursInDay();
+						else
 						if(s.startsWith("WEEK"))
 							budgetTickDown=location().getArea().getTimeObj().getDaysInWeek()*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
 						else
@@ -608,14 +616,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
 					int yourValue=yourValue(mob,msg.tool(),false)[0];
-					if(yourValue<1)
+					if(yourValue<2)
 					{
 						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
 						return false;
 					}
-					if((msg.targetMinor()==CMMsg.TYP_SELL)&&(yourValue>budgetRemaining))
+					if((msg.targetMinor()==CMMsg.TYP_SELL)&&(((long)yourValue)>budgetRemaining))
 					{
-						if(yourValue>budgetMax)
+						if(((long)yourValue)>budgetMax)
 							CommonMsgs.say(this,mob,"That's way out of my price range! Try AUCTIONing it.",true,false);
 						else
 							CommonMsgs.say(this,mob,"Sorry, I can't afford that right now.  Try back later.",true,false);
@@ -1155,10 +1163,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			itemRate=Util.div(Util.s_double((String)V.firstElement()),100.0);
 			resourceRate=Util.div(Util.s_double((String)V.lastElement()),100.0);
 		}
-		if(product instanceof EnvResource)
-			return resourceRate;
-		else
-			return itemRate;
+		double rate=(product instanceof EnvResource)?resourceRate:itemRate;
+		rate=rate*num;
+		if(rate>1.0) rate=1.0;
+		if(rate<0.0) rate=0.0;
+		return rate;
 	}
 	
 	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
@@ -1212,12 +1221,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		//double halfPrice=Math.round(Util.div(val,2.0));
 		// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(Util.div(Util.mul(val[0],mob.charStats().getStat(CharStats.CHARISMA)),60.0));
-
-		if(product instanceof EnvResource)
-			buyPrice-=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
-		else
         if(!(product instanceof Ability))
-			buyPrice-=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
+			buyPrice=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
 
 		// the price is 200% at 0 charisma, and 100% at 30
 		int sellPrice=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
@@ -1353,13 +1358,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
 
 	public String budget(){return budget;}
-	public void setBudget(String factors){budget=factors;}
+	public void setBudget(String factors){budget=factors; budgetTickDown=0;}
 	
 	public String devalueRate(){return devalueRate;}
 	public void setDevalueRate(String factors){devalueRate=factors;}
 	
 	public int invResetRate(){return invResetRate;}
-	public void setInvResetRate(int ticks){invResetRate=ticks;}
+	public void setInvResetRate(int ticks){invResetRate=ticks; invResetTickDown=0;}
 	
 	protected StringBuffer listInventory(MOB mob)
 	{

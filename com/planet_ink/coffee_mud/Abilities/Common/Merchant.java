@@ -63,6 +63,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		return text;
 	}
+	public String budget(){return "";}
+	public void setBudget(String factors){}
+	public String devalueRate(){return "";}
+	public void setDevalueRate(String factors){}
+	public int invResetRate(){return 0;}
+	public void setInvResetRate(int ticks){}
+	
 	public void setMiscText(String text)
 	{
 		synchronized(this)

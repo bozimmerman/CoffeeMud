@@ -793,7 +793,7 @@ public class MobData extends StdWebMacro
 				break;
 			case 42: // inventory reset rate
 				if((firstTime)&&(M instanceof ShopKeeper))
-					old=((ShopKeeper)M).invResetRate();
+					old=""+((ShopKeeper)M).invResetRate();
 				str.append(old);
 				break;
 			}
