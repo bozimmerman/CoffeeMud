@@ -34,7 +34,7 @@ target commmand to switch among targets fighting you
 
 Two-handed fighting
 
-Finish implementing height -- make armor that doesn't fit!
+Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
 
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
 
@@ -44,7 +44,7 @@ be able to drink or fill waterskin from freshwater locales
 
 PlayerKill flag
 
-vassels command to list the ones who serve you (and are online)
+vassels command to list the ones who serve you (even those which are online)
 
 Forget spell to make someone forget a skill they try, at random!
 
