@@ -38,6 +38,8 @@ public class Poison extends StdAbility
 	protected int POISON_DELAY(){return 3;}
 	protected String POISON_DONE(){return "The poison runs its course.";}
 	protected String POISON_START(){return "^G<S-NAME> turn(s) green.^?";}
+	protected String POISON_START_TARGETONLY(){return "";}
+	protected boolean POISON_AFFECTTARGET(){return true;}
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";}
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
@@ -179,8 +181,14 @@ public class Poison extends StdAbility
 				if(msg.value()<=0)
 				{
 					if(target instanceof MOB)
-						R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
-				    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
+					    if(POISON_START_TARGETONLY().length()>0)
+							((MOB)target).tell(POISON_START_TARGETONLY());
+					    else
+							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
+					if(POISON_AFFECTTARGET())
+					    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
+					else
+					    success=true;
 				}
 				else
 					success=false;

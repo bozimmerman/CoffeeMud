@@ -30,13 +30,26 @@ public class Poison_Rotten extends Poison
 
 	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 5;}
-	protected String POISON_DONE(){return "The poison runs its course.";}
+	protected boolean POISON_AFFECTTARGET()
+	{
+	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH))
+		    return false;
+	    else
+	        return true;
+	}
+	protected String POISON_START_TARGETONLY()
+	{
+	    if((affected instanceof Food)&&((((Food)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH))
+		    return "^G"+affected.name()+" was rotten! Blech!^?";
+	    else
+		    return "";
+	}
 	protected String POISON_START()
 	{
 	    if(affected instanceof Food)
 		    return "^G<S-NAME> <S-HAS-HAVE> eaten rotten "+affected.name()+"!^?";
 	    else
-		    return "^G<S-NAME> seem(s) weakened!^?";
+		    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
 	}
 	protected String POISON_AFFECT(){return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";}
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
