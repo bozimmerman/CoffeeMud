@@ -112,7 +112,7 @@ public class Undead_EnergyDrain extends StdAbility
 						mob.recoverMaxState();
 					}
 					else
-						success=maliciousAffect(mob,target,10,-1);
+						success=maliciousAffect(mob,target,0,-1);
 				}
 			}
 		}

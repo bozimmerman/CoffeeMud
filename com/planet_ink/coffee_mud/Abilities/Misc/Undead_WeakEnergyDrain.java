@@ -113,7 +113,7 @@ public class Undead_WeakEnergyDrain extends StdAbility
 						mob.recoverMaxState();
 					}
 					else
-						success=maliciousAffect(mob,target,0,-1);
+						success=maliciousAffect(mob,target,10,-1);
 				}
 			}
 		}

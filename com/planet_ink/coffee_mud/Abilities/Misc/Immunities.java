@@ -20,6 +20,7 @@ public class Immunities extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
 	public Environmental newInstance(){	return new Immunities();}
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -43,7 +44,6 @@ public class Immunities extends StdAbility
 		&&((affect.targetMinor()==Affect.TYP_PARALYZE)&&((text.indexOf("PARALYZE")>=0)||(text.equals("ALL"))))
 		&&((affect.targetMinor()==Affect.TYP_POISON)&&((text.indexOf("POISON")>=0)||(text.equals("ALL"))))
 		&&((affect.targetMinor()==Affect.TYP_UNDEAD)&&((text.indexOf("UNDEAD")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_WEAPONATTACK)&&((text.indexOf("ACID")>=0)||(text.equals("ALL"))))
 		&&(!mob.amDead()))
 		{
 			String immunityName="certain";

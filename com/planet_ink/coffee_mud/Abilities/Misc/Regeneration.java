@@ -17,13 +17,15 @@ public class Regeneration extends StdAbility
 	public String displayText(){ return "(Regeneration)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public int quality(){return Ability.BENEFICIAL_OTHERS;}
 	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"REGENERATION"};
+	private static final String[] triggerStrings = {"REGENERATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Regeneration();}
 	public int classificationCode(){return Ability.SKILL;}
+	private int permanentDamage=0;
+	
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -47,6 +49,86 @@ public class Regeneration extends StdAbility
 		return true;
 	}
 
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if(!super.okAffect(myHost,msg))
+			return false;
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB M=(MOB)affected;
+			if(msg.amISource(M)&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			{
+				permanentDamage=0;
+				M.recoverMaxState();
+			}
+			else
+			if((msg.amITarget(M))
+			&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			&&(msg.tool()!=null)
+			&&(text().length()>0))
+			{
+				String text=text().toUpperCase();
+				boolean hurts=false;
+				if(msg.tool() instanceof Weapon)
+				{
+					int x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
+					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+						hurts=true;
+					if(Sense.isABonusItems(msg.tool()))
+					{
+						x=text.indexOf("MAGIC");
+						if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+							hurts=true;
+					}
+					x=text.indexOf("LEVEL");
+					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+					{
+						String lvl=text.substring(x+5);
+						if(lvl.indexOf(" ")>=0)
+							lvl=lvl.substring(lvl.indexOf(" "));
+						if(msg.tool().envStats().level()>=Util.s_int(lvl))
+							hurts=true;
+					}
+					x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
+					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+						hurts=true;
+				}
+				else
+				if(msg.tool() instanceof Ability)
+				{
+					int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES;
+					switch(classType)
+					{
+					case Ability.SPELL:
+					case Ability.PRAYER:
+					case Ability.CHANT:
+					case Ability.SONG:
+						{
+							int x=text.indexOf("MAGIC");
+							if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+								hurts=true;
+						}
+						break;
+					default:
+						break;
+					}
+				}
+				if(hurts)
+				{
+					permanentDamage+=(msg.targetCode()-msg.MASK_HURT);
+					M.recoverMaxState();
+				}
+			}
+			
+		}
+		return true;
+	}
+	
+	public void affectCharState(MOB mob, CharState state)
+	{
+		super.affectCharState(mob,state);
+		state.setHitPoints(state.getHitPoints()-permanentDamage);
+	}
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

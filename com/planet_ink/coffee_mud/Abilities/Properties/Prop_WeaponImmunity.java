@@ -50,9 +50,6 @@ public class Prop_WeaponImmunity extends Property
 						if(text.charAt(x-1)!='-')
 							immune=true;
 					}
-					else
-					if(x==0)
-						immune=true;
 					if(Sense.isABonusItems(msg.tool()))
 					{
 						x=text.indexOf("MAGIC");
@@ -65,9 +62,24 @@ public class Prop_WeaponImmunity extends Property
 								immune=true;
 						}
 					}
-					else
-					if(x==0)
-						immune=true;
+					x=text.indexOf("LEVEL");
+					if(x>0)
+					{
+						String lvl=text.substring(x+5);
+						if(lvl.indexOf(" ")>=0)
+							lvl=lvl.substring(lvl.indexOf(" "));
+						if((text.charAt(x-1)=='-')&&(immune))
+						{
+							if(msg.tool().envStats().level()>=Util.s_int(lvl))
+								immune=false;
+						}
+						else
+						if(text.charAt(x-1)!='-')
+						{
+							if(msg.tool().envStats().level()<Util.s_int(lvl))
+								immune=true;
+						}
+					}
 					x=text.indexOf(EnvResource.RESOURCE_DESCS[((Weapon)msg.tool()).material()&EnvResource.RESOURCE_MASK]);
 					if(x>0)
 					{
@@ -77,9 +89,6 @@ public class Prop_WeaponImmunity extends Property
 						if(text.charAt(x-1)!='-')
 							immune=true;
 					}
-					else
-					if(x==0)
-						immune=true;
 				}
 				else
 				if(msg.tool() instanceof Ability)
