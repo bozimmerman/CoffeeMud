@@ -85,12 +85,12 @@ public class Doppleganger extends StdMOB
 		{
 			if(mimicing!=null)
 			{
-				if(mimicing.getVictim()!=this)
+				if((mimicing.getVictim()!=null)&&(mimicing.getVictim()!=this))
 					mimicing=null;
-				if(mimicing.location()!=location())
+				if((mimicing.location()!=null)&&(mimicing.location()!=location()))
 					mimicing=null;
 			}
-			if(mimicing==null)
+			if((mimicing==null)&&(location()!=null)&&(affect.source()!=null))
 			{
 				location().show(this,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
 				mimicing=affect.source();

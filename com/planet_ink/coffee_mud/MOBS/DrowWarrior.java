@@ -27,13 +27,14 @@ public class DrowWarrior extends DrowElf
 		// ===== set the basics
 		Username="a Drow male";
 		setDescription("a Drow warrior");
-		setDisplayText("He\\`s armored in black chain mail and a full arsenal of weapons.");
+		setDisplayText("A Drow warrior considers you carefully.");
 
         equipDrow();
 
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
+		baseCharStats.setGender('M');
 
 		setWimpHitPoint(1);
 

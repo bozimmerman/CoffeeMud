@@ -22,7 +22,7 @@ public class DrowWizard extends DrowElf
 		// ===== set the basics
 		Username="a Drow male";
 		setDescription("a Drow wizard");
-		setDisplayText("He\\`s wearing a finely crafted black cloak.");
+		setDisplayText("A Drow wizard turns your blood cold.");
 
 		Weapon mainWeapon = (Weapon)CMClass.getWeapon("Quarterstaff");
 		if(mainWeapon!=null)
@@ -36,6 +36,7 @@ public class DrowWizard extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
+		baseCharStats.setGender('M');
 
 		setWimpHitPoint(1);
 

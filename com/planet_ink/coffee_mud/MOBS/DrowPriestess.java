@@ -21,7 +21,7 @@ public class DrowPriestess extends DrowElf
 		// ===== set the basics
 		Username="a Drow priestess";
 		setDescription("a Drow priestess");
-		setDisplayText("She's armored in black chain mail and carrying a solid looking mace.");
+		setDisplayText("A Drow priestess wants to see you dead.");
 
 		Weapon w=(Weapon)CMClass.getWeapon("Mace");
 		if(w!=null)
@@ -35,6 +35,7 @@ public class DrowPriestess extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
+		baseCharStats.setGender('F');
 
 		setWimpHitPoint(1);
 

@@ -1,1 +1,2 @@
 if you try to start a new song, the old one should automatically be voided, regardless of success of the new song. Currentyly, if you miss your skill, you get to retain the old song.
+can't eat sesame seed
