@@ -69,7 +69,22 @@ public class ItemIdentifier extends StdBehavior
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
 			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+affect.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r"+((Item)affect.tool()).secretIdentity()+"'^?.");
+			StringBuffer up=new StringBuffer(affect.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r");
+			if((affect.tool() instanceof Armor)&&(affect.tool().envStats().height()>0))
+				up.append("It is a size "+affect.tool().envStats().height()+".");
+			int weight=affect.tool().envStats().weight();
+			if((weight!=affect.tool().baseEnvStats().weight())&&(affect.tool() instanceof Container))
+				up.append("It weighs "+affect.tool().baseEnvStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
+			else
+				up.append("It weighs "+weight+" pounds.\n\r");
+			if(affect.tool() instanceof Weapon)
+			{
+				Weapon w=(Weapon)affect.tool();
+				up.append("It is a "+Weapon.classifictionDescription[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
+				up.append("It does "+Weapon.typeDescription[w.weaponType()].toLowerCase()+" damage.\n\r");
+			}
+			up.append(((Item)affect.tool()).secretIdentity());
+			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);

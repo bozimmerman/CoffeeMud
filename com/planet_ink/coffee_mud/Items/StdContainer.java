@@ -268,8 +268,10 @@ public class StdContainer extends StdItem implements Container
 				{
 					Item newitem=(Item)affect.tool();
 					if(newitem.container()==this)
+					{
 						newitem.setContainer(null);
-					unWear();
+						newitem.unWear();
+					}
 				}
 				else
 				if(!mob.isMine(this))
@@ -280,7 +282,7 @@ public class StdContainer extends StdItem implements Container
 				}
 				else
 				{
-					this.setContainer(null);
+					setContainer(null);
 					unWear();
 					mob.location().recoverRoomStats();
 				}

@@ -171,11 +171,25 @@ public class Weaponsmithing extends CommonSkill
 		return true;
 	}
 
+	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	{
+		if(!super.canMend(mob,E,quiet)) return false;
+		Item building=(Item)E;
+		if((!(building instanceof Weapon))
+		||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
+		{
+			if(!quiet)
+				commonTell(mob,"You don't know how to mend that sort of thing.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, or \"weaponsmith mend <item>\".");
+			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", or \"weaponsmith mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -210,6 +224,9 @@ public class Weaponsmithing extends CommonSkill
 			commonEmote(mob,buf.toString());
 			return true;
 		}
+		if(str.equalsIgnoreCase("scan"))
+			return publicScan(mob,commands);
+		else
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
@@ -217,24 +234,7 @@ public class Weaponsmithing extends CommonSkill
 			messedUp=false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
-			if(building==null) return false;
-
-			if((!(building instanceof Weapon))
-			||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
-			{
-				commonTell(mob,"You don't know how to mend that sort of thing.");
-				return false;
-			}
-			if(!building.subjectToWearAndTear())
-			{
-				commonTell(mob,"You can't mend "+building.name()+".");
-				return false;
-			}
-			if(((Item)building).usesRemaining()>=100)
-			{
-				commonTell(mob,building.name()+" is in good condition already.");
-				return false;
-			}
+			if(!canMend(mob,building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;

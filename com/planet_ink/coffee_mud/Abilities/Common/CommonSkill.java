@@ -419,6 +419,117 @@ public class CommonSkill extends StdAbility
 		return null;
 	}
 
+	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
+	{
+		Vector V=new Vector();
+		if(from==null) return V;
+		if(from instanceof Room)
+		{
+			Room R=(Room)from;
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if((I!=null)
+				&&(I.container()==contained)
+				&&(canMend(mob,I,true))
+				&&(Sense.canBeSeenBy(I,mob)))
+					V.addElement(I);
+			}
+		}
+		else
+		if(from instanceof MOB)
+		{
+			MOB M=(MOB)from;
+			for(int i=0;i<M.inventorySize();i++)
+			{
+				Item I=M.fetchInventory(i);
+				if((I!=null)
+				&&(I.container()==contained)
+				&&(canMend(mob,I,true))
+				&&(Sense.canBeSeenBy(I,mob))
+				&&((M==from)||(!I.amWearingAt(Item.INVENTORY))))
+					V.addElement(I);
+			}
+		}
+		else
+		if(from instanceof Item)
+		{
+			if(from instanceof Container)
+				V=getAllMendable(mob,((Item)from).owner(),(Item)from);
+			if(canMend(mob,from,true))
+				V.addElement(from);
+		}
+		return V;
+	}
+	
+	public boolean publicScan(MOB mob, Vector commands)
+	{
+		String rest=Util.combine(commands,1);
+		Environmental scanning=null;
+		if(rest.length()==0)
+			scanning=mob;
+		else
+		if(rest.equalsIgnoreCase("room"))
+			scanning=mob.location();
+		else
+		{
+			scanning=mob.location().fetchInhabitant(rest);
+			if((scanning==null)||(!Sense.canBeSeenBy(scanning,mob)))
+			{
+				commonTell(mob,"You don't see anyone called '"+rest+"' here.");
+				return false;
+			}
+		}
+		Vector allStuff=getAllMendable(mob,scanning,null);
+		if(allStuff.size()==0)
+		{
+			if(mob==scanning)
+				commonTell(mob,"You don't seem to have anything that needs mending with "+name()+".");
+			else
+				commonTell(mob,"You don't see anything on "+scanning.name()+" that needs mending with "+name()+".");
+			return false;
+		}
+		StringBuffer buf=new StringBuffer("The following items could use some "+name()+":\n\r");
+		for(int i=0;i<allStuff.size();i++)
+		{
+			Item I=(Item)allStuff.elementAt(i);
+			buf.append(Util.padRight(I.usesRemaining()+"%",5)+I.name());
+			if(!I.amWearingAt(Item.INVENTORY))
+				buf.append(" ("+Sense.wornLocation(I.rawWornCode())+")");
+			if(i<(allStuff.size()-1))
+				buf.append("\n\r");
+		}
+		commonTell(mob,buf.toString());
+		return true;
+	}
+	
+	
+	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	{
+		if(E==null) return false;
+		if(!(E instanceof Item))
+		{
+			if(!quiet)
+				commonTell(mob,"You can't mend "+E.name()+".");
+			return false;
+		}
+		Item building=(Item)E;
+		if(!building.subjectToWearAndTear())
+		{
+			if(!quiet)
+				commonTell(mob,"You can't mend "+building.name()+".");
+			return false;
+		}
+		if(building.usesRemaining()>=100)
+		{
+			if(!quiet)
+				commonTell(mob,building.name()+" is in good condition already.");
+			return false;
+		}
+		return true;
+	}
+	
+	
 	protected Item makeItemResource(int type)
 	{
 		Item I=null;

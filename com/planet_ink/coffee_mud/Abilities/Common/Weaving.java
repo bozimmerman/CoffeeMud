@@ -102,11 +102,28 @@ public class Weaving extends CommonSkill
 		super.unInvoke();
 	}
 
+	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	{
+		if(!super.canMend(mob,E,quiet)) return false;
+		Item building=(Item)E;
+		if((building.material()!=EnvResource.RESOURCE_COTTON)
+		&&(building.material()!=EnvResource.RESOURCE_SILK)
+		&&(building.material()!=EnvResource.RESOURCE_HEMP)
+		&&(building.material()!=EnvResource.RESOURCE_WHEAT)
+		&&(building.material()!=EnvResource.RESOURCE_SEAWEED))
+		{
+			if(!quiet)
+				commonTell(mob,"That's not made of any sort of weavable material.  It can't be mended.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, or \"weave mend <item>\".");
+			commonTell(mob,"Weave what? Enter \"weave list\" for a list, \"weave refit <item>\" to resize, \"weave scan\", or \"weave mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -147,26 +164,7 @@ public class Weaving extends CommonSkill
 			messedUp=false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
-			if(building==null) return false;
-			if((building.material()!=EnvResource.RESOURCE_COTTON)
-			&&(building.material()!=EnvResource.RESOURCE_SILK)
-			&&(building.material()!=EnvResource.RESOURCE_HEMP)
-			&&(building.material()!=EnvResource.RESOURCE_WHEAT)
-			&&(building.material()!=EnvResource.RESOURCE_SEAWEED))
-			{
-				commonTell(mob,"That's not made of any sort of weavable material.  It can't be mended.");
-				return false;
-			}
-			if(!building.subjectToWearAndTear())
-			{
-				commonTell(mob,"You can't mend "+building.name()+".");
-				return false;
-			}
-			if(((Item)building).usesRemaining()>=100)
-			{
-				commonTell(mob,building.name()+" is in good condition already.");
-				return false;
-			}
+			if(!canMend(mob,building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;

@@ -10,6 +10,6 @@ set mob Gargamel
 give behavior Scriptable LOAD=quests/smurfocide/gargamel.script
 # load the above behavior into the last mob (gargamel)
 
-set duration 75
-# the duration of the quest is 5 minutes (75 ticks).  The scripts on the mobs will
+set duration 150
+# the duration of the quest is 10 minutes (150 ticks).  The scripts on the mobs will
 # do the rest...

@@ -111,11 +111,24 @@ public class Carpentry extends CommonSkill
 		super.unInvoke();
 	}
 
+	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	{
+		if(!super.canMend(mob,E,quiet)) return false;
+		Item building=(Item)E;
+		if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		{
+			if(!quiet)
+				commonTell(mob,"That's not made of wood.  That can't be mended.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, or \"carve mend <item>\".");
+			commonTell(mob,"Carve what? Enter \"carve list\" for a list, \"carve refit <item>\" to resize shoes or armor, \"carve scan\", or \"carve mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -140,6 +153,9 @@ public class Carpentry extends CommonSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		if(str.equalsIgnoreCase("scan"))
+			return publicScan(mob,commands);
+		else
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
@@ -148,22 +164,7 @@ public class Carpentry extends CommonSkill
 			messedUp=false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
-			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-			{
-				commonTell(mob,"That's not made of wood.  That can't be mended.");
-				return false;
-			}
-			if(!building.subjectToWearAndTear())
-			{
-				commonTell(mob,"You can't mend "+building.name()+".");
-				return false;
-			}
-			if(((Item)building).usesRemaining()>=100)
-			{
-				commonTell(mob,building.name()+" is in good condition already.");
-				return false;
-			}
+			if(!canMend(mob, building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
