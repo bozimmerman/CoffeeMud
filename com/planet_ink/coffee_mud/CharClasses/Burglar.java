@@ -50,7 +50,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 			
-CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Listen",false);
 			
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",true);
@@ -62,7 +62,7 @@ CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_SlipItem",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
 			
-CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Search",false);
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Bribe",true);
@@ -99,7 +99,7 @@ CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Thief_Embezzle",true);
-CMAble.addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 		}
 	}
 	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}

@@ -75,7 +75,9 @@ public class Thief_ContractHit extends ThiefSkill
 					M.bringToLife(mob.location(),true);
 					M.setVictim(mob);
 					mob.setVictim(M);
-					Ability A=M.fetchAbility("Thief_BackStab");
+					Ability A=M.fetchAbility("Thief_Hide");
+					if(A!=null) A.invoke(M,M,true);
+					A=M.fetchAbility("Thief_BackStab");
 					if(A!=null) A.invoke(M,mob,false);
 				}
 			}
