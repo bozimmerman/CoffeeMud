@@ -486,10 +486,12 @@ public class CoffeeFilter
 
 
 			if((len<buf.length())
-			   &&(loop!=lastSp)
-			   &&(lastSp>=0)
-			   &&(((int)buf.charAt(loop))!=13)
-			   &&(((int)buf.charAt(loop))!=10))
+			&&(loop!=lastSp)
+			&&(lastSp>=0)
+			&&(loop>=0)
+			&&(loop<buf.length())
+			&&(((int)buf.charAt(loop))!=13)
+			&&(((int)buf.charAt(loop))!=10))
 			{
 				if(buf.charAt(lastSp+1)==' ')
 				{
