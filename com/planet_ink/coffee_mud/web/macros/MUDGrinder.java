@@ -14,6 +14,9 @@ public class MUDGrinder extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+															  
 		if(parms!=null)
 		if(parms.containsKey("AREAMAP"))
 		{

@@ -52,7 +52,7 @@ public class ItemMender extends StdBehavior
 			}
 			if(source.getMoney()<cost(tool))
 			{
-				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Armor)affect.tool())+" gold coins to repair that.",true,false);
+				ExternalPlay.quickSay(observer,source,"You'll need "+cost((Item)affect.tool())+" gold coins to repair that.",true,false);
 				return false;
 			}
 			return true;

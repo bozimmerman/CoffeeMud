@@ -98,7 +98,7 @@ public class CommandProcessor
 					itemUsage.pull(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.BUG:
-					Log.errOut(mob.name(),Util.combine(commands,1));
+					ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.name(),"ALL","BUG",Util.combine(commands,1),-1);
 					mob.tell("Thank you for your assistance in debugging CoffeeMud!");
 					break;
 				case CommandSet.BUY:
@@ -235,6 +235,10 @@ public class CommandProcessor
 					break;
 				case CommandSet.HOLD:
 					itemUsage.hold(mob,commands);
+					break;
+				case CommandSet.IDEA:
+					ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.name(),"ALL","IDEA",Util.combine(commands,1),-1);
+					mob.tell("Thank you for your contribution!");
 					break;
 				case CommandSet.IMPORT:
 					if(mob.isASysOp(null))
@@ -441,6 +445,10 @@ public class CommandProcessor
 					break;
 				case CommandSet.TRAIN:
 					basicSenses.train(mob,commands);
+					break;
+				case CommandSet.TYPO:
+					ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.name(),"ALL","TYPOS",Util.combine(commands,1),-1);
+					mob.tell("Thank you for your assistance!");
 					break;
 				case CommandSet.UNLOCK:
 					movement.unlock(mob,Util.combine(commands,1));

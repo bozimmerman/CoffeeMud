@@ -39,6 +39,9 @@ public class ExitData extends StdWebMacro
 		Room R=CMMap.getRoom(last);
 		if(R==null) return "@break@";
 		
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+		
 		String linkdir=(String)reqs.get("LINK");
 		if(linkdir==null) return "@break@";
 		int link=Directions.getGoodDirectionCode(linkdir);

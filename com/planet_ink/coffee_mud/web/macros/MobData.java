@@ -256,6 +256,9 @@ public class MobData extends StdWebMacro
 		String mobCode=(String)reqs.get("MOB");
 		if(mobCode==null) return "@break@";
 		
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+		
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
 		{

@@ -208,6 +208,29 @@ public class Lister
 
 	}
 
+	public StringBuffer journalList(String journal)
+	{
+		StringBuffer buf=new StringBuffer("");
+		Vector V=ExternalPlay.DBReadJournal(journal);
+		if(V!=null)
+		{
+			buf.append("\n\r"+Util.padRight("#",5)+Util.padRight("From",10)+" Entry\n\r");
+			buf.append("---------------------------------------------\n\r");
+			for(int j=0;j<V.size();j++)
+			{
+				Vector entry=(Vector)V.elementAt(j);
+				String from=(String)entry.elementAt(1);
+				String date=(String)entry.elementAt(2);
+				String to=(String)entry.elementAt(3);
+				String subject=(String)entry.elementAt(4);
+				String message=(String)entry.elementAt(5);
+				buf.append(Util.padRight((j+1)+"",3)+") "+Util.padRight(from,10)+" "+message+"\n\r");
+			}
+		}
+		return buf;
+	}
+	
+	
 	public void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -279,6 +302,15 @@ public class Lister
 		if("MAGIC".startsWith(listThis))
 			mob.tell(reallyList(CMClass.miscMagic).toString());
 		else
+		if("BUGS".startsWith(listThis))
+			mob.tell(journalList("SYSTEM_BUGS").toString());
+		else
+		if("IDEAS".startsWith(listThis))
+			mob.tell(journalList("SYSTEM_IDEAS").toString());
+		else
+		if("TYPOS".startsWith(listThis))
+			mob.tell(journalList("SYSTEM_TYPOS").toString());
+		else
 		if("LOG".startsWith(listThis))
 			mob.tell(Log.getLog().toString());
 		else
@@ -291,6 +323,6 @@ public class Lister
 		if("THREADS".startsWith(listThis))
 			mob.tell(listThreads(mob).toString());
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS or AREA.");
+			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, or AREA.");
 	}
 }

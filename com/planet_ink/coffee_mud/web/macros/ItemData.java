@@ -19,6 +19,9 @@ public class ItemData extends StdWebMacro
 		if(itemCode==null) return "@break@";
 		int itemNum=Util.s_int(itemCode);
 		
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+		
 		String mobNum=(String)reqs.get("MOB");
 		
 		Room R=null;

@@ -236,6 +236,10 @@ public class RoomData extends StdWebMacro
 		String last=(String)httpReq.getRequestParameters().get("ROOM");
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
+		
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+		
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
 		{

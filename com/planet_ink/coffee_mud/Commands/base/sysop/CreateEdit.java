@@ -75,6 +75,48 @@ public class CreateEdit
 			sysopSocials.destroy(mob,commands);
 		}
 		else
+		if(commandType.equals("BUG"))
+		{
+			int which=-1;
+			if(commands.size()>2)
+				which=Util.s_int((String)commands.elementAt(2));
+			if(which<=0)
+				mob.tell("Please enter a valid bug number to delete.  Use List Bugs for more information.");
+			else
+			{
+				ExternalPlay.DBDeleteJournal("SYSTEM_BUGS",which-1);
+				mob.tell("Bug deletion submitted.");
+			}
+		}
+		else
+		if(commandType.equals("IDEA"))
+		{
+			int which=-1;
+			if(commands.size()>2)
+				which=Util.s_int((String)commands.elementAt(2));
+			if(which<=0)
+				mob.tell("Please enter a valid idea number to delete.  Use List ideas for more information.");
+			else
+			{
+				ExternalPlay.DBDeleteJournal("SYSTEM_IDEAS",which-1);
+				mob.tell("Idea deletion submitted.");
+			}
+		}
+		else
+		if(commandType.equals("TYPO"))
+		{
+			int which=-1;
+			if(commands.size()>2)
+				which=Util.s_int((String)commands.elementAt(2));
+			if(which<=0)
+				mob.tell("Please enter a valid typo number to delete.  Use List typos for more information.");
+			else
+			{
+				ExternalPlay.DBDeleteJournal("SYSTEM_TYPOS",which-1);
+				mob.tell("Typo deletion submitted.");
+			}
+		}
+		else
 		if(commandType.equals("MOB"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
@@ -145,7 +187,7 @@ public class CreateEdit
 					mob.tell(
 						"\n\rYou cannot destroy a '"+commandType+"'. "
 						+"However, you might try an "
-						+"EXIT, ITEM, USER, MOB, SOCIAL, or a ROOM.");
+						+"EXIT, ITEM, USER, MOB, SOCIAL, BUG, TYPO, IDEA, or a ROOM.");
 				}
 			}
 		}

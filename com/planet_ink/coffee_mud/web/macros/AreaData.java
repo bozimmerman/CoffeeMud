@@ -170,6 +170,9 @@ public class AreaData extends StdWebMacro
 		String last=(String)httpReq.getRequestParameters().get("AREA");
 		if(last==null) return " @break@";
 
+		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
+			return httpReq.getMUD().gameStatusStr();
+		
 		if(last.length()>0)
 		{
 			Area A=CMMap.getArea(last);
