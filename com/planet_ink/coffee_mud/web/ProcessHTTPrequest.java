@@ -716,7 +716,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		byte[] replyData = null;
 
 		status = S_200;
-
 		try
 		{
 			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
@@ -896,6 +895,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					// must insert a blank line before message body
 					sout.writeBytes( cr );
 					sout.write(replyData);
+					sout.flush();
 				}
 			}
 
@@ -912,12 +912,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 				":" + status);
 
+		
 		try
 		{
 			if (sout != null)
 			{
 				sout.flush();
-				try{Thread.sleep(500);}catch(Exception e){}
 				sout.close();
 				sout = null;
 			}
@@ -999,56 +999,40 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		try
 		{
 			int timeout=0;
+			BufferedReader BR=new BufferedReader(new InputStreamReader(sin));
 			ByteArrayOutputStream out=new ByteArrayOutputStream();
 			int contentLength=-1;
 			int c=-1;
 			while(true)
 			{
-				while(sin.available()>0)
+				c=BR.read();
+				if(c<0) break;
+				if((contentLength<0)&&(c==13))
 				{
-					c=sin.read();
-					if((contentLength<0)&&(c==13))
+					if(out.size()==0)
 					{
-						if(out.size()==0)
-						{
-							// got empty line, but no data yet!
-							contentLength=getContentLength(data);
-							if(contentLength<=0) return data;
-						}
-						else
-						{
-							String s=new String(out.toByteArray());
-							out=new ByteArrayOutputStream();
-							data.addElement(s);
-							if(s.startsWith("GET ")) return data;
-						}
+						// got empty line, but no data yet!
+						contentLength=getContentLength(data);
+						if(contentLength<=0) return data;
 					}
 					else
-					if((c!=10)||((contentLength>0)&&(out.size()>0)))
 					{
-						out.write(c);
-						if((contentLength>0)&&(out.size()>=contentLength))
-						{
-							data.addElement(out.toByteArray());
-							return data;
-						}
-					}
-				}
-				try{Thread.sleep(100);}catch(Exception e){}
-				timeout++;
-				if(sin.available()==0)
-				{
-					if(timeout>=20)
-					{
-						if(data.size()==0)
-							data.addElement(new String(out.toByteArray()));
-						else
-							data.addElement(out.toByteArray());
-						break;
+						String s=new String(out.toByteArray());
+						out=new ByteArrayOutputStream();
+						data.addElement(s);
+						if(s.startsWith("GET ")) return data;
 					}
 				}
 				else
-					timeout=0;					
+				if((c!=10)||((contentLength>0)&&(out.size()>0)))
+				{
+					out.write(c);
+					if((contentLength>0)&&(out.size()>=contentLength))
+					{
+						data.addElement(out.toByteArray());
+						return data;
+					}
+				}
 			}
 		}
 		catch(Exception e)
@@ -1093,6 +1077,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			Vector inData = getData(sin);
 			//Log.sysOut("HTTP",inLine);
+
 			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String))) 
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
