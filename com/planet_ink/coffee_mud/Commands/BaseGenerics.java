@@ -4231,7 +4231,7 @@ public class BaseGenerics extends StdCommand
 			genWeapon(mob,me,++showNumber,showFlag);
 			genRacialAbilities(mob,me,++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
-			genRacialEffects(mob,me,++showNumber,showFlag);
+			//genRacialEffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
