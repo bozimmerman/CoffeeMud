@@ -5685,13 +5685,15 @@ public class Scriptable extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-
 		MOB mob=getScriptableMOB(ticking);
 
 		Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
 		if((mob==null)||(lastKnownLocation==null))
+		{
+			altStatusTickable=null;
 			return true;
+		}
 
 		Environmental affecting=(ticking instanceof Environmental)?((Environmental)ticking):null;
 
@@ -5792,8 +5794,8 @@ public class Scriptable extends StdBehavior
 						if(!done)
 							lastDayProgsDone.remove(new Integer(v));
 					}
-					break;
 				}
+				break;
 			case 15: // day_prog
 				if((mob.location()!=null)
 				&&(!mob.amDead()))
@@ -5819,8 +5821,8 @@ public class Scriptable extends StdBehavior
 						if(!done)
 							lastDayProgsDone.remove(new Integer(v));
 					}
-					break;
 				}
+				break;
 			case 13: // questtimeprog
 				if(!oncesDone.contains(script))
 				{
@@ -5836,6 +5838,8 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
+			default:
+			    break;
 			}
 		}
 		try{
@@ -5848,6 +5852,7 @@ public class Scriptable extends StdBehavior
 			}
 		}catch(Exception e){}
 	    tickStatus=Tickable.STATUS_NOT;
+		altStatusTickable=null;
 		return true;
 	}
 }

@@ -195,9 +195,8 @@ public class CMMap
 	}
 	public static void justDelRoom(Room oneToDel)
 	{
-		if(oneToDel instanceof GridLocale)
-			((GridLocale)oneToDel).clearGrid(null);
-		roomsList.remove(oneToDel);
+	    if(oneToDel!=null)
+			roomsList.remove(oneToDel);
 	}
 	
 

@@ -273,15 +273,18 @@ public class Skill_Track extends StdAbility
 		if(rooms.size()>0)
 		{
 			theTrail=null;
+		    tickStatus=Tickable.STATUS_MISC6+8;
 			if((cacheCode==1)&&(rooms.size()==1))
 				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
+		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
 				theTrail=MUDTracker.findBastardTheBestWay(thisRoom,rooms,false,false,false,false,200);
+		    tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMMap.getExtendedRoomID(thisRoom)+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
 		}
 
-	    tickStatus=Tickable.STATUS_MISC6+8;
+	    tickStatus=Tickable.STATUS_MISC6+11;
 		if((success)&&(theTrail!=null))
 		{
 			theTrail.addElement(thisRoom);
@@ -293,17 +296,17 @@ public class Skill_Track extends StdAbility
 			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track.");
 			if(thisRoom.okMessage(mob,msg))
 			{
-			    tickStatus=Tickable.STATUS_MISC6+9;
+			    tickStatus=Tickable.STATUS_MISC6+12;
 				thisRoom.send(mob,msg);
 				invoker=mob;
 				Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverEnvStats();
-			    tickStatus=Tickable.STATUS_MISC6+10;
+			    tickStatus=Tickable.STATUS_MISC6+13;
 				newOne.nextDirection=MUDTracker.trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}
-		    tickStatus=Tickable.STATUS_MISC6+11;
+		    tickStatus=Tickable.STATUS_MISC6+14;
 		}
 		else
 		{
