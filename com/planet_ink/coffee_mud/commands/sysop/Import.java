@@ -761,7 +761,8 @@ public class Import
 			boolean circleFormat=false;
 			if(nextLine(objV).endsWith("~"))
 			{
-				R=CMClass.getRace(eatLineSquiggle(objV));
+				String raceName=eatLineSquiggle(objV);
+				R=CMClass.getRace(raceName);
 				circleFormat=true;
 			}
 			if(R==null)

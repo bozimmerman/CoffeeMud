@@ -67,7 +67,7 @@ public class Prayer extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(holyQuality!=Prayer.HOLY_NEUTRAL)
+		if((!auto)&&(holyQuality!=Prayer.HOLY_NEUTRAL))
 		{
 			if(holyQuality==Prayer.HOLY_EVIL)
 				mob.setAlignment(mob.getAlignment()-(envStats().level()*10));

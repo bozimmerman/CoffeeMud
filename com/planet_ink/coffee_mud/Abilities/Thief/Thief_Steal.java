@@ -66,7 +66,7 @@ public class Thief_Steal extends ThiefSkill
 
 		if(!success)
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getWisdom(),30.0))+(levelDiff*5);
+			int discoverChance=target.charStats().getWisdom()+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 			if(Dice.rollPercentage()<discoverChance)
@@ -80,7 +80,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getWisdom(),30.0))+(levelDiff*5);
+			int discoverChance=target.charStats().getWisdom()+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 
@@ -92,9 +92,11 @@ public class Thief_Steal extends ThiefSkill
 					str="<S-NAME> attempt(s) to steal from <T-HIS-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 
 			String hisStr=str;
-			int hisCode=Affect.MSG_NOISYMOVEMENT | ((target.isMonster())?Affect.MASK_MALICIOUS:0);
+			int hisCode=Affect.MSG_NOISYMOVEMENT;
 			if(Dice.rollPercentage()>discoverChance)
 				hisStr=null;
+			else
+				hisCode=hisCode | ((target.isMonster())?Affect.MASK_MALICIOUS:0);
 			
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))

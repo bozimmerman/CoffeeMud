@@ -166,7 +166,11 @@ public class CMClass
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		else
-		if((abilities.size()>0)&&(calledThis.length()>0))
+		if((abilities.size()>0)
+		&&(calledThis.length()>0)
+		&&(calledThis.indexOf("+")<0)
+		&&(calledThis.indexOf("-")<0)
+		&&(calledThis.indexOf("=")<0))
 			Log.sysOut("CMClass","Unknown Ability '"+calledThis+"'.");
 		return A;
 	}

@@ -2490,6 +2490,16 @@
 9
 
 ############################################################
+>horse pony
+
+(horse|pony|hi|hello)
+8:neighs
+4:prances around
+#matches anything and then says nothing
+()
+9
+
+############################################################
 >duck duckling swan goose
 
 (hi|hello)
