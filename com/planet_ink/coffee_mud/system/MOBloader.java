@@ -184,11 +184,25 @@ public class MOBloader
 						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 					else
 					{
-						if(profficiency==Integer.MAX_VALUE)
+						if((profficiency<0)||(profficiency==Integer.MAX_VALUE))
 						{
-							newAbility.setProfficiency(100);
-							mob.addNonUninvokableEffect(newAbility);
-							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+							if(profficiency==Integer.MAX_VALUE)
+							{
+								newAbility.setProfficiency(100);
+								mob.addNonUninvokableEffect(newAbility);
+								newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+							}
+							else
+							{
+								profficiency=profficiency+200;
+								newAbility.setProfficiency(profficiency);
+								newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+								
+								Ability newAbility2=(Ability)newAbility.copyOf();
+								mob.addNonUninvokableEffect(newAbility);
+								newAbility2.recoverEnvStats();
+								mob.addAbility(newAbility2);
+							}
 						}
 						else
 						{
@@ -693,14 +707,22 @@ public class MOBloader
 	{
 		if(mob.Name().length()==0) return;
 		DBConnector.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
-		HashSet H=new HashSet();
 		Vector V=new Vector();
+		HashSet H=new HashSet();
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
-			H.add(thisAbility.ID());
 			if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
 			{
+				int profficiency=thisAbility.profficiency();
+				H.add(thisAbility.ID());
+				
+				
+				Ability effectA=mob.fetchEffect(thisAbility.ID());
+				if((effectA!=null)&&(!effectA.isBorrowed(mob))
+				&&((!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())))
+					profficiency=profficiency-200;
+				
 				String
 				str="INSERT INTO CMCHAB ("
 				+"CMUSERID, "
@@ -710,7 +732,7 @@ public class MOBloader
 				+") values ("
 				+"'"+mob.Name()+"',"
 				+"'"+thisAbility.ID()+"',"
-				+thisAbility.profficiency()+",'"
+				+profficiency+",'"
 				+thisAbility.text()+"'"
 				+")";
 				V.addElement(str);
@@ -720,9 +742,9 @@ public class MOBloader
 		{
 			Ability thisAffect=mob.fetchEffect(a);
 			if((thisAffect!=null)
+			&&(!H.contains(thisAffect.ID()))
 			&&(!thisAffect.isBorrowed(mob))
-			&&((!H.contains(thisAffect.ID()))
-			   ||((!thisAffect.canBeUninvoked())&&(!thisAffect.isAutoInvoked()))))
+			&&((!thisAffect.canBeUninvoked())&&(!thisAffect.isAutoInvoked())))
 			{
 				String
 				str="INSERT INTO CMCHAB ("
