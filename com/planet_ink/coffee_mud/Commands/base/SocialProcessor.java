@@ -285,9 +285,36 @@ public class SocialProcessor
 		say(mob,newCommands);
 	}
 
-	public static void report(MOB mob)
+	public static void report(MOB mob, Vector commands)
 	{
-		say(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
+		if(commands.size()<2)
+			say(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
+		else
+		{
+			String s=Util.combine(commands,1).toUpperCase();
+			if("SPELLS".startsWith(s))
+				ExternalPlay.quickSay(mob,null,("^NMy spells:^? "+Scoring.getAbilities(mob,Ability.SPELL,-1,false)),false,false);
+			else
+			if("SKILLS".startsWith(s))
+			{
+				Vector V=new Vector();
+				V.addElement(new Integer(Ability.THIEF_SKILL));
+				V.addElement(new Integer(Ability.SKILL));
+				V.addElement(new Integer(Ability.COMMON_SKILL));
+				ExternalPlay.quickSay(mob,null,("^NMy skills:^? "+Scoring.getAbilities(mob,V,-1,false)),false,false);
+			}
+			else
+			if("PRAYERS".startsWith(s))
+				ExternalPlay.quickSay(mob,null,("^NMy prayers:^? "+Scoring.getAbilities(mob,Ability.PRAYER,-1,false)),false,false);
+			else
+			if("CHANTS".startsWith(s))
+				ExternalPlay.quickSay(mob,null,("^NMy chants:^? "+Scoring.getAbilities(mob,Ability.CHANT,-1,false)),false,false);
+			else
+			if("SONGS".startsWith(s))
+				ExternalPlay.quickSay(mob,null,("^NMy songs:^? "+Scoring.getAbilities(mob,Ability.SONG,-1,false)),false,false);
+			else
+				mob.tell("'"+s+"' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, or SONGS.");
+		}
 	}
 
 	public static void reply(MOB mob, Vector commands)

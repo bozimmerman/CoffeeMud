@@ -69,12 +69,6 @@ public class ExternalPlay
 	{
 		if(player!=null) player.resetRoom(room);
 	}
-	public static String systemReport(String itemCode)
-	{
-		if(sysPlayer!=null) return sysPlayer.systemReport(itemCode);
-		return "";
-	}
-	
 	public static Ability getToEvoke(MOB mob, Vector commands)
 	{
 		if(player!=null) return player.getToEvoke(mob,commands);
@@ -214,6 +208,12 @@ public class ExternalPlay
 									 int numTicks)
 	{
 		if(sysPlayer!=null) sysPlayer.startTickDown(E,tickID,numTicks);
+	}
+	
+	public static String systemReport(String itemCode)
+	{
+		if(sysPlayer!=null) return sysPlayer.systemReport(itemCode);
+		return "";
 	}
 	
 	public static boolean deleteTick(Tickable E, int tickID)

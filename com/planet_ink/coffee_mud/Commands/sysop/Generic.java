@@ -971,6 +971,9 @@ public class Generic
 		if(E instanceof Armor)
 			modifyGenArmor(mob,(Armor)E);
 		else
+		if(E instanceof MusicalInstrument)
+			modifyGenInstrument(mob,(MusicalInstrument)E);
+		else
 		if(E instanceof Food)
 			modifyGenFood(mob,(Food)E);
 		else
@@ -1359,6 +1362,39 @@ public class Generic
 						newValue=EnvResource.RESOURCE_DATA[i][0];
 				if(newValue>=0)
 					E.setMaterial(newValue);
+				else
+					mob.tell("(no change)");
+			}
+		}
+	}
+
+	public static void genInstrumentType(MOB mob, MusicalInstrument E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Instrument Type: '"+MusicalInstrument.TYPE_DESC[E.instrumentType()]+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		boolean q=false;
+		while(!q)
+		{
+			String newType=mob.session().prompt("Enter a new type (?)\n\r:",MusicalInstrument.TYPE_DESC[E.instrumentType()]);
+			if(newType.equals("?"))
+			{
+				StringBuffer say=new StringBuffer("");
+				for(int i=0;i<MusicalInstrument.TYPE_DESC.length-1;i++)
+					say.append(MusicalInstrument.TYPE_DESC[i]+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=-1;
+				for(int i=0;i<MusicalInstrument.TYPE_DESC.length-1;i++)
+					if(newType.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
+						newValue=i;
+				if(newValue>=0)
+					E.setInstrumentType(newValue);
 				else
 					mob.tell("(no change)");
 			}
@@ -2501,6 +2537,50 @@ public class Generic
 			genValue(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genSize(mob,me,++showNumber,showFlag);
+			genDisposition(mob,me,++showNumber,showFlag);
+			genBehaviors(mob,me,++showNumber,showFlag);
+			genAffects(mob,me,++showNumber,showFlag);
+			if(showFlag<-900){ ok=true; break;}
+			if(showFlag>0){ showFlag=-1; continue;}
+			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
+			if(showFlag<=0)
+			{
+				showFlag=-1;
+				ok=true;
+				me.recoverEnvStats();
+				if(me.text().length()>=maxLength)
+				{
+					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+					ok=false;
+				}
+			}
+		}
+	}
+	public static void modifyGenInstrument(MOB mob, MusicalInstrument me)
+		throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		int showFlag=-1;
+		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
+			showFlag=-999;
+		while(!ok)
+		{
+			int showNumber=0;
+			genName(mob,me,++showNumber,showFlag);
+			genDisplayText(mob,me,++showNumber,showFlag);
+			genDescription(mob,me,++showNumber,showFlag);
+			genLevel(mob,me,++showNumber,showFlag);
+			genMaterialCode(mob,me,++showNumber,showFlag);
+			genWornLocation(mob,me,++showNumber,showFlag);
+			genRejuv(mob,me,++showNumber,showFlag);
+			genAbility(mob,me,++showNumber,showFlag);
+			genSecretIdentity(mob,me,++showNumber,showFlag);
+			genGettable(mob,me,++showNumber,showFlag);
+			genInstrumentType(mob,me,++showNumber,showFlag);
+			genValue(mob,me,++showNumber,showFlag);
+			genWeight(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);

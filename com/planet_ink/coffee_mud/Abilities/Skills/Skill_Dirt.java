@@ -56,9 +56,7 @@ public class Skill_Dirt extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
+		
 		if((mob.location().domainConditions()==Room.CONDITION_WET)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
@@ -75,6 +73,10 @@ public class Skill_Dirt extends StdAbility
 			mob.tell("There's no dirt here to kick!");
 			return false;
 		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		boolean success=profficiencyCheck(-(target.charStats().getStat(CharStats.DEXTERITY)*3),auto);
 
 		if(success)

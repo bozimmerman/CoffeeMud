@@ -244,15 +244,13 @@ public class Channels
 	public static void channel(MOB mob, Vector commands, boolean systemMsg)
 	{
 		PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		FullMsg msg=null;
 		commands.removeElementAt(0);
-
 		int channelInt=getChannelInt(channelName);
 		int channelNum=getChannelNum(channelName);
 
-		if(Util.isSet(pstats.getChannelMask(),channelInt))
+		if((pstats!=null)&&(Util.isSet(pstats.getChannelMask(),channelInt)))
 		{
 			pstats.setChannelMask(pstats.getChannelMask()&(pstats.getChannelMask()-channelNum));
 			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
@@ -306,8 +304,8 @@ public class Channels
 				&&(!M.amDead())
 				&&(M.location()!=null)
 				&&(M.envStats().level()>=lvl)
-				&&(M.playerStats()!=null)
-				&&(!M.playerStats().getIgnored().containsKey(mob.Name()))
+				&&((M.playerStats()==null)
+					||(!M.playerStats().getIgnored().containsKey(mob.Name())))
 				&&(M.okAffect(M,msg)))
 				{
 					M.affect(M,msg);

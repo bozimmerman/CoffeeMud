@@ -323,7 +323,7 @@ public class Scoring
 		V.addElement(new Integer(Ability.THIEF_SKILL));
 		V.addElement(new Integer(Ability.SKILL));
 		V.addElement(new Integer(Ability.COMMON_SKILL));
-		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1)+"\n\r");
+		msg.append("\n\r^HYour skills:^? "+getAbilities(mob,V,-1,true)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -410,7 +410,7 @@ public class Scoring
 	public static void prayers(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER,-1)+"\n\r");
+		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER,-1,true)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -418,7 +418,7 @@ public class Scoring
 	public static void chants(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1)+"\n\r");
+		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1,true)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -426,7 +426,7 @@ public class Scoring
 	public static void songs(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.SONG,-1)+"\n\r");
+		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.SONG,-1,true)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -434,7 +434,7 @@ public class Scoring
 	public static void languages(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.LANGUAGE,-1)+"\n\r");
+		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.LANGUAGE,-1,true)+"\n\r");
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
@@ -463,7 +463,7 @@ public class Scoring
 
 		}
 		else
-			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain));
+			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain,true));
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(spells.toString()+"\n\r");
 	}
@@ -486,7 +486,7 @@ public class Scoring
 	}
 
 
-	public static StringBuffer getAbilities(MOB able, int ofType, int ofDomain)
+	public static StringBuffer getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
@@ -496,9 +496,9 @@ public class Scoring
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));
-		return getAbilities(able,V,mask);
+		return getAbilities(able,V,mask,addQualLine);
 	}
-	public static StringBuffer getAbilities(MOB able, Vector ofTypes, int mask)
+	public static StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
@@ -543,6 +543,7 @@ public class Scoring
 		if(msg.length()==0)
 			msg.append("^!None!^?");
 		else
+		if(addQualLine)
 			msg.append("\n\r\n\rUse QUALIFY to see additional skills you can GAIN.");
 		return msg;
 	}

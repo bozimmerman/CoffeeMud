@@ -138,7 +138,7 @@ public class Socials
 			loaded= false;
 		}
 	}
-
+	
 	public static Social FetchSocial(String name, boolean exactOnly)
 	{
 		Social thisOne=(Social)soc.get(name.toUpperCase());

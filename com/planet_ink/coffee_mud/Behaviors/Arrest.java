@@ -796,11 +796,32 @@ public class Arrest extends StdBehavior
 								getBit(info,BIT_SENTENCE),
 								getBit(info,BIT_WARNMSG));
 		}
+		
+		for(int a=0;a<affect.source().numAffects();a++)
+		{
+			Ability A=affect.source().fetchAffect(a);
+			if((A!=null)
+			&&(!A.isAutoInvoked())
+			&&(laws.get("$"+A.ID().toUpperCase())!=null))
+			{
+				String info=(String)laws.get("$"+A.ID().toUpperCase());
+				if((info!=null)&&(info.length()>0))
+					fillOutWarrant(affect.source(),
+									myArea,
+									null,
+									getBit(info,BIT_CRIMELOCS),
+									getBit(info,BIT_CRIMEFLAGS),
+									getBit(info,BIT_CRIMENAME),
+									getBit(info,BIT_SENTENCE),
+									getBit(info,BIT_WARNMSG));
+			}
+		}
 
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		   &&(affect.target()!=null)
 		   &&((affect.tool()==null)||(affect.source().isMine(affect.tool())))
-		   &&(affect.target()!=affect.source()))
+		   &&(affect.target()!=affect.source())
+		   &&(!affect.target().name().equals(affect.source().name())))
 		{
 			String info=(String)laws.get("ASSAULT");
 			if((info!=null)&&(info.length()>0))

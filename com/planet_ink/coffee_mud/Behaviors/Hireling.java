@@ -136,6 +136,7 @@ public class Hireling extends StdBehavior
 				ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
 			else
 			if(((affect.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
+			&&((workingFor!=null)&&(affect.source().Name().equals(workingFor)))
 			&&(affect.amITarget(observer))
 			&&(onTheJobUntil!=0))
 			{

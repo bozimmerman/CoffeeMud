@@ -181,16 +181,14 @@ public class Scriptable extends StdBehavior
 				int z=parse.indexOf("~",y);
 				if(z>0)
 				{
-					depth+=1;
 					String filename=parse.substring(y+5,z).trim();
 					parse=parse.substring(z+1);
-					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth));
+					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
 				}
 				else
 				{
-					depth+=1;
 					String filename=parse.substring(y+5).trim();
-					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth));
+					results.append(parseLoads(Resources.getFileResource(filename).toString(),depth+1));
 					break;
 				}
 			}

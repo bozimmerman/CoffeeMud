@@ -37,6 +37,16 @@ public class Prisoner extends StdAbility
 			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
 			return false;
 		}
+		else
+		if((affect.targetMinor()==Affect.TYP_ENTER)
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof Room)
+		   &&(affect.source().location()!=null)
+		   &&(!affect.source().location().getArea().name().equals(((Room)affect.target()).getArea().name())))
+		{
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
+			return false;
+		}
 		return super.okAffect(myHost,affect);
 	}
 

@@ -1,4 +1,5 @@
 % Cup	1	10	8	1	GenWater		5		1
+% Bowl	1	10	8	1	GenContainer		5		1
 % Toy	1	10	5	1	GenItem		0		0
 Puppet	1	10	5	1	GenItem		0		0
 Marionette	1	10	5	1	GenItem		0		0

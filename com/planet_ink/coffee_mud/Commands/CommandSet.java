@@ -482,6 +482,12 @@ public class CommandSet extends Hashtable
 
 	public void loadAbilities(Enumeration abilities)
 	{
+		Vector abilitiesList=(Vector)Resources.getResource("ABILITY WORDS");
+		if(abilitiesList==null){
+			abilitiesList=new Vector();
+			Resources.submitResource("ABILITY WORDS",abilitiesList);
+		}
+		abilitiesList.clear();
 		for(Enumeration e=abilities;e.hasMoreElements();)
 		{
 			Ability thisAbility=(Ability)e.nextElement();
@@ -499,6 +505,8 @@ public class CommandSet extends Hashtable
 					}
 					if(this.get(ts)==null)
 						this.put(ts,new Integer(EVOKE));
+					if(!abilitiesList.contains(ts))
+						abilitiesList.addElement(ts);
 				}
 			}
 		}

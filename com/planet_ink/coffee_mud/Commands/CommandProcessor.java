@@ -556,7 +556,7 @@ public class CommandProcessor
 			SocialProcessor.reply(mob,commands);
 			break;
 		case CommandSet.REPORT:
-			SocialProcessor.report(mob);
+			SocialProcessor.report(mob,commands);
 			break;
 		case CommandSet.RESET:
 			if(mob.isASysOp(mob.location()))
