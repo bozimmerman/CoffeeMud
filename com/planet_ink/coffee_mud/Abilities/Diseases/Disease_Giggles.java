@@ -15,7 +15,6 @@ public class Disease_Giggles extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Giggles();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 15;}
 	protected int DISEASE_DELAY(){return 3;}

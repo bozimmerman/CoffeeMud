@@ -15,7 +15,7 @@ public class Disease extends StdAbility
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease();}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.DISEASE;}
 
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 5;}
@@ -43,8 +43,6 @@ public class Disease extends StdAbility
 		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 		return catchIt(mob,target);
 	}
-
-	public String text(){return "DISEASE";}
 
 	public void unInvoke()
 	{

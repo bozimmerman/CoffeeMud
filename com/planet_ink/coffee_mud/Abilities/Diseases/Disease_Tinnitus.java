@@ -15,7 +15,6 @@ public class Disease_Tinnitus extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Tinnitus();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 100;}
 	protected int DISEASE_DELAY(){return 1;}

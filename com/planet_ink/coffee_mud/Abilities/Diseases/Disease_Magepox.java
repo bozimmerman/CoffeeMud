@@ -15,7 +15,6 @@ public class Disease_Magepox extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Magepox();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return Host.TICKS_PER_DAY;}
 	protected int DISEASE_DELAY(){return 15;}

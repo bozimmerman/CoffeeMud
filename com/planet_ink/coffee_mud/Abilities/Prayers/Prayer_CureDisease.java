@@ -20,7 +20,7 @@ public class Prayer_CureDisease extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if((A!=null)&&(A.text().equalsIgnoreCase("DISEASE")))
+			if((A!=null)&&((A.text().equalsIgnoreCase("DISEASE")||((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))))
 				offenders.addElement(A);
 		}
 		return offenders;

@@ -5,17 +5,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class ResetWhole extends ActiveTicker
+public class ResetWhole extends StdBehavior
 {
 	public String ID(){return "ResetWhole";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
 	protected long lastAccess=-1;
 	
-	public ResetWhole()
-	{
-		tickReset();
-	}
 	public Behavior newInstance()
 	{
 		return new ResetWhole();

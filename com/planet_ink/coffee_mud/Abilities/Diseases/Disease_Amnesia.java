@@ -15,7 +15,6 @@ public class Disease_Amnesia extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Amnesia();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 34;}
 	protected int DISEASE_DELAY(){return 5;}

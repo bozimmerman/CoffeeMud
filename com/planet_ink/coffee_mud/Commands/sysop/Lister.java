@@ -422,6 +422,9 @@ public class Lister
 		if("SKILLS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
+		if("DISEASES".startsWith(listThis))
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
+		else
 		if("TICKS".startsWith(listThis))
 			mob.tell(ExternalPlay.listTicks(-1).toString());
 		else
@@ -468,6 +471,6 @@ public class Lister
 		if("RESOURCES".startsWith(listThis))
 			s.rawPrintln(reallyList(Resources.findResourceKeys("")).toString());
 		else
-			s.rawPrintln("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
+			s.rawPrintln("Can't list those, try ITEMS, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
 	}
 }

@@ -15,7 +15,6 @@ public class Disease_Flu extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Flu();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 30;}
 	protected int DISEASE_DELAY(){return 5;}

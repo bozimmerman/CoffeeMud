@@ -14,7 +14,6 @@ Sniper.  This allows a character to make a single ranged attack from a hidden po
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
-random monster property class which reads stats from a resource file
 Space ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.

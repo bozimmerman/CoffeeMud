@@ -17,12 +17,10 @@ public class Disease_MummyRot extends StdAbility
 	private static final String[] triggerStrings = {"MUMMYROT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Disease_MummyRot();}
-	public int classificationCode(){return Ability.SKILL;}
+	public int classificationCode(){return Ability.DISEASE;}
 
 	int conDown=1;
 	int diseaseTick=0;
-	
-	public String text(){return "DISEASE";}
 	
 	public boolean tick(int tickID)
 	{

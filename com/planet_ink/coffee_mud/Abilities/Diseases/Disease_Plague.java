@@ -15,7 +15,6 @@ public class Disease_Plague extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Plague();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 4;}

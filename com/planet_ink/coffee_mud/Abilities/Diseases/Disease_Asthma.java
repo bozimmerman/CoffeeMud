@@ -15,7 +15,6 @@ public class Disease_Asthma extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Asthma();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 99999;}
 	protected int DISEASE_DELAY(){return 5;}

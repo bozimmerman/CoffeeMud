@@ -313,7 +313,7 @@ public class StdRace implements Race
 		for(int i=0;i<mob.numAffects();i++)
 		{
 			Ability A=mob.fetchAffect(i);
-			if((A!=null)&&(A.text().equalsIgnoreCase("DISEASE")))
+			if((A!=null)&&((A.text().equalsIgnoreCase("DISEASE")||((A.classificationCode()&Ability.ALL_CODES)==Ability.DISEASE))))
 			{
 				if(getSpellCast==null) getSpellCast=CMClass.getAbility("Prop_UseSpellCast2");
 				getSpellCast.setMiscText(A.ID()+";"+getSpellCast.text());

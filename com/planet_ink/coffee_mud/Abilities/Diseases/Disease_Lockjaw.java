@@ -15,7 +15,6 @@ public class Disease_Lockjaw extends Disease
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Lockjaw();}
-	public int classificationCode(){return Ability.SKILL;}
 
 	protected int DISEASE_TICKS(){return 9999999;}
 	protected int DISEASE_DELAY(){return Host.TICKS_PER_DAY;}
