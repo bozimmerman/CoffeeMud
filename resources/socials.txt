@@ -1,7 +1,5 @@
 ot	PATPAT <T-NAME>	You patpat <T-NAMESELF>, trying to comfort <T-HIM-HER>.	<S-NAME> patpats <T-NAME>.  <T-NAME> is NOT comforted.	<S-NAME> patpats you.	They must not need your comforting.
 mo	SMILE	You smile happily.	<S-NAME> smiles happily.		
-mo	SSMILE	You smile sweetly.	<S-NAME> smiles sweetly.		
-mo	WEDGIE	You look around for someone to wedgie.	<S-NAME> looks around for someone to wedgie.		
 mo	BONK	***BONK!!!***	<S-NAME> bonk(s) <S-HIM-HERSELF> on the head for being such a moron.		
 mo	TWEAK	Tweak who?			
 mo	GLARE	You glare at nothing in particular.	<S-NAME> glares around <S-HIM-HER>.		
@@ -50,9 +48,9 @@ mo	ROLL SELF	At whom do you wish to roll your eyes?
 mo	POINT	You point in every direction.	<S-NAME> points excitedly!		
 ws	MUTTER SELF	You mutter quietly to yourself.	<S-NAME> mutters something quietly to <S-HIM-HERSELF>.		
 ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER> case to anyone who will listen... You ALMOST feel sorry for <S-HIS-HER>.		
+mo	SSMILE <T-NAME>	You smile sweetly at <T-HIM-HER>.	<S-NAME> smiles sweetly at <T-NAME>.	<S-NAME> smiles sweetly at you.	There's no one by that name around.
 mt	FRENCH	Kiss whom?			
 mo	SMILE SELF	You smile at yourself.	<S-NAME> smiles at <S-HIM-HERSELF>.		
-mo	SSMILE SELF	You sweetly smile to yourself.	<S-NAME> smiles sweetly to <S-HIM-HERSELF>.		
 mv	SHAKE	You shake your head.	<S-NAME> shakes <S-HIS-HER> head.		
 mo	TWEAK SELF	You can't DO that.			
 mo	SHRUG SELF	You shrug to yourself.	<S-NAME> shrugs to <S-HIM-HERSELF>.		
@@ -64,8 +62,8 @@ mo	HEAD	You toss your head haughtily.	<S-NAME> tosses <S-HIS-HER> head haughtily
 ot	TICKLE SELF	You tickle yourself, how funny!	<S-NAME> tickles <S-HIM-HERSELF>.	<S-NAME> tickles <S-HIM-HERSELF>.	
 mo	SQUEEZE	Where, what, how, WHO ???			
 ov	PUNCH SELF	You punch yourself.  You deserve it.	<S-NAME> punches <S-HIM-HERSELF>.  Why don't you join in?		
-mv	FIST <T-NAME>	You shake your fist at <T-HIM-HER>!	<S-NAME> shakes his fist at <T-NAME>! Uh-oh!	<S-NAME> shakes his fist at <T-NAME>! Uh-oh!	You must have scared them off.
 mo	SHIVER	Brrrrrrrrr.	<S-NAME> shivers uncomfortably.		
+mv	FIST <T-NAME>	You shake your fist at <T-HIM-HER>!	<S-NAME> shakes his fist at <T-NAME>! Uh-oh!	<S-NAME> shakes his fist at <T-NAME>! Uh-oh!	You must have scared them off.
 ss	SNIFF SELF	You sniff sadly at your lost opportunities.	<S-NAME> sniffs sadly at <S-HIM-HERSELF>. Something MUST be bothering <S-HIM-HER>.		
 mv	NTWIST	You pinch and twist your nipples playfully.	<S-NAME> twists <S-HIS-HER> nipples in a seductive manner.  Ooh-lala!		
 ov	HIGHFIVE <T-NAME>	You jump in the air and give a BIG high five to <T-NAMESELF>!	<S-NAME> enthusiastically high-five's <T-NAMESELF>!	<S-NAME> gives you a BIG high five!  Way to go!!	Sorry, they have already left.
@@ -102,7 +100,7 @@ mo	POUT	Ah, don't take it so hard.	<S-NAME> pouts.
 mo	WORRY SELF	You worry about what's going to happen.	A troubled look suddenly crosses <S-NAME>'s face.  Wonder what's wrong?		
 ss	SCREAM SELF	You scream at yourself.  Yes, that's ONE way of relieving tension!	<S-NAME> screams loudly at <S-HIM-HERSELF>!  Is there a full moon up?		
 ss	MOO	You chew your cud and moo plaintively.  Muh-OOOOO!	<S-NAME> turns cowlike eyes on you, chews <S-HIS-HER> cud, and moos plaintively.		
-m 	STRANGLE	Who do you want to strangle?			
+mv	STRANGLE	Who do you want to strangle?			
 mo	NUZZLE SELF	I'm sorry, friend, but that's impossible.			
 ot	HANDSHAKE <T-NAME>	You shake <T-NAME>'s hand.	<S-NAME> shakes <T-NAME>'s hand.	<S-NAME> shakes your hand.	
 mo	FAREWELL	You raise a hand in farewell.	<S-NAME> raises a hand in farewell.		
@@ -117,16 +115,14 @@ mo	BEAM <T-NAME>	You dazzle <T-NAMESELF> with your smile.	<S-NAME> must like <T-
 ss	WHISTLE	You whistle appreciatively.	<S-NAME> whistles appreciatively.		
 mo	MATE	Umm, with yourself?			
 mo	SMILE <T-NAME>	You smile at <T-HIM-HER>.	<S-NAME> smiles at <T-NAME>.	<S-NAME> smiles at you.	There's no one by that name around.
-mo	SSMILE <T-NAME>	You smile sweetly at <T-HIM-HER>.	<S-NAME> smiles sweetly at <T-NAME>.	<S-NAME> smiles sweetly at you.	There's no one by that name around.
-mo	WEDGIE <T-NAME>	You give <T-NAME> a HUGE wedgie! You got <T-HIS-HER> good!	<S-NAME> gives <T-NAME> a HUGE wedgie!	Oh no! <S-NAME> gave you a HUGE wedgie! It's stuck in there good!	There's no one by that name around.
 mo	SQUEEZE SELF	You squeeze yourself - try to relax a little!	<S-NAME> squeezes <S-HIM-HERSELF>.		
 mo	DAYDREAM	You dream of better times.	<S-NAME> looks absent-minded, his eyes staring into space.		
 mo	WONDER	You wonder about how things could have been.	<S-NAME> gets a blank stare on <S-HIS-HER> face.  What could <S-HE-SHE> be wondering about?		
 mo	SHRUG <T-NAME>	You shrug in response to <T-HIS-HER> question.	<S-NAME> shrugs in response to <T-NAMESELF>'s question.	<S-NAME> shrugs in response to your question.	You shrug to no one in particular.
 mo	COWER SELF	You are afraid of your own shadow!	<S-NAME> cowers in the corner afraid of <S-HIS-HER> own shadow		
 ww	SCREAM <T-NAME>	ARRRRRRRRRRGH!!!!!  Yes, it MUST have been <T-HIS-HER> fault!!!	<S-NAME> screams loudly at <T-NAMESELF>.  Better leave before <S-NAME> blames you, too!!!	<S-NAME> screams at you!  That's not nice!  *sniff*	Your lungs can't reach that far!
-ov	FBEG <T-NAME>	You beg forgiveness from <T-NAME>.	<S-NAME> begs <T-NAME> for mercy.	<S-NAME> begs <T-NAME> for forgiveness.	Who do you want to beg forgiveness from?
 oo	NUDGE	Nudge whom?			
+ov	FBEG <T-NAME>	You beg forgiveness from <T-NAME>.	<S-NAME> begs <T-NAME> for mercy.	<S-NAME> begs <T-NAME> for forgiveness.	Who do you want to beg forgiveness from?
 mo	GRIN	You grin.	<S-NAME> grins.		
 mv	REGAL <T-NAME>	You look regally down your nose at <T-NAME>.	<S-NAME> looks down upon <T-NAME> haughtily.	<S-NAME> looks down upon <T-NAME> haughtily.	They left too quickly, it seems.
 mv	FROLICK <T-NAME>	You frolick about <T-NAME>, trying to make <T-HIM-HER> dizzy. Or disgusted. Or both.	<S-NAME> frolicks playfully about <T-NAME>.	<S-NAME> frolicks around <T-NAME> playfully.	They left too quickly, it seems.
@@ -152,7 +148,7 @@ ot	CURTSEY <T-NAME>	You curtsey to <T-HIM-HER>.	<S-NAME> curtseys gracefully to 
 mo	CRAMP	You gasp and clutch your abdomen, wheezing with the pain.	<S-NAME> gasps and clutches <S-HIM-HER> abdomen in agony.		
 mo	SHIVER <T-NAME>	You shiver at the thought of fighting <T-HIM-HER>.	<S-NAME> shivers at the thought of fighting <T-NAMESELF>.	<S-NAME> shivers at the suicidal thought of fighting you.	You don't see any reason to shiver.
 mo	SHRUG	You shrug helplessly.	<S-NAME> shrugs helplessly.		
-m 	CPAT	Who do you want to pat on the cheek?			
+mv	CPAT	Who do you want to pat on the cheek?			
 mt	CARESS <T-NAME>	You tenderly caress <T-HIM-HER>.	<S-NAME> tenderly caresses <T-NAMESELF>.	<S-NAME> tenderly caresses your body.	You're S.O.L., buddy.
 mo	BCATCH	You reach out and rescue the bottle from its flight.	<S-NAME> reaches out and grabs the bottle of beer tossed to <S-HIM-HER>.		
 ss	WHISTLE <T-NAME>	You whistle at the sight of <T-HIM-HER>.	<S-NAME> whistles at the sight of <T-NAMESELF>.	<S-NAME> whistles at the sight of you.	You don't see nothing special to whistle at.
@@ -216,6 +212,7 @@ mo	TIGHT	You hold yourself tightly in your loving arms.	<S-NAME> holds <S-HIM-HE
 mo	MISCHIEVOUS	You give a mischievous smile at the trouble you have in mind.	<S-NAME> grins mischievously at a nasty idea.		
 mt	NIBBLE <T-NAME>	You nibble on <T-NAMESELF>'s ear.	<S-NAME> nibbles on <T-NAMESELF>'s ear.	<S-NAME> nibbles on your ear.	Sorry, not present.
 ss	SNORT SELF	You snort derisively at yourself.	<S-NAME> snorts derisively at <S-HIS-HERSELF>.		
+mo	WEDGIE <T-NAME>	You give <T-NAME> a HUGE wedgie!  You got <T-HIM-HER> good!	<S-NAME> gives <T-NAME> a HUGE wedgie!	Oh no! <S-NAME> gave you a HUGE wedgie! It's stuck in there good!	There's no one by that name around.
 ww	THANK SELF	You thank yourself since nobody else wants to!	<S-NAME> thanks <S-HIM-HERSELF> since you won't.		
 oo	STRUT	Strut your stuff.	<S-NAME> struts proudly.		
 ss	GIGGLE	You giggle.	<S-NAME> giggles.		
@@ -278,6 +275,7 @@ mt	PINCH <T-NAME>	You squeeze <T-HIS-HER> bottom and grin.	<S-NAME> pinches <T-N
 mv	ENOD	You eagerly nod <S-YOUPOSS> approval.	<S-NAME> eagerly nods <S-HIS-HER> approval.		
 mo	LICK SELF	You lick your own eyebrows.	<S-NAME> licks <S-HIS-HER> own eyebrows.		
 mo	NOD SELF	You attempt to nod at yourself and get dizzy instead.	<S-NAME> nods quietly to <S-HIM-HERSELF>.  What a wacko.		
+mo	SSMILE	You smile sweetly.	<S-NAME> smiles sweetly.		
 mo	SHIVER SELF	You shiver to yourself?	<S-NAME> scares <S-HIM-HERSELF> to shivers.		
 oo	PIE	You pick up a pie and toss it around for a bit.	<S-NAME> picks up a pie and tosses it around for a bit.		
 mo	HAND SELF	You kiss your own hand.	<S-NAME> kisses <S-HIS-HER> own hand.		
@@ -323,8 +321,8 @@ mo	TIGHT <T-NAME>	You hold <T-HIM-HER> tightly in your arms.	<S-NAME> holds <T-N
 ss	SNARL	You grizzle your teeth and look mean.	<S-NAME> snarls angrily.		
 ww	TANK <T-NAME>	You offer to tank for <T-NAMESELF>.	<S-NAME> offers to tank for <T-NAMESELF>.	<S-NAME> offers to tank for you!	Tank for whom?
 ww	ANTICIPATE	You murmur 'Sssssoonnn, my presssssciousssss...'	<S-NAME> murmurs 'Ssssssooonnnn, my pressssscioussss...'		
-o 	GOUGE	Whose eyes do you want to gouge out today?			
 ss	INNOCENT <T-NAME>	You look at <T-NAMESELF> and bat your eyelashes -- the picture of innocence!	<S-NAME> bats <S-HIS-HER> eyelashes innocently at <T-NAMESELF>.	<S-NAME> looks at you and innocently bats <S-HIS-HER> eyelashes.	Don't even TRY -- they've already left.
+ov	GOUGE	Whose eyes do you want to gouge out today?			
 mo	FLUTTER	You flutter your eyelashes seductively.	<S-NAME> flutters <S-HIS-HER> eyelashes seductively.		
 ww	THREATEN	You threaten everyone with your overwhelming presence.	You feel threatened in the presence of the great <S-NAME>.		
 mo	CAMEL <T-NAME>	You light a Camel cigarette for <T-HIM-HER>.	<S-NAME> lights a Camel cigarette for <T-NAMESELF>.	<S-NAME> lights a Camel cigarette for you.	You don't see that personhere.
@@ -497,6 +495,7 @@ ss	SNORE	Zzzzzzzzzzzzzzzzz.	<S-NAME> snores loudly.
 oo	SNOWBALL	Who do you want to throw a snowball at?			
 mo	AIR <T-NAME>	You hope <T-HE-SHE> appreciates your (total lack of) talent.	<S-NAME> is surrounded by air groupies.	<S-NAME> plays a most excellent tune for you on <S-HIS-HER> most excellent air guitar.	Awww... you have no audience!
 mv	FOLD <T-NAME>	You glare at <T-NAME> as you fold your arms over your chest.	<S-NAME> glares at <T-NAME> as <S-HE-SHE> folds <S-HIS-HER> arms over <S-HIS-HER> chest.	<S-NAME> glares at <T-NAME> as <S-HE-SHE> folds <S-HIS-HER> arms over <S-HIS-HER> chest.	They got away!
+mo	WEDGIE	You look around for someone to wedgie.	<S-NAME> looks around for someone to wedgie.		
 ov	WIGGY <T-NAME>	You wiggy <T-NAME>.	<S-NAME> wiggies <T-NAME>.	<S-NAME> wiggies all over you!	<S-NAME> wiggies with <S-HIM-HERSELF>.
 ss	CACKLE SELF	You cackle at yourself.  Now THAT'S strange!	<S-NAME> is really crazy now!  <S-HE-SHE> cackles at <S-HIM-HERSELF>.		
 mo	COWER <T-NAME>	You cower away from <T-NAMESELF> and <T-HIS-HER> harsh words.	<S-NAME> cowers in a corner, terrified that <T-NAMESELF> will come after <S-HIM-HER>.	You scared poor <S-NAME>!  Now <T-HIS-HER> is cowering in a corner, afraid for <S-HIS-HER> life.	That person is AWOL at the moment.
@@ -534,8 +533,8 @@ mo	STARE SELF	You stare dreamily at yourself - enough narcissism for now.	<S-NAM
 ot	WHAP <T-NAME>	You whap <T-NAMESELF> upside the head!	With a resounding WHAP!, <S-NAME> reprimands <T-NAMESELF>.	HEY!  <S-NAME> whaps you upside the head!	Whiff...
 ss	LOL	You laugh hysterically.	<S-NAME> laughs hysterically.		
 mo	PECK	Wouldn't you like to do that to a person, or do you prefer air?			
-mv	NARROW	You narrow your eyes in disdain.	<S-NAME> narrows <S-HIS-HER> eyes in disdain.		
 mo	GLARE <T-NAME>	You glare icily at <T-HIM-HER>.	<S-NAME> glares at <T-NAMESELF>.	<S-NAME> glares icily at you, you feel cold to your bones.	You try to glare at somebody who is not present.
+mv	NARROW	You narrow your eyes in disdain.	<S-NAME> narrows <S-HIS-HER> eyes in disdain.		
 mo	VIEW	You sit back and watch the world go by.	<S-NAME> kicks back and enjoys the view.		
 ss	MOAN	You start to moan.	<S-NAME> starts moaning.		
 mo	TONGUE SELF	You slowly tongue yourself.	<S-NAME> slowly tongues <S-HIM-HERSELF>... ICK.		
@@ -566,19 +565,20 @@ mo	CAMEL SELF	You light a Camel cigarette and inhale sharply.	<S-NAME> lights a 
 mt	NOOGIE SELF	You rub your head and create a static charge...	<S-NAME> rubs <S-HIS-HER> OWN head and creates a static charge... *ZAP*		
 mo	STARVE	You show your prominent ribs and hope that someone will take pity.	<S-NAME> is withering before your eyes!  Starvation!		
 ot	SLOBBER <T-NAME>	You slobber on <T-NAMESELF>.	<S-NAME> slobbers on <T-NAMESELF>  **Yuck**	<S-NAME> slobbers disgustingly on you.	Slobber on WHOM?
+mo	SSMILE SELF	You sweetly smile to yourself.	<S-NAME> smiles sweetly to <S-HIM-HERSELF>.		
 mo	KISS SELF	All the lonely people :(			
 mo	VOODOO SELF	You stab a pin into your own voodoo doll!  Agony!	<S-NAME> jabs a pin into <S-HIS-HER> own voodoo doll, and twitches in agony!		
 mo	CONFUSED	Your confusion is showing.	<S-NAME> blinks slowly...		
 mt	BONK <T-NAME>	You bonk <T-NAMESELF> on the head for being such a moron.	<S-NAME> bonks <T-NAMESELF> on the head for being such an UTTER moron.	<S-NAME> bonks you on the head for being so foolish.	***BONK*** they left...
 mv	TOUT <T-NAME>	You stick your tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	Are you sure you wish to stick your tongue out without an audience?
-m 	LBITE	Who do you want to give love bites?			
+mv	LBITE	Who do you want to give love bites?			
 mo	EYEBROW <T-NAME>	You raise your eyebrow at <T-NAMESELF>.	<S-NAME> raises an eyebrow at <T-NAMESELF>'s weird actions.	<S-NAME> raises an eyebrow at you.	Forget it.  They aren't here.
 mv	FIDGET <T-NAME>	You fidget uncomfortably under <T-YOUPOSS> gaze.	<S-NAME> fidgets uncomfortably under <T-YOUPOSS> gaze.	<S-NAME> fidgets uncomfortably under <T-YOUPOSS> gaze.	There is no one there by that name.
 mo	EMBRACE	Who would you like to embrace?			
 ss	PANT <T-NAME>	You pant lustily at <T-HIM-HER>.	<S-NAME> looks at <T-NAMESELF> and pants lustily.	<S-NAME> looks at you and pants lustily...	
-ms	CLAP <T-NAME>	You clap at <T-HIS-HER> performance.	<S-NAME> claps at <T-NAMESELF>'s performance.	<S-NAME> claps at your performance.	You clap for nothing.
-ww	BEG <T-NAME>	You desperately try to squeeze a few coins from <T-HIM-HER>.	<S-NAME> begs you for money. You graciously let <S-HIM-HER> peep at your fortune.	<S-NAME> begs <T-NAMESELF> for a dime or two - or twenty !	Your money-lender seems to be out for the moment.
 mo	COWER	You cower in a corner.	<S-NAME> cowers in a corner and whimpers softly.		
+ww	BEG <T-NAME>	You desperately try to squeeze a few coins from <T-HIM-HER>.	<S-NAME> begs you for money. You graciously let <S-HIM-HER> peep at your fortune.	<S-NAME> begs <T-NAMESELF> for a dime or two - or twenty !	Your money-lender seems to be out for the moment.
+ms	CLAP <T-NAME>	You clap at <T-HIS-HER> performance.	<S-NAME> claps at <T-NAMESELF>'s performance.	<S-NAME> claps at your performance.	You clap for nothing.
 mo	AIR SELF	You play softly to yourself.			
 mo	GROPE	Whom do you wish to grope ??			
 ss	SNICKER <T-NAME>	You snicker at <T-HIM-HER>.	<S-NAME> snickers at <T-NAME>.	<S-NAME> snickers at you.	Huh?
@@ -587,15 +587,15 @@ oo	ROSE SELF	You give yourself a rose and feel a little sad...	<S-NAME> gives <S
 mo	SNAP SELF	You snap yourself to attention.	<S-NAME> snaps <S-HIM-HERSELF> to attention.		
 ot	GROPE <T-NAME>	Well, what sort of noise do you expect here?	<S-NAME> gropes <T-NAMESELF>.	<S-NAME> gropes you.	Try someone who's here.
 mo	PISSED <T-NAME>	You turn a stoney gaze toward <T-NAMESELF>... you are SOOO pissed at <T-NAMESELF>!	<S-NAME> glares at <S-NAME>.... <S-NAME> is SOOO PISSED at <S-HIM-HER>!	<S-NAME> is pissed at you now... What do you think <S-HE-SHE>'ll DO?	That person is not here...
-mo	LIFE	You try to get a life, and fail.	<S-NAME> tries to get a life, and fails.		
 ss	TSK <T-NAME>	You tsk <T-NAME>, <T-HE-SHE> deserves it.	<T-NAME> is being tsked by <S-NAME> for something.	Ack, <T-NAME> is tsking you!  Hide!	Tsk, tsk, tsk.
-mo	GRIMACE <T-NAME>	You grimace at <T-NAMESELF>.	<S-NAME> grimaces at <S-NAME>.	<S-NAME> grimaces at you.  What could be wrong?	You grimace at no one in particular.
+mo	LIFE	You try to get a life, and fail.	<S-NAME> tries to get a life, and fails.		
 mo	BIRD <T-NAME>	You shoot a bird at <T-NAMESELF>.	<S-NAME> gives <T-NAMESELF> the bird.	<S-NAME> gives you the bird...What an ass!	Don't you hate to waste a good obscene gesture like that?
-mo	WORRY	You worry about what's going to happen.	A troubled look suddenly crosses <S-NAME>'s face.  Wonder what's wrong?		
+mo	GRIMACE <T-NAME>	You grimace at <T-NAMESELF>.	<S-NAME> grimaces at <S-NAME>.	<S-NAME> grimaces at you.  What could be wrong?	You grimace at no one in particular.
 mo	JUDGE <T-NAME>	You judge <S-HIM-HER> on a scale of 1 to 10.	On a scale from 1 to 10, <S-NAME> thinks <T-NAMESELF> is a complete ZERO!!!	<S-NAME> judges your actions on a scale of 1 to 10 and comes up with ZERO!!!	They aren't here right now.
+mo	WORRY	You worry about what's going to happen.	A troubled look suddenly crosses <S-NAME>'s face.  Wonder what's wrong?		
 mo	MASSAGE SELF	You practice yoga as you try to massage yourself.	<S-NAME> gives a show on yoga-positions, trying to massage <S-HIM-HERSELF>.		
-ov	BOUNCE SELF	You bounce your head like a basketball.	<S-NAME> plays basketball with <S-HIS-HER> head.		
 ww	GRUMBLE	You grumble distractedly to yourself	<S-NAME> grumbles and growls. You wonder what's wrong...		
+ov	BOUNCE SELF	You bounce your head like a basketball.	<S-NAME> plays basketball with <S-HIS-HER> head.		
 ww	TOAST <T-NAME>	You raise your glass of champagne to <T-HIS-HER>.	<S-NAME> silently toasts <T-NAMESELF>.	<S-NAME> silently toasts you.	Your object of praise is absent.
 mo	HEAD <T-NAME>	You toss your head haughtily at <T-NAMESELF>.	<S-NAME> tosses her head haughtily at <T-NAMESELF>... what an ATTITUDE!	<S-NAME> tossed <S-HIS-HER> head haughtily at you... :(	That person is AWOL.
 mo	MATE <T-NAME>	You make passionate love to <T-HIM-HER>.	<S-NAME> makes passionate love to <T-NAMESELF>.	<S-NAME> makes passionate love to you.	Sorry, friend, I can't see that person here.
@@ -615,11 +615,11 @@ ss	INNOCENT	You innocently whistle a tune.	<S-NAME> looks around and whistles in
 ss	GACK SELF	*GACK!*	Appalled, <S-NAME> gacks at <S-HIM-HERSELF>!		
 mo	BECKON SELF	You beckon to your shadow to follow.	<S-NAME> beckons to <S-HIS-HER> shadow to follow.		
 mo	TIP	You tip your hat gallantly.	<S-NAME> gallantly tips <S-HIS-HER> hat.		
-mo	EMBRACE SELF	You try to console yourself with a loving embrace.	<S-NAME> tries to console <S-HIM-HERSELF> by wrapping <S-HIS-HER> arms around <S-HIM-HERSELF>.		
 ww	SERENADE <T-NAME>	You raise your voice in a loving serenade to <T-NAMESELF>.	<S-NAME> raises <S-HIS-HER> voice in a loving serenade to <T-NAMESELF>.	<S-NAME> serenades you, you are swept away by <S-HIS-HER> voice.	The one that you wish to serenade has left you to sing to yourself.
+mo	EMBRACE SELF	You try to console yourself with a loving embrace.	<S-NAME> tries to console <S-HIM-HERSELF> by wrapping <S-HIS-HER> arms around <S-HIM-HERSELF>.		
 mt	MAKE <T-NAME>	You steam up the windows with <T-HIM-HER>.	<S-NAME> and <T-NAMESELF> start steaming up the windows.	<S-NAME> starts steaming up the windows with you.	Sorry, friend, I can't see that person here.
-mv	PURSE	You purse your lips.	<S-NAME> gains a look of perplexity as <S-HE-SHE> purses <S-HIS-HER> lips.		
 ss	CRY SELF	You cry to yourself.	<S-NAME> sobs quietly to <S-HIM-HERSELF>.		
+mv	PURSE	You purse your lips.	<S-NAME> gains a look of perplexity as <S-HE-SHE> purses <S-HIS-HER> lips.		
 mo	FUME <T-NAME>	You stare at <T-HIM-HER>, fuming.	<S-NAME> stares at <T-NAMESELF>, fuming with rage.	<S-NAME> stares at you, fuming with rage!	Fume away... they ain't here.
 mo	TIE	You toy with a pair of handcuffs suggestively.	<S-NAME> toys suggestively with a pair of handcuffs.		
 oo	STRUT SELF	You strut to yourself, lost in your own world.	<S-NAME> struts to <S-HIM-HERSELF>, lost in <S-HIS-HER> own world.		
@@ -630,16 +630,16 @@ mv	ANGELIC <T-NAME>	You smile angelically at <T-NAME>, the epitome of innocence 
 mo	RUB	You rub your hands together in greedy anticipation.	<S-NAME> rubs <S-HIS-HER> hands together in greedy anticipation.		
 mt	RUB <T-NAME>	You give <T-NAMESELF> a nice, long, kinky rubdown.	<S-NAME> gives <T-NAMESELF> a nice long rubdown.	<S-NAME> gives you a rubdown, running <S-HIS-HER> hands over your tense shoulders...Mmmm...	Shame to waste those talented hands, but they've already left.
 ss	GIGGLE <T-NAME>	You giggle at <T-HIM-HER>.	<S-NAME> giggles at <T-NAME>.	<S-NAME> giggles at you.	You giggle by yourself, since you can't find a partner to giggle with.
-ot	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.
 mo	FLINCH SELF	You can't belive what you've done...	<S-NAME> twitches violently, shocked at <S-HIS-HER> own behavior.		
+ot	FRENCH <T-NAME>	You give <T-NAMESELF> a long and passionate kiss, it seems to last forever...	<S-NAME> kisses <T-NAMESELF> passionately.	<S-NAME> gives you a long and passionate kiss, it seems to last forever...	Your heart is filled with despair as that person is not here.
 ot	POUND <T-NAME>	You pound <T-HIM-HER> into a bloody mass.	<S-NAME> pounds <T-NAMESELF> into a bloody mass.	<S-NAME> pounds you into a bloody mass.	Sorry, friend, I can't see that person here.
 ww	GRUMBLE SELF	Why bother?			
-mo	BLEED SELF	You bleed all over yourself.	<S-NAME> bleeds profusely all over <S-HIM-HERSELF>.		
 ss	TSK SELF	You tsk yourself because of your poor behavior.	<S-NAME> is tsking <S-HISHERSELF>.  You don`t see that everyday.		
+mo	BLEED SELF	You bleed all over yourself.	<S-NAME> bleeds profusely all over <S-HIM-HERSELF>.		
 ov	WHIP	You crack your bullwhip menacingly.	<S-NAME> cracks a bullwhip menacingly.		
 ov	CHARGE SELF	You run your head into a brick wall.  OUCH!			
-ot	FONDLE <T-NAME>	You fondly fondle <T-HIM-HER>.	<S-NAME> fondly fondles <T-NAMESELF>.	<S-NAME> fondly fondles you.	You fondly try to fondle someone not in the room, but who cares.
 ot	SLAP <T-NAME>	*thwock!* You slap <T-NAMESELF> ringingly.	*thwock!* <S-NAME> slaps <T-NAMESELF>!	<S-NAME> slaps you stingingly.	How about slapping someone in the same room as you ??
+ot	FONDLE <T-NAME>	You fondly fondle <T-HIM-HER>.	<S-NAME> fondly fondles <T-NAMESELF>.	<S-NAME> fondly fondles you.	You fondly try to fondle someone not in the room, but who cares.
 mo	GLARE SELF	You glare icily at your feet, they are suddenly very cold.	<S-NAME> glares at <S-HIS-HER> feet, what is bothering <S-HIM-HER>?		
 ss	AARGH	AAAAAARRRRRRGGGGGGHHHHHH!!!!!!	<S-NAME> throws back <S-HIS-HER> head and howls in profound frustration!		
 ww	PRAY SELF	Talk about narcissism...	<S-NAME> performs some strange yoga-exercises and mumbles a prayer to <S-HIM-HERSELF>.		
@@ -649,40 +649,39 @@ ss	GACK <T-NAME>	Appalled, you gack at <T-NAMESELF>.	<S-NAME> gacks expressively
 ov	GOUGE <T-NAME>	In a fit of rage, you attempt to gouge out <T-YOUPOSS> eyes. Take that!	Outraged, <S-NAME> tries to gouge out <T-YOUPOSS> eyes!	In a fit of rage, <S-NAME> tries to gouge out <T-YOUPOSS> eyes! OWW!	No one present goes by that name.
 mv	TOUT SELF	You stick your tongue out and wag it all about.	<S-NAME> sticks <S-HIS-HER> tongue out and wags it all about.		
 ww	PROPOSE SELF	You are SO full of yourself!	<S-NAME> proposes to <S-HIM-HERSELF> -- how narcissistic!		
-mv	REGAL	You sit up straight.	<S-NAME> sits up straight, lending <S-HIM-HER> a regal appearance.		
-ss	GACK	Gaaack!	<S-NAME> gacks with dismay!		
 ss	POLITE	You give a polite little chuckle.	<S-NAME> gives a polite little chuckle.		
+ss	GACK	Gaaack!	<S-NAME> gacks with dismay!		
 ov	ROFLMAO SELF	You roll on the floor hysterically laughing your ass off.	<S-NAME> rolls on the floor hysterically laughing <S-HIS-HER> ass off.		
-mo	SNAP	Eureka!  You snap your fingers.	<S-NAME> snaps <S-HIS-HER> fingers.		
-ot	SUPPORT <T-NAME>	You hug <T-HIM-HER> supportively and smile.	<S-NAME> hugs <T-NAMESELF> supportively and smiles.	<S-NAME> hugs you supportively and smiles.	Sorry, friend, I can't see that person here.
 ss	SNORT <T-NAME>	You snort derisively at <T-NAMESELF>.	<S-NAME> snorts derisively at <T-NAMESELF>.	<S-NAME> snorts at you.	Snort at whom?
+ot	SUPPORT <T-NAME>	You hug <T-HIM-HER> supportively and smile.	<S-NAME> hugs <T-NAMESELF> supportively and smiles.	<S-NAME> hugs you supportively and smiles.	Sorry, friend, I can't see that person here.
+mo	SNAP	Eureka!  You snap your fingers.	<S-NAME> snaps <S-HIS-HER> fingers.		
 ww	CHEER	You cheer and dance as the joy within you bursts forth!	<S-NAME> cheers and sings... <S-HE-SHE> is just BURSTING with joy!		
 ot	PAT <T-NAME>	You pat <T-NAMESELF> on <T-HIS-HER> head.	<S-NAME> pats <T-NAMESELF> on <T-HIS-HER> head.	<S-NAME> pats you on your head.	Who, where, what?
 ss	COUGH <T-NAME>	You cough ostentatiously on <T-NAME>.	<S-NAME> coughs ostentatiously on <T-NAME>.	<S-NAME> coughs on ostentatiously on you.	
 ov	DISCODANCE	Groovy!	<S-NAME> discos wildly!		
 ss	CHUCKLE <T-NAME>	You chuckle at <T-HIM-HER>.	<S-NAME> chuckles at <T-NAME>.	<S-NAME> chuckles at you.	You can't find a friend to chuckle with.
 ww	BOAST	You boast loudly of all your amazing accomplishments.	<S-NAME> boasts loudly in a pigheaded fashion.		
-oo	SCUFF <T-NAME>	You scuff your foot, avoiding <T-NAMESELF>'s gaze.	<S-NAME> scuffs <S-HIS-HER> foot and shyly avoids <T-NAMESELF>'s gaze.	<S-NAME> scuffs <S-HIS-HER> foot and shyly avoids your gaze.	They aren't here.
 mo	FAREWELL <T-NAME>	You raise a hand in farewell to <T-NAME>.	<S-NAME> raises a hand in farewell to <T-NAME>.	<S-NAME> raises a hand in farewell to you.	
-mo	SNAP <T-NAME>	You snap back at <T-HIM-HER>.	<S-NAME> snaps back at <T-NAMESELF>.	<S-NAME> snaps back at you!	You must be very agitated.
+oo	SCUFF <T-NAME>	You scuff your foot, avoiding <T-NAMESELF>'s gaze.	<S-NAME> scuffs <S-HIS-HER> foot and shyly avoids <T-NAMESELF>'s gaze.	<S-NAME> scuffs <S-HIS-HER> foot and shyly avoids your gaze.	They aren't here.
 ms	ROFL <T-NAME>	You fall to the floor laughing at <T-NAMESELF>'s remark.	<S-NAME> rolls on the floor laughing at <T-NAMESELF>'s antics!	<S-NAME> rolls on the floor laughing at your antics!	
+mo	SNAP <T-NAME>	You snap back at <T-HIM-HER>.	<S-NAME> snaps back at <T-NAMESELF>.	<S-NAME> snaps back at you!	You must be very agitated.
 ss	SIGH	You sigh.	<S-NAME> sighs.		
 oo	DROOL <T-NAME>	You drool messily on <T-NAMESELF>.	<S-NAME> drools upon <T-NAMESELF>.	<S-NAME> looks at you lustily and drools.	Oh fine, make a pool of slobber -- they aren't even here!
-ss	SQUEAL <T-NAME>	You look at <T-NAMESELF> and squeal with delight!	<S-NAME> squeals with delight at <T-NAMESELF>.	<S-NAME> looks at you and squeals with delight!	
 mo	TWIDDLE <T-NAME>	You twiddle <T-HIS-HER> ears.	<S-NAME> twiddles <T-NAMESELF>'s ears.	<S-NAME> twiddles your ears.	You don't see the person here.
+ss	SQUEAL <T-NAME>	You look at <T-NAMESELF> and squeal with delight!	<S-NAME> squeals with delight at <T-NAMESELF>.	<S-NAME> looks at you and squeals with delight!	
 mo	WINK SELF	You wink at yourself ?? - what are you up to?	<S-NAME> winks at <S-HIM-HERSELF> - something strange is going on...		
-mo	CRINGE SELF	I beg your pardon?			
 ot	LACES <T-NAME>	With the greatest of stealth, you tie <T-HIS-HER> shoelaces together.	<S-NAME> sneaks up to <T-NAMESELF> and ties <T-HIS-HER> shoelaces together.	You try to take a step, and you hit the world facedown!  Someone must have tied your shoelaces together!	Whose laces?
+mo	CRINGE SELF	I beg your pardon?			
 mo	BLEED	You bleed profusely -- making a horrible mess!	<S-NAME> weakly bleeds all over the floor.		
-mo	STROKE	You stroke the air vaguely.	<S-NAME> makes vague stroking motions.		
 ss	LAUGH	You laugh.	<S-NAME> laughs.		
-mo	SAGE	You nod sagely.	<S-NAME> nods sagely.		
+mo	STROKE	You stroke the air vaguely.	<S-NAME> makes vague stroking motions.		
 ws	MUTTER	You mutter quietly to yourself.	<S-NAME> mutters something quietly to <S-HIM-HERSELF>.		
-ss	BRB	Hope to see you soon!	<S-NAME> will be right back!		
+mo	SAGE	You nod sagely.	<S-NAME> nods sagely.		
 mo	KISS	Isn't there someone you want to kiss?			
-ww	SERENADE SELF	You sing a loud serenade to yourself.  What type of person are you?!	<S-NAME> serenades <S-HIM-HERSELF>.  What an ego!		
+ss	BRB	Hope to see you soon!	<S-NAME> will be right back!		
 mo	PISSED	You are PISSED!	<S-NAME> is PISSED so watch out!		
-mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles on <S-HIS-HER> OWN ear (I wonder how it is done !!).		
+ww	SERENADE SELF	You sing a loud serenade to yourself.  What type of person are you?!	<S-NAME> serenades <S-HIM-HERSELF>.  What an ego!		
 oo	GOOSE	Who would you like to goose?			
+mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles on <S-HIS-HER> OWN ear (I wonder how it is done !!).		
 mo	PALE SELF	You feel the blood draining from your face.			
 ss	LAUGH <T-NAME>	You laugh at <T-NAMESELF> mercilessly.	<S-NAME> laughs at <T-NAMESELF> mercilessly.	<S-NAME> laughs at you mercilessly.	You can't find the butt of your joke.
