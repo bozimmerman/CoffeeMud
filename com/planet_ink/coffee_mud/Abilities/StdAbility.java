@@ -437,7 +437,7 @@ public class StdAbility implements Ability, Cloneable
 		if(A==null) return;
 		if(A.profficiency()<100)
 		{
-			if(Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*38.0*Math.random())>=A.profficiency())
+			if(Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random())>=A.profficiency())
 			{
 				// very important, since these can be autoinvoked affects (copies)!
 				A.setProfficiency(A.profficiency()+1);
