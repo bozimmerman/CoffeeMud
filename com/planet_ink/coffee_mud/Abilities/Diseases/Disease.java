@@ -35,12 +35,15 @@ public class Disease extends StdAbility implements DiseaseAffect
 		if(invoker==target) return true;
 		if(diseased==null) diseased=mob;
 		if((diseased==null)&&(target instanceof MOB)) diseased=(MOB)target;
-		if((target!=null)&&(diseased!=null)&&(target.fetchAffect(ID())==null))
+		if((target!=null)
+		&&(diseased!=null)
+		&&(target.fetchAffect(ID())==null))
 		{
 			if(target instanceof MOB)
 			{
 				MOB targetMOB=(MOB)target;
-				if(Dice.rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
+				if((Dice.rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
+				&&(targetMOB.location()!=null))
 				{
 					targetMOB.location().show(targetMOB,null,Affect.MSG_OK_VISUAL,DISEASE_START());
 					maliciousAffect(diseased,target,DISEASE_TICKS(),-1);
@@ -57,6 +60,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 	}
 	protected boolean catchIt(MOB mob)
 	{
+		if(mob==null) return false;
+		if(mob.location()==null) return false;
 		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 		return catchIt(mob,target);
 	}
