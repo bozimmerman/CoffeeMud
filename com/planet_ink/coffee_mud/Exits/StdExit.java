@@ -439,7 +439,7 @@ public class StdExit implements Exit
 			isOpen=false;
 			break;
 		case CMMsg.TYP_OPEN:
-			if((!hasADoor())||(isOpen())||(isLocked())) return;
+			if((!hasADoor())||(isOpen())) return;
 			if(defaultsClosed()||defaultsLocked())
 				CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;

@@ -50,7 +50,7 @@ public class Chant_Thorns extends Chant
 			{
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*2)))
 				{
-					FullMsg msg2=new FullMsg(source,mob,this,affectType(false),null);
+					FullMsg msg2=new FullMsg(source,mob,this,affectType(true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);

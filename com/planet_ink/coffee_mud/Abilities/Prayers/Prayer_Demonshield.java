@@ -51,7 +51,7 @@ public class Prayer_Demonshield extends Prayer
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3))
 				   &&(source.getAlignment()>350))
 				{
-					FullMsg msg2=new FullMsg(source,mob,this,affectType(false),null);
+					FullMsg msg2=new FullMsg(source,mob,this,affectType(true),null);
 					if(source.location().okMessage(source,msg2))
 					{
 						source.location().send(source,msg2);
