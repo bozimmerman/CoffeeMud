@@ -26,7 +26,7 @@ public class Power_OctoArms extends SuperPower
 	public String name(){ return "Octo-Arms";}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
+	protected  int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
@@ -58,5 +58,11 @@ public class Power_OctoArms extends SuperPower
 			}
 		}
 		return true;
+	}
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(affected==invoker)
+			affectableStats.alterBodypart(Race.BODY_ARM,4);
 	}
 }

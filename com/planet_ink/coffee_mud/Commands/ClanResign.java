@@ -50,8 +50,8 @@ public class ClanResign extends BaseClanner
 					mob.setClanRole(0);
 					if(C!=null)
 					{
-						if(!C.delClanHomeSpell(mob))
-							CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),"",0);
+						C.updateClanPrivileges(mob);
+						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),"",0);
 					}
 					else
 						CMClass.DBEngine().DBUpdateClanMembership(mob.Name(),"",0);

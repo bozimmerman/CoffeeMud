@@ -77,6 +77,8 @@ public class DefaultCharState implements Cloneable, CharState
 	public void setHunger(int newVal){Hunger=newVal; if(Hunger>0)ticksHungry=0;}
 	public boolean adjHunger(int byThisMuch, int max)
 	{
+	    if((byThisMuch>0)&&(Hunger==Integer.MAX_VALUE))
+	        return false;
 		Hunger+=byThisMuch;
 		if(Hunger<0)
 		{
@@ -105,6 +107,8 @@ public class DefaultCharState implements Cloneable, CharState
 	public void setThirst(int newVal){Thirst=newVal; if(Thirst>0) ticksThirsty=0;}
 	public boolean adjThirst(int byThisMuch, int max)
 	{
+	    if((byThisMuch>0)&&(Thirst==Integer.MAX_VALUE))
+	        return false;
 		Thirst+=byThisMuch;
 		if(Thirst<0)
 		{

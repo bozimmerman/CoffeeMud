@@ -431,15 +431,13 @@ public class StdRace implements Race
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		Body.setPlayerCorpse(!mob.isMonster());
-		if(!mob.isMonster())
-			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 		Body.setMobPKFlag(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
 		Body.setName("the body of "+mob.Name());
 		Body.setMobName(mob.Name());
 		Body.setMobDescription(mob.description());
 		Body.setDisplayText("the body of "+mob.Name()+" lies here.");
 		if(room!=null)
-			room.addItem(Body);
+			room.addItemRefuse(Body,mob.isMonster()?Item.REFUSE_MONSTER_BODY:Item.REFUSE_PLAYER_BODY);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAllEffects();i++)
@@ -463,7 +461,7 @@ public class StdRace implements Race
 				{
 					Item newItem=(Item)thisItem.copyOf();
 					newItem.setContainer(null);
-					newItem.setDispossessionTime(System.currentTimeMillis()+(Item.REFUSE_MONSTER_EQ*IQCalendar.MILI_HOUR));
+					newItem.setDispossessionTime(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*IQCalendar.MILI_HOUR));
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;

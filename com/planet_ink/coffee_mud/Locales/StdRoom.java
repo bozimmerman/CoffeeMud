@@ -854,7 +854,7 @@ public class StdRoom
 		recoverRoomStats();
 	}
 
-	public void bringItemHere(Item item, int survivalCode)
+	public void bringItemHere(Item item, double survivalRLHours)
 	{
 		if(item==null) return;
 
@@ -867,10 +867,10 @@ public class StdRoom
 		if(o instanceof MOB)((MOB)o).delInventory(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
 
-		if(survivalCode<0)
+		if(survivalRLHours<=0.0)
 			addItem(item);
 		else
-			addItemRefuse(item,survivalCode);
+			addItemRefuse(item,survivalRLHours);
 		for(int v=0;v<V.size();v++)
 		{
 			Item i2=(Item)V.elementAt(v);
@@ -1259,10 +1259,10 @@ public class StdRoom
 		contents.addElement(item);
 		item.recoverEnvStats();
 	}
-	public void addItemRefuse(Item item, int survivalTime)
+	public void addItemRefuse(Item item, double survivalRLHours)
 	{
 		addItem(item);
-		item.setDispossessionTime(System.currentTimeMillis()+(survivalTime*IQCalendar.MILI_HOUR));
+		item.setDispossessionTime(System.currentTimeMillis()+Math.round(Util.mul(survivalRLHours,IQCalendar.MILI_HOUR)));
 	}
 	public void delItem(Item item)
 	{

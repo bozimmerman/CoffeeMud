@@ -350,10 +350,15 @@ public class DefaultCharStats implements Cloneable, CharStats
 		}
 	}
 	
+	public int getBodypartAlteration(int racialPartNumber)
+	{
+	    if(bodyAlterations==null) return 0;
+	    return bodyAlterations[racialPartNumber];
+	}
 	public void alterBodypart(int racialPartNumber, int deviation)
 	{
 		if(bodyAlterations==null) bodyAlterations=new int[Race.BODY_PARTS];
-		bodyAlterations[racialPartNumber]=deviation;
+		bodyAlterations[racialPartNumber]+=deviation;
 	}
 	
 	public int ageCategory()

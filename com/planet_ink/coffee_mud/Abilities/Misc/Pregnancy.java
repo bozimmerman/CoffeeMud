@@ -432,7 +432,14 @@ public class Pregnancy extends StdAbility
 							I.addBehavior(B);
 							I.text();
 							if((!mob.isMonster())&&(mob.soulMate()==null))
+							{
 								CoffeeTables.bump(mob,CoffeeTables.STAT_BIRTHS);
+								if((Dice.rollPercentage()<20)&&(mob.fetchEffect("Disease_Depression")==null))
+								{
+								    Ability A=CMClass.getAbility("Diease_Depression");
+								    if(A!=null) A.invoke(mob,mob,true,0);
+								}
+							}
 						}
 						else
 							mob.tell("You are in labor!!");

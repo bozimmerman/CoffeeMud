@@ -829,11 +829,7 @@ public class StdMOB implements MOB
 		if((!isMonster())&&(soulMate()==null))
 			bringToLife(CMMap.getDeathRoom(this),true);
 		if(deathRoom!=null)
-		{
-			if(Body!=null)
-				Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();
-		}
 		return Body;
 	}
 
@@ -1879,6 +1875,20 @@ public class StdMOB implements MOB
 				break;
 			}
 		}
+		if((msg.source()!=this)&&(msg.target()!=this))
+		{
+			if(msg.othersMinor()==CMMsg.TYP_DEATH)
+			{
+			    if((followers!=null)
+			    &&(followers.contains(msg.source()))
+				&&(Dice.rollPercentage()>1)
+			    &&(fetchEffect("Disease_Depression")==null))
+				{
+				    Ability A=CMClass.getAbility("Disease_Depression");
+				    if(A!=null) A.invoke(this,this,true,0);
+				}
+			}
+		}
 		return true;
 	}
 
@@ -2368,22 +2378,25 @@ public class StdMOB implements MOB
 			&&((canseesrc)||(canhearsrc)))
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 
-			if((msg.othersMinor()==CMMsg.TYP_DEATH)&&(victim!=null))
+			if(msg.othersMinor()==CMMsg.TYP_DEATH)
 			{
-				MOB victim=this.victim;
-				if(victim==msg.source())
-					setVictim(null);
-				else
-				if((victim.getVictim()==null)||(victim.getVictim()==msg.source()))
-				{
-					if((amFollowing()!=null)&&(victim.amFollowing()!=null)&&(amFollowing()==victim.amFollowing()))
+			    if(victim!=null)
+			    {
+					MOB victim=this.victim;
+					if(victim==msg.source())
 						setVictim(null);
 					else
+					if((victim.getVictim()==null)||(victim.getVictim()==msg.source()))
 					{
-						victim.setAtRange(-1);
-						victim.setVictim(this);
+						if((amFollowing()!=null)&&(victim.amFollowing()!=null)&&(amFollowing()==victim.amFollowing()))
+							setVictim(null);
+						else
+						{
+							victim.setAtRange(-1);
+							victim.setVictim(this);
+						}
 					}
-				}
+			    }
 			}
 		}
 

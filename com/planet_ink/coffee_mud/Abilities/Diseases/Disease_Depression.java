@@ -37,7 +37,7 @@ public class Disease_Depression extends Disease
 	protected String DISEASE_DONE(){return "You feel better.";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) depressed.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> moap(s).";}
-	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
+	public int abilityCode(){return 0;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

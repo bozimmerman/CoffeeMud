@@ -81,8 +81,7 @@ public class ClanExile extends BaseClanner
 								M.setClanRole(0);
 								mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
 								M.tell("You have been exiled from "+C.typeName()+" '"+C.ID()+"'.");
-								if(!C.delClanHomeSpell(M))
-									CMClass.DBEngine().DBUpdateMOB(M);
+								C.updateClanPrivileges(M);
 								return false;
 							}
 						}

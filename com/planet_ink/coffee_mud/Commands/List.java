@@ -780,35 +780,35 @@ public class List extends StdCommand
 		}
 		switch(code)
 		{
-		case 0:	s.rawPrintln(unlinkedExits(mob,commands)); break;
-		case 1: s.rawPrintln(CMLister.reallyList(CMClass.items()).toString()); break;
-		case 2: s.rawPrintln(CMLister.reallyList(CMClass.armor()).toString()); break;
-		case 3: s.rawPrintln(listEnvResources()); break;
-		case 4: s.rawPrintln(CMLister.reallyList(CMClass.weapons()).toString()); break;
-		case 5: s.rawPrintln(CMLister.reallyList(CMClass.mobTypes()).toString()); break;
-		case 6: s.rawPrintln(roomDetails(CMMap.rooms(),mob.location()).toString()); break;
-		case 7: s.rawPrintln(roomTypes(CMMap.rooms(),mob.location()).toString()); break;
-		case 8: s.rawPrintln(CMLister.reallyList(CMClass.locales()).toString()); break;
-		case 9: s.rawPrintln(CMLister.reallyList(CMClass.behaviors()).toString()); break;
-		case 10: s.rawPrintln(CMLister.reallyList(CMClass.exits()).toString()); break;
-		case 11: s.rawPrintln(listRaces(CMClass.races()).toString()); break;
-		case 12: s.rawPrintln(CMLister.reallyList(CMClass.charClasses()).toString()); break;
-		case 13: s.rawPrintln(listSubOps(mob).toString()); break;
-		case 14: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SPELL).toString()); break;
-		case 15: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SONG).toString()); break;
-		case 16: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PRAYER).toString()); break;
-		case 17: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PROPERTY).toString()); break;
-		case 18: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString()); break;
-		case 19: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString()); break;
+		case 0:	s.wraplessPrintln(unlinkedExits(mob,commands)); break;
+		case 1: s.wraplessPrintln(CMLister.reallyList(CMClass.items()).toString()); break;
+		case 2: s.wraplessPrintln(CMLister.reallyList(CMClass.armor()).toString()); break;
+		case 3: s.wraplessPrintln(listEnvResources()); break;
+		case 4: s.wraplessPrintln(CMLister.reallyList(CMClass.weapons()).toString()); break;
+		case 5: s.wraplessPrintln(CMLister.reallyList(CMClass.mobTypes()).toString()); break;
+		case 6: s.wraplessPrintln(roomDetails(CMMap.rooms(),mob.location()).toString()); break;
+		case 7: s.wraplessPrintln(roomTypes(CMMap.rooms(),mob.location()).toString()); break;
+		case 8: s.wraplessPrintln(CMLister.reallyList(CMClass.locales()).toString()); break;
+		case 9: s.wraplessPrintln(CMLister.reallyList(CMClass.behaviors()).toString()); break;
+		case 10: s.wraplessPrintln(CMLister.reallyList(CMClass.exits()).toString()); break;
+		case 11: s.wraplessPrintln(listRaces(CMClass.races()).toString()); break;
+		case 12: s.wraplessPrintln(CMLister.reallyList(CMClass.charClasses()).toString()); break;
+		case 13: s.wraplessPrintln(listSubOps(mob).toString()); break;
+		case 14: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SPELL).toString()); break;
+		case 15: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SONG).toString()); break;
+		case 16: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PRAYER).toString()); break;
+		case 17: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.PROPERTY).toString()); break;
+		case 18: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString()); break;
+		case 19: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.COMMON_SKILL).toString()); break;
 		case 20: break;
-		case 21: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString()); break;
+		case 21: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString()); break;
 		case 22: s.println(listQuests().toString()); break;
-		case 23: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;
-		case 24: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.POISON).toString()); break;
+		case 23: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.DISEASE).toString()); break;
+		case 24: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.POISON).toString()); break;
 		case 25: s.println(listTicks(Util.combine(commands,1)).toString()); break;
-		case 26: s.rawPrintln(CMLister.reallyList(CMClass.miscMagic()).toString()); break;
-		case 27: s.rawPrintln(CMLister.reallyList(CMClass.miscTech()).toString()); break;
-		case 28: s.rawPrintln(CMLister.reallyList(CMClass.clanItems()).toString()); break;
+		case 26: s.wraplessPrintln(CMLister.reallyList(CMClass.miscMagic()).toString()); break;
+		case 27: s.wraplessPrintln(CMLister.reallyList(CMClass.miscTech()).toString()); break;
+		case 28: s.wraplessPrintln(CMLister.reallyList(CMClass.clanItems()).toString()); break;
 		case 29: s.println(journalList("SYSTEM_BUGS").toString()); break;
 		case 30: s.println(journalList("SYSTEM_IDEAS").toString()); break;
 		case 31:
@@ -818,7 +818,7 @@ public class List extends StdCommand
 			if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
 				str.append((b+1)+") "+((String)protectedOnes.elementAt(b))+"\n\r");
-			s.rawPrintln(str.toString());
+			s.wraplessPrintln(str.toString());
 			break;
 		}
 		case 32:
@@ -828,22 +828,22 @@ public class List extends StdCommand
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
 				str.append((b+1)+") "+((String)banned.elementAt(b))+"\n\r");
-			s.rawPrintln(str.toString());
+			s.wraplessPrintln(str.toString());
 			break;
 		}
 		case 33: s.println(journalList("SYSTEM_TYPOS").toString()); break;
-		case 34: s.rawPrintln(Log.getLog().toString()); break;
+		case 34: s.wraplessPrintln(Log.getLog().toString()); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
 		case 38: s.println(listThreads(mob).toString()); break;
-		case 39: s.rawPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
-		case 40: s.rawPrintln(reallyFindOneWays(mob,commands)); break;
-		case 41: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
+		case 39: s.wraplessPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
+		case 40: s.wraplessPrintln(reallyFindOneWays(mob,commands)); break;
+		case 41: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
 		case 42:
-		case 43: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
+		case 43: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SUPERPOWER).toString()); break;
 		case 44:
-		case 45: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
+		case 45: s.wraplessPrintln(CMLister.reallyList(CMClass.abilities(),Ability.EVILDEED).toString()); break;
 		default:
 			s.println("List?!");
 			break;

@@ -636,15 +636,7 @@ public class MUD extends Thread implements MudHost
 				            CMClass.DBEngine().DBUpdateTheseMOBs(R,shopmobs);
 			        }
 			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
-			        {
-			            for(int i=R.numItems()-1;i>=0;i--)
-			            {
-			                Item I=R.fetchItem(i);
-			                if((I!=null)&&(I.dispossessionTime()!=0))
-			                    I.destroy();
-			            }
 			            CMClass.DBEngine().DBUpdateItems(R);
-			        }
 			    }
 			}
 			if(S!=null)S.println("done");

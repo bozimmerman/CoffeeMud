@@ -45,7 +45,6 @@ public class Corpse extends GenContainer implements DeadBody
 		setDescription("Bloody and bruised, obviously mistreated.");
 		properWornBitmap=0;
 		baseEnvStats.setWeight(150);
-		baseEnvStats.setRejuv(100);
 		capacity=5;
 		baseGoldValue=0;
 		recoverEnvStats();
@@ -58,25 +57,6 @@ public class Corpse extends GenContainer implements DeadBody
 			super.setMiscText(newText);
 	}
 
-	public void startTicker(Room thisRoom)
-	{
-		roomLocation=thisRoom;
-		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_DEADBODY_DECAY,envStats().rejuv());
-	}
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(tickID==MudHost.TICK_DEADBODY_DECAY)
-		{
-			destroy();
-			if(owner() instanceof Room)
-				roomLocation=(Room)owner();
-			if(roomLocation!=null)
-				roomLocation.recoverRoomStats();
-			return false;
-		}
-		else
-			return super.tick(ticking,tickID);
-	}
 	public CharStats charStats()
 	{
 		if(charStats==null)

@@ -118,6 +118,7 @@ public class ClanAssign extends BaseClanner
 											MOB M2=CMMap.getPlayer(s);
 											if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 											CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
+											C.updateClanPrivileges(M2);
 										}
 									}
 									else
@@ -133,12 +134,14 @@ public class ClanAssign extends BaseClanner
 												MOB M2=CMMap.getPlayer(s);
 												if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 												CMClass.DBEngine().DBUpdateClanMembership(s, C.ID(), Clan.POS_MEMBER);
+												C.updateClanPrivileges(M2);
 											}
 										}
 									}
 								}
 								clanAnnounce(mob,M.Name()+" changed from "+Clans.getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+Clans.getRoleName(C.getGovernment(),newPos,true,false));
 								M.setClanRole(newPos);
+								C.updateClanPrivileges(M);
 								CMClass.DBEngine().DBUpdateClanMembership(M.Name(), C.ID(), newPos);
 								mob.tell(M.Name()+" has been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");
 								M.tell("You have been assigned to be "+Util.startWithAorAn(Clans.getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" '"+C.ID()+"'.");

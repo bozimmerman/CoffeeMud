@@ -324,10 +324,11 @@ public class Clans implements Clan, Tickable
 		CMClass.DBEngine().DBUpdateClan(this);
 	}
 
-	public boolean addClanHomeSpell(MOB M)
+	public boolean updateClanPrivileges(MOB M)
 	{
 		boolean did=false;
-		if(M.getClanID().equals(ID())&&(M.getClanRole()!=Clan.POS_APPLICANT))
+		if(M.getClanID().equals(ID())
+		&&(M.getClanRole()!=Clan.POS_APPLICANT))
 		{
 			if(M.fetchAbility("Spell_ClanHome")==null)
 			{
@@ -341,27 +342,55 @@ public class Clans implements Clan, Tickable
 				(M.fetchAbility("Spell_ClanDonate")).setProfficiency(100);
 				did=true;
 			}
-			if(did)
-				CMClass.DBEngine().DBUpdateMOB(M);
 		}
-		return did;
-	}
-
-	public boolean delClanHomeSpell(MOB mob)
-	{
-		boolean did=false;
-		if(mob.fetchAbility("Spell_ClanHome")!=null)
+		else
+		{
+			if(M.fetchAbility("Spell_ClanHome")!=null)
+			{
+				did=true;
+				M.delAbility(M.fetchAbility("Spell_ClanHome"));
+			}
+			if(M.fetchAbility("Spell_ClanDonate")!=null)
+			{
+				did=true;
+				M.delAbility(M.fetchAbility("Spell_ClanDonate"));
+			}
+		}
+		if(((M.getClanID().equals(ID())))
+		&&(allowedToDoThis(M,Clan.FUNC_CLANCANORDERCONQUERED)>0))
+		{
+		    if(M.fetchAbility("Spell_Flagportation")==null)
+		    {
+				M.addAbility(CMClass.findAbility("Spell_Flagportation"));
+				(M.fetchAbility("Spell_Flagportation")).setProfficiency(100);
+				did=true;
+		    }
+		}
+		else
+		if(M.fetchAbility("Spell_Flagportation")!=null)
 		{
 			did=true;
-			mob.delAbility(mob.fetchAbility("Spell_ClanHome"));
+			M.delAbility(M.fetchAbility("Spell_Flagportation"));
 		}
-		if(mob.fetchAbility("Spell_ClanDonate")!=null)
+		
+		if(M.playerStats()!=null)
+		for(int i=0;i<Clans.POSORDER.length;i++)
 		{
-			did=true;
-			mob.delAbility(mob.fetchAbility("Spell_ClanDonate"));
+		    int pos=Clans.POSORDER[i];
+			String title="*, "+getRoleName(getGovernment(),pos,true,false)+" of "+name();
+			if((M.getClanRole()==pos)
+			&&(M.getClanID().equals(ID()))
+			&&(pos!=Clan.POS_APPLICANT))
+			{
+				if(!M.playerStats().getTitles().contains(title))
+				    M.playerStats().getTitles().addElement(title);
+			}
+			else
+			if(M.playerStats().getTitles().contains(title))
+			    M.playerStats().getTitles().remove(title);
 		}
-		if(did)
-			CMClass.DBEngine().DBUpdateMOB(mob);
+		if((did)&&(!CMSecurity.isSaveFlag("NOPLAYERS")))
+			CMClass.DBEngine().DBUpdateMOB(M);
 		return did;
 	}
 
@@ -376,6 +405,7 @@ public class Clans implements Clan, Tickable
 			{
 				M.setClanID("");
 				M.setClanRole(0);
+				updateClanPrivileges(M);
 				CMClass.DBEngine().DBUpdateClanMembership(M.Name(), "", 0);
 			}
 		}
@@ -446,7 +476,7 @@ public class Clans implements Clan, Tickable
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
 			if(mob.getClanID().equalsIgnoreCase(ID()))
-				addClanHomeSpell(mob);
+				updateClanPrivileges(mob);
 			msg.append("-----------------------------------------------------------------\n\r"
 			          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_MEMBER,true,true),16)
 					  +":^.^N "+crewList(Clan.POS_MEMBER)+"\n\r");
