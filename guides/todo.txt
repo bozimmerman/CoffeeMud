@@ -34,6 +34,7 @@
 ! Distract ability (can't fight during) to make an enemies scores worse...
 ! Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
 ! random monster property class which reads stats from a resource file
+! make sure you can create pills that generate experience points
 
 thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
 

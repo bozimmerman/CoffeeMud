@@ -148,6 +148,8 @@ public class GenSuperPill extends GenPill
 		mob.setTrains(mob.getTrains()+getVal(readableText,"trai"));
 		mob.setQuestPoint(mob.getQuestPoint()+getVal(readableText,"ques"));
 		mob.setMoney(mob.getMoney()+getVal(readableText,"coin"));
+		int exp=getVal(readableText,"expe");
+		if(exp>0) mob.charStats().getMyClass().gainExperience(mob,null,mob.getLeigeID(),exp);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
