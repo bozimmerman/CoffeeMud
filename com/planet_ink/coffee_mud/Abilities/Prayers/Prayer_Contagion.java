@@ -30,6 +30,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
+	public int difficultyLevel(){return 0;}
 
 	public void unInvoke()
 	{

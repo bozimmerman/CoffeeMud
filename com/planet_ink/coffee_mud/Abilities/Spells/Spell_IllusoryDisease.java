@@ -28,6 +28,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	public int difficultyLevel(){return 9;}
 	private int diseaseTick=5;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

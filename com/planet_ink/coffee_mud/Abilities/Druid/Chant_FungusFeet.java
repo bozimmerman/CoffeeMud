@@ -28,6 +28,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public String displayText(){return "(Fungus Feet)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public int abilityCode(){return 0;}
+	public int difficultyLevel(){return 4;}
 	int plagueDown=8;
 	double drawups=1.0;
 	public boolean tick(Tickable ticking, int tickID)

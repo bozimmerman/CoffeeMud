@@ -53,7 +53,8 @@ public class WhoIs extends Who
 			MOB mob2=thisSession.mob();
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
-			&&((!Sense.isCloaked(mob2)||(CMSecurity.isAllowedAnywhere(mob,"CLOAK"))))
+			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
 			&&(mob2.envStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
 				msg.append(showWhoShort(mob2));

@@ -28,6 +28,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int difficultyLevel(){return 5;}
 
 	int plagueDown=4;
 

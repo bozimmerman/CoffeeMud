@@ -30,6 +30,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public String displayText(){ return "(Doomspout)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int difficultyLevel(){return 7;}
 	int plagueDown=4;
 	String godName="The Demon";
 

@@ -41,6 +41,16 @@ public class Where extends StdCommand
 		V.addElement(area,new Integer(i));
 	}
 
+	public boolean canShowTo(MOB showTo, MOB show)
+	{
+	    if((show!=null)
+	    &&(show.session()!=null)
+		&&((show.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+			||((CMSecurity.isAllowedAnywhere(showTo,"CLOAK")||CMSecurity.isAllowedAnywhere(showTo,"WIZINV"))&&(showTo.envStats().level()>=show.envStats().level())))
+			return true;
+		return false;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -55,9 +65,10 @@ public class Where extends StdCommand
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=Sessions.elementAt(s);
-					if(thisSession.mob() != null)
+					MOB mob2=thisSession.mob();
+					if(canShowTo(mob,mob2))
 					{
-						lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(mob2.Name(),17)+"^?| ");
 						if(thisSession.mob().location() != null )
 						{
 							lines.append(thisSession.mob().location().displayText());
@@ -138,50 +149,53 @@ public class Where extends StdCommand
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
-							if((!itemOnly)&&(!roomOnly))
-								if((EnglishParser.containsString(M.name(),who))
-								||(EnglishParser.containsString(M.displayText(),who))
-								||(EnglishParser.containsString(M.description(),who)))
-								{
-									lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
-									lines.append(R.roomTitle());
-									lines.append(" ("+R.roomID()+")");
-									lines.append("\n\r");
-								}
-							if((!mobOnly)&&(!roomOnly))
-							{
-								for(int i=0;i<M.inventorySize();i++)
-								{
-									Item I=M.fetchInventory(i);
-									if((EnglishParser.containsString(I.name(),who))
-									||(EnglishParser.containsString(I.displayText(),who))
-									||(EnglishParser.containsString(I.description(),who)))
+						    if((M!=null)&&((M.isMonster())||(canShowTo(mob,M))))
+						    {
+								if((!itemOnly)&&(!roomOnly))
+									if((EnglishParser.containsString(M.name(),who))
+									||(EnglishParser.containsString(M.displayText(),who))
+									||(EnglishParser.containsString(M.description(),who)))
 									{
-										lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
-										lines.append("INV: "+M.name());
+										lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+										lines.append(R.roomTitle());
 										lines.append(" ("+R.roomID()+")");
 										lines.append("\n\r");
-										break;
 									}
-								}
-								ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
-								Vector V=(SK!=null)?SK.getUniqueStoreInventory():null;
-								if(V!=null)
-								for(int i=0;i<V.size();i++)
+								if((!mobOnly)&&(!roomOnly))
 								{
-									Environmental E=(Environmental)V.elementAt(i);
-									if((EnglishParser.containsString(E.name(),who))
-									||(EnglishParser.containsString(E.displayText(),who))
-									||(EnglishParser.containsString(E.description(),who)))
+									for(int i=0;i<M.inventorySize();i++)
 									{
-										lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
-										lines.append("SHOP: "+M.name());
-										lines.append(" ("+R.roomID()+")");
-										lines.append("\n\r");
-										break;
+										Item I=M.fetchInventory(i);
+										if((EnglishParser.containsString(I.name(),who))
+										||(EnglishParser.containsString(I.displayText(),who))
+										||(EnglishParser.containsString(I.description(),who)))
+										{
+											lines.append("^!"+Util.padRight(I.name(),17)+"^?| ");
+											lines.append("INV: "+M.name());
+											lines.append(" ("+R.roomID()+")");
+											lines.append("\n\r");
+											break;
+										}
+									}
+									ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+									Vector V=(SK!=null)?SK.getUniqueStoreInventory():null;
+									if(V!=null)
+									for(int i=0;i<V.size();i++)
+									{
+										Environmental E=(Environmental)V.elementAt(i);
+										if((EnglishParser.containsString(E.name(),who))
+										||(EnglishParser.containsString(E.displayText(),who))
+										||(EnglishParser.containsString(E.description(),who)))
+										{
+											lines.append("^!"+Util.padRight(E.name(),17)+"^?| ");
+											lines.append("SHOP: "+M.name());
+											lines.append(" ("+R.roomID()+")");
+											lines.append("\n\r");
+											break;
+										}
 									}
 								}
-							}
+						    }
 						}
 					}
 				}
