@@ -25,6 +25,19 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genAuthor(MOB mob, Area A, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Author: '"+A.getAuthorID()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if(newName.length()>0)
+			A.setAuthorID(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	static void genClan(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{

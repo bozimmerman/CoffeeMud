@@ -1,6 +1,4 @@
 do a control panel, include dbconnections reset.
-add author str to areas
-
 Test: Annul, Divorce
 
 Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 

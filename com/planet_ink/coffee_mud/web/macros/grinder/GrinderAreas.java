@@ -160,6 +160,11 @@ public class GrinderAreas
 		if(desc==null)desc="";
 		A.setDescription(Util.safetyFilter(desc));
 
+		// description
+		String author=httpReq.getRequestParameter("AUTHOR");
+		if(author==null)author="";
+		A.setAuthorID(Util.safetyFilter(author));
+		
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");
         for(int v=0;v<A.getNumParents();v++)

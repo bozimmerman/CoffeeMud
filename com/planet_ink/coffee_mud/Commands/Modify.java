@@ -339,6 +339,7 @@ public class Modify extends BaseGenerics
 				int showNumber=0;
 				genName(mob,myArea,++showNumber,showFlag);
 				genDescription(mob,myArea,++showNumber,showFlag);
+				genAuthor(mob,myArea,++showNumber,showFlag);
 				genTechLevel(mob,myArea,++showNumber,showFlag);
 				genClimateType(mob,myArea,++showNumber,showFlag);
 				genArchivePath(mob,myArea,++showNumber,showFlag);

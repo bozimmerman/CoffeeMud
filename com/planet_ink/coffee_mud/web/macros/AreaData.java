@@ -211,6 +211,13 @@ public class AreaData extends StdWebMacro
 						name=A.Name();
 					str.append(name);
 				}
+				if(parms.containsKey("AUTHOR"))
+				{
+					String author=httpReq.getRequestParameter("AUTHOR");
+					if((author==null)||(author.length()==0))
+						author=A.getAuthorID();
+					str.append(author);
+				}
 				if(parms.containsKey("ARCHP"))
 				{
 					String path=httpReq.getRequestParameter("ARCHP");
