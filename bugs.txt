@@ -14,7 +14,6 @@ Prop_Translator -- echos translations to the room, but on items, players.
 I have 2 walking arenedirs one day, and he doesn't leige, and he doesn't autoassist!
 add string control to decay
 look into cycling through classes on all stdmob recover/affect calls.
-confirm viability of fountains and gettability, removability, etc.. its BROKE!!!!
 Add ability to disable future logons.
 
 Some solution for variable eq on mobs -- use rejuv! 

@@ -1530,12 +1530,8 @@ public class CoffeeMaker
 
 		setEnvProperties(E,buf);
 		String deprecatedFlag=XMLManager.getValFromPieces(buf,"FLAG");
-if(E.displayText().indexOf("beautiful large marble fountain")>=0)
-	System.out.println("1-"+E.name()+"/"+deprecatedFlag+"/"+Sense.isGettable((Item)E));
 		if((deprecatedFlag!=null)&&(deprecatedFlag.length()>0))
 			setEnvFlags(E,Util.s_int(deprecatedFlag));
-if(E.displayText().indexOf("beautiful large marble fountain")>=0)
-	System.out.println("2-"+E.name()+"/"+deprecatedFlag+"/"+Sense.isGettable((Item)E));
 
 		if(E instanceof Exit)
 		{
