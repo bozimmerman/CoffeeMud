@@ -750,7 +750,7 @@ command.&nbsp; Other items include weapons, which can be discovered through
 "list weapons", armor from "list armor", and other miscellaneous enchanted items 
 through "list magic".&nbsp; </P>
 <P>For those items you need by are not present, there is 
-also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenTable", "GenBed", 
+also the "GenItem",&nbsp;"GenBoat", "GenChair", "GenTable", "GenBed", "GenLimb",  
 "GenCoins", "GenCorpse", "GenKey", "GenLantern", "GenLightSource", "GenCigar", 
 "GenPipe", "GenMap",&nbsp;&nbsp;"GenResource", "GenLiquidResource", 
 "GenFoodResource", "GenRideable", "GenWallpaper", "GenJournal", "GenContainer", 
@@ -2289,6 +2289,30 @@ more:</P>
     <TD>This is the general classification of the 
       instrument for the purposes of several of the Minstrel 
 songs.</TD></TR></TABLE></P>
+<P><A name=geni24>The "GenLimb" </A></STRONG></P>
+<P>This strange item represents both false limbs and real replaceable ones.</P>
+<P>Whenever a GenLimb item is created, much like the 
+GenContainer above, you are presented with a list of properties to fill 
+in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
+include all of the fields listed above under GenItem, though 
+some have slightly different meanings:</P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Name, Secret Identity</EM></TD>
+    <TD>At least one of these fields must *END* with the name of a valid body part
+    in order for the GenLimb to operate properly.  Value body parts include: 
+    </TD></TR>
+  <TR>
+    <TD><EM>Magical Ability</EM></TD>
+    <TD>On a GenLimb, this field should have a value of 0 when the limb is 
+    false (meaning that wearing it does not replace the functionality of missing limbs),
+    or a value > 0 (meaning that it replaces X missing limbs).</TD></TR>
+    </TABLE></STRONG>
 <P>
 <P>
 <P><STRONG><FONT color=blue size=5><A name=moditems>Modifying 
@@ -6992,14 +7016,16 @@ color=green size=3>Generic Item Types
   <TR>
     <TD><A href="#geni15" ><FONT color=black 
       >GenPowder</FONT></A></TD>
+    <TD><A href="#geni24" ><FONT color=black 
+    >GenLimb</FONT></A></TD>
     <TD><A href="#geni21" ><FONT color=black 
     ></FONT></A></TD>
     <TD><A href="#geni21" ><FONT color=black 
     ></FONT></A></TD>
     <TD><A href="#geni21" ><FONT color=black 
-    ></FONT></A></TD>
-    <TD><A href="#geni21" ><FONT color=black 
-    ></FONT></A></TD>&gt;GenPiano</FONT></A></TD></TR></TR></TABLE>
+    ></FONT></A></TD>&gt;GenPiano</FONT></A></TD>
+  </TR>
+</TR></TABLE>
 <P class=MsoNormal><STRONG><FONT 
 color=green size=3>Generic MOB Types 
 (GenMOBs)</FONT></STRONG></P>

@@ -350,6 +350,7 @@ public class Amputation extends StdAbility
 		}
 		Item limb=CMClass.getItem("GenLimb");
 		limb.setName("a "+gone);
+		limb.baseEnvStats().setAbility(1);
 		limb.setDisplayText("a bloody "+gone+" is sitting here.");
 		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 		int material=EnvResource.RESOURCE_MEAT;

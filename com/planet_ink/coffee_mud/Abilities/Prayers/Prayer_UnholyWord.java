@@ -72,8 +72,8 @@ public class Prayer_UnholyWord extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word "+ofDiety(mob)+" to <T-NAMESELF>.^?";
-		String missStr="<S-NAME> speak(s) the unholy word of "+ofDiety(mob)+", but nothing happens.";
+		String str=auto?"The unholy word is spoken.":"^S<S-NAME> speak(s) the unholy word"+ofDiety(mob)+" to <T-NAMESELF>.^?";
+		String missStr="<S-NAME> speak(s) the unholy word of"+ofDiety(mob)+", but nothing happens.";
 
 		Room room=mob.location();
 		if(room!=null)

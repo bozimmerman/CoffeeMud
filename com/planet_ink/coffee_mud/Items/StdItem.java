@@ -498,7 +498,7 @@ public class StdItem implements Item
 	}
 
 	
-	private boolean canWearComplete(MOB mob)
+	protected boolean canWearComplete(MOB mob)
 	{
 		if(!canWear(mob,0))
 		{
