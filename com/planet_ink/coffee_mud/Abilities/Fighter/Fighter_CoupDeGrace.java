@@ -72,7 +72,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
-		if((success)&&((dmg<50)||(dmg<target.maxState().getHitPoints())))
+		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/2))))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
