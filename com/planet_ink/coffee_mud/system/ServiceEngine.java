@@ -259,7 +259,7 @@ public class ServiceEngine
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
 				Tickable E=C.clientObject;
-
+				String name="!NULL!";
 				if((E instanceof Ability)&&(E.ID().equals("ItemRejuv")))
 					E=((Ability)E).affecting();
 
@@ -271,7 +271,11 @@ public class ServiceEngine
 					msg.append("\n\r");
 					col=1;
 				}
-				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+(C.suspended?"??":""+oo),10));
+				if(E!=null) name=E.name();
+				msg.append(Util.padRight(""+v,4)
+						   +Util.padRight(name,18)
+						   +" "+Util.padRight(id+"",5)
+						   +Util.padRight(pr+"/"+(C.suspended?"??":""+oo),10));
 			}
 		}
 		return msg;

@@ -1899,10 +1899,10 @@ public class Import
 			if(Util.numBits(codeStr3)>2)
 			{
 				I.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr3,0)));
-				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 30);
+				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 10);
 				if(I.baseEnvStats().weight()<1) I.baseEnvStats().setWeight(1);
 				if(I instanceof Rideable)
-					I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) * 3);
+					I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) * 10);
 				I.setBaseValue(Util.s_int(Util.getBit(codeStr3,2)));
 			}
 			else

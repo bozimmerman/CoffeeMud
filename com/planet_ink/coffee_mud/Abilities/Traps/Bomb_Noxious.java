@@ -8,8 +8,8 @@ import java.util.*;
 public class Bomb_Noxious extends StdBomb
 {
 	public String ID() { return "Bomb_Noxious"; }
-	public String name(){ return "smoke bomb";}
-	protected int trapLevel(){return 12;}
+	public String name(){ return "stink bomb";}
+	protected int trapLevel(){return 19;}
 	public String requiresToSet(){return "an egg";}
 	public Environmental newInstance(){	return new Bomb_Noxious();}
 	
@@ -29,9 +29,9 @@ public class Bomb_Noxious extends StdBomb
 		if(target.location()!=null)
 		{
 			if((target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the smoke bomb!");
+				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the stink bomb!");
 			else
-			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" explodes smoke into <T-YOUPOSS> eyes!"))
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" explodes stink into <T-YOUPOSS> eyes!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_StinkingCloud");

@@ -1,9 +1,8 @@
 GAES still isn't done
 MovingRoom behavior?
 test traps!
-way to extinguish lightsource
 timer on help proff still broke
-export world bug?
+
 
 
 

@@ -9,6 +9,7 @@ public class Spell_Irritation extends Spell
 {
 	public String ID() { return "Spell_Irritation"; }
 	public String name(){return "Irritation";}
+	public int quality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Irritation();}
@@ -38,11 +39,11 @@ public class Spell_Irritation extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> start(s) wincing and scratching!");
-				beneficialAffect(mob,target,0);
+				maliciousAffect(mob,target,0,-1);
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting but nothing happens.");
+			maliciousFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting but nothing happens.");
 
 
 		// return whether it worked

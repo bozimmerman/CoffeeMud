@@ -9,7 +9,7 @@ public class Bomb_Spores extends StdBomb
 {
 	public String ID() { return "Bomb_Spores"; }
 	public String name(){ return "spore bomb";}
-	protected int trapLevel(){return 15;}
+	protected int trapLevel(){return 21;}
 	public String requiresToSet(){return "some diseased meat";}
 	public Environmental newInstance(){	return new Bomb_Spores();}
 	
@@ -30,7 +30,7 @@ public class Bomb_Spores extends StdBomb
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Vector V=returnOffensiveAffects(E);
-		if((!(E instanceof Drink))||(V.size()==0))
+		if((!(E instanceof Food))||(V.size()==0))
 		{
 			mob.tell("You need some diseased meat to make this out of.");
 			return false;

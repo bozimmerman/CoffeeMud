@@ -9,7 +9,7 @@ public class Bomb_Smoke extends StdBomb
 {
 	public String ID() { return "Bomb_Smoke"; }
 	public String name(){ return "smoke bomb";}
-	protected int trapLevel(){return 2;}
+	protected int trapLevel(){return 12;}
 	public String requiresToSet(){return "something wooden";}
 	public Environmental newInstance(){	return new Bomb_Smoke();}
 	

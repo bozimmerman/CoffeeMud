@@ -91,7 +91,7 @@ public class SaveThread extends Thread
 				{
 					long check=60000;
 					if(S.mob().isASysOp(null))
-						check=check*10;
+						check=check*15;
 					if(S.getStatus()==Session.STATUS_LOGIN)
 						check=check*5;
 					if(time>(check*10))
