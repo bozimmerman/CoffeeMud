@@ -98,7 +98,7 @@ public class Skill_Dirt extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,auto?"Dirt flys at <T-NAME>!":"<S-NAME> kick(s) dirt at <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"Dirt flys at <T-NAME>!":"<S-NAME> kick(s) dirt at <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

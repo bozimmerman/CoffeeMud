@@ -110,8 +110,7 @@ public class Grouping
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();
-			if(target!=mob)
-				target.tell(mob.name()+" tell(s) the group '"+text+"'.");
+			target.tell(mob.name()+" tell(s) the group '"+text+"'.");
 		}
 	}
 

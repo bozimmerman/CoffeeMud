@@ -2540,6 +2540,17 @@
 9
 
 ############################################################
+>insect centipede
+
+(centipede|hi|hello)
+8:crawls around.
+4:
+
+#matches anything and then says nothing
+()
+9
+
+############################################################
 >papa_smurf smurf 
 
 (smurf|smurfette)

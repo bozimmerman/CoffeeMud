@@ -124,7 +124,7 @@ public class Fighter_Whomp extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,auto?"<T-NAME> hit(s) the floor!":"<S-NAME> knock(s) <T-NAMESELF> to the floor!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"<S-NAME> knock(s) <T-NAMESELF> to the floor!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -78,7 +78,15 @@ public class Sense
 	public static boolean isSeen(Environmental E)
 	{ return ((E.envStats().disposition()&IS_SEEN)==0) || isSleeping(E); }
 	public static boolean isHidden(Environmental E)
-	{ return ((E.envStats().disposition()&IS_HIDDEN)==IS_HIDDEN); }
+	{
+		boolean isInHide=((E.envStats().disposition()&IS_HIDDEN)==IS_HIDDEN);
+		if((isInHide)
+		&&(E!=null)
+		&&(E instanceof MOB)
+		&&(((MOB)E).isInCombat()))
+			return false;
+		return isInHide; 
+	}
 	public static boolean isInvisible(Environmental E)
 	{ return ((E.envStats().disposition()&IS_INVISIBLE)==IS_INVISIBLE); }
 	public static boolean isEvil(Environmental E)

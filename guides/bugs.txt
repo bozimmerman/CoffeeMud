@@ -1,7 +1,6 @@
 west gate of new thalos is both open and closed
-gtell should echo more than just OK
-Mushrooms aren't poisonous?!
-the pit bull remains invisible... fix that!  Hidden should not remain so!
-the help for disarm uses the example: bash orc instead of disarm orc.
-a failed login that isn't correctly terminated results in a MOB remaining actice
-if you remove torch from inv, shouldn't it go out?
+//gtell should echo more than just OK
+//Mushrooms aren't poisonous?!
+//the pit bull remains invisible... fix that!  Hidden should not remain so!
+// -- could not attack them back either!
+?a failed login that isn't correctly terminated results in a MOB remaining actice

@@ -115,7 +115,7 @@ public class Dragonbreath extends StdAbility
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|strikeType,null);
+				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|strikeType|(auto?Affect.ACT_GENERAL:0),null);
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);
