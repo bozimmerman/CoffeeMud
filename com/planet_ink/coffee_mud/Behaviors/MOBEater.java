@@ -10,7 +10,6 @@ public class MOBEater extends ActiveTicker
 	public String ID(){return "MOBEater";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private Room Stomach = null;
-	private int swallowDown=5;
 	private int digestDown=4;
 	private Room lastKnownLocation=null;
 
@@ -45,30 +44,32 @@ public class MOBEater extends ActiveTicker
 
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-		int morselCount = Stomach.numInhabitants();
-		for (int x=morselCount-1;x>=0;x--)
+		Vector these=new Vector();
+		for (int x=0;x<Stomach.numInhabitants();x++)
 		{
 			// ===== get the tasty morsels
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if(TastyMorsel!=null)
-				lastKnownLocation.bringMobHere(TastyMorsel,false);
+				these.addElement(TastyMorsel);
 		}
 
 		// =====move the inventory of the stomach to the room
-		int itemCount = Stomach.numItems();
-		for (int y=itemCount-1;y>=0;y--)
+		for (int y=0;y<Stomach.numItems();y++)
 		{
 			Item PartiallyDigestedItem = Stomach.fetchItem(y);
-			if (PartiallyDigestedItem!=null)
-			{
-				lastKnownLocation.addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
-				Stomach.delItem(PartiallyDigestedItem);
-			}
+			if((PartiallyDigestedItem!=null)&&(PartiallyDigestedItem.container()==null))
+				these.addElement(PartiallyDigestedItem);
 		}
-		if((morselCount>0)||(itemCount>0))
+		for(int i=0;i<these.size();i++)
 		{
-			lastKnownLocation.recoverRoomStats();
+			if(these.elementAt(i) instanceof Item)
+				lastKnownLocation.bringItemHere((Item)these.elementAt(i),Item.REFUSE_PLAYER_DROP);
+			else
+			if(these.elementAt(i) instanceof MOB)
+				lastKnownLocation.bringMobHere((MOB)these.elementAt(i),false);
 		}
+		Stomach.recoverEnvStats();
+		lastKnownLocation.recoverRoomStats();
 		lastKnownLocation=null;
 	}
 
@@ -79,24 +80,19 @@ public class MOBEater extends ActiveTicker
 		if(!(ticking instanceof MOB)) return true;
 
 		MOB mob=(MOB)ticking;
-		if((canAct(ticking,tickID))&&(ticking instanceof MOB)&&(((MOB)ticking).isInCombat()))
+		if(mob.location()!=null)
+			lastKnownLocation=mob.location();
+		
+		if((--digestDown)<=0)
 		{
-			if(mob.location()!=null)
-				lastKnownLocation=mob.location();
-			if((!mob.amDead())&&(tickID==Host.MOB_TICK))
-			{
-				if((--swallowDown)<=0)
-				{
-					swallowDown=2;
-					digestTastyMorsels(mob);
-				}
-				if((--digestDown)<=0)
-				{
-					digestDown=4;
-					trySwallowWhole(mob);
-				}
-			}
+			digestDown=4;
+			digestTastyMorsels(mob);
 		}
+		
+		if((canAct(ticking,tickID))
+		&&(((MOB)ticking).isInCombat())
+		&&(!mob.amDead()))
+			trySwallowWhole(mob);
 		if(mob.amDead())
 			kill();
 		return true;
@@ -111,24 +107,19 @@ public class MOBEater extends ActiveTicker
 			if(TastyMorsel==null) return true;
 			if (TastyMorsel.envStats().weight()<(mob.envStats().weight()/2))
 			{
-				// ===== if it is less than three so roll for it
-				// ===== check the result
-				if (Dice.rollPercentage()<5)
+				// ===== The player has been eaten.
+				// ===== move the tasty morsel to the stomach
+				FullMsg EatMsg=new FullMsg(mob,
+										   TastyMorsel,
+										   null,
+										   Affect.MSG_OK_ACTION,
+										   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
+				if(mob.location().okAffect(TastyMorsel,EatMsg))
 				{
-					// ===== The player has been eaten.
-					// ===== move the tasty morsel to the stomach
-					FullMsg EatMsg=new FullMsg(mob,
-											   TastyMorsel,
-											   null,
-											   Affect.MSG_OK_ACTION,
-											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-					if(mob.location().okAffect(TastyMorsel,EatMsg))
-					{
-						mob.location().send(TastyMorsel,EatMsg);
-						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-						Stomach.send(TastyMorsel,enterMsg);
-					}
+					mob.location().send(TastyMorsel,EatMsg);
+					Stomach.bringMobHere(TastyMorsel,false);
+					FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+					Stomach.send(TastyMorsel,enterMsg);
 				}
 			}
 		}

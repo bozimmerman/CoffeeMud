@@ -27,6 +27,7 @@ public class Util
 		return str;
 	}
 	
+	
 	public static String[] toStringArray(Vector V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -539,6 +540,21 @@ public class Util
 		}
 		if(s.trim().length()>0)
 			V.addElement(s.trim());
+		return V;
+	}
+	
+	public static Vector parseSquiggles(String s)
+	{
+		Vector V=new Vector();
+		if((s==null)||(s.length()==0)) return V;
+		int x=s.indexOf("~");
+		while(x>=0)
+		{
+			String s2=s.substring(0,x).trim();
+			s=s.substring(x+1).trim();
+			V.addElement(s2);
+			x=s.indexOf("~");
+		}
 		return V;
 	}
 	

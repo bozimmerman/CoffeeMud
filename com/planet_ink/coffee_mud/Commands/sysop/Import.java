@@ -15,15 +15,25 @@ public class Import
 	{
 		// find area line first
 		String areaName="";
-		if((nextLine(V).indexOf("~")>=0)&&(nextLine(V).indexOf("}")>=0))
+		String firstLine=nextLine(V);
+		if((firstLine.indexOf("~")>=0)&&(firstLine.indexOf("}")>=0))
 		{
-			String areaLine=nextLine(V);
+			String areaLine=firstLine;
 			areaLine=areaLine.substring(0,areaLine.length()-1);
 			int x=areaLine.indexOf("}");
 			areaLine=areaLine.substring(x+1).trim();
 			x=areaLine.indexOf("  ");
 			if(x>0)
 				areaLine=areaLine.substring(x+1).trim();
+			areaName=areaLine;
+		}
+		else
+		if((firstLine.indexOf("~")>=0)&&(firstLine.startsWith("#AREA ")))
+		{
+			String areaLine=firstLine;
+			areaLine=areaLine.substring(5).trim();
+			if(areaLine.endsWith("~"))
+				areaLine=areaLine.substring(0,areaLine.length()-1).trim();
 			areaName=areaLine;
 		}
 		else
@@ -81,14 +91,34 @@ public class Import
 		{((char)27)+"misc"+((char)27),"^N"},
 		{((char)27)+"roomname"+((char)27),"^O"},
 		{((char)27)+"roomdesc"+((char)27),"^L"},
-		{((char)27)+"monster"+((char)27),"^M"}
+		{((char)27)+"monster"+((char)27),"^M"},
+		{"&x",""},
+		{"&r","^R"},
+		{"&g","^G"},
+		{"&O","^Y"},
+		{"&b","^B"},
+		{"&p","^P"},
+		{"&c","^C"},
+		{"&w","^W"},
+		{"&z","^W"},
+		{"&R","^r"},
+		{"&G","^g"},
+		{"&Y","^y"},
+		{"&B","^b"},
+		{"&P","^p"},
+		{"&C","^c"},
+		{"&W","^w"},
+		{"&[",""},
+		{"&[","^?"},
 	};
-	
+
 	private static String removeAtAts(String str)
 	{
 		int x=str.indexOf("@@");
 		while(x>=0)
 		{
+			if((x+3)>=str.length())
+				break;
 			str=str.substring(0,x)+str.substring(x+3);
 			x=str.indexOf("@@");
 		}
@@ -272,12 +302,19 @@ public class Import
 			if((word.startsWith("'"))||(word.startsWith("`")))
 			   word=word.substring(1);
 			if(word.length()<3)	return "";
-
+			if(word.startsWith("NONE")) i=-1;
+			else
+			if(word.startsWith("COMPLETE HEAL")) i=209;
+			else
+			if(word.startsWith("RESTORE MANA")) i=234;
+			else
 			if(word.startsWith("ACID B")) i=70;
 			else
 			if(word.startsWith("ARMOR")) i=1;
 			else
 			if(word.startsWith("ENHANCED ARMOR")) i=212;
+			else
+			if(word.startsWith("ENHANCE ARMOR")) i=212;
 			else
 			if(word.startsWith("BLESS")) i=3;
 			else
@@ -319,7 +356,13 @@ public class Import
 			else
 			if(word.startsWith("GIANT")) i=39;
 			else
+			if(word.startsWith("HOLY STRE")) i=39;
+			else
+			if(word.startsWith("ENHANCED STRE")) i=39;
+			else
 			if(word.startsWith("HARM")) i=27;
+			else
+			if(word.startsWith("HOLY FIRE")) i=27;
 			else
 			if(word.startsWith("HEAL")) i=28;
 			else
@@ -459,6 +502,14 @@ public class Import
 			else
 			if(word.startsWith("CONFUSE")) i=216;
 			else
+			if(word.startsWith("FIRESHIELD")) i=232;
+			else
+			if(word.startsWith("ICESHIELD")) i=232;
+			else
+			if(word.startsWith("SHOCKSHIELD")) i=232;
+			else
+			if(word.startsWith("BLADE BARRIER")) i=233;
+			else
 			if(word.startsWith("SENSE LI")) i=217;
 			else
 			if(word.startsWith("MYSTERIOUS DR")) i=218;
@@ -498,6 +549,58 @@ public class Import
 			if(word.startsWith("ACID RAIN")) i=230;
 			else
 			if(word.startsWith("ETHEREAL FORM")) i=231;
+			else
+			if(word.startsWith("MANA")) i=234;
+			else
+			if(word.startsWith("CHAOS FIELD")) i=235;
+			else
+			if(word.startsWith("COMBAT MIND")) i=236;
+			else
+			if(word.startsWith("DARK BLESSING")) i=17;
+			else
+			if(word.startsWith("FLESH ARMOR")) i=224;
+			else
+			if(word.startsWith("TRUE SIGHT")) i=237;
+			else
+			if(word.startsWith("INERTIAL")) i=36;
+			else
+			if(word.startsWith("PHASE SHIFT")) i=36;
+			else
+			if(word.startsWith("DISPLACEMENT")) i=244;
+			else
+			if(word.startsWith("THOUGHT SHIELD")) i=238;
+			else
+			if(word.startsWith("INTELLECT FORTRESS")) i=238;
+			else
+			if(word.startsWith("MENTAL BARRIER")) i=238;
+			else
+			if(word.startsWith("MENTAL BLOCK")) i=238;
+			else
+			if(word.startsWith("SHATTER")) i=239;
+			else
+			if(word.startsWith("ICESTORM")) i=240;
+			else
+			if(word.startsWith("DISINTEGRATE")) i=241;
+			else
+			if(word.startsWith("ANIMATE DEAD")) i=242;
+			else
+			if(word.startsWith("VIBRATE")) i=243;
+			else
+			if(word.startsWith("ULTRABLAST")) i=26;
+			else
+			if(word.startsWith("FIELD OF DECAY")) i=245;
+			else
+			if(word.startsWith("BIOFEEDBACK")) i=245;
+			else
+			if(word.startsWith("DANCING LIGHTS")) i=246;
+			else
+			if(word.startsWith("BIO-ACCELERATION")) i=227;
+			else
+			if(word.startsWith("CELL ADJUSTMENT")) i=227;
+			else
+			if(word.startsWith("AURA SIGHT")) i=20;
+			else
+			if(word.startsWith("ENERGY CONTAINMENT")) i=247;
 			else
 			{
 				Log.sysOut("Unknown spell: "+word);
@@ -578,7 +681,7 @@ public class Import
 		case 76: return "Spell_StoneFlesh"; // stone
 		case 77: return "Spell_Infravision";
 		case 80: return "Prayer_CreateWater";
-		case 81: return "Prayer_Calm"; // refresh
+		case 81: return "Prayer_Restoration"; // refresh
 		case 82: return "Spell_ChangeSex";
 		case 83: return "Spell_Gate";
 		case 84: return "Spell_Haste";
@@ -618,6 +721,22 @@ public class Import
 		case 229: return "Prayer_MassHeal";
 		case 230: return "Spell_AcidFog";
 		case 231: return "Prayer_Etherealness";
+		case 232: return "Spell_Flameshield";
+		case 233: return "Prayer_BladeBarrier";
+		case 234: return "Chant_RestoreMana";
+		case 235: return "Spell_Frenzy";
+		case 236: return "Spell_CombatPrecognition";
+		case 237: return "Spell_TrueSight";
+		case 238: return "Spell_MindBlock";
+		case 239: return "Spell_Shatter";
+		case 240: return "Spell_IceStorm";
+		case 241: return "Spell_Disintegrate";
+		case 242: return "Prayer_AnimateDead";
+		case 243: return "Spell_Siphon";
+		case 244: return "Spell_Blink";
+		case 245: return "Prayer_Plague";
+		case 246: return "Spell_Delirium";
+		case 247: return "Chant_SpellWard";
 		default:
 			Log.sysOut("Unknown spell num: "+i);
 			break;
@@ -682,6 +801,9 @@ public class Import
 				if(s.startsWith("AREA"))
 				{
 					wasUsingThisOne=null;
+					if((s.indexOf("~")>=0)
+					&&(s.startsWith("AREA ")))
+						okString=true;
 					useThisOne=areaData;
 				}
 				else
@@ -701,6 +823,19 @@ public class Import
 				else
 				if((s.startsWith("OLIMITS"))
 				||(s.startsWith("OMPROGS"))
+				||(s.startsWith("ECONOMY"))
+				||(s.startsWith("AUTHOR"))
+				||(s.startsWith("RANGES"))
+				||(s.startsWith("CLIMATE"))
+				||(s.startsWith("RESETMSG"))
+				||(s.startsWith("VERSION"))
+				||(s.startsWith("CONTINENT"))
+				||(s.startsWith("COORDS"))
+				||(s.startsWith("RESETFREQUENCY"))
+				||(s.startsWith("VNUMS"))
+				||(s.startsWith("FLAGS"))
+				||(s.startsWith("REPAIRS"))
+				||(s.startsWith("OBJFUNS"))
 				||(s.startsWith("HELPS"))
 				||(s.startsWith("PRACTICERS")))
 				{
@@ -711,12 +846,6 @@ public class Import
 				if(s.startsWith("MOBPROG"))
 				{
 					wasUsingThisOne=null;
-					useThisOne=mobProgData;
-				}
-				else
-				if(s.startsWith("OBJFUNS"))
-				{
-					wasUsingThisOne=objectData;
 					useThisOne=mobProgData;
 				}
 				else
@@ -1544,6 +1673,12 @@ public class Import
 						B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
 				}
 				else
+				if(s.startsWith("|"))
+				{
+					eatNextLine(objV);
+					// just eat and go.. its an end of mob marker probably
+				}
+				else
 					eatNextLine(objV);
 			}
 			for(int mp=0;mp<mobProgData.size();mp++)
@@ -1676,7 +1811,8 @@ public class Import
 						continue;
 
 					String special=Util.getBit(s,2).toUpperCase().trim();
-					if(special.equals("SPEC_CAST_MAGE"))
+					if((special.equals("SPEC_CAST_MAGE"))
+					||(special.equals("SPEC_WANDERER")))
 						M.addBehavior(CMClass.getBehavior("Mageness"));
 					else
 					if(special.equals("SPEC_CAST_SENESCHAL"))
@@ -1705,8 +1841,42 @@ public class Import
 						
 					}
 					else
+					if(special.equals("SPEC_CAST_PSIONICIST"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Spell_Spook"));
+						M.addAbility(CMClass.getAbility("Spell_Slow"));
+						M.addAbility(CMClass.getAbility("Spell_DispelMagic"));
+						M.addAbility(CMClass.getAbility("Undead_WeakEnergyDrain"));
+						M.addAbility(CMClass.getAbility("WeakParalysis"));
+					}
+					else
+					if(special.equals("SPEC_CAST_GHOST"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Spell_Spook"));
+						M.addAbility(CMClass.getAbility("Prayer_Curse"));
+						M.addAbility(CMClass.getAbility("Prayer_Blindness"));
+						M.addAbility(CMClass.getAbility("Prayer_Harm"));
+						M.addAbility(CMClass.getAbility("Prayer_Poison"));
+						M.addAbility(CMClass.getAbility("WeakParalysis"));
+					}
+					else
 					if(special.equals("SPEC_THIEF"))
 						M.addBehavior(CMClass.getBehavior("Thiefness"));
+					else
+					if(special.equals("SPEC_HEALER"))
+						M.addBehavior(CMClass.getBehavior("Healer"));
+					else
+					if(special.equals("SPEC_REPAIRMAN"))
+						M.addBehavior(CMClass.getBehavior("ItemMender"));
+					else
+					if((special.equals("SPEC_SUMMON_LIGHT"))
+					||(special.equals("SPEC_SUMMON_DEMON")))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Prayer_SummonElemental"));
+					}
 					else
 					if(special.equals("SPEC_EXECUTIONER"))
 						M.addBehavior(CMClass.getBehavior("GoodExecutioner"));
@@ -1906,7 +2076,7 @@ public class Import
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
 			String codeStr3=eatNextLine(objV);
-
+			
 			if((!objectID.startsWith("#"))
 			||((objectName.length()==0)
 			&&((Util.numBits(codeStr1)<3)
@@ -1923,7 +2093,7 @@ public class Import
 			String obj=Util.getBit(codeStr1,0);
 			if((obj.trim().length()>1)&&(Character.isLetter(obj.charAt(0))))
 				circleForm=true;
-			int objType=0;
+			int objType=Util.s_int(obj);
 			if(circleForm)
 			{
 				if(obj.equalsIgnoreCase("light")) objType=1;
@@ -1973,12 +2143,41 @@ public class Import
 				if(obj.equalsIgnoreCase("jukebox"))
 					continue;// NO JUKE BOXES!
 			}
-			else
-				objType=Util.s_int(obj);
 			int extraFlag=getBitMask(codeStr1,1);
 			int wearFlag=getBitMask(codeStr1,2);
 
 			Ability adjuster=CMClass.getAbility("Prop_HaveAdjuster");
+			switch(objType)
+			{
+			case 2:
+			case 3:
+			case 4:
+			case 10:
+				if((codeStr2.indexOf("`")<=0)
+				&&(nextLine(objV).indexOf("`")>=0))
+					codeStr2=eatNextLine(objV);
+				break;
+			default:
+				break;
+			}
+			boolean forgiveZeroes=false;
+			if((codeStr2.indexOf("~")>=0)&&(codeStr2.lastIndexOf("~")>codeStr2.indexOf("~")))
+			{
+				Vector V=Util.parseSquiggles(codeStr2);
+				if(V.size()==4)
+				{
+					forgiveZeroes=true;
+					codeStr2="'"+((String)V.elementAt(0))+"' "
+						    +"'"+((String)V.elementAt(1))+"' "
+						    +"'"+((String)V.elementAt(2))+"' "
+						    +"'"+((String)V.elementAt(3))+"'";
+				}
+				else
+					returnAnError(mob,"Invalid object codeStr2 line: "+codeStr2+", item not aborted, but stuff will be wrong!");
+						
+			}
+
+			
 			String str1=Util.getBit(codeStr2,0);
 			String str2=Util.getBit(codeStr2,1);
 			String str3=Util.getBit(codeStr2,2);
@@ -2724,6 +2923,48 @@ public class Import
 
 
 					}
+				}
+				else
+				if(codeLine.startsWith(">"))
+				{
+					codeLine=eatLineSquiggle(objV);
+					String scriptStuff="";
+					if(!codeLine.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
+					{
+						scriptStuff+=codeLine.substring(1).trim()+";";
+						codeLine=nextLine(objV);
+						while(codeLine.indexOf("~")<0)
+						{
+							scriptStuff+=codeLine.trim()+";";
+							eatLine(objV);
+							codeLine=nextLine(objV);
+						}
+						codeLine=eatLineSquiggle(objV).trim();
+						scriptStuff+=codeLine+"~";
+					}
+					// nothing done with the script. :(
+				}
+				else
+				if(codeLine.equals("|"))
+				{
+					eatNextLine(objV);
+					// have no idea, but we skip it
+				}
+				else
+				if((forgiveZeroes)
+				&&(codeLine.length()>0)
+				&&(Util.isNumber(""+codeLine.charAt(0)))
+				&&(Util.numBits(codeLine)>1))
+				{
+					eatNextLine(objV);
+					// eos support
+				}
+				else
+				if((forgiveZeroes)
+				&&(codeLine.endsWith("~")))
+				{
+					eatNextLine(objV);
+					// eos support
 				}
 				else
 				if((codeLine.startsWith("#"))||(codeLine.length()==0))
@@ -3622,9 +3863,26 @@ public class Import
 						case 3: dirCode=3; break;
 						case 4: dirCode=4; break;
 						case 5: dirCode=5; break;
+						case 6:
+						case 7:
+						case 8:
+						case 9:
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if(R.rawDoors()[d]==null)
+								{
+									dirCode=d;
+									break;
+								}
+							break;
+						case 10: dirCode=Directions.GATE; break;
 						default:
 								returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
 								continue;
+						}
+						if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS))
+						{
+							returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
+							continue;
 						}
 						if(Util.numBits(codeStr)!=3)
 						{
@@ -3760,7 +4018,39 @@ public class Import
 						// not important enough to generate an error from
 					}
 					else
+					if(nextLine.startsWith(">"))
+					{
+						nextLine=nextLine;
+						String scriptStuff="";
+						if(!nextLine.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
+						{
+							scriptStuff+=nextLine.substring(1).trim()+";";
+							nextLine=nextLine(roomV);
+							while(nextLine.indexOf("~")<0)
+							{
+								scriptStuff+=nextLine.trim()+";";
+								eatLine(roomV);
+								nextLine=nextLine(roomV);
+							}
+							nextLine=eatLineSquiggle(roomV).trim();
+							scriptStuff+=nextLine+"~";
+						}
+						// nothing done with the script. :(
+					}
+					else
 					if(nextLine.toUpperCase().startsWith("O"))
+					{
+						// ?
+						// not important enough to generate an error from
+					}
+					else
+					if(nextLine.startsWith("Rd"))
+					{
+						// some sort of eos thang
+						// not important enough to generate an error from
+					}
+					else
+					if(nextLine.trim().equals("|"))
 					{
 						// ?
 						// not important enough to generate an error from
@@ -3781,7 +4071,7 @@ public class Import
 			while(resetData.size()>0)
 			{
 				mob.session().print(".");
-				String s=eatNextLine(resetData);
+				String s=eatNextLine(resetData).trim();
 				if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
 				{
 				}
@@ -3793,22 +4083,23 @@ public class Import
 					R=findRoomSomewhere(roomID,areaName,doneRooms);
 					if(R==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea) 
+							nextResetData.addElement(s);
 						else
-						returnAnError(mob,"Reset error (no room) on line: "+s+", area="+areaName);
+							returnAnError(mob,"Reset error (no room) on line: "+s+", area="+areaName);
 					}
 					else
 					{
 						M=getMOB("#"+mobID,R,mob,Util.copyVector(mobData),Util.copyVector(mobProgData),Util.copyVector(specialData),Util.copyVector(shopData),doneMOBS,areaFileName);
 						if(M==null)
 						{
-							if(multiArea) nextResetData.addElement(s);
+							if(multiArea) 
+								nextResetData.addElement(s);
 							else
-							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+								returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
 						}
 						else
 							M.bringToLife(R,true);
-
 					}
 				}
 				else
@@ -3816,9 +4107,10 @@ public class Import
 				{
 					if(M==null)
 					{
-						if(multiArea) nextResetData.addElement(s);
+						if(multiArea) 
+							nextResetData.addElement(s);
 						else
-						returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
+							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
 					}
 					else
 					{
@@ -4092,6 +4384,11 @@ public class Import
 				if(s.startsWith("R "))
 				{
 					// have no idea what this is, but its not important.
+				}
+				else
+				if(s.startsWith("*"))
+				{
+					// usually a comment of some sort
 				}
 				else
 				if(s.length()>0)

@@ -479,12 +479,32 @@ public class Scriptable extends StdBehavior
 
 	public boolean eval(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String msg, String evaluable)
 	{
+		Vector formatCheck=Util.parse(evaluable);
+		for(int i=1;i<(formatCheck.size()-1);i++)
+			if((" == >= > < <= => =< != ".indexOf(" "+((String)formatCheck.elementAt(i))+" ")>=0)
+			&&(((String)formatCheck.elementAt(i-1)).endsWith(")")))
+			{
+				String ps=(String)formatCheck.elementAt(i-1);
+				ps=ps.substring(0,ps.length()-1);
+				if(ps.length()==0) ps=" ";
+				String os=(String)formatCheck.elementAt(i+1);
+				os=os+")";
+				formatCheck.setElementAt(ps,i-1);
+				formatCheck.setElementAt(os,i+1);
+				i+=2;
+			}
+		evaluable=Util.combine(formatCheck,0);
 		String uevaluable=evaluable.toUpperCase().trim();
 		boolean returnable=false;
 		while(evaluable.length()>0)
 		{
 			int y=evaluable.indexOf("(");
 			int z=evaluable.indexOf(")");
+			if((y<0)||(z<y))
+			{
+				Log.errOut("Scriptable","Invalid EVAL format: "+evaluable);
+				return false;
+			}
 			String preFab=uevaluable.substring(0,y).trim();
 			Integer funcCode=(Integer)funcH.get(preFab);
 			if(funcCode==null) funcCode=new Integer(0);
@@ -1057,21 +1077,28 @@ public class Scriptable extends StdBehavior
 			case 17: // inroom
 			{
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String comp="==";
 				Environmental E=monster;
+				if((" == >= > < <= => =< != ".indexOf(" "+Util.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
+				{
+					E=getArgumentItem(Util.getCleanBit(evaluable.substring(y+1,z),0),source,monster,target,primaryItem,secondaryItem,msg);
+					comp=Util.getCleanBit(evaluable.substring(y+1,z),1);
+					arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				}
 				Room R=getRoom(arg2,lastKnownLocation);
-				if((E==null)||(!(E instanceof MOB)))
+				if(E==null)
 					returnable=false;
 				else
-				if((R==null)&&(arg2.length()==0))
-					returnable=true;
-				else
-				if(R==null)
-					returnable=false;
-				else
-				if(((MOB)E).location().roomID().equalsIgnoreCase(R.roomID()))
-					returnable=true;
-				else
-					returnable=false;
+				{
+					Room R2=CoffeeUtensils.roomLocation(E);
+					if((R==null)&&((arg2.length()==0)||(R2==null)))
+						returnable=true;
+					else
+					if((R==null)||(R2==null))
+						returnable=false;
+					else
+						returnable=simpleEval(R2.roomID(),R.roomID(),comp,"INROOM");
+				}
 				break;
 			}
 			case 37: // inlocale
@@ -2516,10 +2543,13 @@ public class Scriptable extends StdBehavior
 			{
 				String m=Util.getCleanBit(s,1);
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				if((newTarget!=null)||(m.startsWith("$")))
-					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
-				else
-					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
+				if(lastKnownLocation!=null)
+				{
+					if((newTarget!=null)||(m.startsWith("$")))
+						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
+					else
+						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
+				}
 				break;
 			}
 			case 13: // mpunaffect
@@ -2588,19 +2618,22 @@ public class Scriptable extends StdBehavior
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
 				MOB m=CMClass.getMOB(s);
-				if(m==null)
+				if(lastKnownLocation!=null)
 				{
-					Environmental e=findSomethingCalledThis(s,lastKnownLocation,true);
-					if(e instanceof MOB)
-						m=(MOB)e;
-				}
-				if(m!=null)
-				{
-					m=(MOB)m.copyOf();
-					m.recoverEnvStats();
-					m.recoverCharStats();
-					m.resetToMaxState();
-					m.bringToLife(lastKnownLocation,true);
+					if(m==null)
+					{
+						Environmental e=findSomethingCalledThis(s,lastKnownLocation,true);
+						if(e instanceof MOB)
+							m=(MOB)e;
+					}
+					if(m!=null)
+					{
+						m=(MOB)m.copyOf();
+						m.recoverEnvStats();
+						m.recoverCharStats();
+						m.resetToMaxState();
+						m.bringToLife(lastKnownLocation,true);
+					}
 				}
 				break;
 			}
@@ -2610,6 +2643,7 @@ public class Scriptable extends StdBehavior
 				if(Util.s_int(s)>0)
 					monster.setMoney(monster.getMoney()+Util.s_int(s));
 				else
+				if(lastKnownLocation!=null)
 				{
 					Item m=CMClass.getItem(s);
 					if(m==null)
@@ -2633,7 +2667,7 @@ public class Scriptable extends StdBehavior
 			case 7: // mpechoat
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				if((newTarget!=null)&&(newTarget instanceof MOB))
+				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
 				{
 					s=Util.getPastBit(s,1).trim();
 					lastKnownLocation.showSource((MOB)newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
@@ -2643,7 +2677,7 @@ public class Scriptable extends StdBehavior
 			case 8: // mpechoaround
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
-				if((newTarget!=null)&&(newTarget instanceof MOB))
+				if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
 				{
 					s=Util.getPastBit(s,1).trim();
 					lastKnownLocation.showOthers((MOB)newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
@@ -2769,12 +2803,16 @@ public class Scriptable extends StdBehavior
 			case 14: // mpgoto
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
-				Room goHere=getRoom(s,lastKnownLocation);
-				if(goHere!=null)
-					goHere.bringMobHere(monster,true);
+				if(lastKnownLocation!=null)
+				{
+					Room goHere=getRoom(s,lastKnownLocation);
+					if(goHere!=null)
+						goHere.bringMobHere(monster,true);
+				}
 				break;
 			}
 			case 15: // mpat
+			if(lastKnownLocation!=null)
 			{
 				Room lastPlace=lastKnownLocation;
 				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
@@ -2877,7 +2915,7 @@ public class Scriptable extends StdBehavior
 			case 25: // mpbeacon
 			{
 				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				if(roomName.length()>0)
+				if((roomName.length()>0)&&(lastKnownLocation!=null))
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 					Room newRoom=getRoom(roomName,lastKnownLocation);
@@ -3382,6 +3420,7 @@ public class Scriptable extends StdBehavior
 			if(!mob.amDead())
 				lastKnownLocation=mob.location();
 
+			if(lastKnownLocation!=null)
 			for(int v=0;v<scripts.size();v++)
 			{
 				Vector script=(Vector)scripts.elementAt(v);
@@ -3460,9 +3499,9 @@ public class Scriptable extends StdBehavior
 						if(lastTimeProgDone!=time)
 						{
 							boolean done=false;
-							for(int i=1;Util.getCleanBit(trigger,i).length()>0;i++)
+							for(int i=1;i<Util.numBits(trigger);i++)
 							{
-								if(time==Util.s_int(Util.getCleanBit(trigger,i)))
+								if(time==Util.s_int(Util.getCleanBit(trigger,i).trim()))
 								{
 									done=true;
 									execute(mob,mob,mob,null,null,script,null);
@@ -3474,6 +3513,7 @@ public class Scriptable extends StdBehavior
 							if(!done)
 								lastDayProgsDone.remove(new Integer(v));
 						}
+						break;
 					}
 				case 15: // day_prog
 					if((mob.location()!=null)
@@ -3486,7 +3526,7 @@ public class Scriptable extends StdBehavior
 						if(lastDayProgDone!=day)
 						{
 							boolean done=false;
-							for(int i=1;Util.getCleanBit(trigger,i).length()>0;i++)
+							for(int i=1;i<Util.numBits(trigger);i++)
 							{
 								if(day==Util.s_int(Util.getCleanBit(trigger,i)))
 								{
@@ -3500,6 +3540,7 @@ public class Scriptable extends StdBehavior
 							if(!done)
 								lastDayProgsDone.remove(new Integer(v));
 						}
+						break;
 					}
 				case 13: // questtimeprog
 					if(!oncesDone.contains(script))

@@ -110,16 +110,20 @@ public class CombatAbilities extends StdBehavior
 		&&(Dice.rollPercentage()<25)
 		&&(mob.fetchAbility("Skill_WandUse")!=null))
 		{
+			Ability A=mob.fetchAbility("Skill_WandUse");
+			if(A!=null) A.setProfficiency(100);
 			Item myWand=null;
 			Item backupWand=null;
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				if((I!=null)&&(I instanceof Wand)&&(!I.amWearingAt(Item.INVENTORY)))
-					myWand=I;
-				else
 				if((I!=null)&&(I instanceof Wand))
-					backupWand=I;
+				{
+					if(!I.amWearingAt(Item.INVENTORY))
+						myWand=I;
+					else
+						backupWand=I;
+				}
 			}
 			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob)))
 			{
@@ -131,13 +135,13 @@ public class CombatAbilities extends StdBehavior
 			else
 			if(myWand!=null)
 			{
-				Ability A=((Wand)myWand).getSpell();
+				A=((Wand)myWand).getSpell();
 				if((A!=null)
 				&&((A.quality()==Ability.MALICIOUS)
 				||(A.quality()==Ability.BENEFICIAL_SELF)
 				||(A.quality()==Ability.BENEFICIAL_OTHERS)))
 				{
-					if(A.quality()==Ability.MALICIOUS)
+					if(A.quality()!=Ability.MALICIOUS)
 						victim=mob;
 					Vector V=new Vector();
 					V.addElement("say");
