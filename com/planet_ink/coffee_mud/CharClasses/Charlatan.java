@@ -182,7 +182,7 @@ public class Charlatan extends StdCharClass
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((CMAble.getQualifyingLevel(ID(),A.ID())<0)
+				if((CMAble.qualifyingLevel(mob,A)<=0)
 				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)))
 					return;
 			}
@@ -191,7 +191,8 @@ public class Charlatan extends StdCharClass
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((CMAble.getQualifyingLevel(ID(),A.ID())<0)
+				if((CMAble.qualifyingLevel(mob,A)<=0)
+				&&(mob.fetchAbility(A.ID())==null)
 				&&((CMAble.lowestQualifyingLevel(A.ID())==classLevel)||(CMAble.lowestQualifyingLevel(A.ID())==classLevel-1)))
 					choices.addElement(A);
 			}
@@ -205,5 +206,30 @@ public class Charlatan extends StdCharClass
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+(2*affectableStats.getClassLevel(this)));
+	}
+	
+	public void level(MOB mob)
+	{
+		Vector V=new Vector();
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A!=null)	V.addElement(A);
+		}
+		super.level(mob);
+		Ability able=null;
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if((A!=null)
+			&&(!V.contains(A))
+			&&(CMAble.qualifyingLevel(mob,A)<=0))
+				able=A;
+		}
+		if(able!=null)
+		{
+			String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
+			mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.displayName()+"^?.^N");
+		}
 	}
 }

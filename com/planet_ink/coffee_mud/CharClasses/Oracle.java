@@ -291,4 +291,30 @@ public class Oracle extends Cleric
 				w.wearAt(Item.WIELD);
 		}
 	}
+	public void level(MOB mob)
+	{
+		Vector V=new Vector();
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A!=null)	V.addElement(A);
+		}
+		super.level(mob);
+		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
+		{
+			Ability able=null;
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+				Ability A=mob.fetchAbility(a);
+				if((A!=null)
+				&&(!V.contains(A)))
+					able=A;
+			}
+			if(able!=null)
+			{
+				String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
+				mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.displayName()+"^?.^N");
+			}
+		}
+	}
 }

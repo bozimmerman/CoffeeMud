@@ -726,10 +726,10 @@ public class StdAbility implements Ability, Cloneable
 
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
-		if((yourAbility==null)||(CMAble.qualifyingLevel(student,yourAbility)<0))
+		if(yourAbility==null)
 		{
-			teacher.tell(student.displayName()+" has not learned '"+displayName()+"' yet.");
-			student.tell("You havn't learned '"+displayName()+"' yet.");
+			teacher.tell(student.displayName()+" has not gained '"+displayName()+"' yet.");
+			student.tell("You havn't gained '"+displayName()+"' yet.");
 			return false;
 		}
 
