@@ -129,7 +129,7 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD",getVer());
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
-		Log.sysOut("MUD","Starting...\n\r");
+		Log.sysOut("MUD","Starting...");
 		
 		while (!serverIsRunning && isOK)
 		{
