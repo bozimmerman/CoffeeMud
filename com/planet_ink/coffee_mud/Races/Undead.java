@@ -66,16 +66,5 @@ public class Undead extends StdRace
 		else
 			return "^c" + mob.name() + "^c is in perfect condition.^N";
 	}
-	public Vector myResources()
-	{
-		synchronized(resources)
-		{
-			if(resources.size()==0)
-			{
-				resources.addElement(makeResource
-					("ape fur",EnvResource.RESOURCE_FUR));
-			}
-		}
-		return resources;
-	}
 }
+

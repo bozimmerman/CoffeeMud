@@ -6,13 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Chant_ResistLightning extends Chant
+public class Chant_LightningWard extends Chant
 {
-	public String ID() { return "Chant_ResistLightning"; }
-	public String name(){ return "Resist Lightning";}
-	public String displayText(){return "(Resist Lightning)";}
+	public String ID() { return "Chant_LightningWard"; }
+	public String name(){ return "Lightning Ward";}
+	public String displayText(){return "(Lightning Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_ResistLightning();}
+	public Environmental newInstance(){	return new Chant_LightningWard();}
 
 	public void unInvoke()
 	{
@@ -38,9 +38,11 @@ public class Chant_ResistLightning extends Chant
 		MOB target=mob;
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already resisting lightning.");
+			mob.tell("You are already warding lightning.");
 			return false;
 		}
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

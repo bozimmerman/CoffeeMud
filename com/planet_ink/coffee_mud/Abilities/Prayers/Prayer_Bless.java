@@ -89,7 +89,13 @@ public class Prayer_Bless extends Prayer
 					A.unInvoke();
 				if((A instanceof Prayer_HolyAura)&&(level!=1))
 					A.unInvoke();
+				if((A instanceof Prayer_CurseMetal)&&(level!=1))
+					A.unInvoke();
+				if((A instanceof Prayer_CurseMind)&&(level!=1))
+					A.unInvoke();
 				if((A instanceof Prayer_HolyWord)&&(level!=2))
+					A.unInvoke();
+				if((A instanceof Prayer_CurseMinds)&&(level!=2))
 					A.unInvoke();
 				if((A instanceof Prayer_GreatCurse)&&(level>0))
 					A.unInvoke();
@@ -102,6 +108,8 @@ public class Prayer_Bless extends Prayer
 	public static boolean isCursed(Item item)
 	{
 		if(item.fetchAffect("Prayer_Curse")!=null)
+			return true;
+		if(item.fetchAffect("Prayer_CurseMetal")!=null)
 			return true;
 		if(item.fetchAffect("Prayer_GreatCurse")!=null)
 			return true;

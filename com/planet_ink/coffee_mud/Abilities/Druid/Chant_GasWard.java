@@ -6,13 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Chant_ResistGas extends Chant
+public class Chant_GasWard extends Chant
 {
-	public String ID() { return "Chant_ResistGas"; }
-	public String name(){ return "Resist Gas";}
-	public String displayText(){return "(Resist Gas)";}
+	public String ID() { return "Chant_GasWard"; }
+	public String name(){ return "Gas Ward";}
+	public String displayText(){return "(Gas Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_ResistGas();}
+	public Environmental newInstance(){	return new Chant_GasWard();}
 
 	public void unInvoke()
 	{
@@ -38,9 +38,11 @@ public class Chant_ResistGas extends Chant
 		MOB target=mob;
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already resisting gas.");
+			mob.tell("You are already warding gas.");
 			return false;
 		}
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

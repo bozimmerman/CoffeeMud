@@ -25,7 +25,7 @@ public class Skill_UndeadInvisibility extends StdAbility
 		{
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())
-			   &&(affect.source().charStats().getMyRace().ID().equals("Undead"))
+			   &&(affect.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			   &&(affect.source().getVictim()!=target))
 			{
 				affect.source().tell("You don't see "+target.name());

@@ -6,13 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Chant_ResistCold extends Chant
+public class Chant_ColdWard extends Chant
 {
-	public String ID() { return "Chant_ResistCold"; }
-	public String name(){ return "Resist Cold";}
-	public String displayText(){return "(Resist Cold)";}
+	public String ID() { return "Chant_ColdWard"; }
+	public String name(){ return "Cold Ward";}
+	public String displayText(){return "(Cold Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_ResistCold();}
+	public Environmental newInstance(){	return new Chant_ColdWard();}
 
 
 	public void unInvoke()
@@ -38,9 +38,11 @@ public class Chant_ResistCold extends Chant
 		MOB target=mob;
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already resisting the cold.");
+			mob.tell("You are already warding the cold.");
 			return false;
 		}
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

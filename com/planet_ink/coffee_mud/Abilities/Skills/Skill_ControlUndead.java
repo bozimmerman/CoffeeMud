@@ -46,7 +46,7 @@ public class Skill_ControlUndead extends StdAbility
 		if(target==null) return false;
 
 		if((target.baseCharStats().getMyRace()==null)
-		||(!target.baseCharStats().getMyRace().ID().equals("Undead")))
+		||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 		{
 			mob.tell(auto?"Only the undead can be controlled.":"You can only control the undead.");
 			return false;

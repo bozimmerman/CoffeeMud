@@ -5,16 +5,16 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prayer_SummonEarthElemental extends Prayer
+public class Prayer_SummonElemental extends Prayer
 {
-	public String ID() { return "Prayer_SummonEarthElemental"; }
-	public String name(){return "Summon Earth Elemental";}
-	public String displayText(){return "(Demon Gate)";}
+	public String ID() { return "Prayer_SummonElemental"; }
+	public String name(){return "Summon Elemental";}
+	public String displayText(){return "(Summon Elemental)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int holyQuality(){ return HOLY_NEUTRAL;}
-	public Environmental newInstance(){	return new Prayer_SummonEarthElemental();}
+	public Environmental newInstance(){	return new Prayer_SummonElemental();}
 
 	public boolean tick(int tickID)
 	{
@@ -78,6 +78,9 @@ public class Prayer_SummonEarthElemental extends Prayer
 		// return whether it worked
 		return success;
 	}
+	
+	protected final static String types[]={"EARTH","FIRE","AIR","WATER"};
+	
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
@@ -94,13 +97,45 @@ public class Prayer_SummonEarthElemental extends Prayer
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
 		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
-		newMOB.setName("a hideous rock beast");
-		newMOB.setDisplayText("a hideous rock beast is stomping around here");
-		newMOB.setDescription("This enormous hunk of rock is roughly the shape of a humanoid.");
-		ride.setMobCapacity(2);
+		int type=-1;
+		for(int i=0;i<types.length;i++)
+			if(text().toUpperCase().indexOf(types[i])>=0)
+				type=i;
+		if(type<0) type=Dice.roll(1,types.length,-1);
+		switch(type)
+		{
+		case 0:
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
+			newMOB.setName("a hideous rock beast");
+			newMOB.setDisplayText("a hideous rock beast is stomping around here");
+			newMOB.setDescription("This enormous hunk of rock is roughly the shape of a humanoid.");
+			ride.setMobCapacity(2);
+			break;
+		case 1:
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
+			newMOB.setName("a creature of flame and smoke ");
+			newMOB.setDisplayText("a creature of flame and smoke is here");
+			newMOB.setDescription("This enormous burning ember is roughly the shape of a humanoid.");
+			ride.setMobCapacity(0);
+			break;
+		case 2:
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("AireElemental"));
+			newMOB.setName("a swirling air elemental");
+			newMOB.setDisplayText("a swirling air elemental spins around here");
+			newMOB.setDescription("This enormous swirling code of air is roughly the shape of a humanoid.");
+			ride.setMobCapacity(0);
+			break;
+		case 3:
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
+			newMOB.setName("a hideous ice beast");
+			newMOB.setDisplayText("a hideous ice beast is stomping around here");
+			newMOB.setDescription("This enormous hunk of ice is roughly the shape of a humanoid.");
+			ride.setMobCapacity(2);
+			break;
+		}
+			
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

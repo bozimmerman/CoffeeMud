@@ -39,7 +39,8 @@ public class Prayer_Sanctuary extends Prayer
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
+		if((affect.amITarget(mob))
+		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
 			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
 			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());

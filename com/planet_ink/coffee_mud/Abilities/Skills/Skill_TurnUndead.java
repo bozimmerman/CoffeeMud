@@ -24,7 +24,7 @@ public class Skill_TurnUndead extends StdAbility
 		if(target==null) return false;
 
 		if((target.baseCharStats().getMyRace()==null)
-		   ||(!target.baseCharStats().getMyRace().ID().equals("Undead")))
+		   ||(!target.baseCharStats().getMyRace().racialCategory().equals("Undead")))
 		{
 			mob.tell(auto?"Only the undead can be turned.":"You can only turn the undead.");
 			return false;

@@ -56,7 +56,7 @@ public class Prayer_MassParalyze extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) an unholy paralysis upon <T-NAMESELF>.^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy paralysis upon <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_PARALYZE|(auto?Affect.MASK_GENERAL:0),null);
 				if((target!=mob)&&(mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 				{

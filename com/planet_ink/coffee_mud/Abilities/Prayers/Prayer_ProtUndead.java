@@ -26,7 +26,7 @@ public class Prayer_ProtUndead extends Prayer
 
 		MOB mob=(MOB)affected;
 
-		if(mob.charStats().getMyRace().name().equalsIgnoreCase("Undead"))
+		if(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 		{
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
@@ -44,7 +44,7 @@ public class Prayer_ProtUndead extends Prayer
 		if(mob.isInCombat())
 		{
 			MOB victim=mob.getVictim();
-			if(victim.charStats().getMyRace().name().equalsIgnoreCase("Undead"))
+			if(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
 				affectableStats.setArmor(affectableStats.armor()-50);
 		}
 	}

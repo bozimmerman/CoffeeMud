@@ -47,6 +47,14 @@ public class Prayer extends StdAbility
 			return "pray(s)";
 	}
 	
+	protected String prayingWord(MOB mob)
+	{
+		if(mob.getMyDeity()!=null)
+			return "praying to "+mob.getMyDeity().name();
+		else
+			return "praying";
+	}
+	
 	public boolean appropriateToMyAlignment(int alignment)
 	{
 		switch(holyQuality())

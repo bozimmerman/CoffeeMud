@@ -6,13 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Chant_ResistPoison extends Chant
+public class Chant_VenomWard extends Chant
 {
-	public String ID() { return "Chant_ResistPoison"; }
-	public String name(){ return "Resist Poison";}
-	public String displayText(){return "(Resist Poison)";}
+	public String ID() { return "Chant_VenomWard"; }
+	public String name(){ return "Venom Ward";}
+	public String displayText(){return "(Venom Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_ResistPoison();}
+	public Environmental newInstance(){	return new Chant_VenomWard();}
 
 	public void unInvoke()
 	{

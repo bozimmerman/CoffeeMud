@@ -36,7 +36,7 @@ public class Prayer_Drain extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),null);
-			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, praying!^?");
+			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, "+prayingWord(mob)+"!^?");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg2);
@@ -54,7 +54,7 @@ public class Prayer_Drain extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> reach(es) for <T-NAMESELF>, praying, but the spell fades.");
+			return maliciousFizzle(mob,target,"<S-NAME> reach(es) for <T-NAMESELF>, "+prayingWord(mob)+", but the spell fades.");
 
 
 		// return whether it worked
