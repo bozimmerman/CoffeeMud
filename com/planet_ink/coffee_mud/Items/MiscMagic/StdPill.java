@@ -91,15 +91,19 @@ public class StdPill extends StdFood implements Pill
 			{
 			case Affect.TYP_EAT:
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+				{
 					eatIfAble(mob,this);
+					super.affect(affect);
+				}
 				else
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
 				break;
 			default:
+				super.affect(affect);
 				break;
 			}
 		}
-		if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+		else
 			super.affect(affect);
 	}
 }

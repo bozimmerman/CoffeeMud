@@ -222,7 +222,6 @@ public class StdRoom
 
 	public void affect(Affect affect)
 	{
-
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
