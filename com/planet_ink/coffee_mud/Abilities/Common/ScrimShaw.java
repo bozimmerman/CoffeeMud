@@ -233,6 +233,7 @@ public class ScrimShaw extends CommonSkill
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			key=null;

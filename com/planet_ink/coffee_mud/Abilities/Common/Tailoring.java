@@ -280,6 +280,7 @@ public class Tailoring extends CommonSkill
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));

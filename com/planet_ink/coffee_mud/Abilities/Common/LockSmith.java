@@ -256,6 +256,7 @@ public class LockSmith extends CommonSkill
 		building.setBaseValue(1);
 		building.setMaterial(firstWood.material());
 		building.baseEnvStats().setLevel(workingOn.envStats().level());
+		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

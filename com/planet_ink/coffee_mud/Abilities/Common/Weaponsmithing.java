@@ -342,6 +342,7 @@ public class Weaponsmithing extends CommonSkill
 			building.setBaseValue((Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(firstWood.baseGoldValue())));
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(building instanceof Weapon)
 			{
 				Weapon w=(Weapon)building;

@@ -2,6 +2,3 @@ GAES still isn't done
 -------------------------------------------------
 Quests mob name should include negative mask -beggar
 -------------------------------------------------
-Scalp - Barbarian(5), Templar(10), Assassin (10), or Thief(20)
--------------------------------------------------
-With a ****non-archon****, trying to trigger a GIVE_PROG on a shopkeeper. > It just adds the item to inventory.

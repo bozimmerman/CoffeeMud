@@ -196,6 +196,7 @@ public class PaperMaking extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
 			building.setMaterial(firstWood.material());
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(materialType==EnvResource.MATERIAL_WOODEN)
 				building.setMaterial(EnvResource.RESOURCE_PAPER);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));

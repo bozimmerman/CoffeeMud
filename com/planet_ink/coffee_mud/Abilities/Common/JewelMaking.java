@@ -208,6 +208,7 @@ public class JewelMaking extends CommonSkill
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
+		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		if(firstOther==null)
 			building.setMaterial(firstWood.material());
 		else

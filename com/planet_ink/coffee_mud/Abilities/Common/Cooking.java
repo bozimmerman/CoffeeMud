@@ -536,6 +536,7 @@ public class Cooking extends CommonSkill
 			finalDish.setName(((burnt)?"burnt ":"")+finalDishName);
 			finalDish.setDisplayText("some "+((burnt)?"burnt ":"")+finalDishName+" has been left here");
 			finalDish.setDescription("It looks "+((burnt)?"burnt!":"good!"));
+			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
 			food.setNourishment(0);
 			if(!burnt)
 			{
@@ -569,6 +570,7 @@ public class Cooking extends CommonSkill
 			finalDish.setName(((burnt)?"spoiled ":"")+finalDishName);
 			finalDish.setDisplayText("some "+((burnt)?"spoiled ":"")+finalDishName+" has been left here.");
 			finalDish.setDescription("It looks "+((burnt)?"spoiled!":"good!"));
+			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
 			Drink drink=(Drink)finalDish;
 			for(int v=0;v<contents.size();v++)
 			{

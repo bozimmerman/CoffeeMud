@@ -290,6 +290,7 @@ public class Carpentry extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));

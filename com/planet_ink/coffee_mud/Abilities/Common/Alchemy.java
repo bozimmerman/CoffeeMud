@@ -285,6 +285,7 @@ public class Alchemy extends CommonSkill
 			building.setName("a potion of "+theSpell.name().toLowerCase());
 			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 			building.setDescription("");
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			building.recoverEnvStats();
 			building.text();
 

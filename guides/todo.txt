@@ -16,6 +16,11 @@ apply languages to writing as well. Should be simple, right? ha!
 Room descriptions varying by the time of day.
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
 Conquest Area behavior
+Scalp - Barbarian(5), Templar(10), Assassin (10), or Thief(20)
+DEPRESSION.  -10 to Attack, Gets hungry faster (10% or so), reduced saves vs Justice (-20%), Reduced chance of pregnancy/fertility.  People who get depressed generally have less enthusiasm about everything (fighting, sex, personal property...it's all pointless anyways) and tend to eat more.  (Thereby getting FAT.)
+YAWNS.  if you get too fatigued, you may get this disease, which is contagious.  No effect other than the occassionally yawning.
+Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable item of FAT for the duration of the obessity.  You can get rid of Obessity with a cure disease, or by remaining hungry for a good while.  You contract obessity by overeatting.
+Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

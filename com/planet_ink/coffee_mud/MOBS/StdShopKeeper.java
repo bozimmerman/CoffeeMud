@@ -608,10 +608,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 			case Affect.TYP_GIVE:
 				if((affect.tool()!=null)
-				&&((doISellThis(affect.tool())))
-				||((whatISell==DEAL_INVENTORYONLY)&&(mob.isASysOp(mob.location()))))
+				&&(mob.isASysOp(mob.location()))
+				&&((doISellThis(affect.tool()))||(whatISell==DEAL_INVENTORYONLY)))
 				{
-					storeInventory.addElement(affect.tool());
+					storeInventory.addElement(affect.tool().copyOf());
 					return;
 				}
 				super.affect(myHost,affect);

@@ -331,6 +331,7 @@ public class Armorsmithing extends CommonSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(building instanceof Armor)
 			{
 				((Armor)building).setRawProperLocationBitmap(0);

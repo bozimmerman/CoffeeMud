@@ -117,6 +117,7 @@ public class Taxidermy extends CommonSkill
 		found.setName("the stuffed body of "+name);
 		found.setDisplayText("the stuffed body of "+name+" stands here");
 		found.setDescription(desc);
+		found.setSecretIdentity("This is the work of "+mob.Name()+".");
 		found.recoverEnvStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();

@@ -33,6 +33,8 @@ public class SaucerSupport
 			zapCodes.put("-TATTOO",new Integer(7));
 			zapCodes.put("+TATTOOS",new Integer(8));
 			zapCodes.put("+TATTOO",new Integer(8));
+			zapCodes.put("-NAME",new Integer(9));
+			zapCodes.put("-NAMES",new Integer(9));
 		}
 		return zapCodes;
 	}
@@ -119,6 +121,19 @@ public class SaucerSupport
 				return true;
 			x=txt.indexOf(";");
 		}
+		return false;
+	}
+	
+	public static boolean nameCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	{
+		Vector names=Util.parse(mob.name());
+		for(int v=0;v<names.size();v++)
+			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
+				return true;
+		names=Util.parse(mob.displayText());
+		for(int v=0;v<names.size();v++)
+			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
+				return true;
 		return false;
 	}
 	
@@ -270,6 +285,20 @@ public class SaucerSupport
 						buf.append(".  ");
 					}
 					break;
+				case 9: // -Names
+					{
+						buf.append("Requires the following name(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				}
 			else
 			{
@@ -324,6 +353,7 @@ public class SaucerSupport
 		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
 		String mobGender=mob.charStats().genderName().toUpperCase();
+		String mobName=mob.name().toUpperCase();
 		int level=mob.envStats().level();
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		
@@ -370,6 +400,9 @@ public class SaucerSupport
 				case 8: // +tattoos
 					if(tattooCheck(V,'-',v+1,mob)) return false;
 					break;
+				case 9: // -names
+					if(!nameCheck(V,'+',v+1,mob)) return false;
+					break;
 				}
 			else
 			if(str.startsWith("-"+mobClass)) return false;
@@ -379,6 +412,8 @@ public class SaucerSupport
 			if(str.startsWith("-"+mobAlign)) return false;
 			else
 			if(str.startsWith("-"+mobGender)) return false;
+			else
+			if(str.startsWith("-"+mobName)) return false;
 			else
 			if(levelCheck(str,'-',0,level)) return false;
 		}

@@ -22,6 +22,7 @@ public class InstrumentMaking extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_MATERIAL=7;
 	private static final int RCP_RACES=8;
+	private static final int RCP_TYPE=9;
 
 	private Item building=null;
 	private boolean messedUp=false;
@@ -207,7 +208,9 @@ public class InstrumentMaking extends CommonSkill
 		building.setMaterial(firstWood.material());
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+		String type=(String)foundRecipe.elementAt(RCP_TYPE);
+		building.setSecretIdentity("A type of '"+type+"'.  This one is the work of "+mob.Name()+".");
 		if(building instanceof Rideable)
 		{
 			((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);

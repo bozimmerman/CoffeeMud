@@ -331,6 +331,7 @@ public class LeatherWorking extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
 			building.setMaterial(firstWood.material());
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-2;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+((multiplier-1)*3));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
