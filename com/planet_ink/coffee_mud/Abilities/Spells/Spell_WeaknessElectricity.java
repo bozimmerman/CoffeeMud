@@ -69,8 +69,7 @@ public class Spell_WeaknessElectricity extends Spell
 			&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_ELECTRIC)))
 			{
 				int damage=Dice.roll(1,3,0);
-				room.show(invoker,dummy,Affect.MSG_OK_ACTION,"The electricity in the air "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
-				ExternalPlay.postDamage(invoker,dummy,null,damage);
+				ExternalPlay.postDamage(invoker,dummy,null,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The electricity in the air <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

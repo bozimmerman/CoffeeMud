@@ -69,9 +69,7 @@ public class Prayer_Drain extends Prayer
 						maxDie = 5;
 					damage += Dice.roll(maxDie,5,1);
 
-					mob.location().show(mob,target,Affect.MSG_OK_ACTION,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp "+ExternalPlay.standardHitWord(-1,damage)+" <T-NAME>.");
-					ExternalPlay.postDamage(mob,target,this,damage);
-					mob.curState().adjHitPoints(damage,mob.maxState());
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
 				}
 			}
 		}

@@ -104,10 +104,7 @@ public class Spell_Earthquake extends Spell
 						if(success)
 						{
 							if(target.location()==mob.location())
-							{
-								target.location().show(target,null,Affect.MSG_OK_ACTION,"The ground underneath <S-NAME> shakes as <S-NAME> fall(s) to the ground!!");
-								ExternalPlay.postDamage(mob,target,this,10);
-							}
+								ExternalPlay.postDamage(mob,target,this,10,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
 						}
 					}
 				}

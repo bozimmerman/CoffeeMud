@@ -30,9 +30,15 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.postAttack(attacker,target,weapon);
 	}
-	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage)
+	public void postDamage(MOB attacker, 
+						   MOB target, 
+						   Environmental weapon, 
+						   int damage,
+						   int messageCode,
+						   int damageType,
+						   String allDisplayMessage)
 	{
-		processor.theFight.postDamage(attacker,target,weapon,damage);
+		processor.theFight.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
 	public String standardHitWord(int weaponType, int damageAmount)
 	{
@@ -62,9 +68,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.strike(source,target,weapon,success);
 	}
-	public void doDamage(MOB source, MOB target, int damageAmount)
+	public void die(MOB source, MOB target)
 	{
-		processor.theFight.doDamage(source,target,damageAmount);
+		processor.theFight.die(source,target);
 	}
 	public boolean isHit(MOB attacker, MOB target)
 	{

@@ -86,8 +86,7 @@ public class Spell_Dragonfire extends Spell
 						if(msg2.wasModified())
 							damage = (int)Math.round(Util.div(damage,2.0));
 
-						mob.location().show(target,null,Affect.MSG_OK_ACTION,"The flames "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
-						ExternalPlay.postDamage(mob,target,this,damage);
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 					}
 				}
 			}

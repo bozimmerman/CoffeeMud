@@ -73,14 +73,11 @@ public class Spell_Disintegrate extends Spell
 
 					if(target instanceof MOB)
 					{
-						ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10));
+						ExternalPlay.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The spell <DAMAGE> <T-NAME>!");
 						if(((MOB)target).amDead())
 							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
 						else
-						{
-							mob.location().show(mob,target,Affect.MSG_OK_ACTION,"The wicked spell "+ExternalPlay.standardHitWord(Weapon.TYPE_BURSTING,((MOB)target).curState().getHitPoints())+" <T-NAME>.");
 							return false;
-						}
 					}
 					else
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");

@@ -83,11 +83,7 @@ public class Spell_WeaknessAcid extends Spell
 				if(((room.getArea().weatherType(room)==Area.WEATHER_RAIN)
 				||(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM))
 				&&(Dice.rollPercentage()>dummy.charStats().getSave(CharStats.SAVE_ACID)))
-				{
-					int damage=1;
-					room.show(invoker,dummy,Affect.MSG_OK_ACTION,"The biting rain dissolves and "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
-					ExternalPlay.postDamage(invoker,dummy,null,damage);
-				}
+					ExternalPlay.postDamage(invoker,dummy,null,1,Affect.ACT_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The biting rain dissolves and <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

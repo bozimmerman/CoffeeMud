@@ -45,7 +45,7 @@ public class Poison extends StdAbility
 			poisonTick=3;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int damage=Dice.roll(envStats().level(),3,1);
-			ExternalPlay.postDamage(invoker,mob,this,damage);
+			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_POISON,-1,null);
 		}
 		return true;
 	}

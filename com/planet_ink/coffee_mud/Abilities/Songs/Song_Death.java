@@ -45,8 +45,7 @@ public class Song_Death extends Song
 		if(invoker==null) return false;
 
 		int hpLoss=(int)Math.round(Math.floor(mob.curState().getHitPoints()*.1));
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The painful song "+ExternalPlay.standardHitWord(-1,hpLoss)+" <S-NAME>!");
-		ExternalPlay.postDamage(invoker,mob,this,hpLoss);
+		ExternalPlay.postDamage(invoker,mob,this,hpLoss,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The painful song <DAMAGE> <T-NAME>!");
 		return true;
 	}
 

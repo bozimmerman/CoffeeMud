@@ -145,8 +145,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.wasModified())
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"The gas "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
-					ExternalPlay.postDamage(mob,target,this,dmg);
+					ExternalPlay.postDamage(mob,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURNING,"The gas <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -160,8 +159,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				target.location().show(target,null,Affect.MSG_OK_ACTION,"A sudden blast of gas "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>");
-				ExternalPlay.postDamage(target,target,this,dmg);
+				ExternalPlay.postDamage(target,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURSTING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
@@ -177,8 +175,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			target.location().send(target,msg);
 			if(msg.wasModified())
 				dmg=(int)Math.round(Util.div(dmg,2.0));
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"The needle "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
-			ExternalPlay.postDamage(target,target,this,dmg);
+			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 			Ability P=CMClass.getAbility("Poison");
 			P.invoke(invoker,target,true);
@@ -196,10 +193,9 @@ public class Trap_Trap extends StdAbility implements Trap
 			target.location().send(target,msg);
 			if(msg.wasModified())
 				dmg=(int)Math.round(Util.div(dmg,2.0));
-			target.location().show(target,null,Affect.MSG_OK_ACTION,"The blade "+ExternalPlay.standardHitWord(-1,dmg)+" <S-NAME>!");
 			Ability P=CMClass.getAbility("Poison");
 			P.invoke(invoker,target,true);
-			ExternalPlay.postDamage(target,target,this,dmg);
+			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 		}
 	}
 
@@ -242,7 +238,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(mob.envStats().level(),3,1);
-			ExternalPlay.postDamage(mob,mob,this,damage);
+			ExternalPlay.postDamage(mob,mob,this,damage,Affect.NO_EFFECT,-1,null);
 		}
 		ExternalPlay.look(mob,null,true);
 	}

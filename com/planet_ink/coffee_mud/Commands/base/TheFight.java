@@ -52,7 +52,8 @@ public class TheFight
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				doDamage(mob,target,target.curState().getHitPoints()+10);
+				target.curState().setHitPoints(0);
+				die(mob,target);
 			}
 		}
 		else
@@ -223,195 +224,224 @@ public class TheFight
 		if(target.location().okAffect(msg))
 			target.location().send(attacker,msg);
 	}
-	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage)
+	public void postDamage(MOB attacker, 
+						   MOB target, 
+						   Environmental weapon, 
+						   int damage,
+						   int messageCode,
+						   int damageType,
+						   String allDisplayMessage)
 	{
 		if(!canDamageEachOther(attacker,target)) return;
 
-		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damage,Affect.NO_EFFECT,null);
+		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
 		if(target.location().okAffect(msg))
+		{
+			allDisplayMessage=msg.othersMessage();
+			if((allDisplayMessage!=null)
+			   &&(msg.sourceCode()>0)
+			   &&(allDisplayMessage.equals(msg.sourceMessage()))
+			   &&(damageType>=0)
+			   &&((msg.targetCode()&Affect.MASK_HURT)>0))
+			{
+				int replace=allDisplayMessage.indexOf("<DAMAGE>");
+				if(replace>=0)
+				{
+					int dmg=msg.targetCode()-Affect.MASK_HURT;
+					String damageWord=null;
+					if(weapon instanceof Weapon)
+						damageWord=((Weapon)weapon).hitString(dmg);
+					else
+						damageWord=standardHitWord(damageType,dmg);
+					allDisplayMessage=allDisplayMessage.substring(0,replace)+damageWord+allDisplayMessage.substring(replace+8);
+					msg.modify(msg.source(),
+							   msg.target(),
+							   msg.tool(),
+							   msg.sourceCode(),
+							   allDisplayMessage,
+							   msg.targetCode(),
+							   allDisplayMessage,
+							   msg.othersCode(),
+							   allDisplayMessage);
+				}
+			}
 			target.location().send(target,msg);
+		}
 	}
 
-	public void doDamage(MOB source, MOB target, int damageAmount)
+	public void die(MOB source, MOB target)
 	{
-		if((!target.curState().adjHitPoints(-damageAmount,target.maxState()))
-		   &&(target.location()!=null))
+		Room deathRoom=target.location();
+		int expAmount=60;
+		int totalLevels=0;
+		Hashtable beneficiaries=new Hashtable();
+		Hashtable followers=new Hashtable();
+		if(source!=null)
+			followers=grouping.getGroupMembers(source);
+
+		for(int m=0;m<deathRoom.numInhabitants();m++)
 		{
-			Room deathRoom=target.location();
-			int expAmount=60;
-			int totalLevels=0;
-			Hashtable beneficiaries=new Hashtable();
-			Hashtable followers=new Hashtable();
-			if(source!=null)
-				followers=grouping.getGroupMembers(source);
+			MOB mob=deathRoom.fetchInhabitant(m);
+			if((mob!=null)
+			&&(!mob.amDead())
+			&&(mob.charStats().getMyClass()!=null)
+			&&(beneficiaries.get(mob)==null)
+			&&(mob!=target))
+			{
+				if((mob.getVictim()==target)
+				||(followers.get(mob)!=null)
+				||(mob==source))
+				{
+					beneficiaries.put(mob,mob);
+					expAmount+=10;
+					totalLevels+=mob.envStats().level();
+				}
+			}
+		}
+		if(beneficiaries.size()>0)
+		{
+			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+			{
+				MOB mob=(MOB)e.nextElement();
+				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
+				if(myAmount>100) myAmount=100;
+				mob.charStats().getMyClass().gainExperience(mob,target,"",myAmount);
+			}
+		}
+		while(target.numFollowers()>0)
+		{
+			MOB follower=target.fetchFollower(0);
+			if(follower!=null)
+				follower.setFollowing(null);
+		}
+		target.setFollowing(null);
+		deathRoom.delInhabitant(target);
+		deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
+		if(!target.isMonster())
+		{
+			int expLost=100;
+			target.setExperience(target.getExperience()-expLost);
+			target.tell("You lose 100 experience points.");
+		}
+		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+		Body.baseEnvStats().setLevel(target.baseEnvStats().level());
+		Body.baseEnvStats().setWeight(target.baseEnvStats().weight());
+		if(!target.isMonster())
+			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
+		deathRoom.addItem(Body);
+		Body.recoverEnvStats();
 
-			for(int m=0;m<deathRoom.numInhabitants();m++)
+		int deadMoney=target.getMoney();
+		target.setMoney(0);
+		Vector items=new Vector();
+		for(int i=0;i<target.inventorySize();)
+		{
+			Item thisItem=target.fetchInventory(i);
+			if((thisItem!=null)&&(thisItem.savable()))
 			{
-				MOB mob=deathRoom.fetchInhabitant(m);
-				if((mob!=null)
-				&&(!mob.amDead())
-				&&(mob.charStats().getMyClass()!=null)
-				&&(beneficiaries.get(mob)==null)
-				&&(mob!=target))
+				if(target.isMonster())
 				{
-					if((mob.getVictim()==target)
-					||(followers.get(mob)!=null)
-					||(mob==source))
-					{
-						beneficiaries.put(mob,mob);
-						expAmount+=10;
-						totalLevels+=mob.envStats().level();
-					}
-				}
-			}
-			if(beneficiaries.size()>0)
-			{
-				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
-				{
-					MOB mob=(MOB)e.nextElement();
-					int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
-					if(myAmount>100) myAmount=100;
-					mob.charStats().getMyClass().gainExperience(mob,target,"",myAmount);
-				}
-			}
-			while(target.numFollowers()>0)
-			{
-				MOB follower=target.fetchFollower(0);
-				if(follower!=null)
-					follower.setFollowing(null);
-			}
-			target.setFollowing(null);
-			deathRoom.delInhabitant(target);
-			deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
-			if(!target.isMonster())
-			{
-				int expLost=100;
-				target.setExperience(target.getExperience()-expLost);
-				target.tell("You lose 100 experience points.");
-			}
-			DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
-			Body.baseEnvStats().setLevel(target.baseEnvStats().level());
-			Body.baseEnvStats().setWeight(target.baseEnvStats().weight());
-			if(!target.isMonster())
-				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
-			deathRoom.addItem(Body);
-			Body.recoverEnvStats();
-
-			int deadMoney=target.getMoney();
-			target.setMoney(0);
-			Vector items=new Vector();
-			for(int i=0;i<target.inventorySize();)
-			{
-				Item thisItem=target.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.savable()))
-				{
-					if(target.isMonster())
-					{
-						Item newItem=(Item)thisItem.copyOf();
-						newItem.setLocation(null);
-						newItem.setPossessionTime(Calendar.getInstance());
-						newItem.recoverEnvStats();
-						thisItem=newItem;
-						i++;
-					}
-					else
-						target.delInventory(thisItem);
-					thisItem.remove();
-					if(thisItem.location()==null)
-						thisItem.setLocation(Body);
-					deathRoom.addItem(thisItem);
-					items.addElement(thisItem);
-				}
-				else
-				if(thisItem!=null)
-					target.delInventory(thisItem);
-				else
+					Item newItem=(Item)thisItem.copyOf();
+					newItem.setLocation(null);
+					newItem.setPossessionTime(Calendar.getInstance());
+					newItem.recoverEnvStats();
+					thisItem=newItem;
 					i++;
-			}
-			target.kill();
-
-			// lastly, clean up victimhood
-			for(int i=0;i<deathRoom.numInhabitants();i++)
-			{
-				MOB inhab=deathRoom.fetchInhabitant(i);
-				// if a mob is not fighting the dead man (fighting someone else),
-				// and the person this mob is fighting is either fighting noone, or the victim
-				// then he should fight this mob!
-				// otherwise, if the mob is still fighting the target, stop him!
-				if((inhab!=null)&&(inhab.getVictim()!=null))
-				{
-					if(inhab.getVictim()!=target)
-					{
-						MOB victim=inhab.getVictim();
-						if((victim.getVictim()==null)||(victim.getVictim()==target))
-						{
-							if((inhab.amFollowing()!=null)&&(victim.amFollowing()!=null)&&(inhab.amFollowing()==victim.amFollowing()))
-								inhab.setVictim(null);
-							else
-							{
-								victim.setAtRange(-1);
-								victim.setVictim(inhab);
-							}
-						}
-
-					}
-					else
-						inhab.setVictim(null);
 				}
-			}
-
-			Body.setName("the body of "+target.name());
-			Body.setSecretIdentity(target.name()+"/"+target.description());
-			Body.setDisplayText("the body of "+target.name()+" lies here.");
-			if((!target.isMonster())||(target.soulMate()!=null))
-			{
-				if(target.soulMate()==null)
-					target.raiseFromDead();
 				else
-					new SysOpSkills().dispossess(target);
+					target.delInventory(thisItem);
+				thisItem.remove();
+				if(thisItem.location()==null)
+					thisItem.setLocation(Body);
+				deathRoom.addItem(thisItem);
+				items.addElement(thisItem);
 			}
-			Body.startTicker(deathRoom);
-			deathRoom.recoverRoomStats();
+			else
+			if(thisItem!=null)
+				target.delInventory(thisItem);
+			else
+				i++;
+		}
+		target.kill();
 
-			if(deadMoney>0)
+		// lastly, clean up victimhood
+		for(int i=0;i<deathRoom.numInhabitants();i++)
+		{
+			MOB inhab=deathRoom.fetchInhabitant(i);
+			// if a mob is not fighting the dead man (fighting someone else),
+			// and the person this mob is fighting is either fighting noone, or the victim
+			// then he should fight this mob!
+			// otherwise, if the mob is still fighting the target, stop him!
+			if((inhab!=null)&&(inhab.getVictim()!=null))
 			{
-				if((source.getBitmap()&MOB.ATT_AUTOGOLD)==0)
+				if(inhab.getVictim()!=target)
 				{
-					Item C=(Item)CMClass.getItem("StdCoins");
-					C.baseEnvStats().setAbility(deadMoney);
-					C.recoverEnvStats();
-					C.setPossessionTime(Calendar.getInstance());
+					MOB victim=inhab.getVictim();
+					if((victim.getVictim()==null)||(victim.getVictim()==target))
+					{
+						if((inhab.amFollowing()!=null)&&(victim.amFollowing()!=null)&&(inhab.amFollowing()==victim.amFollowing()))
+							inhab.setVictim(null);
+						else
+						{
+							victim.setAtRange(-1);
+							victim.setVictim(inhab);
+						}
+					}
+
+				}
+				else
+					inhab.setVictim(null);
+			}
+		}
+
+		Body.setName("the body of "+target.name());
+		Body.setSecretIdentity(target.name()+"/"+target.description());
+		Body.setDisplayText("the body of "+target.name()+" lies here.");
+		if((!target.isMonster())||(target.soulMate()!=null))
+		{
+			if(target.soulMate()==null)
+				target.raiseFromDead();
+			else
+				new SysOpSkills().dispossess(target);
+		}
+		Body.startTicker(deathRoom);
+		deathRoom.recoverRoomStats();
+
+		if(deadMoney>0)
+		{
+			if((source.getBitmap()&MOB.ATT_AUTOGOLD)==0)
+			{
+				Item C=(Item)CMClass.getItem("StdCoins");
+				C.baseEnvStats().setAbility(deadMoney);
+				C.recoverEnvStats();
+				C.setPossessionTime(Calendar.getInstance());
+				C.setLocation(Body);
+				deathRoom.addItem(C);
+				deathRoom.recoverRoomStats();
+			}
+			else
+			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+			{
+				MOB mob=(MOB)e.nextElement();
+				int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
+				if(myAmount>0)
+				{
+					Item C=CMClass.getItem("StdCoins");
+					C.baseEnvStats().setAbility(myAmount);
 					C.setLocation(Body);
+					C.setPossessionTime(Calendar.getInstance());
+					C.recoverEnvStats();
 					deathRoom.addItem(C);
 					deathRoom.recoverRoomStats();
-				}
-				else
-				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
-				{
-					MOB mob=(MOB)e.nextElement();
-					int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
-					if(myAmount>0)
-					{
-						Item C=CMClass.getItem("StdCoins");
-						C.baseEnvStats().setAbility(myAmount);
-						C.setLocation(Body);
-						C.setPossessionTime(Calendar.getInstance());
-						C.recoverEnvStats();
-						deathRoom.addItem(C);
-						deathRoom.recoverRoomStats();
-						if(Sense.canBeSeenBy(Body,mob))
-							new ItemUsage().get(mob,Body,C,false);
-					}
+					if(Sense.canBeSeenBy(Body,mob))
+						new ItemUsage().get(mob,Body,C,false);
 				}
 			}
-			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
-				for(int i=items.size()-1;i>=0;i--)
-					if(Sense.canBeSeenBy(Body,source))
-						new ItemUsage().get(source,Body,(Item)items.elementAt(i),false);
 		}
-		else
-		if((target.curState().getHitPoints()<target.getWimpHitPoint())&&(target.isInCombat()))
-			ExternalPlay.flee(target,"");
+		if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+			for(int i=items.size()-1;i>=0;i--)
+				if(Sense.canBeSeenBy(Body,source))
+					new ItemUsage().get(source,Body,(Item)items.elementAt(i),false);
 	}
 
 	public void autoloot(MOB mob)

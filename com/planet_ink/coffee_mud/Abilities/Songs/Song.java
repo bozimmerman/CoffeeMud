@@ -40,7 +40,6 @@ public class Song extends StdAbility
 	{
 		return new Song();
 	}
-	public int affectType(){return affectType|Ability.MASK_MAGICAL;}
 
 	public boolean tick(int tickID)
 	{

@@ -16,9 +16,9 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postAttack(attacker,target,weapon);
 	}
-	public static void postDamage(MOB attacker, MOB target, Environmental weapon, int damage)
+	public static void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{
-		if(player!=null) player.postDamage(attacker,target,weapon,damage);
+		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
 	public static String standardHitWord(int weaponType, int damageAmount)
 	{
@@ -77,9 +77,9 @@ public class ExternalPlay
 	{
 		if(player!=null) player.strike(source,target,weapon,success);
 	}
-	public static void doDamage(MOB source, MOB target, int damageAmount)
+	public static void die(MOB source, MOB target)
 	{
-		if(player!=null) player.doDamage(source,target,damageAmount);
+		if(player!=null) player.die(source,target);
 	}
 	public static boolean isHit(MOB attacker, MOB target)
 	{

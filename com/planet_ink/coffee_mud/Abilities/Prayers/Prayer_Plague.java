@@ -38,7 +38,7 @@ public class Prayer_Plague extends Prayer
 			plagueDown=4;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(invoker==null) invoker=mob;
-			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
+			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level(),Affect.NO_EFFECT,-1,null);
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				if(Dice.rollPercentage()>(target.charStats().getStat(CharStats.CONSTITUTION)*4))

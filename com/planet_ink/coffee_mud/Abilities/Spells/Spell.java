@@ -32,7 +32,6 @@ public class Spell extends StdAbility
 	{
 		return new Spell();
 	}
-	public int affectType(){return affectType|Ability.MASK_MAGICAL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -71,7 +71,7 @@ public class Falling extends StdAbility
 					return true;
 				unInvoke();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
-				ExternalPlay.postDamage(mob,mob,this,damageToTake);
+				ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
 				return false;
 			}
 			else
@@ -97,7 +97,7 @@ public class Falling extends StdAbility
 						return true;
 					unInvoke();
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
-					ExternalPlay.postDamage(mob,mob,this,damageToTake);
+					ExternalPlay.postDamage(mob,mob,this,damageToTake,Affect.NO_EFFECT,-1,null);
 					return false;
 				}
 				else

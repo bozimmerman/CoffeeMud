@@ -52,10 +52,7 @@ public class Prayer_DispelGood extends Prayer
 				{
 					target.setAlignment(target.getAlignment()-100);
 					if(target.location()==mob.location())
-					{
-						target.location().show(target,null,Affect.MSG_OK_VISUAL,"The blessed spell "+ExternalPlay.standardHitWord(-1,harming)+" <S-NAME>!");
-						ExternalPlay.postDamage(mob,target,this,harming);
-					}
+						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The blessed spell <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

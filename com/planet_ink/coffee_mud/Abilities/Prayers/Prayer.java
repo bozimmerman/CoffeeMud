@@ -37,7 +37,6 @@ public class Prayer extends StdAbility
 	{
 		return Ability.PRAYER;
 	}
-	public int affectType(){return affectType|Ability.MASK_MAGICAL;}
 
 	public Environmental newInstance()
 	{

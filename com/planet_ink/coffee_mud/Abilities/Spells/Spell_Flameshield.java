@@ -71,8 +71,7 @@ public class Spell_Flameshield extends Spell
 						if(!msg.wasModified())
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							affect.source().location().show(mob,source,Affect.MSG_OK_ACTION,"The flame shield around <S-NAME> flares and "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <T-NAME>!");
-							ExternalPlay.postDamage(mob,source,this,damage);
+							ExternalPlay.postDamage(mob,source,this,damage,Affect.ACT_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

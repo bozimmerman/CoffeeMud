@@ -51,8 +51,7 @@ public class Prayer_MassHarm extends Prayer
 					{
 						mob.location().send(mob,msg);
 						int harming=Dice.roll(4,mob.envStats().level()/numEnemies,numEnemies);
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The spell "+ExternalPlay.standardHitWord(-1,harming)+" <S-NAME>!");
-						ExternalPlay.postDamage(mob,target,this,harming);
+						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 					}
 				}
 				else

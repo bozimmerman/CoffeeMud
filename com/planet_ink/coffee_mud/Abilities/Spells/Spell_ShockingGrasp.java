@@ -72,8 +72,7 @@ public class Spell_ShockingGrasp extends Spell
 						invoker=mob;
 
 						int damage = Dice.roll(1,8,mob.envStats().level());
-						mob.location().show(mob,target,Affect.MSG_OK_ACTION,auto?"<T-NAME> gasp(s) in shock and pain!":"The shocking grasp "+ExternalPlay.standardHitWord(-1,damage)+" <T-NAME>!");
-						ExternalPlay.postDamage(mob,target,this,damage);
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,auto?"<T-NAME> gasp(s) in shock and pain!":"The shocking grasp <DAMAGE> <T-NAME>!");
 					}
 				}
 			}

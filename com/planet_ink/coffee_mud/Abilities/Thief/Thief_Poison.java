@@ -48,7 +48,7 @@ public class Thief_Poison extends ThiefSkill
 			poisonDown=3;
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int hpLoss=invoker.envStats().level();
-			ExternalPlay.postDamage(invoker,mob,this,hpLoss);
+			ExternalPlay.postDamage(invoker,mob,this,hpLoss,Affect.NO_EFFECT,-1,null);
 		}
 		return true;
 	}

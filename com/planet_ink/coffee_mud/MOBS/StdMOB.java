@@ -1277,7 +1277,13 @@ public class StdMOB implements MOB
 			{
 				int dmg=affect.targetCode()-Affect.MASK_HURT;
 				if(dmg>0)
-					ExternalPlay.doDamage(affect.source(),this,dmg);
+				{
+					if((!curState().adjHitPoints(-dmg,maxState()))&&(location()!=null))
+						ExternalPlay.die(affect.source(),this);
+					else
+					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
+						ExternalPlay.flee(this,"");
+				}
 			}
 			else
 			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
@@ -1447,7 +1453,7 @@ public class StdMOB implements MOB
 				if(!Sense.canBreathe(this))
 				{
 					this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
-					ExternalPlay.doDamage(this,this,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)));
+					ExternalPlay.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),Affect.NO_EFFECT,-1,null);
 				}
 				if(isInCombat())
 				{
