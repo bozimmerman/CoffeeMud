@@ -20,10 +20,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class FasterRoom extends StdBehavior
+public class FasterRecovery extends StdBehavior
 {
-	public String ID(){return "FasterRoom";}
-	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	public String ID(){return "FasterRecovery";}
+	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS|Behavior.CAN_ITEMS;}
 	public static int getVal(String text, String key, int defaultValue)
 	{
 		text=text.toUpperCase();
@@ -55,6 +55,42 @@ public class FasterRoom extends StdBehavior
 		}
 		return defaultValue;
 	}
+	
+	public void doBe(MOB M, int burst, int health, int hits, int mana, int move)
+	{
+	    if(M==null) return;
+		for(int i2=0;i2<burst;i2++)
+			M.tick(M,MudHost.TICK_MOB);
+		for(int i2=0;i2<health;i2++)
+			M.curState().recoverTick(M,M.maxState());
+		if(hits!=0)
+		{
+			int oldMana=M.curState().getMana();
+			int oldMove=M.curState().getMovement();
+			for(int i2=0;i2<mana;i2++)
+				M.curState().recoverTick(M,M.maxState());
+			M.curState().setMana(oldMana);
+			M.curState().setMovement(oldMove);
+		}
+		if(mana!=0)
+		{
+			int oldHP=M.curState().getHitPoints();
+			int oldMove=M.curState().getMovement();
+			for(int i2=0;i2<mana;i2++)
+				M.curState().recoverTick(M,M.maxState());
+			M.curState().setHitPoints(oldHP);
+			M.curState().setMovement(oldMove);
+		}
+		if(move!=0)
+		{
+			int oldMana=M.curState().getMana();
+			int oldHP=M.curState().getHitPoints();
+			for(int i2=0;i2<mana;i2++)
+				M.curState().recoverTick(M,M.maxState());
+			M.curState().setMana(oldMana);
+			M.curState().setHitPoints(oldHP);
+		}
+	}
 	public void doBe(Room room, int burst, int health, int hits, int mana, int move)
 	{
 		if(room==null) return;
@@ -62,61 +98,55 @@ public class FasterRoom extends StdBehavior
 		{
 			MOB M=room.fetchInhabitant(i);
 			if(M!=null)
-			{
-				for(int i2=0;i2<burst;i2++)
-					M.tick(M,MudHost.TICK_MOB);
-				for(int i2=0;i2<health;i2++)
-					M.curState().recoverTick(M,M.maxState());
-				if(hits!=0)
-				{
-					int oldMana=M.curState().getMana();
-					int oldMove=M.curState().getMovement();
-					for(int i2=0;i2<mana;i2++)
-						M.curState().recoverTick(M,M.maxState());
-					M.curState().setMana(oldMana);
-					M.curState().setMovement(oldMove);
-				}
-				if(mana!=0)
-				{
-					int oldHP=M.curState().getHitPoints();
-					int oldMove=M.curState().getMovement();
-					for(int i2=0;i2<mana;i2++)
-						M.curState().recoverTick(M,M.maxState());
-					M.curState().setHitPoints(oldHP);
-					M.curState().setMovement(oldMove);
-				}
-				if(move!=0)
-				{
-					int oldMana=M.curState().getMana();
-					int oldHP=M.curState().getHitPoints();
-					for(int i2=0;i2<mana;i2++)
-						M.curState().recoverTick(M,M.maxState());
-					M.curState().setMana(oldMana);
-					M.curState().setHitPoints(oldHP);
-				}
-			}
+			    doBe(M,burst,health,hits,mana,move);
+		}
+	}
+	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
+	{
+		if(area==null) return;
+		for(Enumeration r=area.getMetroMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			doBe(R,burst,health,hits,mana,move);
 		}
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(((tickID==MudHost.TICK_AREA)||(tickID==MudHost.TICK_ROOM_BEHAVIOR)))
+		int burst=getVal(getParms(),"BURST",0)-1;
+		int health=getVal(getParms(),"HEALTH",0)-1;
+		int hits=getVal(getParms(),"HITS",0)-1;
+		int mana=getVal(getParms(),"MANA",0)-1;
+		int move=getVal(getParms(),"MOVE",0)-1;
+		if(ticking instanceof Room)
+			doBe((Room)ticking,burst,health,hits,mana,move);
+		else
+		if(ticking instanceof Area)
+			doBe((Area)ticking,burst,health,hits,mana,move);
+		else
+		if(ticking instanceof Rideable)
 		{
-			int burst=getVal(getParms(),"BURST",0)-1;
-			int health=getVal(getParms(),"HEALTH",0)-1;
-			int hits=getVal(getParms(),"HITS",0)-1;
-			int mana=getVal(getParms(),"MANA",0)-1;
-			int move=getVal(getParms(),"MOVE",0)-1;
-			if(ticking instanceof Room)
-				doBe((Room)ticking,burst,health,hits,mana,move);
-			else
-			if(ticking instanceof Area)
-			{
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					doBe(R,burst,health,hits,mana,move);
-				}
-			}
+		    Rider R=null;
+		    for(int r=0;r<((Rideable)ticking).numRiders();r++)
+		    {
+		        R=((Rideable)ticking).fetchRider(r);
+		        if(R instanceof MOB)
+					doBe((MOB)R,burst,health,hits,mana,move);
+		    }
+		}
+		else
+		if(ticking instanceof MOB)
+			doBe((MOB)ticking,burst,health,hits,mana,move);
+		else
+		if(ticking instanceof Item)
+		{
+		    if(Sense.isGettable((Item)ticking)
+		    &&(((Item)ticking).owner() instanceof MOB)
+		    &&(!((Item)ticking).amWearingAt(Item.INVENTORY)))
+				doBe((MOB)((Item)ticking).owner(),burst,health,hits,mana,move);
+		    else
+		    if(!Sense.isGettable((Item)ticking)
+		    &&(((Item)ticking).owner() instanceof Room))
+				doBe((Room)((Item)ticking).owner(),burst,health,hits,mana,move);
 		}
 		return true;
 	}

@@ -66,6 +66,8 @@ public class CraftingSkill extends CommonSkill
 	                V2=(Vector)V.elementAt(v);
 	                if((recipes.size()==0)||(((Vector)recipes.lastElement()).size()<=V2.size()))
 	                    recipes.addElement(V2);
+	                else
+	                    Log.errOut(ID(),"Not enough parms: "+((Recipe)I).getRecipeCodeLine());
 	            }
 	        }
 	    }

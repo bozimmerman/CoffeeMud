@@ -683,7 +683,6 @@ public class BaseGenerics extends StdCommand
         }
     }
 
-
 	public static void genCloseWord(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{

@@ -34,6 +34,10 @@ public class FireElemental extends StdRace
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
 	protected boolean destroyBodyAfterUse(){return true;}
+	private String[]culturalAbilityNames={"Ignan"};
+	private int[]culturalAbilityProfficiencies={100};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}

@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armordmg,extraMaterialRequirement
 % Barette	1	10	1	5	GenArmor	HEAD	0	0
 % Ring	1	20	1	50	GenArmor	LEFT FINGER||RIGHT FINGER	0	0	PRECIOUS
 % Chain	2	20	2	10	GenArmor	NECK	0	0

@@ -26,7 +26,7 @@ public class Ignan extends Language
 			String[] two={"pul","sak","dhu","ka","rej","ya","no","la","iy","da","vra","ni","ik"};
 			String[] three={"nya","rik","iwa","tya","mat","kaj","raj","lak","vak","dra","vik","sat","nav"};
 			String[] four={"nahi","ty'aj","tras","dams","dagh","jatu","chik","jhak","gruk","k'sip","kuha","ucca","inkh","asya","abhi","arya","isti","id'va","mala","mrga","s'ami","sira","skus","stup"};
-			String[] five={"stigh,"stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
+			String[] five={"stigh","stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
 			String[] six={"masu'ra","marttika","bhai'sa","bollai","vila'sini","barhis't'ha","barkro","parada","nikauriya","nird'har","dhanik","ja'n'o","tanakti","chikka'ra","kullada","uccaya","utsava","istaka","i'rsya","inkhuksa","akha'ra","adhuna","avas'dyak"};
 			wordLists=new Vector();
 			wordLists.addElement(one);
@@ -43,7 +43,7 @@ public class Ignan extends Language
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;
-		hashwords.put("ABODE","okah")
+		hashwords.put("ABODE","okah");
 		hashwords.put("ABOVE","adhi");
 		hashwords.put("ACID","amla");
 		hashwords.put("ACCOMPLISH","daks");
@@ -53,7 +53,7 @@ public class Ignan extends Language
 		hashwords.put("ARM","bahu");
 		hashwords.put("ARMY","jurnih");
 		hashwords.put("AROUND","pari");
-		hashwords.put("ATMOSPHERE","krntatram")
+		hashwords.put("ATMOSPHERE","krntatram");
 		hashwords.put("AUNT","attai");
 		hashwords.put("AWAY","ava");
 		hashwords.put("AXLE","aksa");
@@ -119,7 +119,7 @@ public class Ignan extends Language
 		hashwords.put("FOOD","sinam");
 		hashwords.put("FOOL","ja'mi");
 		hashwords.put("FORWARD","pra");
-		hashwords.put("FRAGMENT","khanda")
+		hashwords.put("FRAGMENT","khanda");
 		hashwords.put("FRONT","pragram");
 		hashwords.put("FROM","prati");
 		hashwords.put("GAMBLER","s'vaghni");
@@ -129,17 +129,17 @@ public class Ignan extends Language
 		hashwords.put("GO","amb");
 		hashwords.put("GOING","aya");
 		hashwords.put("GOLD","hiranyam");
-		hashwords.put("GRAIN","saktuh);
+		hashwords.put("GRAIN","saktuh");
 		hashwords.put("GREAT","aminah");
 		hashwords.put("HALF","ardha");
-		hashwords.put("HAND","panh")
+		hashwords.put("HAND","panh");
 		hashwords.put("HEEL","adi");
-		hashwords.put("HERBS","virudhah);
+		hashwords.put("HERBS","virudhah");
 		hashwords.put("HIGH","atta");
 		hashwords.put("HOME","ama");
 		hashwords.put("HOMES","grhah");
 		hashwords.put("HOOK","ankus'a");
-		hashwords.put("HORNY","nissapi);
+		hashwords.put("HORNY","nissapi");
 		hashwords.put("HORSE","dadhikra");
 		hashwords.put("HOUSE","agara");
 		hashwords.put("HURT","ard");
@@ -151,7 +151,7 @@ public class Ignan extends Language
 		hashwords.put("JOINED","u");
 		hashwords.put("KILL","kutsa");
 		hashwords.put("KNOWLEDGE","kila");
-		hashwords.put("LIGHT","kus'ika")
+		hashwords.put("LIGHT","kus'ika");
 		hashwords.put("LIKE","iva");
 		hashwords.put("LIMB","anga");
 		hashwords.put("LOWER","avara");
@@ -189,7 +189,7 @@ public class Ignan extends Language
 		hashwords.put("POLE","dhuh");
 		hashwords.put("POSTERIOR","apara");
 		hashwords.put("PRESS","amh");
-		hashwords.put("PRIEST","rtwik);
+		hashwords.put("PRIEST","rtwik");
 		hashwords.put("PROHIBITION","khalu");
 		hashwords.put("PROTECTION","utih");
 		hashwords.put("PROXIMITY","anta");
@@ -215,7 +215,7 @@ public class Ignan extends Language
 		hashwords.put("SHINING","tvisitah");
 		hashwords.put("SHOULDER","skandha");
 		hashwords.put("SIEVE","tita");
-		hashwords.put("SINGER","nodhas);
+		hashwords.put("SINGER","nodhas");
 		hashwords.put("SISTER","jamih");
 		hashwords.put("SIX","sat");
 		hashwords.put("SLAY","vanusyati");
@@ -230,7 +230,7 @@ public class Ignan extends Language
 		hashwords.put("STARS","strahih");
 		hashwords.put("STING","ala");
 		hashwords.put("STINKY","kepuyah");
-		hashwords.put("STOMACH","jatharam);
+		hashwords.put("STOMACH","jatharam");
 		hashwords.put("STREAM","visruhah");
 		hashwords.put("STRONGLY","barhana");
 		hashwords.put("SUN","aru");
