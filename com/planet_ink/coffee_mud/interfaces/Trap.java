@@ -14,4 +14,6 @@ public interface Trap extends Ability
 	public boolean sprung();
 	public void setSprung(boolean isSprung);
 	public void spring(MOB target);
+	public void setReset(int reset);
+	public int getReset();
 }

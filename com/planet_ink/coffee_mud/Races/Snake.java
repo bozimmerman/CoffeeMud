@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Snake extends StdRace
 {
+	public String ID(){	return "Snake"; }
+	public String name(){ return "Snake"; }
+	protected int shortestMale(){return 2;}
+	protected int shortestFemale(){return 2;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 5;}
+	protected int weightVariance(){return 15;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Snake()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=2;
-		shortestFemale=2;
-		heightVariance=3;
-		// pounds
-		lightestWeight=5;
-		weightVariance=15;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -92,13 +87,13 @@ public class Snake extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" fangs",EnvResource.RESOURCE_SCALES));
+				("a pair of "+name().toLowerCase()+" fangs",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

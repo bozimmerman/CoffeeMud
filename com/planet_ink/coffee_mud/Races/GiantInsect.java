@@ -7,21 +7,16 @@ import java.util.*;
 
 public class GiantInsect extends StdRace
 {
+	public String ID(){	return "GiantInsect"; }
+	public String name(){ return "Giant Insect"; }
+	protected int shortestMale(){return 35;}
+	protected int shortestFemale(){return 29;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 120;}
+	protected int weightVariance(){return 30;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	
 	protected static Vector resources=new Vector();
-	public GiantInsect()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Giant Insect";
-		// inches
-		shortestMale=35;
-		shortestFemale=29;
-		heightVariance=5;
-		// pounds
-		lightestWeight=120;
-		weightVariance=30;
-		forbiddenWornBits=Integer.MAX_VALUE;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -59,7 +54,7 @@ public class GiantInsect extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+				("a pile of "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
 			}
 		}
 		return resources;

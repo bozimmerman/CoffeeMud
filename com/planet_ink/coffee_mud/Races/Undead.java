@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Undead extends StdRace
 {
+	public String ID(){	return "Undead"; }
+	public String name(){ return "Undead"; }
+	protected int shortestMale(){return 64;}
+	protected int shortestFemale(){return 60;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 100;}
+	protected int weightVariance(){return 100;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Undead()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=64;
-		shortestFemale=60;
-		heightVariance=12;
-		// pounds
-		lightestWeight=100;
-		weightVariance=100;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

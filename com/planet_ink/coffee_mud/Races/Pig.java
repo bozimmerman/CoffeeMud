@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Pig extends StdRace
 {
+	public String ID(){	return "Pig"; }
+	public String name(){ return "Pig"; }
+	protected int shortestMale(){return 12;}
+	protected int shortestFemale(){return 12;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 100;}
+	protected int weightVariance(){return 60;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Pig()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=12;
-		shortestFemale=12;
-		heightVariance=12;
-		// pounds
-		lightestWeight=100;
-		weightVariance=60;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -81,14 +76,14 @@ public class Pig extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" snout",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" snout",EnvResource.RESOURCE_MEAT));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_PORK));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_PORK));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

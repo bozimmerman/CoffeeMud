@@ -7,20 +7,16 @@ import java.util.*;
 
 public class Wyvern extends StdRace
 {
+	public String ID(){	return "Wyvern"; }
+	public String name(){ return "Wyvern"; }
+	protected int shortestMale(){return 64;}
+	protected int shortestFemale(){return 58;}
+	protected int heightVariance(){return 40;}
+	protected int lightestWeight(){return 1500;}
+	protected int weightVariance(){return 500;}
+	protected long forbiddenWornBits(){return Item.HELD|Item.WIELD|Item.ON_WAIST;}
+	
 	protected static Vector resources=new Vector();
-	public Wyvern()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		// inches
-		shortestMale=64;
-		shortestFemale=58;
-		heightVariance=40;
-		// pounds
-		lightestWeight=1500;
-		weightVariance=500;
-		forbiddenWornBits=Item.HELD|Item.WIELD|Item.ON_WAIST;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -88,15 +84,15 @@ public class Wyvern extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" tail",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" tail",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Orc extends StdRace
 {
+	public String ID(){	return "Orc"; }
+	public String name(){ return "Orc"; }
+	protected int shortestMale(){return 60;}
+	protected int shortestFemale(){return 56;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 150;}
+	protected int weightVariance(){return 100;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Orc()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=60;
-		shortestFemale=56;
-		heightVariance=12;
-		// pounds
-		lightestWeight=150;
-		weightVariance=100;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -93,11 +88,11 @@ public class Orc extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

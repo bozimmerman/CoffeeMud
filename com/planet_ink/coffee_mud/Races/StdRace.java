@@ -7,28 +7,20 @@ import java.util.*;
 
 public class StdRace implements Race
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	protected String name="MOB";
-	protected int practicesAtFirstLevel=0;
-	protected int trainsAtFirstLevel=0;
+	public String ID(){	return "StdRace"; }
+	public String name(){ return "StdRace"; }
+	protected int practicesAtFirstLevel(){return 0;}
+	protected int trainsAtFirstLevel(){return 0;}
+	protected int shortestMale(){return 24;}
+	protected int shortestFemale(){return 24;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 60;}
+	protected int weightVariance(){return 10;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	
-	protected int shortestMale=24;
-	protected int shortestFemale=24;
-	protected int heightVariance=5;
-	protected int lightestWeight=60;
-	protected int weightVariance=10;
-	protected long forbiddenWornBits=0;
-	
-	public String ID()
-	{
-		return myID;
-	}
-	public String name()
-	{
-		return name;
-	}
 	public boolean playerSelectable(){return false;}
 
 	/** some general statistics about such an item
@@ -48,7 +40,7 @@ public class StdRace implements Race
 	
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if((forbiddenWornBits&Item.HELD)>0)
+		if((forbiddenWornBits()&Item.HELD)>0)
 		{
 			if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
 			{
@@ -138,8 +130,8 @@ public class StdRace implements Race
 		{
 			if(mob.baseEnvStats().level()<=1)
 			{
-				mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
-				mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
+				mob.setPractices(mob.getPractices()+practicesAtFirstLevel());
+				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
 			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 		}
@@ -210,16 +202,16 @@ public class StdRace implements Race
 	public void setHeightWeight(EnvStats stats, char gender)
 	{
 		int weightModifier=0;
-		if(weightVariance>0)
-			weightModifier=Dice.roll(1,weightVariance,0);
-		stats.setWeight(lightestWeight+weightModifier);
+		if(weightVariance()>0)
+			weightModifier=Dice.roll(1,weightVariance(),0);
+		stats.setWeight(lightestWeight()+weightModifier);
 		int heightModifier=0;
-		if(heightVariance>0)
-			heightModifier=Dice.roll(1,heightVariance,0);
+		if(heightVariance()>0)
+			heightModifier=Dice.roll(1,heightVariance(),0);
 		if (gender == 'M')
-			stats.setHeight(shortestMale+heightModifier);
+			stats.setHeight(shortestMale()+heightModifier);
  		else
-			stats.setHeight(shortestFemale+heightModifier);
+			stats.setHeight(shortestFemale()+heightModifier);
 	}
 	
 	public void confirmGear(MOB mob)
@@ -246,10 +238,10 @@ public class StdRace implements Race
 	
 	public boolean canWear(Item item)
 	{
-		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))
+		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits())>0))
 			return false;
 		else
-		if((!item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&(Integer.MAX_VALUE-forbiddenWornBits))==0))
+		if((!item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&(Integer.MAX_VALUE-forbiddenWornBits()))==0))
 			return false;
 		return true;
 	}
@@ -267,7 +259,7 @@ public class StdRace implements Race
 			I=CMClass.getItem("GenResource");
 		I.setName(name);
 		I.setDisplayText(name+" has been left here.");
-		I.setDescription("It looks like "+name);
+		I.setDescription("It looks like "+name());
 		I.setMaterial(type);
 		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
 		I.baseEnvStats().setWeight(1);

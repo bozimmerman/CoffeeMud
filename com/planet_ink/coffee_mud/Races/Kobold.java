@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Kobold extends StdRace
 {
+	public String ID(){	return "Kobold"; }
+	public String name(){ return "Kobold"; }
+	protected int shortestMale(){return 45;}
+	protected int shortestFemale(){return 40;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 50;}
+	protected int weightVariance(){return 50;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Kobold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=45;
-		shortestFemale=40;
-		heightVariance=6;
-		// pounds
-		lightestWeight=50;
-		weightVariance=50;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -101,11 +96,11 @@ public class Kobold extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some nobby "+name.toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("some nobby "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

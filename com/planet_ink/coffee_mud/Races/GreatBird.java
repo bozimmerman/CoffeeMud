@@ -7,19 +7,16 @@ import java.util.*;
 
 public class GreatBird extends StdRace
 {
+	public String ID(){	return "GreatBird"; }
+	public String name(){ return "Great Bird"; }
+	protected int shortestMale(){return 8;}
+	protected int shortestFemale(){return 8;}
+	protected int heightVariance(){return 10;}
+	protected int lightestWeight(){return 20;}
+	protected int weightVariance(){return 10;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public GreatBird()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Great Bird";
-		shortestMale=8;
-		shortestFemale=8;
-		heightVariance=10;
-		lightestWeight=20;
-		weightVariance=10;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -88,13 +85,13 @@ public class GreatBird extends StdRace
 			{
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pile of "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+					("a pile of "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

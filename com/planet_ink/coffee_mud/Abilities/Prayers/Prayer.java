@@ -29,10 +29,7 @@ public class Prayer extends StdAbility
 		if(auto) affectType=affectType|Affect.ACT_GENERAL;
 		return affectType;
 	}
-	public Environmental newInstance()
-	{
-		return new Prayer();
-	}
+	public Environmental newInstance(){	return new Prayer();}
 
 	public boolean appropriateToMyAlignment(int alignment)
 	{

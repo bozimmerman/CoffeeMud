@@ -7,21 +7,16 @@ import java.util.*;
 
 public class SchoolMonster extends StdRace
 {
+	public String ID(){	return "SchoolMonster"; }
+	public String name(){ return "School Monster"; }
+	protected int shortestMale(){return 24;}
+	protected int shortestFemale(){return 24;}
+	protected int heightVariance(){return 52;}
+	protected int lightestWeight(){return 60;}
+	protected int weightVariance(){return 60;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public SchoolMonster()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="School Monster";
-		// inches
-		shortestMale=24;
-		shortestFemale=24;
-		heightVariance=52;
-		// pounds
-		lightestWeight=60;
-		weightVariance=60;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -84,11 +79,11 @@ public class SchoolMonster extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" intestines",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" intestines",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Doll extends StdRace
 {
+	public String ID(){	return "Doll"; }
+	public String name(){ return "Doll"; }
+	protected int shortestMale(){return 6;}
+	protected int shortestFemale(){return 6;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 10;}
+	protected int weightVariance(){return 20;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Doll()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=6;
-		shortestFemale=6;
-		heightVariance=3;
-		// pounds
-		lightestWeight=10;
-		weightVariance=20;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -77,9 +72,9 @@ public class Doll extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" clothes",EnvResource.RESOURCE_COTTON));
+				("some "+name().toLowerCase()+" clothes",EnvResource.RESOURCE_COTTON));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" parts",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" parts",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,20 +7,15 @@ import java.util.*;
 
 public class Gorilla extends Monkey
 {
+	public String ID(){	return "Gorilla"; }
+	public String name(){ return "Gorilla"; }
+	protected int shortestMale(){return 62;}
+	protected int shortestFemale(){return 60;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 220;}
+	protected int weightVariance(){return 80;}
+	
 	protected static Vector resources=new Vector();
-	public Gorilla()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Gorilla";
-		// inches
-		shortestMale=62;
-		shortestFemale=60;
-		heightVariance=12;
-		// pounds
-		lightestWeight=220;
-		weightVariance=80;
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -36,16 +31,16 @@ public class Gorilla extends Monkey
 			{
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("an "+name.toLowerCase()+" nose",EnvResource.RESOURCE_HIDE));
+				("an "+name().toLowerCase()+" nose",EnvResource.RESOURCE_HIDE));
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

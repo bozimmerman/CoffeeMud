@@ -7,19 +7,16 @@ import java.util.*;
 
 public class SongBird extends StdRace
 {
+	public String ID(){	return "SongBird"; }
+	public String name(){ return "Song Bird"; }
+	protected int shortestMale(){return 3;}
+	protected int shortestFemale(){return 3;}
+	protected int heightVariance(){return 2;}
+	protected int lightestWeight(){return 2;}
+	protected int weightVariance(){return 5;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES-Item.ON_HEAD;}
+	
 	protected static Vector resources=new Vector();
-	public SongBird()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Song Bird";
-		shortestMale=3;
-		shortestFemale=3;
-		heightVariance=2;
-		lightestWeight=2;
-		weightVariance=5;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -87,15 +84,15 @@ public class SongBird extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" voice box",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" voice box",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

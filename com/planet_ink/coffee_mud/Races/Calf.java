@@ -7,20 +7,15 @@ import java.util.*;
 
 public class Calf extends Cow
 {
+	public String ID(){	return "Calf"; }
+	public String name(){ return "Calf"; }
+	protected int shortestMale(){return 36;}
+	protected int shortestFemale(){return 36;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 150;}
+	protected int weightVariance(){return 100;}
+	
 	protected static Vector resources=new Vector();
-	public Calf()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=36;
-		shortestFemale=36;
-		heightVariance=6;
-		// pounds
-		lightestWeight=150;
-		weightVariance=100;
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -35,15 +30,15 @@ public class Calf extends Cow
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" hooves",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" hooves",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("a strip of "+name.toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+				("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

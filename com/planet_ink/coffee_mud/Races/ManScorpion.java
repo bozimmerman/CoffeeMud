@@ -7,21 +7,16 @@ import java.util.*;
 
 public class ManScorpion extends StdRace
 {
+	public String ID(){	return "ManScorpion"; }
+	public String name(){ return "Man-Scorpion"; }
+	protected int shortestMale(){return 58;}
+	protected int shortestFemale(){return 54;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 120;}
+	protected int weightVariance(){return 50;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public ManScorpion()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=58;
-		shortestFemale=54;
-		heightVariance=12;
-		// pounds
-		lightestWeight=120;
-		weightVariance=50;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -62,11 +57,11 @@ public class ManScorpion extends StdRace
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" plating",EnvResource.RESOURCE_STEEL));
+					("a pound of "+name().toLowerCase()+" plating",EnvResource.RESOURCE_STEEL));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Horse extends StdRace
 {
+	public String ID(){	return "Horse"; }
+	public String name(){ return "Horse"; }
+	protected int shortestMale(){return 60;}
+	protected int shortestFemale(){return 60;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 350;}
+	protected int weightVariance(){return 100;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Horse()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=60;
-		shortestFemale=60;
-		heightVariance=12;
-		// pounds
-		lightestWeight=350;
-		weightVariance=100;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -85,16 +80,16 @@ public class Horse extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" mane",EnvResource.RESOURCE_FUR));
+				("a "+name().toLowerCase()+" mane",EnvResource.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,21 +7,16 @@ import java.util.*;
 
 public class AirElemental extends StdRace
 {
+	public String ID(){	return "AirElemental"; }
+	public String name(){ return "Air Elemental"; }
+	protected int shortestMale(){return 64;}
+	protected int shortestFemale(){return 60;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 400;}
+	protected int weightVariance(){return 100;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public AirElemental()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Air Elemental";
-		// inches
-		shortestMale=64;
-		shortestFemale=60;
-		heightVariance=12;
-		// pounds
-		lightestWeight=400;
-		weightVariance=100;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

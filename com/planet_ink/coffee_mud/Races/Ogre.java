@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Ogre extends Humanoid
 {
+	public String ID(){	return "Ogre"; }
+	public String name(){ return "Ogre"; }
+	protected int shortestMale(){return 74;}
+	protected int shortestFemale(){return 69;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 290;}
+	protected int weightVariance(){return 90;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Ogre()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=ID();
-		// inches
-		shortestMale=74;
-		shortestFemale=69;
-		heightVariance=12;
-		// pounds
-		lightestWeight=290;
-		weightVariance=90;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

@@ -4,20 +4,15 @@ import java.util.Vector;
 
 public class Rat extends Rodent
 {
+	public String ID(){	return "Rat"; }
+	public String name(){ return "Rat"; }
+	protected int shortestMale(){return 6;}
+	protected int shortestFemale(){return 6;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 10;}
+	protected int weightVariance(){return 10;}
+	
 	protected static Vector resources=new Vector();
-	public Rat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Rat";
-		// inches
-		shortestMale=6;
-		shortestFemale=6;
-		heightVariance=6;
-		// pounds
-		lightestWeight=10;
-		weightVariance=10;
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -30,11 +25,11 @@ public class Rat extends Rodent
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name.toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+					("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

@@ -19,7 +19,7 @@ public class Regeneration extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public boolean putInCommandlist(){return false;}
-	private static final String[] triggerStrings = {"REGENERATE"};
+	private static final String[] triggerStrings = {"REGENERATION"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Regeneration();}

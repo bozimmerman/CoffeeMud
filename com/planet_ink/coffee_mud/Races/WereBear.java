@@ -7,21 +7,16 @@ import java.util.*;
 
 public class WereBear extends Bear
 {
+	public String ID(){	return "WereBear"; }
+	public String name(){ return "WereBear"; }
+	protected int shortestMale(){return 59;}
+	protected int shortestFemale(){return 59;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 80;}
+	protected int weightVariance(){return 80;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public WereBear()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="WereBear";
-		// inches
-		shortestMale=59;
-		shortestFemale=59;
-		heightVariance=12;
-		// pounds
-		lightestWeight=80;
-		weightVariance=80;
-		forbiddenWornBits=0;
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+8);
@@ -35,16 +30,16 @@ public class WereBear extends Bear
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" claws",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" claws",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

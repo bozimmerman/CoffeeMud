@@ -7,19 +7,15 @@ import java.util.*;
 
 public class Bat extends StdRace
 {
+	public String ID(){	return "Bat"; }
+	public String name(){ return "Bat"; }
+	protected int shortestMale(){return 2;}
+	protected int shortestFemale(){return 2;}
+	protected int heightVariance(){return 2;}
+	protected int lightestWeight(){return 2;}
+	protected int weightVariance(){return 0;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	protected static Vector resources=new Vector();
-	public Bat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		shortestMale=2;
-		shortestFemale=2;
-		heightVariance=2;
-		lightestWeight=2;
-		weightVariance=0;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -89,11 +85,11 @@ public class Bat extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name.toLowerCase()+" wings",EnvResource.RESOURCE_HIDE));
+					("a pair of "+name().toLowerCase()+" wings",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

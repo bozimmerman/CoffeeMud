@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Dragon extends StdRace
 {
+	public String ID(){	return "Dragon"; }
+	public String name(){ return "Dragon"; }
+	protected int shortestMale(){return 84;}
+	protected int shortestFemale(){return 78;}
+	protected int heightVariance(){return 80;}
+	protected int lightestWeight(){return 2000;}
+	protected int weightVariance(){return 500;}
+	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+	
 	protected static Vector resources=new Vector();
-	public Dragon()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=84;
-		shortestFemale=78;
-		heightVariance=80;
-		// pounds
-		lightestWeight=2000;
-		weightVariance=500;
-		forbiddenWornBits=Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -96,15 +91,15 @@ public class Dragon extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" claw",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" claw",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

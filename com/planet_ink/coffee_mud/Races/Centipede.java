@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Centipede extends StdRace
 {
+	public String ID(){	return "Centipede"; }
+	public String name(){ return "Centipede"; }
+	protected int shortestMale(){return 1;}
+	protected int shortestFemale(){return 1;}
+	protected int heightVariance(){return 0;}
+	protected int lightestWeight(){return 1;}
+	protected int weightVariance(){return 0;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_TORSO;}
+	
 	protected static Vector resources=new Vector();
-	public Centipede()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=1;
-		shortestFemale=1;
-		heightVariance=0;
-		// pounds
-		lightestWeight=1;
-		weightVariance=0;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_TORSO;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -62,7 +57,7 @@ public class Centipede extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

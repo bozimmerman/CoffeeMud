@@ -7,19 +7,16 @@ import java.util.*;
 
 public class Raven extends StdRace
 {
+	public String ID(){	return "Raven"; }
+	public String name(){ return "Raven"; }
+	protected int shortestMale(){return 6;}
+	protected int shortestFemale(){return 6;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 2;}
+	protected int weightVariance(){return 5;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Raven()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Raven";
-		shortestMale=6;
-		shortestFemale=6;
-		heightVariance=5;
-		lightestWeight=2;
-		weightVariance=5;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -95,13 +92,13 @@ public class Raven extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

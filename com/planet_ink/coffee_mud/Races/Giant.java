@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Giant extends StdRace
 {
+	public String ID(){	return "Giant"; }
+	public String name(){ return "Giant"; }
+	protected int shortestMale(){return 84;}
+	protected int shortestFemale(){return 80;}
+	protected int heightVariance(){return 24;}
+	protected int lightestWeight(){return 300;}
+	protected int weightVariance(){return 200;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Giant()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=84;
-		shortestFemale=80;
-		heightVariance=24;
-		// pounds
-		lightestWeight=300;
-		weightVariance=200;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -93,11 +88,11 @@ public class Giant extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" hairs",EnvResource.RESOURCE_FUR));
+				("some "+name().toLowerCase()+" hairs",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
+				("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

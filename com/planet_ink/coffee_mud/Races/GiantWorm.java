@@ -7,21 +7,16 @@ import java.util.*;
 
 public class GiantWorm extends StdRace
 {
+	public String ID(){	return "GiantWorm"; }
+	public String name(){ return "Giant Worm"; }
+	protected int shortestMale(){return 22;}
+	protected int shortestFemale(){return 22;}
+	protected int heightVariance(){return 0;}
+	protected int lightestWeight(){return 180;}
+	protected int weightVariance(){return 20;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	
 	protected static Vector resources=new Vector();
-	public GiantWorm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Giant Worm";
-		// inches
-		shortestMale=22;
-		shortestFemale=22;
-		heightVariance=0;
-		// pounds
-		lightestWeight=180;
-		weightVariance=20;
-		forbiddenWornBits=Integer.MAX_VALUE;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public String arriveStr()
@@ -49,7 +44,7 @@ public class GiantWorm extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" guts",EnvResource.RESOURCE_MEAT));
 			}
 		}
 		return resources;

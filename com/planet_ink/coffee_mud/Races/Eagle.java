@@ -4,13 +4,10 @@ import java.util.Vector;
 
 public class Eagle extends GreatBird
 {
+	public String ID(){	return "Eagle"; }
+	public String name(){ return "Eagle"; }
+	
 	protected static Vector resources=new Vector();
-	public Eagle()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Eagle";
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -24,15 +21,15 @@ public class Eagle extends GreatBird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("an "+name.toLowerCase()+" beak",EnvResource.RESOURCE_BONE));
+				("an "+name().toLowerCase()+" beak",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

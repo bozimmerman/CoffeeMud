@@ -7,20 +7,16 @@ import java.util.*;
 
 public class Turtle extends StdRace
 {
+	public String ID(){	return "Turtle"; }
+	public String name(){ return "Turtle"; }
+	protected int shortestMale(){return 8;}
+	protected int shortestFemale(){return 8;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 30;}
+	protected int weightVariance(){return 20;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Turtle()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		// inches
-		shortestMale=8;
-		shortestFemale=8;
-		heightVariance=5;
-		// pounds
-		lightestWeight=30;
-		weightVariance=20;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -90,7 +86,7 @@ public class Turtle extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" shell",EnvResource.RESOURCE_BONE));
+				("a "+name().toLowerCase()+" shell",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,21 +7,15 @@ import java.util.*;
 
 public class Cub extends Bear
 {
+	public String ID(){	return "Cub"; }
+	public String name(){ return "Cub"; }
+	protected int shortestMale(){return 24;}
+	protected int shortestFemale(){return 24;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 45;}
+	protected int weightVariance(){return 10;}
+	
 	protected static Vector resources=new Vector();
-	public Cub()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cub";
-		// inches
-		shortestMale=24;
-		shortestFemale=24;
-		heightVariance=6;
-		// pounds
-		lightestWeight=45;
-		weightVariance=10;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -48,15 +42,15 @@ public class Cub extends Bear
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
+				("a "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" paws",EnvResource.RESOURCE_HIDE));
+				("some "+name().toLowerCase()+" paws",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

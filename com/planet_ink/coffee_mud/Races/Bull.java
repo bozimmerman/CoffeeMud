@@ -7,20 +7,14 @@ import java.util.*;
 
 public class Bull extends Buffalo
 {
+	public String ID(){	return "Bull"; }
+	public String name(){ return "Bull"; }
+	protected int shortestMale(){return 48;}
+	protected int shortestFemale(){return 48;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 350;}
+	protected int weightVariance(){return 100;}
 	protected static Vector resources=new Vector();
-	public Bull()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=48;
-		shortestFemale=48;
-		heightVariance=6;
-		// pounds
-		lightestWeight=350;
-		weightVariance=100;
-	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -43,17 +37,17 @@ public class Bull extends Buffalo
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
 				for(int i=0;i<7;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

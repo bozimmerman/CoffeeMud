@@ -6,19 +6,16 @@ import java.util.*;
 
 public class Owl extends StdRace
 {
+	public String ID(){	return "Owl"; }
+	public String name(){ return "Owl"; }
+	protected int shortestMale(){return 8;}
+	protected int shortestFemale(){return 8;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 5;}
+	protected int weightVariance(){return 5;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Owl()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Owl";
-		shortestMale=8;
-		shortestFemale=8;
-		heightVariance=5;
-		lightestWeight=5;
-		weightVariance=5;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -96,15 +93,15 @@ public class Owl extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" eyes",EnvResource.RESOURCE_MEAT));
+				("a pair of "+name().toLowerCase()+" eyes",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

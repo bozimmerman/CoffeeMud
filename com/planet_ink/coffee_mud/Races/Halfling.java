@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Halfling extends StdRace
 {
+	public String ID(){	return "Halfling"; }
+	public String name(){ return "Halfling"; }
+	protected int shortestMale(){return 40;}
+	protected int shortestFemale(){return 36;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 80;}
+	protected int weightVariance(){return 50;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Halfling()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=40;
-		shortestFemale=36;
-		heightVariance=6;
-		// pounds
-		lightestWeight=80;
-		weightVariance=50;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return true;}
 
 	public void startRacing(MOB mob, boolean verifyOnly)
@@ -113,11 +108,11 @@ public class Halfling extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of hairy "+name.toLowerCase()+" feet",EnvResource.RESOURCE_MEAT));
+				("a pair of hairy "+name().toLowerCase()+" feet",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

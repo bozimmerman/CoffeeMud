@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Cow extends StdRace
 {
+	public String ID(){	return "Cow"; }
+	public String name(){ return "Cow"; }
+	protected int shortestMale(){return 48;}
+	protected int shortestFemale(){return 48;}
+	protected int heightVariance(){return 6;}
+	protected int lightestWeight(){return 250;}
+	protected int weightVariance(){return 100;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Cow()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=48;
-		shortestFemale=48;
-		heightVariance=6;
-		// pounds
-		lightestWeight=250;
-		weightVariance=100;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -84,17 +79,17 @@ public class Cow extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
 				for(int i=0;i<7;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

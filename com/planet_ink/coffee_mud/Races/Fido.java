@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Fido extends StdRace
 {
+	public String ID(){	return "Fido"; }
+	public String name(){ return "Fido"; }
+	protected int shortestMale(){return 12;}
+	protected int shortestFemale(){return 12;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 10;}
+	protected int weightVariance(){return 60;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Fido()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=12;
-		shortestFemale=12;
-		heightVariance=12;
-		// pounds
-		lightestWeight=10;
-		weightVariance=60;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -85,15 +80,15 @@ public class Fido extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" nose",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" nose",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" hair",EnvResource.RESOURCE_HIDE));
+				("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

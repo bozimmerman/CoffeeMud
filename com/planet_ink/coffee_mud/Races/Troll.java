@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Troll extends StdRace
 {
+	public String ID(){	return "Troll"; }
+	public String name(){ return "Troll"; }
+	protected int shortestMale(){return 74;}
+	protected int shortestFemale(){return 70;}
+	protected int heightVariance(){return 14;}
+	protected int lightestWeight(){return 200;}
+	protected int weightVariance(){return 200;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Troll()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=74;
-		shortestFemale=70;
-		heightVariance=14;
-		// pounds
-		lightestWeight=200;
-		weightVariance=100;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -105,11 +100,11 @@ public class Troll extends StdRace
 			{
 				for(int i=0;i<4;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

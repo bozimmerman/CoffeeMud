@@ -7,21 +7,16 @@ import java.util.*;
 
 public class GiantScorpion extends StdRace
 {
+	public String ID(){	return "GiantScorpion"; }
+	public String name(){ return "Giant Scorpion"; }
+	protected int shortestMale(){return 32;}
+	protected int shortestFemale(){return 34;}
+	protected int heightVariance(){return 2;}
+	protected int lightestWeight(){return 87;}
+	protected int weightVariance(){return 97;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	
 	protected static Vector resources=new Vector();
-	public GiantScorpion()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Giant Scorpion";
-		// inches
-		shortestMale=32;
-		shortestFemale=34;
-		heightVariance=2;
-		// pounds
-		lightestWeight=87;
-		weightVariance=97;
-		forbiddenWornBits=Integer.MAX_VALUE;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -59,7 +54,7 @@ public class GiantScorpion extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" pincers",EnvResource.RESOURCE_BONE));
+				("some "+name().toLowerCase()+" pincers",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

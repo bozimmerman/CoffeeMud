@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Grasshopper extends StdRace
 {
+	public String ID(){	return "Grasshopper"; }
+	public String name(){ return "Grasshopper"; }
+	protected int shortestMale(){return 1;}
+	protected int shortestFemale(){return 1;}
+	protected int heightVariance(){return 0;}
+	protected int lightestWeight(){return 1;}
+	protected int weightVariance(){return 0;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_TORSO-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Grasshopper()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=1;
-		shortestFemale=1;
-		heightVariance=0;
-		// pounds
-		lightestWeight=1;
-		weightVariance=0;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_TORSO-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -61,7 +56,7 @@ public class Grasshopper extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" legs",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

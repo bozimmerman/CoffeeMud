@@ -7,50 +7,72 @@ import java.util.*;
 
 public class StdAbility implements Ability, Cloneable
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	protected String name="an ability";
-	protected String description="&";
+	public String ID() { return "StdAbility"; }
+	public String name(){ return "an ability";}
+	public String description(){return "&";}
+	public String displayText(){return "What they see when affected.";}
+	public static final String[] empty={};
+	public String[] triggerStrings(){return empty;}
+	public int maxRange(){return 0;}
+	public int minRange(){return 0;}
+	public boolean putInCommandlist(){return true;}
+	public boolean isAutoInvoked(){return false;}
+	protected int trainsRequired(){return 1;}
+	protected int practicesRequired(){return 0;}
+	protected int practicesToPractice(){return 1;}
+	protected int overrideMana(){return -1;}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return Ability.CAN_AREAS|
+										 Ability.CAN_ITEMS|
+										 Ability.CAN_MOBS|
+										 Ability.CAN_ROOMS|
+										 Ability.CAN_EXITS;}
+	protected int canTargetCode(){return Ability.CAN_AREAS|
+										 Ability.CAN_ITEMS|
+										 Ability.CAN_MOBS|
+										 Ability.CAN_ROOMS|
+										 Ability.CAN_EXITS;}
+	
+	protected boolean isAnAutoEffect=false;
+	protected int profficiency=0;
 	protected boolean borrowed=false;
-	public String displayText="What they see when affected.";
 	public String miscText="";
 	protected MOB invoker=null;
-	protected Vector triggerStrings=new Vector();
-	protected int uses=Integer.MAX_VALUE;
-	protected int profficiency=0;
-	protected boolean isAnAutoEffect=false;
-	protected int overrideMana=-1;
-	protected int maxRange=0;
-	protected int minRange=0;
-	
-	protected int canAffectCode=Ability.CAN_AREAS|
-								Ability.CAN_ITEMS|
-								Ability.CAN_MOBS|
-								Ability.CAN_ROOMS|
-								Ability.CAN_EXITS;
-	protected int canTargetCode=Ability.CAN_AREAS|
-								Ability.CAN_ITEMS|
-								Ability.CAN_MOBS|
-								Ability.CAN_ROOMS|
-								Ability.CAN_EXITS;
-
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected Environmental affected=null;
-
 	protected boolean canBeUninvoked=true;
-	protected boolean isAutoinvoked=false;
 	protected boolean unInvoked=false;
-	protected boolean putInCommandlist=true;
-	protected int trainsRequired=1;
-	protected int practicesRequired=0;
-	protected int practicesToPractice=1;
-
-	protected int quality=Ability.INDIFFERENT;
-	
 	protected int tickDown=-1;
+	
 	public StdAbility()
 	{
 	}
+	
+	public Environmental newInstance()	{ return new StdAbility(); }
+	public int classificationCode(){ return Ability.SKILL; }
+	
+	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
+	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
+	public void setBorrowed(Environmental toMe, boolean truefalse) { borrowed=truefalse; }
+	public void setName(String newName){}
+	public EnvStats envStats(){	return new DefaultEnvStats();}
+	public EnvStats baseEnvStats(){return new DefaultEnvStats();}
+	public void recoverEnvStats() {}
+	public int usesRemaining(){return 100;}
+	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+	public void setDisplayText(String newDisplayText){}
+	public void setDescription(String newDescription){}
+	public void setUsesRemaining(int newUses){}
+	
+	// ** For most abilities, the following stuff actually matters */
+	public void setMiscText(String newMiscText)	{ miscText=newMiscText;}
+	public String text(){ return miscText;}
+	public int profficiency(){ return profficiency;}
+	public void setProfficiency(int newProfficiency)
+	{ 
+		profficiency=newProfficiency;
+		if(profficiency>100) profficiency=100;
+	}
+
 	public boolean qualifiesByLevel(MOB student)
 	{
 		int level=qualifyingLevel(student);
@@ -60,14 +82,6 @@ public class StdAbility implements Ability, Cloneable
 		else
 			return false;
 	}
-
-	public boolean isAutoInvoked(){return isAutoinvoked;}
-	public boolean isNowAnAutoEffect()
-	{ return isAnAutoEffect; }
-	public boolean isBorrowed(Environmental toMe)
-	{ return borrowed;	}
-	public void setBorrowed(Environmental toMe, boolean truefalse)
-	{ borrowed=truefalse; }
 
 	public void startTickDown(Environmental affected, int tickTime)
 	{
@@ -87,14 +101,6 @@ public class StdAbility implements Ability, Cloneable
 		tickDown=tickTime;
 	}
 
-	public int maxRange(){return maxRange;}
-	public int minRange(){return minRange;}
-	
-	public boolean putInCommandlist()
-	{
-		return putInCommandlist;
-	}
-	
 	protected int adjustedLevel(MOB caster)
 	{
 		if(caster==null) return 1;
@@ -115,24 +121,24 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean canAffect(Environmental E)
 	{
-		if((E==null)&&(canAffectCode==0)) return true;
+		if((E==null)&&(canAffectCode()==0)) return true;
 		if(E==null) return false;
-		if((E instanceof MOB)&&((canAffectCode&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canAffectCode&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canAffectCode&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canAffectCode&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canAffectCode&Ability.CAN_AREAS)>0)) return true;
+		if((E instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
+		if((E instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 	
 	public boolean canTarget(Environmental E)
 	{
-		if((E==null)&&(canTargetCode==0)) return true;
+		if((E==null)&&(canTargetCode()==0)) return true;
 		if(E==null) return false;
-		if((E instanceof MOB)&&((canTargetCode&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canTargetCode&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Room)&&((canTargetCode&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canTargetCode&Ability.CAN_AREAS)>0)) return true;
+		if((E instanceof MOB)&&((canTargetCode()&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canTargetCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Room)&&((canTargetCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canTargetCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 	
@@ -146,10 +152,10 @@ public class StdAbility implements Ability, Cloneable
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 		   target=mob.getVictim();
 		else
-		if((targetName.length()==0)&&(quality!=Ability.MALICIOUS))
+		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
 			target=mob;
 		else
 		if(targetName.length()>0)
@@ -203,7 +209,7 @@ public class StdAbility implements Ability, Cloneable
 		if(givenTarget!=null)
 			target=givenTarget;
 		else
-		if((targetName.length()==0)&&(mob.isInCombat())&&(quality==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 			target=mob.getVictim();
 		else
 		{
@@ -269,44 +275,8 @@ public class StdAbility implements Ability, Cloneable
 		return (Item)target;
 	}
 
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
 
-	public String ID()
-	{
-		return myID;
-	}
-	public String name(){ return name;}
-	public void setName(String newName){name=newName;}
-
-	public EnvStats envStats()
-	{
-		return envStats;
-	}
-	public EnvStats baseEnvStats()
-	{
-		return baseEnvStats;
-	}
-	public void recoverEnvStats()
-	{
-		envStats=baseEnvStats.cloneStats();
-	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
-	{
-		baseEnvStats=newBaseEnvStats.cloneStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new StdAbility();
-	}
-	private void cloneFix(Ability E)
-	{
-		baseEnvStats=E.baseEnvStats().cloneStats();
-		envStats=E.envStats().cloneStats();
-	}
+	private void cloneFix(Ability E){}
 	public Environmental copyOf()
 	{
 		try
@@ -320,24 +290,6 @@ public class StdAbility implements Ability, Cloneable
 		{
 			return this.newInstance();
 		}
-	}
-	public String displayText()
-	{ return displayText;}
-	public void setDisplayText(String newDisplayText)
-	{ displayText=newDisplayText;}
-	public void setMiscText(String newMiscText)
-	{ miscText=newMiscText;}
-	public String text()
-	{ return miscText;}
-	public String description()
-	{ return description;}
-	public void setDescription(String newDescription)
-	{ description=newDescription;}
-	public int profficiency(){ return profficiency;}
-	public void setProfficiency(int newProfficiency)
-	{ 
-		profficiency=newProfficiency;
-		if(profficiency>100) profficiency=100;
 	}
 
 	public boolean profficiencyCheck(int adjustment, boolean auto)
@@ -405,15 +357,6 @@ public class StdAbility implements Ability, Cloneable
 		return canBeUninvoked;
 	}
 
-	public int usesRemaining()
-	{
-		return uses;
-	}
-	public void setUsesRemaining(int newUses)
-	{
-		uses=newUses;
-	}
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -424,11 +367,6 @@ public class StdAbility implements Ability, Cloneable
 	public MOB invoker()
 	{
 		return invoker;
-	}
-
-	public Vector triggerStrings()
-	{
-		return triggerStrings;
 	}
 
 	public void helpProfficiency(MOB mob)
@@ -481,7 +419,7 @@ public class StdAbility implements Ability, Cloneable
 			default: manaConsumed=5; break;
 			}
 			
-			if(overrideMana>=0) manaConsumed=overrideMana;
+			if(overrideMana()>=0) manaConsumed=overrideMana();
 
 			if(mob.curState().getMana()<manaConsumed)
 			{
@@ -594,7 +532,7 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean autoInvocation(MOB mob)
 	{
-		if(isAutoinvoked)
+		if(isAutoInvoked())
 		{
 			if(mob.envStats().level()>=envStats().level())
 			{
@@ -614,7 +552,7 @@ public class StdAbility implements Ability, Cloneable
 		canBeUninvoked=false;
 	}
 
-	public String accountForYourself(){return name;}
+	public String accountForYourself(){return name();}
 	public int getTickDownRemaining(){return tickDown;}
 	public void setTickDownRemaining(int newTick){tickDown=newTick;}
 
@@ -639,18 +577,18 @@ public class StdAbility implements Ability, Cloneable
 	public String requirements()
 	{
 		String returnable="";
-		if(trainsRequired==1)
+		if(trainsRequired()==1)
 			returnable="1 train";
 		else
-		if(trainsRequired>1)
-			returnable=trainsRequired+" trains";
-		if((returnable.length()>0)&&(practicesRequired>0))
+		if(trainsRequired()>1)
+			returnable=trainsRequired()+" trains";
+		if((returnable.length()>0)&&(practicesRequired()>0))
 			returnable+=", ";
-		if(practicesRequired==1)
+		if(practicesRequired()==1)
 			returnable+="1 practice";
 		else
-		if(practicesRequired>1)
-			returnable+=practicesRequired+" practices";
+		if(practicesRequired()>1)
+			returnable+=practicesRequired()+" practices";
 		if(returnable.length()==0)
 			return "free!";
 		else
@@ -659,13 +597,13 @@ public class StdAbility implements Ability, Cloneable
 	
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesRequired)
+		if(student.getPractices()<practicesRequired())
 		{
 			teacher.tell(student.name()+" does not have enough practices to learn '"+name()+"'.");
 			student.tell("You do not have enough practices.");
 			return false;
 		}
-		if(student.getTrains()<trainsRequired)
+		if(student.getTrains()<trainsRequired())
 		{
 			teacher.tell(student.name()+" does not have enough training points to learn '"+name()+"'.");
 			student.tell("You do not have enough training points.");
@@ -720,7 +658,7 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesToPractice)
+		if(student.getPractices()<practicesToPractice())
 		{
 			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
 			student.tell("You do not have enough practices.");
@@ -777,14 +715,14 @@ public class StdAbility implements Ability, Cloneable
 
 	public void teach(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesRequired)
+		if(student.getPractices()<practicesRequired())
 			return;
-		if(student.getTrains()<trainsRequired)
+		if(student.getTrains()<trainsRequired())
 			return;
 		if(student.fetchAbility(ID())==null)
 		{
-			student.setPractices(student.getPractices()-practicesRequired);
-			student.setTrains(student.getTrains()-trainsRequired);
+			student.setPractices(student.getPractices()-practicesRequired());
+			student.setTrains(student.getTrains()-trainsRequired());
 			Ability newAbility=(Ability)newInstance();
 			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
 			if(newAbility.profficiency()>75)
@@ -799,7 +737,7 @@ public class StdAbility implements Ability, Cloneable
 
 	public void practice(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<practicesToPractice)
+		if(student.getPractices()<practicesToPractice())
 			return;
 
 		Ability yourAbility=student.fetchAbility(ID());
@@ -807,7 +745,7 @@ public class StdAbility implements Ability, Cloneable
 		{
 			if(yourAbility.profficiency()<75)
 			{
-				student.setPractices(student.getPractices()-practicesToPractice);
+				student.setPractices(student.getPractices()-practicesToPractice());
 				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);
@@ -819,7 +757,6 @@ public class StdAbility implements Ability, Cloneable
 		tickDown=Integer.MAX_VALUE; 
 	}
 
-	public int quality(){return this.quality;}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

@@ -3,21 +3,16 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.Vector;
 public class Puppy extends Dog
 {
+	public String ID(){	return "Puppy"; }
+	public String name(){ return "Puppy"; }
+	protected int shortestMale(){return 6;}
+	protected int shortestFemale(){return 6;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 7;}
+	protected int weightVariance(){return 20;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Puppy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=6;
-		shortestFemale=6;
-		heightVariance=3;
-		// pounds
-		lightestWeight=7;
-		weightVariance=20;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

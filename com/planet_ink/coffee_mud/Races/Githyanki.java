@@ -7,13 +7,9 @@ import java.util.*;
 
 public class Githyanki extends Humanoid
 {
+	public String ID(){	return "Githyanki"; }
+	public String name(){ return "Githyanki"; }
 	protected static Vector resources=new Vector();
-	public Githyanki()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=ID();
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

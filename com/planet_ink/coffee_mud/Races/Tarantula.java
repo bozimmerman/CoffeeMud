@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Tarantula extends StdRace
 {
+	public String ID(){	return "Tarantula"; }
+	public String name(){ return "Tarantula"; }
+	protected int shortestMale(){return 2;}
+	protected int shortestFemale(){return 2;}
+	protected int heightVariance(){return 0;}
+	protected int lightestWeight(){return 1;}
+	protected int weightVariance(){return 0;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	
 	protected static Vector resources=new Vector();
-	public Tarantula()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=2;
-		shortestFemale=2;
-		heightVariance=0;
-		// pounds
-		lightestWeight=1;
-		weightVariance=0;
-		forbiddenWornBits=Integer.MAX_VALUE;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -62,7 +57,7 @@ public class Tarantula extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" legs",EnvResource.RESOURCE_MEAT));
+				("some "+name().toLowerCase()+" legs",EnvResource.RESOURCE_MEAT));
 			}
 		}
 		return resources;

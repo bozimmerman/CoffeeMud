@@ -4,20 +4,15 @@ import com.planet_ink.coffee_mud.common.*;
 import java.util.Vector;
 public class Python extends Snake
 {
+	public String ID(){	return "Python"; }
+	public String name(){ return "Python"; }
+	protected int shortestMale(){return 6;}
+	protected int shortestFemale(){return 6;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 15;}
+	protected int weightVariance(){return 20;}
+	
 	protected static Vector resources=new Vector();
-	public Python()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Python";
-		// inches
-		shortestMale=6;
-		shortestFemale=6;
-		heightVariance=3;
-		// pounds
-		lightestWeight=15;
-		weightVariance=20;
-	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)
@@ -41,12 +36,12 @@ public class Python extends Snake
 			{
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_SCALES));
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

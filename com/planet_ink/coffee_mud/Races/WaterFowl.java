@@ -7,19 +7,16 @@ import java.util.*;
 
 public class WaterFowl extends StdRace
 {
+	public String ID(){	return "WaterFowl"; }
+	public String name(){ return "Water Fowl"; }
+	protected int shortestMale(){return 8;}
+	protected int shortestFemale(){return 8;}
+	protected int heightVariance(){return 5;}
+	protected int lightestWeight(){return 5;}
+	protected int weightVariance(){return 5;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public WaterFowl()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Water Fowl";
-		shortestMale=8;
-		shortestFemale=8;
-		heightVariance=5;
-		lightestWeight=5;
-		weightVariance=5;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -90,15 +87,15 @@ public class WaterFowl extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("some webbed "+name.toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
+				("some webbed "+name().toLowerCase()+" feet",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
+				("some "+name().toLowerCase()+" feathers",EnvResource.RESOURCE_FEATHERS));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
+				("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_POULTRY));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -7,13 +7,9 @@ import java.util.*;
 
 public class MindFlayer extends Humanoid
 {
+	public String ID(){	return "MindFlayer"; }
+	public String name(){ return "MindFlayer"; }
 	protected static Vector resources=new Vector();
-	public MindFlayer()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=ID();
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -38,7 +34,7 @@ public class MindFlayer extends Humanoid
 			{
 				resources=super.myResources();
 				resources.addElement(makeResource
-				("a "+name.toLowerCase()+" tenticle",EnvResource.RESOURCE_MEAT));
+				("a "+name().toLowerCase()+" tenticle",EnvResource.RESOURCE_MEAT));
 			}
 		}
 		return resources;

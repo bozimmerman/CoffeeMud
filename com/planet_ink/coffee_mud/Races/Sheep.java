@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Sheep extends StdRace
 {
+	public String ID(){	return "Sheep"; }
+	public String name(){ return "Sheep"; }
+	protected int shortestMale(){return 36;}
+	protected int shortestFemale(){return 36;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 50;}
+	protected int weightVariance(){return 60;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Sheep()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=36;
-		shortestFemale=36;
-		heightVariance=12;
-		// pounds
-		lightestWeight=50;
-		weightVariance=60;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -85,14 +80,14 @@ public class Sheep extends StdRace
 			{
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
-					("some "+name.toLowerCase()+" wool",EnvResource.RESOURCE_WOOL));
+					("some "+name().toLowerCase()+" wool",EnvResource.RESOURCE_WOOL));
 				for(int i=0;i<3;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_MUTTON));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MUTTON));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;

@@ -10,7 +10,8 @@ public class Skill_Resistance extends StdAbility
 {
 	public String ID() { return "Skill_Resistance"; }
 	public String name(){ return "Resistance";}
-	public String displayText(){ return "";}
+	private String displayText="";
+	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
@@ -63,10 +64,7 @@ public class Skill_Resistance extends StdAbility
 		if(newText.equalsIgnoreCase("disease"))
 			resistanceCode=CharStats.SAVE_DISEASE;
 		if(resistanceCode>0)
-		{
-			name="Resistance to "+newText.trim().toLowerCase();
 			displayText="(Resistance to "+newText.trim().toLowerCase()+")";
-		}
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)

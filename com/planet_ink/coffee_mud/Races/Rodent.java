@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Rodent extends StdRace
 {
+	public String ID(){	return "Rodent"; }
+	public String name(){ return "Rodent"; }
+	protected int shortestMale(){return 2;}
+	protected int shortestFemale(){return 2;}
+	protected int heightVariance(){return 3;}
+	protected int lightestWeight(){return 1;}
+	protected int weightVariance(){return 5;}
+	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	
 	protected static Vector resources=new Vector();
-	public Rodent()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name=myID;
-		// inches
-		shortestMale=2;
-		shortestFemale=2;
-		heightVariance=3;
-		// pounds
-		lightestWeight=1;
-		weightVariance=5;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -98,11 +93,11 @@ public class Rodent extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
+					("some "+name().toLowerCase()+" hair",EnvResource.RESOURCE_FUR));
 				resources.addElement(makeResource
-					("a pair of "+name.toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
+					("a pair of "+name().toLowerCase()+" teeth",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
-					("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

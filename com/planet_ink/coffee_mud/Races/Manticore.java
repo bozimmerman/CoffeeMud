@@ -7,21 +7,16 @@ import java.util.*;
 
 public class Manticore extends GreatCat
 {
+	public String ID(){	return "Manticore"; }
+	public String name(){ return "Manticore"; }
+	protected int shortestMale(){return 69;}
+	protected int shortestFemale(){return 69;}
+	protected int heightVariance(){return 12;}
+	protected int lightestWeight(){return 120;}
+	protected int weightVariance(){return 80;}
+	protected long forbiddenWornBits(){return 0;}
+	
 	protected static Vector resources=new Vector();
-	public Manticore()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Manticore";
-		// inches
-		shortestMale=69;
-		shortestFemale=69;
-		heightVariance=12;
-		// pounds
-		lightestWeight=120;
-		weightVariance=80;
-		forbiddenWornBits=0;
-	}
 	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -40,17 +35,17 @@ public class Manticore extends GreatCat
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name.toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
+				("a pair of "+name().toLowerCase()+" horns",EnvResource.RESOURCE_BONE));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a strip of "+name.toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
+					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_LEATHER));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource
-					("a pound of "+name.toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));
 				resources.addElement(makeResource
-				("some "+name.toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource
-				("a pile of "+name.toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
+				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
 		return resources;
