@@ -1435,7 +1435,7 @@ public class StdMOB implements MOB
 				if((!isMonster())&&(!mob.isMonster())
 				&&(soulMate()==null)
 				&&(mob.soulMate()==null)
-				&&(!isASysOp())&&(!mob.isASysOp())
+				&&(!isASysOp(location()))&&(!mob.isASysOp(mob.location()))
 				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
 				{
 					mob.tell("That is not EVEN a fair fight.");
