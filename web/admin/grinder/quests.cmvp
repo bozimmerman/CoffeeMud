@@ -1,5 +1,110 @@
-package web.admin.grinder;
-
-public class quests
-{
-}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Manage Quests</title>
+	<script language=JavaScript>
+	<!--
+		function Refresh()
+		{
+			document.QUESTS.QUEST.value="";
+			document.QUESTS.FUNCTION.value="";
+			document.QUESTS.action='/grinder/quests.cmvp';
+			document.QUESTS.submit();
+		}
+		function Quest(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("quest.cmvp?AUTH=@Authenticate?AUTH@&QUEST="+action,"Quest",strFeatures, false);
+		}
+		function Clicked(quest, action)
+		{
+			document.QUESTS.QUEST.value=quest;
+			document.QUESTS.FUNCTION.value=action;
+			document.QUESTS.submit();
+		}
+		function Load(action)
+		{
+			document.QUESTS.QUEST.value="";
+			document.QUESTS.FUNCTION.value="";
+			document.QUESTS.action=action;
+			document.QUESTS.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=QUESTS TARGET=_top METHOD=GET ACTION="quests.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=QUEST VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+	@if?!CheckReqParm?QUEST=@
+		@if?CheckReqParm?FUNCTION=START@
+			<FONT COLOR=RED><B>@QuestMgr?START@</B></FONT><P>
+		@endif@
+		@if?CheckReqParm?FUNCTION=STOP@
+			<FONT COLOR=RED><B>@QuestMgr?STOP@</B></FONT><P>
+		@endif@
+		@if?CheckReqParm?FUNCTION=DELETE@
+			<FONT COLOR=RED><B>@QuestMgr?DELETE@</B></FONT><P>
+		@endif@
+	@endif@
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud 4.0 Quests Manager</H2></FONT></TD></TR>
+	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Name</FONT></B></TD>
+	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
+	<TD WIDTH=30%><BR></TD>
+	</TR>
+	@QuestNext?RESET@
+	@loop@
+	<TR>
+	@QuestNext@
+	<TD><a href="javascript:Quest('@QuestData?NAME@')"><FONT COLOR=WHITE><B>@QuestData?NAME@</B></FONT></a></TD>
+	<TD><FONT COLOR=WHITE>
+	@if?QuestData?RUNNING@
+		Running (@QuestData?REMAINING@ mins remaining)
+	@else@
+		@if?QuestData?WAITING@
+			Running (@QuestData?WAITLEFT@ ticks left)
+		@else@
+			Loaded
+		@endif@
+	@endif@
+	</FONT>
+	</TD>
+	<TD>
+	@if?QuestData?RUNNING@
+		<INPUT TYPE=BUTTON NAME=Stop VALUE=Stop ONCLICK="Clicked('@QuestData?NAME@','STOP');">
+	@else@
+		<INPUT TYPE=BUTTON NAME=Start VALUE=Start ONCLICK="Clicked('@QuestData?NAME@','START');">
+	@endif@
+	<INPUT TYPE=BUTTON NAME=Delete VALUE=Delete ONCLICK="Clicked('@QuestData?NAME@','DELETE');">
+	</TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=Create VALUE="New Quest" ONCLICK="Quest('');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Load('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

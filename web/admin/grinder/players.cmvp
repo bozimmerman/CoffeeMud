@@ -4,7 +4,7 @@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
-	<title>System Resources</title>
+	<title>Players List</title>
 	<script language=JavaScript>
 	<!--
 		function Sort(action)
@@ -29,7 +29,7 @@
 <body BGCOLOR=BLACK>
 <CENTER>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
+<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="players.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
 	<TABLE WIDTH=100% BORDER=1>
@@ -40,6 +40,7 @@
 	<TD WIDTH=5%><B><a href="javascript:Sort('LEVEL')"><FONT COLOR=YELLOW>Level</FONT></a></B></TD>
 	<TD WIDTH=10%><B><a href="javascript:Sort('HOURS')"><FONT COLOR=YELLOW>Hours</FONT></a></B></TD>
 	<TD WIDTH=35%><B><a href="javascript:Sort('LASTDATETIMEMILLIS')"><FONT COLOR=YELLOW>Last Date/Time</FONT></a></B></TD>
+	</TR>
 	@ResourceMgr?RESET@
 	@loop@
 	<TR>

@@ -676,7 +676,51 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name(),mob)))
-					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+				{
+					StringBuffer str=new StringBuffer("");
+					str.append("Interested in "+affect.tool().name()+"?");
+					str.append(" Here is some information for you:");
+					str.append("\n\rLevel      : "+affect.tool().envStats().level());
+					if(affect.tool() instanceof Item)
+					{
+						Item I=(Item)affect.tool();
+						str.append("\n\rMaterial   : "+Util.capitalize(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].toLowerCase()));
+						str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
+						if(I instanceof Weapon)
+						{
+							str.append("\n\rWeap. Type : "+Util.capitalize(Weapon.typeDescription[((Weapon)I).weaponType()]));
+							str.append("\n\rWeap. Class: "+Util.capitalize(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
+						}
+						else
+						if(I instanceof Armor)
+						{
+							str.append("\n\rWear Info  : Worn on ");
+							int maxCode=1;
+							for(int l=0;l<18;l++)
+							{
+								int wornCode=1<<l;
+								if(Sense.wornLocation(wornCode).length()>0)
+								{
+									if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
+									{
+										str.append(Util.capitalize(Sense.wornLocation(wornCode))+" ");
+										if(I.rawLogicalAnd())
+											str.append("and ");
+										else
+											str.append("or ");
+									}
+								}
+							}
+							if(str.toString().endsWith(" and "))
+								str.delete(str.length()-5,str.length());
+							else
+							if(str.toString().endsWith(" or "))
+								str.delete(str.length()-4,str.length());
+						}
+					}
+					str.append("\n\rDescription: "+affect.tool().description());
+					ExternalPlay.quickSay(this,affect.source(),str.toString(),true,false);
+				}
 				break;
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);

@@ -45,11 +45,13 @@
 	<BR>
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
+	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
+	<BR>
+	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
+	<BR>
 	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
-	<BR>
-	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
 	<BR>
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
 	<BR>

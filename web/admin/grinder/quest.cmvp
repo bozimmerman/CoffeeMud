@@ -1,11 +1,100 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Quest Manager</title>
+	<script language=JavaScript>
+	<!--
+		function openUp(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			var w2=window.open("/ahelp.cmvp?TOPIC="+named,"Help",strFeatures,false);
+		}
+		function GoForIt()
+		{
+			@if?!CheckReqParm?QUEST=@
+				if(confirm('Modify this quest script?'))
+				{
+					document.QUEST.FUNCTION.value='MODIFY';
+					document.QUEST.submit();
+				}
+			@else@
+				if(confirm('Create this quest?'))
+				{
+					document.QUEST.FUNCTION.value='CREATE';
+					document.QUEST.submit();
+				}
+			@endif@
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=QUEST TARGET=_top METHOD=GET ACTION="quest.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=QUEST VALUE="@RequestParameter?QUEST@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+@if?!CheckReqParm?SCRIPT=@
+	@if?CheckReqParm?FUNCTION=CREATE@
+		<FONT COLOR=RED><B>@QuestMgr?CREATE@</B></FONT>
+	@else@
+		@if?CheckReqParm?FUNCTION=MODIFY@
+			<FONT COLOR=RED><B>@QuestMgr?MODIFY@</B></FONT>
+		@endif@
+	@endif@
+@endif@
+<P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
+<BR>
+<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>
+@if?!CheckReqParm?QUEST=@
+	@QuestData?SCRIPT@
+@else@
+	set name MyQuest
+	#   Set the quest name
 
-<P>&nbsp;</P>
-
+	set duration 450
+	#   The duration of the quest is 30 minutes (450 ticks).  
+	#   The scripts on the mobs will do the rest...
+	
+	#    Some Sample Commands below: Use help for more!
+	#
+	#set wait 200
+	#set interval 25
+	#   For auto-quests: wait about 15 mins between quests
+	#set area Midgaard
+	#   inform the quest that it occurs in Midgaard
+	#set mobtype ShopKeeper
+	#   load up any mob from the above area of type shopkeeper. 
+	#   This command will set a room!
+	#give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
+	#   load the above behavior into the last mob 
+	#   (in this case, the shopkeeper)
+	#set locale CityStreet 
+	#   find any locale in Midgaard of type CityStreet
+	#set mob "the thief"
+	#   load up any mob from area with that name.  
+	#   Since a room was set above,  this will move the mob into 
+	#   the room (locale CityStreet)
+	#give behavior Scriptable "LOAD=quests/robbed/thief.script"
+	#   load the above behavior into the last mob 
+	#   (in this case, the thief)
+@endif@
+</TEXTAREA>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR><TD ALIGN=CENTER WIDTH=50%>
+	<INPUT TYPE=BUTTON NAME=Submit VALUE="Submit" ONCLICK="GoForIt();">
+</TD>
+<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=Close VALUE="Close" ONCLICK="window.close();">
+</TD>
+</TR>
+</TABLE>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@
+

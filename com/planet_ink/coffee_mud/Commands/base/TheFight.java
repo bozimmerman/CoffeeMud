@@ -854,7 +854,9 @@ public class TheFight
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,
+									Affect.MSG_OK_VISUAL,
 									Affect.MASK_HURT+damageInt,
+									Affect.MSG_OK_VISUAL,
 									oldHitString);
 			msg.tagModified(true);
 			// why was there no okaffect here?

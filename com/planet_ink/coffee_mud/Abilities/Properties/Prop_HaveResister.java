@@ -155,20 +155,12 @@ public class Prop_HaveResister extends Property
 			if(affect.tool() instanceof Ability)
 			{
 				Ability A=(Ability)affect.tool();
-				if((A.ID().equals("Spell_Summon"))||(A.ID().equals("Spell_Gate")))
+				if((A.ID().equals("Spell_Summon"))
+				   ||(A.ID().equals("Spell_Gate")))
 				{
 					if(Prop_HaveResister.checkProtection(me,"teleport"))
 					{
 						affect.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
-						return false;
-					}
-				}
-				else
-				if((A instanceof Prayer)&&(((Prayer)A).holyQuality()==Prayer.HOLY_EVIL))
-				{
-					if(Prop_HaveResister.checkProtection(me,"evil"))
-					{
-						mob.location().show(affect.source(),mob,Affect.MSG_OK_VISUAL,"The unholy energies from <S-NAME> repell from <T-NAME>.");
 						return false;
 					}
 				}
@@ -178,15 +170,6 @@ public class Prop_HaveResister extends Property
 					if(Prop_HaveResister.checkProtection(me,"holy"))
 					{
 						mob.location().show(affect.source(),mob,Affect.MSG_OK_VISUAL,"Holy energies from <S-NAME> are repelled from <T-NAME>.");
-						return false;
-					}
-				}
-				else
-				if(A.ID().equals("Prayer_Plague"))
-				{
-					if(Prop_HaveResister.checkProtection(me,"disease"))
-					{
-						mob.location().show(affect.source(),mob,Affect.MSG_OK_VISUAL,"<T-NAME> resist(s) the disease attack from <S-NAME>.");
 						return false;
 					}
 				}

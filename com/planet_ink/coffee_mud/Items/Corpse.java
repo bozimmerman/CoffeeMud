@@ -29,7 +29,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		if(newText.length()>30) 
+		if(newText.length()>0) 
 			super.setMiscText(newText);
 	}
 	public Environmental newInstance()

@@ -1,9 +1,7 @@
 Bard Subclasses
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
 script editor in mudgrinder
-quest manager in mudgrinder
 macro help files
-For Shopkeeper VIEW, armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
 Weapon Immunity SILVER, MAGIC, LEVELS 1, 2, 3, 4, 5 PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MAGIC.  
 add to regenMOB PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MAGIC -- damage which is permanent, and does not regen
 
