@@ -10,7 +10,17 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_PLAYERFLEE=3;
 	public static final int SYSTEM_SHOWDAMAGE=4;
 	public static final int SYSTEM_EMAILREQ=5;
-	public static final int NUM_SYSTEM=6;
+	public static final int SYSTEM_ESC0=6;
+	public static final int SYSTEM_ESC1=7;
+	public static final int SYSTEM_ESC2=8;
+	public static final int SYSTEM_ESC3=9;
+	public static final int SYSTEM_ESC4=10;
+	public static final int SYSTEM_ESC5=11;
+	public static final int SYSTEM_ESC6=12;
+	public static final int SYSTEM_ESC7=13;
+	public static final int SYSTEM_ESC8=14;
+	public static final int SYSTEM_ESC9=15;
+	public static final int NUM_SYSTEM=16;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;

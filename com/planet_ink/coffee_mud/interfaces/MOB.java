@@ -23,6 +23,7 @@ public interface MOB
 	public static final int ATT_AUTOWEATHER=1024;
 	public static final int ATT_AUTODRAW=2048;
 	public static final int ATT_AUTOGUARD=4096;
+	public static final int ATT_SOUND=8192;
 
 	public static final boolean[] AUTOREV={false,
 										   false,

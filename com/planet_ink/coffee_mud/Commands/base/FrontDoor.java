@@ -243,6 +243,9 @@ public class FrontDoor
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 
+				if(mob.session().confirm("\n\rDoes your client support MSP sound codes (y/N)?","N"))
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
+				
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
@@ -467,7 +470,7 @@ public class FrontDoor
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(mob.session()!=null)
-			mob.session().setTermID((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0);
+			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
 		Vector journal=ExternalPlay.DBReadJournal("CoffeeMud News");
 		for(int which=0;which<journal.size();which++)
 		{

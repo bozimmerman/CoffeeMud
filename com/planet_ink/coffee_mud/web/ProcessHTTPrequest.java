@@ -943,7 +943,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 			StringBuffer inData = new StringBuffer("");
 			inData.append(inLine+" ");
-			int blanks=0;
 			
 			while(inLine.toUpperCase().indexOf("SUBMIT")<0)
 			{

@@ -431,6 +431,9 @@ public class CommandProcessor
 				case CommandSet.MOUNT:
 					Movement.mount(mob,commands);
 					break;
+				case CommandSet.NOCHANNEL:
+					Channels.nochannel(mob,commands);
+					break;
 				case CommandSet.NOCOLOR:
 					BasicSenses.ansi(mob,0);
 					break;
@@ -440,8 +443,8 @@ public class CommandProcessor
 				case CommandSet.NORTH:
 					Movement.standAndGo(mob,Directions.NORTH);
 					break;
-				case CommandSet.NOCHANNEL:
-					Channels.nochannel(mob,commands);
+				case CommandSet.NOSOUND:
+					BasicSenses.sound(mob,0);
 					break;
 				case CommandSet.OPEN:
 					Movement.open(mob,Util.combine(commands,1));
@@ -573,6 +576,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.SOUTH:
 					Movement.standAndGo(mob,Directions.SOUTH);
+					break;
+				case CommandSet.SOUND:
+					BasicSenses.sound(mob,1);
 					break;
 				case CommandSet.SPELLS:
 					Scoring.spells(mob,commands);

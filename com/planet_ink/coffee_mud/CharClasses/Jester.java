@@ -36,7 +36,7 @@ public class Jester extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
+CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
@@ -100,7 +100,7 @@ public class Jester extends StdCharClass
 			
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Steal",false);
 			
-CMAble.addCharAbilityMapping(ID(),22,"Skill_Feint",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Skill_Feint",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Song_Quickness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BlindFighting",false);
@@ -111,7 +111,7 @@ CMAble.addCharAbilityMapping(ID(),22,"Skill_Feint",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_Puppeteer",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Roll",false);
 
-CMAble.addCharAbilityMapping(ID(),30,"Skill_Buffonery",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Skill_Buffoonery",false);
 		}
 	}
 

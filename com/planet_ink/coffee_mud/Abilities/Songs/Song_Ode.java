@@ -54,8 +54,6 @@ public class Song_Ode extends Song
 			String t=trail.toString();
 			int[] counts=new int[stuff.length];
 			int x=t.indexOf(";");
-			int[] highs=new int[3];
-			int[] highcs=new int[3];
 			while(x>=0)
 			{
 				int q=Util.s_int(t.substring(0,x));
@@ -173,7 +171,6 @@ public class Song_Ode extends Song
 					int ticks=((Integer)H.get(I)).intValue();
 					if(ticks>50) ticks=50;
 					if(ticks<=0) ticks=1;
-					int stat=Util.s_int(chk[2]);
 					switch(chk[2].charAt(0))
 					{
 					case 'h': affectableStats.setHunger(affectableStats.getHunger()+ticks);

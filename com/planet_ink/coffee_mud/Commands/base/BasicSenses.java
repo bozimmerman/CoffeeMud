@@ -471,6 +471,56 @@ public class BasicSenses
 		}
 	}
 
+	public static void sound(MOB mob, int WhatToDo)
+	{
+		if(!mob.isMonster())
+		{
+			switch(WhatToDo)
+			{
+			case -1:
+			{
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+				{
+					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.tell("MSP Sound/Music disabled.\n\r");
+				}
+				else
+				{
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.tell("MSP Sound/Music enabled.\n\r");
+				}
+			}
+			break;
+			case 0:
+			{
+				if(Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
+				{
+					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.tell("MSP Sound/Music disabled.\n\r");
+				}
+				else
+				{
+					mob.tell("MSP Sound/Music is already disabled.\n\r");
+				}
+			}
+			break;
+			case 1:
+			{
+				if(!Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
+				{
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));
+					mob.tell("MSP Sound/Music enabled.\n\r");
+				}
+				else
+				{
+					mob.tell("MSP Sound/Music is already enabled.\n\r");
+				}
+			}
+			break;
+			}
+		}
+	}
+
 	public static void weather(MOB mob, Vector commands)
 	{
 		Room room=mob.location();

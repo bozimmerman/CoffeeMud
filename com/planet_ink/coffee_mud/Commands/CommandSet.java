@@ -189,6 +189,8 @@ public class CommandSet extends Hashtable
 	public static final int CLANCREATE=176;
 	public static final int EMAIL=177;
 	public static final int AUCTION=178;
+	public static final int SOUND=179;
+	public static final int NOSOUND=180;
 
 	private CommandSet()
 	{
@@ -337,6 +339,8 @@ public class CommandSet extends Hashtable
 			put("BOARD",new Integer(MOUNT));
 			put("RIDE",new Integer(MOUNT));
 			put("M",new Integer(MOUNT));
+		put("SOUND",new Integer(SOUND));
+		put("NOSOUND",new Integer(NOSOUND));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
 		put("NOCOLOR",new Integer(NOCOLOR));

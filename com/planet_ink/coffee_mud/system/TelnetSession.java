@@ -38,7 +38,7 @@ public class TelnetSession extends Thread implements Session
 	public long tickTotal=0;
 	public long lastKeystroke=0;
 
-	private int termID = 0;	//0 = NOANSI, 1 = ANSI
+	private int termID = 0;	//1 = ANSI, 2 = SOUND/MUSIC
 	public int currentColor=(int)'N';
 	public int lastColor=-1;
 	private final static int HISHER=0;
@@ -482,7 +482,15 @@ public class TelnetSession extends Thread implements Session
 
 	public final String makeEscape(int c)
 	{
-		if (termID == 1 && c != -1)
+		if((c<='9')&&(c>='0'))
+		{
+			if((termID&2)==2)
+				return CommonStrings.getVar(CommonStrings.SYSTEM_ESC0+(((int)c)-((int)'0')));
+			else
+				return "";
+		}
+		else
+		if (((termID&1)==1) && (c != -1))
 		{
 			if ((c != currentColor)||(c=='^'))
 			{
@@ -542,7 +550,8 @@ public class TelnetSession extends Thread implements Session
 			}
 		}
 
-		if ((currentColor != ((int)'N'))&&(termID>0)) buf.append(makeEscape((int)'N'));
+		if ((currentColor != ((int)'N'))&&(((termID&1)==1))) 
+			buf.append(makeEscape((int)'N'));
 
 		return buf.toString();
 
@@ -596,6 +605,32 @@ public class TelnetSession extends Thread implements Session
 					break;
 				case '`':
 					buf.setCharAt(loop,'\'');
+					break;
+				case '!':
+					if((loop<buf.length()-10)
+					&&(buf.charAt(loop+1)=='!')
+					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
+					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
+					{
+						int x=buf.indexOf("(",loop+7);
+						int y=buf.indexOf(")",loop+7);
+						if((x>=0)&&(y>=x))
+						{
+							if(((termID&2)==2)
+							&&((source==null)
+							   ||(source==mob)
+							   ||(Sense.canBeHeardBy(source,mob))))
+							{
+								loop=y;
+								len=len+(y-loop)+1;
+							}
+							else
+							{
+								buf.delete(loop,y+1);
+								loop--;
+							}
+						}
+					}
 					break;
 				case '&':
 					if(loop<buf.length()-3)
@@ -901,8 +936,14 @@ public class TelnetSession extends Thread implements Session
 									loop-=1;
 								}
 								else
+								if((colorID<((int)'0'))||(colorID>((int)'9')))
 								{
 									loop+=csl-1;	// already processed 1 char
+									len+=csl;		// does not count for any length
+								}
+								else
+								{
+									loop--;
 									len+=csl;		// does not count for any length
 								}
 							}
@@ -940,7 +981,7 @@ public class TelnetSession extends Thread implements Session
 
 		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((currentColor != ((int)'N'))&&(termID>0))
+		if ((currentColor != ((int)'N'))&&((termID&1)==1))
 			buf.append(makeEscape((int)'N'));
 
 		/* fabulous debug code
@@ -1248,10 +1289,7 @@ public class TelnetSession extends Thread implements Session
 
 	public void setTermID(int tid)
 	{
-		if (tid != 0)
-			termID = 1;
-		else
-			termID = 0;
+		termID = tid;
 	}
 
 	private void closeSocks()

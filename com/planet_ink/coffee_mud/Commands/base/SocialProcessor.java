@@ -395,6 +395,21 @@ public class SocialProcessor
 				allFlag=false;
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
+			if((giveThis==null)
+			&&(V.size()==0)
+			&&(addendumStr.length()==0)
+			&&(!allFlag))
+			{
+				giveThis=mob.fetchWornItem(thingToGive);
+				if(giveThis!=null)
+				{
+					if((!((Item)giveThis).amWearingAt(Item.HELD))&&(!((Item)giveThis).amWearingAt(Item.WIELD)))
+						mob.tell("You must remove that first.");
+					else
+					if(!ItemUsage.remove(mob,((Item)giveThis),true))
+						return;
+				}
+			}
 			if(giveThis==null) break;
 			if(Sense.canBeSeenBy(giveThis,mob))
 				V.addElement(giveThis);

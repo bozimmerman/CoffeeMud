@@ -184,6 +184,16 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERFLEE,page.getStr("FLEE"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_SHOWDAMAGE,page.getStr("SHOWDAMAGE"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_EMAILREQ,page.getStr("EMAILREQ"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC0,page.getStr("ESCAPE0"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC1,page.getStr("ESCAPE1"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC2,page.getStr("ESCAPE2"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC3,page.getStr("ESCAPE3"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC4,page.getStr("ESCAPE4"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC5,page.getStr("ESCAPE5"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC6,page.getStr("ESCAPE6"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC7,page.getStr("ESCAPE7"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC8,page.getStr("ESCAPE8"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_ESC9,page.getStr("ESCAPE9"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
@@ -515,9 +525,9 @@ public class MUD extends Thread implements Host
 				Sessions.removeElementAt(0);
 			else
 			{
-				offlineReason="Shutting down...Stopping session "+S2.getTermID();
+				offlineReason="Shutting down...Stopping session "+S2.getAddress();
 				S2.logoff();
-				offlineReason="Shutting down...Done stopping session "+S2.getTermID();
+				offlineReason="Shutting down...Done stopping session "+S2.getAddress();
 			}
 		}
 		S.println("All users logged off.");

@@ -360,6 +360,22 @@ public class ItemUsage
 				allFlag=false;
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
+			if((dropThis==null)
+			&&(container==null)
+			&&(V.size()==0)
+			&&(addendumStr.length()==0)
+			&&(!allFlag))
+			{
+				dropThis=mob.fetchWornItem(whatToDrop);
+				if(dropThis!=null)
+				{
+					if((!dropThis.amWearingAt(Item.HELD))&&(!dropThis.amWearingAt(Item.WIELD)))
+						mob.tell("You must remove that first.");
+					else
+					if(!remove(mob,dropThis,true))
+						return;
+				}
+			}
 			if(dropThis==null) break;
 			if((Sense.canBeSeenBy(dropThis,mob))
 			&&(!V.contains(dropThis)))
