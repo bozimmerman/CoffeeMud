@@ -50,7 +50,7 @@ public class CreateEdit
 			items.destroy(mob,commands);
 		}
 		else
-		if(commandType.equals("AREA"))
+		if((commandType.equals("AREA"))&&(mob.isASysOp(null)))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
 			rooms.destroyArea(mob,commands);
@@ -62,7 +62,7 @@ public class CreateEdit
 			rooms.destroy(mob,commands);
 		}
 		else
-		if(commandType.equals("USER"))
+		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
 			mobs.destroyUser(mob,commands);

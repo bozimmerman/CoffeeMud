@@ -367,6 +367,7 @@ public class CMClass
 						}
 						catch(Exception e)
 						{
+							Log.errOut("CMCLASS",e);
 							if((!item.endsWith("Child"))&&(!item.endsWith("Room")))
 								Log.sysOut("CMClass","Couldn't load: "+objPath+item);
 						}

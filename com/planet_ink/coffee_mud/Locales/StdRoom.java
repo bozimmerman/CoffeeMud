@@ -370,7 +370,9 @@ public class StdRoom
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		getArea().affectEnvStats(this,envStats());
+		Area myArea=getArea();
+		if(myArea!=null)
+			myArea.affectEnvStats(this,envStats());
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);

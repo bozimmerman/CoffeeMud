@@ -140,6 +140,12 @@ public class RoomLoader
 			thisRoom.startItemRejuv();
 			thisRoom.recoverRoomStats();
 		}
+		for(int a=0;a<areas.size();a++)
+		{
+			Area A=(Area)areas.elementAt(a);
+			StringBuffer s=A.getAreaStats();
+			Resources.submitResource("HELP_"+A.name().toUpperCase(),s);
+		}
 	}
 
 	public static void DBReadContent(Room thisRoom)

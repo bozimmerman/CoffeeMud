@@ -590,6 +590,18 @@ public class CommandProcessor
 				mob.tell("No help is available.");
 				return;
 			}
+			// the area exception
+			if(CMMap.getArea(helpStr.trim())!=null)
+			{
+				StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
+				if(s==null)
+				{
+					s=CMMap.getArea(helpStr.trim()).getAreaStats();
+					Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
+				}
+				mob.tell(s.toString());
+				return;
+			}
 		}
 		doHelp(mob,helpStr,helpFile);
 	}

@@ -7,11 +7,13 @@ public interface Area extends Environmental
 	public int climateType();
 	public void setClimateType(int newClimateType);
 	
+	public StringBuffer getAreaStats();
+	public Vector getMyMap();
+	
 	public void addSubOp(String username);
 	public void delSubOp(String username);
 	public boolean amISubOp(String username);
 	public String getSubOpList();
-	public Vector getMyMap();
 	public void setSubOpList(String list);
 	
 	public final static int WEATHER_CLEAR=0;

@@ -142,7 +142,7 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (this can take a while).");
 		RoomLoader.DBRead(CMMap.AREAS,CMMap.map);
-		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size()+" in "+CMMap.AREAS.size()+" areas.");
+		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size()+" in "+CMMap.AREAS.size()+" areas");
 		if(CMMap.map.size()==0)
 		{
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
