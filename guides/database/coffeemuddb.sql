@@ -38,7 +38,7 @@ CREATE TABLE CMCHAR (
 	CMGOLD int NULL ,
 	CMWIMP int NULL ,
 	CMQUES int NULL ,
-	CMROID char (50) NULL ,
+	CMROID char (100) NULL ,
 	CMDATE datetime NULL ,
 	CMCHAN int NULL ,
 	CMATTA int NULL ,

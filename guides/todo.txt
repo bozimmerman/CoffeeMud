@@ -30,3 +30,4 @@ Spell: 'Rogue Limb'  One sof your limbs goes out of your control, causing you to
 Post for the web server
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 level and type and wear locations for weaponsmithing and armorsmithing
+For Shopkeeper armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.

@@ -51,7 +51,15 @@ public class MOBloader
 				mob.setMoney(Util.s_int(DBConnections.getRes(R,"CMGOLD")));
 				mob.setWimpHitPoint(Util.s_int(DBConnections.getRes(R,"CMWIMP")));
 				mob.setQuestPoint(Util.s_int(DBConnections.getRes(R,"CMQUES")));
-				mob.setStartRoom(CMMap.getRoom(DBConnections.getRes(R,"CMROID")));
+				String roomID=DBConnections.getRes(R,"CMROID");
+				if(roomID==null) roomID="";
+				int x=roomID.indexOf("||");
+				if(x>=0)
+				{
+					mob.setLocation(CMMap.getRoom(roomID.substring(x+2)));
+					roomID=roomID.substring(0,x);
+				}
+				mob.setStartRoom(CMMap.getRoom(roomID));
 				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
 				long lastDateTime=IQCalendar.string2Millis(dateTimeStr);
 				mob.setLastDateTime(lastDateTime);
@@ -470,9 +478,8 @@ public class MOBloader
 		}
 
 		DBConnection D=null;
-		String strStartRoomID="";
-		if(mob.getStartRoom()!=null)
-			strStartRoomID=mob.getStartRoom().ID();
+		String strStartRoomID=(mob.getStartRoom()!=null)?mob.getStartRoom().ID():"";
+		String strOtherRoomID=(mob.location()!=null)?mob.location().ID():"";
 		String str=null;
 		try
 		{
@@ -502,7 +509,7 @@ public class MOBloader
 			+", CMGOLD="+mob.getMoney()
 			+", CMWIMP="+mob.getWimpHitPoint()
 			+", CMQUES="+mob.getQuestPoint()
-			+", CMROID='"+strStartRoomID+"'"
+			+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
 			+", CMDATE='"+IQCalendar.d2mysqlString(mob.lastDateTime())+"'"
 			+", CMCHAN="+mob.getChannelMask()
 			+", CMATTA="+mob.baseEnvStats().attackAdjustment()

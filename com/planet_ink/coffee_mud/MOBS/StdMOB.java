@@ -1480,6 +1480,14 @@ public class StdMOB implements MOB
 				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				}
 				break;
+			case Affect.TYP_QUIT:
+				if(mob.isInCombat())
+				{
+					ExternalPlay.flee(mob,"NOWHERE");
+					mob.makePeace();
+				}
+				tell(affect.source(),affect.target(),affect.tool(),affect.sourceMessage());
+				break;
 			case Affect.TYP_STAND:
 				{
 				int oldDisposition=mob.baseEnvStats().disposition();

@@ -81,8 +81,6 @@ public class Rooms
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreateRoom(thisRoom,Locale);
 			CMMap.addRoom(thisRoom);
-			mob.location().getArea().fillInAreaRoom(mob.location());
-			mob.location().getArea().fillInAreaRoom(thisRoom);
 		}
 
 		if(thisRoom==null)
@@ -96,6 +94,8 @@ public class Rooms
 
 		mob.location().recoverRoomStats();
 		thisRoom.recoverRoomStats();
+		mob.location().getArea().fillInAreaRoom(mob.location());
+		mob.location().getArea().fillInAreaRoom(thisRoom);
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
 		Log.sysOut("Rooms",mob.ID()+" created room "+thisRoom.ID()+".");
 	}
@@ -131,9 +131,9 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
+		exitifyNewPortal(mob,thisRoom,direction);
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().getArea().fillInAreaRoom(thisRoom);
-		exitifyNewPortal(mob,thisRoom,direction);
 
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
@@ -632,6 +632,7 @@ public class Rooms
 			mob.location().rawDoors()[direction]=null;
 			mob.location().rawExits()[direction]=null;
 			ExternalPlay.DBUpdateExits(mob.location());
+			mob.location().getArea().fillInAreaRoom(mob.location());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 			Log.sysOut("Rooms",mob.ID()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().ID()+".");
 		}

@@ -4,11 +4,6 @@ try to finish the set alarm thing for radiant rooms
 journal date bug? (SQL Server 2000) Single QUOTE in journal
 When I boot a player, they're still listed according to the website and archon command 'where', but not to 'who'.. Plus, after having done it,t he CPU time is way up.
 WEB WHO shows dead connections, mucked up when archon wizinv
-For armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
 fetch new classes from files and load them in?
-bugs w/ maze and grid editing?
-lose exp when quit
-CanvaseRoom, CanvaseMaze 
-INI option to save last room
 Options for fleeing?
 
