@@ -8,6 +8,11 @@ import java.io.File;
 
 public class LeatherWorking extends CommonSkill
 {
+	public String ID() { return "LeatherWorking"; }
+	public String name(){ return "Leather Working";}
+	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -23,25 +28,14 @@ public class LeatherWorking extends CommonSkill
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
+	private static boolean mapped=false;
 	public LeatherWorking()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="LeatherWorking";
-
-		miscText="";
-		triggerStrings.addElement("LEATHERWORK");
-		triggerStrings.addElement("LEATHERWORKING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new LeatherWorking();
-	}
+	public Environmental newInstance(){	return new LeatherWorking();}
 	
 	private static synchronized Vector loadRecipes()
 	{

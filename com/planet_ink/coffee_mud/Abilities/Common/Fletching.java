@@ -8,6 +8,11 @@ import java.io.File;
 
 public class Fletching extends CommonSkill
 {
+	public String ID() { return "Fletching"; }
+	public String name(){ return "Fletching";}
+	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -23,26 +28,14 @@ public class Fletching extends CommonSkill
 	private Item building=null;
 	private boolean messedUp=false;
 	private boolean mending=false;
+	private static boolean mapped=false;
 	public Fletching()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fletching";
-
-		miscText="";
-		triggerStrings.addElement("FLETCH");
-		triggerStrings.addElement("FLETCHING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new Fletching();
-	}
-	
+	public Environmental newInstance(){	return new Fletching();	}
 
 	private static synchronized Vector loadRecipes()
 	{

@@ -6,28 +6,24 @@ import java.util.*;
 
 public class Fishing extends CommonSkill
 {
+	public String ID() { return "Fishing"; }
+	public String name(){ return "Fishing";}
+	private static final String[] triggerStrings = {"FISH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String foundShortName="";
+	private static boolean mapped=false;
 	public Fishing()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fishing";
-
 		displayText="You are fishing...";
 		verb="fishing";
-		miscText="";
-		triggerStrings.addElement("FISH");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Fishing();
-	}
+	public Environmental newInstance(){	return new Fishing();}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))

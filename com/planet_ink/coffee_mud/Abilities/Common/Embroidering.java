@@ -6,29 +6,23 @@ import java.util.*;
 
 public class Embroidering extends CommonSkill
 {
+	public String ID() { return "Embroidering"; }
+	public String name(){ return "Embroidering";}
+	private static final String[] triggerStrings = {"EMBROIDER","EMBROIDERING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String writing="";
+	private static boolean mapped=false;
 	public Embroidering()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Embroidering";
-
 		displayText="You are embroidering...";
 		verb="embroidering";
-		miscText="";
-		triggerStrings.addElement("EMBROIDER");
-		triggerStrings.addElement("EMBROIDERING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Embroidering();
-	}
+	public Environmental newInstance(){	return new Embroidering();}
 
 	public void unInvoke()
 	{

@@ -8,6 +8,11 @@ import java.io.File;
 
 public class GlassBlowing extends CommonSkill
 {
+	public String ID() { return "GlassBlowing"; }
+	public String name(){ return "Glass Blowing";}
+	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -20,25 +25,15 @@ public class GlassBlowing extends CommonSkill
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
+	private static boolean mapped=false;
 	public GlassBlowing()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="GlassBlowing";
-
-		miscText="";
-		triggerStrings.addElement("GLASSBLOW");
-		triggerStrings.addElement("GLASSBLOWING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
+	public Environmental newInstance(){	return new GlassBlowing();}
 	
-	public Environmental newInstance()
-	{
-		return new GlassBlowing();
-	}
 	
 	public boolean tick(int tickID)
 	{

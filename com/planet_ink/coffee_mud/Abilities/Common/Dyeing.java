@@ -7,29 +7,23 @@ import java.io.File;
 
 public class Dyeing extends CommonSkill
 {
+	public String ID() { return "Dyeing"; }
+	public String name(){ return "Dyeing";}
+	private static final String[] triggerStrings = {"DYE","DYEING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String writing="";
+	private static boolean mapped=false;
 	public Dyeing()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dyeing";
-
 		displayText="You are dyeing...";
 		verb="dyeing";
-		miscText="";
-		triggerStrings.addElement("DYE");
-		triggerStrings.addElement("DYEING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Dyeing();
-	}
+	public Environmental newInstance(){	return new Dyeing();}
 
 	private String fixColor(String name, String colorWord)
 	{

@@ -6,29 +6,23 @@ import java.util.*;
 
 public class Hunting extends CommonSkill
 {
+	public String ID() { return "Hunting"; }
+	public String name(){ return "Hunting";}
+	private static final String[] triggerStrings = {"HUNT","HUNTING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private MOB found=null;
 	private String foundShortName="";
+	private static boolean mapped=false;
 	public Hunting()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hunting";
-
 		displayText="You are hunting...";
 		verb="hunting";
-		miscText="";
-		triggerStrings.addElement("HUNT");
-		triggerStrings.addElement("HUNTING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Hunting();
-	}
+	public Environmental newInstance(){	return new Hunting();}
 	
 	public Room nearByRoom()
 	{

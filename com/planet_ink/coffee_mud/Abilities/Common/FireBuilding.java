@@ -6,31 +6,23 @@ import java.util.*;
 
 public class FireBuilding extends CommonSkill
 {
+	public String ID() { return "FireBuilding"; }
+	public String name(){ return "Fire Building";}
+	private static final String[] triggerStrings = {"LIGHT","FIREBUILD","FIREBUILDING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	public Item lighting=null;
 	private int durationOfBurn=0;
 	private boolean failed=false;
+	private static boolean mapped=false;
 	public FireBuilding()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fire Building";
-
-		displayText="You building a fire";
-		verb="building a fire";
-		miscText="";
-		triggerStrings.addElement("LIGHT");
-		triggerStrings.addElement("FIREBUILD");
-		triggerStrings.addElement("FIREBUILDING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
+	public Environmental newInstance()	{return new FireBuilding();	}
 	
-	public Environmental newInstance()
-	{
-		return new FireBuilding();
-	}
 	
 	public void unInvoke()
 	{

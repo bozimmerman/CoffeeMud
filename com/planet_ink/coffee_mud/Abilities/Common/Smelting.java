@@ -8,6 +8,11 @@ import java.io.File;
 
 public class Smelting extends CommonSkill
 {
+	public String ID() { return "Smelting"; }
+	public String name(){ return "Smelting";}
+	private static final String[] triggerStrings = {"SMELT","SMELTING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -21,25 +26,14 @@ public class Smelting extends CommonSkill
 	private Item fire=null;
 	private boolean messedUp=false;
 	private int amountMaking=0;
+	private static boolean mapped=false;
 	public Smelting()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Smelting";
-
-		miscText="";
-		triggerStrings.addElement("SMELT");
-		triggerStrings.addElement("SMELTING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new Smelting();
-	}
+	public Environmental newInstance(){	return new Smelting();}
 	
 	public boolean tick(int tickID)
 	{

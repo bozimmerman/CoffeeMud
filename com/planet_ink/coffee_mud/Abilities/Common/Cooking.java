@@ -7,6 +7,11 @@ import java.util.*;
 
 public class Cooking extends CommonSkill
 {
+	public String ID() { return "Cooking"; }
+	public String name(){ return "Cooking";}
+	private static final String[] triggerStrings = {"COOK","COOKING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
 	public static int RCP_MAININGR=2;
@@ -20,27 +25,17 @@ public class Cooking extends CommonSkill
 	private Vector finalRecipe=null;
 	private boolean burnt=false;
 	private Hashtable oldContents=null;
+	private static boolean mapped=false;
 	public Cooking()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cooking";
-
 		displayText="You are cooking...";
 		verb="cooking";
-		miscText="";
-		triggerStrings.addElement("COOK");
-		triggerStrings.addElement("COOKING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Cooking();
-	}
+	public Environmental newInstance(){	return new Cooking();}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))

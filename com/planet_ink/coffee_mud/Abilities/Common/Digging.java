@@ -6,29 +6,25 @@ import java.util.*;
 
 public class Digging extends CommonSkill
 {
+	public String ID() { return "Digging"; }
+	public String name(){ return "Gem Digging";}
+	private static final String[] triggerStrings = {"DIG","DIGGING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String foundShortName="";
+	private static boolean mapped=false;
 	public Digging()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Gem Digging";
-
 		displayText="You are digging...";
 		verb="digging";
-		miscText="";
-		triggerStrings.addElement("DIG");
-		triggerStrings.addElement("DIGGING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Digging();
-	}
+	public Environmental newInstance(){	return new Digging();}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))

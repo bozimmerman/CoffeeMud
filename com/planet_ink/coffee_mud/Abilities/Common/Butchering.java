@@ -6,31 +6,25 @@ import java.util.*;
 
 public class Butchering extends CommonSkill
 {
+	public String ID() { return "Butchering"; }
+	public String name(){ return "Butchering";}
+	private static final String[] triggerStrings = {"BUTCHER","BUTCHERING","SKIN"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private DeadBody body=null;
 	private String foundShortName="";
 	private boolean failed=false;
+	private static boolean mapped=false;
 	public Butchering()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Butchering";
-
 		displayText="You are skinning and butchering something...";
 		verb="skinning and butchering";
-		miscText="";
-		triggerStrings.addElement("BUTCHER");
-		triggerStrings.addElement("BUTCHERING");
-		triggerStrings.addElement("SKIN");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Butchering();
-	}
+	public Environmental newInstance(){	return new Butchering();}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked)

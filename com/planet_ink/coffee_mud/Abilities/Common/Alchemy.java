@@ -8,32 +8,27 @@ import java.io.File;
 
 public class Alchemy extends CommonSkill
 {
+	public String ID() { return "Alchemy"; }
+	public String name(){ return "Alchemy";}
+	private static final String[] triggerStrings = {"BREW","ALCHEMY"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private boolean requiresFire=false;
 	private Item building=null;
 	private Item fire=null;
 	String oldName="";
 	private Ability theSpell=null;
 	private boolean messedUp=false;
+	private static boolean mapped=false;
 	public Alchemy()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Alchemy";
-
-		miscText="";
-		triggerStrings.addElement("BREW");
-		triggerStrings.addElement("ALCHEMY");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("Mage",1,ID(),false);
-		CMAble.addCharAbilityMapping("Cleric",1,ID(),false);
+		
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("Mage",1,ID(),false);
+					CMAble.addCharAbilityMapping("Cleric",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new Alchemy();
-	}
+	public Environmental newInstance(){ return new Alchemy();	}
 	
 	public boolean tick(int tickID)
 	{

@@ -8,6 +8,11 @@ import java.io.File;
 
 public class Tailoring extends CommonSkill
 {
+	public String ID() { return "Tailoring"; }
+	public String name(){ return "Tailoring";}
+	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -18,32 +23,19 @@ public class Tailoring extends CommonSkill
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
 	
-	
 	private Item building=null;
 	private Item key=null;
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
+	private static boolean mapped=false;
 	public Tailoring()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Tailoring";
-
-		miscText="";
-		triggerStrings.addElement("KNIT");
-		triggerStrings.addElement("TAILOR");
-		triggerStrings.addElement("TAILORING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new Tailoring();
-	}
+	public Environmental newInstance(){	return new Tailoring();}
 	
 	public boolean tick(int tickID)
 	{

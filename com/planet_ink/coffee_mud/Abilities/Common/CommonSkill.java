@@ -7,43 +7,29 @@ import java.util.*;
 
 public class CommonSkill extends StdAbility
 {
+	public String ID() { return "CommonSkill"; }
+	public String name(){ return "Common Skill";}
+	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
+	public int quality(){return Ability.INDIFFERENT;}
+	protected String displayText="(Doing something productive)";
+	public String displayText(){return displayText;}
+	
+	protected int trainsRequired(){return 0;}
+	protected int practicesRequired(){return 2;}
+	protected int practicesToPractice(){return 1;}
+	
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
 	protected int tickUp=0;
 	protected String verb="working";
 
-	public CommonSkill()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Common Skill";
-		displayText="(Doing something productive)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-		trainsRequired=0;
-		practicesRequired=2;
-		practicesToPractice=1;
-
-		baseEnvStats().setLevel(20);
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new CommonSkill();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.COMMON_SKILL;
-	}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	
+	public Environmental newInstance()	{	return new CommonSkill();	}
+	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
 	protected String replacePercent(String thisStr, String withThis)
 	{

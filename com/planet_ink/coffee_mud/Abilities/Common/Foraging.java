@@ -6,29 +6,24 @@ import java.util.*;
 
 public class Foraging extends CommonSkill
 {
+	public String ID() { return "Foraging"; }
+	public String name(){ return "Foraging";}
+	private static final String[] triggerStrings = {"FORAGE","FORAGING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String foundShortName="";
+	private static boolean mapped=false;
 	public Foraging()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Foraging";
-
 		displayText="You are foraging...";
 		verb="foraging";
-		miscText="";
-		triggerStrings.addElement("FORAGE");
-		triggerStrings.addElement("FORAGING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Foraging();
-	}
+	public Environmental newInstance(){	return new Foraging();}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))

@@ -7,29 +7,24 @@ import java.util.*;
 
 public class Engraving extends CommonSkill
 {
+	public String ID() { return "Engraving"; }
+	public String name(){ return "Engraving";}
+	private static final String[] triggerStrings = {"ENGRAVE","ENGRAVING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private Item found=null;
 	private String writing="";
+	private static boolean mapped=false;
 	public Engraving()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Engraving";
-
 		displayText="You are engraving...";
 		verb="engraving";
-		miscText="";
-		triggerStrings.addElement("ENGRAVE");
-		triggerStrings.addElement("ENGRAVING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-
-	public Environmental newInstance()
-	{
-		return new Engraving();
-	}
+	public Environmental newInstance(){	return new Engraving();	}
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked)

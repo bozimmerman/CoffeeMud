@@ -8,6 +8,11 @@ import java.io.File;
 
 public class JewelMaking extends CommonSkill
 {
+	public String ID() { return "JewelMaking"; }
+	public String name(){ return "Jewel Making";}
+	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
 	private static final int RCP_TICKS=2;
@@ -22,25 +27,14 @@ public class JewelMaking extends CommonSkill
 	private Item building=null;
 	private Item fire=null;
 	private boolean messedUp=false;
+	private static boolean mapped=false;
 	public JewelMaking()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Jewel Making";
-
-		miscText="";
-		triggerStrings.addElement("JEWEL");
-		triggerStrings.addElement("JEWELMAKING");
-		quality=Ability.INDIFFERENT;
-
-		recoverEnvStats();
-		CMAble.addCharAbilityMapping("All",1,ID(),false);
+		if(!mapped){mapped=true;
+					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	
-	public Environmental newInstance()
-	{
-		return new JewelMaking();
-	}
+	public Environmental newInstance(){	return new JewelMaking();}
 	
 	public boolean tick(int tickID)
 	{
