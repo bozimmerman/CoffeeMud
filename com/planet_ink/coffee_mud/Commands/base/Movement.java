@@ -17,8 +17,7 @@ public class Movement
 		else
 		{
 			String doing=(String)commands.elementAt(0);
-			mob.tell(Character.toUpperCase(doing.charAt(0))+doing.substring(1)+" which direction?");
-			mob.tell("Try north, south, east, west, up, or down.");
+			mob.tell(Character.toUpperCase(doing.charAt(0))+doing.substring(1)+" "+Scripts.get("Movement-goerr"));
 			return;
 		}
 	}
@@ -27,7 +26,7 @@ public class Movement
 	{
 		if(commands.size()<=1)
 		{
-			mob.tell("Enter what or where? Try EXITS.");
+			mob.tell(Scripts.get("Movement-entererr1"));
 			return;
 		}
 		String enterWhat=Util.combine(commands,1).toUpperCase();
@@ -69,7 +68,7 @@ public class Movement
 				sit(mob,commands);
 				return;
 			}
-			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",enterWhat.toLowerCase()));
 			return;
 		}
 		move(mob,dir,false,false);
@@ -102,7 +101,7 @@ public class Movement
 		}
 		else
 		{
-			mob.tell("Crawl which way?  Try north, south, east, west, up, or down.");
+			mob.tell(Scripts.get("Movement-crawlerr1"));
 			return;
 		}
 	}
@@ -112,7 +111,7 @@ public class Movement
 		standIfNecessary(mob);
 		if(Sense.isSitting(mob))
 		{
-			mob.tell("You need to stand up first.");
+			mob.tell(Scripts.get("Movement-standandgoerr1"));
 			return;
 		}
 		move(mob,directionCode,false,false);
@@ -128,7 +127,7 @@ public class Movement
 		Exit exit=thisRoom.getExitInDir(directionCode);
 		if(destRoom==null)
 		{
-			mob.tell("You can't go that way.");
+			mob.tell(Scripts.get("Movement-moveerr1"));
 			return false;
 		}
 
@@ -144,22 +143,22 @@ public class Movement
 		FullMsg leaveMsg=null;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName);
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flee(s) with ":"ride(s) ")+mob.riding().name()+" "+directionName);
+			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,Scripts.get("Movement-sridesin",mob.riding().name(),otherDirectionName));
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?Scripts.get("Movement-youflee",directionName):null),leaveCode,null,leaveCode,((flee)?Scripts.get("Movement-sfleeswith",mob.riding().name(),directionName):Scripts.get("Movement-srides",mob.riding().name(),directionName)));
 		}
 		else
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
+			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,Scripts.get("Movement-senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?Scripts.get("Movement-youflee",directionName):null),leaveCode,null,leaveCode,((flee)?Scripts.get("Movement-sflees",directionName):(Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName));
 		}
 		if((exit==null)&&(!mob.isASysOp(destRoom)))
 		{
-			mob.tell("You can't go that way.");
+			mob.tell(Scripts.get("Movement-moveerr1"));
 			return false;
 		}
 		else
 		if(exit==null)
-			thisRoom.showHappens(Affect.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
+			thisRoom.showHappens(Affect.MSG_OK_VISUAL,Scripts.get("Movement-stwitch",directionName));
 		else
 		if((exit!=null)&&(!exit.okAffect(enterMsg)))
 			return false;
@@ -186,7 +185,7 @@ public class Movement
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState())))
 			{
-				mob.tell("You are too tired.");
+				mob.tell(Scripts.get("Movement-tootired"));
 				return false;
 			}
 		}
@@ -209,7 +208,7 @@ public class Movement
 			if((riding instanceof MOB)
 			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)riding)))
 			{
-				((MOB)riding).tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
+				((MOB)riding).tell(Scripts.get("Movement-youridden",Directions.getDirectionName(directionCode)));
 				move(((MOB)riding),directionCode,false,false);
 			}
 			else
@@ -239,13 +238,13 @@ public class Movement
 					boolean fallOff=false;
 					if(rMOB.location()==thisRoom)
 					{
-						rMOB.tell("You ride "+riding.name()+" "+Directions.getDirectionName(directionCode)+".");
+						rMOB.tell(Scripts.get("Movement-youride",riding.name(),Directions.getDirectionName(directionCode)));
 						if(!move(rMOB,directionCode,flee,false))
 							fallOff=true;
 					}
 					if(fallOff)
 					{
-						rMOB.tell("You fall off "+riding.name()+"!");
+						rMOB.tell(Scripts.get("Movement-youfalloff",riding.name()));
 						rMOB.setRiding(null);
 					}
 					else
@@ -268,7 +267,7 @@ public class Movement
 					if((follower.location()==thisRoom)
 					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==0))
 					{
-						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
+						follower.tell(Scripts.get("Movement-youfollow",mob.name(),Directions.getDirectionName(directionCode)));
 						if(!move(follower,directionCode,false,false))
 						{
 							//follower.setFollowing(null);
@@ -286,7 +285,7 @@ public class Movement
 	{
 		if((mob.location()==null)||(!mob.isInCombat()))
 		{
-			mob.tell("You can only flee while in combat.");
+			mob.tell(Scripts.get("Movement-fleeerr1"));
 			return;
 		}
 		
@@ -316,7 +315,7 @@ public class Movement
 				directionCode=Directions.getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
-				mob.tell("Flee where?!");
+				mob.tell(Scripts.get("Movement-fleeerr2"));
 				return;
 			}
 		}
@@ -329,7 +328,7 @@ public class Movement
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true,false))))
 		{
 			mob.makePeace();
-			mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
+			mob.tell(Scripts.get("Movement-fleeexp",""+lostExperience));
 			mob.charStats().getCurrentClass().loseExperience(mob,lostExperience);
 		}
 	}
@@ -338,7 +337,7 @@ public class Movement
 	{
 		if(whatToOpen.length()==0)
 		{
-			mob.tell("Open what?");
+			mob.tell(Scripts.get("Movement-openerr1"));
 			return;
 		}
 		Environmental openThis=null;
@@ -350,10 +349,10 @@ public class Movement
 
 		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
 		{
-			mob.tell("You don't see '"+whatToOpen+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",whatToOpen));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,"<S-NAME> open(s) "+openThis.name()+".");
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,Scripts.get("Movement-sopens",openThis.name()));
 		if(openThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -365,7 +364,7 @@ public class Movement
 	{
 		if(whatTounlock.length()==0)
 		{
-			mob.tell("Unlock what?");
+			mob.tell(Scripts.get("Movement-unlockerr1"));
 			return;
 		}
 		Environmental unlockThis=null;
@@ -377,10 +376,10 @@ public class Movement
 
 		if((unlockThis==null)||(!Sense.canBeSeenBy(unlockThis,mob)))
 		{
-			mob.tell("You don't see '"+whatTounlock+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",whatTounlock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) "+unlockThis.name()+".");
+		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,Scripts.get("Movement-sopens",unlockThis.name()));
 		if(unlockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -392,7 +391,7 @@ public class Movement
 	{
 		if(whatToClose.length()==0)
 		{
-			mob.tell("Close what?");
+			mob.tell(Scripts.get("Movement-closeerr1"));
 			return;
 		}
 		Environmental closeThis=null;
@@ -404,10 +403,10 @@ public class Movement
 
 		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell("You don't see '"+whatToClose+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",whatToClose));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,"<S-NAME> close(s) "+closeThis.name()+".");
+		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,Scripts.get("Movement-scloses",closeThis.name()));
 		if(closeThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -461,7 +460,7 @@ public class Movement
 	{
 		if(whatTolock.length()==0)
 		{
-			mob.tell("Lock what?");
+			mob.tell(Scripts.get("Movement-lockerr1"));
 			return;
 		}
 		Environmental lockThis=null;
@@ -473,10 +472,10 @@ public class Movement
 
 		if((lockThis==null)||(!Sense.canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell("You don't see '"+whatTolock+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",whatTolock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,"<S-NAME> lock(s) "+lockThis.name()+".");
+		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,Scripts.get("Movement-slocks",lockThis.name()));
 		if(lockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -488,7 +487,7 @@ public class Movement
 	{
 		if(Sense.isSitting(mob))
 		{
-			mob.tell("You are already sitting!");
+			mob.tell(Scripts.get("Movement-siterr1"));
 			return;
 		}
 		if(commands.size()<=1){ sit(mob); return;}
@@ -496,7 +495,7 @@ public class Movement
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
 		{
-			mob.tell("You don't see '"+possibleRideable+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",possibleRideable));
 			return;
 		}
 		if(E instanceof MOB)
@@ -506,10 +505,10 @@ public class Movement
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=((Rideable)E).mountString(Affect.TYP_SIT);
+			mountStr=Scripts.get("Movement-sitmounton",((Rideable)E).mountString(Affect.TYP_SIT),E.name());
 		else
-			mountStr="sit(s) on";
-		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,"<S-NAME> "+mountStr+" "+E.name()+".");
+			mountStr=Scripts.get("Movement-sitson",E.name());
+		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,mountStr);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
@@ -517,7 +516,7 @@ public class Movement
 	{
 		if(Sense.isSleeping(mob))
 		{
-			mob.tell("You are already asleep!");
+			mob.tell(Scripts.get("Movement-sleeperr1"));
 			return;
 		}
 		if(commands.size()<=1){ sleep(mob); return;}
@@ -525,15 +524,15 @@ public class Movement
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
 		{
-			mob.tell("You don't see '"+possibleRideable+"' here.");
+			mob.tell(Scripts.get("All-youdontsee",possibleRideable));
 			return;
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=((Rideable)E).mountString(Affect.TYP_SLEEP);
+			mountStr=Scripts.get("Movement-sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP),E.name());
 		else
-			mountStr="sleep(s) on";
-		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,"<S-NAME> "+mountStr+" "+E.name()+".");
+			mountStr=Scripts.get("Movement-sleepson",E.name());
+		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,mountStr);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
@@ -541,10 +540,10 @@ public class Movement
 	public static void sit(MOB mob)
 	{
 		if(Sense.isSitting(mob))
-			mob.tell("You are already sitting!");
+			mob.tell(Scripts.get("Movement-siterr1"));
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,Scripts.get("Movement-sitdown"));
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}
@@ -556,10 +555,10 @@ public class Movement
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!Sense.isSleeping(mob))
-				mob.tell("You aren't sleeping!?");
+				mob.tell(Scripts.get("Movement-wakeerr1"));
 			else
 			{
-				FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");
+				FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,Scripts.get("Movement-wakeup"));
 				if(mob.location().okAffect(msg))
 					mob.location().send(mob,msg);
 			}
@@ -570,15 +569,15 @@ public class Movement
 			MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!Sense.canBeSeenBy(M,mob)))
 			{
-				mob.tell("You don't see '"+whom+"' here.");
+				mob.tell(Scripts.get("All-youdontsee",whom));
 				return;
 			}
 			if(!Sense.isSleeping(M))
 			{
-				mob.tell(M.name()+" is awake!");
+				mob.tell(Scripts.get("Movement-wakeerr2",M.name()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to wake <T-NAME> up.");
+			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,Scripts.get("Movement-wakeother"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -589,7 +588,7 @@ public class Movement
 	public static void sleep(MOB mob)
 	{
 		if(Sense.isSleeping(mob))
-			mob.tell("You are already asleep!");
+			mob.tell(Scripts.get("Movement-sleeperr1"));
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SLEEP,Scripts.get("Movement-sleep"));
@@ -607,10 +606,10 @@ public class Movement
 	public static void stand(MOB mob)
 	{
 		if((!Sense.isSitting(mob))&&(!Sense.isSleeping(mob)))
-			mob.tell("You are already standing!");
+			mob.tell(Scripts.get("Movement-standerr1"));
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> stand(s) up.");
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,Scripts.get("Movement-standup"));
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}
@@ -620,7 +619,7 @@ public class Movement
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(((String)commands.elementAt(0))+" what?");
+			mob.tell(Scripts.get("Movement-mounterr1",((String)commands.elementAt(0))));
 			return;
 		}
 		commands.removeElementAt(0);
@@ -645,13 +644,15 @@ public class Movement
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0),Item.WORN_REQ_UNWORNONLY);
 		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
 		{
-			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
+			mob.tell(Scripts.get("All-youdontsee",Util.combine(commands,0)));
 			return;
 		}
-		String mountStr="mount(s)";
+		String mountStr=null;
 		if(recipient instanceof Rideable)
-			mountStr=((Rideable)recipient).mountString(Affect.TYP_MOUNT);
-		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+			mountStr=Scripts.get("Movement-mounton",((Rideable)recipient).mountString(Affect.TYP_MOUNT));
+		else
+			mountStr=Scripts.get("Movement-mounts");
+		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,mountStr);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
@@ -659,10 +660,10 @@ public class Movement
 	{
 		if(mob.riding()==null)
 		{
-			mob.tell("But you aren't riding anything?!");
+			mob.tell(Scripts.get("Movement-dismounterr1"));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString()+" <T-NAMESELF>.");
+		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,Scripts.get("Movement-dismounts",mob.riding().dismountString()));
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

@@ -28,6 +28,39 @@ public class Scripts
 		return messages.getString(tag);
 	}
 	
+	public static String get(String tag, String replaceX)
+	{
+		if(messages==null) setLocale(language,country);
+		String msg=messages.getString(tag);
+		if(msg!=null) Util.replaceAll(msg,"@x1",replaceX);
+		else msg="";
+		return msg;
+	}
+	public static String get(String tag, String replaceX, String replaceX2)
+	{
+		if(messages==null) setLocale(language,country);
+		String msg=messages.getString(tag);
+		if(msg!=null)
+		{
+			Util.replaceAll(msg,"@x1",replaceX);
+			Util.replaceAll(msg,"@x2",replaceX2);
+		}
+		else msg="";
+		return msg;
+	}
+	public static String get(String tag, String replaceX, String replaceX2, String replaceX3)
+	{
+		if(messages==null) setLocale(language,country);
+		String msg=messages.getString(tag);
+		if(msg!=null)
+		{
+			Util.replaceAll(msg,"@x1",replaceX);
+			Util.replaceAll(msg,"@x2",replaceX2);
+			Util.replaceAll(msg,"@x3",replaceX3);
+		}
+		else msg="";
+		return msg;
+	}
 	public static void clear()
 	{
 		messages=null;

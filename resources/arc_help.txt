@@ -6,7 +6,7 @@ take unloadhelp dumpfile
 reset order ticktock list
 boot ban beacon
 ^HModules^N  
-import export xml i3
+import export xml i3 merge
 
 ^HSkills^N
 genchar possess goto wizinv

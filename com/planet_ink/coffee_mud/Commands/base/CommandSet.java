@@ -172,6 +172,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANREJECT=159;
 	public static final int CLANRESIGN=160;
 	public static final int GODS=161;
+	public static final int MERGE=162;
 
 	private CommandSet()
 	{
@@ -301,6 +302,7 @@ public class CommandSet extends Hashtable
 			put("LOO",new Integer(LOOK));
 			put("LO",new Integer(LOOK));
 			put("L",new Integer(LOOK));
+		put("MERGE",new Integer(MERGE));
 		put("MODIFY",new Integer(MODIFY));
 		put("MOUNT",new Integer(MOUNT));
 			put("BOARD",new Integer(MOUNT));
