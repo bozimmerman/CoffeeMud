@@ -2304,14 +2304,16 @@ temporarily.<BR>"Prop_Invisibility" makes an item
 invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item 
 from specified targeted spells.<BR>"Prop_ItemTransporter" 
 makes an item that transports things.<BR>"Prop_ItemTransReceiver" makes an item receives transported 
-things.<BR>"Prop_ModExperience" modifies experience gained 
-when holding/wielding/wearing this.<BR>"Prop_NoPurge" makes 
-the item a permanent piece of garbage.<BR>"Prop_OpenPassword" gives a container a secret opening 
-word.<BR>"Prop_RideAdjuster" modifies the mounted persons 
-stats.<BR>"Prop_RideResister" modifies the mounted persons 
-saving throws.<BR>"Prop_RideSpellCast" gives a spell effect 
-to the mounter.<BR>"Prop_RideZapper" restricts mounting.<BR>"Prop_RoomView" makes an item that gives you a view of 
-something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
+things.<BR>"Prop_LimitedItems" can limit the number of a particular item ever to 
+be owned.<BR>"Prop_ModExperience" modifies experience 
+gained when holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the item a permanent piece of 
+garbage.<BR>"Prop_OpenPassword" gives a container a secret 
+opening word.<BR>"Prop_RideAdjuster" modifies the mounted 
+persons stats.<BR>"Prop_RideResister" modifies the mounted 
+persons saving throws.<BR>"Prop_RideSpellCast" gives a 
+spell effect to the mounter.<BR>"Prop_RideZapper" restricts 
+mounting.<BR>"Prop_RoomView" makes an item that gives you a 
+view of something else.&nbsp; A window maker!<BR>"Prop_SpellReflecting"&nbsp;helps make&nbsp;a shield that 
 reflects magic.<BR>"Prop_TattooAdder" makes an item that 
 grants one a tattoo.<BR>"Prop_TicketTaker" makes a rideable 
 that requires money to board.<BR>"Prop_Trashcan" makes a 
@@ -2722,69 +2724,66 @@ Factors</EM></TD>
       with the words "LIMIT=", then you may enter a number representing the 
       maximum number of rows of inventory the shopkeeper will display whenever a 
       LIST is done.&nbsp; This feature has no relation with the above 
-      prejudice&nbsp;functionality -- its just 
-bonus.</P></TD></TR>
+      prejudice&nbsp;functionality -- its just bonus.</P></TD></TR>
   <TR>
     <TD><EM>Budget</EM></TD>
     <TD>
-      <P>This field is used to define the maximum amount of money, per a defined
-		 time period, which shopkeepers will spend when buying equipment from 
-		 players.  The format of the field is an amount of gold followed by
-		 the name of period (HOUR, DAY, WEEK, MONTH, YEAR).  All of these time
-		 periods are **MUD** time periods, where one hour is about 10 minutes of
-		 real life time.  For example, a value of "200 DAY" means that the
-		 shopkeeper will not buy more than 200 gold per day of any equipment from
-		 players.
-</P></TD></TR>
+      <P>This field is used to define the maximum amount of 
+      money, per a defined time period, which shopkeepers will spend when buying 
+      equipment from players. The format of the field is an amount of gold 
+      followed by the name of period (HOUR, DAY, WEEK, MONTH, YEAR). All of 
+      these time periods are **MUD** time periods, where one hour is about 10 
+      minutes of real life time. For example, a value of "200 DAY" means that 
+      the shopkeeper will not buy more than 200 gold per day of any equipment 
+      from players. </P></TD></TR>
   <TR>
     <TD><EM>Devalue Rate</EM></TD>
     <TD>
-      <P>This field is used to limit the number of EACH PARTICULAR item
-      that a shopkeeper will keep in his inventory.  This provides a ceiling
-      therefore on the number of unique items of a kind which a shopkeeper
-      will purchase from players.  The way this field works is by defining
-      how far the price drops, in percentage, every time the player sells an
-      item to a shopkeeper.  Decimals (real numbers) are allowed in this field.
-      This field may also be used to differentiate between the rate of devaluation
-      of raw resources and other finished items.  A single integer field would represent
-      the devaluation percentage of all items, while a field with two integers 
-      seperated by a space would represent the devaluation of finished items and
-      raw resources respectively.  For example, a value of "20" would mean that
-      the shopkeepers value price drops by 20% every time this shopkeeper buys 
-      a particular item.  If the shopkeeper buys two, it would be 20%.  Three would
-      be 60% and so forth.  This effectively limits the shopkeeper to buying to more
-      than 5 of any item (5 * 20) == 100%.  A value of "20 0.5" would mean a 
-      devaluation rate of 20% for finished items, and 0.5% (1/2%) for raw resources.
-</P></TD></TR>
+      <P>This field is used to limit the number of EACH 
+      PARTICULAR item that a shopkeeper will keep in his inventory. This 
+      provides a ceiling therefore on the number of unique items of a kind which 
+      a shopkeeper will purchase from players. The way this field works is by 
+      defining how far the price drops, in percentage, every time the player 
+      sells an item to a shopkeeper. Decimals (real numbers) are allowed in this 
+      field. This field may also be used to differentiate between the rate of 
+      devaluation of raw resources and other finished items. A single integer 
+      field would represent the devaluation percentage of all items, while a 
+      field with two integers seperated by a space would represent the 
+      devaluation of finished items and raw resources respectively. For example, 
+      a value of "20" would mean that the shopkeepers value price drops by 20% 
+      every time this shopkeeper buys a particular item. If the shopkeeper buys 
+      two, it would be 20%. Three would be 60% and so forth. This effectively 
+      limits the shopkeeper to buying to more than 5 of any item (5 * 20) == 
+      100%. A value of "20 0.5" would mean a devaluation rate of 20% for 
+      finished items, and 0.5% (1/2%) for raw resources. </P></TD></TR>
   <TR>
     <TD><EM>Devalue Rate</EM></TD>
     <TD>
-      <P>This field is used to limit the number of EACH PARTICULAR item
-      that a shopkeeper will keep in his inventory.  This provides a ceiling
-      therefore on the number of unique items of a kind which a shopkeeper
-      will purchase from players.  The way this field works is by defining
-      how far the price drops, in percentage, every time the player sells an
-      item to a shopkeeper.  Decimals (real numbers) are allowed in this field.
-      This field may also be used to differentiate between the rate of devaluation
-      of raw resources and other finished items.  A single integer field would represent
-      the devaluation percentage of all items, while a field with two integers 
-      seperated by a space would represent the devaluation of finished items and
-      raw resources respectively.  For example, a value of "20" would mean that
-      the shopkeepers value price drops by 20% every time this shopkeeper buys 
-      a particular item.  If the shopkeeper buys two, it would be 20%.  Three would
-      be 60% and so forth.  This effectively limits the shopkeeper to buying to more
-      than 5 of any item (5 * 20) == 100%.  A value of "20 0.5" would mean a 
-      devaluation rate of 20% for finished items, and 0.5% (1/2%) for raw resources.
-</P></TD></TR>
+      <P>This field is used to limit the number of EACH 
+      PARTICULAR item that a shopkeeper will keep in his inventory. This 
+      provides a ceiling therefore on the number of unique items of a kind which 
+      a shopkeeper will purchase from players. The way this field works is by 
+      defining how far the price drops, in percentage, every time the player 
+      sells an item to a shopkeeper. Decimals (real numbers) are allowed in this 
+      field. This field may also be used to differentiate between the rate of 
+      devaluation of raw resources and other finished items. A single integer 
+      field would represent the devaluation percentage of all items, while a 
+      field with two integers seperated by a space would represent the 
+      devaluation of finished items and raw resources respectively. For example, 
+      a value of "20" would mean that the shopkeepers value price drops by 20% 
+      every time this shopkeeper buys a particular item. If the shopkeeper buys 
+      two, it would be 20%. Three would be 60% and so forth. This effectively 
+      limits the shopkeeper to buying to more than 5 of any item (5 * 20) == 
+      100%. A value of "20 0.5" would mean a devaluation rate of 20% for 
+      finished items, and 0.5% (1/2%) for raw resources. </P></TD></TR>
   <TR>
-    <TD><EM>Inventory Reset Rate</EM></TD>
+    <TD><EM>Inventory Reset 
+    Rate</EM></TD>
     <TD>
-      <P>This is the rate, in ticks (4 second periods) at which the shopkeeper
-      totally resets his inventory back to the last saved "stock" items.  Leave
-      this field empty to use the INI default, or not to have a reset rate
-      depending.
-</P></TD></TR>
-</TABLE></STRONG><BR></P><STRONG>
+      <P>This is the rate, in ticks (4 second periods) at 
+      which the shopkeeper totally resets his inventory back to the last saved 
+      "stock" items. Leave this field empty to use the INI default, or not to 
+      have a reset rate depending. </P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
 <P>A Banker is a special type of ShopKeeper that holds 
 money and items in a special private account for players.&nbsp; Bankers can pay 
@@ -3155,8 +3154,9 @@ around the map.<BR>"RaceHelper" makes the mob assist those
 of the same race.<BR>"Scavenger" makes the mob a scavenger 
 of stuff on the ground.<BR>"Scriptable" makes the mob run 
 scripts that you write!<BR>"Sounder" makes the mob emote 
-the silly things you want it to.<BR>"TaxCollector" makes 
-the mob a collector of money from players and or mobs.<BR>"Thiefness" makes the mob use thief skills in combat.<BR>"Vagrant" makes the mob sleepy.<BR>"VeryAggressive" makes the mob willing to jump rooms to 
+the silly things you want it to.<BR>"TargetPlayer" makes the mob fight the 
+weakest player attacking him.<BR>"TaxCollector" makes the 
+mob a collector of money from players and or mobs.<BR>"Thiefness" makes the mob use thief skills in combat.<BR>"Vagrant" makes the mob sleepy.<BR>"VeryAggressive" makes the mob willing to jump rooms to 
 fight.<BR>"Wimpy" makes the mob run away.<BR>"WimpyAggressive" makes the mob only fight sleeping 
 folks.<BR></P>
 <P>Mobs&nbsp;also benefit from effects, just like rooms, 
@@ -3386,9 +3386,9 @@ Adjustments</EM></TD>
     <TD><EM>Racial Abilities</EM></TD>
     <TD>a list of abilities available to members of this 
       race.&nbsp; the abilities must be of the type that have command 
-      words.&nbsp; the proficiency given to the ability is hard coded and 
-      cannot be modified.&nbsp; the level referred to is in player levels as 
-      opposed to class levels.</TD></TR>
+      words.&nbsp; the proficiency given to the ability is hard coded and cannot 
+      be modified.&nbsp; the level referred to is in player levels as opposed to 
+      class levels.</TD></TR>
   <TR>
     <TD><EM>Cultural 
     Abilities</EM></TD>

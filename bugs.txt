@@ -1,3 +1,4 @@
+hey drop it, think they got rid of it, and it shows up in their inventory 150 ticks later.  They sell it, it shows back up in their inventory 150 ticks later (admittedly, we'd have to do something about that not getting exploited, perhaps cursed items are worth almost nothing...).  They get a cleric to remove curse and they drop the item AND IT SHOWS UP IN THEIR INVENTORY 150 TICKS LATER.    Oh, it's brilliant.  Eg.  Cursed item: "a little black rain cloud"  it keeps making you wet and giving you a cold.  Follows you EVERYWHERE.
 map command.  
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.
 ability to deposit a container and its contents.
