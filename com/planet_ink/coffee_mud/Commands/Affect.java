@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Affect extends StdCommand
 {
-	private String[] access={"AFFECT","AFF"};
+	private String[] access={"AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 	
 	public String getAffects(MOB mob)

@@ -203,28 +203,31 @@ public class Masonry extends CommonSkill
 											((GridLocale)R2).buildGrid();
 									}
 							}
-							Room R2=CMClass.getLocale("UnderWater");
-							R2.setRoomID(CMMap.getOpenRoomID(R.getArea().ID()));
-							R2.setDisplayText("Under the water");
-							R2.setDescription("You are swimming around under the water.");
-							R2.setArea(R.getArea());
-							R2.rawDoors()[Directions.UP]=R;
-							R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
-							R.rawDoors()[Directions.DOWN]=R2;
-							R2.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
-							for(int a=0;a<R.numEffects();a++)
+							if(doingCode==BUILD_POOL)
 							{
-								Ability A=R.fetchEffect(a);
-								if((A!=null)&&(A instanceof LandTitle))
+								Room R2=CMClass.getLocale("UnderWater");
+								R2.setRoomID(CMMap.getOpenRoomID(room.getArea().ID()));
+								R2.setDisplayText("Under the water");
+								R2.setDescription("You are swimming around under the water.");
+								R2.setArea(R.getArea());
+								R2.rawDoors()[Directions.UP]=R;
+								R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
+								R.rawDoors()[Directions.DOWN]=R2;
+								R2.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
+								for(int a=0;a<R.numEffects();a++)
 								{
-									LandTitle A2=(LandTitle)A.newInstance();
-									A2.setLandPrice(((LandTitle)A).landPrice());
-									R2.addNonUninvokableEffect((Ability)A2);
-									break;
+									Ability A=R.fetchEffect(a);
+									if((A!=null)&&(A instanceof LandTitle))
+									{
+										LandTitle A2=(LandTitle)A.newInstance();
+										A2.setLandPrice(((LandTitle)A).landPrice());
+										R2.addNonUninvokableEffect((Ability)A2);
+										break;
+									}
 								}
+								CMClass.DBEngine().DBCreateRoom(R2,R2.ID());
+								CMClass.DBEngine().DBUpdateExits(R2);
 							}
-							CMClass.DBEngine().DBCreateRoom(R2,R2.ID());
-							CMClass.DBEngine().DBUpdateExits(R2);
 							
 							R.getArea().clearMap();
 							R.getArea().fillInAreaRoom(R);

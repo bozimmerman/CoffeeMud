@@ -12,6 +12,7 @@ public class Spell_AnimateWeapon extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_AnimateWeapon();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public int overrideMana(){return 100;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

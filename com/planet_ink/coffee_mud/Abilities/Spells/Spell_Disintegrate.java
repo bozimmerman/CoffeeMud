@@ -13,6 +13,7 @@ public class Spell_Disintegrate extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Disintegrate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
+	public int overrideMana(){return 100;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

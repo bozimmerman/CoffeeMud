@@ -17,17 +17,17 @@ public class NoChannel extends StdCommand
 		if(pstats==null) return false;
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
-
-		int channelNum=0;
+		int channelNum=-1;
 		for(int c=0;c<ChannelSet.getNumChannels();c++)
 		{
-			if(ChannelSet.getChannelName(c).startsWith(channelName))
+			if(ChannelSet.getChannelName(c).toUpperCase().startsWith(channelName))
 			{
 				channelNum=c;
 				channelName=ChannelSet.getChannelName(c);
 			}
 		}
-		if(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelNum),mob))
+		if((channelNum<0)
+		||(!MUDZapper.zapperCheck(ChannelSet.getChannelMask(channelNum),mob)))
 		{
 			mob.tell("This channel is not available to you.");
 			return false;

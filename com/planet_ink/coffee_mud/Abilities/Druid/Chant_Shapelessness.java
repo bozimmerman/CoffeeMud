@@ -42,9 +42,9 @@ public class Chant_Shapelessness extends Chant
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(Dice.rollPercentage()>10))
+		&&(Dice.rollPercentage()>25))
 		{
-			switch(msg.targetMinor())
+			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_PUT:

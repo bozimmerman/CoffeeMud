@@ -891,7 +891,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			else
 			if(("NO"+ChannelSet.getChannelName(c)).startsWith(firstWord))
 			{
-				commands.setElementAt(ChannelSet.getChannelName(c),0);
+				commands.setElementAt("NO"+ChannelSet.getChannelName(c),0);
 				C=CMClass.getCommand("NoChannel");
 				if(C!=null) return C;
 			}
