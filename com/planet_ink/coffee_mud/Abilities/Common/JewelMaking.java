@@ -205,7 +205,13 @@ public class JewelMaking extends CommonSkill
 		displayText="You are making "+building.name();
 		verb="making "+building.name();
 		building.setDisplayText(itemName+" is here");
-		building.setDescription(itemName+". ");
+		if((firstOther!=null)&&(firstWood!=null)
+		&&((((firstWood.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+		   ||(((firstWood.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
+		&&(((firstOther.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)))
+			building.setDescription(itemName+" made of "+EnvResource.RESOURCE_DESCS[firstWood.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+		else
+			building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
