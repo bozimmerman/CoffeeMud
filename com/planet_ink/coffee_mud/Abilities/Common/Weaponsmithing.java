@@ -229,6 +229,8 @@ public class Weaponsmithing extends CommonSkill
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
 			building=null;
 			mending=false;
 			messedUp=false;
@@ -245,21 +247,8 @@ public class Weaponsmithing extends CommonSkill
 		else
 		{
 			mending=false;
-			fire=null;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I2=mob.location().fetchItem(i);
-				if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
-				{
-					fire=I2;
-					break;
-				}
-			}
-			if((fire==null)||(!mob.location().isContent(fire)))
-			{
-				commonTell(mob,"A fire will need to be built first.");
-				return false;
-			}
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
 			building=null;
 			messedUp=false;
 			String recipeName=Util.combine(commands,0);

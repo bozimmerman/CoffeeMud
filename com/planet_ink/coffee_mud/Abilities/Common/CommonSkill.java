@@ -251,6 +251,26 @@ public class CommonSkill extends StdAbility
 		}
 		return mostItem;
 	}
+	
+	public Item getRequiredFire(MOB mob)
+	{
+		Item fire=null;
+		for(int i=0;i<mob.location().numItems();i++)
+		{
+			Item I2=mob.location().fetchItem(i);
+			if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
+			{
+				fire=I2;
+				break;
+			}
+		}
+		if((fire==null)||(!mob.location().isContent(fire)))
+		{
+			commonTell(mob,"A fire will need to be built first.");
+			return null;
+		}
+		return fire;
+	}
 
 	protected int findNumberOfResource(Room room, int resource)
 	{

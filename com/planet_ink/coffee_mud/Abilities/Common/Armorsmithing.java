@@ -191,6 +191,8 @@ public class Armorsmithing extends CommonSkill
 			building=null;
 			mending=false;
 			messedUp=false;
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
@@ -208,6 +210,8 @@ public class Armorsmithing extends CommonSkill
 			mending=false;
 			refitting=false;
 			messedUp=false;
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
@@ -236,24 +240,11 @@ public class Armorsmithing extends CommonSkill
 		}
 		else
 		{
-			fire=null;
-			for(int i=0;i<mob.location().numItems();i++)
-			{
-				Item I2=mob.location().fetchItem(i);
-				if((I2!=null)&&(I2.container()==null)&&(Sense.isOnFire(I2)))
-				{
-					fire=I2;
-					break;
-				}
-			}
-			if((fire==null)||(!mob.location().isContent(fire)))
-			{
-				commonTell(mob,"A fire will need to be built first.");
-				return false;
-			}
 			building=null;
 			mending=false;
 			messedUp=false;
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
 			for(int r=0;r<recipes.size();r++)
