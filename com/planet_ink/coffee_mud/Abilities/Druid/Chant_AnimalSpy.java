@@ -139,8 +139,11 @@ public class Chant_AnimalSpy extends Chant
 				spy=target;
 				beneficialAffect(mob,spy,0);
 				Ability A=spy.fetchEffect(ID());
-				mob.addNonUninvokableEffect((Ability)A.copyOf());
-				A.setAffectedOne(spy);
+				if(A!=null)
+				{
+					mob.addNonUninvokableEffect((Ability)A.copyOf());
+					A.setAffectedOne(spy);
+				}
 			}
 
 		}
