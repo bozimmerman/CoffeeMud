@@ -294,31 +294,34 @@ public class DefaultTimeClock implements TimeClock
 				setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
 				setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
 				setYear(XMLManager.getIntFromPieces(V,"YEAR"));
-				if((XMLManager.getValFromPieces(V,"HOURS").length()==0)
-				||(XMLManager.getValFromPieces(V,"DAYS").length()==0)
-				||(XMLManager.getValFromPieces(V,"MONTHS").length()==0))
+				if(this!=globalClock)
 				{
-					setHoursInDay(globalClock.getHoursInDay());
-					setDaysInMonth(globalClock.getDaysInMonth());
-					setMonthsInYear(globalClock.getMonthNames());
-					setDawnToDusk(globalClock.getDawnToDusk()[TIME_DAWN],
-								  globalClock.getDawnToDusk()[TIME_DAY],
-								  globalClock.getDawnToDusk()[TIME_DUSK],
-								  globalClock.getDawnToDusk()[TIME_NIGHT]);
-					setDaysInWeek(globalClock.getWeekNames());
-					setYearNames(globalClock.getYearNames());
-				}
-				else
-				{
-					setHoursInDay(XMLManager.getIntFromPieces(V,"HOURS"));
-					setDaysInMonth(XMLManager.getIntFromPieces(V,"DAYS"));
-					setMonthsInYear(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"MONTHS"),true)));
-					setDawnToDusk(XMLManager.getIntFromPieces(V,"DAWNHR"),
-								  XMLManager.getIntFromPieces(V,"DAYHR"),
-								  XMLManager.getIntFromPieces(V,"DUSKHR"),
-								  XMLManager.getIntFromPieces(V,"NIGHTHR"));
-					setDaysInWeek(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"WEEK"),true)));
-					setYearNames(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"YEARS"),true)));
+					if((XMLManager.getValFromPieces(V,"HOURS").length()==0)
+					||(XMLManager.getValFromPieces(V,"DAYS").length()==0)
+					||(XMLManager.getValFromPieces(V,"MONTHS").length()==0))
+					{
+						setHoursInDay(globalClock.getHoursInDay());
+						setDaysInMonth(globalClock.getDaysInMonth());
+						setMonthsInYear(globalClock.getMonthNames());
+						setDawnToDusk(globalClock.getDawnToDusk()[TIME_DAWN],
+									  globalClock.getDawnToDusk()[TIME_DAY],
+									  globalClock.getDawnToDusk()[TIME_DUSK],
+									  globalClock.getDawnToDusk()[TIME_NIGHT]);
+						setDaysInWeek(globalClock.getWeekNames());
+						setYearNames(globalClock.getYearNames());
+					}
+					else
+					{
+						setHoursInDay(XMLManager.getIntFromPieces(V,"HOURS"));
+						setDaysInMonth(XMLManager.getIntFromPieces(V,"DAYS"));
+						setMonthsInYear(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"MONTHS"),true)));
+						setDawnToDusk(XMLManager.getIntFromPieces(V,"DAWNHR"),
+									  XMLManager.getIntFromPieces(V,"DAYHR"),
+									  XMLManager.getIntFromPieces(V,"DUSKHR"),
+									  XMLManager.getIntFromPieces(V,"NIGHTHR"));
+						setDaysInWeek(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"WEEK"),true)));
+						setYearNames(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"YEARS"),true)));
+					}
 				}
 			}
 			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_MILIS_PER_MUDHOUR)

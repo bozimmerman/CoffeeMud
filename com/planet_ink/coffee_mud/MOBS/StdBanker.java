@@ -431,7 +431,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
 							delDepositInventory(owner,item);
-							MoneyUtils.giveMoney(mob,msg.source(),((Coins)old).numberOfCoins());
+							MoneyUtils.giveMoney(this,msg.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)

@@ -350,7 +350,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		int cat=Race.AGE_INFANT;
 		int[] chart=getMyRace().getAgingChart();
 		if(age<chart[1]) return cat;
-		while((cat<=Race.AGE_ANCIENT)&&(age>chart[cat]))
+		while((cat<=Race.AGE_ANCIENT)&&(age>=chart[cat]))
 			cat++;
 		return cat-1;
 	}
