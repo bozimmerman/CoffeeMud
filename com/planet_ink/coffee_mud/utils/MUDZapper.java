@@ -309,15 +309,28 @@ public class MUDZapper
 	}
 	
 	
+	public static boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
+	{
+		for(int v=fromHere;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			if(str.length()==0) continue;
+			if(zapCodes.containsKey(str))
+				return false;
+			if(str.equalsIgnoreCase(plusMinus+find)) return true;
+		}
+		return false;
+	}
+
 	public static boolean nameCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		Vector names=Util.parse(mob.name().toUpperCase());
 		for(int v=0;v<names.size();v++)
-			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
+			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
 		names=Util.parse(mob.displayText().toUpperCase());
 		for(int v=0;v<names.size();v++)
-			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
+			if(fromHereEqual(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
 		return false;
 	}
