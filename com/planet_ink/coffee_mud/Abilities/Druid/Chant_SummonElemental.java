@@ -74,7 +74,6 @@ public class Chant_SummonElemental extends Chant
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
 		newMOB.baseEnvStats().setLevel(adjustedLevel(caster)/2);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Unique"));
 		switch(Dice.roll(1,4,0))
 		{
 		case 1:
@@ -83,6 +82,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
 			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 			newMOB.setAlignment(0);
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
 		case 2:
@@ -90,6 +90,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("an ice elemental is chilling out here.");
 			newMOB.setDescription("A large beast, made of ice, with crytaline eyes and a cold disposition.");
 			newMOB.setAlignment(1000);
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("WaterElemental"));
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
 		case 3:
@@ -97,6 +98,7 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("an earth elemental looks right at home.");
 			newMOB.setDescription("A large beast, made of rock and dirt, with a hard stare.");
 			newMOB.setAlignment(500);
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("EarthElemental"));
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
 		case 4:
@@ -104,9 +106,14 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("an air elemental blows right by.");
 			newMOB.setDescription("A large beast, made of swirling clouds and air.");
 			newMOB.setAlignment(1000);
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;
 		}
+		newMOB.recoverEnvStats();
+		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setLocation(caster.location());

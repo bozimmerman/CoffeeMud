@@ -75,9 +75,18 @@ public class CMClass extends ClassLoader
 		return thisItem;
 	}
 	
-	public static Command findExtraCommand(String word)
+	public static Command findExtraCommand(String word, boolean exactOnly)
 	{
-		return (Command)extraCmds.get(word.trim().toUpperCase());
+		Command C=(Command)extraCmds.get(word.trim().toUpperCase());
+		if((exactOnly)||(C!=null)) return C;
+		word=word.toUpperCase();
+		for(Enumeration e=extraCmds.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if(key.toUpperCase().startsWith(word))
+				return (Command)extraCmds.get(key);
+		}
+		return null;
 	}
 
 	

@@ -129,6 +129,10 @@ public class Spell_SummonSteed extends Spell
 			newMOB.setDescription("Ferocious, fleet of foot, and strong, a best of breed!");
 			ride.setRiderCapacity(3);
 		}
+		newMOB.recoverEnvStats();
+		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.setAlignment(500);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

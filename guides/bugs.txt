@@ -1,6 +1,5 @@
 GAES still isn't done
 Two specifics, why are there MEDIDATE and GAIN socials if they're commands/skills?
-Also, after deleting socials, the 'socials' command doesn't seem to update when socials are destroyed.
 SLAP social doesn't work thanks to slapstick
 make xcommands override regular ones
 

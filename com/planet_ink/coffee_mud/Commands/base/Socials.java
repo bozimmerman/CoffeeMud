@@ -16,18 +16,16 @@ public class Socials
 	private static String filename="";
 	private static boolean loaded=false;
 	private static Hashtable soc=new Hashtable();
-	private static String socialsList=null;
 
 	public static boolean isLoaded() { return loaded; }
 	public static void put(String name, Social S) { soc.put(name, S); }
 	public static void remove(String name) { soc.remove(name); }
-	public static void resetSocialsList() { socialsList = null; }
 	public static void clearAllSocials()
 	{
 		loaded=false;
 		filename="";
 		soc=new Hashtable();
-		resetSocialsList();
+		Resources.removeResource("SOCIALS LIST");
 	}
 
 	public static void addSocial(Social S)
@@ -141,13 +139,21 @@ public class Socials
 		}
 	}
 
-	public static Social FetchSocial(String name)
+	public static Social FetchSocial(String name, boolean exactOnly)
 	{
 		Social thisOne=(Social)soc.get(name.toUpperCase());
-		return thisOne;
+		if((exactOnly)||(thisOne!=null)) return thisOne;
+		name=name.toUpperCase();
+		for(Enumeration e=soc.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if(key.toUpperCase().startsWith(name))
+				return (Social)soc.get(key);
+		}
+		return null;
 	}
 
-	public static Social FetchSocial(Vector C)
+	public static Social FetchSocial(Vector C, boolean exactOnly)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
@@ -161,8 +167,8 @@ public class Socials
 				Target="<T-NAME>";
 			theRest=" "+Target;
 		}
-		Social S=FetchSocial(SocialName+theRest);
-		if(S==null)
+		Social S=FetchSocial(SocialName+theRest,true);
+		if((S==null)&&(!exactOnly))
 		{
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
@@ -170,7 +176,7 @@ public class Socials
 				if(key.startsWith(SocialName.toUpperCase()))
 				{	SocialName=key; break;}
 			}
-			S=FetchSocial(SocialName+theRest);
+			S=FetchSocial(SocialName+theRest,true);
 		}
 		return S;
 	}
@@ -290,9 +296,9 @@ public class Socials
 
 	public static String getSocialsList()
 	{
-		if(socialsList!=null)
-			return socialsList;
-		StringBuffer msg=new StringBuffer("");
+		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS LIST");
+		if(socialsList!=null) return socialsList.toString();
+		socialsList=new StringBuffer("");
 		Hashtable uniqueList=new Hashtable();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 		{
@@ -315,13 +321,12 @@ public class Socials
 		{
 			if((++col)>4)
 			{
-				msg.append("\n\r");
+				socialsList.append("\n\r");
 				col=1;
 			}
-
-			msg.append(Util.padRight((String)sortableList.elementAt(i),19));
+			socialsList.append(Util.padRight((String)sortableList.elementAt(i),19));
 		}
-		socialsList=msg.toString();
-		return socialsList;
+		Resources.submitResource("SOCIALS LIST",socialsList);
+		return socialsList.toString();
 	}
 }

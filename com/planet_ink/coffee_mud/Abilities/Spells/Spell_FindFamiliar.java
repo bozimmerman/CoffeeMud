@@ -130,6 +130,10 @@ public class Spell_FindFamiliar extends Spell
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;
 		}
+		newMOB.recoverEnvStats();
+		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.setAlignment(1000);
 		newMOB.setStartRoom(null);

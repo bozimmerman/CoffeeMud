@@ -208,7 +208,7 @@ public class CreateEdit
 						destroy(mob,commands);
 					}
 					else
-					if(Socials.FetchSocial(allWord)!=null)
+					if(Socials.FetchSocial(allWord,true)!=null)
 					{
 						commands.insertElementAt("SOCIAL",1);
 						destroy(mob,commands);
@@ -450,7 +450,7 @@ public class CreateEdit
 				}
 			}
 			else
-			if(Socials.FetchSocial(allWord)!=null)
+			if(Socials.FetchSocial(allWord,true)!=null)
 			{
 				commands.insertElementAt("SOCIAL",1);
 				edit(mob,commands);

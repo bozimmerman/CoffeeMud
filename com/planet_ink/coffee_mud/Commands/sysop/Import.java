@@ -2764,9 +2764,9 @@ public class Import
 					int x=word.indexOf(" ");
 					if(x>0) word=word.substring(0,x).trim();
 
-					Social S1=Socials.FetchSocial(word);
-					Social S2=Socials.FetchSocial(word+" <T-NAME>");
-					Social S3=Socials.FetchSocial(word+" SELF");
+					Social S1=Socials.FetchSocial(word,true);
+					Social S2=Socials.FetchSocial(word+" <T-NAME>",true);
+					Social S3=Socials.FetchSocial(word+" SELF",true);
 					boolean changing=true;
 					if((S1==null)||(!S1.name().toUpperCase().equals(word)))
 					{

@@ -2145,6 +2145,24 @@ public class StdMOB implements MOB
 	{
 		return abilities.size();
 	}
+	public boolean hasAbilityEvoker(String word)
+	{
+		try
+		{
+			for(int a=0;a<abilities.size();a++)
+			{
+				Ability A=(Ability)abilities.elementAt(a);
+				for(int s=0;s<A.triggerStrings().length;s++)
+				{
+					if(A.triggerStrings()[s].startsWith(word))
+						return true;
+				}
+			}
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return false;
+	}
+
 	public Ability fetchAbility(int index)
 	{
 		try

@@ -22,8 +22,8 @@ public class Chant_Feralness extends Chant
 		{
 			if((((MOB)affected).fetchWieldedItem()==null))
 			{
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 5);
-				affectableStats.setDamage(affectableStats.damage() + 2);
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 50);
+				affectableStats.setDamage(affectableStats.damage()*2);
 			}
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),4.0)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(Util.div(affectableStats.attackAdjustment(),4.0)));

@@ -97,7 +97,6 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
 		newMOB.baseCharStats().setStat(CharStats.DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
-		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		int type=-1;
 		for(int i=0;i<types.length;i++)
@@ -135,6 +134,7 @@ public class Prayer_SummonElemental extends Prayer
 			ride.setRiderCapacity(2);
 			break;
 		}
+		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 			
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

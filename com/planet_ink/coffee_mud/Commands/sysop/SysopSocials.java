@@ -31,7 +31,7 @@ public class SysopSocials
 		if(modifySocial(mob,soc2))
 		{
 			soc2.setName(soc2.name().toUpperCase());
-			if(Socials.FetchSocial(soc2.name())!=null)
+			if(Socials.FetchSocial(soc2.name(),true)!=null)
 			{
 				mob.tell("That social already exists.  Try MODIFY!");
 				return;
@@ -39,7 +39,7 @@ public class SysopSocials
 			else
 			{
 				Socials.put(soc2.name(),soc2);
-				Socials.resetSocialsList();
+				Resources.removeResource("SOCIALS LIST");
 				Socials.save();
 			}
 			Log.sysOut("SysopSocials",mob.Name()+" created social "+soc2.name()+".");
@@ -258,7 +258,7 @@ public class SysopSocials
 		}
 
 		String stuff=Util.combine(commands,2).toUpperCase();
-		Social soc2=Socials.FetchSocial(stuff);
+		Social soc2=Socials.FetchSocial(stuff,true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -269,14 +269,14 @@ public class SysopSocials
 		if(modifySocial(mob,soc2))
 		{
 			soc2.setName(soc2.name().toUpperCase());
-			if(Socials.FetchSocial(soc2.name())!=soc2)
+			if(Socials.FetchSocial(soc2.name(),true)!=soc2)
 			{
 				mob.session().rawPrintln("That social already exists in another form (<T-NAME>, or SELF).  Try deleting the other one first!");
 				return;
 			}
 			else
 			{
-				Socials.resetSocialsList();
+				Resources.removeResource("SOCIALS LIST");
 				Socials.save();
 			}
 			Log.sysOut("SysopSocials",mob.Name()+" modified social "+soc2.name()+".");
@@ -305,7 +305,7 @@ public class SysopSocials
 			}
 		}
 
-		Social soc2=Socials.FetchSocial(Util.combine(commands,2).toUpperCase());
+		Social soc2=Socials.FetchSocial(Util.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -317,7 +317,7 @@ public class SysopSocials
 			if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
 			{
 				Socials.remove(soc2.name());
-				Socials.resetSocialsList();
+				Resources.removeResource("SOCIALS LIST");
 				Socials.save();
 				mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
 			}

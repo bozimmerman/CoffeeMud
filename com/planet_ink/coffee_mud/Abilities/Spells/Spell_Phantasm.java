@@ -142,6 +142,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.baseCharStats().setStat(CharStats.CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(R);
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
+		newMOB.recoverEnvStats();
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
