@@ -37,14 +37,10 @@
 ! make sure you can create pills that generate experience points
 ! thieves skills -- silent autoloot, silent autogold (thief will autoloot and autogold "off the top")
 ! die of hunger, thirst
-
-appraise skill to give weight, base value, and material of an item
-
-Lore skill for Bards.. allows an identify for them.
-
-Exit/Area/Room property to only let in mobs with certain tatoos (a property that keeps track of one or more tatoos). A property to grant a tatoo when a mob is killed, or an item picked up.
-
-add parameter to spells command to list by school
+! appraise skill to give weight, base value, and material of an item
+! Lore skill for Bards.. allows an identify for them.
+! Exit/Area/Room property to only let in mobs with certain tatoos (a property that keeps track of one or more tatoos). A property to grant a tatoo when a mob is killed, or an item picked up.
+! add parameter to spells command to list by school
 
 More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!  Sweep would make a good Fighter ability, as would cleave!
 

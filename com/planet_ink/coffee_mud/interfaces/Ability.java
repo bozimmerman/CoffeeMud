@@ -13,6 +13,9 @@ public interface Ability  extends Environmental
 	public static final int THIEF_SKILL=6;
 	public static final int LANGUAGE=7;
 	public static final int ALL_CODES=31;
+	public static final String[] TYPE_DESCS={
+		"SKILL","SPELL","PRAYER","SONG","TRAP","PROPERTY","THIEF SKILL","LANGUAGE"
+	};
 	
 	// domains
 	public static final int DOMAIN_DIVINATION=1<<5;
@@ -23,6 +26,10 @@ public interface Ability  extends Environmental
 	public static final int DOMAIN_TRANSMUTATION=6<<5;	
 	public static final int DOMAIN_ENCHANTMENT=7<<5;	
 	public static final int DOMAIN_CONJURATION=8<<5;
+	public static final String[] DOMAIN_DESCS={
+		"NOTHING","DIVINATION","ABJURATION","ILLUSION","INVOCATION/EVOCATION","ALTERATION",
+		"TRANSMUTATION","ENCHANTMENT/CHARM","CONJURATION"
+	};
 	
 	public static final int ALL_DOMAINS=(255<<5);
 	// the classification incorporates the above

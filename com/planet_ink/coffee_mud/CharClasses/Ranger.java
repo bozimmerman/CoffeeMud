@@ -50,6 +50,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);

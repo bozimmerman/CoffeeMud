@@ -323,7 +323,7 @@ public class CommandProcessor
 					itemUsage.put(mob,commands);
 					break;
 				case CommandSet.QUALIFY:
-					scoring.qualify(mob);
+					scoring.qualify(mob,commands);
 					break;
 				case CommandSet.QUIET:
 					channels.quiet(mob);
@@ -402,7 +402,7 @@ public class CommandProcessor
 					movement.standAndGo(mob,Directions.SOUTH);
 					break;
 				case CommandSet.SPELLS:
-					scoring.spells(mob);
+					scoring.spells(mob,commands);
 					break;
 				case CommandSet.SPLIT:
 					grouping.split(mob,commands);

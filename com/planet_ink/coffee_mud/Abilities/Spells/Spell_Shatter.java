@@ -23,6 +23,10 @@ public class Spell_Shatter extends Spell
 	{
 		return new Spell_Shatter();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
