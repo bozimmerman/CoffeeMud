@@ -10,7 +10,7 @@ X Look for "about the body" importables -- nah, too much work
 ! Under guildmaster should take you to sewer -- Import bug!  Do a room "checkup" before and room link "restore" after import to reattach to olde rooms.
 ! consider consider, it is inaccurate
 ! edged, hammer, dagger import bug
-? dark horseman -- don't hide WHILE in combat?
+! dark horseman -- don't hide WHILE in combat?  They sneak when fleeing -- thats ok.
 X where IS there dirt? -- Where there ought to be.
 X Look for inside-outside Locales --- (done, looks ok on spot check)
 ! Flying across water surface doesn't put out a torch

@@ -950,7 +950,11 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Prayer_ProtGood"));
 
 			if(Util.isSet(affFlag,15))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_SNEAKING);
+			{
+				Ability A=(Ability)CMClass.getAbility("Thief_Sneak").copyOf();
+				A.setProfficiency(100);
+				M.addAbility(A);
+			}
 
 			if(Util.isSet(affFlag,16))
 				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_HIDDEN);
