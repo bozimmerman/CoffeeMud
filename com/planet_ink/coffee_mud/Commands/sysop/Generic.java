@@ -220,6 +220,9 @@ public class Generic
 		mob.tell(showNumber+". Closed Text: '"+E.closedText()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter something new\n\r:","");
+		if(newName.equals("null"))
+			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),"");
+		else
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),newName);
 		else
