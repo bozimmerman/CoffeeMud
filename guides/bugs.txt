@@ -1,6 +1,6 @@
 The shopkeepers give way to much money for items. It is too lucrative
 bug look for alternate materials in the common skills
 Damn Scriptable Behavior
-merge fieldname 
 poison looks funny too.
+import cmare files giving double on clean midgaard import
 view.n A large golden statue adorns 

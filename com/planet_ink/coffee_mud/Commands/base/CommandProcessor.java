@@ -358,6 +358,12 @@ public class CommandProcessor
 				case CommandSet.LOOK:
 					BasicSenses.look(mob,commands,false);
 					break;
+				case CommandSet.MERGE:
+					if(mob.isASysOp(null))
+						Import.merge(mob,commands);
+					else
+						mob.tell("You lack that power.\n\r");
+					break;
 				case CommandSet.MODIFY:
 					if(mob.isASysOp(mob.location()))
 						CreateEdit.edit(mob,commands);
