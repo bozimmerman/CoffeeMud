@@ -1,11 +1,121 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+Spell_IronGrip	IRON
+Spell_InsatiableThirst	SALT WATER
+Spell_ResistMagicMissiles	SCALES
+Spell_MagicalAura	MILK
+Spell_Shield	BRASS
+Spell_Blur	COTTON
+Spell_Infravision	CARROTS
+Spell_DetectUndead	PEPPERS
+Spell_ObscureSelf	MILK
+Spell_ResistPoison	ORANGES
+Spell_Clog	STONE
+Spell_DeadenSmell	TOMATOES
+Spell_DetectMetal	TIN
+Spell_ResistGas	BERRIES
+Spell_Deafness	CORN
+Spell_FeatherFall	FEATHERS
+Spell_Sleep	SAND
+Spell_Hunger	POTATOES
+Spell_DetectWater	WATER
+Spell_ResistAcid	MILK
+Spell_WaterBreathing	SEAWEED
+Spell_DetectMagic	MAPLE
+Spell_DetectGold	GOLD
+Spell_Spook	BLOOD
+Spell_ResistCold	FUR
+Spell_WeaknessGas	MARBLE
+Spell_DispelMagic	AQUAMARINE
+Spell_FaerieFire	FLINT
+Spell_WeaknessAcid	LEMONS
+Spell_DetectInvisible	EGGS
+Spell_ResistElectricity	OAK
+Spell_GraceOfTheCat	GREENS
+Spell_WeaknessCold	CLAY
+Spell_Invisibility	SILVER
+Spell_LightSensitivity	ZINC
+Spell_Tourettes	HOPS
+Spell_ManaBurn	MUTTON
+Spell_ResistFire	SCALES
+Spell_DetectHidden	TOPAZ
+Spell_WeaknessElectricity	IRONWOOD
+Spell_ResistDisease	APPLES
+Spell_Fear	DATES
+Spell_WeaknessFire	HICKORY
+Spell_Blindness	FLINT
+Spell_ComprehendLangs	HICKORY
+Spell_Slow	PORK
+Spell_ResistArrows	IRON
+Spell_Mute	CRYSOBERYL
+Spell_Feeblemind	POULTRY
+Spell_Stoneskin	GRANITE
+Spell_Laughter	OLIVES
+Spell_Weaken	WATER
+Spell_ChangeSex	BONE
+Spell_Haste	COFFEEBEANS
+Spell_Confusion	FISH
+Spell_Delirium	BEEF
+Spell_Fly	FEATHERS
+Spell_ResistParalyzation	BERRIES
+Spell_GiantStrength	GREENS
+Spell_Frenzy	COFFEEBEANS
+Spell_Nondetection	JADE
+Spell_Advancement	PLATINUM
+Spell_Hold	OBSIDIAN
+Spell_Blink	GEM
+Spell_Polymorph	WHEAT
+Spell_Choke	CACTUS
+Spell_MageClaws	BONE
+Spell_MindFog	COAL
+Spell_FreeMovement	BLOOD
+Spell_Delude	GLASS
+Spell_ResistPetrification	GARNET
+Spell_FleshStone	STONE
+Spell_ImprovedInvisibility	SILVER
+Spell_Nightmare	BLOOD
+Spell_Immunity	MITHRIL
+Spell_MindBlock	BALSA
+Spell_LowerResists	RICE
+Spell_CombatPrecognition	STEEL
+Spell_Frailty	CLAY
+Spell_Anchor	LEAD
+Spell_Disintegrate	COCOA
+Prayer_CureLight	WATER
+Prayer_RestoreSmell	WATER
+Prayer_SenseEvil	SALT WATER
+Prayer_SenseLife	SALT WATER
+Prayer_SenseGood	SALT WATER
+Prayer_ProtEvil	WATER
+Prayer_ProtUndead	WATER
+Prayer_ProtGood	BLOOD
+Prayer_CureDeafness	WATER
+Prayer_Deafness	BLOOD
+Prayer_CureSerious	WATER
+Prayer_CauseSerious	BLOOD
+Prayer_Bless	WATER
+Prayer_Curse	BLOOD
+Prayer_Freedom	WATER
+Prayer_ProtParalyzation	WATER
+Prayer_Paralyze	BLOOD
+Prayer_SenseInvisible	SALT WATER
+Prayer_SenseMagic	SALT WATER
+Prayer_RestoreVoice	WATER
+Prayer_SenseHidden	SALT WATER
+Prayer_ProtPoison	WATER
+Prayer_Poison	BLOOD
+Prayer_RemovePoison	WATER
+Prayer_CureDisease	WATER
+Prayer_ProtDisease	WATER
+Prayer_Plague	BLOOD
+Prayer_Sanctuary	WATER
+Prayer_ProtectHealth	WATER
+Prayer_BloodMoon	BLOOD
+Prayer_CureCritical	WATER
+Prayer_CauseCritical	BLOOD
+Prayer_HolyAura	WATER
+Prayer_GreatCurse	BLOOD
+Prayer_CureBlindness	WATER
+Prayer_Blindsight	SALT WATER
+Prayer_Blindness	BLOOD
+Prayer_ProtectElements	WATER
+Prayer_Heal	WATER
+Prayer_Harm	BLOOD
