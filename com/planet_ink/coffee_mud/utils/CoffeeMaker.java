@@ -2210,7 +2210,7 @@ public class CoffeeMaker
 			else
 			if(reach>basereach)
 				basereach=reach;
-			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*(hands+1);
+			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*(((hands*2)+1)/2);
 			int cost=2*((weight*materialvalue)+((2*damage)+baseattack+(reach*10))*damage)/(hands+1);
 
 			if(basematerial==EnvResource.MATERIAL_METAL)

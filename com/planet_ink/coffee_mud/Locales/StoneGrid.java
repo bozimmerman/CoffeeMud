@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class StoneGrid extends StdRoom
+public class StoneGrid extends StdGrid
 {
 	public String ID(){return "StoneGrid";}
 	public StoneGrid()

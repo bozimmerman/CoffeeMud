@@ -42,7 +42,8 @@ public class Who extends BaseWho
 
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
-			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
+			&&((((mob2.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
+				||(mob.isASysOp(null))))
 			&&((friends==null)||(friends.containsKey(mob2.Name())||(friends.containsKey("All"))))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));
