@@ -26,7 +26,7 @@ public class Poison_Alcohol extends Poison
 	public String ID() { return "Poison_Alcohol"; }
 	public String name(){ return "Alcohol";}
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
-	public String displayText(){ return "(Drunk)";}
+	public String displayText(){ return (drunkness<=3)?"(Tipsy)":(drunkness<10)?"(Drunk)":"(Smashed)";}
 	public String[] triggerStrings(){return triggerStrings;}
 
 	protected int POISON_TICKS(){return 65;}
@@ -39,14 +39,23 @@ public class Poison_Alcohol extends Poison
 	protected int POISON_DAMAGE(){return 0;}
 	protected boolean disableHappiness=false;
 
+	protected int alchoholContribution(){return 1;}
+	protected int drunkness=5;
+	
+	public Poison_Alcohol()
+	{
+		super();
+		drunkness=5;
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(((MOB)affected).envStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(drunkness+((MOB)affected).envStats().level()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-drunkness));
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}
@@ -81,7 +90,7 @@ public class Poison_Alcohol extends Poison
 		if(mob==null) return true;
 
 		Room room=mob.location();
-		if((Dice.rollPercentage()<20)&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
+		if((Dice.rollPercentage()<(4*drunkness))&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(mob.getAlignment()<350)
 			switch(Dice.roll(1,9,-1))
@@ -196,6 +205,7 @@ public class Poison_Alcohol extends Poison
 			if((msg.amISource((MOB)affected))
 			&&(msg.sourceMessage()!=null)
 			&&(msg.tool()==null)
+			&&(drunkness>=5)
 			&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
 			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))))
@@ -212,6 +222,7 @@ public class Poison_Alcohol extends Poison
 			}
 			else
 			if((!Util.bset(msg.targetMajor(),CMMsg.MASK_GENERAL))
+			&&(Dice.rollPercentage()<(drunkness*20))
 			&&(msg.targetMajor()>0))
 			{
 				if((msg.target() !=null)
@@ -224,5 +235,56 @@ public class Poison_Alcohol extends Poison
 
 		}
 		return true;
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		int largest=alchoholContribution();
+		if((givenTarget instanceof MOB)&&(auto)&&(givenTarget.fetchEffect(ID())!=null))
+		{
+			Vector found=new Vector();
+			for(int a=0;a<givenTarget.numEffects();a++)
+			{
+				Ability A=givenTarget.fetchEffect(a);
+				if(A instanceof Poison_Alcohol)
+				{
+					if(((Poison_Alcohol)A).drunkness>largest)
+						largest=((Poison_Alcohol)A).drunkness;
+					found.addElement(A);
+				}
+			}
+			largest+=alchoholContribution();
+			if(found.size()>0)
+			{
+				FullMsg msg=new FullMsg(mob,givenTarget,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON|CMMsg.MASK_GENERAL,POISON_CAST());
+				Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
+				if(R.okMessage(mob,msg))
+				{
+				    R.send(mob,msg);
+					if(msg.value()<=0)
+					{
+						R.show((MOB)givenTarget,null,CMMsg.MSG_OK_VISUAL,POISON_START());
+						for(int a=0;a<found.size();a++)
+						{
+							((Poison_Alcohol)found.elementAt(a)).drunkness=largest;
+							((Poison_Alcohol)found.elementAt(a)).tickDown+=POISON_TICKS();
+						}
+						R.recoverRoomStats();
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		boolean success=super.invoke(mob,commands,givenTarget,auto);
+		if(success&&(givenTarget instanceof MOB)&&(auto))
+		{
+			Ability A=givenTarget.fetchEffect(ID());
+			if(A instanceof Poison_Alcohol)
+				((Poison_Alcohol)A).drunkness=largest;
+			Room R=(((MOB)givenTarget).location()!=null)?((MOB)givenTarget).location():mob.location();
+			R.recoverRoomStats();
+		}
+		return success;
 	}
 }

@@ -1558,7 +1558,10 @@ public class StdMOB implements MOB
 				recoverEnvStats();
 			}
 			else
-			if(msg.tool()!=null)
+			if((msg.tool()!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_BUY)
+			&&(msg.sourceMinor()!=CMMsg.TYP_SELL)
+			&&(msg.sourceMinor()!=CMMsg.TYP_VIEW))
 			{
 				int useRange=rangeToTarget();
 				Environmental tool=msg.tool();

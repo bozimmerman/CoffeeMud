@@ -24,6 +24,11 @@ public class EnglishParser extends Scriptable implements Tickable
 	public String ID(){return "EnglishParser";}
 	public String name(){return "CoffeeMuds English Parser";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	
+	public static final int FLAG_STR=0;
+	public static final int FLAG_DOT=1;
+	public static final int FLAG_ALL=2;
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		return true;
@@ -1164,13 +1169,26 @@ public class EnglishParser extends Scriptable implements Tickable
 		}
 		return found;
 	}
-
-	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
+	
+	public static String bumpDotNumber(String srchStr)
+	{
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return srchStr;
+		if(((Boolean)flags[FLAG_ALL]).booleanValue())
+			return srchStr;
+		if(((Integer)flags[FLAG_DOT]).intValue()==0)
+			return "1."+((String)flags[FLAG_STR]);
+		else
+			return (((Integer)flags[FLAG_DOT]).intValue()+1)+"."+((String)flags[FLAG_STR]);
+	}
+	
+	public static Object[] fetchFlags(String srchStr)
 	{
 		if(srchStr.length()==0) return null;
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
-
+		Object[] flags=new Object[3];
+		
 		boolean allFlag=false;
 		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
@@ -1200,8 +1218,21 @@ public class EnglishParser extends Scriptable implements Tickable
 					occurrance=0;
 			}
 		}
+		flags[0]=srchStr;
+		flags[1]=new Integer(occurrance);
+		flags[2]=new Boolean(allFlag);
+		return flags;
+	}
 
-		int myOccurrance=occurrance;
+	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
+	{
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+		
 		if(exactOnly)
 		{
 			try
@@ -1221,7 +1252,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		}
 		else
 		{
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
 				for(int i=0;i<list.size();i++)
@@ -1234,7 +1265,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
 				for(int i=0;i<list.size();i++)
@@ -1254,42 +1285,15 @@ public class EnglishParser extends Scriptable implements Tickable
 
 	public static Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
 	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
 
 		if(list.get(srchStr)!=null)
 			return (Environmental)list.get(srchStr);
-		int myOccurrance=occurrance;
 		if(exactOnly)
 		{
 			for(Enumeration e=list.elements();e.hasMoreElements();)
@@ -1305,7 +1309,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		}
 		else
 		{
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
@@ -1314,7 +1318,7 @@ public class EnglishParser extends Scriptable implements Tickable
 					if((--myOccurrance)<=0)
 						return thisThang;
 			}
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
@@ -1328,40 +1332,13 @@ public class EnglishParser extends Scriptable implements Tickable
 
 	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-
-		int myOccurrance=occurrance;
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+		
 		if(exactOnly)
 		{
 			for(int i=0;i<list.length;i++)
@@ -1378,7 +1355,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		}
 		else
 		{
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(int i=0;i<list.length;i++)
 			{
 				Environmental thisThang=(Environmental)list[i];
@@ -1388,7 +1365,7 @@ public class EnglishParser extends Scriptable implements Tickable
 						if((--myOccurrance)<=0)
 							return thisThang;
 			}
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			for(int i=0;i<list.length;i++)
 			{
 				Environmental thisThang=(Environmental)list[i];
@@ -1403,39 +1380,13 @@ public class EnglishParser extends Scriptable implements Tickable
 
 	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
-		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
-		   return null;
-		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equalsIgnoreCase("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=Util.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=Util.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-		int myOccurrance=occurrance;
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+		
 		if(exactOnly)
 		{
 			try
@@ -1475,7 +1426,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=occurrance;
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
 				for(int i=0;i<list.size();i++)

@@ -31,21 +31,8 @@ public class Poison_Firebreather extends Poison_Liquor
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int POISON_TICKS(){return 35;}
 
-	public void unInvoke()
-	{
-		if((affected!=null)&&(affected instanceof MOB))
-		{
-			MOB mob=(MOB)affected;
-			if((Dice.rollPercentage()<10)&&(!((MOB)affected).isMonster()))
-			{
-				Ability A=CMClass.getAbility("Disease_Migraines");
-				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
-					A.invoke(mob,mob,true);
-			}
-			CommonMsgs.stand(mob,true);
-		}
-		super.unInvoke();
-	}
+	protected int alchoholContribution(){return 3;}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -54,7 +41,7 @@ public class Poison_Firebreather extends Poison_Liquor
 
 		MOB mob=(MOB)affected;
 		Room room=mob.location();
-		if((Dice.rollPercentage()<15)&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
+		if((Dice.rollPercentage()<drunkness)&&(Sense.aliveAwakeMobile(mob,true))&&(room!=null))
 		{
 			if(Dice.rollPercentage()<40)
 			{

@@ -31,14 +31,16 @@ public class Poison_Liquor extends Poison_Alcohol
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.POISON;}
 
+	protected int alchoholContribution(){return 2;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(((MOB)affected).envStats().level()*4));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round((drunkness+((MOB)affected).envStats().level())*4));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-10));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-(drunkness*2)));
 		if(affectableStats.getStat(CharStats.DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.DEXTERITY,1);
 	}
@@ -49,7 +51,7 @@ public class Poison_Liquor extends Poison_Alcohol
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			mob=(MOB)affected;
-			if((Dice.rollPercentage()<5)&&(!((MOB)affected).isMonster()))
+			if((Dice.rollPercentage()<(drunkness*10))&&(!((MOB)affected).isMonster()))
 			{
 				Ability A=CMClass.getAbility("Disease_Migraines");
 				if(A!=null) A.invoke(mob,mob,true);

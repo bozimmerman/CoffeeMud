@@ -1246,7 +1246,17 @@ public class StdRoom
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
 			else
-				found=null;
+			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
+			{
+				String newThingName=EnglishParser.bumpDotNumber(thingName);
+				if(!newThingName.equals(thingName))
+				{
+					thingName=newThingName;
+					found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
+				}
+				else
+					found=null;
+			}
 		}
 
 		if((found!=null) // the smurfy well/gate exception
@@ -1314,7 +1324,17 @@ public class StdRoom
 			if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
 				return found;
 			else
-				found=null;
+			while((found!=null)&&(!Sense.canBeSeenBy(found,mob)))
+			{
+				String newThingName=EnglishParser.bumpDotNumber(thingName);
+				if(!newThingName.equals(thingName))
+				{
+					thingName=newThingName;
+					found=fetchFromRoomFavorItems(goodLocation, thingName,wornReqCode);
+				}
+				else
+					found=null;
+			}
 		}
 		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORN_REQ_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);

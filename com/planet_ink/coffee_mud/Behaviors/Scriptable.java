@@ -3522,7 +3522,7 @@ public class Scriptable extends StdBehavior
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(s,1)));
-				if((t>0)&&(newTarget!=null)&&(newTarget instanceof MOB))
+				if((t!=0)&&(newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					HashSet group=((MOB)newTarget).getGroupMembers(new HashSet());
 					if(!group.contains(newTarget))
@@ -3864,7 +3864,11 @@ public class Scriptable extends StdBehavior
 				{
 					Room goHere=getRoom(s,lastKnownLocation);
 					if(goHere!=null)
+					{
 						goHere.bringMobHere(monster,true);
+						if(!(scripted instanceof MOB))
+							goHere.delInhabitant(monster);
+					}
 				}
 				break;
 			}
@@ -3885,6 +3889,11 @@ public class Scriptable extends StdBehavior
 						V.addElement(s.trim());
 						execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg);
 						lastPlace.bringMobHere(monster,true);
+						if(!(scripted instanceof MOB))
+						{
+							goHere.delInhabitant(monster);
+							lastPlace.delInhabitant(monster);
+						}
 					}
 				}
 				break;
@@ -4304,7 +4313,7 @@ public class Scriptable extends StdBehavior
 					break;
 				}
 				Vector vscript=new Vector();
-				vscript.addElement("FUNCTION_PROG ALARM_"+time);
+				vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random());
 				vscript.addElement(parms);
 				que.insertElementAt(new ScriptableResponse(scripted,source,target,monster,primaryItem,secondaryItem,vscript,Util.s_int(time),msg),0);
 				break;

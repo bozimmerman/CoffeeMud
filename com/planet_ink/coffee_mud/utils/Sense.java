@@ -389,6 +389,8 @@ public class Sense
 
 	public static boolean seenTheSameWay(MOB seer, Environmental seen1, Environmental seen2)
 	{
+		if(Sense.canBeSeenBy(seen1,seer)!=Sense.canBeSeenBy(seen2,seer))
+		   return false;
 		if((Sense.isEvil(seen1)!=Sense.isEvil(seen2))&&(Sense.canSeeEvil(seer)))
 			return false;
 		if((Sense.isGood(seen1)!=Sense.isGood(seen2))&&(Sense.canSeeGood(seer)))

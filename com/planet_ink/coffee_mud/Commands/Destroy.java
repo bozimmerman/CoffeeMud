@@ -178,7 +178,8 @@ public class Destroy extends BaseItemParser
 				return;
 			}
 			Room unRoom=mob.location().rawDoors()[direction];
-			if(unRoom.getGridParent()!=null) unRoom=unRoom.getGridParent();
+			if((unRoom!=null)&&(unRoom.getGridParent()!=null))
+				unRoom=unRoom.getGridParent();
 			if((mob.location().getGridParent()!=null)
 			&&(!(mob.location() instanceof GridLocale)))
 			{
