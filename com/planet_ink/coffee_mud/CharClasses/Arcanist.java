@@ -79,7 +79,7 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 			
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",true);
