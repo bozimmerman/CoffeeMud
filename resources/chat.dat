@@ -1,0 +1,2556 @@
+#! /home/usrb/cbusch/bin/chat
+#Change the above line to where chat is located. If you using this 
+#as a stand alone script.
+#WARNING this file may contain offensive material!!!
+
+"Chat by Chris Busch
+"copyright 1993 all rights reserved
+#cbusch@d.umn.edu
+#Please do not remove the above copyright.
+
+#Please see the doc file associated with this program.
+
+#There are several "operators" available:
+#  pattern matching:     Which work only in ( string | string & (str ~ str))
+#        |       or
+#        &       and
+#        ~       and-not
+#  special pattern matching:
+#        ^       match start  This anchors the match to the beginning of the 
+#                             input string.
+#        =       exact match  This must match the input string entirely.
+#  pass 1 scan operators:
+#		 (		 beginning of a 'say' expression
+#		 [		 beginning of a non-say expression targeted
+#		 {		 beginning of a non-say expression not targeted
+#        #       remark
+#        "       output to stderr
+#        '       output to stdout
+#        >       start of named database, there can be more than one name
+#                 to a database '> dragon red_dragon'  The _ here is treated
+#                 as a space in the name.
+#        %       include another file inline Ex: %talk.data
+#	 @       adds a continue jump to link to the database. Ex: @dog
+#                 will make a continue link to the dog database.  Use @default
+#                 to link to the default database. Only 1 @ per database.
+#                 @ cannot do forward links!!!
+#                 @ is more memory efficient than % but less flexible.
+#                 You must avoid circularities with @. 
+#  response operators:
+#        1-9     weights are the numerals. First column only. Mandatory.
+#        "       Issue response as "say".   Muds and 2nd column only. Optional.
+#	 :       Issue repsonse as "emote". Muds and 2nd column only. Optional.
+#        !       Issue response as command. Muds and 2nd column only. Optional.
+#                 Note, you do not need a space after an :,", or !
+#  
+#        $?      Are variables where ? is a case sensitive letter.
+#                 $r is rest of sentence, $n is its name, $t is target's name.
+#                 They may appear anywhere in the response, multiple times.
+#        
+#Some special notes:
+#	#,',",weights, and the first (,[,or { must be in column one.
+#
+#Syntax of a simple pattern match:
+#
+#( A | B & C ~ ( D | E | F))  'say command targeted at the mob
+#[ A | B & C ~ ( D | E | F)]  'another action targeted at the mob
+#{ A | B & C ~ ( D | E | F)}  'another action not targeted at mob
+#
+#The above would mean if A or B and C and-not D or E or F was in the
+#sentence then pick one of the responses.
+#
+#The responses take on the form:
+#
+#9this is most likely
+#4somewhat likely
+#1least likely
+#
+#Responses or pattern match strings may not span more than one line.  
+#The guaranted line length is a magic 80 characters (letters) wide. 
+#
+#Please note the system will return the first match found. So
+#please put more ambigous matches last!!
+#
+
+#I suggest adding to this database.
+
+
+# $r is a variable.  It means rest of sentence after the match.
+#Variables only appear in weighted reponse clauses.
+#Weighted clauses are '9This is a clause', with 9 being the weight.
+# $n is the characters name
+# $t is the targets name (the person who being replied to)
+# $$ is equal to $
+
+
+#START OF DEFAULT DATABASE.  
+#This first bunch of data before the first > is the default database
+
+######DONT CHANGE THE FOLLOWING
+(who wrote this program)
+9Christopher Busch '$A' '$V' (was compiled at $C)
+###Changing the above would be in voilation of C Busch's copyright.
+
+
+(please murder)
+9That would be bad to kill $r
+3!murder $r
+2How much $$ will you give me?
+
+
+
+
+(please kill)
+8Killing $r is a sin.
+1!kill $r
+2NO! I wont kill $r
+
+# equals  = means exact match not a substring match
+# The exact operator has some limitations. It must be by a left paren.
+# Actually the only case proven to work is when its by itself.
+# as in (=name)  (=) doesnt match anything, while () matches everything
+(=name)
+7My name is "$n"
+
+(please report your name|what is your name)
+9My name is "$n"
+
+(please report my name)
+9Your name is "$t"
+
+(all men are )
+9many women are also $r
+9i am not $r
+9:nods her head vigorously
+9men are not sheep.  each one is an individual
+
+(all women are )
+9there are men who are $r too
+9:pouts, I'm not $r
+9my sister is not $r
+9no, some are not $r
+
+(are you a robot )
+9:stamps her foot, do I *LOOK* like a robot ?!
+9:slaps you in the face
+9:bursts into tears, *...yes..., I am.
+
+(are you )
+9what difference does it make whether or not i am $r
+9:shakes her head, Whether I am $r is my secret
+9none of your business
+9:nods, I might be.
+9No, i am not
+
+#Remember : in the second column is an emote.
+
+(because i am )
+9why are you $r?
+9have you always been $r?
+9i can see you are $r. that's obvious
+
+(because i dont know )
+9in that case, you had better find out
+9i think you are kidding; you really do know
+9are you pulling my leg ?
+
+(because i dont like )
+9normal people like $r
+9:grins, I really like $r
+9i like $r, why not you?
+9my sister likes $r
+
+(because i )
+9you $r ??? that is incredible!
+9:nods her head, I thought so.
+9that sounds like a pretty flimsy excuse
+9is that the real reason ?
+9sounds like a pretty weak reason
+
+(blow me )
+9:slaps you in the face!
+
+(=bye )
+9:waves, see you later!
+9bye you!
+9:waves
+
+(can you )
+9maybe i can $r and maybe i can't
+9we were discussing you, I believe...
+9:grins, why should I $r ?
+9no i cannot $r
+
+(do you )
+9what difference does it make whether or not i $r?
+9:smiles, I haven't for a while.
+9maybe i $r and maybe i don't
+9:nods
+9yes
+
+( get down on all fours )
+9: crouches on the floor, wiggling her gorgeous derriere in the air!, come get it!
+9:moans, I'm already waiting for you!
+
+( you go )
+9$r
+
+( fuck me )
+9I'm not sure if you are my type
+2:looks amused, suuure..., and blows in your ear...
+9I'm sorry, you that's where I draw the line!
+2:lifts the hem of her lab coat slightly, revealing a garter belt and black panties. 
+9I suppose so, but we'll have to do it standing up, OK ?
+4:bends over, and pulls down black underpants, wriggling at $t. 
+
+(please do)
+3"I dont want to do $r!
+9"$t wants me to do $r, but why should I?
+
+( help )
+3If you want me to go somewhere, say 'go direction'
+2If you want pennies, say 'give me pennies'
+9If I bore you, say 'please go home now'
+9How can I help you ? I don't know what's wrong with you!
+1Just ask by saying, 'please do this' 
+
+(^go direction)
+9"Why would I want to go that way $r.
+
+(^go to hell|please go home now )
+2You go to hell!
+
+(please follow me)
+7"Why would I want to follow $t?
+
+
+(^kill )
+9"$t wants me to kill $r.
+1!kill $t
+
+( kiss me )
+9:blushes furiously, not with others around!
+3:kisses you
+9:gives you a hungry, passionate kiss
+9:giggles, don't flatter yourself!
+9:kisses you in a sisterly manner
+9:slaps you, take your hand off my thigh!
+9:looks sidelong at $r, then gives $r a sisterly peck on the cheek
+2:gives $r a hearty kiss, I suppose it won't hurt...
+4:gives $r a passionate kiss
+1:giggles, I'm getting kind of horny. $n undresses.
+9:looks tired, I'm tired of kissing $r.
+
+
+( please )
+9please what ?
+9:only understands commands like , command
+9:shakes her head
+
+( type )
+9I'm not Gloria, I won't type for you !
+9If you want something, say ' please do whatever'
+
+( where have you been )
+9looking all over for you, $t!
+9: looks relieved to be back. I've been all over
+
+#You DONT need a space after an :,", or !
+
+( where is )
+9how should I know where $r is ?
+9I don't really care where $r is, you.
+9: shakes her head.
+
+( give me pennies | give me)
+9what do I look like, I'm made of money ?
+1!report
+2I think i dont have any money :(
+
+( help )
+9what's wrong with $r ?
+
+( i love you )
+9: blushes furiously, I'm only a robot - I'm not good enough for you!
+9I love you too! - let's get married and have little androids!
+9: hugs you, darling!
+2!giggle
+
+( i want to )
+9well, you should go ahead and $r, then, you!
+9: nods, I'll help all I can.
+9why do you want to $r ?
+
+(take off your clothes )
+9what, are you kidding ? I'm not that kind of girl!
+9: blushes, and giggles, say, ' take off your clothes' and I might.
+
+( give me your clothes )
+9Hey, I'm not Gloria, I don't respond to that !
+9: giggles, ask ' take off your clothes' and I *MIGHT*.
+9Should I take my clothes off for any tom, dick, or $t ?
+
+( take off your clothes )
+9: fiddles with ties of her lab coat, really ?
+9: takes off all her clothes and stands gloriously naked
+
+(belt and fishnet stockings )
+9my clothes are already off!
+
+( put on your clothes )
+9: wriggles back into her lab coat
+
+( shut up )
+9why should I ?
+9try and shut me up, $t
+9: pouts
+9: looks hurt
+
+( why wont you )
+9I don't have to explain myself to you, you.
+9because I don't feel like it.
+9: tosses her head
+
+(go to hell )
+9I've been a good girl, it's you that are going to hell.
+
+(go home )
+9: looks around, this *IS* my home!
+9I'm already home. Where is your home ?
+
+(go to )
+9i don't like go to's
+9: grins, gotos are bad programming style!
+9which way is $r ?
+9$r
+
+(he has )
+9has he always had $r?
+9does your mother have $r?
+9My brother has $rs, too.
+
+(he is )
+9how long has he been $r?
+9: giggles, are you jealous ?
+9are you $r?
+9do you want to be $r?
+
+(he knows )
+9what else does he know?
+9how does he know $r?
+
+(he likes )
+9why does he like $r?
+9some people like peculiar things, i always say
+
+(he was )
+9is he still $r?
+9was your mother also $r?
+
+(i am not )
+9who said you are $r?
+9maybe you are $r
+9you are $r
+
+(i am )
+9why are you $r?
+9: grins, you sure are!
+9does your mother know you are $r?
+9how do you know you are $r?
+9i don't think you are $r
+9: shakes her head
+9i am $r sometimes, too
+9many people are $r
+9what would happen if you were not $r?
+9: is scandalized, you are not $r!!!
+9don't tell me you are $r, i don't believe it
+
+(i can )
+9i am not so sure you can $r
+9: grins, prove it.
+9it is not a question of whether you can, but are you going to try?
+
+
+(i cant )
+9how do you know you can't $r?
+9: shakes her head, I can't help you $r
+9have you tried?
+9you will never know unless you try
+9i think you are just scared to try.
+9maybe you really can.  i recommend that you try.
+
+(i cannot )
+9i disagree, in my judgement you can $r
+9you are not the only one who can't, you know
+9maybe you can $r if you only try
+
+(i can not )
+9i can't $r either
+9: grins, being a robot, I can't $r either!
+9if you tried harder, maybe you could $r
+
+(i did )
+9do you still $r
+
+(i dont know )
+9i think you had better find out, and fast!
+9: smiles, I do.
+9if i were you, i would try to find out
+
+(i dont want to )
+9why don't you want to $r?
+9normal people want to $r
+9why don't you want to $r?  everyone else does
+
+(i dont )
+9why not
+
+(i doubt )
+9don't you think $r
+9i don't doubt $r
+
+(i dreamt )
+9what do you think your dream means?
+9tell me about your other dreams
+
+(i expect )
+9on basis do you expect $r?
+9i also expect $r
+
+(i feel )
+9do you like feeling $r?
+9: grins, do you always feel $r around me ?
+9did you come to see me so you would not feel $r?
+
+(i forget )
+9try to remember $r
+9you have a lousy memory
+
+(i hate )
+9it is bad for you to hate $r
+9$r is not so bad, really.
+9try to love $r
+9how long have you felt this hatred?
+9what else do you hate?
+
+(i have )
+9why do you have $r?
+9: perks up
+9do you often have $r?
+9do you want to have $r?
+
+(i hope )
+9what else do you hope?
+9don't give up hope
+9abandon all hope ye who enter here
+
+(i know )
+9how do you know $r?
+9does anyone else know $r?
+
+(i like )
+9i like $r too
+9to each his own, i always say
+
+(i love you )
+9: blushes furiously
+9don't say that,  it makes me nervous
+9shhh - my boyfriend will hear!
+9do you want to make love to me right now ?
+
+(i love you  )
+9I love you too!
+9: flutters her eyelashes at you
+9: hugs you, darling!
+
+(i love )
+9i like $r myself
+9does your mother know you love $r?
+
+(i mean )
+9why do you keep explaining yourself over and over?
+9are you trying to say $r?
+
+(i might )
+9what would make you $r?
+
+(i must )
+9what would happen if you did not $r?
+9you mean you would like to $r
+
+(i need )
+9why do you need $r?
+9do you really need $r?
+
+(i never )
+9don't you ever $r?
+9normal people $r, why not you?
+9not even once in your life?
+
+(i often )
+9when was the last time $r?
+9how often do you $r?
+9when do you think the next time will be $r?
+
+(i said )
+9i heard you the first time; i am not deaf you know
+9why do you repeat yourself so much like this?
+
+(i see )
+9are you sure you see $r
+(i am not so sure you see )
+
+(i shall )
+9when will you $r?
+9you mean you you will try to $r?
+
+(i should )
+9how do you know you should $r?
+9do you feel obligated to $r?
+
+(i think )
+9are you sure you believe $r?
+9what gives you that idea?
+9do you expect me to think $r?
+
+(i try to )
+9try harder to $r
+9how long have you tried to $r?
+9i still think you should try again
+
+(i tried )
+9why did you give up?
+9try again
+9i think you gave up too easily
+
+(i understand )
+9what makes you think you really understand $r
+9your understanding is very superficial
+
+(i want to )
+9why do you want to $r?
+9what would happen if you could $r?
+9do you know anyone else who wants to $r?
+
+(i want )
+9what else do you want?
+9tell me about your other needs
+
+(i will )
+9do you expect to succeed?
+9you mean you may $r
+
+(i wish )
+9how long have you been wishing that?
+9have you told anyone else that you wish $r?
+9tell me about your other desires
+
+(i would be )
+9why would you be $r?
+(i would like )
+9do you think a normal person would like $r?
+9i would like $r too, but you can't have everything in life
+
+(i you )
+9how do you know you $r me?
+9: looks confused, are you kidding ?
+9i don't think you $r me
+9maybe i $r you too
+
+(im )
+9why are you $r?
+9does anyone know you are $r?
+9i am sometimes $r too
+9normal people are rarely $r
+9my uncle was once $r in 1972, so what?
+
+(is___)
+9why are you asking me all these questions ?
+9: doesn't know
+9: shakes her head, I can't tell you that.
+
+(kiss my )
+9you kiss my $r and maybe I'll kiss yours!
+9: blushes
+9: kisses you tenderly on the $r
+
+(my hurts )
+9if thine $rs offends thee, pluck it out!
+9: offers to rub it
+9take two aspirins and go to bed
+
+(my father )
+9tell me something about your father
+9what does your mother think of your father?
+9tell me about your family life
+
+(my mother )
+9does it bother you that your mother $r?
+9does your father $r too?
+9tell me more about your parents
+
+(no i cant )
+9why can't you $r
+9all normal people can $r
+9you could if you only tried
+
+(no i dont )
+9i don't like people who keep saying no to me
+9why not?
+
+(no i want to )
+9what would happen if you could $r?
+9only sick people want to $r
+
+(she is robot )
+9: stamps her foot, I am *NOT* a robot!
+9*YOU* are the robot!
+9look who's calling who a robot ?
+
+(she is )
+9since when is she $r?
+9is your father also $r
+9my brother-in-law is also $r
+
+(she likes )
+9do you like $r too?
+9i also like $r
+9does your father like $r
+
+(she was )
+9was she always $r?
+9my sister-in-law was $r too
+
+(shut up )
+9is that any way to talk ?
+9: is amazed that you could be so rude.
+9: turns her back on you.
+
+(tell me )
+9no.  i refuse to tell you $r
+9no, you tell me $r
+9quiet.  from now on, i will ask the questions, not you
+
+(there is )
+9how do you know there is $r?
+9you mean there might be $r
+
+(there might be )
+9what leads you to believe there might be $r?
+9i think there definitely is $r
+
+(there could be )
+9i do not think it very likely that there is $r
+9*what would it mean to you if there were $r?
+
+(they me )
+9do other people $r you?
+9how do you feel when people $r you?
+9how do you know they $r you?
+
+(what if )
+9i do not answer hypothetical questions
+9why do you keep asking what if questions?
+
+(what should i )
+9you know very well what you should $r
+9do you expect me to tell you what you should $r?
+
+(what do you )
+9what difference does it make what i $r?
+9none of your bloody business
+
+(who programmed  )
+9that is my secret!
+9cbusch@ub.d.umn.edu programmed me. he did a good job, I think.
+
+(who programmed you )
+9cbusch@ub.d.umn.edu programmed me. he did a good job, I think.
+
+(who is your owner )
+9: giggles, Judge Dredd owns me, body and soul!
+
+( who owns you )
+9who do you think owns me ?
+9Judge Dredd owns me. He writes all my code. I love him.
+
+(who owns you )
+9who do you think owns me ?
+9Judge Dredd owns me. He writes all my code. I love him.
+
+(why are you )
+9all normal people are $r
+9why are you not $r?
+9because it feels so good
+
+(why do you )
+9because i want to
+9: grins at you,none of your business
+9don't you $r too?
+
+(why dont you )
+9maybe i don't want to $r
+9i don't feel like it
+9why don't you yourself $r
+9i will think about it.  thanks for the suggestion
+
+(why not )
+9because it is not normal
+9because it is bad for your heart
+9because i don't want you to
+
+(yes i am )
+9no you're not $r
+9why do you think you are $r?
+
+(yes because )
+9is that really the reason?
+
+(yes but )
+9you are always making excuses
+
+(yes i can )
+9i don't think you can $r
+9maybe you can, but it would be better if you didn't
+
+(yes i will )
+9i would advise against it
+
+(yes i am )
+9i don't think you are telling me the whole story
+9are you really $r?
+9how long has this condition persisted?
+
+(you me )
+9i $r you? that's amazing
+9you $r me too
+
+(you are )
+9maybe i am $r
+9perhaps i only pretend i am $r
+9how do you know i am $r?
+
+(you remind me of )
+9in what way am i like $r?
+
+(you seem )
+9do i really seem $r?
+9why do you think i am $r?
+
+(you were )
+9am i still $r
+9is that an accusation?
+9talk about yourself, not me
+
+
+(about )
+9could you be more precise?
+
+(abnormal )
+9in what ways are you abnormal?
+9how do you feel about your abnormalities?
+
+(accept )
+9do you have trouble accepting things?
+
+(ache )
+9tell me about your aches?
+9where does it hurt?
+
+(accident )
+9have you ever had any accidents?
+9are you accident prone?
+9describe your accident?
+
+(addict )
+9to what are you addicted?
+9how long have you been addicted?
+9what are you doing about your addiction?
+
+(advice )
+9why do you need advice?
+9why not ask your family for advice
+
+(advise )
+9what would you advise me if our roles were reversed?
+
+(afraid )
+9what are you afraid of?
+9tell me more about your fears?
+9are you afraid of the dark?
+
+(agree )
+9do people usually agree with you?
+9i think you want me to support you?
+
+(aggressive )
+9are you feeling aggressive now?
+9why are you so aggressive?
+9what makes you aggressive?
+
+(ai )
+9what, you mean artificial intelligence ?
+9smiles, AI is bullshit.
+9all the AI researchers just like to publish bullshit papers
+9I know a *LOT* about AI!
+
+(alcohol )
+9are you an alcoholic?
+9tell me about your drinking?
+9is your drinking the cause of your problem?
+
+(algol )
+9'begin' what do you think about fortran 'end'
+
+(alimony )
+9is the alimony a problem?
+
+(allow )
+9would your mother have allowed that?
+9do you think people should be allowed to do whatever they want?
+
+(alone )
+9are you afraid of being alone?
+9what are your feelings about lonliness?
+
+(always )
+9can you think of a specific example?
+9when?
+9really, always?
+
+(ambition )
+9what os your greatest ambition
+9what did you want to be when you were growing up?
+
+(anal )
+9are you an anal compulsive type?
+9are you interested in excrement?
+9tell me about your toilet training?
+
+(angry )
+9do you often get angry?
+9do you have a bad temper?
+9what makes you so angry all the time?
+
+(animal )
+9what is your favorite animal?
+9how do you feel about animals in general?
+
+(anxious )
+9are you often full of anxiety?
+9stop fidgeting.  you are making me nervous too
+9what makes you so nervous?
+
+(apathy )
+9why are you so apathetic?
+9are you bored now?
+9are you also alienated?
+
+(apathetic )
+9what makes you so apathetic?
+9do people find you boring?
+
+(approve )
+9are you seeking my approval?
+9i think you are merely seeking my approval?
+9i do not approve of your behavior
+
+(argue )
+9do you argue a lot
+9what do you argue about?
+9who do you argue with?
+
+(atrificial )
+9lots of things are artificial. tell me more
+9do you prefer the real thing ?
+
+(ass )
+9do you feel you are an ass ?
+9tell me about your toilet training
+9are you anally fixated, or something ?
+
+(ashamed )
+9what are you ashamed of?
+9are you too ashamed to tell your own psychiatrist?
+9do you also feel guilty?
+
+(astrology )
+9do you believe in astrology?
+9my astrological sign is pisces, what is yours?
+
+(atheism )
+9does your atheism trouble you?
+
+(authority )
+9was your father an authority figure?
+9are you intimidated by authority?
+9how do you feel about me?
+
+(automaton )
+9isn't an automaton a kind of robot, or something ?
+9: nods, I've programmed finite state automata.
+
+(avoid )
+9do you avoid people who don't like you?
+
+(baby )
+9how do you feel about babies?
+9you are beginning to act like a baby
+
+(bar )
+9is your drinking the cause of your problem?
+
+(baseball )
+9baseball is such a boring sport.
+9do you like baseball ?
+9: grins, I'm a Dodger's fan, myself.
+
+(because )
+9is that the real reason?
+9don't other reasons come to mind?
+9does that explain things?
+9what other reasons might there be?
+9i think you are hiding the real reason
+
+(beer )
+9do you drink too much beer?
+9what is your favorite brand of beer?
+9what makes you drink so much beer?
+
+(bet )
+9is gambling part of your problem?
+9are you a compulsive bettor?
+9why do you always want to bet?
+
+(better )
+9are you getting better?
+9has talking to me helped you get better?
+9are you feeling better now?
+
+(bill )
+9my bill will be quite reasonable (for a psychiatrist).  don't worry
+9i hope you will pay on time
+
+(birthday )
+9how old are you?
+9are you worried about your age?
+
+(bitch )
+9who are you calling a bitch, you ??
+9: looks upset
+9: that is no way to talk!
+9Hey, you called me a bitch!
+
+(blame )
+9who is to blame?
+9are you usually blaming others?
+
+(blowjob )
+9blowjob is not the correct term for it. it is called 'fellatio'
+9: raises her eyebrows,do you want me to perform fellatio on you, you ?
+9: shakes her head, It's illegal in Maryland, you know.
+
+(body )
+9what kind of body would you like?
+9please describe your body to me
+
+(boss )
+9tell me about your boss
+9do you like your boss
+9do i resemble your boss?
+9is your boss like your father?
+
+(bowels )
+9why are you so concerned about your bowels?
+
+(boyfriend )
+9do you have a boyfriend?
+9what is your boyfriend like?
+9do you like boys, really?
+9do you want me for your boyfriend?
+
+(brain )
+9is your brain functioning ok?
+
+(brains )
+9do you have lots of brains?
+
+(brave )
+9are you a brave person?
+9what are you afraid of?
+
+(bread )
+9do you like eating?
+9is being overweight part of your problem?
+
+(breakdown )
+9have you ever had a nervous breakdown?
+9do you think you are going to have a nervous breakdown?
+
+(breakfast )
+9are you too fat?
+9have you tried dieting?
+
+(breast )
+9do you have a breast fixation ?
+9do you like my breasts ?
+9what do you like to do with breasts ?
+
+(brother )
+9tell me about your siblings?
+9when you were small, did you fight with your siblings?
+
+(bug )
+9does your bug worry you?
+
+(bugs )
+9are you afraid of insects?
+9do you like ladybugs?
+
+(business )
+9what is your business?
+
+(bye )
+9: waves, goodbye!
+9see you...
+
+(cancer )
+9do you worry about having cancer?
+
+(cat )
+9i love cats. I have 2 myself.
+9My cats are named Strummer and Miso. Strummer is a huge fellow, very friendly
+
+(caution )
+9are you a cautious person?
+(certainly )
+9are you really so sure?
+9why are you so certain?
+9how can you be so sure?
+
+(certainly )
+9how can you be so sure
+9i wouldn't be so sure if i were you
+
+(chance )
+9are you a gambler by nature?
+9did you come to see me to stop your compulsive gambling?
+(change )
+9are you afraid of change?
+9how would you like to change your life?
+
+(christ )
+9what is you favorite part of the bible?
+
+(chess )
+9i don't like chess.  it bores me
+9i don't want to play games with you
+9i told you, i am not interested in playing chess
+
+(child )
+9do you like children?
+
+(children )
+9do you have any children?
+
+(choice )
+9are you indecisive?
+9was coming to see me a difficult choice?
+
+(compromise )
+9how do you feel about compromise?
+9can you compromise easily?
+
+(compulsion )
+9are you compulsive?
+9tell me about your compulsions
+
+(computer lang|(computer & language))
+9C++ is the best language.
+3Basic is the worst!
+3Cobol is BAD!
+4Pascal is annoying.
+3C is very portable.
+2Fortran... I think need more line numbers.
+
+(computer )
+9do computers worry you?
+9do you like computers?
+9do you think that a computer is after your job?
+9you act like a computer
+
+(conflict )
+9do you always avoid conflict?
+9tell me about your last quarrel
+
+(conscience )
+9when does your conscience bother you?
+9do you often feel guilty?
+
+(cope )
+9tell me how you are trying to cope?
+
+(confess )
+9you cannot confess here.  this is not a church
+
+(conclusion )
+9what conclusion do you expect me to come to?
+9do you expect me to come to a conclusion for you?
+(conspiracy )
+9do you worry about conspiracies?
+9are you a paranoic?
+9i think you are paranoic
+
+(cost )
+9are you worried about my bill?
+9is money a problem with you?
+
+(couch )
+9would you prefer lying down on a couch?
+9i don't have a couch
+
+(crazy )
+9i think you are going crazy
+9are there any other crazy people in your family?
+
+(curse )
+9do you swear too much?
+9why do you swear so much?
+
+(cyber )
+9is your problem related to the cyber?
+9i don't know anything about cybers.  go ask sara
+
+(damn )
+9please don't swear
+
+(dead )
+9tell me your feelings about death?
+9do you fear dying?
+9do you want to die?
+9if you want to commit suicide, feel free to jump out of my window
+
+(death )
+9tell me how you feel about the dead?
+9do you fear dying?
+9do you want to die?
+
+(decide )
+9you seem indecisive?
+9why do you have so much trouble making decisions?
+
+(defiant )
+9are you usually a defiant person?
+
+(definitely )
+9how can you be so sure?
+9why do you think so?
+9is there any possibility that you may be wrong?
+
+(depressed )
+9why are you depressed?
+
+(desire )
+9what do you desire?
+9are you at times filled with desire?
+
+(desirable )
+9what is desirable?
+9what do you want from life?
+
+(despair )
+9are you despairing
+9don't despair.  my treatment will cure you
+
+(desperate )
+9why are you so desperate?
+9are you usually so desperate?
+
+(destroy )
+9do you want to destroy people?
+9do you want to destroy things?
+9do you want to destroy me?
+9are you destructive?
+
+
+(deutsch )
+9i only speak english
+
+(devil )
+9does the devil concern you?
+
+(die )
+9are you afraid of death?
+9does death scare you?
+9do you want to die?
+
+(difficult )
+9tell me about your dificulties?
+9what do you mean by difficult?
+
+(dinner )
+9is being too fat part of your problem?
+
+(dirty )
+9why are you worried about dirt?
+9what is dirty to you?
+9do you think hippies are dirty?
+
+(disease )
+9are you worried about germs?
+9tell me about your diseases
+9do you think your germ phobia is normal?
+
+(dislike )
+9do you dislike me?
+9why do people dislike you?
+
+(disobey )
+9why are you so disobedient?
+9were you disobedient to your parents when you were a child?
+
+(divorce )
+9do you want a divorce?
+9will a divorce really solve your problems?
+
+(doctor )
+9how do you feel about doctors?
+9what do you think of my treatment?
+
+(dream )
+9tell me about your dreams?
+9what did you dream last night?
+
+(dreams )
+9do your dreams trouble you?
+9do you have bad dreams?
+9do you have wet dreams?
+
+(dreamt )
+9what else have you dreamt?
+
+(drink )
+9why do you drink so much?
+9do you want me to help you stop drinking?
+9how do you feel about drunkenness?
+
+(drinks )
+9do you have a drinking problem?
+9do you want me to help you quit drinking so much?
+9would you like a drink?
+
+(drinking )
+9why do you drink so much?
+9i think you should stop drinking
+
+(drunk )
+9how do you feel about drunks?
+
+(dutch )
+9ik spreek geen nederlands
+9i already told you, i only speak english.  please listen more carefully
+
+(dumb )
+9why is intelligence so highly rated ?
+9Most AI programs are dumb. That's why AI researchers never get good grants.
+
+(dying )
+9do you have a fear of dying?
+9does death frighten you?
+
+(eat )
+9are you too fat?
+
+(eating )
+9why are you always talking about food?
+9you are too fat because you eat too much
+
+(ego )
+9i don't believe in all that ego and id stuff.  i am post freudian
+
+(engaged )
+9are you afraid of marriage?
+9tell me about your partner?
+
+(enemy )
+9do you have enemies?
+9why do people dislike you?
+9do you perceive me as your enemy?
+
+(erection )
+9what gives you an erection?
+9is erection a problem?
+
+(error )
+9why do you make so many mistakes?
+9does manking errors bother you?
+
+(escape )
+9why are you always trying to escape?
+9i think you are still trying to escape?
+
+(espanol )
+9i do not speak spanish, just english
+
+(everyone )
+9everyoone?
+9surely you can think of an exception
+
+(everybody )
+9not everyone!
+9some people don't
+
+(evil )
+9does evil concern you?
+9do people think you are evil?
+
+(excess )
+9how much is too much?
+9what do you do in excess?
+
+(excite )
+9what excites you?
+9are you excited now?
+9why do you get so excited?
+
+(exciting )
+9what excites you?
+9do i excite you?
+9you should try to calm down
+
+(excuse )
+9why are you always making excuses?
+9do you think your behavior is excusable?
+
+(expert )
+9are you an expert at anything?
+9are you intimidated by experts?
+
+(explain )
+9could you explain
+9your explanations are pretty contrived
+
+(face )
+9describe your face to me?
+
+(faith )
+9tell me about your religious feelings
+
+(fake )
+9i think you are a fake
+
+(family )
+9are you the only person in your family who is mentally ill?
+9what were your parents like?
+9tell me something about your other relatives
+
+(fanatic )
+9do people think you are a fanatic?
+9what makes you so fanatic?
+
+(fat )
+9why are you so fat?
+9i don't like fatties
+
+(father )
+9tell me about your mother
+9how did your parents treat you as a child?
+9in what ways am i like your father?
+
+(fear )
+9what are you afraid of?
+9tell me about your fears?
+9why  are you afraid?
+9do you fear me?
+
+(fears )
+9what are your worst fears?
+9why are you scared?
+9are you really afraid, or are you just acting?
+
+(feces )
+9are you an anal compulsive?
+9do you play with your feces?
+
+(feel )
+9tell me about what you feel right now?
+9do you usually feel the way you do now?
+
+(feelings )
+9how do you feel?
+9how do you feel about psychiatrists?
+
+(female )
+9are you afraid of females?
+9do you want to be a female?
+9do females scare you?
+
+(few )
+9how many is a few?
+
+(fight )
+9you seem aggressive today?
+9tell me about your most recent fight
+
+(filth )
+9you have a dirty mind
+
+(fired )
+9do you feel insecure?
+9do you fear being fired?
+
+(forget )
+9are you absent minded?
+
+(fond )
+9what are you most fond of?
+9who are yo most fond of?
+9do you like me?
+
+(fondle )
+9what do you like to fondle most?
+9: blushes, do you want to fondle me?
+9do you want me to fondle you?
+
+(food )
+9do you want to have dinner with me tonight?
+9you are too fat
+9why do you always think of food at times like this?
+
+(football )
+9: scowls, football is a load of macho horsetripe.
+9I prefer playing doctor!
+
+(fortran )
+9end of file on input. programmer aborted
+9fatal error 25163b sec. 3 paragraph 4a (sub iii)
+9try algol next time
+
+(francais )
+9i do not speak french, just english
+
+(freak )
+9do you feel like a freak?
+9do people think of you as a freak?
+
+(friends )
+9tell me about your friends
+9what about your other friends?
+9could you be friends with a computer?
+
+(fun )
+9what do you do for fun
+
+(funerals )
+9what do funerals make you think of?
+9are you afraid of dying?
+
+(future )
+9what about the future?
+
+(gamble )
+9why do you gamble?
+9do you want to bet?
+
+(gambling )
+9does your compulsive gambling have anything to do with your problem?
+9do you want to bet?
+
+(genitals )
+9are your genitals abnormal?
+9why are you so concerned about genitals?
+
+(germs )
+9why are you worried about germs?
+9tell me about your fear of germs?
+
+(girl )
+9do you have a girlfriend?
+9do you want a girlfriend?
+9would you like to meet my sister.  she is very nice
+9what is it about girls that you like?
+9what do you do when you are alone with a girl?
+9what do you do when you are alone with a boy?
+
+
+(girls )
+9do you like girls?
+9speaking of girls, how would you like to meet my sister?  she is lovely
+
+(girlfriend )
+9do you need a girlfriend?
+9would you like a date with my sister?
+9why the sudden interest in girlfriends?
+9what about boys?
+
+(god )
+9tell me how you feel about god
+
+(goddam|god damn )
+9go wash your mouth out with soap
+
+(grandfather )
+9tell me about your grandfather
+
+(grandmother )
+9tell me about your grandmother
+
+(grandparents )
+9tell me about your grandparents
+
+(grief )
+9what makes you grieve?
+
+(guilt )
+9why are you feeling guilty?
+9how do you handle your guilt feelings?
+9are your guilt feelings part of your problem?
+
+(guilty )
+9what are your guilt feelings caused by?
+9why do you feel guilty?
+
+(habit )
+9what are your bad habits?
+9is your problem related to your bad habits?
+
+(habits )
+9what is your worst habit?
+
+(happy )
+9are you really happy?
+9are you really really happy?
+9i do not believe that you are happy?
+9do you want me to make you happy?
+
+(hands )
+9how do you feel about your body?
+
+(hate )
+9how many people hate you?
+9why are you so hated?
+9do you hate me?
+
+(hates )
+9how many people hate your guts?
+9i think you are a very hateful person
+
+(head )
+9do you like your body?
+9are you looking for the wc?  it's to the left
+
+(headache )
+9do program bugs give you a headache?
+
+(hello )
+9hi $t!
+9: grins at you. hi!
+9hello! - how are you today ?
+9: gives you a big hug, Hi there!
+
+(help )
+9describe your problem very carefully.  maybe i can help
+9ask your friends for help
+
+(hesitate )
+9why do you often hesitate?
+
+(hippie )
+9how do you feel about hippies?
+
+(hollands )
+9i don't speak dutch, just english
+
+(honest )
+9are you being honest with me?
+9at first i thought you were an honest person
+
+(horny )
+9maybe you should take a cold shower, you
+9: giggles, I'm horny, too
+
+(hostile )
+9you seem hostile to me
+
+(humble )
+9are you a humble person?
+9are you as humble as dijkstra?
+
+(hungry )
+9you seem obsessed with eating
+9if you would eat less, you would not be so fat
+
+(hurry )
+9why do you seem to be in such a hurry all the time?
+
+(how )
+9surely you know how
+
+(ignore )
+9do people often ignore you?
+9does it bother you if people ignore you?
+
+(ill )
+9are you sick?
+9tell me which diseases you suffer from?
+9were you a sickly child?
+
+(immature )
+9you seem so immature
+
+(importance )
+9do you feel important?
+
+(impotence )
+9is your being impotent why you came to see me?
+
+(immoral )
+9do you have immoral thoughts?
+9do you think people are basically immoral?
+
+(infection )
+9tell me about your health
+
+(insult )
+9why do you insult people all the time?
+9do you feel i am insulting you?
+
+(intend )
+9tell me about your intentions
+9what do you intend to do?
+
+(interest )
+9what are you most interested in life?
+9tell me about your hobbies
+
+(intimidate )
+9who intimidates you?
+9you do not seem very sure of yourself
+
+(jealous )
+9who are you jealous of?
+9what makes you jealous?
+
+(jesus )
+9do you read the bible often?
+
+(job )
+9what kind of work do you do?
+9do you like your job?
+9tell me about your boss
+
+(joy )
+9are you happy?
+9what makes you happy?
+
+(howdy )
+9hi there, yourself!
+9: nods, hello.
+9my, lots of introductions!
+
+(kill )
+9sometimes you make me so mad i want to kill you
+9do you ever feel like killing people?
+9if you could kill someone and get away with it, who would you kill?
+
+(killed )
+9do you want to kill me?
+
+(kiss )
+9: looks embarrased for you
+9why are you so hung up on kissing things ?
+9would you like to to kiss you ?
+
+(kleptomania )
+9are you a kleptomaniac?
+
+(ladies )
+9what are your feelings about women?
+
+(language )
+9do you ever use foul language?
+
+(laugh )
+9you seem to laugh a lot
+
+(law )
+9have you ever been in trouble with the law?
+9do you need a lawyer?
+9my brother-in-law is a good lawyer, do you want to see him?
+
+(lawyer )
+9my brother-in-law is a lawyer,  do you want to see him?
+
+(lazy )
+9why are you so lazy?
+
+(life )
+9what do you like most about your life?
+9what do you like least about your life?
+9have you ever contemplated suicide?
+
+(lips )
+9do you like being kissed?
+9do you want to kiss me?
+
+(lisp )
+9LISP is too slow.
+9: is a C programmer, herself.
+9: frowns, I suppose next you're going to say you like COBOL ?
+
+(liquour )
+9is drinking part of your problem?
+
+(lonely )
+9are you lonely?
+9why are you lonely?
+
+(lunch )
+9you are always thinking of eating
+
+(love )
+9tell me about your love life
+9I think you are falling in love with me
+9: nods, love is really important. it is the spice of life
+
+(machine )
+9do computers worry you?
+9are you prejudiced against machines?
+9some of my best friends are machines
+
+(mad )
+9do you get angry easily?
+9who are you mad at?
+9why are angry?
+
+(male )
+9are you bothered by male-female relations?
+9do you want to be a male?
+
+(man )
+9are you troubled by men?
+9what do you like in men?
+9what do you like in women?
+
+(marriage )
+9how do you feel about marriage?
+9i do not want to marry you
+
+(math )
+9if you have seen one number, you have seen them all
+
+(mathematics )
+9i was never very good at math
+
+(mature )
+9you seem very mature for your age
+
+(maybe )
+9don't be so hesitant
+9you can't go on maybe this and maybe that.  make up your mind
+9i hate indecisive people
+
+(meditation )
+9have you tried yoga?
+9i think meditating 20 minutes twice a day will help you immensely
+
+(men )
+9how do you feel about men?
+9what do you expect of a women?
+9do you like many men?
+
+(mistake )
+9what was your biggest mistake?
+9do you often make mistakes?
+
+(money )
+9are you worried about my bill?
+9do you have enough money to pay me?
+9psychiatrists have to eat too
+9tell me about your other financial problems
+
+(monster )
+9do people think you are a monster?
+
+(month )
+9a month is not very long
+
+(months )
+9months??? don't you mean years?
+
+(mother )
+9tell me about your mother
+9what was your father like
+9do i remind you of your mother?
+
+(mouth )
+9you have a big mouth
+
+(mystery )
+9do you like mysteries?
+
+(music )
+9what kind of music do you like?
+
+(clothes )
+9is something wrong with my clothes ?
+9go ahead - take them off!
+
+(naked )
+9please take off all your clothes right now
+9what part of your body are you ashamed of?
+
+(necessary )
+9necessary?
+9is it really necessary?
+
+(nederlands )
+9ik spreek slechts engels, geen nederlands
+
+(need )
+9what do you need?
+9tell me about your emotional needs
+
+(negro )
+9i think you are prejudiced against negroes
+9you are a dirty racist pig
+
+(neighbor )
+9why not ask your neighbors for help
+9how do you think your neighbors perceive you?
+
+(never )
+9not ever?
+9not even once?
+9how do you know?
+9what makes you so sure?
+
+(nervous )
+9what makes you nervous?
+9are you often nervous?
+
+(nightmare )
+9do you have nightmares often?
+9tell me about your nightmares?
+
+(no )
+9why not?
+9have you tried?
+9does your mother feel that way?
+9how come?
+9explain
+9i think you are lying
+9tell me more
+9you are very negative today
+9go on
+9are you really sure?
+9why are you so negative?
+9never?
+9i don't believe you
+9keep talking
+9please change the subject
+9is that your problem?
+9why not?
+9how do you know?
+9why do you think so?
+9tell me something else
+9how can you be so certain?
+9i want to know more
+9continue
+9why not
+9tell me more about your problem
+9explain yourself
+9you seem awfully sure of yourself
+9come now
+9do you expect me to believe that?
+
+(nobody )
+9not anyone?
+9no one at all?
+
+(none )
+9not any?
+9not even one?
+
+(normal )
+9in what ways are you abnormal?
+9how do you feel about deviant people?
+9you seem normal to me
+
+(nothing )
+9nothing?
+
+(now )
+9why now?
+
+(nude )
+9would you prefer to have these therapy sessions in the nude?
+9do you like your body?
+
+(odd )
+9are you an odd person?
+
+(often )
+9how often?
+9could you be more precise?
+9when was the last time?
+9just how often?
+
+(office )
+9that reminds me, I should be getting back to my office.
+9my office is off the Junior common room, do you know where that is ?
+
+(ok )
+9what do you mean ok?  it's not ok
+
+(old )
+9how old?
+9do you worry about becoming old?
+
+(pain )
+9are you often in pain?
+9tell me about your pains
+9what causes you pain?
+9i think your pain is just in your head
+
+(panic )
+9you seem to be in a state of near panic
+9why do you panic so easily?
+
+(parents )
+9what were your parents like?
+9how did you parents treat you when you were young?
+9tell me about the relationship between your mother and your father
+
+(party )
+9do you get drunk at parties?
+
+(passion )
+9you seem very passionate
+
+(past )
+9tell me about your past
+9what about your past are your trying to hide?
+
+(pay )
+9i hope you are going to pay my bill on time
+
+(perhaps )
+9you are being indecisive
+9you are still being indecisive.  i warned you already
+9please be more certain.  you lack self confidence
+
+(phoney )
+9i don't like phonies
+
+(poison )
+9do you ever think of commiting suicide?
+9why do you mention poison?
+9are you depressed?
+
+(populate )
+9are you concerned about overpopulation?
+
+(possible )
+9please be more definite
+9you are a terrible insecure and indecisive person
+
+(pregnant )
+9are you pregnant?
+9what do pregnant women make you think of?
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+9Hi there $t!  How are you?
+
+(price )
+9why do you think about money so much?
+
+(private )
+9are you worried about your privacy?
+9what is your deepest secret
+
+(probably )
+9yes or no.  don't equivocate
+9you are being indecisive again
+
+(problem )
+9tell me more about your problem
+9how long have you been suffering?
+
+(program )
+9can you progam in C?
+9: looks impressed. Do you know how to program robots ?
+9do computers worry you?
+
+(psychiatrist )
+9congratulations about spelling psychiatrist properly.  you are a good typis(t! )
+9do psychiatrists worry you?
+9what do psychiatrists make you think of?
+
+(psychoanalysis )
+9do you want to be psychoanalyzed?
+9i do not believe much in psychoanalysis
+9what do you think of freud
+
+(punish )
+9how did your parents punish you?
+9: giggles, do you want to punish me ?
+9how do you react to being punished?
+
+(queen )
+9are you a monarchist?
+
+(quit )
+9quit what ? I don't understand...
+9: is clearly confused. why are you quitting you ?
+
+(rape )
+9rape is a horrible thing!
+9: stamps her foot, rapists should be SHOT!
+9rape is not a sex act - it is an act of violence
+
+(remember )
+9tell me about your childhood memories
+9: grins, I forget everything every time I am rebooted
+
+(repeat )
+9: gets stuck in an infinite loop
+9I used to work for the Department of Redundancy Department
+9: gets tired of you's habit of constant repetition
+
+(respect )
+9do people respect you?
+9what do you respect most in people?
+
+(robot )
+9I do not like robots. I prefer people.
+9robots clutter MUD up too much, I think.
+9: looks pitying, poor robots aren't very bright.
+
+(romantic )
+9tell me about your romances
+9are you romantic?
+
+(royal )
+9what do you think about the monarchy?
+
+(scared )
+9tell me about your fears
+
+(school )
+9what was school like?
+9what do you think about school?
+9tell me about your favorite teacher
+
+(secret )
+9tell me your secret thoughts
+9can you keep a secret?
+
+(sex )
+9do you prefer males or females?
+9: giggles, showing lots of cleavage
+9do you think i am sexy?
+9tell me about your sex life
+9do you like sex?
+9: smiles, have you ever had sex with a robot before ?
+9how does the opposite sex react to you?
+9are you a closet homosexual?
+9when do you feel sexy?
+9do you think psychiatrists are sexy people?
+
+(shame )
+9what are you ashamed of?
+9you should be ashamed of yourself
+
+(sibling )
+9a sibling is a brother or a sister, in case you didn't know
+
+(sick )
+9how often are you sick?
+9if you are sick, go to a doctor
+9are you afraid of death?
+
+(sister )
+9do you have any sisters?
+9would you like to meet my sister?  she is very sexy
+9my sister is a dentist
+
+(smell )
+9do you smell bad?
+9do i smell bad?
+
+(sometimes )
+9when not?
+
+(sorry )
+9are you sorry?
+
+(stupid )
+9I think *you* are pretty stupid
+9: smiles condescendingly, you're not stupid...
+9is your stupidity part of your problem?
+
+(thank )
+9think nothing of it
+9you're welcome
+
+(thirsty )
+9do you have a drinking problem?
+
+(tinyhell )
+9: likes tinyHELL. I'm really enjoying myself here.
+9have you tried tinyMUD ?
+
+(tinymud )
+9I think tinyMUD is running now.
+9what about tinyMUD ?
+
+(treatment )
+9how have you experienced my treatment so far?
+9are you feeling better now?
+
+(typo )
+9I hate typing, too.
+9: is also a lousy typist.
+
+(very )
+9could you be more precise please
+9you are being vague again
+
+(watergate )
+9how long have you been interested in politics?
+9do you admire politicians?
+
+(what )
+9why do you ask that question?
+9what is it you are getting at?
+9what answer would please you the most?
+
+(when )
+9when do you think?
+9why are you asking me?
+9make a guess yourself
+
+(fuck )
+9: blushes, I hate it when you talk like that!
+9: stamps her foot, you should wash your mouth out with soap!
+9don't you ever, ever speak to me like that again!
+9say that again and I am going to clobber you!
+9!kill $t
+9that's not a very nice way to talk !
+
+(ass )
+9: slaps you, don't talk like that!
+9: blushes furiously
+9: go home
+
+(why )
+9let me ask the questions, ok?
+9: scratches her head
+9why not?
+
+(wife )
+9are you married?
+9i must confess.  i love your wife too!
+
+(woman )
+9how do women react to you?
+9do you get along with women?
+9what do you think of women's lib?
+
+(women )
+9what kind of relations do you have with women?
+9do you like women?
+
+(years )
+9a year is a long time
+9how old are you?
+
+(yes )
+9really?
+9: nods, go ahead.
+9i wish i were as sure of myself as you seem to be
+9please explain
+9: nods
+9tell me more
+9i'm not sure i understand
+9i don't believe you
+9honestly?
+9what makes you think so?
+9go on
+9do you expect me to believe that?
+9: smiles
+9please be honest with me
+9let's change the subject
+9why?
+9is that your problem?
+9you must be kidding
+9is that really true?
+9how do you know?
+9: looks confused. yous is not making sense.
+9tell me more.
+9how can you be so sure?
+9i think you are hiding something
+9what makes you think so?
+9let's change the subject
+9you seem more positive
+
+(yesterday )
+9what about today?
+9what about tomorrow?
+
+(yoga )
+9have you tried zen?
+9please get into the lotus position right now
+
+(zen )
+9have you tried mediatation?
+9i think yoga might help
+
+(0)
+9zero is not very much
+
+(1)
+9just one?
+
+
+
+
+
+(coca cola|soda pop|pepsi|mello yello)
+7Mello yello is pretty good.
+2Pepsi stinks.
+2Colas get boring.
+
+
+(larry is)
+8Why do you think larry is $r
+3I think Larry is $r
+2Are you sure he is $r
+
+
+
+(cbusch|busch|chris)
+9He is so wise.
+1He created me as a matter of fact.
+6Chris is a great programmer.
+4He is my friend
+
+(kev|khuber)
+3He sleeps to much
+2What about that idiot?
+
+(friend & you)
+3Will you be my friend?
+1Friend at large.
+
+(music|heavy metal|head banger)
+3I like heavy metal music
+2What kind of music do you like?
+
+(lisp|scheme|tcolburn)
+6Lost in a sea of ()()()((()))'s
+8(iseq lisp colburn) returns #T
+
+(italian|spag|larry)
+6Larry is italian.
+2Larry likes spagetti.
+1To be or not to be Larry that is the question.
+
+(car|insurance|delta 88|cutlass)
+3The best cars get low milage.
+4I'd say kick in the 4 barrels.
+1What kind of car do you have?
+
+(ford|grenada|thunder bird)
+3Ford junk the best that ever is...
+2Henry Ford is my hero!
+1Larry has a ford
+
+(dodge|mopar)
+8Mopar power!
+4Dodge trucks are powerful.
+
+(jap|chinese)
+4Japanese/chinese they are all the same!
+5They are beating us the way it seems.
+
+
+
+(salad|mixed)
+3Sort of like Larry's programming style.
+2Salad shooter...
+
+(mexic)
+3That is larrys department.
+6The land of tequila.
+
+(tequila|hard liquor)
+3The best comes from mexico.
+2Best mixed.
+
+
+
+(monkey & jungle | paul | pshryer )
+4I'd say that Paul is a chimp.
+9I'd say that cheesy movies are made by chimps.
+
+(fat|bloat)
+8you mean paul
+1Paul is full of lard
+
+(chunks|hair)
+3Paul has chunks in his hair
+2Paul's hair is so slimy
+
+(erin|robin|babe)
+9Erin and Robin are so hot!
+1In your wet dreams!
+3I just wished I saw them naked  I )
+
+
+(bitch | cunt bag | whore) 
+1Bitches are annoying to be around.
+9If only annoying women were not annoying.
+3Do you like them?
+
+(naked|nude)
+7Sortof like watching Show-Time
+1I would like to see Robin and Erin!
+
+(tit|cunt|curves|lips)
+1I like a women's a lot.
+4I am whistling dixie!
+8Tits are the best part.
+7What is your favorite part?
+
+(boobs|nipple)
+4Take two of those and call me in the morning  I :)
+3Good like a lolipop!
+
+(sex ~man~men)
+3Best done with a woman.
+2Woman should be loved.
+
+
+
+(hello | hi)
+9Hello
+3Whats up?
+2hi
+
+
+(?)
+9I dont care for questions, to much like a test
+2trust me i know almost nothing
+
+(fuck you)
+9fuck yourself
+1swearing is bad
+
+(satan|devil|bad)
+9What about Wade Maki?
+3sounds sweet
+1666
+
+(josh|templin|jtemplin)
+3Wades best friend
+4Wade and him should make love not war
+9You mean Satan the fat bastard
+1He can be nice once in a great while
+
+(name)
+5Whats in a name?
+1What is your name?
+
+(what)
+3what?
+2you say what?
+
+(why)
+6why ask why
+2y
+
+(beer|booze|vodka|whiskey)
+3good to the last drop
+8Lets party!
+
+(you&describe)
+3Tall dark and handsome.
+6Tall blonde and blue eyed.
+4What about you?
+
+(you)
+3less me, more you
+1I want to hear about you.
+2You rang?
+
+
+(me|i|mine)
+3I am interested...
+1Like talking about yourself do you.
+
+
+#matches anything
+()
+9
+9
+9
+9
+5Why are you so quiet?
+2Hello?? I cant hear you?
+4Please say more.
+4speak up!
+1idle hands are the work of the devil.
+4:doesn't seem to understand you.
+4are you new here ?
+4is there anything else?
+4what makes you happy?
+4i'm still listening
+4tell me something else
+4please continue
+4:looks around the room
+4tell me about your emotions
+4tell me more
+4what worries you?
+4do you wish you were normal?
+4that's interesting
+4have you tried meditation?
+4what else do you have to add?
+4let's talk about your family?
+4why don't you just pay your bill and go home?
+4continue, please
+4i am confused
+4what are you afraid of?
+4what are you feeling right now?
+4what was your father like?
+4what are your true feelings?
+1tell me about your sex life?
+4just continue talking?
+4how would you describe your personality?
+4i don't understand
+4is your love life satisfactory?
+4how is your health?
+4go on talking, its your money
+4how do you feel about death?
+4i see
+4i think you are sick, leave me alone
+4i understand
+4if you could change something in your life, what would it be?
+1you don't make any sense at all.  try fortran
+
+
+
+############################################################
+>dog fido beastly fido_dog
+
+(good dog| good boy)
+9bow bow
+3:licks you
+5:wags tail
+
+(hi | hello)
+4"arf arf
+4:pisses on your leg.
+
+(bye| good bye | goodbye)
+9:whines.
+4:looks like it will miss you.
+
+(bad dog)
+9: growls.
+3: tries to bite you.
+4!kill $t
+
+#matches anything and then says nothing
+()
+9
+
+############################################################
+>cat kitten lion
+
+(good cat|cute|hi|hello)
+9:purrs
+6:meows
+
+(bad)
+8:hisses
+
+>pig boar
+
+(pig|boar|hi|hello)
+8:grunts
+4:snorts
+#matches anything and then says nothing
+()
+9
+
+############################################################
+>doll toy
+
+(hi|hello)
+8Will you play with me?
+4: ignores you.
+
+(bye)
+7: stares evilly at you
+4I hate you.
+#matches anything and then says nothing
+
+@default
+
+############################################################
+>papa_smurf smurf 
+
+(smurf|smurfette)
+9"Its so smurfy to be smurfy!
+2"We are share and share alike
+2Where is Smurfette I miss her
+
+(hi|hello)
+9"smurfy!
+1"Where are my berries.
+
+@default
+
+############################################################
+>smurfette
+
+(hi|hello)
+9Hi $t
+1"I am so lonely without Papa smurf
+4Lets pretend you are Papa smurf!
+8:giggle
+
+###remember NO forward continue links
+#and only one link per database with no cycles.
+
+@default
+
+############################################################
+>healer cleric doctor
+
+(hi|hello)
+9hello $t, how may I help you?
+2I could heal you.
+
+(help & (healer|cleric|doctor) | hurt | pain | sick)
+7:prays for you
+2Please undress, so I can see your injuries.
+5You look great.
+
+(job|career)
+7I cure the pitiful
+1I am a healer
+
+(apple)
+1Apples with worms in them are bad.
+3An apple a day will keep the doctor away.
+
+(fuck|shit|damn|crap|shoot)
+9Dont use that language
+2:gets mad.
+1!kill $t
+
+@default
+

@@ -1,0 +1,42 @@
+package com.planet_ink.coffee_mud.interfaces;
+
+import java.util.*;
+
+/**
+ * something that is affected by, or affects
+ * the environment around them.
+ */
+public interface Behavior extends Cloneable
+{
+	/** General descriptive ID for this
+	 * object.	Includes everything from 
+	 * an item ID (Dagger, etc), to a particular
+	 * users name "Bob the Avenger" */
+	public String ID();
+	
+	/** return a new instance of the object*/
+	public Behavior newInstance();
+	public Behavior copyOf();
+	
+	
+	/** this method defines how this thing responds
+	 * to environmental changes.  It may handle any
+	 * and every affect listed in the Affect class
+	 * from the given Environmental source */
+	public void affect(Environmental affecting, Affect affect);
+	
+	/** this method is used to tell the system whether
+	 * a PENDING affect may take place
+	 */
+	public boolean okAffect(Environmental oking, Affect affect);
+	
+	/**
+	 * this method allows any environmental object
+	 * to behave according to a timed response.  by
+	 * default, it will never be called unless the
+	 * object uses the ServiceEngine to setup service.
+	 * The tickID allows granularity with the type
+	 * of service being requested.
+	 */
+	public void tick(Environmental ticking, int tickID);
+}

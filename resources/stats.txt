@@ -1,0 +1,13 @@
+Your stats below reflect your physical and mental gifts.  They can be boosted through the use of Training points, which are granted at first level, and are gained at a rate of one per level.  These training points are also needed to gain new spells and abilities which your class qualifies for, but does not get at first level.
+
+Strength: Physical strength and fighting prowess is reflected in strength.  The limit is 18 for all classes except Fighter, Paladin, and Ranger.
+
+Dexterity: Agility and the ability to dodge blows is reflected in Dexterity.  The limit is 18 for all classes except Thieves and Rangers.
+
+Constitution: Health, stamina, and the ability to live through harder fights is reflected in Constitution.  The limit is 18.
+
+Intelligence: Memory and concentration, and the ability to gain greater profficiency in skills and spells through practice are reflected in Intelligence.  The limit is 18 for all classes except Mages.
+
+Wisdom: Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom.  The limit is 18 for all classes except Clerics and Paladins.
+
+Charisma: Grace, charm, and the ability to get better prices from merchants is reflected in Charisma.  The limit is 18 for all classes except Bards.

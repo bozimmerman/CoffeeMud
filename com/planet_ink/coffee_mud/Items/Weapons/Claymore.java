@@ -1,0 +1,70 @@
+package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.interfaces.*;
+import java.util.*;
+
+public class Claymore extends Sword
+{
+	public final static int PLAIN					= 0;
+	public final static int QUALITY_WEAPON			= 1;
+	public final static int EXCEPTIONAL	  			= 2;
+
+	public Claymore()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+
+		Random randomizer = new Random(System.currentTimeMillis());
+		int claymoreType = Math.abs(randomizer.nextInt() % 3);
+
+		this.envStats.setAbility(claymoreType);
+		setItemDescription(this.envStats.ability());
+
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(0);
+		baseEnvStats.setWeight(10);
+		baseEnvStats().setAttackAdjustment(0);
+		baseEnvStats().setDamage(8);
+		baseGoldValue=25;
+		recoverEnvStats();
+		wornLogicalAnd=true;
+		properWornBitmap=Item.HELD|Item.WIELD;
+		weaponType=TYPE_SLASHING;
+	}
+	
+	public Environmental newInstance()
+	{
+		return new Claymore();
+	}
+
+	public void setItemDescription(int level)
+	{
+		switch(level)
+		{
+			case Claymore.PLAIN:
+				name="a simple claymore";
+				displayText="a simple claymore is on the ground.";
+				description="It\\`s an oversized two-handed sword.  Someone made it just to make it.";
+				break;
+
+			case Claymore.QUALITY_WEAPON:
+				name="a very nice claymore";
+				displayText="a very nice claymore leans against the wall.";
+				description="It\\`s ornate with an etched hilt.  Someone took their time making it.";
+				break;
+
+			case Claymore.EXCEPTIONAL:
+				name="an exceptional claymore";
+				displayText="an exceptional claymore is found nearby.";
+				description="It\\`s a huge two-handed sword, with a etchings in the blade and a tassel hanging from the hilt.";
+				break;
+
+			default:
+				name="a simple claymore";
+				displayText="a simple claymore is on the ground.";
+				description="It\\`s an oversized two-handed sword.  Someone made it just to make it.";
+				break;
+		}
+	}
+
+
+}

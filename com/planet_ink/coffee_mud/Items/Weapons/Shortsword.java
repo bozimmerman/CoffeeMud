@@ -1,0 +1,28 @@
+package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.interfaces.*;
+
+public class Shortsword extends Sword
+{
+	public Shortsword()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="a short sword";
+		displayText="a short sword has been dropped on the ground.";
+		miscText="";
+		description="A sword with a not-too-long blade.";
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(0);
+		baseEnvStats.setWeight(3);
+		baseEnvStats().setAttackAdjustment(0);
+		baseEnvStats().setDamage(6);
+		baseGoldValue=10;
+		recoverEnvStats();
+		weaponType=TYPE_PIERCING;
+	}
+	
+	public Environmental newInstance()
+	{
+		return new Shortsword();
+	}
+}

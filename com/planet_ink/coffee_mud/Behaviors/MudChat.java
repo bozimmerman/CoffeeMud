@@ -1,0 +1,472 @@
+package com.planet_ink.coffee_mud.Behaviors;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.commands.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.service.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.application.*;
+import com.planet_ink.coffee_mud.StdAffects.*;
+import com.planet_ink.coffee_mud.CharClasses.*;
+import java.util.*;
+public class MudChat extends StdBehavior
+{
+	//----------------------------------------------
+	private static boolean resourceLoaded=false;
+	// format: first group is general mob (no other
+	// fit found).  All groups are chat groups.
+	private static Vector chatGroups=new Vector();
+	// each chat group includes a string describing
+	// qualifying mobs followed by one or more chat
+	// collections.
+	private Vector myChatGroup=null;
+	private String myOldName="";
+	// chat collection: first string is the pattern
+	// match string
+	// following strings are the proposed responses.
+	//----------------------------------------------
+	
+	private Vector responseQue=new Vector();
+	private int tickDown=3;
+	// responseQue is a qued set of commands to
+	// run through the standard command processor,
+	// on tick or more.
+	
+	private final static int RESPONSE_DELAY=2;
+	
+	public MudChat()
+	{
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	}
+	public Behavior newInstance()
+	{ 
+		return new MudChat();
+	}
+	
+	public void initChat()
+	{
+		StringBuffer rsc=Resources.getFileResource("chat.dat");
+		Vector V=new Vector();
+		V.addElement("");
+		chatGroups.addElement(V);
+		String str=nextLine(rsc);
+		Vector C=null;
+		while(str!=null)
+		{
+			if(str.length()>0)
+			switch(str.charAt(0))
+			{
+			case '"':
+				Log.sysOut("MudChat",str.substring(1));
+				break;
+			case '(':
+			case '[':
+			case '{':
+				C=new Vector();
+				C.addElement(str);
+				if(V!=null)
+					V.addElement(C);
+				break;
+			case '>':
+				V=new Vector();
+				V.addElement(str.substring(1).trim());
+				chatGroups.addElement(V);
+				C=null;
+				break;
+			case '@':
+				Vector V1=matchChatGroup(str.substring(1).trim());
+				if(V1==null)
+					V1=(Vector)chatGroups.elementAt(0);
+				for(int v1=1;v1<V1.size();v1++)
+					V.addElement(V1.elementAt(v1));
+				break;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if(C!=null)
+					C.addElement(str);
+				break;
+			}
+			str=nextLine(rsc);
+		}
+	}
+	
+	public String nextLine(StringBuffer tsc)
+	{
+		String ret=null;
+		if((tsc!=null)&&(tsc.length()>0))
+		{
+			int y=tsc.toString().indexOf("\n\r");
+			if(y<0)
+			{
+				tsc.setLength(0);
+				ret="";
+			}
+			else
+			{
+				ret=tsc.substring(0,y).trim();
+				tsc.delete(0,y+2);
+			}
+		}
+		return ret;
+		
+	}
+	
+	
+	private Vector matchChatGroup(String myName)
+	{
+		for(int i=1;i<chatGroups.size();i++)
+		{
+			Vector V=(Vector)chatGroups.elementAt(i);
+			if(V.size()>0)
+				if(((String)V.elementAt(0)).length()>0)
+				{
+					String names=((String)V.elementAt(0)).substring(1);
+					while(names.length()>0)
+					{
+						String name=null;
+						int y=names.indexOf(" ");
+						if(y>=0)
+						{
+							name=names.substring(0,y).trim().toUpperCase();
+							names=names.substring(y+1);
+						}
+						else
+						{
+							name=names.trim().toUpperCase();
+							names="";
+						}
+						if(name.length()>0)
+						{
+							if(myName.indexOf(name)>=0)
+							{
+								return V;
+							}
+						}
+					}
+				}
+		}
+		return null;
+	}
+	
+	private Vector getMyChatGroup(MOB forMe)
+	{
+		if(!resourceLoaded)
+			initChat();
+		if((myChatGroup!=null)&&(myOldName.equals(forMe.name())))
+			return myChatGroup;
+		myOldName=forMe.name();
+		Vector V=matchChatGroup(myOldName.toUpperCase());
+		if(V!=null) return V;
+		V=matchChatGroup(forMe.description());
+		if(V!=null) return V;
+		V=matchChatGroup(forMe.displayText());
+		if(V!=null) return V;
+		V=matchChatGroup(INI.className(forMe));
+		if(V!=null) return V;
+		return (Vector)chatGroups.elementAt(0);
+	}
+	
+	private void queResponse(Vector responses, MOB source, MOB target, String rest)
+	{
+		int total=0;
+		for(int x=1;x<responses.size();x++)
+			total+=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
+		
+		String selection=null;
+		int select=Dice.roll(1,total,0);
+		for(int x=1;x<responses.size();x++)
+		{
+			select-=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
+			if(select<=0)
+			{
+				selection=(String)responses.elementAt(x);
+				break;
+			}
+		}
+			
+		if(selection!=null)
+		{
+			String finalCommand=selection.substring(1).trim();
+			if(finalCommand.trim().length()==0)
+				return;
+			else
+			if(finalCommand.startsWith(":"))
+			{
+				finalCommand="emote "+finalCommand.substring(1).trim();
+				int t=finalCommand.indexOf(" her ");
+				while(t>=0)
+					finalCommand=finalCommand.substring(0,t)+" <S-HISHER> "+finalCommand.substring(t+2);
+			}
+			else
+			if(finalCommand.startsWith("!"))
+				finalCommand=finalCommand.substring(1).trim();
+			else
+			if(finalCommand.startsWith("\""))
+				finalCommand="say "+finalCommand.substring(1).trim();
+			else
+			if(target!=null)
+				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
+			
+			int t=finalCommand.indexOf("$r");
+			while(t>=0)
+			{
+				finalCommand=finalCommand.substring(0,t)+rest+finalCommand.substring(t+2);
+				t=finalCommand.indexOf("$r");
+			}
+			t=finalCommand.indexOf("$t");
+			while((t>=0)&&(target!=null))
+			{
+				finalCommand=finalCommand.substring(0,t)+target.name()+finalCommand.substring(t+2);
+				t=finalCommand.indexOf("$t");
+			}
+			t=finalCommand.indexOf("$n");
+			while((t>=0)&&(target!=null))
+			{
+				finalCommand=finalCommand.substring(0,t)+source.name()+finalCommand.substring(t+2);
+				t=finalCommand.indexOf("$n");
+			}
+			t=finalCommand.indexOf("$$");
+			while((t>=0)&&(target!=null))
+			{
+				finalCommand=finalCommand.substring(0,t)+"$"+finalCommand.substring(t+2);
+				t=finalCommand.indexOf("$$");
+			}
+
+			Vector V=CommandProcessor.parse(finalCommand);
+			V.insertElementAt(new Integer(RESPONSE_DELAY),0);
+			for(int f=0;f<responseQue.size();f++)
+			{
+				Vector V1=(Vector)responseQue.elementAt(f);
+				if(CommandProcessor.combine(V1,1).equalsIgnoreCase(finalCommand))
+				{
+					V=null;
+					break;
+				}
+			}
+			if(V!=null)
+				responseQue.addElement(V);
+		}
+	}
+	
+	
+	private boolean match(String expression, String message, String[] rest)
+	{
+		int l=expression.length();
+		if(l==0) return true;
+		if((expression.charAt(0)=='(')
+		&&(expression.charAt(l-1)==')'))
+			expression=expression.substring(1,expression.length()-1);
+		
+		int end=0;
+		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++);
+		String check=null;
+		if(end<expression.length())
+		{
+			check=expression.substring(0,end);
+			expression=expression.substring(end);
+		}
+		else
+		{
+			check=expression;
+			expression="";
+		}
+		boolean response=true;
+		if(check.startsWith("="))
+		{
+			response=check.substring(1).trim().equalsIgnoreCase(message.trim());
+			if(response)
+				rest[0]="";
+		}
+		else
+		if(check.startsWith("^"))
+		{
+			response=message.trim().startsWith(check.substring(1));
+			if(response)
+				rest[0]=message.substring(check.substring(1).trim().length());
+		}
+		else
+		if(check.length()>0)
+		{
+			int x=message.toUpperCase().indexOf(check.toUpperCase());
+			response=(x>=0);
+			if(response)
+				rest[0]=message.substring(x+check.length());
+		}
+		else
+		{
+			response=true;
+			rest[0]=message;
+		}
+		
+		if(expression.length()>0)
+		{
+			if(expression.startsWith("("))
+			{
+				int expEnd=0;
+				int parenCount=1;
+				while(((++expEnd)<expression.length())&&(parenCount>0))
+					if(expression.charAt(expEnd)=='(')
+						parenCount++;
+					else
+					if(expression.charAt(expEnd)==')')
+					{
+						parenCount--;
+						if(parenCount<=0) break;
+					}
+				if(expEnd<expression.length()&&(parenCount<=0))
+				{
+					return response&match(expression.substring(1,expEnd),message,rest);
+				}
+				return response;
+			}
+			else
+			if(expression.startsWith("&"))
+				return response&&match(expression.substring(1),message,rest);
+			else
+			if(expression.startsWith("|"))
+				return response||match(expression.substring(1),message,rest);
+			else
+			if(expression.startsWith("~"))
+				return response&&(!match(expression.substring(1),message,rest));
+			
+		}
+		return response;
+	}
+	
+	
+	/** this method defines how this thing responds
+	 * to environmental changes.  It may handle any
+	 * and every affect listed in the Affect class
+	 * from the given Environmental source */
+	public void affect(Environmental affecting, Affect affect)
+	{
+		super.affect(affecting,affect);
+		
+		if(!canBehave(affecting)) 
+			return;
+		MOB mob=affect.source();
+		MOB monster=(MOB)affecting;
+		if((!affect.amISource(monster))&&(!mob.isMonster()))
+		{
+			Vector myResponses=null;
+			Vector myGroup=getMyChatGroup(monster);
+			String rest[]=new String[1];
+			
+			if((affect.targetCode()==Affect.SOUND_WORDS)
+			&&(affect.amITarget(monster)||((mob.location()==monster.location())&&(mob.location().numInhabitants()<3)))
+			&&(Sense.canBeHeardBy(mob,monster))
+			&&(myGroup!=null)
+			&&(affect.targetMessage()!=null))
+			{
+				int x=affect.targetMessage().indexOf("'");
+				int y=affect.targetMessage().lastIndexOf("'");
+				if((x>=0)&&(y>x))
+				{
+					String msg=" "+affect.targetMessage().substring(x+1,y)+" ";
+					int l=0;
+					for(int i=1;i<myGroup.size();i++)
+					{
+						Vector possResponses=(Vector)myGroup.elementAt(i);
+						String expression=((String)possResponses.elementAt(0)).trim();
+						l=expression.length();
+						if((l>0)
+						&&(expression.charAt(0)=='(')
+						&&(expression.charAt(l-1)==')'))
+						{
+							if(match(expression.substring(1,expression.length()-1),msg,rest))
+							{
+								myResponses=possResponses;
+								break;
+							}
+						}
+					}
+				}
+			}
+			else
+			if((Sense.canBeHeardBy(mob,monster)&&Sense.canBeSeenBy(mob,monster))
+			&&(myGroup!=null))
+			{
+				String msg=null;
+				char c1='[';
+				char c2=']';
+				if((affect.amITarget(monster)&&(affect.targetMessage()!=null)))
+					msg=" "+affect.targetMessage()+" ";
+				else
+				if(affect.othersMessage()!=null)
+				{
+					c1='{';
+					c2='}';
+					msg=" "+affect.othersMessage()+" ";
+				}
+				if(msg!=null)
+				{
+					int l=0;
+					for(int i=1;i<myGroup.size();i++)
+					{
+						Vector possResponses=(Vector)myGroup.elementAt(i);
+						String expression=((String)possResponses.elementAt(0)).trim();
+						l=expression.length();
+						if((l>0)
+						&&(expression.charAt(0)==c1)
+						&&(expression.charAt(l-1)==c2))
+						{
+							if(match(expression.substring(1,expression.length()-1),msg,rest))
+							{
+								myResponses=possResponses;
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+				
+			if(myResponses!=null)
+				queResponse(myResponses,monster,mob,rest[0]);
+		}
+	}
+	
+	public void tick(Environmental ticking, int tickID)
+	{
+		super.tick(ticking,tickID);
+		if((tickID==ServiceEngine.MOB_TICK)&&(ticking instanceof MOB))
+		{
+			if(tickDown>=0)
+			{
+				--tickDown;
+				if(tickDown<0)
+				{
+					Vector myGroup=getMyChatGroup((MOB)ticking);
+				}
+			}
+			for(int t=responseQue.size()-1;t>=0;t--)
+			{
+				Vector que=(Vector)responseQue.elementAt(t);
+				Integer I=(Integer)que.elementAt(0);
+				I=new Integer(I.intValue()-1);
+				que.setElementAt(I,0);
+				if(I.intValue()<=0)
+				{
+					que.removeElementAt(0);
+					responseQue.removeElementAt(t);
+					try
+					{
+						CommandProcessor.doCommand((MOB)ticking,que);
+					}
+					catch(Exception e)
+					{
+						Log.errOut("MudChat",e);
+					}
+				}
+			}
+		}
+	}
+}

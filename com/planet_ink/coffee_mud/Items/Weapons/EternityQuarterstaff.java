@@ -1,0 +1,76 @@
+package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.StdAffects.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
+
+public class EternityQuarterstaff extends Quarterstaff
+{
+	public EternityQuarterstaff()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="a quarterstaff";
+		displayText="a wooden quarterstaff lies on the ground.";
+		miscText="";
+		description="It\\`s long and wooden, just like a quarterstaff ought to be.";
+		secretIdentity="A quarterstaff fashioned from a branch of one of the Fox god's Eternity Trees.  A truely wondrous gift.";
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(20);
+		baseEnvStats.setWeight(4);
+		this.setUsesRemaining(50);
+		baseEnvStats().setAttackAdjustment(0);
+		baseEnvStats().setDamage(12);
+		baseGoldValue+=5000;
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		wornLogicalAnd=true;
+		properWornBitmap=Item.HELD|Item.WIELD;
+		weaponType=TYPE_BASHING;
+		weaponClassification=Weapon.CLASS_BLUNT;
+		recoverEnvStats();
+
+	}
+
+	public Environmental newInstance()
+	{
+		return new EternityQuarterstaff();
+	}
+
+	public void affect(Affect affect)
+	{
+		MOB mob=affect.source();
+		switch(affect.sourceCode())
+		{
+		case Affect.SOUND_WORDS:
+			if((mob.isMine(this))
+			   &&(!amWearingAt(Item.INVENTORY))
+			   &&(affect.target() instanceof MOB)
+			   &&(mob.location().isInhabitant((MOB)affect.target())))
+			{
+				MOB target=(MOB)affect.target();
+				int x=affect.targetMessage().toUpperCase().indexOf("HEAL");
+				if(x>=0)
+				{
+					if(usesRemaining()>0)
+					{
+						this.setUsesRemaining(this.usesRemaining()-5);
+						FullMsg msg=new FullMsg(mob,target,this,Affect.SOUND_MAGIC,Affect.SOUND_MAGIC,Affect.SOUND_MAGIC,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAME>, and delivers a healing beam of light.");
+						if(mob.location().okAffect(msg))
+						{
+		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));
+							target.curState().adjHitPoints(healing,target.maxState());
+							target.tell("You feel a little better!");
+							return;
+						}
+
+					}
+				}
+			}
+			break;
+		default:
+			break;
+		}
+		super.affect(affect);
+	}
+
+
+}

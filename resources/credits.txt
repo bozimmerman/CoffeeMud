@@ -1,0 +1,8 @@
+CoffeeMud is an all-Java server application 
+written by Bo Zimmerman, Mike Rundell, and Lee Fox.
+
+It is based on concepts borrowed from AD&D, and observed
+in such popular muds as ROM.
+
+Long live text-based mudding!
+

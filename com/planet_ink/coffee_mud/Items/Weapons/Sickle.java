@@ -1,0 +1,31 @@
+package com.planet_ink.coffee_mud.Items.Weapons;
+import com.planet_ink.coffee_mud.interfaces.*;
+
+public class Sickle extends Weapon
+{
+	public Sickle()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="a sickle";
+		displayText="a sickle lies on the ground.";
+		miscText="";
+		description="A long and very curvy blade attached to a wooden handle.";
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(0);
+		baseEnvStats.setWeight(3);
+		baseEnvStats().setAttackAdjustment(0);
+		baseEnvStats().setDamage(5);
+		baseGoldValue=1;
+		recoverEnvStats();
+		material=Item.WOODEN;
+		weaponType=TYPE_PIERCING;
+		weaponClassification=Weapon.CLASS_EDGED;
+	}
+	
+	public Environmental newInstance()
+	{
+		return new Sickle();
+	}
+
+}
