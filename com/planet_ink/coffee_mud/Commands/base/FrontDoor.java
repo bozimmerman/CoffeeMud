@@ -169,7 +169,7 @@ public class FrontDoor
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.session().setTermID(1);
 
-				mob.session().println(null,null,"\n\r\n\r^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.  Enter '?' for a more descriptive list.^N");
+				mob.session().println(null,null,Resources.getFileResource("races.txt").toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
@@ -278,7 +278,7 @@ public class FrontDoor
 							mayCont=false;
 					}
 				}
-				mob.session().println(null,null,"\n\r\n\r^bNow it is time to choose your character's ^BClass^?, which is the career-path that they will follow in the game.  This is your most important decision, choose wisely!  Enter '?' for a more descriptive list.^N");
+				mob.session().println(null,null,Resources.getFileResource("classes.txt").toString());
 
 				CharClass newClass=null;
 				while(newClass==null)
