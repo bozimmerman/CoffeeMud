@@ -1,17 +1,11 @@
 Either change the cr/lf encoding of the InstallUNIX.sh file in  CoffeeMud.zip, or add a step in the install instructions that the file  should be converted with dos2unix (or like tool), before running the shell  script.
-ONLINE flag for PlayerData
-allow droping cursed items when in containers
-MODIFY ROOM. That is to say, you can`t type ? to find out available room types
-The reason for the funky server issue tonight is due to a flaw in the POSSESS command. POSSESS hopping doesn`t work. If you possess one thing and try to possess another without going to your original body first, it runs the risk of causing the server to get quirky. That is why Zac had to reboot it tonight. 6-1-04
-MPGSET $n CONSTITUTION $<$n HOLD>
 imc2 causing login problems?!?!
+randommonsters is broke
 i3 shake shows $N to others.
-Morris Cox (yahoo ) probs 
-genrace init problem
 cmstat table in ms access
-I turned smurfette into a statue, and then cast Acid Fog. It tells me Someone sizzles in the acid fog , even though noone else is here. (Loki looked, he saw smurfette's statue and smurfette, since she is petrified). The bug is: statue characters shouldn't take damage from area affect spells.
-When Increase Gravity is revoked, I still can't move afterward. Neither can anyone else in my party. 
 [ca, geas, troll, kill, hassan]
+racial affects
+Look into stopping the autocombat stuff? Do Combat Queueing, whatever that is.
 Install ship battery
 make diff levels of drunk, and disease_hangover
 mutable body parts, with ability to grant powers

@@ -51,6 +51,11 @@ public class Possess extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if(mob.soulMate()!=null)
+		{
+			mob.tell("You are already possessing someone.  Quit back to your body first!");
+			return false;
+		}
 		commands.removeElementAt(0);
 		String MOBname=Util.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);

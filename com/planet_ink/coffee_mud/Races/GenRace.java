@@ -243,13 +243,13 @@ public class GenRace extends StdRace
 	{
 		if(parms.trim().length()==0)
 		{
-			Log.errOut("GenRace","Unable to parse: "+parms);
+			Log.errOut("GenRace","Unable to parse empty xml");
 			return;
 		}
 		Vector xml=XMLManager.parseAllXML(parms);
 		if(xml==null)
 		{
-			Log.errOut("GenRace","Unable to parse: "+parms);
+			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
 		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
@@ -262,12 +262,19 @@ public class GenRace extends StdRace
 		}
 		ID=id;
 		name=XMLManager.getValFromPieces(raceData,"NAME");
+		if((name==null)||(name.length()==0))
+		{
+			Log.errOut("GenRace","Not able to parse: "+parms);
+			return;
+		}
+		
 		String rcat=XMLManager.getValFromPieces(raceData,"CAT");
 		if((rcat==null)||(rcat.length()==0))
 		{
-			Log.errOut("GenRace","Unable to parse: "+parms);
+			rcat=name;
 			return;
 		}
+		
 		racialCategory=rcat;
 		forbiddenWornBits=XMLManager.getLongFromPieces(raceData,"WEAR");
 		weightVariance=XMLManager.getIntFromPieces(raceData,"VWEIGHT");

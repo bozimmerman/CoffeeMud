@@ -39,7 +39,6 @@ public class Quit extends StdCommand
 			try
 			{
 				mob.session().cmdExit(mob,commands);
-
 			}
 			catch(Exception e)
 			{

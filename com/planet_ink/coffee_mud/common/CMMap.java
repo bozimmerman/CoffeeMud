@@ -149,14 +149,16 @@ public class CMMap
 				allNums.put(new Integer(newnum),R);
 			}
 		}
-		if(highest<0) return AreaID+"#0";
-		if(lowest<highest)
-			for(int i=lowest;i<=highest;i++)
-			{
-				if(!allNums.containsKey(new Integer(i)))
-					return AreaID+"#"+i;
-			}
-		return AreaID+"#"+(highest+1);
+		if((highest<0)&&(getRoom(AreaID+"#0"))==null)
+			return AreaID+"#0";
+		if(lowest>highest) lowest=highest+1;
+		for(int i=lowest;i<=highest+1000;i++)
+		{
+			if((!allNums.containsKey(new Integer(i)))
+			&&(getRoom(AreaID+"#"+i)==null))
+				return AreaID+"#"+i;
+		}
+		return AreaID+"#"+Math.random();
 	}
 
 

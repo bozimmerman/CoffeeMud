@@ -775,7 +775,7 @@ public class StdItem implements Item
 				mob.tell("You don't have that.");
 				return false;
 			}
-			if(!Sense.isUltimatelyDroppable(this))
+			if(!Sense.isDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -787,7 +787,7 @@ public class StdItem implements Item
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
 			}
-			if(!Sense.isUltimatelyDroppable(this))
+			if(!Sense.isDroppable(this))
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;

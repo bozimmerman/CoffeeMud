@@ -12,7 +12,6 @@ public class Spell_IncreaseGravity extends Spell
 	public String displayText(){return "(Gravity is Increased)";}
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	private Vector childrenAffects=new Vector();
 	private Room theGravityRoom=null;
 	private Room gravityRoom()
 	{
@@ -76,10 +75,11 @@ public class Spell_IncreaseGravity extends Spell
 		if(!super.okMessage(myHost,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			if(((MOB)affected).location()!=gravityRoom())
+			if((((MOB)affected).location()!=gravityRoom())
+			||((gravityRoom()!=null)&&(gravityRoom().fetchEffect(ID())==null)))
 			{
 				unInvoke();
-				return false;
+				return true;
 			}
 		}
 		switch(msg.sourceMinor())

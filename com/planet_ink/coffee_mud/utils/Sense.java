@@ -128,18 +128,6 @@ public class Sense
 			I.envStats().setSensesMask(Util.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
 		}
 	}
-	public static boolean isUltimatelyDroppable(Item I)
-	{
-		if(I instanceof Container)
-		{
-			Vector V=((Container)I).getContents();
-			for(int v=0;v<V.size();v++)
-				if(!isDroppable((Item)V.elementAt(v)))
-					return false;
-		}
-		return isDroppable(I);
-	}
-
 	public static boolean isSeen(Environmental E)
 	{ return (E!=null)&&(((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E)); }
 	public static boolean isHidden(Environmental E)

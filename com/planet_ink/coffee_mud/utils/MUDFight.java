@@ -20,6 +20,7 @@ public class MUDFight
 			if((inhab!=null)
 			&&(inhab!=mob)
 			&&(!h1.contains(inhab))
+			&&(Sense.canMove(inhab)||Sense.isSeen(inhab))
 			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
 				h.add(inhab);
 		}
@@ -59,11 +60,12 @@ public class MUDFight
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
 			if((inhab!=null)
-			   &&((inhab==mob.getVictim())
+			&&((inhab==mob.getVictim())
 				||((inhab!=mob)
-				  &&(inhab.getVictim()!=mob.getVictim())
-				  &&(!h1.contains(inhab)))))
-					h.add(inhab);
+					&&(inhab.getVictim()!=mob.getVictim())
+					&&(Sense.canMove(inhab)||Sense.isSeen(inhab))
+					&&(!h1.contains(inhab)))))
+			 	h.add(inhab);
 		}
 		return h;
 

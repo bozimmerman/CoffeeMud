@@ -254,19 +254,32 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return R;
 		mob.tell(showNumber+". Type: '"+CMClass.className(R)+"'");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return R;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
-		if(newName.length()>0)
+		String newName="";
+		while(newName.length()==0)
 		{
-			Room newRoom=CMClass.getLocale(newName);
-			if(newRoom==null)
-				mob.tell("'"+newName+"' does not exist. No Change.");
+			newName=mob.session().prompt("Enter a new one (?)\n\r:","");
+			if(newName.trim().equals("?"))
+			{
+				mob.tell(CMLister.reallyList2Cols(CMClass.locales(),-1,null).toString()+"\n\r");
+				newName="";
+			}
 			else
-			if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  Are you absolutely sure (y/N)? ","N"))
-				R=changeRoomType(R,newRoom);
-			R.recoverRoomStats();
+			if(newName.length()>0)
+			{
+				Room newRoom=CMClass.getLocale(newName);
+				if(newRoom==null)
+					mob.tell("'"+newName+"' does not exist. No Change.");
+				else
+				if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  Are you absolutely sure (y/N)? ","N"))
+					R=changeRoomType(R,newRoom);
+				R.recoverRoomStats();
+			}
+			else
+			{
+				mob.tell("(no change)");
+				break;
+			}
 		}
-		else
-			mob.tell("(no change)");
 		return R;
 	}
 

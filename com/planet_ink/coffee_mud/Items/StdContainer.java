@@ -51,6 +51,11 @@ public class StdContainer extends StdItem implements Container
 				if((msg.tool()!=null)
 				&&(msg.tool() instanceof Item))
 				{
+					if(!Sense.isDroppable((Item)msg.tool()))
+					{
+						mob.tell("You can't seem to let go of "+name()+".");
+						return false;
+					}
 					Item newitem=(Item)msg.tool();
 					if(hasALid()&&(!isOpen()))
 					{
