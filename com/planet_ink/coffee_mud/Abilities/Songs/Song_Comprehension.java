@@ -13,8 +13,8 @@ public class Song_Comprehension extends Song
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Conprehension";
-		displayText="(Song of Conprehension)";
+		name="Comprehension";
+		displayText="(Song of Comprehension)";
 		miscText="";
 
 		canBeUninvoked=true;
