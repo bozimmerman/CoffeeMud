@@ -153,6 +153,7 @@ public interface CMMsg extends Cloneable
 	public static final int TYP_EXPCHANGE=81;
 	public static final int TYP_DAMAGE=82;
 	public static final int TYP_HEALING=83;
+	public static final int TYP_ROOMRESET=94;
 
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 
@@ -243,4 +244,5 @@ public interface CMMsg extends Cloneable
 	public static final int MSG_REMOVE=MASK_HANDS|TYP_REMOVE;
 	public static final int MSG_DAMAGE=MASK_GENERAL|TYP_DAMAGE;
 	public static final int MSG_HEALING=MASK_GENERAL|TYP_HEALING;
+	public static final int MSG_ROOMRESET=MASK_GENERAL|TYP_ROOMRESET;
 }

@@ -372,17 +372,14 @@ public class CoffeeUtensils
 		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
 	}
 
+	protected static CMMsg resetMsg=null;
 	public static void resetRoom(Room room)
 	{
 		if(room==null) return;
 		boolean mobile=room.getMobility();
 		room.toggleMobility(false);
-		for(int t=0;t<room.numEffects();t++)
-			if(room.fetchEffect(t) instanceof LandTitle)
-			{
-				CMClass.DBEngine().DBUpdateItems(room);
-				break;
-			}
+		if(resetMsg==null) resetMsg=new FullMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);
+		room.executeMsg(room,resetMsg);
 		CoffeeUtensils.clearTheRoom(room);
 		CMClass.DBEngine().DBReadContent(room,null);
 		room.toggleMobility(mobile);

@@ -29,8 +29,6 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		maxStatAdj[CharStats.WISDOM]=7;
-		maxStatAdj[CharStats.INTELLIGENCE]=7;
 		if(!loaded())
 		{
 			setLoaded(true);

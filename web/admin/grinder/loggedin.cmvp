@@ -26,6 +26,47 @@
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
 			w=window.open("thread.cmvp?AUTH=@Authenticate?AUTH@&TICKGROUPCOUNTER=0","Thread",strFeatures, false);
 		}
+		function SSort(ME,start)
+		{
+			var val='';
+			var oldex=ME.selectedIndex;
+			if(oldex>=0) val=ME.options[oldex].value;
+			
+			var h=0;
+		    while((h*3+1)<ME.options.length)
+			    h=3*h+1;
+		    while(h>0)
+		    {
+		        for (i=h-1;i<ME.options.length;i++) 
+		        {
+		            var T1 = ME.options[i].text;
+		            var T2 = ME.options[i].value;
+		            var j=i;
+		            for(j=i;(j>=h)&&(j>=start)&&((j-h)>=start)&&(ME.options[j-h].text>T1);j-=h) 
+		            {
+		                ME.options[j].value = ME.options[j-h].value;
+		                ME.options[j].text = ME.options[j-h].text;
+		            }
+		            ME.options[j].value = T2;
+		            ME.options[j].text = T1;
+		        }
+		        h = Math.round(h / 3);
+		    }
+		    
+		    ME.selectedIndex=oldex;
+		    if((oldex>=0)&&(ME.options[ME.selectedIndex].value!=val))
+				for(oldex=0;oldex<ME.options.length;oldex++)
+					if(ME.options[oldex].value==val)
+					{
+						ME.selectedIndex=oldex;
+						break;
+					}
+		}
+    
+		function Sort(ME)
+		{
+			SSort(ME,0);
+		}
 	//-->
 	</script>
 </head>
@@ -66,6 +107,11 @@
 <SELECT NAME=AREA HEIGHT=10>
 @MUDGrinder?AREALIST@
 </SELECT>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	Sort(document.SELECTAREA.AREA);
+-->
+</SCRIPT>
 </TD></TR>
 <TR><TD ALIGN=CENTER>
 @if?CheckReqParm?SYSOP=true@

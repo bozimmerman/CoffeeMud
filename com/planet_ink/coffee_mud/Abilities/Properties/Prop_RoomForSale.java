@@ -75,7 +75,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected!=null)
 		&&(affected instanceof Room))
 		{
