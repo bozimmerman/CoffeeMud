@@ -295,18 +295,28 @@ public class Log
 	* @param Message The message to print
 	* @return NA
 	*/
-	public static void errOut(String Module, Exception e)
+	public static void errOut(String Module, Throwable e)
 	{
 		if(errOutWriter!=null)
 		{
-			errOutWriter.println(getLogHeader(null,"Error",Module, e.getMessage()));
-			e.printStackTrace(errOutWriter);			
-			errOutWriter.flush();
+		    if(e!=null)
+		    {
+				errOutWriter.println(getLogHeader(null,"Error",Module, e.getMessage()));
+				e.printStackTrace(errOutWriter);
+				errOutWriter.flush();
+		    }
+		    else
+				errOutWriter.println(getLogHeader(null,"Error",Module,"Null/Unknown error occurred."));
 			if(errMsgs.equalsIgnoreCase("BOTH"))
 			{
-				systemOut(getLogHeader(null,"Error",Module, e.getMessage()));
-				e.printStackTrace(System.out);
-				System.out.flush();
+			    if(e!=null)
+			    {
+					systemOut(getLogHeader(null,"Error",Module, e.getMessage()));
+					e.printStackTrace(System.out);
+					System.out.flush();
+			    }
+			    else
+			        systemOut(getLogHeader(null,"Error",Module,"Null/Unknown error occurred."));
 			}
 		}
 	}

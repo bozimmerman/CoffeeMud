@@ -50,42 +50,43 @@ public class Spell_LimbRack extends Spell
 	    return true;
 	}
 	
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void unInvoke()
 	{
-	    if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-        &&(affected instanceof MOB)
-        &&(msg.amISource((MOB)affected))
-        &&(msg.source().location()!=null)
-	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
-	    &&(msg.source().charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0))
+	    if((affected instanceof MOB)
+	    &&(((MOB)affected).amDead()))
 	    {
-	        MOB mob=msg.source();
-	        if(text().equalsIgnoreCase("ARMSONLY"))
-		        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
-	        else
-		        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
-			Amputation A=(Amputation)mob.fetchEffect("Amputation");
-			boolean newOne=false;
-			if(A==null)
-			{
-				A=new Amputation();
-				newOne=true;
-			}
-			for(int i=0;i<limbsToRemove.size();i++)
-				Amputation.amputate(mob,A,(String)limbsToRemove.elementAt(i));
-			if(newOne==true)
-			{
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-			else
-			{
-				Ability A2=mob.fetchAbility(A.ID());
-				if(A2!=null) A2.setMiscText(A.text());
-			}
+	        MOB mob=(MOB)affected;
+	        if((mob.location()!=null)
+		    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>0)
+		    &&(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
+		    {
+		        if(text().equalsIgnoreCase("ARMSONLY"))
+			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms TORN OFF!");
+		        else
+			        mob.location().show(mob,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> has <S-HIS-HER> arms and legs TORN OFF!");
+				Amputation A=(Amputation)mob.fetchEffect("Amputation");
+				boolean newOne=false;
+				if(A==null)
+				{
+					A=new Amputation();
+					newOne=true;
+				}
+				for(int i=0;i<limbsToRemove.size();i++)
+					Amputation.amputate(mob,A,(String)limbsToRemove.elementAt(i));
+				if(newOne==true)
+				{
+					mob.addAbility(A);
+					A.autoInvocation(mob);
+				}
+				else
+				{
+					Ability A2=mob.fetchAbility(A.ID());
+					if(A2!=null) A2.setMiscText(A.text());
+				}
+		    }
 			mob.confirmWearability();
 	    }
-	    super.executeMsg(host,msg);
+	    super.unInvoke();
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -104,8 +105,8 @@ public class Spell_LimbRack extends Spell
 		        remainingLimbList.removeElementAt(i);
 		}
 		if((remainingLimbList.size()==0)
-	    ||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]>=0)
-	    &&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>=0)))
+	    ||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]<=0)
+	    &&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]<=0)))
 		{
 			if(!auto)
 				mob.tell("There is nothing left on "+target.name()+" to rack off!");

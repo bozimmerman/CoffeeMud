@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.u;
 
 import java.util.*;
 /* 
@@ -1308,12 +1309,12 @@ public class StdRoom
 	{
 		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
-		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,false);
+		Vector V=(Vector)contents.clone();
+		for(int e=0;e<exits.length;e++)
+		    if(exits[e]!=null)V.addElement(exits[e]);
+		V.addAll(inhabitants);
+		found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
+		if(found==null) found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -1332,12 +1333,12 @@ public class StdRoom
 	{
 		// def was Item.WORN_REQ_UNWORNONLY;
 		Environmental found=null;
-		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,true);
-		if(found==null)	found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,true);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(inhabitants,thingName,false);
-		if(found==null) found=EnglishParser.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
-		if(found==null)	found=EnglishParser.fetchEnvironmental(exits,thingName,false);
+		Vector V=(Vector)inhabitants.clone();
+		V.addAll(contents);
+		for(int e=0;e<exits.length;e++)
+		    if(exits[e]!=null)V.addElement(exits[e]);
+		if(found==null)	found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
+		if(found==null) found=EnglishParser.fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 		return found;
 	}
 

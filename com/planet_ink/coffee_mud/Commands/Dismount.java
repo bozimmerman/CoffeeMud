@@ -42,12 +42,13 @@ public class Dismount extends StdCommand
 		}
 		else
 		{
-			Item RI=mob.location().fetchItem(null,Util.combine(commands,0));
-			if(RI==null)
+			Environmental E=mob.location().fetchFromRoomFavorItems(null,Util.combine(commands,0),Item.WORN_REQ_ANY);
+			if((E==null)||(!(E instanceof Rider)))
 			{
 				mob.tell(getScr("Movement","dismounterr2",Util.combine(commands,0)));
 				return false;
 			}
+			Rider RI=(Rider)E;
 			if((RI.riding()==null)
 			   ||((RI.riding() instanceof MOB)&&(!mob.location().isInhabitant((MOB)RI.riding())))
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
@@ -55,6 +56,11 @@ public class Dismount extends StdCommand
 			{
 				mob.tell(getScr("Movement","dismounterr3",RI.name()));
 				return false;
+			}
+			if((RI instanceof MOB)&&(!Sense.isBoundOrHeld(RI))&&(!((MOB)RI).willFollowOrdersOf(mob)))
+			{
+			    mob.tell(getScr("Movement","dismounterr4",RI.name()));
+			    return false;
 			}
 			FullMsg msg=new FullMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,getScr("Movement","dismounts2"));
 			if(mob.location().okMessage(mob,msg))

@@ -1504,6 +1504,106 @@ public class EnglishParser extends Scriptable implements Tickable
 		return null;
 	}
 
+	public static Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	{
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+		
+	    Environmental E=null;
+	    Item thisThang=null;
+		if(exactOnly)
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+				    E=(Environmental)list.elementAt(i);
+				    if(E instanceof Item)
+				    {
+						thisThang=(Item)E;
+						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+	
+						if((thisThang.container()==goodLocation)
+						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&(thisThang.ID().equalsIgnoreCase(srchStr)
+						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
+						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
+							if((!allFlag)||(thisThang.displayText().length()>0))
+								if((--myOccurrance)<=0)
+									return thisThang;
+				    }
+				    else
+					if(E.ID().equalsIgnoreCase(srchStr)
+					||E.Name().equalsIgnoreCase(srchStr)
+					||E.name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||(E.displayText().length()>0))
+							if((--myOccurrance)<=0)
+								return E;
+				    }
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					E=(Environmental)list.elementAt(i);
+					if(E instanceof Item)
+					{
+					    thisThang=(Item)E;
+						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+	
+						if((thisThang.container()==goodLocation)
+						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+						   &&((!allFlag)||(thisThang.displayText().length()>0))))
+							if((--myOccurrance)<=0)
+								return thisThang;
+					}
+					else
+					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+				    &&((!allFlag)||(E.displayText().length()>0)))
+						if((--myOccurrance)<=0)
+							return E;
+					    
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					E=(Environmental)list.elementAt(i);
+					if(E instanceof Item)
+					{
+					    thisThang=(Item)E;
+						boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
+						if((thisThang.container()==goodLocation)
+						&&(thisThang.displayText().length()>0)
+						&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
+						&&(containsString(thisThang.displayText(),srchStr)))
+							if((--myOccurrance)<=0)
+								return thisThang;
+					}
+					else
+					if((E.displayText().length()>0)
+					&&(containsString(E.displayText(),srchStr)))
+						if((--myOccurrance)<=0)
+							return E;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return null;
+	}
+
 	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
 	{
 		if(commands.size()==0)

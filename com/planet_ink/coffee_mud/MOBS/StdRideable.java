@@ -263,70 +263,60 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
-			if((msg.tool()!=null)
-			&&((msg.tool() instanceof Rider)&&(!Sense.isBoundOrHeld(msg.tool()))))
+			if(amRiding(msg.source()))
 			{
-				if(amRiding((Rider)msg.tool()))
+				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name()+"!");
+				msg.source().setRiding(this);
+				return false;
+			}
+		    if(msg.amITarget(this))
+		    {
+		        Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
+				if(amRiding(whoWantsToRide))
 				{
-					msg.source().tell(msg.tool().name()+" is "+stateString((Rider)msg.tool())+" "+name()+"!");
-					((Rider)msg.tool()).setRiding(this);
+					msg.source().tell(whoWantsToRide.name()+" is "+stateString(whoWantsToRide)+" "+name()+"!");
+					whoWantsToRide.setRiding(this);
 					return false;
 				}
-				else
+				if((msg.tool() instanceof MOB)&&(!Sense.isBoundOrHeld(msg.tool())))
+			    {
+					msg.source().tell(msg.tool().name()+" won't let you do that.");
+					return false;
+				}
+				if(riding()==whoWantsToRide)
+				{
+					msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
+					return false;
+				}
 				if((msg.tool() instanceof Rideable)&&(msg.tool() instanceof MOB))
 				{
 					msg.source().tell(msg.tool().name()+" is not allowed on "+name()+".");
 					return false;
 				}
-				if((!(msg.tool() instanceof Rideable))
-				&&(msg.amITarget(this))
+				if((msg.tool() instanceof Rideable)
+				&&(msg.tool() instanceof Item)
 				&&(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_WAGON))
 				{
-					msg.source().tell(msg.tool().name()+" can not be mounted onto "+name()+"!");
+					msg.source().tell(msg.tool().name()+" can not be mounted on "+name()+".");
 					return false;
 				}
-				if((baseEnvStats().weight()*5<msg.tool().baseEnvStats().weight())
-				&&(msg.amITarget(this)))
+				if((baseEnvStats().weight()*5<whoWantsToRide.baseEnvStats().weight()))
 				{
-					msg.source().tell(name()+" is too small to pull "+msg.tool().name()+".");
+					msg.source().tell(name()+" is too small for "+whoWantsToRide.name()+".");
 					return false;
 				}
-			}
-			else
-			if(amRiding(msg.source()))
-			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
-				msg.source().setRiding(this);
-				return false;
-			}
-			else
-			if(msg.source() instanceof Rideable)
-			{
-				msg.source().tell("You are not allowed on "+name()+".");
-				return false;
-			}
-			
-			if((riding()!=msg.source())
-			&&(msg.amITarget(this)))
-			{
 				if((numRiders()>=riderCapacity())
-				&&(!amRiding(msg.source())))
+				&&(!amRiding(whoWantsToRide)))
 				{
 					// for items
-					//msg.source().tell(name()+" is full.");
+					msg.source().tell("No more can fit on "+name()+".");
 					// for mobs
-					 msg.source().tell("No more can fit on "+name()+".");
+					// msg.source().tell("No more can fit on "+name()+".");
 					return false;
 				}
-				// protects from standard mob rejection
+				// protects from standard item rejection
 				return true;
-			}
-			else
-			if(msg.amITarget(this))
-			{
-				msg.source().tell("You cannot mount "+name()+".");
-				return false;
-			}
+		    }
 			break;
 		case CMMsg.TYP_ENTER:
 			if(amRiding(msg.source())

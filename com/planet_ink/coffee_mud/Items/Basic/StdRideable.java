@@ -385,49 +385,65 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		case CMMsg.TYP_MOUNT:
-			if((msg.tool()!=null)
-			&&(msg.amITarget(this))
-			&&((msg.tool() instanceof Rider)&&(!Sense.isBoundOrHeld(msg.tool()))))
-			{
-				msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
-				return false;
-			}
-			else
+		{
 			if(amRiding(msg.source()))
 			{
-				msg.source().tell("You are "+stateString(msg.source())+" "+name()+"!");
+				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name()+"!");
 				msg.source().setRiding(this);
 				return false;
 			}
-			if((riding()!=msg.source())
-			&&((rideBasis()==Rideable.RIDEABLE_LAND)
-			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
-			   ||(rideBasis()==Rideable.RIDEABLE_WAGON)
-			   ||(rideBasis()==Rideable.RIDEABLE_LADDER)
-			   ||(rideBasis()==Rideable.RIDEABLE_WATER)))
-			{
-				if(msg.amITarget(this))
+		    if(msg.amITarget(this))
+		    {
+		        Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();
+				if(amRiding(whoWantsToRide))
 				{
-					if((numRiders()>=riderCapacity())
-					&&(!amRiding(msg.source())))
-					{
-						// for items
-						msg.source().tell(name()+" is full.");
-						// for mobs
-						// msg.source().tell("No more can fit on "+name()+".");
-						return false;
-					}
-					// protects from standard item rejection
-					return true;
+					msg.source().tell(null,whoWantsToRide,null,"<T-NAME> <T-IS-ARE> "+stateString(msg.source())+" "+name()+"!");
+					whoWantsToRide.setRiding(this);
+					return false;
 				}
-			}
-			else
-			if(msg.amITarget(this))
-			{
-				msg.source().tell("You cannot mount "+name()+".");
-				return false;
-			}
+				if((msg.tool() instanceof MOB)
+				&&(!Sense.isBoundOrHeld(msg.tool())))
+			    {
+					msg.source().tell(msg.tool().name()+" won't let you do that.");
+					return false;
+				}
+				else
+				if(riding()==whoWantsToRide)
+				{
+					msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
+					return false;
+				}
+				else
+				if(msg.tool() instanceof Rideable)
+				{
+					msg.source().tell(msg.tool().name()+" is not allowed on "+name()+".");
+					return false;
+				}
+				if(msg.tool()==null)
+				    switch(rideBasis())
+				    {
+			    	case Rideable.RIDEABLE_ENTERIN:
+			    	case Rideable.RIDEABLE_SIT:
+			    	case Rideable.RIDEABLE_SLEEP:
+						msg.source().tell(name()+" can not be mounted in this way.");
+						return false;
+					default:
+					    break;
+				    }
+				if((numRiders()>=riderCapacity())
+				&&(!amRiding(whoWantsToRide)))
+				{
+					// for items
+					msg.source().tell(name()+" is full.");
+					// for mobs
+					// msg.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				// protects from standard item rejection
+				return true;
+		    }
 			break;
+		}
 		case CMMsg.TYP_ENTER:
 			if(amRiding(msg.source())
 			&&(msg.target()!=null)
@@ -571,6 +587,19 @@ public class StdRideable extends StdContainer implements Rideable
 				   &&(msg.tool() instanceof Rider))
 				{
 					((Rider)msg.tool()).setRiding(this);
+					if(msg.tool() instanceof MOB)
+				    switch(rideBasis())
+				    {
+			    	case Rideable.RIDEABLE_SIT:
+			    	case Rideable.RIDEABLE_ENTERIN:
+			    	    msg.tool().baseEnvStats().setDisposition(msg.tool().baseEnvStats().disposition()|EnvStats.IS_SITTING);
+			    	    break;
+			    	case Rideable.RIDEABLE_SLEEP:
+			    	    msg.tool().baseEnvStats().setDisposition(msg.tool().baseEnvStats().disposition()|EnvStats.IS_SLEEPING);
+			    		break;
+					default:
+					    break;
+				    }
 					if(msg.source().location()!=null)
 						msg.source().location().recoverRoomStats();
 				}

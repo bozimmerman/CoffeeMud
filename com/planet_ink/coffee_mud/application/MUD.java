@@ -458,8 +458,7 @@ public class MUD extends Thread implements MudHost
 		}
 		catch(Throwable t)
 		{
-			if((t!=null)&&(t instanceof Exception))
-				Log.errOut("MUD",((Exception)t).getMessage());
+			Log.errOut("MUD",t);
 
 			if (!serverIsRunning)
 				isOK = false;

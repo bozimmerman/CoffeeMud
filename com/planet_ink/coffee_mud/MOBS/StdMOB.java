@@ -1958,6 +1958,7 @@ public class StdMOB implements MOB
 						else
 							CommonMsgs.channel("WIZINFO","",Name()+" has just died.",true);
 					}
+					if(riding()!=null) riding().delRider(this);
 				}
 				break;
 			case CMMsg.TYP_REBUKE:
