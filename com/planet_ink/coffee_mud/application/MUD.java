@@ -437,6 +437,12 @@ public class MUD extends Thread implements Host
 		saveThread=null;
 		S.println("Save thread stopped.");
 
+		if(imserver!=null)
+		{
+			imserver.shutdown();
+			imserver=null;
+		}
+		
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session session=Sessions.elementAt(s);

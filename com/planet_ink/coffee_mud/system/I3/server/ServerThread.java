@@ -237,6 +237,10 @@ public class ServerThread extends Thread {
         return port;
     }
 
+	public void shutdown()
+	{
+	}
+	
     protected synchronized ServerObject[] getObjects() {
         ServerObject[] tmp = new ServerObject[objects.size()];
         Enumeration e = objects.elements();

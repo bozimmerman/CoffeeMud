@@ -234,13 +234,31 @@ public class IMudInterface implements ImudServices, Serializable
 		case Packet.LOCATE_QUERY:
 			{
 				LocateQueryPacket lk=(LocateQueryPacket)packet;
+				String stat="online";
 				MOB smob=findSessMob(lk.user_name);
+				if(smob==null)
+				for(int m=0;m<CMClass.MOBs.size();m++)
+				{
+					MOB mob=(MOB)CMClass.MOBs.elementAt(m);
+					if(mob.name().equalsIgnoreCase(lk.user_name))
+					{
+						smob=mob;
+						stat="exists, but not logged in";
+						break;
+					}
+				}
+				if(smob==null)
+				{
+					if(ExternalPlay.DBUserSearch(null,lk.user_name))
+					{
+						stat="exists, but is not online";
+						smob=CMClass.getMOB("StdMOB");
+						smob.setName(lk.user_name);
+					}
+				}
 				if(smob!=null)
 				{
-					String stat="online";
-					if(Sense.isInvisible(smob)) stat="invisible";
-					if(Sense.isHidden(smob)) stat="hidden";
-					if(!Sense.isSeen(smob)) stat="wizinv";
+					if(!Sense.isSeen(smob)) stat+=" and wizinv";
 					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.name(),0,stat);
 					try{
 					lpk.send();

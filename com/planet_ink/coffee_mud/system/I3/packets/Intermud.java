@@ -391,7 +391,6 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 }
                 else if( type.equals("locate-reply") ) {
                     try {
-						Log.sysOut("InterMud","Got locate reply!");						
                         LocateReplyPacket p = new LocateReplyPacket(data);
 
                         intermud.receive(p);

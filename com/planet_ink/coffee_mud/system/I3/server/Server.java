@@ -68,6 +68,14 @@ public class Server {
         return thread.getPort();
     }
 
+	static public void shutdown()
+	{
+		try{
+		thread.shutdown();
+		thread.interrupt();
+		}catch(Exception e){}
+	}
+	
     static public void removeObject(ServerObject ob) {
         if( !ob.getDestructed() ) {
             return;

@@ -15,8 +15,18 @@ public class LocateReplyPacket extends Packet {
             type = Packet.LOCATE_REPLY;
             located_mud_name = (String)v.elementAt(6);
             located_visible_name = (String)v.elementAt(7);
+			try {
             idle_time = ((Integer)v.elementAt(8)).intValue();
+			}
+			catch( ClassCastException e ) {
+				idle_time=-1;
+			}
+			try {
             status = (String)v.elementAt(9);
+			}
+			catch( ClassCastException e ) {
+				status="unknown";
+			}
         }
         catch( ClassCastException e ) {
             throw new InvalidPacketException();
