@@ -20,7 +20,7 @@ public class Chant_Bury extends Chant
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
-			if((I!=null)&&(I instanceof DeadBody))
+			if((I!=null)&&(I instanceof DeadBody)&&(I.secretIdentity().indexOf("FAKE")<0))
 				return I;
 		}
 		return null;
@@ -48,7 +48,7 @@ public class Chant_Bury extends Chant
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if(!(target instanceof DeadBody))
+		if((!(target instanceof DeadBody))||(target.secretIdentity().indexOf("FAKE")>=0))
 		{
 			mob.tell("You may only feed the dead to the earth.");
 			return false;

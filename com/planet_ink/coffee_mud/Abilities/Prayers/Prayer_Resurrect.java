@@ -18,7 +18,7 @@ public class Prayer_Resurrect extends Prayer
 	{
 		Item body=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(body==null) return false;
-		if(!(body instanceof DeadBody))
+		if((!(body instanceof DeadBody))||(body.rawSecretIdentity().indexOf("FAKE")>=0))
 		{
 			mob.tell("You can't resurrect that.");
 			return false;

@@ -20,7 +20,7 @@ public class Prayer_Sacrifice extends Prayer
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
-			if((I!=null)&&(I instanceof DeadBody))
+			if((I!=null)&&(I instanceof DeadBody)&&(I.rawSecretIdentity().indexOf("FAKE")<0))
 				return I;
 		}
 		return null;
@@ -36,7 +36,7 @@ public class Prayer_Sacrifice extends Prayer
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if(!(target instanceof DeadBody))
+		if((!(target instanceof DeadBody))||(target.secretIdentity().indexOf("FAKE")>=0))
 		{
 			mob.tell("You may only sacrifice the dead.");
 			return false;

@@ -45,6 +45,7 @@ public class Prayer_BoneMoon extends Prayer
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(I.container()==null)
+				&&(I.rawSecretIdentity().indexOf("FAKE")<0)
 				&&(I.rawSecretIdentity().length()>0)
 				&&(I.rawSecretIdentity().indexOf("/")>0))
 				{
