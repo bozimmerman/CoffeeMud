@@ -824,6 +824,9 @@ public class StdMOB implements MOB
 	}
 	public void setMiscText(String newText)
 	{
+		if(newText.length()==0)
+			miscText=null;
+		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
 			miscText=Util.compressString(newText);
 		else
@@ -831,7 +834,7 @@ public class StdMOB implements MOB
 	}
 	public String text()
 	{
-		if(miscText.length==0)
+		if((miscText==null)||(miscText.length==0))
 			return "";
 		else
 		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
