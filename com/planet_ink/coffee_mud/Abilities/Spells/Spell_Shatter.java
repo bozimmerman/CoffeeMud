@@ -38,6 +38,8 @@ public class Spell_Shatter extends Spell
 				if(possibilities.size()>0)
 					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
 			}
+			if(target==null)
+				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens.");
 		}
 
 		if(target==null)

@@ -54,13 +54,13 @@ public class Thief_Racketeer extends ThiefSkill
 
 		if(((!target.mayIFight(mob))&&(levelDiff<10)))
 		{
-			mob.tell("You cannot rob from "+target.charStats().himher()+".");
+			mob.tell("You cannot racketeer "+target.charStats().himher()+".");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int amount=Dice.roll(profficiency(),100,0);
+		int amount=Dice.roll(profficiency(),target.envStats().level(),0);
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{

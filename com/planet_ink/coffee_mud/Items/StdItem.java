@@ -1012,13 +1012,15 @@ public class StdItem implements Item
 	public void destroy()
 	{
 		myContainer=null;
-		for(int a=this.numEffects()-1;a>=0;a--)
+		for(int a=numEffects()-1;a>=0;a--)
 		{
 			Ability aff=fetchEffect(a);
 			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
 				aff.unInvoke();
 		}
-
+		for(int b=numBehaviors()-1;b>=0;b--)
+			delBehavior(fetchBehavior(b));
+		
 		riding=null;
 		destroyed=true;
 

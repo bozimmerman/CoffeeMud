@@ -91,6 +91,8 @@ public class Stat extends BaseAbleLister
 			}
 		}
 		if(target==null)
+			target=CMMap.getLoadPlayer(MOBname);
+		if(target==null)
 		{
 			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");
 			return false;

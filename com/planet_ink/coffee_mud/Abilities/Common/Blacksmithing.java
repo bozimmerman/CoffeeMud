@@ -165,18 +165,21 @@ public class Blacksmithing extends CommonSkill
 			commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
 			return false;
 		}
-		if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
-			woodRequired=woodRequired/2;
-		else
-		if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
-			woodRequired=woodRequired/3;
+		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+		if(!misctype.equalsIgnoreCase("BUNDLE")) 
+		{
+			if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
+				woodRequired=woodRequired/2;
+			else
+			if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
+				woodRequired=woodRequired/3;
+		}
 		if(woodRequired<1) woodRequired=1;
 		if(foundWood<woodRequired)
 		{
 			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		if(!misctype.equalsIgnoreCase("BUNDLE"))
 		{
 			fireRequired=true;

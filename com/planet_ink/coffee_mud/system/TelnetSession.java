@@ -1357,7 +1357,7 @@ public class TelnetSession extends Thread implements Session
 		if(mob!=null)
 		{
 			String name=mob.Name();
-			if(name.trim().length()==0) name="Someone";
+			if(name.trim().length()==0) name="Unknown";
 				CommonMsgs.channel("WIZINFO","",name+" has logged out.",true);
 			// the player quit message!
 			if(mob.location()!=null)

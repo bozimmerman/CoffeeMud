@@ -102,8 +102,8 @@ public class Farming extends CommonSkill
 			commonTell(mob,"It looks like a crop is already growing here.");
 			return false;
 		}
-		if((mob.isMonster()
-		&&(!Sense.isAnimalIntelligence(mob)))
+		if(mob.isMonster()
+		&&(!Sense.isAnimalIntelligence(mob))
 		&&(commands.size()==0))
 		{
 			for(int i=0;i<mob.inventorySize();i++)
@@ -114,10 +114,10 @@ public class Farming extends CommonSkill
 				&&(Sense.canBeSeenBy(I2,mob))
 				&&(I2.container()==null)
 				&&(((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
-				  ||(I2.material()==EnvResource.RESOURCE_COTTON)
-				  ||((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
+					||(I2.material()==EnvResource.RESOURCE_COTTON)
+					||((I2.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)))
 				{
-					commands.addElement(EnvResource.RESOURCE_DESCS[I2.material()&EnvResource.RESOURCE_MAPLE]);
+					commands.addElement(EnvResource.RESOURCE_DESCS[I2.material()&EnvResource.RESOURCE_MASK]);
 					break;
 				}
 				if(commands.size()==0)

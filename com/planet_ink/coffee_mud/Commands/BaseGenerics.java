@@ -853,15 +853,16 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		String c="Q";
+		String commandStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()=+-";
 		while(!c.equals("\n"))
 		{
 			for(int i=0;i<CharStats.TRAITS.length;i++)
 				if(i!=CharStats.GENDER)
-					mob.session().println("    "+(char)((int)('A')+i)+") "+Util.padRight(CharStats.TRAITS[i],20)+":"+((E.baseCharStats().getStat(i))));
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDEFGHIJKLMNOPQRSTUVWXYZ\n","\n").toUpperCase();
-			if((c.charAt(0)>='A')&&(c.charAt(0)<='Z'))
+					mob.session().println("    "+commandStr.charAt(i)+") "+Util.padRight(CharStats.TRAITS[i],20)+":"+((E.baseCharStats().getStat(i))));
+			c=mob.session().choose("Enter one to change, or ENTER when done: ",commandStr.substring(0,CharStats.TRAITS.length)+"\n","\n").toUpperCase();
+			int num=commandStr.indexOf(c);
+			if(num>=0)
 			{
-				int num=(int)c.charAt(0)-'A';
 				String newVal=mob.session().prompt("Enter new value for "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
 				if(((Util.s_int(newVal)>0)||(newVal.trim().equals("0")))
 				&&(num!=CharStats.GENDER))

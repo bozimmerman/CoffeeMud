@@ -63,12 +63,6 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
-	public String landPropertyID(){
-		if((affected!=null)&&(affected instanceof Room))
-			return CMMap.getExtendedRoomID((Room)affected);
-		return "";
-	}
-
 	// update lot, since its called for all rooms by savethread, ONLY worries about itself
 	public void updateLot()
 	{

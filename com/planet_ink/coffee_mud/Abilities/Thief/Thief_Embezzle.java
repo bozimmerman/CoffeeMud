@@ -64,42 +64,42 @@ public class Thief_Embezzle extends ThiefSkill
 		Vector accounts=bank.getAccountNames();
 		String victim="";
 		int tries=0;
-		Coins coins=null;
-		int amount=0;
-		while((coins==null)&&((++tries)<10))
+		Coins hisCoins=null;
+		int hisAmount=0;
+		while((hisCoins==null)&&((++tries)<10))
 		{
 			String possVic=(String)accounts.elementAt(Dice.roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
 			if((C!=null)&&(C instanceof Coins)&&((((Coins)C).numberOfCoins()/50)>0))
 			{
-				coins=(Coins)C;
+				hisCoins=(Coins)C;
 				victim=possVic;
-				amount=coins.numberOfCoins()/50;
+				hisAmount=hisCoins.numberOfCoins()/50;
 				break;
 			}
 		}
 		int classLevel=mob.charStats().getClassLevel("Burglar");
 		if((classLevel>0)
-		&&(amount>(1000*classLevel)))
-		   amount=(1000*classLevel);
+		&&(hisAmount>(1000*classLevel)))
+		   hisAmount=(1000*classLevel);
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
-		if((success)&&(amount>0)&&(coins!=null))
+		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+amount+" gold from the "+victim+" account maintained by <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+hisAmount+" gold from the "+victim+" account maintained by <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,new Long(((MudHost.TIME_TICK_DELAY*TimeClock.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
-				bank.delDepositInventory(victim,coins);
-				coins.setNumberOfCoins(coins.numberOfCoins()-amount);
-				bank.addDepositInventory(victim,coins);
-				bank.delDepositInventory(mob.Name(),coins);
-				((Coins)myCoins).setNumberOfCoins(((Coins)myCoins).numberOfCoins()+amount);
-				bank.addDepositInventory(mob.Name(),coins);
+				bank.delDepositInventory(victim,hisCoins);
+				hisCoins.setNumberOfCoins(hisCoins.numberOfCoins()-hisAmount);
+				bank.addDepositInventory(victim,hisCoins);
+				bank.delDepositInventory(mob.Name(),myCoins);
+				((Coins)myCoins).setNumberOfCoins(((Coins)myCoins).numberOfCoins()+hisAmount);
+				bank.addDepositInventory(mob.Name(),myCoins);
 			}
 		}
 		else

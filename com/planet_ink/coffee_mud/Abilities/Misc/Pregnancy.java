@@ -66,7 +66,7 @@ public class Pregnancy extends StdAbility
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						labor=true;
 						ticksInLabor++;
-						if(ticksInLabor>45)
+						if(ticksInLabor==45)
 						{
 							String name=mob.Name()+" jr.";
 							String race1=mob.baseCharStats().getMyRace().ID();
@@ -261,9 +261,18 @@ public class Pregnancy extends StdAbility
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
+							Ability STAT=CMClass.getAbility("Prop_StatTrainer");
+							if(STAT!=null)
+							{
+								STAT.setMiscText("CHA=10 CON=6 DEX=2 INT=2 STR=1 WIS=1");
+								babe.addNonUninvokableEffect(STAT);
+							}
 							Ability A3=CMClass.getAbility("Age");
-							A3.setMiscText(""+System.currentTimeMillis());
-							babe.addNonUninvokableEffect(A3);
+							if(A3!=null)
+							{
+								A3.setMiscText(""+System.currentTimeMillis());
+								babe.addNonUninvokableEffect(A3);
+							}
 							babe.recoverCharStats();
 							babe.recoverEnvStats();
 							babe.recoverMaxState();

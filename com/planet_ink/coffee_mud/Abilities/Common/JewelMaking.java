@@ -358,11 +358,15 @@ public class JewelMaking extends CommonSkill
 				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
 				return false;
 			}
-			if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
-				woodRequired=woodRequired/2;
-			else
-			if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
-				woodRequired=woodRequired/3;
+			misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			if(!misctype.equalsIgnoreCase("BUNDLE")) 
+			{
+				if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
+					woodRequired=woodRequired/2;
+				else
+				if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
+					woodRequired=woodRequired/3;
+			}
 			if(woodRequired<1) woodRequired=1;
 			if(foundWood<woodRequired)
 			{
@@ -393,7 +397,6 @@ public class JewelMaking extends CommonSkill
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			else
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			if(misctype.equalsIgnoreCase("BUNDLE")) 
 				itemName="a "+woodRequired+"# "+itemName;
 			else

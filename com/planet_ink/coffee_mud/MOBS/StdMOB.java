@@ -966,6 +966,15 @@ public class StdMOB implements MOB
 			else
 				tell("Wha? Huh?");
 		}
+		catch(java.io.IOException io)
+		{
+			Log.errOut("StdMOB",Util.toStringList(commands));
+			if((io!=null)&&(io.getMessage()!=null))
+				Log.errOut("StdMOB",io.getMessage());
+			else
+				Log.errOut("StdMOB",io);
+			tell("Oops!");
+		}
 		catch(Exception e)
 		{
 			Log.errOut("StdMOB",Util.toStringList(commands));
@@ -2491,15 +2500,11 @@ public class StdMOB implements MOB
 	}
 	public void setFollowing(MOB mob)
 	{
-		if(mob==null)
+		if((amFollowing!=null)&&(amFollowing!=mob))
 		{
-			if(amFollowing!=null)
-			{
-				if(amFollowing.fetchFollower(this)!=null)
-					amFollowing.delFollower(this);
-			}
+			if(amFollowing.fetchFollower(this)!=null)
+				amFollowing.delFollower(this);
 		}
-		else
 		if(mob.fetchFollower(this)==null)
 			mob.addFollower(this);
 		amFollowing=mob;
@@ -2618,9 +2623,7 @@ public class StdMOB implements MOB
 			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		A=(Ability)EnglishParser.fetchEnvironmental(abilities,ID,false);
-		if(A==null) A=(Ability)EnglishParser.fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
-		return A;
+		return null;
 	}
 
 	public void addNonUninvokableEffect(Ability to)

@@ -823,7 +823,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
 						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
-						if(location().okMessage(mob,msg2))
+						if((product instanceof LandTitle)||(location().okMessage(mob,msg2)))
 						{
 							tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 							location().send(mob,msg2);
@@ -1088,7 +1088,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 						if(skipThisOne) continue;
 					}
-
+					I.text();
 					I.recoverEnvStats();
 					V.addElement(I);
 				}

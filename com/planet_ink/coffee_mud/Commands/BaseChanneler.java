@@ -26,7 +26,8 @@ public class BaseChanneler extends StdCommand
 			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^q"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q"+mob.name()+str);
 		}
 		else
-		if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
+		if((message.startsWith(":")||message.startsWith(","))
+		   &&(message.trim().length()>3))
 		{
 			String msgstr=message.substring(1);
 			Vector V=Util.parse(msgstr);

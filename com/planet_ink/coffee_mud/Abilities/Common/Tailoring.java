@@ -280,7 +280,10 @@ public class Tailoring extends CommonSkill
 			verb="knitting "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired/2);
+			if(misctype.equalsIgnoreCase("BUNDLE")) 
+				building.baseEnvStats().setWeight(woodRequired);
+			else
+				building.baseEnvStats().setWeight(woodRequired/2);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));

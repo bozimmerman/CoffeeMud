@@ -124,20 +124,26 @@ public class StdPortal extends StdContainer implements Rideable
 			break;
 		case CMMsg.TYP_SIT:
 		{
-			Room thisRoom=msg.source().location();
-			if((thisRoom.rawDoors()[Directions.GATE]==null)
-			   &&(thisRoom.rawExits()[Directions.GATE]==null))
+			if(msg.amITarget(this))
 			{
-				Vector V=Util.parseSemicolons(readableText(),true);
-				Room R=null;
-				if(V.size()>0)
-					R=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
-				if(R==null) R=thisRoom;
-				thisRoom.rawDoors()[Directions.GATE]=R;
-				thisRoom.rawExits()[Directions.GATE]=CMClass.getExit("Open");
-				MUDTracker.move(msg.source(),Directions.GATE,false,false,false);
-				thisRoom.rawDoors()[Directions.GATE]=null;
-				thisRoom.rawExits()[Directions.GATE]=null;
+				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
+				{
+					Room thisRoom=msg.source().location();
+					if((thisRoom.rawDoors()[Directions.GATE]==null)
+					   &&(thisRoom.rawExits()[Directions.GATE]==null))
+					{
+						Vector V=Util.parseSemicolons(readableText(),true);
+						Room R=null;
+						if(V.size()>0)
+							R=CMMap.getRoom((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+						if(R==null) R=thisRoom;
+						thisRoom.rawDoors()[Directions.GATE]=R;
+						thisRoom.rawExits()[Directions.GATE]=CMClass.getExit("Open");
+						MUDTracker.move(msg.source(),Directions.GATE,false,false,false);
+						thisRoom.rawDoors()[Directions.GATE]=null;
+						thisRoom.rawExits()[Directions.GATE]=null;
+					}
+				}
 			}
 			break;
 		}

@@ -2526,11 +2526,13 @@ public class CoffeeMaker
 
 			double totalpts=0.0;
 			double weightpts=0.0;
+			double wornweights=0.0;
 			for(int i=0;i<Item.wornWeights.length-1;i++)
 			{
 				if(Util.isSet(worndata,i))
 				{
 					totalpts+=(pts*Item.wornWeights[i+1]);
+					wornweights+=Item.wornWeights[i+1];
 					switch(materialCode)
 					{
 					case EnvResource.MATERIAL_METAL:
@@ -2582,7 +2584,7 @@ public class CoffeeMaker
 			}
 			vals.put("ARMOR",""+armor);
 			vals.put("VALUE",""+cost);
-			vals.put("WEIGHT",""+(int)Math.round(weightpts));
+			vals.put("WEIGHT",""+(int)Math.round(new Integer(armor).doubleValue()/wornweights*weightpts));
 		}
 		return vals;
 	}

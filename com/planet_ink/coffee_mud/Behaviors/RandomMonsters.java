@@ -89,8 +89,6 @@ public class RandomMonsters extends ActiveTicker
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
-		Vector monsters=getMonsters(null,newParms);
-		if(monsters!=null) monsters.size(); // so the compiler thinks I used it.
 	}
 	
 	public RandomMonsters()
@@ -180,6 +178,9 @@ public class RandomMonsters extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
+		if((!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		||(CommonStrings.isDisabled("RANDOMMONSTERS")))
+			return true;
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
 			MOB M=(MOB)maintained.elementAt(i);

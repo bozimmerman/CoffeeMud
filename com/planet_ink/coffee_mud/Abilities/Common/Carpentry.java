@@ -251,11 +251,15 @@ public class Carpentry extends CommonSkill
 				commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");
 				return false;
 			}
-			if(firstWood.material()==EnvResource.RESOURCE_BALSA)
-				woodRequired=woodRequired/2;
-			else
-			if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
-				woodRequired=woodRequired*2;
+			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			if(!misctype.equalsIgnoreCase("BUNDLE")) 
+			{
+				if(firstWood.material()==EnvResource.RESOURCE_BALSA)
+					woodRequired=woodRequired/2;
+				else
+				if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
+					woodRequired=woodRequired*2;
+			}
 			if(woodRequired<1) woodRequired=1;
 
 			if(foundWood<woodRequired)
@@ -273,7 +277,6 @@ public class Carpentry extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE")) 
 				itemName="a "+woodRequired+"# "+itemName;

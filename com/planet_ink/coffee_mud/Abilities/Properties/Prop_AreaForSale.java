@@ -77,7 +77,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			Vector V=getPropertyRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)myHost;
+				Room R=(Room)V.elementAt(v);
 				lastMobSave=System.currentTimeMillis();
 				Vector mobs=new Vector();
 				for(int m=0;m<R.numInhabitants();m++)
@@ -119,7 +119,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				Room R=(Room)V.elementAt(v);
 				lastCall=System.currentTimeMillis();
 				Integer lastItemNum=(Integer)lastItemNums.get(R);
-				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData((Room)affected,this,false,(lastItemNum==null)?-1:lastItemNum.intValue())));
+				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData(R,this,false,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();
 		}

@@ -81,10 +81,11 @@ public class StdTitle extends StdItem implements LandTitle
 		if(!name.startsWith("the title to"))
 		{
 			Vector V=getPropertyRooms();
-			if(V.size()<2)
+			if((V.size()<2)
+			||(CMMap.getArea(landPropertyID())!=null))
 				setName("the title to "+landPropertyID());
 			else
-				setName("the title to rooms around "+((Room)V.firstElement()).ID());
+				setName("the title to rooms around "+CMMap.getExtendedRoomID((Room)V.firstElement()));
 		}
 	}
 

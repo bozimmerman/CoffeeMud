@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_LotsForSale extends Prop_RoomsForSale
+public class Prop_LotsForSale extends Prop_RoomForSale
 {
 	public String ID() { return "Prop_LotsForSale"; }
 	public String name(){ return "Putting many rooms up for sale";}

@@ -524,7 +524,6 @@ public class FrontLogin extends StdCommand
 				mob.addInventory(t);
 				mob.setWimpHitPoint(5);
 
-				mob.baseCharStats().getMyRace().startRacing(mob,false);
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getMyRace().outfit());
 
 				mob.recoverCharStats();

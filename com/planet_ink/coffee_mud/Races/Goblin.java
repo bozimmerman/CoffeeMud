@@ -16,8 +16,8 @@ public class Goblin extends StdRace
 	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Golbinoids";}
-	private String[]culturalAbilityNames={"Orcish"};
-	private int[]culturalAbilityProfficiencies={75};
+	private String[]culturalAbilityNames={"Goblinese"};
+	private int[]culturalAbilityProfficiencies={100};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 

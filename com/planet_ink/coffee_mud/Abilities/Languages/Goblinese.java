@@ -11,13 +11,13 @@ public class Goblinese extends Language
 	public String name(){ return "Goblinese";}
 	public static Vector wordLists=null;
 	private static boolean mapped=false;
-	public Gnomish()
+	public Goblinese()
 	{
 		super();
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Goblin();}
+	public Environmental newInstance(){	return new Goblinese();}
 	public Vector translationVector()
 	{
 		if(wordLists==null)

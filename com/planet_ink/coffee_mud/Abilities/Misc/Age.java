@@ -75,6 +75,9 @@ public class Age extends StdAbility
 					babe.recoverMaxState();
 					Age A=(Age)babe.fetchEffect(ID());
 					if(A!=null) A.setMiscText(text());
+					Ability STAT=babe.fetchEffect("Prop_StatTrainer");
+					if(STAT!=null)
+						STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
 					babe.text();
 					babe.bringToLife(R,true);
 					babe.setMoney(0);
@@ -85,9 +88,15 @@ public class Age extends StdAbility
 			}
 		}
 		else
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)
+		&&(((MOB)affected).amFollowing()!=null)
+		&&(((MOB)affected).amFollowing().playerStats()!=null)
+		&&(!((MOB)affected).amFollowing().isMonster())
+		&&(((MOB)affected).location().isInhabitant((MOB)affected))
+		&&(((MOB)affected).location().isInhabitant(((MOB)affected).amFollowing())))
 		{
-			if(ellapsed>(long)(60*day))
+			if((ellapsed>(long)(60*day))
+			&&(((MOB)affected).fetchBehavior("MudChat")==null))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if(R!=null)
@@ -105,12 +114,97 @@ public class Age extends StdAbility
 					babe.baseState().setMana(25);
 					babe.baseState().setMovement(50);
 					Behavior B=CMClass.getBehavior("MudChat");
-					babe.addBehavior(B);
+					if(B!=null)
+						babe.addBehavior(B);
+					else
+						babe.delEffect(this);
 					babe.recoverCharStats();
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
 					babe.text();
-					babe.delEffect(this);
+				}
+			}
+			else
+			if((ellapsed>(long)(90*day))
+			&&(((MOB)affected).fetchBehavior("MudChat")!=null))
+			{
+				Room R=CoffeeUtensils.roomLocation(affected);
+				if(R!=null)
+				{
+					MOB babe=(MOB)affected;
+					MOB leige=null;
+					if(babe.getLeigeID().length()>0)
+						leige=CMMap.getLoadPlayer(babe.getLeigeID());
+					if(leige==null) leige=babe.amFollowing();
+					MOB newMan=CMClass.getMOB("StdMOB");
+					newMan.setAgeHours(babe.getAgeHours());
+					newMan.setAlignment(babe.getAlignment());
+					newMan.setBaseCharStats(babe.baseCharStats());
+					newMan.setBaseEnvStats(babe.baseEnvStats());
+					newMan.baseEnvStats().setLevel(1);
+					newMan.setBitmap(babe.getBitmap());
+					newMan.setClanID(babe.getClanID());
+					newMan.setDescription(babe.description());
+					newMan.setDisplayText(babe.displayText());
+					newMan.setExperience(babe.getExperience());
+					newMan.setExpNextLevel(babe.getExpNextLevel());
+					newMan.setFollowing(null);
+					newMan.setLeigeID(babe.getLeigeID());
+					newMan.setLocation(babe.location());
+					newMan.setMoney(babe.getMoney());
+					newMan.setName(babe.Name());
+					newMan.setPlayerStats(new DefaultPlayerStats()); // ***TODO
+					newMan.setPractices(babe.getPractices());
+					newMan.setQuestPoint(babe.getQuestPoint());
+					newMan.setStartRoom(babe.getStartRoom());
+					newMan.setTrains(babe.getTrains());
+					newMan.setWimpHitPoint(babe.getWimpHitPoint());
+					newMan.setWorshipCharID(babe.getWorshipCharID());
+					newMan.playerStats().setPassword(leige.playerStats().password());
+					newMan.playerStats().setEmail(leige.playerStats().getEmail());
+					newMan.playerStats().setUpdated(System.currentTimeMillis());
+					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
+					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
+					newMan.baseState().setHitPoints(20);
+					newMan.baseState().setMana(100);
+					newMan.baseState().setMovement(100);
+					newMan.baseCharStats().getMyRace().reRoll(newMan,newMan.baseCharStats());
+					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
+					newMan.baseCharStats().setMyClasses(";Apprentice");
+					newMan.baseCharStats().setMyLevels(";1");
+					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
+					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getMyRace().outfit());
+					CoffeeUtensils.outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit());
+					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+					for(int i=CharStats.MAX_STRENGTH_ADJ;i<CharStats.MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
+						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+					newMan.recoverCharStats();
+					newMan.recoverEnvStats();
+					newMan.recoverMaxState();
+					newMan.resetToMaxState();
+					CMClass.DBEngine().DBCreateCharacter(newMan);
+					if(CMMap.getPlayer(newMan.Name())==null)
+						CMMap.addPlayer(newMan);
+
+					newMan.playerStats().setLastIP(leige.session().getAddress());
+					Log.sysOut("Age","Created user: "+newMan.Name());
+					for(int s=0;s<Sessions.size();s++)
+					{
+						Session S=Sessions.elementAt(s);
+						if((S!=null)
+						&&(S.mob()!=null)
+						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+						&&(S.mob().playerStats()!=null)
+						&&((S.mob().playerStats().getFriends().containsKey(newMan.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
+							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
+					}
+					CommonMsgs.channel("WIZINFO","",newMan.Name()+" has just been created.",true);
+					if(leige!=babe.amFollowing())
+						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+leige.Name()+"'s.");
+					leige.tell(newMan.Name()+" has just grown up! "+Util.capitalize(newMan.baseCharStats().hisher())+" password is the same as "+leige.Name()+"'s.");
+					newMan.removeFromGame();
+					babe.destroy();
 				}
 			}
 		}

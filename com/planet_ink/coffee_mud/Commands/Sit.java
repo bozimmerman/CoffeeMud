@@ -20,27 +20,26 @@ public class Sit extends StdCommand
 		}
 		if(commands.size()<=1)
 		{
-			if(Sense.isSitting(mob))
-				mob.tell(getScr("Movement","siterr1"));
-			else
-			{
-				FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SIT,getScr("Movement","sitdown"));
-				if(mob.location().okMessage(mob,msg))
-					mob.location().send(mob,msg);
-			}
+			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SIT,getScr("Movement","sitdown"));
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
 			return false;
 		}
 		String possibleRideable=Util.combine(commands,1);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
-		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+		Environmental E=null;
+		if(possibleRideable.length()>0)
 		{
-			mob.tell(getScr("Movement","youdontsee",possibleRideable));
-			return false;
-		}
-		if(E instanceof MOB)
-		{
-			Command C=CMClass.getCommand("Mount");
-			if(C!=null) return C.execute(mob,commands);
+			E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Item.WORN_REQ_UNWORNONLY);
+			if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+			{
+				mob.tell(getScr("Movement","youdontsee",possibleRideable));
+				return false;
+			}
+			if(E instanceof MOB)
+			{
+				Command C=CMClass.getCommand("Mount");
+				if(C!=null) return C.execute(mob,commands);
+			}
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
