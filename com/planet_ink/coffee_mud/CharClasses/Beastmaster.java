@@ -44,6 +44,7 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_BestowName",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SensePregnancy",false);

@@ -817,7 +817,7 @@ public class StdMOB implements MOB
 	public String displayText(MOB viewer)
 	{
 		if((displayText.length()==0)
-		   ||(!name().equals(name()))
+		   ||(!name().equals(Name()))
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)

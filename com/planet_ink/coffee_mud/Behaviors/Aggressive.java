@@ -40,6 +40,7 @@ public class Aggressive extends StdBehavior
 		&&(monster.location()!=null)
 		&&(monster.location().isInhabitant(mob))
 		&&(monster.location().getArea().getMobility())
+		&&(!Sense.isATrackingMonster(mob))
 		&&(!Sense.isATrackingMonster(monster))
 		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))

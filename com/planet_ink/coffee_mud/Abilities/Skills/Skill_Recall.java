@@ -27,7 +27,7 @@ public class Skill_Recall extends StdAbility
 		{
 			Room recalledRoom=mob.location();
 			Room recallRoom=mob.getStartRoom();
-			FullMsg msg=new FullMsg(mob,recallRoom,this,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
+			FullMsg msg=new FullMsg(mob,recallRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
 			if(recalledRoom.okMessage(mob,msg))
 			{
 				if(mob.isInCombat())
@@ -43,7 +43,7 @@ public class Skill_Recall extends StdAbility
 					&&(follower.location()==recalledRoom)
 					&&(recalledRoom.isInhabitant(follower)))
 					{
-						FullMsg msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+						FullMsg msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,CMMsg.MASK_MOVE|CMMsg.MSG_ENTER,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
 						if(recalledRoom.okMessage(follower,msg2))
 						{
 							if(follower.isInCombat())

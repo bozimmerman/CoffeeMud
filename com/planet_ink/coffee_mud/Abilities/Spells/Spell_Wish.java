@@ -564,7 +564,7 @@ public class Spell_Wish extends Spell
 					MUDFight.postExperience(mob,null,null,-amount,false);
 					mob.tell("Your wish has drained you of "+amount+" experience points.");
 				}
-				MUDFight.postExperience((MOB)target,null,((MOB)target).getLiegeID(),amount,false);
+				MUDFight.postExperience((MOB)target,null,null,amount,false);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" gains experience!");
 				return true;
 			}

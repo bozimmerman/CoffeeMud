@@ -276,7 +276,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public void gainExperience(MOB mob,
 							   MOB victim,
-							   String homage,
+							   String homageMessage,
 							   int amount,
 							   boolean quiet)
 	{
@@ -304,7 +304,7 @@ public class StdCharClass implements CharClass, Cloneable
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
-		if((homage!=null)&&(mob.getLiegeID().length()>0)&&(amount>2))
+		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
 			MOB sire=CMMap.getLoadPlayer(mob.getLiegeID());
 			if(sire!=null)
@@ -333,14 +333,14 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 
 		mob.setExperience(mob.getExperience()+amount);
-		if(homage==null) homage="";
+		if(homageMessage==null) homageMessage="";
 		if(!quiet)
 		{
 			if(amount>1)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homage+".^N");
+				mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homageMessage+".^N");
 			else
 			if(amount>0)
-				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
+				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homageMessage+".^N");
 		}
 
 		while((mob.getExperience()>=mob.getExpNextLevel())

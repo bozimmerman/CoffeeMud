@@ -63,7 +63,7 @@ public class Prayer_UnholyArmament extends Prayer
 			I.setDescription("Whatever made this sharp twisted thing couldn`t have been good..");
 			I.baseEnvStats().setLevel(mob.envStats().level());
 			I.baseEnvStats().setWeight(20);
-			I.setMaterial(EnvResource.MATERIAL_MITHRIL);
+			I.setMaterial(EnvResource.RESOURCE_MITHRIL);
 			I.recoverEnvStats();
 			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
 			I.baseEnvStats().setDamage(Util.s_int((String)H.get("DAMAGE")));
@@ -78,7 +78,7 @@ public class Prayer_UnholyArmament extends Prayer
 			if(pos==Item.ABOUT_BODY) 
 				I.setMaterial(EnvResource.RESOURCE_COTTON);
 			else
-				I.setMaterial(EnvResource.MATERIAL_MITHRIL);
+				I.setMaterial(EnvResource.RESOURCE_MITHRIL);
 			I.recoverEnvStats();
 			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
 			I.baseEnvStats().setArmor(Util.s_int((String)H.get("ARMOR")));

@@ -270,40 +270,12 @@ public class Pregnancy extends StdAbility
 						if(ticksInLabor==45)
 						{
 							ticksInLabor=0;
-							String name=mob.Name()+" jr.";
 							String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
 							String sondat="daughter";
 							if(Dice.rollPercentage()>50){
 								gender='M';
 								sondat="son";
-							}
-							if(mob.session()!=null)
-							{
-								try{
-									while(name.indexOf(" ")>=0)
-									{
-										String n=mob.session().prompt("What would you like to name your "+sondat+"? ","",60000).trim().toLowerCase();
-										if(n.indexOf(" ")>=0)
-											mob.tell("Spaces are not allowed in names! Please enter another one.");
-										else
-										if(n.length()!=0)
-										{
-											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n)))
-												mob.tell("That name is already taken.  Please enter a different one.");
-											else
-											if(mob.session().confirm("If the name '"+Util.capitalize(n)+"' correct (y/N)?","N",60000))
-												name=Util.capitalize(n);
-											else
-												name=" ";
-										}
-									}
-								}
-								catch(Throwable t)
-								{
-									labor=false;
-									return true;
-								};
 							}
 							String desc="The "+sondat+" of "+mob.Name();
 							String race2=mob.baseCharStats().getMyRace().ID();
@@ -328,6 +300,7 @@ public class Pregnancy extends StdAbility
 							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=getRace(babe,race1,race2);
 							if(R==null) R=mob.baseCharStats().getMyRace();
+							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();
 							babe.setName(name);
 							babe.setAlignment(1000);
 							babe.setClanID(mob.getClanID());

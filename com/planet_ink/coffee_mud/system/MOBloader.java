@@ -105,7 +105,9 @@ public class MOBloader
 	public static void DBRead(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-
+		int oldDisposition=mob.baseEnvStats().disposition();
+		mob.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
+		mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
 		DBReadUserOnly(mob);
 
 		DBConnection D=null;
@@ -229,7 +231,8 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 		}
 		if(D!=null) DBConnector.DBDone(D);
-
+		
+		mob.baseEnvStats().setDisposition(oldDisposition);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();

@@ -36,6 +36,7 @@ public class VeryAggressive extends Aggressive
 		if(tickID!=MudHost.TICK_MOB) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
+		if(Sense.isATrackingMonster(mob)) return;
 
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)

@@ -67,10 +67,13 @@ public class Say extends StdCommand
 				
 				if((!toFlag)&&(target!=null))
 				{
-					if((target!=null)&&(!target.name().equalsIgnoreCase(whom))&&(whom.length()<4))
+					if(!(target instanceof MOB))
 						target=null;
-					if((target.name().toUpperCase().indexOf(whom.toUpperCase())<0)
-					||(!(target instanceof MOB)))
+					else
+					if(target.name().toUpperCase().indexOf(whom.toUpperCase())<0)
+						target=null;
+					else
+					if((!target.name().equalsIgnoreCase(whom))&&(whom.length()<4))
 						target=null;
 				}
 				

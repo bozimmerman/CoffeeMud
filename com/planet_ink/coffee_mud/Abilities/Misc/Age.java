@@ -117,6 +117,11 @@ public class Age extends StdAbility
 				if(R!=null)
 				{
 					MOB babe=(MOB)affected;
+					if(babe.Name().indexOf(" ")>0)
+					{
+						babe.setName(Util.replaceAll(babe.Name()," baby "," young "));
+						babe.setDisplayText(Util.replaceAll(babe.displayText()," baby "," young "));
+					}
 					babe.baseCharStats().setStat(CharStats.CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 					babe.baseCharStats().setStat(CharStats.DEXTERITY,5);
@@ -144,7 +149,7 @@ public class Age extends StdAbility
 			&&(((MOB)affected).fetchBehavior("MudChat")!=null))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
-				if(R!=null)
+				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMClass.DBEngine().DBUserSearch(null,affected.Name())))
 				{
 					MOB babe=(MOB)affected;
 					MOB liege=null;
@@ -225,6 +230,31 @@ public class Age extends StdAbility
 					CMClass.DBEngine().DBUpdateMOB(newMan);
 					newMan.removeFromGame();
 					babe.destroy();
+				}
+				else
+				{
+					MOB babe=(MOB)affected;
+					MOB liege=null;
+					if(babe.getLiegeID().length()>0)
+						liege=CMMap.getLoadPlayer(babe.getLiegeID());
+					if(liege==null) liege=babe.amFollowing();
+					if(babe.Name().indexOf(" ")>0)
+					{
+						babe.setName(Util.replaceAll(babe.Name(),"young boy ","male "));
+						babe.setName(Util.replaceAll(babe.Name(),"baby boy ","male "));
+						babe.setName(Util.replaceAll(babe.Name(),"young girl ","female "));
+						babe.setName(Util.replaceAll(babe.Name(),"baby girl ","female "));
+						babe.setDisplayText(babe.Name()+" stands here.");
+					}
+					if(liege!=babe.amFollowing())
+						babe.amFollowing().tell(babe.Name()+" has just grown up to be a mob.");
+					liege.tell(babe.Name()+" has just grown up to be a mob.");
+					Ability A=babe.fetchEffect(ID());
+					if(A!=null) babe.delEffect(A);
+					babe.recoverCharStats();
+					babe.recoverEnvStats();
+					babe.recoverMaxState();
+					babe.text();
 				}
 			}
 		}

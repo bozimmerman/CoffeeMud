@@ -88,7 +88,7 @@ public class Prayer_Resurrect extends Prayer
 						else
 						if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
 						{
-							int expLost=Util.s_int(whatToDo);
+							int expLost=Util.s_int(whatToDo)/2;
 							rejuvedMOB.tell("^F^*You regain "+expLost+" experience points.^?^.");
 							MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
 						}
@@ -97,7 +97,7 @@ public class Prayer_Resurrect extends Prayer
 							continue;
 						else
 						{
-							int expLost=100*rejuvedMOB.envStats().level();
+							int expLost=(100*rejuvedMOB.envStats().level())/2;
 							rejuvedMOB.tell("^F^*You regain "+expLost+" experience points.^?^.");
 							MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
 						}

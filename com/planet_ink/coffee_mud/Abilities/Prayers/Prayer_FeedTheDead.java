@@ -56,8 +56,8 @@ public class Prayer_FeedTheDead extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MUDFight.postExperience(mob,null,mob.getLiegeID(),-amount,false);
-				MUDFight.postExperience(target,null,target.getLiegeID(),amount,false);
+				MUDFight.postExperience(mob,null,null,-amount,false);
+				MUDFight.postExperience(target,null,null,amount,false);
 			}
 		}
 		else

@@ -77,42 +77,45 @@ public class Spell_Gate extends Spell
 			return false;
 
 		boolean success=profficiencyCheck(mob,-adjustment,auto);
-
-		if(success)
+		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
-			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
-			{
-				mob.location().send(mob,msg);
-				HashSet h=properTargets(mob,givenTarget,false);
-				if(h==null) return false;
+			Room room=null;
+			int x=0;
+			while((room==null)||(room==newRoom)||((++x)>1000)||(room==mob.location())||(!Sense.canAccess(mob,room)))
+				room=CMMap.getRandomRoom();
+			if(room==null)
+				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
+			newRoom=room;
+		}
+				
+		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+		if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
+		{
+			mob.location().send(mob,msg);
+			HashSet h=properTargets(mob,givenTarget,false);
+			if(h==null) return false;
 
-				Room thisRoom=mob.location();
-				for(Iterator f=h.iterator();f.hasNext();)
+			Room thisRoom=mob.location();
+			for(Iterator f=h.iterator();f.hasNext();)
+			{
+				MOB follower=(MOB)f.next();
+				FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
+				FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
+				if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
 				{
-					MOB follower=(MOB)f.next();
-					FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
-					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))
+					if(follower.isInCombat())
 					{
-						if(follower.isInCombat())
-						{
-							CommonMsgs.flee(follower,("NOWHERE"));
-							follower.makePeace();
-						}
-						thisRoom.send(follower,leaveMsg);
-						newRoom.bringMobHere(follower,false);
-						newRoom.send(follower,enterMsg);
-						follower.tell("\n\r\n\r");
-						CommonMsgs.look(follower,true);
+						CommonMsgs.flee(follower,("NOWHERE"));
+						follower.makePeace();
 					}
+					thisRoom.send(follower,leaveMsg);
+					newRoom.bringMobHere(follower,false);
+					newRoom.send(follower,enterMsg);
+					follower.tell("\n\r\n\r");
+					CommonMsgs.look(follower,true);
 				}
 			}
-
 		}
-		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
-
 
 		// return whether it worked
 		return success;

@@ -304,15 +304,15 @@ public class ClanCrafting extends CraftingSkill
 			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
-				building.setMaterial(EnvResource.MATERIAL_PAPER);
+				building.setMaterial(EnvResource.RESOURCE_PAPER);
 				Sense.setReadable(building,true);
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}
-		else
+		
 		if((Sense.isReadable(building))
-		&&((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
-			building.setMaterial(EnvResource.MATERIAL_PAPER);
+		&&((building.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
+			building.setMaterial(EnvResource.RESOURCE_PAPER);
 
 		if(spell.length()>0)
 		{

@@ -14,7 +14,6 @@ public class Chant_BestowName extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_BestowName();}
-	public String newName="";
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
@@ -22,22 +21,24 @@ public class Chant_BestowName extends Chant
 		if((affected instanceof MOB)
 		&&(((MOB)affected).amFollowing()==null)
 		&&(Sense.isInTheGame(affected)))
+		{
 			affected.delEffect(affected.fetchEffect(ID()));
+			affectedStats.setName(null);
+		}
 		else							   
-		if((newName!=null)&&(newName.length()>0))
-			affectedStats.setName(newName);
+		if((text().length()>0))
+			affectedStats.setName(text());
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
-		if((!Sense.isAnimalIntelligence(target))||(!target.isMonster())||(mob.getGroupMembers(new HashSet()).contains(target)))
+		if(commands.size()<2)
 		{
-			mob.tell("This chant only works on non-player animals in your group.");
+			mob.tell("You must specify the animal, and a name to give him.");
 			return false;
 		}
-		String myName=Util.combine(commands,0).trim();
+		String myName=((String)commands.lastElement()).trim();
+		commands.removeElementAt(commands.size()-1);
 		if(myName.length()==0)
 		{
 			mob.tell("You must specify a name.");
@@ -46,6 +47,14 @@ public class Chant_BestowName extends Chant
 		if(myName.indexOf(" ")>=0)
 		{
 			mob.tell("Your name may not contain a space.");
+			return false;
+		}
+		
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		if((!Sense.isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet()).contains(target)))
+		{
+			mob.tell("This chant only works on non-player animals in your group.");
 			return false;
 		}
 		
@@ -74,7 +83,7 @@ public class Chant_BestowName extends Chant
 			{
 				mob.location().send(mob,msg);
 				Chant_BestowName A=(Chant_BestowName)copyOf();
-				A.newName=myName;
+				A.setMiscText(myName);
 				target.addNonUninvokableEffect(A);
 				mob.location().recoverRoomStats();
 			}

@@ -199,7 +199,7 @@ public class Prop_SpellAdder extends Property
 		if((affected instanceof Room)||(affected instanceof Area))
 		{
 			if((msg.targetMinor()==CMMsg.TYP_LEAVE)
-			||(msg.targetMinor()==CMMsg.TYP_RECALL))
+			||(msg.sourceMinor()==CMMsg.TYP_RECALL))
 				removeMyAffectsFrom(msg.source());
 			if(msg.targetMinor()==CMMsg.TYP_ENTER)
 				addMeIfNeccessary(msg.source());

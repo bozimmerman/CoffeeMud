@@ -52,6 +52,12 @@ public class Order extends StdCommand
 		}
 		while(allFlag);
 
+		if(V.size()==0)
+		{
+			mob.tell("You don't see anyone called '"+whomToOrder+" here.");
+			return false;
+		}
+		
 		MOB target=null;
 		if(V.size()==1)
 		{
@@ -85,7 +91,14 @@ public class Order extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
-			if(target.willFollowOrdersOf(mob))
+			if((!Sense.canBeSeenBy(target,mob))
+			||(!Sense.canBeHeardBy(mob,target))
+			||(target.location()!=mob.location()))
+				mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
+			else
+			if(!target.willFollowOrdersOf(mob))
+				mob.tell("You can't order '"+target.name()+"' around.");
+			else
 			{
 				FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
 				if(mob.location().okMessage(mob,msg))

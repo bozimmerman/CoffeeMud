@@ -3524,7 +3524,7 @@ public class Scriptable extends StdBehavior
 					{
 						MOB M=(MOB)e.next();
 						if(M.location()==lastKnownLocation)
-							MUDFight.postExperience(M,null,M.getLiegeID(),t,false);
+							MUDFight.postExperience(M,null,null,t,false);
 					}
 				}
 				break;

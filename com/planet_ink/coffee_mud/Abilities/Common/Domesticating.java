@@ -74,6 +74,12 @@ public class Domesticating extends CommonSkill
 	{
 		taming=null;
 		String str=Util.combine(commands,0);
+		String newName=null;
+		if((commands.size()>2)&&(((String)commands.firstElement()).equalsIgnoreCase("name")))
+		{
+			str=(String)commands.elementAt(1);
+			newName=Util.combine(commands,2);
+		}
 		MOB M=mob.location().fetchInhabitant(str);
 		if((M==null)||(!Sense.canBeSeenBy(M,mob)))
 		{
@@ -82,13 +88,46 @@ public class Domesticating extends CommonSkill
 		}
 		if(!M.isMonster())
 		{
-			commonTell(mob,"You can't domesticate "+M.name()+".");
+			if(newName!=null)
+				commonTell(mob,"You can't name "+M.name()+".");
+			else
+				commonTell(mob,"You can't domesticate "+M.name()+".");
 			return false;
 		}
 		if(!Sense.isAnimalIntelligence(M))
 		{
-			commonTell(mob,"You don't know how to domesticate "+M.name()+".");
+			if(newName!=null)
+				commonTell(mob,"You can't name "+M.name()+".");
+			else
+				commonTell(mob,"You don't know how to domesticate "+M.name()+".");
 			return false;
+		}
+		String theName=newName;
+		if((newName!=null)&&(M.amFollowing()==null))
+		{
+			commonTell(mob,"You can only name someones pet.");
+			return false;
+		}
+		else
+		if((newName!=null)&&(M!=null))
+		{
+			if(newName.trim().length()==0)
+			{
+				mob.tell("You must specify a name.");
+				return false;
+			}
+			if(newName.indexOf(" ")>=0)
+			{
+				mob.tell("The name may not contain a space.");
+				return false;
+			}
+			if((M.name().toUpperCase().startsWith("A "))
+			||(M.name().toUpperCase().startsWith("AN "))
+			||(M.name().toUpperCase().startsWith("SOME ")))
+				newName=M.name()+" named "+newName;
+			else
+			if(M.name().indexOf(" ")>=0)
+				newName=newName+", "+M.name();
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -100,11 +139,23 @@ public class Domesticating extends CommonSkill
 		messedUp=!profficiencyCheck(mob,-(levelDiff*5),auto);
 		int duration=35+levelDiff;
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.name()+".");
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,
+			(newName!=null)?"<S-NAME> name(s) "+M.name()+" '"+theName+"'.":"<S-NAME> start(s) domesticating "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,duration);
+			if(newName!=null)
+			{
+				Ability A=CMClass.getAbility("Chant_BestowName");
+				if(A!=null)
+				{
+					A.setMiscText(newName);
+					M.addNonUninvokableEffect(A);
+					mob.location().recoverRoomStats();
+				}
+			}
+			else
+				beneficialAffect(mob,mob,duration);
 		}
 		return true;
 	}
