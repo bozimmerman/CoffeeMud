@@ -136,7 +136,7 @@ public class Tailoring extends CommonSkill
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",10)+" "+Util.padRight("Cloth",10)+" ");
+				buf.append(Util.padRight("Item",19)+" "+Util.padRight("Cloth",5)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -148,7 +148,7 @@ public class Tailoring extends CommonSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,10)+" "+Util.padRight(""+wood,10)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,19)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
