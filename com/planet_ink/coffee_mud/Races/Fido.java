@@ -42,9 +42,9 @@ public class Fido extends StdRace
 		return naturalWeapon;
 	}
 
-	public DeadBody getCorpse(MOB mob, Room room)
+	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
-		DeadBody body=super.getCorpse(mob,room);
+		DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(Dice.rollPercentage()<25))
 		{
 			Ability A=CMClass.getAbility("Disease_Fleas");

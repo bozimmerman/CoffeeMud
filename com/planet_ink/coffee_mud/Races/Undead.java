@@ -117,9 +117,9 @@ public class Undead extends StdRace
 		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
 	}
-	public DeadBody getCorpse(MOB mob, Room room)
+	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
-		DeadBody body=super.getCorpse(mob,room);
+		DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
 			if((mob.Name().toUpperCase().indexOf("DRACULA")>=0)

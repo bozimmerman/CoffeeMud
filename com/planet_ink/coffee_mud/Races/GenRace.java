@@ -51,10 +51,10 @@ public class GenRace extends StdRace
 	protected String[] culturalAbilityNames=null;
 	protected int[] culturalAbilityProfficiencies=null;
 	
-	public String[] racialAbilityNames(){return racialAbilityNames;}
-	public int[] racialAbilityLevels(){return racialAbilityLevels;}
-	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
-	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	protected String[] racialAbilityNames(){return racialAbilityNames;}
+	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 	

@@ -29,13 +29,13 @@ public class StdRace implements Race
 	protected Vector naturalWeaponChoices=null;
 	protected Vector outfitChoices=null;
 	protected Hashtable racialAbilityMap=null;
-	public String[] racialAbilityNames(){return null;}
-	public int[] racialAbilityLevels(){return null;}
-	public int[] racialAbilityProfficiencies(){return null;}
-	public boolean[] racialAbilityQuals(){return null;}
-	public String[] culturalAbilityNames(){return null;}
-	public int[] culturalAbilityProfficiencies(){return null;}
-	public boolean uncharmable(){return false;}
+	protected String[] racialAbilityNames(){return null;}
+	protected int[] racialAbilityLevels(){return null;}
+	protected int[] racialAbilityProfficiencies(){return null;}
+	protected boolean[] racialAbilityQuals(){return null;}
+	protected String[] culturalAbilityNames(){return null;}
+	protected int[] culturalAbilityProfficiencies(){return null;}
+	protected boolean uncharmable(){return false;}
 	
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
@@ -309,7 +309,7 @@ public class StdRace implements Race
 		}
 	}
 
-	public DeadBody getCorpse(MOB mob, Room room)
+	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		if(room==null) room=mob.location();
 

@@ -20,10 +20,10 @@ public class WaterElemental extends StdRace
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProfficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	public String[] racialAbilityNames(){return null;}
-	public int[] racialAbilityLevels(){return null;}
-	public int[] racialAbilityProfficiencies(){return null;}
-	public boolean[] racialAbilityQuals(){return null;}
+	protected String[] racialAbilityNames(){return null;}
+	protected int[] racialAbilityLevels(){return null;}
+	protected int[] racialAbilityProfficiencies(){return null;}
+	protected boolean[] racialAbilityQuals(){return null;}
 	public boolean fertile(){return false;}
 	public boolean uncharmable(){return true;}
 

@@ -20,10 +20,10 @@ public class WereAmphibian extends StdRace
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProfficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	public String[] racialAbilityNames(){return null;}
-	public int[] racialAbilityLevels(){return null;}
-	public int[] racialAbilityProfficiencies(){return null;}
-	public boolean[] racialAbilityQuals(){return null;}
+	protected String[] racialAbilityNames(){return null;}
+	protected int[] racialAbilityLevels(){return null;}
+	protected int[] racialAbilityProfficiencies(){return null;}
+	protected boolean[] racialAbilityQuals(){return null;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,1 ,1 ,1 ,1 ,0 };
