@@ -87,6 +87,51 @@ public class Quests implements Cloneable, Quest
 		}
 	}
 
+	public Vector sortSelect(Environmental E, String str,
+							 Vector choices,
+							 Vector choices0,
+							 Vector choices1,
+							 Vector choices2,
+							 Vector choices3)
+	{
+		String mname=E.name().toUpperCase();
+		String mdisp=E.displayText().toUpperCase();
+		String mdesc=E.description().toUpperCase();
+		if(str.equalsIgnoreCase("any"))
+		{
+			choices=choices0;
+			choices0.addElement(E);
+		}
+		else
+		if(mname.equalsIgnoreCase(str))
+		{
+			choices=choices0;
+			choices0.addElement(E);
+		}
+		else
+		if(EnglishParser.containsString(mname,str))
+		{
+			if((choices==null)||(choices==choices2)||(choices==choices3))
+				choices=choices1;
+			choices1.addElement(E);
+		}
+		else
+		if(EnglishParser.containsString(mdisp,str))
+		{
+			if((choices==null)||(choices==choices3))
+				choices=choices2;
+			choices2.addElement(E);
+		}
+		else
+		if(EnglishParser.containsString(mdesc,str))
+		{
+			if(choices==null) choices=choices3;
+			choices3.addElement(E);
+		}
+		return choices;
+	}
+	
+	
 	// this will execute the quest script.  If the quest is running, it
 	// will call stopQuest first to shut it down.
 	public void startQuest()
@@ -98,6 +143,7 @@ public class Quests implements Cloneable, Quest
 		Area A=null;
 		Room R=null;
 		MOB M=null;
+		Vector MG=null;
 		Item I=null;
 		Environmental E=null;
 		boolean error=false;
@@ -179,25 +225,44 @@ public class Quests implements Cloneable, Quest
 						{
 							String mobType=(String)mobTypes.elementAt(t);
 							if(mobType.startsWith("-")) continue;
-							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMap();
-							for(;e.hasMoreElements();)
+							if(MG==null)
 							{
-								Room R2=(Room)e.nextElement();
-								for(int i=0;i<R2.numInhabitants();i++)
+								Enumeration e=CMMap.rooms();
+								if(A!=null) e=A.getMap();
+								for(;e.hasMoreElements();)
 								{
-									MOB M2=R2.fetchInhabitant(i);
-									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+									Room R2=(Room)e.nextElement();
+									for(int i=0;i<R2.numInhabitants();i++)
 									{
-										if(mobType.equalsIgnoreCase("any"))
-											choices.addElement(M2);
-										else
-										if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
-										||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
-										||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-										||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
-											choices.addElement(M2);
+										MOB M2=R2.fetchInhabitant(i);
+										if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+										{
+											if(mobType.equalsIgnoreCase("any"))
+												choices.addElement(M2);
+											else
+											if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+											||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+											||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+											||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+												choices.addElement(M2);
+										}
 									}
+								}
+							}
+							else
+							for(Enumeration e=MG.elements();e.hasMoreElements();)
+							{
+								MOB M2=(MOB)e.nextElement();
+								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+								{
+									if(mobType.equalsIgnoreCase("any"))
+										choices.addElement(M2);
+									else
+									if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+									||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+									||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+									||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+										choices.addElement(M2);
 								}
 							}
 						}
@@ -242,6 +307,49 @@ public class Quests implements Cloneable, Quest
 								stuff.addElement(M);
 							R.recoverRoomStats();
 							R.showHappens(CMMsg.MSG_OK_ACTION,null);
+						}
+					}
+					if(cmd.equals("MOBGROUP"))
+					{
+						MG=null;
+						if(p.size()<3) continue;
+						Vector choices=null;
+						Vector choices0=new Vector();
+						Vector choices1=new Vector();
+						Vector choices2=new Vector();
+						Vector choices3=new Vector();
+						String mobName=Util.combine(p,2).toUpperCase();
+						String mask="";
+						int x=mobName.indexOf("MASK=");
+						if(x>=0)
+						{
+							mask=mobName.substring(x+5).trim();
+							mobName=mobName.substring(0,x).trim();
+						}
+						if(mobName.length()==0) mobName="ANY";
+						Enumeration e=CMMap.rooms();
+						if(A!=null) e=A.getMap();
+						for(;e.hasMoreElements();)
+						{
+							Room R2=(Room)e.nextElement();
+							for(int i=0;i<R2.numInhabitants();i++)
+							{
+								MOB M2=R2.fetchInhabitant(i);
+								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
+								{
+									if(!MUDZapper.zapperCheck(mask,M2))
+										continue;
+									choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+								}
+							}
+						}
+						if((choices!=null)&&(choices.size()>0))
+							MG=choices;
+						else
+						{
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', !mobgroup '"+mobName+"'.");
+							error=true; break;
 						}
 					}
 					else
@@ -431,51 +539,34 @@ public class Quests implements Cloneable, Quest
 							mobName=mobName.substring(0,x).trim();
 						}
 						if(mobName.length()==0) mobName="ANY";
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
-						for(;e.hasMoreElements();)
+						if(MG!=null)
 						{
-							Room R2=(Room)e.nextElement();
-							for(int i=0;i<R2.numInhabitants();i++)
+							for(Enumeration e=MG.elements();e.hasMoreElements();)
 							{
-								MOB M2=R2.fetchInhabitant(i);
+								MOB M2=(MOB)e.nextElement();
 								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
 								{
-									String mname=M2.name().toUpperCase();
-									String mdisp=M2.displayText().toUpperCase();
-									String mdesc=M2.description().toUpperCase();
 									if(!MUDZapper.zapperCheck(mask,M2))
 										continue;
-									if(mobName.equalsIgnoreCase("any"))
+									choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+								}
+							}
+						}
+						else
+						{
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMap();
+							for(;e.hasMoreElements();)
+							{
+								Room R2=(Room)e.nextElement();
+								for(int i=0;i<R2.numInhabitants();i++)
+								{
+									MOB M2=R2.fetchInhabitant(i);
+									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
 									{
-										choices=choices0;
-										choices0.addElement(M2);
-									}
-									else
-									if(mname.equalsIgnoreCase(mobName))
-									{
-										choices=choices0;
-										choices0.addElement(M2);
-									}
-									else
-									if(EnglishParser.containsString(mname,mobName))
-									{
-										if((choices==null)||(choices==choices2)||(choices==choices3))
-											choices=choices1;
-										choices1.addElement(M2);
-									}
-									else
-									if(EnglishParser.containsString(mdisp,mobName))
-									{
-										if((choices==null)||(choices==choices3))
-											choices=choices2;
-										choices2.addElement(M2);
-									}
-									else
-									if(EnglishParser.containsString(mdesc,mobName))
-									{
-										if(choices==null) choices=choices3;
-										choices3.addElement(M2);
+										if(!MUDZapper.zapperCheck(mask,M2))
+											continue;
+										choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
 									}
 								}
 							}
@@ -522,42 +613,7 @@ public class Quests implements Cloneable, Quest
 							{
 								Item I2=R2.fetchItem(i);
 								if((I2!=null)&&(objectInUse(I2)==null))
-								{
-									String iname=I2.name().toUpperCase();
-									String idisp=I2.displayText().toUpperCase();
-									String idesc=I2.description().toUpperCase();
-									if(itemName.equalsIgnoreCase("any"))
-									{
-										choices=choices0;
-										choices0.addElement(I2);
-									}
-									else
-									if(iname.equalsIgnoreCase(itemName))
-									{
-										choices=choices0;
-										choices0.addElement(I2);
-									}
-									else
-									if(EnglishParser.containsString(iname,itemName))
-									{
-										if((choices==null)||(choices==choices2)||(choices==choices3))
-											choices=choices1;
-										choices1.addElement(I2);
-									}
-									else
-									if(EnglishParser.containsString(idisp,itemName))
-									{
-										if((choices==null)||(choices==choices3))
-											choices=choices2;
-										choices2.addElement(I2);
-									}
-									else
-									if(EnglishParser.containsString(idesc,itemName))
-									{
-										if(choices==null) choices=choices3;
-										choices3.addElement(I2);
-									}
-								}
+									choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
 							}
 						}
 						if((choices!=null)&&(choices.size()>0))
@@ -897,7 +953,7 @@ public class Quests implements Cloneable, Quest
 					else
 					if(cmd.equals("ABILITY"))
 					{
-						if(M==null)
+						if((M==null)&&(MG==null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give ability, no mob set.");
@@ -916,31 +972,41 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						Vector V=new Vector();
-						V.addElement(E);
-						if(M.fetchAbility(A3.ID())!=null)
-						{
-							A3=M.fetchAbility(A3.ID());
-							V.addElement(A3);
-							V.addElement(A3);
-							V.addElement(A3.text());
-							A3.setMiscText(Util.combine(p,3));
-							A3.setProfficiency(100);
-						}
+						Vector toSet=new Vector();
+						if(M!=null) 
+							toSet.addElement(M);
 						else
+						if(MG!=null) 
+							toSet=MG;
+						for(int i=0;i<toSet.size();i++)
 						{
-							A3.setMiscText(Util.combine(p,3));
-							V.addElement(A3);
-							V.addElement(A3);
-							A3.setProfficiency(100);
-							M.addAbility(A3);
+							M=(MOB)toSet.elementAt(i);
+							Vector V=new Vector();
+							V.addElement(M);
+							if(M.fetchAbility(A3.ID())!=null)
+							{
+								A3=M.fetchAbility(A3.ID());
+								V.addElement(A3);
+								V.addElement(A3);
+								V.addElement(A3.text());
+								A3.setMiscText(Util.combine(p,3));
+								A3.setProfficiency(100);
+							}
+							else
+							{
+								A3.setMiscText(Util.combine(p,3));
+								V.addElement(A3);
+								V.addElement(A3);
+								A3.setProfficiency(100);
+								M.addAbility(A3);
+							}
+							addons.addElement(V);
 						}
-						addons.addElement(V);
 					}
 					else
 					if(cmd.equals("BEHAVIOR"))
 					{
-						if(E==null)
+						if((E==null)&&(MG!=null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, no mob or item set.");
@@ -959,27 +1025,37 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						Vector V=new Vector();
-						V.addElement(E);
-						if(E.fetchBehavior(B.ID())!=null)
-						{
-							B=E.fetchBehavior(B.ID());
-							V.addElement(B);
-							V.addElement(B.getParms());
-							B.setParms(Util.combine(p,3));
-						}
+						Vector toSet=new Vector();
+						if(E!=null) 
+							toSet.addElement(E);
 						else
+						if(MG!=null) 
+							toSet=MG;
+						for(int i=0;i<toSet.size();i++)
 						{
-							V.addElement(B);
-							B.setParms(Util.combine(p,3));
-							E.addBehavior(B);
+							E=(Environmental)toSet.elementAt(i);
+							Vector V=new Vector();
+							V.addElement(E);
+							if(E.fetchBehavior(B.ID())!=null)
+							{
+								B=E.fetchBehavior(B.ID());
+								V.addElement(B);
+								V.addElement(B.getParms());
+								B.setParms(Util.combine(p,3));
+							}
+							else
+							{
+								V.addElement(B);
+								B.setParms(Util.combine(p,3));
+								E.addBehavior(B);
+							}
+							addons.addElement(V);
 						}
-						addons.addElement(V);
 					}
 					else
 					if(cmd.equals("AFFECT"))
 					{
-						if(E==null)
+						if((E==null)&&(MG!=null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, no mob or item set.");
@@ -998,27 +1074,37 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give Effect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						Vector V=new Vector();
-						V.addElement(E);
-						if(E.fetchEffect(A3.ID())!=null)
-						{
-							A3=E.fetchEffect(A3.ID());
-							V.addElement(A3);
-							V.addElement(A3.text());
-							A3.makeLongLasting();
-							A3.setMiscText(Util.combine(p,3));
-						}
+						Vector toSet=new Vector();
+						if(E!=null) 
+							toSet.addElement(E);
 						else
+						if(MG!=null) 
+							toSet=MG;
+						for(int i=0;i<toSet.size();i++)
 						{
-							V.addElement(A3);
-							A3.setMiscText(Util.combine(p,3));
-							if(M!=null)
-								A3.startTickDown(M,E,99999);
+							E=(Environmental)toSet.elementAt(i);
+							Vector V=new Vector();
+							V.addElement(E);
+							if(E.fetchEffect(A3.ID())!=null)
+							{
+								A3=E.fetchEffect(A3.ID());
+								V.addElement(A3);
+								V.addElement(A3.text());
+								A3.makeLongLasting();
+								A3.setMiscText(Util.combine(p,3));
+							}
 							else
-								A3.startTickDown(null,E,99999);
-							A3.makeLongLasting();
+							{
+								V.addElement(A3);
+								A3.setMiscText(Util.combine(p,3));
+								if(M!=null)
+									A3.startTickDown(M,E,99999);
+								else
+									A3.startTickDown(null,E,99999);
+								A3.makeLongLasting();
+							}
+							addons.addElement(V);
 						}
-						addons.addElement(V);
 					}
 					else
 					{
