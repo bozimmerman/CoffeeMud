@@ -632,36 +632,152 @@ coffeemud). Then save the changes. </P>
 CoffeeMud!</P>
 <P><STRONG><EM>Installing and using HSQLDB</EM></STRONG> <STRONG><EM>with 
 CoffeeMud on a UN*X or Linux machine</EM></STRONG></P>
-<P><STRONG>1. </STRONG>First download hsqldb*.zip from <A 
-href="http://sourceforge.net/project/showfiles.php?group_id=23316&amp;package_id=16653&amp;release_id=287789">here</A>.</P>
-<P><STRONG>2.</STRONG> Copy the hsqldb/org directory into your Coffeemud/ </P>
-<P><STRONG>3.</STRONG> Modify your coffeemud to look like: 
-<BR>DBCLASS=org.hsqldb.jdbcDriver 
-<BR>DBSERVICE=jdbc:hsqldb:file:hsqldb/data/coffeemud <BR>DBUSER=sa 
-<BR>DBCONNECTIONS=4 </P>
-<P><STRONG>(notes)</STRONG>&nbsp;I used 6 DB connections, I don't know if that 
-sped things up. DBService is the location of the database, mine was in 
-Coffee/hsqldb/data/ and it was named coffeemud. dbuser=sa is the default user.. 
-I don't think this really NEEDS to be changed.. </P>
-<P><STRONG>4. </STRONG>The default database must be created first (just like 
-with mysql). do a mkdir Coffee/hsqldb/data/ </P>
-<P><STRONG>5. </STRONG>Run the runManager script in the hsqldb/demo's directory. 
-Set up the connection to use "HSQLDB Standalone" in the next prompt change where 
-it says &lt;<DIRECTORY filename>&gt; to coffeemud (Be sure to delete the 
-&lt;&lt;&gt;&gt;'s!!!!!!), just coffeemud, do not include the directory path. it 
-will make it in hsqldb/data. </P>
-<P><STRONG>6. </STRONG>Then select open script, and use coffeemuddbh.sql . </P>
-<P><STRONG>7. </STRONG>I used mmake to make a new makefile that used java to 
-compile the org/hsqldb directory.. it gave me a bunch of errors, but compiled 
-jdbcDriver.java just fine, so it's safe to ignore the errors. Once you have 
-compiled the driver Coffee/org/hsqldb/jdbcDriver.java in to jdbcDriver.class 
-</P>
-<P><STRONG>8. </STRONG>Start up coffeemud, and Viala, it should work. Once you 
-have built the main database, you can delete all the files in the Coffee/hsqldb/ 
-directory EXCEPT the data directory, where your world files are. And now when 
-coffeemud starts, it uses hsqldb internally, no need to start up an extra 
-server. Also, I experience nearly 2x faster load times than 
-mysql.</P>              
+  <B>1.</B>
+  <FONT size=3>Get the database software</FONT>
+  <P>Go to <A 
+  href="http://sourceforge.net/projects/hsqldb/">http://sourceforge.net/projects/hsqldb/</A> 
+  and download the applicable archive. </P>
+  <B>2.</B>
+  <FONT size=3>Putting HSQLDB into the classpath</FONT>
+  <P>Go into the archive that was just downloaded. Extract the file hsqldb.jar. 
+  This file needs to be placed into the classpath. I merely placed it in 
+  "&lt;JRE install path&gt;\lib\ext" (C:\Program Files\Java\j2re1.4.2_06\lib\ext 
+  on my system) </P>
+  <B>3.</B>
+  <FONT size=3>Creating the coffeemud database</FONT>
+  <P>Open a command window and navigate to the root of the CoffeeMUD install 
+  directory. </P>
+  <P>Create the directory for the database to reside in by executing the 
+  following command (or wherever you want to call it): </P><PRE>mkdir coffeemud</PRE>
+  <P>Now navigate into the newly created directory. </P>
+  <P>Next, issue the following command to start the database interface. </P><PRE>java org.hsqldb.util.DatabaseManager</PRE>
+  <P>The system will respond by bringing up a small GUI application. </P>
+  <P>Now we need to set up the correct parameters to create the database. The 
+  final parameter of the URL is the name of the database </P><PRE>Type: HSQL Database Engine Standalone
+Driver: org.hsqldb.jdbcDriver
+URL: jdbc:hsqldb:file:coffeemud
+User: &lt;whatever you want&gt;
+Password: &lt;whatever you want&gt;
+</PRE>
+  <P>Now that the values have been filled in click ok. </P>
+  <P>The tables necessary for CoffeeMUD can be setup by: </P><PRE>	Open File Menu.
+	Select Open Script.
+	Find and open the coffeemuddbhsqldb.sql file in the CoffeeMUD\guides\database directory.
+	The script will then be loaded into the small text box on the upper right.
+	Click the Execute button.
+	The system should return with and update count of 0.
+</PRE>
+  <P>Now to shutdown the database and exit this utility: </P><PRE>	Open Command Menu.
+	Select SHUTDOWN.
+	Click the Execute Button.
+	Open the File Menu.
+	Select Exit.
+</PRE>
+  <P>The coffeemud database will exist in the folder where the DatabaseManager 
+  utility was run. </P>
+  <B>4.</B>
+  <FONT size=3>Setup CoffeeMUD to use the correct driver</FONT>
+  <P>Open coffeemud.ini and scroll down to the ODBC Database fields section. 
+  Comment out the current settings (place a # in front of them) and add the 
+  following lines below them: </P><PRE>#here are the settings for HSQLDB
+DBCLASS=org.hsqldb.jdbcDriver
+DBSERVICE=jdbc:hsqldb:file:coffeemud/coffeemud
+DBUSER=sa
+DBPASS=
+DBCONNECTIONS=4
+</PRE>
+  <P>The file: parameter of the DBSERVICE is the path to the database (relative 
+  from the root of the coffeemud directory) followed by the name of the 
+  database. </P>
+<P>
+  <B>5.</B>
+  <FONT size=3>Smile, you are done.</FONT> </P>
+<P><STRONG><EM>Installing and using Derby (IBM Cloudscape) for Windows or 
+*nix</EM></STRONG></P>
+<B>1.</B>&nbsp;Get the database software
+  <P>Go to <A 
+  href="http://sourceforge.net/cloudscape_download_choose.php">http://sourceforge.net/cloudscape_download_choose.php</A> 
+  and download the applicable installer (I used the Java installer). </P>
+  <B>2.</B>&nbsp;Install the database software
+  <P>Follow the instructions included with the installer. </P>
+<B>3.</B>&nbsp;Putting Derby into the classpath
+  <P>Derby.jar and Derbytools.jar must be placed into the classpath for them to 
+  be of any use. These archives live in the lib subfolder of the path where 
+  Derby was installed. They can be placed into the root of the CoffeeMUD folder 
+  or they can be placed into "&lt;JRE install path&gt;\lib\ext" (C:\Program 
+  Files\Java\j2re1.4.2_06\lib\ext on my system) </P>
+<B>4.</B> Creating the coffeemud database
+  <P>Open a command window and navigate to the root of the CoffeeMUD install 
+  directory. Issue the following command to start the database interface. </P><PRE>java org.apache.derby.tools.ij</PRE>
+  <P>The system will respond with: </P><PRE>ij version 10.0 (C) Copyright IBM Corp. 1997, 2004.
+ij&gt;
+</PRE>
+  <P>Now we will issue the command that will create the database. </P><PRE>connect 'jdbc:derby:coffeemud;create=true';</PRE>
+  <P>After a time the ij&gt; prompt will return. Now to run the SQL that will 
+  set up the tables: </P><PRE>run '.\guides\database\coffeemuddbderby.sql';</PRE>
+  <P>A description of all of the tables created will fill up the window. 
+  Finally, we must disconnect from the database and exit the utility. </P><PRE>disconnect;
+exit;</PRE>
+  <P>The coffeemud database will exist in a folder called 'coffeemud' in the 
+  current working directory, and if CoffeeMUD is to find it this must be the 
+  root of the coffeemud install. </P>
+  <B>5.</B> Setup CoffeeMUD to use the correct driver
+  <P>Open coffeemud.ini and scroll down to the ODBC Database fields section. 
+  Comment out the current settings (place a # in front of them) and add the 
+  following lines below them: </P><PRE>#here are the settings for IBM Cloudscape(Derby)
+DBCLASS=org.apache.derby.jdbc.EmbeddedDriver
+DBSERVICE=jdbc:derby:coffeemud
+DBCONNECTIONS=2
+</PRE>
+<B>6.</B>Smile, you are done... well mostly
+  <P>Currently there are some minor changes that must be made to the code for 
+  Derby to work properly. </P>
+  <B>7.</B>Change 1
+  <P>The statement that is issued when a new character is created has a slight 
+  flaw. Open MOBloader.java in your text editor of choice. On line 876 perform 
+  the following action: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');");
+</PRE>
+  <P>Must be changed to: </P><PRE>+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"')");
+</PRE>
+  <P>Now recompile the source and it will work like a dream... </P>
+  <B>8.</B>Change 2
+  <P>This step is not really necessary, it just makes things cleaner. Currently 
+  when CoffeeMUD is shut down it does not exit the database properly, I have not 
+  yet worked out a good way to fix this, however, the following will work: </P>
+  <P>Open DBConnection.java in your text editor of choice. Goto line 107 (the 
+  close() function). </P>
+  <P>change </P><PRE>if(myConnection!=null)
+	myConnection.close();
+</PRE>
+  <P>into </P><PRE>if(myConnection!=null)
+{
+	try
+	{
+	   DriverManager.getConnection("jdbc:derby:;shutdown=true");
+	}
+	catch (SQLException se)
+	{
+	}
+}
+</PRE>
+  <P>Now recompile the source and it will work like a dream... </P>
+  <B>9.</B>Increasing performance
+  <P>The basic settings for Derby end up in it being about half the speed of 
+  other databases. The method to correct this is simple, however, it is very 
+  memory intensive (I upped the maximum memory for CoffeeMUD to 512 Megs, it 
+  really only uses about 300 Megs...) 
+  <P>
+  <P>Before running step 4 (the creation of the database), create a file called 
+  'derby.properties' in the root CoffeeMUD directory. This file should contain: 
+  </P><PRE># derby.properties
+#
+derby.storage.pageSize=32768
+derby.storage.pageCacheSize=10000
+</PRE>
+  <P>When the coffeemud database is created this time it will run at about the 
+  same speed as other databases. More information on these properties can be 
+  found at &lt;Derby Install Path&gt;\doc\pdf\tuning.pdf. </P>
+  <P></P>
             
             
 </BODY>
