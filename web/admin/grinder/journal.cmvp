@@ -7,6 +7,14 @@
 	<title>Journal Browser</title>
 	<script language=JavaScript>
 	<!--
+		function Clicked(action)
+		{
+			document.JOURNAL.JOURNAL.action=action;
+			document.JOURNAL.JOURNAL.value'';
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.submit();
+		}
 		function Clicked1(journal)
 		{
 			document.JOURNAL.JOURNAL.value=journal;
