@@ -109,7 +109,7 @@ public class MoneyChanger extends StdBehavior
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
 					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(100000);
-					msliver.setName("a Heros note");
+					msliver.setName("a Heroes note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
 					msliver.setDescription("This note convertable to 100,000 gold coins.");
 					totalWeight++;

@@ -552,8 +552,8 @@ public class Import
 				}
 				else
 				{
-					useThisOne=null;
-					Log.sysOut("Import","Unknown line: "+s);
+					//useThisOne=null;
+					Log.sysOut("Import","Suspect line: "+s);
 				}
 			}
 			if(useThisOne!=null)

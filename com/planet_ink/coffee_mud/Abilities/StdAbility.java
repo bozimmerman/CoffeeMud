@@ -18,6 +18,7 @@ public class StdAbility implements Ability, Cloneable
 	protected int uses=Integer.MAX_VALUE;
 	protected int profficiency=0;
 	protected boolean isAnAutoEffect=false;
+	protected int overrideMana=-1;
 	protected int maxRange=0;
 	protected int minRange=0;
 	
@@ -480,6 +481,8 @@ public class StdAbility implements Ability, Cloneable
 			case 5: manaConsumed=10; break;
 			default: manaConsumed=5; break;
 			}
+			
+			if(overrideMana>=0) manaConsumed=overrideMana;
 
 			if(mob.curState().getMana()<manaConsumed)
 			{

@@ -446,7 +446,10 @@ public class CommandProcessor
 					movement.unlock(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.UNLINK:
-					createEdit.destroy(mob,commands);
+					if(mob.isASysOp(mob.location()))
+						createEdit.destroy(mob,commands);
+					else
+						mob.tell("You lack the power to link rooms.\n\r");
 					break;
 				case CommandSet.UNLOADHELP:
 

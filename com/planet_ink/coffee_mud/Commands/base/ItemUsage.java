@@ -264,7 +264,7 @@ public class ItemUsage
 			if(putThis!=null)
 				allFlag=false;
 			else
-				putThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToPut+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
 			if((putThis==null)||((putThis!=null)&&(!Sense.canBeSeenBy(putThis,mob))))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToPut)<=0))
@@ -277,9 +277,6 @@ public class ItemUsage
 				addendumStr="."+(++addendum);
 				continue;
 			}
-			else
-			if((doneSomething)&&(!(putThis instanceof Item)))
-				return;
 
 			if((!mob.isMine(putThis))&&(doneSomething))
 				return;

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class TelnetSession extends Thread implements Session
 {
+	private int status=0;
 	private Socket sock;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -960,8 +961,11 @@ public class TelnetSession extends Thread implements Session
 		}
 	}
 	
+	public int getStatus(){return status;}
+	
 	public void run()
 	{
+		status=Session.STATUS_LOGIN;
 		try
 		{
 			long tries=5;
@@ -970,14 +974,17 @@ public class TelnetSession extends Thread implements Session
 				MOB newMob=(MOB)CMClass.getMOB("StdMOB");
 				newMob.setSession(this);
 				mob=newMob;
+				status=Session.STATUS_LOGIN;
 				if(ExternalPlay.login(newMob))
 				{
+					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
 						Log.sysOut("Session","login: "+mob.name());
 					needPrompt=true;
 					Vector CMDS=null;
 					while((!killFlag)&&(mob!=null))
 					{
+						status=Session.STATUS_OK;
 						waiting=true;
 						String input=readlineContinue();
 						if(input!=null)
@@ -1006,6 +1013,7 @@ public class TelnetSession extends Thread implements Session
 							needPrompt=false;
 						}
 					}
+					status=Session.STATUS_LOGOUT2;
 					if(mob!=null)
 						Log.sysOut("Session","logout: "+mob.name());
 				}
@@ -1014,7 +1022,9 @@ public class TelnetSession extends Thread implements Session
 					mob=null;
 					newMob.setSession(null);
 				}
+				status=Session.STATUS_LOGOUT;
 			}
+			status=Session.STATUS_LOGOUT3;
 		}
 		catch(InterruptedException x)
 		{
@@ -1046,15 +1056,18 @@ public class TelnetSession extends Thread implements Session
 				errorOut(t);
 			}
 		}
+		status=Session.STATUS_LOGOUT3;
 
 		Sessions.removeElement(this);
 
+		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
 			mob.destroy();
 			mob.setSession(null);
 			mob=null;
 		}
+		status=Session.STATUS_LOGOUT5;
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
@@ -1063,13 +1076,19 @@ public class TelnetSession extends Thread implements Session
 		{
 			if(sock!=null)
 			{
+				status=Session.STATUS_LOGOUT6;
 				if(out!=null)
 					out.flush();
+				status=Session.STATUS_LOGOUT7;
 				sock.shutdownInput();
+				status=Session.STATUS_LOGOUT8;
 				sock.shutdownOutput();
+				status=Session.STATUS_LOGOUT9;
 				if(out!=null)
 					out.close();
+				status=Session.STATUS_LOGOUT10;
 				sock.close();
+				status=Session.STATUS_LOGOUT11;
 			}
 			in=null;
 			out=null;
@@ -1082,5 +1101,6 @@ public class TelnetSession extends Thread implements Session
 		//finally
 		//{
 		//}
+		status=Session.STATUS_LOGOUTFINAL;
 	}
 }

@@ -125,28 +125,28 @@ public class Lister
 	{
 		
 		StringBuffer lines=new StringBuffer("^X");
-		lines.append(Util.padRight("Status",7)+"| ");
-		lines.append(Util.padRight("Valid",7)+"| ");
+		lines.append(Util.padRight("Status",9)+"| ");
+		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");
 		lines.append(Util.padRight("Location",17)+"| ");
 		lines.append(Util.padRight("IP",17)+"^?\n\r");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			lines.append((thisSession.killFlag()?"^H":"")+Util.padRight(thisSession.killFlag()?"CLOSING":"open",7)+(thisSession.killFlag()?"^?":"")+"| ");
+			lines.append((thisSession.killFlag()?"^H":"")+Util.padRight(Session.statusStr[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ");
 			if (thisSession.mob() != null)
 			{
-				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),7)+"| ");
+				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ");
 				lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
 				if ( thisSession.mob().location() != null )
 					lines.append(Util.padRight(thisSession.mob().location().ID(),17)+"| ");
 				else
-					lines.append(Util.padRight("^B(no location)^?",17)+"| ");
+					lines.append("^B"+Util.padRight("(no location)",17)+"^?| ");
 			}
 			else
 			{
-				lines.append(Util.padRight("UNKNOWN",7)+"| ");
-				lines.append(Util.padRight("NAMELESS",7)+"| ");
+				lines.append(Util.padRight("N/A",5)+"| ");
+				lines.append(Util.padRight("NAMELESS",17)+"| ");
 				lines.append(Util.padRight("NOWHERE",17)+"| ");
 			}
 			lines.append(Util.padRight(thisSession.getAddress(),17)+"\n\r");
