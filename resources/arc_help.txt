@@ -5,7 +5,7 @@ list unlink save sysmsgs
 take unloadhelp dumpfile
 reset
 ^HModules^N  
-import xml
+import export xml
 
 ^HSkills^N
 chargen possess goto wizinv
