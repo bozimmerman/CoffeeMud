@@ -92,7 +92,7 @@ public class ExternalPlay
 	}
 	public static void unfollow(MOB mob, boolean quiet)
 	{
-		if(plater!=null) player.unfollow(mob,quiet);
+		if(player!=null) player.unfollow(mob,quiet);
 	}
 	public static void follow(MOB mob, MOB tofollow, boolean quiet)
 	{
