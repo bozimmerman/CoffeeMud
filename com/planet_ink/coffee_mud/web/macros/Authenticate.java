@@ -29,12 +29,18 @@ public class Authenticate extends StdWebMacro
 
 	public static MOB getAuthenticatedMOB(String login)
 	{
-		MOB mob=(MOB)CMMap.MOBs.get(login);
+		MOB mob=null;
+		for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
+		{
+			MOB mob2=(MOB)e.nextElement();
+			if(mob2.name().equalsIgnoreCase(login))
+			{ mob=mob2; break;}
+		}
 		if(mob==null)
 		{
 			mob=CMClass.getMOB("StdMOB");
 			mob.setName(login);
-			if(!ExternalPlay.DBReadUserOnly(mob))
+			if(!ExternalPlay.DBUserSearch(mob,login))
 				return null;
 			mob.recoverEnvStats();
 			mob.recoverCharStats();

@@ -15,7 +15,7 @@ public class AddFile extends StdWebMacro
 		if(parms==null)
 			return "";
 		StringBuffer buf=new StringBuffer("");
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		for(Enumeration e=parms.elements();e.hasMoreElements();)
 		{
 			String file=(String)e.nextElement();
 			if(file.length()>0)
