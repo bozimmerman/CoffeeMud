@@ -1,5 +1,6 @@
 Some sort of Archon-only Journal that you can add banned address to (and remove).
 owns a room, owns mobs who start there (clans)
+bankers be snobby by requiring a minimum balance to deposit.
 
 New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
 Wainsright - to create wagons
@@ -34,6 +35,7 @@ Infection: Hitpoints are recovered at 1/2 rate.
 add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
+Behavior & Skill libido - Property Pregnancy, Property Aging 
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
 SPECULATE skill to determine what resources are available in a given area.

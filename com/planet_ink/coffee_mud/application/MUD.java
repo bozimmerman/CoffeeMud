@@ -355,12 +355,45 @@ public class MUD extends Thread implements Host
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
 					Log.sysOut("MUD","Got a connection from "+address);
-					StringBuffer introText=Resources.getFileResource("intro.txt");
-					TelnetSession S=new TelnetSession(sock,
-						introText != null ? introText.toString() : null);
-					S.start();
-					Sessions.addElement(S);
-					sock = null;
+					// now see if they are banned!
+					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+					boolean ok=true;
+					if((banned!=null)&&(banned.size()>0))
+					for(int b=0;b<banned.size();b++)
+					{
+						String str=(String)banned.elementAt(b);
+						if(str.length()>0)
+						{
+							if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(address))) ok= false;
+							else
+							if(str.startsWith("*")&&str.endsWith("*")&&(address.indexOf(str.substring(1,str.length()-1))>=0)) ok= false;
+							else
+							if(str.startsWith("*")&&(address.endsWith(str.substring(1)))) ok= false;
+							else
+							if(str.endsWith("*")&&(address.startsWith(str.substring(0,str.length()-1)))) ok= false;
+						}
+						if(!ok) break;
+					}
+					if(!ok)
+					{
+						Log.sysOut("MUD","Blocking a connection from "+address);
+						PrintWriter out = new PrintWriter(sock.getOutputStream());
+						out.println("\n\rOFFLINE: Blocked\n\r");
+						out.flush();
+						out.println("\n\rYou are unwelcome.  Noone likes you here. Go away.\n\r\n\r");
+						out.flush();
+						out.close();
+						sock = null;
+					}
+					else
+					{
+						StringBuffer introText=Resources.getFileResource("intro.txt");
+						TelnetSession S=new TelnetSession(sock,
+							introText != null ? introText.toString() : null);
+						S.start();
+						Sessions.addElement(S);
+						sock = null;
+					}
 				}
 				else
 				{

@@ -36,7 +36,8 @@ public class FrontDoor
 		if(login.length()>20) return false;
 		if(login.trim().indexOf(" ")>=0) return false;
 		
-		Vector V=Util.parse(login.toUpperCase().trim());
+		login=login.toUpperCase().trim();
+		Vector V=Util.parse(login);
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			String str=(String)V.elementAt(v);
@@ -75,6 +76,22 @@ public class FrontDoor
 			char C=Character.toUpperCase(login.charAt(c));
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
+		}
+		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+		if((banned!=null)&&(banned.size()>0))
+		for(int b=0;b<banned.size();b++)
+		{
+			String str=(String)banned.elementAt(b);
+			if(str.length()>0)
+			{
+				if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return false;
+				else
+				if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return false;
+				else
+				if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return false;
+				else
+				if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return false;
+			}
 		}
 		return true;
 	}

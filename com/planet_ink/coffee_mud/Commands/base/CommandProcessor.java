@@ -107,6 +107,12 @@ public class CommandProcessor
 				case CommandSet.AUTODRAW:
 					theFight.autoDraw(mob);
 					break;
+				case CommandSet.BAN:
+					if(mob.isASysOp(null))
+						sysopSkills.ban(mob,commands);
+					else
+						mob.tell("You are not powerful enough to do that.\n\r");
+					break;
 				case CommandSet.BEACON:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.beacon(mob);
