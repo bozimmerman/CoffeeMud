@@ -69,7 +69,7 @@ public class Chant_Unbreakable extends Chant
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if(((Weapon)target).fetchEffect(this.ID())!=null)
+		if(((Item)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already unbreakable.");
 			return false;

@@ -7,7 +7,7 @@
 
 ^ZConstitution:^.^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.
 
-^ZIntelligence:^.^? Memory and concentration, and the ability to gain greater profficiency in skills is reflected in Intelligence.
+^ZIntelligence:^.^? Memory and concentration, and the ability to gain greater proficiency in skills is reflected in Intelligence.
 
 ^ZWisdom:^.^? Intuition, wit, and the ability to gain more practice points per level is reflected in Wisdom.
 

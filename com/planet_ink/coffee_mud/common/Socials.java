@@ -360,7 +360,7 @@ public class Socials
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
-				if(key.startsWith(SocialName.toUpperCase()))
+				if((key.startsWith(SocialName.toUpperCase()))&&(key.indexOf(" ")<0))
 				{	SocialName=key; break;}
 			}
 			S=FetchSocial(SocialName+theRest,true);

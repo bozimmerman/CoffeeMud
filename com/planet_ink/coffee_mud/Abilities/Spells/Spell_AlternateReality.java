@@ -123,9 +123,11 @@ public class Spell_AlternateReality extends Spell
 							}
 						}
 						if(badGuys.size()>0)
+						{
 							target.setVictim((MOB)badGuys.elementAt(Dice.roll(1,badGuys.size(),-1)));
-						if(mob.getVictim()==null)
-							mob.setVictim((MOB)badGuys.elementAt(Dice.roll(1,badGuys.size(),-1)));
+							if(mob.getVictim()==null)
+								mob.setVictim((MOB)badGuys.elementAt(Dice.roll(1,badGuys.size(),-1)));
+						}
 					}
 				}
 			}

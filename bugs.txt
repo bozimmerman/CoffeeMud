@@ -1,26 +1,22 @@
-webmacro SHUTDOWN Allow an Admin to Shutdown the server without having to be logged  into the game.
-webmacro SHUTDOWN RESTART Same reason as above, if somethings wrong with the game but your not  on the host pc and you believe the problem could be fixed by a quick  reboot this will be handy without having to log into the game (maybe  the game isnt accepting connections, i.e. you wouldnt be able to log  in anyway)
-webmacro ANNOUNCE Make announcements without having to log into the game, makes it  easier then having to log in and dealing with player pages etc. if  you just need to make a quick announcement.
-webmacro DUMPFILE To view some text file on your computer through the MUD without  having to log on or ebing on the host PC.
-webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
-
-
-!OK....now I have seen it all. Myrddhin has just use floating disc to float a ton of armor nearby, to gain benefits from it all.
 leash in mobile broke
+ticktock cmd does not skip hours over days well
 !wimpy behavior -race +dwarf zappercheck (very?) broken -- should have protected dwarves from fighting each other
-you can not deposit a container with contents in it. (According to badmonkey--the actual typo said I HATE HAVING TO DEPOSIT A PACK OF THIRTY THINGS SEPERATELY.)
 !sounders should have triggers for damage and starting a fight.
 !Follower allows a mob to follow someone who enters the room and meets the appropriate masks. For ex..gnome slave has a willfollow towards -race +gnome +player.
 !skillaggressive makes mob aggressive if they see you using a particular skill, or under the effect of a particular skill.
-!Prop_HaveEnabler, Prop_WearEnabler, Prop_RideEnabler
-!Herbology -- might pull its herb from the secret identity, allow herb choices based on domain types
 Prop_ClosedNightDay gets seasonal stuff
+ability to deposit a container and its contents.
+monetary tax rate on shopkeepers in controlled areas
+Hassan still doesn't recognize quester who recall to him.
+IDEA really--have crafted items say what the source of the material was upon completion of the item. For example, a Dragon butchers for some dragon scales (material scales). If you make boots out of it, it should be some scales boots. In the description, it should say some scale boots made from dragon scales.
+I have a vambrace with clanenchant acid on it to a power of 10. It should increase my acid save by 50. It makes no change at all to my acid save.
+Nevermind bug #11 from beldin. I didn't refresh the webpage when I checked. Damned cached pages.....
+im not sure if this is a bug or not but for some reason my character is fatigued and no matter how much i sleep nothing happens :P
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 racial affects
-display text/
 Install ship battery
-make diff levels of drunk, and disease_hangover
+make diff levels of drunk, and disease_hangover (makes everything loud that you hear)
 mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 document real estate, space ship selling, genairlock

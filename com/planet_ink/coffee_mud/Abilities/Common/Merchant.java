@@ -558,6 +558,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				commonTell(mob,"'"+itemName+"' is not on the list.");
 				return false;
 			}
+			String iname=I.name();
 			while(I!=null)
 			{
 				mob.addInventory(I);
@@ -567,7 +568,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();
-			mob.tell(I.name()+" has been removed from your inventory list.");
+			mob.tell(iname+" has been removed from your inventory list.");
 			return true;
 		}
 
