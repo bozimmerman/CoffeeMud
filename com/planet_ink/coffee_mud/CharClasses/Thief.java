@@ -195,6 +195,12 @@ public class Thief extends StdCharClass
 	}
 
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level after 1st.";}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		if(Sense.isSleeping(affected)||Sense.isSitting(affected))
+			affectableStats.setArmor(affectableStats.armor()+(100-affected.baseEnvStats().armor()));
+	}
 	public void level(MOB mob)
 	{
 		super.level(mob);

@@ -29,10 +29,11 @@ public class CrossClassAbilities extends StdWebMacro
 			for(int c=0;c<CMClass.charClasses.size();c++)
 			{
 				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-				if(C.playerSelectable()&&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
-					if((++numFound)>1) break;
+				if(C.playerSelectable()
+				   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
+					if((++numFound)>0) break;
 			}
-			if(numFound>1)
+			if(numFound>0)
 			{
 				buf.append("<TR><TD><B>"+A.name()+"</B></TD>");
 				for(int c=0;c<CMClass.charClasses.size();c++)

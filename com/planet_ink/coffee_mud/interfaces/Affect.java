@@ -64,6 +64,7 @@ public interface Affect extends Cloneable
 	public static final int ACT_EARS=32768;       // listening to
 	public static final int ACT_SOUND=65536;      // general body noises 
 	
+	
 	// action target affect types
 	public static final int AFF_GENERAL=1024;
 	public static final int AFF_TOUCHED=2048;

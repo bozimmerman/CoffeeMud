@@ -765,6 +765,209 @@ destroying all the items in a room.
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG>
+<IMG src="images/kiss.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 ><STRONG><FONT 
+color=red><FONT>Digression 1: With Great Affection</FONT>:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>CoffeeMud&nbsp;is essentially a distributed message passing 
+and handling system, where the actions and events that occur in the system are 
+represented as messages (Affects) which are then previewed, modified, cancelled, and/or reacted to by 
+handlers.&nbsp;&nbsp; Understanding this idea is key to fully understanding how 
+CoffeeMud really works, so let's take a second and peruse this 
+concept in more detail.</FONT></P>
+<P align=left><FONT size=4>Messages in 
+CoffeeMud, at least as we are talking about them here, always represent 
+Events.&nbsp; Events such as a mob picking up an item, swinging a sword at an 
+opponent, taking damage from a fireball, or getting pricked by a poisonous 
+needle.&nbsp; These events can never actually occur in CoffeeMud unless a proper 
+message is generated for them first.&nbsp; These messages, in the code, 
+implement the interface Affect, and are typically an instance of the class 
+FullMsg.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Messages are created at the moment that the event 
+needs to occur.&nbsp; This moment can be triggered by the player entering a 
+command into their telnet client and pressing Enter.&nbsp; It can also by 
+triggered by the mindless algorithms with animate the mobs.&nbsp; Either way, 
+when the moment has come, a message is created, and it looks like this:</FONT></P>
+<pre>	
+FullMsg msg=new FullMsg(mob,targetMOB,this,
+	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke a spell at &lt;T-NAME&gt;s feet..^?",
+	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invoke(s) a spell at your feet.^?",
+	Affect.MSG_CAST_ATTACK_VERBAL_SPELL,"^S&lt;S-NAME&gt; invokes a spell at &lt;T-NAME&gt;s feet.^?");
+</pre>
+<P align=left><FONT size=4>The above 
+message was taken from the code for the Grease&nbsp;spell, and contains a 
+FullMsg constructor which utilizes every major component of the 
+message.&nbsp;&nbsp;These components&nbsp;are, in order:</FONT></P>
+<P align=left><FONT size=4>
+<UL>
+<LI>Source - The source of any message must always be a 
+  valid reference to an instance of the MOB interface.&nbsp; In short, all 
+  events that occur in the system are a direct result of the activity of a MOB.&nbsp; This is on the theory that 
+  the universe is controlled and governed by sentience.&nbsp; In the extremely rare instances 
+  where a mob is not readily available to provide a message source, one should be instantiated 
+  -- even if it is just a blank, new StdMOB.
+<LI>Target - The target of a message may be null, or any 
+  valid reference&nbsp;to an instance of&nbsp;the Environmental interface, which 
+  includes Items, MOBs, Rooms, Exits, etc.&nbsp; The type and context of message 
+  you wish to generate will typically tell you intuitively whether the source is 
+  doing something to someone or something else, or is acting 
+  independently.&nbsp; This is usually another mob or an item, but you will find 
+  examples of all kinds of targets in the code
+<LI>Tool - The tool of a message may be null, or any valid 
+  reference to an instance of&nbsp;the Environmental interface, which includes 
+  Items, Abilities, MOBs, Rooms, Exits, etc.&nbsp; The tool represents something 
+  which the source is utilizing to accomplish the task or generate the 
+  event.&nbsp; This is typically either an Ability object (like a Spell or Skill 
+  being used), or an Item object (like a weapon in an attack event).
+<LI>Source Code - This is an encoded integer which 
+  represents what the source MOB is actually doing.&nbsp; We'll break down this 
+  code below.
+<LI>Source Message - This is the string which the source 
+  MOB will see should the event occur successfully.&nbsp;
+<LI>Target Code - This is an encoded integer which 
+  represents what is happening to the target.&nbsp; If there is no target, this 
+  number will typically have the value of 0 (Affect.NOEFFECT).
+<LI>Target Message - This is the string which the target 
+  MOB (if it is a MOB) will see should the event occur successfully.&nbsp; If 
+  there is no target, this string is null.
+<LI>Others Code - This is an encoded integer which 
+  represents how any other objects (such as MOBs, Items, Rooms, Exits) other 
+  than the source and target, in the same room, perceive the event.&nbsp; If the 
+  event is completely imperceptable by anything other than the source, it may be 
+  0 (Affect.NOEFFECT)
+<LI>Others Message - This is the string which other MOBs 
+  in the same room as the source and target MOBs will see should the event occur 
+  successfully.&nbsp; If the event is completely imperceptable by other MOBs, it 
+  may be null.</LI></UL>
+<P>The Source Code, Target Code, and Others Code is easily the most complicated 
+aspect of a Message.&nbsp; For this reason, numerous pre-configured message 
+codes have been created in the Affect interface, all of which begin with the 
+characters MSG_.&nbsp; Although we will not go into the meaning of each of these 
+messages (that will be left to the reader to search the code for instances of 
+messages which use the codes, and learn from the context in which they are 
+used), we can at least break down these codes so that they can be better 
+understood.</P>
+<P>These coded integers all have two parts, the Major aspect (or the Major Code) 
+and the Minor aspect (or the Minor Code).&nbsp; They may be referenced off of an 
+already constructed&nbsp;Affect object using such methods as sourceMajor() and 
+sourceMinor().&nbsp; These methods will automatically break down a sourceCode() 
+in the components we will discuss.</P>
+<P>The Major code is a series of significant bits in the integer, each of which 
+gives some new meaning to the message.&nbsp; These bits are as follows:</P>
+<P>
+<TABLE cellSpacing=1 cellPadding=1 width="75%" border=1>
+  
+  <TR>
+    <TD WIDTH="15%"><STRONG>Bit mask</STRONG> </TD>
+    <TD WIDTH="35%">Affect Equate Variable(s)</TD>
+    <TD WIDTH="50%"><STRONG>Meaning</STRONG></TD></TR>
+  <TR>
+    <TD WIDTH="15%">1024</TD>
+    <TD WIDTH="35%">
+      <P>ACT_GENERAL,<BR>AFF_GENERAL,<BR>OTH_GENERAL</P></TD>
+    <TD WIDTH="50%">Override mask which flags the message 
+      as something which Must occur, regardless of the state of the source or 
+      target.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">2048</TD>
+    <TD WIDTH="35%">
+      <P>ACT_HANDS,<BR>AFF_TOUCHED</P></TD>
+    <TD WIDTH="50%">Message includes small 
+  movements.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">4096</TD>
+    <TD WIDTH="35%">
+      <P>ACT_MOVE,<BR>AFF_MOVEDON</P></TD>
+    <TD WIDTH="50%">Message includes large, full-body 
+      movements.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">8192</TD>
+    <TD WIDTH="35%">ACT_EYES,<BR>AFF_SEEN</TD>
+    <TD WIDTH="50%">Message includes visual 
+    information.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">16384</TD>
+    <TD WIDTH="35%">ACT_MOUTH,<BR>AFF_CONSUMED</TD>
+    <TD WIDTH="50%">Message include mouth movement, or 
+      consumption.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">32768</TD>
+    <TD WIDTH="35%">ACT_EARS,<BR>AFF_HEARD</TD>
+    <TD WIDTH="50%">Message includes auditory 
+    information.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">65536</TD>
+    <TD WIDTH="35%">ACT_SOUND,<BR>AFF_SOUNDEDAT<BR></TD>
+    <TD WIDTH="50%">Message includes misc. sounds, or 
+      sounds which may be a side-affect of the primary event.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">131072</TD>
+    <TD WIDTH="35%">MASK_MAGIC</TD>
+    <TD WIDTH="50%">Message has a magical nature.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">262144</TD>
+    <TD WIDTH="35%">MASK_DELICATE</TD>
+    <TD WIDTH="50%">Message includes very fine, delicate 
+      movements, such as thief skills.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">1048576</TD>
+    <TD WIDTH="35%">MASK_CHANNEL</TD>
+    <TD WIDTH="50%">Message is&nbsp;part of 
+      public&nbsp;channel conversation.</TD></TR>
+  <TR>
+    <TD WIDTH="15%">512+1024</TD>
+    <TD WIDTH="35%">MASK_HURT</TD>
+    <TD WIDTH="50%">*Special* Damage message.</TD></TR>
+</TABLE></P>
+</FONT>
+<P align=left><FONT size=4>The above 
+masks can be quite confusing.&nbsp; It is best to examine the several MSG_ 
+equates in the Affect interface to see how they are properly or improperly 
+used.&nbsp; Remember a MSG_ equate is a completely constructed Code, complete 
+with the appropriate Major and Minor aspects.</FONT></P>
+<P align=left><FONT size=4>The Minor Code&nbsp;represents the more specific 
+activity being performed, and is a simple integer ranging from&nbsp;0 (NO 
+EFFECT) to 1023.&nbsp; The exception to this is&nbsp;any message with the 
+MASK_HURT bits set.&nbsp; In that case, the bits from 0-511 represent the amount 
+of damage being taken.&nbsp;&nbsp;Another exception is the CHANNEL&nbsp;Mask, 
+where the&nbsp;lower bits represent the CHANNEL number being chatted on.&nbsp; 
+In all other cases, however, the Minor Code is a unique&nbsp;integer 
+representing the specific task being performed.&nbsp; The officially recognized 
+Minor codes are exhaustively listed in the Affect interface, and all begin with 
+the prefix TYP_.&nbsp; These types cover every sort of major event which occurs 
+in the CoffeeMud engine, including getting items, casting spells, entering or 
+leaving rooms, etc, etc..</FONT></P>
+<pre>	
+		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,null);
+</pre>
+<P align=left><FONT size=4>The abo</FONT>&nbsp;</P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/temple.jpg">
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><FONT size=5 ><STRONG><FONT 
+color=red><FONT>Digression 2: The State of Things</FONT>:</FONT></STRONG></FONT></P>
+<P align=left><FONT size=4>Understanding states thingys.</FONT></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left></P>
+<P align=left><FONT size=5><STRONG>
 <IMG src="images/clown.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 ><STRONG><FONT 
@@ -826,7 +1029,7 @@ color=blue><FONT>Behaviors</FONT>:</FONT></STRONG></FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left><FONT size=5><STRONG>
-<IMG src="images/temple.jpg">
+<IMG src="images/scenery.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 color=red><STRONG>Locales:</STRONG></FONT></P>
 <P align=left><FONT size=4>How to code a Locale.</FONT></P>
