@@ -1,24 +1,22 @@
-where to show areas for you to level in
-tread water for water surfaces with water beneath
-add floating num to resources -- whether the item will float
-mobile parm LEASH=X rooms from start
-ability to view wear location, weapon class/type in VIEW command
+Can we get some web macros that would list and display the deities?
 encumbrance slows you down?
-in the skill MASON, could you add to the desription of archways the type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
+ability to view wear location, weapon class/type in VIEW command
 pour command as a reverse fill
+Room descriptions varying by the time of day.
+smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
+mobile parm LEASH=X rooms from start
 locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
+in the skill MASON, could you add to the desription of archways the type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
 putting a change bag into a changebag should combine your notes.
 ability to deposit in someone elses bank account
-Room descriptions varying by the time of day.
+BLACKSMITH chain....works like rope, but heavy and metal.
+TAILOR pillow, sheets, blanket, large pillow, cushion
 Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
-foraging add Tobacco to the resource list
-smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
-some sort of emote/social channel?
+tread water for water surfaces with water beneath
+add floating num to resources -- whether the item will float
 barbarian skill improved throwing...does extra damage with hurled items.
 Song that does the same thing as Mana Pool. Very bard-like, so it should be a lower level.
 common skill PACKAGING...allows you to crate up a bunch of resources into one large unit. must be unpackaged to be used (using the packaging skill to unpack.)
-BLACKSMITH chain....works like rope, but heavy and metal.
-TAILOR pillow, sheets, blanket, large pillow, cushion
 Thief skill ALERTNESS gives one random description from an item in the room upon entry into that room.. For example: A thief walks into a room. He gets the room description. His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. It randomly selects one of those items (the coin) and issues a LOOK COIN command.
 can the death/morgue strings be specified by the player's deity?
 1) Can DEATH allow you to specify room by the god of the player, with a default room for unholy folks?

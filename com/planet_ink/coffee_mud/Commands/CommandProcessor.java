@@ -728,7 +728,7 @@ public class CommandProcessor
 			if(mob.isASysOp(mob.location()))
 				Lister.where(mob,commands);
 			else
-				mob.tell("Only the Archons may divine that.");
+				Scoring.where(mob);
 			break;
 		case CommandSet.WHISPER:
 			SocialProcessor.whisper(mob,commands);

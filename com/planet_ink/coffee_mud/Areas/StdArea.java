@@ -1356,6 +1356,7 @@ public class StdArea implements Area
 			medianLevel=((Integer)mobRanges.elementAt((int)Math.round(Math.floor(Util.div(mobRanges.size(),2.0))))).intValue();
 			averageLevel=(int)Math.round(Util.div(totalLevels,totalMOBs));
 			averageAlignment=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(totalMOBs).doubleValue());
+			s.append("Population     : "+mobRanges.size()+"\n\r");
 			s.append("Level range    : "+lowestLevel+" to "+highestLevel+"\n\r");
 			s.append("Average level  : "+averageLevel+"\n\r");
 			s.append("Median level   : "+medianLevel+"\n\r");

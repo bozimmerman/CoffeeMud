@@ -839,6 +839,106 @@ public class Scoring
 		mob.tell(msg.toString());
 	}
 
+	
+	private static void whereAdd(DVector V, String area, int i)
+	{
+		if(V.size()==0)
+			V.addElement(area,new Integer(i));
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			if(((Integer)V.elementAt(v,2)).intValue()>i)
+			{
+				V.insertElementAt(v,area,new Integer(i));
+				return;
+			}
+		}
+		V.addElement(area,new Integer(i));
+	}
+	public static void where(MOB mob)
+	{
+		DVector levelsVec=new DVector(2);
+		DVector mobsVec=new DVector(2);
+		DVector alignVec=new DVector(2);
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		{
+			Area A=(Area)a.nextElement();
+			if(Sense.canAccess(mob,A))
+			{
+				Vector V=Resources.getFileLineVector(A.getAreaStats());
+				for(int v=0;v<V.size();v++)
+				{
+					String s=((String)V.elementAt(v)).toUpperCase();
+					int x=s.indexOf(":");
+					if(x>=0)
+					{
+						if(s.indexOf("MEDIAN")>=0)
+						{
+							int median=Util.s_int(s.substring(x+1).trim());
+							int medianDiff=0;
+							int upperLimit=mob.envStats().level()/3;
+							if((median<(mob.envStats().level()+upperLimit))
+							&&((median>=(mob.envStats().level()-5))))
+							{
+								if(mob.envStats().level()>=median)
+									medianDiff=(int)Math.round(9.0*Util.div(median,mob.envStats().level()));
+								else
+									medianDiff=(int)Math.round(10.0*Util.div(mob.envStats().level(),median));
+							}
+							whereAdd(levelsVec,A.name(),medianDiff);
+						}
+						else
+						if(s.indexOf("POPULATION")>=0)
+							whereAdd(mobsVec,A.name(),Util.s_int(s.substring(x+1).trim()));
+						else
+						if(s.indexOf("ALIGN")>=0)
+						{
+							int y=s.indexOf("(",x+1);
+							if(y>=0)
+							{
+								int align=Util.s_int(s.substring(x+1,y).trim());
+								int alignDiff=((int)Math.abs(new Integer(mob.getAlignment()-align).doubleValue()));
+								whereAdd(alignVec,A.name(),alignDiff);
+							}
+						}
+					}
+				}
+			}
+		}
+		StringBuffer msg=new StringBuffer("You are currently in: ^H"+mob.location().getArea().name()+"^?\n\r");
+		DVector scores=new DVector(2);
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		{
+			Area A=(Area)a.nextElement();
+			if(Sense.canAccess(mob,A))
+			{
+				int index=levelsVec.getIndex(A.name());
+				if(index>=0)
+				{
+					Integer I=(Integer)levelsVec.elementAt(index,2);
+					if((I!=null)&&(I.intValue()!=0))
+					{
+						int score=(index+1);
+						index=mobsVec.getIndex(A.name());
+						if(index>=0)
+							score+=(index+1);
+						
+						index=alignVec.getIndex(A.name());
+						if(index>=0) 
+							score+=(index+1);
+						whereAdd(scores,A.name(),score);
+					}
+				}
+			}
+		}
+		msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r");
+		for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-6)));i--)
+			msg.append(((String)scores.elementAt(i,1))+"\n\r");
+		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
+		if(!mob.isMonster())
+			mob.session().colorOnlyPrintln(msg.toString());
+	}
+	
 	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();
@@ -865,6 +965,7 @@ public class Scoring
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(msg.toString());
 	}
+	
 	public static boolean email(MOB mob, Vector commands, boolean confirmOnly)
 		throws IOException
 	{

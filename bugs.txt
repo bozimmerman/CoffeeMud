@@ -1,3 +1,2 @@
 still get damage msgs after the kill
-look at silent gold/loot
-clan boss deletion automatically votes for a new one
+can see the wizinv?!

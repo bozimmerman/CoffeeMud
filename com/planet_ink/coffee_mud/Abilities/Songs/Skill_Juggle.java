@@ -271,7 +271,7 @@ public class Skill_Juggle extends StdAbility
 									w.setWeaponType(((Weapon)I).weaponType());
 								else
 									w.setWeaponType(Weapon.TYPE_BASHING);
-								w.baseEnvStats().setDamage(1);
+								w.baseEnvStats().setDamage(Dice.roll(1,adjustedLevel(mob),0));
 								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
 								w.recoverEnvStats();
 								ExternalPlay.postAttack(mob,mob.getVictim(),w);

@@ -52,6 +52,12 @@ public class DVector
 			stuff[4].addElement(O3);
 		}
 	}
+	public int getIndex(Object O)
+	{
+		if(stuff[0].contains(O))
+			return stuff[0].indexOf(O);
+		return -1;
+	}
 	public Vector set(int dim)
 	{
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
@@ -85,6 +91,45 @@ public class DVector
 		{
 			if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
 			return stuff[dim-1].elementAt(i);
+		}
+	}
+	
+	public void insertElementAt(int here, Object O)
+	{
+		if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+			stuff[0].insertElementAt(O,here);
+		}
+	}
+	public void insertElementAt(int here, Object O, Object O1)
+	{
+		if(dimensions!=2) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+			stuff[0].insertElementAt(O,here);
+			stuff[1].insertElementAt(O1,here);
+		}
+	}
+	public void insertElementAt(int here, Object O, Object O1, Object O2)
+	{
+		if(dimensions!=3) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+			stuff[0].insertElementAt(O,here);
+			stuff[1].insertElementAt(O1,here);
+			stuff[2].insertElementAt(O2,here);
+		}
+	}
+	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3)
+	{
+		if(dimensions!=4) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+			stuff[0].insertElementAt(O,here);
+			stuff[1].insertElementAt(O1,here);
+			stuff[2].insertElementAt(O2,here);
+			stuff[4].insertElementAt(O3,here);
 		}
 	}
 }
