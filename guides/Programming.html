@@ -13,10 +13,253 @@ to code a non-generic item.&nbsp; How to code a generic item.&nbsp; How to
 properly create and destroy areas, rooms, mobs, items, spells, chants, 
 etc.&nbsp; How to invoke abilities and affects.&nbsp; Event model.&nbsp; This 
 should be as useful to YOU as to others, Bo.</EM></FONT></P>
-<P align=left><FONT size=5><STRONG><IMG src="images/mug.jpg"></STRONG><FONT 
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/mug.jpg">
+</STRONG><FONT 
 size=3>&nbsp;</FONT></FONT></P>
-<P align=left><FONT size=5><STRONG>Overview:</STRONG></FONT></P>
-<P align=left><FONT size=5></FONT>&nbsp;</P>
+<P align=left><FONT size=5 color=limegreen><STRONG>Overview:</STRONG></FONT></P>
+<P align=left><FONT size=4>The purpose 
+of this document is to assist those who wish to add custom Items, MOBs, 
+Behaviors, Properties, or other objects to CoffeeMud.&nbsp; The reader should be 
+familiar with Java programming, and should be experienced with writing and 
+compiling Java classes.&nbsp; The object oriented notions of class inheretance 
+and&nbsp;polymorphism, as well as the Java constructs of 
+interfaces should be at least vaguely familiar to you before attempting to build classes 
+for CoffeeMud.&nbsp; Also, it is expected that all of the ideas 
+presented in the Archons Guide (ArchonGuide.html) are completely familiar.&nbsp; The difference 
+between a GenItem and a StdItem will not be explained.&nbsp; 
+It is not explained in the Archons Guide either, but if you 
+have followed the Guide, you have discovered the differences on your 
+own.</FONT></P>
+<P align=left><FONT size=4>It is not expected that someone would wish to dive in 
+and make wholesale changes to the CoffeeMud system right away, but is more 
+likely wanting to fill in a functional gap in the system for their own 
+needs.&nbsp; For this reason, this document is not organized as a comprehensive 
+guide to programming CoffeeMud.&nbsp; Instead, it is designed to be a quick 
+reference for those who wish to create the spot MOB, Behavior, Item, or Property 
+for use on their maps.</FONT></P>
+<P align=left><FONT size=4>With this in mind then, and in no particular order, 
+the several essential object types in CoffeeMud are presented.</FONT></P>
+<IMG src="images/smurf.jpg">
+<P align=left><FONT size=5 color=mediumslateblue><STRONG>MOBs:</STRONG></FONT></P>
+<P align=left><FONT size=4>MOBs, or "Moveable OBjects", are the creatures and 
+characters which the players fight.&nbsp; In CoffeeMud, they are among the 
+simpler objects to code.&nbsp; This is not because they are uncomplex.&nbsp; In 
+fact, they are the MOST complex.&nbsp; However, this complexity comes due to the 
+myriad of Items, Behaviors, Properties, and Abilities that are added to 
+them.&nbsp; Short of these numerous additions, a MOB by himself is rather 
+simple!</FONT></P>
+<P align=left><FONT size=4>This simplicity is important however, and should be 
+carefully considered before you run off to create new MOBs.&nbsp; If you are 
+creating a new MOB because you want a creature to have some new kind of ability, 
+then are you sure it is not a new Ability you want to write?&nbsp; If the new 
+MOBs behavior is complex and unique, are you sure it's not a new Behavior you 
+wish to code?</FONT></P>
+<P align=left><FONT size=4>If you are sure, then carry on!&nbsp; The directory 
+for your custom coded MOB objects should be specified using the "MOBS" entry in 
+the coffeemud.ini file.&nbsp; See the Installation Guide for more information on 
+your INI file.</FONT></P>
+<P align=left><FONT size=4 color=mediumslateblue><STRONG>Coding a new MOB:</STRONG></FONT></P>
+<P align=left><FONT size=4>A Custom MOB may or may not belong to any particular 
+package, though it is important that the NAME of the MOB be unique in the 
+system.&nbsp; A custom MOB must import the following packages:</FONT></P>
+<pre>
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.*;
+import com.planet_ink.coffee_mud.common.*;
+</pre>
+<P><FONT size=4>As well as any other 
+java.*,&nbsp;&nbsp;sun.*, or&nbsp;custom&nbsp;packages you may need.&nbsp; No 
+other packages in the CoffeeMud system should be imported, other than those 
+listed.</FONT> 
+<P><FONT size=4>A MOB class must extend either StdMOB or GenMob, StdShopKeeper 
+or GenShopKeeper, StdRideable or GenRideable depending on the basic 
+capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
+objects are more customizable at run-time, they also take a long time for the 
+system to load and build, and take up a lot of database disk space.&nbsp; For 
+this reason, using Standard instead of Generic whereever possible is always 
+good.&nbsp; </FONT>
+<P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
+below.</FONT><PRE>public class MyNewMOB extends StdMOB <BR>{ <BR>	public MyNewMOB() <BR>	{ <BR>		super(); <BR>	}</PRE><PRE>	public Environmental newInstance() <BR>	{ <BR>		return new MyNewMOB(); <BR>	} <BR>}</PRE>
+<P><FONT size=4>     
+    All of 
+your customizing will be done inside the constructor: name, displayText, description, etc, 
+etc.</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>
+	public MyNewMOB()
+	{
+		super();
 
+		Username="anew mob"; 
+		setDescription("It`s furry with 2 legs"); 
+		setDisplayText("My new mob is standing here.");
+		
+		setAlignment(500);
+		setMoney(0);
+		setWimpHitPoint(2);
+		baseEnvStats().setDamage(4);
+
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(1);
+		baseEnvStats().setArmor(30);
+		baseEnvStats().setSpeed(1.0);
+		baseEnvStats().setAttackAdjustment(30);
+		baseEnvStats().setWeight(85);
+		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INFRARED); <BR>		baseEnvStats().setDisposition(EnvStats.IS_FLYING);
+		baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+		
+		baseCharStats().setMyRace(CMClass.getRace("Dog"));
+		baseCharStats().getMyRace().startRacing(this,false);
+		baseCharStats().setStat(CharStats.GENDER,(int)'F');
+		baseCharStats().setStat(CharStats.STRENGTH,18); <BR>		baseCharStats().setStat(CharStats.INTELLIGENCE,14);
+		baseCharStats().setStat(CharStats.WISDOM,13);
+		baseCharStats().setStat(CharStats.DEXTERITY,15);
+		baseCharStats().setStat(CharStats.CONSTITUTION,12);
+		baseCharStats().setStat(CharStats.CHARISMA,13);
+		baseCharStats().setStat(CharStats.SAVE_COLD,50);<BR>
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,20));
+		baseState.setMana(Dice.roll(baseEnvStats().level(),50,100));
+		
+		recoverMaxState();
+		resetToMaxState();
+		recoverEnvStats();
+		recoverCharStats();
+	}
+</pre>
+<P><FONT size=4>You can see here that the basic stats have 
+been filled out, from level to attack speed, alignment and 
+weight.&nbsp;&nbsp;For&nbsp;numeric values, higher is always better, except for 
+Armor, which is always best low, and comes down from 100.&nbsp; You'll notice 
+above that two commands are required to set the Race of the creature.&nbsp; 
+Also, you should realize that the numerous saving throws, and senses as well as 
+dispositions (sneaking, hiding) are not represented above, but can easily be 
+added using the format shown.</FONT>
+<P><FONT size=4>It is very important to note the last four commands.&nbsp; These 
+commands "reset" the MOB, and "implement" the scores which are given in the 
+several areas.&nbsp; "recoverEnvStats()", for instance, must be called whenever 
+a change is made to the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and 
+"MaxState".&nbsp; </FONT>
+<P><FONT size=4>Now, suppose we wanted to add an "Affect" or "Behavior" or "Ability" to the MOB.&nbsp; The 
+proper place for such a statement would be in the same above constructor, among 
+the other commands.&nbsp; Preferably before the several "recover" commands, but 
+after the several stat definitions.</FONT>
+<pre>
+		
+		addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
+		addAbility(CMClass.getAbility("Poison"));
+		
+		addBehavior(CMClass.getBehavior("MudChat"));
+		addBehavior(CMClass.getBehavior("Mobile"));
+		addBehavior(CMClass.getBehavior("CombatAbilities"));
+		
+</pre>
+<P><FONT size=4></FONT>
+<P><FONT size=4>The commands above will 
+make the MOB permanently Berzerk, gives it the ability to Poison folks while in 
+combat, allows the MOB to Chat with other players, and&nbsp;to walk around 
+in its area. The last behavior 
+gives the MOB the wisdom to use its Poison ability while in 
+combat.</FONT></P>
+<P><FONT size=4>The last thing is to give the MOB equipment, 
+armor, and weapons.&nbsp; The following commands will do the trick!</FONT></P>
+<pre>
+		Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
+		addInventory(sword);
+		sword.wearIfPossible(this);
+		
+		Armor mail=(Armor)CMClass.getArmor("FullPlate");
+		addInventory(mail);
+		mail.wearIfPossible(this);
+		
+		Item waterskin=(Item)CMClass.getItem("Waterskin");
+		addInventory(waterskin);
+</pre>
+<P><FONT size=4>And THAT's all there is to creating a new MOB.  Easy, huh?  Well, obviously, the real complexity of MOBs
+comes when the Behaviors and Abilities are programmed, but that is not covered here, of course.</FONT>
+<P><FONT size=4 color=mediumslateblue><STRONG>Bringing MOBs to Life, and Taking That Life 
+Away:</STRONG></FONT></P>
+<P><FONT color=black size=4>The 
+following instructions are supplemental, and unnecessary. Once  you have created your new MOB, modified your INI file, and
+rebooted your CoffeeMud server, you need only use the CREATE and other Archon commands to make use of him. If, 
+for some reason, you want to know HOW these commands do their work, however, here it is.</FONT></P>
+<P><FONT color=black size=4>To bring a MOB into existence, a MOB must have 
+somewhere to exist!&nbsp; Presumably, this is some room on your map.&nbsp; Rooms 
+on the map are classes which implement the interface "Room".&nbsp; If a MOB is 
+to have a permanent existence, it must also have a starting room, or a place to 
+rejuvinate into when necessary.&nbsp; If a MOB does not have a starting room, 
+then its death, when that death comes, &nbsp;will be forever.</FONT></P>
+<pre>
+	MOB mob=CMClass.getMOB("MyNewMOB");
+	Room room=CMMap.getRoom("Midgaard#3504");
+	
+	mob.setStartRoom(room); // this mob will rejuvinate into this room.
+	mob.baseEnvStats().setRejuv(500); // 30 minutes rejuvination time
+	mob.recoverEnvStats(); // remember this command?!
+	
+	mob.bringToLife(room); // tadah!
+</pre>
+<P><FONT size=4>And THAT's all there is to bring a mob to life.  Of course, you may want to save this room to the
+database to REALLY make the situation permanent, but all of this is usually done from inside CoffeeMud using the
+CREATE, MODIFY, and DESTROY commands anyway.  Speaking of destroy, destroying one for good is even easier:</FONT>
+<pre>
+	Room room=CMMap.getRoom("Midgaard#3504");
+	for(int i=0;i&lt;room.numInhabitants();i++)
+	{
+		MOB mob=room.fetchInhabitant(i);
+		mob.destroy();
+	}
+</pre><PRE>
+</PRE><P><P>
+<P align=left><FONT size=5><STRONG>
+<IMG src="images/sword.jpg">
+</STRONG><FONT 
+size=3>&nbsp;</FONT></FONT></P>
+<P align=left><FONT size=5 color=crimson><STRONG>Items:</STRONG></FONT></P><FONT size=4>
+<P align=left><FONT size=4>A Custom MOB may or may not belong to any particular 
+package, though it is important that the NAME of the MOB be unique in the 
+system.&nbsp; A custom MOB must import the following packages:</FONT></P>
+<FONT size=3><PRE>	import java.util.*;
+	import com.planet_ink.coffee_mud.utils.*;
+	import com.planet_ink.coffee_mud.interfaces.*;
+	import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.Items.Armor.*;
+import com.planet_ink.coffee_mud.Items.Weapons.*;
+import com.planet_ink.coffee_mud.Items.MiscMagic.*;
+import com.planet_ink.coffee_mud.common.*;</FONT> 
+ </PRE></FONT>
+<P><FONT size=4>As well as any other java.*,&nbsp;&nbsp;sun.*, 
+or&nbsp;custom&nbsp;packages you may need.&nbsp; No other packages in the 
+CoffeeMud system should be imported, other than those listed.</FONT> 
+<P><FONT size=4>An Item&nbsp;class must extend either StdItem or GenItem, StdWeapon or GenWeapon, 
+StdRideable or GenRideable, StdArmor or GenArmor&nbsp;depending on the basic 
+capabilities, and customizability&nbsp;you would like.&nbsp; Although Generic 
+objects are more customizable at run-time, they also take a long time for the 
+system to load and build, and take up a lot of database disk space.&nbsp; For 
+this reason, using Standard instead of Generic whereever possible is always 
+good.&nbsp; </FONT>
+<P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
+below.</FONT><PRE>public class MyNewSword extends StdWeapon <BR>{ <BR>	public MyNewWeapon() <BR>	{ <BR>		super(); <BR>	}</PRE><PRE>	public Environmental newInstance() <BR>	{ <BR>		return new MyNewWeapon(); <BR>	} <BR>}</PRE>
+<P><FONT size=4>     
+    All of 
+your customizing will be done inside the constructor: name, displayText, description, etc, 
+etc.</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	public MyNewWeapon()
+	{
+		super();
+
+		Username=
+	 
+	
+		
+
+		"asuper sword"; 
+		setDescription("A long super duper sword!"); 
+		setDisplayText("Someone left their super sword here.");
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
 </BODY>
 </HTML>
