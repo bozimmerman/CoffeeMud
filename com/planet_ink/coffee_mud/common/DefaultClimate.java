@@ -554,7 +554,7 @@ public class DefaultClimate implements Climate
 				desc.append("Dark and looming stormclouds ");
 			else
 			if(((A.climateType()&Area.CLIMASK_HOT)>0)||(A.getTimeObj().getSeasonCode()==TimeClock.SEASON_SUMMER))
-				desc.append("Light whisps of cloud ");
+				desc.append("Light wisps of cloud ");
 			else
 				desc.append("Fluffy cloudbanks ");
 			if((A.climateType()&Area.CLIMATE_WINDY)>0)

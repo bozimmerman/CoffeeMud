@@ -29,7 +29,7 @@ public class Prayer_DispelGood extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The good inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the good inside <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"The good inside <T-NAME> exorcise(s)!":"^S<S-NAME> exorcise(s) the good inside <T-NAMESELF>!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -44,7 +44,7 @@ public class Prayer_DispelGood extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> exercise(s) <T-NAMESELF>, but nothing emerges.");
+			return maliciousFizzle(mob,target,"<S-NAME> exorcise(s) <T-NAMESELF>, but nothing emerges.");
 
 
 		// return whether it worked

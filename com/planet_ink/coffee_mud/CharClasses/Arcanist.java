@@ -233,7 +233,8 @@ public class Arcanist extends Thief
 			if(msg.tool() instanceof Ability)
 			{
 				Ability A=mob.fetchAbility(msg.tool().ID());
-				if((A!=null)&&(A.isBorrowed(mob)))
+				if((A!=null)&&(A.isBorrowed(mob))
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 					mob.delAbility(A);
 			}
 		}

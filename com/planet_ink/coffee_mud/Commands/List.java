@@ -442,6 +442,7 @@ public class List extends StdCommand
 
 			if((sortBy<3)||(sortBy>4))
 			{
+				if(sortBy==6) sortBy=0;
 				Vector selected=(Vector)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{

@@ -164,10 +164,13 @@ public class Resources
 	}
 	
 	public static void saveFileResource(String filename)
+	{saveFileResource(filename,getFileResource(filename));}
+	
+	public static void saveFileResource(String filename, StringBuffer myRsc)
 	{
-		StringBuffer myRsc=getFileResource(filename);
-		if(myRsc==null){
-			Log.errOut("Resources","Unable to read file resource '"+filename+"'.");
+		if(myRsc==null)
+		{
+			Log.errOut("Resources","Unable to save file resource '"+filename+"': No Data.");
 			return;
 		}
 		try

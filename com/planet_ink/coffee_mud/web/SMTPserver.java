@@ -100,7 +100,8 @@ public class SMTPserver extends Thread implements Tickable
 					{
 						boolean forward=(parm.toUpperCase().startsWith("FORWARD ")||parm.toUpperCase().endsWith(" FORWARD")||(parm.toUpperCase().indexOf(" FORWARD ")>=0));
 						boolean subscribeOnly=(parm.toUpperCase().startsWith("SUBSCRIBEONLY ")||parm.toUpperCase().endsWith(" SUBSCRIBEONLY")||(parm.toUpperCase().indexOf(" SUBSCRIBEONLY ")>=0));
-						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),parm);
+						boolean keepAll=(parm.toUpperCase().startsWith("KEEPALL ")||parm.toUpperCase().endsWith(" KEEPALL")||(parm.toUpperCase().indexOf(" KEEPALL ")>=0));
+						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),new Boolean(keepAll),parm);
 					}
 				}
 			}
@@ -148,13 +149,23 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		return false;
 	}
+	public boolean isAKeepAllJournal(String journal)
+	{
+		if(journals==null) return false;
+		for(int i=0;i<journals.size();i++)
+		{
+			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
+				return ((Boolean)journals.elementAt(i,4)).booleanValue();
+		}
+		return false;
+	}
 	public String getJournalCriteria(String journal)
 	{
 		if(journals==null) return "";
 		for(int i=0;i<journals.size();i++)
 		{
 			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return (String)journals.elementAt(i,4);;
+				return (String)journals.elementAt(i,5);;
 		}
 		return "";
 	}
@@ -290,19 +301,56 @@ public class SMTPserver extends Thread implements Tickable
 		long curr=System.currentTimeMillis();
 		IQCalendar IQE=new IQCalendar(email);
 		IQCalendar IQC=new IQCalendar(curr);
-		if(Util.absDiff(email,curr)<30) return true;
+		if(Util.absDiff(email,curr)<(30*60*1000)) return true;
 		while(IQE.before(IQC))
 		{
-			if(Util.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<30) 
+			if(Util.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000)) 
 				return true;
 			IQE.add(Calendar.DATE,1);
 		}
 		return false;
 	}
+
+	
+	public Hashtable getMailingLists(Hashtable oldH)
+	{
+		if(oldH==null)
+		{
+			oldH=new Hashtable();
+			Vector V=new Vector();
+			try{
+				V=Resources.getFileLineVector(Resources.getFile("resources"+File.separatorChar+"mailinglists.txt"));
+			}catch(Exception e){}
+			if((V!=null)&&(V.size()>0))
+			{
+				String journal="";
+				Vector set=new Vector();
+				for(int v=0;v<V.size();v++)
+				{
+					String s=(String)V.elementAt(v);
+					if(s.trim().length()==0)
+						journal="";
+					else
+					if(journal.length()==0)
+					{
+						journal=s;
+						set=new Vector();
+						oldH.put(journal,set);
+					}
+					else
+						set.addElement(s);
+				}
+			}
+		}
+		return oldH;
+	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickStatus!=STATUS_NOT) return true;
+		
+		boolean updatedMailingLists=false;
+		Hashtable lists=null;
 		
 		tickStatus=STATUS_START;
 		if((tickID==MudHost.TICK_READYTOSTOP)||(tickID==MudHost.TICK_EMAIL))
@@ -318,6 +366,7 @@ public class SMTPserver extends Thread implements Tickable
 				String name=(String)journals.elementAt(j,1);
 				if(isAForwardingJournal(name))
 				{
+					boolean keepall=isAKeepAllJournal(name);
 					// Vector mailingList=?
 					Vector msgs=CMClass.DBEngine().DBReadJournal(name);
 					for(int m=0;m<msgs.size();m++)
@@ -326,15 +375,36 @@ public class SMTPserver extends Thread implements Tickable
 						String to=(String)msg.elementAt(DatabaseEngine.JOURNAL_TO);
 						if(to.equalsIgnoreCase("ALL"))
 						{
+							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE));
+							String from=(String)msg.elementAt(DatabaseEngine.JOURNAL_FROM);
 							String key=(String)msg.elementAt(DatabaseEngine.JOURNAL_KEY);
 							String subj=((String)msg.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 							String s=((String)msg.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
-							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE));
 							if((subj.equalsIgnoreCase("subscribe"))
 							||(s.equalsIgnoreCase("subscribe")))
 							{
 								// add to mailing list
 								CMClass.DBEngine().DBDeleteJournal(key);
+								if(CMClass.DBEngine().DBUserSearch(null,from))
+								{
+									lists=getMailingLists(lists);
+									if(lists==null) lists=new Hashtable();
+									Vector mylist=(Vector)lists.get(name);
+									if(mylist==null)
+									{
+										mylist=new Vector();
+										lists.put(name,mylist);
+									}
+									boolean found=false;
+									for(int l=0;l<mylist.size();l++)
+										if(((String)mylist.elementAt(l)).equalsIgnoreCase(from))
+											found=true;
+									if(!found)
+									{
+										mylist.addElement(from);
+										updatedMailingLists=true;
+									}
+								}
 							}
 							else
 							if((subj.equalsIgnoreCase("unsubscribe"))
@@ -342,13 +412,46 @@ public class SMTPserver extends Thread implements Tickable
 							{
 								// remove from mailing list
 								CMClass.DBEngine().DBDeleteJournal(key);
+								lists=getMailingLists(lists);
+								if(lists==null) continue;
+								Vector mylist=(Vector)lists.get(name);
+								if(mylist==null) continue;
+								for(int l=mylist.size()-1;l>=0;l--)
+									if(((String)mylist.elementAt(l)).equalsIgnoreCase(from))
+									{
+										mylist.removeElementAt(l);
+										updatedMailingLists=true;
+									}
 							}
 							else
 							{
-								// split from mailing list to mail boxes
-								// if from address is valid member
-								// also, check if message should be deleted
-								// when forwarded -- should be a global setting
+								if(date>lastAllProcessing)
+								{
+									lists=getMailingLists(lists);
+									if(lists!=null)
+									{
+										Vector mylist=(Vector)lists.get(name);
+										if((mylist!=null)&&(mylist.contains(from)))
+										{
+											for(int i=0;i<mylist.size();i++)
+											{
+												String to2=(String)mylist.elementAt(i);
+												CMClass.DBEngine().DBWriteJournal(name,from,to2,subj,s,-1);
+											}
+										}
+										else
+											CMClass.DBEngine().DBDeleteJournal(key);
+									}
+								}
+								if(!keepall)
+									CMClass.DBEngine().DBDeleteJournal(key);
+								else
+								{
+									IQCalendar IQE=new IQCalendar(date);
+									IQE.add(IQCalendar.DATE,getJournalDays());
+									if(IQE.getTimeInMillis()<System.currentTimeMillis())
+										CMClass.DBEngine().DBDeleteJournal((String)msg.elementAt(DatabaseEngine.JOURNAL_KEY));
+								}
 							}
 						}
 					}
@@ -356,14 +459,41 @@ public class SMTPserver extends Thread implements Tickable
 			}
 		
 			// here is where the mail is actually sent
-			if((tickID==MudHost.TICK_EMAIL)
-			&&(mailboxName()!=null)
-			&&(mailboxName().length()>0))
+			if(tickID==MudHost.TICK_EMAIL)
 			{
-				Vector emails=CMClass.DBEngine().DBReadJournal(mailboxName());
-				processEmails(emails,null,true);
+				if((mailboxName()!=null)&&(mailboxName().length()>0))
+				{
+					Vector emails=CMClass.DBEngine().DBReadJournal(mailboxName());
+					processEmails(emails,null,true);
+				}
+				if(journals!=null)
+					for(int j=0;j<journals.size();j++)
+					{
+						String name=(String)journals.elementAt(j,1);
+						if(isAForwardingJournal(name))
+						{
+							Vector emails=CMClass.DBEngine().DBReadJournal(name);
+							processEmails(emails,null,true);
+						}
+					}
 			}
 			lastAllProcessing=System.currentTimeMillis();
+			if((updatedMailingLists)&&(lists!=null))
+			{
+				StringBuffer str=new StringBuffer("");
+				for(Enumeration e=lists.keys();e.hasMoreElements();)
+				{
+					String ml=(String)e.nextElement();
+					Vector V=(Vector)lists.get(ml);
+					str.append(ml+"\r\n");
+					if(V!=null)
+					for(int v=0;v<V.size();v++)
+						str.append(((String)V.elementAt(v))+"\r\n");
+					str.append("\r\n");
+				}
+				Resources.saveFileResource("mailinglists.txt",str);
+				updatedMailingLists=false;
+			}
 		}
 		System.gc();
 		try{Thread.sleep(1000);}catch(Exception ex){}
@@ -514,17 +644,25 @@ public class SMTPserver extends Thread implements Tickable
 	public int getEmailDays()
 	{
 		String s=page.getStr("EMAILDAYS");
-		if(s==null) return Integer.MAX_VALUE;
+		if(s==null) return (365*20);
 		int x=Util.s_int(s);
-		if(x==0) return Integer.MAX_VALUE;
+		if(x==0) return (365*20);
+		return x;
+	}
+	public int getJournalDays()
+	{
+		String s=page.getStr("JOURNALDAYS");
+		if(s==null) return (365*20);
+		int x=Util.s_int(s);
+		if(x==0) return (365*20);
 		return x;
 	}
 	public int getFailureDays()
 	{
 		String s=page.getStr("FAILUREDAYS");
-		if(s==null) return Integer.MAX_VALUE;
+		if(s==null) return (365*20);
 		int x=Util.s_int(s);
-		if(x==0) return Integer.MAX_VALUE;
+		if(x==0) return (365*20);
 		return x;
 	}
 	public long getMaxMsgSize()
