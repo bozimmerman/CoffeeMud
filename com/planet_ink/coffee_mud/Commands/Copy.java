@@ -156,9 +156,9 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s "+end+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s falls "+end+".");
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" "+end+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" fall "+end+".");
 					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" item "+newItem.ID()+".");
 				}
 			}
