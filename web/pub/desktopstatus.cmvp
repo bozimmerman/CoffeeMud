@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>CoffeeMud Status</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta HTTP-EQUIV="Refresh" CONTENT="30">
+</head>
+
+<body bgcolor="#000000" text="#FFCC00">
+<FONT SIZE=-1>
+<font color=YELLOW>@MUDSERVERVERSION@ is @MUDSERVERSTATUS@</font>
+<ul>
+@PLAYERLIST@
+</ul>
+</FONT>
+</body>
+</html>
