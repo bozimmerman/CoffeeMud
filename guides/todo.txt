@@ -1,6 +1,6 @@
 auction system (see mailing list)
 have babble work for gossip/tell/gtell
-common skill for searching
+common skill for searching, investigate for thief
 Improve maps to divide area into sections
 Druid Subclasses
 Bard Subclasses

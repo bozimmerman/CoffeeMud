@@ -52,7 +52,7 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonDustdevil",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_LoveMoon",true);
 	
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_Hide",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_SummonFire",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_ControlFire",true);
 	
@@ -68,7 +68,7 @@ public class SkyWatcher extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_WindGust",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_FireWard",true);
 	
-			CMAble.addCharAbilityMapping(ID(),10,"Thief_Sneak",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Ranger_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_Whisperward",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_HeatMetal",true);
 	
@@ -95,11 +95,11 @@ CMAble.addCharAbilityMapping(ID(),13,"Chant_GroveWalk",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_ChantWard",false);
 	
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonCold",true);
-CMAble.addCharAbilityMapping(ID(),17,"Chant_WakingMoon",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_WakingMoon",true);
 	
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Observation",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonRain",true);
-CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonMoon",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonMoon",true);
 	
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonWind",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_PrayerWard",true);
@@ -113,10 +113,10 @@ CMAble.addCharAbilityMapping(ID(),18,"Chant_SummonMoon",true);
 	
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_Meditation",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonLightning",true);
-CMAble.addCharAbilityMapping(ID(),22,"Chant_FalseMoon",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_ManicMoon",true);
 	
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_WindSnatcher",true);
-CMAble.addCharAbilityMapping(ID(),23,"Chant_AstralProjection",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_AstralProjection",true);
 	
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CloudWalk",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_DeathMoon",true);
@@ -167,6 +167,7 @@ CMAble.addCharAbilityMapping(ID(),23,"Chant_AstralProjection",true);
 	public String otherBonuses(){return "Attains Lunar Changes (lunar phase based bonuses/penalties) at level 5.";}
 
 	private static final double[] moonfactors={2.0,1.0,0.0,-1.0,-2.0,-1.0,0.0,2.0,5.0};
+	
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);

@@ -102,6 +102,7 @@ public interface Area extends Environmental
 	public int getMonth();
 	public void setMonth(int m);
 	public int getMoonPhase();
+	public boolean canSeeTheMoon(Room room);
 	
 	public int getDayOfMonth();
 	public void setDayOfMonth(int d);

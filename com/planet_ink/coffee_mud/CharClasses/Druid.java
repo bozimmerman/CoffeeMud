@@ -194,6 +194,18 @@ public class Druid extends StdCharClass
 		}
 	}
 	
+	
+	public void affectCharState(MOB affected, CharState affectableState)
+	{
+		super.affectCharState(affected,affectableState);
+		if(affected.location()!=null)
+			for(int i=0;i<affected.location().numItems();i++)
+			{
+				Item I=affected.location().fetchItem(i);
+				if((I!=null)&&(I.ID().equals("DruidicMonument")))
+					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
+			}
+	}
 	public String statQualifications(){return "Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

@@ -82,7 +82,7 @@ public class Prayer_ChainStrike extends Prayer
 						invoker=mob;
 
 						int dmg=damage;
-						if((!msg.wasModified())&&(!msg2.wasModified()))
+						if((msg.wasModified())||(msg2.wasModified()))
 							dmg = (int)Math.round(Util.div(dmg,2.0));
 						if(target.location()==mob.location())
 						{

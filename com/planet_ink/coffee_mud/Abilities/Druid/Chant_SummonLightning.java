@@ -54,7 +54,7 @@ public class Chant_SummonLightning extends Chant
 				mob.location().send(mob,msg2);
 				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob)).doubleValue());
 				int damage = Dice.roll(maxDie,12,maxDie);
-				if((!msg.wasModified())&&(!msg2.wasModified()))
+				if((msg.wasModified())||(msg2.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())

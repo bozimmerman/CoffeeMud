@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_PeaceMoon extends Chant
 {
 	public String ID() { return "Chant_PeaceMoon"; }
-	public String name(){ return "Peace Moon";}
+	public String name(){ return "Peace Moon";} 
 	public String displayText(){return "(Peace Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -19,7 +19,12 @@ public class Chant_PeaceMoon extends Chant
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			if(affected instanceof Room)
+				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The peace moon sets.");
+			super.unInvoke();
 			return;
+		}
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the peace moon.");
@@ -65,6 +70,9 @@ public class Chant_PeaceMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room room=(Room)affected;
+			if(!Chant_BlueMoon.moonInSky(room,this))
+				unInvoke();
+			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
@@ -82,9 +90,9 @@ public class Chant_PeaceMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the peace moon here.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 		if(target.fetchAffect(ID())!=null)

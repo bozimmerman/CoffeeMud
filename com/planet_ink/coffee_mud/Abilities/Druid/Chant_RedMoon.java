@@ -8,10 +8,10 @@ import java.util.*;
 public class Chant_RedMoon extends Chant
 {
 	public String ID() { return "Chant_RedMoon"; }
-	public String name(){ return "Red Moon";}
+	public String name(){ return "Red Moon";} 
 	public String displayText(){return "(Red Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_RedMoon();}
 
@@ -47,13 +47,26 @@ public class Chant_RedMoon extends Chant
 		return true;
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		if(affected==null) return false;
+		if(affected instanceof Room)
+		{
+			Room R=(Room)affected;
+			if(!Chant_BlueMoon.moonInSky(R,this))
+				unInvoke();
+		}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the red moon here.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 		if(target.fetchAffect(ID())!=null)

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_DeathMoon extends Chant
 {
 	public String ID() { return "Chant_DeathMoon"; }
-	public String name(){ return "Death Moon";}
+	public String name(){ return "Death Moon";} 
 	public String displayText(){return "(Death Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -17,12 +17,9 @@ public class Chant_DeathMoon extends Chant
 
 	public void unInvoke()
 	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("You are no longer under the death moon.");
+			if(affected instanceof Room)
+				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The death moon sets.");
 
 		super.unInvoke();
 
@@ -42,6 +39,9 @@ public class Chant_DeathMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room room=(Room)affected;
+			if(!Chant_BlueMoon.moonInSky(room,this))
+				unInvoke();
+			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
@@ -56,9 +56,9 @@ public class Chant_DeathMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the death moon here.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 		if(target.fetchAffect(ID())!=null)

@@ -19,8 +19,9 @@ public class Masonry extends CommonSkill
 	private final static int BUILD_DEMOLISH=3;
 	private final static int BUILD_TITLE=4;
 	private final static int BUILD_DESC=5;
-	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description"};
-	private final static int[] woodReq={250,500,200,0,0,0};
+	private final static int BUILD_MONUMENT=6;
+	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description","Druidic Monument"};
+	private final static int[] woodReq={250,500,200,0,0,0,1000};
 
 	private Room room=null;
 	private int dir=-1;
@@ -64,6 +65,9 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_DESC:
 						commonTell(mob,"You've ruined the describing!");
+						break;
+					case BUILD_MONUMENT:
+						commonTell(mob,"You've ruined the druidic monument!");
 						break;
 					case BUILD_DEMOLISH:
 					default:
@@ -170,6 +174,13 @@ public class Masonry extends CommonSkill
 							ExternalPlay.DBUpdateRoom(room);
 						}
 						break;
+					case BUILD_MONUMENT:
+						{
+							Item I=CMClass.getItem("DruidicMonument");
+							room.addItem(I);
+							I.setDispossessionTime(0);
+						}
+						break;
 					case BUILD_DEMOLISH:
 					default:
 						{
@@ -259,8 +270,11 @@ public class Masonry extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
-			for(int r=0;r<6;r++)
-				buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
+			for(int r=0;r<names.length;r++)
+			{
+				if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
+					buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
+			}
 			commonTell(mob,buf.toString());
 			return true;
 		}
@@ -276,10 +290,11 @@ public class Masonry extends CommonSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<6;r++)
+		for(int r=0;r<names.length;r++)
 		{
-			if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
-				doingCode=r;
+			if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
+				if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
+					doingCode=r;
 		}
 		if(doingCode<0)
 		{
@@ -294,6 +309,7 @@ public class Masonry extends CommonSkill
 		if(((dir<0)||(dir>3))
 		   &&(doingCode!=BUILD_ROOF)
 		   &&(doingCode!=BUILD_DESC)
+		   &&(doingCode!=BUILD_MONUMENT)
 		   &&(doingCode!=BUILD_TITLE))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
@@ -301,20 +317,7 @@ public class Masonry extends CommonSkill
 		}
 
 		int woodRequired=woodReq[doingCode];
-		/*
-		if(((mob.location().domainType()&Room.INDOORS)==0)&&(doingCode<BUILD_ROOF))
-		{
-			commonTell(mob,"That can only be built after a roof, which includes the frame.");
-			return false;
-		}
-		else
-		if(((mob.location().domainType()&Room.INDOORS)>0)&&(doingCode>BUILD_ROOF)&&(doingCode<BUILD_DEMOLISH))
-		{
-			commonTell(mob,"That can only be built outdoors!");
-			return false;
-		}
-		*/
-
+		
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);
@@ -367,6 +370,7 @@ public class Masonry extends CommonSkill
 		{
 			if((doingCode!=BUILD_ROOF)
 			   &&(doingCode!=BUILD_TITLE)
+			   &&(doingCode!=BUILD_MONUMENT)
 			   &&(doingCode!=BUILD_DESC)
 			   &&(dir>=0))
 			{
@@ -415,6 +419,9 @@ public class Masonry extends CommonSkill
 			break;
 		case BUILD_DESC:
 			verb="giving this place a description";
+			break;
+		case BUILD_MONUMENT:
+			verb="building a druidic monument";
 			break;
 		case BUILD_DEMOLISH:
 		default:

@@ -88,6 +88,22 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			mob.tell("You must be at full mana to grow the oak.");
 			return false;
 		}
+		Vector V=Druid_MyPlants.myPlantRooms(mob);
+		for(int v=0;v<V.size();v++)
+		{
+			Room R=(Room)V.elementAt(v);
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if((I!=null)
+				   &&(I.secretIdentity().equals(mob.name()))
+				   &&(I.fetchAffect(ID())!=null))
+				{
+					mob.tell("Each druid is allowed but one oak at a time.");
+					return false;
+				}
+			}
+		}
 		if(super.invoke(mob,commands,givenTarget,auto))
 		{ 
 			if(!auto)mob.curState().setMana(0);

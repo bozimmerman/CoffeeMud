@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_LoveMoon extends Chant
 {
 	public String ID() { return "Chant_LoveMoon"; }
-	public String name(){ return "Love Moon";}
+	public String name(){ return "Love Moon";} 
 	public String displayText(){return "(Love Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -19,7 +19,13 @@ public class Chant_LoveMoon extends Chant
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			if(affected instanceof Room)
+				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The love moon sets.");
+			super.unInvoke();
 			return;
+		}
+		
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the love moon.");
@@ -74,7 +80,7 @@ public class Chant_LoveMoon extends Chant
 							mob.tell("You feel very close to "+M.name()+".");
 							break;
 						case 5:
-							mob.tell("You lovingly towards "+M.name()+".");
+							mob.tell("You feel lovingly towards "+M.name()+".");
 							break;
 						}
 					}catch(Exception e){}
@@ -85,6 +91,9 @@ public class Chant_LoveMoon extends Chant
 		if(affected instanceof Room)
 		{
 			Room room=(Room)affected;
+			if(!Chant_BlueMoon.moonInSky(room,this))
+				unInvoke();
+			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
@@ -92,6 +101,7 @@ public class Chant_LoveMoon extends Chant
 				{
 					Ability A=(Ability)copyOf();
 					M.addAffect(A);
+					M.recoverCharStats();
 				}
 			}
 		}
@@ -108,9 +118,9 @@ public class Chant_LoveMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the love moon here.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 		if(target.fetchAffect(ID())!=null)

@@ -7,7 +7,7 @@ import java.util.*;
 public class Chant_MeteorStrike extends Chant
 {
 	public String ID() { return "Chant_MeteorStrike"; }
-	public String name(){return "Meteor Storm";}
+	public String name(){return "Meteor Strike";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};

@@ -8,10 +8,10 @@ import java.util.*;
 public class Chant_BlueMoon extends Chant
 {
 	public String ID() { return "Chant_BlueMoon"; }
-	public String name(){ return "Blue Moon";}
+	public String name(){ return "Blue Moon";}  
 	public String displayText(){return "(Blue Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_BlueMoon();}
 
@@ -27,6 +27,19 @@ public class Chant_BlueMoon extends Chant
 		super.unInvoke();
 
 	}
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		if(affected==null) return false;
+		if(affected instanceof Room)
+		{
+			Room R=(Room)affected;
+			if(!Chant_BlueMoon.moonInSky(R,this))
+				unInvoke();
+		}
+		return true;
+	}
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect))
@@ -46,14 +59,30 @@ public class Chant_BlueMoon extends Chant
 		}
 		return true;
 	}
+	
+	public static boolean moonInSky(Room R, Ability Acheck)
+	{
+		if(R==null) return false;
+		if(R.getArea().canSeeTheMoon(R)) return true;
+		for(int a=0;a<R.numAffects();a++)
+		{
+			Ability A=R.fetchAffect(a);
+			if((A!=null)
+			&&(A!=Acheck)
+			&&(A.name().endsWith(" Moon"))
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+				return true;
+		}
+		return false;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the blue moon here.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 		if(target.fetchAffect(ID())!=null)

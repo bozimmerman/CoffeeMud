@@ -8,22 +8,18 @@ import java.util.*;
 public class Chant_HealingMoon extends Chant
 {
 	public String ID() { return "Chant_HealingMoon"; }
-	public String name(){ return "Healing Moon";}
+	public String name(){ return "Healing Moon";} 
 	public String displayText(){return "(Healing Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
-	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_HealingMoon();}
 
 	public void unInvoke()
 	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("You are no longer under the healing moon.");
-
+			if(affected instanceof Room)
+				((Room)affected).showHappens(Affect.MSG_OK_VISUAL,"The healing moon sets.");
 		super.unInvoke();
 
 	}
@@ -32,38 +28,16 @@ public class Chant_HealingMoon extends Chant
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if(affected==null) return false;
-		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
-			if(mob.location().fetchAffect(ID())==null)
-				unInvoke();
-			else
-				mob.curState().adjHitPoints(mob.charStats().getStat(CharStats.CONSTITUTION),mob.maxState());
-		}
-		else
 		if(affected instanceof Room)
 		{
 			Room room=(Room)affected;
-			if((room.getArea().weatherType(room)==Area.WEATHER_BLIZZARD)
-			||(room.getArea().weatherType(room)==Area.WEATHER_CLOUDY)
-			||(room.getArea().weatherType(room)==Area.WEATHER_DUSTSTORM)
-			||(room.getArea().weatherType(room)==Area.WEATHER_HAIL)
-			||(room.getArea().weatherType(room)==Area.WEATHER_RAIN)
-			||(room.getArea().weatherType(room)==Area.WEATHER_SLEET)
-			||(room.getArea().weatherType(room)==Area.WEATHER_SNOW)
-			||(room.getArea().weatherType(room)==Area.WEATHER_THUNDERSTORM)
-			||((room.getArea().getTODCode()!=Area.TIME_DUSK)
-			   &&(room.getArea().getTODCode()!=Area.TIME_NIGHT)))
+			if(!Chant_BlueMoon.moonInSky(room,this))
 				unInvoke();
 			else
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				if((M!=null)&&(M.fetchAffect(ID())==null))
-				{
-					Ability A=(Ability)copyOf();
-					M.addAffect(A);
-				}
+				M.curState().adjHitPoints(M.charStats().getStat(CharStats.CONSTITUTION),M.maxState());
 			}
 		}
 		return true;
@@ -73,23 +47,9 @@ public class Chant_HealingMoon extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if((target.domainType()&Room.INDOORS)>0)
+		if(!Chant_BlueMoon.moonInSky(mob.location(),null))
 		{
-			mob.tell("You cannot summon the healing moon here.");
-			return false;
-		}
-		if((target.getArea().weatherType(target)==Area.WEATHER_BLIZZARD)
-		||(target.getArea().weatherType(target)==Area.WEATHER_CLOUDY)
-		||(target.getArea().weatherType(target)==Area.WEATHER_DUSTSTORM)
-		||(target.getArea().weatherType(target)==Area.WEATHER_HAIL)
-		||(target.getArea().weatherType(target)==Area.WEATHER_RAIN)
-		||(target.getArea().weatherType(target)==Area.WEATHER_SLEET)
-		||(target.getArea().weatherType(target)==Area.WEATHER_SNOW)
-		||(target.getArea().weatherType(target)==Area.WEATHER_THUNDERSTORM)
-		||((target.getArea().getTODCode()!=Area.TIME_DUSK)
-		   &&(target.getArea().getTODCode()!=Area.TIME_NIGHT)))
-		{
-			mob.tell("You cannot see the moon right now.");
+			mob.tell("You must be able to see the moon for this magic to work.");
 			return false;
 		}
 

@@ -157,6 +157,28 @@ public class StdArea implements Area
 		}
 		return "th";
 	}
+	
+	public boolean canSeeTheMoon(Room room)
+	{
+		if(((timeCode!=Area.TIME_NIGHT)&&(timeCode!=Area.TIME_DUSK))
+		||((room.domainType()&Room.INDOORS)>0))
+			return false;
+		switch(weatherType(room))
+		{
+		case Area.WEATHER_BLIZZARD:
+		case Area.WEATHER_HAIL:
+		case Area.WEATHER_SLEET:
+		case Area.WEATHER_SNOW:
+		case Area.WEATHER_RAIN:
+		case Area.WEATHER_THUNDERSTORM:
+		case Area.WEATHER_CLOUDY:
+		case Area.WEATHER_DUSTSTORM:
+			return false;
+		default:
+			return true;
+		}
+	}
+	
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -719,16 +741,14 @@ public class StdArea implements Area
 							for(int i=0;i<M.inventorySize();i++)
 							{
 								Item I=M.fetchInventory(i);
-								if(I==null)	continue;
+								if((I==null)||(I.amWearingAt(Item.INVENTORY)))
+								   continue;
 								if(I.amWearingAt(Item.ON_FEET))
 									coveredPlaces=coveredPlaces|Item.ON_FEET;
-								else
 								if(I.amWearingAt(Item.ABOUT_BODY))
 									coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
-								else
 								if(I.amWearingAt(Item.ON_TORSO))
 									coveredPlaces=coveredPlaces|Item.ON_TORSO;
-								else
 								if(I.amWearingAt(Item.ON_LEGS))
 									coveredPlaces=coveredPlaces|Item.ON_LEGS;
 							}

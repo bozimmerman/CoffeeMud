@@ -53,7 +53,7 @@ public class Spell_ForkedLightning extends Spell
 
 					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
 					int damage = Dice.roll(maxDie,8,1);
-					if((!msg.wasModified())&&(!msg2.wasModified()))
+					if((msg.wasModified())||(msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())
 						ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"A bolt <DAMAGE> <T-NAME>!");
