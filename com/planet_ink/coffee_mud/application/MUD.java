@@ -599,6 +599,7 @@ public class MUD extends Thread implements MudHost
 				}
 			}
             Vector shopmobs=new Vector();
+            Vector bodies=new Vector();
 			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
 			    if(((++roomCounter)%200)==0)
@@ -636,7 +637,18 @@ public class MUD extends Thread implements MudHost
 				            CMClass.DBEngine().DBUpdateTheseMOBs(R,shopmobs);
 			        }
 			        if(CMSecurity.isSaveFlag("ROOMITEMS"))
+			        {
+			            bodies.clear();
+				        for(int i=0;i<R.numItems();i++)
+				        {
+				            Item I=R.fetchItem(i);
+				            if(I instanceof DeadBody)
+				                bodies.addElement(I);
+				        }
+				        for(int i=0;i<bodies.size();i++)
+				            ((Item)bodies.elementAt(i)).destroy();
 			            CMClass.DBEngine().DBUpdateItems(R);
+			        }
 			    }
 			}
 			if(S!=null)S.println("done");
