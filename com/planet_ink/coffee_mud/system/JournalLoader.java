@@ -199,7 +199,7 @@ public class JournalLoader
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
 			{
 				Vector keys=new Vector();
-				ResultSet R=D.query("SELECT * FROM CMJNRL");
+				ResultSet R=D.query("SELECT * FROM CMJRNL");
 				while(R.next())
 				{
 					String playerID2=DBConnections.getRes(R,"CMJKEY");
@@ -211,11 +211,11 @@ public class JournalLoader
 				{
 					DBConnector.DBDone(D);
 					D=DBConnector.DBFetch();
-					D.update("DELETE FROM CMJNRL WHERE CMJKEY='"+((String)keys.elementAt(i))+"'",0);
+					D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+((String)keys.elementAt(i))+"'",0);
 				}
 			}
 			else
-				D.update("DELETE FROM CMJNRL WHERE CMTONM='"+name+"'",0);
+				D.update("DELETE FROM CMJRNL WHERE CMTONM='"+name+"'",0);
 		}
 		catch(Exception sqle)
 		{
