@@ -91,11 +91,18 @@ public class Resources
 		Vector V=new Vector();
 		
 		String str="";
-		for(int i=0;i<buf.length();i++)
+		for(int i=0;i<buf.length()-1;i++)
 		{
-			if((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
+			if(((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
+			   ||((buf.charAt(i)=='\r')&&(buf.charAt(i+1)=='\n')))
 			{
 				i++;
+				V.addElement(str);
+				str="";
+			}
+			if(((buf.charAt(i)=='\r'))
+			||((buf.charAt(i)=='\n')))
+			{
 				V.addElement(str);
 				str="";
 			}

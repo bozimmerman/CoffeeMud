@@ -72,6 +72,9 @@ public class Arrest extends StdBehavior
 
 	protected class Laws implements Law
 	{
+		private boolean namesModifiable=false;
+		private boolean lawsModifiable=false;
+		
 		private Vector otherCrimes=new Vector();
 		private Vector otherBits=new Vector();
 		private Hashtable abilityCrimes=new Hashtable();
@@ -99,7 +102,116 @@ public class Arrest extends StdBehavior
 		private Integer[] jailTimes=new Integer[4];
 		public Laws(){}
 		
-		public Laws(Properties laws) 
+		public Laws(Properties laws, 
+					boolean modifiableNames, 
+					boolean modifiableLaws) 
+		{
+			namesModifiable=modifiableNames;
+			lawsModifiable=modifiableLaws;
+			resetLaw(laws);
+		}
+
+		public Vector otherCrimes()	{ return otherCrimes;}
+		public Vector otherBits() { return otherBits;}
+		public Hashtable abilityCrimes(){ return abilityCrimes;}
+		public Hashtable basicCrimes(){ return basicCrimes;}
+		
+		public boolean hasModifiableNames(){return namesModifiable;}
+		public boolean hasModifiableLaws(){return lawsModifiable;}
+		
+		public Vector chitChat(){ return chitChat;}
+		public Vector chitChat2(){ return chitChat2;}
+		public Vector jailRooms(){ return jailRooms;}
+		public Vector releaseRooms(){ return releaseRooms;}
+		public Vector officerNames(){ return officerNames;}
+		public Vector judgeNames(){ return judgeNames;}
+		public String[] messages(){ return messages;}
+		
+		public Vector oldWarrants(){ return oldWarrants;}
+		public Vector warrants(){ return warrants;}
+		
+		public boolean arrestMobs(){ return arrestMobs;}
+		
+		public String[] paroleMessages(){ return paroleMessages;}
+		public Integer[] paroleTimes(){ return paroleTimes;}
+											 
+		public String[] jailMessages(){ return jailMessages;}
+		public Integer[] jailTimes(){ return jailTimes;}
+		
+
+		public void changeStates(LegalWarrant W, int state)
+		{
+			if((W==null)||(W.criminal()==null)) return;
+			if(warrants.contains(W))
+				for(int w=0;w<warrants.size();w++)
+				{
+					LegalWarrant W2=(LegalWarrant)warrants.elementAt(w);
+					if(W2.criminal()==W.criminal())
+						W2.setState(state);
+				}
+		}
+		
+		public String getMessage(int which)
+		{
+			if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
+			   return (String)messages[which];
+			return "";
+		}
+		public String paroleMessages(int which)
+		{
+			if((which>=0)
+			&&(which<paroleMessages.length)
+			&&(paroleMessages[which]!=null))
+			   return paroleMessages[which];
+			return "";
+		}
+		public int paroleTimes(int which)
+		{
+			if((which>=0)
+			&&(which<paroleTimes.length)
+			&&(paroleTimes[which]!=null))
+			   return paroleTimes[which].intValue();
+			return 0;
+		}
+		public String jailMessages(int which)
+		{
+			if((which>=0)
+			&&(which<jailMessages.length)
+			&&(jailMessages[which]!=null))
+			   return jailMessages[which];
+			return "";
+		}
+		public int jailTimes(int which)
+		{
+			if((which>=0)
+			&&(which<jailTimes.length)
+			&&(jailTimes[which]!=null))
+			   return jailTimes[which].intValue();
+			return 0;
+		}
+		
+		public String getInternalStr(String msg)
+		{ 
+			if((theLaws!=null)&&(theLaws.get(msg)!=null))
+				return (String)theLaws.get(msg);
+			return "";
+		}
+		public void setInternalStr(String tag, String value)
+		{ 
+			if(theLaws!=null)
+			{
+				if(theLaws.get(tag)!=null)
+					theLaws.remove(tag);
+				theLaws.put(tag,value);
+			}
+		}
+		
+		public void resetLaw()
+		{
+			if(theLaws!=null)
+				resetLaw(theLaws);
+		}
+		private void resetLaw(Properties laws)
 		{
 			theLaws=laws;
 			officerNames=Util.parse(getInternalStr("OFFICERS"));
@@ -185,87 +297,15 @@ public class Arrest extends StdBehavior
 				}
 			}
 		}
-
-		public Vector otherCrimes()	{ return otherCrimes;}
-		public Vector otherBits() { return otherBits;}
-		public Hashtable abilityCrimes(){ return abilityCrimes;}
-		public Hashtable basicCrimes(){ return basicCrimes;}
 		
-		public Vector chitChat(){ return chitChat;}
-		public Vector chitChat2(){ return chitChat2;}
-		public Vector jailRooms(){ return jailRooms;}
-		public Vector releaseRooms(){ return releaseRooms;}
-		public Vector officerNames(){ return officerNames;}
-		public Vector judgeNames(){ return judgeNames;}
-		public String[] messages(){ return messages;}
-		
-		public Vector oldWarrants(){ return oldWarrants;}
-		public Vector warrants(){ return warrants;}
-		
-		public boolean arrestMobs(){ return arrestMobs;}
-		
-		public String[] paroleMessages(){ return paroleMessages;}
-		public Integer[] paroleTimes(){ return paroleTimes;}
-											 
-		public String[] jailMessages(){ return jailMessages;}
-		public Integer[] jailTimes(){ return jailTimes;}
-		
-
-		public void changeStates(LegalWarrant W, int state)
+		public String rawLawString()
 		{
-			if((W==null)||(W.criminal()==null)) return;
-			if(warrants.contains(W))
-				for(int w=0;w<warrants.size();w++)
-				{
-					LegalWarrant W2=(LegalWarrant)warrants.elementAt(w);
-					if(W2.criminal()==W.criminal())
-						W2.setState(state);
-				}
-		}
-		
-		public String getMessage(int which)
-		{
-			if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
-			   return (String)messages[which];
-			return "";
-		}
-		public String paroleMessages(int which)
-		{
-			if((which>=0)
-			&&(which<paroleMessages.length)
-			&&(paroleMessages[which]!=null))
-			   return paroleMessages[which];
-			return "";
-		}
-		public int paroleTimes(int which)
-		{
-			if((which>=0)
-			&&(which<paroleTimes.length)
-			&&(paroleTimes[which]!=null))
-			   return paroleTimes[which].intValue();
-			return 0;
-		}
-		public String jailMessages(int which)
-		{
-			if((which>=0)
-			&&(which<jailMessages.length)
-			&&(jailMessages[which]!=null))
-			   return jailMessages[which];
-			return "";
-		}
-		public int jailTimes(int which)
-		{
-			if((which>=0)
-			&&(which<jailTimes.length)
-			&&(jailTimes[which]!=null))
-			   return jailTimes[which].intValue();
-			return 0;
-		}
-		
-		private String getInternalStr(String msg)
-		{ 
-			if((theLaws!=null)&&(theLaws.get(msg)!=null))
-				return (String)theLaws.get(msg);
+			if(theLaws!=null)
+			{
+				ByteArrayOutputStream out=new ByteArrayOutputStream();
+				try{ theLaws.store(out,"");}catch(IOException e){}
+				return out.toString();
+			}
 			return "";
 		}
 		
@@ -317,13 +357,7 @@ public class Arrest extends StdBehavior
 
 	
 	// here are the codes for interacting with this behavior
-	// 0=frame with crimes of the mob (framed mob is next item in vector)
-	// 1=arrest the mob (officer mob is the next item in the vector)
-	// 2=fill with warrant info for the given mob
-	// 3=fill with legal info
-	// 4=fill with legal text (stringbuffer)
-	// 5=return whether the given mob is an officer
-	// 6=return whether the given mob has a warrant out
+	// see Law.java for info
 	public boolean modifyBehavior(Environmental hostObj, 
 								  MOB mob, 
 								  Object O)
@@ -351,7 +385,7 @@ public class Arrest extends StdBehavior
 			
 			switch(I.intValue())
 			{
-			case 0: // frame
+			case Law.MOD_FRAME: // frame
 				if(V.size()>0)
 				{
 					MOB framed=(MOB)V.elementAt(1);
@@ -362,7 +396,7 @@ public class Arrest extends StdBehavior
 					return true;
 				}
 				break;
-			case 1: //arrest
+			case Law.MOD_ARREST: //arrest
 				if(V.size()>0)
 				{
 					MOB officer=(MOB)V.elementAt(1);
@@ -381,7 +415,7 @@ public class Arrest extends StdBehavior
 					}
 				}
 				break;
-			case 2: // warrant info
+			case Law.MOD_WARRANTINFO: // warrant info
 				{
 					V.clear();
 					for(int i=0;i<laws.warrants().size();i++)
@@ -401,22 +435,43 @@ public class Arrest extends StdBehavior
 					}
 				}
 				return true;
-			case 3: // legal info
+			case Law.MOD_LEGALINFO: // legal info
 				{
 					V.clear();
 					V.addElement(laws);
 				}
 				break;
-			case 4: // legal text
+			case Law.MOD_LEGALTEXT: // legal text
 				break;
-			case 5: // is an officer
+			case Law.MOD_ISELLIGOFFICER: // is an elligible officer
 				if((mob.isMonster())
 				&&(mob.location()!=null)
 				&&(isElligibleOfficer(laws,mob,mob.location().getArea())))
 					return true;
 				return false;
-			case 6: // has a warrant out
+			case Law.MOD_HASWARRANT: // has a warrant out
 				return (laws.getWarrant(mob,0))!=null;
+			case Law.MOD_ISOFFICER: // is a officer
+				if((mob.isMonster())
+				&&(mob.location()!=null)
+				&&(isAnyKindOfOfficer(laws,mob)))
+					return true;
+				return false;
+			case Law.MOD_ISJUDGE: // is a judge
+				if((mob.isMonster())
+				&&(mob.location()!=null)
+				&&(isTheJudge(laws,mob)))
+					return true;
+				return false;
+			case Law.MOD_SETNEWLAW:
+				laws.resetLaw();
+				if(getParms().equalsIgnoreCase("custom")
+				&&(hostObj!=null))
+				{
+					ExternalPlay.DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
+					ExternalPlay.DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
+				}
+				break;
 			}
 		}
 		return super.modifyBehavior(hostObj,mob,O);
@@ -428,17 +483,27 @@ public class Arrest extends StdBehavior
 		loadAttempt=false;
 	}
 
+	protected boolean defaultModifiableNames(){return true;}
+	
 	protected Law getLaws(Environmental what)
 	{
 		String lawName=getParms();
+		
+		boolean modifiableLaw=false;
+		boolean modifiableNames=defaultModifiableNames();
+		
 		Law laws=null;
 		if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
+		{
+			modifiableLaw=true;
 			laws=(Law)Resources.getResource("LEGAL-"+what.Name());
+		}
 		else
 		{
 			if(lawName.length()==0)	
 				lawName="laws.ini";
 			laws=(Law)Resources.getResource("LEGAL-"+lawName);
+			modifiableNames=false;
 		}
 		if(laws==null)
 		{
@@ -473,7 +538,7 @@ public class Arrest extends StdBehavior
 				return new Laws();
 			}
 			loadAttempt=true;
-			laws=new Laws(lawprops);
+			laws=new Laws(lawprops,modifiableNames,modifiableLaw);
 			Resources.submitResource("LEGAL-"+lawName,laws);
 		}
 		return laws;

@@ -4,6 +4,20 @@ import java.util.*;
 
 public class XMLManager
 {
+	/**
+	 * Returns the double value of a string without crashing
+ 	 * 
+	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
+	 * @param double String to convert
+	 * @return double Double value of the string
+	 */
+	public static double s_double(String DOUBLE)
+	{
+		double sdouble=0;
+		try{ sdouble=Double.parseDouble(DOUBLE); }
+		catch(Exception e){ return 0;}
+		return sdouble;
+	}
 
 	/**
 	 * Returns the integer value of a string without crashing
@@ -290,7 +304,7 @@ public class XMLManager
 	 */
 	public static double getDoubleFromPieces(Vector V, String tag)
 	{
-		return Util.s_double(getValFromPieces(V,tag));
+		return s_double(getValFromPieces(V,tag));
 	}
 	
 	

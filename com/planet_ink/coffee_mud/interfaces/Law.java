@@ -50,6 +50,17 @@ public interface Law
 	public final static int MSG_RESIST=11;
 	public final static int MSG_TOTAL=12;
 	
+	public final static int MOD_FRAME = 0;
+	public final static int MOD_ARREST = 1;
+	public final static int MOD_WARRANTINFO = 2;
+	public final static int MOD_LEGALINFO = 3;
+	public final static int MOD_LEGALTEXT = 4;
+	public final static int MOD_ISELLIGOFFICER = 5;
+	public final static int MOD_HASWARRANT = 6;
+	public final static int MOD_ISOFFICER = 7;
+	public final static int MOD_ISJUDGE = 8;
+	public final static int MOD_SETNEWLAW=9;
+	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+
 		"JUDGE=@\n"+
@@ -134,4 +145,10 @@ public interface Law
 		public int jailTimes(int which);
 		public LegalWarrant getWarrant(MOB mob, int which);
 		public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
+		public void resetLaw();
+		public boolean hasModifiableNames();
+		public boolean hasModifiableLaws();
+		public String getInternalStr(String msg);
+		public void setInternalStr(String tag, String value);
+		public String rawLawString();
 }
