@@ -231,7 +231,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					case Directions.NORTH:
 						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][x],dirRoom,d,dirExit,altExit);
+							linkRoom(subMap[x][0],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.SOUTH:
 						for(int x=0;x<subMap.length;x++)

@@ -20,7 +20,7 @@ public class EndlessSky extends StdGrid
 		setDescription("");
 		xsize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
 		ysize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
-		if(xsize==0)
+		if((xsize==0)||(ysize==0))
 		{
 			xsize=3;
 			ysize=3;
@@ -117,8 +117,8 @@ public class EndlessSky extends StdGrid
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);
 		for(int x=0;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x][subMap.length-1],Directions.NORTH,ox,ox);
+			linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 		for(int x=1;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x-1][subMap.length-1],Directions.UP,ox,ox);
+			linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
 	}
 }

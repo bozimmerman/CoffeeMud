@@ -112,8 +112,8 @@ public class UnderWaterGrid extends StdGrid
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);
 		for(int x=0;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x][subMap.length-1],Directions.NORTH,ox,ox);
+			linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 		for(int x=1;x<subMap.length;x++)
-			linkRoom(subMap[x][0],subMap[x-1][subMap.length-1],Directions.UP,ox,ox);
+			linkRoom(subMap[x][0],subMap[x-1][subMap[x].length-1],Directions.UP,ox,ox);
 	}
 }
