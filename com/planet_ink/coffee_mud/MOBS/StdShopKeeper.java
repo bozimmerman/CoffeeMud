@@ -1096,6 +1096,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			}
 		}
+		else
+			super.affect(myHost,affect);
 	}
 
 	private double prejudiceValueFromPart(MOB mob, boolean sellTo, String part)
