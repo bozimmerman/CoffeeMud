@@ -124,15 +124,20 @@ public class Social implements Environmental
 		String targetStr="";
 		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
 			targetStr=(String)commands.elementAt(1);
-
 		Environmental Target=null;
 		if((Target==null)&&(targetStr.length()>0))
 		{
-			Target=CMMap.getPlayer(targetStr);
-			if((Target==null)&&(makeTarget))
+		    String targetMud="";
+		    if(targetStr.indexOf("@")>0)
+		        targetMud=targetStr.substring(targetStr.indexOf("@")+1);
+		    else
+				Target=CMMap.getPlayer(targetStr);
+			
+			if(((Target==null)&&(makeTarget))||((targetMud.length()>0)&&((CMClass.I3Interface().i3online())&&(CMClass.I3Interface().isI3channel(channelName)))))
 			{
 				Target=CMClass.getMOB("StdMOB");
 				Target.setName(targetStr);
+				((MOB)Target).setLocation(CMMap.getRandomRoom());
 			}
 			if((Target!=null)&&(!Sense.isSeen(Target)))
 			   Target=null;

@@ -405,6 +405,8 @@ public class Intermud implements Runnable, Persistent, Serializable
                     return;
                 }
                 try {
+                    if(CMSecurity.isDebugging("I3"))
+                        Log.sysOut("Intermud","Receiving: "+str);
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
@@ -559,6 +561,8 @@ public class Intermud implements Runnable, Persistent, Serializable
     private void send(String str) {
         int x = str.length();
 
+        if(CMSecurity.isDebugging("I3"))
+            Log.sysOut("Intermud","Sending: "+str);
         try {
             output.writeInt(x);
             output.writeBytes(str);
