@@ -18,6 +18,7 @@ public class Thief extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 5;}
 	private static boolean abilitiesLoaded=false;
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	
 	public Thief()
 	{
@@ -108,39 +109,13 @@ public class Thief extends StdCharClass
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
+			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
+			&&(!new Thief().armorCheck(myChar)))
 			{
-				for(int i=0;i<myChar.inventorySize();i++)
+				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					Item I=myChar.fetchInventory(i);
-					if(I==null) break;
-					if((!I.amWearingAt(Item.INVENTORY))&&((I instanceof Armor)||(I instanceof Shield)))
-					{
-						switch(I.material()&EnvResource.MATERIAL_MASK)
-						{
-						case EnvResource.MATERIAL_CLOTH:
-						case EnvResource.MATERIAL_LEATHER:
-						case EnvResource.MATERIAL_UNKNOWN:
-						case EnvResource.MATERIAL_FLESH:
-						case EnvResource.MATERIAL_VEGETATION:
-							break;
-						default:
-							if((Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
-							{
-								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
-								return false;
-							}
-							break;
-						}
-					}
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
+					return false;
 				}
 			}
 			else

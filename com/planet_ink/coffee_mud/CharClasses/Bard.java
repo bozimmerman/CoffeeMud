@@ -17,6 +17,7 @@ public class Bard extends StdCharClass
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	private static boolean abilitiesLoaded=false;
+	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	
 	public Bard()
 	{

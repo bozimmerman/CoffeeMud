@@ -65,6 +65,53 @@ public class StdCharClass implements CharClass
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "";}
 	public String statQualifications(){return "";}
+	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	
+	public boolean armorCheck(MOB mob)
+	{
+		if(allowedArmorLevel()==CharClass.ARMOR_ANY) return true;
+		
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if(I==null) break;
+			if((!I.amWearingAt(Item.INVENTORY))
+			&&((I instanceof Armor)||(I instanceof Shield)))
+			{
+				boolean ok=true;
+				switch(I.material()&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_LEATHER:
+					if(allowedArmorLevel()==CharClass.ARMOR_CLOTH)
+						ok=false;
+					break;
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_MITHRIL:
+					ok=false;
+					break;
+				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_ROCK:
+					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
+					||(allowedArmorLevel()==CharClass.ARMOR_LEATHER))
+						ok=false;
+					break;
+				default:
+					break;
+				}
+				if((!ok)
+				&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
+				&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
+				&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
+				&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
+				&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
+				&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
+				&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
+				&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
+					return false;
+			}
+		}
+		return true;
+	}
 
 	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
 	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}

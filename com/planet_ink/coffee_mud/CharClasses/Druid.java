@@ -18,6 +18,7 @@ public class Druid extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 6;}
 	private static boolean abilitiesLoaded=false;
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	
 	public Druid()
 	{
@@ -143,42 +144,13 @@ public class Druid extends StdCharClass
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool())))))
+			&&((affect.tool()==null)||((affect.tool() instanceof Ability)&&(myChar.isMine(affect.tool()))))
+			&&(!armorCheck(myChar)))
 			{
-				for(int i=0;i<myChar.inventorySize();i++)
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					Item I=myChar.fetchInventory(i);
-					if(I==null) break;
-					if((!I.amWearingAt(Item.INVENTORY))&&((I instanceof Armor)||(I instanceof Shield)))
-					{
-						switch(I.material()&EnvResource.MATERIAL_MASK)
-						{
-						case EnvResource.MATERIAL_CLOTH:
-						case EnvResource.MATERIAL_VEGETATION:
-						case EnvResource.MATERIAL_LEATHER:
-						case EnvResource.MATERIAL_FLESH:
-						case EnvResource.MATERIAL_ROCK:
-						case EnvResource.MATERIAL_WOODEN:
-						case EnvResource.MATERIAL_PAPER:
-						case EnvResource.MATERIAL_UNKNOWN:
-							break;
-						default:
-							if((Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
-							{
-								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
-								return false;
-							}
-							break;
-						}
-					}
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+					return false;
 				}
 			}
 			else

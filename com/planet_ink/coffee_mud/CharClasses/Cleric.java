@@ -17,6 +17,7 @@ public class Cleric extends StdCharClass
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	private static boolean abilitiesLoaded=false;
+	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	
 	public Cleric()
 	{

@@ -19,6 +19,7 @@ public class Ranger extends StdCharClass
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	private static boolean abilitiesLoaded=false;
+	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	
 	public Ranger()
 	{

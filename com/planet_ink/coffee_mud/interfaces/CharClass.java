@@ -2,6 +2,11 @@ package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
 public interface CharClass
 {
+	public static final int ARMOR_ANY=0;
+	public static final int ARMOR_CLOTH=1;
+	public static final int ARMOR_LEATHER=2;
+	public static final int ARMOR_NONMETAL=3;
+	
 	public String ID();
 	public String name();
 	public String baseClass();
@@ -15,6 +20,8 @@ public interface CharClass
 	public void level(MOB mob);
 	public void unLevel(MOB mob);
 	public void outfit(MOB mob);
+	
+	public boolean armorCheck(MOB mob);
 
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */

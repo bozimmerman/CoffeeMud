@@ -19,6 +19,7 @@ public class Fighter extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
+	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public Fighter()
 	{
 		super();

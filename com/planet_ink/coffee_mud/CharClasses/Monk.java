@@ -19,6 +19,7 @@ public class Monk extends StdCharClass
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	private static boolean abilitiesLoaded=false;
+	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	
 	public Monk()
 	{
@@ -169,8 +170,8 @@ public class Monk extends StdCharClass
 	{
 	}
 	
-	public String weaponLimitations(){return "To avoid fumble chance, must use dagger, staff, or natural weapon.";}
-	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid spell failure.";}
+	public String weaponLimitations(){return "May use any weapon, but prefers unarmed.";}
+	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid skill failure.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amITarget(myChar)
@@ -189,39 +190,13 @@ public class Monk extends StdCharClass
 		{
 			if((affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool())))
+			&&(myChar.isMine(affect.tool()))
+			&&(!armorCheck(myChar)))
 			{
-				for(int i=0;i<myChar.inventorySize();i++)
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.DEXTERITY)*2)
 				{
-					Item I=myChar.fetchInventory(i);
-					if(I==null) break;
-					if((!I.amWearingAt(Item.INVENTORY))
-					&&((I instanceof Armor)||(I instanceof Shield)))
-					{
-						switch(I.material()&EnvResource.MATERIAL_MASK)
-						{
-						case EnvResource.MATERIAL_CLOTH:
-						case EnvResource.MATERIAL_UNKNOWN:
-						case EnvResource.MATERIAL_VEGETATION:
-						case EnvResource.MATERIAL_PAPER:
-							break;
-						default:
-							if((Dice.rollPercentage()>myChar.charStats().getStat(CharStats.DEXTERITY)*2)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
-							{
-								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
-								return false;
-							}
-							break;
-						}
-					}
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					return false;
 				}
 			}
 			else

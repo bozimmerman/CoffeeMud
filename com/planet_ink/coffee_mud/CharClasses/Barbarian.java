@@ -20,6 +20,7 @@ public class Barbarian extends StdCharClass
 	public int getTrainsFirstLevel(){return 4;}
 	public int getMovementMultiplier(){return 8;}
 	private static boolean abilitiesLoaded=false;
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	
 	public Barbarian()
 	{
@@ -95,6 +96,8 @@ public class Barbarian extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
+	public String weaponLimitations(){return "";}
+	public String armorLimitations(){return "Must use non-metal armors to avoid skill failure.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if((affect.amITarget(myChar))
@@ -124,37 +127,13 @@ public class Barbarian extends StdCharClass
 		{
 			if((affect.tool()!=null)
 			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool())))
+			&&(myChar.isMine(affect.tool()))
+			&&(!armorCheck(myChar)))
 			{
-				for(int i=0;i<myChar.inventorySize();i++)
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 				{
-					Item I=myChar.fetchInventory(i);
-					if(I==null) break;
-					if((!I.amWearingAt(Item.INVENTORY))
-					&&((I instanceof Armor)||(I instanceof Shield)))
-					{
-						switch(I.material()&EnvResource.MATERIAL_MASK)
-						{
-						case EnvResource.MATERIAL_METAL:
-						case EnvResource.MATERIAL_MITHRIL:
-							if((Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-							&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
-							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
-							{
-								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
-								return false;
-							}
-							break;
-						default:
-							break;
-						}
-					}
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					return false;
 				}
 			}
 		}
