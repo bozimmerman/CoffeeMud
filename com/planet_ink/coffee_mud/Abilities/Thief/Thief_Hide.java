@@ -39,7 +39,10 @@ public class Thief_Hide extends ThiefSkill
 			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))
+			{
 				unInvoke();
+				mob.recoverEnvStats();
+			}
 		}
 		return;
 	}

@@ -1544,10 +1544,20 @@ public class StdMOB implements MOB
 		&&(!affect.amITarget(this)))
 		{
 			int othersMajor=affect.othersMajor();
+			int othersMinor=affect.othersMinor();
 
 			if(Util.bset(affect.othersCode(),Affect.MASK_MALICIOUS)&&(affect.target() instanceof MOB))
 				fightingFollowers((MOB)affect.target(),affect.source());
 
+			if((othersMinor==Affect.TYP_ENTER) // exceptions to movement
+			||(othersMinor==Affect.TYP_FLEE)
+			||(othersMinor==Affect.TYP_LEAVE))
+			{
+				if(((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
+				&&(Sense.canSenseMoving(affect.source(),this)))
+					tell(affect.source(),affect.target(),affect.othersMessage());
+			}
+			else
 			if(Util.bset(othersMajor,affect.MASK_CHANNEL))
 			{
 				if(!Util.isSet(getChannelMask(),(affect.othersCode()-affect.MASK_CHANNEL)))
@@ -1564,15 +1574,6 @@ public class StdMOB implements MOB
 			||(Util.bset(othersMajor,Affect.MASK_GENERAL)))
 			&&((!asleep)&&(canseesrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
-			else
-			if((affect.othersMinor()==Affect.TYP_ENTER) // exceptions to movement
-			||(affect.othersMinor()==Affect.TYP_FLEE)
-			||(affect.othersMinor()==Affect.TYP_LEAVE))
-			{
-				if(((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
-				&&(Sense.canSenseMoving(affect.source(),this)))
-					tell(affect.source(),affect.target(),affect.othersMessage());
-			}
 			else
 			if(((Util.bset(othersMajor,Affect.MASK_MOVE))
 				||((Util.bset(othersMajor,Affect.MASK_MOUTH))&&(!Util.bset(othersMajor,Affect.MASK_SOUND))))

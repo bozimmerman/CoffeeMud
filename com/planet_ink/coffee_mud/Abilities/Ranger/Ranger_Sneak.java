@@ -62,18 +62,28 @@ public class Ranger_Sneak extends StdAbility
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(levelDiff*10,auto);
-
+			if(levelDiff<0) 
+				levelDiff=levelDiff*10;
+			else 
+				levelDiff=levelDiff*5;
+			success=profficiencyCheck(levelDiff,auto);
+			
 			if(success)
-				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SNEAKING);
+			{
+				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
+				mob.recoverEnvStats();
+			}
 			ExternalPlay.move(mob,dirCode,false);
 			if(success)
 			{
-				Ability toHide=new Ranger_Hide();
-				toHide.invoke(mob,new Vector(),null,true);
+				
+				int disposition=mob.baseEnvStats().disposition();
+				if((disposition&EnvStats.IS_SNEAKING)>0)
+				{
+					mob.baseEnvStats().setDisposition(disposition-EnvStats.IS_SNEAKING);
+					mob.recoverEnvStats();
+				}
 			}
-			if(Sense.isSneaking(mob))
-				mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SNEAKING);
 		}
 		return success;
 	}

@@ -54,7 +54,7 @@ public class GateGuard extends StdBehavior
 		return key;
 	}
 	
-	private int numValidPlayers(Room room)
+	private int numValidPlayers(MOB mob, Room room)
 	{
 		if(room==null) return 0;
 		int num=0;
@@ -63,6 +63,7 @@ public class GateGuard extends StdBehavior
 			MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(!M.isMonster())
+			&&(Sense.canBeSeenBy(M,mob))
 			&&(ExternalPlay.zapperCheck(getParms(),M)))
 				num++;
 		}
@@ -82,7 +83,7 @@ public class GateGuard extends StdBehavior
 			int dir=findGate(mob);
 			if(dir<0) return;
 			Exit e=mob.location().getExitInDir(dir);
-			int numPlayers=numValidPlayers(mob.location());
+			int numPlayers=numValidPlayers(mob,mob.location());
 			if((mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))

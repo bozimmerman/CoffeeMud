@@ -205,8 +205,12 @@ public class TheFight
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
-		deathRoom.showSource(target,null,Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r");
-		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
+		FullMsg msg=new FullMsg(target,null,null,
+			Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
+			Affect.MSG_DEATH,"ARGH!",
+			Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
+		if((deathRoom!=null)&&(deathRoom.okAffect(msg)))
+			deathRoom.send(target,msg);
 		
 		Hashtable beneficiaries=new Hashtable();
 		if((source!=null)&&(source.charStats()!=null))
@@ -693,7 +697,9 @@ public class TheFight
 							   msg.othersCode(),
 							   newMsg);
 				}
-				if(source.mayIFight(target))
+				if((source.mayIFight(target))
+				&&(source.location()==room)
+				&&(target.location()==room))
 					room.send(source,msg);
 			}
 		}

@@ -49,13 +49,26 @@ public class Thief_Sneak extends ThiefSkill
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(levelDiff*10,auto);
-
+			if(levelDiff<0) 
+				levelDiff=levelDiff*8;
+			else 
+				levelDiff=levelDiff*10;
+			success=profficiencyCheck(levelDiff,auto);
 			if(success)
-				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SNEAKING);
+			{
+				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
+				mob.recoverEnvStats();
+			}
 			ExternalPlay.move(mob,dirCode,false);
 			if(success)
 			{
+				
+				int disposition=mob.baseEnvStats().disposition();
+				if((disposition&EnvStats.IS_SNEAKING)>0)
+				{
+					mob.baseEnvStats().setDisposition(disposition-EnvStats.IS_SNEAKING);
+					mob.recoverEnvStats();
+				}
 				Ability toHide=mob.fetchAbility(new Thief_Hide().ID());
 				if(toHide!=null)
 					toHide.invoke(mob,new Vector(),null,true);
