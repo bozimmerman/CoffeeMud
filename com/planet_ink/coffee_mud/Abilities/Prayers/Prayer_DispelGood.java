@@ -50,7 +50,6 @@ public class Prayer_DispelGood extends Prayer
 					harming=(int)Math.round(Util.div(harming,2.0));
 				if(target.getAlignment()>650)
 				{
-					target.setAlignment(target.getAlignment()-100);
 					if(target.location()==mob.location())
 						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The blessed spell <DAMAGE> <T-NAME>!");
 				}

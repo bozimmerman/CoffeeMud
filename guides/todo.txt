@@ -14,27 +14,22 @@
 ! Serve and Rebuke commands.  Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
 ! Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting.
 ! Crawl command, and crawlspace property for rooms and exits
+! Furniture.. chairs to sit in, beds to lie in, tables to put things on?  It's all riding...
+~ Convert some properties to work with the new areas. Prop_NOMOB, etc..
+~ make room properties also work for exits
+~ Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it will send the items to the appropriate GateObject.  The GateObject can be either a container or not. If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject will have identical MiscText fields to establish the Keys between them.
 
-Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
-will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
-If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject 
-will have identical MiscText fields to establish the Keys between them.
-
-A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The 
+A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type would be constructed.  The
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
 Following thing would be automatic, if an Exit and Direction extensions are used.
-
-Convert some properties to work with the new areas. Prop_NOMOB, etc..
-
-Furniture.. chairs to sit in, beds to lie in, tables to put things on?  It's all riding...
-
-make room properties also work for exits
 
 ranger skills: find water, hunt (finds a huntable animal)
 
 target commmand to switch among targets fighting you
 
 Two-handed fighting
+
+NonVagrant behavior to wake up those sleeping on the streets
 
 Finish implementing height -- make armor that doesn't fit! Armor can init at height 0, and adjust to the very first wearer.
 

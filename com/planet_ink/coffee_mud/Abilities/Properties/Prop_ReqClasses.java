@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_RoomClasses extends Property
+public class Prop_ReqClasses extends Property
 {
-	public Prop_RoomClasses()
+	public Prop_ReqClasses()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room Class Limitations";
+		name="Class Limitations";
 	}
 
 	public Environmental newInstance()
 	{
-		Prop_RoomClasses newOne=new Prop_RoomClasses();
+		Prop_ReqClasses newOne=new Prop_ReqClasses();
 		newOne.setMiscText(text());
 		return newOne;
 	}
@@ -24,8 +24,7 @@ public class Prop_RoomClasses extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			int x=text().toUpperCase().indexOf("ALL");

@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_RoomLevels extends Property
+public class Prop_ReqLevels extends Property
 {
-	public Prop_RoomLevels()
+	public Prop_ReqLevels()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room Level Limitations";
+		name="Level Limitations";
 	}
 
 	public Environmental newInstance()
 	{
-		Prop_RoomLevels newOne=new Prop_RoomLevels();
+		Prop_ReqLevels newOne=new Prop_ReqLevels();
 		newOne.setMiscText(text());
 		return newOne;
 	}
@@ -24,8 +24,7 @@ public class Prop_RoomLevels extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp((Room)affected)))

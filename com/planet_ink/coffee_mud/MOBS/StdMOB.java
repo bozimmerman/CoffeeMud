@@ -1047,6 +1047,7 @@ public class StdMOB implements MOB
 				&&(affect.source().envStats().level()>(this.envStats().level()-26)))
 				{
 					mob.tell("Player killing is highly discouraged.");
+					mob.setVictim(null);
 					return false;
 				}
 				if(this.amFollowing()==mob)

@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_RoomAlignments extends Property
+public class Prop_ReqAlignments extends Property
 {
-	public Prop_RoomAlignments()
+	public Prop_ReqAlignments()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room Alignment Limitations";
+		name="Alignment Limitations";
 	}
 
 	public Environmental newInstance()
 	{
-		Prop_RoomAlignments newOne=new Prop_RoomAlignments();
+		Prop_ReqAlignments newOne=new Prop_ReqAlignments();
 		newOne.setMiscText(text());
 		return newOne;
 	}
@@ -24,8 +24,7 @@ public class Prop_RoomAlignments extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			int x=text().toUpperCase().indexOf("ALL");

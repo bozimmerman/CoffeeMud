@@ -224,8 +224,8 @@ public class SaveThread extends Thread
 						processed++;
 					}
 				}
-				if(processed>0)
-					Log.sysOut("SaveThread","Saved "+processed+" mobs.");
+				//if(processed>0)
+				//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
 			}
 			catch(InterruptedException ioe)
 			{

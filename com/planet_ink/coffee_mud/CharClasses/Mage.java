@@ -286,9 +286,16 @@ public class Mage extends StdCharClass
 			}
 		}
 		Hashtable given=new Hashtable();
-		for(int level=2;level<19;level++)
+		for(int level=2;level<26;level++)
 		{
-			int numSpells=(int)Math.floor(Util.div(26-level,8));
+			int numSpells=3;
+			if(level<8)
+				numSpells=3;
+			else
+			if(level<19)
+				numSpells=2;
+			else
+				numSpells=1;
 			int numLevel=0;
 			while(numLevel<numSpells)
 			{
@@ -316,34 +323,6 @@ public class Mage extends StdCharClass
 				}
 			}
 		}
-		int numLevel=0;
-		while(numLevel<2)
-		{
-			int randSpell=(int)Math.round(Math.random()*numTotal);
-			for(int a=0;a<CMClass.abilities.size();a++)
-			{
-				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if((A.qualifyingLevel(mob)>0)
-				&&(!CMAble.getDefaultGain(ID(),A.ID()))
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
-				{
-					if(randSpell==0)
-					{
-						if((A.qualifyingLevel(mob)>18)&&(given.get(A.ID())==null))
-						{
-							giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
-							given.put(A.ID(),A);
-							numLevel++;
-						}
-						break;
-					}
-					else
-						randSpell--;
-				}
-			}
-		}
-
-
 		if(!mob.isMonster())
 			outfit(mob);
 	}

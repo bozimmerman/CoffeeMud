@@ -5,9 +5,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_Trainer extends Property
+public class Prop_StatTrainer extends Property
 {
-	public Prop_Trainer()
+	public Prop_StatTrainer()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -16,11 +16,11 @@ public class Prop_Trainer extends Property
 
 	public Environmental newInstance()
 	{
-		return new Prop_Trainer();
+		return new Prop_StatTrainer();
 	}
 
 	public String accountForYourself()
-	{ return "Trainer";	}
+	{ return "Stats Trainer";	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

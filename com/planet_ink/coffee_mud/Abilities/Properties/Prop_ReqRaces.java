@@ -5,18 +5,18 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Prop_RoomRaces extends Property
+public class Prop_ReqRaces extends Property
 {
-	public Prop_RoomRaces()
+	public Prop_ReqRaces()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Room Race Limitations";
+		name="Room/Exit Race Limitations";
 	}
 
 	public Environmental newInstance()
 	{
-		Prop_RoomRaces newOne=new Prop_RoomRaces();
+		Prop_ReqRaces newOne=new Prop_ReqRaces();
 		newOne.setMiscText(text());
 		return newOne;
 	}
@@ -24,8 +24,7 @@ public class Prop_RoomRaces extends Property
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
-		   &&(affected instanceof Room)
-		   &&(affect.amITarget(affected))
+		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
 			int x=text().toUpperCase().indexOf("ALL");

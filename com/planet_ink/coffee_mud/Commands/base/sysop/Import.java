@@ -898,7 +898,7 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
 
 			if(Util.isSet(actFlag,9))
-				M.addNonUninvokableAffect(CMClass.getAbility("Prop_Trainer"));
+				M.addNonUninvokableAffect(CMClass.getAbility("Prop_StatTrainer"));
 			if(Util.isSet(actFlag,10))
 				M.addBehavior(CMClass.getBehavior("MOBTeacher"));
 
@@ -2495,7 +2495,7 @@ public class Import
 				}
 
 				Ability prop_RoomCapacity=CMClass.getAbility("Prop_RoomCapacity");
-				Ability prop_RoomLevels=CMClass.getAbility("Prop_RoomLevels");
+				Ability prop_RoomLevels=CMClass.getAbility("Prop_ReqLevels");
 
 
 				if(Util.isSet(codeBits,21)) // underwater room
@@ -2507,7 +2507,7 @@ public class Import
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_RoomDark"));
 
 				if(Util.isSet(codeBits,2)) // no mobs room
-					R.addNonUninvokableAffect(CMClass.getAbility("Prop_RoomNoMOB"));
+					R.addNonUninvokableAffect(CMClass.getAbility("Prop_ReqNoMOB"));
 
 				if(Util.isSet(codeBits,9)) // two people only room
 				{

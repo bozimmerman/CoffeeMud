@@ -25,6 +25,6 @@ public interface Rideable extends Environmental
 	public String stateString();
 	public String stateStringSubject();
 	public boolean mobileRideBasis();
-	public String mountString();
+	public String mountString(int commandType);
 	public String dismountString();
 }

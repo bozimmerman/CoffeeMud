@@ -77,13 +77,13 @@ public class StdRideable extends StdContainer implements Rideable
 			return "riding in";
 		case Rideable.RIDEABLE_SIT:
 		case Rideable.RIDEABLE_TABLE:
-			return "sitting on";
+			return "on";
 		case Rideable.RIDEABLE_SLEEP:
-			return "lieing on";
+			return "on";
 		}
 		return "riding in";
 	}
-	public String mountString()
+	public String mountString(int commandType)
 	{
 		switch(rideBasis)
 		{
@@ -96,7 +96,10 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_TABLE:
 			return "sit(s) on";
 		case Rideable.RIDEABLE_SLEEP:
-			return "lie(s) down on";
+			if(commandType==Affect.TYP_SIT)
+				return "sit(s) down on";
+			else
+				return "lie(s) down on";
 		}
 		return "board(s)";
 	}
@@ -185,81 +188,105 @@ public class StdRideable extends StdContainer implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
-			if(!amRiding(affect.source()))
+			if(affect.amITarget(this))
 			{
-				affect.source().tell("You are not "+stateString()+" "+name()+"!");
-				if(affect.source().riding()==this)
-					affect.source().setRiding(null);
-				return false;
-			}
-			// protects from standard item rejection
-			return true;
-		case Affect.TYP_SIT:
-			if((rideBasis()==Rideable.RIDEABLE_SIT)
-			||(rideBasis()==Rideable.RIDEABLE_SLEEP))
-			{
-				if(amRiding(affect.source()))
+				if(!amRiding(affect.source()))
 				{
-					affect.source().tell("You are already "+stateString()+" "+name()+"!");
-					affect.source().setRiding(this);
-					return false;
-				}
-				else
-				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
-				{
-					// for items
-					affect.source().tell(name()+" is full.");
-					// for mobs
-					// affect.source().tell("No more can fit on "+name()+".");
-					return false;
-				}
-				return true;
-			}
-			break;
-		case Affect.TYP_SLEEP:
-			if((rideBasis()==Rideable.RIDEABLE_SIT)
-			||(rideBasis()==Rideable.RIDEABLE_SLEEP))
-			{
-				if(amRiding(affect.source()))
-				{
-					affect.source().tell("You are already "+stateString()+" "+name()+"!");
-					affect.source().setRiding(this);
-					return false;
-				}
-				else
-				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
-				{
-					// for items
-					affect.source().tell(name()+" is full.");
-					// for mobs
-					// affect.source().tell("No more can fit on "+name()+".");
-					return false;
-				}
-				return true;
-			}
-			break;
-		case Affect.TYP_MOUNT:
-			if((rideBasis()==Rideable.RIDEABLE_LAND)
-			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
-			   ||(rideBasis()==Rideable.RIDEABLE_WATER))
-			{
-				if(amRiding(affect.source()))
-				{
-					affect.source().tell("You are already "+stateString()+" "+name()+"!");
-					affect.source().setRiding(this);
-					return false;
-				}
-				else
-				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
-				{
-					// for items
-					affect.source().tell(name()+" is full.");
-					// for mobs
-					// affect.source().tell("No more can fit on "+name()+".");
+					affect.source().tell("You are not "+stateString()+" "+name()+"!");
+					if(affect.source().riding()==this)
+						affect.source().setRiding(null);
 					return false;
 				}
 				// protects from standard item rejection
 				return true;
+			}
+			break;
+		case Affect.TYP_SIT:
+			if(amRiding(affect.source()))
+			{
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
+				affect.source().setRiding(this);
+				return false;
+			}
+			else
+			if(((rideBasis()==Rideable.RIDEABLE_SIT)
+			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
+			{
+				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				{
+					// for items
+					affect.source().tell(name()+" is full.");
+					// for mobs
+					// affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			else
+			if(affect.amITarget(this))
+			{
+				affect.source().tell("You cannot sit on "+name()+".");
+				return false;
+			}
+			break;
+		case Affect.TYP_SLEEP:
+			if(amRiding(affect.source()))
+			{
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
+				affect.source().setRiding(this);
+				return false;
+			}
+			else
+			if(rideBasis()==Rideable.RIDEABLE_SLEEP)
+			{
+				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				{
+					// for items
+					affect.source().tell(name()+" is full.");
+					// for mobs
+					// affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			else
+			if(affect.amITarget(this))
+			{
+				affect.source().tell("You cannot lie down on "+name()+".");
+				return false;
+			}
+			break;
+		case Affect.TYP_MOUNT:
+			if(amRiding(affect.source()))
+			{
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
+				affect.source().setRiding(this);
+				return false;
+			}
+			else
+			if((rideBasis()==Rideable.RIDEABLE_LAND)
+			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
+			   ||(rideBasis()==Rideable.RIDEABLE_WATER))
+			{
+				if(affect.amITarget(this))
+				{
+					if(numRiders()>=mobCapacity())
+					{
+						// for items
+						affect.source().tell(name()+" is full.");
+						// for mobs
+						// affect.source().tell("No more can fit on "+name()+".");
+						return false;
+					}
+					// protects from standard item rejection
+					return true;
+				}
+			}
+			else
+			if(affect.amITarget(this))
+			{
+				affect.source().tell("You cannot mount "+name()+".");
+				return false;
 			}
 			break;
 		case Affect.TYP_ENTER:
@@ -329,16 +356,18 @@ public class StdRideable extends StdContainer implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
-		case Affect.TYP_STAND:
 			if(amRiding(affect.source()))
 				affect.source().setRiding(null);
 			break;
 		case Affect.TYP_MOUNT:
 		case Affect.TYP_SIT:
 		case Affect.TYP_SLEEP:
-			if(!amRiding(affect.source()))
+			if((affect.amITarget(this))&&(!amRiding(affect.source())))
 				affect.source().setRiding(this);
 			break;
 		}
+		if((affect.sourceMinor()==Affect.TYP_STAND)
+		&&(amRiding(affect.source())))
+		   affect.source().setRiding(null);
 	}
 }

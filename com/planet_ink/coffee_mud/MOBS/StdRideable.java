@@ -81,7 +81,7 @@ public class StdRideable extends StdMOB implements Rideable
 		return riders.contains(mob);
 	}
 	public String stateString(){return "riding on";}
-	public String mountString(){return "mount(s)";}
+	public String mountString(int commandType){return "mount(s)";}
 	public String dismountString(){return "dismount(s)";}
 	public String stateStringSubject(){return "being ridden by";}
 
@@ -90,33 +90,69 @@ public class StdRideable extends StdMOB implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
-			if(!amRiding(affect.source()))
+			if(affect.amITarget(this))
 			{
-				affect.source().tell("You are not "+stateString()+" "+name()+"!");
-				if(affect.source().riding()==this)
-					affect.source().setRiding(null);
-				return false;
+				if(!amRiding(affect.source()))
+				{
+					affect.source().tell("You are not "+stateString()+" "+name()+"!");
+					if(affect.source().riding()==this)
+						affect.source().setRiding(null);
+					return false;
+				}
+				// protects from standard mob rejection
+				return true;
 			}
-			// protects from standard mob rejection
-			return true;
-		case Affect.TYP_MOUNT:
+			break;
+		case Affect.TYP_SIT:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You are already "+stateString()+" "+name()+"!");
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
 				affect.source().setRiding(this);
 				return false;
 			}
 			else
-			if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+			if(affect.amITarget(this))
 			{
-				// for items
-				//affect.source().tell(name()+" is full.");
-				// for mobs
-				 affect.source().tell("No more can fit on "+name()+".");
+				affect.source().tell("You cannot simply sit on "+name()+", try 'mount'.");
 				return false;
 			}
-			// protects from standard mob rejection
-			return true;
+			break;
+		case Affect.TYP_SLEEP:
+			if(amRiding(affect.source()))
+			{
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
+				affect.source().setRiding(this);
+				return false;
+			}
+			else
+			if(affect.amITarget(this))
+			{
+				affect.source().tell("You cannot lie down on "+name()+".");
+				return false;
+			}
+			break;
+		case Affect.TYP_MOUNT:
+			if(amRiding(affect.source()))
+			{
+				affect.source().tell("You are "+stateString()+" "+name()+"!");
+				affect.source().setRiding(this);
+				return false;
+			}
+			else
+			if(affect.amITarget(this))
+			{
+				if(numRiders()>=mobCapacity())
+				{
+					// for items
+					//affect.source().tell(name()+" is full.");
+					// for mobs
+					 affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				// protects from standard mob rejection
+				return true;
+			}
+			break;
 		case Affect.TYP_ENTER:
 			if(amRiding(affect.source())
 			   &&(affect.target()!=null)
@@ -158,8 +194,6 @@ public class StdRideable extends StdMOB implements Rideable
 			break;
 		case Affect.TYP_BUY:
 		case Affect.TYP_SELL:
-		case Affect.TYP_SIT:
-		case Affect.TYP_SLEEP:
 			if(amRiding(affect.source()))
 			{
 				affect.source().tell("You cannot do that while "+stateString()+" "+name()+".");
@@ -205,18 +239,18 @@ public class StdRideable extends StdMOB implements Rideable
 		}
 		return super.okAffect(affect);
 	}
+		
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
-		case Affect.TYP_STAND:
 			if(amRiding(affect.source()))
 				affect.source().setRiding(null);
 			break;
 		case Affect.TYP_MOUNT:
-			if(!amRiding(affect.source()))
+			if((affect.amITarget(this))&&(!amRiding(affect.source())))
 				affect.source().setRiding(this);
 			break;
 		}

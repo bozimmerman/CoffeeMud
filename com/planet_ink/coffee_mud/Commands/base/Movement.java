@@ -120,7 +120,12 @@ public class Movement
 		if(!mob.okAffect(enterMsg))
 			return false;
 
-		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
+		if(mob.riding()!=null)
+		{
+			if((!mob.riding().okAffect(enterMsg)))
+				return false;
+		}
+		else
 		{
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(mob),mob.maxState())))
@@ -129,9 +134,6 @@ public class Movement
 				return false;
 			}
 		}
-		else
-		if(!mob.riding().okAffect(enterMsg))
-			return false;
 
 		Vector riders=null;
 		Rideable riding=mob.riding();
@@ -427,7 +429,7 @@ public class Movement
 			mob.tell("You are already sitting!");
 			return;
 		}
-		if(commands.size()==1) sit(mob);
+		if(commands.size()<=1){ sit(mob); return;}
 		String possibleRideable=Util.combine(commands,1);
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
@@ -442,7 +444,7 @@ public class Movement
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=((Rideable)E).mountString();
+			mountStr=((Rideable)E).mountString(Affect.TYP_SIT);
 		else
 			mountStr="sit(s) on";
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,"<S-NAME> "+mountStr+" "+E.name()+".");
@@ -451,12 +453,12 @@ public class Movement
 	}
 	public void sleep(MOB mob, Vector commands)
 	{
-		if(Sense.isSitting(mob))
+		if(Sense.isSleeping(mob))
 		{
 			mob.tell("You are already asleep!");
 			return;
 		}
-		if(commands.size()==1) sleep(mob);
+		if(commands.size()<=1){ sleep(mob); return;}
 		String possibleRideable=Util.combine(commands,1);
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
@@ -466,7 +468,7 @@ public class Movement
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=((Rideable)E).mountString();
+			mountStr=((Rideable)E).mountString(Affect.TYP_SLEEP);
 		else
 			mountStr="sleep(s) on";
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,"<S-NAME> "+mountStr+" "+E.name()+".");
@@ -558,7 +560,10 @@ public class Movement
 			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+mob.riding().mountString()+" <T-NAMESELF>.");
+		String mountStr="mount(s)";
+		if(recipient instanceof Rideable)
+			mountStr=((Rideable)recipient).mountString(Affect.TYP_MOUNT);
+		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

@@ -50,9 +50,8 @@ public class Spell_ObscureSelf extends Spell
 		String targetMessage=affect.targetMessage();
 		boolean somethingsChanged=false;
 		int x=0;
-		if(affect.amITarget(mob))
+		if((affect.amITarget(mob))&&((affect.targetCode()&Affect.MASK_HURT)==0))
 		{
-
 			if((!affect.amISource(mob))&&((affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
 										||(affect.targetMinor()==Affect.TYP_READSOMETHING)))
 			{
