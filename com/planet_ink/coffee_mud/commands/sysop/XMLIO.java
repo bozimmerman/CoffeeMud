@@ -54,15 +54,8 @@ public class XMLIO
 				if(newList.equalsIgnoreCase("AREA"))
 				{
 					Hashtable h=new Hashtable();
-					for(int m=0;m<CMMap.map.size();m++)
-					{
-						Room R=(Room)CMMap.map.elementAt(m);
-						if(h.get(R.getArea().name())==null)
-						{
-							roomXML.append(R.getArea().name()+";");
-							h.put(R.getArea().name(),R.getArea().name());
-						}
-					}
+					for(int a=0;a<CMMap.AREAS.size();a++)
+						roomXML.append(((Area)CMMap.AREAS.elementAt(a)).name()+";");
 				}
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))

@@ -57,7 +57,7 @@ public class Spell_Teleport extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			int roomNum=(int)Math.round(Math.random()*numRooms);
+			int roomNum=Dice.roll(1,numRooms,-1);
 			for(int m=0;m<CMMap.map.size();m++)
 			{
 				Room room=(Room)CMMap.map.elementAt(m);

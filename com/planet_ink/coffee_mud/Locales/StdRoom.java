@@ -179,7 +179,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea().name().equals(getArea().name())))
+						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
 						   if(!otherRoom.okAffect(affect)) return false;
 					}
 				}
@@ -272,7 +272,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea().name().equals(getArea().name())))
+						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
 						   otherRoom.affect(affect);
 					}
 				}

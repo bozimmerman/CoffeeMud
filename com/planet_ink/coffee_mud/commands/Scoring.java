@@ -362,17 +362,9 @@ public class Scoring
 		if(areasList==null)
 		{
 
-			Hashtable areasHash=new Hashtable();
 			Vector areasVec=new Vector();
-			for(int m=0;m<CMMap.map.size();m++)
-			{
-				Room room=(Room)CMMap.map.elementAt(m);
-				if(areasHash.get(room.getArea().name())==null)
-				{
-					areasHash.put(room.getArea().name(),room.getArea().name());
-					areasVec.addElement(room.getArea().name());
-				}
-			}
+			for(int a=0;a<CMMap.AREAS.size();a++)
+				areasVec.addElement(((Area)CMMap.AREAS.elementAt(a)).name());
 			Collections.sort((List)areasVec);
 			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
 			int col=0;
@@ -386,6 +378,7 @@ public class Scoring
 
 				msg.append(Util.padRight((String)areasVec.elementAt(i),25));
 			}
+			msg.append("\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			Resources.submitResource("areasList",msg);
 			areasList=msg;
 		}

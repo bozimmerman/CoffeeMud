@@ -11,13 +11,13 @@ public class Rooms
 	public String getOpenRoomID(String AreaID)
 	{
 		int highest=0;
-		AreaID+="#";
 		for(int m=0;m<CMMap.map.size();m++)
 		{
 			Room thisRoom=(Room)CMMap.map.elementAt(m);
-			if(thisRoom.ID().startsWith(AreaID))
+			if((thisRoom.getArea().name().equals(AreaID))
+			&&(thisRoom.ID().startsWith(AreaID+"#")))
 			{
-				int newnum=Util.s_int(thisRoom.ID().substring(AreaID.length()));
+				int newnum=Util.s_int(thisRoom.ID().substring(AreaID.length()+1));
 				if(newnum>=highest)
 					highest=newnum+1;
 			}
