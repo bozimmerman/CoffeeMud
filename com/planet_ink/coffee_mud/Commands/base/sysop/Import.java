@@ -835,7 +835,7 @@ public class Import
 			||(checkName.indexOf("GEIST")>=0))
 				M=CMClass.getMOB("GenUndead");
 			else
-			if(checkName.indexOf("HORSE")>=0)
+			if(simpleName.toUpperCase().indexOf("HORSE")>=0)
 				M=CMClass.getMOB("GenRideable");
 			for(int i=0;i<shopData.size();i++)
 			{
