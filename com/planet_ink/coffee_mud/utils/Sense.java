@@ -180,22 +180,38 @@ public class Sense
 
 		if((isInvisible(seen))&&(!canSeeInvisible(seer)))
 		   return false;
+		
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
+		
+		if(seen instanceof MOB)
+		{
+			MOB mob=(MOB)seen;
+			if((mob.location()!=null)&&(!mob.location().isInhabitant(mob)))
+				return false;
+		}
+		
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
-			if((mob.location()!=null)&&(isInDark(mob.location())))
+			if(mob.location()!=null)
 			{
-				if((isGlowing(seen))||(isLightSource(seer)))
-					return true;
-				if(canSeeInDark(seer))
-					return true;
-				if((!isGolem(seen))&&(canSeeInfrared(seer)))
-				   return true;
-				if((canSeeVictims(seer))&&(mob.getVictim()==seen))
-					return true;
-				return false;
+				
+				if(!mob.location().isInhabitant(mob))
+					return false;
+				
+				if(isInDark(mob.location()))
+				{
+					if((isGlowing(seen))||(isLightSource(seer)))
+						return true;
+					if(canSeeInDark(seer))
+						return true;
+					if((!isGolem(seen))&&(canSeeInfrared(seer)))
+					   return true;
+					if((canSeeVictims(seer))&&(mob.getVictim()==seen))
+						return true;
+					return false;
+				}
 			}
 			return true;
 		}
