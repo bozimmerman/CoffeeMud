@@ -56,10 +56,11 @@ public class Cooking extends CraftingSkill
 
 	public boolean isMineForCooking(MOB mob, Item cooking)
 	{
-		if(mob.isMine(cooking)) return true;
+		if(mob.isMine(cooking)) 
+		    return true;
 		if((mob.location()==cooking.owner())
-		&&(cooking.container()!=null)
-		&&(Sense.isOnFire(cooking.container())))
+		&&((Sense.isOnFire(cooking))
+			||((cooking.container()!=null)&&(Sense.isOnFire(cooking.container())))))
 		   return true;
 		return false;
 	}

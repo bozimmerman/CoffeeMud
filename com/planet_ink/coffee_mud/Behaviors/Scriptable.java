@@ -890,7 +890,7 @@ public class Scriptable extends StdBehavior
 							else
 								H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.Name());
 							if(H!=null)
-								middle=(String)H.get(mid);
+								middle=(String)H.get(mid.toUpperCase());
 							if(middle==null) middle="";
 						}
 						back=back.substring(x+1);
@@ -1060,7 +1060,7 @@ public class Scriptable extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			name=(String)V.elementAt(v,1);
-			key=(String)V.elementAt(v,2);
+			key=((String)V.elementAt(v,2)).toUpperCase();
 			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+name);
 			if(H==null)
 			{
@@ -2596,7 +2596,7 @@ public class Scriptable extends StdBehavior
 					String val="";
 					if(H!=null)
 					{
-						val=(String)H.get(arg2);
+						val=(String)H.get(arg2.toUpperCase());
 						if(val==null) val="";
 					}
 					if(arg3.equals("=="))
@@ -3663,7 +3663,7 @@ public class Scriptable extends StdBehavior
 					String val="";
 					if(H!=null)
 					{
-						val=(String)H.get(arg2);
+						val=(String)H.get(arg2.toUpperCase());
 						if(val==null) val="";
 					}
 					results.append(val);
@@ -4631,7 +4631,7 @@ public class Scriptable extends StdBehavior
 					for(int v=0;v<V.size();v++)
 					{
 						arg1=(String)V.elementAt(0,1);
-						arg2=(String)V.elementAt(0,2);
+						arg2=((String)V.elementAt(0,2)).toUpperCase();
 						Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+arg1);
 						String val="";
 						if(H!=null)
