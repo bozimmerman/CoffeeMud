@@ -68,7 +68,7 @@ public class MOTD extends StdCommand
 					}
 				}
 				if((mob.session()!=null)&&(buf.length()>0))
-					mob.session().unfilteredPrintln("\n\r--------------------------------------\n\r"+buf.toString());
+					mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
 			}
 			catch(HTTPRedirectException e){}
 			return false;

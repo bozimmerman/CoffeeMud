@@ -34,7 +34,7 @@ public class CMSecurity
 	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV)
 	// CMDMOBS (also prevents walkaways)
-	// SUPERSKILL (never fails skills), IMMORT (never dies)
+	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS
 	// JOURNALS, PKILL, SESSIONS, TRAILTO, 
 	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat

@@ -62,7 +62,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 				if(Dice.rollPercentage()>90) helpProfficiency((MOB)affected);
 				StringBuffer str=CommonMsgs.getScore((MOB)msg.target());
 				if(!mob.isMonster())
-					mob.session().unfilteredPrintln(str.toString());
+					mob.session().wraplessPrintln(str.toString());
 			}
 		}
 		super.executeMsg(myHost,msg);

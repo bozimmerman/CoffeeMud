@@ -45,12 +45,12 @@ public class ATopics extends StdCommand
 
 			Collections.sort(reverseList);
 			topicBuffer=new StringBuffer("Help topics: \n\r\n\r");
-			topicBuffer.append(CMLister.fourColumns(reverseList));
+			topicBuffer.append(CMLister.fourColumns(reverseList,"HELP"));
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}
 		if((topicBuffer!=null)&&(mob!=null)&&(!mob.isMonster()))
-			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.",23);
+			mob.session().colorOnlyPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.",23);
 	}
 
 

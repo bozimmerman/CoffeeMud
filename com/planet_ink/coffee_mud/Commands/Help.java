@@ -50,7 +50,7 @@ public class Help extends StdCommand
 		}
 		else
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(thisTag.toString());
+			mob.session().wraplessPrintln(thisTag.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

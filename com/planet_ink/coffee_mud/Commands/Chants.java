@@ -31,7 +31,7 @@ public class Chants extends BaseAbleLister
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1,true,parseOutLevel(commands))+"\n\r");
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(msg.toString());
+			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

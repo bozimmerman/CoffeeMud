@@ -294,7 +294,7 @@ public class Stat extends BaseAbleLister
 		else
 			str=CommonMsgs.getScore(target);
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(str.toString());
+			mob.session().wraplessPrintln(str.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

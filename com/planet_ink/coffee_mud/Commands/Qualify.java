@@ -77,7 +77,7 @@ public class Qualify extends BaseAbleLister
 						col=1;
 					}
 					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
-					+Util.padRight(A.name(),19)+" "
+					+Util.padRight("^<HELP^>"+A.name()+"^</HELP^>",19)+" "
 					+Util.padRight(A.requirements(),(col==2)?12:13));
 				}
 			}
@@ -156,7 +156,7 @@ public class Qualify extends BaseAbleLister
 						col=1;
 					}
 					thisLine.append("^N[^H"+Util.padRight(""+1,3)+"^?] "
-					+Util.padRight(C.name(),19)+" "
+					+Util.padRight("^<HELP^>"+C.name()+"^</HELP^>",19)+" "
 					+Util.padRight("1 train",(col==2)?12:13));
 				}
 				if(thisLine.length()>0)
@@ -180,7 +180,7 @@ public class Qualify extends BaseAbleLister
 		else
 		if(!mob.isMonster())
 		{
-			mob.session().unfilteredPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
+			mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills and spells.");
 			if(classesFound) mob.tell("\n\rUse the TRAIN command to train for a new class.");
 		}

@@ -165,7 +165,7 @@ public class Score extends Affect
 			return false;
 		}
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(msg.toString());
+			mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -51,7 +51,7 @@ public class WillQualify extends BaseAbleLister{
 					Ability A=CMClass.getAbility(cimable.abilityName);
 					if(A!=null)
 					thisLine.append("^N[^H" + Util.padRight("" + l, 3) + "^?] "
-					        + Util.padRight(A.name(), 19) + " "
+					        + Util.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
 					        + Util.padRight(A.requirements(), (col == 2) ? 12 : 13));
 				}
 			}
@@ -95,7 +95,7 @@ public class WillQualify extends BaseAbleLister{
 			msg.append("At level "+level+" of class '"+C.ID()+"', you could qualify for:\n\r");
 			msg.append(getQualifiedAbilities(mob,C.ID(),level,""));
 			if(!mob.isMonster())
-			    mob.session().unfilteredPrintln(msg.toString());
+			    mob.session().wraplessPrintln(msg.toString());
 			return false;
 		}
 		else

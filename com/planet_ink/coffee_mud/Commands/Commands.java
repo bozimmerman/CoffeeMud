@@ -30,28 +30,41 @@ public class Commands extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			boolean arc=CMSecurity.isStaff(mob);
-			StringBuffer commandList=(StringBuffer)Resources.getResource((arc?"ARC":"")+"COMMAND LIST");
-			if(commandList==null)
+			StringBuffer commandList=new StringBuffer("");
+			Vector commandSet=new Vector();
+			int col=0;
+			HashSet done=new HashSet();
+			for(Enumeration e=CMClass.commands();e.hasMoreElements();)
 			{
-				commandList=new StringBuffer("");
-				int col=0;
-				for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+				Command C=(Command)e.nextElement();
+				String[] access=C.getAccessWords();
+				if((access!=null)
+				&&(access.length>0)
+				&&(access[0].length()>0)
+				&&(!done.contains(access[0]))
+				&&(C.securityCheck(mob)))
 				{
-					Command C=(Command)e.nextElement();
-					String[] access=C.getAccessWords();
-					if((access!=null)
-					&&(access.length>0)
-					&&(access[0].length()>0)
-					&&(C.securityCheck(mob)))
-					{
-						if(++col>3){ commandList.append("\n\r"); col=0;}
-						commandList.append(Util.padRight(access[0],19));
-					}
+				    done.add(access[0]);
+				    commandSet.add(access[0]);
 				}
-				commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
-				Resources.submitResource((arc?"ARC":"")+"COMMAND LIST",commandList);
 			}
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+			    Ability A=mob.fetchAbility(a);
+				if((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+				{
+				    done.add(A.triggerStrings()[0]);
+				    commandSet.add(A.triggerStrings()[0]);
+				}
+			}
+			Collections.sort(commandSet);
+			for(Iterator i=commandSet.iterator();i.hasNext();)
+			{
+			    String s=(String)i.next();
+				if(++col>3){ commandList.append("\n\r"); col=0;}
+				commandList.append(Util.padRight("^<HELP^>"+s+"^</HELP^>",19));
+			}
+			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
 			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),23);
 		}
 		return false;

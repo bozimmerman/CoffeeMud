@@ -241,7 +241,7 @@ public class CharGen extends StdCommand
 		{
 			StringBuffer msg=CommonMsgs.getScore(avgMob);
 			if(!mob.isMonster())
-				mob.session().unfilteredPrintln(msg.toString());
+				mob.session().wraplessPrintln(msg.toString());
 		}
 		return false;
 	}

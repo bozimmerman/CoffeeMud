@@ -97,7 +97,7 @@ public class Inventory extends StdCommand
 			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else
 		if(!mob.isMonster())
-			mob.session().unfilteredPrintln("^HYou are carrying:^?\n\r"+msg.toString());
+			mob.session().wraplessPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

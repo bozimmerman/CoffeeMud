@@ -104,9 +104,9 @@ public class Equipment extends StdCommand
 		if(!mob.isMonster())
 		{
 			if((commands.size()>1)&&(Util.combine(commands,1).equalsIgnoreCase("long")))
-				mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
+				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,true));
 			else
-				mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
+				mob.session().wraplessPrintln("You are wearing:\n\r"+getEquipment(mob,mob,false));
 		}
 		return false;
 	}
