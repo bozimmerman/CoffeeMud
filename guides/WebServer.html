@@ -26,7 +26,8 @@ href="http://localhost:27744/">http://localhost:27744/</A></P>
 <P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
 <p><b>What it does and doesn't do:</b><br>
-It only supports GET, POST&nbsp;and HEAD 
+It 
+only supports GET, urlencoded POST&nbsp;and HEAD 
 requests (I think HEAD is HTTP 1.1, but it's supported anyway).&nbsp; 
 It does not cache.
 </p>
@@ -141,53 +142,111 @@ of double-embedding, where MacroThree is embedded as the parameter to MacroTwo,
 which is embedded as the parameter to MacroOne:</P>
 <P>@MacroOne?@@MacroTwo?@@@MacroThree?PARM@@@ @@ @</P>
 <P>Here are the macros defined so far.&nbsp; Keep in mind 
-the difference between a Macro parameter (things which follow the first Question 
-mark in a macro), and a Request Parameter (data submitted from a &lt;FORM&gt; on 
-a web page, or on the URL line of a GET request).</P>
+the difference between a Macro parameter (things which follow the first Question mark in a 
+macro), and a Request Parameter (data submitted from a &lt;FORM&gt; on a 
+web page, or on the URL line of a GET request).&nbsp; Macro parms will 
+be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqParm.</P>
 <TABLE BORDER=1 WIDTH="100%">
-<TR><TD WIDTH="25%"><B>Macro</B></TD><TD><B>Description&gt;</B></TD></TR>
-<TR><TD>AbilityAffectNext</TD><TD></TD></TR>
-<TR><TD>AbilityData</TD><TD></TD></TR>
-<TR><TD>AbilityDomainNext</TD><TD></TD></TR>
-<TR><TD>AbilityID</TD><TD></TD></TR>
-<TR><TD>AbilityName</TD><TD></TD></TR>
-<TR><TD>AbilityPlayerNext</TD><TD></TD></TR>
-<TR><TD>AbilityTypeNext</TD><TD></TD></TR>
+<TR><TD WIDTH="25%"><B>Macro</B></TD><TD><B>Description</B></TD></TR>
+<TR><TD>AbilityAffectNext</TD><TD>Sets the ReqParam ABILITY to the next Ability 
+      which no class qualifies for.&nbsp;&nbsp;MacParms may include the types of 
+      Abilities to show.&nbsp; ABILITYTYPE ReqParm may also be set to an Ability 
+      type to show.&nbsp; A MacParm of NOT negates the list.&nbsp; Returns 
+      @break@ when the list has been completed, or "" if MacParm "EMPTYOK" 
+      found.&nbsp;&nbsp; Accepts MacParm of RESET to restart listing.</TD></TR>
+<TR><TD>AbilityData</TD><TD>Requires ReqParm ABILITY be set an an Ability 
+      ID.&nbsp; Returns information about the ability from the Macro 
+      parms.&nbsp; Valid MacParms include help, ranges, quality, target, 
+      alignment, domain,&nbsp;qualifyQ (if ReqParm CLASS is set to a valid 
+      character class), auto.&nbsp;</TD></TR>
+<TR><TD>AbilityDomainNext</TD><TD>Sets the ReqParam DOMAIN to the next&nbsp;Spell 
+      Domain.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.</TD></TR>
+<TR><TD>AbilityID</TD><TD>Requires ReqParm ABILITY be set an an Ability 
+      ID.&nbsp; Returns that ID.</TD></TR>
+<TR><TD>AbilityName</TD><TD>Requires ReqParm ABILITY be set an an Ability 
+      ID.&nbsp; Returns the name of the Ability designated.</TD></TR>
+<TR><TD>AbilityPlayerNext</TD><TD>This Macro is a mess -- it iterates through player 
+      abilities.&nbsp; The simplest way to use it is to set ReqParm PLAYER to a 
+      valid player name, call it with MacParm RESET to clear ABILITY 
+      ReqParm.&nbsp; Call it with MacParm NEXT to set ABILITY ReqParm to next 
+      ability the player has.</TD></TR>
+<TR><TD>AbilityTypeNext</TD><TD>Sets the ReqParm ABILITYTYPE to the 
+      next&nbsp;Ability Type.&nbsp; Returns @break@ when the list has been 
+      completed, or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm 
+      of RESET to restart listing.</TD></TR>
 <TR><TD>AddFile</TD><TD>The parameters for this macro are a list of file 
       names.&nbsp; Inserts the contents of the files&nbsp; into the current 
       document.</TD></TR>
-<TR><TD>AddRequestParameter</TD><TD>  The parameters for this macro are one 
-      or more Request Parameter names and values.&nbsp; 
-      Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually 
+<TR><TD>AddRequestParameter</TD><TD>      The parameters for 
+      this macro are one or more ReqParm 
+      namesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually 
       used to provide literal data for other macros which may require certain 
       Request parameter data.</TD></TR>
-<TR><TD>AreaData</TD><TD></TD></TR>
-<TR><TD>AreaName</TD><TD></TD></TR>
-<TR><TD>AreaNameEncoded</TD><TD></TD></TR>
-<TR><TD>AreaNext</TD><TD></TD></TR>
+<TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area 
+      name.&nbsp; Returns information about that area depending on the 
+      MacParms.&nbsp; Valid MacParms include: HELP, CLIMATES, TECHLEVEL, 
+      BEHAVIORS, AFFECTS, NAME, ARCHP, CLASSES, SUBOPS, DESCRIPTION, SEASON, 
+      TODCODE, WEATHER, MOON, STATS</TD></TR>
+<TR><TD>AreaName</TD><TD>Requires ReqParm AREA be set to a valid area 
+      name.&nbsp; Returns that name.</TD></TR>
+<TR><TD>AreaNameEncoded</TD><TD>Requires ReqParm AREA be set to a valid area 
+      name.&nbsp; Returns that name encoded for an HTTP GET request.</TD></TR>
+<TR><TD>AreaNext</TD><TD>Sets the ReqParm AREA to the 
+      next&nbsp;Area.&nbsp; Returns @break@ when the list has been completed, or 
+      "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to 
+      restart listing.</TD></TR>
 <TR><TD>AreaTbl</TD><TD> Returns a formatted HTML table containing all the areas currently installed in the
 		game; as with @PLAYERLIST@, the enclosing &lt;TABLE&gt;..&lt;/TABLE&gt; must still be 
 		specified. Each &lt;TD&gt; element has style-sheet class <I>cmAreaTblEntry</I>. 
       The area list may only be obtained while the mud server is running; 
       otherwise a simple table containing a game-not-running message is 
       returned.</TD></TR>
-<TR><TD>Authenticate</TD><TD></TD></TR>
+<TR><TD>Authenticate</TD><TD>Requires ReqParms LOGIN and PASSWORD to be 
+      unencrypted login data, or AUTH to be encrypted login data.&nbsp; If 
+      MacParm AUTH specified, will return the encrypted login data.&nbsp; 
+      Otherwise, returns "true" if login is valid, and "false" otherwise.</TD></TR>
 <TR><TD>back</TD><TD>Denotes the looping point for a @loop@ block.&nbsp; 
       See the @loop@ macro.</TD></TR>
-<TR><TD>BanListMgr</TD><TD></TD></TR>
-<TR><TD>BaseCharClassName</TD><TD></TD></TR>
-<TR><TD>BaseCharClassNext</TD><TD></TD></TR>
-<TR><TD>BehaviorNext</TD><TD></TD></TR>
+<TR><TD>BanListMgr</TD><TD>Handles the banned user list.&nbsp; MacParm RESET 
+      will clear ReqParm BANNEDONE.&nbsp; MacParm NEXT will set BANNEDONE to the 
+      next&nbsp;banned user or ip.&nbsp; MacParm NEXT returns @break@ when the 
+      list has been completed, or "" if MacParm "EMPTYOK" also found. MacParm 
+      DELETE will delete banneded name/ip&nbsp;that ReqParm&nbsp;BANNEDONE is se 
+      to.&nbsp; MacParm ADD will create a new banned name/ip from ReqParm 
+      NEWBANNEDONE.</TD></TR>
+<TR><TD>BaseCharClassName</TD><TD>Requires ReqParm BASECLASS be set to a valid base 
+      character class id.&nbsp; Returns the name of that class.</TD></TR>
+<TR><TD>BaseCharClassNext</TD><TD>Sets the ReqParm BASECLASS to the next&nbsp;base 
+      character class.&nbsp; Returns @break@ when the list has been completed, 
+      or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to 
+      restart listing.</TD></TR>
+<TR><TD>BehaviorData</TD><TD>Requires ReqParm BEHAVIOR be set to a valid 
+      behavior id.&nbsp; Accepts MacParm HELP.</TD></TR>
+<TR><TD>BehaviorID</TD><TD>Requires ReqParm BEHAVIOR be set to a valid 
+      behavior id.&nbsp; Returns that ID.</TD></TR>
 <TR><TD>break</TD><TD>Stops inserting text into a web page at the current 
       point, skips ahead to the next @back@ macro found, and starts again.&nbsp; 
       If no @back@ macro is found, the page will not continue to be 
       evaluated.&nbsp; See the @loop@ macro.&nbsp; This macro is actually 
       returned by many other macros as a means of creating breaks in 
 loops.</TD></TR>
-<TR><TD>CharClassData</TD><TD></TD></TR>
-<TR><TD>CharClassID</TD><TD></TD></TR>
-<TR><TD>CharClassName</TD><TD></TD></TR>
-<TR><TD>CharClassNext</TD><TD></TD></TR>
+<TR><TD>CharClassData</TD><TD>Requires ReqParm CLASS be set to a 
+      valid&nbsp;character class&nbsp;id.&nbsp;Returns data about this class 
+      depending on MacParms found.&nbsp; Valid MacParms include: help, playable, 
+      max stats, pracs, trains, hitpoints,&nbsp; mana, movement, attack, 
+      weapons, armor, limits, bonuses,&nbsp; prime, quals, startingeq.</TD></TR>
+<TR><TD>CharClassID</TD><TD>Requires ReqParm CLASS be set to a 
+      valid&nbsp;character class&nbsp;id.&nbsp;Returns that ID.</TD></TR>
+<TR><TD>CharClassName</TD><TD>Requires ReqParm CLASS be set to a 
+      valid&nbsp;character class&nbsp;id.&nbsp;Returns the name of that 
+  class.</TD></TR>
+<TR><TD>CharClassNext</TD><TD>Sets the ReqParm CLASS to the next&nbsp;character 
+      class.&nbsp; List may be limited by ReqParm BASECLASS if found.&nbsp; 
+      Returns @break@ when the list has been completed, or "" if MacParm 
+      "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+    listing.</TD></TR>
 <TR><TD>CheckReqParm</TD><TD>Evaluates to the string "true" if the specified 
       Request parameters is equal to the values for them&nbsp;given. For 
       example, @CheckReqParm?PARM=VALUE@ would return "true" if the PARM request 
@@ -199,13 +258,29 @@ loops.</TD></TR>
       @ChkReqParmBreak?PARM=VALUE@ would return " @break@" if PARM is 
       equal to VALUE, and "" otherwise. See the @loop@ macro for 
       more information on how this might be useful.</TD></TR>
-<TR><TD>ClassRaceNext</TD><TD></TD></TR>
-<TR><TD>CrossClassAbilities</TD><TD></TD></TR>
+<TR><TD>ClassRaceNext</TD><TD>Requires ReqParm CLASS be set to a 
+      valid&nbsp;character class&nbsp;id.&nbsp;Sets the ReqParm RACE to the 
+      next&nbsp;race qualified for the given class.&nbsp; Returns @break@ when 
+      the list has been completed, or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; 
+      Accepts MacParm of RESET to restart listing.</TD></TR>
+<TR><TD>CrossClassAbilities</TD><TD>Returns a full HTML table of classes and 
+      abilities.</TD></TR>
 <TR><TD>else</TD><TD>Creates an exception to an @if?@ macro.</TD></TR>
 <TR><TD>endif</TD><TD>Denotes the end of an @if?@ block.&nbsp; See the 
       @if?@ macro.</TD></TR>
-<TR><TD>ExitData</TD><TD></TD></TR>
-<TR><TD>HelpTopics</TD><TD></TD></TR>
+<TR><TD>ExitData</TD><TD>MUDGrinder support macro for showing exit data on 
+      maps.&nbsp; Too complicated to describe.</TD></TR>
+<TR><TD>HelpTopics</TD><TD>Handles the showing of help topics.&nbsp; MacParm 
+      RESET will clear ReqParm HELPTOPIC and HELPFIRSTLETTER.&nbsp; MacParm NEXT 
+      will set HELPTOPIC to the next&nbsp;help topic depending on other MacParms 
+      found (SHORT to not include abilities, ARCHON to show only Archon Help, 
+      BOTH to show Archon and Player Help, FIRSTLETTER=val to show only those 
+      with starting letter (ReqParm HELPFIRSTLETTER does the same).&nbsp; 
+      MacParm NEXT returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" also found. MacParm NEXTLETTER sets ReqParm 
+      HELPFIRSTLETTER to next letter in the alphabet, returning @break@ when 
+      done.&nbsp; MacParm DATA returns the help text denoted by ReqParm 
+      HELPTOPIC.</TD></TR>
 <TR><TD>HTTPclientIP</TD><TD>Returns the client's IP address.</TD></TR>
 <TR><TD>HTTPstatus</TD><TD>Returns the http return code; this is normally of 
       no use ("200 OK") unless customising the error page.</TD></TR>
@@ -220,21 +295,49 @@ loops.</TD></TR>
       example: @if?CheckReqParm?PARM=VALUE@&nbsp; @if?!CheckReqParm?PARM=VALUE@ 
       would return true and false (or vis-versa) depending whether the request 
       parameter PARM was equal to VALUE.</TD></TR>
-<TR><TD>ItemData</TD><TD></TD></TR>
-<TR><TD>JournalFunction</TD><TD></TD></TR>
-<TR><TD>JournalInfo</TD><TD></TD></TR>
-<TR><TD>JournalMessageNext</TD><TD></TD></TR>
-<TR><TD>JournalName</TD><TD></TD></TR>
-<TR><TD>JournalNext</TD><TD></TD></TR>
-<TR><TD>LevelNext</TD><TD></TD></TR>
-<TR><TD>LevelNumber</TD><TD></TD></TR>
-<TR><TD>LogViewer</TD><TD></TD></TR>
+<TR><TD>ItemData</TD><TD>MUDGrinder macro for support of&nbsp;mob and room 
+      items.&nbsp; Too complicated to describe.</TD></TR>
+<TR><TD>JournalFunction</TD><TD>Requires ReqParm JOURNAL be set to a 
+      valid&nbsp;journal name, and an authenticatable user found (see 
+      Authenticate).&nbsp; If MacParm NEWPOST found, along with ReqParms TO, 
+      SUBJECT, and NEWTEXT, a new post is added.&nbsp; If ReqParm JOURNALMESSAGE 
+      is set to a valid message number for this journal, then MacParm DELETE 
+      will delete the message.&nbsp; If MacParm REPLY and ReqParm NEWTEXT found, 
+      a reply added to the designated message.</TD></TR>
+<TR><TD>JournalInfo</TD><TD>Requires ReqParm JOURNAL be set to a 
+      valid&nbsp;journal name.&nbsp; Returns information about the journal 
+      depending on MacParms found.&nbsp; Valid MacParms include: COUNT, to 
+      return messages found.&nbsp; If ReqParm JOURNALMESSAGE is set to a valid 
+      message number for this journal, and an authenticatable user is found (see 
+      Authenticate) additional MacParms may be used to get information about 
+      that message.&nbsp; These MacParms include: KEY, FROM, DATE, TO, SUBJECT, 
+      MESSAGE</TD></TR>
+<TR><TD>JournalMessageNext</TD><TD>Requires ReqParm JOURNAL be set to a 
+      valid&nbsp;journal name, and an authenticatable user&nbsp;found (see 
+      Authenticate).&nbsp; Sets the ReqParm JOURNALMESSAGE to the 
+      next&nbsp;message found in the given journal.&nbsp; Returns @break@ when 
+      the list has been completed, or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; 
+      Accepts MacParm of RESET to restart listing.</TD></TR>
+<TR><TD>JournalName</TD><TD>Requires ReqParm JOURNAL be set to a 
+      valid&nbsp;journal name.&nbsp; Returns that name.</TD></TR>
+<TR><TD>JournalNext</TD><TD>Sets the ReqParm JOURNAL to the next&nbsp;journal 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.</TD></TR>
+<TR><TD>LevelNext</TD><TD>Sets the ReqParm LEVEL to the next&nbsp;number 
+      between 1 and 30.&nbsp; Returns @break@ when the list has been completed, 
+      or "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to 
+      restart listing.</TD></TR>
+<TR><TD>LevelNumber</TD><TD>Requires ReaParm LEVEL be set to a number between 
+      1 and 30.&nbsp; Returns that number.</TD></TR>
+<TR><TD>LogViewer</TD><TD>Returns the CoffeeMud log file.</TD></TR>
 <TR><TD>loop</TD><TD>Repeatedly inserts into the page the contents 
       between this macro and the corresponding @back@ until a @break@ macro 
       located inside the block is processed.&nbsp; This @break@ string is most 
       often returned by a macro processed within the block, but may also be 
       embedded in an @if?@ macro block as well.</TD></TR>
-<TR><TD>MobData</TD><TD></TD></TR>
+<TR><TD>MobData</TD><TD>MUDGrinder macro for viewing room mob data.&nbsp; 
+      Too complicated to describe.</TD></TR>
 <TR><TD>MUDGrinder</TD><TD>The main processing macro for the MUDGrinder 
       area-editing tool.&nbsp; This macro runs as an admin macro.&nbsp; See the 
       MUDGrinder guide for more information.&nbsp; There are too many parameters 
@@ -248,9 +351,21 @@ loops.</TD></TR>
   server.</TD></TR>
 <TR><TD>NumPlayers</TD><TD>Returns the number of players online which can be 
       seen (no WizInvisibles)</TD></TR>
-<TR><TD>PlayerData</TD><TD></TD></TR>
-<TR><TD>PlayerDelete</TD><TD></TD></TR>
-<TR><TD>PlayerID</TD><TD></TD></TR>
+<TR><TD>PlayerData</TD><TD>Requires ReqParm PLAYER be set to a 
+      valid&nbsp;player name.&nbsp; Returns information about that player 
+      depending on MacParms found.&nbsp; Valid MacParms include: NAME, 
+      DESCRIPTION, LASTDATETIME, EMAIL, RACE, CHARCLASS, LEVEL, LEVELSTR, 
+      CLASSLEVEL, CLASSES, MAXCARRY, ATTACK, ARMOR, DAMAGE, HOURS, PRACTICES, 
+      EXPERIENCE, EXPERIENCELEVEL, TRAINS, MONEY, DEITY, LEIGE, CLAN, CLANROLE, 
+      ALIGNMENT, ALIGNMENTSTRING, WIMP, STARTROOM, LOCATION, STARTROOMID, 
+      LOCATIONID, INVENTORY, WEIGHT, ENCUMBRANCE, GENDER, LASTDATETIMEMILLIS, 
+      HITPOINTS, MANA, MOVEMENT, RIDING, HEIGHT, LASTIP, QUESTPOINTS, 
+      BASEHITPOINTS, BASEMANA, BASEMOVEMENT.</TD></TR>
+<TR><TD>PlayerDelete</TD><TD>Requires ReqParm PLAYER be set to a 
+      valid&nbsp;player name, and an authenticated user (see 
+      Authenticate).&nbsp; Deletes the player.</TD></TR>
+<TR><TD>PlayerID</TD><TD>Requires ReqParm PLAYER be set to a 
+      valid&nbsp;player name.&nbsp; Returns that name.</TD></TR>
 <TR><TD>PlayerList</TD><TD>Returns a series of HTML &lt;LI&gt; elements; the 
       enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or 
       &lt;OL&gt;..&lt;/OL&gt;) are not part of this string and so must be 
@@ -258,15 +373,46 @@ loops.</TD></TR>
       style-sheet class set to either <I 
       >cmPlayerListEntry</I> or, if applicable, <I 
       >cmPlayerListEntryArchon</I>.</TD></TR>
-<TR><TD>PlayerNext</TD><TD></TD></TR>
-<TR><TD>PlayerOnline</TD><TD></TD></TR>
-<TR><TD>QuestData</TD><TD></TD></TR>
-<TR><TD>QuestMgr</TD><TD></TD></TR>
-<TR><TD>QuestNext</TD><TD></TD></TR>
-<TR><TD>RaceClassNext</TD><TD></TD></TR>
-<TR><TD>RaceData</TD><TD></TD></TR>
-<TR><TD>RaceID</TD><TD></TD></TR>
-<TR><TD>RaceName</TD><TD></TD></TR>
+<TR><TD>PlayerNext</TD><TD>Sets the ReqParm PLAYER to the next&nbsp;player 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.&nbsp; Accepts MacParm SORTBY=COLNAME to sort the list.</TD></TR>
+<TR><TD>PlayerOnline</TD><TD>Requires ReqParm PLAYER be set to a 
+      valid&nbsp;player name.&nbsp; Returns true if online, false 
+      otherwise.&nbsp; If MacParm BOOT found, will kick the player off.&nbsp; If 
+      MacParm BANBYIP found, will ban the ip address for the player.&nbsp; If 
+      MacParm BANBYNAME found, will be the name of the player.</TD></TR>
+<TR><TD>QuestData</TD><TD>Requires ReqParm QUEST be set to a valid quest 
+      name.&nbsp; Returns data about the Quest depending on MacParms 
+      found.&nbsp; Valid MacParms include: NAME, DURATION, WAIT, INTERVAL, 
+      RUNNING, WAITING, REMAINING, WAITLEFT, WINNERS, SCRIPT.</TD></TR>
+<TR><TD>QuestMgr</TD><TD>If MacParm CREATE is given, along with ReqParm 
+      SCRIPT, will create a new Quest.&nbsp; Other functions require ReqParm 
+      QUEST be set to a valid quest name.&nbsp; Performs functions on the Quest 
+      depending on MacParms found.&nbsp; Valid MacParms include: MODIFY (with 
+      ReqParm SCRIPT), DELETE, START, STOP.</TD></TR>
+<TR><TD>QuestNext</TD><TD>Sets the ReqParm QUEST to the next&nbsp;quest 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.&nbsp;</TD></TR>
+<TR><TD>RaceClassNext</TD><TD>Requires ReqParm RACE be set to a valid&nbsp;race 
+      id.&nbsp;Sets the ReqParm CLASS to the next&nbsp;class qualified for by 
+      the given race.&nbsp; Returns @break@ when the list has been completed, or 
+      "" if MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to 
+      restart listing.</TD></TR>
+<TR><TD>RaceData</TD><TD>Requires ReqParm RACE be set to a valid&nbsp;race 
+      id.&nbsp; Returns information about that race depending on MacParms 
+      found.&nbsp; Valid MacParms include: HELP, STATS, SENSES, TRAINS, PRACS, 
+      ABILITIES,&nbsp; HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, 
+      STARTINGEQ,&nbsp; CLASSES, LANGS</TD></TR>
+<TR><TD>RaceID</TD><TD>Requires ReqParm RACE be set to a valid&nbsp;race 
+      id.&nbsp; Returns the id.</TD></TR>
+<TR><TD>RaceName</TD><TD>Requires ReqParm RACE be set to a valid&nbsp;race 
+      id.&nbsp; Returns the name.</TD></TR>
+<TR><TD>RaceNext</TD><TD>Sets the ReqParm RACE to the next&nbsp;race 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.&nbsp;</TD></TR>
 <TR><TD>RequestParameter</TD><TD>Inserts the&nbsp;value of the Request Parameter(s) 
       specified in the macro parameters.</TD></TR>
 <TR><TD>RequestParameterEncoded</TD><TD>Inserts the value of the Request Parameter(s) 
@@ -274,13 +420,22 @@ loops.</TD></TR>
 request.</TD></TR>
 <TR><TD>RequestParametersEncoded</TD><TD>Inserts the names and values of all Request 
       Parameters, formatted for a valid GET request.</TD></TR>
-<TR><TD>ResourceMgr</TD><TD></TD></TR>
-<TR><TD>RoomData</TD><TD></TD></TR>
-<TR><TD>RoomID</TD><TD></TD></TR>
-<TR><TD>RoomName</TD><TD></TD></TR>
-<TR><TD>StdWebMacro</TD><TD></TD></TR>
-<TR><TD>SystemInfo</TD><TD></TD></TR>
-<TR><TD>WebServerName</TD><TD></TD></TR>
+<TR><TD>ResourceMgr</TD><TD>Handles the resource cache.&nbsp; MacParm RESET 
+      will clear ReqParm RESOURCE.&nbsp; MacParm NEXT will set RESOURCE to the 
+      next&nbsp;resource.&nbsp; MacParm NEXT returns @break@ when the list has 
+      been completed, or "" if MacParm "EMPTYOK" also found. MacParm DELETE will 
+      delete resource&nbsp;&nbsp;that ReqParm&nbsp;RESOURCE is set to.</TD></TR>
+<TR><TD>RoomData</TD><TD>MUDGrinder macro for manipulating room data.&nbsp; 
+      Too complicated to describe.</TD></TR>
+<TR><TD>RoomID</TD><TD>Returns the ReqParm ROOM.</TD></TR>
+<TR><TD>RoomName</TD><TD>Returns the display text for the room designated by 
+      ReqParm ROOM.</TD></TR>
+<TR><TD>StdWebMacro</TD><TD>Base template for all other macros.&nbsp; Serves no 
+      useful purpose.</TD></TR>
+<TR><TD>SystemInfo</TD><TD>Returns information about the CoffeeMud 
+      system.&nbsp; Too many valid MacParms to mention.&nbsp; See the sample 
+      MUDGrinder pages which use this macro.</TD></TR>
+<TR><TD>WebServerName</TD><TD>Returns just the name of the web server.</TD></TR>
 <TR><TD>WebServerPort</TD><TD>Returns the port number the web server is running 
       on.</TD></TR>
 <TR><TD>WebServerVersion</TD><TD>Returns the name and version of the web 
@@ -309,7 +464,7 @@ output; it takes a single parameter, a reference to the <i>ProcessWebRequest</i>
 the macro (you can use <code>.getWebServer()</code> on this parameter to get a reference to 
 the web server, and <code>.getWebServer().getMUD()</code> to get a reference to the main MUD object).<br>
 If <code>runMacro()</code> returns <I>null</I>, the string [Error] is used to replace the macro; also
-note that <B>macros may not return other macros in the processed text.</B>
+note that <B>macros may not return other macros in the processed text unless properly embedded as discussed above.</B>
 </p>
 Example: this is the complete code for the <B>@HTTPCLIENTIP@</B> macro (HTTPclientIP.java):
 <pre>package com.planet_ink.coffee_mud.web.macros;
@@ -328,8 +483,42 @@ public class HTTPclientIP extends StdWebMacro
 	}
 
 }
-</pre>
-The <code>.getHTTPclientIP()</code> member of ProcessWebRequest essentially just does this:
+</pre>  
+<pre> 
+ 
+ 
+ 
+
+     
+
+
+	    	
+	
+	     
+	
+		 
+	
+
+&nbsp;
+</pre>  
+<pre>
+The <code>.getHTTPclientIP()</code> 
+ 
+ 
+ 
+
+     
+
+
+	    	
+	
+	    member of
+	ProcessWebRequest
+		essentially just
+	does
+
+this:
+</pre>       
 <pre>
 	return sock.getInetAddress().getHostAddress();
 </pre>
