@@ -10,6 +10,7 @@ public class Spell_RechargeWand extends Spell
 	public String ID() { return "Spell_RechargeWand"; }
 	public String name(){return "Recharge Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
+	public int overrideMana(){return 100;}
 	public Environmental newInstance(){	return new Spell_RechargeWand();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
@@ -24,17 +25,9 @@ public class Spell_RechargeWand extends Spell
 			mob.tell("You can't recharge that.");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		mob.curState().setMana(0);
-		mob.charStats().getCurrentClass().loseExperience(mob,50);
 
 		boolean success=profficiencyCheck(0,auto);
 

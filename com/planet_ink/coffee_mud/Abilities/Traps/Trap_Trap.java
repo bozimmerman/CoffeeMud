@@ -245,7 +245,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
 			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdLockedDoorway");
+			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
 			myPitUp.rawDoors()[Directions.UP]=mob.location();
 			myPitUp.recoverEnvStats();
 

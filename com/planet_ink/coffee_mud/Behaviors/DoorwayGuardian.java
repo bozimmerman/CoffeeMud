@@ -33,7 +33,7 @@ public class DoorwayGuardian extends StdBehavior
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Exit E=room.getExitInDir(d);
-			if(E.hasADoor())
+			if((E!=null)&&(E.hasADoor()))
 			{
 				Exit[] exits={E,room.getPairedExit(d)};
 				return exits;

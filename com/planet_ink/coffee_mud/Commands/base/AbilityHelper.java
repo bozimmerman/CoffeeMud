@@ -86,9 +86,13 @@ public class AbilityHelper
 		if(mob.isASysOp(mob.location()))
 		{
 			if(text.toUpperCase().indexOf("+SYSOP")>=0)
+			{
 				return true;
+			}
 			if(text.toUpperCase().indexOf("-SYSOP")>=0)
+			{
 				return false;
+			}
 		}
 		
 		// do class first
@@ -96,12 +100,16 @@ public class AbilityHelper
 		if(x>=0)
 		{
 			if(text.indexOf("+"+mobClass)<x)
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(text.indexOf("-"+mobClass)>=0)
+			{
 				return false;
+			}
 		}
 
 		// now base class
@@ -109,12 +117,16 @@ public class AbilityHelper
 		if(x>=0)
 		{
 			if(text.indexOf("+"+mobBaseClass)<x)
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(text.indexOf("-"+mobBaseClass)>=0)
+			{
 				return false;
+			}
 		}
 
 		// now race
@@ -122,13 +134,16 @@ public class AbilityHelper
 		if(x>=0)
 		{
 			if(text.indexOf("+"+mobRace)<x)
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(text.indexOf("-"+mobRace)>=0)
+			{
 				return false;
-
+			}
 		}
 
 		// and now alignments
@@ -137,46 +152,58 @@ public class AbilityHelper
 		{
 
 			if(text.indexOf("+"+mobAlign)<x)
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(text.indexOf("-"+mobAlign)>=0)
+			{
 				return false;
-
+			}
 		}
 		
 		x=text.indexOf("-GENDER");
 		if(x>=0)
 		{
 			if(text.indexOf("+"+mobGender)<x)
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(text.indexOf("-"+mobGender)>=0)
+			{
 				return false;
+			}
 		}
 		
 		x=text.indexOf("-LEVELS");
 		if(x>=0)
 		{
 			if(!levelCheck(text,'+',x+6,level))
+			{
 				return false;
+			}
 		}
 		else
 		{
 			if(levelCheck(text,'-',0,level))
+			{
 				return false;
+			}
 		}
 
 		x=text.indexOf("-CLASSLEVEL");
 		if(x>=0)
 		{
 			if(!levelCheck(text,'+',x+6,classLevel))
+			{
 				return false;
+			}
 		}
-		
 		return true;
 	}
 

@@ -9,6 +9,7 @@ public class Spell_ClarifyScroll extends Spell
 {
 	public String ID() { return "Spell_ClarifyScroll"; }
 	public String name(){return "Clarify Scroll";}
+	public int overrideMana(){return 50;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_ClarifyScroll();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;	}
@@ -23,17 +24,9 @@ public class Spell_ClarifyScroll extends Spell
 			mob.tell("You can't clarify that.");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
-		{
-			mob.tell("You need to be at full mana to cast this.");
-			return false;
-		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		mob.charStats().getCurrentClass().loseExperience(mob,25);
-		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

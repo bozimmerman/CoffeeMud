@@ -290,42 +290,42 @@ public class Grouping
 		}
 		String whomToOrder=(String)commands.elementAt(0);
 		MOB target=target=mob.location().fetchInhabitant(whomToOrder);
-		boolean canFollow=false;
-		if((target!=null)
-		&&((mob.isASysOp(mob.location()))
-			||(target.amFollowing()==mob)
-			||(target.getLeigeID().equals(mob.name()))))
-		   canFollow=true;
 		
 		if((target==null)
-		&&(Sense.canBeSeenBy(target,mob))
-		&&(Sense.canBeHeardBy(mob,target))
-		&&(target.location()==mob.location()))
+		||(!Sense.canBeSeenBy(target,mob))
+		||(!Sense.canBeHeardBy(mob,target))
+		||(target.location()!=mob.location()))
 		{
-			mob.tell("'"+whomToOrder+"' doesn't seem to be here.");
+			mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 			return;
+		}
+		
+		if(mob.isASysOp(mob.location())
+		||(target.amFollowing()==mob)
+		||(target.getLeigeID().equals(mob.name()))
+		||((target.getClanID().length()>0)
+		   &&(target.getClanID().equals(mob.getClanID()))
+		   &&(mob.getClanRole()==Clan.POS_LEADER))
+		||(ExternalPlay.doesOwnThisProperty(mob,target.getStartRoom())))
+		{
+			commands.removeElementAt(0);
+			Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
+			if((!mob.isASysOp(mob.location()))
+			   &&(commandCodeObj!=null)
+			   &&(commandCodeObj.intValue()==CommandSet.ORDER))
+			{
+				mob.tell("You cannot order someone to follow.");
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				ExternalPlay.doCommand(target,commands);
+			}
 		}
 		else
-		if(!canFollow)
-		{
 			mob.tell("You can't order '"+whomToOrder+"' around.");
-			return;
-		}
-		commands.removeElementAt(0);
-		Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
-		if((!mob.isASysOp(mob.location()))
-		   &&(commandCodeObj!=null)
-		   &&(commandCodeObj.intValue()==CommandSet.ORDER))
-		{
-			mob.tell("You cannot order someone to follow.");
-			return;
-		}
-		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
-		if(mob.location().okAffect(msg))
-		{
-			mob.location().send(mob,msg);
-			ExternalPlay.doCommand(target,commands);
-		}
 	}
 
 	public static void split(MOB mob, Vector commands)

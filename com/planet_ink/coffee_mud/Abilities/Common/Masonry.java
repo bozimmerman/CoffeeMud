@@ -348,29 +348,23 @@ public class Masonry extends CommonSkill
 			return false;
 		}
 
-		String titleInName="";
-		Room R2=null;
-		for(int a=0;a<mob.location().numAffects();a++)
+		boolean canBuild=(ExternalPlay.doesOwnThisProperty(mob,mob.location())
+		   ||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
+		if(!canBuild)
 		{
-			Ability A=mob.location().fetchAffect(a);
-			if((A!=null)&&(A instanceof LandTitle))
-			{ titleInName=((LandTitle)A).landOwner(); break;}
-		}
-		if(!(titleInName.equals(mob.name())
-		   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
-		{
-			if((doingCode!=BUILD_ROOF)&&(doingCode!=BUILD_TITLE)&&(doingCode!=BUILD_DESC)&&(dir>=0))
-				R2=mob.location().getRoomInDir(dir);
-			if(R2!=null)
-			for(int a=0;a<R2.numAffects();a++)
+			if((doingCode!=BUILD_ROOF)
+			   &&(doingCode!=BUILD_TITLE)
+			   &&(doingCode!=BUILD_DESC)
+			   &&(dir>=0))
 			{
-				Ability A=R2.fetchAffect(a);
-				if((A!=null)&&(A instanceof LandTitle))
-				{ titleInName=((LandTitle)A).landOwner(); break;}
+				Room R=mob.location().getRoomInDir(dir);
+				if((R!=null)
+				&&((ExternalPlay.doesOwnThisProperty(mob,R))
+					||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),R)))))
+					canBuild=true;
 			}
 		}
-		if(!(titleInName.equals(mob.name())
-		   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
+		if(!canBuild)
 		{
 			commonTell(mob,"You'll need the permission of the owner to do that.");
 			return false;

@@ -17,7 +17,7 @@ public class Prop_ReqEntry extends Property
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		return !ExternalPlay.zapperCheck(text(),mob);
+		return ExternalPlay.zapperCheck(text(),mob);
 	}	
 	public boolean okAffect(Affect affect)
 	{

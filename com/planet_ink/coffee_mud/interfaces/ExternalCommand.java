@@ -31,6 +31,7 @@ public interface ExternalCommand
 	public void follow(MOB mob, MOB tofollow, boolean quiet);
 	public void unfollow(MOB mob, boolean quiet);
 	public void makePeaceInGroup(MOB mob);
+	public boolean doesOwnThisProperty(MOB mob, Room room);
 	
 	// messages
 	public StringBuffer getInventory(MOB seer, MOB mob);

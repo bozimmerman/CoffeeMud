@@ -105,20 +105,44 @@ public class ItemUsage
 
 	public static void compare(MOB mob, Vector commands)
 	{
-		if(commands.size()<3)
+		if(commands.size()<2)
 		{
 			mob.tell("Compare what to what?");
 			return;
 		}
 		commands.removeElementAt(0);
-
 		Item compareThis=mob.fetchInventory((String)commands.elementAt(0));
 		if((compareThis==null)||((compareThis!=null)&&(!Sense.canBeSeenBy(compareThis,mob))))
 		{
 			mob.tell("You don't have a "+((String)commands.elementAt(0))+".");
 			return;
 		}
-		Item toThis=mob.fetchInventory(Util.combine(commands,1));
+		Item toThis=null;
+		if(commands.size()==1)
+		{
+			Item possible=null;
+			for(int i=0;i<mob.inventorySize();i++)
+			{
+				Item I=(Item)mob.fetchInventory(i);
+				if((I!=null)
+				   &&(I!=compareThis)
+				   &&(I.rawProperLocationBitmap()==compareThis.rawProperLocationBitmap())
+				   &&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
+				{
+					if(!I.amWearingAt(Item.INVENTORY))
+					{ toThis=I; break;}
+					if(possible==null) possible=I;
+				}
+			}
+			if(toThis==null) toThis=possible;
+			if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
+			{
+				mob.tell("Compare a "+compareThis.name()+" to what?");
+				return;
+			}
+		}
+		else
+			toThis=mob.fetchInventory(Util.combine(commands,1));
 		if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
 		{
 			mob.tell("You don't have a "+((String)commands.elementAt(1))+".");

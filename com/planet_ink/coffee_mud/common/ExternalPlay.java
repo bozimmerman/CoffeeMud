@@ -27,6 +27,11 @@ public class ExternalPlay
 		if(player!=null) return player.channelInt(channelName);
 		return -1;
 	}
+	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	{
+		if(player!=null) return player.doesOwnThisProperty(mob,room);
+		return false;
+	}
 	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if(player!=null) player.postAttack(attacker,target,weapon);

@@ -227,10 +227,16 @@ public class JewelMaking extends CommonSkill
 		else
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 
-		if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
-			itemName="an "+itemName;
-		else
-			itemName="a "+itemName;
+		if((!itemName.toUpperCase().startsWith("A "))
+		&&(!itemName.toUpperCase().startsWith("AN "))
+		&&(!itemName.toUpperCase().startsWith("THE "))
+		&&(!itemName.toUpperCase().startsWith("SOME ")))
+		{
+			if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
+				itemName="an "+itemName;
+			else
+				itemName="a "+itemName;
+		}
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) making "+building.name()+".";
 		displayText="You are making "+building.name();

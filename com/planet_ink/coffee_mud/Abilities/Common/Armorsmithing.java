@@ -326,10 +326,16 @@ public class Armorsmithing extends CommonSkill
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
+			if((!itemName.toUpperCase().startsWith("A "))
+			&&(!itemName.toUpperCase().startsWith("AN "))
+			&&(!itemName.toUpperCase().startsWith("THE "))
+			&&(!itemName.toUpperCase().startsWith("SOME ")))
+			{
 				if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
 					itemName="an "+itemName;
 				else
 					itemName="a "+itemName;
+			}
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();

@@ -21,6 +21,25 @@ public class ShopKeepers
 		return null;
 	}
 
+	public static boolean doesOwnThisProperty(MOB mob, Room room)
+	{
+		String titleInName="";
+		for(int a=0;a<room.numAffects();a++)
+		{
+			Ability A=room.fetchAffect(a);
+			if((A!=null)&&(A instanceof LandTitle))
+			{ titleInName=((LandTitle)A).landOwner(); break;}
+		}
+		if(titleInName.length()==0) return false;
+		if(titleInName.equals(mob.name())) return true;
+		if(titleInName.equals(mob.getClanID()))
+		{
+			if(mob.getClanRole()==Clan.POS_LEADER)
+				return true;
+		}
+		return false;
+	}
+	
 	public static void sell(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
