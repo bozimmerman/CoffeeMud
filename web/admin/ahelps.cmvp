@@ -6,7 +6,7 @@
 	<!--
 	function openUp(named)
 	{
-		var strFeatures="top=200,left=50,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+		var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
 		w=window.open("ahelp.cmvp?TOPIC="+named,
 		            "Help",strFeatures, false);
 	}
@@ -14,17 +14,16 @@
 	</SCRIPT>
 </head>
 
-<body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud 4.0 Archon Help Topics</h3><P>
+<body BGCOLOR=BLACK>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Topics</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=PURPLE ALIGN=CENTER><H2><FONT COLOR=WHITE>CoffeeMud 4.0 Archon Help Topics</FONT></H2></TD></TR>
 	@HelpTopics?reset@
 	@loop@
 	<TR>
-	@HelpTopics?ARCHON&SHORT&NEXT@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
-	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B>@HelpTopics@</B></a></TD>
+	@HelpTopics?ARCHON&SHORT&NEXT@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B><FONT COLOR=WHITE>@HelpTopics@</FONT></B></a></TD>
+	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B><FONT COLOR=WHITE>@HelpTopics@</FONT></B></a></TD>
+	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B><FONT COLOR=WHITE>@HelpTopics@</FONT></B></a></TD>
+	@HelpTopics?NEXT&SHORT&ARCHON&EMPTYOK@<TD WIDTH=25%><a href="javascript:openUp('@HelpTopics@');"><B><FONT COLOR=WHITE>@HelpTopics@</FONT></B></a></TD>
 	</TR>
 	@back@
 	</TABLE>

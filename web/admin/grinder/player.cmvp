@@ -5,6 +5,12 @@
 	<title>System Resources</title>
 	<script language=JavaScript>
 	<!--
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/property.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
 		function Delete()
 		{
 			if(confirm('Delete this user?! Confirm!'))
@@ -52,11 +58,31 @@
 	</script>
 </head>
 <body BGCOLOR=BLACK>
-<P ALIGN=RIGHT><INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();"></P>
 <FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PLAYER VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?PlayerOnline?=true@
+	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Player" ONCLICK="Boot();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Player" ONCLICK="Ban();">
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
+	</TD>
+	</TR>
+	</TABLE>
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
 <TR>
 	<TD WIDTH=60%>
@@ -244,31 +270,9 @@
 	<TD WIDTH=100% COLSPAN=2><FONT COLOR=YELLOW>Equipment: </FONT><FONT COLOR=WHITE>@PlayerData?INVENTORY@</FONT></TD>
 </TR>
 <TR>
-	<TD WIDTH=100% COLSPAN=2><FONT COLOR=YELLOW>Abilities: </FONT><FONT COLOR=WHITE>@AbilityNext?reset@ @loop@ @AbilityNext@ @AbilityName@ / @back@</FONT></TD>
+	<TD WIDTH=100% COLSPAN=2><FONT COLOR=YELLOW>Abilities: </FONT>@AbilityPlayerNext?reset@ @loop@ @AbilityPlayerNext@ <a href="javascript:openUp2('@AbilityID@');"><FONT COLOR=WHITE>@AbilityName@</FONT></a> <FONT COLOR=WHITE>/</FONT> @back@</TD>
 </TR>
 </TABLE>
-<P>
-	<TABLE WIDTH=100% BORDER=0>
-	<TR>
-	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
-	</TD>
-	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
-	</TD>
-	<TD WIDTH=20% ALIGN=CENTER>
-	@if?PlayerOnline?=true@
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Player" ONCLICK="Boot();">
-	@endif@
-	</TD>
-	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Player" ONCLICK="Ban();">
-	</TD>
-	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
-	</TD>
-	</TR>
-	</TABLE>
 </FORM>
 </BODY>
 </HTML>

@@ -1,9 +1,10 @@
 Bard Subclasses
-Admin macros for the grinder (view logs, manage banage)
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
 Just a command that lets players knock on a door, causing the folk inside to hear a 'knonk on the door' or some such. 5 rooms deep indoors if HARD is used.
 News (Journal) reading macro
 macro help files
+Some way to fish from land (as a beach, or a peer)
+Roll the BuildersFAQ into the Archon's Guide
 
 //****** next version ********************************************************
 friends list, for filter who

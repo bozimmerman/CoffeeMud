@@ -29,12 +29,11 @@
 <body BGCOLOR=BLACK>
 <CENTER>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<h3><FONT COLOR=YELLOW>CoffeeMud 4.0 Player Manager</FONT></h3><P>
 <FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>Players</H2></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud 4.0 Player Manager</H2></FONT></TD></TR>
 	<TD WIDTH=30%><B><a href="javascript:Sort('NAME')"><FONT COLOR=YELLOW>Name</FONT></a></B></TD>
 	<TD WIDTH=10%><B><a href="javascript:Sort('RACE')"><FONT COLOR=YELLOW>Race</FONT></a></B></TD>
 	<TD WIDTH=10%><B><a href="javascript:Sort('CHARCLASS')"><FONT COLOR=YELLOW>Class</FONT></a></B></TD>

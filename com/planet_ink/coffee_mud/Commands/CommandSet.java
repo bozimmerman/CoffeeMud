@@ -192,6 +192,7 @@ public class CommandSet extends Hashtable
 	public static final int SOUND=179;
 	public static final int NOSOUND=180;
 	public static final int AUTOIMPROVEMENT=181;
+	public static final int KNOCK=182;
 
 	private CommandSet()
 	{
@@ -323,6 +324,7 @@ public class CommandSet extends Hashtable
 			put("I",new Integer(INVENTORY));
 		put("KILL",new Integer(KILL));
 			put("K",new Integer(KILL));
+		put("KNOCK",new Integer(KNOCK));
 		put("LANGUAGES",new Integer(LANGUAGES));
 			put("LANGS",new Integer(LANGUAGES));
 		put("LIST",new Integer(LIST));

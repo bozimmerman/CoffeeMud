@@ -64,40 +64,7 @@ public class Movement extends Scriptable
 			return;
 		}
 		String enterWhat=Util.combine(commands,1).toUpperCase();
-		int dir=-1;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Exit e=mob.location().getExitInDir(d);
-			Room r=mob.location().getRoomInDir(d);
-			if((e!=null)&&(r!=null))
-			{
-				if((Sense.canBeSeenBy(e,mob))
-				&&((e.name().equalsIgnoreCase(enterWhat))
-				||(e.displayText().equalsIgnoreCase(enterWhat))
-				||(r.displayText().equalsIgnoreCase(enterWhat))
-				||(e.description().equalsIgnoreCase(enterWhat))))
-				{
-					dir=d; break;
-				}
-			}
-		}
-		if(dir<0)
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Exit e=mob.location().getExitInDir(d);
-			Room r=mob.location().getRoomInDir(d);
-			if((e!=null)&&(r!=null))
-			{
-				if((Sense.canBeSeenBy(e,mob))
-				&&(((CoffeeUtensils.containsString(e.name().toUpperCase(),enterWhat))
-				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),enterWhat))
-				||(CoffeeUtensils.containsString(r.displayText().toUpperCase(),enterWhat))
-				||(CoffeeUtensils.containsString(e.description().toUpperCase(),enterWhat)))))
-				{
-					dir=d; break;
-				}
-			}
-		}
+		int dir=findExitDir(mob,mob.location(),enterWhat);
 		if(dir<0)
 		{
 			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORN_REQ_UNWORNONLY);
@@ -497,6 +464,84 @@ public class Movement extends Scriptable
 		}
 	}
 
+	public static int findExitDir(MOB mob, Room R, String desc)
+	{
+		int dir=Directions.getGoodDirectionCode(desc);
+		if(dir<0)
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit e=R.getExitInDir(d);
+			Room r=R.getRoomInDir(d);
+			if((e!=null)&&(r!=null))
+			{
+				if((Sense.canBeSeenBy(e,mob))
+				&&((e.name().equalsIgnoreCase(desc))
+				||(e.displayText().equalsIgnoreCase(desc))
+				||(r.displayText().equalsIgnoreCase(desc))
+				||(e.description().equalsIgnoreCase(desc))))
+				{
+					dir=d; break;
+				}
+			}
+		}
+		if(dir<0)
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit e=R.getExitInDir(d);
+			Room r=R.getRoomInDir(d);
+			if((e!=null)&&(r!=null))
+			{
+				if((Sense.canBeSeenBy(e,mob))
+				&&(((CoffeeUtensils.containsString(e.name().toUpperCase(),desc))
+				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),desc))
+				||(CoffeeUtensils.containsString(r.displayText().toUpperCase(),desc))
+				||(CoffeeUtensils.containsString(e.description().toUpperCase(),desc)))))
+				{
+					dir=d; break;
+				}
+			}
+		}
+		return dir;
+	}
+	
+	public static void knock(MOB mob, Vector commands)
+	{
+		if(commands.size()<=1)
+		{
+			mob.tell(getScr("Movement","knockerr1"));
+			return;
+		}
+		String knockWhat=Util.combine(commands,1).toUpperCase();
+		int dir=findExitDir(mob,mob.location(),knockWhat);
+		if(dir<0)
+		{
+			Environmental getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,knockWhat,Item.WORN_REQ_UNWORNONLY);
+			if(getThis==null)
+			{
+				mob.tell(getScr("Movement","youdontsee",knockWhat.toLowerCase()));
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movemenet","knockmsg"));
+			if(mob.location().okAffect(mob,msg))
+				mob.location().send(mob,msg);
+			
+		}
+		else
+		{
+			Exit E=mob.location().getExitInDir(dir);
+			if((E==null)||(!E.hasADoor()))
+			{
+				mob.tell(getScr("Movement","knockerr2",E.name()));
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_KNOCK,Affect.MSG_KNOCK,Affect.MSG_KNOCK,getScr("Movemenet","knockmsg"));
+			if(mob.location().okAffect(mob,msg))
+				mob.location().send(mob,msg);
+			
+		}
+		
+	}
+	
 	public static void open(MOB mob, String whatToOpen)
 	{
 		if(whatToOpen.length()==0)

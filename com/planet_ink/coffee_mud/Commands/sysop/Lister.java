@@ -316,7 +316,45 @@ public class Lister
 		long free=Runtime.getRuntime().freeMemory()/1000;
 		long total=Runtime.getRuntime().totalMemory()/1000;
 		buf.append("The system is utilizing ^H"+(total-free)+"^?kb out of ^H"+total+"^?kb.\n\r");
-		buf.append(ExternalPlay.systemReport());
+		buf.append("\n\r^xService Engine report:^.^N\n\r");
+		String totalTickers=ExternalPlay.systemReport("totalTickers");
+		String tickGroupSize=ExternalPlay.systemReport("TICKGROUPSIZE");
+		long totalMillis=Util.s_long(ExternalPlay.systemReport("totalMillis"));
+		long totalTicks=Util.s_long(ExternalPlay.systemReport("totalTicks"));
+		String topGroupNumber=ExternalPlay.systemReport("topGroupNumber");
+		long topGroupMillis=Util.s_long(ExternalPlay.systemReport("topGroupMillis"));
+		long topGroupTicks=Util.s_long(ExternalPlay.systemReport("topGroupTicks"));
+		long topObjectMillis=Util.s_long(ExternalPlay.systemReport("topObjectMillis"));
+		long topObjectTicks=Util.s_long(ExternalPlay.systemReport("topObjectTicks"));
+		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroupSize+"^? threads.\n\r");
+		buf.append("The ticking objects have consumed: ^H"+Util.returnTime(totalMillis,totalTicks)+"^?.\n\r");
+		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+Util.returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
+		String topObjectClient=ExternalPlay.systemReport("topObjectClient");
+		String topObjectGroup=ExternalPlay.systemReport("topObjectGroup");
+		if(topObjectClient.length()>0)
+		{
+			buf.append("The most active object has been '^H"+topObjectClient+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
+			buf.append("That object has consumed: ^H"+Util.returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
+		}
+		buf.append("\n\r");
+		buf.append("^xSave Thread report:^.^N\n\r");
+		long saveThreadMilliTotal=Util.s_long(ExternalPlay.systemReport("saveThreadMilliTotal"));
+		long saveThreadTickTotal=Util.s_long(ExternalPlay.systemReport("saveThreadTickTotal"));
+		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(saveThreadMilliTotal,saveThreadTickTotal)+"^?.\n\r");
+		buf.append("\n\r");
+		buf.append("^xSession report:^.^N\n\r");
+		long totalMOBMillis=Util.s_long(ExternalPlay.systemReport("totalMOBMillis"));
+		long totalMOBTicks=Util.s_long(ExternalPlay.systemReport("totalMOBTicks"));
+		buf.append("There are ^H"+Sessions.size()+"^? ticking players logged on.\n\r");
+		buf.append("The ticking players have consumed: ^H"+Util.returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
+		long topMOBMillis=Util.s_long(ExternalPlay.systemReport("topMOBMillis"));
+		long topMOBTicks=Util.s_long(ExternalPlay.systemReport("topMOBTicks"));
+		String topMOBClient=ExternalPlay.systemReport("topMOBClient");
+		if(topMOBClient.length()>0)
+		{
+			buf.append("The most active mob has been '^H"+topMOBClient+"^?'\n\r");
+			buf.append("That mob has consumed: ^H"+Util.returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
+		}
 		return buf;
 	}
 
@@ -403,6 +441,40 @@ public class Lister
 		}
 		return buf;
 	}
+	
+	public static StringBuffer listTicks(String whichTickTock)
+	{
+		StringBuffer msg=new StringBuffer("");
+		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10));
+		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10)+"\n\r");
+		int col=0;
+		int numGroups=Util.s_int(ExternalPlay.tickInfo("tickGroupSize"));
+		int whichTick=-1;
+		if(whichTickTock.length()>0) whichTick=Util.s_int(whichTickTock);
+		for(int v=0;v<numGroups;v++)
+		{
+			int tickersSize=Util.s_int(ExternalPlay.tickInfo("tickersSize"+v));
+			if((whichTick<0)||(whichTick==v))
+			for(int t=0;t<tickersSize;t++)
+			{
+				String name=ExternalPlay.tickInfo("tickerName"+v+"-"+t);
+				String id=ExternalPlay.tickInfo("tickerID"+v+"-"+t);
+				String pr=ExternalPlay.tickInfo("tickerTickDown"+v+"-"+t);
+				String oo=ExternalPlay.tickInfo("tickerReTickDown"+v+"-"+t);
+				boolean suspended=Util.s_bool(ExternalPlay.tickInfo("tickerSuspended"+v+"-"+t));
+				if((col++)==2)
+				{
+					msg.append("\n\r");
+					col=1;
+				}
+				msg.append(Util.padRight(""+v,4)
+						   +Util.padRight(name,18)
+						   +" "+Util.padRight(id+"",5)
+						   +Util.padRight(pr+"/"+(suspended?"??":""+oo),10));
+			}
+		}
+		return msg;
+	}
 
 	public static void list(MOB mob, Vector commands)
 	{
@@ -478,11 +550,8 @@ public class Lister
 		if("POISONS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
 		else
-		if("TICKS".startsWith(listThis))
-			mob.tell(ExternalPlay.listTicks(-1).toString());
-		else
 		if("TICKS".startsWith(listWord))
-			mob.tell(ExternalPlay.listTicks(Util.s_int(Util.combine(commands,1))).toString());
+			mob.tell(listTicks(Util.combine(commands,1)).toString());
 		else
 		if("MAGIC".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.miscMagic()).toString());

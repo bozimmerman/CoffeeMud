@@ -1,4 +1,5 @@
 GAES still isn't done
 something rideable when sleeping on it.
 bench travels with archon goto, and probably spells, when sitting on the bench
-
+editing a preexisting mob in MUDGrinder, the old mob stays in library, effectively leaving you with the old and the new.
+support for creation of things in portal direction.  grinder also.

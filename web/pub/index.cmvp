@@ -7,36 +7,40 @@
 </head>
 
 <body>
-<IMG src="images/logo.gif" ALIGN=LEFT>
-<TABLE WIDTH=50% BORDER=0>
-<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=BLUE><B>
-@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@
-</B></FONT></TD></TR>
-<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=LTGREEN><B>
+<CENTER>
+<FONT COLOR=BLUE><B>@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@
+</CENTER><P>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><TD WIDTH=320 VALIGN=TOP>
+<IMG src="images/logo.gif">
+</TD><TD VALIGN=TOP>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><TD WIDTH=100% VALIGN=TOP><FONT COLOR=LTGREEN><B>
 Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a>
 </B></FONT></TD></TR>
-<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%><FONT COLOR=ORANGE><B>
+<TR><TD WIDTH=100%><FONT COLOR=ORANGE><B>
 Players currently online: <b>@NUMPLAYERS@</B>
 </B></FONT></TD></TR>
-<TR><TD WIDTH=10%><BR></TD><TD WIDTH=90%>
-<BR><BR>
-<UL>
-<LI><a href="guides/mudintro.html">Introduction</a>
-<LI><a href="guides/Features.html">CoffeeMUD features</a>
-<LI><a href="areas.cmvp">Installed Areas</a>
-<LI><a href="helps.cmvp?FIRSTLETTER=A">Help Topics</a>
-<LI><a href="sounds.zip">Download sounds.zip (MSP only)</a>
+<TR><TD WIDTH=100%>
+<BR>
+<LI><a href="guides/mudintro.html"><FONT COLOR=GREEN><B>Introduction</B></FONT></a>
+<LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
+<LI><a href="guides/Features.html"><FONT COLOR=GREEN><B>CoffeeMUD features</B></FONT></a>
+<LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
+<LI><a href="sounds.zip"><FONT COLOR=GREEN><B>Download Sounds for MSP support</B></FONT></a>
+<P>
 <LI><B>Player Races: </B>
 	@loop@
 	@RaceNext@
-	<A href="races.cmvp#@RaceID@">@RaceName@</A>
+	<A href="races.cmvp#@RaceID@"><FONT COLOR=PURPLE>@RaceName@</FONT></A>
 	@back@
 <LI><B>Player Abilities: </B>
-					  <a href="spells.cmvp?ABILITYTYPE=SPELL">Spells</a> 
-					  <a href="ables.cmvp?ABILITYTYPE=SONG">Songs</a>
-					  <a href="ables.cmvp?ABILITYTYPE=PRAYER">Prayers</a>  
-					  <a href="ables.cmvp?ABILITYTYPE=CHANT">Chants</a>  
-					  <a href="skills.cmvp">Skills</a>
+					  <a href="spells.cmvp?ABILITYTYPE=SPELL"><FONT COLOR=RED>Spells</FONT></a> 
+					  <a href="ables.cmvp?ABILITYTYPE=SONG"><FONT COLOR=RED>Songs</FONT></a>
+					  <a href="ables.cmvp?ABILITYTYPE=PRAYER"><FONT COLOR=RED>Prayers</FONT></a>  
+					  <a href="ables.cmvp?ABILITYTYPE=CHANT"><FONT COLOR=RED>Chants</FONT></a>  
+					  <a href="skills.cmvp"><FONT COLOR=RED>Skills</FONT></a>
+<P>
 @BaseCharClassNext?RESET@
 @loop@
 @BaseCharClassNext@
@@ -44,13 +48,12 @@ Players currently online: <b>@NUMPLAYERS@</B>
 	@CharClassNext?RESET@
 	@loop@
 		@CharClassNext@
-		<A href="classes.cmvp?CLASS=@CharClassID@">@CharClassName@</A>
+		<A href="classes.cmvp?CLASS=@CharClassID@"><FONT COLOR=BLUE>@CharClassName@</FONT></A>
 	@back@
 	&nbsp;
 @back@
 	<BR><BR>
-</UL>
 </TD></TR>
-</TABLE>
+</TABLE></TR></TR></TABLE>
 </body>
 </html>

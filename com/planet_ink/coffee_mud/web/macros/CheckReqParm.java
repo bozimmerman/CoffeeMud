@@ -15,13 +15,31 @@ public class CheckReqParm extends StdWebMacro
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
+			boolean not=false;
+			if(key.startsWith("!"))
+			{
+				key=key.substring(1);
+				not=true;
+			}
 			String equals=(String)parms.get(key);
 			String check=httpReq.getRequestParameter(key);
-			if((check==null)&&(equals.length()==0))
-				return "true";
-			if(check==null) return "false";
-			if(!check.equalsIgnoreCase(equals))
+			if(not)
+			{
+				if((check==null)&&(equals.length()==0))
+					return "false";
+				if(check==null) return "true";
+				if(!check.equalsIgnoreCase(equals))
+					return "true";
 				return "false";
+			}
+			else
+			{
+				if((check==null)&&(equals.length()==0))
+					return "true";
+				if(check==null) return "false";
+				if(!check.equalsIgnoreCase(equals))
+					return "false";
+			}
 		}
 		return "true";
 	}

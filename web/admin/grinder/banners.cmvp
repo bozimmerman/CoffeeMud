@@ -1,11 +1,61 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Banned List Management</title>
+	<script language=JavaScript>
+	<!--
+		function ClearClicked(action)
+		{
+			document.RESOURCES.NEWBANNEDONE.value='';
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="banners.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<CENTER><FONT COLOR=RED><B>@BanListMgr?DELETE@ @BanListMgr?ADD@</B></FONT></CENTER>
+	<BR>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Banned List Management</H2></FONT></TD></TR>
+	@BanListMgr?RESET@
+	@loop@
+	<TR>
+	@BanListMgr?NEXT@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE VALUE="@BanListMgr@"><FONT COLOR=WHITE><B>@BanListMgr@</B></FONT></TD>
+	@BanListMgr?NEXT&EMPTYOK@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE VALUE="@BanListMgr@"><FONT COLOR=WHITE><B>@BanListMgr@</B></FONT></TD>
+	@BanListMgr?NEXT&EMPTYOK@<TD WIDTH=33%><INPUT TYPE=RADIO NAME=BANNEDONE VALUE="@BanListMgr@"><FONT COLOR=WHITE><B>@BanListMgr@</B></FONT></TD>
+	</TR>
+	@back@
+	<TR>
+	<TD WIDTH=100% COLSPAN=3><FONT COLOR=WHITE><B>Add New: </B></FONT><INPUT TYPE=TEXT SIZE=50 MAXLENGTH=255 NAME=NEWBANNEDONE></TD>
+	</TR>
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELGO VALUE="Delete selected" ONCLICK="ClearClicked('/grinder/banners.cmvp');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Add New" ONCLICK="Clicked('/grinder/banners.cmvp');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="ClearClicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TABLE>
 </BODY>
 </HTML>
+@endif@
+@endif@

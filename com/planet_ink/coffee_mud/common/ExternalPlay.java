@@ -78,10 +78,10 @@ public class ExternalPlay
 	{
 		if(player!=null) player.resetRoom(room);
 	}
-	public static StringBuffer systemReport()
+	public static String systemReport(String itemCode)
 	{
-		if(sysPlayer!=null) return sysPlayer.systemReport();
-		return new StringBuffer("");
+		if(sysPlayer!=null) return sysPlayer.systemReport(itemCode);
+		return "";
 	}
 	
 	public static Ability getToEvoke(MOB mob, Vector commands)
@@ -386,10 +386,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.tickAllTickers(here);
 	}
-	public static StringBuffer listTicks(int whichTick)
+	public static String tickInfo(String which)
 	{
-		if(sysPlayer!=null) return sysPlayer.listTicks(whichTick);
-		return new StringBuffer();
+		if(sysPlayer!=null) return sysPlayer.tickInfo(which);
+		return "";
 	}
 	public static boolean DBReadUserOnly(MOB mob)
 	{

@@ -12,9 +12,10 @@ public interface ExternalHTTPRequests
 	public Host getMUD();
 	public String WebHelperhtmlPlayerList();
 	public String WebHelperhtmlAreaTbl();
-	public Hashtable getRequestParameters();
+	public boolean isRequestParameter(String key);
+	public String getRequestParameter(String key);
+	public void removeRequestParameter(String key);
 	public void addRequestParameters(String key, String value);
-	public void resetRequestEncodedParameters();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);

@@ -14,8 +14,7 @@
 	</SCRIPT>
 </head>
 
-<body BGCOLOR=#FFCCCC>
-<h3>CoffeeMud 4.0 Help Topics</h3><P>
+<body>
 	@HelpTopics?reset@
 	@loop@
 		@HelpTopics?NEXTLETTER@
@@ -25,7 +24,7 @@
 	@back@
 	<P>
 	<TABLE WIDTH=100% BORDER=1>
-	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=#FF00CC ALIGN=CENTER><H2>Topics</H2></TD></TR>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=LTGREEN ALIGN=CENTER><H2>CoffeeMud 4.0 Help Topics</H2></TD></TR>
 	@HelpTopics?reset@
 	@loop@
 	<TR>

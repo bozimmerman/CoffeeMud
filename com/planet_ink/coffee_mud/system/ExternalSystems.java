@@ -47,9 +47,9 @@ public class ExternalSystems implements ExternalSystem
 		MOBloader.DBUpdateFollowers(mob);
 	}
 	
-	public StringBuffer systemReport()
+	public String systemReport(String itemCode)
 	{
-		return ServiceEngine.report();
+		return ServiceEngine.report(itemCode);
 	}
 		
 	public void DBReadContent(Room thisRoom, Hashtable rooms)
@@ -129,9 +129,9 @@ public class ExternalSystems implements ExternalSystem
 	{
 		ServiceEngine.tickAllTickers(here);
 	}
-	public StringBuffer listTicks(int whichTick)
+	public String tickInfo(String which)
 	{
-		return ServiceEngine.listTicks(whichTick);
+		return ServiceEngine.tickInfo(which);
 	}
 	public Area DBCreateArea(String areaName, String areaType)
 	{

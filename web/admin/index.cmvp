@@ -20,28 +20,37 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<br>
 	Players currently online: <b>@NUMPLAYERS@</B><br>
 	<br>
-	<a href="pub/">Go to public pages</A><br>
+	<a href="pub/"><FONT COLOR=BLUE>Go to public pages</FONT></A><br>
 	<br>
-	Admin Info:<br>
-	<a href="ahelps.cmvp">Archon Help Topics</A><br>
-	<A HREF="pub/guides/InstallationGuide.html">The Installation Guide</A><br>
-	<A HREF="pub/guides/WebServer.html">The Web Server guide</A><br>
-	<a href="pub/guides/ArchonGuide.html">Archon's Guide</a><BR>
-	<A HREF="pub/guides/MUDGrinder.html">The MUDGrinder Guide</A><br>
-	<A HREF="pub/guides/Programming.html">The Programmer's Guide</A><br>
-	<A href="abilities.cmvp">Complete Skills List</a><BR>
-	<A href="behaviors.cmvp">Complete Behaviors List</a><BR>
-	<A href="affects.cmvp">Complete Affects List</a><BR>
-	<a href="resources.cmvp">Manage Resources</A><br>
-	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
 	<FORM NAME=LOGIN METHOD=GET ACTION=/grinder/loggedin.cmvp TARGET=_top>
 	<TABLE WIDTH=200 BORDER=1>
-	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER><FONT COLOR=WHITE><B>Login to MUDGrinder</B></FONT></TD></TR>
+	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Login to MUDGrinder</B></FONT></TD></TR>
 	<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
 	<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=15 NAME=PASSWORD></TD></TR>
 	<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Login></TD></TR>
 	</TABLE>
-	</FORM
+	</FORM>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+	<B><FONT COLOR=WHITE>Guides</FONT></B><br>
+	<A HREF="pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>The Installation Guide</FONT></A><br>
+	<A HREF="pub/guides/WebServer.html"><FONT COLOR=BLUE>The Web Server guide</FONT></A><br>
+	<a href="pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
+	<A HREF="pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>The MUDGrinder Guide</FONT></A><br>
+	<A HREF="pub/guides/Programming.html"><FONT COLOR=BLUE>The Programmer's Guide</FONT></A><br>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+	<B><FONT COLOR=WHITE>Lists</FONT></B><br>
+	<a href="ahelps.cmvp"><FONT COLOR=BLUE>Archon Help Topics</FONT></A><br>
+	<A href="abilities.cmvp"><FONT COLOR=BLUE>Complete Skills List</FONT></a><BR>
+	<A href="behaviors.cmvp"><FONT COLOR=BLUE>Complete Behaviors List</FONT></a><BR>
+	<A href="affects.cmvp"><FONT COLOR=BLUE>Complete Affects List</FONT></a><BR>
+	<A href="log.cmvp"><FONT COLOR=BLUE>View Server Log</FONT></a><BR>
+	</TD>
+	</TR></TABLE>
 </big>
 <br>
 </DIV>

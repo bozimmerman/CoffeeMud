@@ -140,10 +140,57 @@ public class ServiceEngine
 	}
 
 
-	public static StringBuffer report()
+	public static String report(String itemCode)
 	{
-		StringBuffer buf=new StringBuffer("");
-		buf.append("\n\r^xService Engine report:^.^N\n\r");
+		long totalMOBMillis=0;
+		long totalMOBTicks=0;
+		long topMOBMillis=0;
+		long topMOBTicks=0;
+		MOB topMOBClient=null;
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=Sessions.elementAt(s);
+			totalMOBMillis+=S.getTotalMillis();
+			totalMOBTicks+=S.getTotalTicks();
+			if(S.getTotalMillis()>topMOBMillis)
+			{
+				topMOBMillis=S.getTotalMillis();
+				topMOBTicks=S.getTotalTicks();
+				topMOBClient=S.mob();
+			}
+		}
+		
+		if(itemCode.equalsIgnoreCase("totalMOBMillis"))
+			return ""+totalMOBMillis;
+		else
+		if(itemCode.equalsIgnoreCase("totalMOBMillisTime"))
+			return Util.returnTime(totalMOBMillis,0);
+		else
+		if(itemCode.equalsIgnoreCase("totalMOBMillisTimePlusAverage"))
+			return Util.returnTime(totalMOBMillis,totalMOBTicks);
+		else
+		if(itemCode.equalsIgnoreCase("totalMOBTicks"))
+			return ""+totalMOBTicks;
+		else
+		if(itemCode.equalsIgnoreCase("topMOBMillis"))
+			return ""+topMOBMillis;
+		else
+		if(itemCode.equalsIgnoreCase("topMOBMillisTime"))
+			return Util.returnTime(topMOBMillis,0);
+		else
+		if(itemCode.equalsIgnoreCase("topMOBMillisTimePlusAverage"))
+			return Util.returnTime(topMOBMillis,topMOBTicks);
+		else
+		if(itemCode.equalsIgnoreCase("topMOBTicks"))
+			return ""+topMOBTicks;
+		else
+		if(itemCode.equalsIgnoreCase("topMOBClient"))
+		{
+			if(topMOBClient!=null) 
+				return topMOBClient.Name();
+			return "";
+		}
+		
 		int totalTickers=0;
 		long totalMillis=0;
 		long totalTicks=0;
@@ -178,45 +225,91 @@ public class ServiceEngine
 				}
 			}
 		}
-
-		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroup.size()+"^? threads.\n\r");
-		buf.append("The ticking objects have consumed: ^H"+Util.returnTime(totalMillis,totalTicks)+"^?.\n\r");
-		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+Util.returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
-		if(topObjectClient!=null)
+		if(itemCode.equalsIgnoreCase("freeMemory"))
+			return ""+(Runtime.getRuntime().freeMemory()/1000);
+		else
+		if(itemCode.equalsIgnoreCase("totalMemory"))
+			return ""+(Runtime.getRuntime().totalMemory()/1000);
+		else
+		if(itemCode.equalsIgnoreCase("totalTime"))
+			return ""+Util.returnTime(System.currentTimeMillis()-ExternalPlay.getStartTime(),0);
+		else
+		if(itemCode.equalsIgnoreCase("startTime"))
+			return IQCalendar.d2String(ExternalPlay.getStartTime());
+		else
+		if(itemCode.equalsIgnoreCase("currentTime"))
+			return IQCalendar.d2String(System.currentTimeMillis());
+		else
+		if(itemCode.equalsIgnoreCase("totalTickers"))
+			return ""+totalTickers;
+		else
+		if(itemCode.equalsIgnoreCase("totalMillis"))
+			return ""+totalMillis;
+		else
+		if(itemCode.equalsIgnoreCase("totalMillisTime"))
+			return Util.returnTime(totalMillis,0);
+		else
+		if(itemCode.equalsIgnoreCase("totalMillisTimePlusAverage"))
+			return Util.returnTime(totalMillis,totalTicks);
+		else
+		if(itemCode.equalsIgnoreCase("totalTicks"))
+			return ""+totalTicks;
+		else
+		if(itemCode.equalsIgnoreCase("tickgroupsize"))
+			return ""+tickGroup.size();
+		else
+		if(itemCode.equalsIgnoreCase("topGroupNumber"))
+			return ""+topGroupNumber;
+		else
+		if(itemCode.equalsIgnoreCase("topGroupMillis"))
+			return ""+topGroupMillis;
+		else
+		if(itemCode.equalsIgnoreCase("topGroupMillisTime"))
+			return Util.returnTime(topGroupMillis,0);
+		else
+		if(itemCode.equalsIgnoreCase("topGroupMillisTimePlusAverage"))
+			return Util.returnTime(topGroupMillis,topGroupTicks);
+		else
+		if(itemCode.equalsIgnoreCase("topGroupTicks"))
+			return ""+topGroupTicks;
+		else
+		if(itemCode.equalsIgnoreCase("topObjectMillis"))
+			return ""+topObjectMillis;
+		else
+		if(itemCode.equalsIgnoreCase("topObjectMillisTime"))
+			return Util.returnTime(topObjectMillis,0);
+		else
+		if(itemCode.equalsIgnoreCase("topObjectMillisTimePlusAverage"))
+			return Util.returnTime(topObjectMillis,topObjectTicks);
+		else
+		if(itemCode.equalsIgnoreCase("topObjectTicks"))
+			return ""+topObjectTicks;
+		else
+		if(itemCode.equalsIgnoreCase("topObjectGroup"))
+			return ""+topObjectGroup;
+		else
+		if(itemCode.equalsIgnoreCase("saveThreadMilliTotal"))
+			return ""+SaveThread.milliTotal;
+		else
+		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTime"))
+			return Util.returnTime(SaveThread.milliTotal,0);
+		else
+		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTimePlusAverage"))
+			return Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal);
+		else
+		if(itemCode.equalsIgnoreCase("saveThreadTickTotal"))
+			return ""+SaveThread.tickTotal;
+		else
+		if(itemCode.equalsIgnoreCase("topObjectClient"))
 		{
-			buf.append("The most active object has been '^H"+topObjectClient.name()+"^?', from group #^H"+topObjectGroup+"^?.\n\r");
-			buf.append("That object has consumed: ^H"+Util.returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
+			if(topObjectClient!=null)
+				return topObjectClient.name();
+			else
+				return "";
 		}
-		buf.append("\n\r");
-		buf.append("^xSave Thread report:^.^N\n\r");
-		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+"^?.\n\r");
-		buf.append("\n\r");
-		buf.append("^xSession report:^.^N\n\r");
-		long totalMOBMillis=0;
-		long totalMOBTicks=0;
-		long topMOBMillis=0;
-		long topMOBTicks=0;
-		MOB topMOBClient=null;
-		for(int s=0;s<Sessions.size();s++)
-		{
-			Session S=Sessions.elementAt(s);
-			totalMOBMillis+=S.getTotalMillis();
-			totalMOBTicks+=S.getTotalTicks();
-			if(S.getTotalMillis()>topMOBMillis)
-			{
-				topMOBMillis=S.getTotalMillis();
-				topMOBTicks=S.getTotalTicks();
-				topMOBClient=S.mob();
-			}
-		}
-		buf.append("There are ^H"+Sessions.size()+"^? ticking players logged on.\n\r");
-		buf.append("The ticking players have consumed: ^H"+Util.returnTime(totalMOBMillis,totalMOBTicks)+"^?.\n\r");
-		if(topMOBClient!=null)
-		{
-			buf.append("The most active mob has been '^H"+topMOBClient.name()+"^?'\n\r");
-			buf.append("That mob has consumed: ^H"+Util.returnTime(topMOBMillis,topMOBTicks)+"^?.\n\r");
-		}
-		return buf;
+		
+		
+		return "";
 	}
 
 	public static void tickAllTickers(Room here)
@@ -245,40 +338,68 @@ public class ServiceEngine
 		}
 	}
 
-	public static StringBuffer listTicks(int whichTick)
+	public static String tickInfo(String which)
 	{
-		StringBuffer msg=new StringBuffer("");
-		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10));
-		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10)+"\n\r");
-		int col=0;
-		for(int v=0;v<tickGroup.size();v++)
-		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			if((whichTick<0)||(whichTick==v))
-			for(int t=0;t<almostTock.tickers.size();t++)
+		int grpstart=-1;
+		for(int i=0;i<which.length();i++)
+			if(Character.isDigit(which.charAt(i)))
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Tickable E=C.clientObject;
-				String name="!NULL!";
-				if((E instanceof Ability)&&(E.ID().equals("ItemRejuv")))
-					E=((Ability)E).affecting();
-
-				int id=C.tickID;
-				int pr=C.tickDown;
-				int oo=C.reTickDown;
-				if((col++)==2)
-				{
-					msg.append("\n\r");
-					col=1;
-				}
-				if(E!=null) name=E.name();
-				msg.append(Util.padRight(""+v,4)
-						   +Util.padRight(name,18)
-						   +" "+Util.padRight(id+"",5)
-						   +Util.padRight(pr+"/"+(C.suspended?"??":""+oo),10));
+				grpstart=i;
+				break;
 			}
+		if(which.equalsIgnoreCase("tickGroupSize"))
+			return ""+tickGroup.size();
+		else
+		if(which.toLowerCase().startsWith("tickerssize"))
+		{
+			int group=Util.s_int(which.substring(grpstart));
+			if((group>=0)&&(group<tickGroup.size()))
+				return ""+((Tick)tickGroup.elementAt(group)).tickers.size();
+			return "";
 		}
-		return msg;
+		int group=-1;
+		int client=-1;
+		int clistart=which.indexOf("-");
+		if((grpstart>=0)&&(clistart>grpstart))
+		{
+			group=Util.s_int(which.substring(grpstart,clistart));
+			client=Util.s_int(which.substring(clistart+1));
+		}
+		if((group<0)||(client<0)||(group>=tickGroup.size())) return "";
+		Tick almostTock=(Tick)tickGroup.elementAt(group);
+		if(client>=almostTock.tickers.size()) return "";
+		TockClient C=(TockClient)almostTock.tickers.elementAt(client);
+		
+		if(which.toLowerCase().startsWith("tickername"))
+		{
+			Tickable E=C.clientObject;
+			if((E instanceof Ability)&&(E.ID().equals("ItemRejuv")))
+				E=((Ability)E).affecting();
+			if(E!=null) return E.name();
+			return "!NULL!";
+		}
+		else
+		if(which.toLowerCase().startsWith("tickerid"))
+			return ""+C.tickID;
+		else
+		if(which.toLowerCase().startsWith("tickertickdown"))
+			return ""+C.tickDown;
+		else
+		if(which.toLowerCase().startsWith("tickerretickdown"))
+			return ""+C.reTickDown;
+		else
+		if(which.toLowerCase().startsWith("tickermillitotal"))
+			return ""+C.milliTotal;
+		else
+		if(which.toLowerCase().startsWith("tickerlaststartdate"))
+			return IQCalendar.d2String(C.lastStart);
+		else
+		if(which.toLowerCase().startsWith("tickerlaststopdate"))
+			return IQCalendar.d2String(C.lastStop);
+		else
+		if(which.toLowerCase().startsWith("tickersuspended"))
+			return ""+C.suspended;
+		return "";
 	}
 
 	public static void shutdownAll()

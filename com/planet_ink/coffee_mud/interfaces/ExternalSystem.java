@@ -43,10 +43,10 @@ public interface ExternalSystem
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
 	public void clearDebri(Room room, int taskCode);
-	public StringBuffer listTicks(int whichTick);
+	public String tickInfo(String which);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String leigeID);
 	public void tickAllTickers(Room here);
-	public StringBuffer systemReport();
+	public String systemReport(String itemCode);
 }

@@ -1,11 +1,63 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>System Resources</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="resources.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+</CENTER>
+<P>
+<FONT COLOR=#CCFFFF><B>CoffeeMud System Report:</B></FONT><P>
+<FONT COLOR=WHITE>
+The system has been running for <FONT COLOR=#CCFFFF>@SystemInfo?TOTALTIME@</FONT>.<BR>
+The system has been running since <FONT COLOR=#CCFFFF>@SystemInfo?STARTTIME@</FONT>.<BR>
+The system is utilizing <FONT COLOR=#CCFFFF>@SystemInfo?FREEMEMORY@</FONT>kb out of <FONT COLOR=#CCFFFF>@SystemInfo?TOTALMEMORY@</FONT>kb.<BR>
+<BR>
+<FONT COLOR=#CCFFFF><B>Service Engine report:</B></FONT><BR>
+There are <FONT COLOR=#CCFFFF>@SystemInfo?totalTickers@</FONT> ticking objects in <FONT COLOR=#CCFFFF>@SystemInfo?tickGroupSize@</FONT> threads.<BR>
+The ticking objects have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMillisTimePlusAverage@</FONT>.<BR>
+The most active group, #<FONT COLOR=#CCFFFF>@SystemInfo?topGroupNumber@</FONT>, has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topGroupMillisTimePlusAverage@</FONT>.<BR>
+The most active object has been '<FONT COLOR=#CCFFFF>@SystemInfo?topObjectClient@</FONT>', from group #<FONT COLOR=#CCFFFF>@SystemInfo?topObjectGroup@</FONT>.<BR>
+That object has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topObjectMillisTimePlusAverage@</FONT>.<BR>
+<BR>
+<FONT COLOR=#CCFFFF><B>Save Thread report:</B></FONT><BR>
+The Save Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?saveThreadMilliTotalTimePlusAverage@</FONT>.<BR>
+<BR>
+<FONT COLOR=#CCFFFF><B>Session report:</B></FONT><BR>
+There are <FONT COLOR=#CCFFFF>@NumPlayers?ALL@</FONT> ticking players logged on.<BR>
+The ticking players have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMOBMillisTimePlusAverage@</FONT>.<BR>
+The most active mob has been '<FONT COLOR=#CCFFFF>@SystemInfo?topMOBClient@</FONT>'<BR>
+That mob has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topMOBMillisTimePlusAverage@</FONT>.<BR>
+</FONT>
 
-<P>&nbsp;</P>
+@AddRequestParameter?TICKGROUPCOUNTER=0@
+Try: @AddRequestParameter?TICKGROUPSIZE=@@SystemInfo?tickGroupSize@@ @
 
+@loop@
+	@ChkReqParmBreak?TICKGROUPCOUNTER=@@RequestParameter?TICKGROUPSIZE@@ @
+	
+	<FONT COLOR=WHITE>@RequestParameter?TICKGROUPCOUNTER@</FONT>
+	
+	@AddRequestParameter?TICKGROUPCOUNTER=++@
+	
+@back@
+<FONT COLOR=WHITE>
 </BODY>
 </HTML>
+@endif@
+@endif@

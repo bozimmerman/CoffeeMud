@@ -16,6 +16,11 @@
 			document.SELECTAREA.action='/grinder/'+action;
 			document.SELECTAREA.submit();
 		}
+		function Clicked2(action)
+		{
+			document.SELECTAREA.action=action;
+			document.SELECTAREA.submit();
+		}
 	//-->
 	</script>
 </head>
@@ -29,17 +34,21 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 @if?CheckReqParm?SYSOP=true@
 <TABLE WIDTH=200 BORDER=1>
-<TR><TD ALIGN=CENTER><FONT COLOR=WHITE><B>Archon Utilities:</B></FONT></TD></TR>
+<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Archon Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
-	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=YELLOW>Manage Resources</FONT></a>
+	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
-	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=YELLOW>Players List</FONT></a>
+	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
+	<BR>
+	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
+	<BR>
+	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 </TD></TR>
 </TABLE>
 <P>
 @endif@
 <TABLE WIDTH=200 BORDER=1>
-<TR><TD ALIGN=CENTER><FONT COLOR=WHITE><B>Areas available:</B></FONT></TD></TR>
+<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas available:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
 <SELECT NAME=AREA HEIGHT=10>
 @MUDGrinder?AREALIST@
@@ -59,6 +68,10 @@
 <INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 @endif@
 </TD></TR></TABLE>
+<P>
+<CENTER>
+<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Log Out" ONCLICK="Clicked2('/index.cmvp');">
+</CENTER>
 </FORM>
 </BODY>
 </HTML>

@@ -395,6 +395,9 @@ public class CommandProcessor
 				case CommandSet.KILL:
 					TheFight.kill(mob,commands);
 					break;
+				case CommandSet.KNOCK:
+					Movement.knock(mob,commands);
+					break;
 				case CommandSet.LANGUAGES:
 					Scoring.languages(mob);
 					break;
