@@ -20,7 +20,7 @@ public class Fighter extends StdCharClass
 		name=myID;
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;
-		damageBonusPerLevel=2;
+		damageBonusPerLevel=1;
 	}
 
 	public boolean playerSelectable()
