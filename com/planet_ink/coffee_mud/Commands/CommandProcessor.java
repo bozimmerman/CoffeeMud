@@ -635,6 +635,9 @@ public class CommandProcessor
 					else
 						mob.tell("Only the Archons may divine that.");
 					break;
+				case CommandSet.WHISPER:
+					SocialProcessor.whisper(mob,commands);
+					break;
 				case CommandSet.WHOIS:
 					Grouping.whois(mob,Util.combine(commands,1));
 					break;

@@ -9,23 +9,62 @@ public class Thief_Listen extends ThiefSkill
 {
 	public String ID() { return "Thief_Listen"; }
 	public String name(){ return "Listen";}
-	protected int canAffectCode(){return 0;}
-	protected int canTargetCode(){return 0;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"LISTEN"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Listen();	}
 
+	private Room sourceRoom=null;
+	private Room room=null;
+	private String lastSaid="";
+	
+	public void affect(Affect msg)
+	{
+		super.affect(msg);
+		if((affected!=null)
+		&&(affected instanceof Room)
+		&&(invoker()!=null)
+		&&(invoker().location()!=null)
+		&&(sourceRoom!=null)
+		&&(!invoker().isInCombat())
+		&&(invoker().location()==sourceRoom))
+		{
+			if((msg.sourceMinor()==Affect.TYP_SPEAK)
+			&&(msg.othersCode()==Affect.NO_EFFECT)
+			&&(msg.othersMessage()==null)
+			&&(msg.sourceMessage()!=null)
+			&&(!msg.amISource(invoker()))
+			&&(!msg.amITarget(invoker()))
+			&&(!lastSaid.equals(msg.sourceMessage())))
+			{
+				lastSaid=msg.sourceMessage();
+				invoker().tell(msg.source(),msg.target(),msg.sourceMessage());
+			}
+		}
+		else
+			unInvoke();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		int dirCode=Directions.getGoodDirectionCode(Util.combine(commands,0));
+		String whom=Util.combine(commands,0);
+		int dirCode=Directions.getGoodDirectionCode(whom);
 		if(!Sense.canHear(mob))
 		{
 			mob.tell("You don't hear anything.");
 			return false;
 		}
 
-		Room room=null;
+		if(room!=null)
+		for(int a=room.numAffects()-1;a>=0;a--)
+		{
+			Ability A=room.fetchAffect(a);
+			if((A.ID().equals(ID()))&&(invoker()==mob))
+				A.unInvoke();
+		}
+		room=null;
 		if(dirCode<0)
 			room=mob.location();
 		else
@@ -61,8 +100,15 @@ public class Thief_Listen extends ThiefSkill
 			}
 			if((success)&&(numberHeard>0))
 			{
-				if(profficiency()>75)
-					mob.tell("You definitely hear the movement of "+numberHeard+" creature(s).");
+				if((profficiency()>50)||(room==mob.location()))
+				{
+					mob.tell("You definitely hear "+numberHeard+" creature(s).");
+					if(profficiency()>((room==mob.location())?50:75))
+					{
+						sourceRoom=mob.location();
+						beneficialAffect(mob,room,((room==mob.location())?0:10));
+					}
+				}
 				else
 					mob.tell("You definitely hear something.");
 			}

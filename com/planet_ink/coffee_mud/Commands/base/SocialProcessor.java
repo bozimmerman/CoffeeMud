@@ -167,6 +167,84 @@ public class SocialProcessor
 			mob.location().send(mob,msg);
 	}
 
+	public static void whisper(MOB mob, Vector commands)
+	{
+		if(commands.size()==1)
+		{
+			mob.tell("Whisper what?");
+			return;
+		}
+		Environmental target=null;
+		if(commands.size()>2)
+		{
+			String possibleTarget=(String)commands.elementAt(1);
+			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
+			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+			   target=null;
+			if((target!=null)
+			&&(Sense.canBeSeenBy(target,mob))
+			&&((!(target instanceof Rider))
+			   ||(((Rider)target).riding()==mob.riding())))
+				commands.removeElementAt(1);
+			else
+				target=null;
+		}
+		for(int i=1;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.indexOf(" ")>=0)
+				commands.setElementAt("\""+s+"\"",i);
+		}
+		String combinedCommands=Util.combine(commands,1);
+		if(combinedCommands.equals(""))
+		{
+			mob.tell("Whisper what?");
+			return;
+		}
+
+		FullMsg msg=null;
+		if(target==null)
+		{
+			Rideable R=mob.riding();
+			if(R==null)
+			{
+				msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to himself '"+combinedCommands+"'^?",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+				if(mob.location().okAffect(msg))
+					mob.location().send(mob,msg);
+			}
+			else
+			{
+				msg=new FullMsg(mob,R,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
+								Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
+								Affect.NO_EFFECT,null);
+				if(mob.location().okAffect(msg))
+				{
+					mob.location().send(mob,msg);
+					for(int r=0;r<R.numRiders();r++)
+					{
+						Rider M=R.fetchRider(r);
+						if(M!=null)
+						{
+							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
+											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
+											Affect.NO_EFFECT,null);
+							if(mob.location().okAffect(msg))
+								mob.location().sendOthers(mob,msg);
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^?"
+										   ,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^?"
+										   ,Affect.NO_EFFECT,null);
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
+	}
+	
 	public static void yell(MOB mob, Vector commands)
 	{
 		Vector newCommands=Util.parse(Util.combine(commands,0).toUpperCase());
