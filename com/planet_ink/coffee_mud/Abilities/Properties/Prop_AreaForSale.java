@@ -55,7 +55,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{   
 	    setMiscText(landOwner()+"/"
 	        +(rentalProperty()?"RENTAL ":"")
-	        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+	        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 	        +price);
 	}
 	
@@ -69,7 +69,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{   
 	    setMiscText(owner+"/"
 		        +(rentalProperty()?"RENTAL ":"")
-		        +((backTaxes()>0)?"TAX"+backTaxes()+"X ":"")
+		        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 		        +landPrice());
     }
 
@@ -85,7 +85,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{	
 	    setMiscText(landOwner()+"/"
 		        +(rentalProperty()?"RENTAL ":"")
-		        +((backTaxes()>0)?"TAX"+tax+"X ":"")
+		        +((tax!=0)?"TAX"+tax+"X ":"")
 		        +landPrice());
 	}
 	
@@ -98,7 +98,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	{	
 	    setMiscText(landOwner()+"/"
 		        +(truefalse?"RENTAL ":"")
-		        +((backTaxes()>0)?"X"+backTaxes()+"X ":"")
+		        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 		        +landPrice());
 	}
 	

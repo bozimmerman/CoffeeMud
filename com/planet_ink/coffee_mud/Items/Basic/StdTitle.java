@@ -201,6 +201,51 @@ public class StdTitle extends StdItem implements LandTitle
 					return false;
 			}
 		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_BUY)
+		&&(msg.target() instanceof MOB)
+		&&(msg.tool()==this))
+		{
+			LandTitle A=fetchALandTitle();
+			if(A.landOwner().length()>0)
+			{
+				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
+			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
+			            &&(!A.landOwner().equals(msg.source().getClanID())))
+			    ||(((SK.whatIsSold()==ShopKeeper.DEAL_BANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER))
+			            &&(!A.landOwner().equals(msg.source().Name()))))
+			    {
+			        String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.landOwner()+".  It should be destroyed.";
+			        if(((MOB)msg.target()).isMonster())
+				        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
+			        else
+			            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
+			        destroy();
+					if(SK!=null) SK.removeStock(Name(),msg.source());
+			        return false;
+			    }
+			        
+			}
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_WITHDRAW)
+		&&(msg.target() instanceof MOB)
+		&&(msg.tool()==this))
+		{
+			LandTitle A=fetchALandTitle();
+			if(A.landOwner().length()==0)
+			{
+		        String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
+		        if(((MOB)msg.target()).isMonster())
+			        CommonMsgs.say((MOB)msg.target(),msg.source(),str,false,false);
+		        else
+		            ((MOB)msg.target()).tell(str+" You might want to tell the customer.");
+		        destroy();
+				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
+				if(SK!=null) SK.removeStock(Name(),msg.source());
+		        return false;
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 
@@ -362,7 +407,7 @@ public class StdTitle extends StdItem implements LandTitle
 					A.setLandOwner(msg.source().getClanID());
 				else
 					A.setLandOwner(msg.source().Name());
-				A.setBackTaxes(0);
+				setBackTaxes(0);
 				updateTitle();
 				updateLot();
 				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");

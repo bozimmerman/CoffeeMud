@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.interfaces;
 
 import java.util.*;
 
+import com.planet_ink.coffee_mud.common.CMMap;
+import com.planet_ink.coffee_mud.utils.Util;
+
 /* 
    Copyright 2000-2004 Bo Zimmerman
 
@@ -95,6 +98,7 @@ public interface Law
 	public final static int MOD_ADDWARRANT=14;
 	public final static int MOD_DELWARRANT=15;
 	public final static int MOD_CRIMEACCUSE=16;
+	public final static int MOD_CRIMEAQUIT=17;
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+
@@ -195,4 +199,5 @@ public interface Law
 		public String rawLawString();
 		public boolean lawIsActivated();
 		public void propertyTaxTick(Area A);
+		public Environmental[] getTreasuryNSafe(Area A);
 }

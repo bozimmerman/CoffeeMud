@@ -178,79 +178,75 @@ public class Arrest extends StdBehavior
 				}
 		}
 		
+		public Environmental[] getTreasuryNSafe(Area A)
+		{
+            Room treasuryR=null;
+            Item container=null;
+	        String tres=(String)taxLaws().get("TREASURY");
+	        if((tres!=null)&&(tres.length()>0))
+	        {
+				Vector V=Util.parseSemicolons(tres,false);
+				if(V.size()>0)
+				{
+				    Room R=null;
+					String room=(String)V.firstElement();
+					String item="";
+					if(V.size()>1) item=Util.combine(V,1);
+					if(!room.equalsIgnoreCase("*"))
+					{
+						treasuryR=CMMap.getRoom(room);
+						if(treasuryR!=null)
+					        container=treasuryR.fetchAnyItem(item);
+					}
+					else
+					if(item.length()>0)
+					for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+					{
+					    R=(Room)e.nextElement();
+					    if(R.fetchAnyItem(item) instanceof Container)
+					    { 
+					        container=R.fetchAnyItem(item);
+					        treasuryR=R; 
+					        break;
+				        }
+					}
+					if((room.length()>0)&&(treasuryR==null))
+					    treasuryR=A.getRandomMetroRoom();
+				}
+	        }
+	        Environmental[] ES=new Environmental[2];
+	        ES[0]=treasuryR;
+	        ES[1]=container;
+	        return ES;
+		}
+		
 		public void propertyTaxTick(Area A)
 		{
-		    if(lastMonthChecked<A.getTimeObj().getMonth())
+		    if(lastMonthChecked!=A.getTimeObj().getMonth())
 		    {
-		        double tax=Util.s_double((String)taxLaws.get("PROPERTYTAX"));
-		        if(tax==0.0)
-	            {
-			        lastMonthChecked=A.getTimeObj().getMonth();
-		            return;
-	            }
-		        tax=Util.div(tax,100.0);
-		        if(lastMonthChecked<0)
-		        {
-		            
-		        }
 		        lastMonthChecked=A.getTimeObj().getMonth();
-		        Hashtable titles=new Hashtable();
-			    Room R=null;
-			    for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-			    {
-			        R=(Room)e.nextElement();
-			        LandTitle T=CoffeeUtensils.getLandTitle(R);
-			        if((T!=null)&&(!titles.containsKey(T))&&(T.landOwner().length()>0)&&(!T.rentalProperty()))
-			            titles.put(T,R);
-			    }
+		        double tax=Util.s_double((String)taxLaws.get("PROPERTYTAX"));
+		        if(tax==0.0) return;
+		        tax=Util.div(tax,100.0);
+			    Vector titles=CoffeeUtensils.getAllUniqueTitles(A.getMetroMap(),"*",false);
 			    Hashtable owners=new Hashtable();
-			    for(Enumeration e=titles.keys();e.hasMoreElements();)
+			    for(Enumeration e=titles.elements();e.hasMoreElements();)
 			    {
 			        LandTitle T=(LandTitle)e.nextElement();
-			        R=(Room)titles.get(T);
-			        DVector D=(DVector)owners.get(T.landOwner());
+			        Vector D=(Vector)owners.get(T.landOwner());
 			        if(D==null)
 			        {
-			            D=new DVector(2);
+			            D=new Vector();
 			            owners.put(T.landOwner(),D);
 			        }
-			        D.addElement(T,R);
+			        D.addElement(T);
 			    }
 			    titles=null;
-                Room treasuryR=null;
-                Item container=null;
-                String tres=(String)taxLaws().get("TREASURY");
-                if((tres!=null)&&(tres.length()>0))
-                {
-        			Vector V=Util.parseSemicolons(tres,false);
-        			if(V.size()>0)
-        			{
-        				String room=(String)V.firstElement();
-        				String item="";
-        				if(V.size()>1) item=Util.combine(V,1);
-        				if(!room.equalsIgnoreCase("*"))
-        				{
-        					treasuryR=CMMap.getRoom(room);
-        					if(treasuryR!=null)
-	    				        container=treasuryR.fetchAnyItem(item);
-        				}
-        				else
-        				if(item.length()>0)
-        				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
-        				{
-        				    Room R2=(Room)e.nextElement();
-        				    if(R2.fetchAnyItem(item) instanceof Container)
-        				    { 
-        				        container=R2.fetchAnyItem(item);
-        				        treasuryR=R2; 
-        				        break;
-    				        }
-        				}
-        				if((room.length()>0)&&(treasuryR==null))
-        				    treasuryR=A.getRandomMetroRoom();
-        			}
-                }
+			    Environmental[] Treas=getTreasuryNSafe(A);
+                Room treasuryR=(Room)Treas[0];
+                Item container=(Item)Treas[1];
 		        String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
+		        
 			    for(Enumeration e=owners.keys();e.hasMoreElements();)
 			    {
 			        String owner=(String)e.nextElement();
@@ -260,45 +256,87 @@ public class Arrest extends StdBehavior
 				        responsibleMob=C.getResponsibleMember();
 				    else
 				        responsibleMob=CMMap.getLoadPlayer(owner);
-			        DVector particulars=(DVector)owners.get(owner);
+			        Vector particulars=(Vector)owners.get(owner);
+			        
 			        long totalValue=0;
 			        int paid=0;
+			        int owed=0;
 			        StringBuffer properties=new StringBuffer("");
+			        LandTitle T=null;
+			        Vector propertyRooms=null;
+			        
 			        for(int p=0;p<particulars.size();p++)
 			        {
 			            if(p>0) properties.append(", ");
-			            properties.append(((Room)particulars.elementAt(p,2)).roomID());
-			            LandTitle T=((LandTitle)particulars.elementAt(p,1));
+			            T=((LandTitle)particulars.elementAt(p));
+						propertyRooms=T.getPropertyRooms();
+						if((propertyRooms.size()<2)
+						||(CMMap.getArea(T.landPropertyID())!=null))
+						    properties.append(T.landPropertyID());
+						else
+						    properties.append("around "+CMMap.getExtendedRoomID((Room)propertyRooms.firstElement()));
+			            totalValue+=T.landPrice();
+			            if(T.backTaxes()>0)
+			            {
+			                totalValue+=T.backTaxes();
+			                owed+=T.backTaxes();
+			            }
+			        }
+			        owed+=(int)Math.round(Util.mul(totalValue,tax));
+			        
+			        if(owed>0)
+			        for(int p=0;p<particulars.size();p++)
+			        {
+			            T=((LandTitle)particulars.elementAt(p));
 			            if(T.backTaxes()<0)
 			            {
-			                paid+=(-T.backTaxes());
-			                T.setBackTaxes(0);
-			                T.updateTitle();
+			                if((-T.backTaxes())>=owed)
+			                {
+			                    paid+=owed;
+			                    T.setBackTaxes(T.backTaxes()+owed);
+					            T.updateTitle();
+			                    break;
+			                }
+			                else
+			                {
+				                paid+=(-T.backTaxes());
+				                T.setBackTaxes(0);
+					            T.updateTitle();
+			                }
 			            }
-			            totalValue+=T.landPrice();
 			        }
-			        int owed=(int)Math.round(Util.mul(totalValue,tax));
 			        if(owed>0)
 			        {
 			            owed-=paid;
 			            if((owed>0)&&(!MoneyUtils.modifyLocalBankGold(A,owner,CoffeeUtensils.getFormattedDate(A)+": Withdrawl of "+owed+": Taxes on property: "+properties.toString(),-owed)))
 			            {
-			                boolean owes=false;
+			                boolean owesButNotConfiscated=false;
 					        for(int p=0;p<particulars.size();p++)
 					        {
-					            LandTitle T=(LandTitle)particulars.elementAt(p,1);
-						        owed=(int)Math.round(Util.mul(T.landPrice(),tax));
-						        if((T.backTaxes()>0)&&(T.landPrice()/T.backTaxes())<4)
-						            T.setLandOwner("");
-						        else
-						        if(owed>0)
+					            T=(LandTitle)particulars.elementAt(p);
+						        int owedOnThisLand=(int)Math.round(Util.mul(T.landPrice(),tax));
+						        owedOnThisLand-=(paid/particulars.size());
+						        if(owedOnThisLand>0)
 						        {
-						            owes=true;
-					                T.setBackTaxes(T.backTaxes()+owed);
-						            T.updateTitle();
+					                T.setBackTaxes(T.backTaxes()+owedOnThisLand);
+							        if((T.landPrice()/T.backTaxes())<4)
+							        {
+							            if(Clans.getClan(T.landOwner())!=null)
+							        		CommonMsgs.channel("CLANTALK",T.landOwner(),"You clan has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+							            else
+							            if(CMMap.getPlayer(T.landOwner())!=null)
+							                CMMap.getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
+							            T.setLandOwner("");
+							            T.updateTitle();
+							        }
+							        else
+							        {
+							            owesButNotConfiscated=true;
+							            T.updateTitle();
+							        }
 						        }
 					        }
-					        if((owes)
+					        if((owesButNotConfiscated)
 					        &&(evasionBits!=null)
 					        &&(evasionBits[Law.BIT_CRIMENAME].length()>0)
 					        &&(responsibleMob!=null))
@@ -316,7 +354,7 @@ public class Arrest extends StdBehavior
 			            {
 					        for(int p=0;p<particulars.size();p++)
 					        {
-					            LandTitle T=(LandTitle)particulars.elementAt(p,1);
+					            T=(LandTitle)particulars.elementAt(p);
 					            if(T.backTaxes()>0)
 					            {
 					                T.setBackTaxes(0);
@@ -782,6 +820,39 @@ public class Arrest extends StdBehavior
 					return true;
 				}
 				return false;
+			case Law.MOD_CRIMEAQUIT:
+				if((laws!=null)
+		        &&(V!=null)
+		        &&(V.size()>2)
+		        &&(V.elementAt(1) instanceof MOB))
+				{
+					String[] info=null;
+					for(int v=1;v<V.size();v++)
+					{
+						String brokenLaw=(String)V.elementAt(v);
+						if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
+						else
+						if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+						else
+						if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
+						{   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
+					}
+					if(info==null) return false;
+					for(int i=0;i<laws.warrants().size();i++)
+					{
+						LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+						if((isStillACrime(W))
+						&&(W.criminal()==mob)
+						&&(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME])))
+						{
+							laws.warrants().removeElement(V.elementAt(1));
+							return true;
+						}
+					}
+				}
+			    return false;
 			case Law.MOD_CRIMEACCUSE:
 				if((laws!=null)
 		        &&(V!=null)
@@ -794,13 +865,20 @@ public class Arrest extends StdBehavior
 					{
 						String brokenLaw=(String)V.elementAt(v);
 						if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
+						    info=(String[])laws.basicCrimes().get(brokenLaw);
 						else
 						if((laws.taxLaws().containsKey(brokenLaw))&&(laws.taxLaws().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.taxLaws().get(brokenLaw);   break; }
+						    info=(String[])laws.taxLaws().get(brokenLaw);
 						else
 						if((laws.abilityCrimes().containsKey(brokenLaw))&&(laws.abilityCrimes().get(brokenLaw) instanceof String[]))
-						{   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
+						    info=(String[])laws.abilityCrimes().get(brokenLaw);
+						if(info!=null)
+						{
+						    if((info[Law.BIT_CRIMENAME]!=null)
+						    &&(info[Law.BIT_CRIMENAME].length()>0))
+						        break;
+						    info=null;
+						}
 					}
 					if(info==null) return false;
 					fillOutWarrant(mob,
@@ -2040,7 +2118,6 @@ public class Arrest extends StdBehavior
 		for(int w=0;w<warrs.size();w++)
 		{
 			LegalWarrant W=(LegalWarrant)warrs.elementAt(w);
-
 			if((W.criminal()==null)||(W.criminal().location()==null))
 				continue;
 

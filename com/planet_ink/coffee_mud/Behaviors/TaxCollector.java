@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.sun.rsasign.p;
 
 import java.util.*;
 
@@ -43,6 +44,25 @@ public class TaxCollector extends StdBehavior
 		waitTime=Util.getParmInt(newParms,"WAIT",1000*60*2);
 		graceTime=Util.getParmInt(newParms,"GRACE",1000*60*60);
 	}
+	
+	public int[] totalMoneyOwed(MOB M)
+	{
+	    int[] owed=new int[3];
+	    if((peopleWhoOwe.contains(M.Name()))||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
+	    {
+	        for(int t=0;t<taxableProperties.size();t++)
+	        {
+	            LandTitle T=(LandTitle)taxableProperties.elementAt(t);
+			    if((T.landOwner().equals(M.Name())
+			            ||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
+	            &&(T.backTaxes()>0))
+	                owed[2]+=T.backTaxes();
+	        }
+	    }
+		owed[1]=MoneyUtils.totalMoney(M)/10;
+		owed[0]=owed[1]+owed[2];
+		return owed;
+	}
 
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
@@ -52,41 +72,76 @@ public class TaxCollector extends StdBehavior
 			MOB mob=(MOB)oking;
 			if(msg.amITarget(mob)
 			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-			&&(msg.tool() instanceof Coins)
-			&&((demanded!=null)&&(paid!=null))
-			&&(demanded.contains(msg.source())))
+			&&(msg.tool() instanceof Coins))
 			{
-				int demanDex=demanded.indexOf(msg.source());
 				int paidAmount=((Coins)msg.tool()).numberOfCoins();
-				if(demanDex>=0)
+				if(paidAmount<=0) return;
+			    int[] owed=totalMoneyOwed(msg.source());
+	            if(treasuryR!=null)
+	            {
+    				Coins COIN=(Coins)CMClass.getStdItem("StdCoins");
+    				COIN.setNumberOfCoins(paidAmount);
+    				COIN.setContainer(treasuryItem);
+    				treasuryR.addItem(COIN);
+    				COIN.putCoinsBack();
+	            }
+	            
+				if((demanded!=null)&&(demanded.contains(msg.source())))
 				{
-					demanded.removeElementAt(demanDex);
-					paid.addElement(msg.source(),new Long(System.currentTimeMillis()));
+					int demanDex=demanded.indexOf(msg.source());
+					if(demanDex>=0)
+					{
+					    paidAmount-=owed[1];
+						demanded.removeElementAt(demanDex);
+					}
 				}
+				if(paid.contains(msg.source())) paid.removeElement(msg.source());
+				paid.addElement(msg.source(),new Long(System.currentTimeMillis()));
 				
 				int numProperties=0;
+				int numBackTaxesUnpaid=0;
+				boolean paidBackTaxes=false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
 				    LandTitle T=(LandTitle)taxableProperties.elementAt(i);
-				    if((T.landOwner().equals(msg.source().Name())))
+				    if(T.landOwner().equals(msg.source().Name())
+			            ||((msg.source().getClanID().length()>0)&&T.landOwner().equals(msg.source().getClanID())))
 				    {
 				        numProperties++;
-				        if((T.backTaxes()>0)&&(paidAmount>=0))
+				        if(T.backTaxes()>0)
 				        {
-				            if(paidAmount>=T.backTaxes())
-				            {
-				                paidAmount-=T.backTaxes();
-				                T.setBackTaxes(0);
-				                T.updateTitle();
-				            }
-				            else
-				            {
-				                paidAmount=0;
-				                T.setBackTaxes(T.backTaxes()-paidAmount);
-				                T.updateTitle();
-				                break;
-				            }
+				            numBackTaxesUnpaid++;
+					        if(paidAmount>=0)
+					        {
+					            if(paidAmount>=T.backTaxes())
+					            {
+					                paidAmount-=T.backTaxes();
+					                T.setBackTaxes(0);
+					                T.updateTitle();
+						            numBackTaxesUnpaid--;
+						            paidBackTaxes=true;
+					            }
+					            else
+					            {
+					                paidAmount=0;
+					                T.setBackTaxes(T.backTaxes()-paidAmount);
+					                T.updateTitle();
+					                break;
+					            }
+					        }
 				        }
+				    }
+				}
+				if((paidBackTaxes)&&(numBackTaxesUnpaid==0)&&(mob.location()!=null))
+				{
+				    Behavior B=CoffeeUtensils.getLegalBehavior(mob.location().getArea());
+				    if(B!=null)
+				    {
+						Vector VB=new Vector();
+						Area A2=CoffeeUtensils.getLegalObject(mob.location().getArea());
+						VB.addElement(new Integer(Law.MOD_CRIMEAQUIT));
+						VB.addElement("TAXEVASION");
+						B.modifyBehavior(A2,msg.source(),VB);
 				    }
 				}
 				
@@ -102,15 +157,7 @@ public class TaxCollector extends StdBehavior
 			            paidAmount-=(paidAmount/numProperties);
 				    }
 				}
-				
-	            if((treasuryR!=null)&&(paidAmount>0))
-	            {
-    				Coins COIN=(Coins)CMClass.getStdItem("StdCoins");
-    				COIN.setNumberOfCoins(paidAmount);
-    				COIN.setContainer(treasuryItem);
-    				treasuryR.addItem(COIN);
-    				COIN.putCoinsBack();
-	            }
+				msg.addTrailerMsg(new FullMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,"<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>."));
 			}
 		}
 	}
@@ -122,17 +169,16 @@ public class TaxCollector extends StdBehavior
 		MOB mob=(MOB)oking;
 		if(msg.amITarget(mob)
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(msg.tool() instanceof Coins)
-		&&((demanded!=null)&&(paid!=null))
-		&&(demanded.contains(msg.source())))
+		&&(msg.tool() instanceof Coins))
 		{
-			int money=MoneyUtils.totalMoney(msg.source());
+		    int[] owe=totalMoneyOwed(msg.source());
 			int coins=((Coins)msg.tool()).numberOfCoins();
-			int owed=money/10;
-			if(owed<1) owed=1;
-			if(coins<owed)
+			if((paid!=null)&&(paid.contains(msg.source())))
+		        owe[0]-=owe[1];
+			if(coins<owe[0])
 			{
-				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
+			    msg.source().tell(mob.name()+" refuses your money.");
+				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owe[0]+".  Try again.",false,false);
 				return false;
 			}
 		}
@@ -173,57 +219,25 @@ public class TaxCollector extends StdBehavior
 				Law theLaw=(Law)VB.firstElement();
 				
 				String taxs=(String)theLaw.taxLaws().get("PROPERTYTAX");
-				taxableProperties.clear();
-				peopleWhoOwe.clear();
-				Room R2=null;
 				LandTitle T=null;
+				peopleWhoOwe.clear();
 				if((taxs!=null)&&(taxs.length()>0)&&(Util.s_double(taxs)>0))
-				for(Enumeration e=A2.getMetroMap();e.hasMoreElements();)
 				{
-				    R2=(Room)e.nextElement();
-				    T=CoffeeUtensils.getLandTitle(R2);
-				    if((T!=null)
-				    &&(T.landOwner().length()>0)
-				    &&(!taxableProperties.contains(T)))
+				    taxableProperties=CoffeeUtensils.getAllUniqueTitles(A2.getMetroMap(),"*",false);
+				    for(int v=0;v<taxableProperties.size();v++)
 				    {
-				        taxableProperties.addElement(T);
+				        T=(LandTitle)taxableProperties.elementAt(v);
 				        if((!peopleWhoOwe.contains(T.landOwner()))
 				        &&(T.backTaxes()>0))
 				            peopleWhoOwe.add(T.landOwner());
 				    }
 				}
+				else
+					taxableProperties.clear();
 				
-                String tres=(String)theLaw.taxLaws().get("TREASURY");
-                if((tres!=null)&&(tres.length()>0))
-                {
-        			Vector V=Util.parseSemicolons(tres,false);
-        			if(V.size()>0)
-        			{
-        				String room=(String)V.firstElement();
-        				String item="";
-        				if(V.size()>1) item=Util.combine(V,1);
-        				if(!room.equalsIgnoreCase("*"))
-        				{
-        					treasuryR=CMMap.getRoom(room);
-        					if(treasuryR!=null)
-        					    treasuryItem=treasuryR.fetchAnyItem(item);
-        				}
-        				else
-        				if(item.length()>0)
-        				for(Enumeration e=A2.getMetroMap();e.hasMoreElements();)
-        				{
-        				    R2=(Room)e.nextElement();
-        				    if(R2.fetchAnyItem(item) instanceof Container)
-        				    { 
-        				        treasuryItem=R2.fetchAnyItem(item);
-        				        treasuryR=R2; 
-        				        break;
-    				        }
-        				}
-        				if((room.length()>0)&&(treasuryR==null))
-        				    treasuryR=A2.getRandomMetroRoom();
-        			}
-                }
+				Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
+				treasuryR=(Room)Treas[0];
+				treasuryItem=(Item)Treas[1];
 		    }
 		}
 		
@@ -241,47 +255,49 @@ public class TaxCollector extends StdBehavior
 			&&(!Sense.isAnimalIntelligence(M))
 			&&(Sense.canBeSeenBy(M,mob)))
 			{
-				int money=MoneyUtils.totalMoney(M);
-				if(money>0)
+				int demandDex=demanded.indexOf(M);
+				if((demandDex>=0)
+				&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 				{
-					int demandDex=demanded.indexOf(M);
-					if((demandDex>=0)
-					&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
-					{
+				    Behavior B=CoffeeUtensils.getLegalBehavior(R.getArea());
+				    if(B!=null)
+				    {
+						Vector VB=new Vector();
+						Area A2=CoffeeUtensils.getLegalObject(R.getArea());
+						VB.addElement(new Integer(Law.MOD_CRIMEACCUSE));
+						VB.addElement(mob);
+						VB.addElement("TAXEVASION");
+						B.modifyBehavior(A2,M,VB);
+						CommonMsgs.say(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
+				    }
+				    else
+				    {
 						CommonMsgs.say(mob,M,"You know what they say about death and taxes, so if you won't pay ... DIE!!!!",false,false);
 						MUDFight.postAttack(mob,M,mob.fetchWieldedItem());
 						demanded.removeElementAt(demandDex);
-					}
-					if((!paid.contains(M))&&(demandDex<0))
-					{
-					    String plus="";
-					    if(peopleWhoOwe.contains(M.Name()))
-					    {
-					        int backTaxes=0;
-					        for(int t=0;t<taxableProperties.size();t++)
-					        {
-					            LandTitle T=(LandTitle)taxableProperties.elementAt(t);
-					            if((T.landOwner().equals(M.Name()))
-					            &&(T.backTaxes()>0))
-					                backTaxes+=T.backTaxes();
-					        }
-					        if(backTaxes>0)
-					            plus=" plus "+backTaxes+" in back property taxes";
-					    }
-						int amount=money/10;
-						if(amount<1) amount=1;
-						CommonMsgs.say(mob,M,"You owe "+amount+" gold in citizen taxes"+plus+".  You must pay me immediately or face the consequences.",false,false);
+				    }
+				}
+				if((!paid.contains(M))&&(demandDex<0))
+				{
+				    int[] owe=totalMoneyOwed(M);
+				    StringBuffer say=new StringBuffer("");
+				    if(owe[1]>0)
+				    	say.append("You owe "+owe[1]+" gold in local taxes. ");
+				    if(owe[2]>0)
+				    	say.append("You owe "+owe[2]+" in back property taxes");
+				    if(say.length()>0)
+				    {
+						CommonMsgs.say(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);
 						demanded.addElement(M,new Long(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
 							Vector V=new Vector();
 							V.addElement("GIVE");
-							V.addElement(""+amount);
+							V.addElement(""+owe[0]);
 							V.addElement(mob.name());
 							M.doCommand(V);
 						}
-
-					}
+				    }
 				}
 			}
 

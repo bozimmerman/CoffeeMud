@@ -628,6 +628,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 						CommonMsgs.say(this,mob,"What do you want? I'm busy!",true,false);
 						return false;
 					}
+					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+					    return false;
 					MOB owner=msg.source();
 					int balance=getBalance(owner);
 					if(msg.tool() instanceof Coins)

@@ -67,7 +67,7 @@ public class SaveThread extends Thread
 			MOB mob=(MOB)p.nextElement();
 			if(!mob.isMonster())
 			{
-				status="saving "+mob.Name();
+				status="just saving "+mob.Name();
 				MOBloader.DBUpdateJustMOB(mob);
 				if((mob.Name().length()==0)||(mob.playerStats()==null))
 					continue;
@@ -339,6 +339,7 @@ public class SaveThread extends Thread
 						Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
 						lastStart=System.currentTimeMillis();
 						savePlayers();
+						status="not saving players";
 						//if(processed>0)
 						//	Log.sysOut("SaveThread","Saved "+processed+" mobs.");
 					}

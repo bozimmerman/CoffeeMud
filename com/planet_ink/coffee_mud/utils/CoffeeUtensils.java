@@ -124,6 +124,41 @@ public class CoffeeUtensils
 		return -1;
 	}
 
+	public static Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
+	{
+	    Vector V=new Vector();
+	    HashSet roomsDone=new HashSet();
+	    Room R=null;
+	    for(;e.hasMoreElements();)
+	    {
+	        R=(Room)e.nextElement();
+	        LandTitle T=CoffeeUtensils.getLandTitle(R);
+	        if((T!=null)
+	        &&(!V.contains(T))
+	        &&(includeRentals||(!T.rentalProperty()))
+            &&((owner==null)
+                ||(owner.length()==0)
+                ||(owner.equals("*")&&(T.landOwner().length()>0))
+                ||(T.landOwner().equals(owner))))
+	        {
+	            Vector V2=T.getPropertyRooms();
+	            boolean proceed=true;
+	            for(int v=0;v<V2.size();v++)
+	            {
+	                Room R2=(Room)V2.elementAt(v);
+	                if(!roomsDone.contains(R2))
+	                    roomsDone.add(R2);
+	                else
+	                    proceed=false;
+	            }
+	            if(proceed)
+	                V.addElement(T);
+	                
+	        }
+	    }
+	    return V;
+	}
+	
 	public static Environmental makeResource(int myResource, int localeCode, boolean noAnimals)
 	{
 		if(myResource<0)

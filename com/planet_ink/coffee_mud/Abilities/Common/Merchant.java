@@ -369,6 +369,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((msg.tool()!=null)
 				&&(doIHaveThisInStock(msg.tool().Name(),mob)))
 				{
+					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+					    return false;
 					if((msg.targetMinor()!=CMMsg.TYP_VIEW)
 					&&(yourValue(mob,msg.tool(),true)[0]>MoneyUtils.totalMoney(mob)))
 					{

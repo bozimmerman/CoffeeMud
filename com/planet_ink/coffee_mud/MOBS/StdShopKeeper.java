@@ -669,6 +669,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if((msg.tool()!=null)
 				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
 				{
+					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
+					    return false;
 					if(msg.targetMinor()!=CMMsg.TYP_VIEW)
 					{
 						int[] val=yourValue(mob,msg.tool(),true);

@@ -62,16 +62,24 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	public void updateTitle()
 	{
 		Vector V=getPropertyRooms();
+		String owner=landOwner();
+		int price=landPrice();
+		boolean rental=rentalProperty();
+		int back=backTaxes();
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);
 			LandTitle A=(LandTitle)R.fetchEffect(ID());
 			if((A!=null)
-			&&((!A.landOwner().equals(landOwner()))
-			   ||(A.landPrice()!=landPrice())))
+			&&((!A.landOwner().equals(owner))
+			   ||(A.landPrice()!=price)
+			   ||(A.backTaxes()!=back)
+			   ||(A.rentalProperty()!=rental)))
 			{
-				A.setLandOwner(landOwner());
-				A.setLandPrice(landPrice());
+				A.setLandOwner(owner);
+				A.setLandPrice(price);
+				A.setBackTaxes(back);
+				A.setRentalProperty(rental);
 				CMClass.DBEngine().DBUpdateRoom(R);
 			}
 		}
