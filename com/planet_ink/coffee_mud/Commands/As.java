@@ -35,6 +35,7 @@ public class As extends StdCommand
 			mob.tell("As whom do what?");
 			return false;
 		}
+		boolean here=false;
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		if((!CMSecurity.isAllowed(mob,mob.location(),"AS"))||(mob.isMonster()))
@@ -44,12 +45,33 @@ public class As extends StdCommand
 		}
 		Session mySession=mob.session();
 		MOB M=CMMap.getLoadPlayer(cmd);
+		if(M==null)
+			M=mob.location().fetchInhabitant(cmd);
+		if(M==null)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				M=R.fetchInhabitant(cmd);
+				if(M!=null) break;
+			}
+		if(M==null)
+		{
+			mob.tell("You don't know of anyone by that name.");
+			return false;
+		}
 		Session oldSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		M.setSession(mySession);
 		mySession.setMob(M);
+		if(((String)commands.firstElement()).equalsIgnoreCase("here")
+		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
+		{
+			mob.location().bringMobHere(M,false);
+			commands.removeElementAt(0);
+		}
 		M.doCommand(commands);
+		if(M.playerStats()!=null) M.playerStats().setUpdated(0);
 		if((oldRoom!=null)&&(inside))
 			oldRoom.bringMobHere(M,false);
 		else
