@@ -298,6 +298,7 @@ public class TheFight
 				{
 					Item newItem=(Item)thisItem.copyOf();
 					newItem.setLocation(null);
+					newItem.setPossessionTime(Calendar.getInstance());
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;
@@ -356,6 +357,7 @@ public class TheFight
 					Item C=(Item)CMClass.getItem("Coins");
 					C.baseEnvStats().setAbility(deadMoney);
 					C.recoverEnvStats();
+					C.setPossessionTime(Calendar.getInstance());
 					C.setLocation(Body);
 					deathRoom.addItem(C);
 					deathRoom.recoverRoomStats();
@@ -370,6 +372,7 @@ public class TheFight
 						Item C=CMClass.getItem("Coins");
 						C.baseEnvStats().setAbility(myAmount);
 						C.setLocation(Body);
+						C.setPossessionTime(Calendar.getInstance());
 						C.recoverEnvStats();
 						deathRoom.addItem(C);
 						deathRoom.recoverRoomStats();
