@@ -17,7 +17,7 @@ public class Spell_DeadenSmell extends Spell
 		// bring up their affected list.
 		displayText="(Deadened Smell)";
 
-		quality=Ability.MALICIOUS;
+		quality=Ability.INDIFFERENT;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -85,12 +85,12 @@ public class Spell_DeadenSmell extends Spell
 				if(!msg.wasModified())
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> lost <S-HIS-HER> sense of smell!");
-					success=maliciousAffect(mob,target,0,-1);
+					success=beneficialAffect(mob,target,0);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles.");
+			return beneficialFizzle(mob,target,"<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles.");
 
 		// return whether it worked
 		return success;
