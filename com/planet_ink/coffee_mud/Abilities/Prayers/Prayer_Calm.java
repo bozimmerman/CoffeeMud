@@ -11,7 +11,7 @@ public class Prayer_Calm extends Prayer
 	public String name(){ return "Calm";}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Calm();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -13,7 +13,7 @@ public class Prayer_SummonElemental extends Prayer
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_SummonElemental();}
 
 	public boolean tick(Tickable ticking, int tickID)

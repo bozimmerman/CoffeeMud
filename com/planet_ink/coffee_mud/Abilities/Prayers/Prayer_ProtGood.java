@@ -11,7 +11,7 @@ public class Prayer_ProtGood extends Prayer
 	public String name(){ return "Protection Good";}
 	public String displayText(){ return "(Protection from Good)";}
 	public int quality(){ return OK_SELF;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_ProtGood();}
@@ -49,7 +49,8 @@ public class Prayer_ProtGood extends Prayer
 			&&(affect.tool() instanceof Prayer))
 			{
 				Prayer bob=(Prayer)affect.tool();
-				if(bob.holyQuality()==Prayer.HOLY_GOOD)
+				if((Util.bset(bob.flags(),Ability.FLAG_HOLY))
+				&&(!Util.bset(bob.flags(),Ability.FLAG_UNHOLY)))
 				{
 					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+affect.source().name()+".");
 					return false;

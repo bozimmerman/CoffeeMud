@@ -10,7 +10,7 @@ public class Prayer_Avatar extends Prayer
 	public String ID() { return "Prayer_Avatar"; }
 	public String name(){ return "Avatar";}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
 			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";

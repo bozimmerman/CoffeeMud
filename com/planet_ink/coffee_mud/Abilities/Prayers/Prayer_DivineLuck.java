@@ -11,7 +11,7 @@ public class Prayer_DivineLuck extends Prayer
 	public String name(){ return "Divine Luck";}
 	public String displayText(){ return "(Divine Luck)";}
 	public int quality(){ return OK_SELF;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_DivineLuck();}

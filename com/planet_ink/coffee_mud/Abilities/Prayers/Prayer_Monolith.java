@@ -15,7 +15,7 @@ public class Prayer_Monolith extends Prayer
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Monolith();}
 
 	private final static int TYP_ICE=0;

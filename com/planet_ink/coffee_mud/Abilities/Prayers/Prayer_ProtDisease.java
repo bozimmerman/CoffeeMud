@@ -10,7 +10,7 @@ public class Prayer_ProtDisease extends Prayer
 	public String ID() { return "Prayer_ProtDisease"; }
 	public String name(){ return "Protection Disease";}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Protection Disease)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -10,7 +10,7 @@ public class Prayer_Sacrifice extends Prayer
 	public String ID() { return "Prayer_Sacrifice"; }
 	public String name(){ return "Sacrifice";}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_Sacrifice();}
 

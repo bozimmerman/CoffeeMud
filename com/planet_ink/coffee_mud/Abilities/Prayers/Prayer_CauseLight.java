@@ -10,7 +10,7 @@ public class Prayer_CauseLight extends Prayer
 	public String ID() { return "Prayer_CauseLight"; }
 	public String name(){ return "Cause Light Wounds";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_CauseLight();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

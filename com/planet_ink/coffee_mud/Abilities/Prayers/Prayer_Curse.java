@@ -11,7 +11,7 @@ public class Prayer_Curse extends Prayer
 	public String name(){ return "Curse";}
 	public String displayText(){ return "(Cursed)";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_Curse();}

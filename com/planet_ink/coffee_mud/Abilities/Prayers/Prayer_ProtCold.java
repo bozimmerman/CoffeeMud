@@ -11,10 +11,9 @@ public class Prayer_ProtCold extends Prayer
 	public String ID() { return "Prayer_ProtCold"; }
 	public String name(){ return "Protection Cold";}
 	public String displayText(){return "(Protection from Cold)";}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEATING;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public Environmental newInstance(){	return new Prayer_ProtCold();}
-	public long flags(){return Ability.FLAG_HEATING;}
 
 	public void unInvoke()
 	{

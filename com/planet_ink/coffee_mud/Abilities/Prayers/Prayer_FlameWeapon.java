@@ -11,11 +11,10 @@ public class Prayer_FlameWeapon extends Prayer
 	public String name(){ return "Flame Weapon";}
 	public String displayText(){return "(Enflamed)";}
 	public int quality(){return Ability.INDIFFERENT;}
-	public int holyQuality(){ return HOLY_EVIL;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_FlameWeapon();}
-	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 	private boolean notAgain=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

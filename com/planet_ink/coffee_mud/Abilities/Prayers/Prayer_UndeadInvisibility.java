@@ -11,7 +11,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 	public String name(){ return "Invisibility to Undead";}
 	public String displayText(){ return "(Inivisbility to Undead)";}
 	public int quality(){ return OK_SELF;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_UndeadInvisibility();}

@@ -10,7 +10,7 @@ public class Prayer_Restoration extends Prayer
 	public String ID() { return "Prayer_Restoration"; }
 	public String name(){ return "Restoration";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Restoration();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

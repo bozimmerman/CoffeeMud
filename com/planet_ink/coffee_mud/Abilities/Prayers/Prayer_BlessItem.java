@@ -13,7 +13,7 @@ public class Prayer_BlessItem extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_BlessItem();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -11,7 +11,7 @@ public class Prayer_Fertilize extends Prayer
 	public String name(){return "Fertilize";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Fertilize();}
 
 	public boolean tick(Tickable ticking, int tickID)

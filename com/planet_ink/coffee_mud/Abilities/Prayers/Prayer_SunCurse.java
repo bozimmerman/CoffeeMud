@@ -10,7 +10,7 @@ public class Prayer_SunCurse extends Prayer
 	public String ID() { return "Prayer_SunCurse"; }
 	public String name(){ return "Sun Curse";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Sun Curse)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

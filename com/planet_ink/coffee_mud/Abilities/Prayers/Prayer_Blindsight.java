@@ -13,7 +13,7 @@ public class Prayer_Blindsight extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Blindsight();	}
 
 

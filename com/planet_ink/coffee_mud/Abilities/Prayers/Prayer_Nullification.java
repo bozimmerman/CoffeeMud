@@ -10,7 +10,7 @@ public class Prayer_Nullification extends Prayer
 	public String ID() { return "Prayer_Nullification"; }
 	public String name(){ return "Nullification";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_Nullification();}

@@ -11,7 +11,7 @@ public class Prayer_Weather extends Prayer
 	public String ID() { return "Prayer_Weather"; }
 	public String name(){ return "Weather";}
 	protected int canAffectCode(){return 0;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_Weather();}
 	

@@ -10,7 +10,7 @@ public class Prayer_MassMobility extends Prayer
 	public String ID() { return "Prayer_MassMobility"; }
 	public String name(){ return "Mass Mobility";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Mass Mobility)";}
 	public Environmental newInstance(){	return new Prayer_MassMobility();}
 

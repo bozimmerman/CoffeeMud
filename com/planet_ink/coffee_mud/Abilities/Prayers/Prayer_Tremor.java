@@ -13,7 +13,7 @@ public class Prayer_Tremor extends Prayer
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Tremor();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

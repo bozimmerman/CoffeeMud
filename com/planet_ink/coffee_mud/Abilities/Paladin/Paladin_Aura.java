@@ -61,7 +61,8 @@ public class Paladin_Aura extends Paladin
 			&&(affect.tool() instanceof Prayer))
 			{
 				Prayer bob=(Prayer)affect.tool();
-				if(bob.holyQuality()==Prayer.HOLY_EVIL)
+				if((!Util.bset(bob.flags(),Ability.FLAG_HOLY))
+				&&(Util.bset(bob.flags(),Ability.FLAG_UNHOLY)))
 				{
 					affect.source().location().show((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
 					return false;

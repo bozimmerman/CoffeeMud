@@ -10,7 +10,7 @@ public class Prayer_Wave extends Prayer
 	public String ID() { return "Prayer_Wave"; }
 	public String name(){ return "Wave";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Waved)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}

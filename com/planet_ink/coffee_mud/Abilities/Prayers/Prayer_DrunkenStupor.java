@@ -10,7 +10,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	public String ID() { return "Prayer_DrunkenStupor"; }
 	public String name(){ return "Drunken Stupor";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Drunken Stupod)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

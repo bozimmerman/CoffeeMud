@@ -13,7 +13,7 @@ public class Prayer_SenseInvisible extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return OK_SELF;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_SenseInvisible();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -13,7 +13,7 @@ public class Prayer_AuraStrife extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public boolean autoInvocation(MOB mob){return true;}
 	public Environmental newInstance(){	return new Prayer_AuraStrife();}
 

@@ -10,7 +10,7 @@ public class Prayer_AnimateZombie extends Prayer
 	public String ID() { return "Prayer_AnimateZombie"; }
 	public String name(){ return "Animate Zombie";}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_AnimateZombie();}
 

@@ -11,7 +11,7 @@ public class Prayer_ProtFire extends Prayer
 	public String ID() { return "Prayer_ProtFire"; }
 	public String name(){ return "Protection Fire";}
 	public String displayText(){return "(Protection from Fire)";}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public Environmental newInstance(){	return new Prayer_ProtFire();}
 

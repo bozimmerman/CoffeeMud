@@ -10,7 +10,7 @@ public class Prayer_CureSerious extends Prayer
 	public String ID() { return "Prayer_CureSerious"; }
 	public String name(){ return "Cure Serious Wounds";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_CureSerious();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

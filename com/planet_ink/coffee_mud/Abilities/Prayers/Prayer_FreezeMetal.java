@@ -14,7 +14,7 @@ public class Prayer_FreezeMetal extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_FreezeMetal();}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	private Vector affectedItems=new Vector();
 

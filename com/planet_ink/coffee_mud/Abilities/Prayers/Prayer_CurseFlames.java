@@ -12,7 +12,7 @@ public class Prayer_CurseFlames extends Prayer
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
 	public Environmental newInstance(){	return new Prayer_CurseFlames();	}

@@ -10,7 +10,7 @@ public class Prayer_Godstrike extends Prayer
 	public String ID() { return "Prayer_Godstrike"; }
 	public String name(){ return "Godstrike";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Godstrike();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

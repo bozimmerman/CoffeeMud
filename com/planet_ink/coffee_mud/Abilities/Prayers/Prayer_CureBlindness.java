@@ -10,7 +10,7 @@ public class Prayer_CureBlindness extends Prayer
 	public String ID() { return "Prayer_CureBlindness"; }
 	public String name(){ return "Cure Blindness";}
 	public int quality(){ return OK_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_CureBlindness();}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)

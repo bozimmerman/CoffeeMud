@@ -13,7 +13,7 @@ public class Prayer_Extinguish extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public int quality(){ return OK_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Extinguish();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

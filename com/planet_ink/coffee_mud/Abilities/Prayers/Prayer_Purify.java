@@ -13,7 +13,7 @@ public class Prayer_Purify extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_Purify();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

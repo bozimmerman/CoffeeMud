@@ -10,7 +10,7 @@ public class Prayer_AnimateGhoul extends Prayer
 	public String ID() { return "Prayer_AnimateGhoul"; }
 	public String name(){ return "Animate Ghoul";}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_AnimateGhoul();}
 

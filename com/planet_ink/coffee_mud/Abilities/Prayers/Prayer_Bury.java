@@ -11,7 +11,7 @@ public class Prayer_Bury extends Prayer
 	public String name(){ return "Bury";}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Bury();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

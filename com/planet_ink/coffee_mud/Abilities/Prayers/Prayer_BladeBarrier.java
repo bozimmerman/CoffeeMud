@@ -13,7 +13,7 @@ public class Prayer_BladeBarrier extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	String lastMessage=null;
 	public Environmental newInstance(){	return new Prayer_BladeBarrier();}
 

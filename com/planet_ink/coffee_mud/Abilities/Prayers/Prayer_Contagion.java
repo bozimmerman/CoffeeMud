@@ -11,7 +11,7 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public String displayText(){ return "(Contagion)";}
 	public String name(){ return "Contagion";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Contagion();	}

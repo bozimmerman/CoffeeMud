@@ -11,7 +11,7 @@ public class Prayer_Deafness extends Prayer
 	public String name(){ return "Deafness";}
 	public String displayText(){ return "(Deafness)";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Deafness();}

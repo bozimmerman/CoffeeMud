@@ -11,7 +11,7 @@ public class Prayer_CurseMind extends Prayer
 	public String name(){return "Curse Mind";}
 	public String displayText(){return "(Cursed Mind)";}
 	public int quality(){return MALICIOUS;};
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_CurseMind();}
 	

@@ -12,7 +12,7 @@ public class Prayer_Rockskin extends Prayer
 	public String displayText(){return "(Rockskin)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_Rockskin();}
 
 	int HitsRemaining=0;

@@ -10,7 +10,7 @@ public class Prayer_Earthshield extends Prayer
 	public String ID() { return "Prayer_Earthshield"; }
 	public String name(){ return "Earthshield";}
 	public int quality(){ return OK_OTHERS;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(In Earthshield)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

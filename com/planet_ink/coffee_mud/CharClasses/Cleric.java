@@ -221,13 +221,14 @@ public class Cleric extends StdCharClass
 
 	protected int holyQuality(Ability A)
 	{
-		boolean notgood=(!A.appropriateToMyAlignment(1000));
-		boolean notneutral=(!A.appropriateToMyAlignment(500));
-		boolean notevil=(!A.appropriateToMyAlignment(0));
-		boolean good=!notgood;
-		boolean evil=!notevil;
-		if(notgood&&notneutral&&evil) return 0;
-		if(notevil&&notneutral&&good) return 1000;
+		if(Util.bset(A.flags(),Ability.FLAG_HOLY))
+		{
+			if(!Util.bset(A.flags(),Ability.FLAG_UNHOLY))
+				return 1000;
+		}
+		else
+		if(Util.bset(A.flags(),Ability.FLAG_UNHOLY))
+			return 0;
 		return 500;
 	}
 

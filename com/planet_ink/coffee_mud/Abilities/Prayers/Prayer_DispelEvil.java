@@ -10,7 +10,7 @@ public class Prayer_DispelEvil extends Prayer
 	public String ID() { return "Prayer_DispelEvil"; }
 	public String name(){ return "Dispel Evil";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_DispelEvil();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

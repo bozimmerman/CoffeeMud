@@ -10,10 +10,9 @@ public class Prayer_MassParalyze extends Prayer
 	public String ID() { return "Prayer_MassParalyze"; }
 	public String name(){ return "Mass Paralyze";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_BINDING;}
 	public String displayText(){ return "(Paralyzed)";}
 	public Environmental newInstance(){	return new Prayer_MassParalyze();}
-	public long flags(){return Ability.FLAG_BINDING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

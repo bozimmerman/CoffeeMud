@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer;
 import java.util.*;
 
 // this ability is the very picture of the infectuous affect.
@@ -165,7 +164,9 @@ public class Prop_HaveResister extends Property
 					}
 				}
 				else
-				if((A instanceof Prayer)&&(((Prayer)A).holyQuality()==Prayer.HOLY_GOOD))
+				if((A.classificationCode()==Ability.PRAYER)
+				&&(Util.bset(A.flags(),Ability.FLAG_HOLY))
+				&&(!Util.bset(A.flags(),Ability.FLAG_UNHOLY)))
 				{
 					if(Prop_HaveResister.checkProtection(me,"holy"))
 					{

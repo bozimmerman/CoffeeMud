@@ -13,7 +13,7 @@ public class Prayer_HolyWord extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_HolyWord();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -10,12 +10,11 @@ public class Prayer_Paralyze extends Prayer
 	public String ID() { return "Prayer_Paralyze"; }
 	public String name(){ return "Paralyze";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_BINDING;}
 	public String displayText(){ return "(Paralyzed)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Paralyze();}
-	public long flags(){return Ability.FLAG_BINDING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

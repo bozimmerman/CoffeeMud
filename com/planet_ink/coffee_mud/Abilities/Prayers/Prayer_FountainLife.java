@@ -10,7 +10,7 @@ public class Prayer_FountainLife extends Prayer
 	public String ID() { return "Prayer_FountainLife"; }
 	public String name(){ return "Fountain of Life";}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	private Room SpringLocation=null;

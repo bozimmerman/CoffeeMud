@@ -10,7 +10,7 @@ public class Prayer_CreateFood extends Prayer
 	public String ID() { return "Prayer_CreateFood"; }
 	public String name(){ return "Create Food";}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_CreateFood();	}

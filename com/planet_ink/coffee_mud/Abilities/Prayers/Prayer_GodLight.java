@@ -10,7 +10,7 @@ public class Prayer_GodLight extends Prayer
 	public String ID() { return "Prayer_GodLight"; }
 	public String name(){ return "Godlight";}
 	public String displayText(){return "(Godlight)";}
-	public int holyQuality(){return Prayer.HOLY_GOOD;}
+	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Prayer_GodLight();}
 

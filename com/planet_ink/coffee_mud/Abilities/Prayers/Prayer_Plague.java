@@ -10,7 +10,7 @@ public class Prayer_Plague extends Prayer implements DiseaseAffect
 	public String ID() { return "Prayer_Plague"; }
 	public String name(){ return "Plague";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Plague)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -10,7 +10,7 @@ public class Prayer_MassHarm extends Prayer
 	public String ID() { return "Prayer_MassHarm"; }
 	public String name(){ return "Mass Harm";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public Environmental newInstance(){	return new Prayer_MassHarm();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -10,7 +10,7 @@ public class Prayer_Poison extends Prayer
 	public String ID() { return "Prayer_Poison"; }
 	public String name(){ return "Poison";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

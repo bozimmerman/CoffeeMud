@@ -13,14 +13,9 @@ public class Prayer extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return INDIFFERENT;}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
 	private static final String[] triggerStrings = {"PRAY","PR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.PRAYER;}
-
-	public final static int HOLY_EVIL=0;
-	public final static int HOLY_NEUTRAL=1;
-	public final static int HOLY_GOOD=2;
 
 	protected int affectType(boolean auto){
 		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
@@ -75,16 +70,26 @@ public class Prayer extends StdAbility
 
 	public boolean appropriateToMyAlignment(int alignment)
 	{
-		switch(holyQuality())
+		int qual=0;
+		if(Util.bset(flags(),Ability.FLAG_HOLY))
 		{
-		case Prayer.HOLY_EVIL:
-			if(alignment<350) return true;
+			if(!Util.bset(flags(),Ability.FLAG_UNHOLY))
+				qual=1;
+		}
+		else
+		if(Util.bset(flags(),Ability.FLAG_UNHOLY))
+			qual=2;
+		switch(qual)
+		{
+		case 0:
+			if((alignment>350)&&(alignment<650)) 
+				return true;
 			break;
-		case Prayer.HOLY_GOOD:
+		case 1:
 			if(alignment>650) return true;
 			break;
-		case Prayer.HOLY_NEUTRAL:
-			if((alignment>350)&&(alignment<650)) return true;
+		case 2:
+			if(alignment<350) return true;
 			break;
 		}
 		return false;

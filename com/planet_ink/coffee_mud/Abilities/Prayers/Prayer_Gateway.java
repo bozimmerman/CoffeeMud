@@ -11,8 +11,7 @@ public class Prayer_Gateway extends Prayer
 	public String name(){return "Gateway";}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Prayer_Gateway();}
-	public int holyQuality(){ return HOLY_NEUTRAL;}
-	public long flags(){return Ability.FLAG_TRANSPORTING;}
+	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
 
 	Room newRoom=null;
 	Room oldRoom=null;
