@@ -19,5 +19,5 @@ gentian
 valerian
 marjoram
 yerba mate
-cinamin
+cinnamon
 

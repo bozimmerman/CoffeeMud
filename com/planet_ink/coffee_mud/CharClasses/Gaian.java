@@ -341,6 +341,8 @@ public class Gaian extends StdCharClass
 		if(myChar==null) return duration;
 		if(Util.bset(skill.flags(),Ability.FLAG_CRAFTING)
 		&&(myChar.charStats().getCurrentClass()==this)
+		&&(!skill.ID().equals("FoodPrep"))
+		&&(!skill.ID().equals("Cooking"))
 		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Weaving"))
 		&&(!skill.ID().equals("Masonry")))

@@ -20,13 +20,13 @@ Chant_BullStrength	13	BEEF	Damiana$	Lemon Grass$
 Chant_ColdWard	14	BARLEY	Angelica$	Marjoram$	
 Chant_Thorns	14	CACTUS	Mint$	Elder$	
 Chant_Hawkeye	15	CARROTS	Gentian$		
-Chant_SongWard	16	MUTTON	Sarsaparilla$	Cloves$	Cinnamin$
+Chant_SongWard	16	MUTTON	Sarsaparilla$	Cloves$	Cinnamon$
 Chant_FireWard	16	LAMP OIL	Myrrh$	Anise$	
 Chant_GasWard	18	OLIVES	Thyme$	Cassia$	
 Chant_Hibernation	18	BERRIES	Gentian$	Rosemary$	
 Chant_Chlorophyll	18	SEAWEED	Elder$	Chamomile$	
 Chant_Bloodhound	19	POULTRY	Mint$	Valerian$	
-Chant_Shapelessness	21	MILK	Cinnamin$	Anise$	
+Chant_Shapelessness	21	MILK	Cinnamon$	Anise$	
 Chant_Fertility	20	GRAPES	Thyme$	Anise$	Rosemary$
 Chant_SpellWard	21	LEMONS	Angelica$	Thyme$	Yerba Mate$
 Chant_NeutralizePoison	22	SAND	Peppermint$		

@@ -39,6 +39,7 @@ public class Archon_Metacraft extends CraftingSkill
 			{
 				Ability A=(Ability)e.nextElement();
 				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
+				&&((" Cooking Baking FoodPrep Apothecary ").indexOf(A.ID())<0)
 				&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					V.addElement(A.copyOf());
 			}

@@ -97,7 +97,7 @@ public class ItemRefitter extends StdBehavior
 			((Item)msg.tool()).baseEnvStats().setHeight(0);
 			((Item)msg.tool()).recoverEnvStats();
 
-			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+costStr+" to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
 			msg.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?");
 			msg.addTrailerMsg(newMsg);

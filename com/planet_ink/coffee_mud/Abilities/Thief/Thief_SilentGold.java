@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -30,18 +31,20 @@ public class Thief_SilentGold extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTGOLD"};
 	public String[] triggerStrings(){return triggerStrings;}
+	private CMMsg lastMsg=null;
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-		    return false;
+		super.executeMsg(myHost,msg);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.source()!=affected)
 			&&(Sense.canBeSeenBy(msg.source(),(MOB)affected))
+			&&(msg!=lastMsg)
 			&&(msg.source().location()==((MOB)affected).location()))
 			{
+			    lastMsg=msg;
 			    double money=BeanCounter.getTotalAbsoluteNativeValue(msg.source());
 				if((money/10.0)>0.0)
 				{
@@ -54,19 +57,17 @@ public class Thief_SilentGold extends ThiefSkill
 						mob.location().recoverRoomStats();
 						MOB victim=mob.getVictim();
 						mob.setVictim(null);
-						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently loot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
-							msg2=new FullMsg(mob,C,null,CMMsg.MSG_GET,"You silently autoloot "+C.name()+" from the corpse of "+msg.source().name(),null,null);
-							msg.addTrailerMsg(msg2);
+							CommonMsgs.get(mob,null,C,true);
 						}
 						if(victim!=null) mob.setVictim(victim);
 					}
 				}
 			}
 		}
-		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -51,7 +51,7 @@ public class Herbology extends CommonSkill
 					commonTell(mob,"You lose your concentration on "+found.name()+".");
 				else
 				{
-				    Vector herbList=Resources.getFileLineVector(Resources.getFileResource("resources"+File.separatorChar+"skills"+File.separatorChar+"herbology.txt"));
+				    Vector herbList=Resources.getFileLineVector(Resources.getFileResource("skills"+File.separatorChar+"herbology.txt"));
 					String herb=((String)herbList.elementAt(Dice.roll(1,herbList.size(),-1))).trim().toLowerCase();
 					
 					if(found.rawSecretIdentity().length()>0)

@@ -1377,6 +1377,11 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       information on this feature.</P></TD></TR>
   <TR>
     <TD><EM>Is This Item 
+      Gettable</EM></TD>
+    <TD>whether the item can be picked up off the ground. 
+  </TD></TR>
+  <TR>
+    <TD><EM>Is This Item 
       Droppable</EM></TD>
     <TD>whether the item can be dropped into a room. 
   </TD></TR>
@@ -1387,9 +1392,15 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       removed. </TD></TR>
   <TR>
     <TD><EM>Is This Item 
+      Locatable</EM></TD>
+    <TD>whether the item can be found with the Locate Object spell. </TD></TR>
+  <TR>
+    <TD><EM>Is This Item 
       Readable</EM></TD>
     <TD>whether there are any readable markings on the 
-      item</TD></TR>
+      item.&nbsp; Normally, an item must be in a players inventory to be 
+      read.&nbsp; However, if the item is set as not being Gettable, then it may 
+      be read even on the ground, like a sign or billboard.</TD></TR>
   <TR>
     <TD><EM>Assigned Readable 
       Text</EM></TD>
@@ -2353,31 +2364,31 @@ not be&nbsp;noticed otherwise.&nbsp;</P>
 (which should contain key words for the LOOK command), the description that is 
 seen, and whether or not it is also readable.</P>
 <P><STRONG><A name=geni25>The "GenRecipe"</A></STRONG></STRONG></P>
-<P>GenWallpaper is a complex but powerful tool for expanding the system of 
-Common Skills in the CoffeeMud codebase.&nbsp; A GenRecipe is a piece of paper 
-upon which is written a recipe, schematic, or some other instructions for 
-enhancing the list of things which can be crafted by players using their 
-crafting Common Skills.&nbsp; A player takes advantage of a recipe by mearly 
-having the item in his or her inventory and using the appropriate skill for 
-which the recipe was designed.</P>
-<P>Designing a GenRecipe object is extremely complex.&nbsp; After setting the 
-"normal" GenItem fields for this item, such as name, readabletext, weight, 
-value, etc, there are still the two key GenRecipe fields left to fill in: Common 
-Skill ID, and the Recipe Data line.&nbsp; The Common Skill ID identifies which 
-of the common skills is served by the recipe.&nbsp; The Data line describes in 
-detail the item which can be created by players with this recipe on hand.&nbsp; 
-The format of the data line is a series of comma-delimited values which are 
-defined for each common skill uniquely.&nbsp; There are two ways of determining 
-the number and nature of each value for the data line.&nbsp; One is to open the 
-appropriate common skill *.java file in the /com/planet_ink/Abilities/Common/ 
-directory on your computer and observing the several lines near the top of the 
-file which begin with "protected static final int RCP_".&nbsp; The number, 
-order, and nature of the values will be identical to these variable 
-definitions.&nbsp; The second way is to open the appropriate *.txt file for the 
-common skill in the /resources/skills/ directory&nbsp;(such as weaponsmith.txt 
-or pottery.txt) and noting the first line of the&nbsp;file.&nbsp; The first line 
-in most cases will be a guide to the number and nature of the field 
-values.&nbsp;</P>
+<P>GenWallpaper is a complex but powerful tool for 
+expanding the system of Common Skills in the CoffeeMud codebase.&nbsp; A 
+GenRecipe is a piece of paper upon which is written a recipe, schematic, or some 
+other instructions for enhancing the list of things which can be crafted by 
+players using their crafting Common Skills.&nbsp; A player takes advantage of a 
+recipe by mearly having the item in his or her inventory and using the 
+appropriate skill for which the recipe was designed.</P>
+<P>Designing a GenRecipe object is extremely complex.&nbsp; 
+After setting the "normal" GenItem fields for this item, such as name, 
+readabletext, weight, value, etc, there are still the two key GenRecipe fields 
+left to fill in: Common Skill ID, and the Recipe Data line.&nbsp; The Common 
+Skill ID identifies which of the common skills is served by the recipe.&nbsp; 
+The Data line describes in detail the item which can be created by players with 
+this recipe on hand.&nbsp; The format of the data line is a series of 
+comma-delimited values which are defined for each common skill uniquely.&nbsp; 
+There are two ways of determining the number and nature of each value for the 
+data line.&nbsp; One is to open the appropriate common skill *.java file in the 
+/com/planet_ink/Abilities/Common/ directory on your computer and observing the 
+several lines near the top of the file which begin with "protected static final 
+int RCP_".&nbsp; The number, order, and nature of the values will be identical 
+to these variable definitions.&nbsp; The second way is to open the appropriate 
+*.txt file for the common skill in the /resources/skills/ directory&nbsp;(such 
+as weaponsmith.txt or pottery.txt) and noting the first line of 
+the&nbsp;file.&nbsp; The first line in most cases will be a guide to the number 
+and nature of the field values.&nbsp;</P>
 <P><STRONG><A name=geni23>The "GenInstrument" and 
 "GenPiano"</A></STRONG></STRONG></P>
 <P>The GenInstrument represents a musical instrument for 

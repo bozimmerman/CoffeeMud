@@ -1,6 +1,6 @@
 FINALFOOD,FOODDRINK,BONUSSPELL,LEVEL,MAININGR,MAINAMNT,OTHERINGREDIENTS...,OTHERAMOUNTS...
 bread	FOOD		1	dough	1							
-baked apples	FOOD		1	apples	1	Cinnamon	1					
+baked apples	FOOD		1	apples	1	cinnamon	1					
 baked potato	FOOD		2	potatoes	1							
 baked dates	FOOD		2	dates	1							
 baked greens	FOOD		3	greens	1							
@@ -18,11 +18,11 @@ potato bread	FOOD		10	Potatoes	1	dough	2
 corn bread	FOOD		11	Corn	2	dough	1					
 lemon cookies	FOOD		12	lemons	1	dough	1					
 roasted carrots	FOOD		13	carrots	1	butter	1					
-%baked steak	FOOD		14	meat	1	herbs	1					
-%baked steak	FOOD		14	beef	1	herbs	1					
-%baked steak	FOOD		15	pork	1	herbs	1					
+% baked steak	FOOD		14	meat	1	herbs	1					
+% baked steak	FOOD		14	beef	1	herbs	1					
+% baked steak	FOOD		15	pork	1	herbs	1					
 baked lamb chops	FOOD		16	mutton	1	herbs	1					
-%baked fillet	FOOD		17	fish	1	herbs	1	butter	herbs	1		
+% baked fillet	FOOD		17	fish	1	herbs	1	butter	herbs	1		
 peanut butter cookies	FOOD		18	peanut butter	2	dough	1					
 cheese pizza	FOOD		19	dough	2	tomatoes	1	cheese	1			
 focacia	FOOD		20	bread	1	olives	1	cheese	1			

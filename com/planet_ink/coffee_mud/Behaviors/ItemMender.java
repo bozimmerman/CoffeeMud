@@ -101,7 +101,7 @@ public class ItemMender extends StdBehavior
 			String costStr=BeanCounter.nameCurrencyLong(observer,new Integer(cost).doubleValue());
 			source.recoverEnvStats();
 			((Item)msg.tool()).setUsesRemaining(100);
-			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+costStr+" to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
 			msg.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?");
 			msg.addTrailerMsg(newMsg);

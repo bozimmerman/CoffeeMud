@@ -50,6 +50,8 @@ public class Chant_Hippieness extends Chant
 
 		if((msg.source()==affected)
 		&&(msg.tool() instanceof Ability)
+		&&(!msg.tool().ID().equals("FoodPrep"))
+		&&(!msg.tool().ID().equals("Cooking"))
 		&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
 		   ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)))
 		{

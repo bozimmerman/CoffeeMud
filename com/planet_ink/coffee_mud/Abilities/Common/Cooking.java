@@ -29,7 +29,6 @@ public class Cooking extends CraftingSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "cook";};
 	public String cookWord(){return "cooking";};
-	public long flags(){return 0;}
 	public boolean honorHerbs(){return true;}
 	public boolean requireFire(){return true;}
 	public boolean requireLid(){return false;}
@@ -241,7 +240,7 @@ public class Cooking extends CraftingSkill
 						String ingredient2=contents[i].toUpperCase();
 						int amount2=amounts[i];
 						if((ingredient2.startsWith(ingredient+"/"))
-						||(ingredient2.endsWith("/"+ingredient)))
+						||(ingredient2.endsWith(ingredient)))
 						{
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
@@ -302,7 +301,7 @@ public class Cooking extends CraftingSkill
 				String ingredient2=((String)Vr.elementAt(vr)).toUpperCase();
 				if((ingredient2.length()>0)
 				&&((ingredient.toUpperCase().startsWith(ingredient2+"/"))
-				||(ingredient.toUpperCase().endsWith("/"+ingredient2))))
+				||(ingredient.toUpperCase().endsWith(ingredient2))))
 					found=true;
 			}
 			if(!found)
@@ -335,7 +334,7 @@ public class Cooking extends CraftingSkill
 				{
 					String ingredient2=((String)e.nextElement()).toUpperCase();
 					if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
-					||(ingredient2.endsWith("/"+ingredient.toUpperCase())))
+					||(ingredient2.endsWith(ingredient.toUpperCase())))
 					{ found=true; break;}
 				}
 				if(amount>=0)
@@ -370,7 +369,15 @@ public class Cooking extends CraftingSkill
 		finalDishName=null;
 		burnt=false;
 		oldContents=null;
-		Vector allRecipes=loadRecipes();
+		Vector allRecipes=addRecipes(mob,loadRecipes());
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,allRecipes,commands,autoGenerate);
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Recipe",16)+" ingredients required\n\r");
@@ -463,7 +470,7 @@ public class Cooking extends CraftingSkill
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
 				if((ingredient2.startsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()+"/"))
-				||(ingredient2.endsWith("/"+((String)Vr.elementAt(RCP_MAININGR)).toUpperCase())))
+				||(ingredient2.endsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase())))
 				{ found=true; break;}
 			}
 			if(found)

@@ -77,6 +77,8 @@ public class Apprentice extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"CageBuilding",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Carpentry",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Cooking",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Baking",false);
+			CMAble.addCharAbilityMapping(ID(),4,"FoodPrep",false);
 			CMAble.addCharAbilityMapping(ID(),4,"LeatherWorking",false);
 			CMAble.addCharAbilityMapping(ID(),4,"GlassBlowing",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Pottery",false);

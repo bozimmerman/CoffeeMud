@@ -64,6 +64,8 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 			CMAble.addCharAbilityMapping(ID(),1,"SmokeRings",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Cooking",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Baking",false);
+			CMAble.addCharAbilityMapping(ID(),1,"FoodPrep",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Butchering",false);
 			CMAble.addCharAbilityMapping(ID(),3,"BodyPiercing",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Searching",false);

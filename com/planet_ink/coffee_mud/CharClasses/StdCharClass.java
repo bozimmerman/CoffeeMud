@@ -65,6 +65,8 @@ public class StdCharClass implements CharClass, Cloneable
 			CMAble.addCharAbilityMapping("All",1,"Cobbling",false);
 			CMAble.addCharAbilityMapping("All",10,"Construction",false);
 			CMAble.addCharAbilityMapping("All",1,"Cooking",false);
+			CMAble.addCharAbilityMapping("All",1,"Baking",false);
+			CMAble.addCharAbilityMapping("All",1,"FoodPrep",false);
 			CMAble.addCharAbilityMapping("All",1,"Digging",false);
 			CMAble.addCharAbilityMapping("All",1,"Distilling",false);
 			CMAble.addCharAbilityMapping("All",1,"Drilling",false);
@@ -625,7 +627,7 @@ public class StdCharClass implements CharClass, Cloneable
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append("^H" + practiceGain+"^N practice " +
+		theNews.append(" ^H" + practiceGain+"^N practice " +
 			( practiceGain != 1? "points" : "point" ) + ", ");
 
 		int trainGain=1;

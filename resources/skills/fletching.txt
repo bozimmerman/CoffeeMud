@@ -16,11 +16,11 @@ Quiver of 100 AP Arrows	40	60	10	225	GenAmmunition	arrows	100			MITHRIL	PROP_ADD
 Quiver of 200 AP Arrows	45	80	20	325	GenAmmunition	arrows	200			MITHRIL	PROP_ADDDAMAGE;50% +MITHRIL 10
 Quiver of 500 AP Arrows	50	100	50	500	GenAmmunition	arrows	500			MITHRIL	PROP_ADDDAMAGE;50% +MITHRIL 10
 Simple Crossbow	1	150	20	395	GenBow	bolts	2	6	2		
-Hand Crossbow	8	180	5	147	GenBow	darts	5	4	2		
+Hand Crossbow	8	180	5	147	GenSling	darts	5	4	2		
 Light Crossbow	8	160	20	620	GenBow	bolts	2	10	3		
 Heavy Crossbow	16	170	25	1400	GenBow	bolts	1	20	4		
 Repeating Crossbow	35	300	30	4000	GenBow	bolts	30	40	5		
-Wrist Crossbow	45	200	4	2773	GenBow	darts	20	40	2		
+Wrist Crossbow	45	200	4	2773	GenSling	darts	20	40	2		
 Pack of 50 Bolts	5	30	2	25	GenAmmunition	bolts	50			METAL	
 Pack of 100 Bolts	10	40	5	50	GenAmmunition	bolts	100			METAL	
 Pack of 500 Bolts	20	60	20	100	GenAmmunition	bolts	500			METAL	

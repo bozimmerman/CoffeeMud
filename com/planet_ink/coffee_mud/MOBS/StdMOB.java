@@ -391,7 +391,7 @@ public class StdMOB implements MOB
 	    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
 	        int chaAdjust=(int)(playerStats.getHygiene()/PlayerStats.HYGIENE_DELIMIT);
-	        if(charStats.getStat(CharStats.CHARISMA)/2>chaAdjust)
+	        if((charStats.getStat(CharStats.CHARISMA)/2)>chaAdjust)
 		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)-chaAdjust);
 	        else
 		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)/2);
@@ -794,6 +794,7 @@ public class StdMOB implements MOB
 				if(victim!=null)
 					victim.setVictim(null);
 				victim=null;
+				setAtRange(-1);
 			}
 			else
 			{
@@ -1712,7 +1713,7 @@ public class StdMOB implements MOB
 				&&((msg.tool()==null)||(!(msg.tool() instanceof Ability))||(!((Ability)msg.tool()).isNowAnAutoEffect())))
 				{
 					mob.tell("You like yourself too much.");
-					if(victim==this) victim=null;
+					if(victim==this){ victim=null; setAtRange(-1);}
 					return false;
 				}
 

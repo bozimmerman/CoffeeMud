@@ -49,50 +49,41 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud 4.6 Journal Browser</H2></FONT></TD></TR>
-	<TR><TD WIDTH=100% COLSPAN=2>
-		<TABLE WIDTH=100% BORDER=1>
-			<TR>
-			@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
-			@JournalNext?RESET@
-			@loop@
-				@JournalNext@<TD><a href="javascript:Clicked1('@JournalName@')"><FONT COLOR=WHITE>@JournalName@</FONT></a></TD>
-			@back@
-			</TR>
-		</TABLE>
-		</TD>
-	</TR>
 	<TR><TD WIDTH=30% VALIGN=TOP>
-		@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
-		
-		@if?!CheckReqParm?JOURNAL=@
-		
-			@if?CheckReqParm?FUNCTION=DELETE@
-			<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
-			@endif@
-			@if?CheckReqParm?FUNCTION=NEWPOST@
-			<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
-			@endif@
+		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
+		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+		@JournalNext?RESET@
+		@loop@
+			@JournalNext@<a href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName@</FONT></a><BR>
+			@if?CheckReqParm?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
+				@if?CheckReqParm?FUNCTION=DELETE@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
+				@endif@
+				@if?CheckReqParm?FUNCTION=NEWPOST@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
+				@endif@
+				
+				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 			
-			@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
-		
-			@JournalMessageNext?RESET@
-			<UL>
-			@loop@
-				@JournalMessageNext@
-				<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
-				<FONT COLOR=YELLOW>
-				@RequestParameter?JOURNALMESSAGE@
-				</FONT>
-				<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
-				</FONT>
-				</a>
-			@back@
-			</UL>
-			<INPUT TYPE=BUTTON NAME=POSTNEW VALUE="Compose New" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
-		@endif@
+				@JournalMessageNext?RESET@
+				<UL>
+				@loop@
+					@JournalMessageNext@
+					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
+					<FONT COLOR=YELLOW>
+					@RequestParameter?JOURNALMESSAGE@
+					</FONT>
+					<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
+					</FONT>
+					</a>
+				@back@
+				</UL>
+			@endif@
+		@back@
 		</TD>
 		<TD WIDTH=70% VALIGN=TOP>
 		@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+		@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
 		
 		@if?!CheckReqParm?JOURNAL=@
 			@if?CheckReqParm?FUNCTION=POSTNEW@
@@ -114,43 +105,45 @@
 					@if?CheckReqParm?FUNCTION=REPLY@
 					<CENTER><FONT COLOR=RED><B>@JournalFunction?REPLY@</B></FONT></CENTER>
 					@endif@
-				<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
-				<TR>
-					<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+					<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+					<TR>
+						<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+						</TD>
+						<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>From: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>To: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
+					</TR>
+					<TR>
+						<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+						<TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
+					</TR>
+					</TABLE>
+					<HR>
+					<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+					<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+					<HR>
+					<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL></TEXTAREA>
+					<TABLE WIDTH=100% BORDER=0>
+					<TR>
+					<TD WIDTH=50% ALIGN=LEFT>
+					<INPUT TYPE=BUTTON NAME=REPLY VALUE="Submit Reply" ONCLICK="if(document.JOURNAL.NEWTEXT.value.length>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
 					</TD>
-					<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
-				</TR>
-				<TR>
-					<TD><FONT COLOR=YELLOW>From: </FONT></TD>
-					<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
-				</TR>
-				<TR>
-					<TD><FONT COLOR=YELLOW>To: </FONT></TD>
-					<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
-				</TR>
-				<TR>
-					<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
-					<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
-				</TR>
-				<TR>
-					<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
-					<TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
-				</TR>
-				</TABLE>
-				<HR>
-				<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
-				<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
-				<HR>
-				<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL></TEXTAREA>
-				<TABLE WIDTH=100% BORDER=0>
-				<TR>
-				<TD WIDTH=50% ALIGN=LEFT>
-				<INPUT TYPE=BUTTON NAME=REPLY VALUE="Submit Reply" ONCLICK="if(document.JOURNAL.NEWTEXT.value.length>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
-				</TD>
-				<TD WIDTH=50% ALIGN=RIGHT>
-				</TD>
-				</TR>
-				</TABLE>
+					<TD WIDTH=50% ALIGN=RIGHT>
+					</TD>
+					</TR>
+					</TABLE>
+				@else@
+					<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
 				@endif@
 			@endif@
 		@endif@
