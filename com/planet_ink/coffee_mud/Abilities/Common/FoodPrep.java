@@ -21,27 +21,27 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Baking extends Cooking
+public class FoodPrep extends Cooking
 {
-	public String ID() { return "Baking"; }
-	public String name(){ return "Baking";}
-	private static final String[] triggerStrings = {"BAKING","BAKE"};
+	public String ID() { return "FoodPrep"; }
+	public String name(){ return "Food Prep.";}
+	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "bake";};
-	public String cookWord(){return "baking";};
+	public String cookWordShort(){return "make";};
+	public String cookWord(){return "making";};
 	public boolean honorHerbs(){return false;}
-	public boolean requireLid(){return true;}
+	public boolean requireFire(){return false;}
 
 	protected Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("BAKING RECIPES");
+		Vector V=(Vector)Resources.getResource("FOODPREP RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"bake.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"foodprep.txt");
 			V=loadList(str);
 			if(V.size()==0)
-				Log.errOut("Baking","Recipes not found!");
-			Resources.submitResource("BAKING RECIPES",V);
+				Log.errOut("FoodPrep","Recipes not found!");
+			Resources.submitResource("FOODPREP RECIPES",V);
 		}
 		return V;
 	}

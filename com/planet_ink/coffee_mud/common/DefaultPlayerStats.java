@@ -23,6 +23,7 @@ public class DefaultPlayerStats implements PlayerStats
 {
 	private final static int TELL_STACK_MAX_SIZE=50;
 	private final static int GTELL_STACK_MAX_SIZE=50;
+	private long Hygiene=0; 
 	
 	private HashSet friends=new HashSet();
 	private HashSet ignored=new HashSet();
@@ -256,5 +257,18 @@ public class DefaultPlayerStats implements PlayerStats
 		poofout=poofOut;
 		tranpoofin=tranPoofIn;
 		tranpoofout=tranPoofOut;
+	}
+	
+	public long getHygiene(){return Hygiene;}
+	public void setHygiene(long newVal){Hygiene=newVal;}
+	public boolean adjHygiene(long byThisMuch)
+	{
+	    Hygiene+=byThisMuch;
+		if(Hygiene<1)
+		{
+		    Hygiene=0;
+			return false;
+		}
+		return true;
 	}
 }

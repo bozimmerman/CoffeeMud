@@ -31,6 +31,8 @@ public class Cooking extends CraftingSkill
 	public String cookWord(){return "cooking";};
 	public long flags(){return 0;}
 	public boolean honorHerbs(){return true;}
+	public boolean requireFire(){return true;}
+	public boolean requireLid(){return false;}
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
@@ -54,32 +56,47 @@ public class Cooking extends CraftingSkill
 		verb=cookWord();
 	}
 
-	public boolean isMineForCooking(MOB mob, Item cooking)
+	public boolean isMineForCooking(MOB mob, Container cooking)
 	{
 		if(mob.isMine(cooking)) 
 		    return true;
 		if((mob.location()==cooking.owner())
 		&&((Sense.isOnFire(cooking))
+		    ||(!requireFire())
 			||((cooking.container()!=null)&&(Sense.isOnFire(cooking.container())))))
 		   return true;
 		return false;
 	}
 
+	public boolean meetsLidRequirements(MOB mob, Container cooking)
+	{
+	    if(!requireLid()) return true;
+	    if((cooking.hasALid())&&(!cooking.isOpen())) 
+	        return true;
+		if((cooking.container()!=null)
+		&&(cooking.container() instanceof Container)
+		&&(((Container)cooking.container()).hasALid())
+		&&(!((Container)cooking.container()).isOpen()))
+		   return true;
+		return false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((cooking==null)
-			||(fire==null)
+			||(requireFire()&&(fire==null))
 			||(finalDish==null)
 			||(finalRecipe==null)
 			||(finalAmount<=0)
 			||(!isMineForCooking(mob,cooking))
+			||(!meetsLidRequirements(mob,cooking))
 			||(!contentsSame(potContents(cooking),oldContents))
-			||(!Sense.isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			||(requireFire()&&(!Sense.isOnFire(fire)))
+			||(requireFire()&&(!mob.location().isContent(fire)))
+			||(requireFire()&&mob.isMine(fire)))
 			{
 				aborted=true;
 				unInvoke();
@@ -393,14 +410,19 @@ public class Cooking extends CraftingSkill
 		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if(!isMineForCooking(mob,target))
+		if(!(target instanceof Container))
+		{
+			commonTell(mob,"There's nothing in "+target.name()+" to "+cookWordShort()+"!");
+			return false;
+		}
+		if(!isMineForCooking(mob,(Container)target))
 		{
 			commonTell(mob,"You probably need to pick that up first.");
 			return false;
 		}
-		if(!(target instanceof Container))
+		if(!meetsLidRequirements(mob,(Container)target))
 		{
-			commonTell(mob,"There's nothing in "+target.name()+" to "+cookWordShort()+"!");
+			commonTell(mob,"You need a closeable container to bake that in, and you need to close it to begin.");
 			return false;
 		}
 		switch(target.material()&EnvResource.MATERIAL_MASK)
@@ -416,8 +438,11 @@ public class Cooking extends CraftingSkill
 			return false;
 		}
 
-		fire=getRequiredFire(mob,0);
-		if(fire==null) return false;
+		if(requireFire())
+		{
+			fire=getRequiredFire(mob,0);
+			if(fire==null) return false;
+		}
 
 		burnt=!profficiencyCheck(mob,0,auto);
 		int duration=40-mob.envStats().level();

@@ -74,6 +74,8 @@ public class CommonSkill extends StdAbility
 			&&(helpingAbility.affected instanceof MOB)
 			&&(((MOB)helpingAbility.affected).isMine(helpingAbility)))
 				helpingAbility.tick(helpingAbility.affected,tickID);
+			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.location()!=null))
+			    mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
 		tickUp++;
 		return super.tick(ticking,tickID);

@@ -87,6 +87,13 @@ public class UnderWater extends StdRoom implements Drink
 			if(full)
 				mob.tell("You have drunk all you can.");
 		}
+		
+		if((msg.source().playerStats()!=null)
+		&&(Util.bset(msg.sourceMajor(),CMMsg.MASK_MOVE))
+		&&(msg.source().soulMate()==null)
+		&&(msg.source().playerStats().getHygiene()>0)
+		&&(msg.source().riding()==null))
+		    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
 
 		if(Sense.isSleeping(room))
 			return;

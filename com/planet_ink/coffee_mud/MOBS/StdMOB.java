@@ -388,6 +388,14 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
 		baseCharStats.getMyRace().agingAffects(this,baseCharStats,charStats);
+	    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+	    {
+	        int chaAdjust=(int)(playerStats.getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+	        if(charStats.getStat(CharStats.CHARISMA)/2>chaAdjust)
+		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)-chaAdjust);
+	        else
+		        charStats.setStat(CharStats.CHARISMA,charStats.getStat(CharStats.CHARISMA)/2);
+	    }
 	}
 	
 	public void setBaseCharStats(CharStats newBaseCharStats)
@@ -1947,7 +1955,18 @@ public class StdMOB implements MOB
 			break;
 			case CMMsg.TYP_SNIFF:
 			{
-			    // mob smells are wierd without hygiene
+			    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+			    {
+			        int x=(int)(playerStats.getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+			        if(x<=1) msg.source().tell(name()+" has a slight aroma about "+charStats().himher()+"."); 
+			        else
+			        if(x<=3) msg.source().tell(name()+" smells pretty sweaty."); 
+			        else
+			        if(x<=7) msg.source().tell(name()+" stinks pretty bad.");
+			        else
+			        if(x<15) msg.source().tell(name()+" smells most foul.");
+			        else msg.source().tell(name()+" reeks of noxious odors.");
+			    }
 			}
 			break;
 			case CMMsg.TYP_DAMAGE:
@@ -2235,6 +2254,8 @@ public class StdMOB implements MOB
 								MUDFight.postWeaponDamage(msg.source(),this,weapon,isHit);
 								msg.setValue(1);
 							}
+							if((soulMate==null)&&(playerStats!=null)&&(location!=null))
+							    playerStats.adjHygiene(PlayerStats.HYGIENE_FIGHTDIRTY);
 						}
 						else
 						if((msg.tool()!=null)

@@ -247,6 +247,8 @@ public class Go extends StdCommand
 				mob.tell(getScr("Movement","tootired"));
 				return false;
 			}
+			if((mob.soulMate()==null)&&(mob.playerStats()!=null)&&(mob.riding()==null)&&(mob.location()!=null))
+			    mob.playerStats().adjHygiene(mob.location().pointsPerMove(mob));
 			long minMoveTime=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINMOVETIME);
 			if((minMoveTime>0)&&(!flee))
 			{

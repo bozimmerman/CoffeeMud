@@ -194,6 +194,18 @@ public class Score extends Affect
 			msg.append("^!You are hungry.^?\n\r");
 		if(mob.curState().getThirst()<1)
 			msg.append("^!You are thirsty.^?\n\r");
+	    if((mob.playerStats()!=null)&&(mob.soulMate()==null)&&(mob.playerStats().getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
+	    {
+	        int x=(int)(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+	        if(x<=1) msg.append("^!You could use a bath.^?\n\r"); 
+	        else
+	        if(x<=3) msg.append("^!You could really use a bath.^?\n\r"); 
+	        else
+	        if(x<=7) msg.append("^!You need to bathe.^?\n\r");
+	        else
+	        if(x<15) msg.append("^!You desperately need to bathe.^?\n\r");
+	        else msg.append("^!Your stench is horrendous! Bathe dammit!.^?\n\r");
+	    }
 		msg.append(getAffects(mob));
 		return msg;
 	}

@@ -1,0 +1,40 @@
+FINALFOOD,FOODDRINK,BONUSSPELL,LEVEL,MAININGR,MAINAMNT,OTHERINGREDIENTS...,OTHERAMOUNTS...
+corn tortilla	FOOD		1	corn	1	wheat	1	water	1								
+dough	FOOD		1	wheat	1	water	1										
+cheese	FOOD		2	milk	5												
+fruit preserves	FOOD		3	fruit	1												
+berry preserves	FOOD		4	berries	1												
+orange preserves	FOOD		5	oranges	1												
+lemon preserves	FOOD		6	lemons	1												
+pie crust	FOOD		6	dough	1	wheat	1										
+cactus preserves	FOOD		7	cactus	1												
+grape jelly	FOOD		8	grapes	1												
+butter	FOOD		9	milk	3												
+cream	FOOD		10	milk	2												
+pasta	FOOD		11	wheat	1	water	1	eggs	1								
+chocolate	FOOD		12	cocoa	10	milk	1										
+fruit juice	DRINK		13	fruit	1	water	1										
+apple juice	DRINK		14	apples	1	water	1										
+berry juice	DRINK		15	berries	1	water	1										
+orange juice	DRINK		16	oranges	1	water	1										
+lemonade	DRINK		17	lemons	1	water	1										
+grape juice	DRINK		18	grapes	1	water	1										
+peanut butter	DRINK		18	nuts	1	butter	1										
+olive juice	DRINK		19	olives	1	water	1										
+cactus juice	DRINK		20	cactus	1	water	1										
+prune juice	DRINK		21	dates	1	water	1										
+egg sandwich	FOOD		22	eggs	1	bread	1										
+cheese sandwich	FOOD		23	cheese	1	bread	1										
+sushi	FOOD		24	fish	1	seaweed	1										
+caesar salad	FOOD		25	greens	1	eggs	1	olives	1								
+chocolate pudding	FOOD		26	cocoa	2	cream	1										
+fish sandwich	FOOD		27	fish	1	bread	1	greens	-1	tomatoes	-1						
+beef sandwich	FOOD		28	beef	1	bread	1	greens	-1	tomatoes	-1						
+pork sandwich	FOOD		29	Pork	1	bread	1	greens	-1	tomatoes	-1						
+garden salad	FOOD		29	greens	1	tomatoes	1	onions	1	peppers	1	carrots	1				
+chef's salad	FOOD		30	greens	1	poultry	1	eggs	1	tomatoes	1	peppers	1	carrots	1	onions	1
+chocolate covered nuts	FOOD		54	nuts	1	chocolate	1	cherries	1								
+PB&B sandwich	FOOD		67	bread	1	peanut butter	1	banana	1	grape jelly	1						
+strawberry shortcake	FOOD		76	shortcake	1	strawberries	1	cream	2								
+chococream cherry candies	FOOD		88	cream	1	chocolate	1	nuts	1	cherries	1	hot fudge	1				
+peanut butter candies	FOOD		91	peanut butter	1	wheat	1	sugar	1	hot fudge	1						

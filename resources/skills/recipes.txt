@@ -1,90 +1,45 @@
 FINALFOOD,FOODDRINK,BONUSSPELL,LEVEL,MAININGR,MAINAMNT,OTHERINGREDIENTS...,OTHERAMOUNTS...
-% steak	FOOD		0	MEAT													
-% steak	FOOD		0	BEEF													
-% steak	FOOD		0	PORK													
-fried %	FOOD		0	POULTRY													
-lamb chops	FOOD		0	MUTTON													
-% fillet	FOOD		0	FISH													
-			0	WHEAT													
-corn on the cob	FOOD		0	CORN													
-fried rice	FOOD		0	RICE													
-roasted carrots	FOOD		0	CARROTS													
-fried tomatos	FOOD		0	TOMATOES													
-baked peppers	FOOD		0	PEPPERS													
-baked greens	FOOD		0	GREENS													
-fruit preserves	FOOD		0	FRUIT													
-baked apples	FOOD		0	APPLES													
-berry preserves	FOOD		0	BERRIES													
-orange preserves	FOOD		0	ORANGES													
-lemon preserves	FOOD		0	LEMONS													
-grape jelly	FOOD		0	GRAPES													
-cooked olives	FOOD		0	OLIVES													
-baked potato	FOOD		0	POTATOES													
-cactus preserves	FOOD		0	CACTUS													
-baked dates	FOOD		0	DATES													
-fried eggs	FOOD		0	EGGS													
-			0	HOPS													
-			0	COFFEEBEANS													
-chocolate	FOOD		0	COCOA	10	MILK	1										
-% stew	FOOD		0	MEAT	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
-beef stew	FOOD		0	BEEF	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
-pork stew	FOOD		0	PORK	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
-% stew	FOOD		0	POULTRY	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
-lamb stew	FOOD		0	MUTTON	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1		
-gumbo	FOOD		0	FISH	1	WATER	1	GREENS	1								
-pasta	FOOD		0	WHEAT	1	WATER	1	EGGS	1								
-dough	FOOD		0	WHEAT	1	WATER	1										
-creamed corn	FOOD		0	CORN	1	WATER	1										
-rice soup	FOOD		0	RICE	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
-carrot soup	FOOD		0	CARROTS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
-tomato soup	FOOD		0	TOMATOES	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
-pepper soup	FOOD		0	PEPPERS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
-vegetable soup	FOOD		0	GREENS	1	WATER	1	GREENS	-1	CARROTS	-1	POTATOES	-1	CORN	-1	TOMATOES	-1
-fruit juice	DRINK		0	FRUIT	1	WATER	1										
-apple juice	DRINK		0	APPLES	1	WATER	1										
-berry juice	DRINK		0	BERRIES	1	WATER	1										
-orange juice	DRINK		0	ORANGES	1	WATER	1										
-lemonade	DRINK		0	LEMONS	1	WATER	1										
-grape juice	DRINK		0	GRAPES	1	WATER	1										
-olive juice	DRINK		0	OLIVES	1	WATER	1										
-mashed potatos	FOOD		0	POTATOES	1	WATER	1										
-cactus juice	DRINK		0	CACTUS	1	WATER	1										
-prune juice	DRINK		0	DATES	1	WATER	1										
-hard-boiled eggs	FOOD		0	EGGS	1	WATER	1										
-mush	FOOD		0	HOPS	2	WATER	1										
-coffee	DRINK		0	COFFEEBEANS	1	WATER	1										
-cocoa	DRINK		0	COCOA	1	WATER	1										
-hot chocolate	DRINK		0	COCOA	1	MILK	1										
-cheese	FOOD		0	MILK	5												
-butter	FOOD		0	MILK	3												
-cream	FOOD		0	MILK	2												
-% pot pie	FOOD		0	MEAT	2	Dough	1										
-% pot pie	FOOD		0	BEEF	2	Dough	1										
-% pot pie	FOOD		0	PORK	2	Dough	1										
-% pot pie	FOOD		0	POULTRY	2	Dough	1										
-% pot pie	FOOD		0	MUTTON	2	Dough	1										
-% pot pie	FOOD		0	FISH	2	Dough	1										
-tart	FOOD		0	BERRIES	2	Dough	1										
-soap	SOAP		0	ASH	1	LIMES	1	BEEF	1								
-apple pie	FOOD		0	APPLES	2	Dough	1										
-lemon meringe pie	FOOD		0	LEMONS	2	Dough	1	Cream	1								
-lemon cookies	FOOD		0	LEMONS	1	Dough	1										
-cookie	FOOD		0	COCOA	1	Dough	2										
-potato bread	FOOD		0	POTATOES	1	Dough	2										
-wheat bread	FOOD		0	WHEAT	1	Dough	2										
-bread	FOOD		0	Dough	1												
-corn bread	FOOD		0	CORN	2	Dough	1										
-focaccia	FOOD		0	Bread	1	OLIVES	1	Cheese	1								
-% pizza	FOOD		0	Dough	2	TOMATOES	1	Cheese	1	MEAT	-1	BEEF	-1				
-cheese pizza	FOOD		0	Dough	2	TOMATOES	1	Cheese	1								
-caesar salad	FOOD		0	GREENS	2	EGGS	1	OLIVES	-1								
-stuffed peppers	FOOD		0	PEPPERS	1	Cheese 	-1										
-dolmas	FOOD		0	RICE	2	GRAPES	1										
-sushi	FOOD		0	FISH	1	SEAWEED	1										
-tamales	FOOD		0	CORN	1	MEAT	-1	BEEF	-1								
-cheese enchiladas	FOOD		0	CORN	1	Cheese											
-kabobs	FOOD		0	PEPPERS	1	MEAT	-1	FISH	-1	BEEF	-1	POULTRY	-1	PORK	-1	MUTTON	-1
-fish n chips	FOOD		0	FISH	1	POTATOES	1										
-% fettucini	FOOD		0	FISH	1	Pasta	2										
-spaghetti	FOOD		0	Pasta	2	TOMATOES	1										
-spaghetti n % meatballs	FOOD		0	Pasta	2	TOMATOES	1	BEEF	1								
+mush	FOOD		1	hops	2	water	1										
+hard-boiled eggs	FOOD		1	eggs	1	water	1										
+corn on the cob	FOOD		2	corn	1												
+fried eggs	FOOD		2	eggs													
+creamed corn	FOOD		3	corn	1												
+fried tomatoes	FOOD		3	tomatoes	1												
+cooked olives	FOOD		4	olives	1												
+fried rice	FOOD		4	rice	1												
+coffee	DRINK		5	coffeebeans	1	water	1										
+cocoa	DRINK		5	cocoa	1	water	1										
+mashed potatoes	FOOD		6	potatoes	1	milk	1	butter	1								
+% steak	FOOD		7	meat	1												
+% steak	FOOD		7	beef	1												
+fried % FOOD	FOOD		8	poultry	1												
+lamb chops	FOOD		9	mutton	1												
+% fillet	FOOD		10	fish	1												
+fish and chips	FOOD		10	fish	1	potatoes	1										
+pancakes	FOOD		11	wheat	1	water	1	eggs	1								
+waffles	FOOD		11	wheat	1	water	1	eggs	1	fruit							
+gumbo	FOOD		12	fish	1	water	1	greens	1								
+tomato soup	FOOD		13	tomatoes	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+rice soup	FOOD		14	rice	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+carrot soup	FOOD		15	carrots	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+hot fudge	FOOD		16	Chocolate	10												
+pepper soup	FOOD		17	peppers	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+vegetable soup	FOOD		17	greens	1	water	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1
+hot chocolate	FOOD		18	cocoa	1	milk	1										
+soap	SOAP		19	ash	1	limes	1	beef	1								
+dolmas	FOOD		20	rice	1	grapes	1										
+kabobs	FOOD		21	peppers	1	meat	-1	fish	1								
+% stew	FOOD		22	meat	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		23	beef	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		24	pork	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+% stew	FOOD		25	poultry	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+lamb stew	FOOD		26	mutton	1	greens	-1	carrots	-1	potatoes	-1	corn	-1	tomatoes	-1		
+quesadillas	FOOD		27	corn tortilla	1	cheese	1	beef	1								
+tacos	FOOD		27	corn tortilla	1	beef	1	greens	1	tomatoes	1	cheese	1				
+spaghetti	FOOD		28	pasta	2	tomatoes	1										
+fettucini	FOOD		28	fish	1	pasta	2	cream	1	herbs	1						
+spaghetti and meatballs	FOOD		29	pasta	2	tomatoes	1	beef	1								
+pot roast	FOOD		29	beef	1	potatoes	1	carrots	1	onion	1	herbs	1				
+hot fudge brownies	FOOD		30	cocoa	10	wheat	1	eggs	1	sugar	1	hot fudge	2				
+beef and noodles	FOOD		62	beef	1	pasta	1	water	1	carrots	1						
+burrito	FOOD		91	corn tortilla	1	beans	1	cheese	1								
