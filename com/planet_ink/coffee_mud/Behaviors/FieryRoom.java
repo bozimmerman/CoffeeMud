@@ -64,14 +64,14 @@ public class FieryRoom extends ActiveTicker {
                                         }
                                         if(noNpc) {
                                                 reallyAffect=false;
-                                                Hashtable group=inhab.getGroupMembers(new Hashtable());
-                                                for(Enumeration e=group.elements();e.hasMoreElements();)
+                                                HashSet group=inhab.getGroupMembers(new HashSet());
+												for(Iterator e=group.iterator();e.hasNext();)
                                                 {
-                                                        MOB follower=(MOB)e.nextElement();
-                                                        if(!(follower.isMonster())) {
-                                                                reallyAffect=true;
-                                                                break;
-                                                        }
+                                                    MOB follower=(MOB)e.next();
+                                                    if(!(follower.isMonster())) {
+                                                            reallyAffect=true;
+                                                            break;
+                                                    }
                                                 }
                                         }
                                         if (reallyAffect) {

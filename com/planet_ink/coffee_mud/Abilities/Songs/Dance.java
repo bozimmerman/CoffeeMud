@@ -142,14 +142,14 @@ public class Dance extends StdAbility
 				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
-				Hashtable h=properTargets(mob,givenTarget,auto);
+				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
-				if(h.get(mob)==null) h.put(mob,mob);
+				if(!h.contains(mob)) h.add(mob);
 
 				Room R=mob.location();
-				for(Enumeration f=h.elements();f.hasMoreElements();)
+				for(Iterator f=h.iterator();f.hasNext();)
 				{
-					MOB follower=(MOB)f.nextElement();
+					MOB follower=(MOB)f.next();
 					Room R2=follower.location();
 
 					// malicious dances must not affect the invoker!

@@ -18,14 +18,14 @@ public class Prayer_MassHarm extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
-		for(Enumeration e=h.elements();e.hasMoreElements();)
+		for(Iterator e=h.iterator();e.hasNext();)
 		{
-			MOB target=(MOB)e.nextElement();
+			MOB target=(MOB)e.next();
 			if(target!=mob)
 			{
 				if(success)

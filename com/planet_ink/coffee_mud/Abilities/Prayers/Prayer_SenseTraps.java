@@ -49,7 +49,6 @@ public class Prayer_SenseTraps extends Prayer
 				if(R.getExitInDir(d)==E)
 				{
 					Exit E2=R.getReverseExit(d);
-					Room R2=R.getRoomInDir(d);
 					msg.append(trapHere(mob,E));
 					msg.append(trapHere(mob,E2));
 					break;

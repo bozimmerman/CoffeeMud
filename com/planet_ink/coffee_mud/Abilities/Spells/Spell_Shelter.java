@@ -62,7 +62,7 @@ public class Spell_Shelter extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Hashtable h=properTargets(mob,givenTarget,false);
+			HashSet h=properTargets(mob,givenTarget,false);
 			if(h==null) return false;
 
 			Room thisRoom=mob.location();
@@ -70,9 +70,9 @@ public class Spell_Shelter extends Spell
 			shelter=CMClass.getLocale("MagicShelter");
 			Room newRoom=shelter;
 			shelter.setArea(mob.location().getArea());
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB follower=(MOB)f.nextElement();
+				MOB follower=(MOB)f.next();
 				if((follower.isMonster())||(follower==mob))
 				{
 					FullMsg enterMsg=new FullMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of nowhere.");

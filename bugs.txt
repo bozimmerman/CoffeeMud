@@ -1,4 +1,5 @@
 Test: ?Plant Choke, ?Plant Constriction, ?Plant Trap
+Oracle still broke on level
 
 Desired stats=
 # of players

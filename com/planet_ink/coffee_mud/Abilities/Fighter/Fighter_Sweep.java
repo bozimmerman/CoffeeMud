@@ -36,10 +36,10 @@ public class Fighter_Sweep extends StdAbility
 			mob.tell("You must be in combat to sweep!");
 			return false;
 		}
-		Hashtable h=properTargets(mob,givenTarget,false);
-		for(Enumeration e=h.elements();e.hasMoreElements();)
+		HashSet h=properTargets(mob,givenTarget,false);
+		for(Iterator e=h.iterator();e.hasNext();)
 		{
-			MOB m=(MOB)e.nextElement();
+			MOB m=(MOB)e.next();
 			if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))
 				h.remove(m);
 		}
@@ -79,9 +79,9 @@ public class Fighter_Sweep extends StdAbility
 				invoker=mob;
 				mob.addEffect(this);
 				mob.recoverEnvStats();
-				for(Enumeration e=h.elements();e.hasMoreElements();)
+				for(Iterator e=h.iterator();e.hasNext();)
 				{
-					MOB target=(MOB)e.nextElement();
+					MOB target=(MOB)e.next();
 					// it worked, so build a copy of this ability,
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else

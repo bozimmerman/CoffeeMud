@@ -54,13 +54,13 @@ public class Skill_Conduct extends BardSkill
 				Play newOne=(Play)this.copyOf();
 				newOne.referencePlay=newOne;
 
-				Hashtable h=properTargets(mob,givenTarget,auto);
+				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
-				if(h.get(mob)==null) h.put(mob,mob);
+				if(!h.contains(mob)) h.add(mob);
 
-				for(Enumeration f=h.elements();f.hasMoreElements();)
+				for(Iterator f=h.iterator();f.hasNext();)
 				{
-					MOB follower=(MOB)f.nextElement();
+					MOB follower=(MOB)f.next();
 
 					// malicious songs must not affect the invoker!
 					int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;

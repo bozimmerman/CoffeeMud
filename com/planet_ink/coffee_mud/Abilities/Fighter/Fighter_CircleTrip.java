@@ -85,7 +85,7 @@ public class Fighter_CircleTrip extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth tripping.");
@@ -97,9 +97,9 @@ public class Fighter_CircleTrip extends StdAbility
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			for(Enumeration e=h.elements();e.hasMoreElements();)
+			for(Iterator e=h.iterator();e.hasNext();)
 			{
-				MOB target=(MOB)e.nextElement();
+				MOB target=(MOB)e.next();
 
 				if((Sense.isSitting(target)||Sense.isSleeping(target)))
 				{

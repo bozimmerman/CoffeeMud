@@ -17,7 +17,7 @@ public class Spell_MassFly extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,false);
+		HashSet h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth making fly.");
@@ -36,9 +36,9 @@ public class Spell_MassFly extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s).^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

@@ -55,7 +55,7 @@ public class Follow extends StdCommand
 				nofollow(mob,true,false);
 				return true;
 			}
-			if(mob.getGroupMembers(new Hashtable()).contains(tofollow))
+			if(mob.getGroupMembers(new HashSet()).contains(tofollow))
 			{
 				if(!quiet)
 					mob.tell("You are already a member of "+tofollow.name()+"'s group!");

@@ -19,11 +19,11 @@ public class Prayer_MassHeal extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
-		for(Enumeration e=h.elements();e.hasMoreElements();)
+		for(Iterator e=h.iterator();e.hasNext();)
 		{
-			MOB target=(MOB)e.nextElement();
+			MOB target=(MOB)e.next();
 			if(success)
 			{
 				// it worked, so build a copy of this ability,

@@ -55,7 +55,7 @@ public class Chant_SummonInsects extends Chant
 			return false;
 		}
 
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -74,9 +74,9 @@ public class Chant_SummonInsects extends Chant
 				return false;
 			}
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"A swarm of stinging insects appear, then flutter away!":"^S<S-NAME> chant(s) into the sky.  A swarm of stinging insects appears and attacks!^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

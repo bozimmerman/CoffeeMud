@@ -100,11 +100,11 @@ public class Bard extends StdCharClass
 		double theAmount=new Integer(amount).doubleValue();
 		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
 		{
-			Hashtable H=mob.getGroupMembers(new Hashtable());
+			HashSet H=mob.getGroupMembers(new HashSet());
 			double origAmount=theAmount;
-			for(Enumeration e=H.elements();e.hasMoreElements();)
+			for(Iterator e=H.iterator();e.hasNext();)
 			{
-				MOB mob2=(MOB)e.nextElement();
+				MOB mob2=(MOB)e.next();
 				if((mob2!=mob)
 				   &&(mob2!=victim)
 				   &&(mob2.location()!=null)

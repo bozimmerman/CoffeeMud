@@ -37,10 +37,10 @@ public class Ranger_AnimalFrenzy extends StdAbility
 
 		if(rangersGroup!=null)
 		{
-			Hashtable h=invoker.getGroupMembers(new Hashtable());
-			for(Enumeration e=h.elements();e.hasMoreElements();)
+			HashSet H=invoker.getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
 			{
-				MOB mob=(MOB)e.nextElement();
+				MOB mob=(MOB)e.next();
 				if((!rangersGroup.contains(mob))
 				&&(mob!=invoker)
 				&&(mob.location()==invoker.location())
@@ -55,7 +55,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				try
 				{
 					MOB mob=(MOB)rangersGroup.elementAt(i);
-					if((!h.contains(mob))
+					if((!H.contains(mob))
 					||(mob.location()!=invoker.location()))
 					{
 						Ability A=mob.fetchEffect(this.ID());

@@ -8,33 +8,33 @@ public class MUDFight
 {
 	private MUDFight(){};
 
-	public static Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
+	public static HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
-		Hashtable h=new Hashtable();
+		HashSet h=new HashSet();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-		Hashtable h1=mob.getGroupMembers(new Hashtable());
+		HashSet h1=mob.getGroupMembers(new HashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
 			if((inhab!=null)
 			&&(inhab!=mob)
-			&&(h1.get(inhab)==null)
+			&&(!h1.contains(inhab))
 			&&((beRuthless)||(!mob.isMonster())||(!inhab.isMonster())))
-				h.put(inhab,inhab);
+				h.add(inhab);
 		}
 		return h;
 	}
 
-	public static Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
+	public static HashSet properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
-		Hashtable h=null;
+		HashSet h=null;
 		if(A.quality()!=Ability.MALICIOUS)
 		{
-			h=caster.getGroupMembers(new Hashtable());
-			for(Enumeration e=h.keys();e.hasMoreElements();)
+			h=caster.getGroupMembers(new HashSet());
+			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
 			{
-				MOB M=(MOB)e.nextElement();
+				MOB M=(MOB)e.next();
 				if(M.location()!=caster.location())
 					h.remove(M);
 			}
@@ -47,14 +47,14 @@ public class MUDFight
 		return h;
 	}
 
-	public static Hashtable allCombatants(MOB mob)
+	public static HashSet allCombatants(MOB mob)
 	{
-		Hashtable h=new Hashtable();
+		HashSet h=new HashSet();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
 		if(!mob.isInCombat()) return null;
 
-		Hashtable h1=mob.getGroupMembers(new Hashtable());
+		HashSet h1=mob.getGroupMembers(new HashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -62,8 +62,8 @@ public class MUDFight
 			   &&((inhab==mob.getVictim())
 				||((inhab!=mob)
 				  &&(inhab.getVictim()!=mob.getVictim())
-				  &&(h1.get(inhab)==null))))
-					h.put(inhab,inhab);
+				  &&(!h1.contains(inhab)))))
+					h.add(inhab);
 		}
 		return h;
 
@@ -71,10 +71,10 @@ public class MUDFight
 
 	public static void makePeaceInGroup(MOB mob)
 	{
-		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
-		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
+		HashSet myGroup=mob.getGroupMembers(new HashSet());
+		for(Iterator e=myGroup.iterator();e.hasNext();)
 		{
-			MOB mob2=(MOB)e.nextElement();
+			MOB mob2=(MOB)e.next();
 			if(mob2.isInCombat()&&(myGroup.contains(mob2.getVictim())))
 				mob2.makePeace();
 		}

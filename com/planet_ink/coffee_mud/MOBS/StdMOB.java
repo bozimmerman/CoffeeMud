@@ -2546,41 +2546,26 @@ public class StdMOB implements MOB
 		}
 		amFollowing=mob;
 	}
-	private void addFollowers(MOB mob, Hashtable toThis)
-	{
-		if(toThis.get(mob)==null)
-		   	toThis.put(mob,mob);
 
-		for(int f=0;f<mob.numFollowers();f++)
-		{
-			MOB follower=mob.fetchFollower(f);
-			if((follower!=null)&&(toThis.get(follower)==null))
-			{
-				toThis.put(follower,follower);
-				addFollowers(follower,toThis);
-			}
-		}
-	}
-
-	public Hashtable getRideBuddies(Hashtable list)
+	public HashSet getRideBuddies(HashSet list)
 	{
 		if(list==null) return list;
-		if(list.get(this)==null) list.put(this,this);
+		if(!list.contains(this)) list.add(this);
 		if(riding()!=null)
 			riding().getRideBuddies(list);
 		return list;
 	}
 
-	public Hashtable getGroupMembers(Hashtable list)
+	public HashSet getGroupMembers(HashSet list)
 	{
 		if(list==null) return list;
-		if(list.get(this)==null) list.put(this,this);
+		if(!list.contains(this)) list.add(this);
 		if(amFollowing()!=null)
 			amFollowing().getGroupMembers(list);
 		for(int f=0;f<numFollowers();f++)
 		{
 			MOB follower=fetchFollower(f);
-			if((follower!=null)&&(list.get(follower)==null))
+			if((follower!=null)&&(!list.contains(follower)))
 				follower.getGroupMembers(list);
 		}
 		return list;

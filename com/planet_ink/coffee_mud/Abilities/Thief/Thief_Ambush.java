@@ -35,12 +35,12 @@ public class Thief_Ambush extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable H=mob.getGroupMembers(new Hashtable());
-		if(!H.contains(mob)) H.put(mob,mob);
+		HashSet H=mob.getGroupMembers(new HashSet());
+		if(!H.contains(mob)) H.add(mob);
 		int numBesidesMe=0;
-		for(Enumeration e=H.elements();e.hasMoreElements();)
+		for(Iterator e=H.iterator();e.hasNext();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=(MOB)e.next();
 			if((M!=mob)&&(mob.location().isInhabitant(M)))
 				numBesidesMe++;
 		}
@@ -70,9 +70,9 @@ public class Thief_Ambush extends ThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Ability hide=CMClass.getAbility("Thief_Hide");
-				for(Enumeration e=H.elements();e.hasMoreElements();)
+				for(Iterator e=H.iterator();e.hasNext();)
 				{
-					MOB M=(MOB)e.nextElement();
+					MOB M=(MOB)e.next();
 					hide.invoke(M,M,true);
 				}
 			}

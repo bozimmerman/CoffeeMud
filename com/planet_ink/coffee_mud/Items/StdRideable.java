@@ -62,15 +62,15 @@ public class StdRideable extends StdContainer implements Rideable
 		super.cloneFix(E);
 		riders=new Vector();
 	}
-	public Hashtable getRideBuddies(Hashtable list)
+	public HashSet getRideBuddies(HashSet list)
 	{
 		if(list==null) return list;
 		for(int r=0;r<numRiders();r++)
 		{
 			Rider R=fetchRider(r);
 			if((R instanceof MOB)
-			&&(list.get(R)==null))
-				list.put(R,R);
+			&&(!list.contains(R)))
+				list.add(R);
 		}
 		return list;
 	}

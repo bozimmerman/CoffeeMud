@@ -94,9 +94,8 @@ public class Prayer_Haunted extends Prayer
 				level=14;
 				numDone=0;
 				numMax=mob.envStats().level()/8;
-				if((target instanceof Room)
-				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
-					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				if((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
+					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target)))))
 				{
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMClass.DBEngine().DBUpdateRoom((Room)target);

@@ -67,11 +67,11 @@ public class Fighter_Rallycry extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Hashtable h=properTargets(mob,givenTarget,auto);
+				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
-				for(Enumeration e=h.elements();e.hasMoreElements();)
+				for(Iterator e=h.iterator();e.hasNext();)
 				{
-					MOB target=(MOB)e.nextElement();
+					MOB target=(MOB)e.next();
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallyed!");
 					timesTicking=0;
 					hpUp=mob.envStats().level();

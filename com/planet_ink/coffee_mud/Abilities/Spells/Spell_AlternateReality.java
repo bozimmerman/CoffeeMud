@@ -47,7 +47,7 @@ public class Spell_AlternateReality extends Spell
 		&&(msg.target()!=null)
 		&&(invoker()!=null))
 		{
-			Hashtable H=invoker().getGroupMembers(new Hashtable());
+			HashSet H=invoker().getGroupMembers(new HashSet());
 			if(H.contains(msg.target()))
 			{
 				msg.source().tell("But you are on "+invoker().name()+"'s side!");
@@ -100,8 +100,8 @@ public class Spell_AlternateReality extends Spell
 						target.makePeace();
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
-						Hashtable H=mob.getGroupMembers(new Hashtable());
-						if(!H.contains(mob))H.put(mob,mob);
+						HashSet H=mob.getGroupMembers(new HashSet());
+						if(!H.contains(mob))H.add(mob);
 						Vector badGuys=new Vector();
 						for(int i=0;i<R.numInhabitants();i++)
 						{

@@ -83,13 +83,13 @@ public class Spell_Gate extends Spell
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
-				Hashtable h=properTargets(mob,givenTarget,false);
+				HashSet h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
 
 				Room thisRoom=mob.location();
-				for(Enumeration f=h.elements();f.hasMoreElements();)
+				for(Iterator f=h.iterator();f.hasNext();)
 				{
-					MOB follower=(MOB)f.nextElement();
+					MOB follower=(MOB)f.next();
 					FullMsg enterMsg=new FullMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> appear(s) in a burst of light.")+CommonStrings.msp("appear.wav",10));
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&newRoom.okMessage(follower,enterMsg))

@@ -26,9 +26,9 @@ public class Prayer_BlessedHearth extends Prayer
 		if(((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.target() instanceof MOB))
 		{
-			Hashtable H=((MOB)msg.target()).getGroupMembers(new Hashtable());
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
+				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
 				{
 					R.show(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,"The blessed powers block the unholy magic from <S-NAMESELF>.");
 					return false;
@@ -38,9 +38,9 @@ public class Prayer_BlessedHearth extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB))
 		{
-			Hashtable H=((MOB)msg.target()).getGroupMembers(new Hashtable());
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
+				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
 				{
 					msg.setValue(msg.value()/10);
 					break;

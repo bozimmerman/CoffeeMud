@@ -36,7 +36,7 @@ public class StdPortal extends StdContainer implements Rideable
 	public void delRider(Rider mob){}
 	public void recoverEnvStats(){Sense.setReadable(this,false); super.recoverEnvStats();}
 
-	public Hashtable getRideBuddies(Hashtable list){return list;}
+	public HashSet getRideBuddies(HashSet list){return list;}
 
 	public boolean mobileRideBasis(){return false;}
 	public String stateString(Rider R){	return "in";}

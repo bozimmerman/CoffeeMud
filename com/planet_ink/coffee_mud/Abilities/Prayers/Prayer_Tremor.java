@@ -77,7 +77,7 @@ public class Prayer_Tremor extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");
@@ -97,9 +97,9 @@ public class Prayer_Tremor extends Prayer
 		{
 
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

@@ -65,7 +65,6 @@ public class Prayer_PeaceRitual extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		MOB mob=(MOB)affected;
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(clan1.length()>0)&&(clan2.length()>0))

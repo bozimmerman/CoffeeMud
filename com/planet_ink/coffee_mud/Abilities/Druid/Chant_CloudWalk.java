@@ -50,10 +50,10 @@ public class Chant_CloudWalk extends Chant
 			}
 			else
 			{
-				Hashtable H=mob.getGroupMembers(new Hashtable());
-				for(Enumeration e=H.elements();e.hasMoreElements();)
+				HashSet H=mob.getGroupMembers(new HashSet());
+				for(Iterator e=H.iterator();e.hasNext();)
 				{
-					MOB M=(MOB)e.nextElement();
+					MOB M=(MOB)e.next();
 					if((M!=null)
 					   &&(M.location()!=null)
 					   &&(M!=mob)

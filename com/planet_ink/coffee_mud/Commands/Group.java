@@ -34,11 +34,11 @@ public class Group extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Hashtable group=mob.getGroupMembers(new Hashtable());
+		HashSet group=mob.getGroupMembers(new HashSet());
 		StringBuffer msg=new StringBuffer("");
-		for(Enumeration e=group.elements();e.hasMoreElements();)
+		for(Iterator e=group.iterator();e.hasNext();)
 		{
-			MOB follower=(MOB)e.nextElement();
+			MOB follower=(MOB)e.next();
 			msg.append(showWhoLong(follower));
 		}
 		mob.tell(msg.toString());

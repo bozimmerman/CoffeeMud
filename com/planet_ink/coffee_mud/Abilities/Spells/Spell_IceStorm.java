@@ -17,7 +17,7 @@ public class Spell_IceStorm extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth storming.");
@@ -36,9 +36,9 @@ public class Spell_IceStorm extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?")+CommonStrings.msp("spelldam2.wav",40)))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

@@ -554,12 +554,12 @@ public class StdCharClass implements CharClass, Cloneable
 	protected boolean isValidBeneficiary(MOB killer,
 									   MOB killed,
 									   MOB mob,
-									   Hashtable followers)
+									   HashSet followers)
 	{
 		if((mob!=null)
 		&&(!mob.amDead())
 		&&((mob.getVictim()==killed)
-		 ||(followers.get(mob)!=null)
+		 ||(followers.contains(mob))
 		 ||(mob==killer)))
 			return true;
 		return false;
@@ -571,7 +571,7 @@ public class StdCharClass implements CharClass, Cloneable
 		if(deathRoom==null) deathRoom=killer.location();
 
 		Hashtable beneficiaries=new Hashtable();
-		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
+		HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
 
 		int totalLevels=0;
 		int expAmount=100;

@@ -36,9 +36,9 @@ public class Prayer_GuardianHearth extends Prayer
 		||(prots.contains(new Integer(msg.targetMinor()))))
 		   &&(msg.target() instanceof MOB))
 		{
-			Hashtable H=((MOB)msg.target()).getGroupMembers(new Hashtable());
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
+				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
 				{
 					R.show(((MOB)msg.target()),null,this,CMMsg.MSG_OK_VISUAL,"The guardian hearth protect(s) <S-NAME>!");
 					break;

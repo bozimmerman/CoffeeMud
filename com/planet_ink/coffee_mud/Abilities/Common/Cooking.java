@@ -294,7 +294,6 @@ public class Cooking extends CommonSkill
 		String possiblyMissing=null;
 		boolean foundOptional=false;
 		boolean hasOptional=false;
-		String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 		{
 			String ingredient=(String)Vr.elementAt(vr);

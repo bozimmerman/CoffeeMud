@@ -811,7 +811,7 @@ public class Arrest extends StdBehavior
 	public boolean isStillACrime(LegalWarrant W)
 	{
 		// will witness talk, or victim press charges?
-		Hashtable H=W.criminal().getGroupMembers(new Hashtable());
+		HashSet H=W.criminal().getGroupMembers(new HashSet());
 		if(W.witness().amDead()) return false;
 		if(W.arrestingOfficer()!=null)
 		{
@@ -821,8 +821,8 @@ public class Arrest extends StdBehavior
 				return true;
 		}
 
-		if(H.containsKey(W.witness())) return false;
-		if((W.victim()!=null)&&(H.containsKey(W.victim()))) return false;
+		if(H.contains(W.witness())) return false;
+		if((W.victim()!=null)&&(H.contains(W.victim()))) return false;
 		// crimes expire after three real days
 		if((W.lastOffense()>0)&&((System.currentTimeMillis()-W.lastOffense())>EXPIRATION_MILLIS))
 			return false;

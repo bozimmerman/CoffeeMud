@@ -67,7 +67,7 @@ public class Dance_Square extends Dance
 				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
-				Hashtable friends=mob.getGroupMembers(new Hashtable());
+				HashSet friends=mob.getGroupMembers(new HashSet());
 
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{

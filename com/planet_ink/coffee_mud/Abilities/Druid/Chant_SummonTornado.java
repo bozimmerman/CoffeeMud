@@ -74,10 +74,10 @@ public class Chant_SummonTornado extends Chant
 					if((I!=null)&&(I.container()==null))
 						stuff.addElement(I);
 				}
-				Hashtable H=properTargets(mob,givenTarget,true);
+				HashSet H=properTargets(mob,givenTarget,true);
 				if(H!=null)
-				for(Enumeration e=H.elements();e.hasMoreElements();)
-					stuff.addElement((MOB)e.nextElement());
+				for(Iterator e=H.iterator();e.hasNext();)
+					stuff.addElement((MOB)e.next());
 				Vector availableRooms=new Vector();
 				availableRooms.addElement(mob.location());
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

@@ -26,9 +26,9 @@ public class Prayer_BloodHearth extends Prayer
 		
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		{
-			Hashtable H=msg.source().getGroupMembers(new Hashtable());
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.nextElement(),R))
+			HashSet H=msg.source().getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
+				if(CoffeeUtensils.doesOwnThisProperty((MOB)e.next(),R))
 				{
 					msg.setValue(msg.value()*10);
 					break;

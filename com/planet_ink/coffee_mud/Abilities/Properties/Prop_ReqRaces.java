@@ -40,17 +40,17 @@ public class Prop_ReqRaces extends Property
 		   &&(!Sense.isFalling(msg.source()))
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
-			Hashtable H=new Hashtable();
+			HashSet H=new HashSet();
 			if(text().toUpperCase().indexOf("NOFOL")>=0)
-				H.put(msg.source(),msg.source());
+				H.add(msg.source());
 			else
 			{
 				msg.source().getGroupMembers(H);
-				for(Enumeration e=H.elements();e.hasMoreElements();)
-					((MOB)e.nextElement()).getRideBuddies(H);
+				for(Iterator e=H.iterator();e.hasNext();)
+					((MOB)e.next()).getRideBuddies(H);
 			}
-			for(Enumeration e=H.elements();e.hasMoreElements();)
-				if(passesMuster((MOB)e.nextElement()))
+			for(Iterator e=H.iterator();e.hasNext();)
+				if(passesMuster((MOB)e.next()))
 					return super.okMessage(myHost,msg);
 			msg.source().tell("You can not go that way.");
 			return false;

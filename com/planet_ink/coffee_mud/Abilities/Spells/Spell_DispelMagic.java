@@ -66,7 +66,7 @@ public class Spell_DispelMagic extends Spell
 			int affectType=affectType(auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
-			||(mob.getGroupMembers(new Hashtable()).containsKey(target)))
+			||(mob.getGroupMembers(new HashSet()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 

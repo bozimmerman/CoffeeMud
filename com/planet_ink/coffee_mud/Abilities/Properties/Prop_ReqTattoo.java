@@ -46,17 +46,17 @@ public class Prop_ReqTattoo extends Property
 			if(((msg.target() instanceof Room)&&(msg.targetMinor()==CMMsg.TYP_ENTER))
 			||((msg.target() instanceof Item)&&(msg.targetMinor()==CMMsg.TYP_GET)))
 			{
-				Hashtable H=new Hashtable();
+				HashSet H=new HashSet();
 				if(text().toUpperCase().indexOf("NOFOL")>=0)
-					H.put(msg.source(),msg.source());
+					H.add(msg.source());
 				else
 				{
 					msg.source().getGroupMembers(H);
-					for(Enumeration e=H.elements();e.hasMoreElements();)
-						((MOB)e.nextElement()).getRideBuddies(H);
+					for(Iterator e=H.iterator();e.hasNext();)
+						((MOB)e.next()).getRideBuddies(H);
 				}
-				for(Enumeration e=H.elements();e.hasMoreElements();)
-					if(passesMuster((MOB)e.nextElement()))
+				for(Iterator e=H.iterator();e.hasNext();)
+					if(passesMuster((MOB)e.next()))
 						return super.okMessage(myHost,msg);
 				if(msg.target() instanceof Room)
 					msg.source().tell("You have not been granted authorization to go that way.");

@@ -34,7 +34,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 		}
 
-		Hashtable H=mob.getGroupMembers(new Hashtable());
+		HashSet H=mob.getGroupMembers(new HashSet());
 		int highestLevel=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{

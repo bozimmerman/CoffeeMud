@@ -61,7 +61,7 @@ public class Spell_GustOfWind extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell("There doesn't appear to be anyone here worth blowing around.");
@@ -80,9 +80,9 @@ public class Spell_GustOfWind extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

@@ -42,16 +42,16 @@ public class Prayer_MassDeafness extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
 		if(success)
 		{
-			for(Enumeration e=h.elements();e.hasMoreElements();)
+			for(Iterator e=h.iterator();e.hasNext();)
 			{
-				MOB target=(MOB)e.nextElement();
+				MOB target=(MOB)e.next();
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else

@@ -20,7 +20,6 @@ public class Prayer_HolyShield extends Prayer
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		if(!(affected instanceof MOB)) return;
 
 		affectableStats.setStat(CharStats.SAVE_UNDEAD,100);
 	}

@@ -197,8 +197,8 @@ public interface MOB
 	public MOB amFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);
-	public Hashtable getGroupMembers(Hashtable list);
-	public Hashtable getRideBuddies(Hashtable list);
+	public HashSet getGroupMembers(HashSet list);
+	public HashSet getRideBuddies(HashSet list);
 	public boolean isEligibleMonster();
 	public int maxFollowers();
 	public int totalFollowers();

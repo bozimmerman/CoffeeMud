@@ -26,10 +26,11 @@ public class Split extends StdCommand
 		}
 
 		int num=0;
-		Hashtable H=mob.getGroupMembers(new Hashtable());
-		for(Enumeration e=H.keys();e.hasMoreElements();)
+		HashSet H=mob.getGroupMembers(new HashSet());
+		
+		for(Iterator e=((HashSet)H.clone()).iterator();e.hasNext();)
 		{
-			MOB recipient=(MOB)e.nextElement();
+			MOB recipient=(MOB)e.next();
 			if((!recipient.isMonster())
 			&&(recipient!=mob)
 			&&(recipient.location()==mob.location())
@@ -51,9 +52,9 @@ public class Split extends StdCommand
 			mob.tell("You don't have that much gold.");
 			return false;
 		}
-		for(Enumeration e=H.keys();e.hasMoreElements();)
+		for(Iterator e=H.iterator();e.hasNext();)
 		{
-			MOB recipient=(MOB)e.nextElement();
+			MOB recipient=(MOB)e.next();
 			mob.setMoney(mob.getMoney()-gold);
 			Item C=(Item)CMClass.getItem("StdCoins");
 			C.baseEnvStats().setAbility(gold);

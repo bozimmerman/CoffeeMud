@@ -29,10 +29,10 @@ public class Paladin extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			Hashtable h=((MOB)affected).getGroupMembers(new Hashtable());
-			for(Enumeration e=h.elements();e.hasMoreElements();)
+			HashSet H=((MOB)affected).getGroupMembers(new HashSet());
+			for(Iterator e=H.iterator();e.hasNext();)
 			{
-				MOB mob=(MOB)e.nextElement();
+				MOB mob=(MOB)e.next();
 				if(!paladinsGroup.contains(mob))
 					paladinsGroup.addElement(mob);
 			}
@@ -41,7 +41,7 @@ public class Paladin extends StdAbility
 				try
 				{
 					MOB mob=(MOB)paladinsGroup.elementAt(i);
-					if((!h.contains(mob))
+					if((!H.contains(mob))
 					||(mob.location()!=invoker.location()))
 						paladinsGroup.removeElement(mob);
 				}

@@ -76,7 +76,7 @@ public class Spell_Earthquake extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");
@@ -96,9 +96,9 @@ public class Spell_Earthquake extends Spell
 		{
 
 			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?");
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

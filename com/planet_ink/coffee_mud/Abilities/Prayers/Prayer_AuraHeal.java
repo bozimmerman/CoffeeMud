@@ -38,10 +38,10 @@ public class Prayer_AuraHeal extends Prayer
 		if((--tickDown)>=0) return super.tick(ticking,tickID);
 		tickDown=4;
 		
-		Hashtable H=null;
+		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))
 		{
-			H=new Hashtable();
+			H=new HashSet();
 			invoker().getGroupMembers(H);
 		}
 		Room R=(Room)affected;
@@ -52,7 +52,7 @@ public class Prayer_AuraHeal extends Prayer
 			   &&(M.curState().getHitPoints()<M.maxState().getHitPoints())
 			   &&((H==null)
 				||(M.getVictim()==null)
-				||(!H.containsKey(M.getVictim()))))
+				||(!H.contains(M.getVictim()))))
 			{
 				if(invoker()!=null)
 				{

@@ -20,7 +20,7 @@ public class Prayer_Wave extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
 		if(dir<0)
@@ -38,9 +38,9 @@ public class Prayer_Wave extends Prayer
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
-		for(Enumeration e=h.elements();e.hasMoreElements();)
+		for(Iterator e=h.iterator();e.hasNext();)
 		{
-			MOB target=(MOB)e.nextElement();
+			MOB target=(MOB)e.next();
 			if(target!=mob)
 			{
 				if(success)

@@ -49,7 +49,6 @@ public class StdClanFlag extends StdItem implements ClanItem
 		{
 			V.clear();
 			V.addElement(new Integer(code));
-			String rulingClan="";
 			if((B.modifyBehavior(A,mob,V))
 			&&(V.size()>0)
 			&&(V.firstElement() instanceof String))

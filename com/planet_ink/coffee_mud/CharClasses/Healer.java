@@ -123,38 +123,38 @@ public class Healer extends Cleric
 		{
 			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return;
 
-			Hashtable followers=myChar.getGroupMembers(new Hashtable());
+			HashSet followers=myChar.getGroupMembers(new HashSet());
 			if(myChar.location()!=null)
 				for(int i=0;i<myChar.location().numInhabitants();i++)
 				{
 					MOB M=myChar.location().fetchInhabitant(i);
 					if((M!=null)
-					&&((M.getVictim()==null)||(followers.get(M.getVictim())==null)))
-						followers.put(M,M);
+					&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
+						followers.add(M);
 				}
 			if((fiveDown)<=0)
 			{
 				fiveDown=5;
 				Ability A=CMClass.getAbility("Prayer_CureLight");
 				if(A!=null)
-				for(Enumeration e=followers.elements();e.hasMoreElements();)
-					A.invoke(myChar,((MOB)e.nextElement()),true);
+				for(Iterator e=followers.iterator();e.hasNext();)
+					A.invoke(myChar,((MOB)e.next()),true);
 			}
 			if((tenDown)<=0)
 			{
 				tenDown=10;
 				Ability A=CMClass.getAbility("Prayer_RemovePoison");
 				if(A!=null)
-				for(Enumeration e=followers.elements();e.hasMoreElements();)
-					A.invoke(myChar,((MOB)e.nextElement()),true);
+				for(Iterator e=followers.iterator();e.hasNext();)
+					A.invoke(myChar,((MOB)e.next()),true);
 			}
 			if((twentyDown)<=0)
 			{
 				twentyDown=10;
 				Ability A=CMClass.getAbility("Prayer_CureDisease");
 				if(A!=null)
-				for(Enumeration e=followers.elements();e.hasMoreElements();)
-					A.invoke(myChar,((MOB)e.nextElement()),true);
+				for(Iterator e=followers.iterator();e.hasNext();)
+					A.invoke(myChar,((MOB)e.next()),true);
 			}
 		}
 		return;

@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 
-import java.util.Hashtable;
+import java.util.HashSet;
 
 public interface Rideable extends Environmental
 {
@@ -34,5 +34,5 @@ public interface Rideable extends Environmental
 	public boolean mobileRideBasis();
 	public String mountString(int commandType, Rider R);
 	public String dismountString(Rider R);
-	public Hashtable getRideBuddies(Hashtable list);
+	public HashSet getRideBuddies(HashSet list);
 }

@@ -99,11 +99,11 @@ public class Spell_StinkingCloud extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=null;
+		HashSet h=null;
 		if(givenTarget!=null)
 		{
-			h=new Hashtable();
-			h.put(givenTarget,givenTarget);
+			h=new HashSet();
+			h.add(givenTarget);
 		}
 		else
 			h=MUDFight.properTargets(this,mob,auto);
@@ -125,9 +125,9 @@ public class Spell_StinkingCloud extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the

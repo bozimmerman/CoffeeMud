@@ -15,16 +15,16 @@ public class Prayer_ChainStrike extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
-		if(h==null) h=new Hashtable();
+		HashSet h=properTargets(mob,givenTarget,auto);
+		if(h==null) h=new HashSet();
 
-		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
+		HashSet myGroup=mob.getGroupMembers(new HashSet());
 		Vector targets=new Vector();
-		for(Enumeration e=h.elements();e.hasMoreElements();)
-			targets.addElement(e.nextElement());
-		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
+		for(Iterator e=h.iterator();e.hasNext();)
+			targets.addElement(e.next());
+		for(Iterator e=myGroup.iterator();e.hasNext();)
 		{
-			MOB M=(MOB)e.nextElement();
+			MOB M=(MOB)e.next();
 			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
 		}
 		targets.addElement(mob);

@@ -112,7 +112,7 @@ public class Thief_Hide extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable H=mob.getGroupMembers(new Hashtable());
+		HashSet H=mob.getGroupMembers(new HashSet());
 		int highestLevel=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{

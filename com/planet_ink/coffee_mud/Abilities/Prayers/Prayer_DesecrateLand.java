@@ -21,7 +21,6 @@ public class Prayer_DesecrateLand extends Prayer
 		if(affected==null)
 			return super.okMessage(myHost,msg);
 
-		Room R=(Room)affected;
 		if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)

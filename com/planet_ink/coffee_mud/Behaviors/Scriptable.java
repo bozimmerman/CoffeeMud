@@ -3124,12 +3124,12 @@ public class Scriptable extends StdBehavior
 				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2)));
 				if((t>0)&&(newTarget!=null)&&(newTarget instanceof MOB))
 				{
-					Hashtable group=((MOB)newTarget).getGroupMembers(new Hashtable());
+					HashSet group=((MOB)newTarget).getGroupMembers(new HashSet());
 					if(!group.contains(newTarget))
-						group.put(newTarget,newTarget);
-					for(Enumeration e=group.elements();e.hasMoreElements();)
+						group.add(newTarget);
+					for(Iterator e=group.iterator();e.hasNext();)
 					{
-						MOB M=(MOB)e.nextElement();
+						MOB M=(MOB)e.next();
 						if(M.location()==lastKnownLocation)
 							MUDFight.postExperience(M,null,M.getLiegeID(),t,false);
 					}
@@ -3404,10 +3404,10 @@ public class Scriptable extends StdBehavior
 						for(int v=0;v<V.size();v++)
 						{
 							MOB mob=(MOB)V.elementAt(v);
-							Hashtable h=mob.getGroupMembers(new Hashtable());
-							for(Enumeration e=h.elements();e.hasMoreElements();)
+							HashSet H=mob.getGroupMembers(new HashSet());
+							for(Iterator e=H.iterator();e.hasNext();)
 							{
-								MOB M=(MOB)e.nextElement();
+								MOB M=(MOB)e.next();
 								if((!V.contains(M))&&(M.location()==mob.location()))
 								   V.addElement(M);
 							}

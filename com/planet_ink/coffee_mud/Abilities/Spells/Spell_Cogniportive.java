@@ -105,13 +105,13 @@ public class Spell_Cogniportive extends Spell
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
-				Hashtable h=properTargets(mob,null,false);
+				HashSet h=properTargets(mob,null,false);
 				if(h==null) return;
 
 				Room thisRoom=mob.location();
-				for(Enumeration f=h.elements();f.hasMoreElements();)
+				for(Iterator f=h.iterator();f.hasNext();)
 				{
-					MOB follower=(MOB)f.nextElement();
+					MOB follower=(MOB)f.next();
 					FullMsg enterMsg=new FullMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
 					if(thisRoom.okMessage(follower,leaveMsg)&&home.okMessage(follower,enterMsg))

@@ -89,7 +89,7 @@ public class StdTrap extends StdAbility implements Trap
 			   &&(msg.targetMessage()!=null)
 			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof MOB)
-			   &&(!msg.source().getGroupMembers(new Hashtable()).contains(msg.target())))
+			   &&(!msg.source().getGroupMembers(new HashSet()).contains(msg.target())))
 			{
 				msg.source().tell((MOB)msg.target(),msg.tool(),null,"<S-NAME> can't accept <T-NAME>.");
 				return false;

@@ -578,14 +578,14 @@ public class StdAbility implements Ability, Cloneable
 		return true;
 	}
 
-	public Hashtable properTargets(MOB mob, Environmental givenTarget, boolean auto)
+	public HashSet properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=MUDFight.properTargets(this,mob,auto);
+		HashSet h=MUDFight.properTargets(this,mob,auto);
 		if((givenTarget!=null)&&(givenTarget instanceof MOB))
 		{
-			if(h==null) h=new Hashtable();
-			if(!h.containsKey(givenTarget))
-				h.put(givenTarget,givenTarget);
+			if(h==null) h=new HashSet();
+			if(!h.contains(givenTarget))
+				h.add(givenTarget);
 		}
 		return h;
 	}

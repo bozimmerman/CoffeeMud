@@ -39,17 +39,17 @@ public class Prayer_AuraHarm extends Prayer
 		if((--tickDown)>=0) return super.tick(ticking,tickID);
 		tickDown=4;
 		
-		Hashtable H=null;
+		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))
 		{
-			H=new Hashtable();
+			H=new HashSet();
 			invoker().getGroupMembers(H);
 		}
 		Room R=(Room)affected;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=null)&&((H==null)||(!H.containsKey(M))))
+			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
 				if(invoker()!=null)
 				{

@@ -38,7 +38,6 @@ public class Chant_FindPlant extends Chant
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 			{
 				int cd=EnvResource.RESOURCE_DATA[i][0];
-				boolean found=false;
 				if((okMaterials()!=null)&&(okMaterials().length>0))
 				for(int m=0;m<okMaterials().length;m++)
 					if((cd&EnvResource.MATERIAL_MASK)==okMaterials()[m])

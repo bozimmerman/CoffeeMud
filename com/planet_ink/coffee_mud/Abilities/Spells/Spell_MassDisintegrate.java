@@ -17,7 +17,7 @@ public class Spell_MassDisintegrate extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=properTargets(mob,givenTarget,auto);
+		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()<0))
 		{
 			if(mob.location().numItems()==0)
@@ -26,7 +26,7 @@ public class Spell_MassDisintegrate extends Spell
 				return false;
 			}
 			else
-				h=new Hashtable();
+				h=new HashSet();
 		}
 
 		// the invoke method for spells receives as
@@ -37,9 +37,9 @@ public class Spell_MassDisintegrate extends Spell
 			return false;
 
 		int avgLevel=0;
-		for(Enumeration e=h.elements();e.hasMoreElements();)
+		for(Iterator e=h.iterator();e.hasNext();)
 		{
-			MOB mob2=(MOB)e.nextElement();
+			MOB mob2=(MOB)e.next();
 			avgLevel+=mob2.envStats().level();
 		}
 		if(h.size()>0)
@@ -51,9 +51,9 @@ public class Spell_MassDisintegrate extends Spell
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if(mob.location().okMessage(mob,msg))
 				{

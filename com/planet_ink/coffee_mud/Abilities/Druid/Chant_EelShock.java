@@ -59,7 +59,7 @@ public class Chant_EelShock extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=MUDFight.properTargets(this,mob,auto);
+		HashSet h=MUDFight.properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shocking.");
@@ -103,9 +103,9 @@ public class Chant_EelShock extends Chant
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) and electrical sparks dance across <S-HIS-HER> skin.^?"))
-			for(Enumeration f=h.elements();f.hasMoreElements();)
+			for(Iterator f=h.iterator();f.hasNext();)
 			{
-				MOB target=(MOB)f.nextElement();
+				MOB target=(MOB)f.next();
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
