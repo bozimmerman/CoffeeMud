@@ -90,7 +90,7 @@ public class Throw extends StdCommand
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
-				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,CMMsg.MSG_WEAPONATTACK,CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}

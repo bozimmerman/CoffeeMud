@@ -1521,13 +1521,13 @@ public class StdMOB implements MOB
 		&&(msg.target()!=this)
 		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(msg.target() instanceof MOB)
+		&&(location()!=null)
 		&&(location()==((MOB)msg.target()).location()))
 		{
 			MOB target=(MOB)msg.target();
 			// and now, the consequences of range
-			if((location()!=null)
-			   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-			   &&(rangeToTarget()>maxRange(msg.tool())))
+			if(((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(rangeToTarget()>maxRange(msg.tool())))
+			||((msg.sourceMinor()==CMMsg.TYP_THROW)&&(rangeToTarget()>1)&&(msg.target() instanceof MOB)&&(!(msg.tool() instanceof Weapon))))
 			{
 				String newstr="<S-NAME> advance(s) at ";
 				msg.modify(this,target,null,CMMsg.MSG_ADVANCE,newstr+target.name(),CMMsg.MSG_ADVANCE,newstr+"you",CMMsg.MSG_ADVANCE,newstr+target.name());

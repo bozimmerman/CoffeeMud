@@ -32,4 +32,16 @@ public class Specialization_Ranged extends Specialization_Weapon
 		secondWeaponType=Weapon.CLASS_THROWN;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((activated)
+		&&(Dice.rollPercentage()<25)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
+		&&(msg.tool() instanceof Item)
+		&&(msg.target() instanceof MOB))
+			helpProfficiency((MOB)affected);
+		super.executeMsg(myHost,msg);
+	}
 }
