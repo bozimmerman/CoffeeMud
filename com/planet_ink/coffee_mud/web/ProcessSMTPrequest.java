@@ -210,7 +210,7 @@ public class ProcessSMTPrequest extends Thread
 																		  from,
 																		  (String)to.elementAt(i),
 																		  subject,
-																		  finalData.toString(),-1);
+																		  CoffeeFilter.fullInFilter(finalData.toString()),-1);
 									}
 								}
 							}

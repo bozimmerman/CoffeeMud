@@ -68,9 +68,13 @@ public class Corpse extends GenContainer implements DeadBody
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.amITarget(this)||(msg.tool()==this))
-        &&(msg.targetMinor()==CMMsg.TYP_GET)
+        &&((msg.targetMinor()==CMMsg.TYP_GET)
+			||((msg.tool() instanceof Ability)
+				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
+				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
+				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
         &&((envStats().ability()>10)||(Sense.isABonusItems(this)))
-		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()==0)
+		&&(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).length()>0)
         &&(rawSecretIdentity().indexOf("/")>=0))
         {
             if(((MOB)msg.source()).isASysOp((Room)myHost))
