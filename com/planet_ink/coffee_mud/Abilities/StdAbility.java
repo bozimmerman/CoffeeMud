@@ -382,7 +382,6 @@ public class StdAbility implements Ability, Cloneable
 
 	protected int manaCost(MOB mob)
 	{
-		int manaConsumed=50;
 		int diff=0;
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
@@ -393,20 +392,11 @@ public class StdAbility implements Ability, Cloneable
 				diff+=(classLevel-qualifyingLevel);
 		}
 
+		
+		int manaConsumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
 		if(diff>0)
-		switch(diff)
-		{
-		case 1: manaConsumed=40; break;
-		case 2: manaConsumed=30; break;
-		case 3: manaConsumed=25; break;
-		case 4: manaConsumed=20; break;
-		case 5: manaConsumed=15; break;
-		case 6: manaConsumed=10; break;
-		case 7: manaConsumed=10; break;
-		case 8: manaConsumed=10; break;
-		default: manaConsumed=5; break;
-		}
-
+			manaConsumed=manaConsumed - (manaConsumed /10 *  -diff);
+		if(manaConsumed<5) manaConsumed=5;
 		if(overrideMana()>=0) manaConsumed=overrideMana();
 		return manaConsumed;
 	}

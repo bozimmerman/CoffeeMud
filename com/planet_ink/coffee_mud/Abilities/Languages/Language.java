@@ -9,7 +9,6 @@ public class Language extends StdAbility
 {
 	public String ID() { return "Language"; }
 	public String name(){ return "Languages";}
-	public String displayText(){ return "";}
 	private static final String[] triggerStrings = {"SPEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int quality(){return Ability.OK_SELF;}
@@ -29,7 +28,11 @@ public class Language extends StdAbility
 	public void setBeingSpoken(boolean beingSpoken){spoken=beingSpoken;}
 	public Hashtable translationHash(){ return new Hashtable(); }
 	public Vector translationVector(){ return new Vector(); }
-
+	public String displayText()
+	{
+		if(beingSpoken()) return "(Speaking "+name()+")";
+		return "";
+	}
 
 	protected String fixCase(String like,String make)
 	{

@@ -30,7 +30,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MINCLANMEMBERS=4;
 	public static final int SYSTEMI_DAYSCLANDEATH=5;
 	public static final int SYSTEMI_MINCLANLEVEL=6;
-	public static final int NUMI_SYSTEM=7;
+	public static final int SYSTEMI_MANACOST=7;
+	public static final int NUMI_SYSTEM=8;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
