@@ -470,6 +470,7 @@ public class StdMOB implements MOB
 
 		// will ensure no duplicate ticks, this obj, this id
 		ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
+		tick(this,Host.MOB_TICK); // slap on the butt
 		for(int a=0;a<numAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
@@ -1789,6 +1790,7 @@ public class StdMOB implements MOB
 						tickStatus=Tickable.STATUS_END;
 						destroy();
 						tickStatus=Tickable.STATUS_NOT;
+						lastTickedDateTime=System.currentTimeMillis();
 						return false;
 					}
 				tickStatus=Tickable.STATUS_END;

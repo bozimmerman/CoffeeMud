@@ -1,6 +1,8 @@
 Archons Guide updates
 	Finish documenting behaviors/affects for items, mobs, etc. 
 	shopkeepers/bankers should mention change bags
+	tools of the archons trade: goodybags, ingredients, wandarchon, archonstaff
+	money system explanation?
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns

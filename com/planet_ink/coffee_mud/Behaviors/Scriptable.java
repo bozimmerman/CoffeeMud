@@ -720,7 +720,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				int num=0;
 				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
 				{
@@ -739,7 +739,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				int num=0;
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
@@ -758,7 +758,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				int num=0;
 				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
 				{
@@ -777,7 +777,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				int num=0;
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
@@ -807,7 +807,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -826,7 +826,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 38: // istime
 			{
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				if(monster.location()==null)
 					returnable=false;
 				else
@@ -854,7 +854,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 39: // isday
 			{
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				if((monster.location()!=null)&&(monster.location().getArea().getDayOfMonth()==Util.s_int(arg1)))
 					returnable=true;
 				else
@@ -992,7 +992,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 17: // inroom
 			{
-				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				Environmental E=monster;
 				Room R=getRoom(arg2,lastKnownLocation);
 				if((E==null)||(!(E instanceof MOB)))
@@ -1012,7 +1012,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 37: // inlocale
 			{
-				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				Environmental E=monster;
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
@@ -1030,7 +1030,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1137,7 +1137,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1157,7 +1157,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1186,7 +1186,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1215,7 +1215,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1244,7 +1244,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1308,7 +1308,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase();
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2).toUpperCase());
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
@@ -1647,7 +1647,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 32: // nummobsinarea
 			{
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				int num=0;
 				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
 				{
@@ -1665,7 +1665,7 @@ public class Scriptable extends StdBehavior
 			case 33: // nummobs
 			{
 				int num=0;
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
@@ -1682,7 +1682,7 @@ public class Scriptable extends StdBehavior
 			case 34: // numracesinarea
 			{
 				int num=0;
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
@@ -1699,7 +1699,7 @@ public class Scriptable extends StdBehavior
 			case 35: // numraces
 			{
 				int num=0;
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
@@ -1736,11 +1736,9 @@ public class Scriptable extends StdBehavior
 			}
 			case 39: // isday
 			{
-				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
-				if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().getDayOfMonth()==Util.s_int(arg1)))
-					results.append("day");
-				else
-					results.append("evening");
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				if(lastKnownLocation!=null)
+					results.append(""+lastKnownLocation.getArea().getDayOfMonth());
 				break;
 			}
 			case 43: // roommob
@@ -2506,7 +2504,7 @@ public class Scriptable extends StdBehavior
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				int t=Util.s_int(Util.getCleanBit(s,2));
+				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2)));
 				if((t>0)&&(newTarget!=null))
 				{
 					Hashtable group=newTarget.getGroupMembers(new Hashtable());
@@ -2966,7 +2964,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 26: // MPALARM
 			{
-				String time=Util.getCleanBit(s,1);
+				String time=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				String parms=Util.getPastBit(s,1).trim();
 				if(Util.s_int(time)<=0)
 				{

@@ -37,6 +37,13 @@ public class Spell_Meld extends Spell
 					EnvResource.MATERIAL_PRECIOUS,
 					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
+	private int getHeiarchy(int material)
+	{
+		for(int i=0;i<heiarchy.length;i++)
+			if(heiarchy[i]==material) return i;
+		return 99;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// add something to disable traps
@@ -154,7 +161,7 @@ public class Spell_Meld extends Spell
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
 					int material=((Armor)itemOne).material();
-					if(heiarchy[material&EnvResource.MATERIAL_MASK]<heiarchy[((Armor)itemTwo).material()&EnvResource.MATERIAL_MASK])
+					if(getHeiarchy(material&EnvResource.MATERIAL_MASK)<getHeiarchy(((Armor)itemTwo).material()&EnvResource.MATERIAL_MASK))
 						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();
