@@ -35,6 +35,12 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getMovementMultiplier(){return 10;}
+	public int getHPDivisor(){return 3;}
+	public int getHPDice(){return 1;}
+	public int getHPDie(){return 6;}
+	public int getManaDivisor(){return 3;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 6;}
 	protected int maxStatAdj[]={0,0,0,0,0,0};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	protected Vector outfitChoices=null;
@@ -487,7 +493,8 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(Util.mul(Util.div(conStat,18.0),(getMinHitPointsLevel()+Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()))));
+//		int newHitPointGain=(int)Math.floor(Util.mul(Util.div(conStat,18.0),(getMinHitPointsLevel()+Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()))));
+		int newHitPointGain=(int)Math.floor(Util.div(conStat,getHPDivisor())+Dice.roll(getHPDice(),getHPDie(),0));
 		if(newHitPointGain<=0)
 		{
 			if(conStat>=1)
@@ -529,7 +536,8 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.round(Util.mul(Util.div(manStat,18.0),getBonusManaLevel()));
+//		int manaGain=(int)Math.round(Util.mul(Util.div(manStat,18.0),getBonusManaLevel()));
+		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+Dice.roll(getManaDice(),getManaDie(),0));
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");

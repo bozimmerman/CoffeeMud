@@ -32,6 +32,12 @@ public class Beastmaster extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
+	public int getHPDivisor(){return 2;}
+	public int getHPDice(){return 2;}
+	public int getHPDie(){return 7;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 8;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

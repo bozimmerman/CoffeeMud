@@ -1,6 +1,8 @@
+when money involved in either a get, put, or drop, the trigger is immediate
+still have to fix the craps/kuncklebonus money problem.  2 problems really, with same cause: #1 ISHERE($o) fails, and #2 Can't confirm it wasn't picked up.
+charm uninvoke should reverse your following, and death should not lose followers for players
 grid link problem -- total replacement of a grid room, west first, then south, with a foreign room.
 spellcraft triggered by wear_spellcast?
-still have to fix the craps/kuncklebonus money problem.  2 problems really, with same cause: #1 ISHERE($o) fails, and #2 Can't confirm it wasn't picked up.
 !!someone serving me flees, i am told i lose exp, but i really gain it change the ,sireshare to ,-sireshare'
 Keno: A card with 10 x 8 squares, you choose up to 10 (20 in non video keno) numbers and then 20 balls are drawn each with a non repeating number between 1 and 80. The number of matches are then looked up on a table and multiplied by your bet. The odds are a hypergeometric distribution. Terminology: http://www.gamingtoday.com/Glossary/keno.cfm Sample Payoff: http://casinopassion.s5.com/keno.html
 item generation behavior?

@@ -35,6 +35,12 @@ public class Barbarian extends StdCharClass
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getMovementMultiplier(){return 13;}
+	public int getHPDivisor(){return 2;}
+	public int getHPDice(){return 2;}
+	public int getHPDie(){return 7;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}

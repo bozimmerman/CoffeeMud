@@ -34,6 +34,12 @@ public class Ranger extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
+	public int getHPDivisor(){return 2;}
+	public int getHPDice(){return 2;}
+	public int getHPDie(){return 6;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}

@@ -72,9 +72,9 @@ public class CharClassData extends StdWebMacro
 					str.append("An extra point of damage per "+C.getLevelsPerBonusDamage()+" level(s), ");
 				
 				if(parms.containsKey("HITPOINTS"))
-					str.append("20 at first, plus (((Constitution/18)*Random("+C.getMinHitPointsLevel()+" to "+C.getMaxHitPointsLevel()+")) per level thereafter, ");
+					str.append("20 at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
 				if(parms.containsKey("MANA"))
-					str.append("100 plus ((Intelligence/18)*"+C.getBonusManaLevel()+") per level after first, ");
+					str.append("100 plus (Intelligence/"+C.getManaDivisor()+")+"+C.getManaDice()+"d"+C.getManaDie()+" per level after first, ");
 				if(parms.containsKey("MOVEMENT"))
 					str.append("100 plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
 				
@@ -82,18 +82,18 @@ public class CharClassData extends StdWebMacro
 				{
 					int ah=C.getMinHitPointsLevel()+((C.getMaxHitPointsLevel()-C.getMinHitPointsLevel())/2);
 					int maxCon=18+C.maxStatAdjustments()[CharStats.CONSTITUTION];
-					str.append("("+avgMath(10,ah,10,20)+"/"+avgMath(18,ah,10,20)+"/"+avgMath(maxCon,ah,10,20)+") ");
-					str.append("("+avgMath(10,ah,50,20)+"/"+avgMath(18,ah,50,20)+"/"+avgMath(maxCon,ah,50,20)+") ");
-					str.append("("+avgMath(10,ah,90,20)+"/"+avgMath(18,ah,90,20)+"/"+avgMath(maxCon,ah,90,20)+") ");
+					str.append("("+avgMath2(10,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(10,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
+					str.append("("+avgMath2(50,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
+					str.append("("+avgMath2(90,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
 				}
 					
 				if(parms.containsKey("AVGMANA"))
 				{
 					int ah=C.getBonusManaLevel();
 					int maxInt=18+C.maxStatAdjustments()[CharStats.INTELLIGENCE];
-					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(maxInt,ah,10,100)+") ");
-					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxInt,ah,50,100)+") ");
-					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxInt,ah,90,100)+") ");
+					str.append("("+avgMath2(10,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(10,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
+					str.append("("+avgMath2(50,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(50,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
+					str.append("("+avgMath2(90,100,10,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,18,C.getManaDivisor(),C.getManaDice())+"/"+avgMath2(90,100,maxInt,C.getManaDivisor(),C.getManaDice())+") ");
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
@@ -262,6 +262,10 @@ public class CharClassData extends StdWebMacro
 		return str.toString();
 	}
 	
+	public int avgMath2(int level, int add, int stat, int divisor, int hpdice )
+	{
+		return add+(level*((int)Math.round(Util.div(stat,divisor)))+(hpdice*(hpdice+1)/2));
+	}
 	public int avgMath(int stat, int avg, int lvl, int add)
 	{
 		return add+(int)Math.round(Util.mul(Util.div(stat,18),avg)*lvl);

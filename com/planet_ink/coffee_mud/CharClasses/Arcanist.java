@@ -28,6 +28,9 @@ public class Arcanist extends Thief
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	public int getBonusManaLevel(){return 9;}
+	public int getManaDivisor(){return 3;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 6;}
 
 	public Arcanist()
 	{

@@ -31,6 +31,9 @@ public class Charlatan extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
+	public int getHPDivisor(){return 3;}
+	public int getHPDice(){return 2;}
+	public int getHPDie(){return 6;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

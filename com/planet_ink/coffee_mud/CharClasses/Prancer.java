@@ -32,6 +32,12 @@ public class Prancer extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
+	public int getHPDivisor(){return 3;}
+	public int getHPDice(){return 2;}
+	public int getHPDie(){return 6;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 4;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

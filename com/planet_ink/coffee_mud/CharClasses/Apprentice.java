@@ -32,6 +32,12 @@ public class Apprentice extends StdCharClass
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 25;}
 	public int getTrainsFirstLevel(){return 6;}
+	public int getHPDivisor(){return 9;}
+	public int getHPDice(){return 1;}
+	public int getHPDie(){return 4;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 6;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}

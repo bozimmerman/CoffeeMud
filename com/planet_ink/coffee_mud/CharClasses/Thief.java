@@ -32,6 +32,12 @@ public class Thief extends StdCharClass
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int getMovementMultiplier(){return 10;}
+	public int getHPDivisor(){return 3;}
+	public int getHPDice(){return 1;}
+	public int getHPDie(){return 10;}
+	public int getManaDivisor(){return 4;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 4;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}

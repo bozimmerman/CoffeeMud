@@ -57,6 +57,12 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public int getTrainsFirstLevel();
 	public int getLevelsPerBonusDamage();
 	public int getMovementMultiplier();
+	public int getHPDivisor();
+	public int getHPDice();
+	public int getHPDie();
+	public int getManaDivisor();
+	public int getManaDice();
+	public int getManaDie();
 	public String weaponLimitations();
 	public String armorLimitations();
 	public String otherLimitations();
