@@ -96,6 +96,25 @@ public class Reset
 			Log.sysOut("GOLEMS","ISNOT-"+isnot.toString());
 		}
 		else
+		if(s.toLowerCase().startsWith("norejuvers"))
+		{
+			StringBuffer is=new StringBuffer("");
+			Hashtable names=new Hashtable();
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB M=R.fetchInhabitant(i);
+					if((M.baseEnvStats().rejuv()>0)&&(M.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+						continue;
+					is.append(M.Name()+" ");
+				}
+			}
+			mob.tell("IS-"+is.toString());
+			Log.sysOut("REJUV","IS-"+is.toString());
+		}
+		else
 		if(s.equalsIgnoreCase("areaoramamana"))
 		{
 			// this is just utility code and will change frequently
