@@ -21,9 +21,9 @@ public class Fighter_CritStrike extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
-		baseEnvStats().setLevel(8);
+		baseEnvStats().setLevel(9);
 
-		addQualifyingClass("Fighter",8);
+		addQualifyingClass("Fighter",9);
 		recoverEnvStats();
 	}
 
