@@ -49,75 +49,74 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_Tether",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Chant_CaveFishing",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Chant_CaveFishing",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Darkvision",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_Boulderbash",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_SenseMetal",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_DeepDarkness",false);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Mold",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_MagneticField",false);
 			
-			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Chant_EndureRust",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Brittle",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_Rockfeet",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Chant_Earthpocket",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Earthpocket",true);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Druid_GolemForm",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",true);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_Rockthought",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Stonewalking",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
-
 			
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOre",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGem",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",true);
 			
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		}

@@ -238,4 +238,20 @@ public class SMTPserver extends Thread
 	{
 		return page.getStr("PORT");
 	}
+	public int getMaxMsgs()
+	{
+		String s=page.getStr("MAXMSGS");
+		if(s==null) return Integer.MAX_VALUE;
+		int x=Util.s_int(s);
+		if(x==0) return Integer.MAX_VALUE;
+		return x;
+	}
+	public long getMaxMsgSize()
+	{
+		String s=page.getStr("MAXMSGSIZE");
+		if(s==null) return Long.MAX_VALUE;
+		long x=Util.s_long(s);
+		if(x==0) return Long.MAX_VALUE;
+		return x;
+	}
 }

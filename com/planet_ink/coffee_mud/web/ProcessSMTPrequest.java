@@ -16,8 +16,9 @@ public class ProcessSMTPrequest extends Thread
 	private final static String cr = "\r\n";
 	private final static String S_250 = "250 OK";
 	private String from=null;
-	private String to=null;
-	private String data=null;
+	private Vector to=null;
+	private StringBuffer data=null;
+	private String domain=null;
 
 	public ProcessSMTPrequest(Socket a_sock,
 							  SMTPserver a_Server,
@@ -32,6 +33,22 @@ public class ProcessSMTPrequest extends Thread
 			this.start();
 	}
 	
+	public String validLocalAccount(String s)
+	{
+		int x=s.indexOf("@");
+		String name=s;
+		if(x>0)
+		{
+			
+			name=s.substring(0,x);
+			String domain=s.substring(x+1);
+			if(!domain.toUpperCase().endsWith(server.domainName().toUpperCase()))
+			   return null;
+		}
+		return CMClass.DBEngine().DBUserSearch(null,name)?name:null;
+	}
+	
+	
 	public void run()
 	{
 		BufferedReader sin = null;
@@ -45,9 +62,30 @@ public class ProcessSMTPrequest extends Thread
 			sin=new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			sout.write(("220 ESMTP "+server.domainName()+" "+server.ServerVersionString+"; "+new IQCalendar().d2String()+cr).getBytes());
 			boolean quitFlag=false;
+			boolean dataMode=false;
 			while(!quitFlag)
 			{
+				sock.setSoTimeout(5*60*1000);
 				String s=sin.readLine();
+				if(dataMode)
+				{
+					if(s.equals("."))
+					{
+						/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
+						if(data.length()>=server.getMaxMsgSize())
+							replyData=("552 Message exceeds size limit.").getBytes();
+						else
+							replyData=("250 Message accepted for delivery.").getBytes();
+						dataMode=false;
+					}
+					else
+					{
+						if(data==null) data=new StringBuffer("");
+						if(data.length()<server.getMaxMsgSize())
+							data.append(s+cr);
+					}
+				}
+				
 				String cmd=s.toUpperCase();
 				String parm="";
 				int cmdindex=s.indexOf(" ");
@@ -213,20 +251,96 @@ public class ProcessSMTPrequest extends Thread
 				if(cmd.equals("NOOP"))
 					replyData=(S_250.getBytes()+cr).getBytes();
 				else
-				if(cmd.equals("HELO"))
+				if(cmd.equals("HELO")
+				||cmd.equals("EHLO"))
 				{
-				}
-				else
-				if(cmd.equals("EHLO"))
-				{
+					if(domain!=null)
+						replyData=("503 "+sock.getLocalAddress().getHostName()+" Duplicate HELO/EHLO"+cr).getBytes();
+					else	
+					if(parm.trim().length()==0)
+						replyData=("501 "+cmd+" requires domain address"+cr).getBytes();
+					else
+					{
+						domain=parm;
+						replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
+						if(cmd.equals("EHLO"))
+						{
+							replyData=(replyData.toString()
+									  +"250-8BITMIME"+cr
+									  +"250-SIZE 2000"+cr
+									  +"250-DSN"+cr
+									  +"250-ONEX"+cr
+									  +"250-XUSR"+cr
+									  +"250 HELP"+cr).getBytes();
+						}
+					}
 				}
 				else
 				if(cmd.equals("MAIL"))
 				{
+					int x=parm.indexOf(":");
+					if(x<0)
+						replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+					else
+					{
+						String to2=parm.substring(0,x).trim();
+						if(!to2.equalsIgnoreCase("from"))
+							replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
+						else
+						{
+							parm=parm.substring(x+1).trim();
+							String parmparms="";
+							boolean error=false;
+							if(parm.startsWith("<"))
+							{
+								x=parm.indexOf(">");
+								if(x<0)
+								{
+									replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+									error=true;
+								}
+								else
+								{
+									parmparms=parm.substring(x+1).trim();
+									parm=parm.substring(1,x);
+								}
+							}
+							else
+							if(parm.indexOf(" ")>=0)
+							{
+								replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+								error=true;
+							}
+							if(parmparms.trim().length()>0)
+								replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
+							else
+							if(!error)
+							{
+								String name=validLocalAccount(parm);
+								if(name==null)
+									replyData=("551 Requested action not taken: User is not local."+cr).getBytes();
+								else
+								{
+									replyData=("250 OK "+name+cr).getBytes();
+									from=name;
+								}
+							}
+						}
+					}
 				}
 				else
 				if(cmd.equals("DATA"))
 				{
+					if(from==null)
+						replyData=("503 Need MAIL command"+cr).getBytes();
+					else
+					if(to==null)
+						replyData=("503 Need RCPT (recipient)"+cr).getBytes();
+					else
+					{
+						replyData=("354 Enter mail, end with \".\" on a line by itself"+cr).getBytes();
+						dataMode=true;
+					}
 				}
 				else
 				if(cmd.equals("RSET"))
@@ -244,12 +358,10 @@ public class ProcessSMTPrequest extends Thread
 				}
 				else
 				if(cmd.equals("VRFY"))
-				{
-				}
+					replyData=("252 Cannot VRFY user; try RCPT to attempt delivery (or try finger)"+cr).getBytes();
 				else
 				if(cmd.equals("EXPN"))
-				{
-				}
+					replyData=("502 Sorry, we don't allow mailing lists"+cr).getBytes();
 				else
 				if(cmd.equals("VERB"))
 					replyData=("502 Verbose unavailable"+cr).getBytes();
@@ -259,6 +371,64 @@ public class ProcessSMTPrequest extends Thread
 				else
 				if(cmd.equals("RCPT"))
 				{
+					if(to==null)
+						replyData=("503 Need MAIL before RCPT"+cr).getBytes();
+					else
+					{
+						int x=parm.indexOf(":");
+						if(x<0)
+							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+						else
+						{
+							String to2=parm.substring(0,x).trim();
+							if(!to2.equalsIgnoreCase("to"))
+								replyData=("500 Unrecognized command \""+cmd+"\""+cr).getBytes();
+							else
+							{
+								parm=parm.substring(x+1).trim();
+								String parmparms="";
+								boolean error=false;
+								if(parm.startsWith("<"))
+								{
+									x=parm.indexOf(">");
+									if(x<0)
+									{
+										replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+										error=true;
+									}
+									else
+									{
+										parmparms=parm.substring(x+1).trim();
+										parm=parm.substring(1,x);
+									}
+								}
+								else
+								if(parm.indexOf(" ")>=0)
+								{
+									replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
+									error=true;
+								}
+								if(parmparms.trim().length()>0)
+									replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
+								else
+								if(parm.indexOf("@")<0)
+									replyData=("550 "+parm+" user unknown."+cr).getBytes();
+								else
+								if(!error)
+								{
+									String name=validLocalAccount(parm);
+									if(name==null)
+										replyData=("553 Requested action not taken: User is not local."+cr).getBytes();
+									else
+									{
+										replyData=("250 OK "+name+cr).getBytes();
+										if(to==null) to=new Vector();
+										to.addElement(name);
+									}
+								}
+							}
+						}
+					}
 				}
 				else
 					replyData=("500 Command Unrecognized: \""+cmd+"\""+cr).getBytes();
@@ -273,6 +443,18 @@ public class ProcessSMTPrequest extends Thread
 				}
 			}
 
+		}
+		catch (java.net.SocketTimeoutException e2)
+		{
+			try
+			{
+				sout.write(("421 You're taking too long.  I'm outa here.").getBytes());
+				sout.flush();
+			}
+			catch(Exception e)
+			{
+				Log.errOut(getName(),"Exception2: " + e.getMessage() );
+			}
 		}
 		catch (Exception e)
 		{
