@@ -1,11 +1,95 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMUD MUDGrinder</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		function EditBehavior(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddBehavior(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function EditAffect(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddAffect(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function ReShow()
+		{
+			document.AREAEDIT.action='/grinder/editroomform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
 <BODY>
-
-<P>&nbsp;</P>
-
+<CENTER>
+<h3>Modify Room Data for '@RoomID@'.</H3>
+<P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
+<BR>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editroomdone.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYROOM">
+<TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Room Class:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	<SELECT NAME=CLASS>
+	@RoomData?CLASSES@
+	</SELECT>
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Room Title:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@RoomData?NAME@"></TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Description:</B></FONT></TD>
+    <TD WIDTH=500 COLSPAN=2>
+    <TEXTAREA NAME=DESCRIPTION ROWS=5 COLS=60>@RoomData?DESCRIPTION@</TEXTAREA>
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
+	<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	@RoomData?BEHAVIORS@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
+	<BR><A target=HELP href="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+    <TD WIDTH=500 COLSPAN=2>
+	@RoomData?AFFECTS@
+	</TD>
+</TR>
+<TR>
+    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+	<INPUT TYPE=SUBMIT VALUE="Submit">
+	</CENTER>
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</CENTER>
 </BODY>
 </HTML>
+@endif@
+@endif@

@@ -1059,23 +1059,26 @@ public class TelnetSession extends Thread implements Session
 		waiting=false;
 		needPrompt=false;
 
-		//try
-		//{
-			// might be source of lockup.
-			//if(in!=null)
-			//	in.close();
-			//if(out!=null)
-			//	out.close();
-			//if(sock!=null)
-			//	sock.close();
+		try
+		{
+			if(sock!=null)
+			{
+				if(out!=null)
+					out.flush();
+				sock.shutdownInput();
+				sock.shutdownOutput();
+				if(out!=null)
+					out.close();
+				sock.close();
+			}
 			in=null;
 			out=null;
 			sock=null;
 
-		//}
-		//catch(IOException e)
-		//{
-		//}
+		}
+		catch(IOException e)
+		{
+		}
 		//finally
 		//{
 		//}

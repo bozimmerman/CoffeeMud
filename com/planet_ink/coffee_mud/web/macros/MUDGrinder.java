@@ -60,8 +60,6 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to edit area!");
-			httpReq.resetRequestEncodedParameters();
 			String AREA=(String)httpReq.getRequestParameters().get("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
@@ -76,8 +74,6 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELEXIT"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to delete exit!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
@@ -91,8 +87,6 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to edit exit!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
@@ -106,8 +100,6 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKEXIT"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to link!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
@@ -125,21 +117,17 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to edit room!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
 			if(R==null) return "@break@";
-			String errMsg=GrinderRooms.editRoom(R);
+			String errMsg=GrinderRooms.editRoom(httpReq,parms,R);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
 		}
 		else
 		if(parms.containsKey("DELROOM"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to delete room!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
@@ -158,8 +146,6 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
-			httpReq.getRequestParameters().put("ERRMSG","Unable to add room!");
-			httpReq.resetRequestEncodedParameters();
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
