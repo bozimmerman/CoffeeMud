@@ -73,65 +73,87 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((clanID().length()>0)
-		&&(msg.amITarget(myHost))
-		&&(!msg.source().getClanID().equals(clanID())))
+		if((clanID().length()>0)&&(msg.amITarget(myHost)))
 		{
-			if(msg.targetMinor()==CMMsg.TYP_GET)
+			if(!msg.source().getClanID().equals(clanID()))
 			{
-				Room R=CoffeeUtensils.roomLocation(this);
-				if(R!=null)
-					for(int i=0;i<R.numInhabitants();i++)
+				if(msg.targetMinor()==CMMsg.TYP_GET)
+				{
+					Room R=CoffeeUtensils.roomLocation(this);
+					if(R!=null)
 					{
-						MOB M=R.fetchInhabitant(i);
-						if((M!=null)
-						&&(M.isMonster())
-						&&(M.getClanID().equals(clanID())
-						&&(Sense.aliveAwakeMobile(M,true))
-						&&(Sense.canBeSeenBy(this,M))
-						&&(!Sense.isAnimalIntelligence(M))))
+						for(int i=0;i<R.numInhabitants();i++)
 						{
-							R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
+							MOB M=R.fetchInhabitant(i);
+							if((M!=null)
+							&&(M.isMonster())
+							&&(M.getClanID().equals(clanID())
+							&&(Sense.aliveAwakeMobile(M,true))
+							&&(Sense.canBeSeenBy(this,M))
+							&&(!Sense.isAnimalIntelligence(M))))
+							{
+								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
+								return false;
+							}
+						}
+					}
+				}
+				else
+				if(msg.targetMinor()==CMMsg.TYP_DROP)
+				{
+					Room R=msg.source().location();
+					LandTitle T=null;
+					Area A=null;
+					Behavior B=null;
+					Vector V=null;
+					if(R!=null)
+					{
+						A=R.getArea();
+						for(int r=0;r<R.numEffects();r++)
+							if(R.fetchEffect(r) instanceof LandTitle)
+								T=(LandTitle)R.fetchEffect(r);
+					}
+					if((T==null)
+					||((!T.landOwner().equals(clanID()))&&(!T.landOwner().equals(msg.source().Name()))))
+					{
+						if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+						if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+						boolean ok=false;
+						if(B!=null)
+						{
+							V.clear();
+							V.addElement(new Integer(Law.MOD_RULINGCLAN));
+							String rulingClan="";
+							if((B.modifyBehavior(A,msg.source(),V))
+							&&(V.size()>0)
+							&&(V.firstElement() instanceof String))
+								ok=true;
+						}
+						if(!ok)
+						{
+							msg.source().tell("You can not place a flag here, this place is controlled by the Archons.");
 							return false;
 						}
 					}
+				}
 			}
 			else
-			if(msg.targetMinor()==CMMsg.TYP_DROP)
+			if((msg.targetMinor()==CMMsg.TYP_GET)
+			&&(msg.source().location()!=null)
+			&&(msg.source().isMonster()))
 			{
-				Room R=msg.source().location();
-				LandTitle T=null;
-				Area A=null;
-				Behavior B=null;
-				Vector V=null;
-				if(R!=null)
+				boolean foundOne=false;
+				for(int i=0;i<msg.source().location().numInhabitants();i++)
 				{
-					A=R.getArea();
-					for(int r=0;r<R.numEffects();r++)
-						if(R.fetchEffect(r) instanceof LandTitle)
-							T=(LandTitle)R.fetchEffect(r);
+					MOB M=msg.source().location().fetchInhabitant(i);
+					if((M!=null)&&(!M.isMonster())
+					&&(M.getClanID().equals(clanID())))
+					{ foundOne=true; break;}
 				}
-				if((T==null)
-				||((!T.landOwner().equals(clanID()))&&(!T.landOwner().equals(msg.source().Name()))))
+				if(!foundOne)
 				{
-					if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-					if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
-					boolean ok=false;
-					if(B!=null)
-					{
-						V.clear();
-						V.addElement(new Integer(Law.MOD_RULINGCLAN));
-						String rulingClan="";
-						if((B.modifyBehavior(A,msg.source(),V))
-						&&(V.size()>0)
-						&&(V.firstElement() instanceof String))
-							ok=true;
-					}
-					if(!ok)
-					{
-						msg.source().tell("You can not place a flag here, this place is controlled by the Archons.");
-						return false;
-					}
+					msg.source().tell("You are guarding "+name()+" too closely.");
+					return false;
 				}
 			}
 		}

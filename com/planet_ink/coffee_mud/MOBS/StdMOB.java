@@ -1646,7 +1646,13 @@ public class StdMOB implements MOB
 				{
 					MOB victim=null;
 					if(msg.target() instanceof MOB)
+					{
 						victim=(MOB)msg.target();
+						if((clanID.length()>0)
+						&&(clanID.equals(victim.getClanID()))
+						&&(!Util.s_bool(msg.othersMessage())))
+						   msg.setValue(0);
+					}
 					if(msg.value()>=0)
 						charStats().getCurrentClass().gainExperience(this,
 																	 victim,

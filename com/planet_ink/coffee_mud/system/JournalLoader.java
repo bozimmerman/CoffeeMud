@@ -50,6 +50,23 @@ public class JournalLoader
 					entry.addElement(DBConnections.getRes(R,"CMTONM"));
 					entry.addElement(DBConnections.getRes(R,"CMSUBJ"));
 					entry.addElement(DBConnections.getRes(R,"CMMSGT"));
+					String subject=(String)entry.elementAt(4);
+					if((subject.startsWith("MOTD"))
+					||(subject.startsWith("MOTM"))
+					||(subject.startsWith("MOTY")))
+					{
+						char c=subject.charAt(3);
+						subject=subject.substring(4);
+						long last=Util.s_long((String)entry.elementAt(2));
+						if(c=='D') last=last+((long)(1000*60*60*24));
+						else
+						if(c=='M') last=last+((long)(1000*60*60*24*30));
+						else
+						if(c=='Y') last=last+((long)(1000*60*60*24*365));
+						entry.addElement(""+last);
+					}
+					else
+						entry.addElement(entry.elementAt(2));
 					journal.addElement(entry);
 				}
 				DBConnector.DBDone(D);

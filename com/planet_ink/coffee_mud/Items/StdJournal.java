@@ -209,23 +209,11 @@ public class StdJournal extends StdItem
 				String date=(String)entry.elementAt(2);
 				String to=(String)entry.elementAt(3);
 				String subject=(String)entry.elementAt(4);
-				if((subject.startsWith("MOTD"))
-				||(subject.startsWith("MOTM"))
-				||(subject.startsWith("MOTY")))
-				{
-					char c=subject.charAt(3);
-					subject=subject.substring(4);
-					long last=Util.s_long(date);
-					if(c=='D') last=last+((long)(1000*60*60*24));
-					else
-					if(c=='M') last=last+((long)(1000*60*60*24*30));
-					else
-					if(c=='Y') last=last+((long)(1000*60*60*24*365));
-					date=""+last;
-				}
+				// message is 5, but dont matter.
+				String compdate=(String)entry.elementAt(6);
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
-					if(Util.s_long(date)>lastTimeDate)
+					if(Util.s_long(compdate)>lastTimeDate)
 						buf.append("*");
 					else
 						buf.append(" ");
@@ -233,7 +221,7 @@ public class StdJournal extends StdItem
 							   +((shortFormat)?"":""
 							   +Util.padRight(from,10)+" "
 							   +Util.padRight(to,10)+" ")
-							   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
+							   +Util.padRight(((!date.equals(compdate))?"N/A":IQCalendar.d2String(Util.s_long(date))),19)+" "
 							   +Util.padRight(subject,25+(shortFormat?22:0))+"\n\r");
 				}
 			}
@@ -246,9 +234,12 @@ public class StdJournal extends StdItem
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
+			String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
-			if(mineAble) buf.append("*");
-			else buf.append(" ");
+			if(mineAble) 
+				buf.append("*");
+			else 
+				buf.append(" ");
 			if(message.startsWith("<cmvp>"))
 				message=new String(ExternalPlay.doVirtualPage(message.substring(6).getBytes()));
 			
@@ -256,7 +247,7 @@ public class StdJournal extends StdItem
 				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
-						   +"\n\rDATE: "+IQCalendar.d2String(Util.s_long(date))
+						   +"\n\rDATE: "+((!date.equals(compdate))?"N/A":IQCalendar.d2String(Util.s_long(date)))
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}

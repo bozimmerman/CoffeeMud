@@ -423,12 +423,12 @@ public class Conquerable extends Arrest
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((holdingClan.length()>0)
+		&&(msg.source().getClanID().equals(holdingClan))
 		&&(msg.source().isMonster())
 		&&(msg.target() instanceof MOB)
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		&&(!((MOB)msg.target()).isInCombat())
 		&&(msg.source().getVictim()!=msg.target())
-		&&(msg.source().getClanID().equals(holdingClan))
 		&&(((MOB)msg.target()).getClanID().equals(holdingClan)))
 		{
 			Clan C=Clans.getClan(holdingClan);
