@@ -46,9 +46,18 @@ public class ObjectGuardian extends StdBehavior
 			return true;
 
 		if((mob!=monster)
-		&&((msg.sourceMinor()==CMMsg.TYP_GET)
-		||((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==msg.tool()))
+		&&(((msg.sourceMinor()==CMMsg.TYP_THROW)&&(monster.location()==CoffeeUtensils.roomLocation(msg.target())))
 		||(msg.sourceMinor()==CMMsg.TYP_DROP)))
+		{
+			FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> drop that.");
+			if(monster.location().okMessage(monster,msgs))
+			{
+				monster.location().send(monster,msgs);
+				return false;
+			}
+		}
+		else
+		if((mob!=monster)&&(msg.sourceMinor()==CMMsg.TYP_GET))
 		{
 			FullMsg msgs=new FullMsg(monster,mob,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
 			if(monster.location().okMessage(monster,msgs))

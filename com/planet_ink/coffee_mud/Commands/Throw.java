@@ -90,20 +90,15 @@ public class Throw extends StdCommand
 			if(mob.location().okMessage(mob,newMsg))
 			{
 				mob.location().send(mob,newMsg);
-				FullMsg msg=new FullMsg(mob,item,mob.location(),CMMsg.MSG_THROW,null);
-				FullMsg msg2=new FullMsg(mob,target,item,CMMsg.MSG_WEAPONATTACK,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
-				if((mob.location().okMessage(mob,msg))
-				&&(mob.location().okMessage(mob,msg2)))
-				{
+				FullMsg msg=new FullMsg(mob,target,item,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THROW,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
+				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
-					mob.location().send(mob,msg2);
-				}
 			}
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,item,target,CMMsg.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,item,target,CMMsg.MSG_THROW,"<T-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			FullMsg msg=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,target,item,CMMsg.MSG_THROW,"<T-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
 			if(mob.location().okMessage(mob,msg)&&((Room)target).okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg);

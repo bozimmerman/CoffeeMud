@@ -293,6 +293,12 @@ public class Dragon extends StdMOB
 			return true;
 		}
 
+		if(!Sense.canBreathe(this))
+		{
+			// ===== if you can't breathe, you can't breathe fire
+			return false;
+		}
+		
 		// ===== Tell What the Beast is doing
 		switch (DragonColor())
 		{

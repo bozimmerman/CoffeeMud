@@ -200,7 +200,6 @@ public class GenWallpaper implements Item
 			}
 			break;
 		case CMMsg.TYP_DROP:
-		case CMMsg.TYP_THROW:
 			return true;
 		default:
 			break;

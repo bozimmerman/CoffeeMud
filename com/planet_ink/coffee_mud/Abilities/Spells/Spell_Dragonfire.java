@@ -37,6 +37,12 @@ public class Spell_Dragonfire extends Spell
 			mob.tell("There doesn't appear to be anyone here worth burning.");
 			return false;
 		}
+		
+		if(!Sense.canBreathe(mob))
+		{
+			mob.tell("You can't breathe!");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -311,7 +311,6 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(msg.amITarget(this))
 		{
-
 			MOB mob=msg.source();
 			switch(msg.targetMinor())
 			{
@@ -353,21 +352,6 @@ public class StdContainer extends StdItem implements Container
 					newitem.setContainer(this);
 					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						mob.location().recoverRoomStats();
-				}
-				break;
-			case CMMsg.TYP_THROW:
-				if((mob.isMine(this))
-				&&(msg.tool()!=null)
-				&&(msg.tool() instanceof Room))
-				{
-					setContainer(null);
-					recursiveDropMOB(mob,(Room)msg.tool(),this,this instanceof DeadBody);
-					if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					{
-						mob.location().recoverRoomStats();
-						if(mob.location()!=msg.tool())
-							((Room)msg.tool()).recoverRoomStats();
-					}
 				}
 				break;
 			case CMMsg.TYP_DROP:
@@ -461,6 +445,25 @@ public class StdContainer extends StdItem implements Container
 				break;
 			default:
 				break;
+			}
+		}
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.source()!=null)
+		&&(msg.source().isMine(this)))
+		{
+			setContainer(null);
+			Room R=CoffeeUtensils.roomLocation(msg.target());
+			if(R!=null)
+			{
+				recursiveDropMOB(msg.source(),R,this,this instanceof DeadBody);
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				{
+					msg.source().location().recoverRoomStats();
+					if(msg.source().location()!=R)
+						R.recoverRoomStats();
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);

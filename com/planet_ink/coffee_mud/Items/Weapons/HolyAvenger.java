@@ -70,9 +70,6 @@ public class HolyAvenger extends TwoHandedSword
 				return false;
 			}
 			break;
-		case CMMsg.TYP_DROP:
-		case CMMsg.TYP_THROW:
-			break;
 		default:
 			break;
 		}

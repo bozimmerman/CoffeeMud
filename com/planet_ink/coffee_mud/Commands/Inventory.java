@@ -45,38 +45,41 @@ public class Inventory extends StdCommand
 			}
 		}
 		if((viewItems.size()>0)&&(!foundAndSeen))
-			msg.append("(nothing you can see right now)");
+			viewItems.clear();
 		else
+		if((mask!=null)&&(mask.trim().length()>0))
 		{
-			if((mask!=null)&&(mask.trim().length()>0))
+			mask=mask.trim().toUpperCase();
+			if(!mask.startsWith("all")) mask="all "+mask;
+			Vector V=(Vector)viewItems.clone();
+			viewItems.clear();
+			Item I=(Item)V.firstElement();
+			while(I!=null)
 			{
-				mask=mask.trim().toUpperCase();
-				if(!mask.startsWith("all")) mask="all "+mask;
-				Vector V=(Vector)viewItems.clone();
-				viewItems.clear();
-				Item I=(Item)V.firstElement();
-				while(I!=null)
+				I=(Item)EnglishParser.fetchEnvironmental(V,mask,false);
+				if(I!=null)
 				{
-					I=(Item)EnglishParser.fetchEnvironmental(V,mask,false);
-					if(I!=null)
-					{
-						viewItems.addElement(I);
-						V.remove(I);
-					}
+					viewItems.addElement(I);
+					V.remove(I);
 				}
 			}
-			if(viewItems.size()>0)
-			{
-				msg.append(CMLister.niceLister(seer,viewItems,true));
-				if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
-					msg.append("(some ^ygold^? coins you can't see)");
-				else
-				if(mob.getMoney()>0)
-					msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
-			}
-			else
-				msg.append("(nothing like that you can see right now)");
 		}
+		if(viewItems.size()>0)
+			msg.append(CMLister.niceLister(seer,viewItems,true));
+		
+		if((viewItems.size()==0)&&((mob.getMoney()==0)||(!Sense.canBeSeenBy(mob.location(),seer))))
+		{
+			if((mask!=null)&&(mask.trim().length()>0))
+				msg.append("(nothing like that you can see right now)");
+			else
+				msg.append("(nothing you can see right now)");
+		}
+		else
+		if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
+			msg.append("(some ^ygold^? coins you can't see)");
+		else
+		if(mob.getMoney()>0)
+			msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
 		return msg;
 	}
 

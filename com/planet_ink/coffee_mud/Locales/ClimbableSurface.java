@@ -98,14 +98,19 @@ public class ClimbableSurface extends StdRoom
 		super.executeMsg(myHost,msg);
 		if(Sense.isSleeping(this)) return;
 
-		if((msg.target() instanceof Item)
+		if((msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(CoffeeUtensils.roomLocation(msg.target())==this)
+		&&(msg.tool() instanceof Item)
+		&&((!(msg.tool() instanceof Rideable))
+		   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_LADDER))
+		&&(!Sense.isFlying(msg.tool())))
+			InTheAir.makeFall(msg.tool(),this,0);
+		else
+		if((msg.targetMinor()==CMMsg.TYP_DROP)
+		&&(msg.target() instanceof Item)
 		&&((!(msg.target() instanceof Rideable))
 		   ||(((Rideable)msg.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!Sense.isFlying(msg.target()))
-		&&((msg.targetMinor()==CMMsg.TYP_DROP)
-			||((msg.targetMinor()==CMMsg.TYP_THROW)
-			   &&(msg.tool()!=null)
-			   &&(msg.tool()==this))))
+		&&(!Sense.isFlying(msg.target())))
 			InTheAir.makeFall(msg.target(),this,0);
 		else
 		if(msg.amITarget(this)

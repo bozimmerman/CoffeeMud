@@ -235,12 +235,26 @@ public class LightSource extends StdItem implements Light
 	{
 		LightSource.lightAffect(this,msg);
 		super.executeMsg(myHost,msg);
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(msg.source()!=null))
+		{
+			msg.source().recoverEnvStats();
+			if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+			{
+				if(msg.source().location()!=null)
+					msg.source().location().recoverRoomStats();
+				Room R=CoffeeUtensils.roomLocation(msg.target());
+				if((R!=null)&&(R!=msg.source().location()))
+					R.recoverRoomStats();
+			}
+		}
+		else
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DROP:
-			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_REMOVE:
 				if(msg.source()!=null)
@@ -250,10 +264,9 @@ public class LightSource extends StdItem implements Light
 						msg.source().recoverEnvStats();
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
-						if((msg.tool()!=null)
-						&&(msg.tool()!=msg.source().location())
-						&&(msg.tool() instanceof Room))
-							((Room)msg.tool()).recoverRoomStats();
+						Room R=CoffeeUtensils.roomLocation(msg.tool());
+						if((R!=null)&&(R!=msg.source().location()))
+							R.recoverRoomStats();
 					}
 				}
 				break;

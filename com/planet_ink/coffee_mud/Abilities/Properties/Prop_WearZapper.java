@@ -70,9 +70,6 @@ public class Prop_WearZapper extends Property
 			break;
 		case CMMsg.TYP_GET:
 			break;
-		case CMMsg.TYP_DROP:
-		case CMMsg.TYP_THROW:
-			break;
 		default:
 			break;
 		}

@@ -573,6 +573,25 @@ public class StdItem implements Item
 		}
 
 		MOB mob=msg.source();
+		
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(mob!=null)
+		&&(mob.isMine(this)))
+		{
+			if(envStats().weight()>(mob.maxCarry()/5))
+			{
+				mob.tell(name()+" is too heavy to throw.");
+				return false;
+			}
+			if(!Sense.isDroppable(this))
+			{
+				mob.tell("You can't seem to let go of "+name()+".");
+				return false;
+			}
+			return true;
+		}
+		else
 		if(!msg.amITarget(this))
 			return true;
 		else
@@ -807,18 +826,6 @@ public class StdItem implements Item
 				return false;
 			}
 			return true;
-		case CMMsg.TYP_THROW:
-			if(envStats().weight()>(mob.maxCarry()/5))
-			{
-				mob.tell(name()+" is too heavy to throw.");
-				return false;
-			}
-			if(!Sense.isDroppable(this))
-			{
-				mob.tell("You can't seem to let go of "+name()+".");
-				return false;
-			}
-			return true;
 		case CMMsg.TYP_BUY:
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_VALUE:
@@ -892,6 +899,28 @@ public class StdItem implements Item
 		}
 
 		MOB mob=msg.source();
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_THROW)
+		&&(mob!=null)
+		&&(msg.target()!=null))
+		{
+			Room R=CoffeeUtensils.roomLocation(msg.target());
+			if(mob.isMine(this))
+			{
+				mob.delInventory(this);
+				if(!R.isContent(this))
+					R.addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
+				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
+				{
+					R.recoverRoomStats();
+					if(mob.location()!=R)
+						mob.location().recoverRoomStats();
+				}
+			}
+			unWear();
+			setContainer(null);
+		}
+		else
 		if(!msg.amITarget(this))
 			return;
 		else
@@ -993,24 +1022,6 @@ public class StdItem implements Item
 				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 			}
-			break;
-		case CMMsg.TYP_THROW:
-			if(mob.isMine(this)
-			   &&(msg.tool()!=null)
-			   &&(msg.tool() instanceof Room))
-			{
-				mob.delInventory(this);
-				if(!((Room)msg.tool()).isContent(this))
-					((Room)msg.tool()).addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-				{
-					((Room)msg.tool()).recoverRoomStats();
-					if(mob.location()!=msg.tool())
-						mob.location().recoverRoomStats();
-				}
-			}
-			unWear();
-			setContainer(null);
 			break;
 		case CMMsg.TYP_DROP:
 			if(mob.isMine(this))

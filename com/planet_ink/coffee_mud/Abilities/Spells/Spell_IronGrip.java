@@ -61,7 +61,6 @@ public class Spell_IronGrip extends Spell
 			else
 			if((msg.amISource(mob))
 			&&((msg.targetMinor()==CMMsg.TYP_DROP)
-				||(msg.targetMinor()==CMMsg.TYP_THROW)
 				||(msg.targetMinor()==CMMsg.TYP_GET)
 			    ||(msg.targetMinor()==CMMsg.TYP_REMOVE))
 			&&(msg.target()!=null)
@@ -70,6 +69,16 @@ public class Spell_IronGrip extends Spell
 			&&(((Item)msg.target()).amWearingAt(Item.WIELD)))
 			{
 				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
+				return false;
+			}
+			else
+			if((msg.amISource(mob))
+			&&(msg.targetMinor()==CMMsg.TYP_THROW)
+			&&(msg.tool() instanceof Item)
+			&&(mob.isMine((Item)msg.tool()))
+			&&(((Item)msg.tool()).amWearingAt(Item.WIELD)))
+			{
+				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				return false;
 			}
 		}

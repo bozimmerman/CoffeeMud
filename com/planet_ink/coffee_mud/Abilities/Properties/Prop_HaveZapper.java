@@ -65,9 +65,6 @@ public class Prop_HaveZapper extends Property
 				return false;
 			}
 			break;
-		case CMMsg.TYP_DROP:
-		case CMMsg.TYP_THROW:
-			break;
 		default:
 			break;
 		}

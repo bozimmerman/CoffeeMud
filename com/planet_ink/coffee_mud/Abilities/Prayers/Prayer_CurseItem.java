@@ -76,6 +76,12 @@ public class Prayer_CurseItem extends Prayer
 		Item item=(Item)affected;
 
 		MOB mob=msg.source();
+		if((msg.tool()==item)&&(msg.targetMinor()==CMMsg.TYP_THROW))
+		{
+			mob.tell("You can't seem to get rid of "+item.name()+".");
+			return false;
+		}
+		else
 		if(!msg.amITarget(item))
 			return true;
 		else
@@ -94,7 +100,6 @@ public class Prayer_CurseItem extends Prayer
 			}
 			break;
 		case CMMsg.TYP_DROP:
-		case CMMsg.TYP_THROW:
 			mob.tell("You can't seem to get rid of "+item.name()+".");
 			return false;
 		}
