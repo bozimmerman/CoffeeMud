@@ -353,11 +353,13 @@ public class StdCharClass implements CharClass, Cloneable
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if((msg.source()==myHost)
-	    &&(msg.sourceMinor()==CMMsg.TYP_WIELD)
-	    &&(msg.tool() instanceof Weapon)
+	    &&(msg.targetMinor()==CMMsg.TYP_WIELD)
+	    &&(msg.target() instanceof Weapon)
+		&&(msg.source().charStats().getCurrentClass()==this)
 	    &&(!msg.source().isMonster())
-	    &&(!weaponCheck(msg.source(),msg.sourceCode(),msg.tool())))
-	        msg.addTrailerMsg(new FullMsg(msg.source(),msg.tool(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&EnvResource.MATERIAL_MASK))))
+			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
+	        msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 

@@ -410,7 +410,7 @@ public class FrontLogin extends StdCommand
 					    {
 							mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"themes.txt").toString());
 							mob.session().print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
-							String themeStr=mob.session().choose("\n\r: ",choices,"");
+							String themeStr=mob.session().choose(": ",choices,"");
 							if(themeStr.toUpperCase().startsWith("F"))
 							    theme=Area.THEME_FANTASY;
 							if(themeStr.toUpperCase().startsWith("H"))
@@ -668,6 +668,8 @@ public class FrontLogin extends StdCommand
 				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 			    mob.baseCharStats().setStat(CharStats.AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+				mob.session().println(null,null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchardone.txt").toString());
+				mob.session().prompt("");
 				mob.bringToLife(mob.getStartRoom(),true);
 				mob.location().showOthers(mob,mob.location(),CMMsg.MASK_GENERAL|CMMsg.MSG_ENTER,"<S-NAME> appears!");
 				CMClass.DBEngine().DBCreateCharacter(mob);

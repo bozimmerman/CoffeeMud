@@ -351,7 +351,7 @@ public class CommonStrings extends Scriptable
 		{
 			clookup=new String[256];
 			// N B H - normal bold highlight underline flash italic
-			clookup['N']="^w\033[0m";
+			clookup['N']="^W";
 			clookup['!']="\033[1m";
 			clookup['H']="^c";
 			clookup['_']="\033[4m";
