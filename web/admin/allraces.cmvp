@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Race Information</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=#FFCCCC>
+<h3>CoffeeMud Races Information</h3><P>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR>
+	<TD WIDTH=25% BGCOLOR=#FF00CC ALIGN=CENTER><B>Race</B></TD>
+	<TD WIDTH=25% BGCOLOR=#FF00CC ALIGN=CENTER><B>Expectancy</H2></TD>
+	<TD WIDTH=25% BGCOLOR=#FF00CC ALIGN=CENTER><BR></TD>
+	<TD WIDTH=25% BGCOLOR=#FF00CC ALIGN=CENTER><BR></TD>
+	</TR>
+	@RaceNext?reset@
+	@loop@
+	@RaceNext?ALL@
+	<TR>
+	<TD><B>@RaceID@</B></TD>
+	<TD><B>@RaceData?EXPECTANCY@</B></TD>
+	<TD><BR></TD>
+	<TD><BR></TD>
+	</TR>
+	@back@
+	</TABLE>
+</BODY>
+</HTML>

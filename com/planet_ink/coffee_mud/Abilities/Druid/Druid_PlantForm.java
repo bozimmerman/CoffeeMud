@@ -96,7 +96,13 @@ public class Druid_PlantForm extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(newRace!=null) affectableStats.setMyRace(newRace);
+		if(newRace!=null)
+	    {
+		    int oldCat=affected.baseCharStats().ageCategory();
+			affectableStats.setMyRace(newRace);
+			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
+				affectableStats.setStat(CharStats.AGE,newRace.getAgingChart()[oldCat]);
+	    }
 	}
 
 

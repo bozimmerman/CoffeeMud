@@ -770,12 +770,15 @@ public class Spell_Wish extends Spell
 						mob.baseCharStats().getCurrentClass().unLevel(mob);
 					}
 					wishDrain(mob,baseLoss,true);
+					int oldCat=mob.baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
 					((MOB)target).confirmWearability();
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
+					if(!((MOB)target).isMonster())
+						((MOB)target).baseCharStats().setStat(CharStats.AGE,R.getAgingChart()[oldCat]);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
 					return true;
 				}

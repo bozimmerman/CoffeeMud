@@ -64,7 +64,11 @@ public class Disease_Lycanthropy extends Disease
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(lycanRace()!=null)
+		{
 			affectableStats.setMyRace(lycanRace());
+			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
+				affectableStats.setStat(CharStats.AGE,lycanRace().getAgingChart()[affected.baseCharStats().ageCategory()]);
+		}
 	}
 
 	public MOB victimHere(Room room, MOB mob)

@@ -64,7 +64,10 @@ public class Score extends Affect
 		if(mob.charStats().getStat(CharStats.GENDER)=='M') genderName="male";
 		else
 		if(mob.charStats().getStat(CharStats.GENDER)=='F') genderName="female";
-		msg.append("You are a ^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
+		msg.append("You are a ");
+		if(mob.baseCharStats().getStat(CharStats.AGE)>0)
+		    msg.append("^!"+mob.baseCharStats().getStat(CharStats.AGE)+"^? year old ");
+		msg.append("^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getLiegeID().length()>0)
 		{
 			if(mob.isMarriedToLiege())

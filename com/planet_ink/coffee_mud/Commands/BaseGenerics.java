@@ -977,7 +977,11 @@ public class BaseGenerics extends StdCommand
 				String newVal=mob.session().prompt("Enter new value for "+CharStats.TRAITS[num]+" ("+E.baseCharStats().getStat(num)+"): ","");
 				if(((Util.s_int(newVal)>0)||(newVal.trim().equals("0")))
 				&&(num!=CharStats.GENDER))
+				{
 					E.baseCharStats().setStat(num,Util.s_int(newVal));
+					if((num==CharStats.AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null)&&(E.getStartRoom()!=null))
+					    E.playerStats().getBirthday()[2]=E.getStartRoom().getArea().getTimeObj().getYear()-Util.s_int(newVal);
+				}
 				else
 					mob.tell("(no change)");
 			}
@@ -3874,6 +3878,43 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+	static void genAgingChart(MOB mob, Race E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		
+		mob.tell(showNumber+". Aging Chart: "+Util.toStringList(E.getAgingChart())+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		while(true)
+		{
+			String newName=mob.session().prompt("Enter a comma-delimited list of 9 numbers, running from infant -> ancient\n\r:","");
+			if(newName.length()==0)
+			{
+				mob.tell("(no change)");
+				return;
+			}
+			Vector V=Util.parseCommas(newName,true);
+			if(V.size()==9)
+			{
+			    int highest=-1;
+			    boolean cont=false;
+			    for(int i=0;i<V.size();i++)
+			    {
+			        if(Util.s_int((String)V.elementAt(i))<highest)
+			        {
+			            mob.tell("Entry "+((String)V.elementAt(i))+" is out of place.");
+			            cont=true;
+			            break;
+			        }
+			        highest=Util.s_int((String)V.elementAt(i));
+			    }
+			    if(cont) continue;
+			    E.setStat("AGING",newName);
+			    break;
+			}
+		}
+	}
+
 	static void genRacialAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4303,6 +4344,7 @@ public class BaseGenerics extends StdCommand
 			genText(mob,me,++showNumber,showFlag,"Arriving text","ARRIVE");
 			genHealthBuddy(mob,me,++showNumber,showFlag);
 			genBodyParts(mob,me,++showNumber,showFlag);
+			genAgingChart(mob,me,++showNumber,showFlag);
 			genEStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);

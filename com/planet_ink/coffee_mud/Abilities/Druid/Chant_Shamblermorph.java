@@ -33,7 +33,13 @@ public class Chant_Shamblermorph extends Chant
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm==null) treeForm=CMClass.getRace("Shambler");
-		if(treeForm!=null)	affectableStats.setMyRace(treeForm);
+		if(treeForm!=null)
+	    {
+		    int oldCat=affected.baseCharStats().ageCategory();
+			affectableStats.setMyRace(treeForm);
+			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
+				affectableStats.setStat(CharStats.AGE,treeForm.getAgingChart()[oldCat]);
+	    }
 		affectableStats.setStat(CharStats.GENDER,'N');
 	}
 

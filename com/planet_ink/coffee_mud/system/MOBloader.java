@@ -105,6 +105,8 @@ public class MOBloader
 				V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"EDUS"),true);
 				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
+				if((pstats.getBirthday()==null)&&(mob.getStartRoom()!=null))
+				    stats.setStat(CharStats.AGE,pstats.initializeBirthday((int)Math.round(Util.div(mob.getAgeHours(),60.0)),mob.getStartRoom().getArea().getTimeObj(),stats.getMyRace()));
 
 				found=true;
 			}

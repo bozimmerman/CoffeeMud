@@ -34,7 +34,8 @@ public class Skill_Disarm extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!mob.isInCombat())
+		MOB victim=mob.getVictim();
+		if(victim==null)
 		{
 			mob.tell("You must be in combat to do this!");
 			return false;
@@ -49,42 +50,42 @@ public class Skill_Disarm extends StdAbility
 			mob.tell("You need a weapon to disarm someone!");
 			return false;
 		}
-		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		if(hisWeapon==null) hisWeapon=mob.getVictim().fetchFirstWornItem(Item.HELD);
+		Item hisWeapon=victim.fetchWieldedItem();
+		if(hisWeapon==null) hisWeapon=victim.fetchFirstWornItem(Item.HELD);
 		if((hisWeapon==null)
 		||(!(hisWeapon instanceof Weapon))
 		||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
+			mob.tell(victim.charStats().HeShe()+" is not wielding a weapon!");
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		int levelDiff=victim.envStats().level()-mob.envStats().level();
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(victim)+victim.adjustedArmor()));
 		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
 		   &&((hisWeapon.fitsOn(Item.WIELD))
 			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))
 		{
-			if(mob.location().show(mob,mob.getVictim(),this,CMMsg.MSG_NOISYMOVEMENT,null))
+			if(mob.location().show(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,null))
 			{
-				FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
+				FullMsg msg=new FullMsg(victim,hisWeapon,null,CMMsg.MSG_DROP,null);
 				if(mob.location().okMessage(mob,msg))
 				{
-					mob.location().send(mob.getVictim(),msg);
-					mob.location().show(mob,mob.getVictim(),CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
+					mob.location().send(victim,msg);
+					mob.location().show(mob,victim,CMMsg.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
 				}
 			}
 		}
 		else
-			maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
+			maliciousFizzle(mob,victim,"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");
 		return success;
 	}
 

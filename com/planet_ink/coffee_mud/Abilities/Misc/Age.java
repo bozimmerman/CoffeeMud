@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,6 +35,8 @@ public class Age extends StdAbility
 	public String displayText()
 	{
 		long start=Util.s_long(text());
+		if(start<Integer.MAX_VALUE)
+		    return "";
 		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/30;
 		if(days<1)
@@ -57,6 +60,7 @@ public class Age extends StdAbility
 		long l=Util.s_long(text());
 		if(l==0) return;
 		if(norecurse) return;
+		if(l<Integer.MAX_VALUE) return;
 		norecurse=true;
 
 		long day=60000; // one minute
@@ -212,6 +216,8 @@ public class Age extends StdAbility
 					newMan.playerStats().setEmail(liege.playerStats().getEmail());
 					newMan.playerStats().setUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
+					if(newMan.playerStats().getBirthday()==null)
+					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday((int)Math.round(Util.div(babe.getAgeHours(),60.0)),newMan.getStartRoom().getArea().getTimeObj(),newMan.baseCharStats().getMyRace()));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
 					newMan.baseState().setHitPoints(20);
 					newMan.baseState().setMana(100);
@@ -323,5 +329,15 @@ public class Age extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		doThang();
+	}
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		long l=Util.s_long(text());
+		if((l<Integer.MAX_VALUE)&&(l>0))
+		{
+		    affected.baseCharStats().setStat(CharStats.AGE,(int)l);
+		    affectableStats.setStat(CharStats.AGE,(int)l);
+		}
 	}
 }

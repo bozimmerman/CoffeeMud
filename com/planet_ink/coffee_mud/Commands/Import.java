@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -4171,6 +4172,11 @@ public class Import extends StdCommand
 							M.setStartRoom(CMMap.getStartRoom(M));
 						if(M.location()==null)
 							M.setLocation(mob.location());
+						if((M.playerStats().getBirthday()==null)&&(M.getStartRoom()!=null))
+						{
+						    M.baseCharStats().setStat(CharStats.AGE,M.playerStats().initializeBirthday((int)Math.round(Util.div(M.getAgeHours(),60.0)),M.getStartRoom().getArea().getTimeObj(),M.baseCharStats().getMyRace()));
+						    M.recoverCharStats();
+						}
 						CMClass.DBEngine().DBUpdateMOB(M);
 						M.removeFromGame();
 					}

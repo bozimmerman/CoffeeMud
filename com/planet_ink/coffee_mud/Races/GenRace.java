@@ -29,6 +29,13 @@ public class GenRace extends StdRace
 	public int trainsAtFirstLevel(){return 0;}
 	public int availability=Race.AVAILABLE_NONE;
 	public int availability(){return availability;}
+	public int[] agingChart=null;
+	public int[] getAgingChart()
+	{
+	    if(agingChart==null)
+	        agingChart=(int[])super.getAgingChart().clone();
+        return agingChart;
+	}
 
 	public int shortestMale=24;
 	public int shortestMale(){return shortestMale;}
@@ -179,6 +186,7 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("HEALTHRACE",(healthBuddy!=null)?healthBuddy.ID():""));
 		str.append(XMLManager.convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(XMLManager.convertXMLtoTag("LEAVE",leaveStr()));
+		str.append(XMLManager.convertXMLtoTag("AGING",Util.toStringList(getAgingChart())));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
 			str.append(XMLManager.convertXMLtoTag("ESTATS",CoffeeMaker.getEnvStatsStr(adjEStats)));
@@ -351,6 +359,10 @@ public class GenRace extends StdRace
 		adjState=null;
 		String aState=XMLManager.getValFromPieces(raceData,"ASTATE");
 		if(aState.length()>0){ adjState=new DefaultCharState(); CoffeeMaker.setCharState(adjState,aState);}
+		String aging=XMLManager.getValFromPieces(raceData,"AGING");
+		Vector aV=Util.parseCommas(aging,true);
+		for(int v=0;v<aV.size();v++)
+		    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
 
 		// now RESOURCES!
 		Vector xV=XMLManager.getRealContentsFromPieces(raceData,"RESOURCES");
@@ -472,7 +484,7 @@ public class GenRace extends StdRace
 									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
-									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"
+									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING"
 									 };
 	public String getStat(String code)
 	{
@@ -531,6 +543,7 @@ public class GenRace extends StdRace
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
 		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
+		case 39: return Util.toStringList(getAgingChart());
 		}
 		return "";
 	}
@@ -680,6 +693,12 @@ public class GenRace extends StdRace
 		case 38: {   if(racialEffectLevels==null) racialEffectLevels=new int[num+1];
 				     racialEffectLevels[num]=Util.s_int(val);
 					 break;
+				 }
+		case 39: {
+					Vector aV=Util.parseCommas(val,true);
+					for(int v=0;v<aV.size();v++)
+					    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
+		    		break;
 				 }
 		}
 	}

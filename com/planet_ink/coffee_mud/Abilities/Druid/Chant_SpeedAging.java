@@ -86,8 +86,28 @@ public class Chant_SpeedAging extends Chant
 				{
 					MOB M=(MOB)target;
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
-					M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
+					if(M.baseCharStats().getStat(CharStats.AGE)<=0)
+						M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
+					else
+					if((M.playerStats().getBirthday()!=null)&&(M.getStartRoom()!=null))
+					{
+					    double aging=Util.mul(M.baseCharStats().getStat(CharStats.AGE),.10);
+					    int years=(int)Math.round(Math.floor(aging));
+					    int monthsInYear=M.getStartRoom().getArea().getTimeObj().getMonthsInYear();
+					    int months=(int)Math.round(Util.mul(aging-Math.floor(aging),monthsInYear));
+					    M.playerStats().getBirthday()[2]-=years;
+					    M.playerStats().getBirthday()[1]-=months;
+					    if(M.playerStats().getBirthday()[1]<1)
+					    {
+						    M.playerStats().getBirthday()[2]--;
+						    years++;
+						    M.playerStats().getBirthday()[1]=monthsInYear+M.playerStats().getBirthday()[1];
+					    }
+					    M.baseCharStats().setStat(CharStats.AGE,M.baseCharStats().getStat(CharStats.AGE)+years);
+					    M.recoverCharStats();
+					}
 					target.recoverEnvStats();
+					
 				}
 				else
 				{

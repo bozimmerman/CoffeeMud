@@ -53,4 +53,6 @@ public interface PlayerStats
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
 	public Vector getSecurityGroups();
+	public int[] getBirthday();
+	public int initializeBirthday(int ageHours, TimeClock C, Race R);
 }

@@ -33,13 +33,13 @@ public class DefaultTimeClock implements TimeClock
 	private int month=1;
 	private int day=1;
 	private int time=0;
-	private int hoursInDay=10;
+	private int hoursInDay=6;
 	private String[] monthsInYear={
 			 "the 1st month","the 2nd month","the 3rd month","the 4th month",
 			 "the 5th month","the 6th month","the 7th month","the 8th month"
 	};
 	private int daysInMonth=20;
-	private int[] dawnToDusk={0,1,6,7};
+	private int[] dawnToDusk={0,1,4,5};
 	private String[] weekNames={};
 	private String[] yearNames={"year #"};
 	

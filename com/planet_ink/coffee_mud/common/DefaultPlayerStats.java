@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.XMLManager;
-import com.planet_ink.coffee_mud.utils.Util;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
@@ -39,7 +39,8 @@ public class DefaultPlayerStats implements PlayerStats
 	private String poofin="";
 	private String poofout="";						  
 	private String tranpoofin="";
-	private String tranpoofout="";						  
+	private String tranpoofout="";
+	private int[] birthday=null;
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
 
@@ -119,6 +120,25 @@ public class DefaultPlayerStats implements PlayerStats
 	public String poofOut(){return poofout;}
 	public String tranPoofIn(){return tranpoofin;}
 	public String tranPoofOut(){return tranpoofout;}
+	public int[] getBirthday(){return birthday;}
+	public int initializeBirthday(int ageHours, TimeClock C, Race R)
+	{
+	    birthday=new int[3];
+	    birthday[0]=C.getDayOfMonth();
+	    birthday[1]=C.getMonth();
+	    birthday[2]=C.getYear();
+	    while(ageHours>15)
+	    {
+	        birthday[2]-=1;
+	        ageHours-=15;
+	    }
+	    if(ageHours>0)
+	    {
+	        birthday[1]=Dice.roll(1,C.getMonthsInYear(),0);
+	        birthday[0]=Dice.roll(1,C.getDaysInMonth(),0);
+	    }
+	    return R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2];
+	}
 	
 	private String getPrivateList(HashSet h)
 	{
@@ -134,6 +154,7 @@ public class DefaultPlayerStats implements PlayerStats
 		String i=getPrivateList(getIgnored());
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
+			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
 			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
@@ -145,6 +166,14 @@ public class DefaultPlayerStats implements PlayerStats
 		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
 		setSecurityGroupStr(XMLManager.returnXMLValue(str,"SECGRPS"));
+		String bday=XMLManager.returnXMLValue(str,"BIRTHDAY");
+		if((bday!=null)&&(bday.length()>0))
+		{
+		    Vector V=Util.parseCommas(bday,true);
+		    birthday=new int[3];
+		    for(int v=0;v<V.size();v++)
+		        birthday[v]=Util.s_int((String)V.elementAt(v));
+		}
 		poofin=XMLManager.returnXMLValue(str,"POOFIN");
 		if(poofin==null) poofin="";
 		poofout=XMLManager.returnXMLValue(str,"POOFOUT");

@@ -44,9 +44,9 @@ public class Skill_Disguise extends BardSkill
 	public int classificationCode(){return Ability.SKILL;}
 
 	private final static String[] whats={
-		//0!     1!      2!    3!     4!       5!     6!      7!
-		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT"};
-	private final static int[] levels={2,10,4,12,6,8,0,18};
+		//0!     1!      2!    3!     4!       5!     6!      7!          8!
+		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT","AGE"};
+	private final static int[] levels={2,10,4,14,6,8,0,18,12};
 	protected String[] values=new String[whats.length];
 
 	public void affectEnvStats(Environmental myHost, EnvStats affectableStats)
@@ -71,6 +71,8 @@ public class Skill_Disguise extends BardSkill
 			affectableStats.setDisplayClassLevel(values[1]);
 		if(values[6]!=null)
 			affectableStats.setDisplayClassName(values[6]);
+		if(values[8]!=null)
+			affectableStats.setStat(CharStats.AGE,Util.s_int(values[8]));
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -135,7 +137,7 @@ public class Skill_Disguise extends BardSkill
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 
-		String validChoices="Weight, sex, race, height, name, level, class, or alignment";
+		String validChoices="Weight, sex, race, height, age, name, level, class, or alignment";
 		if(commands.size()==0)
 		{
 			if(A==null)
@@ -276,6 +278,18 @@ public class Skill_Disguise extends BardSkill
 				mob.tell("You may only disguise your alignment as 'good' or 'evil'.");
 				return false;
 			}
+			break;
+		}
+		case 8: // age
+		{
+			if(Util.s_int(how)<=0)
+			{
+				mob.tell("You cannot disguise your age as "+how+" years!");
+				return false;
+			}
+			int x=mob.baseCharStats().getStat(CharStats.AGE)-Util.s_int(how);
+			if(x<0) x=x*-1;
+			adjustment=-((int)Math.round(Util.div(x,mob.baseCharStats().getStat(CharStats.AGE))*100.0));
 			break;
 		}
 		}

@@ -90,6 +90,12 @@ public class Pregnancy extends StdAbility
 		GR.setStat("LEAVE",nonHuman.leaveStr());
 		GR.setStat("ARRIVE",nonHuman.arriveStr());
 		GR.setStat("HEALTHRACE","Human");
+		int[] aging=(int[])race1.getAgingChart().clone();
+		for(int i=0;i<aging.length;i++)
+		    aging[i]+=race2.getAgingChart()[i];
+		for(int i=0;i<aging.length;i++)
+		    aging[i]=aging[i]/2;
+		GR.setStat("AGING",Util.toStringList(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
 				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);

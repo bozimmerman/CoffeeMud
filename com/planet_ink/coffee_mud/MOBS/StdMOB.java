@@ -370,64 +370,7 @@ public class StdMOB implements MOB
 		for(int c=0;c<charStats.numClasses();c++)
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
-		
-		if((!isMonster())&&(playerStats!=null))
-			switch(charStats.ageCategory())
-			{
-				case -1: break;
-				case Race.AGE_INFANT:
-				case Race.AGE_TODDLER:
-				case Race.AGE_CHILD:
-				case Race.AGE_YOUNGADULT:
-				    break;
-				case Race.AGE_MATURE:
-				case Race.AGE_MIDDLEAGED:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+5);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+1);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+1);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+1);
-				    break;
-				case Race.AGE_OLD:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+10);
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-5);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+2);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+2);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+2);
-				    break;
-				case Race.AGE_VENERABLE:
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+15);
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-25);
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-3);
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+3);
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+3);
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+3);
-				    break;
-				case Race.AGE_ANCIENT:
-				{
-					int[] chart=charStats.getMyRace().getAgingChart();
-					int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
-					int age=charStats.getStat(CharStats.AGE)-chart[Race.AGE_ANCIENT];
-					int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff)))-1:1;
-					if(num==0) num=1;
-				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+20+(5*num));
-				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-50+15+(5*num));
-				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-(3+(1*num)));
-				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-(3+(num)));
-				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-(3+(num)));
-				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+(3+(num)));
-				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+(3+(num)));
-				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+(3+(num)));
-				    break;
-				}
-			}
+		baseCharStats.getMyRace().agingAffects(this,baseCharStats,charStats);
 	}
 	
 	public void setBaseCharStats(CharStats newBaseCharStats)
@@ -2013,7 +1956,10 @@ public class StdMOB implements MOB
 					if(!isMonster())
 					{
 						String levelStr=charStats().displayClassLevel(this,false);
-						myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+						myDescription.append(name()+" the ");
+						if(charStats.getStat(CharStats.AGE)>0)
+						    myDescription.append(charStats.ageName().toLowerCase()+" ");
+						myDescription.append(charStats().raceName()+" is a "+levelStr+".\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -2613,22 +2559,43 @@ public class StdMOB implements MOB
 					if(((++tickCounter)*MudHost.TICK_TIME)>60000)
 					{
 						tickCounter=0;
-						setAgeHours(AgeHours+1);
-						if((AgeHours>60000)
-						&&(!CMSecurity.isAllowed(this,location(),"IMMORT")))
+						setAgeHours(AgeHours+1); // this is really minutes
+						if((baseCharStats.getStat(CharStats.AGE)>0)
+						&&(playerStats()!=null)
+						&&(playerStats().getBirthday()!=null)
+						&&(getStartRoom()!=null)
+						&&((AgeHours%20)==0))
 						{
-							if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
+						    int tage=baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]+getStartRoom().getArea().getTimeObj().getYear()-playerStats().getBirthday()[2];
+					        int month=getStartRoom().getArea().getTimeObj().getMonth();
+					        int day=getStartRoom().getArea().getTimeObj().getDayOfMonth();
+					        int bday=playerStats().getBirthday()[0];
+					        int bmonth=playerStats().getBirthday()[1];
+						    while((tage>baseCharStats.getStat(CharStats.AGE))
+						    &&((month>bmonth)||((month==bmonth)&&(day>=bday))))
+				            {
+						        if((month==bmonth)&&(day==bday))
+						            tell("Happy Birthday!");
+						        baseCharStats.setStat(CharStats.AGE,baseCharStats.getStat(CharStats.AGE)+1);
+						        recoverCharStats();
+						        recoverEnvStats();
+						        recoverMaxState();
+						    }
+							if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
 							{
-								Ability A=CMClass.getAbility("Disease_Cancer");
-								if((A!=null)&&(fetchEffect(A.ID())==null))
-									A.invoke(this,this,true,0);
-							}
-							else
-							if(((AgeHours%1200)==0)&&(Dice.rollPercentage()<25))
-							{
-								Ability A=CMClass.getAbility("Disease_Arthritis");
-								if((A!=null)&&(fetchEffect(A.ID())==null))
-									A.invoke(this,this,true,0);
+								if((baseCharStats.ageCategory()>=Race.AGE_VENERABLE)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
+								{
+									Ability A=CMClass.getAbility("Disease_Cancer");
+									if((A!=null)&&(fetchEffect(A.ID())==null))
+										A.invoke(this,this,true,0);
+								}
+								else
+								if((baseCharStats.ageCategory()>=Race.AGE_ANCIENT)&&(Dice.rollPercentage()==1))
+								{
+									Ability A=CMClass.getAbility("Disease_Arthritis");
+									if((A!=null)&&(fetchEffect(A.ID())==null))
+										A.invoke(this,this,true,0);
+								}
 							}
 						}
 					}

@@ -93,8 +93,11 @@ public class Prop_EnterAdjuster extends Property
 		val=Util.getParmStr(readableText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
+		    int oldCat=mob.baseCharStats().ageCategory();
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
+			if(mob.baseCharStats().getStat(CharStats.AGE)>0)
+				mob.baseCharStats().setStat(CharStats.AGE,mob.baseCharStats().getMyRace().getAgingChart()[oldCat]);
 		}
 		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+Util.getParmPlus(readableText,"str"));
 		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+Util.getParmPlus(readableText,"wis"));

@@ -209,7 +209,10 @@ public class ServerThread extends Thread {
                     java.net.Socket s;
                     ServerUser new_user;
 
-                    s = listen_thread.nextSocket();
+                    if(listen_thread!=null)
+	                    s = listen_thread.nextSocket();
+                    else
+                        s=null;
                     if( s == null ) {
                         break;
                     }

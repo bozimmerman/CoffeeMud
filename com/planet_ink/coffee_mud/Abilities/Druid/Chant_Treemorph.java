@@ -57,7 +57,12 @@ public class Chant_Treemorph extends Chant
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm!=null)
+		{
+		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
+			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
+				affectableStats.setStat(CharStats.AGE,treeForm.getAgingChart()[oldCat]);
+		}
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

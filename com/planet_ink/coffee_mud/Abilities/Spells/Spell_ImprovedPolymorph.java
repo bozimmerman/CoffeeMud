@@ -48,7 +48,12 @@ public class Spell_ImprovedPolymorph extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
+		{
+		    int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
+			if(affected.baseCharStats().getStat(CharStats.AGE)>0)
+				affectableStats.setStat(CharStats.AGE,newRace.getAgingChart()[oldCat]);
+		}
 	}
 
 

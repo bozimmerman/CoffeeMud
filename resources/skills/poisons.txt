@@ -1,6 +1,6 @@
 beesting	DRINK	Poison_BeeSting	1	SOME INSECT GUTS	1	LEMONS	1		
 bloodboil	DRINK	Poison_Bloodboil	5	SOME UNDEAD BLOOD	1	WATER	1	LEMONS	1		
-peppersauce	DRINK	Poison_Peppersauce	7	PEPPER	1	WATER	1				
+peppersauce	DRINK	Poison_Peppersauce	7	PEPPERS	1	WATER	1				
 venom	DRINK	Poison_Venom	10	SOME SNAKE BLOOD	1	
 mindsap	DRINK	Poison_Mindsap	12	LEAD	1	WATER	1	LAMP OIL	1		
 heartstopper	DRINK	Poison_Heartstopper	15	LAMP OIL	1	SEAWEED	1	POTATOES	1	
