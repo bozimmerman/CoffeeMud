@@ -55,7 +55,7 @@ public class Spell_MagicMissile extends Spell
 
 		if(success)
 		{
-			int numMissiles=((int)Math.round(Math.floor(Util.div(mob.envStats().level(),5)))+1);
+			int numMissiles=((int)Math.round(Math.floor(Util.div(adjustedLevel(mob),5)))+1);
 			for(int i=0;i<numMissiles;i++)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,affectType,(i==0)?(auto?"A magic missle appears hurling full speed at <T-NAME>!":"<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!"):null);

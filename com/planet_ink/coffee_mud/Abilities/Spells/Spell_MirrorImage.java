@@ -142,7 +142,7 @@ public class Spell_MirrorImage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			numberOfImages = Dice.roll(1,(int)(Math.round(Util.div(mob.envStats().level(),3.0))),2);
+			numberOfImages = Dice.roll(1,(int)(Math.round(Util.div(adjustedLevel(mob),3.0))),2);
 			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A spell forms around":"<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.");
 			if(mob.location().okAffect(msg))
 			{

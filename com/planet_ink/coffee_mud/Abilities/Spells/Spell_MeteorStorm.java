@@ -76,7 +76,7 @@ public class Spell_MeteorStorm extends Spell
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie=(int)Math.round(Util.div(mob.envStats().level(),3.0));
+					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),3.0));
 					damage = Dice.roll(maxDie,6,6);
 					if(!msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));

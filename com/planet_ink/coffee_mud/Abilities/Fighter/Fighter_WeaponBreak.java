@@ -63,7 +63,7 @@ public class Fighter_WeaponBreak extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob);
 		if(levelDiff>0) 
 			levelDiff=levelDiff*5;
 		else 

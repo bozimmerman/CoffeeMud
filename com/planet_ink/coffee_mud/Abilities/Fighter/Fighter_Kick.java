@@ -57,7 +57,7 @@ public class Fighter_Kick extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			int topDamage=mob.envStats().level()+2;
+			int topDamage=adjustedLevel(mob)+2;
 			int damage=Dice.roll(1,topDamage,0);
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
 			if(mob.location().okAffect(msg))

@@ -111,7 +111,7 @@ public class Spell_Stoneskin extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as stone!");
-				HitsRemaining=5+(int)Math.round(mob.envStats().level()/2);
+				HitsRemaining=5+(int)Math.round(adjustedLevel(mob)/2);
 				beneficialAffect(mob,target,0);
 			}
 		}

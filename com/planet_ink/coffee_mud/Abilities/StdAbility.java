@@ -82,6 +82,15 @@ public class StdAbility implements Ability, Cloneable
 	{
 		return putInCommandlist;
 	}
+	
+	protected int adjustedLevel(MOB caster)
+	{
+		if(caster==null) return 1;
+		int adjLevel=caster.envStats().level()+(CMAble.lowestQualifyingLevel(ID())-qualifyingLevel(caster));
+		if(adjLevel<1) return 1;
+		return adjLevel;
+	}
+	
 	public int qualifyingLevel(MOB student)
 	{
 		if(student==null) return -1;
@@ -476,7 +485,7 @@ public class StdAbility implements Ability, Cloneable
 			Ability newOne=(Ability)this.copyOf();
 			if(tickAdjustmentFromStandard<=0)
 			{
-				tickAdjustmentFromStandard=(mob.envStats().level()*3)+15;
+				tickAdjustmentFromStandard=(adjustedLevel(mob)*3)+15;
 
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);

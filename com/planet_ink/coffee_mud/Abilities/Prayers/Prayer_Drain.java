@@ -64,7 +64,7 @@ public class Prayer_Drain extends Prayer
 				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					int damage = 0;
-					int maxDie =  (int)Math.round(Util.div(mob.envStats().level(),4.0));
+					int maxDie =  (int)Math.round(Util.div(adjustedLevel(mob),4.0));
 					if (maxDie > 5)
 						maxDie = 5;
 					damage += Dice.roll(maxDie,5,1);

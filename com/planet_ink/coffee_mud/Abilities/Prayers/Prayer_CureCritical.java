@@ -44,7 +44,7 @@ public class Prayer_CureCritical extends Prayer
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				int healing=Dice.roll(4,mob.envStats().level(),6);
+				int healing=Dice.roll(4,adjustedLevel(mob),6);
 				target.curState().adjHitPoints(healing,target.maxState());
 				target.tell("You feel much better!");
 			}

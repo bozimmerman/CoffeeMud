@@ -116,7 +116,7 @@ public class Fighter_Whomp extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-adjustedLevel(mob);
 		if(levelDiff>0) 
 			levelDiff=levelDiff*10;
 		else 

@@ -94,7 +94,7 @@ public class Paladin_SummonMount extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				MOB target = determineMonster(mob, adjustedLevel(mob));
 				target.bringToLife(newRoom);
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);

@@ -70,7 +70,7 @@ public class Paladin_HealingHands extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				mob.curState().adjMana(-1,mob.maxState());
-				int healing=1+(int)Math.round(Util.div(mob.envStats().level(),10.0));
+				int healing=1+(int)Math.round(Util.div(adjustedLevel(mob),10.0));
 				target.curState().adjHitPoints(healing,target.maxState());
 				target.tell("You feel a little better!");
 			}

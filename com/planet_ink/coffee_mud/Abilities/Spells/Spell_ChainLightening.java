@@ -77,7 +77,7 @@ public class Spell_ChainLightening extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int maxDie=(int)Math.round(Util.div(mob.envStats().level(),2.0));
+					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
 					int damage = Dice.roll(maxDie,8,1);
 					if((!msg.wasModified())&&(!msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));

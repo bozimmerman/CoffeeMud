@@ -5,13 +5,13 @@ import com.planet_ink.coffee_mud.interfaces.*;
 
 public class CMAble
 {
-	public int qualLevel=-1;
-	public boolean autoGain=false;
-	public int defaultProfficiency=0;
-	public String defaultParm="";
+	private int qualLevel=-1;
+	private boolean autoGain=false;
+	private int defaultProfficiency=0;
+	private String defaultParm="";
 								
-	public static Hashtable classAbleMap=new Hashtable();
-	public static Hashtable lowestQualifyingLevelMap=new Hashtable();
+	private static Hashtable classAbleMap=new Hashtable();
+	private static Hashtable lowestQualifyingLevelMap=new Hashtable();
 	
 	public static void addCharAbilityMapping(String charClass, 
 											 int qualLevel,
@@ -48,6 +48,17 @@ public class CMAble
 		int arc_level=getQualifyingLevel("Archon",ability);
 		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
 			addCharAbilityMapping("Archon",qualLevel,ability,true);
+		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
+		if((lowLevel==null)
+		||(qualLevel<lowLevel.intValue()))
+			lowestQualifyingLevelMap.put(ability,new Integer(qualLevel));
+	}
+	
+	public static int lowestQualifyingLevel(String ability)
+	{
+		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
+		if(lowLevel==null) return 0;
+		return lowLevel.intValue();
 	}
 	
 	public static Vector getLevelListings(String charClass, int level)

@@ -74,7 +74,7 @@ public class Spell_AcidArrow extends Spell
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
 				invoker=mob;
-                int numDice = mob.envStats().level();
+                int numDice = adjustedLevel(mob);
 				int damage = Dice.roll(numDice, 4, 5);
 				if((msg2.wasModified())||(msg.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
