@@ -305,22 +305,80 @@ covered here.&nbsp; Some of the scripts may need to be changed slightly to work
 with some systems.&nbsp; Some systems will require each SQL Statement be issued 
 independently instead of as part of a larger script.&nbsp; Please consult your 
 database documentation for more information on this.</P>
-<P align=left>In order to use your database with CoffeeMud, as specified in the 
-section on Settings, you must provide CoffeeMud with a JDBC compliant Driver 
-class.&nbsp; In many cases, you will be creating a System ODBC Data 
-Source.&nbsp; When this is the case, the driver "sun.jdbc.odbc.JdbcOdbcDriver" 
-may be used to access the database.&nbsp; Some systems, however, such as MySQL, 
-and Microsoft SQL Server 2000, have native JDBC Drivers which may be used 
-instead of the general ODBC Driver.&nbsp; These native JDBC Drivers tend to be 
-far superior to their ODBC counterparts, and are highly recommended.</P>
+<P align=left>            
+            
+            
+      In order to 
+use your database with CoffeeMud, as specified in the section on Settings, you 
+must provide CoffeeMud with a JDBC compliant Driver class.&nbsp; In many cases, you 
+will be creating a System ODBC Data Source.&nbsp; When this is the case, 
+the driver "sun.jdbc.odbc.JdbcOdbcDriver" may be used to access the database.&nbsp;</P>
+<P align=left>Some systems, however, such as MySQL, and Microsoft SQL Server 
+2000, have native JDBC Drivers which may be used instead of the general ODBC 
+Driver.&nbsp; These native JDBC Drivers tend to be far superior to their ODBC 
+counterparts, and are highly recommended.</P>
 <P align=left>The care and feeding of the tables used by CoffeeMud should be 
 very low.&nbsp; The database will grow along with the areas created, and along 
 with the number of players which join your MUD.&nbsp; All of this growth can be 
 managed, however, within CoffeeMud itself, by your Archon administrative 
 user.&nbsp; You should not need to, nor should you attempt to affect individual 
 rows in your database for any reason.</P>
-<P align=left><EM>Installing and using MySQL with CoffeeMud 
+<P align=left><EM>Installing and using Microsoft Access with CoffeeMud 
 on a Windows machine</EM></P>
+<P align=left><STRONG>1.</STRONG> Open up Microsoft Access and select to create 
+a Blank Access Database.&nbsp; Give the database a name and save it on your hard 
+drive.</P>
+<P align=left><STRONG>2.</STRONG> Under Objects, select the Queries section and 
+select Create Query in Design View.&nbsp; When the dialog box appears, click the 
+close button.</P>
+<P align=left><STRONG>3.</STRONG> Now right click on the large grey area and 
+select "SQL View" from the context Menu.</P>
+<P align=left><STRONG>4.</STRONG> Inside your CoffeeMud/guides/database folder, 
+open up the coffeemuddb2.sql file using Notepad.&nbsp; You will see that the 
+file contains numerous blocks of sql text.&nbsp; Each block begins with CREATE 
+TABLE, and ends with a semicolon ); </P>
+<P align=left><STRONG>5.</STRONG> Select the first block of text in your sql 
+file, from the first CREATE TABLE line down through the ); line, and select Copy 
+from Notepad.&nbsp; Paste this block into the Select Query area in Microsoft 
+Access.&nbsp; Paste it over any other text that may be in there.</P>
+<P align=left><STRONG>6.</STRONG> Press the "!" symbol at the top to execute the 
+block of sql script.</P>
+<P align=left><STRONG>7.</STRONG> Repeat steps 5 and 6 for the remaining CREATE 
+TABLE blocks in the coffeemuddb2.sql file.</P>
+<P align=left><STRONG>8.</STRONG> Now go to your Windows Control Panel (under 
+XP, switch to Classic View)&nbsp; and double-click the <FONT 
+face="Courier New, Courier, mono">ODBC Data Sources (32-bit)</FONT> icon.&nbsp; 
+If you are using Windows 2000 or XP, double-click the <FONT 
+face="Courier New, Courier, mono">Administrative Tools</FONT> option. Then 
+select the <FONT face="Courier New, Courier, mono">Data Sources (ODBC)</FONT> 
+icon.</P>
+<P><STRONG>9.</STRONG> Now, click on the <FONT 
+face="Courier New, Courier, mono">System DSN</FONT> tab. Click the <FONT 
+face="Courier New, Courier, mono">Add</FONT> button. This will present you with 
+a list of drivers. Select "<FONT face="Courier New, Courier, mono">Microsoft 
+Access Driver (*.mdb)</FONT>"</P>
+<P><STRONG>10.</STRONG> Here you should probably name the data source something 
+sensical, like <FONT face="Courier New, Courier, mono">CoffeeMUDData</FONT> or 
+the like. Under <FONT face="Courier New, Courier, mono">Database</FONT>, click 
+<FONT face="Courier New, Courier, mono">Select</FONT>. Locate and select your 
+<FONT face="Courier New, Courier, mono">CoffeeMUD.mdb</FONT> file that you saved 
+in step 1. Click OK and then OK to get all the way back out of things.</P>
+<P><STRONG>11. </STRONG>Open coffeemud.ini. Go to where it says "ODBC Database 
+fields". That section should instead look like this:</P>
+<P><FONT face="Courier New, Courier, mono">#------------------------<BR># ODBC 
+Database fields<BR>#------------------------<BR># DBCLASS is the name of the 
+ODBC Driver, typically sun.jdbc.odbc.JdbcOdbcDriver<BR># DBSERVICE is the name 
+of the ODBC Service as defined by your local operating system<BR># DBUSER is a 
+user name required to log into the ODBC service<BR># DBPASS is the password for 
+the above user name<BR># DBCONNECTIONS is the number of independent connections 
+to make to the 
+database<BR>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<BR>DBSERVICE=jdbc:odbc:<I>CoffeeMUDData</I><BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2</FONT></P>
+<P>Where it says "<FONT 
+face="Courier New, Courier, mono">jdbc:odbc:CoffeeMUDData</FONT>", make sure the 
+part after "<FONT face="Courier New, Courier, mono">jdbc:odbc:</FONT>" matches 
+the DNS name you made earlier.&nbsp; Reboot CoffeeMud, and you are done!</P>
+<P align=left><EM>Installing and using MySQL with CoffeeMud on a Windows 
+machine</EM></P>
 <P align=left><STRONG>1. </STRONG>  Go to <A class=moz-txt-link-abbreviated 
 href="http://www.mysql.com">www.mysql.com</A>, click on Downloads (one of the 
 tabs at the very top), scroll down under "MySQL database server &amp; Standard 

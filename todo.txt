@@ -1,7 +1,6 @@
-Installation Guide 
-	integrate jeremys odbc info
 Archons Guide updates
 	Finish documenting behaviors/affects for items, mobs, etc. 
+	shopkeepers/bankers should mention change bags
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns

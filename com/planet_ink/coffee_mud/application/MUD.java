@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.web.*;
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)8.8;
+	public static final float HOST_VERSION_MINOR=(float)8.9;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
