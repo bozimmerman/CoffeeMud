@@ -50,15 +50,17 @@ public class Prayer_ProtectHealth extends Prayer
 
 		if(affect.target()==invoker)
 		{
-			if((affect.targetMinor()==Affect.TYP_MIND)
-			||(affect.targetMinor()==Affect.TYP_POISON)
-			||(affect.tool().ID().equals("Prayer_Plague"))
-			||(affect.tool().ID().equals("Thief_Poison"))
-			||(affect.tool().ID().equals("Poison"))
-			||((affect.tool() != null)&&(affect.tool().name().toUpperCase().indexOf("DISEASE")>=0))
-			||((affect.tool() != null)&&(affect.tool().name().toUpperCase().indexOf("VIRUS")>=0)))
+			if((affect.targetMinor()==Affect.TYP_POISON)
+			||((affect.tool()!=null)
+			   &&((affect.tool().ID().equals("Prayer_Plague"))
+				||(affect.tool().ID().equals("Thief_Poison"))
+				||(affect.tool().ID().equals("Poison"))
+				||(affect.tool().name().toUpperCase().indexOf("DISEASE")>=0)
+				||(affect.tool().name().toUpperCase().indexOf("POISON")>=0)
+				||(affect.tool().name().toUpperCase().indexOf("PLAGUE")>=0)
+				||(affect.tool().name().toUpperCase().indexOf("VIRUS")>=0))))
 			{
-				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIS-HER> body from unhealthy assaults.");
+				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"An unhealthy assault against <S-NAME> is magically repelled.");
 				return false;
 			}
 

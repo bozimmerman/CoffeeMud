@@ -83,7 +83,7 @@ public class Poison extends StdAbility
 		if(success)
 		{
 			String str=auto?"":"<S-NAME> attempt(s) to poison <T-NAMESELF>!";
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON,str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON,str);
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);

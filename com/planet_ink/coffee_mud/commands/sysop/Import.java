@@ -1258,7 +1258,6 @@ public class Import
 				else
 				if((s.startsWith("#M"))||(s.startsWith("S")))
 				{
-					// blah blah blah
 				}
 				else
 				if(s.trim().length()>0)
@@ -1371,7 +1370,6 @@ public class Import
 				else
 				if((s.startsWith("#SPE"))||(s.startsWith("S"))||(s.startsWith("*")||(s.startsWith("#$"))))
 				{
-					// blah blah blah
 				}
 				else
 				if(s.trim().length()>0)
@@ -2104,7 +2102,6 @@ public class Import
 				else
 				if((codeLine.startsWith("#"))||(codeLine.length()==0))
 				{
-					// blah blah blah
 				}
 				else
 					returnAnError(mob,"Unknown code for item "+objectID+", "+I.name()+": "+codeLine);
@@ -2581,7 +2578,6 @@ public class Import
 				String s=eatNextLine(resetData);
 				if((s.startsWith("#RE"))||(s.startsWith("*"))||(s.startsWith("S")))
 				{
-					// blah blah blah
 				}
 				else
 				if(s.startsWith("M "))

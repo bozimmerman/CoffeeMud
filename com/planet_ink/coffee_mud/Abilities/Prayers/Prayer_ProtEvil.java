@@ -40,7 +40,7 @@ public class Prayer_ProtEvil extends Prayer
 
 		if(mob.getAlignment()<350)
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The protective aura around <S-NAME> "+ExternalPlay.hitWord(-1,mob.envStats().level())+" <S-HIS-HER> skin!");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-HIS-HER> protective aura "+ExternalPlay.hitWord(-1,mob.envStats().level())+" <S-NAME>!");
 			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
 		}
 		return super.tick(tickID);
@@ -64,7 +64,7 @@ public class Prayer_ProtEvil extends Prayer
 				Prayer bob=(Prayer)affect.tool();
 				if(bob.holyQuality()==Prayer.HOLY_EVIL)
 				{
-					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIS-HER> from the evil magic attack of "+affect.source().name()+".");
+					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
 					return false;
 				}
 			}
@@ -85,7 +85,7 @@ public class Prayer_ProtEvil extends Prayer
 		{
 			MOB victim=mob.getVictim();
 			if(victim.getAlignment()<350)
-				affectableStats.setArmor((affectableStats.armor()-10)-mob.envStats().level());
+				affectableStats.setArmor(affectableStats.armor()-10);
 		}
 	}
 

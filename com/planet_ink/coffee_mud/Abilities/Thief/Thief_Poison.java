@@ -91,13 +91,13 @@ public class Thief_Poison extends ThiefSkill
 		if(success)
 		{
 			str=auto?"":"<S-NAME> attempt(s) to poison <T-NAMESELF>!";
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON,str,Affect.MSG_NOISYMOVEMENT,str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON,str,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
+					mob.location().show(target,this,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
 					success=maliciousAffect(mob,target,0,-1);
 				}
 			}
