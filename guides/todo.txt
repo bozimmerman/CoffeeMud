@@ -1,18 +1,15 @@
 kinda annoying to do a get all and see the wallpaper.
-idle ticker
 sleep (exhaustion) ticker
 auction system (see mailing list)
 Patrol behavior
 Merchant common skill
+In order to allow cityguards to drag people to jail (and set them free), those under the keep of a cityguard obtain immunity to aggresive acts by other mobs.
 Behavior & Skill libido - Property Pregnancy (with eggs for some), Property Aging 
-disease--Syphilis. It is contracted through SEX and KISS socials. Makes small red sores on mouth, butt, and genitals. After 1 day, acts like FLU. After 2 days, has a random chance each day of reducing CON by 1.
-disease--Chlamydia. STD. Women symptoms vaginal discharge, genital itching. Men symptoms causes discharge. Causes infertility.
 disease--Gonorrhea. STD. symptoms Discharge from genitals. Leads to sterility. Can cause Arthritis.
 Auto quests, quests, questbox (Behavior)
 Electronic items which can be activated/deactivated, grant some affect, and use up power
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
 Prop_Shield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
-Sniper.  This allows a character to make a single ranged attack from a hidden position without entering combat.  After the shot, combat is ended, as is the Hide.
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 Space ships as Locale types

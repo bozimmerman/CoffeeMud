@@ -1192,7 +1192,7 @@ public class Arrest extends StdBehavior
 								Ability A=W.arrestingOfficer.fetchAffect("Ranger_Track");
 								if(A!=null) officer.delAffect(A);
 								A=CMClass.getAbility("Ranger_Track");
-								A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								if(A!=null) A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))

@@ -46,7 +46,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 	public void affect(Environmental myHost, Affect msg)
 	{
-		if(msg.amITarget(this)&&(msg.targetMinor()==Affect.TYP_GET))
+		if(msg.amITarget(this)
+		   &&(baseEnvStats().ability()==0)
+		   &&(msg.targetMinor()==Affect.TYP_GET))
 		{
 			MOB M=unCageMe();
 			if((M!=null)&&(msg.source().location()!=null))

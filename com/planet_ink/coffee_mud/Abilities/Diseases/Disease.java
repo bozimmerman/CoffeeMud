@@ -115,6 +115,14 @@ public class Disease extends StdAbility implements DiseaseAffect
 					&&(affect.tool() instanceof Weapon)
 					&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
+			else
+			if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_STD))
+			&&((affect.amITarget(mob))||(affect.amISource(mob)))
+			&&(affect.tool()!=null)
+			&&(affect.tool().ID().equals("Social"))
+			&&(affect.tool().name().equals("MATE <T-NAME>")
+				||affect.tool().name().equals("SEX <T-NAME>")))
+				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
 		}
 		else
 		if(affected instanceof Item)

@@ -290,7 +290,9 @@ public class StdMOB implements MOB
 
 	public int maxCarry()
 	{
-		return (baseEnvStats().weight()+50+(charStats().getStat(CharStats.STRENGTH)*30));
+		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
+		double bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
+		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/100.0) + str*10.0);
 	}
 	public int maxFollowers()
 	{
@@ -1814,6 +1816,20 @@ public class StdMOB implements MOB
 				{
 					minuteCounter=0;
 					setAgeHours(AgeHours+1);
+					if(AgeHours>1000)
+					{
+						if(((AgeHours%10)==0)&&(Dice.rollPercentage()==1))
+						{
+							Ability A=CMClass.getAbility("Disease_Cancer");
+							if(A!=null) A.invoke(this,this,true);
+						}
+						else
+						if((AgeHours%100)==0)
+						{
+							Ability A=CMClass.getAbility("Disease_Arthritis");
+							if(A!=null) A.invoke(this,this,true);
+						}
+					}
 				}
 			}
 

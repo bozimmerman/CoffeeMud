@@ -74,10 +74,11 @@ public class Thief_UsePoison extends ThiefSkill
 			if(success)
 			{
 				Ability A=(Ability)V.firstElement();
-				if(target instanceof Weapon)
-					A.invoke(mob,target,true);
-				else
-					target.addNonUninvokableAffect(A);
+				if(A!=null)
+					if(target instanceof Weapon)
+						A.invoke(mob,target,true);
+					else
+						target.addNonUninvokableAffect(A);
 			}
 		}
 		return success;

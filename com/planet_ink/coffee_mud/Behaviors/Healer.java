@@ -61,7 +61,7 @@ public class Healer extends ActiveTicker
 			Vector V=new Vector();
 			if((target!=null)&&(target!=mob)&&(!target.isMonster()))
 				V.addElement(target.name());
-			thisOne.invoke(mob,V,target,false);
+			if(thisOne!=null) thisOne.invoke(mob,V,target,false);
 		}
 		return true;
 	}

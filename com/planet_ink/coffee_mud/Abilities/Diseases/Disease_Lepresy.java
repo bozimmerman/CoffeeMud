@@ -8,8 +8,8 @@ import java.util.*;
 public class Disease_Lepresy extends Disease
 {
 	public String ID() { return "Disease_Lepresy"; }
-	public String name(){ return "Lepresy";}
-	public String displayText(){ return "(Lepresy)";}
+	public String name(){ return "Leprosy";}
+	public String displayText(){ return "(Leprosy)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
@@ -19,10 +19,10 @@ public class Disease_Lepresy extends Disease
 	protected int DISEASE_TICKS(){return 999999;}
 	protected int DISEASE_DELAY(){return 10;}
 	protected int lastHP=Integer.MAX_VALUE;
-	protected String DISEASE_DONE(){return "Your lepresy is cured!";}
+	protected String DISEASE_DONE(){return "Your leprosy is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> look(s) pale!^?";}
 	protected String DISEASE_AFFECT(){return "";}
-	public int abilityCode(){return 0;}
+	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{

@@ -39,6 +39,11 @@ public class Disease_Flu extends Disease
 			int damage=Dice.roll(2,diseaser.envStats().level()+1,1);
 			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			catchIt(mob);
+			if(Dice.rollPercentage()==1)
+			{
+				Ability A=CMClass.getAbility("Disease_Fever");
+				if(A!=null) A.invoke(diseaser,mob,true);
+			}
 			return true;
 		}
 		return true;

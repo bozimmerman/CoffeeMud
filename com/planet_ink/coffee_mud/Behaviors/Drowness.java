@@ -299,7 +299,10 @@ public class Drowness extends StdBehavior
         {
             prayer = CMClass.getAbility("Prayer_CureSerious");
         }
-        return prayer.invoke(mob,null,false);
+		if(prayer!=null) 
+	        return prayer.invoke(mob,null,false);
+		else
+			return false;
     }
 
 	public boolean okAffect(Environmental oking, Affect affect)
@@ -387,10 +390,10 @@ public class Drowness extends StdBehavior
             prayer = CMClass.getAbility("Prayer_CureSerious");
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
-
-        boolean prayerSuccess = prayer.invoke(mob,null,false);
-        return prayerSuccess;
-
+		if(prayer!=null) 
+	        return prayer.invoke(mob,null,false);
+		else
+			return false;
     }
 
 	protected boolean castDarkness(MOB mob)
@@ -404,11 +407,11 @@ public class Drowness extends StdBehavior
 		dark.setProfficiency(100);
 		dark.setBorrowed(mob,true);
 		if(mob.fetchAbility(dark.ID())==null)
-		   mob.addAbility(dark);
+			mob.addAbility(dark);
 		else
 			dark = mob.fetchAbility(dark.ID());
 
-		dark.invoke(mob,null,false);
+		if(dark!=null) dark.invoke(mob,null,false);
 		return true;
 	}
 }

@@ -732,9 +732,9 @@ public class StdArea implements Area
 							if(coveredPlaces!=(Item.ON_FEET|Item.ON_TORSO|Item.ON_LEGS))
 							{
 								Ability COLD=CMClass.getAbility("Disease_Cold");
-								if(Dice.rollPercentage()<fluChance)
+								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
 									COLD=CMClass.getAbility("Disease_Flu");
-								COLD.invoke(M,M,true);
+								if(COLD!=null) COLD.invoke(M,M,true);
 							}
 						}
 						else

@@ -15,6 +15,20 @@ public class Poison_Firebreather extends Poison_Liquor
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Firebreather();}
 	
+	public void unInvoke()
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if((Dice.rollPercentage()<10)&&(!((MOB)affected).isMonster()))
+			{
+				Ability A=CMClass.getAbility("Disease_Migraines");
+				if(A!=null) A.invoke(mob,mob,true);
+			}
+			ExternalPlay.standIfNecessary(mob);
+		}
+		super.unInvoke();
+	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

@@ -35,8 +35,7 @@ public class Poison_Liquor extends Poison_Alcohol
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((getTickDownRemaining()==1)
-		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
+		if(getTickDownRemaining()==1)
 		{
 			unInvoke();
 			mob.delAffect(this);
@@ -49,7 +48,15 @@ public class Poison_Liquor extends Poison_Alcohol
 	{
 		MOB mob=null;
 		if((affected!=null)&&(affected instanceof MOB))
+		{
 			mob=(MOB)affected;
+			if((Dice.rollPercentage()<5)&&(!((MOB)affected).isMonster()))
+			{
+				Ability A=CMClass.getAbility("Disease_Migraines");
+				if(A!=null) A.invoke(mob,mob,true);
+			}
+			ExternalPlay.standIfNecessary(mob);
+		}
 		super.unInvoke();
 		if((mob!=null)&&(!mob.isInCombat()))
 			mob.location().show(mob,null,Affect.MSG_SLEEP,"<S-NAME> curl(s) up on the ground and fall(s) asleep.");

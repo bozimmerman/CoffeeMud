@@ -76,7 +76,24 @@ public class Social implements Environmental
 		{
 			FullMsg msg=new FullMsg(mob,Target,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,targetCode(),Target_sees,othersCode(),Third_party_sees);
 			if(mob.location().okAffect(mob,msg))
+			{
 				mob.location().send(mob,msg);
+				if(target instanceof MOB)
+				{
+					MOB tmob=(MOB)target;
+					if((name().toUpperCase().startsWith("SMILE"))
+					&&(mob.charStats().getStat(CharStats.CHARISMA)>=16)
+					&&(mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))
+					&&(Dice.rollPercentage()==1)
+					&&(mob.charStats().getStat(CharStats.GENDER)!=((int)'N'))
+					&&(tmob.charStats().getStat(CharStats.GENDER)!=((int)'N'))
+					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
+					{
+						Ability A=CMClass.getAbility("Disease_Smiles");
+						if(A!=null) A.invoke(tmob,tmob,true);
+					}
+				}
+			}
 		}
 		return true;
 	}

@@ -41,13 +41,34 @@ player should pick up the book and read it.&nbsp; The commands to do this
 are:</P>
 <P align=left>get book</P>
 <P align=left>read book</P>
-<P align=left>Doing this will turn your player into an Archon.&nbsp; An Archon 
-is an all-powerful administrative player who is capable of all manner of magical 
-conjurations.&nbsp; If you are happy and ready to start making maps and other 
-such nonsense, you may want to switch to reading the Archon's Guide, which is 
-also part of the guides package in CoffeeMud.&nbsp; If you would like to learn a 
-little more about Archon abilities first, however, you may want to finish 
-reading this document.</P>
+<P align=left>  Doing this will turn your player into an Archon.&nbsp; 
+An Archon is an all-powerful administrative player who is capable of all manner 
+of magical conjurations.&nbsp; If you are happy and ready to start making maps 
+and other such nonsense, you may want to switch to reading the Archon's Guide, 
+which is also part of the guides package in CoffeeMud.&nbsp; You will probably want to 
+import a bunch of areas into your database right away.&nbsp; If so, 
+you should enter:</P>
+<P align=left>           
+             
+             
+              
+               
+            
+ ahelp import</P>
+<P align=left>           
+             
+             
+              
+          This will tell you how 
+to import *.CMARE files, which are CoffeeMud formatted area files.&nbsp; Others are 
+supported as well.</P>
+<P align=left>           
+             
+             
+    If you would like to learn a little more about 
+Archon abilities or the system in general,&nbsp;you may want to finish reading this document.&nbsp; Otherwise, 
+once you have your administrator and a few areas, you are technically 
+ready to play!</P>
 <IMG src="images/settings.jpg">
 <P align=left><STRONG><FONT size=5>Settings:</FONT></STRONG></P>
 <P align=left>All of the general purpose settings for the 
@@ -188,15 +209,79 @@ with the number of players which join your MUD.&nbsp; All of this growth can be
 managed, however, within CoffeeMud itself, by your Archon administrative 
 user.&nbsp; You should not need to, nor should you attempt to affect individual 
 rows in your database for any reason.</P>
-<P align=left>&nbsp;</P>
+<P align=left>(<STRONG>Supplementary instructions for installing and using MySQL 
+with CoffeeMud on a Windows machine)</STRONG></P>
+<P align=left>STEP 1: Go to <A class=moz-txt-link-abbreviated 
+href="http://www.mysql.com">www.mysql.com</A>, click on Downloads (one of the 
+tabs at the very top), scroll down under "MySQL database server &amp; Standard 
+Clients:"&nbsp;and click on MySQL 4.0 -- Production release (recommended). 
+Scroll down to "Windows downloads", you will see Windows 95/98/NT/2000/XP, and 
+click on the "Pick a mirror" link to the right, and choose a place to 
+download&nbsp;from.. You will be promted to save a file called 
+"mysql-4.0.1.2-win.zip" (or whatever the newest version is). Save that to a temp 
+folder (WARNING, the file is about 21 megs!).<BR><BR>STEP 2: Go back to the 
+Downloads tab, this time scroll down to "Application Programming Interfaces 
+(APIs), and click on "MySQL Connector /J -- for connecting to MySQL from Java". 
+On the next screen, click on "MySQL Connector /J3.0 -- production release". On 
+the next page, click on the download link for "Source and Binaries (zip)" ( be 
+SURE to get the&nbsp;ZIP file, not the (tar.gz)!) The file name should be 
+"mysql-connector-java-3.0.7-stable.zip". Again, save this file to&nbsp;your temp 
+folder as well.</P>
+<P align=left>STEP 3: Locate the mysql-4.0.1.2-win.zip file you downloaded and 
+unzip it ( if you dont know how to do that..I dont think running a mud 
+should&nbsp;be on your list of priorities...) and run the setup.exe file there. 
+Just hit Next<BR>for all the prompts, and it should install to c:\mysql by 
+default.<BR><BR>STEP 4: Go to your coffeemud folder, open the guides\database 
+folder, and you will see a file called "coffeemuddbmysql.sql". Open that 
+file&nbsp;with a text editor or notepad etc... (you might want to make a backup 
+copy<BR>first...) Now, add the following:<BR><BR><FONT face="Courier New"># 
+Connection: SQL<BR># Host: localhost<BR># Saved: 2003-04-01 00:29:14<BR>#<BR># 
+Connection: SQL<BR># Host: localhost<BR># Saved: 2003-04-01 00:27:39<BR>#<BR>use 
+coffeemud&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&lt;----ADD THIS LINE!<BR>CREATE TABLE CMCHAB (<BR>CMUSERID char (50) NULL 
+,<BR>CMABID char (50) NULL ,<BR>CMABPF int NULL ,<BR>CMABTX text 
+NULL<BR></FONT>etc..<BR>etc..<BR><BR>Now copy the edited coffeemuddbmysql.sql to 
+your c:\mysql\bin folder.<BR><BR>STEP 5: Now, open a DOS window (Start &gt; Run 
+&gt; type "command" and hit enter) and type cd c:\mysql\bin and hit Enter. Your 
+prompt should now be c:\mysql\bin&gt; then type "mysqld" (notice the d on the 
+end..?). After&nbsp; a few moments, it should start up the mysql server. You 
+wont get a new window or icon or anything, I check it by <BR>doing CTRL-ALT-DEL 
+and see if Mysqld is listed in the Close Program Window. If it's there, you're 
+in business, and MySQL is running in the background. You should now be back to 
+the c:\mysql\bin&gt; prompt. Type "mysql" and enter. You&nbsp;should get a 
+Welcome to the MySQL monitor etc. etc. etc.. and now the prompt should simply 
+say "mysql&gt;" . Now type "create database coffeemud;" (please note the 
+semi-colon";"!!!) and hit enter. You should get "Query OK, 1 row affected 
+&lt;0.11sec)" or something like that... then type "\q" and that should quit you 
+out of the monitor.<BR><BR>STEP 6: Now that your out of the monitor, you should 
+be back to the c:\mysql\bin&gt; prompt. Now type "mysql &lt; 
+coffeemuddbmysql.sql"&nbsp; (without the quotes of course) and hit enter... 
+again, after a moment or 2, it SHOULD<BR>return you to the c:\mysql\bin&gt; 
+prompt. Go ahead and close that window now. In theory, you should now have mysql 
+running and a coffeemud database&nbsp;all set for it to access.<BR><BR>STEP 7: 
+Now go to your coffeemud folder and open your coffeemud.ini file in notepad or 
+some text editor, and look for the section that says:<BR><FONT 
+face="Courier New">DBCLASS=com.planet_ink.fakedb.Driver<BR>DBSERVICE=jdbc:fakedb:data<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2<BR></FONT><BR>and 
+change it to:<BR><BR><FONT 
+face="Courier New">DBCLASS=com.mysql.jdbc.Driver<BR>DBSERVICE=jdbc:mysql://localhost/coffeemud<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=4<BR></FONT><BR>STEP 
+8: Go back to the other file you downloaded in STEP 2, 
+mysql-connector-java-3.0.7-stable.zip, and now extract that into a temp folder. 
+Inside, there should be a "mysql-connector-java-3.0.7-stable" folder and inside 
+that, a "com" folder, and inside THAT, a "mysql" folder. Copy the mysql folder 
+over into your c:\coffeemud\com folder. So now inside c:\coffeemud\com, ther 
+should be 2 folders, one called <FONT face="Courier New">mysql</FONT>, and one 
+called <FONT face="Courier New">planet_ink</FONT>.</P>
+<P align=left>STEP 9: Now, with mysqld still running in the background, just 
+launch the mud.bat AS IT IS to start the mud..( I didnt have to make ANY changes 
+in there for this to work, hopefully the same for you...)<BR><BR></P>
 <IMG src="images/mug.jpg">
 <P align=left><FONT size=5><STRONG>CoffeeMud Administration:</STRONG></FONT></P>
-<P align=left><FONT>The administration 
-of your CoffeeMud server is done from within the game server itself, when you 
-are logged in as your Archon player.&nbsp; You may use "ahelp" and "atopics" to 
-see a list of some Archon specific functionality.&nbsp; Many of these commands 
-are discussed in depth in the Archon's Guide (ArchonGuide.html).&nbsp; Here are 
-a few highlights of the Archon commands:</FONT></P>
+<P align=left>The administration of your CoffeeMud server 
+is done from within the game server itself, when you are logged in as your 
+Archon player.&nbsp; You may use "ahelp" and "atopics" to see a list of some 
+Archon specific functionality.&nbsp; Many of these commands are discussed in 
+depth in the Archon's Guide (ArchonGuide.html).&nbsp; Here are a few highlights 
+of the Archon commands:</P>
 <P align=left><EM>SHUTDOWN<BR></EM>Although CoffeeMud can 
 also be brought down by killing the Java virtual machine, the proper way to shut 
 down CoffeeMud is by entering the shutdown command.&nbsp; This will ensure that 
@@ -269,16 +354,16 @@ be destroyed.</P>
 <UL>
 <LI>Go to your coffee mud directory and edit the makemud.bat, 
 the first line will be something like:
-SET JAVACPATH=C:\j2sdk1.4.1_02\bin\javac 
-This might be different for you depending on where your java 
-development package is installed. I have the latest one that 
-Sun has and I installed it on C drive.
+SET JAVACPATH= 
+           
+   C:\j2sdk1.4.1_02\bin\javac This might be different for you 
+depending on where your java development package is installed.&nbsp;
 
 <LI>Save the bat file.
 
-<LI>Run the bat file by double clicking on it. This will compile 
-the mud, making all the .class files. You will prolly notice you 
-only had the .java ones to begin with.
+<LI>            
+ Run the bat file by double clicking on it. This will 
+compile the mud, making all the .class files.
 
 <LI>Go back to the mud directory and edit the 'mud.bat' and modify
 this file to read what your mud is called, I called mine starbucks: 
@@ -287,10 +372,13 @@ java -Xms65535000 -Xmx115535000 com.planet_ink.coffee_mud.application.MUD "Starb
 <LI>Double click on the mud.bat and a DOS prompt will start running and
 initialize everything for you.
 
-<LI>Open up your favorite mud client, if you don't have one you can 
-click on start>run and type 'telnet' in the prompt and press OK.
-<LI>To connect to your local machine you would type in the host name or 
-ip address section 'localhost' and connect to port 4444 by default. The 
-port can be changed in the coffeemud.ini file with lots of other stuff.
+<LI> Open up your favorite mud client, if you don't have one you 
+can click onstart&gt;run and type 'telnet' in the prompt and press OK.
+<LI>To connect to your local machine you would type in 
+  the host name or ip address section 'localhost' and connect to port 4444 by 
+  default. The port can be changed in the coffeemud.ini file with lots of other 
+  stuff.</LI></UL>              
+            
+            
 </BODY>
 </HTML>

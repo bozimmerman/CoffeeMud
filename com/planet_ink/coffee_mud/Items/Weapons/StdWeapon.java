@@ -89,31 +89,61 @@ public class StdWeapon extends StdItem implements Weapon
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()==this)
 		&&(amWearingAt(Item.WIELD))
+		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
+		&&(weaponType()!=Weapon.TYPE_NATURAL)
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof MOB)
+		&&((affect.targetCode()-Affect.MASK_HURT)>0)
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(affect.amISource((MOB)owner())))
 		{
-			if(((affect.targetCode()-Affect.MASK_HURT)>50)
-			&&((this instanceof Electronics)||((affect.targetCode()-Affect.MASK_HURT)>200))
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(((MOB)affect.target()).curState().getHitPoints()>(affect.targetCode()-Affect.MASK_HURT)))
+			int hurt=(affect.targetCode()-Affect.MASK_HURT);
+			MOB tmob=(MOB)affect.target();
+			if((hurt>(tmob.maxState().getHitPoints()/10))
+			&&(tmob.curState().getHitPoints()>hurt))
 			{
-				switch(weaponType())
+				if((!tmob.isMonster())
+				   &&(Dice.rollPercentage()==1)
+				   &&(Dice.rollPercentage()>(tmob.charStats().getStat(CharStats.CONSTITUTION)*4)))
 				{
-				case Weapon.TYPE_FROSTING:
-				case Weapon.TYPE_GASSING:
-					break;
-				default:
-					CMClass.getAbility("Amputation").invoke(affect.source(),affect.target(),true);
-					break;
+					Ability A=null;
+					if(subjectToWearAndTear()
+					&&(usesRemaining()<25)
+					&&((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+					{
+						if(Dice.rollPercentage()>50)
+							A=CMClass.getAbility("Disease_Lockjaw");
+						else
+							A=CMClass.getAbility("Disease_Tetanus");
+					}
+					else
+						A=CMClass.getAbility("Disease_Infection");
+					
+					if(A!=null) A.invoke(affect.source(),affect.target(),true);
+				}
+				else
+				if((hurt>50)
+				   &&((this instanceof Electronics)||(hurt>200)))
+				{
+					switch(weaponType())
+					{
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+						break;
+					default:
+						{
+							Ability A=CMClass.getAbility("Amputation");
+							if(A!=null) A.invoke(affect.source(),affect.target(),true);
+						}
+						break;
+					}
 				}
 			}
 			
 			if((subjectToWearAndTear())
 			&&(Dice.rollPercentage()<5)
 			&&(affect.source().rangeToTarget()==0)
-			&&((affect.targetCode()-Affect.MASK_HURT)>0)
 			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5)))
 			{
 				setUsesRemaining(usesRemaining()-1);

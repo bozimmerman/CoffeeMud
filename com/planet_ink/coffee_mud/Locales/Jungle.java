@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 public class Jungle extends StdRoom
@@ -18,6 +19,19 @@ public class Jungle extends StdRoom
 	public Environmental newInstance()
 	{
 		return new Jungle();
+	}
+	public void affect(Environmental myHost, Affect msg)
+	{
+		if((msg.amITarget(this)||(msg.targetMinor()==Affect.TYP_ADVANCE)||(msg.targetMinor()==Affect.TYP_RETREAT))
+		   &&(!msg.source().isMonster())
+		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+		   &&(Dice.rollPercentage()==1)
+		   &&(Dice.rollPercentage()==1))
+		{
+			Ability A=CMClass.getAbility("Disease_Gonorrhea");
+			if(A!=null) A.invoke(msg.source(),msg.source(),true);
+		}
+		super.affect(myHost,msg);
 	}
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_JADE),

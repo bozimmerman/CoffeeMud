@@ -95,7 +95,7 @@ public class DrowElf extends StdMOB
 		else
 			dark=this.fetchAbility(dark.ID());
 
-		dark.invoke(this,null,true);
+		if(dark!=null) dark.invoke(this,null,true);
 		return true;
 	}
 

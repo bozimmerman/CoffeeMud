@@ -96,9 +96,10 @@ public class LizardManShaman extends LizardMan
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
 
-        boolean prayerSuccess = prayer.invoke(this,null,false);
-        return prayerSuccess;
-
+		if(prayer!=null) 
+		    return prayer.invoke(this,null,false);
+		else
+	        return false;
     }
    
 	public Environmental newInstance()

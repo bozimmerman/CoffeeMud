@@ -23,6 +23,27 @@ public class WereWolf extends GiantWolf
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+3);
 	}
 
+	public void affect(Environmental myHost, Affect msg)
+	{
+		MOB mob=(MOB)myHost;
+		if(msg.amISource(mob)
+		&&(!msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(mob.fetchWieldedItem()==null)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
+		&&(!((MOB)msg.target()).isMonster())
+		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/5))))
+		{
+			Ability A=CMClass.getAbility("Disease_Lycanthropy");
+			if(A!=null)	A.invoke(mob,(MOB)msg.target(),true);
+		}
+		super.affect(myHost,msg);
+	}
+	
 	public Vector myResources()
 	{
 		synchronized(resources)
@@ -35,8 +56,15 @@ public class WereWolf extends GiantWolf
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" hide",EnvResource.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
+				{
+					Item meat=makeResource
+					("some "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT);
+					Ability A=CMClass.getAbility("Disease_Lycanthropy");
+					if(A!=null)	meat.addNonUninvokableAffect(A);
+					resources.addElement(meat);
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				}
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 				resources.addElement(makeResource

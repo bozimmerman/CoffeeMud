@@ -82,7 +82,7 @@ public class Trap_Infected extends StdTrap
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
 				if(A==null) A=CMClass.getAbility("Disease_Cold");
-				A.invoke(invoker(),target,true);
+				if(A!=null) A.invoke(invoker(),target,true);
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

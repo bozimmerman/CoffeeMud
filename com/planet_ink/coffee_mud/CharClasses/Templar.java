@@ -122,7 +122,7 @@ public class Templar extends Cleric
 			if(myChar.fetchAffect("Prayer_AuraStrife")==null)
 			{
 				Ability A=CMClass.getAbility("Prayer_AuraStrife");
-				A.invoke(myChar,myChar,true);
+				if(A!=null) A.invoke(myChar,myChar,true);
 			}
 		}
 		return;

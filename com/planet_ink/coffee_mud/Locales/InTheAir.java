@@ -36,9 +36,12 @@ public class InTheAir extends StdRoom
 			if(!Sense.isFalling(E))
 			{
 				Ability falling=CMClass.getAbility("Falling");
-				falling.setProfficiency(avg);
-				falling.setAffectedOne(room);
-				falling.invoke(null,null,E,true);
+				if(falling!=null) 
+				{
+					falling.setProfficiency(avg);
+					falling.setAffectedOne(room);
+					falling.invoke(null,null,E,true);
+				}
 			}
 		}
 	}

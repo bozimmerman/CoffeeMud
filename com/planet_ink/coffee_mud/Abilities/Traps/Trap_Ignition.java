@@ -65,8 +65,11 @@ public class Trap_Ignition extends StdTrap
 			{
 				super.spring(target);
 				Ability B=CMClass.getAbility("Burning");
-				B.setProfficiency(trapLevel()/5);
-				B.invoke(invoker(),affected,true);
+				if(B!=null) 
+				{
+					B.setProfficiency(trapLevel()/5);
+					B.invoke(invoker(),affected,true);
+				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

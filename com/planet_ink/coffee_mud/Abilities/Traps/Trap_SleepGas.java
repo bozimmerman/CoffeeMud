@@ -87,7 +87,7 @@ public class Trap_SleepGas extends StdTrap
 				for(int i=0;i<target.location().numInhabitants();i++)
 				{
 					MOB M=target.location().fetchInhabitant(i);
-					if((M!=null)&&(M!=invoker()))
+					if((M!=null)&&(M!=invoker())&&(A!=null))
 						A.invoke(invoker(),target,true);
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))

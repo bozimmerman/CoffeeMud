@@ -195,9 +195,11 @@ public class DrowPriestess extends DrowElf
             prayer = CMClass.getAbility("Prayer_CureSerious");
             prayer.setProfficiency(Dice.roll(5, 10, 50));
         }
-
-        boolean prayerSuccess = prayer.invoke(this,null,false);
-        return prayerSuccess;
+		
+		if(prayer!=null) 
+		    return prayer.invoke(this,null,false);
+		else
+	        return false;
 
     }
 
@@ -211,11 +213,11 @@ public class DrowPriestess extends DrowElf
 		Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProfficiency(100);
 		if(this.fetchAbility(dark.ID())==null)
-		   this.addAbility(dark);
+			this.addAbility(dark);
 		else
 			dark =this.fetchAbility(dark.ID());
 
-		dark.invoke(this,null,false);
+		if(dark!=null) dark.invoke(this,null,false);
 		return true;
 	}
 

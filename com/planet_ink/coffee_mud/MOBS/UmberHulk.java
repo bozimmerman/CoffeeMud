@@ -77,7 +77,7 @@ public class UmberHulk extends StdMOB
 		else
 			confuse =this.fetchAbility(confuse.ID());
 
-		confuse.invoke(this,null,false);
+		if(confuse!=null) confuse.invoke(this,null,false);
 		return true;
 	}
 

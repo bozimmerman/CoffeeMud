@@ -1,9 +1,5 @@
 GAES still isn't done
 MovingRoom behavior?
-test traps!
-timer on help proff still broke
-
-
-
-
-
+mobs should recall when prisoner done -- better, you should be released from jail!
+script for a carriage
+finish mating and other diseases!

@@ -14,6 +14,22 @@ public class Prayer_AnimateVampire extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_AnimateVampire();}
 
+	
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if(msg.amISource(mob)
+			   &&(msg.sourceMinor()==Affect.TYP_DEATH))
+			{
+				Ability A=CMClass.getAbility("Disease_Vampirism");
+				A.invoke(mob,mob,true);
+			}
+		}
+		return super.okAffect(myHost,msg);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);

@@ -236,7 +236,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
-		Blessing.invoke(this,mob,true);
+		if(Blessing!=null) Blessing.invoke(this,mob,true);
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
 		{

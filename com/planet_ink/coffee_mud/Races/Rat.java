@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.Vector;
 
 public class Rat extends Rodent
@@ -33,6 +35,15 @@ public class Rat extends Rodent
 					("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
 			}
 		}
-		return resources;
+		Vector rsc=(Vector)resources.clone();
+		Item meat=makeResource
+		("some "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT);
+		if(Dice.rollPercentage()<10)
+		{
+			Ability A=CMClass.getAbility("Disease_SARS");
+			if(A!=null)	meat.addNonUninvokableAffect(A);
+		}
+		rsc.addElement(meat);
+		return rsc;
 	}
 }

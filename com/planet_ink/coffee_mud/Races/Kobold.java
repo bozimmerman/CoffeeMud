@@ -104,6 +104,14 @@ public class Kobold extends StdRace
 				("a pile of "+name().toLowerCase()+" bones",EnvResource.RESOURCE_BONE));
 			}
 		}
-		return resources;
+		Vector rsc=(Vector)resources.clone();
+		Item meat=makeResource
+		("some "+name().toLowerCase()+" flesh",EnvResource.RESOURCE_MEAT);
+		if(Dice.rollPercentage()<5)
+		{
+			Ability A=CMClass.getAbility("Disease_Lepresy");
+			if(A!=null)	meat.addNonUninvokableAffect(A);
+		}
+		return rsc;
 	}
 }

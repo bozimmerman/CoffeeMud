@@ -38,12 +38,26 @@ public class Disease_Infection extends Disease
 							-((mob.curState().getHitPoints()-lastHP)/2));
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
+		if((getTickDownRemaining()==1)
+		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE))
+		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		{
+			mob.delAffect(this);
+			Ability A=CMClass.getAbility("Disease_Gangrene");
+			A.invoke(diseaser,mob,true);
+		}
+		else
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=1;
 			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			if(Dice.rollPercentage()==1)
+			{
+				Ability A=CMClass.getAbility("Disease_Fever");
+				if(A!=null) A.invoke(diseaser,mob,true);
+			}
 			return true;
 		}
 		lastHP=mob.curState().getHitPoints();

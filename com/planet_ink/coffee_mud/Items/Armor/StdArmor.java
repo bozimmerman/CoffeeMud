@@ -209,7 +209,6 @@ public class StdArmor extends StdContainer implements Armor
 						if(Dice.rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-Dice.roll(1,15,0));
 						break;
-					case Weapon.TYPE_BASHING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
@@ -300,6 +299,17 @@ public class StdArmor extends StdContainer implements Armor
 							setUsesRemaining(usesRemaining()-1);
 						break;
 					case Weapon.TYPE_BASHING:
+						if((rawWornCode()==Armor.ON_HEAD)
+						&&(Dice.rollPercentage()==1)
+						&&(Dice.rollPercentage()==1)
+						&&((affect.targetCode()-Affect.MASK_HURT)>10))
+						{
+							Ability A=CMClass.getAbility("Disease_Tinnitus");
+							if(A!=null) A.invoke((MOB)owner(),owner(),true);
+						}
+						if(Dice.rollPercentage()<5)
+							setUsesRemaining(usesRemaining()-2);
+						break;
 					case Weapon.TYPE_STRIKING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<5)

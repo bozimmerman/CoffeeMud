@@ -26,4 +26,39 @@ public class Spell extends StdAbility
 	}
 
 	public Environmental newInstance(){	return new Spell();}
+	public boolean maliciousAffect(MOB mob,
+								   Environmental target,
+								   int tickAdjustmentFromStandard,
+								   int additionAffectCheckCode)
+	{
+		boolean truefalse=super.maliciousAffect(mob,target,tickAdjustmentFromStandard,additionAffectCheckCode);
+		if(truefalse
+		&&(target!=null)
+		&&(target instanceof MOB)
+		&&(mob!=target)
+		&&(!((MOB)target).isMonster())
+		&&(Dice.rollPercentage()==1)
+		&&(((MOB)target).charStats().getCurrentClass().baseClass().equals("Mage")))
+		{
+			MOB tmob=(MOB)target;
+			int num=0;
+			for(int i=0;i<tmob.numAffects();i++)
+			{
+				Ability A=tmob.fetchAffect(i);
+				if((A!=null)
+				&&(A instanceof Spell)
+				&&(A.quality()==Ability.MALICIOUS))
+				{
+					num++;
+					if(num>5)
+					{
+						Ability A2=CMClass.getAbility("Disease_Magepox");
+						if(A2!=null) A2.invoke(mob,target,true);
+						break;
+					}
+				}
+			}
+		}
+		return truefalse;
+	}
 }

@@ -300,6 +300,12 @@ public class TheFight
 		}
 
 		if(Body==null) Body=target.killMeDead(true);
+		
+		if((!target.isMonster())&&(Dice.rollPercentage()==1))
+		{
+			Ability A=CMClass.getAbility("Disease_Amnesia");
+			if(A!=null) A.invoke(target,target,true);
+		}
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 

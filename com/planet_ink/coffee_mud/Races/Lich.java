@@ -38,8 +38,11 @@ public class Lich extends Skeleton
 		{
 			tickDown=10;
 			Ability A=CMClass.getAbility("Spell_Fear");
-			A.setMiscText("WEAK");
-			A.invoke(myChar,null,true);
+			if(A!=null) 
+			{
+				A.setMiscText("WEAK");
+				A.invoke(myChar,null,true);
+			}
 		}
 	}
 }

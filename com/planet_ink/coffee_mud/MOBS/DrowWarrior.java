@@ -256,7 +256,9 @@ public class DrowWarrior extends DrowElf
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");
-        return prayer.invoke(this,null,false);
+		if(prayer!=null) 
+	        return prayer.invoke(this,null,false);
+		return false;
     }
 
 	protected boolean castDarkness()
@@ -274,7 +276,7 @@ public class DrowWarrior extends DrowElf
 		else
 			dark=this.fetchAbility(dark.ID());
 
-		dark.invoke(this,null,false);
+		if(dark!=null) dark.invoke(this,null,false);
 		return true;
 	}
 

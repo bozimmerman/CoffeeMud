@@ -41,6 +41,11 @@ public class Poison_Alcohol extends Poison
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
+			if((Dice.rollPercentage()==1)&&(!((MOB)affected).isMonster()))
+			{
+				Ability A=CMClass.getAbility("Disease_Migraines");
+				if(A!=null) A.invoke(mob,mob,true);
+			}
 			ExternalPlay.standIfNecessary(mob);
 		}
 		super.unInvoke();

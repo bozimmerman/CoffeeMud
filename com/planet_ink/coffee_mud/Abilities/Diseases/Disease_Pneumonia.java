@@ -40,6 +40,11 @@ public class Disease_Pneumonia extends Disease
 			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
 			A.catchIt(mob);
+			if(Dice.rollPercentage()==1)
+			{
+				Ability A2=CMClass.getAbility("Disease_Fever");
+				if(A2!=null) A2.invoke(diseaser,mob,true);
+			}
 			return true;
 		}
 		return true;

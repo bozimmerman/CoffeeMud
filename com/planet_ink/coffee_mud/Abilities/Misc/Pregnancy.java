@@ -89,7 +89,7 @@ public class Pregnancy extends StdAbility
 						ticksInLabor++;
 						if(ticksInLabor>45)
 						{
-							mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> give(s) birth!");
+							mob.location().show(mob,null,Affect.MSG_NOISE,"***** <S-NAME> GIVE(S) BIRTH ******");
 							Ability A=mob.fetchAffect(ID());
 							Ability A2=mob.fetchAbility(ID());
 							if(A!=null) mob.delAffect(A);
@@ -106,7 +106,7 @@ public class Pregnancy extends StdAbility
 							babe.setMoney(0);
 							babe.baseCharStats().setMyRace(R);
 							babe.baseCharStats().setStat(CharStats.CHARISMA,10);
-							babe.baseCharStats().setStat(CharStats.CONSTITUTION,10);
+							babe.baseCharStats().setStat(CharStats.CONSTITUTION,6);
 							babe.baseCharStats().setStat(CharStats.DEXTERITY,2);
 							babe.baseCharStats().setStat(CharStats.GENDER,(int)gender);
 							babe.baseCharStats().setStat(CharStats.INTELLIGENCE,2);
@@ -125,6 +125,16 @@ public class Pregnancy extends StdAbility
 							babe.recoverEnvStats();
 							babe.recoverMaxState();
 							babe.resetToMaxState();
+							Item I=CMClass.getItem("GenCaged");
+							((CagedAnimal)I).cageMe(babe);
+							I.baseEnvStats().setAbility(1);
+							I.addNonUninvokableAffect(A3);
+							I.recoverEnvStats();
+							mob.location().addItem(I);
+							Behavior B=CMClass.getBehavior("Emoter");
+							B.setParms("min=1 max=500 chance=10;crys.;wants its mommy.;smiles.");
+							I.addBehavior(B);
+							I.text();
 						}
 						else
 							mob.tell("You are in labor!!");

@@ -25,6 +25,27 @@ public class Insect extends StdRace
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 	}
+	public void affect(Environmental myHost, Affect msg)
+	{
+		MOB mob=(MOB)myHost;
+		if(msg.amISource(mob)
+		&&(!msg.amITarget(mob))
+		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
+		&&(msg.target()!=null)
+		&&(msg.target() instanceof MOB)
+		&&(mob.fetchWieldedItem()==null)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Weapon)
+		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
+		&&(!((MOB)msg.target()).isMonster())
+		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/20))))
+		{
+			Ability A=CMClass.getAbility("Disease_Lyme");
+			if(A!=null)	A.invoke(mob,(MOB)msg.target(),true);
+		}
+		super.affect(myHost,msg);
+	}
+	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
