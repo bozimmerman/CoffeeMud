@@ -943,13 +943,22 @@ public class TelnetSession extends Thread implements Session
 								setAfkFlag(true);
 						}
 						else
-						if((getIdleMillis()>=10800000)&&((System.currentTimeMillis()-lastBlahCheck)>=60000))
+						if((getIdleMillis()>=10800000)
+						   &&(mob()!=null)
+						   &&((System.currentTimeMillis()-lastBlahCheck)>=60000))
 						{
 							lastBlahCheck=System.currentTimeMillis();
-							if((mob()!=null)
+							if((!Sense.isSleeping(mob))
 							&&(mob().fetchEffect("Disease_Blahs")==null))
 							{
 								Ability A=CMClass.getAbility("Disease_Blahs");
+								if(A!=null) A.invoke(mob,mob,true,0);
+							}
+							else
+							if((Sense.isSleeping(mob))
+							&&(mob().fetchEffect("Disease_Narcolepsy")==null))
+							{
+								Ability A=CMClass.getAbility("Disease_Narcolepsy");
 								if(A!=null) A.invoke(mob,mob,true,0);
 							}
 						}

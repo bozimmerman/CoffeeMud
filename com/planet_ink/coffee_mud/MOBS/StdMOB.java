@@ -641,7 +641,7 @@ public class StdMOB implements MOB
 		if(mob==null)
 			return (int)Math.round(att);
 		else
-			return (Util.squared(envStats().level()-mob.envStats().level())/2)
+			return ((Util.squared(envStats().level()-mob.envStats().level())/2)*(envStats().level()>mob.envStats().level()?1:-1))
 				   +(int)Math.round(att);
 	}
 

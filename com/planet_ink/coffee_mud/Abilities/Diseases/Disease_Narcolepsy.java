@@ -50,8 +50,13 @@ public class Disease_Narcolepsy extends Disease
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.curState().adjFatigue(mob.curState().getFatigue()+25,mob.maxState());
+			mob.curState().adjFatigue(mob.curState().getFatigue()+CharState.FATIGUED_MILLIS,mob.maxState());
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());
+			if(!Sense.isSleeping(mob))
+			{
+				Command C=CMClass.getCommand("Sleep");
+				try{if(C!=null) C.execute(mob,Util.parse("Sleep"));}catch(Exception e){}
+			}
 			return true;
 		}
 		return true;
@@ -59,6 +64,9 @@ public class Disease_Narcolepsy extends Disease
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)/2);
+		if(affectableStats.getStat(CharStats.STRENGTH)<1)
+			affectableStats.setStat(CharStats.STRENGTH,1);
 		super.affectCharStats(affected,affectableStats);
 	}
 

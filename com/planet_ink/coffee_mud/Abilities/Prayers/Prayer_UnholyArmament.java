@@ -55,115 +55,127 @@ public class Prayer_UnholyArmament extends Prayer
 		}
 
 		long pos=-1;
-		for(int i=0;i<checkOrder.length;i++)
-			if(mob.freeWearPositions(checkOrder[i])>0)
-			{ pos=checkOrder[i]; break;}
-		if(pos<0)
-		{
-			if(mob.getWorshipCharID().length()>0)
-				mob.tell(mob.getWorshipCharID()+" can see that you are already completely armed.");
-			else
-				mob.tell("The gods can see that you are already armed.");
-			return false;
-		}
+		int i=0;
 		Item I=null;
-		if(pos==Item.WIELD)
+		while(i<checkOrder.length)
 		{
-			I=CMClass.getWeapon("GenWeapon");
-			I.setName("an unholy blade");
-			I.setDisplayText("an wicked looking blade sits here.");
-			((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
-			((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
-			I.setDescription("Whatever made this sharp twisted thing couldn`t have been good..");
-			I.baseEnvStats().setLevel(mob.envStats().level());
-			I.baseEnvStats().setWeight(20);
-			I.setMaterial(EnvResource.RESOURCE_MITHRIL);
-			I.recoverEnvStats();
-			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
-			I.baseEnvStats().setDamage(Util.s_int((String)H.get("DAMAGE")));
-			I.baseEnvStats().setAttackAdjustment(Util.s_int((String)H.get("ATTACK")));
-			I.setBaseValue(0);
-		}
-		else
-		{
-			I=CMClass.getArmor("GenArmor");
-			I.setRawProperLocationBitmap(pos);
-			I.baseEnvStats().setLevel(mob.envStats().level());
-			if(pos==Item.ABOUT_BODY)
-				I.setMaterial(EnvResource.RESOURCE_COTTON);
-			else
+			if(mob.freeWearPositions(checkOrder[i])<=0)
+			{ 
+				i++;
+				continue;
+			}
+			pos=checkOrder[i]; 
+			if(pos<0)
+			{
+				if(mob.getWorshipCharID().length()>0)
+					mob.tell(mob.getWorshipCharID()+" can see that you are already completely armed.");
+				else
+					mob.tell("The gods can see that you are already armed.");
+				return false;
+			}
+			if(pos==Item.WIELD)
+			{
+				I=CMClass.getWeapon("GenWeapon");
+				I.setName("an unholy blade");
+				I.setDisplayText("an wicked looking blade sits here.");
+				((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
+				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
+				I.setDescription("Whatever made this sharp twisted thing couldn`t have been good..");
+				I.baseEnvStats().setLevel(mob.envStats().level());
+				I.baseEnvStats().setWeight(20);
 				I.setMaterial(EnvResource.RESOURCE_MITHRIL);
+				I.recoverEnvStats();
+				Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
+				I.baseEnvStats().setDamage(Util.s_int((String)H.get("DAMAGE")));
+				I.baseEnvStats().setAttackAdjustment(Util.s_int((String)H.get("ATTACK")));
+				I.setBaseValue(0);
+			}
+			else
+			{
+				I=CMClass.getArmor("GenArmor");
+				I.setRawProperLocationBitmap(pos);
+				I.baseEnvStats().setLevel(mob.envStats().level());
+				if(pos==Item.ABOUT_BODY)
+					I.setMaterial(EnvResource.RESOURCE_COTTON);
+				else
+					I.setMaterial(EnvResource.RESOURCE_MITHRIL);
+				I.recoverEnvStats();
+				Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
+				I.baseEnvStats().setArmor(Util.s_int((String)H.get("ARMOR")));
+				I.baseEnvStats().setWeight(Util.s_int((String)H.get("WEIGHT")));
+				I.setBaseValue(0);
+				if(pos==Item.ON_TORSO)
+				{
+					I.setName("an unholy breast plate");
+					I.setDisplayText("a wicked looking breast plate sits here.");
+					I.setDescription("Whatever made this black spiked armor couldn`t have been good.");
+				}
+				if(pos==Item.ON_HEAD)
+				{
+					I.setName("an unholy helm");
+					I.setDisplayText("a wicked looking helmet sits here.");
+					I.setDescription("Whatever made this spiked helmet couldn`t have been good.");
+				}
+				if(pos==Item.ABOUT_BODY)
+				{
+					I.setName("an unholy cape");
+					I.setDisplayText("a torn black cape sits here.");
+					I.setDescription("Whatever made this cape couldn`t have been good.");
+				}
+				if(pos==Item.ON_ARMS)
+				{
+					I.setName("some unholy arm cannons");
+					I.setDisplayText("a pair of wicked looking arm cannons sit here.");
+					I.setDescription("Whatever made this couldn`t have been good.");
+				}
+				if((pos==Item.ON_LEFT_WRIST)
+				||(pos==Item.ON_RIGHT_WRIST))
+				{
+					I.setName("an unholy vambrace");
+					I.setDisplayText("a wicked looking spiked vambrace sit here.");
+					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+				}
+				if(pos==Item.ON_HANDS)
+				{
+					I.setName("a pair of unholy gauntlets");
+					I.setDisplayText("some wicked looking gauntlets sit here.");
+					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+				}
+				if(pos==Item.ON_WAIST)
+				{
+					I.setName("an unholy girdle");
+					I.setDisplayText("a wicked looking girdle sits here.");
+					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
+				}
+				if(pos==Item.ON_LEGS)
+				{
+					I.setName("a pair of unholy leg cannons");
+					I.setDisplayText("a wicked looking pair of leg cannons sits here.");
+					I.setDescription("Whatever made this twisted and spiked black metal couldn`t have been good.");
+				}
+				if(pos==Item.ON_FEET)
+				{
+					I.setName("a pair of unholy boots");
+					I.setDisplayText("a wicked looking pair of boots sits here.");
+					I.setDescription("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good.");
+				}
+			}
+			Ability A=CMClass.getAbility("Prop_HaveZapper");
+			if(A!=null)
+			{
+				A.setMiscText("-GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
+				I.addNonUninvokableEffect(A);
+			}
 			I.recoverEnvStats();
-			Hashtable H=CoffeeMaker.timsItemAdjustments(I,mob.envStats().level(),I.material(),I.baseEnvStats().weight(),1,0,0,I.rawProperLocationBitmap());
-			I.baseEnvStats().setArmor(Util.s_int((String)H.get("ARMOR")));
-			I.baseEnvStats().setWeight(Util.s_int((String)H.get("WEIGHT")));
-			I.setBaseValue(0);
-			if(pos==Item.ON_TORSO)
+			if((mob.fetchInventory(null,I.name()+"$")!=null)
+			||(mob.location().fetchItem(null,I.name()+"$")!=null))
 			{
-				I.setName("an unholy breast plate");
-				I.setDisplayText("a wicked looking breast plate sits here.");
-				I.setDescription("Whatever made this black spiked armor couldn`t have been good.");
+				i++;
+				I=null;
+				continue;
 			}
-			if(pos==Item.ON_HEAD)
-			{
-				I.setName("an unholy helm");
-				I.setDisplayText("a wicked looking helmet sits here.");
-				I.setDescription("Whatever made this spiked helmet couldn`t have been good.");
-			}
-			if(pos==Item.ABOUT_BODY)
-			{
-				I.setName("an unholy cape");
-				I.setDisplayText("a torn black cape sits here.");
-				I.setDescription("Whatever made this cape couldn`t have been good.");
-			}
-			if(pos==Item.ON_ARMS)
-			{
-				I.setName("some unholy arm cannons");
-				I.setDisplayText("a pair of wicked looking arm cannons sit here.");
-				I.setDescription("Whatever made this couldn`t have been good.");
-			}
-			if((pos==Item.ON_LEFT_WRIST)
-			||(pos==Item.ON_RIGHT_WRIST))
-			{
-				I.setName("an unholy vambrace");
-				I.setDisplayText("a wicked looking spiked vambrace sit here.");
-				I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
-			}
-			if(pos==Item.ON_HANDS)
-			{
-				I.setName("a pair of unholy gauntlets");
-				I.setDisplayText("some wicked looking gauntlets sit here.");
-				I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
-			}
-			if(pos==Item.ON_WAIST)
-			{
-				I.setName("an unholy girdle");
-				I.setDisplayText("a wicked looking girdle sits here.");
-				I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
-			}
-			if(pos==Item.ON_LEGS)
-			{
-				I.setName("a pair of unholy leg cannons");
-				I.setDisplayText("a wicked looking pair of leg cannons sits here.");
-				I.setDescription("Whatever made this twisted and spiked black metal couldn`t have been good.");
-			}
-			if(pos==Item.ON_FEET)
-			{
-				I.setName("a pair of unholy boots");
-				I.setDisplayText("a wicked looking pair of boots sits here.");
-				I.setDescription("Whatever made this pair of twisted and spiked black metal boots couldn`t have been good.");
-			}
+			break;
 		}
-		Ability A=CMClass.getAbility("Prop_HaveZapper");
-		if(A!=null)
-		{
-			A.setMiscText("-GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
-			I.addNonUninvokableEffect(A);
-		}
-		I.recoverEnvStats();
-		if((mob.fetchInventory(null,I.name()+"$")!=null)
-		||(mob.location().fetchItem(null,I.name()+"$")!=null))
-			I=null;
 
 
 		boolean success=profficiencyCheck(mob,0,auto);

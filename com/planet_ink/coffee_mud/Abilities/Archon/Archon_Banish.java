@@ -35,6 +35,7 @@ public class Archon_Banish extends ArchonSkill
 	public int maxRange(){return 1;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	private Room prison=null;
+	private boolean customPrison = false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -118,6 +119,15 @@ public class Archon_Banish extends ArchonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+	        Room myPrison = CMMap.getRoom(Util.combine(commands,1));
+		if(myPrison != null && !"".equals(myPrison.roomID()))
+			while(commands.size() > 1)
+			{
+				commands.removeElementAt(1);
+			}
+		else
+			myPrison = null;
+		
 		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;
 		
@@ -129,7 +139,7 @@ public class Archon_Banish extends ArchonSkill
 			return true;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		if(!super.invoke(mob,commands,givenTarget,auto, asLevel))
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
@@ -139,19 +149,30 @@ public class Archon_Banish extends ArchonSkill
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> is banished!":"^F<S-NAME> banish(es) <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished!");
 				beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
 				A=(Archon_Banish)target.fetchEffect(ID());
 				if(A!=null)
 				{
-					A.prison=CMClass.getLocale("StoneRoom");
-					A.prison.addNonUninvokableEffect((Ability)copyOf());
-					A.prison.setArea(mob.location().getArea());
-					A.prison.bringMobHere(target,false);
-					A.prison.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
-					A.prison.setDisplayText("The Hall of Lost Souls");
-					A.prison.setRoomID("");
+					if(myPrison != null)
+					{
+						A.prison = (Room) myPrison.copyOf();
+					}
+					else
+					{
+							
+						A.prison=CMClass.getLocale("StoneRoom");
+						A.prison.addNonUninvokableEffect((Ability)copyOf());
+						A.prison.setArea(mob.location().getArea());
+						A.prison.setDescription("You are standing on an immense, grey stone floor that stretches as far as you can see in all directions.  Rough winds plunging from the dark, starless sky tear savagely at your fragile body.");
+						A.prison.setDisplayText("The Hall of Lost Souls");
+						A.prison.setRoomID("");
+						for(int d=0;d<4;d++)
+						{
+							A.prison.rawExits()[d]=CMClass.getExit("Open");
+							A.prison.rawDoors()[d]=A.prison;
+						}
+						CMMap.addRoom(A.prison);
+					}
 					CommonMsgs.look(target,true);
 					for(int d=0;d<4;d++)
 					{
@@ -159,6 +180,9 @@ public class Archon_Banish extends ArchonSkill
 						A.prison.rawDoors()[d]=A.prison;
 					}
 					CMMap.addRoom(A.prison);
+					A.prison.bringMobHere(target,false);
+					mob.location().send(mob,msg);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> banished to " + A.prison.displayText() + "!");
 				}
 				
 			}

@@ -80,7 +80,7 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(newitem.amWearingAt(Item.WIELD))
 					{
-						mob.tell("You are wielding that!");
+						mob.tell("You are already wielding that!");
 						return false;
 					}
 					else

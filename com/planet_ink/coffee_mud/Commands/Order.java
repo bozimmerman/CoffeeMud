@@ -92,7 +92,8 @@ public class Order extends StdCommand
 		}
 
 		commands.removeElementAt(0);
-		Object O=EnglishParser.findCommand(target,commands);
+
+		Object O=EnglishParser.findCommand(mob,commands);
 		String order=Util.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		{
@@ -101,21 +102,31 @@ public class Order extends StdCommand
 				mob.tell("You can't order anyone to '"+order+"'.");
 				return false;
 			}
-			if(O instanceof Ability)
-				O=EnglishParser.getToEvoke(target,commands);
-			if((O instanceof Ability)
-			&&(Util.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING)))
-			{
-				mob.tell("You can't order anyone to '"+order+"'.");
-				return false;
-			}
 		}
-		
-
+			
 		Vector doV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
+			O=EnglishParser.findCommand(target,commands);
+			if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
+			{
+				if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
+				{
+					mob.tell("You can't order "+target.name()+" to '"+order+"'.");
+					continue;
+				}
+				if(O instanceof Ability)
+					O=EnglishParser.getToEvoke(target,commands);
+				if(O instanceof Ability)
+				{
+					if(Util.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
+					{
+						mob.tell("You can't order "+target.name()+" to '"+order+"'.");
+						continue;
+					}
+				}
+			}
 			if((!Sense.canBeSeenBy(target,mob))
 			||(!Sense.canBeHeardBy(mob,target))
 			||(target.location()!=mob.location()))

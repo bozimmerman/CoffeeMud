@@ -30,12 +30,11 @@ public class Prayer_AuraStrife extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public boolean autoInvocation(MOB mob){return true;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if((invoker()!=null)&&(affected!=invoker()))
+		if((invoker()!=null)&&(affected!=invoker())&&(invoker().getAlignment()<350))
 		{
 			int levels=invoker().charStats().getClassLevel("Templar");
 			if(levels<0) levels=invoker().envStats().level();
@@ -63,6 +62,7 @@ public class Prayer_AuraStrife extends Prayer
 		if(!super.tick(ticking,tickID)) return false;
 		if((tickID==MudHost.TICK_MOB)
 		&&(invoker()!=null)
+		&&(invoker().getAlignment()<350)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -121,4 +121,10 @@ public class Prayer_AuraStrife extends Prayer
 		return success;
 	}
 
+	public boolean autoInvocation(MOB mob)
+	{
+		if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+			return false;
+		return super.autoInvocation(mob);
+	}
 }
