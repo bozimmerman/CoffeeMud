@@ -187,7 +187,7 @@ public class SMTPserver extends Thread implements Tickable
 		for(int i=0;i<journals.size();i++)
 		{
 			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return (String)journals.elementAt(i,5);;
+				return (String)journals.elementAt(i,5);
 		}
 		return "";
 	}

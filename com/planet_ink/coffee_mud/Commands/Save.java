@@ -143,7 +143,7 @@ public class Save extends StdCommand
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")
 												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")
-												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS");;}
+												 ||CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }
