@@ -67,7 +67,7 @@ public class Skill_Bash extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is bashed!":"<S-NAME> BASH(es) <T-NAMESELF>!";
+			str=auto?"<T-NAME> is bashed!":"<S-NAME> bash(es) <T-NAMESELF>!";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,str);
 			if(mob.location().okAffect(msg))
 			{
@@ -75,6 +75,7 @@ public class Skill_Bash extends StdAbility
 				Weapon w=CMClass.getWeapon("ShieldWeapon");
 				if((w!=null)&&(thisSheild!=null))
 				{
+					w.setName(thisSheild.name());
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
 					w.baseEnvStats().setDamage(thisSheild.envStats().level());

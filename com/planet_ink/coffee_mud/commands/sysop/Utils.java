@@ -26,6 +26,19 @@ public class Utils
 				if(E!=null) break;
 			}
 		if(E==null)
+			for(int r=0;r<CMMap.map.size();r++)
+			{
+				Room room=(Room)CMMap.map.elementAt(r);
+				for(int m=0;m<room.numInhabitants();m++)
+				{
+					MOB mob2=room.fetchInhabitant(m);
+					E=mob2.fetchInventory(name);
+					if((E==null)&&(E instanceof ShopKeeper))
+						E=((ShopKeeper)mob2).getStock(name);
+				}
+				if(E!=null) break;	
+			}
+		if(E==null)
 		{
 			mob.tell("There's no such thing in the living world as a '"+name+"'.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -48,6 +61,8 @@ public class Utils
 		if(E instanceof Item)
 		{
 			Item newItem=(Item)E.copyOf();
+			newItem.setLocation(null);
+			newItem.wearAt(0);
 			mob.location().addItem(newItem);
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 			mob.location().recoverRoomStats();

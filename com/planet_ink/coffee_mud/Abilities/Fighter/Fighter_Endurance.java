@@ -44,6 +44,7 @@ public class Fighter_Endurance extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if((profficiencyCheck(0,false))
+		&&(!mob.isInCombat())
 		&&((mob.curState().getHitPoints()<mob.maxState().getHitPoints())
 		||(mob.curState().getMana()<mob.maxState().getMana())))
 		{
