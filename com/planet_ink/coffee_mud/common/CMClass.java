@@ -41,7 +41,7 @@ public class CMClass extends ClassLoader
 	
 	public static Command findExtraCommand(String word)
 	{
-		return extraCmds.get(word.trim().toUpperCase());
+		return (Command)extraCmds.get(word.trim().toUpperCase());
 	}
 
 	public static Environmental getUnknown(String calledThis)
@@ -304,9 +304,9 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 		
-		extraCmds=loadVectorListToObj(prefix+"commands"+File.separatorChar,page.getStr("BEHAVIORS"));
-		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
-		if(behaviors.size()==0) return false;
+		extraCmds=loadHashListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"));
+		if(extraCmds.size()>0)
+		Log.sysOut("MUD","XCommands loaded  : "+extraCmds.size());
 		return true;
 	}
 
