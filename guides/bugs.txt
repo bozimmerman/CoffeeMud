@@ -1,3 +1,6 @@
 GAES still isn't done
+Not all juggled items are in the air.
+Stealing juggled items from a jester should create problems.
+
 
 

@@ -59,6 +59,15 @@ public class Skill_Disguise extends StdAbility
 			affectableStats.setDisplayClassName(values[6]);
 	}
 
+	public boolean legalName(String name)
+	{
+		MOB M=CMMap.getPlayer(Util.capitalize(name));
+		if(M==null) return true;
+		if(M.charStats().getClassLevel("Archon")<=0)
+			return false;
+		return true;
+	}
+	
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
@@ -227,6 +236,12 @@ public class Skill_Disguise extends StdAbility
 			if(how.indexOf(" ")>=0)
 			{
 				mob.tell("Your disguise name may not have a space in it.");
+				return false;
+			}
+			else
+			if(!legalName(how))
+			{
+				mob.tell("You cannot disguise yourself as an Archon.");
 				return false;
 			}
 			else
