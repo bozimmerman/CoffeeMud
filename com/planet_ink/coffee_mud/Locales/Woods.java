@@ -34,7 +34,7 @@ public class Woods extends StdRoom
 		new Integer(EnvResource.RESOURCE_ORANGES),
 		new Integer(EnvResource.RESOURCE_LEMONS),
 		new Integer(EnvResource.RESOURCE_FUR),
-		new Integer(EnvResource.RESOURCE_SKIN),
+		new Integer(EnvResource.RESOURCE_HIDE),
 		new Integer(EnvResource.RESOURCE_HEMP),
 		new Integer(EnvResource.RESOURCE_FEATHERS),
 		new Integer(EnvResource.RESOURCE_LEATHER),

@@ -1840,7 +1840,7 @@ public class Import
 				I.setMaterial(EnvResource.RESOURCE_BRASS);
 			else
 			if(objectDescription.equalsIgnoreCase("vellum"))
-				I.setMaterial(EnvResource.RESOURCE_SKIN);
+				I.setMaterial(EnvResource.RESOURCE_HIDE);
 			else
 			if(objectDescription.equalsIgnoreCase("silver"))
 				I.setMaterial(EnvResource.RESOURCE_SILVER);

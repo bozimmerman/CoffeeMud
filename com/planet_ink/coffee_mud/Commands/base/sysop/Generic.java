@@ -423,7 +423,7 @@ public class Generic
 			mob.session().println("3) Is Removable  : "+E.isRemovable());
 			mob.session().println("4) Is Trapped    : "+E.isTrapped());
 			if(E instanceof Weapon)
-				mob.session().println("5) Is Two-Handed : "+E.isTrapped());
+				mob.session().println("5) Is Two-Handed : "+E.rawLogicalAnd());
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","12345\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{

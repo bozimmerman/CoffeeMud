@@ -28,7 +28,7 @@ public class Plains extends StdRoom
 		new Integer(EnvResource.RESOURCE_FLINT),
 		new Integer(EnvResource.RESOURCE_COTTON),
 		new Integer(EnvResource.RESOURCE_MEAT),
-		new Integer(EnvResource.RESOURCE_SKIN),
+		new Integer(EnvResource.RESOURCE_HIDE),
 		new Integer(EnvResource.RESOURCE_FUR),
 		new Integer(EnvResource.RESOURCE_FEATHERS),
 		new Integer(EnvResource.RESOURCE_LEATHER),
