@@ -178,6 +178,17 @@ public class ExternalPlay
 		if(player!=null) return player.getScore(mob);
 		return new StringBuffer("");
 	}
+	public static Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater)
+	{
+		if(player!=null) return player.findBastardTheBestWay(location,destRooms,noWater);
+		return new Vector();
+	}
+	public static int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater)
+	{
+		if(player!=null) return player.trackNextDirectionFromHere(theTrail,location,noWater);
+		return -1;
+	}
+	
 	public static void startTickDown(Environmental E,
 									 int tickID,
 									 int numTicks)

@@ -166,7 +166,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
-				if(I.dispossessionTime()!=null)
+				if((I.dispossessionTime()!=null)
+				&&(!(I instanceof DeadBody)))
 				{
 					I.setDispossessionTime(null);
 					updateItems=true;

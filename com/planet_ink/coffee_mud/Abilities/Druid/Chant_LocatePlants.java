@@ -12,52 +12,11 @@ public class Chant_LocatePlants extends Chant
 	public String ID() { return "Chant_LocatePlants"; }
 	public String name(){ return "Locate Plants";}
 	public String displayText(){return "(Locating Plants)";}
-	Room lastRoom=null;
+	
 	private Vector theTrail=null;
-	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
-	protected final static int TRACK_ATTEMPTS=25;
 	public Environmental newInstance(){	return new Chant_LocatePlants();}
 	
-	public void unInvoke()
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		if(canBeUninvoked)
-			lastRoom=null;
-		super.unInvoke();
-	}
-	public int nextDirectionFromHere(Room location)
-	{
-		if(theTrail==null)
-			return -1;
-		if(location==theTrail.elementAt(0))
-			return 999;
-
-		Room nextRoom=null;
-		int bestDirection=-1;
-		int trailLength=Integer.MAX_VALUE;
-		for(int dirs=0;dirs<Directions.NUM_DIRECTIONS;dirs++)
-		{
-			Room thisRoom=location.getRoomInDir(dirs);
-			Exit thisExit=location.getExitInDir(dirs);
-			if((thisRoom!=null)&&(thisExit!=null))
-			{
-				for(int trail=0;trail<theTrail.size();trail++)
-				{
-					if((theTrail.elementAt(trail)==thisRoom)
-					&&(trail<trailLength))
-					{
-						bestDirection=dirs;
-						trailLength=trail;
-						nextRoom=thisRoom;
-					}
-				}
-			}
-		}
-		return bestDirection;
-	}
-
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -111,79 +70,9 @@ public class Chant_LocatePlants extends Chant
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=nextDirectionFromHere(mob.location());
+			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
-	public boolean findTheBastard(Room location, MOB mob, int tryCode, Vector dirVec)
-	{
-		if(lookedIn==null) return false;
-		if(lookedIn.get(location)!=null)
-			return false;
-		lookedIn.put(location,location);
-		for(int x=0;x<dirVec.size();x++)
-		{
-			int i=((Integer)dirVec.elementAt(x)).intValue();
-			Room nextRoom=location.getRoomInDir(i);
-			Exit nextExit=location.getExitInDir(i);
-			if((nextRoom!=null)&&(nextExit!=null))
-			{
-				if((plantsHere(mob,nextRoom).length()>0)
-				||(findTheBastard(nextRoom,mob,tryCode,dirVec)))
-				{
-					if(theTrail==null)
-						theTrail=new Vector();
-					theTrail.addElement(nextRoom);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public boolean findBastardTheBestWay(Room location, MOB mob)
-	{
-		
-		Vector trailArray[] = new Vector[TRACK_ATTEMPTS];
-		
-		for(int t=0;t<TRACK_ATTEMPTS;t++)
-		{
-			lookedIn=new Hashtable();
-			theTrail=null;
-			Vector dirVec=new Vector();
-			while(dirVec.size()<Directions.NUM_DIRECTIONS)
-			{
-				int direction=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
-				for(int x=0;x<dirVec.size();x++)
-					if(((Integer)dirVec.elementAt(x)).intValue()==direction)
-						continue;
-				dirVec.addElement(new Integer(direction));
-			}
-			findTheBastard(location,mob,2,dirVec);
-			trailArray[t]=theTrail;
-		}
-		int winner=-1;
-		int winningTotal=Integer.MAX_VALUE;
-		for(int t=0;t<TRACK_ATTEMPTS;t++)
-		{
-			Vector V=trailArray[t];
-			if((V!=null)&&(V.size()<winningTotal))
-			{
-				winningTotal=V.size();
-				winner=t;
-			}
-		}
-		if(winner<0)
-		{
-			theTrail=null;
-			return false;
-		}
-		else
-		{
-			theTrail=trailArray[winner];
-			return true;
-		}
-	}
-	
 	public String plantsHere(MOB mob, Room R)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -217,9 +106,21 @@ public class Chant_LocatePlants extends Chant
 		
 		boolean success=profficiencyCheck(0,auto);
 
-		lookedIn=new Hashtable();
-		findBastardTheBestWay(mob.location(),mob);
-
+		Hashtable lookedIn=new Hashtable();
+		Vector rooms=new Vector();
+		Vector localMap=mob.location().getArea().getMyMap();
+		for(int r=0;r<localMap.size();r++)
+			if(plantsHere(mob,(Room)localMap.elementAt(r)).length()>0) 
+				rooms.addElement((Room)localMap.elementAt(r));
+		
+		if(rooms.size()<=0)
+		for(int r=0;r<CMMap.numRooms();r++)
+			if(plantsHere(mob,(Room)CMMap.getRoom(r)).length()>0)
+				rooms.addElement(CMMap.getRoom(r));
+		
+		if(rooms.size()>0)
+			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
+		
 		if((success)&&(theTrail!=null))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
@@ -230,7 +131,7 @@ public class Chant_LocatePlants extends Chant
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=newOne.nextDirectionFromHere(mob.location());
+				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}
 		else

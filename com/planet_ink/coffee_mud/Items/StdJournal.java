@@ -193,7 +193,7 @@ public class StdJournal extends StdItem
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
 					IQCalendar theDate=IQCalendar.getIQInstance();
-					theDate.getTime().setTime(Util.s_long(date));
+					theDate.setTimeInMillis(Util.s_long(date));
 					if(Util.s_long(date)>lastTimeDate)
 						buf.append("*");
 					else
@@ -215,7 +215,7 @@ public class StdJournal extends StdItem
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
 			IQCalendar theDate=IQCalendar.getIQInstance();
-			theDate.getTime().setTime(Util.s_long(date));
+			theDate.setTimeInMillis(Util.s_long(date));
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
 			if(mineAble) buf.append("*");
 			else buf.append(" ");

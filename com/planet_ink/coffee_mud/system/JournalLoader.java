@@ -130,7 +130,12 @@ public class JournalLoader
 	}
 	
 	
-	public static synchronized void DBWrite(String Journal, String from, String to, String subject, String message, int which)
+	public static synchronized void DBWrite(String Journal, 
+											String from, 
+											String to, 
+											String subject, 
+											String message, 
+											int which)
 	{
 		String date=new IQCalendar().getTime().getTime()+"";
 		if(which>=0)

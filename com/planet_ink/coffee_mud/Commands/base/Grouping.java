@@ -201,7 +201,8 @@ public class Grouping
 			return;
 		}
 		String whomToFollow=Util.combine(commands,1);
-		if(whomToFollow.equalsIgnoreCase("self"))
+		if((whomToFollow.equalsIgnoreCase("self"))
+		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
 		{
 			nofollow(mob,true,false);
 			return;

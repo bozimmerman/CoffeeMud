@@ -9,7 +9,7 @@ public class Ranger_Track extends StdAbility
 {
 	public String ID() { return "Ranger_Track"; }
 	public String name(){ return "Track";}
-	private String displayText="(tracking)";
+	private String displayText="(Tracking)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -18,44 +18,9 @@ public class Ranger_Track extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	
-	private MOB trackingWhom=null;
 	private Vector theTrail=null;
-	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
-	protected final static int TRACK_ATTEMPTS=25;
-
 	public Environmental newInstance(){	return new Ranger_Track();}
-
-	public int nextDirectionFromHere(Room location)
-	{
-		if(theTrail==null)
-			return -1;
-		if(location==theTrail.elementAt(0))
-			return 999;
-
-		Room nextRoom=null;
-		int bestDirection=-1;
-		int trailLength=Integer.MAX_VALUE;
-		for(int dirs=0;dirs<Directions.NUM_DIRECTIONS;dirs++)
-		{
-			Room thisRoom=location.getRoomInDir(dirs);
-			Exit thisExit=location.getExitInDir(dirs);
-			if((thisRoom!=null)&&(thisExit!=null)&&(thisRoom.domainConditions()!=Room.CONDITION_WET))
-			{
-				for(int trail=0;trail<theTrail.size();trail++)
-				{
-					if((theTrail.elementAt(trail)==thisRoom)
-					&&(trail<trailLength))
-					{
-						bestDirection=dirs;
-						trailLength=trail;
-						nextRoom=thisRoom;
-					}
-				}
-			}
-		}
-		return bestDirection;
-	}
 
 	public boolean tick(int tickID)
 	{
@@ -117,87 +82,7 @@ public class Ranger_Track extends StdAbility
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-				nextDirection=nextDirectionFromHere(mob.location());
-	}
-
-	public boolean findTheBastard(Room location, String mobName, int tryCode, Vector dirVec)
-	{
-		if(lookedIn==null) return false;
-		if(lookedIn.get(location)!=null)
-			return false;
-		lookedIn.put(location,location);
-		for(int x=0;x<dirVec.size();x++)
-		{
-			int i=((Integer)dirVec.elementAt(x)).intValue();
-			Room nextRoom=location.getRoomInDir(i);
-			Exit nextExit=location.getExitInDir(i);
-			if((nextRoom!=null)&&(nextExit!=null)&&(nextRoom.domainConditions()!=Room.CONDITION_WET))
-			{
-				MOB mobCheck=nextRoom.fetchInhabitant(mobName);
-				if((mobCheck!=null)
-				||(findTheBastard(nextRoom,mobName,tryCode,dirVec)))
-				{
-					if(mobCheck!=null)
-						trackingWhom=mobCheck;
-
-					if(theTrail==null)
-						theTrail=new Vector();
-					theTrail.addElement(nextRoom);
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	public boolean findBastardTheBestWay(Room location, String mobName)
-	{
-		
-		Vector trailArray[] = new Vector[TRACK_ATTEMPTS];
-		MOB trackArray[] = new MOB[TRACK_ATTEMPTS];
-		
-		for(int t=0;t<TRACK_ATTEMPTS;t++)
-		{
-			lookedIn=new Hashtable();
-			theTrail=null;
-			trackingWhom=null;
-			Vector dirVec=new Vector();
-			while(dirVec.size()<Directions.NUM_DIRECTIONS)
-			{
-				int direction=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
-				for(int x=0;x<dirVec.size();x++)
-					if(((Integer)dirVec.elementAt(x)).intValue()==direction)
-						continue;
-				dirVec.addElement(new Integer(direction));
-			}
-			findTheBastard(location,mobName,2,dirVec);
-			trailArray[t]=theTrail;
-			trackArray[t]=trackingWhom;
-		}
-		int winner=-1;
-		int winningTotal=Integer.MAX_VALUE;
-		for(int t=0;t<TRACK_ATTEMPTS;t++)
-		{
-			Vector V=trailArray[t];
-			MOB whom=trackArray[t];
-			if((V!=null)&&(whom!=null)&&(V.size()<winningTotal))
-			{
-				winningTotal=V.size();
-				winner=t;
-			}
-		}
-		if(winner<0)
-		{
-			trackingWhom=null;
-			theTrail=null;
-			return false;
-		}
-		else
-		{
-			trackingWhom=trackArray[winner];
-			theTrail=trailArray[winner];
-			return true;
-		}
+			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -220,7 +105,6 @@ public class Ranger_Track extends StdAbility
 			if(commands.size()==0) return true;
 		}
 
-		trackingWhom=null;
 		theTrail=null;
 		nextDirection=-2;
 
@@ -242,13 +126,34 @@ public class Ranger_Track extends StdAbility
 
 		boolean success=profficiencyCheck(0,auto);
 
-		lookedIn=new Hashtable();
-		findBastardTheBestWay(mob.location(),mobName);
+		Vector rooms=new Vector();
+		Vector localMap=mob.location().getArea().getMyMap();
+		for(int r=0;r<localMap.size();r++)
+		{
+			Room R=(Room)localMap.elementAt(r);
+			if(R.fetchInhabitant(mobName)!=null)
+				rooms.addElement(R);
+		}
+		
+		if(rooms.size()<=0)
+		for(int r=0;r<CMMap.numRooms();r++)
+		{
+			Room R=(Room)localMap.elementAt(r);
+			if((R!=null)&&(R.fetchInhabitant(mobName)!=null))
+				rooms.addElement(R);
+		}
+		
+		if(rooms.size()>0)
+			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
+		
+		MOB target=null;
+		if((theTrail!=null)&&(theTrail.size()>0))
+			target=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
 
-		if((success)&&(trackingWhom!=null)&&(theTrail!=null))
+		if((success)&&(theTrail!=null)&&(target!=null))
 		{
 			theTrail.addElement(mob.location());
-			MOB target=trackingWhom;
+			
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
@@ -258,12 +163,12 @@ public class Ranger_Track extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+trackingWhom.name()+")";
+				displayText="(tracking "+target.name()+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=newOne.nextDirectionFromHere(mob.location());
+				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}
 		else

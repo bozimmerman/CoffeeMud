@@ -47,4 +47,8 @@ public interface ExternalCommand
 	public void obliterateRoom(Room deadRoom);
 	public void destroyUser(MOB deadMOB);
 	
+	// ability helpers
+	public Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater);
+	public int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater);
+	
 }

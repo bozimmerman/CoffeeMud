@@ -14,9 +14,6 @@ problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 CONTINUAL LIGHT spell
-add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.
-add fountain to the mason skill.
-add Arch to mason, that modifies an open passageway with a Majestic Arch
 rain/show causes some metals to rust (take minute damage).
 Amnesia as a disease
 eggs that hatch

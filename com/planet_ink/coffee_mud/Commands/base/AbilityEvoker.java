@@ -272,4 +272,5 @@ public class AbilityEvoker
 		teacherAbility.practice(teacher,mob);
 		mob.location().send(mob,msg);
 	}
+	
 }
