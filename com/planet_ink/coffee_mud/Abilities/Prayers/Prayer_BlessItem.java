@@ -53,7 +53,7 @@ public class Prayer_BlessItem extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true);
+		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 			target=Prayer_Bless.getSomething(mobTarget,true);

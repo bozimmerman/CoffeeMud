@@ -56,7 +56,7 @@ public class Lacquerring extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)

@@ -176,9 +176,9 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)
-	{ return getTarget(mob,commands,givenTarget,false);	}
+	{ return getTarget(mob,commands,givenTarget,false,false);	}
 
-	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
+	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet, boolean alreadyAffOk)
 	{
 		String targetName=Util.combine(commands,0);
 		MOB target=null;
@@ -225,7 +225,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			return null;
 		}
 
-		if((target.fetchEffect(this.ID())!=null)&&(!isAutoInvoked()))
+		if((!alreadyAffOk)&&(!isAutoInvoked())&&(target.fetchEffect(this.ID())!=null))
 		{
 			if((givenTarget==null)&&(!quiet))
 			{

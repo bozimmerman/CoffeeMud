@@ -15,7 +15,7 @@ public class Chant_WarpWood extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB mobTarget=getTarget(mob,commands,givenTarget,true);
+		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{

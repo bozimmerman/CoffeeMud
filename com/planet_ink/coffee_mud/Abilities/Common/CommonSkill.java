@@ -22,6 +22,8 @@ public class CommonSkill extends StdAbility
 
 	protected Room activityRoom=null;
 	protected boolean aborted=false;
+	protected boolean helping=false;
+	protected CommonSkill helpingAbility=null;
 	protected int tickUp=0;
 	protected String verb="working";
 	public int usageType(){return USAGE_MOVEMENT;}
@@ -48,6 +50,11 @@ public class CommonSkill extends StdAbility
 			else
 			if((tickUp%4)==0)
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
+			if((helping)
+			&&(helpingAbility!=null)
+			&&(helpingAbility.affected instanceof MOB)
+			&&(((MOB)helpingAbility.affected).isMine(helpingAbility)))
+				helpingAbility.tick(helpingAbility.affected,tickID);
 		}
 		tickUp++;
 		return super.tick(ticking,tickID);
@@ -66,7 +73,8 @@ public class CommonSkill extends StdAbility
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb+".");
 				else
 					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> done "+verb+".");
-
+				helping=false;
+				helpingAbility=null;
 			}
 		}
 		super.unInvoke();
@@ -240,6 +248,8 @@ public class CommonSkill extends StdAbility
 		}
 		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
+		
+		
 		helpProfficiency(mob);
 
 		return true;

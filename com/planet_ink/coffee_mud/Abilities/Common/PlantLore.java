@@ -45,7 +45,7 @@ public class PlantLore extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
 			{
 				MOB mob=(MOB)affected;
 				Room room=mob.location();

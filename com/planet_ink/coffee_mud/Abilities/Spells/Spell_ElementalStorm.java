@@ -65,7 +65,7 @@ public class Spell_ElementalStorm extends Spell
 				}
 				if(target.amDead())
 				{
-					target=this.getTarget(mob,commands,givenTarget,true);
+					target=this.getTarget(mob,commands,givenTarget,true,false);
 					if(target==null)
 						break;
 					if(target.amDead())

@@ -84,7 +84,7 @@ public class Masonry extends CraftingSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if((affected!=null)&&(affected instanceof MOB)&&(!helping))
 			{
 				MOB mob=(MOB)affected;
 				if(!aborted)
@@ -486,6 +486,37 @@ public class Masonry extends CraftingSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
+		helpingAbility=null;
+
+		if(firstWord.equalsIgnoreCase("help"))
+		{
+			messedUp=!profficiencyCheck(mob,0,auto);
+			completion=25;
+			commands.removeElementAt(0);
+			MOB targetMOB=getTarget(mob,commands,givenTarget,false,true);
+			if(targetMOB==null) return false;
+			if(targetMOB==mob)
+			{
+				commonTell(mob,"You can not do that.");
+				return false;
+			}
+			helpingAbility=(CommonSkill)targetMOB.fetchEffect(ID());
+			if(helpingAbility==null)
+			{
+				commonTell(mob,targetMOB.Name()+" is not building anything.");
+				return false;
+			}
+			helping=true;
+			verb="helping "+targetMOB.name()+" with "+helpingAbility.verb;
+			startStr="<S-NAME> start(s) "+verb;
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr+".");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,mob,completion);
+			}
+			return true;
+		}
 		for(int r=0;r<data.length;r++)
 		{
 			if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))

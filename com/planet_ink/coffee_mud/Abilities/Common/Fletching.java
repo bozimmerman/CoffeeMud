@@ -72,7 +72,7 @@ public class Fletching extends CraftingSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((building!=null)&&(!aborted))
+				if((building!=null)&&(!aborted)&&(!helping))
 				{
 					if(messedUp)
 					{

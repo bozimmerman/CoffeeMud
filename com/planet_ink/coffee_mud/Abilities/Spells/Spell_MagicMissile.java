@@ -47,7 +47,7 @@ public class Spell_MagicMissile extends Spell
 				}
 				if(target.amDead())
 				{
-					target=this.getTarget(mob,commands,givenTarget,true);
+					target=this.getTarget(mob,commands,givenTarget,true,false);
 					if(target==null)
 						break;
 					if(target.amDead())
