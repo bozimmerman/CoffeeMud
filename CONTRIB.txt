@@ -8,14 +8,14 @@ documenting those too), and for SOMEHOW finding time to playtest amidst
 all this.  And of course Hojo, playtesting, bugfinding FOOL!
 
 Jef Kamenek and David Walters, for single handedly adding the ANSI support, 
-Archon Help, some very important changes to the base MUD class, writing 
-all of the web-server base and for some very appreciated help in debugging.
+Archon Help, some very important changes to the base MUD class, and for writing 
+the base of the web server system.
 
-Thomas Neumann for the fakedb package, and debugging assistance.
+Thomas Neumann for the fakedb package.
 
 George Reese for kindly providing his I3 java implementation.
 
-Jeremy Vyska for Clan support, numerous Enhancements, and debugging support.
+Jeremy Vyska for clan support and miscellaneous enhancements.
 
 Sky for the Moving Behavior.
 
@@ -29,5 +29,3 @@ and the MOBEater behavior.
 
 Tyra and Lori - for single handedly inspiring this project.  I have never ever forgotten that
 fact, nor the unusual circumstances surrounding it.  I hope in time they have forgiven me. :)
-
-

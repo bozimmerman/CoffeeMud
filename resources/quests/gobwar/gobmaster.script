@@ -1,31 +1,26 @@
-QUEST_TIME_PROG gobwar 5
-	IF EVAL('$%ISHERE()%' == 'Midgaard') and EVAL($%NUMRACESINAREA(Goblin)% == 0)
-		QUESTCHAT The Goblins are routed! Victory is ours! Now, gather round me within the next 4 minutes and I shall reward our heroes!
-		MPSETVAR $i GOBMASTER 0
-	ENDIF
-~
-
 QUEST_TIME_PROG gobwar 4
-	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
-		say We'll give everyone 3 more minutes to get here before awarding the prize.
+	IF EVAL('$%ISHERE()%' == 'Midgaard') and EVAL($%NUMRACESINAREA(Goblin)% == 0)
+		QUESTCHAT The Goblins are routed! Victory is ours! Now, gather round me within the next 3 minutes and I shall reward our heroes!
+		MPSETVAR $i GOBMASTER 0
 	ENDIF
 ~
 
 QUEST_TIME_PROG gobwar 3
 	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
-		say Ok, 2 more minutes before we award the prize.
+		say We'll give everyone 2 more minutes to get here before awarding the prize.
 	ENDIF
 ~
 
 QUEST_TIME_PROG gobwar 2
 	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
-		say Lets wait one more minute for more heroes to get here..
+		say Ok, 1 more minute before we award the prize.
 	ENDIF
 ~
 
 ONCE_PROG
 	mpsetvar $i GOBMASTER ''
 	mpsetvar $i GOBWINNER ''
+	mpsetvar * GOBWARKILL ''
 	QUESTCHAT To arms! To arms! Goblins are invading the city!
 ~
 
