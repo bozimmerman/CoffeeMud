@@ -31,6 +31,17 @@ public class Spell_Clairevoyance extends Spell
 	{
 		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
 	}
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+		if(invoker!=null)
+			invoker.tell("Your visions of '"+mob.name()+"' fade.");
+		super.unInvoke();
+
+	}
 
 	public void affect(Affect affect)
 	{
