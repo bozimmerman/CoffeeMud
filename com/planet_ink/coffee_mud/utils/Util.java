@@ -48,7 +48,7 @@ public class Util
 	{
 		try
 		{
-			if (b == null) return "";
+			if ((b == null)||(b.length==0)) return "";
 
 			decompresser.reset();
 			decompresser.setInput(b);
@@ -61,7 +61,7 @@ public class Util
 		}
 		catch (Exception ex)
 		{
-			Log.errOut("MUD", "Error occur during decompression");
+			Log.errOut("MUD", "Error occur during decompression.  Buffer was: "+new String(b));
 			return "";
 		}
 	}

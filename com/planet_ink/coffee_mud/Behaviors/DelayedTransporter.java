@@ -54,11 +54,11 @@ public class DelayedTransporter extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		Room room=this.getBehaversRoom(ticking);
-		if(room!=null)
+		if((room!=null)&&(destRoomNames!=null)&&(destRoomNames.size()>0))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB inhab=room.fetchInhabitant(i);
-			if((inhab!=null)&&(!inhab.isMonster()))
+			if(inhab!=null)
 			{
 				Integer I=(Integer)transportees.get(inhab.name());
 				if(I==null)
