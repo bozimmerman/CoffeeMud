@@ -1,36 +1,29 @@
 Designer % Sleeping Bag	35	30	15	100	GenRideable	ENTER	0	0	0
 Designer % Tent	40	60	25	250	GenRideable	ENTER	5	0	0
 Designer % Pillow	31	10	5	60	GenBoffWeapon	BASHING		0	0	Prop_NoDamage
-Large Designer % 
-Pillow	40	10	5	250	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
+Large Designer % Pillow	40	10	5	250	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
 Designer % Armbands	33	30	1	18	GenArmor	ARMS	0	6	0
 Designer % Sleeves	42	20	3	73	GenArmor	ARMS	0	7	0
 Designer % Pauldrons	52	30	5	160	GenArmor	ARMS	0	8	0
 Designer % Housecoat	34	30	10	180	GenArmor	BODY	5	27	0
 Designer % Blanket	35	10	15	151	GenArmor	BODY	0	0	0
-% Suit Jacket	8	30	6	225	GenArmor	BODY	20	3	0	Prop_WearAdjuster(CHA+1)
-% Tuxedo	12	30	9	266	GenArmor	BODY	20	6	0	Prop_WearAdjuster(CHA+1)
-% Tuxedo With 
-Tails	23	30	12	442	GenArmor	BODY	20	12	0	Prop_WearAdjuster(CHA+2)
-Designer % Suit 
-Jacket	39	30	12	1216	GenArmor	BODY	20	27	0	Prop_WearAdjuster(CHA+1)
-Designer % 
-Tuxedo	48	30	18	1400	GenArmor	BODY	20	30	0	Prop_WearAdjuster(CHA+1)
-Designer % Tuxedo With 
-Tails	83	30	24	3200	GenArmor	BODY	20	45	0	Prop_WearAdjuster(CHA+2)
+% Suit Jacket	8	30	6	225	GenArmor	BODY	20	3	0	Prop_WearAdjuster;CHA+1
+% Tuxedo	12	30	9	266	GenArmor	BODY	20	6	0	Prop_WearAdjuster;CHA+1
+% Tuxedo With Tails	23	30	12	442	GenArmor	BODY	20	12	0	Prop_WearAdjuster;CHA+2
+Designer % Suit Jacket	39	30	12	1216	GenArmor	BODY	20	27	0	Prop_WearAdjuster;CHA+1
+Designer % Tuxedo	48	30	18	1400	GenArmor	BODY	20	30	0	Prop_WearAdjuster;CHA+1
+Designer % Tuxedo With Tails	83	30	24	3200	GenArmor	BODY	20	45	0	Prop_WearAdjuster;CHA+2
 Designer % Sheet	35	10	5	50	GenArmor	BODY	0	0	0
 Designer % Apron	43	30	6	142	GenArmor	BODY	20	31	0
 Designer % Poncho	52	30	14	448	GenArmor	BODY	0	36	0
 Designer % Trenchcoat	63	30	27	1066	GenArmor	BODY	20	40	0
 Designer % Slippers	33	10	5	90	GenArmor	FEET	0	3	0
 Designer % Socks	33	10	2	36	GenArmor	FEET	0	3	0
-Designer % Mitts	32	10	5	90	GenArmor	HANDS	0	3	0	Prop_WearResister(cold 5%)
+Designer % Mitts	32	10	5	90	GenArmor	HANDS	0	3	0	Prop_WearResister;cold 5%
 Designer % Gloves	52	10	2	64	GenArmor	HANDS	0	4	0
-Designer % Cestus	33	20	2	36	GenArmor	HANDS	0	3	0	Prop_WearAdjuster(att+5)
-Improved Designer % 
-Cestus	51	40	7	224	GenArmor	HANDS	0	4	0	prop_WearAdjuster(att+15)
-Heavy Designer % 
-Cestus	71	80	10	500	GenArmor	HANDS	0	5	0	prop_WearAdjuster(att+30)
+Designer % Cestus	33	20	2	36	GenArmor	HANDS	0	3	0	Prop_WearAdjuster;att+5
+Improved Designer % Cestus	51	40	7	224	GenArmor	HANDS	0	4	0	Prop_WearAdjuster;att+15
+Heavy Designer % Cestus	71	80	10	500	GenArmor	HANDS	0	5	0	Prop_WearAdjuster;att+30
 Designer % Bonnet	33	10	2	36	GenArmor	HEAD	0	6	0
 Designer Pointy % Cap	33	10	2	36	GenArmor	HEAD	0	6	0
 Designer % Headband	33	20	2	36	GenArmor	HEAD	0	6	0
@@ -44,10 +37,9 @@ Designer % Skullcap	72	20	5	250	GenArmor	HEAD	0	10	0
 Designer % Wimple	52	30	6	192	GenArmor	HEAD&&NECK	0	12	0
 Designer % Cuff	33	20	1	18	GenArmor	LEFT WRIST||RIGHT WRIST	0	3	0
 Designer % Vambrace	51	30	5	160	GenArmor	LEFT WRIST||RIGHT WRIST	0	4	0
-Designer % Bandana	33	20	2	72	GenArmor	LEFT WRIST||RIGHT 
-WRIST||NECK||HEAD	0	3	0
+Designer % Bandana	33	20	2	72	GenArmor	LEFT WRIST||RIGHT WRIST||NECK||HEAD	0	3	0
 Designer % Tights	33	10	5	90	GenArmor	LEGS	0	12	0
-Designer % Hose	38	10	3	1054	GenArmor	LEGS	0	12	0	Prop_WearAdjuster(CHA+1)
+Designer % Hose	38	10	3	1054	GenArmor	LEGS	0	12	0	Prop_WearAdjuster;CHA+1
 Designer % Loinclothe	42	10	2	49	GenArmor	LEGS	0	14	0
 Designer % Peplum	42	10	1	21	GenArmor	LEGS	0	13	0
 Designer % Leggings	42	20	3	73	GenArmor	LEGS	0	14	0
@@ -59,9 +51,8 @@ Designer % Petticoat	62	40	8	289	GenArmor	LEGS	0	17	0
 Designer % Pantaloons	62	30	5	202	GenArmor	LEGS	0	18	0
 Designer % Breechclout	62	10	2	81	GenArmor	LEGS	0	18	0
 Designer % Chausses	72	20	6	270	GenArmor	LEGS	0	19	0
-% Suit Pants	11	30	6	212	GenArmor	LEGS	0	4	0	Prop_WearAdjuster(CHA+1)
-Designer % Suit 
-Pants	77	30	6	1300	GenArmor	LEGS	0	20	0	Prop_WearAdjuster(CHA+1)
+% Suit Pants	11	30	6	212	GenArmor	LEGS	0	4	0	Prop_WearAdjuster;CHA+1
+Designer % Suit Pants	77	30	6	1300	GenArmor	LEGS	0	20	0	Prop_WearAdjuster;CHA+1
 Designer % Trousers	72	30	6	300	GenArmor	LEGS	0	20	0
 Designer % Great Kilt	82	100	8	484	GenArmor	LEGS	0	22	0
 Designer % Breeches	82	30	6	330	GenArmor	LEGS	0	21	0
@@ -79,28 +70,24 @@ Designer % Tie	72	15	3	150	GenArmor	NECK	0	5	0
 Designer % Rabat	72	20	2	100	GenArmor	NECK	0	5	0
 Heavy Designer % Cloak	90	45	15	1080	GenArmor	NECK	0	6	0
 Designer % Jabot	91	20	12	864	GenArmor	NECK	0	6	0
-Designer % 
-Bikini	38	20	2	1036	GenArmor	TORSO	0	18	0	Prop_WearAdjuster(CHA+1)
+Designer % Bikini	38	20	2	1036	GenArmor	TORSO	0	18	0	Prop_WearAdjuster;CHA+1
 Designer % Sun Dress	42	16	4	88	GenArmor	TORSO	0	20	0
 Designer % Shirt	42	20	5	122	GenArmor	TORSO	0	21	0
 Designer % Blouse	42	24	4	88	GenArmor	TORSO	0	20	0
 Designer Strapless % Dress	42	20	2	44	GenArmor	TORSO	0	20	0
-Designer % Gown	47	80	3	1073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster(CHA+1)
+Designer % Gown	47	80	3	1073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster;CHA+1
 Designer % Halter	42	20	2	44	GenArmor	TORSO	0	20	0
 Designer % Nightshirt	52	30	4	107	GenArmor	TORSO	0	22	0
 Designer % Bodice	52	30	8	235	GenArmor	TORSO	0	23	0
 Designer % Smock	52	20	8	256	GenArmor	TORSO	0	24	0
 Designer % Corset	52	30	5	160	GenArmor	TORSO	0	24	0
 Designer % Pinafore	52	40	6	192	GenArmor	TORSO	0	24	0
-% Party Dress	8	80	3	273	GenArmor	TORSO	0	3	0	Prop_WearAdjuster(CHA+1)
-Designer % Party 
-Dress	52	80	3	2073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster(CHA+2)
-% Ballgown	17	80	3	473	GenArmor	TORSO	0	6	0	Prop_WearAdjuster(CHA+2)
-Designer % 
-Ballgown	62	80	3	4073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster(CHA+4)
-% Suit Vest	12	30	6	212	GenArmor	TORSO	0	6	0	Prop_WearAdjuster(CHA+1)
-Designer % Suit 
-Vest	57	30	6	1192	GenArmor	TORSO	0	24	0	Prop_WearAdjuster(CHA+1)
+% Party Dress	8	80	3	273	GenArmor	TORSO	0	3	0	Prop_WearAdjuster;CHA+1
+Designer % Party Dress	52	80	3	2073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster;CHA+2
+% Ballgown	17	80	3	473	GenArmor	TORSO	0	6	0	Prop_WearAdjuster;CHA+2
+Designer % Ballgown	62	80	3	4073	GenArmor	TORSO	0	21	0	Prop_WearAdjuster;CHA+4
+% Suit Vest	12	30	6	212	GenArmor	TORSO	0	6	0	Prop_WearAdjuster;CHA+1
+Designer % Suit Vest	57	30	6	1192	GenArmor	TORSO	0	24	0	Prop_WearAdjuster;CHA+1
 Designer % Vest	52	30	6	192	GenArmor	TORSO	0	24	0
 Designer % Waistcoat	62	20	8	300	GenArmor	TORSO	0	26	0
 Designer % Tunic	62	30	9	364	GenArmor	TORSO	0	27	0
@@ -115,10 +102,8 @@ Designer % Kimono	53	60	6	168	GenArmor	TORSO&&ARMS	10	30	0
 Designer % Robes	63	30	12	486	GenArmor	TORSO&&ARMS	40	36	0
 Designer % Smoking Jacket	73	80	20	1000	GenArmor	TORSO&&ARMS	5	40	0
 Designer % Caftan	42	40	18	441	GenArmor	TORSO&&ARMS&&LEGS	0	42	0
-% Wedding 
-Dress	10	40	24	412	GenArmor	TORSO&&ARMS&&LEGS	0	6	0	Prop_WearAdjuster(CHA+4)
-Designer % Wedding 
-Dress	72	40	36	6882	GenArmor	TORSO&&ARMS&&LEGS	0	42	0	Prop_WearAdjuster(CHA+6)
+% Wedding Dress	10	40	24	412	GenArmor	TORSO&&ARMS&&LEGS	0	6	0	Prop_WearAdjuster;CHA+4
+Designer % Wedding Dress	72	40	36	6882	GenArmor	TORSO&&ARMS&&LEGS	0	42	0	Prop_WearAdjuster;CHA+6
 Designer % Habit	52	40	24	768	GenArmor	TORSO&&ARMS&&LEGS	0	48	0
 Designer % Nightgown	33	30	5	90	GenArmor	TORSO&&LEGS	0	30	0
 Designer % Overalls	34	40	9	162	GenArmor	TORSO&&LEGS	5	30	0
@@ -126,4 +111,3 @@ Designer % Frock	42	30	14	304	GenArmor	TORSO&&LEGS	0	33	0
 Designer % Pajamas	52	30	9	288	GenArmor	TORSO&&LEGS	0	40	0
 Designer % Gi	62	30	23	931	GenArmor	TORSO&&LEGS	0	45	0
 Designer % Belt	34	10	2	36	GenArmor	WAIST	25	3	8
-

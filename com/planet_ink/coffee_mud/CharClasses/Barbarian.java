@@ -175,6 +175,7 @@ public class Barbarian extends StdCharClass
 			if((msg.tool()!=null)
 			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
+			&&(!msg.tool().ID().equals("Skill_Recall"))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)

@@ -199,7 +199,8 @@ public class Prancer extends StdCharClass
 		{
 			boolean spellLike=((msg.tool()!=null)
 							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
-							   &&(myChar.isMine(msg.tool())));
+							   &&(myChar.isMine(msg.tool()))
+							   &&(!msg.tool().ID().equals("Skill_Recall")));
 			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
 			&&(msg.tool()!=null)
 			&&(!armorCheck(myChar)))
