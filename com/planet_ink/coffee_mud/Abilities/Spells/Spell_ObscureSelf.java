@@ -44,6 +44,13 @@ public class Spell_ObscureSelf extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
+		
+/*
+if(affect.othersMessage()!=null)
+	Log.sysOut("BLAH",affect.amISource(mob)+"/"+affect.amITarget(mob)+"/o="+affect.othersMessage());
+else
+	Log.sysOut("BLAH",affect.amISource(mob)+"/"+affect.amITarget(mob)+"/s="+affect.sourceMessage());
+*/
 
 		String othersMessage=affect.othersMessage();
 		String sourceMessage=affect.sourceMessage();
@@ -59,7 +66,6 @@ public class Spell_ObscureSelf extends Spell
 				affect.source().tell("He or she is too vague to make out any details.");
 				return false;
 			}
-
 
 			if(othersMessage!=null)
 			{

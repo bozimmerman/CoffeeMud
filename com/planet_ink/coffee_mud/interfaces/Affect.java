@@ -57,7 +57,7 @@ public interface Affect
 	public static final int ACT_HANDS=2048;       // small hand movements
 	public static final int ACT_MOVE=4096;        // large body movements (travel)
 	public static final int ACT_EYES=8192;        // looking and seeing
-	public static final int ACT_MOUTH=16384;      // speaking and eating
+	public static final int ACT_CONSUME=16384;      // speaking and eating
 	public static final int ACT_EARS=32768;       // listening to
 	public static final int ACT_SOUND=65536;      // general body noises 
 	
@@ -138,11 +138,11 @@ public interface Affect
 	public static final int TYP_HANDS=56;
 
 	// helpful message groupings
-	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
-	public static final int MSK_CAST_MALICIOUS_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC|MASK_MALICIOUS;
+	public static final int MSK_CAST_VERBAL=ACT_SOUND|MASK_MAGIC;
+	public static final int MSK_CAST_MALICIOUS_VERBAL=ACT_SOUND|MASK_MAGIC|MASK_MALICIOUS;
 	public static final int MSK_CAST_SOMANTIC=ACT_HANDS|MASK_MAGIC;
 	public static final int MSK_CAST_MALICIOUS_SOMANTIC=ACT_HANDS|MASK_MAGIC|MASK_MALICIOUS;
-	public static final int MSK_HAGGLE=ACT_HANDS|ACT_SOUND|ACT_MOUTH;
+	public static final int MSK_HAGGLE=ACT_HANDS|ACT_SOUND;
 	public static final int MSK_CAST=MSK_CAST_VERBAL|MSK_CAST_SOMANTIC;
 	public static final int MSK_CAST_MALICIOUS=MSK_CAST_MALICIOUS_VERBAL|MSK_CAST_MALICIOUS_SOMANTIC;
 	public static final int MSK_MALICIOUS_MOVE=MASK_MALICIOUS|ACT_MOVE|ACT_SOUND;
@@ -152,7 +152,7 @@ public interface Affect
 	public static final int MSG_AREAAFFECT=ACT_GENERAL|TYP_AREAAFFECT;
 	public static final int MSG_PUSH=ACT_HANDS|TYP_AREAAFFECT;
 	public static final int MSG_PULL=ACT_HANDS|TYP_PULL;
-	public static final int MSG_RECALL=ACT_MOUTH|ACT_SOUND|ACT_HANDS|TYP_RECALL;
+	public static final int MSG_RECALL=ACT_SOUND|ACT_HANDS|TYP_RECALL;
 	public static final int MSG_OPEN=ACT_HANDS|TYP_OPEN;
 	public static final int MSG_CLOSE=ACT_HANDS|TYP_CLOSE;
 	public static final int MSG_PUT=ACT_HANDS|TYP_PUT;
@@ -175,9 +175,9 @@ public interface Affect
 	public static final int MSG_EXAMINESOMETHING=ACT_EYES|TYP_EXAMINESOMETHING;
 	public static final int MSG_READSOMETHING=ACT_EYES|TYP_READSOMETHING;
 	public static final int MSG_NOISE=ACT_SOUND|TYP_NOISE;
-	public static final int MSG_SPEAK=ACT_SOUND|ACT_MOUTH|TYP_SPEAK;
+	public static final int MSG_SPEAK=ACT_SOUND|TYP_SPEAK;
 	public static final int MSG_CAST_VERBAL_SPELL=MSK_CAST_VERBAL|TYP_CAST_SPELL;
-	public static final int MSG_LIST=ACT_SOUND|ACT_MOUTH|TYP_LIST;
+	public static final int MSG_LIST=ACT_SOUND|TYP_LIST;
 	public static final int MSG_EAT=ACT_HANDS|ACT_MOUTH|TYP_EAT;
 	public static final int MSG_ENTER=ACT_MOVE|ACT_SOUND|TYP_ENTER;
 	public static final int MSG_CAST_ATTACK_VERBAL_SPELL=MSK_CAST_MALICIOUS_VERBAL|TYP_CAST_SPELL;
