@@ -109,7 +109,7 @@ public class Chant_PlantSnare extends Chant
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						amountRemaining=200;
+						amountRemaining=400;
 						if(target.location()==mob.location())
 						{
 							success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
