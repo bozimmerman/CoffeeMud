@@ -1,34 +1,20 @@
-MOB`s that are under your control should be able to purchase items if they have money. Remove curse for example. Order Sword.1 buy `remove curse` --- won`t work.
-take a look at WebIQ pregnancy stuff in session.
+?Allow buying of spells from the healer to target a third party.
+?Like with poofs, how about we do it for tranfers? One the room sees when a person is taken and one the room sees when a person is put there?
+?SHOW, DISPLAY command--to show an item to a friend without giving it to him.  
+?PROMPT changes  
+?Add an option for Time of Day  
+?Add an option for Weather  
+?Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
+?WRATH command  
+?HUSH
+?BANISH
 
-Skills:
-	soap recipe ash lime internal oragans.
-	mithril weave.. mithrial 2 silk can be used with spell casters 2pts higher than silk, 500 per, smelt,
-	tailoring/leatherworking item: a hooded cloak
-	Need little kiddie shoes for the cobbling skill. Mary Janes maybe?
-Socials:
-	Simia smiles sweetly at Zenthlas. Simia smiles sweetly
-	Wedgie. Example: (Without argument) - You look around for someone to wedgie. (Room sees without argument) - [character] looks around for someone to wedgie. (Wedgie someone) - You give [character] a HUGE wedgie! You got 'em good! (Getting wedgied) Oh no! [character] gave you a HUGE wedgie! It's stuck in there good!
-Misc:
-	For quiet mode to stop tells.
-	Allow buying of spells from the healer to target a third party.
-	Immortals and higher maybe don't need to be hungry/thirsty?
-	Like with poofs, how about we do it for tranfers? One the room sees when a person is taken and one the room sees when a person is put there?
-61. SHOW, DISPLAY command--to show an item to a friend without giving it to him.  
- 
-62. WRATH command  
-  1. Archon ability that reduces a character to half remaining hp, mana, and movement if you piss them off. Good for subops who don't have the full range of skills available to an archon.  
-  2. Immortals and up should have a WRATH command. In another mud I play, they have that command. If a player pissed off an immortal, the got wrathed. It takes 1/2 of the player's hit points off, and emotes that they've been 'knocked out of their shoes.' When they look, turns out their shoes actually have been knocked off and they have to pick it up. Shows people not to mess with immortals and higher  
 63. EMPTY command  
   1. pours out all contents in a container to the designated target. If no target is specified, then it empties to the ground. If the specified target can't hold that type of material, it dumps to the ground. If it is a liquid dumped to the ground, it is destroyed.  
  
 64. GenPerfume  
   1. A GenItem that can accept an Emoter Behavior as a parameter (so that I can code recipes of perfumes into a common skill (Apothecary).)  
 
-54. PROMPT changes  
-  1. Add an option for Time of Day  
-  2. Add an option for Weather  
-  3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
 The sage in the bazaar has much the same problem and should return the equipment that he never bothers to identify.
 ->The blacksmith at the bazaar should actually return the items, and possibly try and mend them.

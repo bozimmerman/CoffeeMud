@@ -18,6 +18,8 @@ public class DefaultPlayerStats implements PlayerStats
 	private String prompt="";
 	private String poofin="";
 	private String poofout="";						  
+	private String tranpoofin="";
+	private String tranpoofout="";						  
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
 	
@@ -72,6 +74,8 @@ public class DefaultPlayerStats implements PlayerStats
 	
 	public String poofIn(){return poofin;}
 	public String poofOut(){return poofout;}
+	public String tranPoofIn(){return tranpoofin;}
+	public String tranPoofOut(){return tranpoofout;}
 	
 	private String getPrivateList(HashSet h)
 	{
@@ -89,6 +93,8 @@ public class DefaultPlayerStats implements PlayerStats
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+poofout+"</POOFOUT>":"")
+			+((tranpoofin.length()>0)?"<TRANPOOFIN>"+tranpoofin+"</TRANPOOFIN>":"")
+			+((tranpoofout.length()>0)?"<TRANPOOFOUT>"+tranpoofout+"</TRANPOOFOUT>":"")
 			+getSecurityGroupStr();
 	}
 	public void setXML(String str)
@@ -100,6 +106,10 @@ public class DefaultPlayerStats implements PlayerStats
 		if(poofin==null) poofin="";
 		poofout=XMLManager.returnXMLValue(str,"POOFOUT");
 		if(poofout==null) poofout="";
+		tranpoofin=XMLManager.returnXMLValue(str,"TRANPOOFIN");
+		if(tranpoofin==null) tranpoofin="";
+		tranpoofout=XMLManager.returnXMLValue(str,"TRANPOOFOUT");
+		if(tranpoofout==null) tranpoofout="";
 	}
 	
 	private void setSecurityGroupStr(String grps)
@@ -128,9 +138,11 @@ public class DefaultPlayerStats implements PlayerStats
 		
 	}
 	public Vector getSecurityGroups(){	return securityGroups;}
-	public void setPoofs(String poofIn, String poofOut)
+	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
 	{
 		poofin=poofIn;
 		poofout=poofOut;
+		tranpoofin=tranPoofIn;
+		tranpoofout=tranPoofOut;
 	}
 }

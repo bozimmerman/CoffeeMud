@@ -852,10 +852,22 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_BUY:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name()+"$",mob)))
+				MOB mobFor=msg.source();
+				if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0)&&(location()!=null))
 				{
-					Vector products=removeSellableProduct(msg.tool().Name()+"$",mob);
+					Vector V=Util.parse(msg.targetMessage());
+					if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
+					{
+						MOB M=location().fetchInhabitant(((String)V.lastElement())+"$");
+						if(M!=null) 
+							mobFor=M;
+					}
+				}
+				if((msg.tool()!=null)
+				&&(doIHaveThisInStock(msg.tool().Name()+"$",mobFor))
+				&&(location()!=null))
+				{
+					Vector products=removeSellableProduct(msg.tool().Name()+"$",mobFor);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					int[] val=yourValue(mob,product,true);
@@ -868,10 +880,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int p=0;p<products.size();p++)
 						{
 							Item I=(Item)products.elementAt(p);
-							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+							location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
-						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
-						if((product instanceof LandTitle)||(location().okMessage(mob,msg2)))
+						FullMsg msg2=new FullMsg(mobFor,product,this,CMMsg.MSG_GET,null);
+						if((product instanceof LandTitle)||(location().okMessage(mobFor,msg2)))
 						{
 							if(product instanceof LandTitle)
 							{
@@ -881,14 +893,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(removeKey!=null) titleSets.remove(removeKey);
 							}
 							tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
-							location().send(mob,msg2);
+							location().send(mobFor,msg2);
 							if((msg.tool() instanceof InnKey)&&(location()!=null))
 							{
 								InnKey item =(InnKey)msg.tool();
 								String buf=findInnRoom(item, "", location());
 								if(buf==null) buf=findInnRoom(item, "upstairs", location().getRoomInDir(Directions.UP));
 								if(buf==null) buf=findInnRoom(item, "downstairs", location().getRoomInDir(Directions.DOWN));
-								if(buf!=null) CommonMsgs.say(this,mob,"Your room is "+buf+".",true,false);
+								if(buf!=null) CommonMsgs.say(this,mobFor,"Your room is "+buf+".",true,false);
 							}
 						}
 						else
@@ -900,40 +912,40 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						((MOB)product).baseEnvStats().setRejuv(Integer.MAX_VALUE);
 						product.recoverEnvStats();
 						product.setMiscText(product.text());
-						((MOB)product).bringToLife(mob.location(),true);
-						CommonMsgs.follow((MOB)product,mob,false);
+						((MOB)product).bringToLife(location(),true);
+						CommonMsgs.follow((MOB)product,mobFor,false);
 						if(((MOB)product).amFollowing()==null)
-							mob.tell("You cannot accept any more followers!");
+							mobFor.tell("You cannot accept any more followers!");
 					}
 					else
 					if(product instanceof Ability)
 					{
 						Ability A=(Ability)product;
 						if(whatISell==DEAL_TRAINER)
-							A.teach(new Teacher(),mob);
+							A.teach(new Teacher(),mobFor);
 						else
 						{
 							curState().setMana(maxState().getMana());
 							curState().setMovement(maxState().getMovement());
 							Vector V=new Vector();
-							if(A.canTarget(mob))
+							if(A.canTarget(mobFor))
 							{
-								V.addElement(mob.name()+"$");
-								A.invoke(this,V,mob,true);
+								V.addElement(mobFor.name()+"$");
+								A.invoke(this,V,mobFor,true);
 							}
 							else
 							if(A.canTarget(CMClass.sampleItem()))
 							{
-								Item I=mob.fetchWieldedItem();
-								if(I==null) I=mob.fetchFirstWornItem(Item.HELD);
-								if(I==null) I=mob.fetchWornItem("all");
-								if(I==null) I=mob.fetchCarried(null,"all");
+								Item I=mobFor.fetchWieldedItem();
+								if(I==null) I=mobFor.fetchFirstWornItem(Item.HELD);
+								if(I==null) I=mobFor.fetchWornItem("all");
+								if(I==null) I=mobFor.fetchCarried(null,"all");
 								if(I==null) return;
 								V.addElement(I.name()+"$");
 								addInventory(I);
 								A.invoke(this,V,I,true);
 								delInventory(I);
-								if(!mob.isMine(I)) mob.addInventory(I);
+								if(!mobFor.isMine(I)) mobFor.addInventory(I);
 							}
 							curState().setMana(maxState().getMana());
 							curState().setMovement(maxState().getMovement());

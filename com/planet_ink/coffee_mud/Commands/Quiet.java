@@ -13,24 +13,15 @@ public class Quiet extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return false;
-		boolean turnedoff=false;
-		String[] names=ChannelSet.getChannelNames();
-		for(int c=0;c<names.length;c++)
+		if(!Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
 		{
-			if(!Util.isSet(pstats.getChannelMask(),c))
-			{
-				pstats.setChannelMask(pstats.getChannelMask()|(1<<c));
-				turnedoff=true;
-			}
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_QUIET));
+			mob.tell("Quiet mode is now on.  You will no longer receive channel messages or tells.");
 		}
-		if(turnedoff)
-			mob.tell("All channels have been turned off.");
 		else
 		{
-			mob.tell("All channels have been turned back on.");
-			pstats.setChannelMask(0);
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_QUIET));
+			mob.tell("Quiet mode is now off.  You may now receive channel messages and tells.");
 		}
 		return false;
 	}

@@ -34,6 +34,19 @@ public class Buy extends StdCommand
 			commands.setElementAt("all",0);
 		}
 
+		MOB mobFor=null;
+		if((commands.size()>2)
+		&&(((String)commands.elementAt(commands.size()-2)).equalsIgnoreCase("for")))
+		{
+			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
+			if(M==null)
+			{
+				mob.tell("There is noone called '"+((String)commands.lastElement())+"' here.");
+				return false;
+			}
+			mobFor=M;
+		}
+		
 		String whatName=Util.combine(commands,0);
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -52,6 +65,14 @@ public class Buy extends StdCommand
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToDo));
+		String forName="";
+		if(mobFor!=null)
+		{
+			if(mobFor.name().indexOf(" ")>=0)
+				forName=" for \""+mobFor.Name()+"\"";
+			else
+				forName=" for "+mob.Name();
+		}
 
 		if(V.size()==0)
 			mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
@@ -59,7 +80,7 @@ public class Buy extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			Environmental thisThang=(Environmental)V.elementAt(v);
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>"+forName+".");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
 		}

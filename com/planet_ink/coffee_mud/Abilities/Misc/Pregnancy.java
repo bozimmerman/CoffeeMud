@@ -10,6 +10,8 @@ public class Pregnancy extends StdAbility
 {
 	public String ID() { return "Pregnancy"; }
 	public String name(){ return "Pregnancy";}
+	protected long monthsRemaining=-1;
+	
 	public String displayText()
 	{
 		int x=text().indexOf("/");
@@ -43,6 +45,20 @@ public class Pregnancy extends StdAbility
 	private int ticksInLabor=0;
 
 
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(affected,msg.source()))
+		&&(affected instanceof MOB)
+		&&((monthsRemaining>0)&&(monthsRemaining<=3)))
+			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,
+										  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is obviously with child.\n\r",
+										  CMMsg.NO_EFFECT,null,
+										  CMMsg.NO_EFFECT,null));
+		super.executeMsg(host,msg);
+	}
+	
 	public Race mixRaces(MOB babe, Race race1, Race race2, String ID, String name)
 	{
 		Race GR=CMClass.getRace("GenRace").copyOf();
@@ -281,7 +297,7 @@ public class Pregnancy extends StdAbility
 					int z=text().indexOf("/",y+1);
 					long end=Util.s_long(text().substring(x+1,y));
 					long days=((end-System.currentTimeMillis())/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days
-					long months=days/30; // down to months
+					monthsRemaining=days/30; // down to months
 					labor=false;
 					if(days<7) // BIRTH!
 					{
@@ -291,7 +307,7 @@ public class Pregnancy extends StdAbility
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						labor=true;
 						ticksInLabor++;
-						if(ticksInLabor==45)
+						if(ticksInLabor>=45)
 						{
 							ticksInLabor=0;
 							String race1=mob.baseCharStats().getMyRace().ID();
@@ -309,17 +325,21 @@ public class Pregnancy extends StdAbility
 								desc+=" and "+text().substring(y+1,z);
 							}
 							desc+=".";
-
+							mob.curState().setMovement(0);
+							mob.curState().setHitPoints(mob.curState().getHitPoints()/2);
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
-							Ability A=mob.fetchEffect(ID());
-							while(A!=null){
-								mob.delEffect(A);
-								A=mob.fetchEffect(ID());
-							}
-							A=mob.fetchAbility(ID());
-							while(A!=null){
-								mob.delAbility(A);
+							if(Dice.rollPercentage()>5)
+							{
+								Ability A=mob.fetchEffect(ID());
+								while(A!=null){
+									mob.delEffect(A);
+									A=mob.fetchEffect(ID());
+								}
 								A=mob.fetchAbility(ID());
+								while(A!=null){
+									mob.delAbility(A);
+									A=mob.fetchAbility(ID());
+								}
 							}
 							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=getRace(babe,race1,race2);
@@ -382,18 +402,18 @@ public class Pregnancy extends StdAbility
 					else
 					{
 						// pregnant folk get fatigued more often.
-						mob.curState().adjFatigue(months*100,mob.maxState());
-						if((months<=1)&&(Dice.rollPercentage()==1))
+						mob.curState().adjFatigue(monthsRemaining*100,mob.maxState());
+						if((monthsRemaining<=1)&&(Dice.rollPercentage()==1))
 						{
 							if(Sense.isSleeping(mob))
 								mob.enqueCommand(Util.parse("WAKE"),0);
 							mob.tell("Oh! You had a contraction!");
 						}
 						else
-						if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
+						if((monthsRemaining<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
 							mob.tell("You feel a kick in your gut.");
 						else
-						if((months>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
+						if((monthsRemaining>8)&&(mob.location()!=null)&&(mob.location().getArea().getTimeObj().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
 						{
 							if(Dice.rollPercentage()>25)
 								mob.tell("You feel really sick this morning.");

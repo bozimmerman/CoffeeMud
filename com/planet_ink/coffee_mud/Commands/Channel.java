@@ -50,6 +50,12 @@ public class Channel extends BaseChanneler
 			mob.tell(channelName+" has been turned on.  Use `NO"+channelName.toUpperCase()+"` to turn it off again.");
 			return false;
 		}
+		
+		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		{
+			mob.tell("You have QUIET mode on.  You must turn it off first.");
+			return false;
+		}
 
 		if(commands.size()==0)
 		{

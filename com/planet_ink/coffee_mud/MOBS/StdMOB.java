@@ -2074,12 +2074,13 @@ public class StdMOB implements MOB
 				if(Util.bset(targetMajor,CMMsg.MASK_CHANNEL))
 				{
 					if((playerStats()!=null)
+					&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
 					&&(!Util.isSet(playerStats().getChannelMask(),((msg.targetCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL))))
 						tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 				}
 			}
 
-			// now do the tells
+			// now do the says
 			if((Util.bset(targetMajor,CMMsg.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
 			{
@@ -2135,6 +2136,7 @@ public class StdMOB implements MOB
 			if(Util.bset(othersMajor,CMMsg.MASK_CHANNEL))
 			{
 				if((playerStats()!=null)
+				&&(!Util.bset(getBitmap(),MOB.ATT_QUIET))
 				&&(!Util.isSet(playerStats().getChannelMask(),((msg.othersCode()-CMMsg.MASK_CHANNEL)-CMMsg.TYP_CHANNEL))))
 					tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
 			}

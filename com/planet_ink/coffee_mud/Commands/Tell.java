@@ -13,12 +13,19 @@ public class Tell extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if((!mob.isMonster())&&Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+		{
+			mob.tell("You have QUIET mode on.  You must turn it off first.");
+			return false;
+		}
+		
 		if(commands.size()<3)
 		{
 			mob.tell("Tell whom what?");
 			return false;
 		}
 		commands.removeElementAt(0);
+		
 		MOB target=null;
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
 		for(int s=0;s<Sessions.size();s++)
@@ -76,6 +83,13 @@ public class Tell extends StdCommand
 				return false;
 			}
 		}
+		
+		if(Util.bset(target.getBitmap(),MOB.ATT_QUIET))
+		{
+			mob.tell("That person can not hear you.");
+			return false;
+		}
+		
 		CommonMsgs.say(mob,target,combinedCommands,true,true);
 		if((target.session()!=null)
 		&&(target.session().afkFlag()))

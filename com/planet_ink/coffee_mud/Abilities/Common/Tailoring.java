@@ -284,6 +284,7 @@ public class Tailoring extends CraftingSkill
 				building.baseEnvStats().setWeight(woodRequired);
 			else
 				building.baseEnvStats().setWeight(woodRequired/2);
+			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-1;
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
@@ -351,7 +352,7 @@ public class Tailoring extends CraftingSkill
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{

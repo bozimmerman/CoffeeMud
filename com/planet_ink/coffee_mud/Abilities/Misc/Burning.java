@@ -75,6 +75,11 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_UNKNOWN:
 						break;
 					default:
+						Item ash=CMClass.getItem("GenResource");
+						ash.setName("some ash");
+						ash.setDisplayText("a small pile of ash is here");
+						ash.setMaterial(EnvResource.RESOURCE_ASH);
+						room.addItemRefuse(ash,Item.REFUSE_MONSTER_EQ);
 						((Item)affected).destroy();
 						break;
 					}

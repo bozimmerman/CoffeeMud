@@ -200,7 +200,9 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_TUNA=MATERIAL_FLESH|154;
 	public final static int RESOURCE_CATFISH=MATERIAL_FLESH|155;
 	public final static int RESOURCE_BAMBOO=MATERIAL_WOODEN|156;
-   
+	public final static int RESOURCE_SOAP=MATERIAL_VEGETATION|157;
+	public final static int RESOURCE_SPIDERSTEEL=MATERIAL_CLOTH|158;
+	public final static int RESOURCE_ASH=MATERIAL_VEGETATION|159;
 	
 	public final static int RESOURCE_MASK=255;	
 
@@ -363,6 +365,9 @@ public interface EnvResource extends Item
 	"TUNA", // 154
 	"CATFISH", // 155
 	"BAMBOO", // 156
+	"SOAP", // 157
+	"SPIDERSTEEL", // 158
+	"ASH", // 159
 	};
 	
 	public final static int DATA_CODE=0;
@@ -531,6 +536,9 @@ public interface EnvResource extends Item
 	{RESOURCE_TUNA,			6,	1,	1,	1000},	
 	{RESOURCE_CATFISH,		6,	1,	1,	1000},	
 	{RESOURCE_BAMBOO,		15,	10,	4,	120},	
+	{RESOURCE_SOAP,			1,	0,	1,	430}, 
+	{RESOURCE_SPIDERSTEEL,	250,0,	2,	630}, 
+	{RESOURCE_ASH,			1,	0,	0,	50}, 
 	};
 	
 	

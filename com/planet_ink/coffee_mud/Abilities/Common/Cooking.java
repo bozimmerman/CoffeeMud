@@ -620,6 +620,24 @@ public class Cooking extends CraftingSkill
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
 			if(burnt)drink.setThirstQuenched(1);
 		}
+		else
+		{
+			finalDish=CMClass.getItem("GenResource");
+			if(burnt)
+					finalDish.setMaterial(EnvResource.RESOURCE_DUST);
+			else
+			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
+				{
+					finalDish.setMaterial(EnvResource.RESOURCE_DATA[i][0]);
+					break;
+				}
+			finalDish.setName(((burnt)?"ruined ":"")+finalDishName);
+			finalDish.setDisplayText("some "+((burnt)?"ruined ":"")+finalDishName+" has been left here");
+			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+		}
+		
 		if(finalDish!=null)
 		{
 			String spell=(String)finalRecipe.elementAt(RCP_BONUSSPELL);

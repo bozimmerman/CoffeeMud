@@ -759,6 +759,37 @@ public class TelnetSession extends Thread implements Session
 							  if((mob().isInCombat())&&(victim!=null))
 								  buf.append(""+mob().rangeToTarget());
 							  c++; break; }
+				case 't': {	  if(mob().location()!=null)
+								  buf.append(Util.capitalize(TimeClock.TOD_DESC[mob().location().getArea().getTimeObj().getTODCode()].toLowerCase()));
+							  c++; break;
+						  }
+				case 'T': {	  if(mob().location()!=null)
+								  buf.append(mob().location().getArea().getTimeObj().getTimeOfDay());
+							  c++; break;
+						  }
+				case '@': {	  if(mob().location()!=null)
+								  buf.append(mob().location().getArea().getClimateObj().weatherDescription(mob().location()));
+							  c++; break;
+						  }
+				case 'K':
+				case 'k': { MOB tank=mob();
+							if((tank.getVictim()!=null)
+							&&(tank.getVictim().getVictim()!=null)
+							&&(tank.getVictim().getVictim()!=mob()))
+								tank=tank.getVictim().getVictim();
+							if(((++c)<prompt.length())&&(tank!=null))
+								switch(prompt.charAt(++c))
+								{
+									case 'h': { buf.append(tank.curState().getHitPoints()); c++; break;}
+									case 'H': { buf.append(tank.maxState().getHitPoints()); c++; break;}
+									case 'm': { buf.append(tank.curState().getMana()); c++; break;}
+									case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
+									case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
+									case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
+								}
+							c++;
+							break;
+						  }
 				default:{ buf.append("%"+prompt.charAt(c)); c++; break;}
 				}
 			}

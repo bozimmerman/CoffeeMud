@@ -417,11 +417,22 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				break;
 			case CMMsg.TYP_BUY:
 				super.executeMsg(myHost,msg);
+				MOB mobFor=msg.source();
+				if((msg.targetMessage()!=null)&&(msg.targetMessage().length()>0)&&(mob.location()!=null))
+				{
+					Vector V=Util.parse(msg.targetMessage());
+					if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
+					{
+						MOB M2=mob.location().fetchInhabitant(((String)V.lastElement())+"$");
+						if(M2!=null) 
+							mobFor=M2;
+					}
+				}
 				if((msg.tool()!=null)
-				&&(doIHaveThisInStock(msg.tool().Name(),mob)))
+				&&(doIHaveThisInStock(msg.tool().Name(),mobFor)))
 				{
 					int price=yourValue(mob,msg.tool(),true)[0];
-					Vector products=removeSellableProduct(msg.tool().Name(),mob);
+					Vector products=removeSellableProduct(msg.tool().Name(),mobFor);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					MoneyUtils.subtractMoney(M,mob,price);
@@ -434,9 +445,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 							Item I=(Item)products.elementAt(p);
 							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
-						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
-						if(M.location().okMessage(mob,msg2))
-							M.location().send(mob,msg2);
+						FullMsg msg2=new FullMsg(mobFor,product,this,CMMsg.MSG_GET,null);
+						if(M.location().okMessage(mobFor,msg2))
+							M.location().send(mobFor,msg2);
 						else
 							return;
 					}

@@ -30,7 +30,7 @@ public class Age extends StdAbility
 	}
 	private boolean norecurse=false;
 
-	public final static String happyBabyEmoter="min=1 max=500 chance=10;cries for no reason.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
+	public final static String happyBabyEmoter="min=1 max=500 chance=10;makes goo goo noises.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
@@ -127,6 +127,8 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.INTELLIGENCE,6);
 					babe.baseCharStats().setStat(CharStats.STRENGTH,6);
 					babe.baseCharStats().setStat(CharStats.WISDOM,6);
+					if(babe.amFollowing()!=null)
+						babe.setAlignment(babe.amFollowing().getAlignment());
 					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
 					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*5);
 					babe.baseState().setHitPoints(4);
@@ -145,7 +147,8 @@ public class Age extends StdAbility
 			}
 			else
 			if((ellapsed>(long)(90*day))
-			&&(((MOB)affected).fetchBehavior("MudChat")!=null))
+			&&(((MOB)affected).fetchBehavior("MudChat")!=null)
+			&&(((MOB)affected).charStats().getStat(CharStats.INTELLIGENCE)>1))
 			{
 				Room R=CoffeeUtensils.roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMClass.DBEngine().DBUserSearch(null,affected.Name())))
@@ -157,9 +160,9 @@ public class Age extends StdAbility
 					if(liege==null) liege=babe.amFollowing();
 					MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeHours(babe.getAgeHours());
-					newMan.setAlignment(babe.getAlignment());
 					newMan.setBaseCharStats(babe.baseCharStats());
 					newMan.setBaseEnvStats(babe.baseEnvStats());
+					if(liege!=null)	newMan.setAlignment(liege.getAlignment());
 					newMan.baseEnvStats().setLevel(1);
 					newMan.setBitmap(babe.getBitmap());
 					newMan.setClanID(babe.getClanID());

@@ -64,6 +64,7 @@ cream	FOOD		0	MILK	2
 % pot pie	FOOD		0	MUTTON	2	Dough	1										
 % pot pie	FOOD		0	FISH	2	Dough	1										
 tart	FOOD		0	BERRIES	2	Dough	1										
+soap	SOAP		0	ASH	1	LIMES	1	BEEF	1								
 apple pie	FOOD		0	APPLES	2	Dough	1										
 lemon meringe pie	FOOD		0	LEMONS	2	Dough	1	Cream	1								
 lemon cookies	FOOD		0	LEMONS	1	Dough	1										

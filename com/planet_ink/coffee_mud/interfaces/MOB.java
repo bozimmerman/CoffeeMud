@@ -28,6 +28,8 @@ public interface MOB
 	public static final int ATT_AUTONOTIFY=65536;
 	public static final int ATT_AUTOFORWARD=131072;
 	public static final int ATT_DAILYMESSAGE=262144;
+	public static final int ATT_QUIET=524288;
+	// maybe 10 more?
 
 	public static final long SHEATH_TIME=3*MudHost.TICK_TIME;
 
@@ -49,7 +51,8 @@ public interface MOB
 										   false,
 										   false,
 										   true,
-										   true};
+										   true,
+										   false};
 	public static final String[] AUTODESC={"AUTOGOLD",
 										   "AUTOLOOT",
 										   "AUTOEXITS",
@@ -68,7 +71,8 @@ public interface MOB
 										   "NOTEACH",
 										   "AUTONOTIFY",
 										   "AUTOFORWARD",
-										   "MOTD"};
+										   "MOTD",
+										   "QUIET"};
 
 	public int getBitmap();
 	public void setBitmap(int bitmap);

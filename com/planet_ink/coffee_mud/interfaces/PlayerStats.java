@@ -24,7 +24,9 @@ public interface PlayerStats
 	public HashSet getIgnored();
 	public String poofIn();
 	public String poofOut();
-	public void setPoofs(String poofIn, String poofOut);
+	public String tranPoofIn();
+	public String tranPoofOut();
+	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut);
 	public String getXML();
 	public void setXML(String str);
 	public String lastIP();

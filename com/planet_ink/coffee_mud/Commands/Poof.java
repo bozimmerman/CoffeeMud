@@ -30,7 +30,9 @@ public class Poof extends BaseGenerics
 			int showNumber=0;
 			String poofIn=genText(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in");
 			String poofOut=genText(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out");
-			mob.playerStats().setPoofs(poofIn,poofOut);
+			String tranPoofIn=genText(mob,mob.playerStats().tranPoofIn(),++showNumber,showFlag,"Transfer-in");
+			String tranPoofOut=genText(mob,mob.playerStats().tranPoofOut(),++showNumber,showFlag,"Transfer-out");
+			mob.playerStats().setPoofs(poofIn,poofOut,tranPoofIn,tranPoofOut);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
