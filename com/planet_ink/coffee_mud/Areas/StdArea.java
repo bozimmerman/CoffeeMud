@@ -1240,27 +1240,24 @@ public class StdArea implements Area
 
 	public void fillInAreaRooms()
 	{
-		synchronized(roomSemaphore)
+		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
-			for(Enumeration r=getMap();r.hasMoreElements();)
+			Room R=(Room)r.nextElement();
+			R.clearSky();
+			if(R.roomID().length()>0)
 			{
-				Room R=(Room)r.nextElement();
-				R.clearSky();
-				if(R.roomID().length()>0)
-				{
-					if(R instanceof GridLocale)
-						((GridLocale)R).buildGrid();
-				}
+				if(R instanceof GridLocale)
+					((GridLocale)R).buildGrid();
 			}
-			myRooms=null;
-			for(Enumeration r=getMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				R.clearSky();
-				R.giveASky(0);
-			}
-			myRooms=null;
 		}
+		clearMap();
+		for(Enumeration r=getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			R.clearSky();
+			R.giveASky(0);
+		}
+		clearMap();
 	}
 
 	public void fillInAreaRoom(Room R)
@@ -1322,7 +1319,6 @@ public class StdArea implements Area
 	{
 		StringBuffer s=new StringBuffer("");
 		s.append(description()+"\n\r");
-		getMap();
 		s.append("Number of rooms: "+mapSize()+"\n\r");
 
 		Vector mobRanges=new Vector();
@@ -1400,11 +1396,10 @@ public class StdArea implements Area
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms!=null) return myRooms.size();
-		}
-		synchronized(roomSemaphore)
-		{
-			getMap();
+			if(myRooms!=null) 
+				return myRooms.size();
+			else 
+				makeMap();
 			return myRooms.size();
 		}
 	}
@@ -1412,6 +1407,7 @@ public class StdArea implements Area
 	{
 		synchronized(roomSemaphore)
 		{
+			if(myRooms==null) makeMap();
 			if(mapSize()==0) return null;
 			return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
 		}
@@ -1421,6 +1417,15 @@ public class StdArea implements Area
 		synchronized(roomSemaphore)
 		{
 			if(myRooms!=null) return myRooms.elements();
+			makeMap();
+			return myRooms.elements();
+		}
+	}
+	private void makeMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(myRooms!=null) return;
 			Vector myMap=new Vector();
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
@@ -1429,7 +1434,6 @@ public class StdArea implements Area
 					myMap.addElement(R);
 			}
 			myRooms=myMap;
-			return myMap.elements();
 		}
 	}
 

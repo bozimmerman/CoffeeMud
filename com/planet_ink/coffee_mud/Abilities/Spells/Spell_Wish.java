@@ -817,6 +817,7 @@ public class Spell_Wish extends Spell
 			}
 
 			mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
+			Log.sysOut("Wish",mob.Name()+" unsuccessfully wished for '"+Util.combine(commands,0)+"'");
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;
 		}

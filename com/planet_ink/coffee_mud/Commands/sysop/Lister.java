@@ -511,7 +511,7 @@ public class Lister
 			head.append(Util.padRight((String)U.elementAt(2),8)+" ");
 			head.append(Util.padRight((String)U.elementAt(1),10)+" ");
 			head.append(Util.padRight((String)U.elementAt(3),4)+" ");
-			long age=Math.round(Util.div(Util.s_int((String)U.elementAt(3)),60.0));
+			long age=Math.round(Util.div(Util.s_long((String)U.elementAt(4)),60.0));
 			head.append(Util.padRight(""+age,5)+" ");
 			if(sortBy!=6)
 				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");

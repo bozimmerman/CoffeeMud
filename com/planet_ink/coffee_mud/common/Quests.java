@@ -16,6 +16,7 @@ public class Quests implements Cloneable, Quest
 	protected int maxWait=-1;
 	protected int waitRemaining=-1;
 	protected int ticksRemaining=-1;
+	private boolean stoppingQuest=false;
 
 	protected Vector addons=new Vector();
 	// contains a set of vectors, vectors are formatted as such:
@@ -982,6 +983,8 @@ public class Quests implements Cloneable, Quest
 	// mobs to their previous state.
 	public void stopQuest()
 	{
+		if(stoppingQuest) return;
+		stoppingQuest=true;
 		if(stuff.size()>0)
 		{
 			for(int i=0;i<stuff.size();i++)
@@ -1075,6 +1078,7 @@ public class Quests implements Cloneable, Quest
 			else
 				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 		}
+		stoppingQuest=false;
 	}
 
 	public int minWait(){return minWait;}

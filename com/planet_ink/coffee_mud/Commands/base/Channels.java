@@ -310,7 +310,8 @@ public class Channels
 	{
 		int channelInt=getChannelInt(channelName);
 		int channelNum=getChannelNum(channelName);
-		int lvl=((Integer)channelLevels.elementAt(channelInt)).intValue();
+		if(channelLevels.size()>channelInt)
+			int lvl=((Integer)channelLevels.elementAt(channelInt)).intValue();
 		FullMsg msg=null;
 		if(systemMsg)
 		{
