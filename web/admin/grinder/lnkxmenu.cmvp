@@ -14,6 +14,12 @@
 			document.AREAEDIT.action=action;
 			document.AREAEDIT.submit();
 		}
+		function LinkExternally(action)
+		{
+			document.AREAEDIT.target='MENU';
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
 	//-->
 	</script>
 </head>
@@ -24,13 +30,15 @@
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
 <INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
-<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
-<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
+<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
 <B>Unused @RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@)</B>
 <BR>
 @if?!CheckReqParm?OLDLINK=@
 <INPUT TYPE=BUTTON VALUE="Link to @RequestParameter?OLDROOM@ (@RequestParameter?OLDLINK@)" ONCLICK="Clicked('/grinder/linkexit.cmvp');">
+@else@
+<INPUT TYPE=BUTTON VALUE="Link Areas" ONCLICK="LinkExternally('/grinder/linkarea.cmvp');">
 @endif@
 <INPUT TYPE=BUTTON VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
 <INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">

@@ -162,6 +162,26 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.resetRequestEncodedParameters();
 		}
 		else
+		if(parms.containsKey("LINKAREA"))
+		{
+			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			if(mob==null) return "@break@";
+			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			if(R==null) return "@break@";
+			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			if(dir<0) return "@break@";
+			String oldroom=(String)httpReq.getRequestParameters().get("OLDROOM");
+			if(oldroom==null) oldroom="";
+			Room R2=CMMap.getRoom(oldroom);
+			String errMsg="";
+			if(R2==null) 
+				errMsg="No external room with ID '"+oldroom+"' found.";
+			else
+				errMsg=GrinderExits.linkRooms(R,R2,dir,Directions.getOpDirectionCode(dir));
+			httpReq.getRequestParameters().put("ERRMSG",errMsg);
+			httpReq.resetRequestEncodedParameters();
+		}
+		else
 		if(parms.containsKey("EDITROOM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));

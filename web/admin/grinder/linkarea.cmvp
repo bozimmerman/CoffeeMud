@@ -1,11 +1,48 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMUD MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</script>
+</head>
 <BODY>
-
-<P>&nbsp;</P>
-
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/linkedarea.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
+<INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
+<INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
+<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR>
+	<TD WIDTH=50% ALIGN=LEFT>
+	@if?!CheckReqParm?ERRMSG=@
+	<FONT COLOR=RED>@RequestParameter?ERRMSG@</FONT><BR>
+	@endif@
+	<B>Enter Room ID of External room:</B><BR>
+	<INPUT TYPE=TEXT NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
+	<INPUT TYPE=SUBMIT VALUE="Link" ONCLICK="Clicked('/grinder/linkedarea.cmvp');">
+	</TD>
+	<TD WIDTH=40% ALIGN=RIGHT>
+	<INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+	</TD>
+</TR>
+</TABLE>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@
