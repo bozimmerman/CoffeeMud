@@ -293,25 +293,33 @@ public class Scoring
 			mob.session().colorOnlyPrintln(msg.toString());
 	}
 
-	public static void gods(MOB mob)
+	public static void gods(MOB mob, Vector commands)
 	{
-		StringBuffer msg=new StringBuffer("\n\r^HThe known deities:^? \n\r");
+		String str=Util.combine(commands,0).toUpperCase();
+		StringBuffer msg=new StringBuffer(str);
+		if(str.length()==0)
+			msg.append("\n\r^HThe known deities:^? \n\r");
+		else
+			msg.append("\n\r^HThe known '"+str+"' deities:&? \n\r");
 		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();
-			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
-			msg.append(D.description()+"\n\r");
-			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
-			msg.append(D.getClericRequirementsDesc()+"\n\r");
+			StringBuffer msg2=new StringBuffer("");
+			msg2.append("\n\r^x"+D.name()+"^.^?\n\r");
+			msg2.append(D.description()+"\n\r");
+			msg2.append(D.getWorshipRequirementsDesc()+"\n\r");
+			msg2.append(D.getClericRequirementsDesc()+"\n\r");
 			if(D.numBlessings()>0)
 			{
-				msg.append("Blessings: ");
+				msg2.append("Blessings: ");
 				for(int b=0;b<D.numBlessings();b++)
-					msg.append(D.fetchBlessing(b).name()+" ");
-				msg.append("\n\r");
-				msg.append(D.getWorshipTriggerDesc()+"\n\r");
-				msg.append(D.getClericTriggerDesc()+"\n\r");
+					msg2.append(D.fetchBlessing(b).name()+" ");
+				msg2.append("\n\r");
+				msg2.append(D.getWorshipTriggerDesc()+"\n\r");
+				msg2.append(D.getClericTriggerDesc()+"\n\r");
 			}
+			if((str.length()==0)||(msg2.toString().toUpperCase().indexOf(str)>=0))
+				msg.append(msg2);
 		}
 		mob.tell(msg.toString());
 	}

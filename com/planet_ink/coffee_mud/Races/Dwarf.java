@@ -27,21 +27,24 @@ public class Dwarf extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Dwarven");
-		if(A!=null)
+		if(!verifyOnly)
 		{
-			A.setProfficiency(100);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-			if(mob.isMonster())
-				A.invoke(mob,mob,true);
-		}
-		A=CMClass.getAbility("Mining");
-		if(A!=null)
-		{
-			A.setProfficiency(50);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
+			Ability A=CMClass.getAbility("Dwarven");
+			if(A!=null)
+			{
+				A.setProfficiency(100);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+				if(mob.isMonster())
+					A.invoke(mob,mob,true);
+			}
+			A=CMClass.getAbility("Mining");
+			if(A!=null)
+			{
+				A.setProfficiency(50);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+			}
 		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

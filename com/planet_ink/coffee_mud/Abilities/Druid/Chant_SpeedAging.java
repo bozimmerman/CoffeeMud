@@ -77,7 +77,7 @@ public class Chant_SpeedAging extends Chant
 				if((A==null)||(A.displayText().length()==0))
 				{
 					MOB M=(MOB)target;
-					mob.location().show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> ages a bit.");
+					mob.location().show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
 				}
 				else
@@ -88,7 +88,10 @@ public class Chant_SpeedAging extends Chant
 					if(age<(Host.TICKS_PER_DAY*Host.TICK_TIME))
 						age=(Host.TICKS_PER_DAY*Host.TICK_TIME);
 					A.setMiscText(""+(start-age));
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" ages a bit.");
+					if(target instanceof MOB)
+						mob.location().show((MOB)target,null,Affect.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
+					else
+						mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" ages a bit.");
 				}
 			}
 		}

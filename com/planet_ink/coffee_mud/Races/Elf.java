@@ -27,21 +27,24 @@ public class Elf extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Elvish");
-		if(A!=null)
+		if(!verifyOnly)
 		{
-			A.setProfficiency(100);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-			if(mob.isMonster())
-				A.invoke(mob,mob,true);
-		}
-		A=CMClass.getAbility("Foraging");
-		if(A!=null)
-		{
-			A.setProfficiency(50);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
+			Ability A=CMClass.getAbility("Elvish");
+			if(A!=null)
+			{
+				A.setProfficiency(100);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+				if(mob.isMonster())
+					A.invoke(mob,mob,true);
+			}
+			A=CMClass.getAbility("Foraging");
+			if(A!=null)
+			{
+				A.setProfficiency(50);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+			}
 		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

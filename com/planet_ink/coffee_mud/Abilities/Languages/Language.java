@@ -21,13 +21,15 @@ public class Language extends StdAbility
 	public int classificationCode(){return Ability.LANGUAGE;}
 	public Environmental newInstance(){	return new Language();}
 
+	private static Hashtable emptyHash=new Hashtable();
+	private static Vector emptyVector=new Vector();
 	protected boolean spoken=false;
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
 	public boolean beingSpoken(){return spoken;}
 	public void setBeingSpoken(boolean beingSpoken){spoken=beingSpoken;}
-	public Hashtable translationHash(){ return new Hashtable(); }
-	public Vector translationVector(){ return new Vector(); }
+	public Hashtable translationHash(){ return emptyHash; }
+	public Vector translationVector(){ return emptyVector; }
 	public String displayText()
 	{
 		if(beingSpoken()) return "(Speaking "+name()+")";

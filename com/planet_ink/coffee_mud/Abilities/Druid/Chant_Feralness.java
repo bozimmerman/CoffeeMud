@@ -53,9 +53,16 @@ public class Chant_Feralness extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		int lostpoints=mob.maxState().getHitPoints()-mob.curState().getHitPoints();
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			mob.tell("You don't feel quite so feral.");
+			if(lostpoints>=mob.curState().getHitPoints())
+				mob.curState().setHitPoints(1);
+			else
+				mob.curState().adjHitPoints(-lostpoints,mob.maxState());
+		}
 	}
 
 

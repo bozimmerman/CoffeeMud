@@ -371,7 +371,7 @@ public class CommandProcessor
 			Movement.go(mob,commands);
 			break;
 		case CommandSet.GODS:
-			Scoring.gods(mob);
+			Scoring.gods(mob,commands);
 			break;
 		case CommandSet.GOTO:
 			SysOpSkills.gotoCmd(mob,commands);

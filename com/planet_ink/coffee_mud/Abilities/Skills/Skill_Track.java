@@ -170,12 +170,14 @@ public class Skill_Track extends StdAbility
 			return false;
 
 		String mobName=Util.combine(commands,0);
+		if(givenTarget==null)
 		if(mobName.length()==0)
 		{
 			mob.tell("Track whom?");
 			return false;
 		}
 
+		if(givenTarget==null)
 		if(mob.location().fetchInhabitant(mobName)!=null)
 		{
 			mob.tell("Try 'look'.");
@@ -190,6 +192,14 @@ public class Skill_Track extends StdAbility
 		else
 		if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
 			rooms.addElement(((MOB)givenTarget).location());
+		else
+		if(mobName.length()>0)
+		{
+			Room R=CMMap.getRoom(mobName);
+			if(R!=null) rooms.addElement(R);
+		}
+		
+		
 		
 		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)

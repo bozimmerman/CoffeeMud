@@ -27,20 +27,23 @@ public class HalfElf extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
-		Ability A=CMClass.getAbility("Elvish");
-		if(A!=null)
+		if(!verifyOnly)
 		{
-			A.setProfficiency(50);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
-		}
-		A=CMClass.getAbility("Fishing");
-		if(A!=null)
-		{
-			A.setProfficiency(50);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
+			mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
+			Ability A=CMClass.getAbility("Elvish");
+			if(A!=null)
+			{
+				A.setProfficiency(50);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+			}
+			A=CMClass.getAbility("Fishing");
+			if(A!=null)
+			{
+				A.setProfficiency(50);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+			}
 		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -75,10 +75,16 @@ public class Painting extends CommonSkill
 		String str=Util.combine(commands,0);
 		building=null;
 		messedUp=false;
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		Session S=mob.session();
+		if((S==null)&&(mob.amFollowing()!=null))
+			S=mob.amFollowing().session();
+		if(S==null)
+		{
+			commonTell(mob,"I can't work! I need a player to follow!");
 			return false;
+		}
 
-		int completion=25;
+		Item I=null;
 		if(str.equalsIgnoreCase("wall"))
 		{
 			if((!ExternalPlay.doesOwnThisProperty(mob,mob.location()))
@@ -87,14 +93,31 @@ public class Painting extends CommonSkill
 				commonTell(mob,"You need the owners permission to paint the walls here.");
 				return false;
 			}
-			Session S=mob.session();
-			if(!ExternalPlay.doesOwnThisProperty(mob,mob.location()))
-			   S=mob.amFollowing().session();
-			if(S==null)
+		}
+		else
+		{
+			I=mob.location().fetchItem(null,str);
+			if((I==null)||(!Sense.canBeSeenBy(I,mob)))
 			{
-				commonTell(mob,"I can't work! I need a player to follow!");
+				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
 				return false;
 			}
+			if((I.material()!=EnvResource.RESOURCE_COTTON)
+			&&(I.material()!=EnvResource.RESOURCE_SILK)
+			&&(!I.Name().toUpperCase().endsWith("CANVAS"))
+			&&(!I.Name().toUpperCase().endsWith("SILKSCREEN")))
+			{
+				commonTell(mob,"You cannot paint on '"+str+"'.");
+				return false;
+			}
+		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		int completion=25;
+		if(str.equalsIgnoreCase("wall"))
+		{
 			String name=S.prompt("Enter the key words (not the description) for this work.\n\r:","");
 			if(name.trim().length()==0) return false;
 			Vector V=Util.parse(name.toUpperCase());
@@ -103,7 +126,7 @@ public class Painting extends CommonSkill
 				String vstr=" "+((String)V.elementAt(v))+" ";
 				for(int i=0;i<mob.location().numItems();i++)
 				{
-					Item I=mob.location().fetchItem(i);
+					I=mob.location().fetchItem(i);
 					if((I!=null)
 					&&(I.displayText().length()==0)
 					&&(!I.isGettable())
@@ -128,28 +151,6 @@ public class Painting extends CommonSkill
 		}
 		else
 		{
-			Item I=mob.location().fetchItem(null,str);
-			if((I==null)||(!Sense.canBeSeenBy(I,mob)))
-			{
-				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
-				return false;
-			}
-			if((I.material()!=EnvResource.RESOURCE_COTTON)
-			&&(I.material()!=EnvResource.RESOURCE_SILK)
-			&&(!I.Name().toUpperCase().endsWith("CANVAS"))
-			&&(!I.Name().toUpperCase().endsWith("SILKSCREEN")))
-			{
-				commonTell(mob,"You cannot paint on '"+str+"'.");
-				return false;
-			}
-			Session S=mob.session();
-			if((S==null)&&(mob.amFollowing()!=null))
-				S=mob.amFollowing().session();
-			if(S==null)
-			{
-				commonTell(mob,"I can't work! I need a player to follow!");
-				return false;
-			}
 			String name=S.prompt("In brief, what is this a painting of?\n\r:");
 			if(name.trim().length()==0) return false;
 			String desc=S.prompt("Please describe this painting.\n\r:");

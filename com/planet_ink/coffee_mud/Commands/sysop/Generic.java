@@ -197,10 +197,14 @@ public class Generic
 		if(E instanceof Item)
 			newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
 		else
+		if(E instanceof Exit)
+			newName=mob.session().prompt("Enter something new (null == see-through)\n\r:","");
+		else
 			newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 		{
-			if((E instanceof Item)&&(newName.trim().equalsIgnoreCase("null")))
+			if(((E instanceof Item)||(E instanceof Exit))
+			&&(newName.trim().equalsIgnoreCase("null")))
 				newName="";
 			E.setDisplayText(newName);
 		}

@@ -42,13 +42,16 @@ public class Lizard extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Draconic");
-		if(A!=null)
+		if(!verifyOnly)
 		{
- 			mob.addAbility(A);
-			A.autoInvocation(mob);
-			if(mob.isMonster())
-				A.invoke(mob,mob,true);
+			Ability A=CMClass.getAbility("Draconic");
+			if(A!=null)
+			{
+ 				mob.addAbility(A);
+				A.autoInvocation(mob);
+				if(mob.isMonster())
+					A.invoke(mob,mob,true);
+			}
 		}
 	}
 	public Weapon myNaturalWeapon()

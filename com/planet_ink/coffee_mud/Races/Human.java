@@ -40,12 +40,15 @@ public class Human extends StdRace
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		super.startRacing(mob,verifyOnly);
-		Ability A=CMClass.getAbility("Chopping");
-		if(A!=null)
+		if(!verifyOnly)
 		{
-			A.setProfficiency(50);
-			mob.addAbility(A);
-			A.autoInvocation(mob);
+			Ability A=CMClass.getAbility("Chopping");
+			if(A!=null)
+			{
+				A.setProfficiency(50);
+				mob.addAbility(A);
+				A.autoInvocation(mob);
+			}
 		}
 	}
 	public Weapon myNaturalWeapon()
