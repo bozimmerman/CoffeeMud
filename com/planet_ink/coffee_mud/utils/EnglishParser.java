@@ -825,7 +825,7 @@ public class EnglishParser extends Scriptable implements Tickable
 			commands.setElementAt(""+firstWord.charAt(0),0);
 			firstWord=""+firstWord.charAt(0);
 		}
-
+		
 		// first, exacting pass
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if(C!=null) return C;

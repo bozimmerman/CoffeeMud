@@ -25,15 +25,13 @@ public class Commands extends StdCommand
 				{
 					Command C=(Command)e.nextElement();
 					String[] access=C.getAccessWords();
-					if((access!=null)&&(access.length>0)
+					if((access!=null)
+					&&(access.length>0)
+					&&(access[0].length()>0)
 					&&(arc||(!C.arcCommand())))
 					{
-						String longest="";
-						for(int i=0;i<access.length;i++)
-							if(access[i].length()>longest.length())
-								longest=access[i];
-						if(++col>4){ commandList.append("\n\r"); col=0;}
-						commandList.append(Util.padRight(longest,24));
+						if(++col>3){ commandList.append("\n\r"); col=0;}
+						commandList.append(Util.padRight(access[0],24));
 					}
 				}
 				commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");

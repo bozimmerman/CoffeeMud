@@ -948,9 +948,13 @@ public class TelnetSession extends Thread implements Session
 			case 10:
 			{
 				c=-1;
-				if (!lastWasCR)
+				if(!lastWasCR)
+				{
+					lastWasLF = true; 
 					rv = true;
-				lastWasLF = true; 
+				}
+				else
+					lastWasLF = false; 
 				lastWasCR = false;
 				break;
 			}
@@ -958,13 +962,19 @@ public class TelnetSession extends Thread implements Session
 			{
 				c=-1;
 				if(!lastWasLF)
+				{
+					lastWasCR = true;
 					rv = true;
-				lastWasCR = true;
+				}
+				else
+					lastWasCR = false;
 				lastWasLF = false;
 				break;
 			}
 			case 26:
 			{
+				lastWasCR = false;
+				lastWasLF = false;
 				// don't let them enter ANSI escape sequences...
 				c = -1;
 				break;
@@ -985,6 +995,8 @@ public class TelnetSession extends Thread implements Session
 			case 254:
 			case 255:
 			{
+				lastWasCR = false;
+				lastWasLF = false;
 				// don't let them enter telnet codes, except IAC, which is handled...
 				c = -1;
 				break;
@@ -1072,7 +1084,6 @@ public class TelnetSession extends Thread implements Session
 	{
 
 		if((in==null)||(out==null)) return "";
-
 		while(!killFlag)
 		{
 			try

@@ -1,6 +1,8 @@
+deposit requirement prices seem high
+affects list removed from score, put in columns
+chants/spells/etc should have parm to stop listing at specified level, update help
 Courante Dance doesn't seem to give party members extra attacks.
 code something to examine all items and make sure they aren't overboard.
-a pamphlet was destroyed by a conquered mobs touch. Very bad news. I was trying to discretely destabilize an area.
 make it so a native member not of the holding clan scores points when first points scored.
 I tried using broadcast sound in an emoter.  and the sound works for the room yer in, but does NOT broadcast to any adjacent rooms.
 code something to coffeemudify all the beds 

@@ -226,24 +226,25 @@ public class DBConnections
 		while(ThisDB==null)
 		{
 			boolean connectionFailure=false;
-			try
+			ThisDB=null;
+			for(int i=0;i<Connections.size();i++)
 			{
-				for(int i=0;i<Connections.size();i++)
+				try
 				{
-					ThisDB=(DBConnection)Connections.elementAt(i);
-					if(((!prepared)&&ThisDB.use(SQL))
-					||(prepared&&ThisDB.usePrepared(SQL)))
-						break;
-					else
+					DBConnection ADB=(DBConnection)Connections.elementAt(i);
+					if(((!prepared)&&ADB.use(SQL))
+					||(prepared&&ADB.usePrepared(SQL)))
 					{
-						if((!ThisDB.ready())||(ThisDB.isProbablyDead())||(ThisDB.isProbablyLockedUp()))
-							connectionFailure=true;
-						ThisDB=null;
+						Connections.remove(ADB);
+						Connections.addElement(ADB);
+						ThisDB=ADB;
+						break;
 					}
+					else
+					if((!ADB.ready())||(ADB.isProbablyDead())||(ADB.isProbablyLockedUp()))
+						connectionFailure=true;
 				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x)
-			{
+				catch(java.lang.IndexOutOfBoundsException x){}
 			}
 			
 			if(ThisDB==null)
@@ -261,20 +262,24 @@ public class DBConnections
 					}
 				}
 				else
-				if(connectionFailure)
-					repairConnections(DBClass,DBService,DBUser,DBPass);
-				else
 				{
+					if(connectionFailure)
+						repairConnections(DBClass,DBService,DBUser,DBPass);
+					int inuse=0;
+					for(int i=0;i<Connections.size();i++)
+						if(((DBConnection)Connections.elementAt(i)).inUse())
+							inuse++;
 					if(consecutiveFailures==30)
-						Log.errOut("DBConnections","Serious failure obtaining DBConnection.");
+						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
 					else
 					if(consecutiveFailures==15)
-						Log.errOut("DBConnections","Moderate failure obtaining DBConnection.");
+						Log.errOut("DBConnections","Moderate failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
 					else
 					if(consecutiveFailures==5)
-						Log.errOut("DBConnections","Minor failure obtaining DBConnection.");
+						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
 					try
 					{
+						Log.errOut("DBConnections","Trivial failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
 						Thread.sleep(Math.round(Math.random()*500));
 					}
 					catch(InterruptedException i)

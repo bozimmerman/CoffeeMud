@@ -8,7 +8,7 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private String[] access={"SAY","ASK","'","SA"};
+	private String[] access={"SAY","ASK","`","SA"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
