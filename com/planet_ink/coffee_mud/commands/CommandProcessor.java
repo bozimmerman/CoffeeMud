@@ -238,7 +238,7 @@ public class CommandProcessor
 					}
 					break;
 				case CommandSet.NOFOLLOW:
-					grouping.nofollow(mob,true);
+					grouping.nofollow(mob,true,true);
 					break;
 				case CommandSet.NORTH:
 					movement.move(mob,Directions.NORTH,false);

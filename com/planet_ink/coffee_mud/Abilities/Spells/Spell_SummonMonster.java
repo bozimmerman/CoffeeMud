@@ -50,7 +50,7 @@ public class Spell_SummonMonster extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
-				target.setFollowing(mob);
+				ExternalPlay.follow(target,mob,true);
 			}
 		}
 		else

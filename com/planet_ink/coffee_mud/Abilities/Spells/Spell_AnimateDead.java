@@ -97,8 +97,8 @@ public class Spell_AnimateDead extends Spell
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				newMOB.setFollowing(mob);
 				newMOB.bringToLife(mob.location());
+				ExternalPlay.follow(newMOB,mob,true);
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{

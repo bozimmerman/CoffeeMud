@@ -26,6 +26,7 @@ public interface ExternalCommand
 	public boolean drop(MOB mob, Environmental dropThis);
 	public void read(MOB mob, Environmental thisThang, String theRest);
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
+	public void follow(MOB mob, MOB tofollow, boolean quiet);
 	
 	// messages
 	public long adjustedAttackBonus(MOB mob);

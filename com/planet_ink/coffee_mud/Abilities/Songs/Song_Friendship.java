@@ -111,13 +111,15 @@ public class Song_Friendship extends Song
 								{
 									if((follower.amFollowing()!=mob)&&(follower!=mob))
 									{
-										follower.location().show(follower,mob,Affect.MSG_OK_VISUAL,"<S-NAME> follow(s) <T-NAMESELF>.");
-										follower.setFollowing(mob);
+										ExternalPlay.follow(follower,mob,false);
+										if(follower.amFollowing()==mob)
+										{
+											if(follower!=mob)
+												follower.addAffect((Ability)newOne.copyOf());
+											else
+												follower.addAffect(newOne);
+										}
 									}
-									if(follower!=mob)
-										follower.addAffect((Ability)newOne.copyOf());
-									else
-										follower.addAffect(newOne);
 								}
 							}
 						}

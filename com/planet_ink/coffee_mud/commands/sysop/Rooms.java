@@ -262,28 +262,17 @@ public class Rooms
 		
 		if((!myArea.name().equals(oldName))&&(!mob.isMonster()))
 		{
-			String newName=myArea.name();
-			myArea.setName(oldName);
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				// get rooms list from old name
 				Vector areaMap=myArea.getMyMap();
-				
-				// effectively recreates an area record with a new name
-				ExternalPlay.DBDeleteArea(myArea);
-				myArea.setName(newName);
-				CMMap.AREAS.removeElement(ExternalPlay.DBCreateArea(newName,CMClass.className(myArea)));
-				// done with that.
-				
-				// now re-save all rooms with new area name
 				for(int r=0;r<areaMap.size();r++)
-				{
-					Room R=(Room)areaMap.elementAt(r);
-					R.setArea(myArea);
-					ExternalPlay.DBUpdateRoom(R);
-				}
+					ExternalPlay.DBUpdateRoom((Room)areaMap.elementAt(r));
 			}
+			else
+				myArea.setName(oldName);
 		}
+		else
+			myArea.setName(oldName);
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		ExternalPlay.DBUpdateArea(myArea);
 	}

@@ -128,6 +128,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.get(mob,container,getThis,quiet);
 	}
+	public void follow(MOB mob, MOB tofollow, boolean quiet)
+	{
+		processor.grouping.processFollow(mob,tofollow, quiet);
+	}
 	public boolean login(MOB mob)
 		throws IOException
 	{

@@ -252,5 +252,10 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.DBUserSearch(mob,Login);
 		return false;
 	}
+	public static void follow(MOB mob, MOB tofollow, boolean quiet)
+	{
+		if(player!=null) player.follow(mob,tofollow,quiet);
+	}
+
 	
 }

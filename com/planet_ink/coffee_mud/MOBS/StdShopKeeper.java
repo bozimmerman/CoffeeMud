@@ -523,7 +523,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(product instanceof MOB)
 					{
 						((MOB)product).bringToLife(mob.location());
-						((MOB)product).setFollowing(mob);
+						ExternalPlay.follow((MOB)product,mob,false);
 					}
 					else
 					if(product instanceof Ability)

@@ -376,7 +376,7 @@ public class Scoring
 
 				msg.append(Util.padRight((String)areasVec.elementAt(i),25));
 			}
-			msg.append("\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
+			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 			Resources.submitResource("areasList",msg);
 			areasList=msg;
 		}

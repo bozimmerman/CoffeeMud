@@ -133,7 +133,8 @@ public class Spell_FeignDeath extends Spell
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			beneficialAffect(mob,target,0);
 
-			while(target.numFollowers()>0)
+			int tries=0;
+			while((target.numFollowers()>0)&&((++tries)<1000))
 			{
 				MOB follower=target.fetchFollower(0);
 				if(follower!=null)
