@@ -54,6 +54,7 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.tell("There's nothing that way you can burn!");
 				return false;
 			}
+			target=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 			targetRoom=room;
 		}
 		else

@@ -41,7 +41,7 @@ public class Thief_Autosneak extends ThiefSkill
 		
 		if((affected instanceof MOB)
 		&&(!noRepeat)
-		&&(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
@@ -51,7 +51,7 @@ public class Thief_Autosneak extends ThiefSkill
 			MOB mob=(MOB)affected;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if((mob.location().getRoomInDir(d)==msg.target())
-				&&(mob.location().getReverseExit(d)==msg.tool()))
+				&&((mob.location().getReverseExit(d)==msg.tool())||(mob.location().getExitInDir(d)==msg.tool())))
 				{ dir=d; break;}
 			if(dir>=0)
 			{

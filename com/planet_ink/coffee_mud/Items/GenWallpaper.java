@@ -13,7 +13,6 @@ public class GenWallpaper implements Item
 	protected String	readableText="";
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected boolean destroyed=false;
-	protected boolean	isReadable=false;
 	protected Environmental owner=null;
 
 	public boolean isGeneric(){return true;}
@@ -32,7 +31,7 @@ public class GenWallpaper implements Item
 	public EnvStats baseEnvStats()
 	{ return envStats; }
 	public void recoverEnvStats()
-	{ envStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);}
+	{ envStats().setSensesMask(envStats().sensesMask()|EnvStats.SENSE_ITEMNOTGET);}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public boolean isAContainer(){return false;}
 	public Environmental newInstance()
@@ -208,7 +207,7 @@ public class GenWallpaper implements Item
 		case CMMsg.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
+				if((Sense.isReadable(this))&&(readableText()!=null)&&(readableText().length()>0))
 				{
 					if(readableText().startsWith("FILE=")
 						||readableText().startsWith("FILE="))

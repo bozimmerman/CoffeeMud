@@ -32,6 +32,7 @@ public class Thief_Palm extends ThiefSkill
 			try
 			{
 				Command C=CMClass.getCommand("Get");
+				commands.insertElementAt("GET",0);
 				if(C!=null) C.execute(mob,commands);
 			}
 			catch(Exception e)

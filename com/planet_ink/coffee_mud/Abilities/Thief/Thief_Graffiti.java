@@ -51,6 +51,7 @@ public class Thief_Graffiti extends ThiefSkill
 				Item I=CMClass.getItem("GenWallpaper");
 				I.setName("Graffiti");
 				Sense.setReadable(I,true);
+				I.recoverEnvStats();
 				I.setReadableText(str);
 				switch(Dice.roll(1,6,0))
 				{
@@ -74,6 +75,8 @@ public class Thief_Graffiti extends ThiefSkill
 					break;
 				}
 				mob.location().addItem(I);
+				I.recoverEnvStats();
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

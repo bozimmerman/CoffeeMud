@@ -11,6 +11,8 @@ public class Thief_CarefulStep extends ThiefSkill
 	public String name(){ return "Careful Step";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+	public int castingTime(){return 2;}
+	public int combatCastingTime(){return 2;}
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"CARESTEP","CAREFULSTEP"};
 	public String[] triggerStrings(){return triggerStrings;}
@@ -25,6 +27,11 @@ public class Thief_CarefulStep extends ThiefSkill
 		if(dirCode<0)
 		{
 			mob.tell("Step where?");
+			return false;
+		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
 			return false;
 		}
 
@@ -48,7 +55,7 @@ public class Thief_CarefulStep extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
+		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> walk(s) carefully "+Directions.getDirectionName(dirCode)+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

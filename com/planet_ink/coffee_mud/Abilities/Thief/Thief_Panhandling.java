@@ -95,7 +95,7 @@ public class Thief_Panhandling extends ThiefSkill
 					}
 					if(((Dice.rollPercentage()*10)<mob2.getAlignment())
 					&&(mob2.getMoney()>0)
-					&&(Dice.rollPercentage()<mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
+					&&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
 					{
 						int amount=mob2.getMoney()/20;
 						if(amount<1) amount=1;
@@ -106,7 +106,7 @@ public class Thief_Panhandling extends ThiefSkill
 					break;
 				}
 			}
-			if(mobsHitUp.size()>0)
+			if((mobsHitUp.size()>0)&&(Dice.rollPercentage()<10))
 				mobsHitUp.removeElementAt(0);
 		}
 		return true;
@@ -151,7 +151,7 @@ public class Thief_Panhandling extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> start(s) panhandling.");
+		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> start(s) panhandling.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> can't seem to get <S-HIS-HER> panhandling act started.");
 		else
