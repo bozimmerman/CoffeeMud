@@ -111,7 +111,7 @@ public class Painting extends CommonSkill
 					{
 						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
 						{
-							I.destroyThis();
+							I.destroy();
 							return true;
 						}
 					}
@@ -161,7 +161,7 @@ public class Painting extends CommonSkill
 			building.setBaseValue(I.baseGoldValue()*(Dice.roll(1,5,0)));
 			building.setMaterial(I.material());
 			building.baseEnvStats().setLevel(I.baseEnvStats().level());
-			I.destroyThis();
+			I.destroy();
 		}
 		String startStr="<S-NAME> start(s) painting "+building.name()+".";
 		displayText="You are painting "+building.name();

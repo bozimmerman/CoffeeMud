@@ -276,7 +276,7 @@ public class Spell_Wish extends Spell
 				if(target instanceof Item)
 				{
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" quietly vanishes.");
-					((Item)target).destroyThis();
+					((Item)target).destroy();
 				}
 				else
 				if(target instanceof MOB)

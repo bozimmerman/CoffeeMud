@@ -198,7 +198,7 @@ public class GrinderRooms
 		{
 			Item I=(Item)allitems.elementAt(i);
 			if(!R.isContent(I))
-				I.destroyThis();
+				I.destroy();
 		}
 		for(int i=0;i<R.numItems();i++)
 		{

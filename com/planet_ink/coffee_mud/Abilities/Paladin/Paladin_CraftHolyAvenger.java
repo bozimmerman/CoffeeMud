@@ -142,7 +142,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			&&(!Sense.isOnFire(I))
 			&&(I.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
-			  I.destroyThis();
+			  I.destroy();
 		}
 		building=CMClass.getWeapon("GenWeapon");
 		completion=50-CMAble.qualifyingClassLevel(mob,this);

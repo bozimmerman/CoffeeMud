@@ -104,7 +104,7 @@ public class Prayer_AnimateMummy extends Prayer
 					else
 						it++;
 				}
-				body.destroyThis();
+				body.destroy();
 				mob.location().show(newMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 				mob.location().recoverRoomStats();
 			}

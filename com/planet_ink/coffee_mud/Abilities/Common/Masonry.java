@@ -400,7 +400,7 @@ public class Masonry extends CommonSkill
 			&&(I.container()==null)
 			&&(I.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
-				I.destroyThis();
+				I.destroy();
 		}
 
 		switch(doingCode)

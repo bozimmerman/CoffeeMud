@@ -114,7 +114,7 @@ public class AnimalTrading extends CommonSkill
 			{
 				mob.location().send(mob,msg);
 				if(taming instanceof Item)
-					((Item)taming).destroyThis();
+					((Item)taming).destroy();
 			}
 		}
 		else

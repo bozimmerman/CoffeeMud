@@ -137,7 +137,7 @@ public interface Room extends Environmental
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);
 	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode);
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode);
-	public void bringItemHere(Item I);
+	public void bringItemHere(Item I, int survivalCode);
 	
 	
 	

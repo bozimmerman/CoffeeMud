@@ -236,7 +236,7 @@ public class Shipwright extends CommonSkill
 				&&(!Sense.isOnFire(I))
 				&&(I.material()==firstWood.material())
 				&&((--woodDestroyed)>=0))
-					I.destroyThis();
+					I.destroy();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)

@@ -37,7 +37,7 @@ public class Butchering extends CommonSkill
 					if((failed)||(!mob.location().isContent(body)))
 					{
 						commonTell(mob,"You messed up your butchering completely.");
-						body.destroyThis();
+						body.destroy();
 					}
 					else
 					{
@@ -55,7 +55,7 @@ public class Butchering extends CommonSkill
 							}
 						}
 						body.emptyPlease();
-						body.destroyThis();
+						body.destroy();
 						for(int y=0;y<abilityCode();y++)
 						{
 							for(int i=0;i<resources.size();i++)

@@ -36,7 +36,7 @@ public class QuestPoint extends StdItem
 			case Affect.TYP_GET:
 				{
 				setContainer(null);
-				destroyThis();
+				destroy();
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
 				unWear();

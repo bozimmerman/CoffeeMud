@@ -128,7 +128,7 @@ public class Skill_Map extends StdAbility
 					B.setSecretIdentity(item.secretIdentity());
 					B.setRemovable(item.isRemovable());
 					B.setUsesRemaining(item.usesRemaining());
-					item.destroyThis();
+					item.destroy();
 					mob.addInventory(B);
 					item=B;
 				}

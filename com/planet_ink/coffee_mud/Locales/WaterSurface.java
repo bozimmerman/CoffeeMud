@@ -145,7 +145,7 @@ public class WaterSurface extends StdRoom implements Drink
 			   &&(affect.tool()!=null)
 			   &&(affect.tool()==this)))
 		&&(!Sense.isSleeping(this)))
-			((Item)affect.target()).destroyThis();
+			((Item)affect.target()).destroy();
 		else
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{

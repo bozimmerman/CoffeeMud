@@ -69,7 +69,6 @@ public class GrinderItems
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
 
-
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
 						  "MATERIALS","ISGENERIC","ISREADABLE","READABLETEXT",
@@ -394,6 +393,7 @@ public class GrinderItems
 		else
 		if(I!=oldI)
 		{
+			Environmental oldOwner=oldI.owner();
 			if(M==null)
 			{
 				R.delItem(oldI);
@@ -428,6 +428,8 @@ public class GrinderItems
 							I2.setContainer(null);
 				}
 			}
+			oldI.setOwner(oldOwner); // necesssary for destroythis to work.
+			oldI.destroy();
 		}
 		if(M==null)
 		{

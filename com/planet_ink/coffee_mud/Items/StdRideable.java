@@ -28,11 +28,11 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		return new StdRideable();
 	}
-	public void destroyThis()
+	public void destroy()
 	{
 		while(riders.size()>0)
 			fetchRider(0).setRiding(null);
-		super.destroyThis();
+		super.destroy();
 	}
 
 	// common item/mob stuff

@@ -35,7 +35,7 @@ public class GenCorpse extends GenContainer implements DeadBody
 	{
 		if(tickID==Host.DEADBODY_DECAY)
 		{
-			destroyThis();
+			destroy();
 			roomLocation.recoverRoomStats();
 			return false;
 		}

@@ -69,7 +69,7 @@ public class Spell_WallOfAir extends Spell
 				((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of air dissipates.");
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

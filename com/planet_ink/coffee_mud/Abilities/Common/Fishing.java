@@ -75,12 +75,9 @@ public class Fishing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
+		if(!mob.location().resourceChoices().contains(new Integer(EnvResource.RESOURCE_FISH)))
 		{
-			commonTell(mob,"You are kidding, right?  Fish on dry land?");
+			commonTell(mob,"This fishing doesn't look too good around here.");
 			return false;
 		}
 		verb="fishing";

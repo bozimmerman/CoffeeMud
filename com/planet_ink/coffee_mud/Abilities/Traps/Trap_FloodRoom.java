@@ -44,7 +44,7 @@ public class Trap_FloodRoom extends StdTrap
 				if(I instanceof EnvResource)
 				{
 					i--;
-					I.destroyThis();
+					I.destroy();
 				}
 				else
 					((Drink)I).setLiquidRemaining(0);

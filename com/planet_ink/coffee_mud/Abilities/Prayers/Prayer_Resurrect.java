@@ -69,7 +69,7 @@ public class Prayer_Resurrect extends Prayer
 							else
 								it++;
 						}
-						body.destroyThis();
+						body.destroy();
 						rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
 					}

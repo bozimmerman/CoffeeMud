@@ -72,7 +72,7 @@ public class Song_Rebirth extends Song
 								else
 									it++;
 							}
-							body.destroyThis();
+							body.destroy();
 							mob.location().recoverRoomStats();
 							foundOne=true;
 							rejuvedMOB.location().show(rejuvedMOB,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");

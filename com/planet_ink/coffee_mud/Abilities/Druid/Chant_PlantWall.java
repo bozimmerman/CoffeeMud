@@ -45,7 +45,7 @@ public class Chant_PlantWall extends Chant
 				if(amountRemaining<0)
 				{
 					deathNotice="The plant wall is destroyed!";
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 				}
 				return false;
 			}
@@ -60,7 +60,7 @@ public class Chant_PlantWall extends Chant
 				if(amountRemaining<0)
 				{
 					deathNotice="The plant wall is destroyed!";
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 				}
 				return false;
 			}
@@ -92,7 +92,7 @@ public class Chant_PlantWall extends Chant
 				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

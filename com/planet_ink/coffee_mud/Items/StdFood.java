@@ -73,7 +73,7 @@ public class StdFood extends StdItem implements Food
 				else
 				if(full)
 					mob.tell("You are full.");
-				this.destroyThis();
+				this.destroy();
 				mob.location().recoverRoomStats();
 				break;
 			default:

@@ -156,7 +156,7 @@ public class StdWeapon extends StdItem implements Weapon
 					setUsesRemaining(100);
 					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
 					unWear();
-					destroyThis();
+					destroy();
 					owner.recoverEnvStats();
 					owner.recoverCharStats();
 					owner.recoverMaxState();
@@ -202,7 +202,7 @@ public class StdWeapon extends StdItem implements Weapon
 								howMuchToTake=I.usesRemaining();
 							setAmmoRemaining(howMuchToTake);
 							I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
-							if(I.usesRemaining()<=0) I.destroyThis();
+							if(I.usesRemaining()<=0) I.destroy();
 							reLoaded=true;
 							break;
 						}

@@ -93,7 +93,7 @@ public class Prop_Auction extends Property
 							   &&(highBidder.location().isInhabitant(highBidder)))
 							{
 								((Item)auctioning).unWear();
-								highBidder.location().bringItemHere((Item)auctioning);
+								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
 								ExternalPlay.get(highBidder,null,(Item)auctioning,false);
 							}
 							else

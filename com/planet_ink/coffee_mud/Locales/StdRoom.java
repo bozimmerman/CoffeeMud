@@ -673,7 +673,7 @@ public class StdRoom
 						bringMobHere((MOB)mob.riding(),andFollowers);
 					else
 					if(mob.riding() instanceof Item)
-						bringItemHere((Item)mob.riding());
+						bringItemHere((Item)mob.riding(),-1);
 				}
 				else
 					mob.setRiding(null);
@@ -683,7 +683,7 @@ public class StdRoom
 		recoverRoomStats();
 	}
 
-	public void bringItemHere(Item item)
+	public void bringItemHere(Item item, int survivalCode)
 	{
 		if(item==null) return;
 
@@ -695,7 +695,11 @@ public class StdRoom
 			V=((Container)item).getContents();
 		if(o instanceof MOB)((MOB)o).delInventory(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
-		addItem(item);
+		
+		if(survivalCode<0)
+			addItem(item);
+		else
+			addItemRefuse(item,survivalCode);
 		for(int v=0;v<V.size();v++)
 		{
 			Item i2=(Item)V.elementAt(v);
@@ -931,7 +935,7 @@ public class StdRoom
 			delBehavior(fetchBehavior(0));
 		try{
 		for(int a=numItems()-1;a>=0;a--)
-			fetchItem(a).destroyThis();
+			fetchItem(a).destroy();
 		}catch(Exception e){}
 		while(numItems()>0)
 			delItem(fetchItem(0));

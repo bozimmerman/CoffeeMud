@@ -36,7 +36,7 @@ public class GlowingMageArmor extends StdArmor
 
 		if((amWearingAt(Item.INVENTORY)||(owner()==null)||(owner() instanceof Room))
 		&&(!amDestroyed()))
-			destroyThis();
+			destroy();
 
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))

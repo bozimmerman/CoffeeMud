@@ -68,7 +68,7 @@ public class GenCoins extends GenItem implements Coins
 			if(container()==null)
 			{
 				M.setMoney(M.getMoney()+numberOfCoins());
-				destroyThis();
+				destroy();
 				return true;
 			}
 			for(int i=0;i<M.inventorySize();i++)
@@ -87,7 +87,7 @@ public class GenCoins extends GenItem implements Coins
 		if(alternative!=null)
 		{
 			alternative.setNumberOfCoins(alternative.numberOfCoins()+numberOfCoins());
-			destroyThis();
+			destroy();
 			return true;
 		}
 		return false;
@@ -104,7 +104,7 @@ public class GenCoins extends GenItem implements Coins
 				setContainer(null);
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				unWear();
-				destroyThis();
+				destroy();
 				affect.source().location().recoverRoomStats();
 			}
 			break;

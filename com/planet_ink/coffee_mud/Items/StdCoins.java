@@ -78,7 +78,7 @@ public class StdCoins extends StdItem implements Coins
 			if(container()==null)
 			{
 				M.setMoney(M.getMoney()+numberOfCoins());
-				destroyThis();
+				destroy();
 				return true;
 			}
 			for(int i=0;i<M.inventorySize();i++)
@@ -97,7 +97,7 @@ public class StdCoins extends StdItem implements Coins
 		if(alternative!=null)
 		{
 			alternative.setNumberOfCoins(alternative.numberOfCoins()+numberOfCoins());
-			destroyThis();
+			destroy();
 			return true;
 		}
 		return false;
@@ -113,7 +113,7 @@ public class StdCoins extends StdItem implements Coins
 			{
 				setContainer(null);
 				unWear();
-				destroyThis();
+				destroy();
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				affect.source().location().recoverRoomStats();
 			}

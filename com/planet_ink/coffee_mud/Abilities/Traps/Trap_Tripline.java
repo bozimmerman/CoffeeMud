@@ -21,7 +21,7 @@ public class Trap_Tripline extends StdTrap
 	{
 		if(E==null) return null;
 		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
-		if(I!=null) I.destroyThis();
+		if(I!=null) I.destroy();
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
 	

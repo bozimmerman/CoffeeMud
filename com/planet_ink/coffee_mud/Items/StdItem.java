@@ -102,7 +102,7 @@ public class StdItem implements Item
 		for(int a=0;a<E.numAffects();a++)
 		{
 			Ability A=E.fetchAffect(a);
-			if((A!=null)&&(!A.canBeUninvoked()))
+			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
 				addAffect((Ability)A.copyOf());
 		}
 
@@ -902,17 +902,16 @@ public class StdItem implements Item
 				setReadableText((readableText()+" "+affect.targetMessage()).trim());
 			break;
 		case Affect.TYP_DEATH:
-			destroyThis();
+			destroy();
 			break;
 		default:
 			break;
 		}
 	}
 
-	public void destroyThis()
+	public void destroy()
 	{
 		myContainer=null;
-		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
 		{
 			Ability aff=fetchAffect(a);
@@ -922,31 +921,34 @@ public class StdItem implements Item
 
 		riding=null;
 		destroyed=true;
-
-		if (owner instanceof Room)
+		
+		if(owner!=null)
 		{
-			Room thisRoom=(Room)owner;
-			for(int r=thisRoom.numItems()-1;r>=0;r--)
+			if (owner instanceof Room)
 			{
-				Item thisItem = thisRoom.fetchItem(r);
-				if((thisItem!=null)
-				   &&(thisItem.container()!=null)
-				   &&(thisItem.container()==this))
-					thisItem.destroyThis();
+				Room thisRoom=(Room)owner;
+				for(int r=thisRoom.numItems()-1;r>=0;r--)
+				{
+					Item thisItem = thisRoom.fetchItem(r);
+					if((thisItem!=null)
+					   &&(thisItem.container()!=null)
+					   &&(thisItem.container()==this))
+						thisItem.destroy();
+				}
+				thisRoom.delItem(this);
 			}
-			thisRoom.delItem(this);
-		}
-		else
-		if (owner instanceof MOB)
-		{
-			MOB mob=(MOB)owner;
-			for(int r=mob.inventorySize()-1;r>=0;r--)
+			else
+			if (owner instanceof MOB)
 			{
-				Item thisItem = mob.fetchInventory(r);
-				if((thisItem!=null)&&(thisItem.container()!=null)&&(thisItem.container()==this))
-					thisItem.destroyThis();
+				MOB mob=(MOB)owner;
+				for(int r=mob.inventorySize()-1;r>=0;r--)
+				{
+					Item thisItem = mob.fetchInventory(r);
+					if((thisItem!=null)&&(thisItem.container()!=null)&&(thisItem.container()==this))
+						thisItem.destroy();
+				}
+				mob.delInventory(this);
 			}
-			mob.delInventory(this);
 		}
 		recoverEnvStats();
 	}

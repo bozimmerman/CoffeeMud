@@ -233,7 +233,7 @@ public class LockSmith extends CommonSkill
 			&&(I.container()==null)
 			&&(I.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
-				I.destroyThis();
+				I.destroy();
 		}
 		building=CMClass.getItem("GenKey");
 		if(building==null)

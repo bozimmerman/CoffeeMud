@@ -1633,14 +1633,14 @@ public class Scriptable extends StdBehavior
 					while(monster.inventorySize()>0)
 					{
 						Item I=monster.fetchInventory(0);
-						if(I!=null) I.destroyThis();
+						if(I!=null) I.destroy();
 					}
 				}
 				else
 				{
 					Item I=monster.fetchInventory(s);
 					if(I!=null)
-						I.destroyThis();
+						I.destroy();
 				}
 				break;
 			}
@@ -1812,10 +1812,15 @@ public class Scriptable extends StdBehavior
 					if(E!=null)
 					{
 						if(E instanceof MOB)
-							((MOB)E).destroy();
+						{
+							if(!((MOB)E).isMonster())
+								((MOB)E).session().setKillFlag(true);
+							else
+								((MOB)E).destroy();
+						}
 						else
 						if(E instanceof Item)
-							((Item)E).destroyThis();
+							((Item)E).destroy();
 					}
 				}
 				break;

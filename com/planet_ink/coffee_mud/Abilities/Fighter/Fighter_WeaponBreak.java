@@ -68,7 +68,7 @@ public class Fighter_WeaponBreak extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				hisWeapon.destroyThis();
+				hisWeapon.destroy();
 				mob.location().recoverRoomStats();
 			}
 		}

@@ -66,7 +66,7 @@ public class Prayer_DemonicConsumption extends Prayer
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
 
 					if(target instanceof Item)
-						((Item)target).destroyThis();
+						((Item)target).destroy();
 					else
 					{
 						int i=0;
@@ -75,7 +75,7 @@ public class Prayer_DemonicConsumption extends Prayer
 							int s=mob.location().numItems();
 							Item item=mob.location().fetchItem(i);
 							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
-								item.destroyThis();
+								item.destroy();
 							if(s==mob.location().numItems())
 								i++;
 						}

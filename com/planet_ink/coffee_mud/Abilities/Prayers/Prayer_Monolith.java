@@ -63,7 +63,7 @@ public class Prayer_Monolith extends Prayer
 							&&(!M.amDead()))
 								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
-						((Item)affected).destroyThis();
+						((Item)affected).destroy();
 					}
 					return false;
 				}
@@ -114,7 +114,7 @@ public class Prayer_Monolith extends Prayer
 						if(amountRemaining<0)
 						{
 							deathNotice="The monolith of stone is destroyed!";
-							((Item)affected).destroyThis();
+							((Item)affected).destroy();
 						}
 					}
 					return false;
@@ -153,7 +153,7 @@ public class Prayer_Monolith extends Prayer
 				}
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

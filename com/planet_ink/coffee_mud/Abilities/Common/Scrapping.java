@@ -155,7 +155,7 @@ public class Scrapping extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		for(int v=0;v<V.size();v++)
-			((Item)V.elementAt(v)).destroyThis();
+			((Item)V.elementAt(v)).destroy();
 		messedUp=!profficiencyCheck(0,auto);
 		found=makeItemResource(I.material());
 		foundShortName="nothing";

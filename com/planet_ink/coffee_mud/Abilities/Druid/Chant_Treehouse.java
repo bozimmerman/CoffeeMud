@@ -37,7 +37,7 @@ public class Chant_Treehouse extends Chant
 				while(R.numItems()>0)
 				{
 					Item I=R.fetchItem(0);
-					if(I!=null) room.bringItemHere(I);
+					if(I!=null) room.bringItemHere(I,-1);
 				}
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{

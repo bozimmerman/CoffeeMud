@@ -139,7 +139,7 @@ public class Farming extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		
-		mine.destroyThis();
+		mine.destroy();
 		if((profficiencyCheck(0,auto))&&(isPotentialCrop(mob.location(),code)))
 			found=(Item)makeResource(code);
 		int duration=45-mob.envStats().level();

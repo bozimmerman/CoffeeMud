@@ -39,7 +39,7 @@ public class Trap_Greasy extends StdTrap
 		if((I!=null)&&(I instanceof Drink))
 		{
 			((Drink)I).setLiquidHeld(0);
-			I.destroyThis();
+			I.destroy();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}

@@ -33,7 +33,7 @@ public class Chant_Goodberry extends Chant
 			newItem.recoverEnvStats();
 			newItem.setMiscText(newItem.text());
 			Item location=newTarget.container();
-			newTarget.destroyThis();
+			newTarget.destroy();
 			if(owner instanceof MOB)
 				((MOB)owner).addInventory(newItem);
 			else

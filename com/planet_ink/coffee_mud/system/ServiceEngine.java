@@ -352,6 +352,7 @@ public class ServiceEngine
 		else
 		if(which.toLowerCase().startsWith("tickerssize"))
 		{
+			if(grpstart<0) return"";
 			int group=Util.s_int(which.substring(grpstart));
 			if((group>=0)&&(group<tickGroup.size()))
 				return ""+((Tick)tickGroup.elementAt(group)).tickers.size();

@@ -39,7 +39,7 @@ public class Corpse extends StdContainer implements DeadBody
 	{
 		if(tickID==Host.DEADBODY_DECAY)
 		{
-			destroyThis();
+			destroy();
 			roomLocation.recoverRoomStats();
 			return false;
 		}

@@ -28,7 +28,7 @@ public class Items
 		if(deadItem==null) deadItem=(Item)mob.location().fetchItem(null,itemID);
 		while(deadItem!=null)
 		{
-			deadItem.destroyThis();
+			deadItem.destroy();
 			mob.location().recoverRoomStats();
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;

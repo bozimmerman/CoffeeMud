@@ -49,7 +49,7 @@ public class Chant_PlantMaze extends Chant
 				while(R.numItems()>0)
 				{
 					Item I=R.fetchItem(0);
-					if(I!=null) oldRoom.bringItemHere(I);
+					if(I!=null) oldRoom.bringItemHere(I,-1);
 				}
 			}
 			room.clearSky();

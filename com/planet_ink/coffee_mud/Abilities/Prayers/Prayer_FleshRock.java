@@ -119,7 +119,7 @@ public class Prayer_FleshRock extends Prayer
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(statue!=null) statue.destroyThis();
+			if(statue!=null) statue.destroy();
 			mob.tell("Your flesh returns to normal!");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);

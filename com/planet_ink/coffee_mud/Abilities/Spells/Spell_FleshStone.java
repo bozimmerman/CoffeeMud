@@ -119,7 +119,7 @@ public class Spell_FleshStone extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(statue!=null) statue.destroyThis();
+			if(statue!=null) statue.destroy();
 			mob.tell("Your flesh returns to normal!");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);

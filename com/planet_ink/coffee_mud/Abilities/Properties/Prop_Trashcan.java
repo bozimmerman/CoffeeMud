@@ -19,12 +19,12 @@ public class Prop_Trashcan extends Property
 		&&(msg.amITarget(affected))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
-			((Item)msg.tool()).destroyThis();
+			((Item)msg.tool()).destroy();
 		else
 		if((affected instanceof Room)
 		&&(msg.targetMinor()==Affect.TYP_DROP)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item))
-			((Item)msg.target()).destroyThis();
+			((Item)msg.target()).destroy();
 	}
 }

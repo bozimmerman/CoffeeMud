@@ -23,7 +23,7 @@ public class Burning extends StdAbility
 			{
 				Environmental E=((Item)affected).owner();
 				if(E==null)
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 				else
 				if(E instanceof Room)
 				{
@@ -59,13 +59,13 @@ public class Burning extends StdAbility
 							}
 						}
 					}
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 					((Room)E).recoverRoomStats();
 				}
 				else
 				if(E instanceof MOB)
 				{
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 					((MOB)E).location().recoverRoomStats();
 				}
 				return false;

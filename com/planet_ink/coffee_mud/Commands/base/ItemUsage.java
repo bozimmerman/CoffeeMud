@@ -330,7 +330,7 @@ public class ItemUsage
 		if(dropThis instanceof Coins)
 		{
 			mob.setMoney(mob.getMoney()+((Coins)dropThis).numberOfCoins());
-			((Coins)dropThis).destroyThis();
+			((Coins)dropThis).destroy();
 		}
 		return false;
 	}

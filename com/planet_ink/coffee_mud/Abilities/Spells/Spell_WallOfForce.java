@@ -73,7 +73,7 @@ public class Spell_WallOfForce extends Spell
 				((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of force is gone.");
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

@@ -30,7 +30,7 @@ public class Prayer_FountainLife extends Prayer
 		{
 			Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
-			spring.destroyThis();
+			spring.destroy();
 			SpringLocation.recoverRoomStats();
 			SpringLocation=null;
 		}

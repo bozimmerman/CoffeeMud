@@ -122,7 +122,7 @@ public class StdTitle extends StdItem implements LandTitle
 			R=CMMap.getRoom(landRoomID());
 			if(R==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unknown room: "+landRoomID());
 				return null;
 			}
@@ -145,14 +145,14 @@ public class StdTitle extends StdItem implements LandTitle
 			Room R=CMMap.getRoom(landRoomID());
 			if(R==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unknown room: "+landRoomID());
 				return;
 			}
 			LandTitle A=fetchLandTitle(R);
 			if(A==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unsellable room: "+landRoomID());
 				return;
 			}
@@ -174,14 +174,14 @@ public class StdTitle extends StdItem implements LandTitle
 			Room R=CMMap.getRoom(landRoomID());
 			if(R==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unknown room: "+landRoomID());
 				return;
 			}
 			LandTitle A=fetchLandTitle(R);
 			if(A==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Ungiveable room: "+landRoomID());
 				return;
 			}
@@ -199,14 +199,14 @@ public class StdTitle extends StdItem implements LandTitle
 			Room R=CMMap.getRoom(landRoomID());
 			if(R==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unknown room: "+landRoomID());
 				return;
 			}
 			LandTitle A=fetchLandTitle(R);
 			if(A==null)
 			{
-				destroyThis();
+				destroy();
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}

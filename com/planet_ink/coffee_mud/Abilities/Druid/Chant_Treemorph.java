@@ -131,7 +131,7 @@ public class Chant_Treemorph extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(tree!=null) tree.destroyThis();
+			if(tree!=null) tree.destroy();
 			mob.tell("You feel like your normal self again!");
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);

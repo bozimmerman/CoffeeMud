@@ -255,7 +255,7 @@ public class Tailoring extends CommonSkill
 				&&(I.container()==null)
 				&&(I.material()==firstWood.material())
 				&&((--woodDestroyed)>=0))
-					I.destroyThis();
+					I.destroy();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)

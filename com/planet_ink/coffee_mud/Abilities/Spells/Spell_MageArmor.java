@@ -26,7 +26,7 @@ public class Spell_MageArmor extends Spell
 		if(canBeUninvoked())
 		if(theArmor!=null)
 		{
-			theArmor.destroyThis();
+			theArmor.destroy();
 			mob.location().recoverRoomStats();
 		}
 		super.unInvoke();

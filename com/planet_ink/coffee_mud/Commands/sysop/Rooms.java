@@ -56,10 +56,10 @@ public class Rooms
 			return;
 		}
 
-		int direction=Directions.getDirectionCode(((String)commands.elementAt(2)));
+		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U or D.\n\r");
+			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U, D, or V.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -108,10 +108,10 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		int direction=Directions.getDirectionCode(Util.combine(commands,2));
+		int direction=Directions.getGoodDirectionCode(Util.combine(commands,2));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U or D.\n\r");
+			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U, D, or V.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -564,7 +564,7 @@ public class Rooms
 			if(item2!=null)
 			{
 				ExternalPlay.deleteTick(item2,-1);
-				item2.destroyThis();
+				item2.destroy();
 			}
 		}
 		clearTheRoom(deadRoom);
@@ -597,16 +597,16 @@ public class Rooms
 			}
 		}
 		String roomdir=Util.combine(commands,2);
-		int direction=Directions.getDirectionCode(roomdir);
+		int direction=Directions.getGoodDirectionCode(roomdir);
 		Room deadRoom=null;
 		if(!thecmd.equalsIgnoreCase("UNLINK"))
 			deadRoom=CMMap.getRoom(roomdir);
 		if((deadRoom==null)&&(direction<0))
 		{
 			if(thecmd.equalsIgnoreCase("UNLINK"))
-				mob.tell("You have failed to specify a direction.  Try (N, S, E, W, U or D).\n\r");
+				mob.tell("You have failed to specify a direction.  Try (N, S, E, W, U, D, or V).\n\r");
 			else
-				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or (N, S, E, W, U or D).\n\r");
+				mob.tell("You have failed to specify a direction.  Try a VALID ROOM ID, or (N, S, E, W, U, D, or V).\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
@@ -733,7 +733,10 @@ public class Rooms
 			}
 		}
 		while(room.numItems()>0)
-			room.delItem(room.fetchItem(0));
+		{
+			Item I=room.fetchItem(0);
+			I.destroy();
+		}
 		ExternalPlay.clearDebri(room,0);
 	}
 

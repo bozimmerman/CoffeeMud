@@ -40,7 +40,7 @@ public class Prayer_Sacrifice extends Prayer
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.destroyThis();
+				target.destroy();
 				if(mob.getAlignment()>=500)
 				{
 					double exp=5.0;

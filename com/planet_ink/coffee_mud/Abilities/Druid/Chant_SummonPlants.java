@@ -28,7 +28,7 @@ public class Chant_SummonPlants extends Chant
 		{
 			Item plants=littlePlants; // protects against uninvoke loops!
 			littlePlants=null;
-			plants.destroyThis();
+			plants.destroy();
 			PlantsLocation.recoverRoomStats();
 			PlantsLocation=null;
 		}

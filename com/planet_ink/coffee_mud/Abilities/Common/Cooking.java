@@ -95,7 +95,7 @@ public class Cooking extends CommonSkill
 				{
 					Vector V=cooking.getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.elementAt(v)).destroyThis();
+						((Item)V.elementAt(v)).destroy();
 					if((cooking instanceof Drink)&&(finalDish instanceof Drink))
 						((Drink)cooking).setLiquidRemaining(0);
 					for(int i=0;i<finalAmount*(abilityCode());i++)

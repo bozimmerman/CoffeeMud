@@ -26,10 +26,10 @@ public class Exits
 			return;
 		}
 
-		int direction=Directions.getDirectionCode(((String)commands.elementAt(2)));
+		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U or D.\n\r");
+			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U, D, or V.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -104,10 +104,10 @@ public class Exits
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		int direction=Directions.getDirectionCode(((String)commands.elementAt(2)));
+		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U or D.\n\r");
+			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U, D, or V.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
@@ -169,10 +169,10 @@ public class Exits
 			return;
 		}
 
-		int direction=Directions.getDirectionCode(((String)commands.elementAt(2)));
+		int direction=Directions.getGoodDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{
-			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U or D.\n\r");
+			mob.tell("You have failed to specify a direction.  Try N, S, E, W, U, D, or V.\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}

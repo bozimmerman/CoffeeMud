@@ -24,7 +24,7 @@ public class Chant_Mold extends Chant
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			item.destroyThis();
+			item.destroy();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

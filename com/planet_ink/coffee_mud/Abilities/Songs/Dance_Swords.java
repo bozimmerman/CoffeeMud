@@ -51,7 +51,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)E).owner() instanceof Room))
 		{
 			((Room)((Item)E).owner()).showHappens(Affect.MSG_OK_ACTION,E.name()+" vanishes!");
-			((Item)E).destroyThis();
+			((Item)E).destroy();
 		}
 	}
 

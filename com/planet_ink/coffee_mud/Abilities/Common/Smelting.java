@@ -220,10 +220,10 @@ public class Smelting extends CommonSkill
 			{
 				if((I.material()==EnvResource.RESOURCE_DATA[resourceCode1][0])
 				&&((--Resource1Destroyed)>=0))
-					I.destroyThis();
+					I.destroy();
 				if((I.material()==EnvResource.RESOURCE_DATA[resourceCode2][0])
 				&&((--Resource2Destroyed)>=0))
-					I.destroyThis();
+					I.destroy();
 			}
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);

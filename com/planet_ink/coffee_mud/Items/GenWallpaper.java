@@ -213,7 +213,7 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public void destroyThis()
+	public void destroy()
 	{
 		if(owner==null) return;
 		destroyed=true;

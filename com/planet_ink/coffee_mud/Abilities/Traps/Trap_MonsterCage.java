@@ -37,7 +37,7 @@ public class Trap_MonsterCage extends StdTrap
 	{
 		if(E==null) return null;
 		Item I=getCagedAnimal(mob);
-		if(I!=null) I.destroyThis();
+		if(I!=null) I.destroy();
 		setMiscText(((CagedAnimal)I).cageText());
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}

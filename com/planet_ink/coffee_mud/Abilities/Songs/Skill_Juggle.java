@@ -125,7 +125,7 @@ public class Skill_Juggle extends StdAbility
 					unJuggle(I);
 				else
 				if((I.owner() instanceof Room)&&(I.owner()!=R))
-					R.bringItemHere(I);
+					R.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
 			}
 		}
 		pause=true;
@@ -186,7 +186,7 @@ public class Skill_Juggle extends StdAbility
 			{
 				I.unWear();
 				if(!M.location().isContent(I))
-					M.location().bringItemHere(I);
+					M.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP);
 			}
 		}
 		M.recoverEnvStats();
@@ -255,7 +255,7 @@ public class Skill_Juggle extends StdAbility
 								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
 								w.recoverEnvStats();
 								ExternalPlay.postAttack(mob,mob.getVictim(),w);
-								w.destroyThis();
+								w.destroy();
 							}
 							else
 								break;

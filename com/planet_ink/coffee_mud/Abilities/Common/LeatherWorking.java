@@ -300,14 +300,14 @@ public class LeatherWorking extends CommonSkill
 			{
 				Item I=mob.location().fetchItem(i);
 				if((multiplier==3)&&(I==firstMetal))
-					I.destroyThis();
+					I.destroy();
 				else
 				if((I instanceof EnvResource)
 				&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
 				&&(I.container()==null)
 				&&(I.material()==firstWood.material())
 				&&((--woodDestroyed)>=0))
-					I.destroyThis();
+					I.destroy();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)

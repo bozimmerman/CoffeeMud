@@ -40,7 +40,7 @@ public class SaveThread extends Thread
 				{
 					if(itemKillTime>I.dispossessionTime())
 					{
-						I.destroyThis();
+						I.destroy();
 						i=i-1;
 					}
 				}

@@ -79,7 +79,7 @@ public class Prayer_FlameWeapon extends Prayer
 		}
 		super.unInvoke();
 		if(destroyMe!=null)
-			destroyMe.destroyThis();
+			destroyMe.destroy();
 	}
 
 

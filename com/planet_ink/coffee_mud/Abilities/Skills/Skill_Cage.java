@@ -108,7 +108,7 @@ public class Skill_Cage extends StdAbility
 					target.killMeDead(false);
 				}
 				else
-					((Item)caged).destroyThis();
+					((Item)caged).destroy();
 			}
 		}
 		else

@@ -79,7 +79,7 @@ public class Age extends StdAbility
 					babe.bringToLife(R,true);
 					babe.setFollowing(following);
 					R.show(babe,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 				}
 			}
 		}

@@ -163,7 +163,7 @@ public class Movement extends Scriptable
 				Item rItem=(Item)rider;
 				if((rItem.owner()==sourceRoom)
 				||(rItem.owner()==destRoom))
-					destRoom.bringItemHere(rItem);
+					destRoom.bringItemHere(rItem,-1);
 				else
 					rItem.setRiding(null);
 			}
@@ -226,7 +226,7 @@ public class Movement extends Scriptable
 			riding=(Rideable)rideables.elementAt(r);
 			if((riding instanceof Item)
 			&&((sourceRoom).isContent((Item)riding)))
-				destRoom.bringItemHere((Item)riding);
+				destRoom.bringItemHere((Item)riding,-1);
 			else
 			if((riding instanceof MOB)
 			&&((sourceRoom).isInhabitant((MOB)riding)))
@@ -242,7 +242,7 @@ public class Movement extends Scriptable
 						riding=(Rideable)rideables.elementAt(r);
 						if((riding instanceof Item)
 						&&((destRoom).isContent((Item)riding)))
-							sourceRoom.bringItemHere((Item)riding);
+							sourceRoom.bringItemHere((Item)riding,-1);
 						else
 						if((riding instanceof MOB)
 						&&(((MOB)riding).isMonster())

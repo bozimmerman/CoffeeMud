@@ -56,7 +56,7 @@ public class Spell_WallOfIce extends Spell
 							&&(!M.amDead()))
 								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
-						((Item)affected).destroyThis();
+						((Item)affected).destroy();
 					}
 				}
 				return false;
@@ -79,7 +79,7 @@ public class Spell_WallOfIce extends Spell
 				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

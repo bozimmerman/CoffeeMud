@@ -120,7 +120,7 @@ public class LightSource extends StdItem implements Light
 					if(((Room)myLight.owner()).numInhabitants()>0)
 						((Room)myLight.owner()).showHappens(Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
 					if(myLight.destroyedWhenBurnedOut())
-						myLight.destroyThis();
+						myLight.destroy();
 					((Room)myLight.owner()).recoverRoomStats();
 				}
 				else
@@ -129,7 +129,7 @@ public class LightSource extends StdItem implements Light
 					((MOB)myLight.owner()).tell(((MOB)myLight.owner()),null,myLight,"<O-NAME> flickers and burns out.");
 					myLight.setDuration(0);
 					if(myLight.destroyedWhenBurnedOut())
-						myLight.destroyThis();
+						myLight.destroy();
 					((MOB)myLight.owner()).recoverEnvStats();
 					((MOB)myLight.owner()).recoverCharStats();
 					((MOB)myLight.owner()).recoverMaxState();

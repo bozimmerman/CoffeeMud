@@ -300,8 +300,8 @@ public class Spell_Meld extends Spell
 					}
 					melded.recoverEnvStats();
 				}
-				itemOne.destroyThis();
-				itemTwo.destroyThis();
+				itemOne.destroy();
+				itemTwo.destroy();
 				mob.location().recoverRoomStats();
 			}
 		}

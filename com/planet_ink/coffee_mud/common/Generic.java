@@ -1278,7 +1278,7 @@ public class Generic
 			{
 				Item I=((MOB)E).fetchInventory(0);
 				if(I!=null)
-					((MOB)E).delInventory(I);
+					I.destroy();
 			}
 			if(E instanceof ShopKeeper)
 			{
@@ -1792,7 +1792,7 @@ public class Generic
 				while(M.inventorySize()>0)
 				{
 					Item I=M.fetchInventory(0);
-					if(I!=null) M.delInventory(I);
+					if(I!=null) I.destroy();
 				}
 				Generic.setGenMobInventory(M,XMLManager.parseAllXML(val));
 			}

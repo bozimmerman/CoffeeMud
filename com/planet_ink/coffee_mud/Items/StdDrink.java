@@ -149,7 +149,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 				if(full)
 					mob.tell("You have drunk all you can.");
 				if(disappearsAfterDrinking)
-					destroyThis();
+					destroy();
 				break;
 			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
@@ -163,7 +163,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 						setLiquidType(thePuddle.liquidType());
 					amountOfLiquidRemaining+=amountToTake;
 					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
-						destroyThis();
+						destroy();
 				}
 				break;
 			default:

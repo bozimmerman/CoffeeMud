@@ -292,7 +292,7 @@ public class Alchemy extends CommonSkill
 			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
-			building.destroyThis();
+			building.destroy();
 			building=CMClass.getItem("GenPotion");
 			((Potion)building).setSpellList(theSpell.ID());
 			building.setName("a potion of "+theSpell.name().toLowerCase());

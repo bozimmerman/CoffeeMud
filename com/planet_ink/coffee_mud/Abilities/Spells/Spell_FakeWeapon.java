@@ -22,7 +22,7 @@ public class Spell_FakeWeapon extends Spell
 		{
 			Item item=myItem;
 			myItem=null;
-			item.destroyThis();
+			item.destroy();
 		}
 	}
 

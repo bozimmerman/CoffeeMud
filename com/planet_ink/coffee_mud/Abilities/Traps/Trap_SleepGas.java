@@ -56,7 +56,7 @@ public class Trap_SleepGas extends StdTrap
 			Vector V=returnOffensiveAffects(I);
 			if(V.size()>0)
 				setMiscText(((Ability)V.firstElement()).ID());
-			I.destroyThis();
+			I.destroy();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}

@@ -143,7 +143,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			&&(I.container()==null)
 			&&(I.material()==resource.material())
 			&&((--woodDestroyed)>=0))
-				I.destroyThis();
+				I.destroy();
 		}
 
 		boolean success=profficiencyCheck(0,auto);

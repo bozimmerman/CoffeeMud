@@ -395,7 +395,25 @@ public class StdMOB implements MOB
 		return amDead||pleaseDestroy;
 	}
 
+	
 	public void destroy()
+	{
+		removeFromGame();
+		while(numBehaviors()>0)
+			delBehavior(fetchBehavior(0));
+		while(numAffects()>0)
+			delAffect(fetchAffect(0));
+		while(numAbilities()>0)
+			delAbility(fetchAbility(0));
+		while(inventorySize()>0)
+		{
+			Item I=fetchInventory(0);
+			I.destroy();
+			delInventory(I);
+		}
+	}
+	
+	public void removeFromGame()
 	{
 		pleaseDestroy=true;
 		if(location!=null)
@@ -417,6 +435,7 @@ public class StdMOB implements MOB
 				delFollower(follower);
 			}
 		}
+		
 		if(!isMonster())
 		{
 			for(int f=0;f<oldFollowers.size();f++)

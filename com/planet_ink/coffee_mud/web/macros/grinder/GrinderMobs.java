@@ -369,7 +369,10 @@ public class GrinderMobs
 			{
 				Item I=(Item)allitems.elementAt(i);
 				if(!M.isMine(I))
-					I.destroyThis();
+				{
+					I.setOwner(M);
+					I.destroy();
+				}
 			}
 			for(int i=0;i<M.inventorySize();i++)
 			{

@@ -67,7 +67,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 					}
 				}
 				mob.tell("The book vanishes out of your hands.");
-				destroyThis();
+				destroy();
 				affect.source().location().recoverRoomStats();
 				return;
 			default:

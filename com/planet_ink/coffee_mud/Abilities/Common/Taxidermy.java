@@ -100,7 +100,7 @@ public class Taxidermy extends CommonSkill
 			&&(!Sense.isOnFire(I2))
 			&&(I2.material()==firstWood.material())
 			&&((--woodDestroyed)>=0))
-				I2.destroyThis();
+				I2.destroy();
 		}
 		messedUp=!profficiencyCheck(0,auto);
 		if(found!=null)	foundShortName=I.Name();
@@ -120,7 +120,7 @@ public class Taxidermy extends CommonSkill
 		found.recoverEnvStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
-		I.destroyThis();
+		I.destroy();
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{

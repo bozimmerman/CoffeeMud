@@ -101,7 +101,7 @@ public class Prop_SpellReflecting extends Property
 					if(fade>0)
 					{
 						target.location().show(target,affected,Affect.MSG_OK_VISUAL,"<T-NAMESELF> vanishes!");
-						((Item)affected).destroyThis();
+						((Item)affected).destroy();
 						target.location().recoverRoomStats();
 					}
 					else

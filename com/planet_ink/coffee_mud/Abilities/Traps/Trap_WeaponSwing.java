@@ -37,7 +37,7 @@ public class Trap_WeaponSwing extends StdTrap
 		setMiscText("3/a club");
 		if(I!=null){
 			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
-			I.destroyThis();
+			I.destroy();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}

@@ -80,7 +80,7 @@ public class GenPotion extends GenWater implements Potion
 				{
 					drinkIfAble(mob,this);
 					mob.tell(name()+" vanishes!");
-					this.destroyThis();
+					this.destroy();
 				}
 				else
 				{

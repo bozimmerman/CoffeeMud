@@ -321,14 +321,14 @@ public class Weaponsmithing extends CommonSkill
 			{
 				Item I=mob.location().fetchItem(i);
 				if((firstOther!=null)&&(I==firstOther))
-					I.destroyThis();
+					I.destroy();
 				else
 				if((I instanceof EnvResource)
 				&&(I.container()==null)
 				&&(!Sense.isOnFire(I))
 				&&(I.material()==firstWood.material())
 				&&((--woodDestroyed)>=0))
-				  I.destroyThis();
+				  I.destroy();
 			}
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)

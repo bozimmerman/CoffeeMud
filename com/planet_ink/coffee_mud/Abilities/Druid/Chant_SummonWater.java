@@ -28,7 +28,7 @@ public class Chant_SummonWater extends Chant
 		{
 			Item spring=littleSpring; // protects against uninvoke loops!
 			littleSpring=null;
-			spring.destroyThis();
+			spring.destroy();
 			SpringLocation.recoverRoomStats();
 			SpringLocation=null;
 		}

@@ -44,7 +44,7 @@ public class Spell_WallOfStone extends Spell
 				if(amountRemaining<0)
 				{
 					deathNotice="The wall of stone is destroyed!";
-					((Item)affected).destroyThis();
+					((Item)affected).destroy();
 				}
 				return false;
 			}
@@ -66,7 +66,7 @@ public class Spell_WallOfStone extends Spell
 				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
 				Item wall=theWall;
 				theWall=null;
-				wall.destroyThis();
+				wall.destroy();
 			}
 		}
 	}

@@ -27,7 +27,7 @@ public class Spell_FeignDeath extends Spell
 			mob.tell("Your death is no longer feigned.");
 		if((Body!=null)&&(deathRoom!=null)&&(deathRoom.isContent(Body)))
 		{
-			Body.destroyThis();
+			Body.destroy();
 			deathRoom.recoverRoomStats();
 		}
 		super.unInvoke();

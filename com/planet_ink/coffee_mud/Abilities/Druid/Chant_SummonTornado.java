@@ -103,7 +103,7 @@ public class Chant_SummonTornado extends Chant
 						else
 						{
 							mob.location().show(mob,null,I,Affect.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it away.");
-							R.bringItemHere(I);
+							R.bringItemHere(I,-1);
 						}
 						if(I.subjectToWearAndTear())
 						{
@@ -135,7 +135,7 @@ public class Chant_SummonTornado extends Chant
 							if(I.usesRemaining()<=0)
 							{
 								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" is destroyed!");
-								I.destroyThis();
+								I.destroy();
 							}
 						}
 					}

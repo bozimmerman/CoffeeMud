@@ -803,7 +803,7 @@ public class StdArea implements Area
 										if(M.location().okAffect(M,msg))
 											M.location().send(M,msg);
 									}
-									I.destroyThis();
+									I.destroy();
 								}
 							}
 						}

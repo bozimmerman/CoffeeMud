@@ -73,7 +73,7 @@ public class Chant_ControlFire extends Chant
 				if(target.location()==mob.location())
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 			}
-			fireSource.destroyThis();
+			fireSource.destroy();
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");

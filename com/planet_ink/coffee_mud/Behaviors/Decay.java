@@ -46,7 +46,7 @@ public class Decay extends ActiveTicker
 				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
 				if(room==null) return true;
-				item.destroyThis();
+				item.destroy();
 				if(E instanceof MOB)
 				{
 					((MOB)E).tell(item.name()+" vanishes!");

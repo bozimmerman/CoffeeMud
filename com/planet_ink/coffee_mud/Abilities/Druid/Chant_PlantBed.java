@@ -25,7 +25,7 @@ public class Chant_PlantBed extends Chant
 			Rideable RI=(Rideable)peaPod;
 			for(int r=RI.numRiders()-1;r>=0;r--)
 				RI.fetchRider(r).setRiding(null);
-			peaPod.destroyThis();
+			peaPod.destroy();
 		}
 	}
 	

@@ -257,7 +257,7 @@ public class Money
 				{
 					for(int v=0;v<V.size();v++)
 						((Item)V.elementAt(v)).setContainer(I);
-					changeBag.destroyThis();
+					changeBag.destroy();
 					changeBag=(Container)I;
 					break;
 				}
@@ -301,7 +301,7 @@ public class Money
 			}
 		}
 		for(int v=0;v<coinsRequired.size();v++)
-			((Item)coinsRequired.elementAt(v)).destroyThis();
+			((Item)coinsRequired.elementAt(v)).destroy();
 		if((amount>0)&&(mob.getMoney()>=amount))
 		{
 			mob.setMoney(mob.getMoney()-amount);

@@ -40,7 +40,7 @@ public class Prayer_Bury extends Prayer
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.destroyThis();
+				target.destroy();
 				if((mob.getAlignment()>=350)&&(mob.getAlignment()<=650))
 				{
 					double exp=5.0;

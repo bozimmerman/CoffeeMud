@@ -25,7 +25,7 @@ public class Chant_FurCoat extends Chant
 		if(canBeUninvoked())
 		if(theArmor!=null)
 		{
-			theArmor.destroyThis();
+			theArmor.destroy();
 			mob.location().recoverRoomStats();
 		}
 		super.unInvoke();

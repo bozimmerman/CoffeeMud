@@ -212,7 +212,7 @@ public class Quests implements Cloneable, Quest
 						else
 						{
 							if(R!=null)
-								R.bringItemHere(I);
+								R.bringItemHere(I,-1);
 							else
 							if(I.owner() instanceof Room)
 								R=(Room)I.owner();
@@ -469,7 +469,7 @@ public class Quests implements Cloneable, Quest
 						else
 						{
 							if(R!=null)
-								R.bringItemHere(I);
+								R.bringItemHere(I,-1);
 							else
 							if(I.owner() instanceof Room)
 								R=(Room)I.owner();
@@ -890,7 +890,7 @@ public class Quests implements Cloneable, Quest
 			{
 				Environmental E=(Environmental)stuff.elementAt(i);
 				if(E instanceof Item)
-					((Item)E).destroyThis();
+					((Item)E).destroy();
 				else
 				if(E instanceof MOB)
 				{

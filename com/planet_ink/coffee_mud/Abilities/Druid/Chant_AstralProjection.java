@@ -122,7 +122,7 @@ public class Chant_AstralProjection extends Chant
 			while(spirit.inventorySize()>0)
 			{
 				Item I=spirit.fetchInventory(0);
-				if(I!=null) I.destroyThis();
+				if(I!=null) I.destroy();
 			}
 			spirit.setMoney(0);
 			mob.location().show(target,null,Affect.MSG_OK_ACTION,"^Z<S-NAME> go(es) limp!^.^?\n\r");

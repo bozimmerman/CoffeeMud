@@ -239,7 +239,7 @@ public class StdTrap extends StdAbility implements Trap
 					}
 					disable();
 					unInvoke();
-					I.destroyThis();
+					I.destroy();
 					return false;
 				}
 				else
@@ -329,7 +329,7 @@ public class StdTrap extends StdAbility implements Trap
 			&&(I.container()==null)
 			&&(I.material()==resource)
 			&&((--number)>=0))
-				I.destroyThis();
+				I.destroy();
 		}
 	}
 

@@ -28,7 +28,7 @@ public class Chant_SummonFire extends Chant
 		{
 			Item fire=littleFire; // protects against uninvoke loops!
 			littleFire=null;
-			fire.destroyThis();
+			fire.destroy();
 			FireLocation.recoverRoomStats();
 			FireLocation=null;
 		}

@@ -830,9 +830,11 @@ public class ClanCommands
 			mob.tell("You clan does not have a donation room.  Ask your clan boss for more information.");
 			return false;
 		}
-		mob.delInventory(I);
-		donateRoom.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
-		if(donateRoom!=null) donateRoom.recoverRoomStats();
+		else
+		{
+			donateRoom.bringItemHere(I,Item.REFUSE_PLAYER_DROP);
+			donateRoom.recoverRoomStats();
+		}
 		if(mob!=null)
 		{
 			mob.recoverCharStats();

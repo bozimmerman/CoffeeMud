@@ -105,6 +105,9 @@ public class Directions
 		else
 		if(("PORTAL").startsWith(theDir.toUpperCase()))
 		   return GATE;
+		else
+		if(("VORTEX").startsWith(theDir.toUpperCase()))
+		   return GATE;
 		
 		return code;
 	}

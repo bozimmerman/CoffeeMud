@@ -32,7 +32,7 @@ public class Chant_Nectar extends Chant
 			if(canBeUninvoked())
 			{
 				Item spring=littleSpring; // protects against uninvoke loops!
-				spring.destroyThis();
+				spring.destroy();
 				SpringLocation.recoverRoomStats();
 			}
 		}
