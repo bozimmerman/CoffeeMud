@@ -51,7 +51,10 @@ public class Thiefness extends CombatAbilities
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
 				MOB potentialVictim=mob.location().fetchInhabitant(i);
-				if((potentialVictim!=null)&&(!potentialVictim.isMonster())&&(Sense.canBeSeenBy(potentialVictim,mob)))
+				if((potentialVictim!=null)
+				   &&(potentialVictim!=mob)
+				   &&(!potentialVictim.isMonster())
+				   &&(Sense.canBeSeenBy(potentialVictim,mob)))
 					victim=potentialVictim;
 			}
 			if(victim!=null)

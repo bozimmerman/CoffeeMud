@@ -94,7 +94,7 @@ public class Thief_Snatch extends StdAbility
 			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
 			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
-			FullMsg msg2=new FullMsg(mob,null,null,Affect.MSG_THIEF_ACT,null);
+			FullMsg msg2=new FullMsg(mob,null,this,Affect.MSG_THIEF_ACT,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob.getVictim(),msg);

@@ -51,7 +51,7 @@ public class Paladin_Defend extends StdAbility
 			if(affect.amISource(invoker)
 			&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
 			{
-				invoker.location().show(invoker,affect.target(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> defend(s) <S-HIM-HER>self against <T-NAME>.");
+				invoker.location().show(invoker,affect.target(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> defend(s) <S-HIM-HERSELF> against <T-NAME>.");
 				return false;
 			}
 		}

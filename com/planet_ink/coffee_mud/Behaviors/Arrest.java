@@ -162,8 +162,10 @@ public class Arrest extends StdBehavior
 			}
 		}
 		if(B!=null)
-		for(int i=0;i<50;i++)
+		for(int i=0;i<20;i++)
 			B.tick(officer,Host.MOB_TICK);
+		if(officer.getStartRoom()!=null)
+			officer.getStartRoom().bringMobHere(officer,false);
 	}
 	
 	public MOB getAWitnessHere(Room R)
@@ -203,7 +205,6 @@ public class Arrest extends StdBehavior
 		if(W.witness.amDead()) return false;
 		if(H.containsKey(W.witness)) return false;
 		if((W.victim!=null)&&(H.containsKey(W.victim))) return false;
-		if(!Sense.canBeSeenBy(W.criminal,W.witness)) return false;
 		return true;
 	}
 	
@@ -215,7 +216,7 @@ public class Arrest extends StdBehavior
 	{
 		if(mob.amDead()) return;
 		if(mob.location()==null) return;
-		
+
 		// is there a witness
 		MOB witness=getWitness(mob);
 		if(witness==null) return;
@@ -265,6 +266,7 @@ public class Arrest extends StdBehavior
 		W.crime=crime;
 		W.state=STATE_SEEKING;
 		W.witness=witness;
+		sentence=sentence.trim();
 		if(sentence.equalsIgnoreCase("warning"))
 			W.actionCode=ACTION_WARN;
 		else
@@ -291,7 +293,8 @@ public class Arrest extends StdBehavior
 			return;
 		}
 		
-		if(isStillACrime(W))
+		if((isStillACrime(W))
+		&&(Sense.canBeSeenBy(W.criminal,W.witness)))
 			warrants.addElement(W);
 	}
 	
@@ -333,7 +336,7 @@ public class Arrest extends StdBehavior
 		   &&(affect.tool() instanceof Ability)
 		   &&(affect.othersMessage()!=null))
 		{
-			String info=(String)laws.get(affect.tool().ID());
+			String info=(String)laws.get(affect.tool().ID().toUpperCase());
 			if((info!=null)&&(info.length()>0))
 				fillOutWarrant(affect.source(),
 							   affect.target(),
@@ -355,7 +358,6 @@ public class Arrest extends StdBehavior
 		}
 		
 		if((affect.targetCode()!=Affect.NO_EFFECT)
-		   &&(affect.targetMessage()!=null)
 		   &&(affect.othersMessage()!=null))
 		for(int i=0;i<otherCrimes.size();i++)
 		{
@@ -458,10 +460,11 @@ public class Arrest extends StdBehavior
 	{
 		if(W==null) return "";
 		String charge=W.crime;
-		if(charge.indexOf("<T-NAME>")<0) return charge;
 		if(W.victim==null) return charge;
+		if(charge.indexOf("<T-NAME>")<0) return charge;
 		return charge.replaceFirst("<T-NAME>",W.victim.name());
 	}
+	
 	public String restOfCharges(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -549,7 +552,7 @@ public class Arrest extends StdBehavior
 							{
 								if(officer.getVictim()==W.criminal)
 								{
-									ExternalPlay.quickSay(officer,W.criminal,"Resisting arrest?! How DARE you!",false,false);
+									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTFIGHTMSG"),false,false);
 									W.state=STATE_SUBDUEING;
 								}
 								else
@@ -561,9 +564,9 @@ public class Arrest extends StdBehavior
 							else
 							{
 								if(Sense.isSitting(W.criminal)||Sense.isSleeping(W.criminal))
-									ExternalPlay.quickSay(officer,W.criminal,"Good.  Now hold still.",false,false);
+									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("NORESISTMSG"),false,false);
 								else
-									ExternalPlay.quickSay(officer,W.criminal,"I said DOWN! NOW!",false,false);
+									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTWARNMSG"),false,false);
 								W.state=STATE_SUBDUEING;
 							}
 						}
@@ -585,17 +588,24 @@ public class Arrest extends StdBehavior
 							if(!Sense.isSitting(W.criminal)&&(!Sense.isSleeping(W.criminal)))
 							{
 								if(!W.arrestingOfficer.isInCombat())
-									ExternalPlay.quickSay(officer,W.criminal,"Resisting arrest eh?  Well, have it your way.",false,false);
+									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTMSG"),false,false);
 								Ability A=CMClass.getAbility("Fighter_Whomp");
 								if(A!=null)	A.invoke(officer,W.criminal,true);
 							}
 							if(Sense.isSitting(W.criminal)||(Sense.isSleeping(W.criminal)))
 							{
 								makePeace(officer.location());
+								
 								// cuff him!
 								W.state=STATE_MOVING;
 								Ability A=CMClass.getAbility("Skill_HandCuff");
 								if(A!=null)	A.invoke(officer,W.criminal,true);
+								A=W.criminal.fetchAffect("Fighter_Whomp");
+								if(A!=null)A.unInvoke();
+								A=W.criminal.fetchAffect("Skill_Trip");
+								if(A!=null)A.unInvoke();
+								makePeace(officer.location());
+								ExternalPlay.standIfNecessary(W.criminal);
 								A=CMClass.getAbility("Ranger_Track");
 								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 							}
@@ -617,6 +627,7 @@ public class Arrest extends StdBehavior
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							makePeace(officer.location());
+							ExternalPlay.look(officer,null,true);
 							if(officer.location().fetchInhabitant((String)laws.get("JUDGE"))!=null)
 								W.state=STATE_REPORTING;
 							else
@@ -768,6 +779,12 @@ public class Arrest extends StdBehavior
 								W.state=STATE_SEEKING;
 							}
 						}
+						else
+						{
+							unCuff(W.criminal);
+							W.arrestingOfficer=null;
+							W.state=STATE_SEEKING;
+						}
 					}
 					break;
 				case STATE_JAILING:
@@ -780,7 +797,6 @@ public class Arrest extends StdBehavior
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
 							setFree(W.criminal);
-							dismissOfficer(officer);
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
@@ -807,12 +823,18 @@ public class Arrest extends StdBehavior
 									{
 										Ability A=CMClass.getAbility("Prisoner");
 										A.startTickDown(W.criminal,W.jailTime);
+										W.criminal.recoverEnvStats();
+										W.criminal.recoverCharStats();
 									}
+									dismissOfficer(officer);
 									W.criminal.tell("\n\r\n\r");
 									ExternalPlay.look(W.criminal,null,true);
 								}
 								else
+								{
 									ExternalPlay.quickSay(judge,W.criminal,"But since there IS no jail, I will let you go.",false,false);
+									dismissOfficer(officer);
+								}
 							}
 							else
 							{
@@ -845,6 +867,8 @@ public class Arrest extends StdBehavior
 								dismissOfficer(officer);
 								Ability A=CMClass.getAbility("Prisoner");
 								A.startTickDown(W.criminal,100);
+								W.criminal.recoverEnvStats();
+								W.criminal.recoverCharStats();
 								ExternalPlay.postAttack(judge,W.criminal,judge.fetchWieldedItem());
 							}
 							else

@@ -61,7 +61,7 @@ public class Skill_HandCuff extends StdAbility
 			&&(affect.target() instanceof Room)
 			&&(!((Room)affect.target()).isInhabitant(invoker)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
@@ -76,7 +76,7 @@ public class Skill_HandCuff extends StdAbility
 			&&((Util.bset(affect.sourceMajor(),Affect.ACT_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
 				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
@@ -97,6 +97,7 @@ public class Skill_HandCuff extends StdAbility
 		super.unInvoke();
 		if(canBeUninvoked)
 		{
+			mob.setFollowing(null);
 			if(!mob.amDead())
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> released from the handcuffs.");
 			if(oldAssist>0)

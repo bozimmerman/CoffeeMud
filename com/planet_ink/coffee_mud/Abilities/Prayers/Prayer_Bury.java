@@ -48,8 +48,8 @@ public class Prayer_Bury extends Prayer
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
-			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> bury(s) <T-HIM-HER>self.":"<S-NAME> bury(s) <T-NAMESELF> in the name of <S-HIS-HER> god.");
+			// what happened. 
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> bury(s) <T-HIM-HERSELF>.":"<S-NAME> bury(s) <T-NAMESELF> in the name of <S-HIS-HER> god.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

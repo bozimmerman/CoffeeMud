@@ -212,9 +212,11 @@ public class StdRoom
 				if((thatSky!=null)&&(thatSky.ID().length()==0)&&(thatSky instanceof EndlessSky))
 				{
 					sky.rawDoors()[d]=thatSky;
-					sky.rawExits()[d]=rawExits()[d];
+					Exit xo=rawExits()[d];
+					if((xo==null)||(xo.hasADoor())) xo=o;
+					sky.rawExits()[d]=o;
 					thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
-					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+					xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
 					if((xo==null)||(xo.hasADoor())) xo=o;
 					thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
 					((GridLocale)thatSky).clearGrid();

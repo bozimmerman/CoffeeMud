@@ -15,6 +15,13 @@ public class MoneyChanger extends StdBehavior
 	{
 		return new MoneyChanger();
 	}
+	public void startBehavior(Environmental forMe)
+	{
+		if(forMe==null) return;
+		if(!(forMe instanceof MOB)) return;
+		((MOB)forMe).baseCharStats().setStat(CharStats.STRENGTH,25);
+		super.startBehavior(forMe);
+	}
 	public boolean okAffect(Environmental affecting, Affect affect)
 	{
 		if(!super.okAffect(affecting,affect))

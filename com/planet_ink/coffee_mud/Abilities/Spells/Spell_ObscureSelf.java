@@ -175,11 +175,11 @@ public class Spell_ObscureSelf extends Spell
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
+			// and add it to the affects list of the 
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> whisper(s) to <S-HIS-HER>self.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> whisper(s) to <S-HIS-HERSELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -187,7 +187,7 @@ public class Spell_ObscureSelf extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <S-HIS-HER>self, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> whisper(s) to <S-HIS-HERSELF>, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

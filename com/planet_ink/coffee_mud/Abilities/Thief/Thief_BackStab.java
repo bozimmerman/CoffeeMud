@@ -83,7 +83,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,null,(auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
+		FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

@@ -77,10 +77,10 @@ public class Thief_Peek extends ThiefSkill
 			if(Dice.rollPercentage()<discoverChance)
 				str=auto?"":"<S-NAME> peek(s) at your inventory.";
 
-			FullMsg msg=new FullMsg(mob,target,null,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT|Affect.ACT_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_EXAMINESOMETHING,str,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT|Affect.ACT_EYES),auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_EXAMINESOMETHING,str,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
-				msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_OK_VISUAL,str,Affect.NO_EFFECT,null);
+				msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",Affect.MSG_OK_VISUAL,str,(str==null)?Affect.NO_EFFECT:Affect.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
 				StringBuffer msg2=ExternalPlay.getInventory(mob,target);
 				if(msg2.length()==0)

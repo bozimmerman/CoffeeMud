@@ -264,6 +264,18 @@ public class Util
 			return thisStr.substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-thisStr.length())+thisStr;
 	}
+	public static String padRightPreserve(String thisStr, int thisMuch)
+	{
+		if(thisStr.length()>=thisMuch)
+			return thisStr;
+		return thisStr+SPACES.substring(0,thisMuch-thisStr.length());
+	}
+	public static String padLeftPreserve(String thisStr, int thisMuch)
+	{
+		if(thisStr.length()>=thisMuch)
+			return thisStr;
+		return SPACES.substring(0,thisMuch-thisStr.length())+thisStr;
+	}
 	
 	public static double div(double a, double b)
 	{

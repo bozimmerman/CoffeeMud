@@ -104,7 +104,7 @@ public class Thief_Hide extends ThiefSkill
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.ACT_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -45,6 +45,8 @@ public class TelnetSession extends Thread implements Session
 	private final static int ISARE=5;
 	private final static int HASHAVE=6;
 	private final static int YOUPOSS=7;
+	private final static int HIMHERSELF=8;
+	private final static int HISHERSELF=9;
 	private static Hashtable tagTable=null;
 
 	private static int sessionCounter=0;
@@ -57,6 +59,8 @@ public class TelnetSession extends Thread implements Session
 			tagTable=new Hashtable();
 			tagTable.put("-HIS-HER",new Integer(HISHER));
 			tagTable.put("-HIM-HER",new Integer(HIMHER));
+			tagTable.put("-HIM-HERSELF",new Integer(HIMHERSELF));
+			tagTable.put("-HIS-HERSELF",new Integer(HISHERSELF));
 			tagTable.put("-NAME",new Integer(NAME));
 			tagTable.put("-NAMESELF",new Integer(NAMESELF));
 			tagTable.put("-HE-SHE",new Integer(HESHE));
@@ -752,9 +756,6 @@ public class TelnetSession extends Thread implements Session
 									if(regarding==null)
 										replacement="";
 									else
-									if(((source==target)||(target==null))&&(mob==regarding))
-										replacement="your";
-									else
 									if(mob==regarding)
 										replacement="you";
 									else
@@ -763,6 +764,35 @@ public class TelnetSession extends Thread implements Session
 									else
 										replacement="it";
 	
+								}
+								break;
+							case HIMHERSELF:
+								{
+									if(regarding==null)
+										replacement="themself";
+									else
+									if(mob==regarding)
+										replacement="yourself";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().himher()+"self";
+									else
+										replacement="itself";
+	
+								}
+								break;
+							case HISHERSELF:
+								{
+									if(regarding==null)
+										replacement="themself";
+									else
+									if(mob==regarding)
+										replacement="yourself";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().hisher()+"self";
+									else
+										replacement="itself";
 								}
 								break;
 							case HESHE:

@@ -269,7 +269,7 @@ public class Ranger_Track extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> begin(s) to track <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

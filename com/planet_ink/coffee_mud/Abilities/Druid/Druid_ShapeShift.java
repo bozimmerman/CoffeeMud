@@ -185,7 +185,7 @@ public class Druid_ShapeShift extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to <S-HIM-HER>self, but nothing happens.");
+			beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to <S-HIM-HERSELF>, but nothing happens.");
 
 
 		// return whether it worked

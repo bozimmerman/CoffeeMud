@@ -68,7 +68,7 @@ public class Thief_Swipe extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",Affect.NO_EFFECT,null);
+				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
 				if(mob.location().okAffect(msg))
 					mob.location().send(mob,msg);
 			}
@@ -97,7 +97,7 @@ public class Thief_Swipe extends ThiefSkill
 				hisStr=null;
 			else
 				hisCode=hisCode | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

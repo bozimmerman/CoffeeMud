@@ -30,7 +30,9 @@ public class Prop_ReqNoMOB extends Property
 		   &&(affect.targetMinor()==Affect.TYP_ENTER)
 		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			if((affect.source().isMonster())&&(affect.source().amFollowing()==null))
+			if((affect.source().isMonster())
+			   &&(affect.source().amFollowing()==null)
+			   &&(affect.source().numFollowers()==0))
 				return false;
 		}
 		return super.okAffect(affect);

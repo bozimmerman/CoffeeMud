@@ -58,7 +58,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> bury(s) <T-HIM-HER>self.":"<S-NAME> bury(s) <T-NAMESELF> while chanting, returning dust to dust.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> bury(s) <T-HIM-HERSELF>.":"<S-NAME> bury(s) <T-NAMESELF> while chanting, returning dust to dust.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

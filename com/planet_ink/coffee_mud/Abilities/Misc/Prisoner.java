@@ -74,6 +74,4 @@ public class Prisoner extends StdAbility
 		if(canBeUninvoked)
 			mob.tell("Your sentence has been served.");
 	}
-
-
 }

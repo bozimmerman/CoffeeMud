@@ -3,6 +3,7 @@
 % Plate	1	10	8	1	GenContainer		5	
 % Pitcher	1	15	15	1	GenWater		15	
 % Barrel	1	30	30	5	GenWater		50	
+% Plaque	1	20	5	20	GenItem		0	
 Torch	15	15	5	10	GenLightSource		50	
 Small % Table	1	15	30	15	GenRideable	TABLE	20	
 Small % Stool	1	15	10	3	GenChair	CHAIR	1	

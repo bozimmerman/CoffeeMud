@@ -55,7 +55,7 @@ public class Skill_Climb extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,null);
+		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

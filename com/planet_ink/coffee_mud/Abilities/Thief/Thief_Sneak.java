@@ -63,7 +63,7 @@ public class Thief_Sneak extends ThiefSkill
 			return false;
 
 		boolean success=false;
-		FullMsg msg=new FullMsg(mob,null,null,auto?Affect.MSG_OK_VISUAL:Affect.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_VISUAL:Affect.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

@@ -48,8 +48,8 @@ public class Prayer_Sacrifice extends Prayer
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
-			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> sacrifice(s) <T-HIM-HER>self.":"<S-NAME> sacrifice(s) <T-NAMESELF> to <S-HIS-HER> god.");
+			// what happened. 
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> sacrifice(s) <T-HIM-HERSELF>.":"<S-NAME> sacrifice(s) <T-NAMESELF> to <S-HIS-HER> god.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

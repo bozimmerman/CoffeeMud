@@ -1,3 +1,4 @@
+% Plaque	1	10	10	50	GenItem		0	
 % Chessboard	1	80	30	250	GenItem		0	
 % Cup	1	20	10	0	GenWater		5	
 % Mug	1	20	10	0	GenWater		5	

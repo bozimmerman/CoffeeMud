@@ -69,7 +69,7 @@ public class Thief_DetectTraps extends ThiefSkill
 					theTrap=opTrap;
 			}
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
+		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
