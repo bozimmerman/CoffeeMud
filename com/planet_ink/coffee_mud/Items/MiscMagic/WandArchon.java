@@ -37,6 +37,43 @@ public class WandArchon extends StdWand
 		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 	
+	public void affectCharState(MOB mob, CharState affectableState)
+	{
+		if(!amWearingAt(Item.INVENTORY))
+		{
+			affectableState.setHunger(99999999);
+			affectableState.setThirst(99999999);
+			mob.curState().setHunger(9999999);
+			mob.curState().setThirst(9999999);
+		}
+	}
+	
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+
+		MOB mob=affect.source();
+		if(mob.location()==null)
+			return true;
+
+		if(affect.amITarget(this))
+		switch(affect.targetMinor())
+		{
+		case Affect.TYP_HOLD:
+		case Affect.TYP_WEAR:
+		case Affect.TYP_WIELD:
+		case Affect.TYP_GET:
+			if(mob.charStats().getClassLevel("Archon")<0)
+			{
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
+				return false;
+			}
+			break;
+		}
+		return true;
+	}
+	
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   String message,

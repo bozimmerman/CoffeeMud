@@ -7,3 +7,7 @@ TEST: Fighter_SizeOpponent - an ability to tell how many HP a MOB has
 TEST: add currents to water...
 TEST: WHISPER command to talk to everyone at a table only LISTEN should counter it.
 TEST: haggle skill to lower prices HAGGLE 300 item
+TEST: Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
+TEST: ArchonStaff
+TEST: Deadly weak-bridge exit.  If too much weight, you fall and die.
+TEST: Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  

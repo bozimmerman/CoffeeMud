@@ -198,14 +198,19 @@ public class Property implements Ability, Cloneable
 					x++;
 				if(x<text.length())
 				{
-					while((x<text.length())&&(!Character.isLetter(text.charAt(x))))
-						x++;
+					boolean endWithQuote=false;
+					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+						if(text.charAt(x)=='\"'){ endWithQuote=true; x++; break;}
+						else
+							x++;
 					if(x<text.length())
 					{
 						oldText=oldText.substring(x);
 						text=text.substring(x);
 						x=0;
-						while((x<text.length())&&(Character.isLetter(text.charAt(x))))
+						while((x<text.length())
+							&&((Character.isLetterOrDigit(text.charAt(x)))
+							||((endWithQuote)&&(text.charAt(x)!='\"'))))
 							x++;
 						return oldText.substring(0,x).trim();
 					}
@@ -232,13 +237,18 @@ public class Property implements Ability, Cloneable
 					x++;
 				if((x<text.length())&&(text.charAt(x)=='='))
 				{
+					boolean endWithQuote=false;
 					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
-						x++;
+						if(text.charAt(x)=='\"'){ endWithQuote=true; x++; break;}
+						else
+							x++;
 					if(x<text.length())
 					{
 						text=text.substring(x);
 						x=0;
-						while((x<text.length())&&(Character.isLetterOrDigit(text.charAt(x))))
+						while((x<text.length())
+							&&((Character.isLetterOrDigit(text.charAt(x)))
+							||((endWithQuote)&&(text.charAt(x)!='\"'))))
 							x++;
 						return text.substring(0,x).trim();
 					}

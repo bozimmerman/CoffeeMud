@@ -26,6 +26,6 @@ public class FlyingExit extends StdExit
 	}
 	public Environmental newInstance()
 	{
-		return new ClimbableExit();
+		return new FlyingExit();
 	}
 }
