@@ -200,7 +200,7 @@ public class TheFight
 		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"<S-NAME> is DEAD!!!\n\r");
 		
 		Hashtable beneficiaries=new Hashtable();
-		if((target.charStats()!=null)&&(target.charStats().getMyClass()!=null))
+		if((target.charStats()!=null)&&(target.charStats().getMyClass()!=null)&&(source!=null))
 			beneficiaries=target.charStats().getMyClass().dispenseExperience(source,target);
 		
 		if(target.soulMate()==null)
@@ -211,42 +211,45 @@ public class TheFight
 		}
 		
 		int deadMoney=target.getMoney();
-		if((source.getBitmap()&MOB.ATT_AUTOGOLD)>0)
+		if((source!=null)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
 			target.setMoney(0);
 		
 		DeadBody Body=target.killMeDead();
 		
 		if(target.soulMate()!=null) new SysOpSkills().dispossess(target);
 		
-		if((deadMoney>0)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
-			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
-			{
-				MOB mob=(MOB)e.nextElement();
-				int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
-				if(myAmount>0)
+		if(source!=null)
+		{
+			if((deadMoney>0)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
+				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 				{
-					Item C=CMClass.getItem("StdCoins");
-					C.baseEnvStats().setAbility(myAmount);
-					C.setLocation(Body);
-					C.setPossessionTime(Calendar.getInstance());
-					C.recoverEnvStats();
-					deathRoom.addItem(C);
-					deathRoom.recoverRoomStats();
-					if(Sense.canBeSeenBy(Body,mob))
-						ExternalPlay.get(mob,Body,C,false);
+					MOB mob=(MOB)e.nextElement();
+					int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
+					if(myAmount>0)
+					{
+						Item C=CMClass.getItem("StdCoins");
+						C.baseEnvStats().setAbility(myAmount);
+						C.setLocation(Body);
+						C.setPossessionTime(Calendar.getInstance());
+						C.recoverEnvStats();
+						deathRoom.addItem(C);
+						deathRoom.recoverRoomStats();
+						if(Sense.canBeSeenBy(Body,mob))
+							ExternalPlay.get(mob,Body,C,false);
+					}
 				}
-			}
-		if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
-			for(int i=deathRoom.numItems()-1;i>=0;i--)
-			{
-				Item item=deathRoom.fetchItem(i);
-				if((item!=null)
-				&&(item.location()==Body)
-				&&(Sense.canBeSeenBy(Body,source))
-				&&(Sense.canBeSeenBy(item,source)))
-					ExternalPlay.get(source,Body,item,false);
-			}
-		deathRoom.recoverRoomStats();
+			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+				for(int i=deathRoom.numItems()-1;i>=0;i--)
+				{
+					Item item=deathRoom.fetchItem(i);
+					if((item!=null)
+					&&(item.location()==Body)
+					&&(Sense.canBeSeenBy(Body,source))
+					&&(Sense.canBeSeenBy(item,source)))
+						ExternalPlay.get(source,Body,item,false);
+				}
+			deathRoom.recoverRoomStats();
+		}
 	}
 
 	public void autoloot(MOB mob)

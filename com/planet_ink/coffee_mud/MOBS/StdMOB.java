@@ -1594,7 +1594,7 @@ public class StdMOB implements MOB
 										weapon=this.fetchWieldedItem();
 									ExternalPlay.postAttack(this,victim,weapon);
 								}
-							curState().expendEnergy(this,maxState,true);
+							curState().expendEnergy(this,maxState,false);
 						}
 					}
 					if(!isMonster())

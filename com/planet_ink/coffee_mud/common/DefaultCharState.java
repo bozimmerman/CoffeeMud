@@ -11,6 +11,8 @@ public class DefaultCharState implements Cloneable, CharState
 	protected int Thirst=500;
 
 	protected int botherCycle=0;
+	protected int ticksHungry=0;
+	protected int ticksThirsty=0;
 
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
 
@@ -32,7 +34,7 @@ public class DefaultCharState implements Cloneable, CharState
 		return true;
 	}
 	public int getHunger(){return Hunger;}
-	public void setHunger(int newVal){Hunger=newVal;}
+	public void setHunger(int newVal){Hunger=newVal; if(Hunger>0)ticksHungry=0;}
 	public boolean adjHunger(int byThisMuch, CharState max)
 	{
 		Hunger+=byThisMuch;
@@ -41,6 +43,7 @@ public class DefaultCharState implements Cloneable, CharState
 			Hunger=0;
 			return false;
 		}
+		if(Hunger>0) ticksHungry=0;
 		if(Hunger>1000)
 		{
 			Hunger=1000;
@@ -49,7 +52,7 @@ public class DefaultCharState implements Cloneable, CharState
 		return true;
 	}
 	public int getThirst(){return Thirst;}
-	public void setThirst(int newVal){Thirst=newVal;}
+	public void setThirst(int newVal){Thirst=newVal; if(Thirst>0) ticksThirsty=0;}
 	public boolean adjThirst(int byThisMuch, CharState max)
 	{
 		Thirst+=byThisMuch;
@@ -58,6 +61,7 @@ public class DefaultCharState implements Cloneable, CharState
 			Thirst=0;
 			return false;
 		}
+		if(Thirst>0) ticksThirsty=0;
 		if(Thirst>500)
 		{
 			Thirst=500;
@@ -149,24 +153,62 @@ public class DefaultCharState implements Cloneable, CharState
 		}
 	}
 
-	public void expendEnergy(MOB mob, CharState maxState, boolean moving)
+	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement)
 	{
 		if((!mob.isMonster())&&(mob.location()!=null))
 		{
-			if(moving)
+			if(expendMovement)
 				adjMovement(-mob.location().thirstPerRound(mob),maxState);
 
-			boolean annoy=adjThirst(-mob.location().thirstPerRound(mob),maxState);
-			annoy=adjHunger(-1,maxState)||annoy;
-			if(annoy)
+			adjThirst(-mob.location().thirstPerRound(mob),maxState);
+			adjHunger(-1,maxState);
+			boolean thirsty=(getThirst()<=0);
+			boolean hungry=(getHunger()<=0);
+			if((hungry||thirsty)&&(!expendMovement))
 			{
+				if(thirsty)ticksThirsty++;
+				if(hungry)ticksHungry++;
+			
+				if((ticksThirsty>this.DEATH_THIRST_TICKS)
+				||(ticksHungry>this.DEATH_HUNGER_TICKS))
+				{
+					if(thirsty)
+						mob.tell("YOU ARE DYING OF THIRST!");
+					if(hungry)
+						mob.tell("YOU ARE DYING OF HUNGER!");
+					ExternalPlay.die(null,mob);
+				}
+				else
+				if(ticksThirsty>DEATH_THIRST_TICKS-30)
+					mob.tell("You are dehydrated, and near death.  DRINK SOMETHING!");
+				else
+				if(ticksHungry>DEATH_HUNGER_TICKS-30)
+					mob.tell("You are starved, and near death.  EAT SOMETHING!");
+				else
 				if((--annoyanceTicker)<=0)
 				{
 					annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-					if(getThirst()<=0)
-						mob.tell("You are thirsty.");
-					if(getHunger()<=0)
-						mob.tell("You are hungry.");
+						
+					if(thirsty)	
+					{
+						if(ticksThirsty>((DEATH_THIRST_TICKS/2)+(DEATH_THIRST_TICKS/4)))
+							mob.tell("You are dehydrated! Drink something!");
+						else
+						if(ticksThirsty>(DEATH_THIRST_TICKS/2))
+							mob.tell("You are parched! Drink something!");
+						else
+							mob.tell("You are thirsty.");
+					}
+					if(hungry)
+					{
+						if(ticksHungry>((DEATH_HUNGER_TICKS/2)+(DEATH_HUNGER_TICKS/4)))
+							mob.tell("You are starved! Eat something!");
+						else
+						if(ticksHungry>(DEATH_HUNGER_TICKS/2))
+							mob.tell("You are famished! Eat something!");
+						else
+							mob.tell("You are hungry.");
+					}
 				}
 			}
 		}

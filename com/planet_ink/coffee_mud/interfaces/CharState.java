@@ -3,6 +3,8 @@ public interface CharState extends Cloneable
 {
 	public final static int ANNOYANCE_DEFAULT_TICKS=30;
 	public final static int ADJUST_FACTOR=4;
+	public final static int DEATH_THIRST_TICKS=(30*30)*6; // 6 hours
+	public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
 	
 	public int getHitPoints();
 	public void setHitPoints(int newVal);
@@ -26,7 +28,7 @@ public interface CharState extends Cloneable
 	
 	public void adjState(MOB mob, CharState maxState);
 	
-	public void expendEnergy(MOB mob, CharState maxState, boolean moving);
+	public void expendEnergy(MOB mob, CharState maxState, boolean expendMovement);
 	
 	// create a new one of these
 	public CharState cloneCharState();
