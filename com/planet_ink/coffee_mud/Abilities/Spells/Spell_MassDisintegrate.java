@@ -65,10 +65,10 @@ public class Spell_MassDisintegrate extends Spell
 							MUDFight.postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));
 						if(!((MOB)target).amDead())
 							return false;
-						mob.location().recoverRoomStats();
 					}
 				}
 			}
+			mob.location().recoverRoomStats();
 			Vector V=new Vector();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
@@ -87,6 +87,7 @@ public class Spell_MassDisintegrate extends Spell
 					I.destroy();
 				}
 			}
+			mob.location().recoverRoomStats();
 		}
 		else
 			maliciousFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a treacherous but fizzled spell!");

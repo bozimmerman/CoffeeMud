@@ -1399,18 +1399,9 @@ public class Scriptable extends StdBehavior
 			}
 			case 36: // ishere
 			{
-				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
-				if(E==null)
-					returnable=false;
-				else
-				if(E instanceof MOB)
-					returnable=lastKnownLocation.isInhabitant((MOB)E);
-				else
-				if(E instanceof Item)
-					returnable=(lastKnownLocation.isContent((Item)E)
-								||(monster.isMine(E))
-								||((source!=null)&&(source.isMine(E))));
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
+				if(lastKnownLocation!=null)
+					returnable=((lastKnownLocation.fetchAnyItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
 				else
 					returnable=false;
 				break;

@@ -23,8 +23,12 @@ public class Spell_Blur extends Spell
 		MOB mob=(MOB)affected;
 
 		if((msg.amITarget(mob))
+		&&(mob!=msg.source())
+		&&(!mob.amDead())
+		&&(!msg.source().amDead())
 		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
+		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool() instanceof Ability))
 		{
 			int pctDodge=invoker.charStats().getStat(CharStats.INTELLIGENCE);
 			if(Dice.rollPercentage()<(pctDodge*2))

@@ -2006,7 +2006,7 @@ public class Arrest extends StdBehavior
 					else
 					{
 						if(officer!=null)
-							CommonMsgs.say(officer,null,"Lost!",false,false);
+							CommonMsgs.say(officer,null,"Drat! Lost another one!",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(null);

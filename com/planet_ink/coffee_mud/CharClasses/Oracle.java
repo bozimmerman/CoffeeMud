@@ -148,7 +148,14 @@ public class Oracle extends Cleric
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
+			boolean qualifies=false;
+			for(int c=0;c<mob.charStats().numClasses();c++)
+			{
+				CharClass C=mob.charStats().getMyClass(c);
+				if(CMAble.getQualifyingLevel(C.ID(),true,A.ID())>0)
+					qualifies=true;
+			}
+			if(!qualifies)
 				numNonQualified++;
 		}
 		return numNonQualified;
