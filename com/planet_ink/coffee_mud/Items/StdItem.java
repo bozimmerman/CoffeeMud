@@ -28,8 +28,8 @@ public class StdItem implements Item
 	protected Environmental owner=null;
 	protected long dispossessionTime=0;
 
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
+	protected Vector affects=null;
+	protected Vector behaviors=null;
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -91,12 +91,12 @@ public class StdItem implements Item
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
 
-		affects=new Vector();
-		behaviors=new Vector();
+		affects=null;
+		behaviors=null;
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
-			if(B!=null)	addBehavior(B);
+			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
 
 		for(int a=0;a<E.numAffects();a++)
@@ -374,7 +374,7 @@ public class StdItem implements Item
 
 		if(tickID==Host.ITEM_BEHAVIOR_TICK)
 		{
-			if(behaviors.size()==0) return false;
+			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
@@ -390,10 +390,10 @@ public class StdItem implements Item
 				Ability A=fetchAffect(a);
 				if(A!=null)
 				{
-					int s=affects.size();
+					int s=numAffects();
 					if(!A.tick(ticking,tickID))
 						A.unInvoke();
-					if(affects.size()==s)
+					if(numAffects()==s)
 						a++;
 				}
 				else
@@ -996,6 +996,7 @@ public class StdItem implements Item
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
+		if(affects==null) affects=new Vector();
 		if(affects.contains(to)) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
@@ -1005,12 +1006,14 @@ public class StdItem implements Item
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
+		if(affects==null) affects=new Vector();
 		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void delAffect(Ability to)
 	{
+		if(affects==null) return;
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
@@ -1018,10 +1021,12 @@ public class StdItem implements Item
 	}
 	public int numAffects()
 	{
+		if(affects==null) return 0;
 		return affects.size();
 	}
 	public Ability fetchAffect(int index)
 	{
+		if(affects==null) return null;
 		try
 		{
 			return (Ability)affects.elementAt(index);
@@ -1031,6 +1036,7 @@ public class StdItem implements Item
 	}
 	public Ability fetchAffect(String ID)
 	{
+		if(affects==null) return null;
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
@@ -1045,6 +1051,7 @@ public class StdItem implements Item
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
+		if(behaviors==null) behaviors=new Vector();
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -1060,16 +1067,19 @@ public class StdItem implements Item
 	}
 	public void delBehavior(Behavior to)
 	{
+		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
 			ExternalPlay.deleteTick(this,Host.ITEM_BEHAVIOR_TICK);
 	}
 	public int numBehaviors()
 	{
+		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
 	public Behavior fetchBehavior(int index)
 	{
+		if(behaviors==null) return null;
 		try
 		{
 			return (Behavior)behaviors.elementAt(index);
@@ -1079,6 +1089,7 @@ public class StdItem implements Item
 	}
 	public Behavior fetchBehavior(String ID)
 	{
+		if(behaviors==null) return null;
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);

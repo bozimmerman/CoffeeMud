@@ -327,8 +327,13 @@ public class Lister
 
 	public static StringBuffer listReports(MOB mob)
 	{
+		mob.tell("\n\r^xCoffeeMud System Report:^.^N");
+		try
+		{ 
+			System.gc();
+			Thread.sleep(1500);
+		}catch(Exception e){}
 		StringBuffer buf=new StringBuffer("");
-		buf.append("\n\r^xCoffeeMud System Report:^.^N\n\r");
 		long totalTime=System.currentTimeMillis()-ExternalPlay.getStartTime();
 		buf.append("The system has been running for ^H"+Util.returnTime(totalTime,0)+"^?.\n\r");
 		long free=Runtime.getRuntime().freeMemory()/1000;

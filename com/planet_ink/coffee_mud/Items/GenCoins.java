@@ -35,9 +35,9 @@ public class GenCoins extends GenItem implements Coins
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		// import not to sup this, otherwise 'ability' makes it magical!
-		for(int a=0;a<affects.size();a++)
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
+			Ability affect=fetchAffect(a);
 			affect.affectEnvStats(this,envStats);
 		}
 	}
