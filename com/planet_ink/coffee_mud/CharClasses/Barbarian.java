@@ -98,10 +98,12 @@ public class Barbarian extends StdCharClass
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if((affect.amITarget(myChar))
+		   &&(affect.tool()!=null)
+		   &&(affect.tool() instanceof Weapon)
 		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
 			int recovery=(affect.targetCode()-Affect.MASK_HURT)-(myChar.charStats().getClassLevel(this)/5);
-			if(recovery<=0) recovery=1;
+			if(recovery<=0) recovery=0;
 			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
 		else

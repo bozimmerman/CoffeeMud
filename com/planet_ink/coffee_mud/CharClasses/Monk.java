@@ -42,7 +42,7 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Kick",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Monk_MonkeyPunch",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Fighter_MonkeyPunch",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Skill_Climb",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",false);
@@ -51,33 +51,33 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Sneak",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Monk_DeflectProjectile",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Monk_KnifeHand",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_DeflectProjectile",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Trip",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Monk_AxeKick",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Fighter_AxeKick",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true); 
-			CMAble.addCharAbilityMapping(ID(),10,"Monk_BodyFlip",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Monk_CatchProjectile",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Monk_FlyingKick",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_FlyingKick",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Fighter_WeaponBreak",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Monk_Pin",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Fighter_Pin",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Dirt",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Search",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Monk_Cartwheel",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Cartwheel",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Monk_CircleParry",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Monk_KiStrike",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Fighter_CircleParry",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Fighter_KiStrike",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Snatch",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Tumble",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Endurance",false);
-			CMAble.addCharAbilityMapping(ID(),22,"Monk_CircleTrip",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Fighter_CircleTrip",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Listen",false);
-			CMAble.addCharAbilityMapping(ID(),24,"Monk_LightningStrike",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Monk_ReturnProjectile",false);
-			CMAble.addCharAbilityMapping(ID(),30,"Monk_AtemiStrike",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",false);
 		}
 	}
 
