@@ -80,6 +80,15 @@ public class StdFood extends StdItem implements Food
 			{
 			case CMMsg.TYP_EAT:
 				boolean hungry=mob.curState().getHunger()<=0;
+			    if((!hungry)
+			    &&(mob.curState().getHunger()>=mob.maxState().getHunger())
+				&&(Dice.roll(1,500,0)==1)
+				&&(!Sense.isGolem(msg.source()))
+				&&(msg.source().fetchEffect("Disease_Obesity")==null))
+				{
+				    Ability A=CMClass.getAbility("Disease_Obesity");
+				    if(A!=null){A.invoke(mob,mob,true,0);}
+				}
 				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState());
 				if(hungry)
 					mob.tell("You are no longer hungry.");

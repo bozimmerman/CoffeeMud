@@ -37,7 +37,7 @@ public class Clans implements Clan, Tickable
 	protected Vector voteList=null;
 	protected long exp=0;
 	protected double taxRate=0.0;
-
+	
 	//*****************
 	public Hashtable relations=new Hashtable();
 	public int government=Clan.GVT_DICTATORSHIP;
@@ -84,8 +84,32 @@ public class Clans implements Clan, Tickable
 
 	public long calculateMapPoints()
 	{
+	    return calculateMapPoints(getControlledAreas());
+	}
+	public long calculateMapPoints(Vector controlledAreas)
+	{
 		long points=0;
-		HashSet done=new HashSet();
+		for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
+		{
+			Area A=(Area)e.nextElement();
+			Behavior B=CoffeeUtensils.getLegalBehavior(A);
+			if(B!=null)
+			{
+				Area A2=CoffeeUtensils.getLegalObject(A);
+				Vector V=new Vector();
+				V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
+				if((B.modifyBehavior(A2,CMClass.sampleMOB(),V))
+				&&(V.size()==1)
+				&&(V.firstElement() instanceof Integer))
+					points+=((Integer)V.firstElement()).longValue();
+			}
+		}
+		return points;
+	}
+
+	public Vector getControlledAreas()
+	{
+		Vector done=new Vector();
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
 			Area A=(Area)e.nextElement();
@@ -101,18 +125,10 @@ public class Clans implements Clan, Tickable
 				&&(V.size()==1)
 				&&(V.firstElement() instanceof String)
 				&&(((String)V.firstElement()).equals(ID())))
-				{
-				    done.add(A2);
-					V.clear();
-					V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
-					if((B.modifyBehavior(A2,CMClass.sampleMOB(),V))
-					&&(V.size()==1)
-					&&(V.firstElement() instanceof Integer))
-						points+=((Integer)V.firstElement()).longValue();
-				}
+				    done.addElement(A2);
 			}
 		}
-		return points;
+		return done;
 	}
 
 	public Enumeration votes()
@@ -170,7 +186,8 @@ public class Clans implements Clan, Tickable
 	public int getTrophies(){return clanTrophies;}
 	public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
 
-	public void setTaxes(double rate){
+	public void setTaxes(double rate)
+	{
 		taxRate=rate;
 	}
 	public double getTaxes(){return taxRate;}
@@ -440,31 +457,15 @@ public class Clans implements Clan, Tickable
 				        +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_APPLICANT,true,true),16)+":^.^N "+crewList(Clan.POS_APPLICANT)+"\n\r");
 			}
 		}
-		Vector control=null;
-		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
-		{
-			Area A=(Area)e.nextElement();
-			Behavior B=CoffeeUtensils.getLegalBehavior(A);
-			if(B!=null)
-			{
-			    Area A2=CoffeeUtensils.getLegalObject(A);
-				Vector V=new Vector();
-				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(A2,mob,V)
-				&&(V.size()>0)
-				&&(V.firstElement() instanceof String)
-				&&(((String)V.firstElement()).equals(ID()))
-				&&((control==null)||(!control.contains(A.name()))))
-				{
-					if(control==null) control=new Vector();
-					control.addElement(A.name());
-				}
-			}
-		}
-		if(control!=null)
+		Vector control=new Vector();
+		Vector controlledAreas=getControlledAreas();
+		long controlPoints=calculateMapPoints(controlledAreas);
+		for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
+		    control.addElement(((Area)e.nextElement()).name());
+		if(control.size()>0)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append("^xClan Controlled Areas:^.^N \n\r");
+			msg.append("^xClan Controlled Areas:^.^N\n\r");
 			Collections.sort(control);
 			int col=0;
 			for(int i=0;i<control.size();i++)
@@ -477,6 +478,22 @@ public class Clans implements Clan, Tickable
 				msg.append(Util.padRight((String)control.elementAt(i),23)+"^N");
 			}
 			msg.append("\n\r");
+		}
+		if((Clans.trophySystemActive())&&(getTrophies()!=0))
+		{
+			msg.append("-----------------------------------------------------------------\n\r");
+			msg.append("^xTrophies awarded:^.^N\n\r");
+			for(int i=0;i<Clan.TROPHY_DESCS.length;i++)
+			    if((Clan.TROPHY_DESCS[i].length()>0)&&(Util.bset(getTrophies(),i)))
+			    {
+			        msg.append(Clan.TROPHY_DESCS[i]+" ");
+			        switch(i){
+				        case Clan.TROPHY_AREA: msg.append("("+control.size()+") "); break;
+				        case Clan.TROPHY_CONTROL: msg.append("("+controlPoints+") "); break;
+				        case Clan.TROPHY_EXP: msg.append("("+getExp()+") "); break;
+			        }
+			        msg.append(" Prize: "+Clans.translatePrize(i)+"\n\r");
+			    }
 		}
 		return msg.toString();
 	}
@@ -1061,7 +1078,96 @@ public class Clans implements Clan, Tickable
 				if(updateVotes)
 					updateVotes();
 			}
-			update(); // also saves exp
+			
+			if(Clans.trophySystemActive())
+			{
+			    // calculate winner of the exp contest
+			    if(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPEXP).length()>0)
+			    {
+			        Clan winner=null;
+			        for(Enumeration e=Clans.clans();e.hasMoreElements();)
+			        {
+			            Clan C=(Clan)e.nextElement();
+			            if((winner==null)||(C.getExp()>winner.getExp()))
+			                winner=C;
+			        }
+			        if(winner==this)
+			        {
+			            if((!Util.bset(getTrophies(),Clan.TROPHY_EXP))&&(getExp()>0))
+			            {
+			                setTrophies(getTrophies()|Clan.TROPHY_EXP);
+			                Clans.clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_EXP]+".");
+			            }
+			        }
+			        else
+			        if(Util.bset(getTrophies(),Clan.TROPHY_EXP))
+			        {
+		                setTrophies(getTrophies()-Clan.TROPHY_EXP);
+			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_EXP]+".");
+			        }
+			    }
+			    
+			    // calculate winner of the conquest contests
+			    if((CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA).length()>0)
+			    ||(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP).length()>0))
+			    {
+			        long mostClansControlled=-1;
+			        Clan winnerMostClansControlled=null;
+			        long mostControlPoints=-1;
+			        Clan winnerMostControlPoints=null;
+			        Vector tempControl=null;
+			        long tempNumber=0;
+			        for(Enumeration e=Clans.clans();e.hasMoreElements();)
+			        {
+			            Clan C=(Clan)e.nextElement();
+			            tempControl=C.getControlledAreas();
+			            tempNumber=C.calculateMapPoints(tempControl);
+			            if((winnerMostClansControlled==null)||(tempControl.size()>mostClansControlled))
+			            {
+			                winnerMostClansControlled=C;
+			                mostClansControlled=tempControl.size();
+			            }
+			            if((winnerMostControlPoints==null)||(tempNumber>mostControlPoints))
+			            {
+			                winnerMostControlPoints=C;
+			                mostControlPoints=tempNumber;
+			            }
+			        }
+			        if((winnerMostClansControlled==this)
+			        &&(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA).length()>0)
+			        &&(mostClansControlled>0))
+			        {
+			            if(!Util.bset(getTrophies(),Clan.TROPHY_AREA))
+			            {
+			                setTrophies(getTrophies()|Clan.TROPHY_AREA);
+			                Clans.clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_AREA]+".");
+			            }
+			        }
+			        else
+			        if(Util.bset(getTrophies(),Clan.TROPHY_AREA))
+			        {
+		                setTrophies(getTrophies()-Clan.TROPHY_AREA);
+			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_AREA]+".");
+			        }
+			        if((winnerMostControlPoints==this)
+			        &&(CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP).length()>0)
+			        &&(mostControlPoints>0))
+			        {
+			            if(!Util.bset(getTrophies(),Clan.TROPHY_CONTROL))
+			            {
+			                setTrophies(getTrophies()|Clan.TROPHY_CONTROL);
+			                Clans.clanAnnounceAll("The "+typeName()+" "+name()+" has been awarded the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_CONTROL]+".");
+			            }
+			        }
+			        else
+			        if(Util.bset(getTrophies(),Clan.TROPHY_CONTROL))
+			        {
+		                setTrophies(getTrophies()-Clan.TROPHY_CONTROL);
+			            clanAnnounce("Your "+typeName()+" has lost control of the trophy for "+Clans.TROPHY_DESCS[Clan.TROPHY_CONTROL]+".");
+			        }
+			    }
+			}
+			update(); // also saves exp, and trophies
 		}
 		catch(Exception x2)
 		{
@@ -1075,6 +1181,92 @@ public class Clans implements Clan, Tickable
 		CommonMsgs.channel("CLANTALK",ID(),msg,true);
 	}
 
+	public static void clanAnnounceAll(String msg)
+	{
+        for(Enumeration e=Clans.clans();e.hasMoreElements();)
+        {
+            Clan C=(Clan)e.nextElement();
+            C.clanAnnounce(msg);
+        }
+	}
+
+	public int applyExpMods(int exp)
+	{
+	    boolean changed=false;
+	    if((getTaxes()>0.0)&&(exp>1))
+	    {
+			int clanshare=(int)Math.round(Util.mul(exp,getTaxes()));
+			if(clanshare>0)
+			{
+			    exp-=clanshare;
+				adjExp(clanshare);
+				changed=true;
+			}
+	    }
+	    for(int i=0;i<Clans.TROPHY_DESCS_SHORT.length;i++)
+		    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)
+		    &&(Util.bset(getTrophies(),i)))
+		    {
+		        String awardStr=null;
+		        switch(i)
+		        {
+		        case Clan.TROPHY_AREA: awardStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA); break;
+		        case Clan.TROPHY_CONTROL: awardStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP); break;
+		        case Clan.TROPHY_EXP: awardStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPEXP); break;
+		        default: awardStr=null;
+		        }
+		        if(awardStr!=null)
+		        {
+		            int amount=0;
+		            double pct=0.0;
+		            Vector V=Util.parse(awardStr);
+		            if(V.size()>=2)
+		            {
+		                String type=((String)V.lastElement()).toUpperCase();
+		                String amt=(String)V.firstElement();
+		                if(amt.endsWith("%"))
+		                    pct=Util.div(Util.s_int(amt.substring(0,amt.length()-1)),100.0);
+		                else
+		                    amount=Util.s_int(amt);
+		                if("EXPERIENCE".startsWith(type))
+		                    exp+=((int)Math.round(Util.mul(exp,pct)))+amount;
+		            }
+		        }
+		    }
+	    if(changed) update();
+	    return exp;
+	}
+	
+	public static String translatePrize(int trophy)
+	{
+	    String prizeStr="";
+	    switch(trophy)
+	    {
+	    	case Clan.TROPHY_AREA: prizeStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA); break;
+	    	case Clan.TROPHY_CONTROL: prizeStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP); break;
+	    	case Clan.TROPHY_EXP: prizeStr=CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPEXP); break;
+	    }
+	    if(prizeStr.length()==0) return "None";
+        if(prizeStr.length()>0)
+        {
+            Vector V=Util.parse(prizeStr);
+            if(V.size()>=2)
+            {
+                String type=((String)V.lastElement()).toUpperCase();
+                String amt=(String)V.firstElement();
+                if("EXPERIENCE".startsWith(type))
+                    return "Members receive a "+amt+" experience point bonus.";
+            }
+        }
+	    return prizeStr;
+	}
+	public static boolean trophySystemActive()
+	{
+	    return (CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPAREA).length()>0)
+	        || (CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPCP).length()>0)
+	        || (CommonStrings.getVar(CommonStrings.SYSTEM_CLANTROPEXP).length()>0);
+	    
+	}
 	public static class ClanVote
 	{
 		public String voteStarter="";

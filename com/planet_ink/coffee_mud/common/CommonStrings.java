@@ -63,7 +63,10 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CHANNELFILTER=37;
 	public static final int SYSTEM_WIZINFONAMES=38;
 	public static final int SYSTEM_MAILBOX=39;
-	public static final int NUM_SYSTEM=40;
+	public static final int SYSTEM_CLANTROPCP=40;
+	public static final int SYSTEM_CLANTROPEXP=41;
+	public static final int SYSTEM_CLANTROPAREA=42;
+	public static final int NUM_SYSTEM=43;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -225,6 +228,10 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CHANNELFILTER,page.getStr("CHANNELFILTER"));
 		channelFilter=Util.parse((page.getStr("CHANNELFILTER")).toUpperCase());
 		setVar(SYSTEM_WIZINFONAMES,page.getStr("WIZINFONAMES"));
+		setVar(SYSTEM_CLANTROPAREA,page.getStr("CLANTROPAREA"));
+		setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
+		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
+		
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else
@@ -232,7 +239,6 @@ public class CommonStrings extends Scriptable
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
 		else
 			setIntVar(SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
-		
 		String s=page.getStr("COMBATSYSTEM");
 		if(s.equalsIgnoreCase("queue")) 
 			setIntVar(SYSTEMI_COMBATSYSTEM,1);
@@ -268,6 +274,8 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
 		setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
 		setIntVar(SYSTEMI_MUDTHEME,page.getStr("MUDTHEME"));
+		
+		Directions.ReInitialize(page.getInt("DIRECTIONS"));
 		
 		if(Util.s_int(page.getStr("HOURSINDAY"))>0)
 			DefaultTimeClock.globalClock.setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));

@@ -28,12 +28,15 @@ public class ClanList extends BaseClanner
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+	    boolean trophySystemActive=Clans.trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
 		head.append(Util.padRight("Clan Name",24)+" | ");
 		head.append(Util.padRight("Type",13)+" | ");
 		head.append(Util.padRight("Status",8)+" | ");
-		head.append(Util.padRight("Clan Members",12));
+		head.append(Util.padRight("Members",7));
+		if(trophySystemActive)
+			head.append(" | "+Util.padRight("Trophies",8));
 		head.append("]^.^? \n\r");
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=Clans.clans();e.hasMoreElements();)
@@ -62,7 +65,11 @@ public class ClanList extends BaseClanner
 				break;
 			}
 			msg.append(Util.padRight(status,8)+"   ");
-			msg.append(Util.padRight(new Integer(thisClan.getSize()).toString(),12));
+			msg.append(Util.padRight(new Integer(thisClan.getSize()).toString(),7)+"   ");
+			if(trophySystemActive)
+				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
+				    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(Util.bset(thisClan.getTrophies(),i)))
+				        msg.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
 			msg.append("\n\r");
 		}
 		mob.tell(head.toString()+msg.toString());

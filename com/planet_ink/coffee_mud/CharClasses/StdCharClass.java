@@ -397,16 +397,7 @@ public class StdCharClass implements CharClass, Cloneable
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
 			Clan C=Clans.getClan(mob.getClanID());
-			if((C!=null)&&(C.getTaxes()>0.0))
-			{
-				int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
-				if(clanshare>0)
-				{
-					amount-=clanshare;
-					C.adjExp(clanshare);
-					C.update();
-				}
-			}
+			if(C!=null) amount=C.applyExpMods(amount);
 		}
 
 		mob.setExperience(mob.getExperience()+amount);

@@ -506,6 +506,22 @@ public class GrinderMap extends GrinderFlatMap
 			if (room.y < Ybound) 
 				return grid[room.x][room.y + 1][room.z];
 			break;
+        case Directions.NORTHWEST:
+            if((room.y>0)&&(room.x>0))
+                return grid[room.x-1][room.y-1][room.z];
+            break;
+        case Directions.SOUTHWEST:
+            if((room.y<Ybound)&&(room.x>0))
+                return grid[room.x-1][room.y+1][room.z];
+            break;
+        case Directions.NORTHEAST:
+            if((room.y>0)&&(room.x<Xbound))
+                return grid[room.x+1][room.y-1][room.z];
+            break;
+        case Directions.SOUTHEAST:
+            if((room.y<Ybound)&&(room.x<Xbound))
+                return grid[room.x+1][room.y+1][room.z];
+            break;
 		case Directions.EAST:
 			if (room.x < Xbound) 
 				return grid[room.x + 1][room.y][room.z];

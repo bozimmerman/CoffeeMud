@@ -971,13 +971,13 @@ public class StdRoom
 			if((room!=null)&&(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				Say.append(room.roomID()+" via NULL");
 			if(Say.length()>0)
-				mob.tell("^D^<EX^>" + Util.padRight(Dir,5)+"^</EX^>:^.^N ^d"+Say+"^.^N");
+				mob.tell("^D^<EX^>" + Util.padRightPreserve(Dir,5)+"^</EX^>:^.^N ^d"+Say+"^.^N");
 		}
 		Item I=null;
 		for(int i=0;i<numItems();i++)
 		{
 		    I=fetchItem(i);
-		    if(I instanceof Exit)
+		    if((I instanceof Exit)&&(((Exit)I).doorName().length()>0))
 		    {
 				StringBuffer Say=((Exit)I).viewableText(mob, this);
 				if(Say.length()>5)
