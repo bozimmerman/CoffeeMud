@@ -459,7 +459,8 @@ public class MUD extends Thread implements MudHost
 		catch(Throwable t)
 		{
 		    if((!(t instanceof java.net.SocketException))
-		    ||(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSHUTTINGDOWN)))
+		    ||(t.getMessage()==null)
+		    ||(t.getMessage().toLowerCase().indexOf("socket closed")<0))
 		    {
 				Log.errOut("MUD",t);
 		    }
