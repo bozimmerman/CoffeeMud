@@ -31,7 +31,27 @@ public class Help
 					}
 				}
 			}
-			Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
+			if(arcHelpFile!=null)
+			{
+				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
+				{
+					String key=(String)e.nextElement();
+					String entry=(String)arcHelpFile.get(key);
+					int x=entry.indexOf("<ZAP=");
+					if(x>=0)
+					{
+						int y=entry.indexOf(">",x);
+						if(y>(x+5))
+						{
+							String word=entry.substring(x+5,y).trim();
+							entry=entry.substring(0,x)+SaucerSupport.zapperInstructions("\n\r",word)+entry.substring(y+1);
+							arcHelpFile.remove(key);
+							arcHelpFile.put(key,entry);
+						}
+					}
+				}
+				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
+			}
 		}
 		return arcHelpFile;
 	}
@@ -56,7 +76,8 @@ public class Help
 					}
 				}
 			}
-			Resources.submitResource("MAIN HELP FILE",helpFile);
+			if(helpFile!=null)
+				Resources.submitResource("MAIN HELP FILE",helpFile);
 		}
 		return helpFile;
 	}

@@ -152,7 +152,8 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
+					if(!((MOB)affect.target()).amDead())
+						ExternalPlay.postDamage(affect.source(),(MOB)affect.target(),null,flameDamage,Affect.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

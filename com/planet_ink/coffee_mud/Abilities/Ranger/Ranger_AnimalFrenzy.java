@@ -26,10 +26,14 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			return false;
 		if(invoker==null)
 		{
+			if(Sense.isAnimalIntelligence((MOB)affected)
+			&&(((MOB)affected).isMonster()))
+				return true;
 			invoker=(MOB)affected;
-			rangersGroup=new Vector();
 		}
 		if(invoker!=affected) return true;
+		if(rangersGroup==null)
+			rangersGroup=new Vector();
 		
 		if(rangersGroup!=null)
 		{
@@ -64,11 +68,11 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 				}
 			}
+			if((Dice.rollPercentage()==1) 
+			   &&(invoker.isInCombat())
+			   &&(rangersGroup.size()>0))
+				helpProfficiency(invoker);
 		}
-		if((Dice.rollPercentage()==1) 
-		   &&(invoker.isInCombat())
-		   &&(rangersGroup.size()>0))
-			helpProfficiency(invoker);
 		return true;
 	}
 	

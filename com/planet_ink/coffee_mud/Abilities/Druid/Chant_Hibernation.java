@@ -47,7 +47,9 @@ public class Chant_Hibernation extends Chant
 			return;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))&&((Util.bset(affect.sourceCode(),Affect.MASK_MOVE))||(Util.bset(affect.sourceCode(),Affect.MASK_HANDS))||(Util.bset(affect.sourceCode(),Affect.MASK_MOUTH))))
+		if((affect.amISource(mob))
+		&&(!Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
+		&&((Util.bset(affect.sourceCode(),Affect.MASK_MOVE))||(Util.bset(affect.sourceCode(),Affect.MASK_HANDS))||(Util.bset(affect.sourceCode(),Affect.MASK_MOUTH))))
 			unInvoke();
 		return;
 	}

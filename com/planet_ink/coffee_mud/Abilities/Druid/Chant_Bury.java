@@ -14,6 +14,18 @@ public class Chant_Bury extends Chant
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance()	{	return new Chant_Bury();}
 
+	public static Item getBody(Room R)
+	{
+		if(R!=null)
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I!=null)&&(I instanceof DeadBody))
+				return I;
+		}
+		return null;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -29,7 +41,11 @@ public class Chant_Bury extends Chant
 			mob.tell("This chant does not work here.");
 			return false;
 		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=null;
+		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
+			target=getBody(mob.location());
+		if(target==null)
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!(target instanceof DeadBody))

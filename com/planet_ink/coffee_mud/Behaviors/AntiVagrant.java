@@ -5,23 +5,36 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class AntiVagrant extends StdBehavior
+public class AntiVagrant extends ActiveTicker
 {
 	public String ID(){return "AntiVagrant";}
+	private int speakDown=3;
 	private MOB target=null;
-	private int speakDown=2;
+	private boolean kickout=false;
+	private boolean anywhere=false;
 
+	public AntiVagrant()
+	{
+		super();
+		minTicks=2; maxTicks=3; chance=99;
+		tickReset();
+	}
 	public Behavior newInstance()
 	{
 		return new AntiVagrant();
 	}
 
-
-
+	public void setParms(String parms)
+	{
+		kickout=parms.toUpperCase().indexOf("KICK")>=0;
+		anywhere=parms.toUpperCase().indexOf("ANYWHERE")>=0;
+		super.setParms(parms);
+	}
+	
 	public void wakeVagrants(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
-		if(observer.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if(anywhere||(observer.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
 			if(target!=null)
 			if(Sense.isSleeping(target)&&(target!=observer))
@@ -33,6 +46,8 @@ public class AntiVagrant extends StdBehavior
 					observer.location().send(observer,msg);
 					target.tell(observer.name()+" shakes you awake.");
 					ExternalPlay.standIfNecessary(target);
+					if((kickout)&&(!Sense.isSitting(target))&&(!Sense.isSleeping(target)))
+						SaucerSupport.beMobile(target,true,false,false,false,null);
 				}
 			}
 			else
@@ -44,6 +59,8 @@ public class AntiVagrant extends StdBehavior
 				{
 					observer.location().send(observer,msg);
 					ExternalPlay.standIfNecessary(target);
+					if((kickout)&&(!Sense.isSitting(target))&&(!Sense.isSleeping(target)))
+						SaucerSupport.beMobile(target,true,false,false,false,null);
 				}
 			}
 			target=null;
@@ -67,12 +84,9 @@ public class AntiVagrant extends StdBehavior
 		// believe it or not, this is for arrest behavior.
 		super.affect(affecting,msg);
 		if((msg.sourceMinor()==Affect.TYP_SPEAK)
-		&&(affecting!=null)
-		&&(affecting instanceof MOB)
-		&&(msg.amISource((MOB)affecting))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().toUpperCase().indexOf("SIT")>=0))
-			speakDown=2;
+			speakDown=3;
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -80,13 +94,16 @@ public class AntiVagrant extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return true;
-
+		
 		// believe it or not, this is for arrest behavior.
 		if(speakDown>0)	{	speakDown--;return true;	}
 
-		if(!canFreelyBehaveNormal(ticking)) return true;
-		MOB mob=(MOB)ticking;
-		wakeVagrants(mob);
+		if((canFreelyBehaveNormal(ticking))&&(canAct(ticking,tickID)))
+		{
+			MOB mob=(MOB)ticking;
+			wakeVagrants(mob);
+			return true;
+		}
 		return true;
 	}
 }

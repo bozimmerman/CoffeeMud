@@ -34,14 +34,14 @@ public class Druid_ShapeShift extends StdAbility
 	{"Rat",     "Cat",      "Dog",      "Owl",    "Snake",        "Cub",    "Centipede",  "Chimp",        "Cow"},
 	{"Dire Rat","Puma",     "Wolf",     "Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",          "Buffalo"},
 	{"WereRat", "Lion",     "Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",      "Bull"},
-	{"WereBat", "Manticore","WereWolf", "Griffon","Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur"}
+	{"WereBat", "Manticore","WereWolf", "Harpy","Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur"}
 	};
 	private static String[][] races={
 	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",     "Grasshopper","Monkey",   "Calf"},
 	{"Rat",    "Cat",      "Dog",     "Owl",    "Snake",      "Cub",     "Centipede",  "Chimp",    "Cow"},
 	{"DireRat","Puma",     "Wolf",    "Hawk",   "Python",     "Bear",    "Tarantula",  "Ape",      "Buffalo"},
 	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",      "Bear",    "Scarab",     "Gorilla",  "Bull"},
-	{"WereBat","Manticore","WereWolf","Griffon","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
+	{"WereBat","Manticore","WereWolf","Harpy","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
 	private static double[]   attadj=
 	{.7	      ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2      ,.7          ,1.0        ,.7};

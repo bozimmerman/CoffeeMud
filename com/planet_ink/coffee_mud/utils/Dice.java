@@ -20,7 +20,9 @@ public class Dice
 			mul=-1;
 		}
 		// old style
-		if(code<32768) return 10+(level*level)+(Dice.roll(level,code,0)*mul);
+		if(code<32768) return 10
+							  +(int)Math.round(Util.mul(level*level,0.85))
+							  +(Dice.roll(level,code,0)*mul);
 		// new style
 		int r=code>>23;
 		int d=(code-(r<<23))>>15;
@@ -98,7 +100,7 @@ public class Dice
 		{
 			stuff[0]=level;
 			stuff[1]=(code*mul);
-			stuff[2]=(level*level);
+			stuff[2]=(int)Math.round(Util.mul(level*level,0.85));
 		}
 		else
 		{

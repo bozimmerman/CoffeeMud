@@ -52,7 +52,7 @@ public class Spell_ElementalStorm extends Spell
 			int numMissiles=types.length;
 			for(int i=0;i<numMissiles;i++)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CommonStrings.msp("spelldam1.wav",40)):null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?((auto?"An elemental storm assaults <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, evoking an elemental storm!^?")+CommonStrings.msp("spelldam1.wav",40)):null);
 				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);

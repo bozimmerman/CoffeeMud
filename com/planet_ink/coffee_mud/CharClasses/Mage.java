@@ -213,6 +213,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ClarifyScroll",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_FoolsGold",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_WallOfFire",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Spell_Siphon",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_Portal",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_RechargeWand",false);
 			// level 18

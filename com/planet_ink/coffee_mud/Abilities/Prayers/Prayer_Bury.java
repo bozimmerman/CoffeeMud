@@ -16,7 +16,11 @@ public class Prayer_Bury extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=null;
+		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
+			target=Prayer_Sacrifice.getBody(mob.location());
+		if(target==null)
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!(target instanceof DeadBody))

@@ -48,7 +48,9 @@ public class Skill_Meditation extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 
-		if((affect.amISource(mob))&&((Util.bset(affect.sourceCode(),Affect.MASK_MOVE))||(Util.bset(affect.sourceCode(),Affect.MASK_HANDS))||(Util.bset(affect.sourceCode(),Affect.MASK_MOUTH))))
+		if((affect.amISource(mob))
+		&&(!Util.bset(affect.sourceCode(),Affect.MASK_CHANNEL))
+		&&((Util.bset(affect.sourceCode(),Affect.MASK_MOVE))||(Util.bset(affect.sourceCode(),Affect.MASK_HANDS))||(Util.bset(affect.sourceCode(),Affect.MASK_MOUTH))))
 			unInvoke();
 		if(Util.bset(affect.othersCode(),Affect.MASK_SOUND)
 		   &&(Sense.canBeHeardBy(affect.source(),mob)))

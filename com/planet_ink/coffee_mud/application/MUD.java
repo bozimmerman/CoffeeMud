@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.web.*;
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)4.0;
-	public static final long  HOST_VERSION_MINOR=4;
+	public static final long  HOST_VERSION_MINOR=5;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -45,11 +45,11 @@ public class MUD extends Thread implements Host
 		super("MUD-MainServer");
 	}
 
-	private static boolean loadPropPage()
+	private static boolean loadPropPage(String iniFile)
 	{
 		if (page==null || !page.loaded)
 		{
-			page=new INI("coffeemud.ini");
+			page=new INI(iniFile);
 			if(!page.loaded)
 				return false;
 		}
@@ -685,19 +685,32 @@ public class MUD extends Thread implements Host
 	{
 		Log.startLogFiles();
 
-		nameID="Unnamed CoffeeMud";
+		nameID="";
+		String iniFile="coffeemud.ini";
 		if(a.length>0)
 		{
-			nameID="";
 			for(int i=0;i<a.length;i++)
 				nameID+=" "+a[i];
 			nameID=nameID.trim();
+			Vector V=Util.paramParse(nameID);
+			for(int v=0;v<V.size();v++)
+			{
+				String s=(String)V.elementAt(v);
+				if(s.toUpperCase().startsWith("BOOT=")&&(s.length()>5))
+				{
+					iniFile=s.substring(5);
+					V.removeElementAt(v);
+					v--;
+				}
+			}
+			nameID=Util.combine(V,0);
 		}
+		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
 		try
 		{
 			while(true)
 			{
-				if (!loadPropPage())
+				if (!loadPropPage(iniFile))
 				{
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
 					System.out.println("MUD/ERROR: Unable to read ini file.");

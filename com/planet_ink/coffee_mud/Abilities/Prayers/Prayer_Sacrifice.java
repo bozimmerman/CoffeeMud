@@ -14,9 +14,26 @@ public class Prayer_Sacrifice extends Prayer
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_Sacrifice();}
 
+	public static Item getBody(Room R)
+	{
+		if(R!=null)
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I!=null)&&(I instanceof DeadBody))
+				return I;
+		}
+		return null;
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item target=null;
+		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
+			target=Prayer_Sacrifice.getBody(mob.location());
+		if(target==null)
+			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!(target instanceof DeadBody))

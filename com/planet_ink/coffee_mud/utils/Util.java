@@ -441,6 +441,41 @@ public class Util
 	public static Vector parse(String str)
 	{	return parse(str,-1);	}
 	
+	
+	public static Vector paramParse(String str)
+	{
+		Vector commands=parse(str);
+		for(int i=0;i<commands.size();i++)
+		{
+			String s=(String)commands.elementAt(i);
+			if(s.startsWith("=")&&(s.length()>1)&&(i>0))
+			{
+				String prev=(String)commands.elementAt(i-1);
+				commands.setElementAt(prev+s,i-1);
+				commands.removeElementAt(i);
+				i--;
+			}
+			else
+			if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
+			{
+				String next=(String)commands.elementAt(i+1);
+				commands.setElementAt(s+next,i);
+				commands.removeElementAt(i+1);
+			}
+			else
+			if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
+			{
+				String prev=(String)commands.elementAt(i-1);
+				String next=(String)commands.elementAt(i+1);
+				commands.setElementAt(prev+"="+next,i-1);
+				commands.removeElementAt(i);
+				commands.removeElementAt(i+1);
+				i--;
+			}
+		}
+		return commands;
+	}
+	
 	public static Vector parse(String str, int upTo)
 	{
 		Vector commands=new Vector();

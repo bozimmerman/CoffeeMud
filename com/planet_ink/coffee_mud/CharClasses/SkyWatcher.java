@@ -204,9 +204,9 @@ public class SkyWatcher extends StdCharClass
 			int classLevel=mob.charStats().getClassLevel(this);
 			if((classLevel>=5)&&(room.getArea().getMoonPhase()<moonfactors.length))
 			{
-				affectableStats.setArmor(affectableStats.armor()
-										 +(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getMoonPhase()])));
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
+				affectableStats.setArmor(affectableStats.armor() // - is good
+										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getMoonPhase()])));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() // - is bad
 										 -(int)Math.round(Util.mul(classLevel,moonfactors[room.getArea().getMoonPhase()])));
 			}
 		}

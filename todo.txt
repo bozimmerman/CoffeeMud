@@ -1,7 +1,3 @@
-1. mobeater: Please tweek it so that 3 params can be accepted? round=xx chance=xx and race masks/align masks/level masks round would be how many rounds in combat the mob will attempt to eat. Chance would be the percent chance for success after those rounds. The masks makes it possible to say not allow a frog to eat a deer, or a panther to eat an insect.
-2. corpse eater: Can we please have the corpse eater accept race masks? Its strange to see a frog eat the corpse of a rabbit.
-3. Can it please be made to disallow the aggro on players? -player or -pc or something. Frogs should be able to attack flies and eat them, but not aggro on a player.
-
  Programming.html update
 	need special section for languages
 	need special section for poisons

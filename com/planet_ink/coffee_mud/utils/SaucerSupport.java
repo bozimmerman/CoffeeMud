@@ -35,9 +35,53 @@ public class SaucerSupport
 			zapCodes.put("+TATTOO",new Integer(8));
 			zapCodes.put("-NAME",new Integer(9));
 			zapCodes.put("-NAMES",new Integer(9));
+			zapCodes.put("-PLAYER",new Integer(10));
+			zapCodes.put("-NPC",new Integer(11));
+			zapCodes.put("-MOB",new Integer(11));
 		}
 		return zapCodes;
 	}
+
+	private static final String ZAP ="+sysop (allow archons or area subops to bypass the rules)  <BR> "
+									+"-sysop (always <WORD> archons and area subops)  <BR>"
+									+"-player (<WORD> all players) <BR>"
+									+"-mob (<WORD> all mobs/npcs)  <BR>"
+									+"-class  (<WORD> all classes)  <BR>"
+									+"-baseclass  (<WORD> all base classes)  <BR>"
+									+"+thief +mage +ranger (create exceptions to -class and -baseclass) <BR>"
+									+"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
+									+"-race (<WORD> all racial categories)  <BR>"
+									+"+elf +dwarf +human +half +gnome (create exceptions to -race)  <BR>"
+									+"-elf -dward -human -half -gnome (<WORD> only listed races)  <BR>"
+									+"-alignment (<WORD> all alignments)  <BR>"
+									+"+evil +good +neutral (create exceptions to -alignment)  <BR>"
+									+"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
+									+"-gender (<WORD> all genders)  <BR>"
+									+"+male +female +neuter (create exceptions to -gender)  <BR>"
+									+"-male -female -neuter (<WORD> only listed genders)  <BR>"
+									+"-tattoos (<WORD> all tattoos, even a lack of a tatoo) <BR>"
+									+"+mytatto +thistattoo +anytattoo etc..  (create exceptions to -tattoos) <BR>"
+									+"+tattoos (do not <WORD> any or no tattoos) <BR>"
+									+"-mytattoo -anytatto, etc.. (create exceptions to +tattoos) <BR>"
+									+"-level (<WORD> all levels)  <BR>"
+									+"+=1 +>5 +>=7 +<13 +<=20 (create exceptions to -level using level ranges)  <BR>"
+									+"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
+									+"-names (<WORD> everyone) <BR>"
+									+"+bob \"+my name\" etc.. (create exceptions to -names) <BR>"
+									+"-bob \"-my name\" etc.. (<WORD> those with the given name)";
+
+	public static String zapperInstructions(String CR, String word)
+	{
+		String copy=new String(ZAP);
+		if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
+			copy=Util.replaceAll(copy,"<BR>",CR);
+		if((word==null)||(word.length()==0))
+			copy=Util.replaceAll(copy,"<WORD>","disallow");
+		else
+			copy=Util.replaceAll(copy,"<WORD>",word);
+		return copy;
+	}
+	
 	
 	private static boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
 	{
@@ -299,6 +343,12 @@ public class SaucerSupport
 						buf.append(".  ");
 					}
 					break;
+				case 10: // -Player
+					buf.append("Disallows players.  ");
+					break;
+				case 11: // -MOB
+					buf.append("Disallows mobs/npcs.  ");
+					break;
 				}
 			else
 			{
@@ -403,6 +453,12 @@ public class SaucerSupport
 					break;
 				case 9: // -names
 					if(!nameCheck(V,'+',v+1,mob)) return false;
+					break;
+				case 10: // -Player
+					if(!mob.isMonster()) return false;
+					break;
+				case 11: // -MOB
+					if(mob.isMonster()) return false;
 					break;
 				}
 			else

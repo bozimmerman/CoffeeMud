@@ -54,7 +54,7 @@ public class Ingredients extends BagOfEndlessness
 		{
 			alreadyFilled=true;
 			if(getContents().size()==0)
-			for(int i=0;i<EnvResource.RESOURCE_DATA.length;i++)
+			for(int i=1;i<EnvResource.RESOURCE_DATA.length;i++)
 			{
 				String name=EnvResource.RESOURCE_DESCS[i];
 				makeResource(name.toLowerCase(),EnvResource.RESOURCE_DATA[i][0]);

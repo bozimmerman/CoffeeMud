@@ -108,7 +108,7 @@ public class Chant_SummonFlyTrap extends Chant
 	public MOB determineMonster(MOB caster)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster)/4;
+		int level=adjustedLevel(caster);
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));

@@ -18,7 +18,7 @@ public class CorpseEater extends ActiveTicker
 	{
 		return new CorpseEater();
 	}
-
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -32,6 +32,12 @@ public class CorpseEater extends ActiveTicker
 				Item I=thisRoom.fetchItem(i);
 				if((I!=null)&&(I instanceof DeadBody)&&(Sense.canBeSeenBy(I,mob)||Sense.canSmell(mob)))
 				{
+					if(getParms().length()>0)
+					{
+						MOB mob2=CoffeeUtensils.makeMOBfromCorpse((DeadBody)I,null);
+						if(!SaucerSupport.zapperCheck(getParms(),mob2))
+							continue;
+					}
 					if(I instanceof Container)
 						((Container)I).emptyPlease();
 					thisRoom.show(mob,null,I,Affect.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
