@@ -145,7 +145,7 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_DESC:
 						{
-							room.setDisplayText(designTitle);
+							room.setDescription(designDescription);
 							ExternalPlay.DBUpdateRoom(room);
 						}
 						break;
@@ -179,7 +179,7 @@ public class Masonry extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
-			for(int r=0;r<3;r++)
+			for(int r=0;r<5;r++)
 				buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
 			commonTell(mob,buf.toString());
 			return true;
@@ -196,7 +196,7 @@ public class Masonry extends CommonSkill
 		messedUp=false;
 		
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<3;r++)
+		for(int r=0;r<5;r++)
 		{
 			if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
 				doingCode=r;
@@ -319,6 +319,7 @@ public class Masonry extends CommonSkill
 		
 		room=mob.location();
 		int woodDestroyed=woodRequired;
+		if(woodRequired>0)
 		for(int i=mob.location().numItems()-1;i>=0;i--)
 		{
 			Item I=mob.location().fetchItem(i);

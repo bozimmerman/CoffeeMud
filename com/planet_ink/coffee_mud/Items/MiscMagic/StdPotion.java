@@ -14,10 +14,10 @@ public class StdPotion extends StdDrink implements Potion
 	{
 		super();
 
-		name="a flask";
+		name="a potion";
 		baseEnvStats.setWeight(1);
-		displayText="An empty flask sits here.";
-		description="An empty flask with strange residue.";
+		displayText="An empty potion sits here.";
+		description="An empty potion with strange residue.";
 		secretIdentity="What was once a powerful potion.";
 		baseGoldValue=200;
 		material=EnvResource.RESOURCE_GLASS;

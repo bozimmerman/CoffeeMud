@@ -316,6 +316,8 @@ public class StdRoom
 				break;
 			case Affect.TYP_CAST_SPELL:
 				break;
+			case Affect.TYP_SPEAK:
+				break;
 			default:
 				if((Util.bset(affect.targetMajor(),Affect.AFF_TOUCHED))
 				||(Util.bset(affect.targetMajor(),Affect.AFF_CONSUMED)))

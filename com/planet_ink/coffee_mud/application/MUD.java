@@ -23,7 +23,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)0.0;
+	public static final float HOST_VERSION_MINOR=(float)0.1;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");

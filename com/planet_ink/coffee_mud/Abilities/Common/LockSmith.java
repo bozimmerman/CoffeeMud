@@ -114,10 +114,12 @@ public class LockSmith extends CommonSkill
 		}
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		int completion=4;
+		int completion=8;
 		building=null;
+		boolean keyFlag=false;
 		workingOn=null;
 		messedUp=false;
+		int woodRequired=1;
 		String recipeName=Util.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(recipeName);
 		if(dir<0)
@@ -144,7 +146,12 @@ public class LockSmith extends CommonSkill
 				return false;
 			}
 			if(((Exit)workingOn).hasALock())
+			{
 				keyName=((Exit)workingOn).keyName();
+				keyFlag=true;
+			}
+			else
+				woodRequired=5;
 			
 			String titleInName="";
 			for(int a=0;a<mob.location().numAffects();a++)
@@ -186,7 +193,12 @@ public class LockSmith extends CommonSkill
 				return false;
 			}
 			if(((Container)workingOn).hasALock())
+			{
 				keyName=((Container)workingOn).keyName();
+				keyFlag=true;
+			}
+			else
+				woodRequired=3;
 		}
 		else
 		{
@@ -216,7 +228,6 @@ public class LockSmith extends CommonSkill
 			commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
 			return false;
 		}
-		int woodRequired=1;
 		if(foundWood<woodRequired)
 		{
 			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
@@ -241,15 +252,16 @@ public class LockSmith extends CommonSkill
 			return false;
 		}
 		completion=15-((mob.envStats().level()-workingOn.envStats().level()));
+		if(keyFlag) completion=completion/2;
 		String itemName=(EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
 		if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
 			itemName="an "+itemName;
 		else
 			itemName="a "+itemName;
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) working on "+workingOn.name()+".";
-		displayText="You are working on "+workingOn.name();
-		verb="working on "+workingOn.name();
+		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
+		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
+		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		((Key)building).setKey("keyName");
