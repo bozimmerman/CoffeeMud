@@ -996,11 +996,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private Vector getData(InputStream sin)
 	{
 		Vector data=new Vector();
+		ByteArrayOutputStream out=new ByteArrayOutputStream();
 		try
 		{
 			int timeout=0;
 			BufferedReader BR=new BufferedReader(new InputStreamReader(sin));
-			ByteArrayOutputStream out=new ByteArrayOutputStream();
 			int contentLength=-1;
 			int c=-1;
 			while(true)
@@ -1038,6 +1038,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch(Exception e)
 		{
 		};
+		if(data.size()==0)
+			data.addElement(new String(out.toByteArray()));
+		else
+			data.addElement(out.toByteArray());
 		return data;					
 	}
 
