@@ -138,10 +138,10 @@ public class StdCharClass implements CharClass
 		mob.setExperience(mob.getExperience()+amount);
 		if(homage==null) homage="";
 		if(amount>1)
-			mob.tell("^!You gain ^H"+amount+"^? experience points"+homage+".^N");
+			mob.tell("^N^!You gain ^H"+amount+"^N^! experience points"+homage+".^N");
 		else
 		if(amount>0)
-			mob.tell("^!You gain ^H"+amount+"^? experience point"+homage+".^N");
+			mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
 			
 		while(mob.getExperience()>=mob.getExpNextLevel())
 			level(mob);
@@ -302,13 +302,13 @@ public class StdCharClass implements CharClass
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 		{
-			mob.tell("^xYou have ****LOST A LEVEL****^N\n\r\n\r");
+			mob.tell("^xYou have ****LOST A LEVEL****^^^N\n\r\n\r");
 			unLevel(mob);
 		}
 	}
 	public void level(MOB mob)
 	{
-		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
+		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^^^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();

@@ -17,10 +17,8 @@ public class StdItem implements Item
 	protected long 		myWornCode=Item.INVENTORY;
 	protected String 	miscText="";
 	protected String	secretIdentity=null;
-	protected int 		capacity=0;
 	protected boolean	wornLogicalAnd=false;
 	protected long 		properWornBitmap=Item.HELD;
-	protected boolean 	isAContainer=false;
 	protected int		baseGoldValue=0;
 	protected boolean	isReadable=false;
 	protected boolean	isGettable=true;
@@ -75,10 +73,6 @@ public class StdItem implements Item
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
 		baseEnvStats=newBaseEnvStats.cloneStats();
-	}
-	public boolean isAContainer()
-	{
-		return isAContainer;
 	}
 	public Environmental newInstance()
 	{
@@ -261,15 +255,6 @@ public class StdItem implements Item
 		recoverEnvStats();
 	}
 
-
-	public int capacity()
-	{
-		return capacity;
-	}
-	public void setCapacity(int newValue)
-	{
-		capacity=newValue;
-	}
 
 	public int material()
 	{

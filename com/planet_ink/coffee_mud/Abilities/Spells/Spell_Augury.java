@@ -81,10 +81,10 @@ public class Spell_Augury extends Spell
 						}
 				}
 				mob.location().send(mob,msg);
-				if(((exit.isTrapped())||isTrapped(exit))
+				if((isTrapped(exit))
 				||(isTrapped(room))
 				||(aggressiveMonster)
-				||((opExit!=null)&&((opExit.isTrapped())||isTrapped(opExit))))
+				||((opExit!=null)&&(isTrapped(opExit))))
 					mob.tell("You feel going that way would be bad.");
 				else
 					mob.tell("You feel going that way would be good.");

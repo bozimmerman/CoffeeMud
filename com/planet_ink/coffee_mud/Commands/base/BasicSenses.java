@@ -381,19 +381,52 @@ public class BasicSenses
 		}
 	}
 
-	public void ansi(MOB mob)
+	public void ansi(MOB mob, int WhatToDo)
 	{
 		if(!mob.isMonster())
 		{
-			if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+			switch(WhatToDo)
 			{
-				mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
-				mob.tell("ANSI colour disabled.\n\r");
+			case -1:
+			{
+				if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+				{
+					mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+					mob.tell("ANSI colour disabled.\n\r");
+				}
+				else
+				{
+					mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+					mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
+				}
 			}
-			else
+			break;
+			case 0:
 			{
-				mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
-				mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
+				if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+				{
+					mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+					mob.tell("ANSI colour disabled.\n\r");
+				}
+				else
+				{
+					mob.tell("ANSI is already disabled.\n\r");
+				}
+			}
+			break;
+			case 1:
+			{
+				if((mob.getBitmap()&MOB.ATT_ANSI)==0)
+				{
+					mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+					mob.tell("^!ANSI^N ^Hcolour^N enabled.\n\r");
+				}
+				else
+				{
+					mob.tell("^!ANSI^N is ^Halready^N enabled.\n\r");
+				}
+			}
+			break;
 			}
 		}
 	}

@@ -149,6 +149,7 @@ public class CommandSet extends Hashtable
 	public static final int CHANWHO=137;
 	public static final int DEPOSIT=138;
 	public static final int WITHDRAW=139;
+	public static final int NOCOLOR=140;
 
 	public CommandSet()
 	{
@@ -267,6 +268,9 @@ public class CommandSet extends Hashtable
 		put("MUDLIST",new Integer(I3LIST));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
+		put("NOCOLOR",new Integer(NOCOLOR));
+			put("NOANSI",new Integer(NOCOLOR));
+			put("NOCOLOUR",new Integer(NOCOLOR));
 		put("NOFOLLOW",new Integer(NOFOLLOW));
 			put("NOFOL",new Integer(NOFOLLOW));
 		put("OPEN",new Integer(OPEN));
@@ -361,6 +365,8 @@ public class CommandSet extends Hashtable
 			put("WIMP",new Integer(WIMPY));
 		put("WITHDRAW",new Integer(WITHDRAW));
 		put("WIZINV",new Integer(WIZINV));
+			put("NOWIZINV",new Integer(WIZINV));
+			put("VISIBLE",new Integer(WIZINV));
 		put("XML",new Integer(XML));
 		put("YELL",new Integer(YELL));
 			put("Y",new Integer(YELL));

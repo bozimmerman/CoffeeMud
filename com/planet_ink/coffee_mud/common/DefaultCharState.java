@@ -114,55 +114,56 @@ public class DefaultCharState implements Cloneable, CharState
 		double con=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
 		double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
 		double str=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
-		int lvl=mob.envStats().level();
-		int lvlby2=(int)Math.round(Util.div(lvl,1.5));
-		int lvlby4=(int)Math.round(Util.div(lvl,3.0));
+		
+		double lvl=new Integer(mob.envStats().level()).doubleValue();
+		double lvlby2=Util.div(lvl,2.0);
+		double lvlby4=Util.div(lvl,4.0);
 
-		if(Sense.isSleeping(mob))
-		{
-			adjHitPoints((int)Math.round(con*.17)+1,maxState);
-			adjMana((int)Math.round((man*.17)+lvlby2),maxState);
-			adjMovement((int)Math.round((str*.8)+0.5),maxState);
-			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
-			{
-				adjHitPoints((int)Math.round(con*.5)+1,maxState);
-				adjMana((int)Math.round((man*.5)+lvlby2),maxState);
-				adjMovement((int)Math.round(str*.5),maxState);
-			}
+		double hpGain=(con/4.0)+lvlby4+1.0;
+		double manaGain=(man/4.0)+lvlby2+1.0;
+		double moveGain=(str/2.0)+lvlby2+4.0;
+		
+		if(Sense.isSleeping(mob)){
+			hpGain+=(hpGain/2.0);
+			manaGain+=(manaGain/2.0);
+			moveGain+=(moveGain/2.0);
 		}
 		else
 		if((Sense.isSitting(mob))||(mob.riding()!=null))
 		{
-			adjHitPoints((int)Math.round(con*.8)+1,maxState);
-			adjMana((int)Math.round((man*.8)+lvlby4),maxState);
-			adjMovement((int)Math.round((str*.4)+0.5),maxState);
+			hpGain+=(hpGain/4.0);
+			manaGain+=(manaGain/4.0);
+			moveGain+=(moveGain/4.0);
 			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
 			{
-				adjHitPoints((int)Math.round(con*.3),maxState);
-				adjMana((int)Math.round((man*.3)+lvlby4),maxState);
-				adjMovement((int)Math.round(str*.6),maxState);
+				hpGain+=(hpGain/8.0);
+				manaGain+=(manaGain/8.0);
+				moveGain+=(moveGain/8.0);
 			}
 		}
 		else
 		if(Sense.isFlying(mob))
 		{
-			adjHitPoints((int)Math.round((con*.1)+0.5),maxState);
-			adjMana((int)Math.round(man*.2)+lvlby4,maxState);
-			adjMovement((int)Math.round((str*.4)+0.5),maxState);
+			hpGain+=(hpGain/8.0);
+			manaGain+=(manaGain/4.0);
+			moveGain+=(moveGain/8.0);
 		}
 		else
 		if(Sense.isSwimming(mob))
 		{
-			adjHitPoints((int)Math.round((con*.05)+0.5),maxState);
-			adjMana((int)Math.round(man*.1)+lvlby4,maxState);
-			adjMovement((int)Math.round((str*.1)+0.5),maxState);
+			hpGain-=(hpGain/2.0);
+			manaGain-=(manaGain/4.0);
+			moveGain-=(moveGain/2.0);
 		}
-		else
+		
 		if((!mob.isInCombat())&&(!Sense.isClimbing(mob)))
 		{
-			adjHitPoints((int)Math.round((con*.05)+.05),maxState);
-			adjMana((int)Math.round(man*.1)+lvlby4,maxState);
-			adjMovement((int)Math.round((str*.05)+0.5),maxState);
+			if(hpGain>0)
+				mob.curState().adjHitPoints((int)Math.round(hpGain),maxState);
+			if(manaGain>0)
+				mob.curState().adjMana((int)Math.round(manaGain),maxState);
+			if(moveGain>0)
+				mob.curState().adjMovement((int)Math.round(moveGain),maxState);
 		}
 	}
 

@@ -70,7 +70,7 @@ public class CommandProcessor
 					scoring.affected(mob);
 					break;
 				case CommandSet.ANSI:
-					basicSenses.ansi(mob);
+					basicSenses.ansi(mob,1);
 					break;
 				case CommandSet.ARCHELP:
 					if(mob.isASysOp(mob.location()))
@@ -115,8 +115,13 @@ public class CommandProcessor
 					basicSenses.brief(mob);
 					break;
 				case CommandSet.BUG:
-					ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.name(),"ALL","BUG",Util.combine(commands,1),-1);
-					mob.tell("Thank you for your assistance in debugging CoffeeMud!");
+					if(Util.combine(commands,1).length()>0)
+					{
+						ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.name(),"ALL","BUG",Util.combine(commands,1),-1);
+						mob.tell("Thank you for your assistance in debugging CoffeeMud!");
+					}
+					else
+						mob.tell("What's the bug? Be Specific!");
 					break;
 				case CommandSet.BUY:
 					shopKeepers.buy(mob,commands);
@@ -278,8 +283,13 @@ public class CommandProcessor
 						ExternalPlay.i3().i3locate(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.IDEA:
-					ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.name(),"ALL","IDEA",Util.combine(commands,1),-1);
-					mob.tell("Thank you for your contribution!");
+					if(Util.combine(commands,1).length()>0)
+					{
+						ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.name(),"ALL","IDEA",Util.combine(commands,1),-1);
+						mob.tell("Thank you for your contribution!");
+					}
+					else
+						mob.tell("What's your idea?");
 					break;
 				case CommandSet.IMPORT:
 					if(mob.isASysOp(null))
@@ -319,6 +329,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.MOUNT:
 					movement.mount(mob,commands);
+					break;
+				case CommandSet.NOCOLOR:
+					basicSenses.ansi(mob,0);
 					break;
 				case CommandSet.NOFOLLOW:
 					grouping.togglenofollow(mob);
@@ -501,8 +514,13 @@ public class CommandProcessor
 					basicSenses.train(mob,commands);
 					break;
 				case CommandSet.TYPO:
-					ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.name(),"ALL","TYPOS",Util.combine(commands,1),-1);
-					mob.tell("Thank you for your assistance!");
+					if(Util.combine(commands,1).length()>0)
+					{
+						ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.name(),"ALL","TYPOS",Util.combine(commands,1),-1);
+						mob.tell("Thank you for your assistance!");
+					}
+					else
+						mob.tell("What's the typo?");
 					break;
 				case CommandSet.UNLOCK:
 					movement.unlock(mob,Util.combine(commands,1));

@@ -29,9 +29,11 @@ public class Common extends Language
 			Ability A=mob.fetchAffect(a);
 			if((A!=null)&&(A instanceof Language))
 				((Language)A).setBeingSpoken(false);
+				
 		}
 		isAnAutoEffect=false;
-		mob.tell("You are now speaking "+name()+".");
+		if(!auto)
+			mob.tell("You are now speaking "+name()+".");
 		return true;
 	}
 }

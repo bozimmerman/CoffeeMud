@@ -639,6 +639,10 @@ public class Arrest extends StdBehavior
 						&&(Sense.aliveAwakeMobile(officer,true))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
+							if(W.criminal.curState().getMovement()<20)
+								W.criminal.curState().setMovement(20);
+							if(officer.curState().getMovement()<20)
+								officer.curState().setMovement(20);
 							makePeace(officer.location());
 							ExternalPlay.look(officer,null,true);
 							if(officer.location().fetchInhabitant((String)laws.get("JUDGE"))!=null)

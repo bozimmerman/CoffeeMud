@@ -358,7 +358,9 @@ public class MUD extends Thread implements Host
 				
 				if (acceptConnections)
 				{
-					Log.sysOut("MUD","Got a connection.");
+					String address="unknown";
+					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
+					Log.sysOut("MUD","Got a connection from "+address);
 					StringBuffer introText=Resources.getFileResource("intro.txt");
 					TelnetSession S=new TelnetSession(sock,
 						introText != null ? introText.toString() : null);
@@ -368,7 +370,9 @@ public class MUD extends Thread implements Host
 				}
 				else
 				{
-					Log.sysOut("MUD","Rejecting a connection.");
+					String address="unknown";
+					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
+					Log.sysOut("MUD","Rejecting a connection from "+address);
 					StringBuffer rejectText=Resources.getFileResource("offline.txt");
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + offlineReason+"\n\r");

@@ -7,7 +7,7 @@
 
 <P align=center><STRONG><FONT 
 size=6>Programming</FONT></STRONG></P>
-<P align=center><STRONG><FONT size=6>for CoffeeMud 3.0</FONT></STRONG></P>
+<P align=center><STRONG><FONT size=6>for CoffeeMud 4.0</FONT></STRONG></P>
 <P align=left><FONT size=5><STRONG>
 <IMG src="images/mug.jpg">
 </STRONG><FONT 
@@ -387,26 +387,27 @@ objects are more customizable at run-time, they also take a long time for the
 system to load and build, and take up a lot of database disk space.&nbsp; For 
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
-<P><FONT size=4>Each Item must also have a custom "newInstance" method as shown 
+<P><FONT size=4>Each Item must also have a custom newInstance() and ID() methods as shown 
 below.</FONT></P>
 <PRE>
 	public class MyNewSword extends StdWeapon 
 	{ 
-		public MyNewWeapon() 
+		public String ID(){	return "MyNewSword";}
+		public MyNewSword() 
 		{ 
 			super(); 
 		}
 		
 		public Environmental newInstance() 
 		{ 
-			return new MyNewWeapon(); 
+			return new MyNewSword(); 
 		} 
 	}
 </PRE>
 <P><FONT size=4>All of your customizing will be done inside the constructor: name, displayText, description, etc, 
 etc.</FONT></P>
 <pre>	
-	public MyNewWeapon()
+	public MyNewSword()
 	{
 		super();
 
@@ -672,7 +673,7 @@ difference between this and the MOB example above is the fact that we are settin
 parameter on the Behavior before adding it. 
 </FONT></P>
 <pre>	
-		Behavior B=CMClass.getBehavior("Mobile");
+		Behavior B=CMClass.getBehavior("Emoter");
 		B.setParms("min=1 max=20 chance=75/makes strange sounds");
 		addBehavior(B);
 		

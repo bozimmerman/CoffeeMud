@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_ControlFire extends Chant
 {
 	public String ID() { return "Chant_ControlFire"; }
-	public String name(){ return "Calm Fire";}
+	public String name(){ return "Control Fire";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}

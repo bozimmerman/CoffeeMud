@@ -2,10 +2,10 @@ package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.StdItem;
+import com.planet_ink.coffee_mud.Items.StdContainer;
 import java.util.*;
 
-public class StdArmor extends StdItem implements Armor
+public class StdArmor extends StdContainer implements Armor
 {
 	public String ID(){	return "StdArmor";}
 	public StdArmor()
@@ -20,28 +20,14 @@ public class StdArmor extends StdItem implements Armor
 		baseEnvStats().setArmor(10);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=150;
+		setCapacity(0);
+		setLidsNLocks(false,true,false,false);
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}
 	public Environmental newInstance()
-	{
-		switch (Dice.roll(1,10,-1))
-		{
-			case 0:
-				return new ChainMailArmor();
-			case 1:
-				return new FullPlate();
-			case 2:
-				return new LeatherArmor();
-			case 3:
-				return new BandedArmor();
-			case 4:
-				return new FieldPlate();
-			default:
-				return new StdArmor();
-
-		}
-	}
+	{	return new StdArmor(); }
+	
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)

@@ -16,29 +16,13 @@ public interface Exit extends Environmental
 							   boolean defaultsLocked);
 	public String keyName();
 	public void setKeyName(String keyName);
-	
-	public boolean isTrapped();
-	public void setTrapped(boolean isTrue);
-	
+	 
 	public String readableText();
 	public boolean isReadable();
 	public void setReadable(boolean isTrue);
 	public void setReadableText(String text);
 	
 	public StringBuffer viewableText(MOB mob, Room myRoom);
-	
-	public boolean levelRestricted();
-	public void setLevelRestricted(boolean isTrue);
-	
-	public String classRestrictedName();
-	public boolean classRestricted();
-	public void setClassRestricted(boolean isTrue);
-	public void setClassRestrictedName(String className);
-	
-	public String alignmentRestrictedMask();
-	public boolean alignmentRestricted();
-	public void setAlignmentRestricted(boolean isTrue);
-	public void setAlignmentRestrictedMask(String alignments);
 	
 	public String doorName();
 	public String closeWord();

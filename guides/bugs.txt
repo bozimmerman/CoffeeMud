@@ -1,1 +1,8 @@
-fix the up/down in mudgrinder
+?fix the up/down in mudgrinder
+!area removal on cmare import no workie
+!have shopkeepers, bankers, menders, trainers, etc.. speak COMMON
+!the door in Thieves' Guild#38 says that the exit is already d. when you try to close it. (It is missing the CLOSE part of CLOSED.)
+!banker never gives interest
+knock_spell returns you cant do that on !success, instead of what its supposed to about screaming incoherently
+summon a horse, jump on it, get attacked by something, wait till its dead, and cast a spell at it, your encumbrance goes up, cast another spell and it goes back down.
+!clean up the exit requirements flags, as well as the item/exit trap flags

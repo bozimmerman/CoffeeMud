@@ -18,6 +18,8 @@ Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check
 for most, or Balance skill for thieves.  
 
+add grid dimensions fields and to the grinder and editor
+
 The problems flying during storms is a good idea -- I noted that one.
 
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.

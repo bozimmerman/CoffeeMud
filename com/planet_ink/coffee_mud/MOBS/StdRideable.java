@@ -92,6 +92,18 @@ public class StdRideable extends StdMOB implements Rideable
 	public String dismountString(){return "dismount(s)";}
 	public String stateStringSubject(){return "being ridden by";}
 
+	public Hashtable getRideBuddies(Hashtable list)
+	{
+		if(list==null) return list;
+		if(list.get(this)==null) list.put(this,this);
+		for(int r=0;r<numRiders();r++)
+		{
+			MOB R=fetchRider(r);
+			if(list.get(R)==null) list.put(R,R);
+		}
+		return list;
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		switch(affect.targetMinor())

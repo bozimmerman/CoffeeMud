@@ -208,7 +208,11 @@ public class Spell_Meld extends Spell
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
 					gc.baseEnvStats().setArmor(itemOne.baseEnvStats().armor()+itemTwo.baseEnvStats().armor());
 					gc.setMaterial(material);
-					gc.setCapacity(itemOne.capacity()+itemTwo.capacity());
+					gc.setCapacity(0);
+					if(itemOne instanceof Container)
+						gc.setCapacity(gc.capacity()+((Container)itemOne).capacity());
+					if(itemTwo instanceof Container)
+						gc.setCapacity(gc.capacity()+((Container)itemTwo).capacity());
 					gc.setRawLogicalAnd(true);
 					gc.setRawProperLocationBitmap(wornLocation);
 

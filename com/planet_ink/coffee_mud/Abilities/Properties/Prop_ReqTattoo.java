@@ -12,6 +12,27 @@ public class Prop_ReqTattoo extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	Prop_ReqTattoo newOne=new Prop_ReqTattoo();	newOne.setMiscText(text());	return newOne;}
 
+	public boolean passesMuster(MOB mob)
+	{
+		if(mob==null) return false;
+		
+		int x=text().toUpperCase().indexOf("ALL");
+		Vector V=Prop_Tattoo.getTattoos(mob);
+		if(V.size()==0) V.addElement("NONE");
+		for(int v=0;v<V.size();v++)
+		{
+			String tattoo=(String)V.elementAt(v);
+			int y=text().toUpperCase().indexOf(tattoo);
+			if(((x>0)
+				&&(text().charAt(x-1)=='-')
+				&&((y<=0)
+				   ||((y>0)&&(text().charAt(y-1)!='+'))))
+			 ||((y>0)&&(text().charAt(y-1)=='-')))
+				return false;
+		}
+		return true;
+	}
+		
 	public boolean okAffect(Affect affect)
 	{
 		if((affected!=null)
@@ -20,23 +41,20 @@ public class Prop_ReqTattoo extends Property
 		   &&(affect.targetMinor()==Affect.TYP_ENTER)
 		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			int x=text().toUpperCase().indexOf("ALL");
-			Vector V=Prop_Tattoo.getTattoos(affect.source());
-			if(V.size()==0) V.addElement("NONE");
-			for(int v=0;v<V.size();v++)
+			Hashtable H=new Hashtable();
+			if(text().toUpperCase().indexOf("NOFOL")>=0)
+				H.put(affect.source(),affect.source());
+			else
 			{
-				String tattoo=(String)V.elementAt(v);
-				int y=text().toUpperCase().indexOf(tattoo);
-				if(((x>0)
-					&&(text().charAt(x-1)=='-')
-					&&((y<=0)
-					   ||((y>0)&&(text().charAt(y-1)!='+'))))
-				 ||((y>0)&&(text().charAt(y-1)=='-')))
-				{
-					affect.source().tell("You have not been granted authorization to go that way.");
-					return false;
-				}
+				affect.source().getGroupMembers(H);
+				for(Enumeration e=H.elements();e.hasMoreElements();)
+					((MOB)e.nextElement()).getRideBuddies(H);
 			}
+			for(Enumeration e=H.elements();e.hasMoreElements();)
+				if(passesMuster((MOB)e.nextElement()))
+					return super.okAffect(affect);
+			affect.source().tell("You have not been granted authorization to go that way.");
+			return false;
 		}
 		return super.okAffect(affect);
 	}

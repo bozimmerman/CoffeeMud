@@ -1833,6 +1833,15 @@ public class StdMOB implements MOB
 		}
 	}
 
+	public Hashtable getRideBuddies(Hashtable list)
+	{
+		if(list==null) return list;
+		if(list.get(this)==null) list.put(this,this);
+		if(riding()!=null)
+			riding().getRideBuddies(list);
+		return list;
+	}
+	
 	public Hashtable getGroupMembers(Hashtable list)
 	{
 		if(list==null) return list;

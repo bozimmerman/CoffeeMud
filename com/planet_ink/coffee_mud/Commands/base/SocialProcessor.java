@@ -8,7 +8,6 @@ import java.util.*;
 
 public class SocialProcessor
 {
-
 	public Item possibleGold(MOB mob, String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))

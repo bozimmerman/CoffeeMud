@@ -190,7 +190,6 @@ public class GrinderItems
 					I.setRawLogicalAnd(old.equals("on"));
 				break;
 			case 33: // is trapped
-				I.setTrapped(old.equals("on"));
 				break;
 			case 34: // readable spells
 				if(((I instanceof Pill)||(I instanceof Scroll)||(I instanceof Potion))&&(CMClass.className(I).indexOf("SuperPill")<0))
@@ -363,7 +362,7 @@ public class GrinderItems
 					Item I2=R.fetchItem(i);
 					if((I2.container()!=null)
 					&&(I2.container()==oldI))
-						if(I.isAContainer())
+						if(I instanceof Container)
 							I2.setContainer(I);
 						else
 							I2.setContainer(null);
@@ -381,7 +380,7 @@ public class GrinderItems
 					Item I2=M.fetchInventory(i);
 					if((I2.container()!=null)
 					&&(I2.container()==oldI))
-						if(I.isAContainer())
+						if(I instanceof Container)
 							I2.setContainer(I);
 						else
 							I2.setContainer(null);

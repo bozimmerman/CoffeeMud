@@ -67,10 +67,8 @@ public class GrinderExits
 				E.baseEnvStats().setLevel(Util.s_int(old));	
 				break;
 			case 5: // levelrestricted;
-				E.setLevelRestricted(old.equals("on")); 
 				break;
 			case 6: // istrapped
-				E.setTrapped(old.equals("on")); 
 				break;
 			case 7: // hasadoor
 				if(old.equals("on"))
@@ -110,27 +108,12 @@ public class GrinderExits
 				if(E.isReadable()) E.setReadableText(old);
 				break;
 			case 17: // isclassrestricuted
-				E.setClassRestricted(old.equals("on"));
 				break;
 			case 18: // restrictedclasses
-				if(E.classRestricted())
-					E.setClassRestrictedName(old);
 				break;
 			case 19: // isalignmentrestricuted
-				E.setAlignmentRestricted(old.equals("on"));
 				break;
 			case 20: // restrictedalignments
-				String mask=((String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"))+" ";
-				for(int i=1;;i++)
-				{
-					String selection=(String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"+i);
-					if(selection!=null)
-						mask+=selection+" ";
-					else
-						break;
-				}
-				if(E.alignmentRestricted())
-					E.setAlignmentRestrictedMask(mask.trim());
 				break;
 			case 21: // misctext
 				if(!E.isGeneric())
@@ -154,22 +137,8 @@ public class GrinderExits
 		}
 		
 		//adjustments
-		if(E.hasADoor())
-		{
-			E.setClassRestricted(false);
-			E.setAlignmentRestricted(false);
-			if(E.hasALock())
-				E.setReadable(false);
-		}
-		else
-		{
+		if(!E.hasADoor())
 			E.setDoorsNLocks(false,true,false,false,false,false);
-			E.setReadable(false);
-			if(E.classRestricted())
-				E.setAlignmentRestricted(false);
-			if(E.alignmentRestricted())
-				E.setClassRestricted(false);
-		}
 				
 		ExternalPlay.DBUpdateExits(R);
 		String makeSame=(String)httpReq.getRequestParameters().get("MAKESAME");

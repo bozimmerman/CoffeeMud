@@ -300,12 +300,6 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 33: // is trapped
-					if(firstTime) 
-						old=I.isTrapped()?"checked":""; 
-					else 
-					if(old.equals("on")) 
-						old="checked";
-					str.append(old);
 					break;
 				case 34: // readable spells
 					{
@@ -497,7 +491,7 @@ public class ItemData extends StdWebMacro
 						for(int i=0;i<R.numItems();i++)
 						{
 							Item I2=R.fetchItem(i);
-							if((I2!=I)&&(I2!=oldI)&&(I2.isAContainer())&&(!oldContents.contains(I2)))
+							if((I2!=I)&&(I2!=oldI)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
 							{
 								str.append("<OPTION VALUE="+(i+1));
 								if(Util.s_int(old)==(i+1))
@@ -516,7 +510,7 @@ public class ItemData extends StdWebMacro
 						for(int i=0;i<M.inventorySize();i++)
 						{
 							Item I2=M.fetchInventory(i);
-							if((I2!=I)&&(I2!=I)&&(I2.isAContainer())&&(!oldContents.contains(I2)))
+							if((I2!=I)&&(I2!=I)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
 							{
 								str.append("<OPTION VALUE="+(i+1));
 								if(Util.s_int(old)==(i+1))

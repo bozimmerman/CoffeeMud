@@ -19,8 +19,6 @@ public class StdCoins extends StdItem implements Coins
 		myWornCode=0;
 		miscText="";
 		baseEnvStats.setWeight(0);
-		capacity=0;
-		isAContainer=false;
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

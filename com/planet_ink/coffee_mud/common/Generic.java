@@ -59,8 +59,6 @@ public class Generic
 				f=f|4;
 			if(item.isRemovable())
 				f=f|8;
-			if(item.isTrapped())
-				f=f|16;
 		}
 		if(E instanceof Container)
 		{
@@ -79,8 +77,8 @@ public class Generic
 			Exit exit=(Exit)E;
 			if(exit.isReadable())
 				f=f|4;
-			if(exit.isTrapped())
-				f=f|16;
+			//if(exit.isTrapped())
+			//	f=f|16;
 			if(exit.hasADoor())
 				f=f|32;
 			if(exit.hasALock())
@@ -89,12 +87,12 @@ public class Generic
 				f=f|128;
 			if(exit.defaultsLocked())
 				f=f|256;
-			if(exit.levelRestricted())
-				f=f|512;
-			if(exit.classRestricted())
-				f=f|1024;
-			if(exit.alignmentRestricted())
-				f=f|2048;
+			//if(exit.levelRestricted())
+			//	f=f|512;
+			//if(exit.classRestricted())
+			//	f=f|1024;
+			//if(exit.alignmentRestricted())
+			//	f=f|2048;
 		}
 		return f;
 	}
@@ -108,7 +106,7 @@ public class Generic
 			item.setGettable(get(f,2));
 			item.setReadable(get(f,4));
 			item.setRemovable(get(f,8));
-			item.setTrapped(get(f,16));
+			if(get(f,16)) Log.errOut("Generic","Item is trapped!");
 		}
 		if(E instanceof Container)
 		{
@@ -120,19 +118,16 @@ public class Generic
 		{
 			Exit exit=(Exit)E;
 			exit.setReadable(get(f,4));
-			exit.setTrapped(get(f,16));
+			if(get(f,16)) Log.errOut("Generic","Exit is trapped!");
 			boolean HasDoor=get(f,32);
 			boolean HasLock=get(f,64);
 			boolean DefaultsClosed=get(f,128);
 			boolean DefaultsLocked=get(f,256);
-			exit.setLevelRestricted(get(f,512));
-			exit.setClassRestricted(get(f,1024));
-			exit.setAlignmentRestricted(get(f,2048));
+			if(get(f,512)) Log.errOut("Generic","Exit is level restricted!");
+			if(get(f,1024)) Log.errOut("Generic","Exit is class restricted!");
+			if(get(f,2048)) Log.errOut("Generic","Exit is alignment restricted!");
 			exit.setDoorsNLocks(HasDoor,!DefaultsClosed,DefaultsClosed,HasLock,DefaultsLocked,DefaultsLocked);
-			((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,exit.isTrapped());
 		}
-		if(E instanceof Item)
-			((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,((Item)E).isTrapped());
 	}
 
 	public static String getPropertiesStr(Environmental E, boolean fromTop)
@@ -211,9 +206,12 @@ public class Generic
 			//+XMLManager.convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
 			+XMLManager.convertXMLtoTag("MTRAL",item.material())
 			+XMLManager.convertXMLtoTag("READ",item.readableText())
-			+XMLManager.convertXMLtoTag("CAPA",item.capacity())
 			+XMLManager.convertXMLtoTag("WORNL",item.rawLogicalAnd())
 			+XMLManager.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
+			if(E instanceof Container)
+				text.append(XMLManager.convertXMLtoTag("CAPA",((Container)item).capacity()));
+			if(E instanceof Weapon)
+				text.append(XMLManager.convertXMLtoTag("CAPA",((Weapon)item).ammunitionCapacity()));
 		}
 		
 		if(E instanceof Rideable)
@@ -789,7 +787,10 @@ public class Generic
 			item.setBaseValue(XMLManager.getIntFromPieces(buf,"VALUE"));
 			item.setMaterial(XMLManager.getIntFromPieces(buf,"MTRAL"));
 			//item.setUsesRemaining(Util.s_int(XMLManager.returnXMLValue(buf,"USES")));
-			item.setCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
+			if(item instanceof Container)
+				((Container)item).setCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
+			if(item instanceof Weapon)
+				((Weapon)item).setAmmoCapacity(XMLManager.getIntFromPieces(buf,"CAPA"));
 			item.setRawLogicalAnd(XMLManager.getBoolFromPieces(buf,"WORNL"));
 			item.setRawProperLocationBitmap(XMLManager.getIntFromPieces(buf,"WORNB"));
 			item.setReadableText(XMLManager.getValFromPieces(buf,"READ"));

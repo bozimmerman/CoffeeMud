@@ -12,6 +12,7 @@ public class StdContainer extends StdItem implements Container
 	protected boolean hasALock=false;
 	protected boolean isOpen=true;
 	protected boolean hasALid=false;
+	protected int capacity=0;
 
 	public StdContainer()
 	{
@@ -21,7 +22,6 @@ public class StdContainer extends StdItem implements Container
 		description="I'll bet you could put stuff in it!";
 		capacity=25;
 		baseGoldValue=10;
-		isAContainer=true;
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_COTTON;
 	}
@@ -29,6 +29,15 @@ public class StdContainer extends StdItem implements Container
 	public Environmental newInstance()
 	{
 		return new StdContainer();
+	}
+
+	public int capacity()
+	{
+		return capacity;
+	}
+	public void setCapacity(int newValue)
+	{
+		capacity=newValue;
 	}
 
 	public boolean okAffect(Affect affect)
@@ -281,7 +290,7 @@ public class StdContainer extends StdItem implements Container
 						buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 					else
 						buf.append(description()+"\n\r");
-					if(this.isOpen)
+					if((isOpen)&&((capacity()>0)||(!(this instanceof Armor))))
 					{
 						buf.append(name()+" contains:\n\r");
 						Vector newItems=new Vector();
@@ -325,6 +334,7 @@ public class StdContainer extends StdItem implements Container
 						}
 					}
 					else
+					if(hasALid())
 						buf.append(name()+" is closed.");
 					mob.tell(buf.toString());
 				}

@@ -26,10 +26,6 @@ public class StdExit implements Exit
 	protected boolean hasALock=false;
 	protected boolean doorDefaultsLocked=false;
 	protected boolean isReadable=false;
-	protected boolean isTrapped=false;
-	protected boolean levelRestricted=false;
-	protected boolean classRestricted=false;
-	protected boolean alignmentRestricted=false;
 	protected int openDelayTicks=45;
 
 	protected Vector affects=new Vector();
@@ -156,21 +152,6 @@ public class StdExit implements Exit
 					return false;
 				}
 				mob.tell("The "+doorName+" is "+closeName+"d.");
-				return false;
-			}
-			if((levelRestricted)&&(mob.envStats().level()<envStats().level()))
-			{
-				mob.tell("You can't go that way.");
-				return false;
-			}
-			if((classRestricted)&&(!mob.charStats().getMyClass().ID().equalsIgnoreCase(classRestrictedName())))
-			{
-				mob.tell("You can't go that way.");
-				return false;
-			}
-			if((alignmentRestricted)&&(alignmentRestrictedMask().toUpperCase().indexOf(CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase())>=0))
-			{
-				mob.tell("You can't go that way.");
 				return false;
 			}
 			if((Sense.isFlying(this))
@@ -393,7 +374,7 @@ public class StdExit implements Exit
 		case Affect.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				if((isReadable||((!hasALock)&&(!classRestricted)&&(!alignmentRestricted)))&&(readableText()!=null)&&(readableText().length()>0))
+				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
 					mob.tell("There is nothing written on "+name()+".");
@@ -492,26 +473,10 @@ public class StdExit implements Exit
 		doorDefaultsLocked=newDefaultsLocked;
 	}
 
-	public boolean isTrapped() {return isTrapped;}
-	public void setTrapped(boolean isTrue){isTrapped=isTrue;}
-
 	public String readableText(){ return (isReadable?miscText:"");}
 	public boolean isReadable(){ return isReadable;}
 	public void setReadable(boolean isTrue){isReadable=isTrue;}
 	public void setReadableText(String text) { miscText=text; }
-
-	public boolean levelRestricted(){ return levelRestricted;}
-	public void setLevelRestricted(boolean isTrue){levelRestricted=isTrue;}
-
-	public String classRestrictedName(){ return (classRestricted?miscText:"");}
-	public boolean classRestricted(){ return classRestricted;}
-	public void setClassRestricted(boolean isTrue){classRestricted=isTrue;}
-	public void setClassRestrictedName(String className) { miscText=className; }
-
-	public String alignmentRestrictedMask(){ return (alignmentRestricted?miscText:"");}
-	public boolean alignmentRestricted(){ return alignmentRestricted;}
-	public void setAlignmentRestricted(boolean isTrue){alignmentRestricted=isTrue;}
-	public void setAlignmentRestrictedMask(String alignments) { miscText=alignments; }
 
 	public String doorName(){return doorName;}
 	public String closeWord(){return closeName;}

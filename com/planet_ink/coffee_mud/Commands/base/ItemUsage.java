@@ -16,7 +16,7 @@ public class ItemUsage
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
-		&&(((Item)thisThang).isAContainer()))
+		&&(((Item)thisThang) instanceof Container))
 		{
 			commands.removeElementAt(commands.size()-1);
 			return (Item)thisThang;
@@ -51,7 +51,7 @@ public class ItemUsage
 			if((thisThang!=null)
 			&&(thisThang instanceof Item)
 			&&(Sense.canBeSeenBy(thisThang,mob))
-			&&(((Item)thisThang).isAContainer()))
+			&&(((Item)thisThang) instanceof Container))
 			{
 				V.addElement(thisThang);
 				if(V.size()==1)

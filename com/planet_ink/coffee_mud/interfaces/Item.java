@@ -22,7 +22,6 @@ public interface Item extends Environmental
 	public String rawSecretIdentity();
 	public void setSecretIdentity(String newIdentity);
 	
-	public boolean isAContainer();
 	public boolean subjectToWearAndTear();
 	
 	/** If it applies, the number of uses remaining
@@ -38,9 +37,6 @@ public interface Item extends Environmental
 	public int baseGoldValue();
 	public void setBaseValue(int newValue);
 	
-	public int capacity();
-	public void setCapacity(int newValue);
-
 	public int material();
 	public void setMaterial(int newValue);
 
@@ -54,8 +50,6 @@ public interface Item extends Environmental
 	public void setDroppable(boolean isTrue);
 	public boolean isRemovable();
 	public void setRemovable(boolean isTrue);
-	public boolean isTrapped();
-	public void setTrapped(boolean isTrue);
 	
 	/**
 	 * constants for worn items

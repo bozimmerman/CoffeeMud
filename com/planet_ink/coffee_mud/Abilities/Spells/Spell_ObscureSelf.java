@@ -14,6 +14,16 @@ public class Spell_ObscureSelf extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_ObscureSelf();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	private final static String[][] stuff={
+		{"<S-NAME>","<T-NAME>","someone"},
+		{"<S-HIS-HER>","<T-HIS-HER>","him or her"},
+		{"<S-HIM-HER>","<T-HIS-HER>","his or her"},
+		{"<S-NAMESELF>","<T-NAMESELF>","someone"},
+		{"<S-HE-SHE>","<T-HE-SHE>","he or she"},
+		{"<S-YOUPOSS>","<T-YOUPOSS>","someone's"},
+		{"<S-HIM-HERSELF>","<T-HIM-HERSELF>","him or herself"},
+		{"<S-HIS-HERSELF>","<T-HIS-HERSELF>","his or herself"}
+	};
 
 
 	public boolean okAffect(Affect affect)
@@ -39,44 +49,28 @@ public class Spell_ObscureSelf extends Spell
 
 			if(othersMessage!=null)
 			{
-				x=othersMessage.indexOf("<T-NAME>");
-				if(x>=0)
+				for(int i=0;i<stuff.length;i++)
 				{
-					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"someone"+othersMessage.substring(x+("<T-NAME>").length());
-				}
-				x=othersMessage.indexOf("<T-HIS-HER>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"his or her"+othersMessage.substring(x+("<T-HIS-HER>").length());
-				}
-				x=othersMessage.indexOf("<T-NAMESELF>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"someone"+othersMessage.substring(x+("<T-NAMESELF>").length());
+					x=othersMessage.indexOf(stuff[i][1]);
+					while(x>=0)
+					{
+						somethingsChanged=true;
+						othersMessage=othersMessage.substring(0,x)+stuff[i][2]+othersMessage.substring(x+(stuff[i][1]).length());
+						x=othersMessage.indexOf(stuff[i][1]);
+					}
 				}
 			}
 			if((!affect.amISource(mob))&&(sourceMessage!=null))
 			{
-				x=sourceMessage.indexOf("<T-NAME>");
-				if(x>=0)
+				for(int i=0;i<stuff.length;i++)
 				{
-					somethingsChanged=true;
-					sourceMessage=sourceMessage.substring(0,x)+"someone"+sourceMessage.substring(x+("<T-NAME>").length());
-				}
-				x=sourceMessage.indexOf("<T-HIS-HER>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					sourceMessage=sourceMessage.substring(0,x)+"his or her"+sourceMessage.substring(x+("<T-HIS-HER>").length());
-				}
-				x=sourceMessage.indexOf("<T-NAMESELF>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					sourceMessage=sourceMessage.substring(0,x)+"someone"+sourceMessage.substring(x+("<T-NAMESELF>").length());
+					x=sourceMessage.indexOf(stuff[i][1]);
+					while(x>=0)
+					{
+						somethingsChanged=true;
+						sourceMessage=sourceMessage.substring(0,x)+stuff[i][2]+sourceMessage.substring(x+(stuff[i][1]).length());
+						x=sourceMessage.indexOf(stuff[i][1]);
+					}
 				}
 			}
 		}
@@ -84,32 +78,28 @@ public class Spell_ObscureSelf extends Spell
 		{
 			if(othersMessage!=null)
 			{
-				x=othersMessage.indexOf("<S-NAME>");
-				if(x>=0)
+				for(int i=0;i<stuff.length;i++)
 				{
-					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"someone"+othersMessage.substring(x+("<S-NAME>").length());
-				}
-				x=othersMessage.indexOf("<S-HIS-HER>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"his or her"+othersMessage.substring(x+("<S-HIS-HER>").length());
+					x=othersMessage.indexOf(stuff[i][0]);
+					while(x>=0)
+					{
+						somethingsChanged=true;
+						othersMessage=othersMessage.substring(0,x)+stuff[i][2]+othersMessage.substring(x+(stuff[i][0]).length());
+						x=othersMessage.indexOf(stuff[i][0]);
+					}
 				}
 			}
 			if((!affect.amITarget(mob))&&(targetMessage!=null))
 			{
-				x=targetMessage.indexOf("<S-NAME>");
-				if(x>=0)
+				for(int i=0;i<stuff.length;i++)
 				{
-					somethingsChanged=true;
-					targetMessage=targetMessage.substring(0,x)+"someone"+targetMessage.substring(x+("<S-NAME>").length());
-				}
-				x=targetMessage.indexOf("<S-HIS-HER>");
-				if(x>=0)
-				{
-					somethingsChanged=true;
-					targetMessage=targetMessage.substring(0,x)+"his or her"+targetMessage.substring(x+("<S-HIS-HER>").length());
+					x=targetMessage.indexOf(stuff[i][0]);
+					while(x>=0)
+					{
+						somethingsChanged=true;
+						targetMessage=targetMessage.substring(0,x)+stuff[i][2]+targetMessage.substring(x+(stuff[i][0]).length());
+						x=targetMessage.indexOf(stuff[i][0]);
+					}
 				}
 			}
 		}

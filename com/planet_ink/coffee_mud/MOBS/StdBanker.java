@@ -8,8 +8,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 {
 	protected double coinInterest=0.008;
 	protected double itemInterest=-0.001;
-	protected static final Integer allDown=new Integer(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5/Host.TICK_TIME);
-	protected static Hashtable bankTicks=new Hashtable();
+	protected static final Integer allDown=new Integer(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5);
 	protected static Hashtable bankTimes=new Hashtable();
 	
 	public StdBanker()
@@ -146,90 +145,77 @@ public class StdBanker extends StdShopKeeper implements Banker
 		try{
 		if(tickID==Host.MOB_TICK)
 		{
-			Calendar C=Calendar.getInstance();
-			C.add(Calendar.MILLISECOND,-(Host.TICK_TIME/2));
 			boolean proceed=false;
 			// handle interest by watching the days go by...
 			// put stuff up for sale if the account runs out
 			synchronized(bankChain())
 			{
 				IQCalendar c=(IQCalendar)bankTimes.get(bankChain());
-				if(c==null) c=IQCalendar.getIQInstance();
-				else
-				if(c.before(C))
-				{
+				if((c==null)||(c.before(Calendar.getInstance())))
+				{	
+					c=IQCalendar.getIQInstance();
+					c.add(Calendar.MILLISECOND,allDown.intValue());
+					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),c);
-					Integer i=(Integer)bankTicks.get(bankChain());
-					if(i==null) 
-						i=new Integer(-1);
-					else 
-						i=new Integer(i.intValue()-1);
-					if(i.intValue()<=0)
-					{ 
-						i=allDown;
-						proceed=true;
-					}
-					bankTicks.remove(bankChain());
-					bankTicks.put(bankChain(),i);
 				}
-			}
-			if(proceed)
-			{
-				Vector V=ExternalPlay.DBReadJournal(bankChain());
-				Vector userNames=new Vector();
-				for(int v=0;v<V.size();v++)
+				if(proceed)
 				{
-					Vector V2=(Vector)V.elementAt(v);
-					String name=(String)V2.elementAt(1);
-					if(!userNames.contains(name))
-					{
-						if(!ExternalPlay.DBUserSearch(null,name))
-							delAllDeposits(name);
-						else
-							userNames.addElement(name);
-					}
-				}
-				for(int u=0;u<userNames.size();u++)
-				{
-					String name=(String)userNames.elementAt(u);
-					Coins coinItem=null;
-					int totalValue=0;
-					V=getDepositedItems(name);
+					Vector V=ExternalPlay.DBReadJournal(bankChain());
+					Vector userNames=new Vector();
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=(Item)V.elementAt(v);
-						if(I instanceof Coins)
-							coinItem=(Coins)I;
-						else
-						if(itemInterest!=0.0)
-							totalValue+=I.value();
+						Vector V2=(Vector)V.elementAt(v);
+						String name=(String)V2.elementAt(1);
+						if(!userNames.contains(name))
+						{
+							if(!ExternalPlay.DBUserSearch(null,name))
+								delAllDeposits(name);
+							else
+								userNames.addElement(name);
+						}
 					}
-					int newBalance=0;
-					if(coinItem!=null)
-						newBalance=coinItem.numberOfCoins();
-					newBalance+=(int)Math.round(Util.mul(newBalance,1.0+coinInterest));
-					if(totalValue>0)
-						newBalance+=(int)Math.round(Util.mul(totalValue,1.0+itemInterest));
-					if(newBalance<0)
+					for(int u=0;u<userNames.size();u++)
 					{
+						String name=(String)userNames.elementAt(u);
+						Coins coinItem=null;
+						int totalValue=0;
+						V=getDepositedItems(name);
 						for(int v=0;v<V.size();v++)
 						{
 							Item I=(Item)V.elementAt(v);
-							if(!(I instanceof Coins))
-								addStoreInventory(I);
+							if(I instanceof Coins)
+								coinItem=(Coins)I;
+							else
+							if(itemInterest!=0.0)
+								totalValue+=I.value();
 						}
-						delAllDeposits(name);
-					}
-					else
-					if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
-					{
+						int newBalance=0;
 						if(coinItem!=null)
-							delDepositInventory(name,coinItem);
-						coinItem=(Coins)CMClass.getItem("StdCoins");
-						coinItem.setNumberOfCoins(newBalance);
-						coinItem.recoverEnvStats();
-						addDepositInventory(name,coinItem);
+							newBalance=coinItem.numberOfCoins();
+						newBalance+=(int)Math.round(Util.mul(newBalance,1.0+coinInterest));
+						if(totalValue>0)
+							newBalance+=(int)Math.round(Util.mul(totalValue,1.0+itemInterest));
+						if(newBalance<0)
+						{
+							for(int v=0;v<V.size();v++)
+							{
+								Item I=(Item)V.elementAt(v);
+								if(!(I instanceof Coins))
+									addStoreInventory(I);
+							}
+							delAllDeposits(name);
+						}
+						else
+						if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
+						{
+							if(coinItem!=null)
+								delDepositInventory(name,coinItem);
+							coinItem=(Coins)CMClass.getItem("StdCoins");
+							coinItem.setNumberOfCoins(newBalance);
+							coinItem.recoverEnvStats();
+							addDepositInventory(name,coinItem);
+						}
 					}
 				}
 			}

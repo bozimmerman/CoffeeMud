@@ -10,4 +10,6 @@ public interface Container extends Item
 	public String keyName();
 	public void setKeyName(String newKeyName);
 	public Vector getContents();
+	public int capacity();
+	public void setCapacity(int newValue);
 }

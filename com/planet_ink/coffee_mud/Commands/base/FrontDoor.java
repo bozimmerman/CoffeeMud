@@ -189,7 +189,7 @@ public class FrontDoor
 							listOfRaces.append(", ");
 						else
 							tmpFirst = false;
-						listOfRaces.append("^H"+thisRace.name()+"^?");
+						listOfRaces.append("^H"+thisRace.name()+"^N");
 					}
 				}
 				listOfRaces.append("]");
@@ -232,8 +232,8 @@ public class FrontDoor
 						if(newRace!=null)
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newRace.ID().toUpperCase());
-							if(str!=null) mob.tell("\n\r"+str.toString()+"\n\r");
-							if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
+							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
+							if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^N^! correct (Y/n)?^N","Y"))
 								newRace=null;
 						}
 					}
@@ -328,8 +328,8 @@ public class FrontDoor
 						&&(newClass.qualifiesForThisClass(mob)))
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
-							if(str!=null) mob.tell("\n\r"+str.toString()+"\n\r");
-							if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
+							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
+							if(!mob.session().confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
 								newClass=null;
 						}
 						else

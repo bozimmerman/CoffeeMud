@@ -12,6 +12,7 @@ public class StdWeapon extends StdItem implements Weapon
 	protected boolean useExtendedMissString=false;
 	protected int minRange=0;
 	protected int maxRange=0;
+	protected int ammoCapacity=0;
 
 	public StdWeapon()
 	{
@@ -271,8 +272,8 @@ public class StdWeapon extends StdItem implements Weapon
 			amount=20;
 		setUsesRemaining(amount);
 	}
-	public int ammunitionCapacity(){return capacity();}
-	public void setAmmoCapacity(int amount){setCapacity(amount);}
+	public int ammunitionCapacity(){return ammoCapacity;}
+	public void setAmmoCapacity(int amount){ammoCapacity=amount;}
 	public int value()
 	{
 		if((subjectToWearAndTear())&&(usesRemaining()<1000))

@@ -53,14 +53,6 @@ public class GenExit extends StdExit
 	public void setReadable(boolean isTrue){isReadable=isTrue;}
 	public void setReadableText(String text) { keyName=text; }
 
-	public String classRestrictedName(){ return (classRestricted?keyName:"");}
-	public void setClassRestricted(boolean isTrue){classRestricted=isTrue;}
-	public void setClassRestrictedName(String className) { keyName=className; }
-
-	public String alignmentRestrictedMask(){ return (alignmentRestricted?keyName:"");}
-	public void setAlignmentRestricted(boolean isTrue){alignmentRestricted=isTrue;}
-	public void setAlignmentRestrictedMask(String alignments) {keyName=alignments; }
-
 	public String keyName()	{ return keyName; }
 	public void setKeyName(String newKeyName){keyName=newKeyName;}
 

@@ -150,6 +150,7 @@ public interface MOB
 	public MOB amFollowing();
 	public void setFollowing(MOB mob);
 	public Hashtable getGroupMembers(Hashtable list);
+	public Hashtable getRideBuddies(Hashtable list);
 	public boolean isEligibleMonster();
 	
 	/** Manipulation of ability objects, which includes

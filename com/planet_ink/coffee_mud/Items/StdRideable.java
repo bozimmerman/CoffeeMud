@@ -57,6 +57,18 @@ public class StdRideable extends StdContainer implements Rideable
 		if(mob!=null)
 			riders.removeElement(mob);
 	}
+	
+	public Hashtable getRideBuddies(Hashtable list)
+	{
+		if(list==null) return list;
+		for(int r=0;r<numRiders();r++)
+		{
+			MOB R=fetchRider(r);
+			if(list.get(R)==null) list.put(R,R);
+		}
+		return list;
+	}
+	
 	public boolean mobileRideBasis()
 	{
 		switch(rideBasis)

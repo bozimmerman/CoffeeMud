@@ -19,8 +19,6 @@ public class QuestPoint extends StdItem
 		miscText="";
 		material=0;
 		baseEnvStats.setWeight(0);
-		capacity=0;
-		isAContainer=false;
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

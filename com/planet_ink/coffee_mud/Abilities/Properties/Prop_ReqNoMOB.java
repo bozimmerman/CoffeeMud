@@ -22,7 +22,9 @@ public class Prop_ReqNoMOB extends Property
 		{
 			if((affect.source().isMonster())
 			   &&(affect.source().amFollowing()==null)
-			   &&(affect.source().numFollowers()==0))
+			   &&(affect.source().numFollowers()==0)
+			   &&((!(affect.source() instanceof Rideable))
+				  ||(((Rideable)affect.source()).numRiders()==0)))
 				return false;
 		}
 		return super.okAffect(affect);

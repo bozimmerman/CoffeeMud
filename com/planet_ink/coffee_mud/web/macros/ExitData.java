@@ -109,20 +109,8 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 5: // levelrestricted;
-				if(firstTime) 
-					old=E.levelRestricted()?"checked":""; 
-				else 
-				if(old.equals("on")) 
-					old="checked";
-				str.append(old);
 				break;
 			case 6: // istrapped
-				if(firstTime) 
-					old=E.isTrapped()?"checked":""; 
-				else 
-				if(old.equals("on")) 
-					old="checked";
-				str.append(old);
 				break;
 			case 7: // hasadoor
 				if(firstTime) 
@@ -146,10 +134,12 @@ public class ExitData extends StdWebMacro
 				break;
 			case 10: // openword
 				if(firstTime) old=E.openWord(); 
+				if(old.length()==0) old="open";
 				str.append(old);
 				break;
 			case 11: // closeword
 				if(firstTime) old=E.closeWord(); 
+				if(old.length()==0) old="close";
 				str.append(old);
 				break;
 			case 12: // hasalock
@@ -185,59 +175,12 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 17: // isclassrestricuted
-				if(firstTime) old=E.classRestricted()?"checked":""; 
-				else 
-				if(old.equals("on")) 
-					old="checked";
-				str.append(old);
 				break;
 			case 18: // restrictedclasses
-				if(firstTime) old=E.classRestrictedName(); 
-				str.append("<SELECT NAME=RESTRICTEDCLASSES>");
-				for(int c=0;c<CMClass.charClasses.size();c++)
-				{
-					CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-					str.append("<OPTION VALUE=\""+C.ID()+"\"");
-					if(C.ID().equalsIgnoreCase(old))
-						str.append(" SELECTED");
-					str.append(">"+C.name());
-				}
-				str.append("</SELECT>");
-				str.append(old);
 				break;
 			case 19: // isalignmentrestricuted
-				if(firstTime) 
-					old=E.alignmentRestricted()?"checked":""; 
-				else 
-				if(old.equals("on")) 
-					old="checked";
-				str.append(old);
 				break;
 			case 20: // restrictedalignments
-				String mask=E.alignmentRestrictedMask();
-				String[] alignments={"GOOD","NEUTRAL","EVIL"};
-				if(reqs.containsKey("RESTRICTEDALIGNMENTS"))
-				{
-					mask=((String)reqs.get("RESTRICTEDALIGNMENTS"))+" ";
-					for(int i=1;;i++)
-					{
-						String selection=(String)reqs.get("RESTRICTEDALIGNMENTS"+i);
-						if(selection!=null)
-							mask+=selection+" ";
-						else
-							break;
-					}
-				}
-				mask=mask.trim();
-				str.append("<SELECT MULTIPLE NAME=RESTRICTEDALIGNMENTS>");
-				for(int i=0;i<alignments.length;i++)
-				{
-					str.append("<OPTION VALUE=\""+alignments[i]+"\"");
-					if(mask.toUpperCase().indexOf(alignments[i])>=0)
-						str.append(" SELECTED");
-					str.append(">"+alignments[i]);
-				}
-				str.append("</SELECT>");
 				break;
 			case 21: // misc text
 				if(firstTime) old=E.text(); 
