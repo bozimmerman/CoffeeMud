@@ -54,6 +54,13 @@ public class Thief_Alertness extends ThiefSkill
 		return true;
 	}
 
+	public void unInvoke()
+	{
+		MOB M=(MOB)affected;
+		super.unInvoke();
+		if((M!=null)&&(!M.amDead()))
+			M.tell("You don't feel quite so alert any more.");
+	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

@@ -242,11 +242,11 @@ public class Language extends StdAbility
 				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
 					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
 				else
-				if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
-				else
 				if(msg.amITarget((MOB)affected)&&(msg.targetMessage()!=null))
 					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+ID()+")"));
+				else
+				if((!msg.amITarget(null))&&(msg.othersMessage()!=null))
+					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)msg.target(),null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
 			}
 		}
 	}

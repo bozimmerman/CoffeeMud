@@ -104,8 +104,8 @@ public class Prop_LangTranslator extends Property
 					if(msg.amITarget(null)&&(msg.targetMessage()!=null))
 						msg.addTrailerMsg(new FullMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+subStitute(msg.targetMessage(),str)+"\" in "+msg.tool().name()+"'"));
 					else
-					if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
-						msg.addTrailerMsg(new FullMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+subStitute(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
+					if(msg.othersMessage()!=null)
+						msg.addTrailerMsg(new FullMsg(mob,msg.target(),null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+subStitute(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
 				}
 			}
 		}

@@ -88,7 +88,7 @@ public class Thief_Comprehension extends ThiefSkill
 				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
 					queue.addElement(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
-				if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
+				if(msg.othersMessage()!=null)
 					queue.addElement(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 			}
 		}

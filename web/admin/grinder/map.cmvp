@@ -6,7 +6,7 @@
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<title>CoffeeMUD MUDGrinder</title>
+	<title>CoffeeMud MUDGrinder</title>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
 		function Clicked(action,link,room,linksto)

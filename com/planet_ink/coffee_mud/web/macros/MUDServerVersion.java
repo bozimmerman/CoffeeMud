@@ -9,7 +9,7 @@ public class MUDServerVersion extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		return "CoffeeMUD-MainServer/" + CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER);
+		return "CoffeeMud-MainServer/" + CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER);
 	}
 
 }

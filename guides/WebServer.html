@@ -2,14 +2,14 @@
 
 <html>
 <head>
-	<title>The CoffeeMUD Web Server</title>
+	<title>The CoffeeMud Web Server</title>
 </head>
 
 <body>
 
-<p><b>The CoffeeMUD Web Server:</b><br>
-The CoffeeMUD Web Server is a simple, extensible
-web server that runs as part of CoffeeMUD; it uses HTTP 1.0
+<p><b>The CoffeeMud Web Server:</b><br>
+The CoffeeMud Web Server is a simple, extensible
+web server that runs as part of CoffeeMud; it uses HTTP 1.0
 to communicate with a web browser. In addition to being able to
 serve standard HTML web pages, it allows mime-types to be specified
 for any file extension; it also supports a simple server-processed form of HTML
@@ -33,7 +33,7 @@ It does not cache.
 </p>
 
 <p><b>Security:</b><br>
-In the default CoffeeMUD installation, the server named admin&nbsp;may be&nbsp;bound to 127.0.0.1 (localhost) - this
+In the default CoffeeMud installation, the server named admin&nbsp;may be&nbsp;bound to 127.0.0.1 (localhost) - this
 means it will not accept external connections (see below).<br>
 The servers will not permit access to a directory or file outside their base directory tree (which
 includes mounted virtual directories, see below); attempts will generate a log message and return
@@ -42,10 +42,10 @@ a HTTP 401.
 
 
 <p><b>Configuration:</b><br>
-The default installation of CoffeeMUD has two inbuilt web servers, named 'pub' and 'admin'.
+The default installation of CoffeeMud has two inbuilt web servers, named 'pub' and 'admin'.
 The web servers are enabled with the line 'RUNWEBSERVERS=true' in 'coffeemud.ini'; any other
 value or the abscence of this line will cause the web servers not to be loaded.</p>
-<p>INI files for the web servers live in the 'web/' directory off the CoffeeMUD root; by default,
+<p>INI files for the web servers live in the 'web/' directory off the CoffeeMud root; by default,
 all pages to be served go in <I>web/(servername)/</I>, though this can be overridden.
 Options are placed in either 'web/common.ini' or 'web/(servername).ini'; an option in the latter
 will override one in common.
@@ -115,7 +115,7 @@ link BACK from a virtual directory with a RELATIVE link, unless you rely on the 
 remove redundancies; instead, specify a path from the root ('/') -
 e.g., instead of ../index.cmvp specify /index.cmvp.
 </p>
-<P><b>CoffeeMUD Virtual Pages:</b><br>
+<P><b>CoffeeMud Virtual Pages:</b><br>
   Kind of misnamed (these pages in their original, very
 different incarnation didn't exist at all), this is typically a HTML or
 plaintext file that is preprocessed by the server before being dispatched to the

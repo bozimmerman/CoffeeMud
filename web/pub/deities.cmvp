@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
-	<title>CoffeeMUD Web Server</title>
+	<title>CoffeeMud Web Server</title>
 	<script language=JavaScript>
 	<!--
 		function openUp2(named)

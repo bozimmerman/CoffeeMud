@@ -508,10 +508,10 @@ face="Courier New, Courier, mono">Add</FONT> button. This will present you with
 a list of drivers. Select "<FONT face="Courier New, Courier, mono">Microsoft 
 Access Driver (*.mdb)</FONT>"</P>
 <P><STRONG>10.</STRONG> Here you should probably name the data source something 
-sensical, like <FONT face="Courier New, Courier, mono">CoffeeMUDData</FONT> or 
+sensical, like <FONT face="Courier New, Courier, mono">CoffeeMudData</FONT> or 
 the like. Under <FONT face="Courier New, Courier, mono">Database</FONT>, click 
 <FONT face="Courier New, Courier, mono">Select</FONT>. Locate and select your 
-<FONT face="Courier New, Courier, mono">CoffeeMUD.mdb</FONT> file that you saved 
+<FONT face="Courier New, Courier, mono">CoffeeMud.mdb</FONT> file that you saved 
 in step 1. Click OK and then OK to get all the way back out of things.</P>
 <P><STRONG>11. </STRONG>Open coffeemud.ini. Go to where it says "ODBC Database 
 fields". That section should instead look like this:</P>
@@ -522,9 +522,9 @@ of the ODBC Service as defined by your local operating system<BR># DBUSER is a
 user name required to log into the ODBC service<BR># DBPASS is the password for 
 the above user name<BR># DBCONNECTIONS is the number of independent connections 
 to make to the 
-database<BR>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<BR>DBSERVICE=jdbc:odbc:<I>CoffeeMUDData</I><BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2</FONT></P>
+database<BR>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<BR>DBSERVICE=jdbc:odbc:<I>CoffeeMudData</I><BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2</FONT></P>
 <P>Where it says "<FONT 
-face="Courier New, Courier, mono">jdbc:odbc:CoffeeMUDData</FONT>", make sure the 
+face="Courier New, Courier, mono">jdbc:odbc:CoffeeMudData</FONT>", make sure the 
 part after "<FONT face="Courier New, Courier, mono">jdbc:odbc:</FONT>" matches 
 the DNS name you made earlier.&nbsp; Reboot CoffeeMud, and you are done!</P>
 <P align=left><EM>Installing and using MySQL with CoffeeMud on a Windows 
@@ -601,7 +601,7 @@ Make sure mysqld is being run at boot time, and not by the root user. </P>
 <P><STRONG>2.</STRONG>&nbsp;Download and install the mysql jdbc api from <A 
 href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</A>.&nbsp;Extract 
 the .tar.gz file to a temporary directory.&nbsp;Then copy the extracted 
-/com/mysql/ directory (not just its contents) into /CoffeeMUD/com/.</P>
+/com/mysql/ directory (not just its contents) into /CoffeeMud/com/.</P>
 <P><STRONG>3.</STRONG> Create a coffeemud database from the shell as root type, 
 "mysqladmin create coffeemud" (in this example we name the db 
 coffeemud).&nbsp;If you screw up, or need to delete the new db for some reason, 
@@ -610,12 +610,12 @@ you can always do a "mysqladmin drop coffeemud". </P>
 is called coffee).&nbsp; As root, type "mysql" into the shell. Now enter: GRANT 
 ALL ON coffeemud.* TO coffee@localhost IDENTIFIED BY "password";&nbsp;&nbsp; 
 Enter a password for the user inside the quotes.&nbsp;Now type, "quit". </P>
-<P><STRONG>5.</STRONG> Edit the file CoffeeMUD/guides/coffeemuddbmysql.sql like 
+<P><STRONG>5.</STRONG> Edit the file CoffeeMud/guides/coffeemuddbmysql.sql like 
 so:&nbsp;at line 9 insert "use coffeemud" (assuming the new db is called 
 coffeemud). Then save the changes. </P>
 <P><STRONG>6.</STRONG> Run the SQL file as follows:&nbsp;from the shell type, 
 "mysql &lt; coffeemuddbmysql.sql" </P>
-<P><STRONG>7.</STRONG> Edit the following settings in CoffeeMUD/coffeemud.ini: 
+<P><STRONG>7.</STRONG> Edit the following settings in CoffeeMud/coffeemud.ini: 
 <BR>DBCLASS=com.mysql.jdbc.Driver <BR>DBSERVICE=jdbc:mysql://localhost/coffeemud 
 <BR>DBUSER=coffee <BR>DBPASS=password <BR>DBCONNECTIONS=4 </P>
 <P>(no quotes on the password here)<BR>Save your changes and fire up 
