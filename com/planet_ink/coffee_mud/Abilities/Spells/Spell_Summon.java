@@ -55,7 +55,7 @@ public class Spell_Summon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int adjustment=target.envStats().level();
+		int adjustment=target.envStats().level()-mob.envStats().level();
 		if(target.isMonster()) adjustment=adjustment*3;
 		boolean success=profficiencyCheck(-adjustment,auto);
 
@@ -68,7 +68,7 @@ public class Spell_Summon extends Spell
 
 				MOB follower=target;
 				Room newRoom=mob.location();
-				FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a burst of light.");
+				FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
 				FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
 				if(oldRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
 				{

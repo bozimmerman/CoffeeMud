@@ -67,7 +67,16 @@ public class Spell_Portal extends Spell
 		}
 
 		int profNeg=0;
-		profNeg+=newRoom.numInhabitants()*20;
+		for(int i=0;i<newRoom.numInhabitants();i++)
+		{
+			MOB t=newRoom.fetchInhabitant(i);
+			if(t!=null)
+			{
+				int adjustment=t.envStats().level()-mob.envStats().level();
+				if(t.isMonster()) adjustment=adjustment*3;
+				profNeg+=adjustment;
+			}
+		}
 		profNeg+=newRoom.numItems()*20;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -81,7 +90,7 @@ public class Spell_Portal extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);

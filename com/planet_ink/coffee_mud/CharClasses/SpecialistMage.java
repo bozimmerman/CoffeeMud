@@ -19,23 +19,26 @@ public class SpecialistMage extends Mage
 		for(int a=0;a<CMClass.abilities.size();a++)
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			int level=CMAble.getQualifyingLevel(ID(),A.ID());
-			if((A!=null)
-			&&(level>0)
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+			if(A!=null)
 			{
-				if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
+				int level=CMAble.getQualifyingLevel(ID(),A.ID());
+				if((!CMAble.getDefaultGain(baseClass(),A.ID()))
+				&&(level>0)
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 				{
-					if(CMAble.getDefaultGain(baseClass(),A.ID()))
-						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
+					if((A.classificationCode()&Ability.ALL_DOMAINS)==opposed())
+					{
+						if(CMAble.getDefaultGain(baseClass(),A.ID()))
+							CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
+						else
+							CMAble.delCharAbilityMapping(ID(),A.ID());
+					}
 					else
-						CMAble.delCharAbilityMapping(ID(),A.ID());
+					if((A.classificationCode()&Ability.ALL_DOMAINS)==domain())
+						CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
+					else
+						CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
 				}
-				else
-				if((A.classificationCode()&Ability.ALL_DOMAINS)==domain())
-					CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
-				else
-					CMAble.addCharAbilityMapping(ID(),level,A.ID(),0,false);
 			}
 		}
 	}
@@ -45,13 +48,13 @@ public class SpecialistMage extends Mage
 	{
 		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
 		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
-		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic.";
+		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
 	public String otherLimitations()
 	{
 		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
 		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
-		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  At 10th level, receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
+		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
@@ -113,7 +116,7 @@ public class SpecialistMage extends Mage
 									 int duration)
 	{
 		if(myChar==null) return duration;
-		if(myChar.charStats().getClassLevel(this)<10) return duration;
+		boolean lessTen=myChar.charStats().getClassLevel(this)<10;
 		   
 		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
@@ -123,7 +126,10 @@ public class SpecialistMage extends Mage
 				return duration/2;
 			else
 			if(domain==domain())
-				return duration*2;
+			{
+				if(!lessTen)
+					return duration*2;
+			}
 		}
 		else
 		{
@@ -131,7 +137,10 @@ public class SpecialistMage extends Mage
 				return duration*2;
 			else
 			if(domain==domain())
-				return duration/2;
+			{
+				if(!lessTen)
+					return duration/2;
+			}
 		}
 		return duration;
 	}

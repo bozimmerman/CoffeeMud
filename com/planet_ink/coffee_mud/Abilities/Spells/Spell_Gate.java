@@ -54,10 +54,12 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
+		int adjustment=target.envStats().level()-mob.envStats().level();
+		if(target.isMonster()) adjustment=adjustment*3;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(-adjustment,auto);
 
 		if(success)
 		{

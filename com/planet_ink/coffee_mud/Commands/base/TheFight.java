@@ -239,37 +239,6 @@ public class TheFight
 				targetCode=Affect.MASK_HURT+damage;
 			}
 			
-			allDisplayMessage=msg.othersMessage();
-			if((allDisplayMessage!=null)
-			&&(msg.sourceCode()>0)
-			&&(allDisplayMessage.equals(msg.sourceMessage()))
-			&&(damageType>=0)
-			&&(Util.bset(targetCode,Affect.MASK_HURT)))
-			{
-				
-				if((weapon==null)||(!(weapon instanceof Weapon)))
-					allDisplayMessage=replaceDamageTag(allDisplayMessage,damage,damageType);
-				FullMsg msg2=new FullMsg(msg.source(),
-										 msg.target(),
-										 msg.tool(),
-										 msg.sourceCode(),
-										 allDisplayMessage,
-										 msg.othersCode(),
-										 allDisplayMessage,
-										 msg.othersCode(),
-										 allDisplayMessage);
-				target.location().send(target,msg2);
-				msg.modify(msg.source(),
-						   msg.target(),
-						   msg.tool(),
-						   Affect.NO_EFFECT,
-						   null,
-						   targetCode,
-						   null,
-						   Affect.NO_EFFECT,
-						   null);
-			}
-			
 			if(damageType>=0)
 			msg.modify(msg.source(),
 					   msg.target(),
