@@ -58,7 +58,7 @@ public class Spell_Clog extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> gergle(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -15,7 +15,7 @@ public class Song_Thanks extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Thanks();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -93,7 +93,7 @@ public class Song_Thanks extends Song
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -111,12 +111,12 @@ public class Song_Thanks extends Song
 					// malicious songs must not affect the invoker!
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.MASK_GENERAL;
-					
+
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
-						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
+						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())

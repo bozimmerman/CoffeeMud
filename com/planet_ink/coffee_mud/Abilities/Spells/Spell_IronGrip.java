@@ -30,9 +30,9 @@ public class Spell_IronGrip extends Spell
 
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect)) return false;
+		if(!super.okAffect(myHost,affect)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -72,7 +72,7 @@ public class Spell_IronGrip extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!":"^S<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

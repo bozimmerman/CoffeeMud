@@ -47,7 +47,7 @@ public class GoodyBag extends BagOfEndlessness
 		I.recoverEnvStats();
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((!alreadyFilled)&&(owner()!=null))
 		{
@@ -141,6 +141,6 @@ public class GoodyBag extends BagOfEndlessness
 				putInBag(I);
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

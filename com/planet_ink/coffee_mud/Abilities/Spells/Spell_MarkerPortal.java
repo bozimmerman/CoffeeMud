@@ -67,7 +67,7 @@ public class Spell_MarkerPortal extends Spell
 			mob.tell("But your marker is HERE!");
 			return false;
 		}
-		
+
 		if((oldRoom.getRoomInDir(Directions.GATE)!=null)
 		||(oldRoom.getExitInDir(Directions.GATE)!=null))
 		{
@@ -99,7 +99,7 @@ public class Spell_MarkerPortal extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,oldRoom,this,affectType(auto),"^S<S-NAME> conjur(s) a blinding, swirling portal here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
-			if((oldRoom.okAffect(msg))&&(newRoom.okAffect(msg2)))
+			if((oldRoom.okAffect(mob,msg))&&(newRoom.okAffect(mob,msg2)))
 			{
 				oldRoom.send(mob,msg);
 				newRoom.send(mob,msg2);

@@ -128,7 +128,7 @@ public class Amputation extends StdAbility
 				affectableState.setMovement(affectableState.getMovement()/4);
 		}
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB myChar=(MOB)affected;
 		if(myChar==null) return false;
@@ -217,7 +217,7 @@ public class Amputation extends StdAbility
 			affect.source().tell("You cannot give anything to the "+name()+".");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -316,7 +316,7 @@ public class Amputation extends StdAbility
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),str);
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 			    target.location().send(target,msg);
 				if(!msg.wasModified())

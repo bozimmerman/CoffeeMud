@@ -68,7 +68,7 @@ public class Druid_MyPlants extends StdAbility
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_QUIETMOVEMENT|Affect.MASK_MAGIC,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer yourPlants=new StringBuffer("");

@@ -71,7 +71,7 @@ public class Spell_ConjureNexus extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> summon(s) the Nexus of mana!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

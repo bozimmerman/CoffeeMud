@@ -15,7 +15,7 @@ public class Spell_Blur extends Spell
 	public Environmental newInstance(){	return new Spell_Blur();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -30,7 +30,7 @@ public class Spell_Blur extends Spell
 			if(Dice.rollPercentage()<(pctDodge*2))
 			{
 				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 				return false;
 			}
@@ -80,7 +80,7 @@ public class Spell_Blur extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) blurry!");

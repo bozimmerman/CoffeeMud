@@ -58,9 +58,9 @@ public class Chant_LocatePlants extends Chant
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -132,7 +132,7 @@ public class Chant_LocatePlants extends Chant
 		if((success)&&(theTrail!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();

@@ -108,23 +108,29 @@ public class Thief extends StdCharClass
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-	public void affect(MOB myChar, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		if(affect.amISource(myChar)
-		   &&(!myChar.isMonster())
-		   &&(affect.sourceCode()==Affect.MSG_THIEF_ACT)
-		   &&(affect.target()!=null)
-		   &&(affect.target() instanceof MOB)
-		   &&(affect.targetMessage()==null)
-		   &&(affect.tool()!=null)
-		   &&(affect.tool() instanceof Ability)
-		   &&(affect.tool().ID().equals("Thief_Steal")
-			  ||affect.tool().ID().equals("Thief_Swipe")))
-			gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10);
-		super.affect(myChar,affect);
+		if(myHost instanceof MOB)
+		{
+			MOB myChar=(MOB)myHost;
+			if(affect.amISource(myChar)
+			   &&(!myChar.isMonster())
+			   &&(affect.sourceCode()==Affect.MSG_THIEF_ACT)
+			   &&(affect.target()!=null)
+			   &&(affect.target() instanceof MOB)
+			   &&(affect.targetMessage()==null)
+			   &&(affect.tool()!=null)
+			   &&(affect.tool() instanceof Ability)
+			   &&(affect.tool().ID().equals("Thief_Steal")
+				  ||affect.tool().ID().equals("Thief_Swipe")))
+				gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10);
+		}
+		super.affect(myHost,affect);
 	}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)

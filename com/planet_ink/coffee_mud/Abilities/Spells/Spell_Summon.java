@@ -62,7 +62,7 @@ public class Spell_Summon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
-			if((mob.location().okAffect(msg))&&(oldRoom.okAffect(msg)))
+			if((mob.location().okAffect(mob,msg))&&(oldRoom.okAffect(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 
@@ -70,7 +70,7 @@ public class Spell_Summon extends Spell
 				Room newRoom=mob.location();
 				FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
 				FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
-				if(oldRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
+				if(oldRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
 				{
 					follower.makePeace();
 					oldRoom.send(follower,leaveMsg);

@@ -35,19 +35,19 @@ public class Thief_Pick extends ThiefSkill
 			mob.tell("There is no lock on "+unlockThis.name()+"!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		
+
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");
 		else
 		{
 			FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				msg=new FullMsg(mob,unlockThis,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
 				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);

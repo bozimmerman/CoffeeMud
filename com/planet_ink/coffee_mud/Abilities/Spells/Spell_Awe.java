@@ -15,7 +15,7 @@ public class Spell_Awe extends Spell
 	public Environmental newInstance(){	return new Spell_Awe();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected))))
@@ -34,7 +34,7 @@ public class Spell_Awe extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -73,7 +73,7 @@ public class Spell_Awe extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) awesome!");

@@ -28,7 +28,7 @@ public class Spell_DetectScrying extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) softly to <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");

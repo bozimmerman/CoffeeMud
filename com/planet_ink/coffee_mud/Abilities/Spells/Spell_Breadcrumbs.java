@@ -56,7 +56,7 @@ public class Spell_Breadcrumbs extends Spell
 		return str.toString()+")";
 	}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -130,7 +130,7 @@ public class Spell_Breadcrumbs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) mysterious breadcrumbs.":"^S<S-NAME> invoke(s) the mystical breadcrumbs.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				trail=new Vector();

@@ -28,7 +28,7 @@ public class Chant_Treemind extends Chant
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -70,7 +70,7 @@ public class Chant_Treemind extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				amountAbsorbed=0;
 				mob.location().send(mob,msg);

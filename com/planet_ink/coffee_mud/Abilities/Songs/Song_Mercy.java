@@ -13,10 +13,10 @@ public class Song_Mercy extends Song
 	public String displayText(){ return "(Song of Mercy)";}
 	public int quality(){ return INDIFFERENT;}
 	public Environmental newInstance(){	return new Song_Mercy();}
-	
+
 	private Room lastRoom=null;
 	private int count=3;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -33,7 +33,7 @@ public class Song_Mercy extends Song
 			count--;
 		return true;
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB mob=(MOB)affected;
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
@@ -52,11 +52,11 @@ public class Song_Mercy extends Song
 				}
 				return false;
 			}
-			
+
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		count=3;

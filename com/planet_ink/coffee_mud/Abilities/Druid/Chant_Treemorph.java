@@ -37,7 +37,7 @@ public class Chant_Treemorph extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected instanceof MOB)
 		{
@@ -70,7 +70,7 @@ public class Chant_Treemorph extends Chant
 				}
 			}
 		}
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affected instanceof MOB)
@@ -153,7 +153,7 @@ public class Chant_Treemorph extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

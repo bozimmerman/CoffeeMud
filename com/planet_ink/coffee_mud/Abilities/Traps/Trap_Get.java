@@ -12,18 +12,18 @@ public class Trap_Get extends Trap_Trap
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Trap_Get();}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(sprung)
 		{
 			if(affect.source().isMine(affected))
 				unInvoke();
 			else
-				super.affect(affect);
+				super.affect(myHost,affect);
 			return;
 		}
 
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if(affect.amITarget(affected))
 		{

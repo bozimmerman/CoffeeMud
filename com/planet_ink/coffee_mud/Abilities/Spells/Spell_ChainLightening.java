@@ -28,7 +28,7 @@ public class Spell_ChainLightening extends Spell
 			if((M!=mob)&&(!targets.contains(M))) targets.addElement(M);
 		}
 		targets.addElement(mob);
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -38,7 +38,7 @@ public class Spell_ChainLightening extends Spell
 
 		int maxDie=adjustedLevel(mob);
 		int damage = Dice.roll(maxDie,8,1);
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
@@ -59,7 +59,7 @@ public class Spell_ChainLightening extends Spell
 						   &&(M2.location()==mob.location()))
 							 count++;
 					}
-					if(count<2) 
+					if(count<2)
 						return true;
 					continue;
 				}
@@ -74,7 +74,7 @@ public class Spell_ChainLightening extends Spell
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
 				auto=oldAuto;
-				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
+				if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);

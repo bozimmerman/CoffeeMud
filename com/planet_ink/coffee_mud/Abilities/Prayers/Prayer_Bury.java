@@ -37,7 +37,7 @@ public class Prayer_Bury extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened. 
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> bury(s) <T-HIM-HERSELF>.^?":"^S<S-NAME> bury(s) <T-NAMESELF> in the name of "+hisHerDiety(mob)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.destroyThis();

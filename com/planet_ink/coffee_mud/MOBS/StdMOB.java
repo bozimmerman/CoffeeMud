@@ -10,14 +10,14 @@ public class StdMOB implements MOB
 	protected long LastDateTime=System.currentTimeMillis();
 	protected long lastUpdated=0;
 	protected int channelMask;
-	
+
 	private String colorStr=null;
 	private String prompt=null;
 	protected int termID = 0;	//0:plain, 1:ansi
-	
+
 	private String clanID=null;
 	private int clanRole=0;
-	
+
 	protected CharStats baseCharStats=new DefaultCharStats();
 	protected CharStats charStats=new DefaultCharStats();
 
@@ -77,7 +77,7 @@ public class StdMOB implements MOB
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}
 	public void setBitmap(int newVal)
-	{ 
+	{
 		attributesBitmap=newVal;
 		if(mySession!=null)
 			mySession.setTermID(((attributesBitmap&MOB.ATT_ANSI)>0)?1:0);
@@ -119,7 +119,7 @@ public class StdMOB implements MOB
 	{
 		if(getWorshipCharID().length()==0) return null;
 		Deity bob=CMMap.getDeity(getWorshipCharID());
-		if(bob==null) 
+		if(bob==null)
 			setWorshipCharID("");
 		return bob;
 	}
@@ -251,7 +251,7 @@ public class StdMOB implements MOB
 			charStats().getCurrentClass().affectEnvStats(this,envStats);
 			charStats().getMyRace().affectEnvStats(this,envStats);
 		}
-		
+
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item item=fetchInventory(i);
@@ -300,7 +300,7 @@ public class StdMOB implements MOB
 	{
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),baseEnvStats().level()-baseCharStats().combinedSubLevels());
 		charStats=baseCharStats().cloneCharStats();
-			
+
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
 		for(int a=0;a<numAffects();a++)
@@ -414,7 +414,7 @@ public class StdMOB implements MOB
 	public void setClanID(String clan){clanID=clan;}
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
-	
+
 	public MOB replyTo(){	return replyTo;	}
 	public void setReplyTo(MOB mob){	replyTo=mob;	}
 	public String getPrompt()
@@ -430,7 +430,7 @@ public class StdMOB implements MOB
 		return colorStr;
 	}
 	public void setColorStr(String newColors){colorStr=newColors;}
-	
+
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
@@ -466,7 +466,7 @@ public class StdMOB implements MOB
 		location().recoverRoomStats();
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
-		
+
 		if(Sense.isSleeping(this))
 			tell("(You are asleep)");
 		else
@@ -600,7 +600,7 @@ public class StdMOB implements MOB
 		if(mob==null) setAtRange(-1);
 		if(victim==mob) return;
 		if(mob==this) return;
-		
+
 		victim=mob;
 		recoverEnvStats();
 		recoverCharStats();
@@ -706,7 +706,7 @@ public class StdMOB implements MOB
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;
-			if(envStats().replacementName()!=null) 
+			if(envStats().replacementName()!=null)
 				sendBack=new StringBuffer(envStats().replacementName());
 			else
 				sendBack=new StringBuffer(name());
@@ -745,7 +745,7 @@ public class StdMOB implements MOB
 						else
 							sendBack.append(rider.name());
 					}
-					
+
 				}
 			}
 			if((isInCombat())&&(Sense.canMove(this))&&(!Sense.isSleeping(this)))
@@ -762,7 +762,7 @@ public class StdMOB implements MOB
 		else
 			return displayText;
 	}
-	
+
 	public String displayText()
 	{
 		return displayText;
@@ -838,7 +838,7 @@ public class StdMOB implements MOB
 					}
 				}
 			}
-			
+
 			if(target.getVictim()==source)
 			{
 				if(target.rangeToTarget()>=0)
@@ -851,13 +851,13 @@ public class StdMOB implements MOB
 			recoverEnvStats();
 		}
 	}
-	
-	
-	public boolean okAffect(Affect affect)
+
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((getMyDeity()!=null)&&(!getMyDeity().okAffect(affect)))
+		if((getMyDeity()!=null)&&(!getMyDeity().okAffect(this,affect)))
 			return false;
-		
+
 		if(charStats!=null)
 		{
 			if(!charStats().getCurrentClass().okAffect(this,affect))
@@ -869,14 +869,14 @@ public class StdMOB implements MOB
 		for(int i=0;i<numAffects();i++)
 		{
 			Ability aff=(Ability)fetchAffect(i);
-			if((aff!=null)&&(!aff.okAffect(affect)))
+			if((aff!=null)&&(!aff.okAffect(this,affect)))
 				return false;
 		}
 
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item I=(Item)fetchInventory(i);
-			if((I!=null)&&(!I.okAffect(affect)))
+			if((I!=null)&&(!I.okAffect(this,affect)))
 				return false;
 		}
 
@@ -886,7 +886,7 @@ public class StdMOB implements MOB
 			if((B!=null)&&(!B.okAffect(this,affect)))
 				return false;
 		}
-		
+
 		MOB mob=affect.source();
 		if((affect.sourceCode()!=Affect.NO_EFFECT)
 		&&(affect.amISource(this))
@@ -919,7 +919,7 @@ public class StdMOB implements MOB
 				}
 			}
 
-			
+
 			if(Util.bset(srcMajor,Affect.MASK_EYES))
 			{
 				if(Sense.isSleeping(this))
@@ -1009,7 +1009,7 @@ public class StdMOB implements MOB
 				&&((affect.sourceMinor()==Affect.TYP_LEAVE)
 				||(affect.sourceMinor()==Affect.TYP_ENTER)))
 					sitting=false;
-				   
+
 				if(((Sense.isSleeping(this))||(sitting))
 				&&(affect.sourceMinor()!=Affect.TYP_STAND)
 				&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
@@ -1128,7 +1128,7 @@ public class StdMOB implements MOB
 				break;
 			}
 		}
-		
+
 		if((affect.sourceCode()!=Affect.NO_EFFECT)
 		&&(affect.amISource(this))
 		&&(affect.target()!=null)
@@ -1145,7 +1145,7 @@ public class StdMOB implements MOB
 			{
 				String newstr="<S-NAME> advance(s) at ";
 				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.name());
-				boolean ok=location().okAffect(affect);
+				boolean ok=location().okAffect(this,affect);
 				if(ok) setAtRange(rangeToTarget()-1);
 				if(victim!=null)
 				{
@@ -1235,7 +1235,7 @@ public class StdMOB implements MOB
 					if(victim==mob) setVictim(null);
 					return false;
 				}
-				
+
 				if((!isMonster())
 				&&(!mob.isMonster())
 				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
@@ -1258,7 +1258,7 @@ public class StdMOB implements MOB
 						setAtRange(0);
 					}
 				}
-				
+
 				if(affect.targetMinor()!=Affect.TYP_WEAPONATTACK)
 				{
 					int chanceToFail=Integer.MIN_VALUE;
@@ -1274,7 +1274,7 @@ public class StdMOB implements MOB
 						else
 						if(chanceToFail>95)
 						   chanceToFail=95;
-						
+
 						if(Dice.rollPercentage()<chanceToFail)
 						{
 							CommonStrings.resistanceMsgs(affect,affect.source(),this);
@@ -1286,7 +1286,7 @@ public class StdMOB implements MOB
 
 			if((rangeToTarget()>0)&&(!isInCombat()))
 				setAtRange(-1);
-			
+
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_CLOSE:
@@ -1317,12 +1317,12 @@ public class StdMOB implements MOB
 					return false;
 				}
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
-				if(!location().okAffect(msg))
+				if(!location().okAffect(affect.source(),msg))
 					return false;
 				if((affect.target()!=null)&&(affect.target() instanceof MOB))
 				{
 					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
-					if(!location().okAffect(msg))
+					if(!location().okAffect(affect.target(),msg))
 					{
 						mob.tell(affect.target().name()+" cannot seem to accept "+affect.tool().name()+".");
 						return false;
@@ -1353,11 +1353,11 @@ public class StdMOB implements MOB
 		tell(this,this,msg);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(getMyDeity()!=null)
-		   getMyDeity().affect(affect);
-		
+		   getMyDeity().affect(this,affect);
+
 		if(charStats!=null)
 		{
 			charStats().getCurrentClass().affect(this,affect);
@@ -1585,7 +1585,7 @@ public class StdMOB implements MOB
 			if((affect.targetMinor()==Affect.TYP_REBUKE)
 			&&(affect.source().name().equals(getLeigeID())))
 				setLeigeID("");
-			
+
 			int targetMajor=affect.targetMajor();
 			if((Util.bset(targetMajor,Affect.MASK_SOUND))
 			&&(canhearsrc)&&(!asleep))
@@ -1653,10 +1653,10 @@ public class StdMOB implements MOB
 			&&(!asleep)
 			&&((canseesrc)||(canhearsrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
-			
+
 			if((affect.othersMinor()==Affect.TYP_DEATH)&&(victim!=null))
 			{
-				if(victim==affect.source()) 
+				if(victim==affect.source())
 					setVictim(null);
 				else
 				if((victim.getVictim()==null)||(victim.getVictim()==affect.source()))
@@ -1676,21 +1676,21 @@ public class StdMOB implements MOB
 		{
 			Item I=(Item)fetchInventory(i);
 			if(I!=null)
-				I.affect(affect);
+				I.affect(this,affect);
 		}
 
 		for(int i=0;i<numAffects();i++)
 		{
 			Ability A=(Ability)fetchAffect(i);
 			if(A!=null)
-				A.affect(affect);
+				A.affect(this,affect);
 		}
 	}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
-	
+
 	public int movesSinceLastTick(){return movesSinceTick;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(pleaseDestroy)
@@ -1729,7 +1729,7 @@ public class StdMOB implements MOB
 				{
 					if((getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW)
 					 	ExternalPlay.drawIfNecessary(this,false);
-					
+
 					Item weapon=this.fetchWieldedItem();
 					double curSpeed=Math.floor(speeder);
 					speeder+=envStats().speed();
@@ -1754,7 +1754,7 @@ public class StdMOB implements MOB
 									if((!inminrange)&&(curState().getMovement()>=25))
 									{
 										FullMsg msg=new FullMsg(this,victim,Affect.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
-										if(location().okAffect(msg))
+										if(location().okAffect(this,msg))
 											location().send(this,msg);
 									}
 									else
@@ -1765,11 +1765,11 @@ public class StdMOB implements MOB
 							else
 								break;
 						}
-							
+
 						if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
 							curState().adjMovement(-1,maxState());
 					}
-						
+
 					if(!isMonster())
 					{
 						MOB target=this.getVictim();
@@ -1807,11 +1807,11 @@ public class StdMOB implements MOB
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
-				if(B!=null) B.tick(this,tickID);
+				if(B!=null) B.tick(ticking,tickID);
 			}
-			
-			charStats().getCurrentClass().tick(this,tickID);
-			charStats().getMyRace().tick(this,tickID);
+
+			charStats().getCurrentClass().tick(ticking,tickID);
+			charStats().getMyRace().tick(ticking,tickID);
 		}
 		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;
@@ -1853,12 +1853,12 @@ public class StdMOB implements MOB
 				if((oldCode&Item.HELD)>0)
 					msgCode=Affect.MSG_HOLD;
 				FullMsg msg=new FullMsg(this,item,null,Affect.NO_EFFECT,null,msgCode,null,Affect.NO_EFFECT,null);
-				if((R.okAffect(this,msg))&&(item.okAffect(msg)))
+				if((R.okAffect(this,msg))&&(item.okAffect(item,msg)))
 				   item.wearAt(oldCode);
 			}
 		}
 	}
-	
+
 	public void addInventory(Item item)
 	{
 		item.setOwner(this);
@@ -2004,7 +2004,7 @@ public class StdMOB implements MOB
 			riding().getRideBuddies(list);
 		return list;
 	}
-	
+
 	public Hashtable getGroupMembers(Hashtable list)
 	{
 		if(list==null) return list;

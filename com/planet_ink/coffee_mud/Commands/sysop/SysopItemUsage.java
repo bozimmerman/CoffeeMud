@@ -40,7 +40,7 @@ public class SysopItemUsage
 		}
 		I.remove();
 		FullMsg newMsg=new FullMsg(victim,mob,I,Affect.MASK_GENERAL|Affect.MSG_GIVE,"<T-NAME> take(s) "+I.name()+" from <S-NAMESELF>.");
-		if(victim.location().okAffect(newMsg))
+		if(victim.location().okAffect(victim,newMsg))
 			victim.location().send(victim,newMsg);
 	}
 }

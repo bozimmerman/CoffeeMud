@@ -28,9 +28,9 @@ public class Prayer_FlameWeapon extends Prayer
 			affectableStats.setAbility(affectableStats.ability()+1);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.source().location()!=null)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
@@ -41,7 +41,7 @@ public class Prayer_FlameWeapon extends Prayer
 		{
 			notAgain=true;
 			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),affected,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(msg))
+			if(affect.source().location().okAffect(affect.source(),msg))
 			{
 				affect.source().location().send(affect.source(), msg);
 				if(!msg.wasModified())
@@ -110,7 +110,7 @@ public class Prayer_FlameWeapon extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) surrounded by flames!":"^S<S-NAME> hold(s) <T-NAMESELF> and "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

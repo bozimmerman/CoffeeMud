@@ -40,11 +40,11 @@ public class MagicShelter extends StdRoom
 		return new MagicShelter();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
-		if(Sense.isSleeping(this)) 
+		if(Sense.isSleeping(this))
 			return true;
 		if((affect.sourceMinor()==affect.TYP_RECALL)
 		||(affect.sourceMinor()==affect.TYP_LEAVE))

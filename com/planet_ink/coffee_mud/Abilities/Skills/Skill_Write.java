@@ -68,7 +68,7 @@ public class Skill_Write extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",Affect.MSG_WRITE,Util.combine(commands,1),Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else

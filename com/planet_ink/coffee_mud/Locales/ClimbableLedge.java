@@ -10,24 +10,24 @@ import java.util.*;
 
 public class ClimbableLedge extends ClimbableSurface
 {
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(Sense.isSleeping(this)) 
-			return super.okAffect(affect);
-		
+		if(Sense.isSleeping(this))
+			return super.okAffect(myHost,affect);
+
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(this)))
 		{
 			Rideable ladder=findALadder(affect.source(),this);
 			if(ladder!=null)
-			{ 
+			{
 				affect.source().setRiding(ladder);
 				affect.source().recoverEnvStats();
 			}
 			if((getRoomInDir(Directions.DOWN)!=affect.source().location()))
 				return true;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	public Environmental newInstance()
 	{

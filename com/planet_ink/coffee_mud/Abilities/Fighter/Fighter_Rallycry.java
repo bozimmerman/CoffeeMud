@@ -64,7 +64,7 @@ public class Fighter_Rallycry extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SPEAK,auto?"":"^S<S-NAME> scream(s) a mighty RALLYING CRY!!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Hashtable h=ExternalPlay.properTargets(this,mob,auto);

@@ -83,7 +83,7 @@ public class Prayer_Regeneration extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) regenerative abilities!":"^S<S-NAME> "+prayWord(mob)+" for divine regenerative abilities!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -24,7 +24,7 @@ public class BribeGateGuard extends StdBehavior
 
 	int tickTock=0;
   Vector paidPlayers=new Vector();
-	
+
 	private int findGate(MOB mob)
 	{
 		if(mob.location()==null) return -1;
@@ -41,7 +41,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 		return -1;
 	}
-	
+
 	private Key getMyKeyTo(MOB mob, Exit e)
 	{
 		Key key=null;
@@ -113,7 +113,7 @@ public class BribeGateGuard extends StdBehavior
     }
     return balance;
   }
-  
+
   private void charge(int charge, MOB mob)
   {
     // update the balance in the journal
@@ -153,7 +153,7 @@ public class BribeGateGuard extends StdBehavior
       }
     }
   }
-  
+
   private void writeBalance(Coins balance, MOB mob)
   {
     // write an entry for that mob
@@ -232,7 +232,7 @@ public class BribeGateGuard extends StdBehavior
           else
           {
             FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
-            if(monster.location().okAffect(msgs))
+            if(monster.location().okAffect(monster,msgs))
             {
               monster.location().send(monster,msgs);
               ExternalPlay.quickSay(monster,mob,"I'll let you through here if you pay the fee of "+price()+".",true,false);
@@ -252,7 +252,7 @@ public class BribeGateGuard extends StdBehavior
 		super.affect(affecting,affect);
 		MOB source=affect.source();
 		if(!canActAtAll(affecting)) return;
-		
+
 		MOB observer=(MOB)affecting;
 		if((affect.sourceMinor()==Affect.TYP_ENTER)
 		&&(!affect.amISource(observer))
@@ -307,7 +307,7 @@ public class BribeGateGuard extends StdBehavior
 		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		int dir=findGate(mob);
-		if(dir<0) 
+		if(dir<0)
 		{
 			ExternalPlay.quickSay(mob,null,"I'd shut the gate, but there isn't one...",false,false);
 			return true;
@@ -325,7 +325,7 @@ public class BribeGateGuard extends StdBehavior
 					if(getMyKeyTo(mob,e)!=null)
 					{
 						FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 					}
 				}
@@ -336,14 +336,14 @@ public class BribeGateGuard extends StdBehavior
 				if(getMyKeyTo(mob,e)!=null)
 				{
 					FullMsg msg=new FullMsg(mob,e,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
-					if(mob.location().okAffect(msg))
+					if(mob.location().okAffect(mob,msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}
 			}
 			if((e.isOpen())&&(paidPlayers.isEmpty()))
 			{
 				FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 			}
 			if((!e.isOpen())&&(!paidPlayers.isEmpty()))
@@ -353,7 +353,7 @@ public class BribeGateGuard extends StdBehavior
 				{
 					ExternalPlay.quickSay(mob,(MOB)paidPlayers.elementAt(i),"I still have that "+getBalance((MOB)paidPlayers.elementAt(i))+" from before if you're heading through",true,false);
 				}
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 			}
 		}

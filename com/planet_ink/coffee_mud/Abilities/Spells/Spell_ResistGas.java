@@ -47,7 +47,7 @@ public class Spell_ResistGas extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) filteringly protected.":"^S<S-NAME> invoke(s) a filtering field of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -49,7 +49,7 @@ public class Spell_FeignDeath extends Spell
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -108,7 +108,7 @@ public class Spell_FeignDeath extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			target.makePeace();

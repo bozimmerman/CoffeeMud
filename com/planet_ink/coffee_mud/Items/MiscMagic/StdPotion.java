@@ -112,17 +112,17 @@ public class StdPotion extends StdDrink implements Potion
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),getSpells(this));
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affect.amITarget(this))
 		   &&(affect.targetMinor()==Affect.TYP_DRINK)
 		   &&(affect.othersMessage()==null)
 		   &&(affect.sourceMessage()==null))
 				return true;
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -139,16 +139,16 @@ public class StdPotion extends StdDrink implements Potion
 				else
 				{
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
-					super.affect(affect);
+					super.affect(myHost,affect);
 				}
 				break;
 			default:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				break;
 			}
 		}
 		else
-			super.affect(affect);
+			super.affect(myHost,affect);
 	}
 
 }

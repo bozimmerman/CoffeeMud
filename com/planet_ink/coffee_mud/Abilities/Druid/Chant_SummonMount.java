@@ -26,9 +26,9 @@ public class Chant_SummonMount extends Chant
 		}
 	}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
@@ -94,7 +94,7 @@ public class Chant_SummonMount extends Chant
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));

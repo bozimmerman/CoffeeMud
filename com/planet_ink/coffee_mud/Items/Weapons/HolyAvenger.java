@@ -32,10 +32,10 @@ public class HolyAvenger extends TwoHandedSword
 	{
 		return new HolyAvenger();
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		MOB mob=affect.source();
@@ -67,10 +67,10 @@ public class HolyAvenger extends TwoHandedSword
 		}
 		return true;
 	}
-	
-	public void affect(Affect affect)
+
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.source().location()!=null)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
@@ -80,7 +80,7 @@ public class HolyAvenger extends TwoHandedSword
 		&&(((MOB)affect.target()).getAlignment()<350))
 		{
 			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new HolyAvenger(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(msg))
+			if(affect.source().location().okAffect(affect.source(),msg))
 			{
 				affect.source().location().send(affect.source(), msg);
 				int damage=Dice.roll(1,15,0);

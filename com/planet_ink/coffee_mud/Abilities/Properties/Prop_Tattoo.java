@@ -40,7 +40,7 @@ public class Prop_Tattoo extends Property
 	}
 			
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
@@ -67,6 +67,6 @@ public class Prop_Tattoo extends Property
 					affect.addTrailerMsg(new FullMsg(affect.source(),mob,null,Affect.MSG_OK_VISUAL,"<T-NAME> has the following tattoos: "+tattoos.toLowerCase(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

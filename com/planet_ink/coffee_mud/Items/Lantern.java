@@ -28,7 +28,7 @@ public class Lantern extends LightSource
 		return new Lantern();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -73,10 +73,10 @@ public class Lantern extends LightSource
 					break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -99,7 +99,7 @@ public class Lantern extends LightSource
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }
 

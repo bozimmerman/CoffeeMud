@@ -61,7 +61,7 @@ public class Prop_NarrowLedge extends Property
 		}
 		return true;
 	}
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
@@ -85,7 +85,7 @@ public class Prop_NarrowLedge extends Property
 				}
 			}
 		}
-		super.affect(msg);
+		super.affect(myHost,msg);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

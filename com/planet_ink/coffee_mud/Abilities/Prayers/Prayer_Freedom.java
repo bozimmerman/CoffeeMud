@@ -29,7 +29,7 @@ public class Prayer_Freedom extends Prayer
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
-					   ||(!A.okAffect(msg)))
+					   ||(!A.okAffect(newMOB,msg)))
 					if((A.invoker()==null)
 					   ||((A.invoker()!=null)
 						  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
@@ -60,7 +60,7 @@ public class Prayer_Freedom extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> "+prayForWord(mob)+" to deliver a light unbinding touch to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int old=target.numAffects();

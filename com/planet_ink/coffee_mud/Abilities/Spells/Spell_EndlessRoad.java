@@ -28,11 +28,11 @@ public class Spell_EndlessRoad extends Spell
 		ExternalPlay.standIfNecessary(mob);
 	}
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(msg);
+			return super.okAffect(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		   &&(mob.location()!=null)
@@ -51,8 +51,8 @@ public class Spell_EndlessRoad extends Spell
 					   msg.othersCode(),
 					   msg.othersMessage());
 		}
-		   
-		return super.okAffect(msg);
+
+		return super.okAffect(myHost,msg);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -78,7 +78,7 @@ public class Spell_EndlessRoad extends Spell
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> encant(s) to <T-NAMESELF>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);

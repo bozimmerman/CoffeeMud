@@ -266,7 +266,7 @@ public class LockSmith extends CommonSkill
 		messedUp=!profficiencyCheck(profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

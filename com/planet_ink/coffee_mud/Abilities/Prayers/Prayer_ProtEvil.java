@@ -34,9 +34,9 @@ public class Prayer_ProtEvil extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if(invoker==null) return true;
 		if(affected==null) return true;
@@ -105,7 +105,7 @@ public class Prayer_ProtEvil extends Prayer
 
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -115,7 +115,7 @@ public class Prayer_ProtEvil extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from evil.":"^S<S-NAME> "+prayWord(mob)+" for protection from evil.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

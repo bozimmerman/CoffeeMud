@@ -17,9 +17,9 @@ public class Prop_Invisibility extends Property
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;

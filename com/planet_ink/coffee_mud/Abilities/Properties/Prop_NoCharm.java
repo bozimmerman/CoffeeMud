@@ -7,15 +7,15 @@ public class Prop_NoCharm extends Property
 	public String name(){ return "Charm Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_NoCharm();}
-	
+
 	public final static String spellList=
 		(" Spell_Charm Spell_Enthrall Chant_CharmAnimal ").toUpperCase();
-	
+
 	public String text(){ return spellList; }
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affect.tool()!=null)

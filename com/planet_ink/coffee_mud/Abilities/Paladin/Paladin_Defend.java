@@ -18,7 +18,7 @@ public class Paladin_Defend extends StdAbility
 	public Environmental newInstance(){	return new Paladin_Defend();}
 	public boolean fullRound=false;
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
@@ -36,12 +36,12 @@ public class Paladin_Defend extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return;
 		if((affect.amITarget(affected))
@@ -115,7 +115,7 @@ public class Paladin_Defend extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				fullRound=false;

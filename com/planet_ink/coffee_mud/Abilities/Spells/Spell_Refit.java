@@ -30,7 +30,7 @@ public class Spell_Refit extends Spell
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),
 									(auto?"<T-NAME> begins to shimmer!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				

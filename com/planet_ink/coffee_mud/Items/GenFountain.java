@@ -30,7 +30,7 @@ public class GenFountain extends GenWater
 		return new GenFountain();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -44,7 +44,7 @@ public class GenFountain extends GenWater
 					break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 }

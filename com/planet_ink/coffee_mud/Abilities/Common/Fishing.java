@@ -97,7 +97,7 @@ public class Fishing extends CommonSkill
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

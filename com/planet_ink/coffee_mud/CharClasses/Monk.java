@@ -179,8 +179,10 @@ public class Monk extends StdCharClass
 	
 	public String weaponLimitations(){return "May use any weapon, but prefers unarmed.";}
 	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid skill failure.";}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(affect.amITarget(myChar)
 		   &&((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)
 		   &&(affect.tool()!=null)

@@ -14,11 +14,11 @@ public class Spell_Tourettes extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Tourettes();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+
 	int plagueDown=4;
-	
+
 	public String text(){return "DISEASE";}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -31,7 +31,7 @@ public class Spell_Tourettes extends Spell
 			MOB mob=(MOB)affected;
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
-			
+
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(!mob.amDead())&&(Sense.canSpeak(mob))&&(Sense.canBeSeenBy(target,mob)))
 			{
@@ -113,7 +113,7 @@ public class Spell_Tourettes extends Spell
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> incant(s) rudely to <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);

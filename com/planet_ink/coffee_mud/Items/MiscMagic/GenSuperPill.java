@@ -160,7 +160,7 @@ public class GenSuperPill extends GenPill
 		mob.confirmWearability();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -171,17 +171,17 @@ public class GenSuperPill extends GenPill
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					EATME(mob);
-					super.affect(affect);
+					super.affect(myHost,affect);
 				}
 				else
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
 				break;
 			default:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				break;
 			}
 		}
 		else
-			super.affect(affect);
+			super.affect(myHost,affect);
 	}
 }

@@ -49,11 +49,11 @@ public class Chant_AnimalSpy extends Chant
 		super.unInvoke();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		try
 		{
-			super.affect(affect);
+			super.affect(myHost,affect);
 			if(spy==null) return;
 			if(invoker==null) return;
 
@@ -64,7 +64,7 @@ public class Chant_AnimalSpy extends Chant
 			{
 				disable=true;
 				FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-				affect.target().affect(newAffect);
+				affect.target().affect(invoker,newAffect);
 			}
 			else
 			if((!affect.amISource(invoker))
@@ -74,7 +74,7 @@ public class Chant_AnimalSpy extends Chant
 			&&(!disable))
 			{
 				disable=true;
-				((MOB)invoker).affect(affect);
+				((MOB)invoker).affect(invoker,affect);
 			}
 			else
 			if(affect.amISource(invoker)
@@ -140,7 +140,7 @@ public class Chant_AnimalSpy extends Chant
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>, invoking the a mystical connection.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);

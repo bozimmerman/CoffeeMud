@@ -15,7 +15,7 @@ public class Fighter_Cleave extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	private MOB thisTarget=null;
 	private MOB nextTarget=null;
 	public Environmental newInstance(){	return new Fighter_Cleave();}
@@ -28,7 +28,7 @@ public class Fighter_Cleave extends StdAbility
 			return true;
 
 		MOB mob=(MOB)affected;
-		
+
 		if((thisTarget!=null)
 		&&(nextTarget!=null)
 		&&(thisTarget.amDead())
@@ -46,9 +46,9 @@ public class Fighter_Cleave extends StdAbility
 		nextTarget=null;
 		return true;
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -67,7 +67,7 @@ public class Fighter_Cleave extends StdAbility
 			MOB victim=mob.getVictim();
 			Weapon w=(Weapon)affect.tool();
 			int damAmount=affect.targetCode()-Affect.MASK_HURT;
-			
+
 			if((damAmount>victim.curState().getHitPoints())
 			&&(profficiencyCheck(0,false))
 			&&(w.weaponType()==Weapon.TYPE_SLASHING)
@@ -96,5 +96,5 @@ public class Fighter_Cleave extends StdAbility
 		}
 		return true;
 	}
-	
+
 }

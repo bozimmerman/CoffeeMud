@@ -49,7 +49,7 @@ public class Spell_MarkerSummoning extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 
 		Vector inhabs=new Vector();
 		int profNeg=0;
@@ -63,13 +63,13 @@ public class Spell_MarkerSummoning extends Spell
 			}
 		}
 		profNeg+=newRoom.numItems();
-		
+
 		boolean success=profficiencyCheck(-(profNeg/2),auto);
 
 		if((success)&&(inhabs.size()>0))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) the power of <S-HIS-HER> marker energy!^?");
-			if((mob.location().okAffect(msg))&&(oldRoom.okAffect(msg)))
+			if((mob.location().okAffect(mob,msg))&&(oldRoom.okAffect(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<inhabs.size();i++)
@@ -77,7 +77,7 @@ public class Spell_MarkerSummoning extends Spell
 					MOB follower=(MOB)inhabs.elementAt(i);
 					FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
 					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a great summoning swirl.");
-					if(oldRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
+					if(oldRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
 					{
 						follower.makePeace();
 						oldRoom.send(follower,leaveMsg);

@@ -53,7 +53,7 @@ public class Spell_Darkness extends Spell
 		if(target.fetchAffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Darkness has already been cast here!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -69,7 +69,7 @@ public class Spell_Darkness extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

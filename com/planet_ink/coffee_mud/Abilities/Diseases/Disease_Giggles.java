@@ -42,7 +42,7 @@ public class Disease_Giggles extends Disease
 		{
 			diseaseTick=DISEASE_DELAY();
 			Affect msg=new FullMsg(mob,null,this,Affect.MSG_NOISE,DISEASE_AFFECT());
-			if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+			if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
 				mob.location().send(mob,msg);
 			catchIt(mob);
 			return true;

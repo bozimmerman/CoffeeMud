@@ -31,9 +31,9 @@ public class Fighter_Tumble extends StdAbility
 		}
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -56,7 +56,7 @@ public class Fighter_Tumble extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.fetchAffect(this.ID())!=null)
@@ -74,7 +74,7 @@ public class Fighter_Tumble extends StdAbility
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -82,7 +82,7 @@ public class Fighter_Tumble extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				hits=0;

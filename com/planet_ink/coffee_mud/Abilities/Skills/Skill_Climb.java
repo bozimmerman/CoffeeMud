@@ -38,7 +38,7 @@ public class Skill_Climb extends StdAbility
 
 		boolean success=profficiencyCheck(0,auto);
 		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);
@@ -53,7 +53,7 @@ public class Skill_Climb extends StdAbility
 			mob.delAffect(this);
 			mob.recoverEnvStats();
 			if(!success)
-				mob.location().affect(new FullMsg(mob,mob.location(),Affect.MASK_MOVE|Affect.TYP_GENERAL,null));
+				mob.location().affect(mob,new FullMsg(mob,mob.location(),Affect.MASK_MOVE|Affect.TYP_GENERAL,null));
 		}
 		return success;
 	}

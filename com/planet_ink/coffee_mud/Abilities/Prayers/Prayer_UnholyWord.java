@@ -79,7 +79,7 @@ public class Prayer_UnholyWord extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
-				if(room.okAffect(msg))
+				if(room.okAffect(mob,msg))
 				{
 					room.send(mob,msg);
 					if(!msg.wasModified())

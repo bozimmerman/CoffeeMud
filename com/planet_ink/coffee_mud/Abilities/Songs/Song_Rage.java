@@ -28,9 +28,9 @@ public class Song_Rage extends Song
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affect.amISource(invoker)) return true;

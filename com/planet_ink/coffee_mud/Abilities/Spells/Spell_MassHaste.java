@@ -63,7 +63,7 @@ public class Spell_MassHaste extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(msg))
+				if((mob.location().okAffect(mob,msg))
 				   &&(target.fetchAffect("Spell_Haste")==null)
 				   &&(target.fetchAffect("Spell_MassHaste")==null))
 				{

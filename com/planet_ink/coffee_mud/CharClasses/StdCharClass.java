@@ -53,7 +53,9 @@ public class StdCharClass implements CharClass, Cloneable
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
-	public void tick(MOB myChar, int tickID){return;}
+	public boolean tick(Tickable myChar, int tickID){
+		return true;
+	}
 	
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -189,12 +191,16 @@ public class StdCharClass implements CharClass, Cloneable
 
 	}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{
+	}
+	
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		return true;
 	}
 
-	public void affect(MOB myChar, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 	}
 

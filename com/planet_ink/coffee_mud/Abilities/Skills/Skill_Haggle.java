@@ -80,7 +80,7 @@ public class Skill_Haggle extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,shopkeeper,this,Affect.MSG_SPEAK,auto?"":"<S-NAME> haggle(s) with <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;

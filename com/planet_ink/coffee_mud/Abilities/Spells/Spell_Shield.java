@@ -57,7 +57,7 @@ public class Spell_Shield extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a shield upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) protected!");

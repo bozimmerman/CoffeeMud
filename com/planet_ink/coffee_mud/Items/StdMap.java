@@ -483,11 +483,11 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         //    Log.errOut("Map","?!"+(areaMap.size()-processed.size())+" room(s) could not be placed.  I recommend restarting your server.");
     }
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
-			super.affect(affect);
+			super.affect(myHost,affect);
 		else
 		switch(affect.targetMinor())
 		{
@@ -505,7 +505,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				mob.tell("You can't see that!");
 			return;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
     public void placeRoom(MapRoom room,
 							int favoredX,

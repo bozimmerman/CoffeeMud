@@ -23,7 +23,7 @@ public class Specialization_Weapon extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Specialization_Weapon();}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((activated)
 		&&(Dice.rollPercentage()<25)

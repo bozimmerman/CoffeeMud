@@ -20,19 +20,19 @@ public class Emoter extends ActiveTicker
 
 	protected Vector emotes=new Vector();
 	protected boolean broadcast=false;
-	
+
 	protected final static int EMOTE_VISUAL=0;
 	protected final static int EMOTE_SOUND=1;
 	protected final static int EMOTE_SMELL=2;
 	protected int emoteType=0;
-	
+
 
 	public void setParms(String newParms)
 	{
 		parms=newParms;
 		broadcast=false;
 		emoteType=EMOTE_VISUAL;
-		
+
 		emotes=new Vector();
 		char c=';';
 		int x=newParms.indexOf(c);
@@ -87,8 +87,8 @@ public class Emoter extends ActiveTicker
 		Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
 		FullMsg msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,emote);
-		
-		if(room.okAffect(msg))
+
+		if(room.okAffect(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
@@ -96,19 +96,19 @@ public class Emoter extends ActiveTicker
 			switch(emoteType)
 			{
 			case EMOTE_VISUAL:
-				if(Sense.canBeSeenBy(emoter,M))	M.affect(msg);
+				if(Sense.canBeSeenBy(emoter,M))	M.affect(M,msg);
 				break;
 			case EMOTE_SOUND:
-				if(Sense.canBeHeardBy(emoter,M)) M.affect(msg);
+				if(Sense.canBeHeardBy(emoter,M)) M.affect(M,msg);
 				break;
 			case EMOTE_SMELL:
-				if(Sense.canSmell(M)) M.affect(msg);
+				if(Sense.canSmell(M)) M.affect(M,msg);
 				break;
 			}
 		}
 		if(oldLoc!=null) emoter.setLocation(oldLoc);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -126,7 +126,7 @@ public class Emoter extends ActiveTicker
 				}
 				return true;
 			}
-			
+
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
 			if(ticking instanceof MOB)
@@ -147,7 +147,7 @@ public class Emoter extends ActiveTicker
 					emoter.setName(ticking.name());
 			}
 			emoteHere(room,emoter,"^E<S-NAME> "+emote+"^?");
-			
+
 			if(broadcast)
 			{
 				if(ticking instanceof MOB)

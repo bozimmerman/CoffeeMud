@@ -30,7 +30,7 @@ public class Spell_Mirage extends Spell
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)
@@ -42,13 +42,13 @@ public class Spell_Mirage extends Spell
 						  affect.sourceCode(),affect.sourceMessage(),
 						  affect.targetCode(),affect.targetMessage(),
 						  affect.othersCode(),affect.othersMessage());
-			if(newRoom.okAffect(msg))
+			if(newRoom.okAffect(affect.source(),msg))
 			{
-				newRoom.affect(msg);
+				newRoom.affect(affect.source(),msg);
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -80,7 +80,7 @@ public class Spell_Mirage extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");

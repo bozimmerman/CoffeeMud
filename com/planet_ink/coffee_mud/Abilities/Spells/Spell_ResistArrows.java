@@ -29,10 +29,10 @@ public class Spell_ResistArrows extends Spell
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
@@ -50,7 +50,7 @@ public class Spell_ResistArrows extends Spell
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+" from <T-NAME>!");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -66,7 +66,7 @@ public class Spell_ResistArrows extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) absorbantly protected.":"^S<S-NAME> invoke(s) a non-porous barrier of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -54,9 +54,9 @@ public class Spell_AddLimb extends Spell
 		return true;
 	}
 	
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) return false;
+		if(!super.okAffect(myHost,msg)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affected;
@@ -95,9 +95,9 @@ public class Spell_AddLimb extends Spell
 		return true;
 	}
 	
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
@@ -123,7 +123,7 @@ public class Spell_AddLimb extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> grow(s) an arm!");

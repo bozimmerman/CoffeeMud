@@ -62,9 +62,9 @@ public class Thief_Shadow extends ThiefSkill
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 		 ||(affect.targetMinor()==Affect.TYP_FLEE))
 		&&(stillAShadower())
@@ -195,13 +195,13 @@ public class Thief_Shadow extends ThiefSkill
 		if(!success)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"Your attempt to shadow <T-NAMESELF> fails; <T-NAME> spots you!",Affect.MSG_OK_VISUAL,auto?"":"You spot <S-NAME> trying to shadow you.",Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
 			FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MSG_OK_VISUAL:Affect.MSG_THIEF_ACT,"You are now shadowing <T-NAME>.  Enter 'shadow' again to disengage.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				shadowing=target;

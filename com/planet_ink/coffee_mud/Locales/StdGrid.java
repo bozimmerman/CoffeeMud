@@ -25,12 +25,12 @@ public class StdGrid extends StdRoom implements GridLocale
 		return new StdGrid();
 	}
 	public String getChildLocaleID(){return "StdRoom";}
-	
+
 	public int xSize(){return xsize;}
 	public int ySize(){return ysize;}
 	public void setXSize(int x){ if(x>0)xsize=x; }
 	public void setYSize(int y){ if(y>0)ysize=y; }
-	
+
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
@@ -87,7 +87,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(loc==null) return null;
 
 		if(subMap==null) buildGrid();
-		
+
 		if(loc.ID().length()==0) // might be a child of an adjacent grid!
 		{
 			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
@@ -100,7 +100,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					break;
 				}
 		}
-		
+
 		if(oldDirCode<0)
 			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
 				if((doors[x]!=null)&&(doors[x]==loc))
@@ -131,7 +131,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		room.rawDoors()[dirCode]=loc;
 		room.rawExits()[dirCode]=o;
 	}
-	
+
 	protected static void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
 	{
 		if(loc==null) return;
@@ -337,9 +337,9 @@ public class StdGrid extends StdRoom implements GridLocale
 		return gc;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 

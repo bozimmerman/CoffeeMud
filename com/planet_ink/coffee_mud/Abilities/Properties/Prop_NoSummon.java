@@ -7,17 +7,17 @@ public class Prop_NoSummon extends Property
 	public String name(){ return "Summon Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_NoSummon();}
-	
+
 	public final static String spellList=
 		(" Spell_Summon Spell_SummonEnemy Spell_SummonSteed Spell_SummonFlyer "
 		 +"Spell_SummonMonster Spell_DemonGate Chant_SummonMount "
 		 +"Chant_SummonAnimal Spell_PhantomHound ").toUpperCase();
-	
+
 	public String text(){ return spellList; }
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affect.tool()!=null)

@@ -71,7 +71,7 @@ public class Regeneration extends StdAbility
 		{
 			String str=auto?"":"<S-NAME> lay(s) regenerative magic upon <T-NAMESELF>";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,str);
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 			    target.location().send(target,msg);
 				success=beneficialAffect(mob,target,0);

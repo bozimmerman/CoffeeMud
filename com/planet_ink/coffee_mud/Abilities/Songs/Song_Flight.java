@@ -48,7 +48,7 @@ public class Song_Flight extends Song
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -73,7 +73,7 @@ public class Song_Flight extends Song
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
-						if(mob.location().okAffect(msg2))
+						if(mob.location().okAffect(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
 							if(!msg2.wasModified())

@@ -9,7 +9,7 @@ import java.util.*;
 public class ItemUsage
 {
 	private ItemUsage(){}
-	
+
 	public static Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
@@ -73,13 +73,13 @@ public class ItemUsage
 		if(possibleContainerID.equalsIgnoreCase("all")) allFlag=true;
 		if((commands.size()>3)&&(!allFlag))
 			preWord=(String)commands.elementAt(commands.size()-2);
-		
+
 		if(preWord.equalsIgnoreCase("all")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID;}
 		else
 		if(possibleContainerID.toUpperCase().startsWith("ALL.")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(4);}
 		else
 		if(possibleContainerID.toUpperCase().endsWith(".ALL")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(0,possibleContainerID.length()-4);}
-		
+
 		int addendum=1;
 		String addendumStr="";
 		do
@@ -189,10 +189,10 @@ public class ItemUsage
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{ return get(mob,container,getThis,quiet,"get");}
 
-	public static boolean get(MOB mob, 
-					   Item container, 
-					   Item getThis, 
-					   boolean quiet, 
+	public static boolean get(MOB mob,
+					   Item container,
+					   Item getThis,
+					   boolean quiet,
 					   String getWord)
 	{
 		String theWhat=getThis.name();
@@ -206,13 +206,13 @@ public class ItemUsage
 		}
 
 		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat);
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
 		if(!mob.isMine(target))
 		{
 			msg=new FullMsg(mob,getThis,null,Affect.MSG_GET,null);
-			if(!mob.location().okAffect(msg))
+			if(!mob.location().okAffect(mob,msg))
 				return false;
 			mob.location().send(mob,msg);
 		}
@@ -263,7 +263,7 @@ public class ItemUsage
 				addendumStr="."+(++addendum);
 			}
 			while(allFlag);
-			
+
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
@@ -272,7 +272,7 @@ public class ItemUsage
 						((Coins)getThis).putCoinsBack();
 				doneSomething=true;
 			}
-			
+
 			if(containers.size()==0) break;
 		}
 		if(!doneSomething)
@@ -293,7 +293,7 @@ public class ItemUsage
 	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet)
 	{
 		FullMsg msg=new FullMsg(mob,dropThis,null,Affect.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			return true;
@@ -306,7 +306,7 @@ public class ItemUsage
 		}
 		return false;
 	}
-	
+
 	public static void drop(MOB mob, Vector commands)
 	{
 		String whatToDrop=null;
@@ -338,7 +338,7 @@ public class ItemUsage
 			addendumStr="."+(++addendum);
 		}
 		while(allFlag);
-		
+
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -407,10 +407,10 @@ public class ItemUsage
 			addendumStr="."+(++addendum);
 		}
 		while(allFlag);
-		
+
 		if((container!=null)&&(V.contains(container)))
 			V.remove(container);
-		
+
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -418,7 +418,7 @@ public class ItemUsage
 		{
 			Environmental putThis=(Environmental)V.elementAt(i);
 			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
-			if(mob.location().okAffect(putMsg))
+			if(mob.location().okAffect(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)
 				((Coins)putThis).putCoinsBack();
@@ -479,11 +479,11 @@ public class ItemUsage
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(get(mob,null,(Item)fillThis,false))
-					if(mob.location().okAffect(fillMsg))
+					if(mob.location().okAffect(mob,fillMsg))
 						mob.location().send(mob,fillMsg);
 			}
 			else
-			if(mob.location().okAffect(fillMsg))
+			if(mob.location().okAffect(mob,fillMsg))
 				mob.location().send(mob,fillMsg);
 		}
 	}
@@ -505,7 +505,7 @@ public class ItemUsage
 			msgType=Affect.MSG_WIELD;
 		}
 		FullMsg newMsg=new FullMsg(mob,item,null,msgType,quiet?null:str);
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
 			return true;
@@ -516,7 +516,7 @@ public class ItemUsage
 	public static boolean wield(MOB mob, Item item, boolean quiet)
 	{
 		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_WIELD,quiet?null:"<S-NAME> wield(s) <T-NAME>.");
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
 			return true;
@@ -536,18 +536,18 @@ public class ItemUsage
 			msgType=Affect.MSG_WIELD;
 		}
 		FullMsg newMsg=new FullMsg(mob,item,null,msgType,quiet?null:str);
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
 			return true;
 		}
 		return false;
 	}
-	
-	public static Vector fetchItemList(Environmental from, 
-								MOB mob, 
-								Item container, 
-								Vector commands, 
+
+	public static Vector fetchItemList(Environmental from,
+								MOB mob,
+								Item container,
+								Vector commands,
 								int preferredLoc,
 								boolean visionMatters)
 	{
@@ -664,7 +664,7 @@ public class ItemUsage
 		&&(((Drink)thisThang).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
 			ofWhat=" of "+EnvResource.RESOURCE_DESCS[((Drink)thisThang).liquidType()&EnvResource.RESOURCE_MASK].toLowerCase();
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink"+ofWhat+" from <T-NAMESELF>.");
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 	}
 
@@ -688,7 +688,7 @@ public class ItemUsage
 			return;
 		}
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>.");
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 	}
 	public static void read(MOB mob, Environmental thisThang, String theRest)
@@ -711,7 +711,7 @@ public class ItemUsage
 		String tMsg=theRest;
 		if((tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_READSOMETHING,soMsg,Affect.MSG_READSOMETHING,tMsg,Affect.MSG_READSOMETHING,soMsg);
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 
 	}
@@ -740,7 +740,7 @@ public class ItemUsage
 	public static boolean remove(MOB mob, Item item, boolean quiet)
 	{
 		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_GET,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
-		if(mob.location().okAffect(newMsg))
+		if(mob.location().okAffect(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
 			return true;
@@ -781,7 +781,7 @@ public class ItemUsage
 		}
 		int malmask=(openThis instanceof MOB)?Affect.MASK_MALICIOUS:0;
 		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_PUSH|malmask,"^F<S-NAME> push(es) <T-NAME>^?.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 	public static void pull(MOB mob, String whatToOpen)
@@ -800,7 +800,7 @@ public class ItemUsage
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_PULL,"<S-NAME> pull(s) <T-NAME>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 

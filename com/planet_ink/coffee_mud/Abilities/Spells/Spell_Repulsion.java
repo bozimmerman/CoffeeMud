@@ -18,7 +18,7 @@ public class Spell_Repulsion extends Spell
 
 	public int amountRemaining=0;
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -40,7 +40,7 @@ public class Spell_Repulsion extends Spell
 					return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -88,7 +88,7 @@ public class Spell_Repulsion extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

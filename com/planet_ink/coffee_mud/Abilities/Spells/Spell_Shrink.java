@@ -73,7 +73,7 @@ public class Spell_Shrink extends Spell
 		if((success)&&((E instanceof MOB)||(E instanceof Item)))
 		{
 			FullMsg msg=new FullMsg(mob,E,this,affectType(auto),auto?"<T-NAME> feel(s) somewhat smaller.":"^S<S-NAME> cast(s) a small spell on <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,E,0);

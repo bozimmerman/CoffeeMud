@@ -35,7 +35,7 @@ public class Fighter_SizeOpponent extends StdAbility
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_EXAMINESOMETHING|(auto?Affect.MASK_GENERAL:0),"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int adjustedAttack=target.adjustedAttackBonus();

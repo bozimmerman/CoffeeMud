@@ -82,7 +82,7 @@ public class Fighter_AtemiStrike extends StdAbility
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> deliver(s) a deadly Atemi strike to <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");

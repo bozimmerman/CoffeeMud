@@ -131,7 +131,7 @@ public class GenWallpaper implements Item
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
 	public boolean savable(){return true;}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
@@ -172,7 +172,7 @@ public class GenWallpaper implements Item
 		return false;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))

@@ -35,7 +35,7 @@ public class Song_Rebirth extends Song
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				boolean foundOne=false;

@@ -58,7 +58,7 @@ public class Skill_Swim extends StdAbility
 
 		boolean success=profficiencyCheck(0,auto);
 		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);

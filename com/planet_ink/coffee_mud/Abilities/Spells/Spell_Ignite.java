@@ -68,7 +68,7 @@ public class Spell_Ignite extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> evoke(s) a spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -30,7 +30,7 @@ public class Spring extends StdDrink
 		return new Spring();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -44,7 +44,7 @@ public class Spring extends StdDrink
 					break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 }

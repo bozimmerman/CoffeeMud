@@ -63,10 +63,10 @@ public class Spell_IncreaseGravity extends Spell
 		}
 		super.unInvoke();
 	}
-	
-	public boolean okAffect(Affect msg)
+
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) return false;
+		if(!super.okAffect(myHost,msg)) return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if(((MOB)affected).location()!=gravityRoom)
@@ -110,7 +110,7 @@ public class Spell_IncreaseGravity extends Spell
 			affectableStats.setWeight(affectableStats.weight()*2);
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// the invoke method for spells receives as
@@ -125,7 +125,7 @@ public class Spell_IncreaseGravity extends Spell
 		if(target.fetchAffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Gravity has already been increased here!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -141,7 +141,7 @@ public class Spell_IncreaseGravity extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to increase!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				gravityRoom=mob.location();

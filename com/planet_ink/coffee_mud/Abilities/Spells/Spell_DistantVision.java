@@ -46,12 +46,12 @@ public class Spell_DistantVision extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> close(s) <S-HIS-HER> eyes, and invoke(s) a vision.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell("\n\r\n\r");
 				FullMsg msg2=new FullMsg(mob,thisRoom,Affect.MSG_EXAMINESOMETHING,null);
-				thisRoom.affect(msg2);
+				thisRoom.affect(mob,msg2);
 			}
 
 		}

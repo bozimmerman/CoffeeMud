@@ -24,7 +24,7 @@ public class Skill_Convert extends StdAbility
 			mob.tell("You must specify either a deity to convert yourself to, or a player to convert to your religeon.");
 			return false;
 		}
-		
+
 		MOB target=mob;
 		Deity D=CMMap.getDeity(Util.combine(commands,0));
 		if(D==null)
@@ -47,7 +47,7 @@ public class Skill_Convert extends StdAbility
 			mob.tell("You can't convert "+target.name()+".");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -84,9 +84,9 @@ public class Skill_Convert extends StdAbility
 			if(dRoom==mob.location()) dRoom=null;
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
 			FullMsg msg2=new FullMsg(target,D,this,Affect.MSG_SERVE,null);
-			if((mob.location().okAffect(msg))
-			   &&(mob.location().okAffect(msg2))
-			   &&((dRoom==null)||(dRoom.okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))
+			   &&(mob.location().okAffect(mob,msg2))
+			   &&((dRoom==null)||(dRoom.okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(target,msg2);

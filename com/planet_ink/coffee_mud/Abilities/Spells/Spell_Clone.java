@@ -17,9 +17,9 @@ public class Spell_Clone extends Spell
 	public Environmental newInstance(){	return new Spell_Clone();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
@@ -49,7 +49,7 @@ public class Spell_Clone extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> encant(s), feeling his body split in two.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob);

@@ -27,7 +27,7 @@ public class Spell_Dream extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> invoke(s) a dreamy spell.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -39,7 +39,7 @@ public class Spell_Dream extends Spell
 						if((inhab!=null)&&(Sense.isSleeping(inhab)))
 						{
 							msg=new FullMsg(mob,inhab,this,affectType(auto),null);
-							if(R.okAffect(msg))
+							if(R.okAffect(mob,msg))
 								inhab.tell("You dream "+Util.combine(commands,0)+".");
 						}
 					}

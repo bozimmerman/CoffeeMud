@@ -18,9 +18,9 @@ public class Prayer_FreezeMetal extends Prayer
 
 	private Vector affectedItems=new Vector();
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) return false;
+		if(!super.okAffect(myHost,msg)) return false;
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 		if((msg.target()==null)
@@ -127,7 +127,7 @@ public class Prayer_FreezeMetal extends Prayer
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

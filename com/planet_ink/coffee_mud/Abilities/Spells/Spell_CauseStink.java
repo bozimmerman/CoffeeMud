@@ -27,7 +27,7 @@ public class Spell_CauseStink extends Spell
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
 			if(room==null) return false;
-			
+
 			String str=null;
 			switch(cycle++)
 			{
@@ -46,12 +46,12 @@ public class Spell_CauseStink extends Spell
 			if(str!=null)
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MASK_GENERAL|Affect.MASK_SOUND|Affect.MASK_EYES|Affect.TYP_GENERAL,str);
-				if(room.okAffect(msg))
+				if(room.okAffect(mob,msg))
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB M2=room.fetchInhabitant(m);
 					if((!M2.isMonster())&&(M2!=mob)&&(Sense.canSmell(M2)))
-						M2.affect(msg);
+						M2.affect(M2,msg);
 				}
 			}
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -64,8 +64,8 @@ public class Spell_CauseStink extends Spell
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -88,7 +88,7 @@ public class Spell_CauseStink extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) and utter(s) a stinky spell at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

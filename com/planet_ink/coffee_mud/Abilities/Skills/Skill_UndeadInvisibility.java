@@ -18,7 +18,7 @@ public class Skill_UndeadInvisibility extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Skill_UndeadInvisibility();	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected))))
@@ -38,6 +38,6 @@ public class Skill_UndeadInvisibility extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

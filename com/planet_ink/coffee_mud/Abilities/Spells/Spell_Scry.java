@@ -26,9 +26,9 @@ public class Spell_Scry extends Spell
 
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected instanceof MOB)
 		&&(affect.amISource((MOB)affected))
 		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
@@ -37,7 +37,7 @@ public class Spell_Scry extends Spell
 		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(affect.target() instanceof Room))))
 		{
 			FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-			affect.target().affect(newAffect);
+			affect.target().affect(affect.target(),newAffect);
 		}
 		else
 		if((affected instanceof MOB)
@@ -46,7 +46,7 @@ public class Spell_Scry extends Spell
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
 		&&(affect.othersCode()!=Affect.NO_EFFECT)
 		&&(affect.othersMessage()!=null))
-			((MOB)invoker).affect(affect);
+			((MOB)invoker).affect(invoker,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -91,7 +91,7 @@ public class Spell_Scry extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) the name of '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);

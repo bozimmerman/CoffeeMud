@@ -29,12 +29,12 @@ public class Thief_Lore extends ThiefSkill
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> study(s) <T-NAMESELF> and consider(s) for a moment.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String identity=((Item)target).secretIdentity();
 				mob.tell(identity);
-				
+
 			}
 
 		}

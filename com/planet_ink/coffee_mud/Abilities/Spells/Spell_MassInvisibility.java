@@ -19,7 +19,7 @@ public class Spell_MassInvisibility extends Spell
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -83,7 +83,7 @@ public class Spell_MassInvisibility extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(msg))
+				if((mob.location().okAffect(mob,msg))
 				&&(target.fetchAffect("Spell_Invisibility")==null)
 				&&(target.fetchAffect("Spell_MassInvisibility")==null))
 				{

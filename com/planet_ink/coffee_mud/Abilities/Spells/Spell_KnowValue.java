@@ -26,7 +26,7 @@ public class Spell_KnowValue extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> weigh(s) the value of <T-NAMESELF> carefully.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				String str=null;

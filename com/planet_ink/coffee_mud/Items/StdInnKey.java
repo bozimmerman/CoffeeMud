@@ -55,18 +55,18 @@ public class StdInnKey extends StdKey implements InnKey
 		}
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(((affect.targetMinor()==Affect.TYP_GIVE)
 		||(affect.targetMinor()==Affect.TYP_SELL))
 		&&(affect.target()==myShopkeeper)
 		&&(affect.tool()==this))
 			ExternalPlay.deleteTick(this,Host.ITEM_BOUNCEBACK);
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affect.sourceMinor()==Affect.TYP_BUY)

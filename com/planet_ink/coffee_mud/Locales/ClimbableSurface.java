@@ -20,22 +20,22 @@ public class ClimbableSurface extends StdRoom
 	{
 		return new ClimbableSurface();
 	}
-	
+
 	public void mountLadder(MOB mob, Rideable ladder)
 	{
 		String mountStr=ladder.mountString(Affect.TYP_MOUNT,mob);
 		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
-		if((mob.location().okAffect(msg))
-		&&((room==null)||(room.okAffect(msg))))
+		if((mob.location().okAffect(mob,msg))
+		&&((room==null)||(room.okAffect(mob,msg))))
 		{
 			mob.location().send(mob,msg);
 			if(room!=null)
 				room.sendOthers(mob,msg);
 		}
 	}
-	
+
 	public Rideable findALadder(MOB mob, Room room)
 	{
 		if(room==null) return null;
@@ -52,11 +52,11 @@ public class ClimbableSurface extends StdRoom
 		return null;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
-		if(Sense.isSleeping(this)) 
+		if(Sense.isSleeping(this))
 			return true;
 
 		if(affect.amITarget(this)
@@ -77,9 +77,9 @@ public class ClimbableSurface extends StdRoom
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(Sense.isSleeping(this)) return;
 
 		if((affect.target() instanceof Item)

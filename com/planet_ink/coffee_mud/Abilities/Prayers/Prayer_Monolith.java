@@ -22,13 +22,13 @@ public class Prayer_Monolith extends Prayer
 	private final static int TYP_FIRE=1;
 	private final static int TYP_EARTH=2;
 	private final static int TYP_AIR=3;
-	
+
 	private int wallType=0;
 	private int amountRemaining=0;
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
@@ -120,7 +120,7 @@ public class Prayer_Monolith extends Prayer
 			}
 			break;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -286,7 +286,7 @@ public class Prayer_Monolith extends Prayer
 				break;
 			}
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				I.setGettable(false);

@@ -69,7 +69,7 @@ public class Prayer_SenseUndead extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) dark cold senses!":"^S<S-NAME> "+prayWord(mob)+", and gain(s) dark cold senses!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

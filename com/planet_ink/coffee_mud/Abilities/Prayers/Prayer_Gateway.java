@@ -90,7 +90,7 @@ public class Prayer_Gateway extends Prayer
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for a blinding, divine gateway here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, divine gateway appears here.");
-			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(newRoom.okAffect(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				newRoom.send(mob,msg2);

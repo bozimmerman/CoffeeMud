@@ -16,7 +16,7 @@ public class Falling extends StdAbility
 	public Room room=null;
 	int damageToTake=0;
 	public Environmental newInstance(){	return new Falling();}
-	
+
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -31,7 +31,7 @@ public class Falling extends StdAbility
 
 		int direction=Directions.DOWN;
 		String addStr="down";
-		if(reversed()) 
+		if(reversed())
 		{
 			direction=Directions.UP;
 			addStr="upwards";
@@ -53,7 +53,7 @@ public class Falling extends StdAbility
 			||(mob.location().getExitInDir(direction)==null)
 			||(!mob.location().getExitInDir(direction).isOpen()))
 			{
-				if(reversed()) 
+				if(reversed())
 					return true;
 				unInvoke();
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
@@ -79,7 +79,7 @@ public class Falling extends StdAbility
 				||(mob.location().getExitInDir(direction)==null)
 				||(!mob.location().getExitInDir(direction).isOpen()))
 				{
-					if(reversed()) 
+					if(reversed())
 						return true;
 					unInvoke();
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the ground.");
@@ -98,7 +98,7 @@ public class Falling extends StdAbility
 			   &&(item.owner()!=null)
 			   &&(item.owner() instanceof Room))
 				room=(Room)item.owner();
-				
+
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!item.isGettable())
@@ -153,9 +153,9 @@ public class Falling extends StdAbility
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(temporarilyDisable)
@@ -211,7 +211,7 @@ public class Falling extends StdAbility
 			if(!(E instanceof MOB))
 				ExternalPlay.startTickDown(F,Host.MOB_TICK,1);
 			E.recoverEnvStats();
-			
+
 		}
 		return true;
 	}

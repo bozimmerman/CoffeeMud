@@ -31,9 +31,9 @@ public class Prayer_BladeBarrier extends Prayer
 			mob.tell("Your blade barrier disappears.");
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((invoker==null)
 		||(affected==null)
 		||(!(affected instanceof MOB)))
@@ -99,7 +99,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> "+prayWord(mob)+" for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

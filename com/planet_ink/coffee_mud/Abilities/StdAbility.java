@@ -463,7 +463,7 @@ public class StdAbility implements Ability, Cloneable
 		if(additionAffectCheckCode>=0)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.NO_EFFECT,additionAffectCheckCode,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ok=(!msg.wasModified());
@@ -497,7 +497,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T"+message+"^?");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -509,7 +509,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL,message);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -521,7 +521,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		// it didn't work, but tell everyone you tried.
 		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL|Affect.MASK_MALICIOUS,message);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 
 		return false;
@@ -776,7 +776,7 @@ public class StdAbility implements Ability, Cloneable
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		return;
 	}
@@ -784,7 +784,7 @@ public class StdAbility implements Ability, Cloneable
 	/** this method is used to tell the system whether
 	 * a PENDING affect may take place
 	 */
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		return true;
 	}

@@ -6,7 +6,7 @@ import java.util.*;
  * something that is affected by, or affects
  * the environment around them.
  */
-public interface Behavior extends Cloneable, Tickable
+public interface Behavior extends Cloneable, Tickable, MsgListener
 {
 	/** General descriptive ID for this
 	 * object.	Includes everything from 
@@ -33,17 +33,6 @@ public interface Behavior extends Cloneable, Tickable
 	
 	public boolean grantsMobility();
 	public boolean grantsAggressivenessTo(MOB M);
-	
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
-	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect);
-	
-	/** this method is used to tell the system whether
-	 * a PENDING affect may take place
-	 */
-	public boolean okAffect(Environmental oking, Affect affect);
 	
 	/** quick and easy access to the basic values in this object */
 	public String[] getStatCodes();

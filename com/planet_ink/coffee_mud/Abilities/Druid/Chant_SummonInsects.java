@@ -83,8 +83,8 @@ public class Chant_SummonInsects extends Chant
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(msg))
-				   &&(mob.location().okAffect(msg2))
+				if((mob.location().okAffect(mob,msg))
+				   &&(mob.location().okAffect(mob,msg2))
 				   &&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

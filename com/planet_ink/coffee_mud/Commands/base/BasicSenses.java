@@ -20,7 +20,7 @@ public class BasicSenses
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
 			String ID=Util.combine(commands,1);
-			
+
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				mob.location().listExits(mob);
@@ -71,8 +71,8 @@ public class BasicSenses
 						name=Directions.getDirectionName(dirCode);
 				}
 				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.MSG_EXAMINESOMETHING,textMsg+name);
-				
-				if(mob.location().okAffect(msg))
+
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0))
 					((Room)thisThang).listExits(mob);
@@ -91,7 +91,7 @@ public class BasicSenses
 				}
 
 			FullMsg msg=new FullMsg(mob,mob.location(),null,Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			if(((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
 			&&(Sense.canBeSeenBy(mob.location(),mob)))
@@ -141,7 +141,7 @@ public class BasicSenses
 		}
 		String emote="^E<S-NAME> "+Util.combine(commands,1)+"^?";
 		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_EMOTE,emote);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -167,7 +167,7 @@ public class BasicSenses
 		if(commands.size()<2)
 		{
 			mob.tell("Train what? Enter HELP TRAIN for more information.");
-			
+
 			return;
 		}
 		commands.removeElementAt(0);
@@ -266,7 +266,7 @@ public class BasicSenses
 			mob.tell("You can only learn that from another "+mob.charStats().getCurrentClass().baseClass()+".");
 			return;
 		}
-																 
+
 		int curStat=-1;
 		if(abilityCode<100)
 		{
@@ -286,7 +286,7 @@ public class BasicSenses
 		}
 
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return;
 		mob.location().send(mob,msg);
 		switch(abilityCode)
@@ -470,7 +470,7 @@ public class BasicSenses
 			}
 		}
 	}
-	
+
 	public static void weather(MOB mob, Vector commands)
 	{
 		Room room=mob.location();

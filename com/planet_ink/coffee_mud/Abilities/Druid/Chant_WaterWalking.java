@@ -25,9 +25,9 @@ public class Chant_WaterWalking extends Chant
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect)) return false;
+		if(!super.okAffect(myHost,affect)) return false;
 		if(affected==null) return true;
 		MOB mob=(MOB)affected;
 		if((affect.amISource(mob))
@@ -71,9 +71,9 @@ public class Chant_WaterWalking extends Chant
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(triggerNow)triggerNow=false;
 	}
 
@@ -117,7 +117,7 @@ public class Chant_WaterWalking extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())

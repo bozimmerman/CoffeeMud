@@ -27,8 +27,8 @@ public class Prop_ReqAlignments extends Property
 			return false;
 		return true;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -47,10 +47,10 @@ public class Prop_ReqAlignments extends Property
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(affect);
+					return super.okAffect(myHost,affect);
 			affect.source().tell("You may not go that way.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -38,7 +38,7 @@ public class Prayer_FleshRock extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected instanceof MOB)
 		{
@@ -71,7 +71,7 @@ public class Prayer_FleshRock extends Prayer
 				}
 			}
 		}
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affected instanceof MOB)
@@ -155,7 +155,7 @@ public class Prayer_FleshRock extends Prayer
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" and point(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

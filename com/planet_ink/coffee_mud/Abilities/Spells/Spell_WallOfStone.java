@@ -22,7 +22,7 @@ public class Spell_WallOfStone extends Spell
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof Item)))
 			return true;
@@ -49,7 +49,7 @@ public class Spell_WallOfStone extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -121,7 +121,7 @@ public class Spell_WallOfStone extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				amountRemaining=mob.baseState().getHitPoints()/6;

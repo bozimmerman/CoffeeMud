@@ -81,7 +81,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		baseInventory.clear();
 		duplicateInventory.clear();
 	}
-	
+
 	public Vector getUniqueStoreInventory()
 	{
 		Vector V=new Vector();
@@ -205,7 +205,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Environmental copy=thisThang.copyOf();
 			storeInventory.addElement(copy);
-			if(number>maximumDuplicatesBought) 
+			if(number>maximumDuplicatesBought)
 				maximumDuplicatesBought=number;
 			if(number>1)
 				duplicateInventory.put(copy,new Integer(number));
@@ -400,7 +400,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			if(item instanceof Ability)
 				return item;
-			
+
 			Integer possNum=(Integer)duplicateInventory.get(item);
 			if(possNum!=null)
 			{
@@ -552,7 +552,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		msliver.recoverEnvStats();
 		return msliver;
 	}
-	
+
 	public Item makeChange(MOB banker, MOB customer, int value)
 	{
 		Container changeBag=(Container)CMClass.getItem("GenContainer");
@@ -642,7 +642,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		changeBag.recoverEnvStats();
 		changeBag.text();
 		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) "+changeBag.name()+" to <T-NAMESELF>.");
-		if(banker.location().okAffect(newMsg))
+		if(banker.location().okAffect(banker,newMsg))
 		{
 			banker.location().send(banker,newMsg);
 			if(customer.isMine(changeBag))
@@ -670,7 +670,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return null;
 	}
-	
+
 	public void setTotalMoney(MOB mob, int amount)
 	{
 		if(mob==null) return;
@@ -713,7 +713,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(amount<0)
 			makeChange(this,mob,-amount);
 	}
-	
+
 	public int totalMoney(MOB mob)
 	{
 		if(mob==null) return 0;
@@ -734,8 +734,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return money;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(affect.amITarget(this))
@@ -784,7 +784,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						return false;
 					}
 					FullMsg msg=new FullMsg(affect.source(),affect.tool(),Affect.MSG_DROP,null);
-					if(!mob.location().okAffect(msg))
+					if(!mob.location().okAffect(mob,msg))
 						return false;
 					return true;
 				}
@@ -814,7 +814,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if((whatISell==DEAL_TRAINER)&&(!((Ability)affect.tool()).canBeLearnedBy(new Teacher(),mob)))
 							return false;
-						
+
 						if(affect.targetMinor()==Affect.TYP_BUY)
 						{
 							Ability A=(Ability)affect.tool();
@@ -848,7 +848,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public String findInnRoom(InnKey key, String addThis, Room R)
@@ -867,11 +867,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return null;
 	}
-	
-	
-	public void affect(Affect affect)
+
+
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
@@ -978,7 +978,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							}
 						}
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
-						if(location().okAffect(msg))
+						if(location().okAffect(mob,msg))
 						{
 							tell(affect.source(),affect.target(),affect.targetMessage());
 							location().send(mob,msg);
@@ -1086,7 +1086,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		if(yes) return d;
 		return 0.0;
-		
+
 	}
 	private double prejudiceFactor(MOB mob, boolean sellTo)
 	{
@@ -1111,7 +1111,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(d!=0.0) return d;
 		return 1.0;
 	}
-	
+
 	private int yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
 		int val=0;
@@ -1140,22 +1140,22 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		else
 			val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if(mob==null) return val;
-		
+
 		double d=prejudiceFactor(mob,sellTo);
 		val=(int)Math.round(Util.mul(d,val));
 
 		//double halfPrice=Math.round(Util.div(val,2.0));
 		double quarterPrice=Math.round(Util.div(val,4.0));
-		
+
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
-		
+
         if((!(product instanceof Ability)&&(numberInStock(product)!=0)))
 			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div((maximumDuplicatesBought-numberInStock(product)),maximumDuplicatesBought)));
-		
+
 		// the price is 200% at 0 charisma, and 100% at 30
 		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
-		
+
 		if(buyPrice>sellPrice)buyPrice=sellPrice;
 
 		if(sellTo)
@@ -1174,7 +1174,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				return (LandTitle)R.fetchAffect(a);
 		return null;
 	}
-	
+
 	private Vector addRealEstate(Vector V,MOB mob)
 	{
 		if(((whatISell==DEAL_LANDSELLER)||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
@@ -1231,10 +1231,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Vector inventory=getUniqueStoreInventory();
 		inventory=addRealEstate(inventory,mob);
 		if(inventory.size()==0) return msg;
-		
+
 		int totalCols=((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))?1:2;
 		int totalWidth=60/totalCols;
-		
+
 		for(int i=0;i<inventory.size();i++)
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
@@ -1246,7 +1246,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					csize=(""+val).length()-4;
 			}
 		}
-		
+
 		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
 		msg.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
 		int colNum=0;

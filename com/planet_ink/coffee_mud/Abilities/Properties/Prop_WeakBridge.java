@@ -29,7 +29,7 @@ public class Prop_WeakBridge extends Property
 		ticksDown=getParmVal(newText,"down",300);
 	}
 	
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected)))
@@ -62,7 +62,7 @@ public class Prop_WeakBridge extends Property
 	}
 					  
 	
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
 		&&((msg.amITarget(affected))||(msg.tool()==affected))
@@ -93,7 +93,7 @@ public class Prop_WeakBridge extends Property
 				}
 			}
 		}
-		super.affect(msg);
+		super.affect(myHost,msg);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

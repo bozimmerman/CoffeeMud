@@ -15,7 +15,7 @@ public class Spell_Charm extends Spell
 	public Environmental newInstance(){	return new Spell_Charm();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -38,7 +38,7 @@ public class Spell_Charm extends Spell
 			return false;
 		}
 
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -114,7 +114,7 @@ public class Spell_Charm extends Spell
 			// what happened.
 			String str=auto?"":"^S<S-NAME> smile(s) and wink(s) at <T-NAMESELF>.^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

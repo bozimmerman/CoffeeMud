@@ -37,7 +37,7 @@ public class Spell_Ventriloquate extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_SPEAK,"^T<T-NAME> say(s) '"+Util.combine(commands,1)+"'^?.");

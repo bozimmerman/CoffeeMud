@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class AbilityEvoker
 {
 	private AbilityEvoker(){}
-	
+
 	public static void gain(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -63,7 +63,7 @@ public class AbilityEvoker
 				else
 					evokableAbility=thisAbility;
 		}
-		
+
 		if((evokableAbility!=null)&&(commands.size()>1))
 		{
 			int classCode=evokableAbility.classificationCode()&Ability.ALL_CODES;
@@ -80,7 +80,7 @@ public class AbilityEvoker
 				break;
 			}
 		}
-		
+
 		if(evokableAbility!=null)
 			commands.removeElementAt(0);
 		else
@@ -149,7 +149,7 @@ public class AbilityEvoker
 		}
 		return evokableAbility;
 	}
-	
+
 	public static void evoke(MOB mob, Vector commands)
 	{
 		Ability evokableAbility=getToEvoke(mob,commands);
@@ -189,7 +189,7 @@ public class AbilityEvoker
 		String abilityName=Util.combine(commands,0);
 		Ability realAbility=CMClass.findAbility(abilityName,student.charStats());
 		Ability myAbility=null;
-		if(realAbility!=null) 
+		if(realAbility!=null)
 			myAbility=mob.fetchAbility(realAbility.ID());
 		else
 			myAbility=mob.fetchAbility(abilityName);
@@ -208,10 +208,10 @@ public class AbilityEvoker
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return;
 		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return;
 		myAbility.teach(mob,student);
 		mob.location().send(mob,msg);
@@ -266,18 +266,18 @@ public class AbilityEvoker
 			return;
 		}
 
-		if(!teacherAbility.canBeTaughtBy(teacher,mob)) 
+		if(!teacherAbility.canBeTaughtBy(teacher,mob))
 			return;
-		if(!teacherAbility.canBePracticedBy(teacher,mob)) 
+		if(!teacherAbility.canBePracticedBy(teacher,mob))
 			return;
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return;
 		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> practice(s) '"+myAbility.name()+"' with <T-NAMESELF>.");
-		if(!mob.location().okAffect(msg))
+		if(!mob.location().okAffect(mob,msg))
 			return;
 		teacherAbility.practice(teacher,mob);
 		mob.location().send(mob,msg);
 	}
-	
+
 }

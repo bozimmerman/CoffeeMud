@@ -24,7 +24,7 @@ public class Fighter_Pin extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Pin();	}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -46,7 +46,7 @@ public class Fighter_Pin extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -134,7 +134,7 @@ public class Fighter_Pin extends StdAbility
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> get(s) pinned!":"^F<S-NAME> pin(s) <T-NAMESELF> to the floor!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				success=maliciousAffect(mob,target,5,-1);

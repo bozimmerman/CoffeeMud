@@ -26,7 +26,7 @@ public class QuestPoint extends StdItem
 		return new QuestPoint();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -47,6 +47,6 @@ public class QuestPoint extends StdItem
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

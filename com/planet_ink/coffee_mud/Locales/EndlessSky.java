@@ -8,7 +8,7 @@ import java.util.*;
 public class EndlessSky extends StdGrid
 {
 	protected boolean crossLinked=false;
-	
+
 	public EndlessSky()
 	{
 		super();
@@ -31,15 +31,15 @@ public class EndlessSky extends StdGrid
 		return new EndlessSky();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		return InTheAir.isOkAffect(this,affect);
 	}
 	public String getChildLocaleID(){return "InTheAir";}
-	
+
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");

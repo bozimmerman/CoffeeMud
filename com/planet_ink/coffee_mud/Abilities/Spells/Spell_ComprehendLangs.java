@@ -46,9 +46,9 @@ public class Spell_ComprehendLangs extends Spell
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected instanceof MOB)
 		&&(!affect.amISource((MOB)affected))
 		&&((affect.sourceMinor()==Affect.TYP_SPEAK)
@@ -99,7 +99,7 @@ public class Spell_ComprehendLangs extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) more comprehrending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

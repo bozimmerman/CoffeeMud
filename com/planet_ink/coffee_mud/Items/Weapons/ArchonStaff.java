@@ -96,7 +96,7 @@ public class ArchonStaff extends Staff implements Wand
 		}
 		theWand.waveIfAble(mob,afftarget,message,me);
 	}
-	
+
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		super.affectCharState(mob,affectableState);
@@ -108,10 +108,10 @@ public class ArchonStaff extends Staff implements Wand
 			mob.curState().setThirst(9999999);
 		}
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		MOB mob=affect.source();
@@ -134,10 +134,10 @@ public class ArchonStaff extends Staff implements Wand
 		}
 		return true;
 	}
-	
-	public void affect(Affect affect)
+
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.source().location()!=null)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
@@ -146,7 +146,7 @@ public class ArchonStaff extends Staff implements Wand
 		&&(!((MOB)affect.target()).amDead()))
 		{
 			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new ArchonStaff(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(msg))
+			if(affect.source().location().okAffect(affect.source(),msg))
 			{
 				affect.source().location().send(affect.source(), msg);
 				if(!msg.wasModified())

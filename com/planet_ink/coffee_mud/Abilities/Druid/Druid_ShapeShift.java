@@ -158,7 +158,7 @@ public class Druid_ShapeShift extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_OK_ACTION,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);

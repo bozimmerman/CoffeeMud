@@ -40,7 +40,7 @@ public class Prop_Resistance extends Property
 		affectedStats.setStat(CharStats.SAVE_POISON,affectedStats.getStat(CharStats.SAVE_POISON)+adjCharStats.getStat(CharStats.SAVE_POISON));
 		affectedStats.setStat(CharStats.SAVE_PARALYSIS,affectedStats.getStat(CharStats.SAVE_PARALYSIS)+adjCharStats.getStat(CharStats.SAVE_PARALYSIS));
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -53,6 +53,6 @@ public class Prop_Resistance extends Property
 				return false;
 			Prop_HaveResister.resistAffect(affect,mob,this);
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -73,7 +73,7 @@ public class Prayer_CurseMinds extends Prayer
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayWord(mob)+" an unholy curse upon <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-				if((target!=mob)&&(mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+				if((target!=mob)&&(mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);

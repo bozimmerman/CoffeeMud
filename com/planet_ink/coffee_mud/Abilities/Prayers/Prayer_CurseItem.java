@@ -50,9 +50,9 @@ public class Prayer_CurseItem extends Prayer
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affected==null) return true;
@@ -112,7 +112,7 @@ public class Prayer_CurseItem extends Prayer
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&((mobTarget==null)||(mob.location().okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)

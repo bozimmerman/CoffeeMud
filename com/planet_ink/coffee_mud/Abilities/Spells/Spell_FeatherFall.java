@@ -20,7 +20,7 @@ public class Spell_FeatherFall extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
-	
+
 	public int mobWeight(MOB mob)
 	{
 		int weight=mob.baseEnvStats().weight();
@@ -32,8 +32,8 @@ public class Spell_FeatherFall extends Spell
 		}
 		return weight;
 	}
-	
-	public boolean okAffect(Affect msg)
+
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -50,7 +50,7 @@ public class Spell_FeatherFall extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(msg);
+		return super.okAffect(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -86,7 +86,7 @@ public class Spell_FeatherFall extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

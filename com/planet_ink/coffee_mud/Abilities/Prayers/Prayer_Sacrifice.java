@@ -37,7 +37,7 @@ public class Prayer_Sacrifice extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened. 
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> sacrifice(s) <T-HIM-HERSELF>.":"^S<S-NAME> sacrifice(s) <T-NAMESELF> to "+hisHerDiety(mob)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.destroyThis();

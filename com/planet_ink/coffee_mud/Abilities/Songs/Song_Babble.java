@@ -17,7 +17,7 @@ public class Song_Babble extends Song
 	public Environmental newInstance(){	return new Song_Babble();}
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean mindAttack(){return true;}
-	
+
 	protected int numChars(String words)
 	{
 		int num=0;
@@ -28,7 +28,7 @@ public class Song_Babble extends Song
 		}
 		return num;
 	}
-	
+
 	protected char fixCase(char like,char make)
 	{
 		if(Character.isUpperCase(like))
@@ -56,7 +56,7 @@ public class Song_Babble extends Song
 		}
 		return w.toString();
 	}
-	
+
 	protected String getMsgFromAffect(String msg)
 	{
 		if(msg==null) return null;
@@ -75,8 +75,8 @@ public class Song_Babble extends Song
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected instanceof MOB)
 		&&(affect.amISource((MOB)affected))
@@ -107,9 +107,9 @@ public class Song_Babble extends Song
 				helpProfficiency((MOB)affected);
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -130,7 +130,7 @@ public class Song_Babble extends Song
 				str="<S-NAME> start(s) the Song of "+name()+" over again.";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -148,12 +148,12 @@ public class Song_Babble extends Song
 					// malicious songs must not affect the invoker!
 					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.MASK_GENERAL;
-					
+
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
-						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
+						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())

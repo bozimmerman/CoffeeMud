@@ -37,10 +37,10 @@ public class Song_Inebriation extends Song
 	public void show(MOB mob, int code, String text)
 	{
 		FullMsg msg=new FullMsg(mob,null,this,code,code,code,text);
-		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+		if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
 			mob.location().send(mob,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -63,9 +63,9 @@ public class Song_Inebriation extends Song
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affect.source()==invoker)

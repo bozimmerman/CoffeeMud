@@ -26,7 +26,7 @@ public class Fighter_BodyFlip extends StdAbility
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -53,7 +53,7 @@ public class Fighter_BodyFlip extends StdAbility
 			if(mob.location()!=null)
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.standIfNecessary(mob);
@@ -108,7 +108,7 @@ public class Fighter_BodyFlip extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> flip(s) over!":"^F<S-NAME> flip(s) <T-NAMESELF> over!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,2,-1);

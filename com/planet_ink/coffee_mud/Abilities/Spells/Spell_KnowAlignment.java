@@ -28,7 +28,7 @@ public class Spell_KnowAlignment extends Spell
 		// affected MOB.  Then tell everyone else
 		// what happened.
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou draw out <T-NAME>s disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draw(s) out your disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draws out <T-NAME>s disposition.^?");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(success)

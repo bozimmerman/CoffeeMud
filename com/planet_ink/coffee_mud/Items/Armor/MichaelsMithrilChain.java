@@ -25,7 +25,7 @@ public class MichaelsMithrilChain extends StdArmor
 		material=EnvResource.RESOURCE_MITHRIL;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
 			return true;

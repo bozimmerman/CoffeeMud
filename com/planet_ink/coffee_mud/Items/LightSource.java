@@ -72,9 +72,9 @@ public class LightSource extends StdItem implements Light
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		return LightSource.isAnOkAffect(this,affect);
 	}
@@ -201,10 +201,10 @@ public class LightSource extends StdItem implements Light
 			}
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		LightSource.lightAffect(this,affect);
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affect.amITarget(this))
 		{
 			switch(affect.targetMinor())

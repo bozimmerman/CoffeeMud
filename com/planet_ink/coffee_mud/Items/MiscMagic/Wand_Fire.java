@@ -39,7 +39,7 @@ public class Wand_Fire extends StdWand
 	}
 	
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		switch(affect.sourceMinor())
@@ -78,6 +78,6 @@ public class Wand_Fire extends StdWand
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

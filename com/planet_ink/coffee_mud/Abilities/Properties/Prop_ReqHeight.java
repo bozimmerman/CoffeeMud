@@ -15,7 +15,7 @@ public class Prop_ReqHeight extends Property
 	public String accountForYourself()
 	{ return "Height limit: "+Util.s_int(text());	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -32,6 +32,6 @@ public class Prop_ReqHeight extends Property
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -38,7 +38,7 @@ public class Spell_Timeport extends Spell
 		affectableStats.setDisposition(EnvStats.IS_INVISIBLE);
 		affectableStats.setDisposition(EnvStats.IS_HIDDEN);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -54,7 +54,7 @@ public class Spell_Timeport extends Spell
 		if(room!=null)
 			room.show(mob, null, Affect.MSG_OK_VISUAL, "<S-NAME> reappear(s)!");
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
@@ -66,14 +66,14 @@ public class Spell_Timeport extends Spell
 					return false;
 				}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -91,7 +91,7 @@ public class Spell_Timeport extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s)")+"!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room room=mob.location();

@@ -26,9 +26,9 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 
 		if(affected==null)
@@ -132,7 +132,7 @@ public class Spell_MagicMouth extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

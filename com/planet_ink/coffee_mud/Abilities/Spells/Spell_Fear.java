@@ -45,7 +45,7 @@ public class Spell_Fear extends Spell
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
 				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.envStats().level()/2)>target.envStats().level()))
-				&&((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2)))))
+				&&((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2)))))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

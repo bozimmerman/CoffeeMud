@@ -15,9 +15,9 @@ public class Prop_NoChannel extends Property
 	public String accountForYourself()
 	{ return "No Channeling Field";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 

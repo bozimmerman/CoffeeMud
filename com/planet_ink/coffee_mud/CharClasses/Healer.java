@@ -164,8 +164,10 @@ public class Healer extends Cleric
 	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May use Blunt, Flailed weapons, Hammers, and Natural (unarmed) weapons only.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 
@@ -262,9 +264,11 @@ public class Healer extends Cleric
 		return true;
 	}
 
-	public void affect(MOB myChar, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(myChar,affect);
+		super.affect(myHost,affect);
+		if(!(myHost instanceof MOB)) return;
+		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)

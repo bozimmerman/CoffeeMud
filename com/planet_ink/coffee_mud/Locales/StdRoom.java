@@ -27,7 +27,7 @@ public class StdRoom
 	protected int domainCondition=Room.CONDITION_NORMAL;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 	protected boolean mobility=true;
-	
+
 	// base move points and thirst points per round
 	protected int baseThirst=1;
 	protected int myResource=-1;
@@ -228,7 +228,7 @@ public class StdRoom
 			CMMap.addRoom(sky);
 		}
 	}
-	
+
 	public void clearSky()
 	{
 		if(!skyedYet) return;
@@ -245,7 +245,7 @@ public class StdRoom
 			skyedYet=false;
 		}
 	}
-	
+
 	public Vector resourceChoices(){return null;}
 	public int myResource()
 	{
@@ -256,7 +256,7 @@ public class StdRoom
 		}
 		if(myResource<0)
 		{
-			if(resourceChoices()==null) 
+			if(resourceChoices()==null)
 				myResource=-1;
 			else
 			{
@@ -286,15 +286,15 @@ public class StdRoom
 		}
 		return myResource;
 	}
-			
+
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean getMobility(){return mobility;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!getArea().okAffect(affect))
+		if(!getArea().okAffect(this,affect))
 			return false;
-		
+
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -330,26 +330,26 @@ public class StdRoom
 		}
 
 		if(isInhabitant(affect.source()))
-			if(!affect.source().okAffect(affect))
+			if(!affect.source().okAffect(this,affect))
 				return false;
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB inhab=fetchInhabitant(i);
 			if((inhab!=null)
 			&&(inhab!=affect.source())
-			&&(!inhab.okAffect(affect)))
+			&&(!inhab.okAffect(this,affect)))
 				return false;
 		}
 		for(int i=0;i<numItems();i++)
 		{
 			Item content=fetchItem(i);
-			if((content!=null)&&(!content.okAffect(affect)))
+			if((content!=null)&&(!content.okAffect(this,affect)))
 				return false;
 		}
 		for(int i=0;i<numAffects();i++)
 		{
 			Ability A=fetchAffect(i);
-			if((A!=null)&&(!A.okAffect(affect)))
+			if((A!=null)&&(!A.okAffect(this,affect)))
 				return false;
 		}
 		for(int b=0;b<numBehaviors();b++)
@@ -363,16 +363,16 @@ public class StdRoom
 		{
 			Exit thisExit=rawExits()[i];
 			if(thisExit!=null)
-				if(!thisExit.okAffect(affect))
+				if(!thisExit.okAffect(this,affect))
 					return false;
 		}
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		getArea().affect(affect);
-		
+		getArea().affect(this,affect);
+
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -415,14 +415,14 @@ public class StdRoom
 		{
 			Item content=fetchItem(i);
 			if(content!=null)
-				content.affect(affect);
+				content.affect(this,affect);
 		}
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Exit thisExit=rawExits()[d];
 			if(thisExit!=null)
-				thisExit.affect(affect);
+				thisExit.affect(this,affect);
 		}
 
 		for(int b=0;b<numBehaviors();b++)
@@ -436,9 +436,9 @@ public class StdRoom
 		{
 			Ability A=fetchAffect(a);
 			if(A!=null)
-				A.affect(affect);
+				A.affect(this,affect);
 		}
-		
+
 	}
 
 	public void startItemRejuv()
@@ -464,7 +464,7 @@ public class StdRoom
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
-				if(B!=null) B.tick(this,tickID);
+				if(B!=null) B.tick(ticking,tickID);
 			}
 		}
 		else
@@ -570,7 +570,7 @@ public class StdRoom
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
 	}
-	
+
 	private void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
@@ -593,7 +593,7 @@ public class StdRoom
 				Say.append("^N\n\r\n\r");
 			}
 		}
-		
+
 		Vector viewItems=new Vector();
 		for(int c=0;c<numItems();c++)
 		{
@@ -602,7 +602,7 @@ public class StdRoom
 				viewItems.addElement(item);
 		}
 		Say.append(ExternalPlay.niceLister(mob,viewItems,false));
-		
+
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB mob2=fetchInhabitant(i);
@@ -623,7 +623,7 @@ public class StdRoom
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}
-		
+
 		if(Say.length()==0)
 			mob.tell("You can't see anything!");
 		else
@@ -667,7 +667,7 @@ public class StdRoom
 
 		if(item.owner()==null) return;
 		Environmental o=item.owner();
-		
+
 		Vector V=new Vector();
 		if(item instanceof Container)
 			V=((Container)item).getContents();
@@ -735,7 +735,7 @@ public class StdRoom
 			return null;
 		return rawExits()[direction];
 	}
-	
+
 	public void listExits(MOB mob)
 	{
 		if(!Sense.canSee(mob))
@@ -767,11 +767,11 @@ public class StdRoom
 		{
 			MOB otherMOB=(MOB)inhabs.elementAt(i);
 			if((otherMOB!=null)&&(otherMOB!=source))
-				otherMOB.affect(msg);
+				otherMOB.affect(otherMOB,msg);
 		}
-		affect(msg);
+		affect(source,msg);
 	}
-	
+
 	private void reallySend(MOB source, Affect msg)
 	{
 		reallyReallySend(source,msg);
@@ -785,9 +785,9 @@ public class StdRoom
 				&&((affect.target()==null)
 				   ||(!(affect.target() instanceof MOB))
 				   ||(!((MOB)affect.target()).amDead()))
-				&&(okAffect(affect)))
+				&&(okAffect(source,affect)))
 				{
-					source.affect(affect);
+					source.affect(source,affect);
 					reallyReallySend(source,affect);
 				}
 			}
@@ -796,7 +796,7 @@ public class StdRoom
 
 	public void send(MOB source, Affect msg)
 	{
-		source.affect(msg);
+		source.affect(source,msg);
 		reallySend(source,msg);
 	}
 	public void sendOthers(MOB source, Affect msg)
@@ -835,7 +835,7 @@ public class StdRoom
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
-		source.affect(msg);
+		source.affect(source,msg);
 	}
 
 	public Exit[] rawExits()
@@ -874,7 +874,7 @@ public class StdRoom
 		clearSky();
 		ExternalPlay.deleteTick(this,-1);
 	}
-	
+
 	public MOB fetchInhabitant(String inhabitantID)
 	{
 		MOB mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID,true);
@@ -986,7 +986,7 @@ public class StdRoom
 		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
-		
+
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
 		&&(goodLocation==null)

@@ -268,7 +268,7 @@ public class JewelMaking extends CommonSkill
 		messedUp=!profficiencyCheck(0,auto);
 		if(completion<8) completion=8;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

@@ -15,7 +15,7 @@ public class Spell_MassSleep extends Spell
 	public Environmental newInstance(){	return new Spell_MassSleep();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -32,7 +32,7 @@ public class Spell_MassSleep extends Spell
 			mob.tell("You are way too drowsy.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -96,7 +96,7 @@ public class Spell_MassSleep extends Spell
 					// what happened.
 					MOB oldVictim=mob.getVictim();
 					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-					if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+					if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);
 						if(!msg.wasModified())

@@ -38,7 +38,7 @@ public class Spell_FleshStone extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected instanceof MOB)
 		{
@@ -71,7 +71,7 @@ public class Spell_FleshStone extends Spell
 				}
 			}
 		}
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affected instanceof MOB)
@@ -164,7 +164,7 @@ public class Spell_FleshStone extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

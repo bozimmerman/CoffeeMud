@@ -161,8 +161,10 @@ public class Missionary extends Cleric
 	public String otherLimitations(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
 	public String weaponLimitations(){return "May use Blunt, Ranged weapons, and Swords only.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 

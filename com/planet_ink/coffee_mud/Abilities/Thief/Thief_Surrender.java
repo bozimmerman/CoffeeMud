@@ -34,7 +34,7 @@ public class Thief_Surrender extends ThiefSkill
 			mob.tell("There's noone to surrender to!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -55,7 +55,7 @@ public class Thief_Surrender extends ThiefSkill
 					enemiesList.append(", "+vic.name());
 			}
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+gold+" gold.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.setMoney(mob.getMoney()-gold);

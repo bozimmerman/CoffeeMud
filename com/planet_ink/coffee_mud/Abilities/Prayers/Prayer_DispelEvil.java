@@ -30,7 +30,7 @@ public class Prayer_DispelEvil extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the evil inside <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int harming=Dice.roll(1,15,10);

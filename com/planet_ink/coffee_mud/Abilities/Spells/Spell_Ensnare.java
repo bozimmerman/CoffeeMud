@@ -18,7 +18,7 @@ public class Spell_Ensnare extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public int amountRemaining=0;
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -44,7 +44,7 @@ public class Spell_Ensnare extends Spell
 					return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -94,7 +94,7 @@ public class Spell_Ensnare extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

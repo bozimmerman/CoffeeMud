@@ -29,7 +29,7 @@ public class Thief_Distract extends ThiefSkill
 		return Ability.SKILL;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return true;
@@ -48,7 +48,7 @@ public class Thief_Distract extends ThiefSkill
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -101,7 +101,7 @@ public class Thief_Distract extends ThiefSkill
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_THIEF_ACT,auto?"<T-NAME> seem(s) distracted!":"<S-NAME> distract(s) <T-NAMESELF>!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,4);

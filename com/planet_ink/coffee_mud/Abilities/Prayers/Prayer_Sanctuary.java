@@ -30,9 +30,9 @@ public class Prayer_Sanctuary extends Prayer
 			mob.tell("The sanctuary around you fades.");
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -64,7 +64,7 @@ public class Prayer_Sanctuary extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be given sanctuary from harm.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"A white aura surrounds <S-NAME>.");

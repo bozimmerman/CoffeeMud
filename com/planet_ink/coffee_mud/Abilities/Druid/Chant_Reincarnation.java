@@ -44,7 +44,7 @@ public class Chant_Reincarnation extends Chant
 		&&((--tickDown)<0))
 		{
 			tickDown=-1;
-			
+
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.tick(ticking,tickID);
@@ -66,9 +66,9 @@ public class Chant_Reincarnation extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg))
+		if(!super.okAffect(myHost,msg))
 			return false;
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -83,9 +83,9 @@ public class Chant_Reincarnation extends Chant
 			if(newRace!=null)
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
 		}
-		return true;	
+		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -99,15 +99,15 @@ public class Chant_Reincarnation extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		
-		
+
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
 			int modifier=0;
 			if(target!=mob) modifier=Affect.MASK_MALICIOUS;
 			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geis!^?":"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,1800);

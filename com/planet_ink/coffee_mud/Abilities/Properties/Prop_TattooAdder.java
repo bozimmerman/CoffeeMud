@@ -51,7 +51,7 @@ public class Prop_TattooAdder extends Property
 		return tattooCode;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((tattooCode()>=0)
 		   &&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
@@ -88,6 +88,6 @@ public class Prop_TattooAdder extends Property
 				A.setMiscText(A.text()+tattooName.toUpperCase()+";");
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

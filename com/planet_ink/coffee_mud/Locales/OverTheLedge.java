@@ -10,16 +10,16 @@ import java.util.*;
 
 public class OverTheLedge extends InTheAir
 {
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(Sense.isSleeping(this)) 
+		if(Sense.isSleeping(this))
 			return true;
-		
+
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(this))
 		&&((getRoomInDir(Directions.DOWN)!=affect.source().location())))
 			return true;
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	public Environmental newInstance()
 	{

@@ -46,7 +46,7 @@ public class Spell_Teleport extends Spell
 			FullMsg enterMsg=new FullMsg(mob,newRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null);
 			Session session=mob.session();
 			mob.setSession(null);
-			if(!newRoom.okAffect(enterMsg))
+			if(!newRoom.okAffect(mob,enterMsg))
 				newRoom=null;
 			mob.setSession(session);
 			tries++;
@@ -66,7 +66,7 @@ public class Spell_Teleport extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Hashtable h=ExternalPlay.properTargets(this,mob,false);
@@ -78,7 +78,7 @@ public class Spell_Teleport extends Spell
 					MOB follower=(MOB)f.nextElement();
 					FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
-					if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
+					if(thisRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{

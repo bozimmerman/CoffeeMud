@@ -31,9 +31,9 @@ public class FlamingSword extends Longsword
 	{
 		return new FlamingSword();
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.source().location()!=null)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
@@ -42,7 +42,7 @@ public class FlamingSword extends Longsword
 		&&(!((MOB)affect.target()).amDead()))
 		{
 			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new FlamingSword(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
-			if(affect.source().location().okAffect(msg))
+			if(affect.source().location().okAffect(affect.source(),msg))
 			{
 				affect.source().location().send(affect.source(), msg);
 				if(!msg.wasModified())

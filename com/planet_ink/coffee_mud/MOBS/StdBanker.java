@@ -10,7 +10,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	protected double itemInterest=-0.001;
 	protected static final Integer allDown=new Integer(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5);
 	protected static Hashtable bankTimes=new Hashtable();
-	
+
 	public StdBanker()
 	{
 		super();
@@ -35,7 +35,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new StdBanker();
@@ -45,10 +45,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public void setWhatIsSold(int newSellCode){whatISell=ShopKeeper.DEAL_BANKER;}
 	public String prejudiceFactors(){return "";}
 	public void setPrejudiceFactors(String factors){}
-	
+
 	public String bankChain(){return text();}
 	public void setBankChain(String name){setMiscText(name);}
-	
+
 	public void addDepositInventory(String mob, Item thisThang)
 	{
 		String name=thisThang.name();
@@ -142,7 +142,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public void setItemInterest(double interest){itemInterest=interest;};
 	public double getCoinInterest(){return coinInterest;};
 	public double getItemInterest(){return itemInterest;};
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -157,7 +157,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			{
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))
-				{	
+				{
 					L=new Long(System.currentTimeMillis()+allDown.intValue());
 					proceed=true;
 					bankTimes.remove(bankChain());
@@ -227,7 +227,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}catch(Exception e){Log.errOut("StdBanker",e);}
 		return true;
 	}
-	
+
 	protected int getBalance(MOB mob)
 	{
 		Item old=findDepositInventory(mob.name(),""+Integer.MAX_VALUE);
@@ -235,7 +235,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			return ((Coins)old).numberOfCoins();
 		return 0;
 	}
-	
+
 	protected int minBalance(MOB mob)
 	{
 		Vector V=getDepositedItems(mob.name());
@@ -249,7 +249,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return min;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(affect.amITarget(this))
@@ -334,23 +334,23 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
 						FullMsg msg=new FullMsg(mob,old,this,Affect.MSG_GET,null);
-						if(location().okAffect(msg))
+						if(location().okAffect(mob,msg))
 							location().send(mob,msg);
 					}
-					
+
 				}
 				return;
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
 			case Affect.TYP_VIEW:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				return;
 			case Affect.TYP_BUY:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				return;
 			case Affect.TYP_LIST:
 			{
-				super.affect(affect);
+				super.affect(myHost,affect);
 				Vector V=getDepositedItems(mob.name());
 				StringBuffer msg=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
@@ -386,13 +386,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					double cci=Util.mul(Math.abs(coinInterest),100.0);
 					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					msg.append("\n\rWe "+ci+"weekly on money deposited here."); 
+					msg.append("\n\rWe "+ci+"weekly on money deposited here.");
 				}
 				if(itemInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(itemInterest),100.0);
 					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
+					msg.append("\n\rWe "+ci+"weekly on items kept with us.");
 				}
 				if(bankChain().length()>0)
 					msg.append("\n\rI am a banker for "+bankChain()+".");
@@ -406,10 +406,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		else
 		if(affect.sourceMinor()==Affect.TYP_RETIRE)
 			delAllDeposits(affect.source().name());
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(affect.amITarget(this))
@@ -473,9 +473,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
 			case Affect.TYP_VIEW:
-				return super.okAffect(affect);
+				return super.okAffect(myHost,affect);
 			case Affect.TYP_BUY:
-				return super.okAffect(affect);
+				return super.okAffect(myHost,affect);
 			case Affect.TYP_LIST:
 			{
 				if(numberDeposited(affect.source().name())==0)
@@ -485,13 +485,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						double cci=Util.mul(Math.abs(coinInterest),100.0);
 						String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						msg.append("\n\rWe "+ci+"weekly on money deposited here."); 
+						msg.append("\n\rWe "+ci+"weekly on money deposited here.");
 					}
 					if(itemInterest!=0.0)
 					{
 						double cci=Util.mul(Math.abs(itemInterest),100.0);
 						String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-						msg.append("\n\rWe "+ci+"weekly on items kept with us."); 
+						msg.append("\n\rWe "+ci+"weekly on items kept with us.");
 					}
 					if(bankChain().length()>0)
 						msg.append("\n\rI am a banker for "+bankChain()+".");
@@ -505,6 +505,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 				break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

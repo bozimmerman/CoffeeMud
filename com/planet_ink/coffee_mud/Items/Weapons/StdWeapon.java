@@ -67,9 +67,9 @@ public class StdWeapon extends StdItem implements Weapon
 			envStats().setDamage(((int)Math.round(Util.mul(envStats().damage(),Util.div(usesRemaining(),100)))));
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		
 		if((affect.amITarget(this))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
@@ -134,9 +134,9 @@ public class StdWeapon extends StdItem implements Weapon
 			}
 		}
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 			
 		if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)

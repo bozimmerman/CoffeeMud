@@ -17,7 +17,7 @@ public class Prop_ReqTattoo extends Property
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		
+
 		int x=text().toUpperCase().indexOf("ALL");
 		Vector V=Prop_Tattoo.getTattoos(mob);
 		if(V.size()==0) V.addElement("NONE");
@@ -34,8 +34,8 @@ public class Prop_ReqTattoo extends Property
 		}
 		return true;
 	}
-		
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affect.target()!=null)
@@ -55,7 +55,7 @@ public class Prop_ReqTattoo extends Property
 				}
 				for(Enumeration e=H.elements();e.hasMoreElements();)
 					if(passesMuster((MOB)e.nextElement()))
-						return super.okAffect(affect);
+						return super.okAffect(myHost,affect);
 				if(affect.target() instanceof Room)
 					affect.source().tell("You have not been granted authorization to go that way.");
 				else
@@ -64,6 +64,6 @@ public class Prop_ReqTattoo extends Property
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

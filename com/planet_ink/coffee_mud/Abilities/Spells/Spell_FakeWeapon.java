@@ -26,7 +26,7 @@ public class Spell_FakeWeapon extends Spell
 		}
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
@@ -43,7 +43,7 @@ public class Spell_FakeWeapon extends Spell
 						  affect.othersCode(),
 						  affect.othersMessage());
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -68,7 +68,7 @@ public class Spell_FakeWeapon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");

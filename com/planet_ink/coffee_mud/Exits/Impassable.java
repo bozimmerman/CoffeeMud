@@ -10,9 +10,9 @@ public class Impassable extends GenExit
 		return new Impassable();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		MOB mob=affect.source();

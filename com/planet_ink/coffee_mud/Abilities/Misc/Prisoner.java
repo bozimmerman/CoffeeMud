@@ -15,7 +15,7 @@ public class Prisoner extends StdAbility
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prisoner();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.sourceMinor()==affect.TYP_RECALL)
 		{
@@ -36,7 +36,7 @@ public class Prisoner extends StdAbility
 			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()

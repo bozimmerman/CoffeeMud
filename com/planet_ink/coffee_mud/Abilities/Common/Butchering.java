@@ -92,7 +92,7 @@ public class Butchering extends CommonSkill
 			return false;
 		failed=!profficiencyCheck(0,auto);
 		FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) butchering <T-NAME>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;

@@ -55,9 +55,9 @@ public class Prayer_Stasis extends Prayer
 			mob.tell("The holy stasis has been lifted.");
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -72,7 +72,7 @@ public class Prayer_Stasis extends Prayer
 			affect.source().tell(affect.source(),mob,"The statis field around <T-NAME> protect(s) <T-HIM-HER>.");
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -92,7 +92,7 @@ public class Prayer_Stasis extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayForWord(mob)+" to place a stasis upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -15,9 +15,9 @@ public class Prop_Retainable extends Property
 	public String accountForYourself()
 	{ return "Retainable";	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;

@@ -101,8 +101,10 @@ public class Paladin extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Must remain good to avoid spell/skill failure chance.";}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if((affect.amISource(myChar))
 		&&(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
 		&&(myChar.getAlignment() < 650)

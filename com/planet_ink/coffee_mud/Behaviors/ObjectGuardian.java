@@ -29,7 +29,7 @@ public class ObjectGuardian extends StdBehavior
 		||(affect.sourceMinor()==Affect.TYP_DROP)))
 		{
 			FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");
-			if(monster.location().okAffect(msgs))
+			if(monster.location().okAffect(monster,msgs))
 			{
 				monster.location().send(monster,msgs);
 				return false;

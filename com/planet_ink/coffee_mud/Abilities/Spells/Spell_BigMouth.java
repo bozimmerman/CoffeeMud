@@ -15,10 +15,10 @@ public class Spell_BigMouth extends Spell
 	public Environmental newInstance()	{ return new Spell_BigMouth();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 		if((affect.amISource(mob))
@@ -45,7 +45,7 @@ public class Spell_BigMouth extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	
 	private Room Stomach = null;
@@ -125,11 +125,11 @@ public class Spell_BigMouth extends Spell
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
-			super.affect(affect);
+			super.affect(myHost,affect);
 			return;
 		}
 
@@ -152,7 +152,7 @@ public class Spell_BigMouth extends Spell
 		&&((affect.sourceMinor()==Affect.TYP_QUIT)||(affect.sourceMinor()==Affect.TYP_DEATH)))
 			kill();
 		
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -215,7 +215,7 @@ public class Spell_BigMouth extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a spell.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) <S-HIS-HER> mouth grow to an enormous size!");

@@ -15,7 +15,7 @@ public class Prop_NoRecall extends Property
 	public String accountForYourself()
 	{ return "No Recall Field";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.sourceMinor()==affect.TYP_RECALL)
 		{
@@ -23,6 +23,6 @@ public class Prop_NoRecall extends Property
 				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but the magic fizzles.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

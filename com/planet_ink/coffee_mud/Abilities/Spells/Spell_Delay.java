@@ -96,7 +96,7 @@ public class Spell_Delay extends Spell
 		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A delay has already been cast here!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -111,7 +111,7 @@ public class Spell_Delay extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.tell("You hear a clock start ticking down in your head...20...19...");

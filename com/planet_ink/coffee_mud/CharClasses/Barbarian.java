@@ -101,8 +101,11 @@ public class Barbarian extends StdCharClass
 
 	public String weaponLimitations(){return "";}
 	public String armorLimitations(){return "Must use non-metal armors to avoid skill failure.";}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
+		
 		if((affect.amITarget(myChar))
 		   &&(affect.tool()!=null)
 		   &&(affect.tool() instanceof Weapon)

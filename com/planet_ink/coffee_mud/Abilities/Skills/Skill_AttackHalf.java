@@ -22,9 +22,9 @@ public class Skill_AttackHalf extends StdAbility
 	{
 		affectableStats.setSpeed(affectableStats.speed()+(0.5*(new Integer(profficiency()).doubleValue()/100.0)));
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

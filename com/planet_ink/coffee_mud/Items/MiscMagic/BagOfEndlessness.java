@@ -28,7 +28,7 @@ public class BagOfEndlessness extends BagOfHolding
 		return new BagOfEndlessness();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this)
 		&&(affect.tool()!=null)
@@ -51,6 +51,6 @@ public class BagOfEndlessness extends BagOfHolding
 				neweritem.recoverEnvStats();
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

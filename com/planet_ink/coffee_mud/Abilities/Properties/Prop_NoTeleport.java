@@ -7,16 +7,16 @@ public class Prop_NoTeleport extends Property
 	public String name(){ return "Teleport INTO Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	public Environmental newInstance(){	return new Prop_NoTeleport();}
-	
+
 	public final static String spellList=
 		(" Spell_Gate Spell_Teleport Spell_Portal Chant_PlantPass "
 		 +" Spell_Cogniportive Prayer_Gateway").toUpperCase();
-	
+
 	public String text(){ return spellList; }
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affect.tool()!=null)

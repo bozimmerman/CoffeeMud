@@ -150,8 +150,10 @@ public class Shaman extends Cleric
 	public String otherLimitations(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}
 	public String weaponLimitations(){return "May use Blunt and Hammer-like weapons only.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 

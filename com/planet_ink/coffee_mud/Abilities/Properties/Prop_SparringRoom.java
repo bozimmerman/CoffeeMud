@@ -12,9 +12,9 @@ public class Prop_SparringRoom extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_SparringRoom();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affect.sourceMinor()==Affect.TYP_DEATH)
@@ -35,7 +35,7 @@ public class Prop_SparringRoom extends Property
 				   &&(!source.amFollowing().isMonster())
 				   &&(source.amFollowing().charStats()!=null))
 					C=source.amFollowing().charStats().getCurrentClass();
-				
+
 				beneficiaries=C.dispenseExperience(source,target);
 			}
 			if(target.location()!=null) target.location().delInhabitant(target);

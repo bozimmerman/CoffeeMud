@@ -25,9 +25,9 @@ public class Prop_NoPurge extends Property
 			}
 		}
 	}
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((msg.targetMinor()==Affect.TYP_DROP)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Item))

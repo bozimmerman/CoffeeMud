@@ -103,9 +103,9 @@ public class StdCoins extends StdItem implements Coins
 		return false;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_GET:

@@ -40,9 +40,9 @@ public class Chant_Hibernation extends Chant
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
@@ -52,10 +52,10 @@ public class Chant_Hibernation extends Chant
 		return;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 		MOB mob=(MOB)affected;
 
 		if((affect.amISource(mob)
@@ -70,7 +70,7 @@ public class Chant_Hibernation extends Chant
 			else
 				unInvoke();
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -123,7 +123,7 @@ public class Chant_Hibernation extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_SLEEP|Affect.MASK_MAGIC,"<S-NAME> begin(s) to hibernate...");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				oldState=mob.curState();

@@ -55,7 +55,7 @@ public class Thief_Steal extends ThiefSkill
 			if(Dice.rollPercentage()>discoverChance)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to steal; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to steal from <T-NAME> and fails!");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -75,9 +75,9 @@ public class Thief_Steal extends ThiefSkill
 			int hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
-			
+
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
@@ -86,11 +86,11 @@ public class Thief_Steal extends ThiefSkill
 						target.makePeace();
 				}
 				msg=new FullMsg(target,stolen,null,Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_NOISE,null);
-				if(target.location().okAffect(msg))
+				if(target.location().okAffect(target,msg))
 				{
 					target.location().send(mob,msg);
 					msg=new FullMsg(mob,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
-					if(mob.location().okAffect(msg))
+					if(mob.location().okAffect(mob,msg))
 						mob.location().send(mob,msg);
 				}
 			}

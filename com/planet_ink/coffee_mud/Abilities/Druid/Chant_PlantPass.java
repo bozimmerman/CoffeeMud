@@ -22,7 +22,7 @@ public class Chant_PlantPass extends Chant
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
-		
+
 		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
 		if(myPlant==null)
 		{
@@ -55,7 +55,7 @@ public class Chant_PlantPass extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,myPlant,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?");
-			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg)))
+			if((mob.location().okAffect(mob,msg))&&(newRoom.okAffect(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				Hashtable h=ExternalPlay.properTargets(this,mob,false);
@@ -67,7 +67,7 @@ public class Chant_PlantPass extends Chant
 					MOB follower=(MOB)f.nextElement();
 					FullMsg enterMsg=new FullMsg(follower,newRoom,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appear(s) in a burst of light.");
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a burst of light.");
-					if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
+					if(thisRoom.okAffect(follower,leaveMsg)&&newRoom.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{

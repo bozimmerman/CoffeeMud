@@ -19,9 +19,9 @@ public class Prop_HaveZapper extends Property
 
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if(affected==null) return false;
 

@@ -70,7 +70,7 @@ public class Skill_Revoke extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from "+target.name());
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				revokeThis.unInvoke();

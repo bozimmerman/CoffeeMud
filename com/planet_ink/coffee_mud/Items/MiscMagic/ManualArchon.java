@@ -29,7 +29,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 		return new ManualArchon();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -74,7 +74,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 }

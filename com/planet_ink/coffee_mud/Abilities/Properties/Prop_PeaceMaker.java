@@ -14,7 +14,7 @@ public class Prop_PeaceMaker extends Property
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
 		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
@@ -32,6 +32,6 @@ public class Prop_PeaceMaker extends Property
 			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

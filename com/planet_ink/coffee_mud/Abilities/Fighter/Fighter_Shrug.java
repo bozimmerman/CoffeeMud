@@ -18,7 +18,7 @@ public class Fighter_Shrug extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Shrug();}
 	public int classificationCode(){return Ability.SKILL;}
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -34,9 +34,9 @@ public class Fighter_Shrug extends StdAbility
 			unInvoke();
 			return false;
 		}
-		return super.okAffect(msg);
+		return super.okAffect(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((!auto)&&(!mob.isInCombat()))
@@ -48,7 +48,7 @@ public class Fighter_Shrug extends StdAbility
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -65,7 +65,7 @@ public class Fighter_Shrug extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

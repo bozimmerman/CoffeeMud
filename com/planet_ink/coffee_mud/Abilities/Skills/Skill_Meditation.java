@@ -41,9 +41,9 @@ public class Skill_Meditation extends StdAbility
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
@@ -121,7 +121,7 @@ public class Skill_Meditation extends StdAbility
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> begin(s) to meditate...");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE-1000);

@@ -19,10 +19,10 @@ public class Prop_SpellReflecting extends Property
 	protected int fade=1;
 	protected int uses=100;
 	protected long lastFade=0;
-	
+
 	public int usesRemaining(){return uses;}
 	public void setUsesRemaining(int newUses){uses=newUses;}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -34,7 +34,7 @@ public class Prop_SpellReflecting extends Property
 		setUsesRemaining(remaining);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected==null)	return true;
 		if((fade<=0)&&(usesRemaining()<remaining))
@@ -53,7 +53,7 @@ public class Prop_SpellReflecting extends Property
 				}
 			}
 		}
-		
+
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
 		&&(affect.tool()!=null)
@@ -63,7 +63,7 @@ public class Prop_SpellReflecting extends Property
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 		{
 			MOB target=null;
-			if(affected instanceof MOB) 
+			if(affected instanceof MOB)
 				target=(MOB)affected;
 			else
 			if((affected instanceof Item)
@@ -73,11 +73,11 @@ public class Prop_SpellReflecting extends Property
 				target=(MOB)((Item)affected).owner();
 			else
 				return true;
-			
+
 			if(!affect.amITarget(target)) return true;
 			if(affect.amISource(target)) return true;
 			if(target.location()==null) return true;
-			
+
 			int lvl=CMAble.qualifyingLevel(affect.source(),((Ability)affect.tool()));
 			if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(((Ability)affect.tool()).ID());
 			if(lvl<=0) lvl=1;
@@ -110,7 +110,7 @@ public class Prop_SpellReflecting extends Property
 			}
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 

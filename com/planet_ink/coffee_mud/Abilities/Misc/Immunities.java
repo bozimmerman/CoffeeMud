@@ -20,7 +20,7 @@ public class Immunities extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
 	public Environmental newInstance(){	return new Immunities();}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

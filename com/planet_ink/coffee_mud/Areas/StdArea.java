@@ -24,29 +24,29 @@ public class StdArea implements Area
 	protected static int timeCode=Area.TIME_DAWN;
 	protected static int seasonCode=Area.SEASON_SPRING;
 	protected static boolean reReadTime=true;
-	
+
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 	protected Vector subOps=new Vector();
-	
+
 	protected boolean stopTicking=false;
 	private static final int WEATHER_TICK_DOWN=300; // 300 = 20 minutes * 60 seconds / 4
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected static int windDirection=Directions.NORTH;
 
-	private final static 
-	int[] seasonalWeather={  
+	private final static
+	int[] seasonalWeather={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
-		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,  
+		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,
 		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0,
-		/*FALL*/    37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,  
-		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,  
+		/*FALL*/    37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,
+		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,
 	};
-			
-	private final static 
+
+	private final static
 	int[] cold={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
@@ -54,7 +54,7 @@ public class StdArea implements Area
 		/*FALL*/     0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
 		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,
 	};
-	private final static 
+	private final static
 	int[] hot={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,
@@ -62,7 +62,7 @@ public class StdArea implements Area
 		/*FALL*/     0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
 		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,
 	};
-	private final static 
+	private final static
 	int[] dry={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
@@ -70,7 +70,7 @@ public class StdArea implements Area
 		/*FALL*/    10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
 	};
-	private final static 
+	private final static
 	int[] wet={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
@@ -78,7 +78,7 @@ public class StdArea implements Area
 		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
 		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2,
 	};
-	private final static 
+	private final static
 	int[] windy={
 		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
 		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
@@ -86,7 +86,7 @@ public class StdArea implements Area
 		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
 		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,
 	};
-	private final static 
+	private final static
 	int[] changeMap=		{
 	/*				     -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
 	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,
@@ -103,7 +103,7 @@ public class StdArea implements Area
 	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0,
 	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,
 	};
-			
+
 	public StdArea()
 	{
 	}
@@ -160,7 +160,7 @@ public class StdArea implements Area
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
-		
+
 		if((Sense.canSee(mob))&&(timeCode>=0))
 			timeDesc.append(TOD_DESC[timeCode]);
 		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(Area.A_FULL_DAY-1)+")");
@@ -221,7 +221,7 @@ public class StdArea implements Area
 		month=m;
 	}
 	public int getMoonPhase(){return (int)Math.round(Math.floor(Util.mul(Util.div(getDayOfMonth(),Area.DAYS_IN_MONTH),8.0)));}
-	
+
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
 	public int getTimeOfDay(){return time;}
@@ -242,8 +242,8 @@ public class StdArea implements Area
 		time=t;
 		return raiseLowerTheSun;
 	}
-	
-	
+
+
 	public boolean getMobility(){return mobility;}
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean amISubOp(String username)
@@ -288,7 +288,7 @@ public class StdArea implements Area
 				subOps.removeElementAt(s);
 		}
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new StdArea();
@@ -331,7 +331,7 @@ public class StdArea implements Area
 	}
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
-	
+
 	public String text()
 	{
 		return Generic.getPropertiesStr(this,true);
@@ -342,13 +342,13 @@ public class StdArea implements Area
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
-	
+
 	public String description()
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -359,7 +359,7 @@ public class StdArea implements Area
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(affect)))
+			if((A!=null)&&(!A.okAffect(this,affect)))
 				return false;
 		}
 		if((!mobility)||(!Sense.canMove(this)))
@@ -432,7 +432,7 @@ public class StdArea implements Area
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -444,7 +444,7 @@ public class StdArea implements Area
 		{
 			Ability A=fetchAffect(a);
 			if(A!=null)
-				A.affect(affect);
+				A.affect(this,affect);
 		}
 		if((affect.sourceMinor()==Affect.TYP_RETIRE)
 		&&(amISubOp(affect.source().name())))
@@ -460,15 +460,15 @@ public class StdArea implements Area
 		}
 		else
 			stopTicking=true;
-		
+
 	}
-	
+
 	private String getWeatherStop(int weatherCode)
 	{
 		switch(weatherCode)
 		{
 		case Area.WEATHER_HAIL: return "The hailstorm stops.";
-		case Area.WEATHER_CLOUDY: return "The clouds dissipate."; 
+		case Area.WEATHER_CLOUDY: return "The clouds dissipate.";
 		case Area.WEATHER_THUNDERSTORM: return "The thunderstorm stops.";
 		case Area.WEATHER_RAIN: return "It stops raining.";
 		case Area.WEATHER_SNOW: return "It stops snowing.";
@@ -481,8 +481,8 @@ public class StdArea implements Area
 		}
 		return "";
 	}
-	
-	
+
+
 	public int[] addMaskAndReturn(int[] one, int[] two)
 	{
 		if(one.length!=two.length)
@@ -492,13 +492,13 @@ public class StdArea implements Area
 			returnable[o]=one[o]+two[o];
 		return returnable;
 	}
-	
+
 	public void forceWeatherTick()
 	{
 		weatherTicker=1;
 		weatherTick();
 	}
-	
+
 	public void weatherTick()
 	{
 		if((--weatherTicker)<=0)
@@ -506,26 +506,26 @@ public class StdArea implements Area
 			// create a seasonal CHANCE graph
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
-			
+
 			if((climateType()&Area.CLIMASK_COLD)>0)
 				seasonal=addMaskAndReturn(seasonal,cold);
-			
+
 			if((climateType()&Area.CLIMASK_HOT)>0)
 				seasonal=addMaskAndReturn(seasonal,hot);
-			
+
 			if((climateType()&Area.CLIMASK_DRY)>0)
 				seasonal=addMaskAndReturn(seasonal,dry);
-			
+
 			if((climateType()&Area.CLIMASK_WET)>0)
 				seasonal=addMaskAndReturn(seasonal,wet);
-			
+
 			if((climateType()&Area.CLIMATE_WINDY)>0)
 				seasonal=addMaskAndReturn(seasonal,windy);
-				
+
 			// reset the weather ticker!
 			weatherTicker=WEATHER_TICK_DOWN;
-			
-			
+
+
 			String say=null;
 			int goodWeatherTotal=0;
 			int possibleNextWeather=nextWeather;
@@ -541,7 +541,7 @@ public class StdArea implements Area
 				// total all the change chances, negative means NO chance of this change
 				if(chance>0) goodWeatherTotal+=chance;
 			}
-			
+
 			// some sort of debugging commentary
 			/*StringBuffer buf=new StringBuffer(name()+"/"+(Area.SEASON_DESCS[getSeasonCode()])+"/"+Area.WEATHER_DESCS[nextWeather]+"->");
 			for(int g=0;g<Area.NUM_WEATHER;g++)
@@ -551,10 +551,10 @@ public class StdArea implements Area
 				int chance=seasonalNum+changeNum;
 				//if(chance>0) buf.append(Area.WEATHER_DESCS[g]+"="+chance+"("+seasonalNum+"+"+changeNum+"), ");
 			}*/
-			
+
 			// roll a number from this to that.  Like the lottery, whosever number gets rolled wins!
 			int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
-				
+
 			// now, determine the winner!
 			int tempWeatherTotal=0;
 			for(int g=0;g<Area.NUM_WEATHER;g++)
@@ -576,7 +576,7 @@ public class StdArea implements Area
 					}
 				}
 			}
-			
+
 			// remember your olde weather
 			int oldWeather=currentWeather;
 			currentWeather=nextWeather;
@@ -590,7 +590,7 @@ public class StdArea implements Area
 				case 3: windDirection=Directions.WEST; break;
 				case 4: windDirection=Directions.EAST; break;
 				}
-				
+
 				// 0=say nothing;
 				// 1=say weatherdescription only
 				// 2=say stop word only
@@ -623,7 +623,7 @@ public class StdArea implements Area
 			else
 			if(currentWeather==Area.WEATHER_THUNDERSTORM)
 				say="A bolt of lightning streaks across the sky.";
-			
+
 			if(say!=null)
 			{
 				for(Enumeration r=getMap();r.hasMoreElements();)
@@ -642,7 +642,7 @@ public class StdArea implements Area
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(stopTicking) return false;
@@ -652,7 +652,7 @@ public class StdArea implements Area
 			{
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
-					B.tick(this,tickID);
+					B.tick(ticking,tickID);
 			}
 
 			int a=0;
@@ -766,7 +766,7 @@ public class StdArea implements Area
 									if(M.location()!=null)
 									{
 										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
-										if(M.location().okAffect(msg))
+										if(M.location().okAffect(M,msg))
 											M.location().send(M,msg);
 									}
 									I.destroyThis();
@@ -779,7 +779,7 @@ public class StdArea implements Area
 		}
 		return true;
 	}
-	
+
 	protected String theWeatherDescription(int weather)
 	{
 		StringBuffer desc=new StringBuffer("");
@@ -925,12 +925,12 @@ public class StdArea implements Area
 		}
 		return desc.toString();
 	}
-	
+
 	public String getWeatherDescription()
 	{
 		return theWeatherDescription(currentWeather);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(envStats().sensesMask()>0)
@@ -973,7 +973,7 @@ public class StdArea implements Area
 							switch(A.getTODCode())
 							{
 							case Area.TIME_DAWN:
-								mob.tell("The sun begins to rise in the west."); 
+								mob.tell("The sun begins to rise in the west.");
 								break;
 							case Area.TIME_DAY:
 								break;
@@ -1057,12 +1057,12 @@ public class StdArea implements Area
 			}
 		}
 		if(raiseLowerTheSun) raiseLowerTheSunEverywhere();
-		
+
 		StringBuffer timeRsc=new StringBuffer("<DAY>"+A.getDayOfMonth()+"</DAY><MONTH>"+A.getMonth()+"</MONTH><YEAR>"+A.getYear()+"</YEAR>");
 		Resources.updateResource("time.txt",timeRsc);
 		Resources.saveFileResource("time.txt");
 	}
-	
+
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
@@ -1119,9 +1119,9 @@ public class StdArea implements Area
 		}
 		return null;
 	}
-	
+
 	public int adjustWaterConsumption(int base, MOB mob, Room room)
-	{ 
+	{
 		if((room.domainType()&Room.INDOORS)>0)
 			return base;
 		else
@@ -1146,7 +1146,7 @@ public class StdArea implements Area
 		}
 		return base;
 	}
-	
+
 	public void fillInAreaRooms()
 	{
 		for(Enumeration r=getMap();r.hasMoreElements();)
@@ -1168,7 +1168,7 @@ public class StdArea implements Area
 		}
 		myRooms=null;
 	}
-	
+
 	public void fillInAreaRoom(Room R)
 	{
 		R.clearSky();
@@ -1179,9 +1179,9 @@ public class StdArea implements Area
 		}
 		R.giveASky(0);
 	}
-	
+
 	public int adjustMovement(int base, MOB mob, Room room)
-	{ 
+	{
 		if((room.domainType()&Room.INDOORS)>0)
 			return base;
 		else
@@ -1222,14 +1222,14 @@ public class StdArea implements Area
 	}
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
-	
+
 	public StringBuffer getAreaStats()
 	{
 		StringBuffer s=new StringBuffer("");
 		s.append(description()+"\n\r");
 		getMap();
 		s.append("Number of rooms: "+myRooms.size()+"\n\r");
-		
+
 		Vector mobRanges=new Vector();
 		int totalMOBs=0;
 		int lowestLevel=Integer.MAX_VALUE;
@@ -1272,7 +1272,7 @@ public class StdArea implements Area
 		}
 		return s;
 	}
-	
+
 	public Behavior fetchBehavior(int index)
 	{
 		try
@@ -1282,9 +1282,9 @@ public class StdArea implements Area
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	
+
 	public void clearMap(){myRooms=null;}
-	
+
 	public int mapSize()
 	{
 		getMap();
@@ -1308,7 +1308,7 @@ public class StdArea implements Area
 		myRooms=myMap;
 		return myMap.elements();
 	}
-	
+
 	public int nextWeatherType(Room room)
 	{
 		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
@@ -1325,7 +1325,7 @@ public class StdArea implements Area
 	{
 		return theWeatherDescription(nextWeather);
 	}
-	
+
 	public Vector getSubOpVectorList()
 	{
 		return subOps;
@@ -1357,7 +1357,7 @@ public class StdArea implements Area
 		case 1: setClimateType(Util.s_int(val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(Util.s_int(val)); break;	
+		case 4: setTechLevel(Util.s_int(val)); break;
 		}
 	}
 	public boolean sameAs(Environmental E)

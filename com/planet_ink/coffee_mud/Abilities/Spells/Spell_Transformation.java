@@ -35,7 +35,7 @@ public class Spell_Transformation extends Spell
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+inc);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -44,14 +44,14 @@ public class Spell_Transformation extends Spell
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) a large, brutish warrior!":"^S<S-NAME> encant(s), transforming into a large brutish warrior!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				inc=Dice.roll(2,4,0);

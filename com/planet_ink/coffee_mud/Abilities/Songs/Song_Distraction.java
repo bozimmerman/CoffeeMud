@@ -13,8 +13,8 @@ public class Song_Distraction extends Song
 	public String displayText(){ return "(Song of Distraction)";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Distraction();}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -36,7 +36,7 @@ public class Song_Distraction extends Song
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 }

@@ -32,9 +32,9 @@ public class Song_Comprehension extends Song
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected instanceof MOB)
 		&&(!affect.amISource((MOB)affected))
 		&&((affect.sourceMinor()==Affect.TYP_SPEAK)

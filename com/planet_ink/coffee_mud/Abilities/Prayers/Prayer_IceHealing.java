@@ -30,9 +30,9 @@ public class Prayer_IceHealing extends Prayer
 			mob.tell("The aura of ice healing around you fades.");
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -64,9 +64,9 @@ public class Prayer_IceHealing extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -76,7 +76,7 @@ public class Prayer_IceHealing extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for icey healing.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"An aura surrounds <S-NAME>.");

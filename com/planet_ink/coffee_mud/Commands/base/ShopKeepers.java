@@ -89,7 +89,7 @@ public class ShopKeepers
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_SELL,"<S-NAME> sell(s) "+thisThang.name()+" to <T-NAMESELF>.");
-			if(!mob.location().okAffect(newMsg))
+			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
@@ -145,7 +145,7 @@ public class ShopKeepers
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VALUE,null);
-			if(!mob.location().okAffect(newMsg))
+			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
@@ -201,7 +201,7 @@ public class ShopKeepers
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VIEW,null);
-			if(!mob.location().okAffect(newMsg))
+			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
@@ -257,7 +257,7 @@ public class ShopKeepers
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> buy(s) "+thisThang.name()+" from <T-NAMESELF>.");
-			if(!mob.location().okAffect(newMsg))
+			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
 			doneSomething=true;
@@ -305,7 +305,7 @@ public class ShopKeepers
 			}
 		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_DEPOSIT,"<S-NAME> deposit(s) "+thisThang.name()+" into <S-HIS-HER> account with <T-NAMESELF>.");
-		if(!mob.location().okAffect(newMsg))
+		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);
 	}
@@ -388,7 +388,7 @@ public class ShopKeepers
 			}
 		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
-		if(!mob.location().okAffect(newMsg))
+		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);
 	}
@@ -418,7 +418,7 @@ public class ShopKeepers
 			}
 		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,null,Affect.MSG_LIST,null);
-		if(!mob.location().okAffect(newMsg))
+		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);
 	}

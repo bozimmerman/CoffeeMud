@@ -30,7 +30,7 @@ public class Thief_Sneak extends ThiefSkill
 			mob.tell("Sneak where?");
 			return false;
 		}
-		
+
 		Hashtable H=mob.getGroupMembers(new Hashtable());
 		int highestLevel=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)
@@ -46,12 +46,12 @@ public class Thief_Sneak extends ThiefSkill
 
 		boolean success=false;
 		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_VISUAL:Affect.MSG_DELICATE_HANDS_ACT,"You quietly sneak "+Directions.getDirectionName(dirCode)+".",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if(levelDiff<0) 
+			if(levelDiff<0)
 				levelDiff=levelDiff*8;
-			else 
+			else
 				levelDiff=levelDiff*10;
 			success=profficiencyCheck(levelDiff,auto);
 			if(success)
@@ -62,7 +62,7 @@ public class Thief_Sneak extends ThiefSkill
 			ExternalPlay.move(mob,dirCode,false,false);
 			if(success)
 			{
-				
+
 				int disposition=mob.baseEnvStats().disposition();
 				if((disposition&EnvStats.IS_SNEAKING)>0)
 				{

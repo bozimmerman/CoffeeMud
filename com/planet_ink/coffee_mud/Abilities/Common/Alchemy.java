@@ -309,7 +309,7 @@ public class Alchemy extends CommonSkill
 			if(completion<10) completion=10;
 			messedUp=!profficiencyCheck(0,auto);
 			FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,completion);

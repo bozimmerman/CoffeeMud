@@ -14,7 +14,7 @@ public class Chant_CharmArea extends Chant
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_CharmArea();}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_LEAVE)
 		   &&(!affect.amISource(invoker))
@@ -23,12 +23,12 @@ public class Chant_CharmArea extends Chant
 			affect.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affect.amITarget(affected)&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
 		{
 			affect.addTrailerMsg(new FullMsg(affect.source(),null,null,Affect.MSG_OK_VISUAL,Affect.NO_EFFECT,Affect.NO_EFFECT,"There is something charming about this place."));
@@ -61,7 +61,7 @@ public class Chant_CharmArea extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"This area seems to twinkle with beauty.":"^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

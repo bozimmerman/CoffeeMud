@@ -32,7 +32,7 @@ public class Chant_Farsight extends Chant
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> chant(s) for a far off vision.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();
@@ -89,7 +89,7 @@ public class Chant_Farsight extends Chant
 							thatRoom=room;
 							mob.tell("\n\r");
 							FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
-							thatRoom.affect(msg2);
+							thatRoom.affect(mob,msg2);
 						}
 					}
 				}

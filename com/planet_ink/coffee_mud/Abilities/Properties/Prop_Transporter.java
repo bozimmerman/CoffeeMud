@@ -50,7 +50,7 @@ public class Prop_Transporter extends Property
 		return tattooCode;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((tattooCode()>=0)
 		   &&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
@@ -63,6 +63,6 @@ public class Prop_Transporter extends Property
 			else
 				otherRoom.bringMobHere(affect.source(),true);
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

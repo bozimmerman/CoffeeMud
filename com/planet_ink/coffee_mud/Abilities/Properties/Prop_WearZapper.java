@@ -17,9 +17,9 @@ public class Prop_WearZapper extends Property
 		return "Wearing restricted as follows: "+ExternalPlay.zapperDesc(miscText);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affected==null) return false;

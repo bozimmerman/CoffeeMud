@@ -19,9 +19,9 @@ public class Spell_Alarm extends Spell
 	public int classificationCode(){	return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;}
 
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(invoker==null))
 		{
@@ -56,7 +56,7 @@ public class Spell_Alarm extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> glow(s) faintly for a short time.":"^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

@@ -16,7 +16,7 @@ public class Spell_SummonMarker extends Spell
 
 	public void unInvoke()
 	{
-		
+
 		if((canBeUninvoked())&&(invoker()!=null)&&(affected!=null)&&(affected instanceof Room))
 			invoker().tell("Your marker in '"+((Room)affected).displayText()+"' dissipates.");
 		super.unInvoke();
@@ -48,13 +48,13 @@ public class Spell_SummonMarker extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <S-HIS-HER> marker energy to this place!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,mob.location(),Affect.MSG_OK_VISUAL,"The spot <S-NAME> pointed to glows for brief moment.");
 				beneficialAffect(mob,mob.location(),(adjustedLevel(mob)*240)+450);
 			}
-			
+
 		}
 		else
 			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to summon <S-HIS-HER> marker energy, but fail(s).");

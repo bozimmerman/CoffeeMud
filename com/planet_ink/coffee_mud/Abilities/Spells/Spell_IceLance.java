@@ -38,7 +38,7 @@ public class Spell_IceLance extends Spell
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"long shard of ice streaks through the air!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_COLD|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;

@@ -55,7 +55,7 @@ public class Disease extends StdAbility
 			mob.tell(mob,null,DISEASE_DONE());
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -80,7 +80,7 @@ public class Disease extends StdAbility
 			Ability A=(Ability)this.copyOf();
 			A.invoke(mob,affect.target(),true);
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -94,7 +94,7 @@ public class Disease extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_HANDS|Affect.TYP_DISEASE|(auto?Affect.MASK_GENERAL:0),"");
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 			    target.location().send(target,msg);
 				if(!msg.wasModified())

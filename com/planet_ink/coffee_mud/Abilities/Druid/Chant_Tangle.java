@@ -16,7 +16,7 @@ public class Chant_Tangle extends Chant
 	public Item thePlants=null;
 	public Environmental newInstance(){	return new Chant_Tangle();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -24,7 +24,7 @@ public class Chant_Tangle extends Chant
 		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
 		{
 			unInvoke();
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 		}
 
 		MOB mob=(MOB)affected;
@@ -46,7 +46,7 @@ public class Chant_Tangle extends Chant
 					return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -94,7 +94,7 @@ public class Chant_Tangle extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

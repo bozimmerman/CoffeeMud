@@ -34,7 +34,7 @@ public class Skill_Map extends StdAbility
 		map=null;
 	}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -52,7 +52,7 @@ public class Skill_Map extends StdAbility
 			if(map instanceof com.planet_ink.coffee_mud.interfaces.Map)
 				((com.planet_ink.coffee_mud.interfaces.Map)map).doMapArea();
 		}
-		super.affect(msg);
+		super.affect(myHost,msg);
 	}
 	
 	
@@ -108,7 +108,7 @@ public class Skill_Map extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.",Affect.MSG_WRITE,";",Affect.MSG_WRITE,"<S-NAME> start(s) mapping on <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!item.ID().equals("BardMap"));

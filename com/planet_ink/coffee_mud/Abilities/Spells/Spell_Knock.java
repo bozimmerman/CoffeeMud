@@ -39,7 +39,7 @@ public class Spell_Knock extends Spell
 		{
 
 			FullMsg msg=new FullMsg(mob,openThis,null,affectType(auto),auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				for(int a=0;a<openThis.numAffects();a++)
 				{

@@ -30,9 +30,9 @@ public class Fighter_TrueShot extends StdAbility
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
 		}
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

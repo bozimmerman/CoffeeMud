@@ -114,7 +114,7 @@ public class Language extends StdAbility
 		return w.toString();
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((beingSpoken())
 		&&(affected instanceof MOB)
@@ -182,7 +182,7 @@ public class Language extends StdAbility
 				helpProfficiency((MOB)affected);
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -204,9 +204,9 @@ public class Language extends StdAbility
 		return true;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected instanceof MOB)
 		&&(!affect.amISource((MOB)affected))
 		&&((affect.sourceMinor()==Affect.TYP_SPEAK)

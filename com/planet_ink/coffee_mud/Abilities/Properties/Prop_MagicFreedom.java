@@ -15,9 +15,9 @@ public class Prop_MagicFreedom extends Property
 	public String accountForYourself()
 	{ return "Anti-Magic Field";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((Util.bset(affect.sourceCode(),affect.MASK_MAGIC))

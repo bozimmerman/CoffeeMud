@@ -11,13 +11,13 @@ public class Prop_ReqClasses extends Property
 	public String name(){ return "Class Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	Prop_ReqClasses newOne=new Prop_ReqClasses();	newOne.setMiscText(text());	return newOne;}
-	
+
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		
+
 		int x=text().toUpperCase().indexOf("ALL");
 		int y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().name().toUpperCase());
 		if(y<0) y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().baseClass().toUpperCase());
@@ -30,7 +30,7 @@ public class Prop_ReqClasses extends Property
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -49,10 +49,10 @@ public class Prop_ReqClasses extends Property
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(affect);
+					return super.okAffect(myHost,affect);
 			affect.source().tell("You are not allowed to go that way.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

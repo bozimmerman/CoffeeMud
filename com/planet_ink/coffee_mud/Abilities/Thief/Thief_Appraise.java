@@ -37,7 +37,7 @@ public class Thief_Appraise extends ThiefSkill
 		boolean success=profficiencyCheck(levelDiff,auto);
 
 		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> appraise(s) <T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			int realValue=target.value();

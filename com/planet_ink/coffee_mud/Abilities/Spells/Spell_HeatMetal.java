@@ -18,9 +18,9 @@ public class Spell_HeatMetal extends Spell
 
 	private Vector affectedItems=new Vector();
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) return false;
+		if(!super.okAffect(myHost,msg)) return false;
 		if(affected==null) return true;
 		if(!(affected instanceof Item)) return true;
 		if(!msg.amITarget(affected)) return true;
@@ -128,7 +128,7 @@ public class Spell_HeatMetal extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

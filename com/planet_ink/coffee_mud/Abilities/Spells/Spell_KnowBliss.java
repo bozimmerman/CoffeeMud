@@ -52,7 +52,7 @@ public class Spell_KnowBliss extends Spell
 		}
 	}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -87,11 +87,11 @@ public class Spell_KnowBliss extends Spell
 		return super.tick(ticking,tickID);
 	}
 	
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(msg);
+			return super.okAffect(myHost,msg);
 		MOB mob=(MOB)affected;
 		if(msg.amISource(mob)
 		&&(msg.targetCode()&Affect.MASK_MALICIOUS)>0)
@@ -125,7 +125,7 @@ public class Spell_KnowBliss extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> encant(s) happily at <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())

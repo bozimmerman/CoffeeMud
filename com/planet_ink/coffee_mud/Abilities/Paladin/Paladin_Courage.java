@@ -17,9 +17,9 @@ public class Paladin_Courage extends Paladin
 	}
 	public Environmental newInstance(){	return new Paladin_Courage();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if((invoker==null)||(invoker.getAlignment()<650))
 			return true;

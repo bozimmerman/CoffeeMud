@@ -34,7 +34,7 @@ public class Chant_SummonPlants extends Chant
 		}
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affect.amITarget(littlePlants))
 		&&(affect.targetMinor()==Affect.TYP_GET))
@@ -102,7 +102,7 @@ public class Chant_SummonPlants extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the ground.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				buildPlant(mob,mob.location());

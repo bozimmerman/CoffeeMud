@@ -15,7 +15,7 @@ public class Thief_BackStab extends ThiefSkill
 	private static final String[] triggerStrings = {"BACKSTAB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_BackStab();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -64,7 +64,7 @@ public class Thief_BackStab extends ThiefSkill
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT),auto?"":"<S-NAME> attempt(s) to stab <T-NAMESELF> in the back!");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(!success)

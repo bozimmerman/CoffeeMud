@@ -36,7 +36,7 @@ public class WandArchon extends StdWand
 		super.setMiscText(newText);
 		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
-	
+
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		if(!amWearingAt(Item.INVENTORY))
@@ -47,10 +47,10 @@ public class WandArchon extends StdWand
 			mob.curState().setThirst(9999999);
 		}
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		MOB mob=affect.source();
@@ -73,7 +73,7 @@ public class WandArchon extends StdWand
 		}
 		return true;
 	}
-	
+
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   String message,

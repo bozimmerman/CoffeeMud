@@ -36,7 +36,7 @@ public class Prayer_Calm extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of calmness descends.":"^S<S-NAME> "+prayWord(mob)+" for calmness.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)

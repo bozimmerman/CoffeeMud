@@ -24,7 +24,7 @@ public class Spell_GustOfWind extends Spell
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -87,7 +87,7 @@ public class Spell_GustOfWind extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
-				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					if((!msg.wasModified())&&(target.location()==mob.location()))
 					{

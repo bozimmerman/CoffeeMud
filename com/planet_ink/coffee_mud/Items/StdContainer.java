@@ -41,9 +41,9 @@ public class StdContainer extends StdItem implements Container
 		capacity=newValue;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if(affect.amITarget(this))
 		{
@@ -253,7 +253,7 @@ public class StdContainer extends StdItem implements Container
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -395,7 +395,7 @@ public class StdContainer extends StdItem implements Container
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 	protected int recursiveWeight(Item thisContainer)
 	{

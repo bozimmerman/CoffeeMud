@@ -36,9 +36,9 @@ public class Wand_Advancement extends StdWand
 		super.setMiscText(newText);
 		secretWord="LEVEL UP, LEVEL ALL UP";
 	}
-	
 
-	public void affect(Affect affect)
+
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		switch(affect.sourceMinor())
@@ -57,7 +57,7 @@ public class Wand_Advancement extends StdWand
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
 						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
 							target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1);
@@ -72,7 +72,7 @@ public class Wand_Advancement extends StdWand
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
 						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
 							while(target.envStats().level()<30)

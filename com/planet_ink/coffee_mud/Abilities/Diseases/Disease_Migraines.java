@@ -23,8 +23,8 @@ public class Disease_Migraines extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	protected boolean DISEASE_TOUCHSPREAD(){return false;}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -44,7 +44,7 @@ public class Disease_Migraines extends Disease
 			return false;
 		}
 
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

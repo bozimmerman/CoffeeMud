@@ -29,9 +29,9 @@ public class Spell_Flameshield extends Spell
 			mob.tell("Your flame shield disappears.");
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
@@ -51,7 +51,7 @@ public class Spell_Flameshield extends Spell
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
 				{
 					FullMsg msg=new FullMsg(source,mob,this,affectType(false),null);
-					if(source.location().okAffect(msg))
+					if(source.location().okAffect(source,msg))
 					{
 						source.location().send(source,msg);
 						if(invoker==null) invoker=source;
@@ -95,7 +95,7 @@ public class Spell_Flameshield extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

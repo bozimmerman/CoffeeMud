@@ -70,9 +70,9 @@ public class Spell_PhantomHound extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
@@ -91,7 +91,7 @@ public class Spell_PhantomHound extends Spell
 		}
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -108,7 +108,7 @@ public class Spell_PhantomHound extends Spell
 						  affect.othersCode(),
 						  affect.othersMessage());
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -126,7 +126,7 @@ public class Spell_PhantomHound extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB beast=CMClass.getMOB("GenMOB");

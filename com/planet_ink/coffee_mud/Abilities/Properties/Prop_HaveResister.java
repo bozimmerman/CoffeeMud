@@ -16,20 +16,20 @@ public class Prop_HaveResister extends Property
 	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
 	public Environmental newInstance(){	Prop_HaveResister BOB=new Prop_HaveResister();	BOB.setMiscText(text());return BOB;}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		adjCharStats=new DefaultCharStats();
 		setAdjustments(this,adjCharStats);
 	}
-	
+
 	private void ensureStarted()
 	{
 		if(adjCharStats==null)
 			setMiscText(text());
 	}
-	
+
 	public static void adjCharStats(CharStats affectedStats,
 									CharStats adjCharStats)
 	{
@@ -53,8 +53,8 @@ public class Prop_HaveResister extends Property
 		adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
-	
-	
+
+
 	public static boolean checkProtection(Ability me, String protType)
 	{
 		int prot=getProtection(me,protType);
@@ -65,7 +65,7 @@ public class Prop_HaveResister extends Property
 			return true;
 		return false;
 	}
-	
+
 	public static int getProtection(Ability me, String protType)
 	{
 		int z=me.text().toUpperCase().indexOf(protType.toUpperCase());
@@ -193,11 +193,11 @@ public class Prop_HaveResister extends Property
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
-		
+
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner() instanceof MOB))

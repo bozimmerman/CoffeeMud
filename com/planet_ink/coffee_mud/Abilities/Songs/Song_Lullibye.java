@@ -14,7 +14,7 @@ public class Song_Lullibye extends Song
 	public int quality(){ return MALICIOUS;}
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Lullibye();	}
-	
+
 	boolean asleep=false;
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -24,7 +24,7 @@ public class Song_Lullibye extends Song
 		if(asleep)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
-	
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -42,7 +42,7 @@ public class Song_Lullibye extends Song
 		if(asleep!=oldasleep)
 		{
 			if(oldasleep)
-			{	
+			{
 				if(Sense.isSleeping(mob))
 					mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SLEEPING);
 				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
@@ -53,13 +53,13 @@ public class Song_Lullibye extends Song
 				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SLEEPING);
 			}
 		}
-		
+
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affect.source()==invoker)

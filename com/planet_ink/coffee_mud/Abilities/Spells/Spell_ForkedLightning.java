@@ -45,7 +45,7 @@ public class Spell_ForkedLightning extends Spell
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
+				if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);

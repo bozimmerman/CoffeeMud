@@ -41,7 +41,7 @@ public class Thief_Swipe extends ThiefSkill
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		
+
 		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
 
 		if(!success)
@@ -49,7 +49,7 @@ public class Thief_Swipe extends ThiefSkill
 			if(Dice.rollPercentage()>discoverChance)
 			{
 				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the swipe; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to pick your pocket and fails!",Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to pick <T-NAME>'s pocket and fails!");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -80,10 +80,10 @@ public class Thief_Swipe extends ThiefSkill
 			int hisCode=Affect.MSG_THIEF_ACT| ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
-				
-			
+
+
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))

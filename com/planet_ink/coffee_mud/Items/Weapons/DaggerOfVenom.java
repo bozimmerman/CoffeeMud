@@ -33,9 +33,9 @@ public class DaggerOfVenom extends Dagger
 	{
 		return new DaggerOfVenom();
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.source().location()!=null)
 		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		   &&((affect.targetCode()-Affect.MASK_HURT)>0)

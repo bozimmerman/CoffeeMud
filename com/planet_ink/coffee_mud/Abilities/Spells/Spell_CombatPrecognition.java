@@ -16,7 +16,7 @@ public class Spell_CombatPrecognition extends Spell
 	public Environmental newInstance(){	return new Spell_CombatPrecognition();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -34,7 +34,7 @@ public class Spell_CombatPrecognition extends Spell
 				&&(!lastTime)
 				&&(affect.source().getVictim()==mob)
 				&&(affect.source().rangeToTarget()==0)
-				&&(mob.location().okAffect(msg)))
+				&&(mob.location().okAffect(mob,msg)))
 				{
 					lastTime=true;
 					mob.location().send(mob,msg);
@@ -74,7 +74,7 @@ public class Spell_CombatPrecognition extends Spell
 					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <S-NAME>.");
 					break;
 				}
-				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okAffect(msg2)))
+				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okAffect(mob,msg2)))
 				{
 					mob.location().send(mob,msg2);
 					return false;
@@ -119,7 +119,7 @@ public class Spell_CombatPrecognition extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

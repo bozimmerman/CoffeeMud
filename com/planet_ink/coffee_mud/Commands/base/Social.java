@@ -16,7 +16,7 @@ public class Social implements Environmental
 	private int sourceCode=Affect.MSG_OK_ACTION;
 	private int othersCode=Affect.MSG_OK_ACTION;
 	private int targetCode=Affect.MSG_OK_ACTION;
-	
+
 	public String ID() { return "Social"; }
 	public String name(){ return Social_name;}
 	public void setName(String newName){Social_name=newName;}
@@ -34,11 +34,11 @@ public class Social implements Environmental
 	public void setSourceCode(int code){sourceCode=code;}
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}
-	
-	
-	public boolean invoke(MOB mob, 
-						  Vector commands, 
-						  Environmental target, 
+
+
+	public boolean invoke(MOB mob,
+						  Vector commands,
+						  Environmental target,
 						  boolean auto)
 	{
 		String targetStr="";
@@ -62,25 +62,25 @@ public class Social implements Environmental
 		if((Target==null)&&(targetStr.equals("")))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,Affect.NO_EFFECT,null,othersCode(),Third_party_sees);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		if((Target==null)&&(!targetStr.equals("")))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
 			FullMsg msg=new FullMsg(mob,Target,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,targetCode(),Target_sees,othersCode(),Third_party_sees);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		return true;
 	}
-	
+
 	public String description(){return "";}
 	public void setDescription(String str){}
 	public String displayText(){return "";}
@@ -88,12 +88,12 @@ public class Social implements Environmental
 	protected static final EnvStats envStats=new DefaultEnvStats();
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
-	
+
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()
 	{ return new Social();}
-	
+
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){
@@ -130,7 +130,7 @@ public class Social implements Environmental
 		return false;
 	}
 	private void cloneFix(Social E){}
-	
+
 	public Environmental copyOf()
 	{
 		try
@@ -147,12 +147,12 @@ public class Social implements Environmental
 	}
 	public void setMiscText(String newMiscText){}
 	public String text(){return "";}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
-	public void affect(Affect affect){}
-	public boolean okAffect(Affect affect){	return true;}
+	public void affect(Environmental myHost, Affect affect){}
+	public boolean okAffect(Environmental myHost, Affect affect){	return true;}
 	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
 	public int maxRange(){return -1;}
 	public int minRange(){return -1;}

@@ -15,7 +15,7 @@ public class Song_Serenity extends Song
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Serenity();	}
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;

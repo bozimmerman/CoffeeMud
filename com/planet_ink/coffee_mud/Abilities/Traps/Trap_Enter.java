@@ -12,10 +12,10 @@ public class Trap_Enter extends Trap_Trap
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Trap_Enter();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(sprung) return super.okAffect(affect);
-		if(!super.okAffect(affect))
+		if(sprung) return super.okAffect(myHost,affect);
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		   if((affect.amITarget(affected))
@@ -36,9 +36,9 @@ public class Trap_Enter extends Trap_Trap
 		}
 		return true;
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(sprung)
 			return;
 

@@ -29,7 +29,7 @@ public class Chant_IllusionaryForest extends Chant
 		super.unInvoke();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof Room)
@@ -41,13 +41,13 @@ public class Chant_IllusionaryForest extends Chant
 						  affect.sourceCode(),affect.sourceMessage(),
 						  affect.targetCode(),affect.targetMessage(),
 						  affect.othersCode(),affect.othersMessage());
-			if(newRoom.okAffect(msg))
+			if(newRoom.okAffect(myHost,msg))
 			{
-				newRoom.affect(msg);
+				newRoom.affect(myHost,msg);
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -115,7 +115,7 @@ public class Chant_IllusionaryForest extends Chant
 			}
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) dramatically!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"The appearance of this place changes...");

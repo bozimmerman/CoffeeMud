@@ -14,7 +14,7 @@ public class Prop_Crawlspace extends Property
 	public String accountForYourself()
 	{ return "Must be crawled through.";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
 		{
@@ -45,6 +45,6 @@ public class Prop_Crawlspace extends Property
 				}
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -84,7 +84,7 @@ public class Spell_GhostSound extends Spell
 		if(target.fetchAffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -100,7 +100,7 @@ public class Spell_GhostSound extends Spell
 			// what happened.
 
 			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob.location(),0);

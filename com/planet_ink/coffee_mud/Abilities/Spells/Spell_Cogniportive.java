@@ -113,7 +113,7 @@ public class Spell_Cogniportive extends Spell
 					MOB follower=(MOB)f.nextElement();
 					FullMsg enterMsg=new FullMsg(follower,home,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
 					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
-					if(thisRoom.okAffect(leaveMsg)&&home.okAffect(enterMsg))
+					if(thisRoom.okAffect(follower,leaveMsg)&&home.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())
 						{
@@ -131,7 +131,7 @@ public class Spell_Cogniportive extends Spell
 		}
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		
@@ -165,7 +165,7 @@ public class Spell_Cogniportive extends Spell
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -194,7 +194,7 @@ public class Spell_Cogniportive extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");

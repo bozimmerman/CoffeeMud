@@ -49,7 +49,7 @@ public class Prayer_RemovePoison extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				int old=target.numAffects();

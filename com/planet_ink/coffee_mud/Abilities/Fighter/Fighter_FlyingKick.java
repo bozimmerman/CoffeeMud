@@ -63,7 +63,7 @@ public class Fighter_FlyingKick extends StdAbility
 			int topDamage=adjustedLevel(mob)+20;
 			int damage=Dice.roll(1,topDamage,0);
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ExternalPlay.postDamage(mob,target,this,damage,Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a flying KICK!^?");

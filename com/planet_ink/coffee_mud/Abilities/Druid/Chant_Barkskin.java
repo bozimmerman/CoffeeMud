@@ -62,7 +62,7 @@ public class Chant_Barkskin extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<T-NAME> attain(s) bark-like skin!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				success=beneficialAffect(mob,target,0);

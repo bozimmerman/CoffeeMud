@@ -32,10 +32,10 @@ public class UnderWater extends StdRoom implements Drink
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(Sense.isSleeping(this)) 
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 			 
 		if((affect.targetMinor()==affect.TYP_FIRE)
 		||(affect.targetMinor()==affect.TYP_GAS)
@@ -78,11 +78,11 @@ public class UnderWater extends StdRoom implements Drink
 			}
 			return true;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{
 			MOB mob=affect.source();

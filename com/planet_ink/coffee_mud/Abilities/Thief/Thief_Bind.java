@@ -19,7 +19,7 @@ public class Thief_Bind extends ThiefSkill
 
 	public Environmental newInstance(){	return new Thief_Bind();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -42,7 +42,7 @@ public class Thief_Bind extends ThiefSkill
 					return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -89,7 +89,7 @@ public class Thief_Bind extends ThiefSkill
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT|Affect.MASK_SOUND|Affect.MASK_MALICIOUS,"<S-NAME> bind(s) <T-NAME> with strong ropes.");
-			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

@@ -117,9 +117,9 @@ public class Prop_ItemTransporter extends Property
 		return true;
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if(affected==null) return true;
 		
@@ -247,10 +247,10 @@ public class Prop_ItemTransporter extends Property
 		return true;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		// amazingly important that this happens first!
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.targetMinor()==Affect.TYP_GET)
 		||(affect.targetMinor()==Affect.TYP_GIVE)
 		||(affect.targetMinor()==Affect.TYP_PUT)

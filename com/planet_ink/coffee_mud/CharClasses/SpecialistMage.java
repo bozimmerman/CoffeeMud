@@ -60,8 +60,10 @@ public class SpecialistMage extends Mage
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if((affect.tool()==null)||(!(affect.tool() instanceof Ability)))
 		   return super.okAffect(myChar,affect);
 		int domain=((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS;

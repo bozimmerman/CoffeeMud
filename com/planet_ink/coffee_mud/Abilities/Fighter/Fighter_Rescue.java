@@ -58,7 +58,7 @@ public class Fighter_Rescue extends StdAbility
 		{
 			str="<S-NAME> rescue(s) <T-NAMESELF>!";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				monster.setVictim(mob);
@@ -68,7 +68,7 @@ public class Fighter_Rescue extends StdAbility
 		{
 			str="<S-NAME> attempt(s) to rescue <T-NAMESELF>, but fail(s).";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_NOISYMOVEMENT,str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 

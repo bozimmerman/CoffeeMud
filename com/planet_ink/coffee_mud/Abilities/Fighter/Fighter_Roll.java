@@ -20,10 +20,10 @@ public class Fighter_Roll extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public boolean doneThisRound=false;
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		regain=-1;
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -55,9 +55,9 @@ public class Fighter_Roll extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;

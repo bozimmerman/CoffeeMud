@@ -27,7 +27,7 @@ public class Prayer_Weather extends Prayer
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				int switcher=Dice.roll(1,3,0);
 				mob.location().send(mob,msg);

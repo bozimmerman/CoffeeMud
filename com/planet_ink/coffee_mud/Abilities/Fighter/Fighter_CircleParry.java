@@ -16,7 +16,7 @@ public class Fighter_CircleParry extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	
+
 	boolean lastTime=false;
 	public Environmental newInstance(){	return new Fighter_CircleParry();}
 
@@ -32,8 +32,8 @@ public class Fighter_CircleParry extends StdAbility
 		}
 		return false;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -59,7 +59,7 @@ public class Fighter_CircleParry extends StdAbility
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> circle-parry(s) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 					&&(!lastTime)
-					&&(mob.location().okAffect(msg)))
+					&&(mob.location().okAffect(mob,msg)))
 					{
 						lastTime=true;
 						mob.location().send(mob,msg);

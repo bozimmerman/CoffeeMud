@@ -20,8 +20,10 @@ public class Skeleton extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		MOB mob=(MOB)myChar;
 		if((affect.amITarget(mob))
 	    &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))

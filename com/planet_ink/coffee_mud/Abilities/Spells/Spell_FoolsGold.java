@@ -22,9 +22,9 @@ public class Spell_FoolsGold extends Spell
 		return false;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected!=null)&&(affected instanceof Item))
 		{
 			if((affect.amITarget(affected))&&(affect.targetMinor()==Affect.TYP_GET)&&(affect.source()!=invoker))
@@ -50,7 +50,7 @@ public class Spell_FoolsGold extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Item gold=(Item)CMClass.getItem("GenItem");

@@ -20,14 +20,14 @@ public class Fighter_Charge extends StdAbility
 	public int maxRange(){return 2;}
 	public boolean done=false;
 
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==Affect.TYP_WEAPONATTACK))
 			done=true;
-		super.affect(msg);
+		super.affect(myHost,msg);
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -73,7 +73,7 @@ public class Fighter_Charge extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.MSG_ADVANCE,"<S-NAME> charge(s) at <T-NAMESELF>!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(mob.getVictim()==target)

@@ -24,7 +24,7 @@ public class Spell_Farsight extends Spell
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();
@@ -81,7 +81,7 @@ public class Spell_Farsight extends Spell
 							thatRoom=room;
 							mob.tell("\n\r");
 							FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
-							thatRoom.affect(msg2);
+							thatRoom.affect(mob,msg2);
 						}
 					}
 				}

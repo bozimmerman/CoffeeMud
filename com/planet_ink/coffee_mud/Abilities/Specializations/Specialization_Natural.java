@@ -18,7 +18,7 @@ public class Specialization_Natural extends Specialization_Weapon
 
 	public Environmental newInstance(){	return new Specialization_Natural();}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((activated)
 		&&(Dice.rollPercentage()<25)

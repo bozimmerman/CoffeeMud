@@ -16,7 +16,7 @@ public class Song extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SONG;}
 	public int maxRange(){return 2;}
-	
+
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return false;}
 	protected boolean skipStandardSongTick(){return false;}
@@ -40,7 +40,7 @@ public class Song extends StdAbility
 
 		if(skipStandardSongTick())
 			return true;
-		
+
 		MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
@@ -93,7 +93,7 @@ public class Song extends StdAbility
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
@@ -120,7 +120,7 @@ public class Song extends StdAbility
 						FullMsg msg3=msg2;
 						if((mindAttack())&&(follower!=mob))
 							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
+						if((mob.location().okAffect(mob,msg2))&&(mob.location().okAffect(mob,msg3)))
 						{
 							follower.location().send(follower,msg2);
 							if(!msg2.wasModified())

@@ -134,9 +134,9 @@ public class StdTitle extends StdItem implements LandTitle
 		return A;
 	}
 	
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((msg.targetMinor()==Affect.TYP_SELL)
 		&&(msg.tool()==this)
 		&&(msg.target()!=null)

@@ -12,7 +12,7 @@ public class Prop_NoPKill extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	public Environmental newInstance(){	Prop_NoPKill newOne=new Prop_NoPKill();	newOne.setMiscText(text());	return newOne;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
 		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
@@ -37,6 +37,6 @@ public class Prop_NoPKill extends Property
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

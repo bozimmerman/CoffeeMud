@@ -350,8 +350,10 @@ public class Mage extends StdCharClass
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must use dagger, staff, or natural weapon.";}
 	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid spell failure.";}
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)

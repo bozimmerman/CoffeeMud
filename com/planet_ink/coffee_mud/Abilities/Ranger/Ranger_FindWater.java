@@ -78,9 +78,9 @@ public class Ranger_FindWater extends StdAbility
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -246,7 +246,7 @@ public class Ranger_FindWater extends StdAbility
 		if((success)&&(theTrail!=null))
 		{
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,auto?"<S-NAME> begin(s) sniffing around for water!":"<S-NAME> begin(s) sensing water.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Ranger_FindWater newOne=(Ranger_FindWater)this.copyOf();

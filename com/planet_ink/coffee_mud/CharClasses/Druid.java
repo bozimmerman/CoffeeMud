@@ -139,8 +139,10 @@ public class Druid extends StdCharClass
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 

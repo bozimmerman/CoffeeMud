@@ -73,7 +73,7 @@ public class DoorwayGuardian extends StdBehavior
 				&&(affect.targetMinor()!=Affect.TYP_LOCK))
 				{
 					FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
-					if(monster.location().okAffect(msgs))
+					if(monster.location().okAffect(monster,msgs))
 					{
 						monster.location().send(monster,msgs);
 						return false;
@@ -93,7 +93,7 @@ public class DoorwayGuardian extends StdBehavior
 					return true;
 				
 				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
-				if(monster.location().okAffect(msgs))
+				if(monster.location().okAffect(monster,msgs))
 				{
 					monster.location().send(monster,msgs);
 					return false;

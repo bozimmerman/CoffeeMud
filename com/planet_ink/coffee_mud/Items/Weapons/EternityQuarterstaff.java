@@ -37,7 +37,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		return new EternityQuarterstaff();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		switch(affect.sourceMinor())
@@ -56,7 +56,7 @@ public class EternityQuarterstaff extends Quarterstaff
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
 						FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 						{
 		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
@@ -71,6 +71,6 @@ public class EternityQuarterstaff extends Quarterstaff
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

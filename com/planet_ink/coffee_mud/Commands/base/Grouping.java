@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Grouping
 {
 	private Grouping(){}
-	
+
 	public static void whois(MOB mob, String mobName)
 	{
 		if((mobName==null)||(mobName.length()==0))
@@ -18,7 +18,7 @@ public class Grouping
 			mob.tell("whois whom?");
 			return;
 		}
-		
+
 		if(mobName.startsWith("@"))
 		{
 			if(!(ExternalPlay.i3().i3online()))
@@ -27,7 +27,7 @@ public class Grouping
 				ExternalPlay.i3().i3who(mob,mobName.substring(1));
 			return;
 		}
-		
+
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
@@ -89,7 +89,7 @@ public class Grouping
 		}
 	}
 
-	
+
 	public static void makePeaceInGroup(MOB mob)
 	{
 		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
@@ -100,10 +100,10 @@ public class Grouping
 				mob2.makePeace();
 		}
 	}
-	
+
 	public static StringBuffer showWhoLong(MOB who)
 	{
-		
+
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
 		msg.append(Util.padRight(who.charStats().getMyRace().name(),7)+" ");
@@ -185,14 +185,14 @@ public class Grouping
 			nofollow(F,false,quiet);
 		}
 	}
-	
+
 	public static void nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob.amFollowing()!=null)
 		{
 			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
 			// no room OKaffects, since the damn leader may not be here.
-			if(mob.okAffect(msg))
+			if(mob.okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
@@ -220,7 +220,7 @@ public class Grouping
 			}
 			nofollow(mob,false,false);
 			FullMsg msg=new FullMsg(mob,tofollow,null,Affect.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
@@ -274,7 +274,7 @@ public class Grouping
 			mob.tell("You are now accepting followers.");
 		}
 	}
-	
+
 	public static void order(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -291,7 +291,7 @@ public class Grouping
 		}
 		String whomToOrder=(String)commands.elementAt(0);
 		MOB target=target=mob.location().fetchInhabitant(whomToOrder);
-		
+
 		if((target==null)
 		||(!Sense.canBeSeenBy(target,mob))
 		||(!Sense.canBeHeardBy(mob,target))
@@ -300,7 +300,7 @@ public class Grouping
 			mob.tell("'"+whomToOrder+"' doesn't seem to be listening.");
 			return;
 		}
-		
+
 		if(target.willFollowOrdersOf(mob))
 		{
 			commands.removeElementAt(0);
@@ -313,7 +313,7 @@ public class Grouping
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				ExternalPlay.doCommand(target,commands);
@@ -373,14 +373,14 @@ public class Grouping
 				C.recoverEnvStats();
 				mob.addInventory(C);
 				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) "+C.name()+" to <T-NAMESELF>.");
-				if(mob.location().okAffect(newMsg))
+				if(mob.location().okAffect(mob,newMsg))
 					mob.location().send(mob,newMsg);
 				eligible=true;
 			}
 		}
 		if(!eligible) mob.tell("Noone appears to be eligible to receive any of your gold.");
 	}
-	
+
 	public static void dress(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -422,16 +422,16 @@ public class Grouping
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				if(ExternalPlay.drop(mob,item,true))
 				{
 					msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_GET,null);
-					if(mob.location().okAffect(msg))
+					if(mob.location().okAffect(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_WEAR,Affect.MSG_WEAR,Affect.MSG_WEAR,null);
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
 							mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) "+item.name()+" on <T-NAMESELF>.");
@@ -447,7 +447,7 @@ public class Grouping
 		else
 			mob.tell(target.name()+" won't let you.");
 	}
-	
+
 	public static void undress(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -486,14 +486,14 @@ public class Grouping
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_GET,null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_DROP,null);
-					if(mob.location().okAffect(msg))
+					if(mob.location().okAffect(mob,msg))
 					{
 						mob.location().send(mob,msg);
 						if(ExternalPlay.get(mob,null,item,true))
@@ -509,7 +509,7 @@ public class Grouping
 		else
 			mob.tell(target.name()+" won't let you.");
 	}
-	
+
 	public static void feed(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -556,7 +556,7 @@ public class Grouping
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if((ExternalPlay.drop(mob,item,true))
@@ -570,12 +570,12 @@ public class Grouping
 							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_EAT,Affect.MSG_EAT,Affect.MSG_EAT,null);
 						else
 							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DRINK,Affect.MSG_DRINK,Affect.MSG_DRINK,null);
-						if(target.location().okAffect(msg))
+						if(target.location().okAffect(target,msg))
 							target.location().send(target,msg);
 						if(target.isMine(item))
 						{
 							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_DROP,null);
-							if(mob.location().okAffect(msg))
+							if(mob.location().okAffect(mob,msg))
 							{
 								mob.location().send(mob,msg);
 								ExternalPlay.get(mob,null,item,true);

@@ -19,9 +19,9 @@ public class Fighter_CritStrike extends StdAbility
 	public Environmental newInstance(){	return new Fighter_CritStrike();}
 	public int classificationCode(){return Ability.SKILL;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))

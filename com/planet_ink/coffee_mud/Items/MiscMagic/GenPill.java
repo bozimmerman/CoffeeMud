@@ -44,7 +44,7 @@ public class GenPill extends GenFood implements Pill
 	public Vector getSpells(Pill me)
 	{ return new StdPill().getSpells(me);}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -55,18 +55,18 @@ public class GenPill extends GenFood implements Pill
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					eatIfAble(mob,this);
-					super.affect(affect);
+					super.affect(myHost,affect);
 				}
 				else
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
 				break;
 			default:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				break;
 			}
 		}
 		else
-			super.affect(affect);
+			super.affect(myHost,affect);
 	}
 	// stats handled by genfood, spells by readabletext
 }

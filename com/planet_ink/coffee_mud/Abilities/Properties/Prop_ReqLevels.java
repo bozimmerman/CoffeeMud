@@ -17,7 +17,7 @@ public class Prop_ReqLevels extends Property
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		
+
 		if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(mob.isASysOp(R)))
 			return true;
 
@@ -25,7 +25,7 @@ public class Prop_ReqLevels extends Property
 			return false;
 
 		int lvl=mob.envStats().level();
-			
+
 		int lastPlace=0;
 		int x=0;
 		while(x>=0)
@@ -45,7 +45,7 @@ public class Prop_ReqLevels extends Property
 					x++;
 				}
 				lastPlace=x;
-					
+
 				String cmpString="";
 				while((x<text().length())&&
 					  (((text().charAt(x)==' ')&&(cmpString.length()==0))
@@ -73,7 +73,7 @@ public class Prop_ReqLevels extends Property
 		}
 		return true;
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -92,10 +92,10 @@ public class Prop_ReqLevels extends Property
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement(),(Room)affect.target()))
-					return super.okAffect(affect);
+					return super.okAffect(myHost,affect);
 			affect.source().tell("You are not allowed to go that way.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -18,9 +18,9 @@ public class Thief_SilentLoot extends ThiefSkill
 	private Item item=null;
 	public Environmental newInstance(){	return new Thief_SilentLoot();	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((affect.sourceMinor()==Affect.TYP_DEATH)

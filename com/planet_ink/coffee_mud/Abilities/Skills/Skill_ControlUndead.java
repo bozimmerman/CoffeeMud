@@ -18,7 +18,7 @@ public class Skill_ControlUndead extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_ControlUndead();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -37,7 +37,7 @@ public class Skill_ControlUndead extends StdAbility
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -57,7 +57,7 @@ public class Skill_ControlUndead extends StdAbility
 			mob.tell("Only the wicked may control the undead.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -74,7 +74,7 @@ public class Skill_ControlUndead extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_ATTACK_SOMANTIC_SPELL|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> seem(s) controlled.":"^S<S-NAME> control(s) <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
@@ -93,7 +93,7 @@ public class Skill_ControlUndead extends StdAbility
 						target.makePeace();
 						beneficialAffect(mob,target,5);
 					}
-						
+
 				}
 			}
 		}

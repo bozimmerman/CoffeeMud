@@ -428,7 +428,7 @@ public class Masonry extends CommonSkill
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<15) completion=15;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,startStr+".");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,completion);

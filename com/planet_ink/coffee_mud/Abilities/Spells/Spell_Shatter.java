@@ -39,10 +39,10 @@ public class Spell_Shatter extends Spell
 					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
 			}
 		}
-		
+
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
-		
+
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -58,7 +58,7 @@ public class Spell_Shatter extends Spell
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&((mobTarget==null)||(mob.location().okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))&&((mobTarget==null)||(mob.location().okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(mobTarget!=null)
@@ -95,7 +95,7 @@ public class Spell_Shatter extends Spell
 						target.setUsesRemaining(100);
 						if(mobTarget==null)
 							mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> is destroyed!");
-						else													  
+						else
 							mob.location().show(mobTarget,target,Affect.MSG_OK_VISUAL,"<T-NAME>, possessed by <S-NAME>, is destroyed!");
 						target.remove();
 						target.destroyThis();

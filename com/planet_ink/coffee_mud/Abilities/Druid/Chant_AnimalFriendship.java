@@ -12,7 +12,7 @@ public class Chant_AnimalFriendship extends Chant
 	public String displayText(){return "(Animal Friendship)";}
 	public Environmental newInstance()	{	return new Chant_AnimalFriendship();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected)))
@@ -30,7 +30,7 @@ public class Chant_AnimalFriendship extends Chant
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -65,7 +65,7 @@ public class Chant_AnimalFriendship extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -76,7 +76,7 @@ public class Chant_AnimalFriendship extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) animal friendly!":"^S<S-NAME> chant(s) for animal friendship.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -12,7 +12,7 @@ public class Spell_Wish extends Spell
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_Wish();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	
+
 	private Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
 	{
 		if((E!=null)
@@ -44,7 +44,7 @@ public class Spell_Wish extends Spell
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isMonster())
@@ -53,7 +53,7 @@ public class Spell_Wish extends Spell
 			ExternalPlay.quickSay(mob,null,"My wishes never seem to come true.",false,false);
 			return false;
 		}
-		
+
 		String myWish=Util.combine(commands,0);
 		if(mob.curState().getMana()<mob.maxState().getMana())
 		{
@@ -86,14 +86,14 @@ public class Spell_Wish extends Spell
 			return false;
 		}
 		else
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			// cast wish bless were cast on me
 			// cast wish to have restoration cast on me
 			// cast wish to cast bless on me
 			// cast wish to cast disintegrate on orc
 			// cast wish to cast geas on orc to kill bob
-			
+
 			mob.location().send(mob,msg);
 			StringBuffer wish=new StringBuffer(myWish);
 			for(int i=0;i<wish.length();i++)
@@ -108,7 +108,7 @@ public class Spell_Wish extends Spell
 				beneficialWordsFizzle(mob,null,"<S-NAME> make(s) a wish comes true! Nothing happens!");
 				return false;
 			}
-			
+
 			// do locate object first.. its the most likely
 			String objectWish=myWish;
 			String[] redundantStarts={"CREATE","TO CREATE","ANOTHER","THERE WAS","I HAD","I COULD HAVE","MAY I HAVE","CAN I HAVE","CAN YOU","CAN I","MAKE","TO MAKE","GIVE","ME","TO HAVE","TO GET","A NEW","SOME MORE","MY OWN","A","PLEASE","THE","I OWNED"};
@@ -181,17 +181,17 @@ public class Spell_Wish extends Spell
 					mob.location().recoverRoomStats();
 					Log.sysOut("Wish",mob.ID()+" wished for item "+newItem.ID()+".");
 				}
-				if(experienceRequired<=0) 
+				if(experienceRequired<=0)
 					experienceRequired=0;
 				mob.charStats().getCurrentClass().loseExperience(mob,baseLoss+experienceRequired);
 				mob.tell("Your wish has drained you of "+(baseLoss+experienceRequired)+" experience points.");
 				return true;
 			}
-			
+
 			// anything else may refer to another person or item
 			String possName=((String)wishV.elementAt(0)).trim();
 			Environmental target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
-			if((target==null) 
+			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))
 			||(possName.equalsIgnoreCase("BE"))
@@ -209,11 +209,11 @@ public class Spell_Wish extends Spell
 				target=mob;
 			}
 			else
-			{ 
-				wishV.removeElementAt(0); 
+			{
+				wishV.removeElementAt(0);
 				myWish=" "+Util.combine(wishV,0).toUpperCase().trim()+" ";
 			}
-			
+
 			if((target!=null)
 			&&(target!=mob)
 			&&(target instanceof MOB)
@@ -223,7 +223,7 @@ public class Spell_Wish extends Spell
 				mob.tell("You cannot cast wish on "+target.name()+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
 				return false;
 			}
-			
+
 			// a wish for recall
 			if((myWish.startsWith(" TO BE RECALLED "))
 			||(myWish.startsWith(" TO RECALL "))
@@ -248,7 +248,7 @@ public class Spell_Wish extends Spell
 					return true;
 				}
 			}
-				
+
 			// a wish for death or destruction
 			if((myWish.startsWith(" TO DIE "))
 			||(myWish.startsWith(" TO BE DESTROYED "))
@@ -279,7 +279,7 @@ public class Spell_Wish extends Spell
 				}
 				else
 				if(target instanceof MOB)
-				{ 
+				{
 					int exp=mob.getExperience();
 					//int hp=((MOB)target).curState().getHitPoints();
 					ExternalPlay.postDeath(mob,(MOB)target,null);
@@ -293,7 +293,7 @@ public class Spell_Wish extends Spell
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				return true;
 			}
-			
+
 			// a wish for movement
 			String locationWish=myWish;
 			String[] redundantStarts2={"TO GO TO",
@@ -356,7 +356,7 @@ public class Spell_Wish extends Spell
 			while(i<redundantEnds2.length){
 				if(locationWish.endsWith(" "+redundantEnds2[i]+" "))
 				{	locationWish=locationWish.substring(0,locationWish.length()-(1+redundantEnds2[i].length())); i=-1;}i++;}
-				
+
 			// a wish for teleportation
 			if(validStart)
 			{
@@ -382,7 +382,7 @@ public class Spell_Wish extends Spell
 					return true;
 				}
 			}
-			
+
 			// temporary stat changes
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" MORE ")>=0)
@@ -445,7 +445,7 @@ public class Spell_Wish extends Spell
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					return true;
 				}
-				
+
 			}
 			if((target instanceof MOB)
 			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!=(int)'M')
@@ -466,7 +466,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now male!");
 				return true;
 			}
-			
+
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" WAS ")>=0))
@@ -498,7 +498,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now heavier!");
 				return true;
 			}
-			
+
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" WAS ")>=0))
@@ -532,7 +532,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now taller!");
 				return true;
 			}
-			
+
 			if((target instanceof MOB)
 			&&(((MOB)target).charStats().getStat(CharStats.GENDER)!=(int)'F')
 			&&((myWish.indexOf(" BECOME ")>=0)
@@ -552,7 +552,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now female!");
 				return true;
 			}
-			
+
 			// change race
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
@@ -579,7 +579,7 @@ public class Spell_Wish extends Spell
 					return true;
 				}
 			}
-			
+
 			// change class
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
@@ -607,7 +607,7 @@ public class Spell_Wish extends Spell
 						{
 							mob.baseCharStats().setStat(trait,oldVal-amountToLose);
 							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.TRAITS[trait].toLowerCase()+".");
-						}														
+						}
 					}
 					mob.tell(str.toString()+"\n\r");
 					((MOB)target).baseCharStats().setCurrentClass(C);
@@ -618,7 +618,7 @@ public class Spell_Wish extends Spell
 					return true;
 				}
 			}
-				
+
 			// gaining new abilities!
 			if(target instanceof MOB)
 			{
@@ -662,7 +662,7 @@ public class Spell_Wish extends Spell
 					}
 				}
 			}
-			
+
 			// attributes will be hairy
 			int foundAttribute=-1;
 			for(int attributes=0;attributes<CharStats.TRAITS.length;attributes++)
@@ -769,7 +769,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has lost "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
-			
+
 			if((foundAttribute>=0)
 			&&(target instanceof MOB)
 			&&((myWish.indexOf(" MORE ")>=0)
@@ -808,7 +808,7 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,target.name()+" has gained "+CharStats.TRAITS[foundAttribute].toLowerCase()+".");
 				return true;
 			}
-			
+
 			mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
 			mob.tell("Your attempted wish has cost you "+baseLoss+" experience points, but it did not come true.  You might try rewording your wish next time.");
 			return false;

@@ -25,16 +25,16 @@ public class Spell_Claireaudience extends Spell
 		super.unInvoke();
 
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affected instanceof MOB)
 		&&(affect.amISource((MOB)affected))
 		&&(affect.sourceMinor()==Affect.TYP_SPEAK)
 		&&(invoker!=null)
 		&&(((MOB)invoker).location()!=((MOB)affected).location())
 		&&(affect.othersMessage()!=null))
-			((MOB)invoker).affect(affect);
+			((MOB)invoker).affect(invoker,affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -79,7 +79,7 @@ public class Spell_Claireaudience extends Spell
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) claireaudience, calling '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
+			if((mob.location().okAffect(mob,msg))&&((newRoom==mob.location())||(newRoom.okAffect(mob,msg2))))
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);

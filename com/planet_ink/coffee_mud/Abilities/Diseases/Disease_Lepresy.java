@@ -24,7 +24,7 @@ public class Disease_Lepresy extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	protected boolean DISEASE_TOUCHSPREAD(){return false;}
-	
+
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{
 		if(str==null) return null;
@@ -33,8 +33,8 @@ public class Disease_Lepresy extends Disease
 			return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+str.substring(replace+8);
 		return str;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -64,7 +64,7 @@ public class Disease_Lepresy extends Disease
 						  affect.targetCode(),"^F"+((Weapon)affect.tool()).hitString(1)+"^?",
 						  affect.othersCode(),affect.othersMessage());
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 }

@@ -131,8 +131,10 @@ public class Doomsayer extends Cleric
 	public String otherLimitations(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
 	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 

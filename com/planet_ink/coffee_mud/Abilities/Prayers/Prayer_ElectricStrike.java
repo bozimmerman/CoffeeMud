@@ -31,7 +31,7 @@ public class Prayer_ElectricStrike extends Prayer
 			// what happened.
 			Prayer_Thunderbolt newOne=(Prayer_Thunderbolt)this.copyOf();
 			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto),auto?"<T-NAME> is filled with a holy charge!":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+"!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

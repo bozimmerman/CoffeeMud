@@ -23,7 +23,7 @@ public class Skill_HandCuff extends StdAbility
 
 	public Environmental newInstance(){	return new Skill_HandCuff();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -83,7 +83,7 @@ public class Skill_HandCuff extends StdAbility
 					return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -133,7 +133,7 @@ public class Skill_HandCuff extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT|Affect.MASK_MALICIOUS,"<S-NAME> handcuff(s) <T-NAME>.");
-			if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

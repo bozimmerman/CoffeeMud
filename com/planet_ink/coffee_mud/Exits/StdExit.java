@@ -132,16 +132,16 @@ public class StdExit implements Exit
 		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
 		Room room=(Room)((Item)ladder).owner();
 		if(mob.location()==room) room=null;
-		if((mob.location().okAffect(msg))
-		&&((room==null)||(room.okAffect(msg))))
+		if((mob.location().okAffect(mob,msg))
+		&&((room==null)||(room.okAffect(mob,msg))))
 		{
 			mob.location().send(mob,msg);
 			if(room!=null)
 				room.sendOthers(mob,msg);
 		}
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -152,7 +152,7 @@ public class StdExit implements Exit
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(affect)))
+			if((A!=null)&&(!A.okAffect(this,affect)))
 				return false;
 		}
 
@@ -366,7 +366,7 @@ public class StdExit implements Exit
 		return Say;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -378,7 +378,7 @@ public class StdExit implements Exit
 		{
 			Ability A=fetchAffect(a);
 			if(A!=null)
-				A.affect(affect);
+				A.affect(this,affect);
 		}
 
 		MOB mob=affect.source();
@@ -473,7 +473,7 @@ public class StdExit implements Exit
 			{
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
-					B.tick(this,tickID);
+					B.tick(ticking,tickID);
 			}
 			return true;
 		}
@@ -630,7 +630,7 @@ public class StdExit implements Exit
 		if(behaviors.size()==0)
 			ExternalPlay.deleteTick(this,Host.EXIT_BEHAVIOR_TICK);
 	}
-	
+
 	public int numBehaviors()
 	{
 		return behaviors.size();

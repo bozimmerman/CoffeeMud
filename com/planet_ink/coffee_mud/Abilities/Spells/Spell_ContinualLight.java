@@ -55,7 +55,7 @@ public class Spell_ContinualLight extends Spell
 		if(!(target instanceof MOB))
 			str="^S<S-NAME> invoke(s) a continual light into <T-NAME>!^?";
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,Integer.MAX_VALUE-100);

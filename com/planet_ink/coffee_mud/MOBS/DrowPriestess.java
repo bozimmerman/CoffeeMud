@@ -142,9 +142,9 @@ public class DrowPriestess extends DrowElf
 
     }
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		boolean retval = super.okAffect(affect);
+		boolean retval = super.okAffect(myHost,affect);
 
 		if((affect.amITarget(this))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))

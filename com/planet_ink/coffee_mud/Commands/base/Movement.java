@@ -8,7 +8,7 @@ import java.util.*;
 public class Movement extends Scriptable
 {
 	private Movement(){}
-	
+
 	public static void go(MOB mob, Vector commands)
 	{
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
@@ -37,7 +37,7 @@ public class Movement extends Scriptable
 						{
 							if(mob.isMonster())
 							{
-								if(!move(mob,direction,false,false,false)) 
+								if(!move(mob,direction,false,false,false))
 									return;
 							}
 							else
@@ -107,7 +107,7 @@ public class Movement extends Scriptable
 		}
 		move(mob,dir,false,false,false);
 	}
-	
+
 	public static void crawl(MOB mob, Vector commands)
 	{
 		boolean tagged=false;
@@ -120,7 +120,7 @@ public class Movement extends Scriptable
 		if(direction>=0)
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,null);
-			if(Sense.isSitting(mob)||(mob.location().okAffect(msg)))
+			if(Sense.isSitting(mob)||(mob.location().okAffect(mob,msg)))
 			{
 				if(!Sense.isSitting(mob))
 					mob.location().send(mob,msg);
@@ -164,7 +164,7 @@ public class Movement extends Scriptable
 			if(rider instanceof MOB)
 			{
 				MOB rMOB=(MOB)rider;
-					
+
 				if((rMOB.location()==sourceRoom)
 				   ||(rMOB.location()==destRoom))
 				{
@@ -198,12 +198,12 @@ public class Movement extends Scriptable
 			}
 		}
 	}
-	
+
 	public static Vector addRiders(Rider theRider,
 								   Rideable riding,
 								   Vector riders)
 	{
-		
+
 		if((riding!=null)&&(riding.mobileRideBasis()))
 			for(int r=0;r<riding.numRiders();r++)
 			{
@@ -219,7 +219,7 @@ public class Movement extends Scriptable
 			}
 		return riders;
 	}
-	
+
 	public static Vector ridersAhead(Rider theRider,
 									 Room sourceRoom,
 									 Room destRoom,
@@ -284,10 +284,10 @@ public class Movement extends Scriptable
 		}
 		return riders;
 	}
-	
-	public static boolean move(MOB mob, 
-							   int directionCode, 
-							   boolean flee, 
+
+	public static boolean move(MOB mob,
+							   int directionCode,
+							   boolean flee,
 							   boolean nolook,
 							   boolean noriders)
 	{
@@ -308,7 +308,7 @@ public class Movement extends Scriptable
 		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
 		int leaveCode=Affect.MSG_LEAVE;
-		if(flee) 
+		if(flee)
 			leaveCode=Affect.MSG_FLEE;
 
 		FullMsg enterMsg=null;
@@ -332,24 +332,24 @@ public class Movement extends Scriptable
 		if(exit==null)
 			thisRoom.showHappens(Affect.MSG_OK_VISUAL,getScr("Movement","stwitch",directionName));
 		else
-		if((exit!=null)&&(!exit.okAffect(enterMsg)))
+		if((exit!=null)&&(!exit.okAffect(mob,enterMsg)))
 			return false;
 		else
-		if(!leaveMsg.target().okAffect(leaveMsg))
+		if(!leaveMsg.target().okAffect(mob,leaveMsg))
 			return false;
 		else
-		if((opExit!=null)&&(!opExit.okAffect(leaveMsg)))
+		if((opExit!=null)&&(!opExit.okAffect(mob,leaveMsg)))
 			return false;
 		else
-		if(!enterMsg.target().okAffect(enterMsg))
+		if(!enterMsg.target().okAffect(mob,enterMsg))
 			return false;
 		else
-		if(!mob.okAffect(enterMsg))
+		if(!mob.okAffect(mob,enterMsg))
 			return false;
 
 		if(mob.riding()!=null)
 		{
-			if((!mob.riding().okAffect(enterMsg)))
+			if((!mob.riding().okAffect(mob,enterMsg)))
 				return false;
 		}
 		else
@@ -368,23 +368,23 @@ public class Movement extends Scriptable
 			riders=ridersAhead(mob,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);
 			if(riders==null) return false;
 		}
-		
-		if(exit!=null) exit.affect(enterMsg);
+
+		if(exit!=null) exit.affect(mob,enterMsg);
 		mob.location().delInhabitant(mob);
 		((Room)leaveMsg.target()).send(mob,leaveMsg);
-		
+
 		mob.setLocation((Room)enterMsg.target());
 		((Room)enterMsg.target()).addInhabitant(mob);
 		((Room)enterMsg.target()).send(mob,enterMsg);
 
-		if(opExit!=null) opExit.affect(leaveMsg);
-		
+		if(opExit!=null) opExit.affect(mob,leaveMsg);
+
 		if(!nolook)
 			ExternalPlay.look(mob,null,true);
 
 		if(!noriders)
 			ridersBehind(riders,(Room)leaveMsg.target(),(Room)enterMsg.target(),directionCode,flee);
-		
+
 		if(!flee)
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -410,7 +410,7 @@ public class Movement extends Scriptable
 		}
 		return true;
 	}
-	
+
 	public static void flee(MOB mob, String direction)
 	{
 		if((mob.location()==null)||(!mob.isInCombat()))
@@ -418,7 +418,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","fleeerr1"));
 			return;
 		}
-		
+
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{
@@ -486,7 +486,7 @@ public class Movement extends Scriptable
 		if(openThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -513,7 +513,7 @@ public class Movement extends Scriptable
 		if(unlockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -540,7 +540,7 @@ public class Movement extends Scriptable
 		if(closeThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -554,7 +554,7 @@ public class Movement extends Scriptable
 		Exit pair=room.getPairedExit(dirCode);
 		FullMsg altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 		if(pair!=null)
-			pair.affect(altMsg);
+			pair.affect(msg.source(),altMsg);
 	}
 
 	public static int getMyDirCode(Exit exit, Room room, int testCode)
@@ -568,10 +568,10 @@ public class Movement extends Scriptable
 	public static boolean roomOkAndAffectFully(FullMsg msg, Room room, int dirCode)
 	{
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
-			return room.okAffect(msg);
+			return room.okAffect(msg.source(),msg);
 
 		Exit thisExit=(Exit)msg.target();
-		if(!room.okAffect(msg))
+		if(!room.okAffect(msg.source(),msg))
 			return false;
 		dirCode=getMyDirCode(thisExit,room,dirCode);
 		if(dirCode<0) return true;
@@ -609,7 +609,7 @@ public class Movement extends Scriptable
 		if(lockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -639,7 +639,7 @@ public class Movement extends Scriptable
 		else
 			mountStr=getScr("Movement","sitson",E.name());
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,mountStr);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 	public static void sleep(MOB mob, Vector commands)
@@ -663,10 +663,10 @@ public class Movement extends Scriptable
 		else
 			mountStr=getScr("Movement","sleepson",E.name());
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,mountStr);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
-	
+
 	public static void sit(MOB mob)
 	{
 		if(Sense.isSitting(mob))
@@ -674,7 +674,7 @@ public class Movement extends Scriptable
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,getScr("Movement","sitdown"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}
@@ -689,7 +689,7 @@ public class Movement extends Scriptable
 			else
 			{
 				FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,getScr("Movement","wakeup"));
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 		}
@@ -708,7 +708,7 @@ public class Movement extends Scriptable
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,getScr("Movement","wakeother"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				wake(M,null);
@@ -722,7 +722,7 @@ public class Movement extends Scriptable
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SLEEP,getScr("Movement","sleep"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}
@@ -740,11 +740,11 @@ public class Movement extends Scriptable
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,getScr("Movement","standup"));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}
-	
+
 	public static void mount(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -804,10 +804,10 @@ public class Movement extends Scriptable
 				mountStr=getScr("Movement","mounts");
 		}
 		FullMsg msg=new FullMsg(mob,recipient,RI,Affect.MSG_MOUNT,mountStr);
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
-	
+
 	public static void dismount(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -819,7 +819,7 @@ public class Movement extends Scriptable
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,getScr("Movement","dismounts",mob.riding().dismountString(mob)));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
@@ -839,7 +839,7 @@ public class Movement extends Scriptable
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,RI.riding(),RI,Affect.MSG_DISMOUNT,getScr("Movement","dismounts2",RI.name()));
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}

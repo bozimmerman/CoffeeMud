@@ -36,9 +36,9 @@ public class StdFood extends StdItem implements Food
 		amountOfNourishment=amount;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if(affect.amITarget(this))
 		{
@@ -58,7 +58,7 @@ public class StdFood extends StdItem implements Food
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -80,6 +80,6 @@ public class StdFood extends StdItem implements Food
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

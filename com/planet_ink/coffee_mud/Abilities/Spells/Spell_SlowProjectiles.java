@@ -15,7 +15,7 @@ public class Spell_SlowProjectiles extends Spell
 	public Environmental newInstance(){	return new Spell_SlowProjectiles();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()!=null)
@@ -43,7 +43,7 @@ public class Spell_SlowProjectiles extends Spell
 						  affect.othersCode(),
 						  affect.othersMessage());
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -55,7 +55,7 @@ public class Spell_SlowProjectiles extends Spell
 		if(target.fetchAffect(this.ID())!=null)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Projectiles are already slow here!");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 			return false;
 		}
@@ -66,7 +66,7 @@ public class Spell_SlowProjectiles extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> encant(s) slowly.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -22,7 +22,7 @@ public class StdJournal extends StdItem
 	{
 		return new StdJournal();
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		switch(affect.targetMinor())
@@ -35,10 +35,10 @@ public class StdJournal extends StdItem
 			}
 			return true;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		if(affect.amITarget(this))
@@ -166,7 +166,7 @@ public class StdJournal extends StdItem
 			}
 			return;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 	
 	public StringBuffer DBRead(String Journal, String username, int which, long lastTimeDate)

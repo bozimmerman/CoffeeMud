@@ -11,7 +11,7 @@ public class Paladin_PoisonImmunity extends Paladin
 	public String name(){ return "Poison Immunity";}
 	public Environmental newInstance(){	return new Paladin_PoisonImmunity();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -23,7 +23,7 @@ public class Paladin_PoisonImmunity extends Paladin
 		&&(mob.getAlignment()>650)
 		&&(profficiencyCheck(0,false)))
 			return false;
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -145,7 +145,7 @@ public class Prayer_Avatar extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) the AVATAR!");

@@ -45,7 +45,7 @@ public class Spell_StinkingCloud extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affected instanceof MOB))
@@ -63,10 +63,10 @@ public class Spell_StinkingCloud extends Spell
 					break;
 				}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affected instanceof MOB))
@@ -78,7 +78,7 @@ public class Spell_StinkingCloud extends Spell
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 	public void unInvoke()
@@ -128,8 +128,8 @@ public class Spell_StinkingCloud extends Spell
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.MASK_GENERAL:0),null);
-				if((mob.location().okAffect(msg))
-				   &&(mob.location().okAffect(msg2))
+				if((mob.location().okAffect(mob,msg))
+				   &&(mob.location().okAffect(mob,msg2))
 				   &&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

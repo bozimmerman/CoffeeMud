@@ -73,7 +73,7 @@ public class GenScroll extends GenItem implements Scroll
 		new StdScroll().parseSpells(me,names);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -90,7 +90,7 @@ public class GenScroll extends GenItem implements Scroll
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 	public void setReadableText(String newText)
 	{

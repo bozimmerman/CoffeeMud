@@ -11,7 +11,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	public String name(){ return "a Trap!";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	
+
 	protected static MOB benefactor=(MOB)CMClass.getMOB("StdMOB");
 	protected boolean sprung=false;
 	protected Room myPit=null;
@@ -37,7 +37,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	}
 	public void setReset(int Reset){reset=Reset;}
 	public int getReset(){return reset;}
-	
+
 	public Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -140,10 +140,10 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				MOB target=mob.location().fetchInhabitant(i);
 				if(target==null) break;
-				
+
 				int dmg=Dice.roll(target.envStats().level(),10,1);
 				FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
-				if(target.location().okAffect(msg))
+				if(target.location().okAffect(target,msg))
 				{
 					target.location().send(target,msg);
 					if(msg.wasModified())
@@ -157,7 +157,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			MOB target=mob;
 			int dmg=Dice.roll(target.envStats().level(),10,1);
 			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.wasModified())
@@ -173,7 +173,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		MOB target=mob;
 		int dmg=Dice.roll(target.envStats().level(),5,1);
 		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
-		if(target.location().okAffect(msg))
+		if(target.location().okAffect(target,msg))
 		{
 			target.location().send(target,msg);
 			if(msg.wasModified())
@@ -191,7 +191,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		MOB target=mob;
 		int dmg=Dice.roll(target.envStats().level(),2,0);
 		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
-		if(target.location().okAffect(msg))
+		if(target.location().okAffect(target,msg))
 		{
 			target.location().send(target,msg);
 			if(msg.wasModified())
@@ -201,7 +201,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 		}
 	}
-	
+
 	public void victimOfSpell(MOB mob)
 	{
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");

@@ -85,7 +85,7 @@ public class Fighter_Sweep extends StdAbility
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_OK_ACTION|(auto?Affect.MASK_GENERAL:0),null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.postAttack(mob,target,w);

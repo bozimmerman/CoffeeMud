@@ -22,16 +22,16 @@ public class Prop_PracticeDummy extends Property
 		affectableMaxState.setHitPoints(99999);
 		mob.curState().setHitPoints(99999);
 	}
-	
+
 	public void affectEnvStats(Environmental E, EnvStats affectableStats)
 	{
 		super.affectEnvStats(E,affectableStats);
 		affectableStats.setArmor(100);
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect)) return false;
+		if(!super.okAffect(myHost,affect)) return false;
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)
 			&&(affected!=null)
 			&&(affected instanceof MOB)

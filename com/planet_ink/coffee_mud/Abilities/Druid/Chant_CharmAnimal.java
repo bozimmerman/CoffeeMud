@@ -16,7 +16,7 @@ public class Chant_CharmAnimal extends Chant
 
 	public Environmental newInstance(){	return new Chant_CharmAnimal();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -38,7 +38,7 @@ public class Chant_CharmAnimal extends Chant
 			return false;
 		}
 
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -97,7 +97,7 @@ public class Chant_CharmAnimal extends Chant
 			// what happened.
 			String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

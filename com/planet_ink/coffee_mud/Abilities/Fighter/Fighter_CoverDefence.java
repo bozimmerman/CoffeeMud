@@ -19,7 +19,7 @@ public class Fighter_CoverDefence extends StdAbility
 	public Environmental newInstance(){	return new Fighter_CoverDefence();}
 	public int classificationCode(){ return Ability.SKILL; }
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -39,7 +39,7 @@ public class Fighter_CoverDefence extends StdAbility
 			FullMsg msg=new FullMsg(affect.source(),mob,null,Affect.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
 			&&(affect.source().getVictim()==mob)
-			&&(mob.location().okAffect(msg)))
+			&&(mob.location().okAffect(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				helpProfficiency(mob);

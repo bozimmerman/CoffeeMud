@@ -28,10 +28,10 @@ public class Spell_DetectAmbush extends Spell
 			mob.tell(mob,null,"You are no longer detecting ambushes.");
 	}
 
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(msg);
+			return super.okAffect(myHost,msg);
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob)
 		&&(msg.targetMinor()==Affect.TYP_ENTER)
@@ -58,10 +58,10 @@ public class Spell_DetectAmbush extends Spell
 			mob.tell("Potential danger in that direction stops you for a second.");
 			return false;
 		}
-		   
-		return super.okAffect(msg);
+
+		return super.okAffect(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -74,15 +74,15 @@ public class Spell_DetectAmbush extends Spell
 		}
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) careful senses!":"^S<S-NAME> incant(s) softly, and gain(s) careful senses!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

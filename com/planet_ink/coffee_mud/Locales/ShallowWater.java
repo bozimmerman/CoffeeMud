@@ -20,7 +20,7 @@ public class ShallowWater extends StdRoom implements Drink
 	{
 		return new ShallowWater();
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{
@@ -31,11 +31,11 @@ public class ShallowWater extends StdRoom implements Drink
 			}
 			return true;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{
 			MOB mob=affect.source();

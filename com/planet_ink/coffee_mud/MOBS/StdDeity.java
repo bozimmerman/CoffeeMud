@@ -16,7 +16,7 @@ public class StdDeity extends StdMOB implements Deity
 	protected Hashtable trigParts=new Hashtable();
 	protected Hashtable trigTimes=new Hashtable();
 	protected int checkDown=0;
-	
+
 	public StdDeity()
 	{
 		super();
@@ -34,7 +34,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		return new StdDeity();
 	}
-	
+
 	public String getClericRequirements(){return clericReqs;}
 	public void setClericRequirements(String reqs){clericReqs=reqs;}
 	public String getWorshipRequirements(){return worshipReqs;}
@@ -53,8 +53,8 @@ public class StdDeity extends StdMOB implements Deity
 		worshipRitual=ritual;
 		parseTriggers(worshipTriggers,ritual);
 	}
-	
-	
+
+
 	public String getTriggerDesc(Vector V)
 	{
 		if((V==null)||(V.size()==0)) return "Never";
@@ -154,7 +154,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return buf.toString();
 	}
-	
+
 	public String getClericRequirementsDesc()
 	{
 		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements());
@@ -175,7 +175,7 @@ public class StdDeity extends StdMOB implements Deity
 			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
 		return "";
 	}
-	
+
 	public void destroy()
 	{
 		super.destroy();
@@ -186,10 +186,10 @@ public class StdDeity extends StdMOB implements Deity
 		super.bringToLife(newLocation,resetStats);
 		CMMap.addDeity(this);
 	}
-	
-	public boolean okAffect(Affect msg)
+
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) 
+		if(!super.okAffect(myHost,msg))
 			return false;
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
@@ -230,7 +230,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return true;
 	}
-	
+
 	public synchronized void bestowBlessing(MOB mob, Ability Blessing)
 	{
 		Room prevRoom=location();
@@ -238,7 +238,7 @@ public class StdDeity extends StdMOB implements Deity
 		Blessing.invoke(this,mob,true);
 		prevRoom.bringMobHere(this,false);
 	}
-	
+
 	public synchronized void bestowBlessings(MOB mob)
 	{
 		if((!alreadyBlessed(mob))&&(numBlessings()>0))
@@ -261,7 +261,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 		}
 	}
-	
+
 	public void removeBlessings(MOB mob)
 	{
 		if((alreadyBlessed(mob))&&(mob.location()!=null))
@@ -278,7 +278,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 		}
 	}
-	
+
 	public boolean alreadyBlessed(MOB mob)
 	{
 		for(int a=0;a<mob.numAffects();a++)
@@ -289,10 +289,10 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return false;
 	}
-	
-	public void affect(Affect msg)
+
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
@@ -455,11 +455,11 @@ public class StdDeity extends StdMOB implements Deity
 			}
 		}
 	}
-	
-	
+
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID)) 
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		&&((--checkDown)<0))
@@ -475,7 +475,7 @@ public class StdDeity extends StdMOB implements Deity
 						if(!ExternalPlay.zapperCheck(getClericRequirements(),M))
 						{
 							FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-							if((M.location()!=null)&&(M.okAffect(msg)))
+							if((M.location()!=null)&&(M.okAffect(M,msg)))
 								M.location().send(M,msg);
 						}
 					}
@@ -483,7 +483,7 @@ public class StdDeity extends StdMOB implements Deity
 					if(!ExternalPlay.zapperCheck(getWorshipRequirements(),M))
 					{
 						FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
-						if((M.location()!=null)&&(M.okAffect(msg)))
+						if((M.location()!=null)&&(M.okAffect(M,msg)))
 							M.location().send(M,msg);
 					}
 				}
@@ -502,7 +502,7 @@ public class StdDeity extends StdMOB implements Deity
 		}
 		return true;
 	}
-	
+
 	public void addBlessing(Ability to)
 	{
 		if(to==null) return;
@@ -552,7 +552,7 @@ public class StdDeity extends StdMOB implements Deity
 			int div1=trigger.indexOf("&");
 			int div2=trigger.indexOf("|");
 			int div=div1;
-			
+
 			if((div2>=0)&&((div<0)||(div2<div)))
 				div=div2;
 			String trig=null;
@@ -579,56 +579,56 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_SAY;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("TIME"))
 					{
 						DT.triggerCode=TRIGGER_TIME;
 						DT.parm1=""+Util.s_int(Util.combine(V,1));
 					}
-					else 
+					else
 					if((cmd.equals("PUTTHING"))||(cmd.equals("PUT")))
 					{
 						DT.triggerCode=TRIGGER_PUTTHING;
 						if(V.size()<3)
-						{ 
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=Util.combine(V,1,V.size()-2);
 						DT.parm2=(String)V.lastElement();
 					}
-					else 
+					else
 					if(cmd.equals("BURNTHING"))
 					{
 						DT.triggerCode=TRIGGER_BURNTHING;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("PUTVALUE"))
 					{
 						DT.triggerCode=TRIGGER_PUTVALUE;
 						if(V.size()<3)
-						{ 
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)V.elementAt(1));
 						DT.parm2=(String)Util.combine(V,2);
 					}
-					else 
+					else
 					if(cmd.equals("BURNVALUE"))
 					{
 						DT.triggerCode=TRIGGER_BURNVALUE;
 						if(V.size()<3)
-						{ 
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)Util.combine(V,1));
 					}
-					else 
+					else
 					if((cmd.equals("BURNMATERIAL"))||(cmd.equals("BURN")))
-					{ 
+					{
 						DT.triggerCode=TRIGGER_BURNMATERIAL;
 						DT.parm1=Util.combine(V,1);
 						boolean found=false;
@@ -650,18 +650,18 @@ public class StdDeity extends StdMOB implements Deity
 							}
 						}
 						if(!found)
-						{ 
-							Log.errOut("StdDeity",name()+"- Unknown material: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Unknown material: "+trig);
 							break;
 						}
 					}
-					else 
+					else
 					if(cmd.equals("PUTMATERIAL"))
-					{ 
+					{
 						DT.triggerCode=TRIGGER_PUTMATERIAL;
 						if(V.size()<3)
-						{ 
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=(String)V.elementAt(1);
@@ -685,70 +685,70 @@ public class StdDeity extends StdMOB implements Deity
 							}
 						}
 						if(!found)
-						{ 
-							Log.errOut("StdDeity",name()+"- Unknown material: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Unknown material: "+trig);
 							break;
 						}
 					}
-					else 
+					else
 					if(cmd.equals("EAT"))
-					{ 
+					{
 						DT.triggerCode=TRIGGER_EAT;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("DRINK"))
-					{ 
+					{
 						DT.triggerCode=TRIGGER_DRINK;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("INROOM"))
 					{
 						DT.triggerCode=TRIGGER_INROOM;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("RIDING"))
 					{
 						DT.triggerCode=TRIGGER_RIDING;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.equals("CAST"))
 					{
 						DT.triggerCode=TRIGGER_CAST;
 						DT.parm1=Util.combine(V,1);
 						if(CMClass.findAbility(DT.parm1)==null)
-						{ 
-							Log.errOut("StdDeity",name()+"- Illegal SPELL in: "+trig); 
+						{
+							Log.errOut("StdDeity",name()+"- Illegal SPELL in: "+trig);
 							break;
 						}
 					}
-					else 
+					else
 					if(cmd.equals("EMOTE"))
 					{
 						DT.triggerCode=TRIGGER_EMOTE;
 						DT.parm1=Util.combine(V,1);
 					}
-					else 
+					else
 					if(cmd.startsWith("SIT"))
 					{
 						DT.triggerCode=TRIGGER_SITTING;
 					}
-					else 
+					else
 					if(cmd.startsWith("STAND"))
 					{
 						DT.triggerCode=TRIGGER_STANDING;
 					}
-					else 
+					else
 					if(cmd.startsWith("SLEEP"))
 					{
 						DT.triggerCode=TRIGGER_SLEEPING;
 					}
 					else
-					{ 
-						Log.errOut("StdDeity",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'"); 
+					{
+						Log.errOut("StdDeity",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
 						break;
 					}
 					putHere.addElement(DT);
@@ -765,7 +765,7 @@ public class StdDeity extends StdMOB implements Deity
 				previousConnector=CONNECT_OR;
 		}
 	}
-	
+
 	private static final int TRIGGER_SAY=0;
 	private static final int TRIGGER_TIME=1;
 	private static final int TRIGGER_PUTTHING=2;
@@ -802,10 +802,10 @@ public class StdDeity extends StdMOB implements Deity
 		-999,					//15
 		-999					//16
 	};
-		
+
 	private static final int CONNECT_AND=0;
 	private static final int CONNECT_OR=1;
-	
+
 	private class DeityTrigger
 	{
 		public int triggerCode=TRIGGER_SAY;

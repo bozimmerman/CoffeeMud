@@ -23,7 +23,7 @@ public class Prop_Familiar extends Property
 	private final static int RAVEN=8;
 	private final static String[] names={"dog","turtle","cat","bat","rat","snake",
 										 "owl","rabbit","raven"};
-	
+
 	private MOB familiarTo=null;
 	private MOB familiarWith=null;
 	private boolean imthedaddy=false;
@@ -35,13 +35,13 @@ public class Prop_Familiar extends Property
 	{
 		return "is a familiar MOB";
 	}
-	
+
 	public boolean removeMeFromFamiliarTo()
 	{
 		if(familiarTo!=null)
 		{
 			Ability A=familiarTo.fetchAffect(ID());
-			if(A!=null) 
+			if(A!=null)
 			{
 				familiarTo.delAffect(A);
 				/*if(!familiarTo.amDead())
@@ -56,8 +56,8 @@ public class Prop_Familiar extends Property
 		if(familiarWith!=null)
 		{
 			Ability A=familiarWith.fetchAffect(ID());
-			if(A!=null) 
-			{	
+			if(A!=null)
+			{
 				familiarWith.delAffect(A);
 				familiarWith.recoverCharStats();
 				familiarWith.recoverEnvStats();
@@ -69,7 +69,7 @@ public class Prop_Familiar extends Property
 		}
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -77,7 +77,7 @@ public class Prop_Familiar extends Property
 			if((affected==null)||(!(affected instanceof MOB)))
 				return removeMeFromFamiliarTo();
 			MOB familiar=(MOB)affected;
-			if(familiar.amDead()) 
+			if(familiar.amDead())
 				return removeMeFromFamiliarTo();
 			if((!imthedaddy)
 			   &&(familiarTo==null)
@@ -112,7 +112,7 @@ public class Prop_Familiar extends Property
 		case DOG:
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 				break;
-		case TURTLE: 
+		case TURTLE:
 				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)>0)
 				&&(affected instanceof MOB)
 				&&(((MOB)affected).location()!=null)
@@ -138,8 +138,8 @@ public class Prop_Familiar extends Property
 				break;
 		}
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&(familiarWith!=null)
@@ -158,9 +158,9 @@ public class Prop_Familiar extends Property
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -171,7 +171,7 @@ public class Prop_Familiar extends Property
 			{ familiarType=i; break;}
 		displayText="(Familiarity with the "+names[familiarType]+")";
 	}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		switch(familiarType)
@@ -179,7 +179,7 @@ public class Prop_Familiar extends Property
 		case DOG:
 				affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+1);
 				break;
-		case TURTLE: 
+		case TURTLE:
 				affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+1);
 				break;
 		case CAT:

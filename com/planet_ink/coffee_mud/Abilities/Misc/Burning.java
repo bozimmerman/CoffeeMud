@@ -108,9 +108,9 @@ public class Burning extends StdAbility
 		return true;
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected!=null)
@@ -121,7 +121,7 @@ public class Burning extends StdAbility
 		return true;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
@@ -140,7 +140,7 @@ public class Burning extends StdAbility
 				I.delAffect(this);
 			}
 		}
-		super.affect(affect);											 
+		super.affect(myHost,affect);											 
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -157,7 +157,7 @@ public class Burning extends StdAbility
 			if((mob!=null)&&(mob.location()!=null))
 			{
 				FullMsg msg=new FullMsg(mob,target,Affect.MASK_GENERAL|Affect.TYP_FIRE,null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			beneficialAffect(mob,target,profficiency());

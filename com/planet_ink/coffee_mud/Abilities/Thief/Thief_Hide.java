@@ -21,7 +21,7 @@ public class Thief_Hide extends ThiefSkill
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
@@ -30,7 +30,7 @@ public class Thief_Hide extends ThiefSkill
 
 		if(affect.amISource(mob))
 		{
-			
+
 			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
 				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
 				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
@@ -68,7 +68,7 @@ public class Thief_Hide extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -91,7 +91,7 @@ public class Thief_Hide extends ThiefSkill
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MOVE),str,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;

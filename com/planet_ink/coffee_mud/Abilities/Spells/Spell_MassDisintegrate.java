@@ -55,7 +55,7 @@ public class Spell_MassDisintegrate extends Spell
 			{
 				MOB target=(MOB)f.nextElement();
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

@@ -86,7 +86,7 @@ public class Staff extends StdWeapon implements Wand
 		new StdWand().waveIfAble(mob,afftarget,message,me);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		switch(affect.targetMinor())
@@ -102,6 +102,6 @@ public class Staff extends StdWeapon implements Wand
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

@@ -291,11 +291,11 @@ public class Property implements Ability, Cloneable
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		return;
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		return true;
 	}

@@ -29,7 +29,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 		return new ManualClasses();
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -76,7 +76,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 }

@@ -61,9 +61,9 @@ public class Spell_AnimateWeapon extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((!super.okAffect(affect))
+		if((!super.okAffect(myHost,affect))
 		||(affected==null)
 		||(!(affected instanceof Item)))
 		{
@@ -79,7 +79,7 @@ public class Spell_AnimateWeapon extends Spell
 			}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		if((affected!=null)
@@ -89,13 +89,13 @@ public class Spell_AnimateWeapon extends Spell
 			((Room)((Item)affected).owner()).showHappens(Affect.MSG_OK_ACTION,affected.name()+" stops moving.");
 		super.unInvoke();
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
@@ -114,7 +114,7 @@ public class Spell_AnimateWeapon extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.remove();

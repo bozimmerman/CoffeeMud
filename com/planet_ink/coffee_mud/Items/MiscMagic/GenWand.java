@@ -83,7 +83,7 @@ public class GenWand extends GenItem implements Wand
 
 	public String magicWord(){return secretWord;}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		
@@ -100,7 +100,7 @@ public class GenWand extends GenItem implements Wand
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 	// stats handled by genitem, spells by readabletext
 }

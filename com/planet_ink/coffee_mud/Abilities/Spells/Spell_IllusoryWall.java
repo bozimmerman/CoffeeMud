@@ -55,7 +55,7 @@ public class Spell_IllusoryWall extends Spell
 		else
 		{
 			FullMsg msg=new FullMsg(mob,exit,null,affectType(auto),"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,exit,0);

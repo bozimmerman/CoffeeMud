@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
-public interface CharClass extends Cloneable
+public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListener
 {
 	public static final int ARMOR_ANY=0;
 	public static final int ARMOR_CLOTH=1;
@@ -24,32 +24,6 @@ public interface CharClass extends Cloneable
 	
 	public boolean armorCheck(MOB mob);
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
-
-	/** some general statistics about such an item
-	 * see class "EnvStats" for more information. */
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats);
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
-
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
-	 * from the given Environmental source */
-	public void affect(MOB myChar, Affect affect);
-
-	/**
-	 * this method allows any environmental object
-	 * to behave according to a timed response.  by
-	 * default, it will never be called unless the
-	 * object uses the ServiceEngine to setup service.
-	 * The tickID allows granularity with the type
-	 * of service being requested.
-	 */
-	public void tick(MOB myChar, int tickID);
-	
-	/** this method is used to tell the system whether
-	 * a PENDING affect may take place
-	 */
-	public boolean okAffect(MOB myChar, Affect affect);
 
 	public void buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
 

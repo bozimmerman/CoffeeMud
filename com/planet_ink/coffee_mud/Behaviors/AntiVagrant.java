@@ -10,14 +10,14 @@ public class AntiVagrant extends StdBehavior
 	public String ID(){return "AntiVagrant";}
 	private MOB target=null;
 	private int speakDown=2;
-	
+
 	public Behavior newInstance()
 	{
 		return new AntiVagrant();
 	}
 
-	
-	
+
+
 	public void wakeVagrants(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
@@ -28,7 +28,7 @@ public class AntiVagrant extends StdBehavior
 			{
 				ExternalPlay.quickSay(observer,target,"Damn lazy good for nothing!",false,false);
 				FullMsg msg=new FullMsg(observer,target,Affect.MSG_NOISYMOVEMENT,"<S-NAME> shake(s) <T-NAME> awake.");
-				if(observer.location().okAffect(msg))
+				if(observer.location().okAffect(observer,msg))
 				{
 					observer.location().send(observer,msg);
 					target.tell(observer.name()+" shakes you awake.");
@@ -40,7 +40,7 @@ public class AntiVagrant extends StdBehavior
 			{
 				ExternalPlay.quickSay(observer,target,"Get up and move along!",false,false);
 				FullMsg msg=new FullMsg(observer,target,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stand(s) <T-NAME> up.");
-				if(observer.location().okAffect(msg))
+				if(observer.location().okAffect(observer,msg))
 				{
 					observer.location().send(observer,msg);
 					ExternalPlay.standIfNecessary(target);
@@ -72,13 +72,13 @@ public class AntiVagrant extends StdBehavior
 		&&(msg.sourceMessage().toUpperCase().indexOf("SIT")>=0))
 			speakDown=2;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return true;
-		
+
 		// believe it or not, this is for arrest behavior.
 		if(speakDown>0)	{	speakDown--;return true;	}
 

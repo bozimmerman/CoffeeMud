@@ -121,7 +121,7 @@ public class StdRideable extends StdMOB implements Rideable
 		return list;
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		switch(affect.targetMinor())
 		{
@@ -332,12 +332,12 @@ public class StdRideable extends StdMOB implements Rideable
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 		
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:

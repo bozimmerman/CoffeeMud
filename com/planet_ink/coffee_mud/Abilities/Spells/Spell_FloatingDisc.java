@@ -100,7 +100,7 @@ public class Spell_FloatingDisc extends Spell
 				target.recoverEnvStats();
 			}
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long properWornCode=((Item)target).rawProperLocationBitmap();

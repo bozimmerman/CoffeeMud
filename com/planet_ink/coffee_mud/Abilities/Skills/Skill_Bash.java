@@ -46,7 +46,7 @@ public class Skill_Bash extends StdAbility
 		{
 			str=auto?"<T-NAME> is bashed!":"^F<S-NAME> bash(es) <T-NAMESELF>!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Weapon w=CMClass.getWeapon("ShieldWeapon");

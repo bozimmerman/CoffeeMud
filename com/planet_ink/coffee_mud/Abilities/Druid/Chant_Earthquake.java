@@ -27,11 +27,11 @@ public class Chant_Earthquake extends Chant
 
 
 	private MOB lastMOB=null;
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(msg);
+			return super.okAffect(myHost,msg);
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==Affect.TYP_STAND)
@@ -46,7 +46,7 @@ public class Chant_Earthquake extends Chant
 				lastMOB=null;
 			return false;
 		}
-		return super.okAffect(msg);
+		return super.okAffect(myHost,msg);
 	}
 
 	public void unInvoke()
@@ -62,7 +62,7 @@ public class Chant_Earthquake extends Chant
 			if(mob.location()!=null)
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					ExternalPlay.standIfNecessary(mob);
@@ -107,7 +107,7 @@ public class Chant_Earthquake extends Chant
 				if(Sense.isFlying(target))
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
-				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
+				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())

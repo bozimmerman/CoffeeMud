@@ -10,7 +10,7 @@ import java.util.*;
 public class Scoring
 {
 	private Scoring(){}
-	
+
 	public static StringBuffer getInventory(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -41,7 +41,7 @@ public class Scoring
 		}
 		return msg;
 	}
-	
+
 	public static void destroyUser(MOB deadMOB)
 	{
 		if(CMMap.getPlayer(deadMOB.ID())!=null)
@@ -63,7 +63,7 @@ public class Scoring
 			Room R=(Room)r.nextElement();
 			if((R!=null)&&(R!=deadMOB.location()))
 			{
-				if(R.okAffect(msg))
+				if(R.okAffect(deadMOB,msg))
 					R.sendOthers(deadMOB,msg);
 				else
 				{
@@ -103,7 +103,7 @@ public class Scoring
 		else
 			mob.tell("Whew.  Close one.");
 	}
-	
+
 	public static void inventory(MOB mob)
 	{
 		StringBuffer msg=getInventory(mob,mob);
@@ -153,7 +153,7 @@ public class Scoring
 				if(reps>=99)
 					say.append("("+Util.padLeftPreserve(""+(reps+1),3)+") ");
 				else
-				if(reps>0)	
+				if(reps>0)
 					say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 					say.append("^H("+CMClass.className(item)+")^N ");
@@ -183,7 +183,7 @@ public class Scoring
 		}
 		return say;
 	}
-	
+
 	public static void score(MOB mob)
 	{
 		StringBuffer msg=getScore(mob);
@@ -265,7 +265,7 @@ public class Scoring
 			msg.append("^!You are flying.^?\n\r");
 		else
 			msg.append("^!You are standing.^?\n\r");
-		
+
 		if(mob.riding()!=null)
 			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
 
@@ -315,7 +315,7 @@ public class Scoring
 		}
 		mob.tell(msg.toString());
 	}
-	
+
 	public static void skills(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -399,7 +399,7 @@ public class Scoring
 			}
 			msg.append(msg2.toString());
 		}
-		
+
 		if(msg.length()==0)
 			mob.tell("Valid parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, or LANGS.");
 		else
@@ -460,7 +460,7 @@ public class Scoring
 			spells.append("\n\rValid schools are: ");
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 				spells.append(Ability.DOMAIN_DESCS[i]+" ");
-			
+
 		}
 		else
 			spells.append("\n\r^HYour "+domainName+" spells:^? "+getAbilities(mob,Ability.SPELL,domain));
@@ -560,10 +560,10 @@ public class Scoring
 		V.addElement(new Integer(ofType));
 		return getQualifiedAbilities(able,V,mask,prefix);
 	}
-	
-	public static StringBuffer getQualifiedAbilities(MOB able, 
-													 Vector ofTypes, 
-													 int mask, 
+
+	public static StringBuffer getQualifiedAbilities(MOB able,
+													 Vector ofTypes,
+													 int mask,
 													 String prefix)
 	{
 		int highestLevel=0;
@@ -621,7 +621,7 @@ public class Scoring
 		StringBuffer msg=new StringBuffer("");
 		if(Sense.isSleeping(seer))
 			return new StringBuffer("(nothing you can see right now)");
-		
+
 		for(int l=0;l<Item.wornOrder.length;l++)
 		{
 			long wornCode=Item.wornOrder[l];
@@ -662,7 +662,7 @@ public class Scoring
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+Socials.getSocialsList());
 	}
-	
+
 	public static void prompt(MOB mob, Vector commands)
 	{
 		if(mob.session()==null) return;
@@ -674,7 +674,7 @@ public class Scoring
 			mob.session().rawPrintln("Your prompt is currently now set at:\n\r"+mob.getPrompt());
 		}
 	}
-	
+
 	public static void colorSet(MOB mob, Vector commands)
 		throws IOException
 	{

@@ -10,7 +10,7 @@ import java.util.*;
 public class SocialProcessor
 {
 	private SocialProcessor(){}
-	
+
 	public static Item possibleGold(MOB mob, String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
@@ -42,7 +42,7 @@ public class SocialProcessor
 		mob.tell("The following players are in your service:");
 		ExternalPlay.vassals(mob,mob.name());
 	}
-	
+
 	public static void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
 		Room location=mob.location();
@@ -73,7 +73,7 @@ public class SocialProcessor
 			else
 			{
 				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"),Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"),Affect.NO_EFFECT,null);
-				if(location.okAffect(msg))
+				if(location.okAffect(mob,msg))
 					location.send(mob,msg);
 			}
 		}
@@ -81,7 +81,7 @@ public class SocialProcessor
 		if(!isPrivate)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"));
-			if(location.okAffect(msg))
+			if(location.okAffect(mob,msg))
 				location.send(mob,msg);
 		}
 	}
@@ -98,7 +98,7 @@ public class SocialProcessor
 			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm looking to hire some help.'^?");
 		else
 			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'Are you for hire?'^?");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 
@@ -114,7 +114,7 @@ public class SocialProcessor
 		else
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'You are fired!'^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}
@@ -165,7 +165,7 @@ public class SocialProcessor
 			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'^?");
 		else
 			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 		if(theWord.equalsIgnoreCase("Yell"))
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -175,7 +175,7 @@ public class SocialProcessor
 				if((R!=null)&&(E!=null)&&(E.isOpen()))
 				{
 					msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^TYou hear someone yell '"+combinedCommands+"' "+Directions.getInDirectionName(Directions.getOpDirectionCode(d))+"^?");
-					if(R.okAffect(msg))
+					if(R.okAffect(mob,msg))
 						R.sendOthers(mob,msg);
 				}
 			}
@@ -223,7 +223,7 @@ public class SocialProcessor
 			if(R==null)
 			{
 				msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to himself '"+combinedCommands+"'^?",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
@@ -231,7 +231,7 @@ public class SocialProcessor
 				msg=new FullMsg(mob,R,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
 								Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around <T-NAMESELF> '"+combinedCommands+"'^?",
 								Affect.NO_EFFECT,null);
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					for(int r=0;r<R.numRiders();r++)
@@ -242,7 +242,7 @@ public class SocialProcessor
 							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
 											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
 											Affect.NO_EFFECT,null);
-							if(mob.location().okAffect(msg))
+							if(mob.location().okAffect(mob,msg))
 								mob.location().sendOthers(mob,msg);
 						}
 					}
@@ -254,11 +254,11 @@ public class SocialProcessor
 			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^?"
 										   ,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) to <T-NAMESELF> '"+combinedCommands+"'^?"
 										   ,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 	}
-	
+
 	public static void yell(MOB mob, Vector commands)
 	{
 		Vector newCommands=Util.parse(Util.combine(commands,0).toUpperCase());
@@ -269,7 +269,7 @@ public class SocialProcessor
 	{
 		say(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
 	}
-	
+
 	public static void reply(MOB mob, Vector commands)
 	{
 		if(mob==null) return;
@@ -286,7 +286,7 @@ public class SocialProcessor
 		}
 		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
 	}
-	
+
 	public static void tell(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -386,7 +386,7 @@ public class SocialProcessor
 			addendumStr="."+(++addendum);
 		}
 		while(allFlag);
-		
+
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -394,7 +394,7 @@ public class SocialProcessor
 		{
 			Environmental giveThis=(Environmental)V.elementAt(i);
 			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) "+giveThis.name()+" to <T-NAMESELF>.");
-			if(mob.location().okAffect(newMsg))
+			if(mob.location().okAffect(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			else
 			if(giveThis instanceof Coins)
@@ -414,19 +414,19 @@ public class SocialProcessor
 		int mob2Hp=(int)mob2.baseState().getHitPoints();
 		int mob1Hp=(int)mob1.baseState().getHitPoints();
 
-		
+
 		double mob2HitRound=(((Util.div(CoffeeUtensils.normalizeBy5((mob2Attack+mob1Armor)),100.0))*Util.div(mob2Dmg,2.0))+1.0)*Util.mul(mob2.envStats().speed(),1.0);
 		double mob1HitRound=(((Util.div(CoffeeUtensils.normalizeBy5((mob1Attack+mob2Armor)),100.0))*Util.div(mob1Dmg,2.0))+1.0)*Util.mul(mob1.envStats().speed(),1.0);
 		double mob2SurvivalRounds=Util.div(mob2Hp,mob1HitRound);
 		double mob1SurvivalRounds=Util.div(mob1Hp,mob2HitRound);
-		
+
 		//int levelDiff=(int)Math.round(Util.div((mob1SurvivalRounds-mob2SurvivalRounds),1));
 		double levelDiff=mob1SurvivalRounds-mob2SurvivalRounds;
 		int levelDiffed=(int)Math.round(Math.sqrt(Math.abs(levelDiff)));
 
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
-	
+
 	public static void consider(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -525,13 +525,13 @@ public class SocialProcessor
 				return;
 			}
 		}
-		
+
 		FullMsg msg=null;
 		if(target!=null)
 			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) <T-NAMESELF>.");
 		else
 			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLeigeID()+".");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 	public static void serve(MOB mob, Vector commands)
@@ -549,7 +549,7 @@ public class SocialProcessor
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
 	}
 }

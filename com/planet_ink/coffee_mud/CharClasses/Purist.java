@@ -150,8 +150,10 @@ public class Purist extends Cleric
 	public String otherLimitations(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below 500.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
 	public String weaponLimitations(){return "May use Blunt, Flailed weapons, Hammers, and Natural (unarmed) weapons only.";}
 
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(!super.okAffect(myChar, affect))
 			return false;
 

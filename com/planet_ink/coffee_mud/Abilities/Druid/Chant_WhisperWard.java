@@ -26,9 +26,9 @@ public class Chant_WhisperWard extends Chant
 		unInvoke();
 		return;
 	}
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 
 		if(affected==null)
@@ -131,7 +131,7 @@ public class Chant_WhisperWard extends Chant
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				myRoomContainer=mob.location();

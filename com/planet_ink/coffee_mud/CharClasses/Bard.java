@@ -163,8 +163,10 @@ public class Bard extends StdCharClass
 		}
 	}
 	
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
+		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)

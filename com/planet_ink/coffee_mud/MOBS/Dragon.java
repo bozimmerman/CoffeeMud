@@ -228,7 +228,7 @@ public class Dragon extends StdMOB
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if(!started)setupDragon(birthColor,DragonAge/8);
-			
+
 			if((Stomach==null)
 			&&(location()!=null)
 			&&(baseEnvStats().level()>=ADULT))
@@ -353,14 +353,14 @@ public class Dragon extends StdMOB
 											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
 											  Affect.MSG_NOISYMOVEMENT,
 											  msgText);
-				if (room.okAffect(Message))
+				if (room.okAffect(this,Message))
 				{
 					room.send(this,Message);
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
 					if(!Message.wasModified())
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
 					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_HURT+(damage),Affect.NO_EFFECT,null);
-					if(room.okAffect(msg))
+					if(room.okAffect(this,msg))
 						room.send(this,msg);
 				}
 			}
@@ -393,7 +393,7 @@ public class Dragon extends StdMOB
 											   Affect.MASK_GENERAL|Affect.TYP_JUSTICE,
 											   Affect.MSG_NOISYMOVEMENT,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-					if(this.location().okAffect(EatMsg))
+					if(this.location().okAffect(TastyMorsel,EatMsg))
 					{
 						this.location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);

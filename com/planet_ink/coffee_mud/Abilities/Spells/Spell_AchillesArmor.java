@@ -16,7 +16,7 @@ public class Spell_AchillesArmor extends Spell
 	public Environmental newInstance(){	return new Spell_AchillesArmor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	private int vulnerability=0;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -31,10 +31,10 @@ public class Spell_AchillesArmor extends Spell
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
@@ -78,8 +78,8 @@ public class Spell_AchillesArmor extends Spell
 				break;
 			}
 			if(weaponType<0)
-				return super.okAffect(affect);
-			
+				return super.okAffect(myHost,affect);
+
 			if(weaponType!=vulnerability)
 			{
 				String name=null;
@@ -96,7 +96,7 @@ public class Spell_AchillesArmor extends Spell
 			else
 				ExternalPlay.postDeath(affect.source(),mob,affect);
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -112,7 +112,7 @@ public class Spell_AchillesArmor extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) Achilles Armor!":"^S<S-NAME> invoke(s) Achilles Armor around <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				vulnerability=Dice.roll(1,Weapon.typeDescription.length,-1);

@@ -8,7 +8,7 @@ import java.util.*;
 public class StdItem implements Item
 {
 	public String ID(){	return "StdItem";}
-	
+
 	protected String 	name="an ordinary item";
 	protected String	displayText="a nondescript item sits here doing nothing.";
 	protected String 	description="It looks like something.";
@@ -93,7 +93,7 @@ public class StdItem implements Item
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)	addBehavior(B);
 		}
-			
+
 		for(int a=0;a<E.numAffects();a++)
 		{
 			Ability A=E.fetchAffect(a);
@@ -129,7 +129,7 @@ public class StdItem implements Item
 		if((riding()!=null)&&(!riding().amRiding(this)))
 			riding().addRider(this);
 	}
-	
+
 	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{
@@ -220,7 +220,7 @@ public class StdItem implements Item
 		long couldHaveBeenWornAt=-1;
 		if(properWornBitmap==0)
 			return couldHaveBeenWornAt;
-		
+
 		if(!wornLogicalAnd)
 		{
 			for(int i=0;i<20;i++)
@@ -246,7 +246,7 @@ public class StdItem implements Item
 			return 0;
 		}
 	}
-	
+
 	public boolean canWear(MOB mob)
 	{
 		if(whereCantWear(mob)==0)
@@ -367,7 +367,7 @@ public class StdItem implements Item
 			{
 				Behavior B=fetchBehavior(b);
 				if(B!=null)
-					B.tick(this,tickID);
+					B.tick(ticking,tickID);
 			}
 		}
 		else
@@ -390,7 +390,7 @@ public class StdItem implements Item
 		}
 		return true;
 	}
-	
+
 	public Item ultimateContainer()
 	{
 		if(container()==null) return this;
@@ -446,16 +446,16 @@ public class StdItem implements Item
 	{
 		myUses=newUses;
 	}
-	
+
 	public boolean savable(){return true;}
-	
+
 	protected String dispossessionTimeLeftString()
 	{
 		if(dispossessionTime()==0)
 			return "N/A";
 		return ""+(dispossessionTime()-System.currentTimeMillis());
 	}
-	
+
 	private boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
 		if(!thisItem.amWearingAt(Item.INVENTORY))
@@ -474,8 +474,8 @@ public class StdItem implements Item
 		}
 		return true;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -487,7 +487,7 @@ public class StdItem implements Item
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
-			if((A!=null)&&(!A.okAffect(affect)))
+			if((A!=null)&&(!A.okAffect(this,affect)))
 				return false;
 		}
 
@@ -571,7 +571,7 @@ public class StdItem implements Item
 				return false;
 			}
 			if(!canWear(mob))
-			{	
+			{
 				long cantWearAt=whereCantWear(mob);
 				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
 				if((alreadyWearing!=null)&&(cantWearAt!=Item.HELD)&&(cantWearAt!=Item.WIELD))
@@ -628,7 +628,7 @@ public class StdItem implements Item
 				}
 			}
 			if(!canWear(mob))
-			{	
+			{
 				mob.tell("You can't wield "+name()+", your hands are full.");
 				return false;
 			}
@@ -768,7 +768,7 @@ public class StdItem implements Item
 		return false;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -776,12 +776,12 @@ public class StdItem implements Item
 			if(B!=null)
 				B.affect(this,affect);
 		}
-		
+
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability A=fetchAffect(a);
 			if(A!=null)
-				A.affect(affect);
+				A.affect(this,affect);
 		}
 
 		MOB mob=affect.source();
@@ -907,7 +907,7 @@ public class StdItem implements Item
 			if((aff!=null)&&(!(aff.ID().equals("ItemRejuv"))))
 				aff.unInvoke();
 		}
-		
+
 		riding=null;
 		destroyed=true;
 

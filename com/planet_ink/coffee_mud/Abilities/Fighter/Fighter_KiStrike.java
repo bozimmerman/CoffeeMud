@@ -18,8 +18,8 @@ public class Fighter_KiStrike extends StdAbility
 	public Environmental newInstance(){	return new Fighter_KiStrike();}
 	public int classificationCode(){return Ability.SKILL;}
 	boolean done=false;
-	
-	public boolean okAffect(Affect msg)
+
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -31,31 +31,31 @@ public class Fighter_KiStrike extends StdAbility
 			if((Sense.aliveAwakeMobile(mob,true))
 			   &&(mob.location()!=null))
 				mob.location().show(mob,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) KIA!");
-				
+
 			done=true;
 		}
-		return super.okAffect(msg);
+		return super.okAffect(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			if(done) unInvoke();
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!done)
 			affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level()));
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		
+
 		if(!Sense.canSpeak(mob))
 		{
 			mob.tell("You can't speak!");
@@ -78,7 +78,7 @@ public class Fighter_KiStrike extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> concentrate(s) <S-HIS-HER> strength.");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				done=false;

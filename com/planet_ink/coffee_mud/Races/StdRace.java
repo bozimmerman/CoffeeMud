@@ -53,9 +53,10 @@ public class StdRace implements Race
 
 	}
 	
-	public boolean okAffect(MOB myChar, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		
+		if(!(myHost instanceof MOB)) return true;
+		MOB myChar=(MOB)myHost;
 		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
 		{
 			switch(affect.sourceMinor())
@@ -136,7 +137,7 @@ public class StdRace implements Race
 		return true;
 	}
 
-	public void affect(MOB myChar, Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 	}
 	public void wearOutfit(MOB mob, Armor s1, Armor s2, Armor p1)
@@ -174,7 +175,7 @@ public class StdRace implements Race
 	public void level(MOB mob)
 	{
 	}
-	public void tick(MOB myChar, int tickID){}
+	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{
 		if(!verifyOnly)

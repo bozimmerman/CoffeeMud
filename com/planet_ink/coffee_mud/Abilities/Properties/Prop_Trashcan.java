@@ -11,9 +11,9 @@ public class Prop_Trashcan extends Property
 	public String name(){ return "Auto purges items put into a container";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	public Environmental newInstance(){	return new Prop_Trashcan();}
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected instanceof Item)
 		&&(msg.targetMinor()==Affect.TYP_PUT)
 		&&(msg.amITarget(affected))

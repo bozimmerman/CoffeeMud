@@ -17,7 +17,7 @@ public class IMudInterface implements ImudServices, Serializable
 	public String[][] channels={{"diku_chat","CHAT","0"},
 								{"diku_immortals","GOSSIP","32"},
 								{"diku_code","GREET","0"}};
-	
+
 	private final static int I3MAX_ANSI=49;
 
 	String[][] i3ansi_conversion=
@@ -88,8 +88,8 @@ public class IMudInterface implements ImudServices, Serializable
 		{ "^w^*", "%^WHITE%^%^BOLD%^%^FLASH%^",   "\033[1;5;37m" }  // White
 	};
 
-														
-	
+
+
 	public IMudInterface (String Name, String Version, int Port, String i3status, String[][] Channels)
 	{
 		if(Name!=null) name=Name;
@@ -98,7 +98,7 @@ public class IMudInterface implements ImudServices, Serializable
 		if(Channels!=null) channels=Channels;
 		port=Port;
 	}
-	
+
 	private MOB findSessMob(String mobName)
 	{
 		for(int s=0;s<Sessions.size();s++)
@@ -112,7 +112,7 @@ public class IMudInterface implements ImudServices, Serializable
 		}
 		return null;
 	}
-	
+
 	public String fixColors(String str)
 	{
 		StringBuffer buf=new StringBuffer(str);
@@ -144,11 +144,11 @@ public class IMudInterface implements ImudServices, Serializable
 		}
 		return buf.toString();
 	}
-	
-	
+
+
 	public String socialFix(String str)
 	{
-		
+
 		str=Util.replaceAll(str,"$N","<S-NAME>");
 		str=Util.replaceAll(str,"$n","<S-NAME>");
 		str=Util.replaceAll(str,"$T","<T-NAMESELF>");
@@ -163,7 +163,7 @@ public class IMudInterface implements ImudServices, Serializable
 		if(str.equals("$")) return "";
 		return str.trim();
 	}
-	
+
 	/**
      * Handles an incoming I3 packet asynchronously.
      * An implementation should make sure that asynchronously
@@ -190,7 +190,7 @@ public class IMudInterface implements ImudServices, Serializable
 				mob.setLocation(CMClass.getLocale("StdRoom"));
 				String channelName=ck.channel;
 				FullMsg msg=null;
-				
+
 				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
 				   return;
 				if((ck.channel==null)||(ck.channel.length()==0))
@@ -209,7 +209,7 @@ public class IMudInterface implements ImudServices, Serializable
 					String str="^Q("+channelName+") "+msgs+"^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
-				
+
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
@@ -217,8 +217,8 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(!ses.mob().amDead())
 					&&(ses.mob().location()!=null)
 					&&(ses.mob().envStats().level()>=lvl)
-					&&(ses.mob().okAffect(msg)))
-						ses.mob().affect(msg);
+					&&(ses.mob().okAffect(ses.mob(),msg)))
+						ses.mob().affect(ses.mob(),msg);
 				}
 			}
 			break;
@@ -454,7 +454,7 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		return version;
 	}
-	
+
     /**
      * @return the software name and version
      */
@@ -462,14 +462,14 @@ public class IMudInterface implements ImudServices, Serializable
 	{
 		return i3state;
 	}
-	
+
     /**
      * @return the player port for this mud
      */
     public int getMudPort(){
 		return port;
 	}
-	
+
 
     /**
      * Given a local channel name, returns the level

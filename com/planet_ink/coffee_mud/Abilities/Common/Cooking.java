@@ -506,7 +506,7 @@ public class Cooking extends CommonSkill
 			return false;
 
 		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) cooking something in <T-NAME>.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);

@@ -41,10 +41,10 @@ public class Spell_Phantasm extends Spell
 		return super.tick(ticking,tickID);
 	}
 	
-	public boolean okAffect(Affect msg)
+	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if(!super.okAffect(msg)) return false;
-		super.affect(msg);
+		if(!super.okAffect(myHost,msg)) return false;
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -57,9 +57,9 @@ public class Spell_Phantasm extends Spell
 		}
 		return true;
 	}
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -109,7 +109,7 @@ public class Spell_Phantasm extends Spell
 		{
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> encant(s), calling on the name of "+type+".^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, R, mob.envStats().level());

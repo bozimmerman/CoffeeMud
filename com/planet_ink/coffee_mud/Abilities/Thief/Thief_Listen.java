@@ -20,9 +20,9 @@ public class Thief_Listen extends ThiefSkill
 	private Room room=null;
 	private String lastSaid="";
 	
-	public void affect(Affect msg)
+	public void affect(Environmental myHost, Affect msg)
 	{
-		super.affect(msg);
+		super.affect(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof Room)
 		&&(invoker()!=null)
@@ -101,7 +101,7 @@ public class Thief_Listen extends ThiefSkill
 
 		boolean success=false;
 		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,"<S-NAME> listen(s)"+((dirCode<0)?"":" "+Directions.getDirectionName(dirCode))+".");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);

@@ -36,7 +36,7 @@ public class Wand_Nourishment extends StdWand
 		secretWord="SHAZAM";
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -53,6 +53,6 @@ public class Wand_Nourishment extends StdWand
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

@@ -21,7 +21,7 @@ public class Spell_FakeArmor extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		&&(!notAgainThisRound)
@@ -36,7 +36,7 @@ public class Spell_FakeArmor extends Spell
 			((Item)affected).remove();
 			((Item)affected).destroyThis();
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 
 	}
 	public void unInvoke()
@@ -83,7 +83,7 @@ public class Spell_FakeArmor extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Armor armor=(Armor)CMClass.getItem("GenArmor");

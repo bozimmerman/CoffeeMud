@@ -30,7 +30,7 @@ public class Prayer_CauseCritical extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for a critical burst of pain at <T-NAMESELF>!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

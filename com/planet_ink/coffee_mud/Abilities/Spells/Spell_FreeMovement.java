@@ -29,7 +29,7 @@ public class Spell_FreeMovement extends Spell
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -51,7 +51,7 @@ public class Spell_FreeMovement extends Spell
 			{
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!Sense.aliveAwakeMobile(newMOB,true))
-				   ||(!A.okAffect(msg)))
+				   ||(!A.okAffect(newMOB,msg)))
 				{
 					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 					return false;
@@ -77,7 +77,7 @@ public class Spell_FreeMovement extends Spell
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) freely protected.":"^S<S-NAME> invoke(s) an uninhibiting barrier of protection around <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -31,7 +31,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 		}
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected))))
@@ -51,7 +51,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -81,7 +81,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -91,7 +91,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) invisible to the undead.":"^S<S-NAME> "+prayWord(mob)+" for invisibility to the undead.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);

@@ -1048,7 +1048,7 @@ called "SourceMOB", this standard form looks like this:</FONT></FONT></P><pre>
 FullMsg msg=new FullMsg(SourceMOB,TargetMOB,weapon,Affect.MSG_WEAPONATTACK,
 						"&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");
 						
-if(SourceMOB.location().okAffect(msg))
+if(Sourcemob.location().okAffect(mob,msg))
 	SourceMOB.location().send(SourceMOB,msg);
 </PRE>
 <P align=left><FONT size=4>The 
@@ -1115,7 +1115,7 @@ Execution.&nbsp; The first method should always be called unless there are good
 reasons not to.&nbsp; </FONT></P>
 <P align=left><FONT color=black size=4>The "send" method will then begin calling other methods in 
 other objects.&nbsp; These other methods are called the "affect" methods, and 
-are usually of the form "public void affect(Affect msg);".&nbsp; These methods 
+are usually of the form "public void affect(Environmental myHost, Affect msg);".&nbsp; These methods 
 are responsible for Executing the contents of the message.&nbsp; The Room method 
 will make "affect" method calls on itself, and on every Exit, Item, MOB, spell 
 affects (Ability object), and Behavior associated with that Room.&nbsp; As in 
@@ -1388,11 +1388,9 @@ Tock:</FONT></STRONG></FONT></P>
 digression will cover the ability of the mobs, items, exits, abilities, spell 
 effects, behaviors, and other objects to perform tasks on a regular, timed, 
 basis.&nbsp;The tasks to be performed are always located within an method called 
-"</FONT><FONT size=3>public boolean tick(int 
+"</FONT><FONT size=3>public boolean tick(Tickable ticking, int 
 tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
-objects&nbsp;define this method, and Behavior objects have&nbsp;a similar method 
-called "<FONT size=3>public&nbsp;void tick(Environmental 
-ticking, int tickID)</FONT><FONT size=4>"</FONT> 
+objects&nbsp;define this method, and Behavior as well.</FONT> 
 .</FONT></P>
 <P align=left><FONT size=4>These 
 methods are called on a regular, timed basis whenever the object instance in 
@@ -1628,8 +1626,10 @@ describes any special bonuses received due to being this class. </FONT></P><pre>
 method should give the character any Class-Specific equipment they may need. 
 Clothing and so forth is actually covered by Races. </FONT></P><pre>public String weaponLimitations(){return "Weapons?  What for?";}
 public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
-public boolean okAffect(MOB myChar, Affect affect)
+public boolean okAffect(Environmental myChar, Affect affect)
 {
+	if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
+	MOB myChar=(MOB)myHost;
 	if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
 	{
 		if((affect.tool()!=null)

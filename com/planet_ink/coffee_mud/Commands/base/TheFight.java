@@ -40,7 +40,7 @@ public class TheFight
 		if(reallyKill)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"^F<S-NAME> touch(es) <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
@@ -53,7 +53,7 @@ public class TheFight
 			if((mob.getVictim()!=null)&&(mob.getVictim()==target))
 				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
 			else
-			if(mob.location().okAffect(new FullMsg(mob,target,Affect.MSG_WEAPONATTACK,null)))
+			if(mob.location().okAffect(mob,new FullMsg(mob,target,Affect.MSG_WEAPONATTACK,null)))
 			{
 				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);
@@ -65,7 +65,7 @@ public class TheFight
 			mob.tell("You are not allowed to attack "+target.name()+".");
 		else
 			postAttack(mob,target,mob.fetchWieldedItem());
-		
+
 	}
 
 	public static Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
@@ -127,7 +127,7 @@ public class TheFight
 		if(target==null) return;
 		Room deathRoom=target.location();
 		if(deathRoom==null) return;
-		
+
 		// make sure he's not already dead, or with a pending death.
 		if(target.amDead()) return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
@@ -139,7 +139,7 @@ public class TheFight
 			   ||(affect.sourceMinor()==Affect.TYP_DEATH))
 				return;
 		}
-		
+
 		FullMsg msg=new FullMsg(target,null,null,
 			Affect.MSG_OK_VISUAL,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
 			Affect.MSG_OK_VISUAL,null,
@@ -154,19 +154,19 @@ public class TheFight
 			addHere.addTrailerMsg(msg2);
 		}
 		else
-		if((deathRoom!=null)&&(deathRoom.okAffect(msg)))
+		if((deathRoom!=null)&&(deathRoom.okAffect(target,msg)))
 		{
 			deathRoom.send(target,msg);
-			if(deathRoom.okAffect(msg2))
+			if(deathRoom.okAffect(target,msg2))
 				deathRoom.send(target,msg2);
 		}
 	}
-	
+
 	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
-		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) 
+		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return;
-		
+
 		if((weapon==null)
 		&&((attacker.getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW))
 		{
@@ -174,13 +174,13 @@ public class TheFight
 			weapon=attacker.fetchWieldedItem();
 		}
 		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,null);
-		if(target.location().okAffect(msg))
+		if(target.location().okAffect(attacker,msg))
 			target.location().send(attacker,msg);
 	}
 	public static void postPanic(MOB mob, Affect addHere)
 	{
 		if(mob==null) return;
-		
+
 		// make sure he's not already dead, or with a pending death.
 		if(mob.amDead()) return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
@@ -196,10 +196,10 @@ public class TheFight
 		if(addHere!=null)
 			addHere.addTrailerMsg(msg);
 		else
-		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
+		if((mob.location()!=null)&&(mob.location().okAffect(mob,msg)))
 			mob.location().send(mob,msg);
 	}
-	
+
 	private static String replaceDamageTag(String str, int damage, int damageType)
 	{
 		if(str==null) return null;
@@ -209,9 +209,9 @@ public class TheFight
 		return str;
 	}
 
-	public static void postDamage(MOB attacker, 
-						   MOB target, 
-						   Environmental weapon, 
+	public static void postDamage(MOB attacker,
+						   MOB target,
+						   Environmental weapon,
 						   int damage,
 						   int messageCode,
 						   int damageType,
@@ -221,7 +221,7 @@ public class TheFight
 		if(damage>=1024) damage=1023;
 		if(allDisplayMessage!=null) allDisplayMessage="^F"+allDisplayMessage+"^?";
 		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
-		if(target.location().okAffect(msg))
+		if(target.location().okAffect(target,msg))
 		{
 			int targetCode=msg.targetCode();
 			if(Util.bset(targetCode,Affect.MASK_HURT))
@@ -230,7 +230,7 @@ public class TheFight
 				if(damage>=1024) damage=1023;
 				targetCode=Affect.MASK_HURT+damage;
 			}
-			
+
 			if(damageType>=0)
 			msg.modify(msg.source(),
 					   msg.target(),
@@ -249,7 +249,7 @@ public class TheFight
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
-		
+
 		Hashtable beneficiaries=new Hashtable();
 		if((source!=null)&&(source.charStats()!=null))
 		{
@@ -259,14 +259,14 @@ public class TheFight
 			   &&(!source.amFollowing().isMonster())
 			   &&(source.amFollowing().charStats()!=null))
 				C=source.amFollowing().charStats().getCurrentClass();
-			
+
 			beneficiaries=C.dispenseExperience(source,target);
 		}
-		
+
 		int deadMoney=target.getMoney();
 		if((source!=null)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
 			target.setMoney(0);
-		
+
 		DeadBody Body=null;
 		if((target.soulMate()==null)&&(!target.isMonster()))
 		{
@@ -298,11 +298,11 @@ public class TheFight
 				target.charStats().getCurrentClass().loseExperience(target,expLost);
 			}
 		}
-		
+
 		if(Body==null) Body=target.killMeDead();
-		
+
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
-		
+
 		if(source!=null)
 		{
 			if((deadMoney>0)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
@@ -374,7 +374,7 @@ public class TheFight
 			mob.tell("This option has been disabled.");
 			return;
 		}
-			
+
 		if(mob.isInCombat())
 		{
 			mob.tell("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!");
@@ -462,7 +462,7 @@ public class TheFight
 			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
 		}
 	}
-	
+
 	public static void throwit(MOB mob, Vector commands)
 	{
 		if((commands.size()==2)&&(mob.isInCombat()))
@@ -488,7 +488,7 @@ public class TheFight
 			mob.tell("You aren't holding or wielding "+item.name()+"!");
 			return;
 		}
-		
+
 		int dir=Directions.getGoodDirectionCode(str);
 		Environmental target=null;
 		if(dir<0)
@@ -507,7 +507,7 @@ public class TheFight
 			boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
 			boolean isUp=(mob.location().getRoomInDir(Directions.UP)==target);
 			boolean isDown=(mob.location().getRoomInDir(Directions.DOWN)==target);
-			
+
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
@@ -529,13 +529,13 @@ public class TheFight
 				if(ItemUsage.remove(mob,item,true))
 					ItemUsage.wield(mob,item,false);
 			}
-		
+
 			if(item.amWearingAt(Item.WIELD))
 				ExternalPlay.postAttack(mob,(MOB)target,item);
 			else
 			{
 				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> at "+target.name()+".");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 		}
@@ -543,7 +543,7 @@ public class TheFight
 		{
 			FullMsg msg=new FullMsg(mob,item,target,Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
 			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,item.name()+" fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
-			if(mob.location().okAffect(msg)&&((Room)target).okAffect(msg2))
+			if(mob.location().okAffect(mob,msg)&&((Room)target).okAffect(mob,msg2))
 			{
 				mob.location().send(mob,msg);
 				((Room)target).sendOthers(mob,msg2);
@@ -598,7 +598,7 @@ public class TheFight
 		}
 		return sheaths;
 	}
-	
+
 	public static void sheath(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -681,7 +681,7 @@ public class TheFight
 			}
 			while(allFlag);
 		}
-		
+
 		if(items.size()==0)
 		{
 			if(commands.size()==0)
@@ -697,12 +697,12 @@ public class TheFight
 			if(ExternalPlay.remove(mob,putThis,true))
 			{
 				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> sheath(s) "+putThis.name()+" in <T-NAME>");
-				if(mob.location().okAffect(putMsg))
+				if(mob.location().okAffect(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}
 		}
 	}
-	
+
 	public static void drawIfNecessary(MOB mob, boolean held)
 	{
 		if(held)
@@ -714,7 +714,7 @@ public class TheFight
 		if(mob.fetchWieldedItem()==null)
 			draw(mob,new Vector(),true,true);
 	}
-	
+
 	public static void draw(MOB mob, Vector commands, boolean noerrors, boolean quiet)
 	{
 		boolean allFlag=false;
@@ -784,7 +784,7 @@ public class TheFight
 				addendumStr="."+(++addendum);
 			}
 			while(allFlag);
-			
+
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
@@ -803,7 +803,7 @@ public class TheFight
 				if(container!=null)	container.setRawWornCode(wearCode);
 				doneSomething=true;
 			}
-			
+
 			if(containers.size()==0) break;
 		}
 		if((!doneSomething)&&(!noerrors))
@@ -827,7 +827,7 @@ public class TheFight
 		if(msg.equals(oldHit)) return newHit;
 		return oldHit;
 	}
-	
+
 	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(source==null) return;
@@ -846,7 +846,7 @@ public class TheFight
 			msg.tagModified(true);
 			// why was there no okaffect here?
 			Room room=source.location();
-			if((room!=null)&&(room.okAffect(msg)))
+			if((room!=null)&&(room.okAffect(source,msg)))
 			{
 				if((msg.targetCode()&Affect.MASK_HURT)==Affect.MASK_HURT)
 				{
@@ -877,7 +877,7 @@ public class TheFight
 									Affect.MSG_NOISYMOVEMENT,
 									weapon.missString());
 			// why was there no okaffect here?
-			if(source.location().okAffect(msg))
+			if(source.location().okAffect(source,msg))
 				source.location().send(source,msg);
 		}
 	}

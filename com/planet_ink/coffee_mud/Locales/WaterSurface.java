@@ -82,10 +82,10 @@ public class WaterSurface extends StdRoom implements Drink
 		}
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(Sense.isSleeping(this)) 
-			return super.okAffect(affect);
+			return super.okAffect(myHost,affect);
 		
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
@@ -132,12 +132,12 @@ public class WaterSurface extends StdRoom implements Drink
 			}
 			return true;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		if((affect.target() instanceof Item) 
 		&&((affect.targetMinor()==Affect.TYP_DROP)
 			||((affect.targetMinor()==Affect.TYP_THROW)

@@ -21,12 +21,12 @@ public class Mime extends ActiveTicker
 									      |Behavior.CAN_ROOMS;}
 	private boolean disabled=false;
 	private Affect lastMsg=null;
-	
+
 	public Behavior newInstance()
 	{
 		return new Mime();
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -42,7 +42,7 @@ public class Mime extends ActiveTicker
 		||((affect.tool()!=null)&&(affect.tool().ID().equals("Social"))))
 			lastMsg=affect;
 	}
-	
+
 	public void fixSNameTo(Affect msg, MOB sMOB, Environmental ticking)
 	{
 		//String src=msg.sourceMessage();
@@ -73,7 +73,7 @@ public class Mime extends ActiveTicker
 				   msg.targetCode(),trg,
 				   msg.othersCode(),oth);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -132,7 +132,7 @@ public class Mime extends ActiveTicker
 		disabled=true;
 		if((msg!=null)
 		&&(sMOB.location()!=null)
-		&&(sMOB.location().okAffect(msg)))
+		&&(sMOB.location().okAffect(sMOB,msg)))
 		{
 			if(msg.source().location()==null)
 			{

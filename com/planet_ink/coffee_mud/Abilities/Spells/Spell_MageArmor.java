@@ -69,7 +69,7 @@ public class Spell_MageArmor extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a magical glowing breast plate!^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GlowingMageArmor");

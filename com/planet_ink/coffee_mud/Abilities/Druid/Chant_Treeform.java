@@ -16,7 +16,7 @@ public class Chant_Treeform extends Chant
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
 	public Environmental newInstance(){	return new Chant_Treeform();}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -71,11 +71,11 @@ public class Chant_Treeform extends Chant
 				item.setGettable(false);
 				item.envStats().setWeight(2000);
 				FullMsg msg=new FullMsg(affect.source(),item,affect.targetCode(),null);
-				if(!okAffect(msg))
+				if(!okAffect(affect.source(),msg))
 					return false;
 			}
 		}
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if(affect.source().getVictim()==mob)
@@ -171,7 +171,7 @@ public class Chant_Treeform extends Chant
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

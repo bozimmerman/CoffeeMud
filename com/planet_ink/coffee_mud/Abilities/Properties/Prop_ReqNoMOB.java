@@ -12,7 +12,7 @@ public class Prop_ReqNoMOB extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){	Prop_ReqNoMOB newOne=new Prop_ReqNoMOB();	newOne.setMiscText(text());	return newOne;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -27,6 +27,6 @@ public class Prop_ReqNoMOB extends Property
 				  ||(((Rideable)affect.source()).numRiders()==0)))
 				return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

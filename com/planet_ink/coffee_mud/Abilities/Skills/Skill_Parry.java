@@ -24,10 +24,10 @@ public class Skill_Parry extends StdAbility
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public Environmental newInstance(){	return new Skill_Parry();}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -59,7 +59,7 @@ public class Skill_Parry extends StdAbility
 				{
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-70,false))
-					&&(mob.location().okAffect(msg)))
+					&&(mob.location().okAffect(mob,msg)))
 					{
 						doneThisRound=true;
 						mob.location().send(mob,msg);

@@ -40,9 +40,9 @@ public class GapExit extends StdExit
 		return weight;
 	}
 	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect)) return false;
+		if(!super.okAffect(myHost,affect)) return false;
 		MOB mob=affect.source();
 		if(((affect.amITarget(this))||(affect.tool()==this))
 		&&(affect.targetMinor()==Affect.TYP_ENTER)
@@ -61,9 +61,9 @@ public class GapExit extends StdExit
 		return true;
 	}
 	
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 		MOB mob=affect.source();
 		if(((affect.amITarget(this))||(affect.tool()==this))
 		&&(affect.targetMinor()==Affect.TYP_ENTER)

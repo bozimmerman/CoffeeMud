@@ -58,7 +58,7 @@ public class Paralysis extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_PARALYZE|(auto?Affect.MASK_GENERAL:0),auto?"":"^S<S-NAME> paralyze(s) <T-NAMESELF>.^?");
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 				target.location().send(target,msg);
 				if(!msg.wasModified())

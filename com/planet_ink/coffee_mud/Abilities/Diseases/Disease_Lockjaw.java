@@ -23,7 +23,7 @@ public class Disease_Lockjaw extends Disease
 	protected String DISEASE_AFFECT(){return "";}
 	protected boolean DISEASE_STD(){return false;}
 	protected boolean DISEASE_TOUCHSPREAD(){return false;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -42,7 +42,7 @@ public class Disease_Lockjaw extends Disease
 		}
 		return true;
 	}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -60,7 +60,7 @@ public class Disease_Lockjaw extends Disease
 			return false;
 		}
 
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

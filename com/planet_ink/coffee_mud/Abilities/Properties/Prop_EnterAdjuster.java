@@ -106,7 +106,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.confirmWearability();
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)&&((affected instanceof Room)||(affected instanceof Exit)))
 		{
@@ -117,6 +117,6 @@ public class Prop_EnterAdjuster extends Property
 				break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

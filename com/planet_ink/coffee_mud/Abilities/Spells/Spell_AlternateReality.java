@@ -39,8 +39,8 @@ public class Spell_AlternateReality extends Spell
 		}
 		return true;
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amISource((MOB)affected)))
@@ -56,7 +56,7 @@ public class Spell_AlternateReality extends Spell
 				return false;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
 
@@ -64,7 +64,7 @@ public class Spell_AlternateReality extends Spell
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(target.getVictim()!=mob)
 		{
 			mob.tell("But "+target.charStats().heshe()+" isn't fighting you!");
@@ -87,7 +87,7 @@ public class Spell_AlternateReality extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAME>.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())

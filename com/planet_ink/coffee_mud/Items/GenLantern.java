@@ -30,7 +30,7 @@ public class GenLantern extends GenLightSource
 	}
 	public boolean isGeneric(){return true;}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -75,10 +75,10 @@ public class GenLantern extends GenLightSource
 					break;
 			}
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -101,6 +101,6 @@ public class GenLantern extends GenLightSource
 				break;
 			}
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 }

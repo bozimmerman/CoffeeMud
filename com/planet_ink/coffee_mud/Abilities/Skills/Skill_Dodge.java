@@ -25,8 +25,8 @@ public class Skill_Dodge extends StdAbility
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
-	
-	public boolean okAffect(Affect affect)
+
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
@@ -46,7 +46,7 @@ public class Skill_Dodge extends StdAbility
 			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
 			&&(affect.source().getVictim()==mob)
-			&&(mob.location().okAffect(msg)))
+			&&(mob.location().okAffect(mob,msg)))
 			{
 				doneThisRound=true;
 				mob.location().send(mob,msg);

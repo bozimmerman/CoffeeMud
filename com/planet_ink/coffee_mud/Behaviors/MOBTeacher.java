@@ -55,13 +55,13 @@ public class MOBTeacher extends CombatAbilities
 				A2.setProfficiency(100);
 		}
 	}
-	
+
 	private void ensureCharClass()
 	{
 		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
 		myMOB.recoverCharStats();
 		Ability A=null;
-		
+
 		A=(Ability)CMClass.getAbility(getParms());
 		if(A!=null)
 		{
@@ -106,7 +106,7 @@ public class MOBTeacher extends CombatAbilities
 			myMOB.recoverCharStats();
 		}
 	}
-	
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -197,10 +197,10 @@ public class MOBTeacher extends CombatAbilities
 				if(!myAbility.canBeLearnedBy(monster,mob))
 					return;
 				FullMsg msg=new FullMsg(monster,mob,null,Affect.MSG_SPEAK,null);
-				if(!monster.location().okAffect(msg))
+				if(!monster.location().okAffect(monster,msg))
 					return;
 				msg=new FullMsg(monster,mob,null,Affect.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
-				if(!monster.location().okAffect(msg))
+				if(!monster.location().okAffect(monster,msg))
 					return;
 				myAbility.teach(monster,mob);
 				monster.location().send(monster,msg);

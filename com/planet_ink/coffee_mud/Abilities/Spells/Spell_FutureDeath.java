@@ -46,7 +46,7 @@ public class Spell_FutureDeath extends Spell
 			String str=auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>^?";
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);

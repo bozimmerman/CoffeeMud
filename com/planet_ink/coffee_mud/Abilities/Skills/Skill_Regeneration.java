@@ -70,7 +70,7 @@ public class Skill_Regeneration extends StdAbility
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> lay(s) a regenerative property to <T-NAME>.");
-			if(target.location().okAffect(msg))
+			if(target.location().okAffect(target,msg))
 			{
 			    target.location().send(target,msg);
 				success=beneficialAffect(mob,target,0);

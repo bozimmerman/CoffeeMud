@@ -30,7 +30,7 @@ public class Spell_SeeAura extends Spell
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",affectType(auto),auto?"":"^S<S-NAME> draw(s) out your aura.^?",affectType(auto),auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
 		if(success)
 		{
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=ExternalPlay.getScore(target);

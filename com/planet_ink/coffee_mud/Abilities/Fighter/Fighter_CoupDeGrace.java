@@ -75,7 +75,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/2))))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
@@ -87,7 +87,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 		{
 			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace and fail(s)!";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,str);
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		return success;

@@ -14,7 +14,7 @@ public class Channels
 	private static Vector channelNames=new Vector();
 	private static Vector channelLevels=new Vector();
 	private static Vector ichannelList=new Vector();
-	
+
 	public static void unloadChannels()
 	{
 		numChannelsLoaded=0;
@@ -23,7 +23,7 @@ public class Channels
 		channelLevels=new Vector();
 		ichannelList=new Vector();
 	}
-	
+
 	public static void listChannels(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("Available channels: \n\r");
@@ -93,8 +93,8 @@ public class Channels
 		else
 			mob.tell(head+buf.toString());
 	}
-	
-	
+
+
 	public static int getChannelInt(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
@@ -126,7 +126,7 @@ public class Channels
 				return (String)channelNames.elementAt(c);
 		return "";
 	}
-	
+
 	public static String[][] iChannelsArray()
 	{
 		String[][] array=new String[numIChannelsLoaded][3];
@@ -146,7 +146,7 @@ public class Channels
 		}
 		return array;
 	}
-	
+
 	public static int loadChannels(String list, String ilist, CommandSet cmdSet)
 	{
 		while(list.length()>0)
@@ -207,13 +207,13 @@ public class Channels
 			ichannelList.addElement(ichan);
 			cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
 			cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
-		} 
+		}
 		channelNames.addElement(new String("CLANTALK"));
 		channelLevels.addElement(new Integer(0));
 		ichannelList.addElement("");
 		cmdSet.put(new String("CLANTALK"),new Integer(CommandSet.CHANNEL));
 		cmdSet.put("NO"+(new String("CLANTALK")),new Integer(CommandSet.NOCHANNEL));
-		numChannelsLoaded++;    
+		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}
 
@@ -272,12 +272,12 @@ public class Channels
 		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
 		  msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
 		}
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session ses=(Session)Sessions.elementAt(s);
-				
+
 				if(channelName.equalsIgnoreCase("CLANTALK")
 				&&(!ses.mob().getClanID().equalsIgnoreCase(mob.getClanID())))
 					continue;
@@ -285,8 +285,8 @@ public class Channels
 				&&(!ses.mob().amDead())
 				&&(ses.mob().location()!=null)
 				&&(ses.mob().envStats().level()>=lvl)
-				&&(ses.mob().okAffect(msg)))
-					ses.mob().affect(msg);
+				&&(ses.mob().okAffect(ses.mob(),msg)))
+					ses.mob().affect(ses.mob(),msg);
 			}
 		}
 		if((ExternalPlay.i3().i3online())&&(ExternalPlay.i3().isI3channel(getChannelName(channelName))))

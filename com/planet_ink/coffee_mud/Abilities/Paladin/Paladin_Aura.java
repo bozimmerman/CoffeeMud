@@ -39,9 +39,9 @@ public class Paladin_Aura extends Paladin
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 		if((invoker==null)||(invoker.getAlignment()<650))
 			return true;

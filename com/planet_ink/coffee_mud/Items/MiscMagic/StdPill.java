@@ -84,7 +84,7 @@ public class StdPill extends StdFood implements Pill
 		return theSpells;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
@@ -95,17 +95,17 @@ public class StdPill extends StdFood implements Pill
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					eatIfAble(mob,this);
-					super.affect(affect);
+					super.affect(myHost,affect);
 				}
 				else
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
 				break;
 			default:
-				super.affect(affect);
+				super.affect(myHost,affect);
 				break;
 			}
 		}
 		else
-			super.affect(affect);
+			super.affect(myHost,affect);
 	}
 }

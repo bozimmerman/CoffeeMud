@@ -16,7 +16,7 @@ public class Prop_SafePet extends Property
 	public String accountForYourself()
 	{ return "Unattackable";	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
@@ -28,6 +28,6 @@ public class Prop_SafePet extends Property
 		else
 		if((affected!=null)&&(affected instanceof MOB)&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))&&(affect.amISource((MOB)affected)))
 			disabled=true;
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

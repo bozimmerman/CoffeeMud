@@ -28,7 +28,7 @@ public class Prayer_CureBlindness extends Prayer
 				newMOB.recoverEnvStats();
 				A.affectEnvStats(newMOB,newMOB.envStats());
 				if((!Sense.canSee(newMOB))
-				   ||(!A.okAffect(msg)))
+				   ||(!A.okAffect(newMOB,msg)))
 				if((A.invoker()==null)
 				   ||((A.invoker()!=null)
 					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
@@ -56,7 +56,7 @@ public class Prayer_CureBlindness extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to see the light.^?");
-			if(mob.location().okAffect(msg))
+			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)

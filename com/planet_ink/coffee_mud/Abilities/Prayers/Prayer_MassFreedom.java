@@ -29,7 +29,7 @@ public class Prayer_MassFreedom extends Prayer
 					newMOB.recoverEnvStats();
 					A.affectEnvStats(newMOB,newMOB.envStats());
 					if((!Sense.aliveAwakeMobile(newMOB,true))
-					   ||(!A.okAffect(msg)))
+					   ||(!A.okAffect(newMOB,msg)))
 					if((A.invoker()==null)
 					   ||((A.invoker()!=null)
 						  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
@@ -53,14 +53,14 @@ public class Prayer_MassFreedom extends Prayer
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
-			if((room!=null)&&(room.okAffect(msg)))
+			if((room!=null)&&(room.okAffect(mob,msg)))
 			{
 				room.send(mob,msg);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);
 					if(target==null) break;
-					
+
 					Vector offensiveAffects=returnOffensiveAffects(mob,target);
 
 					if(offensiveAffects.size()>0)

@@ -140,7 +140,7 @@ public class StdWand extends StdItem implements Wand
 		}
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
 		
@@ -157,7 +157,7 @@ public class StdWand extends StdItem implements Wand
 		default:
 			break;
 		}
-		super.affect(affect);
+		super.affect(myHost,affect);
 	}
 
 	public String magicWord(){return secretWord;}

@@ -23,8 +23,8 @@ public class Prop_ReqEntry extends Property
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 		return ExternalPlay.zapperCheck(text(),mob);
-	}	
-	public boolean okAffect(Affect affect)
+	}
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -43,10 +43,10 @@ public class Prop_ReqEntry extends Property
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(affect);
+					return super.okAffect(myHost,affect);
 			affect.source().tell("You can not go that way.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -45,9 +45,9 @@ public class Prop_FightSpellCast extends Property
 		return id;
 	}
 
-	public void affect(Affect affect)
+	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(affect);
+		super.affect(myHost,affect);
 
 		if(processing) return;
 		processing=true;

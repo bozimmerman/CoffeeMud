@@ -51,9 +51,9 @@ public class Thief_Trap extends ThiefSkill
 			mob.tell(auto?"":"You don't know how to lay a trap on "+unlockThis.name()+".");
 			return false;
 		}
-		
+
 		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?unlockThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+unlockThis.name()+"."));
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			int rejuv=((30-mob.envStats().level())*30);

@@ -17,7 +17,7 @@ public class Prop_ReqRaces extends Property
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		
+
 		int x=text().toUpperCase().indexOf("ALL");
 		int y=text().toUpperCase().indexOf(mob.charStats().getMyRace().name().toUpperCase());
 		if(((x>0)
@@ -26,10 +26,10 @@ public class Prop_ReqRaces extends Property
 			   ||((y>0)&&(text().charAt(y-1)!='+'))))
 		 ||((y>0)&&(text().charAt(y-1)=='-')))
 			return false;
-		
+
 		return true;
-	}	
-	public boolean okAffect(Affect affect)
+	}
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -48,10 +48,10 @@ public class Prop_ReqRaces extends Property
 			}
 			for(Enumeration e=H.elements();e.hasMoreElements();)
 				if(passesMuster((MOB)e.nextElement()))
-					return super.okAffect(affect);
+					return super.okAffect(myHost,affect);
 			affect.source().tell("You can not go that way.");
 			return false;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

@@ -11,7 +11,7 @@ public class Prop_ReqPKill extends Property
 	public String name(){ return "Playerkill ONLY Zone";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	public Environmental newInstance(){ return new Prop_ReqPKill();}
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
 		   &&(affect.target()!=null)
@@ -28,6 +28,6 @@ public class Prop_ReqPKill extends Property
 		}
 		if((!affect.source().isMonster())&&((affect.source().getBitmap()&MOB.ATT_PLAYERKILL)==0))
 			affect.source().setBitmap(affect.source().getBitmap()|MOB.ATT_PLAYERKILL);
-		return super.okAffect(affect);
+		return super.okAffect(myHost,affect);
 	}
 }

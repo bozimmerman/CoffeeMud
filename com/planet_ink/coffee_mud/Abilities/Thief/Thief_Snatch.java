@@ -41,7 +41,7 @@ public class Thief_Snatch extends StdAbility
 			mob.tell("Your other hand needs to be free to do a weapon snatch.");
 			return false;
 		}
-		
+
 		Item hisItem=mob.getVictim().fetchWieldedItem();
 		if((hisItem!=null)
 		   ||(!(hisItem instanceof Weapon))
@@ -62,9 +62,9 @@ public class Thief_Snatch extends StdAbility
 			return false;
 
 		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*6;
-		else 
+		else
 			levelDiff=0;
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
@@ -75,7 +75,7 @@ public class Thief_Snatch extends StdAbility
 		{
 			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
 			FullMsg msg2=new FullMsg(mob,null,this,Affect.MSG_THIEF_ACT,null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
+			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
 				mob.location().send(mob.getVictim(),msg);
 				mob.location().send(mob,msg2);
@@ -86,7 +86,7 @@ public class Thief_Snatch extends StdAbility
 					if(mob.isMine(hisWeapon))
 					{
 						msg=new FullMsg(mob,hisWeapon,null,Affect.MSG_HOLD,"<S-NAME> snatch(es) the <T-NAME> out of mid-air!");
-						if(mob.location().okAffect(msg))
+						if(mob.location().okAffect(mob,msg))
 							mob.location().send(mob,msg);
 					}
 				}

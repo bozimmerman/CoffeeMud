@@ -19,9 +19,9 @@ public class Fighter_ReturnProjectile extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 	public boolean doneThisRound=false;
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(affect))
+		if(!super.okAffect(myHost,affect))
 			return false;
 
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -77,7 +77,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 			if(mob.location().isContent(w))
 			{
 				FullMsg msg=new FullMsg(mob,w,Affect.MSG_GET,"<S-NAME> catch(es) the <T-NAME> shot by "+affect.source().name()+"!");
-				if(mob.location().okAffect(msg))
+				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);
 					if(mob.isMine(w))
@@ -90,7 +90,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)

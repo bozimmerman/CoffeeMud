@@ -122,7 +122,7 @@ public class MOBEater extends ActiveTicker
 											   null,
 											   Affect.MSG_OK_ACTION,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-					if(mob.location().okAffect(EatMsg))
+					if(mob.location().okAffect(TastyMorsel,EatMsg))
 					{
 						mob.location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);

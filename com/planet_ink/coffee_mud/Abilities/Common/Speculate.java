@@ -95,7 +95,7 @@ public class Speculate extends CommonSkill
 		int duration=45-mob.envStats().level();
 		if(duration<5) duration=5;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) speculating on this area.");
-		if(mob.location().okAffect(msg))
+		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);
