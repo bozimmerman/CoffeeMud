@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
+import java.util.Calendar;
 
 public interface Item extends Environmental
 {
@@ -86,7 +87,10 @@ public interface Item extends Environmental
 	public boolean rawLogicalAnd();
 	public void setRawLogicalAnd(boolean newAnd);
 	public boolean compareProperLocations(Item toThis);
-	public Environmental myOwner();
 	public String materialDescription();
+	
+	public Environmental myOwner();
 	public void setOwner(Environmental E);
+	public Calendar possessionTime();
+	public void setPossessionTime(Calendar time);
 }

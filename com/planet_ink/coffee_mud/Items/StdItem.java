@@ -29,6 +29,7 @@ public class StdItem implements Item
 	protected int		goldValue=0;
 	protected int		material=CLOTH;
 	protected Environmental owner=null;
+	protected Calendar possessionTime=null;
 
 
 	protected Vector affects=new Vector();
@@ -122,7 +123,17 @@ public class StdItem implements Item
 	public void setOwner(Environmental E)
 	{
 		owner=E;
+		if((E!=null)&&(!(E instanceof Room)))
+			setPossessionTime(null);
 		recoverEnvStats();
+	}
+	public Calendar possessionTime()
+	{
+		return possessionTime;
+	}
+	public void setPossessionTime(Calendar time)
+	{
+		possessionTime=time;
 	}
 
 	public boolean amDestroyed()
@@ -667,7 +678,10 @@ public class StdItem implements Item
 			{
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
+				{
 					mob.location().addItem(this);
+					setPossessionTime(Calendar.getInstance());
+				}
 				mob.location().recoverRoomStats();
 			}
 			remove();

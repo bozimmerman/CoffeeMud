@@ -185,6 +185,7 @@ public class RoomLoader
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item thisItem=room.fetchItem(i);
+				thisItem.setPossessionTime(null); // saved items won't clear!
 				if(thisItem.location()==item)
 				{
 					D=DBConnector.DBFetch();

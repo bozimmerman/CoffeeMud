@@ -13,6 +13,9 @@ public class SaveThread extends Thread
 	public Calendar lastDateTime=Calendar.getInstance();
 	public void checkHealth()
 	{
+		Calendar itemKillTime=Calendar.getInstance();
+		itemKillTime.add(Calendar.HOUR,-20);
+		
 		for(int mn=0;mn<CMMap.map.size();mn++)
 		{
 			Room room=(Room)CMMap.map.elementAt(mn);
@@ -23,6 +26,18 @@ public class SaveThread extends Thread
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
 					Log.errOut("SaveThread",mob.name()+" in room "+room.ID()+" unticked ("+(!ticked)+") since: "+new IQCalendar(mob.lastTickedDateTime()).d2String()+".");
+				}
+			}
+			for(int i=0;i<room.numItems();i++)
+			{
+				Item I=room.fetchItem(i);
+				if((I.possessionTime()!=null)&&(I.myOwner()==room))
+				{
+					if(itemKillTime.after(I.possessionTime()))
+					{
+						I.destroyThis();
+						i=-1;
+					}
 				}
 			}
 		}

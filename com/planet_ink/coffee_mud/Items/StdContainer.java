@@ -407,6 +407,7 @@ public class StdContainer extends StdItem implements Container
 		mob.delInventory(thisContainer);
 		thisContainer.remove();
 		mob.location().addItem(thisContainer);
+		thisContainer.setPossessionTime(Calendar.getInstance());
 		thisContainer.recoverEnvStats();
 		boolean nothingDone=true;
 		do

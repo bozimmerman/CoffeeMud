@@ -116,7 +116,7 @@ public class ServiceEngine
 					msg.append("\n\r");
 					col=1;
 				}
-				msg.append(Util.padRight(""+v,4)+Util.padRight(E.ID(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
+				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
 			}
 		}
 		return msg;

@@ -1,5 +1,3 @@
-Implement a clean-up feature in the saver thread for junk lying around
-
 Add Area objects and Tables and Affect/Properties!
 
 Buy command for standard mobs, to facilitate trades.

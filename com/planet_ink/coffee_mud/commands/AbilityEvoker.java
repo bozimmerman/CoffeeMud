@@ -74,7 +74,6 @@ public class AbilityEvoker
 					else
 						evokableAbility=thisAbility;
 			}
-
 			if(evokableAbility!=null)
 				commands.removeElementAt(0);
 			else
@@ -95,6 +94,20 @@ public class AbilityEvoker
 				{
 					commands.removeElementAt(0);
 					commands.removeElementAt(0);
+				}
+			}
+			else
+			{
+				for(int a=0;a<mob.numAbilities();a++)
+				{
+					Ability thisAbility=mob.fetchAbility(a);
+					if((evokedBy(thisAbility,evokeWord))
+					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+					{
+						evokableAbility=thisAbility;
+						commands.removeElementAt(0);
+						break;
+					}
 				}
 			}
 		}

@@ -1,7 +1,0 @@
-Funky 'n' characters intermixed in the room descriptions (see temple of mota).  Make these CRs!
-
-Hassan pulled that MULTI-kill trick!  
-
-Bodies aren't disappearing.  Get that back-up cleaning code in there!
-
-Make the Ability "NAME" searcher better to cover "ca missile" for magic missile.

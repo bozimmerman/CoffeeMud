@@ -142,10 +142,10 @@ public class Import
 		{
 			String l=eatLine(V);
 			if(l.startsWith("  "))
-				s+="\\n"+l;
+				s+="%0D"+l;
 			else
 			if(l.length()==0)
-				s+="\\n";
+				s+="%0D";
 			else
 				s+=" "+l;
 		}
@@ -1868,7 +1868,7 @@ public class Import
 				if(codeLine.equals("E"))
 				{
 					if(I.description().length()>0)
-						I.setDescription(I.description()+"\\n");
+						I.setDescription(I.description()+"%0D");
 					eatLineSquiggle(objV);
 					I.setDescription(I.description()+Util.safetyFilter(eatLineSquiggle(objV)));
 					if(I.ID().equals("GenReadable"))

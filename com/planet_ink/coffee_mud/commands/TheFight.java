@@ -334,6 +334,27 @@ public class TheFight
 				items.addElement(thisItem);
 			}
 			target.kill();
+			
+			// lastly, clean up victimhood
+			for(int i=0;i<deathRoom.numInhabitants();i++)
+			{
+				MOB inhab=deathRoom.fetchInhabitant(i);
+				// if a mob is not fighting the dead man (fighting someone else), 
+				// and the person this mob is fighting is either fighting noone, or the victim
+				// then he should fight this mob!
+				// otherwise, if the mob is still fighting the target, stop him!
+				if(inhab.getVictim()!=null)
+				{
+					if(inhab.getVictim()!=target)
+					{
+						if((inhab.getVictim().getVictim()==null)||(inhab.getVictim().getVictim()==target))
+							inhab.getVictim().setVictim(inhab);
+					}
+					else
+						inhab.setVictim(null);
+				}
+			}
+			
 			Body.setName("the body of "+target.name());
 			Body.setSecretIdentity(target.name()+"/"+target.description());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");
@@ -346,25 +367,13 @@ public class TheFight
 					Ability A=CMClass.getAbility("Archon_Possess");
 					A.setAffectedOne(target);
 					A.unInvoke();
-					Body.startTicker(deathRoom);
 				}
 			}
-			else
-				Body.startTicker(deathRoom);
+			Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();
 			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
 				for(int i=items.size()-1;i>=0;i--)
 					new ItemUsage().get(source,Body,(Item)items.elementAt(i));
-			
-			// lastly, clean up victimhood
-			for(int i=0;i<deathRoom.numInhabitants();i++)
-			{
-				MOB inhab=deathRoom.fetchInhabitant(i);
-				if((inhab.getVictim()!=null)
-				   &&(inhab.getVictim()!=target)
-				   &&((inhab.getVictim().getVictim()==null)||(inhab.getVictim().getVictim()==target)))
-					inhab.getVictim().setVictim(inhab);
-			}
 		}
 		else
 		if(target.curState().getHitPoints()<target.getWimpHitPoint())
