@@ -521,7 +521,11 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			usageCosts[0]=consumed/divider;
 			if(usageCosts[0]<5)	usageCosts[0]=5;
 			if(consumed==Integer.MAX_VALUE)
+			{
 				usageCosts[0]=mob.maxState().getMana();
+				if(mob.baseState().getMana()>mob.maxState().getMana())
+				    usageCosts[0]=mob.baseState().getMana();
+			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
 				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMana(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
@@ -530,7 +534,11 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			usageCosts[1]=consumed/divider;
 			if(usageCosts[1]<5)	usageCosts[1]=5;
 			if(consumed==Integer.MAX_VALUE)
+			{
 				usageCosts[1]=mob.maxState().getMovement();
+				if(mob.baseState().getMovement()>mob.maxState().getMovement())
+				    usageCosts[1]=mob.baseState().getMovement();
+			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
 				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getMovement(),Util.div((Integer.MAX_VALUE-consumed),100.0)));
@@ -539,7 +547,11 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			usageCosts[2]=consumed/divider;
 			if(usageCosts[2]<5)	usageCosts[2]=5;
 			if(consumed==Integer.MAX_VALUE)
+			{
 				usageCosts[2]=mob.maxState().getHitPoints();
+				if(mob.baseState().getHitPoints()>mob.maxState().getHitPoints())
+				    usageCosts[2]=mob.baseState().getHitPoints();
+			}
 			else
 			if(consumed>(Integer.MAX_VALUE-100))
 				usageCosts[0]=(int)Math.round(Util.mul(mob.maxState().getHitPoints(),Util.div((Integer.MAX_VALUE-consumed),100.0)));

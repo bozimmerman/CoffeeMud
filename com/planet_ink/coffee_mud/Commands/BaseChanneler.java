@@ -64,7 +64,7 @@ public class BaseChanneler extends StdCommand
 			String str="["+channelName+"] '"+message+"'^?^.";
 			if((!mob.name().startsWith("^"))||(mob.name().length()>2))
 				str=" "+str;
-			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^q"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q"+mob.name()+str);
+			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^q"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q<S-NAME>"+str);
 		}
 		else
 		if((message.startsWith(":")||message.startsWith(","))
@@ -79,12 +79,12 @@ public class BaseChanneler extends StdCommand
 			else
 			{
 				msgstr=CommonStrings.applyFilter(msgstr,CommonStrings.SYSTEM_EMOTEFILTER);
-				String str="["+channelName+"] "+mob.name()+" "+msgstr+"^?^.";
+				String str="["+channelName+"] <S-NAME> "+msgstr+"^?^.";
 				msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^q"+str,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q"+str);
 			}
 		}
 		else
-			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^qYou "+channelName+" '"+message+"'^?^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q"+mob.name()+" "+channelName+"S '"+message+"'^?^.");
+			msg=new FullMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_GENERAL|CMMsg.MSG_SPEAK,"^Q^qYou "+channelName+" '"+message+"'^?^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^q<S-NAME> "+channelName+"S '"+message+"'^?^.");
 		if((mob.location()!=null)
 		&&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
 		{
