@@ -267,16 +267,22 @@ public class Import extends StdCommand
 		}
 		if(areaName.toUpperCase().startsWith("NAME "))
 		{
-			boolean justdoit=true;
 			if((areaName.length()>=41)
 			&&(areaName.charAt(12)=='{')
 			&&(areaName.charAt(21)!=' ')
 			&&(areaName.charAt(40)==' '))
-			{
 				areaName=areaName.substring(21,41).trim();
-				justdoit=false;
+			else
+			if((areaName.charAt(12)=='{')
+			||(areaName.charAt(13)=='{'))
+			{
+				int x=areaName.indexOf("}",12);
+				if(x>12)
+					areaName=areaName.substring(x+1).trim();
+				else
+					areaName=areaName.substring(5).trim();
 			}
-			if(justdoit)
+			else
 				areaName=areaName.substring(5).trim();
 		}
 
@@ -4267,6 +4273,9 @@ public class Import extends StdCommand
 			else
 				return false;
 		}
+		if((areaName.toUpperCase().startsWith(areaAuthor.toUpperCase()+" "))
+		&&(areaName.substring(areaAuthor.length()+1).trim().length()>0))
+			areaName=areaName.substring(areaAuthor.length()+1).trim();
 
 		try
 		{

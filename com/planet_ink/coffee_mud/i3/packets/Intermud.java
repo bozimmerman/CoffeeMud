@@ -272,7 +272,10 @@ public class Intermud implements Runnable, Persistent, Serializable {
             I3Exception e;
 
             e = new I3Exception(msg);
-			Log.errOut("Intermud",e.getMessage());
+			if((e.getMessage()!=null)
+			&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
+			&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
+				Log.errOut("Intermud",e.getMessage());
         }
         else {
         }
@@ -379,7 +382,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     connect();
 					if((e.getMessage()!=null)
 					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-					&&(e.getMessage().toLowerCase().indexOf("Connection reset")<0))
+					&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
 						Log.errOut("InterMud",e.getMessage());
                     return;
                 }
@@ -389,7 +392,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 catch( I3Exception e ) {
 					if((e.getMessage()!=null)
 					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-					&&(e.getMessage().toLowerCase().indexOf("Connection reset")<0))
+					&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
 						Log.errOut("InterMud",e.getMessage());
                     continue;
                 }
@@ -556,8 +559,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
         }
         catch( java.io.IOException e ) {
 			if((e.getMessage()!=null)
-			&&(e.getMessage().indexOf("reset by peer")<0)
-			&&(e.getMessage().indexOf("Connection reset")<0))
+			&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
+			&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
 				Log.errOut("Intermud",e.getMessage());
         }
     }

@@ -139,7 +139,8 @@ public class Scriptable extends StdBehavior
 		"INCONTAINER", //53
 		"ISALIVE", // 54
 		"ISPKILL", // 55
-		"NAME" // 56
+		"NAME", // 56
+		"ISMOON", // 57
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -1004,6 +1005,25 @@ public class Scriptable extends StdBehavior
 					if((Climate.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
 					&&(monster.location().getArea().getClimateObj().weatherType(monster.location())==a))
 					{returnable=true; break;}
+				break;
+			}
+			case 57: // ismoon
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				returnable=false;
+				if(monster.location()!=null)
+				{
+					if(arg1.length()==0)
+						returnable=monster.location().getArea().getClimateObj().canSeeTheMoon(monster.location());
+					else
+					for(int a=0;a<TimeClock.PHASE_DESC.length;a++)
+						if((TimeClock.PHASE_DESC[a]).startsWith(arg1.toUpperCase())
+						&&(monster.location().getArea().getTimeObj().getMoonPhase()==a))
+						{
+							returnable=true; 
+							break;
+						}
+				}
 				break;
 			}
 			case 38: // istime
@@ -2122,6 +2142,12 @@ public class Scriptable extends StdBehavior
 			{
 				if(monster.location()!=null)
 					results.append(Climate.WEATHER_DESCS[monster.location().getArea().getClimateObj().weatherType(monster.location())]);
+				break;
+			}
+			case 57: // ismoon
+			{
+				if(monster.location()!=null)
+					results.append(TimeClock.PHASE_DESC[monster.location().getArea().getTimeObj().getMoonPhase()]);
 				break;
 			}
 			case 38: // istime

@@ -1,9 +1,7 @@
 Fenris, my attempt at a half-elf/demon is bugged. We have aged him for over 30 minutes as much as possible (with aid of the Butoh dance, so that`s at least twice a minute) and he hasn`t turned into a player. This is the second half demon lost.
 Half the time when I sign in, I have 10 hp out of full, about 50 mv out of full, and 100 mana out of full.
 I can put my armor back on after I start most dances and they don`t get stopped.
-Name        {60 80} Sansara Margate~ not parsing right!
 (copy) not appearing next to your titles
-Some ISMOON check for making events only happen in certain lunar phases.
 set stats from races should also set limits
 
 

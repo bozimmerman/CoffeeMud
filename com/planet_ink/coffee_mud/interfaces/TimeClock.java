@@ -38,6 +38,7 @@ public interface TimeClock extends Tickable
 	public final static int PHASE_WANDEQUARTER=6;
 	public final static int PHASE_WANECRESCENT=7;
 	public final static int PHASE_BLUE=8;
+	public final static String[] PHASE_DESC={"NEW","WAXCRESCENT","WAXQUARTER","WAXGIBBOUS","FULL","WANEGIBBOUS","WANEQUARTER","WANECRESCENT","BLUE"};
 	
 	public final static String[] TOD_DESC={
 		"It is dawn ","It is daytime ","It is dusk ","It is nighttime "

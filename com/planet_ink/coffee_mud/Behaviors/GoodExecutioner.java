@@ -18,15 +18,15 @@ public class GoodExecutioner  extends StdBehavior
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		if(M==null) return false;
+		if(Sense.isBoundOrHeld(M)) return false;
+		if(!M.isMonster()) return false;
 		for(int b=0;b<M.numBehaviors();b++)
 		{
 			Behavior B=M.fetchBehavior(b);
 			if((B!=null)&&(B.grantsAggressivenessTo(M)))
 				return true;
 		}
-		return (((M.getAlignment()<350)&&(M.isMonster())&&(!Sense.isBoundOrHeld(M)))
-		||((M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
-		   &&(M.isMonster())));
+		return ((M.getAlignment()<350)||(M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")));
 	}
 
 	/** this method defines how this thing responds

@@ -162,7 +162,7 @@ public class ServerThread extends Thread {
                         interactive.processInput();
                     }
                     catch( Exception e ) {
-						Log.errOut("InterMud",e);
+						Log.errOut("IMServerThread",e);
                     }
                 }
             }
@@ -177,7 +177,7 @@ public class ServerThread extends Thread {
                             thing.processEvent();
                         }
                         catch( Exception e ) {
-							Log.errOut("InterMud",e);
+							Log.errOut("IMServerThread",e);
                         }
                     }
                 }

@@ -147,7 +147,7 @@ public abstract class Interactive implements ServerUser {
             socket.close();
         }
         catch( java.io.IOException e ) {
-			Log.errOut("Intermud",e);
+			Log.errOut("IMInteractive",e);
         }
         destructed = true;
     }
