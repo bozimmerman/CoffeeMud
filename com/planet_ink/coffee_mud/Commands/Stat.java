@@ -86,6 +86,11 @@ public class Stat extends BaseAbleLister
 		{
 			lastCur=curTime;
 			curTime=curTime-(scale*(24*60*60*1000));
+			IQCalendar C2=new IQCalendar(curTime);
+			C2.set(C.HOUR_OF_DAY,23);
+			C2.set(C.MINUTE,59);
+			C2.set(C.SECOND,59);
+			C2.set(C.MILLISECOND,999);
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
