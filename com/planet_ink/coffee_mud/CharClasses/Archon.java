@@ -61,5 +61,18 @@ public class Archon extends StdCharClass
 	public void level(MOB mob)
 	{
 		mob.tell("^HYou leveled... not that it matters.^N");
+		levelAdjuster(mob,1);
+
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getWisdom(),4.0))+bonusPracLevel;
+		if(practiceGain<=0)practiceGain=1;
+		mob.setPractices(mob.getPractices()+practiceGain);
+
+		int trainGain=1;
+		if(trainGain<=0)trainGain=1;
+		mob.setTrains(mob.getTrains()+trainGain);
+		// wrap it all up
+		mob.recoverEnvStats();
+		mob.recoverCharStats();
+		mob.recoverMaxState();
 	}
 }

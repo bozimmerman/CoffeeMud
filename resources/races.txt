@@ -2,9 +2,9 @@
 
 ^YDwarf   :^? Dwarves are shorter than humans, but much stockier, and enjoy sporting beards (including the women).  They receive one bonus Constitution point, but lose one Charisma point.  They also have Infravision, or the ability to see other creatures in the dark.  Dwarves may be Clerics, Fighters, or Thieves.
 
-^YElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.  They receive one bonus Dexterity point, but lose one Constitution point. Elves have Infravision, and may be Clerics, Fighers, Rangers, Mages, or Thieves.
+^YElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.  They receive one bonus Dexterity point, but lose one Constitution point. Elves have Infravision, and may be Clerics, Fighters, Rangers, Mages, or Thieves.
 
-^YGnome   :^? Gnomes are curious and quick-witted folk, resembling small dwarves.  They receive one bonus Intelligence point, but lose one Wisdom point due to their carelessness.  They also have Infravision, and may be Clerics, Fighers, or Thieves.
+^YGnome   :^? Gnomes are curious and quick-witted folk, resembling small dwarves.  They receive one bonus Intelligence point, but lose one Wisdom point due to their carelessness.  They also have Infravision, and may be Clerics, Fighters, or Thieves.
 
 ^YHalf Elf:^? Half Elves are a mixture of humans and elves.  They have Infravision, and may be Bards, Clerics, Fighters, Mages, Rangers, and Thieves.
 

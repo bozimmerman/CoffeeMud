@@ -139,7 +139,7 @@ public class StdCharClass implements CharClass
 		mob.recoverMaxState();
 	}
 
-	private StringBuffer levelAdjuster(MOB mob, int adjuster)
+	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+1);
 
