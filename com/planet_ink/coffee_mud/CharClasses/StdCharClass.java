@@ -185,8 +185,7 @@ public class StdCharClass implements CharClass
 
 	public void unLevel(MOB mob)
 	{
-		if(mob.baseEnvStats().level()<2)
-			return;
+		if(mob.baseEnvStats().level()<2) return;
 		mob.tell("\n\r^ZYou've lost a level!!!^N");
 
 		levelAdjuster(mob,-1);
@@ -196,11 +195,11 @@ public class StdCharClass implements CharClass
 		int trainGain=0;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
-		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getCurrentClass().name()+"^N.\n\r");
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
+		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name()+"^N.\n\r");
 	}
 
 	protected int neededToBeLevel(int level)

@@ -17,7 +17,7 @@ public class Amputation extends StdAbility
 			if(Util.isSet((int)missingLimbList,i))
 				buf.append(", "+AMPUTATE_DESCS[i]);
 		if(buf.length()==0) return "";
-		return "(Missing your "+buf.substring(1)+")";
+		return "(Missing your"+buf.substring(1)+")";
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -69,10 +69,9 @@ public class Amputation extends StdAbility
 												 AMPUTATE_LEFTEYE,AMPUTATE_RIGHTEYE};
 	
 	protected long missingLimbList(){ return Util.s_long(text());}
-	public boolean canWear(Item item)
+	public boolean canWear(long missingLimbs, Item item)
 	{
 		long forbiddenWornBits=0;
-		long missingLimbs=missingLimbList();
 		if((missingLimbs&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
 			forbiddenWornBits=forbiddenWornBits|Item.ON_ARMS;
 		if((missingLimbs&AMPUTATE_BOTHLEGS)==AMPUTATE_BOTHLEGS)
@@ -137,6 +136,7 @@ public class Amputation extends StdAbility
 			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_HURT))
 			&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
 		{
+			long missingLimbList=missingLimbList();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_PULL:
@@ -145,7 +145,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DROP:
 			case Affect.TYP_OPEN:
-				if((missingLimbList()&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
+				if((missingLimbList&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
 				{
 					myChar.tell("Your condition prevents you from doing that.");
 					return false;
@@ -159,7 +159,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_PUT:
 			case Affect.TYP_UNLOCK:
 			case Affect.TYP_WRITE:
-				if((missingLimbList()&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
+				if((missingLimbList&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
 				{
 					myChar.tell("Your condition prevents you from doing that.");
 					return false;
@@ -167,39 +167,40 @@ public class Amputation extends StdAbility
 				break;
 			case Affect.TYP_HOLD:
 			case Affect.TYP_WIELD:
-				if((affect.tool()!=null)	
-				&&(affect.tool() instanceof Item))
+				if((affect.target()!=null)
+				&&((missingLimbList&AMPUTATE_BOTHHANDS)>0)
+				&&(affect.target() instanceof Item))
 				{
-					if(((missingLimbList()&AMPUTATE_BOTHHANDS)!=AMPUTATE_BOTHHANDS)
-					&&(!myChar.amWearingSomethingHere(Item.HELD))
-					&&(!myChar.amWearingSomethingHere(Item.WIELD)))
+					if(((missingLimbList&AMPUTATE_BOTHHANDS)!=AMPUTATE_BOTHHANDS)
+					&&(!((Item)affect.target()).rawLogicalAnd())
+					&&((!myChar.amWearingSomethingHere(Item.HELD))&&(!myChar.amWearingSomethingHere(Item.WIELD))))
 						break;
 					switch(affect.targetMinor())
 					{
 						case Affect.TYP_HOLD:
-							myChar.tell("Your lack the limbs prevents you from holding "+affect.tool().name()+".");
+							myChar.tell("Your lack of limbs prevents you from holding "+affect.target().name()+".");
 							break;
 						case Affect.TYP_WIELD:
-							myChar.tell("Your lack the limbs prevents you from wielding "+affect.tool().name()+".");
+							myChar.tell("Your lack of limbs prevents you from wielding "+affect.target().name()+".");
 							break;
 					}
 					return false;
 				}
 				break;
 			case Affect.TYP_WEAR:
-				if((affect.tool()!=null)	
-				&&(affect.tool() instanceof Item)
-				&&(!canWear((Item)affect.tool())))
+				if((affect.target()!=null)	
+				&&(affect.target() instanceof Item)
+				&&(!canWear(missingLimbList,(Item)affect.target())))
 				{
-					myChar.tell("Your lack the limbs prevents you from putting on "+affect.tool().name()+".");
+					myChar.tell("Your lack of limbs prevents you from putting on "+affect.target().name()+".");
 					return false;
 				}
 				break;
 			case Affect.TYP_DRINK:
-				if((missingLimbList()&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
+				if((missingLimbList&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
 				{
-					if(affect.tool()==null) return true;
-					if(!myChar.isMine(affect.tool())) return true;
+					if(affect.target()==null) return true;
+					if(!myChar.isMine(affect.target())) return true;
 					myChar.tell("Your lack the limbs prevents you from drinking from that.");
 					return false;
 				}
@@ -225,12 +226,57 @@ public class Amputation extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 
-		unInvoke();
+		super.unInvoke();
 
 		if(canBeUninvoked)
 			mob.tell("Your limbs have been restored.");
 	}
 	
+	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
+	{
+		String targetName=Util.combine(commands,0);
+		MOB target=null;
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		else
+		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		   target=mob.getVictim();
+		else
+		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
+			target=mob;
+		else
+		if(targetName.length()>0)
+		{
+			target=mob.location().fetchInhabitant(targetName);
+			if(target==null)
+			{
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORN_REQ_UNWORNONLY);
+				if((t!=null)&&(!(t instanceof MOB)))
+				{
+					if(!quiet)
+						mob.tell("You can't do that to '"+targetName+"'.");
+					return null;
+				}
+			}
+		}
+
+		if(target!=null) 
+			targetName=target.name();
+		
+		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		{
+			if(!quiet)
+			{
+				if(targetName.trim().length()==0)
+					mob.tell("You don't see them here.");
+				else
+					mob.tell("You don't see '"+targetName+"' here.");
+			}
+			return null;
+		}
+		return target;
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -263,8 +309,8 @@ public class Amputation extends StdAbility
 				return false;
 			}
 			bit=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).longValue();
-			String gone=AMPUTATE_DESCS[(int)bit-1];
-			long code=AMPUTATE_CODES[(int)bit-1];
+			String gone=AMPUTATE_DESCS[(int)bit];
+			long code=AMPUTATE_CODES[(int)bit];
 			
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.ACT_GENERAL:0),str);
@@ -274,18 +320,18 @@ public class Amputation extends StdAbility
 				if(!msg.wasModified())
 				{
 					if((AMPUTATE_BOTHEYES&bit)>0)
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-NAME>'s  "+gone+" is destroyed!^?");
+						target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
 					else
 					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-NAME>'s  "+gone+" falls off!^?");
+						target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
 						Item limb=CMClass.getItem("GenItem");
 						limb.setName("a "+gone);
 						limb.setDisplayText("a bloody "+gone+" is sitting here.");
-						limb.setSecretIdentity(mob.name()+"`s bloody "+gone+".");
+						limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 						limb.baseEnvStats().setLevel(1);
 						limb.baseEnvStats().setWeight(5);
 						limb.recoverEnvStats();
-						mob.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+						target.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
 					}
 					if(newOne==true)
 						target.addNonUninvokableAffect(A);

@@ -297,7 +297,7 @@ public class Movement
 					Exit thisExit=mob.location().getExitInDir(i);
 					Room thisRoom=mob.location().getRoomInDir(i);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
-						directions.addElement(new Integer(direction));
+						directions.addElement(new Integer(i));
 				}
 				// up is last resort
 				if(directions.size()>1)

@@ -462,7 +462,8 @@ public class StdMOB implements MOB
 		||(victim.location()!=location())
 		||(victim.amDead()))
 		{
-			if(victim.getVictim()==this)
+			if((victim instanceof StdMOB)
+			&&(((StdMOB)victim).victim==this))
 				victim.setVictim(null);
 			setVictim(null);
 			return false;

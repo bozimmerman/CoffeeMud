@@ -92,8 +92,8 @@ public class StdRace implements Race
 			case Affect.TYP_DRINK:
 				if((forbiddenWornBits()&Item.HELD)>0)
 				{
-					if(affect.tool()==null) return true;
-					if(!myChar.isMine(affect.tool())) return true;
+					if(affect.target()==null) return true;
+					if(!myChar.isMine(affect.target())) return true;
 					myChar.tell("You cannot drink from that.");
 					return false;
 				}
