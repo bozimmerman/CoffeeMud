@@ -1010,6 +1010,10 @@ useless. </P>
     <TD>Returns the number of mobs in the same room as 
       the scripted monster, including the monster.</TD></TR>
   <TR>
+    <TD>NUMPCSROOM()</TD>
+    <TD>Returns the number of pcs in the same room as 
+      the scripted monster.</TD></TR>
+  <TR>
     <TD>NUMRACEINAREA([race name])</TD>
     <TD>Returns the number of mobs in the same area as 
       the scripted monster whose race matches the given string.</TD></TR>
@@ -1998,21 +2002,24 @@ statement above, will cause the script block with the trigger type FUNCTION_PROG
 and the given name to execute.&nbsp; The parameters passed into the callfunc can 
 be referenced using the $g and $G codes.&nbsp; See the MPCALLFUNC statement 
 above for more information on creating functions.</P>
-<P class=MsoNormal>The callfunc function returns true ONLY if the FUNCTION_PROG 
-includes a RETURN statement that includes a non-empty string parameter.</P>
+<P class=MsoNormal>The callfunc function returns true ONLY 
+if the FUNCTION_PROG includes a RETURN statement that includes a non-empty 
+string parameter.</P>
 <P class=MsoNormal>EXAMPLE:</P>
 <P class=MsoNormal><EM>function_prog 
 myfunc<BR></EM><EM>&nbsp; return $g<BR>~</EM></P>
 <P class=MsoNormal><EM>once_prog<BR></EM><EM>&nbsp; if callfunc(myfunc 
 ASTRING)<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>mpecho This callfunc function 
-will always return true.<BR>&nbsp;&nbsp;&nbsp; mpecho This is because myfunc 
-just returns the parameter it is given.<BR>&nbsp;&nbsp;&nbsp; mpecho And this 
-callfunc is passing in a non-empty string as a parameter.<BR>&nbsp; endif<BR></EM><EM><BR>&nbsp; if !callfunc(myfunc)<BR><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>mpecho This callfunc function 
-will always return false, since my parmeters are empty.<BR>&nbsp; endif<BR>~</EM></P>
+will always return true.<BR>&nbsp;&nbsp;&nbsp; mpecho This 
+is because myfunc just returns the parameter it is given.<BR>&nbsp;&nbsp;&nbsp; mpecho And this callfunc is passing in a 
+non-empty string as a parameter.<BR>&nbsp; endif<BR></EM><EM><BR>&nbsp; if !callfunc(myfunc)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>mpecho 
+This callfunc function will always return false, since my parmeters are 
+empty.<BR>&nbsp; endif<BR>~</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><O:P><EM></EM></O:P></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>class(character == classname)</EM></P>
 <P class=MsoNormal>This checks the class of the character 
 variable.&nbsp; For players, this is their class, or in the case of a 
@@ -2040,9 +2047,9 @@ see all the different things you can evaluate.</P>
 <P class=MsoNormal><EM>if eval($n == 
 an orc) or eval('$&lt;$i VAR&gt;'&nbsp; !=&nbsp; 7)&nbsp;<BR></EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">goldamt<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>goldamt(character &gt; amount)</EM></P>
-<P class=MsoNormal><o:p></o:p></P>
+<P class=MsoNormal><o:p></O:P></P>
 <P class=MsoNormal>This&nbsp;evaluates the amount of gold 
 that the character variable has on hand. Where '==' may be any other logical 
 operator from&nbsp;above.&nbsp;</P>
@@ -2130,7 +2137,7 @@ InTheAir)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor eith
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor is 
 not up in the air.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">inroom<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>inroom(target == roomcode)</EM></P>
 <P class=MsoNormal>This checks to see if the target is 
 in&nbsp;the room specified by the room code.&nbsp; The room code may be a room 
@@ -2166,7 +2173,7 @@ alive.</P>
 <P class=MsoNormal><EM>if 
 isalive($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT dead!<BR>end<BR></EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ischarmed(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is charmed. </P>
@@ -2194,7 +2201,7 @@ evil.</P>
 isevil($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am evil!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or good.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfight<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfight(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is in combat.</P>
@@ -2204,7 +2211,7 @@ isfight($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am fightin
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am not 
 fighting.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isfollow<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isfollow(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable’s master (the person they are following) is in the room.</P>
@@ -2224,7 +2231,7 @@ good.</P>
 isgood($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am good!<BR>else<BR>&nbsp; mpecho I am either 
 neutral or evil.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><STRONG>ishere</STRONG></SPAN></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>ishere(name)</EM></P>
@@ -2237,7 +2244,7 @@ literal string.</P>
 happy frog)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho A happy frog is in the room.<BR>else<BR>&nbsp; mpecho A happy frog is 
 not in the room.</EM><EM><BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isimmort<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>isimmort(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 
 variable is immortal.&nbsp; In CoffeeMud, that means they have the security code 
@@ -2303,7 +2310,7 @@ color=black><SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isneutral(char
 color=black size=3>if isneutral($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho I am neutral!<BR>else<BR>&nbsp; mpecho I am either&nbsp;good or evil.</FONT></EM><EM><BR><FONT color=black size=3>end</FONT></EM></P></SPAN>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isnpc<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: </P>
 <P class=MsoNormal><EM>isnpc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
@@ -2326,7 +2333,7 @@ chest)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is open
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The chest is 
 not open.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ispc<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ispc(character)</EM></P>
 <P class=MsoNormal>This checks to see if a character 
 variable is a player character.</P>
@@ -2396,7 +2403,7 @@ isweather(rain)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Rain, ra
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho We can play! 
 No Rain!<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">level<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>level(character == number)</EM></P>
 <P class=MsoNormal>This checks the total level of the 
 character variable.&nbsp; Where '==' may be any of the logical operators 
@@ -2425,7 +2432,7 @@ cardinality is represented by the code $g.1 is a sword.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those items is a sword.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">number<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>number(string)</EM></P>
 <P class=MsoNormal>This function returns whether the string 
 given is a number.</P>
@@ -2495,6 +2502,19 @@ above.</P>
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
 or less&nbsp;mobs in the room&nbsp;.<BR>endif</EM></P>
 <P class=MsoNormal>
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numpcsroom</SPAN></B></P>
+<P class=MsoNormal>Usage: <BR><EM>numpcsroom( == number)</EM></P>
+<P class=MsoNormal>This function compares the total number 
+of players in the&nbsp;same room as the monster&nbsp;to the number 
+given.&nbsp;&nbsp;&nbsp;This function counts players only, including the hidden 
+and undetectable.&nbsp; The '==' may also be any of the logical operators from 
+above.</P>
+<P class=MsoNormal>EXAMPLES:<BR><BR><EM>if&nbsp;numpcsroom( &gt; 10)<BR><SPAN style="mso-spacerun: yes">&nbsp; 
+</SPAN>mpecho There are more than 10 pcs in this room.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10 
+or less&nbsp;pcs in the room&nbsp;.<BR>endif</EM></P>
+<P class=MsoNormal>
 <P class=MsoNormal><EM></EM></P><B 
 style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">numraces</SPAN></B> 
@@ -2523,7 +2543,7 @@ style="mso-spacerun: yes">&nbsp; </SPAN>mpecho There are 10
 or less&nbsp;goblins in this area.<BR>endif</EM></P>
 <P class=MsoNormal>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">position<o:p></O:P></SPAN></B></P>
 <P></P>
 <P class=MsoNormal>Usage: <BR><EM>position(character == posword)</EM></P>
 <P class=MsoNormal>This checks the position of the 
@@ -2574,9 +2594,9 @@ winner of the quest myquest.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp;
 </SPAN>mpecho This means the&nbsp;the actor&nbsp;hss not&nbsp;been a winner of 
 the&nbsp;quest myquest.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P></SPAN></B></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">race<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == race)</EM></P>
 <P class=MsoNormal>This function compares the race of the 
 character variable with the race name given. For a list of race names, do LIST 
@@ -2586,7 +2606,7 @@ the logical operators from above.</P>
 </SPAN>mpecho The actor is a goblin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not a goblin.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">racecat<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>race(character == category)</EM></P>
 <P class=MsoNormal>This function compares the racial 
 category of the race&nbsp;of the character variable with the racial category 
@@ -2597,9 +2617,9 @@ above.</P>
 </SPAN>mpecho The actor is an Elf, or Elf-kin.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; 
 </SPAN>mpecho The actor is not an Elf-Kin.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></o:p><EM></EM></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><o:p></O:P><EM></EM></SPAN></B></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">rand<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand(integer)</EM></P>
 <P class=MsoNormal>This generates a random number and 
 checks to see if it is under the integer. This is best used for random events 
@@ -2610,7 +2630,7 @@ where there are only two outcomes.</P>
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Not under 
 40%.<BR>endif</EM></P>
 <P class=MsoNormal><B><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">randnum<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>rand(integer == integer)</EM></P>
 <P class=MsoNormal>This generates a random number from 1 to 
 the first integer given, and checks to see if it is under the value give in the 
@@ -2648,7 +2668,7 @@ the code $g.1 is joe.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Neither of 
 those mobs is joe.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">sex<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>sex(character == letter)</EM></P>
 <P class=MsoNormal>This compares the sex of the character 
 variable to the letter given.&nbsp; The letter may be "M", "F", or "N".&nbsp; 
@@ -2691,7 +2711,7 @@ words.<BR>else<BR><SPAN
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho Since no 
 variables were used in the example, this is technically impossible.<BR>endif</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></o:p></SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">var<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>var(character variable == value)</EM></P>
 <P class=MsoNormal>This function compares the variable 
 belonging to the character to the given value.&nbsp; The character is almost 
