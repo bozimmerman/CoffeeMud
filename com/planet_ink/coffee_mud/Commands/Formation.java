@@ -26,33 +26,12 @@ public class Formation extends StdCommand
 	private String[] access={"FORMATION"};
 	public String[] getAccessWords(){return access;}
 	
-	public void process(Vector[] done, MOB leader,int level)
-	{
-		for(int i=0;i<done.length;i++)
-			if((done[i]!=null)&&(done[i].contains(leader)))
-				return;
-		if(done[level]==null) done[level]=new Vector();
-		done[level].addElement(leader);
-		for(int f=0;f<leader.numFollowers();f++)
-		{
-			MOB M=leader.fetchFollower(f);
-			if(M==null) continue;
-			int range=leader.fetchFollowerOrder(M);
-			if(range<0) range=0;
-			process(done,M,level+range);
-		}
-	}
-	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
-		int tries=0;
-		MOB leader=mob;
-		while((leader.amFollowing()!=null)&&(((++tries)<1000)))
-			leader=leader.amFollowing();
-		Vector[] done=new Vector[1000];
-		process(done,leader,0);
+	    MOB leader=MUDFight.getFollowedLeader(mob);
+		Vector[] done=MUDFight.getFormation(mob);
 		if(commands.size()==0)
 		{
 			StringBuffer str=new StringBuffer("");

@@ -877,6 +877,7 @@ public class StdMOB implements MOB
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
+		   ||((amFollowing()!=null)&&(amFollowing().fetchFollowerOrder(this)>0))
 		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0)&&Sense.hasSeenContents(this))
 		   ||(isInCombat()))
 		{
@@ -949,6 +950,31 @@ public class StdMOB implements MOB
 					sendBack.append("someone");
 				else
 					sendBack.append(getVictim().name());
+			}
+			if((amFollowing()!=null)&&(amFollowing().fetchFollowerOrder(this)>0))
+			{
+			    Vector whoseAhead=MUDFight.getFormationFollowed(this);
+			    if((whoseAhead!=null)&&(whoseAhead.size()>0))
+			    {
+				    sendBack.append(", behind ");
+				    for(int v=0;v<whoseAhead.size();v++)
+				    {
+				        MOB ahead=(MOB)whoseAhead.elementAt(v);
+						if(v>0)
+						{
+							sendBack.append(", ");
+							if(v==whoseAhead.size()-1)
+								sendBack.append("and ");
+						}
+						if(ahead==viewer)
+							sendBack.append("you");
+						else
+						if(!Sense.canBeSeenBy(ahead,viewer))
+							sendBack.append("someone");
+						else
+							sendBack.append(ahead.name());
+				    }
+			    }
 			}
 			sendBack.append(".");
 			return sendBack.toString();

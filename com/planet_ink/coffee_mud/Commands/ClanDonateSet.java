@@ -32,7 +32,6 @@ public class ClanDonateSet extends BaseClanner
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 		commands.setElementAt("clandonateset",0);
 
-		LandTitle l=null;
 		Room R=mob.location();
 		if(skipChecks)
 			R=CMMap.getRoom(Util.combine(commands,1));
