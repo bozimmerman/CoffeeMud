@@ -80,12 +80,12 @@ public class StdCharClass implements CharClass
 		{
 			mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
 			mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
-		}
-		for(int a=0;a<CMClass.abilities.size();a++)
-		{
-			Ability A=(Ability)CMClass.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+			for(int a=0;a<CMClass.abilities.size();a++)
+			{
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
+			}
 		}
 	}
 

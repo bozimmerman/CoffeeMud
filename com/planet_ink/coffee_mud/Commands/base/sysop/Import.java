@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.*;
 
 
-// bos favorite import areas command.  saved here for his convenience
 public class Import
 {
 	private String getAreaName(Vector V)
@@ -378,7 +377,7 @@ public class Import
 		case 8: return "Spell_Frost"; // chill touch
 		case 9: return "Spell_MirrorImage"; // clone
 		case 10: return "Spell_Feeblemind"; // color spray
-		case 11: return "Spell_DistantVision"; // control weather
+		case 11: return "Chant_CallRain"; // control weather
 		case 12: return "Prayer_CreateFood";
 		case 13: return "Prayer_CreateWater";
 		case 14: return "Prayer_CureBlindness";
@@ -429,7 +428,7 @@ public class Import
 		case 67: return "Spell_Shield";
 		case 68: return "Spell_Weaken";
 		case 69: return "Spell_MassInvisibility";
-		case 70: return "Spell_Dragonfire"; // acid blast
+		case 70: return "Spell_AcidArrow"; // acid blast
 		case 71: return "Spell_Portal"; // actually mass teleport
 		case 72: return "Spell_FaerieFog";
 		case 73: return "Spell_Frost"; // ice storm
@@ -1012,8 +1011,8 @@ public class Import
 			if(Util.isSet(affFlag,18))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Charm"));
 
-			//if(Util.isSet(affFlag,20)) no door walking through abilities available
-			//	M.addNonUninvokableAffect(new Spell_Charm());
+			if(Util.isSet(affFlag,20))
+				M.addNonUninvokableAffect(CMClass.getAbility("Spell_PassDoor"));
 
 			if(Util.isSet(affFlag,21))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Haste"));
@@ -1021,8 +1020,8 @@ public class Import
 			//if(Util.isSet(affFlag,22)) no effect anyway
 			//	M.addNonUninvokableAffect(new Prayer_Calm());
 
-			//if(Util.isSet(affFlag,23))  dumb
-			//	M.addNonUninvokableAffect(new Prayer_Plague());
+			if(Util.isSet(affFlag,23))
+				M.addNonUninvokableAffect(CMClass.getAbility("Prayer_Plague"));
 
 			if(Util.isSet(affFlag,24))
 				M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
@@ -1206,7 +1205,8 @@ public class Import
 				if(Util.isSet(off,20))
 					M.addBehavior(CMClass.getBehavior("BrotherHelper"));
 				//if(Util.isSet(off,21)) is missing
-				//if(Util.isSet(off,22)) sweeps are not supported
+				if(Util.isSet(off,22))
+					M.addAbility(CMClass.getAbility("Fighter_Sweep"));
 
 				if(M.numAbilities()>numAbiles)
 					M.addBehavior(CMClass.getBehavior("CombatAbilities"));
@@ -1788,7 +1788,7 @@ public class Import
 				I.setRawProperLocationBitmap(Item.ON_ARMS|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,9))
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
-			if(Util.isSet(wearFlag,10)) // about the body
+			if(Util.isSet(wearFlag,10))
 				I.setRawProperLocationBitmap(Item.ABOUT_BODY|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,11))
 				I.setRawProperLocationBitmap(Item.ON_WAIST|I.rawProperLocationBitmap());
@@ -1800,7 +1800,7 @@ public class Import
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,15))
 				I.setRawLogicalAnd(true);
-			if(Util.isSet(wearFlag,17)) //ears
+			if(Util.isSet(wearFlag,17))
 				I.setRawProperLocationBitmap(Item.ON_EARS|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,18)) // ankles
 				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
@@ -1997,8 +1997,8 @@ public class Import
 				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 					I.setMaterial(EnvResource.RESOURCE_GLASS);
 
-			//if(Util.isSet(extraFlag,20))
-			//nothing is unlocatable
+			if(Util.isSet(extraFlag,20))
+				I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.CAN_SEE);
 
 			//if(Util.isSet(extraFlag,22))
 			//nothing is unidentifiable
@@ -2213,8 +2213,8 @@ public class Import
 							//	caster.setMiscText(caster.text()+(new Poison().ID())+";");
 							if(Util.isSet(codeBits,19))
 								dis=dis|EnvStats.IS_FLYING;
-							//if(Util.isSet(codeBits,20)) no pass door irrelevancy, yet
-							//	dis=dis|EnvStats.IS_FLYING;
+							if(Util.isSet(codeBits,20))
+								caster.setMiscText(caster.text()+("Spell_PassDoor")+";");
 							if(Util.isSet(codeBits,21))
 								caster.setMiscText(caster.text()+("Spell_Haste")+";");
 							if(Util.isSet(codeBits,22))

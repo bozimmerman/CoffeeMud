@@ -36,10 +36,10 @@ public class Spell_PassDoor extends Spell
 		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 	
-	public void affectEnvStats(MOB affectedMOB, EnvStats affectedStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
-		super.affectEnvStats(affectedMOB,affectedStats);
-		affectedStats.setDisposition(affectedStats.IS_SEEN);
+		super.affectEnvStats(affected,affectedStats);
+		affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_SEEN);
 		affectedStats.setHeight(-1);
 	}
 
@@ -93,7 +93,8 @@ public class Spell_PassDoor extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		if(!success)
+		if((!success)
+		||(mob.fetchAffect(ID())!=null))
 			beneficialVisualFizzle(mob,null,"<S-NAME> walk(s) "+Directions.getDirectionName(dirCode)+", but go(es) no further.");
 		else
 		if(auto)
@@ -117,6 +118,7 @@ public class Spell_PassDoor extends Spell
 				mob.tell("\n\r\n\r");
 				ExternalPlay.move(mob,dirCode,false);
 				mob.delAffect(this);
+				mob.recoverEnvStats();
 			}
 		}
 

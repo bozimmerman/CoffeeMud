@@ -70,7 +70,7 @@ public class Prop_ClosedDayNight extends Property
 				{
 					doneToday=false;
 					Exit e=((Exit)affected);
-					e.setDoorsNLocks(e.hasADoor(),e.defaultsClosed(),e.defaultsClosed(),e.hasALock(),e.defaultsLocked(),e.defaultsLocked());
+					e.setDoorsNLocks(e.hasADoor(),!e.defaultsClosed(),e.defaultsClosed(),e.hasALock(),e.defaultsLocked(),e.defaultsLocked());
 				}
 			}
 		}

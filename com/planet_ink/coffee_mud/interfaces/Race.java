@@ -37,5 +37,4 @@ public interface Race
 	public boolean okAffect(MOB myChar, Affect affect);
 
 	public void level(MOB mob);
-
 }

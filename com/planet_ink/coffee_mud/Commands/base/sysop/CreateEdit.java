@@ -336,6 +336,19 @@ public class CreateEdit
 				{
 					generic.genMiscText(mob,thang);
 					thang.recoverEnvStats();
+					for(int m=0;m<CMMap.numRooms();m++)
+					{
+						Room room=CMMap.getRoom(m);
+						for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
+						{
+							Exit exit=room.rawExits()[e2];
+							if((exit!=null)&&(exit==thang))
+							{
+								ExternalPlay.DBUpdateExits(room);
+								break;
+							}
+						}
+					}
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 					Log.sysOut("CreateEdit",mob.ID()+" modified exit "+thang.ID()+".");
 				}

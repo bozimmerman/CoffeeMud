@@ -35,7 +35,7 @@ public class Chant_CalmWeather extends Chant
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;

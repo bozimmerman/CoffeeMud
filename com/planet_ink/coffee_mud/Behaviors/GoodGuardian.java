@@ -12,6 +12,7 @@ public class GoodGuardian extends StdBehavior
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
+	
 	public Behavior newInstance()
 	{
 		return new GoodGuardian();
@@ -70,8 +71,6 @@ public class GoodGuardian extends StdBehavior
 			}
 		}
 	}
-
-
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

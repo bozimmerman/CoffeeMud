@@ -72,7 +72,7 @@ public class Chant_PredictWeather extends Chant
 			return false;
 		}
 
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;

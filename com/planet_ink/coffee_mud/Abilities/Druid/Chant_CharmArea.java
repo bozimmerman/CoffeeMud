@@ -51,12 +51,12 @@ public class Chant_CharmArea extends Chant
 		Room target=mob.location();
 		if(target==null) return false;
 
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
+		if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))&&(!auto))
 		{
 			mob.tell("This chant does not work here.");
 			return false;

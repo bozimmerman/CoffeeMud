@@ -128,7 +128,7 @@ public class FrontDoor
 					if(mob.baseCharStats()!=null)
 						if(mob.baseCharStats().getMyClass()!=null)
 						{
-							//mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
+							mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
 							mob.baseCharStats().getMyRace().startRacing(mob,true);
 						}
 					mob.bringToLife(mob.location(),true);

@@ -28,7 +28,7 @@ public class Chant_SummonFood extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		
-		if((mob.location().domainType()&Room.INDOORS)>0)
+		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors to try this.");
 			return false;

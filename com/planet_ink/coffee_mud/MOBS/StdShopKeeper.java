@@ -616,9 +616,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	private StringBuffer listInventory(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		String c="[Cost] "+Util.padRight("Product",30);
-		msg.append(c+c+"\n\r");
-		int colNum=0;
+		int csize=0;
 		Vector inventory=getUniqueStoreInventory();
 		for(int i=0;i<inventory.size();i++)
 		{
@@ -628,7 +626,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5)+"] "+Util.padRight(E.name(),30);
+				if((""+val).length()>(4+csize))
+					csize=(""+val).length()-4;
+			}
+		}
+		
+		String c="["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",30-csize);
+		msg.append(c+c+"\n\r");
+		int colNum=0;
+		for(int i=0;i<inventory.size();i++)
+		{
+			Environmental E=(Environmental)inventory.elementAt(i);
+
+			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
+			{
+				String col=null;
+				int val=yourValue(mob,E,true);
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),30-csize);
 				if((++colNum)>2)
 				{
 					msg.append("\n\r");

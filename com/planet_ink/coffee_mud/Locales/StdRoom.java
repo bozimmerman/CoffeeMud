@@ -481,6 +481,11 @@ public class StdRoom
 				mob.recoverMaxState();
 			}
 		}
+		for(int d=0;d<exits.length;d++)
+		{
+			Exit X=exits[d];
+			if(X!=null) X.recoverEnvStats();
+		}
 		for(int i=0;i<numItems();i++)
 		{
 			Item item=fetchItem(i);

@@ -594,7 +594,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.baseCharStats().getMyClass().unLevel(mob);
 					((MOB)target).baseCharStats().setMyClass(C);
-					//((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
+					((MOB)target).baseCharStats().getMyClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
 					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now a "+C.name()+"!");
