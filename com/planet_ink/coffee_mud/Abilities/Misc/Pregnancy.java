@@ -316,7 +316,15 @@ public class Pregnancy extends StdAbility
 
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchEffect(ID());
-							if(A!=null) mob.delEffect(A);
+							while(A!=null){ 
+								mob.delEffect(A);
+								A=mob.fetchEffect(ID());
+							}
+							A=mob.fetchAbility(ID());
+							while(A!=null){ 
+								mob.delAbility(A);
+								A=mob.fetchAbility(ID());
+							}
 							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=getRace(babe,race1,race2);
 							if(R==null) R=mob.baseCharStats().getMyRace();

@@ -90,9 +90,11 @@ options are: </P>
   href="mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</A>.&nbsp; 
   This domain must match the incoming mail addresses to be accepted. 
   <LI><STRONG>FORWARD</STRONG>=trueorfalse <EM>(e.g. 
-  TRUE)</EM> Should be set to true or false.&nbsp; If TRUE, mail will be 
-  forwarded to players and mailing lists as the mail becomes available.&nbsp; If 
-  FALSE, the server will not forward mail, but will act as a mail accumulator 
+  TRUE)</EM> Should be set to true or false.&nbsp; 
+  If TRUE, mail will be forwarded to players and mailing lists as the mail 
+  becomes available.&nbsp;&nbsp;A player will have their mail forwarded to them ONLY if their AUTOFORWARD flag is set.&nbsp; 
+  If this option is FALSE, the server will not forward mail no 
+  matter what the players AUTOFORWARD flag is, but will act as a mail accumulator 
   only. 
   <LI><STRONG>MAILBOX</STRONG>=journalname <EM>(e.g. The 
   EMail Box)</EM> This is the name of your private email Journal.&nbsp; All 
@@ -150,7 +152,7 @@ options are: </P>
   <P>          
                  
                  
-     &nbsp; </P>
+      </P>
 
 </BODY>
 </HTML>

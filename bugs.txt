@@ -3,10 +3,17 @@ importing and exporting users.  It would help me for some particular scenarios a
 Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
 crafting info parm
+Hi, I wrote some time back, that I have problems with lags when  snooping players. Actually this lag is caused whenever a message  from one person is passed to another one in case the receiver is  reading long texts that require enter to show it completely (more). Seems then all participants have to wait until everyone is ready to  receive new messages. Quite nasty.
 AUTOPAUSE the help file overflows my GMUD display buffer. We really need to break it down into sections (Traps, Skills, Spells, Chants, Prayers, Commonskills, Socials, Commands, etc)
 The blessing of a healer will make you drop things that are in containers. I don`t think that`s very logical, do they jump out of the bag?
 Several of my playtesters have pointed out that fletch bullets doesn't seem to work. I had them try fletch Pack of 50 Bullets with no results. Everything else in fletch works cept th
-Hi, I wrote some time back, that I have problems with lags when  snooping players. Actually this lag is caused whenever a message  from one person is passed to another one in case the receiver is  reading long texts that require enter to show it completely (more). Seems then all participants have to wait until everyone is ready to  receive new messages. Quite nasty.
+compressing genmob data would be really great!
+AddRandomFile' that takes a directory as a parameter?  that'd make it not too hard to have rotating page graphics or random ad banners
+new genraces have wings, aren't ordering their names right to avoid dups, and have 3 legs/feet
+Are childen carried by non-logged in players supposed to emote?
+Everytime I log on, I'm in labor again, and she's not even having sex, and it doesn't say she's pregnant... talk about a bug, I'm on my 6th child now
+Wish does not check to see if the person targeted is in the room, and then casts the wish upon the caster. Example, Kylandaria wished for Fayte to be immune to fire, and ended up with being immune herself.
+People still get in fights over the yawns.
 
 
 Some solution for variable eq on mobs -- use rejuv! 
@@ -14,3 +21,62 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
 
+Every Page 
+Notification of instant messages, greeting, date/time 
+Navigation menu bar (text, image, or combination format) 
+Forum navigation links or text (index/category/board/message... etc.)
+Forum Index
+Stats including: newest member, total members, total posts, most recent post 
+Graphical alert of new messages in each board 
+Date/member of latest posts in each board 
+Name of board moderators 
+Ability to mark every post in the forum "as read" 
+Options not accessible to guests are "hidden" for them 
+Flat text or javascript fading news, with YaBBC enabled
+Topic Index
+Graphical alert each new or updated topic 
+Date/member of latest posts in each topic 
+Names of the board moderators 
+'Jump to' box for instant jump to a different board or category 
+Ability to mark every post in the board "as read" 
+Options not accessible to guests are "hidden" for them
+Topic Display
+Number of reply on each post 
+Author information, such as email, # posts, membergroup, IM links and userpic 
+Option to view profile of authors 
+Ability to quote messages or reply 
+Date of each post listed 
+User/Moderator ability to delete or modify posts 
+Option to display a "printer-friendly" copy of the page 
+Option to send a friend the topic
+Post Page
+Easy to use editor-style interface 
+Option to receive notification of replies 
+Option to disable smileys 
+Full 'editor' bar for inserting smileys and YaBBC tags 
+Input field autojump javascript 
+Full preview ability 
+Option to receive topic "notification" 
+Option to disable smileys
+Other Pages
+Recent posts 
+XX number of posts by a certain member 
+Forum post search 
+Full members list
+Other Features
+Full administration and moderating options 
+Ability to change settings and template on the fly 
+Full YaBBC code in posts, with error-checking galore 
+Integrated instant messaging system for member to member communication 
+Ability to customize the layout colors and CSS via one template 
+Private Boards in which only certain membergroups can access 
+Login length options 
+Delete registered members 
+Full profile options, including signature, settings, and personal information 
+Email all registered users 
+'Maintenance Mode' for major board administration 
+Online help for users and admins 
+Moderator/Administrator ability to move topics 
+Simple registration form and option to generate random password 
+Post icons to designate the message type 
+Admin option to disable the YaBBC code
