@@ -39,7 +39,7 @@ public class Fighter_WeaponBreak extends StdAbility
 		||(!(mob.getVictim().fetchWieldedItem() instanceof Weapon))
 		||(((Weapon)mob.getVictim().fetchWieldedItem()).weaponClassification()==Weapon.CLASS_NATURAL))
 		{
-			mob.tell("He is not wielding a weapon!");
+			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
 			return false;
 		}
 

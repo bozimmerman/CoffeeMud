@@ -46,12 +46,18 @@ public class Prayer_Restoration extends Prayer
 				{
 					target.curState().adjHitPoints(healing,target.maxState());
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				Ability A=target.fetchAffect("Amputation");
 				if(A!=null)
 				{
 					target.delAffect(A);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> missing parts are restored!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				Vector offensiveAffects=Prayer_RestoreSmell.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
@@ -59,6 +65,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can smell again!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_RestoreVoice.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
@@ -66,6 +75,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can speak again!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_RemovePoison.returnOffensiveAffects(target);
 				if(offensiveAffects.size()>0)
@@ -73,6 +85,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> poisonous afflication!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_Freedom.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
@@ -80,6 +95,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can move again!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_CureDisease.returnOffensiveAffects(target);
 				if(offensiveAffects.size()>0)
@@ -87,6 +105,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> disease!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_CureBlindness.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
@@ -94,6 +115,9 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can see again!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_CureDeafness.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
@@ -101,7 +125,11 @@ public class Prayer_Restoration extends Prayer
 					for(int a=offensiveAffects.size()-1;a>=0;a--)
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can hear again!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
 				}
+				mob.location().recoverRoomStats();
 			}
 		}
 		else
