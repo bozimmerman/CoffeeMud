@@ -190,7 +190,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 Channel c = new Channel();
                 Object ob;
 
-                c.channel = (String)keys.nextElement();;
+                c.channel = (String)keys.nextElement();
                 ob = list.get(c.channel);
                 if( ob instanceof Integer ) {
                     removeChannel(c);

@@ -123,7 +123,7 @@ public class MovingRoom extends ActiveTicker
 		messageInfo.addElement(new Vector(V));
 		V.removeAllElements();
 		String theNormalDescBlock = (XMLManager.returnXMLBlock(theDescriptionsBlock, "NORMALDIRECTION"));
-		String theReverseDescBlock = (XMLManager.returnXMLBlock(theDescriptionsBlock, "REVERSEDIRECTION"));;
+		String theReverseDescBlock = (XMLManager.returnXMLBlock(theDescriptionsBlock, "REVERSEDIRECTION"));
 		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOOROPENED"));
 		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "INSIDE"), "DOORCLOSED"));
 		V.addElement(XMLManager.returnXMLValue(XMLManager.returnXMLBlock(theNormalDescBlock, "OUTSIDE"), "DOOROPENED"));

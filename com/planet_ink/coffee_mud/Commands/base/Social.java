@@ -34,7 +34,7 @@ public class Social implements Environmental
 	public void setSourceCode(int code){sourceCode=code;}
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}
-
+	public boolean targetable(){return name().endsWith(" <T-NAME>");}
 
 	public boolean invoke(MOB mob,
 						  Vector commands,
@@ -59,16 +59,16 @@ public class Social implements Environmental
 		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
-		if((Target==null)&&(targetStr.equals("")))
+		if((Target==null)&&(targetable()))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,Affect.NO_EFFECT,null,othersCode(),Third_party_sees);
+			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
-		if((Target==null)&&(!targetStr.equals("")))
+		if(Target==null)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,null,this,(auto?Affect.MASK_GENERAL:0)|sourceCode(),You_see,Affect.NO_EFFECT,null,othersCode(),Third_party_sees);
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}

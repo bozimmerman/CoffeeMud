@@ -587,7 +587,7 @@ public class CMClass extends ClassLoader
 			x=auxPath.indexOf(";");
 		}
 		loadObjectListToObj(v,filePath,auxPath,ancester);
-		return new Vector(new TreeSet(v));;
+		return new Vector(new TreeSet(v));
 	}
 	public static boolean loadListToObj(Object toThis, String filePath, String packageName, boolean aux, String ancestor)
 	{
