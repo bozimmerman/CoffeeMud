@@ -340,8 +340,15 @@ public class TheFight
 				{
 					if(inhab.getVictim()!=target)
 					{
-						if((inhab.getVictim().getVictim()==null)||(inhab.getVictim().getVictim()==target))
-							inhab.getVictim().setVictim(inhab);
+						MOB victim=inhab.getVictim();
+						if((victim.getVictim()==null)||(victim.getVictim()==target))
+						{
+							if((inhab.amFollowing()!=null)&&(victim.amFollowing()!=null)&&(inhab.amFollowing()==victim.amFollowing()))
+								inhab.setVictim(null);
+							else
+								victim.setVictim(inhab);
+						}
+							
 					}
 					else
 						inhab.setVictim(null);
