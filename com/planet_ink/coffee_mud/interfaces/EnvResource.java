@@ -131,75 +131,97 @@ public interface EnvResource extends Item
 
 	
 	public final static String[] RESOURCE_DESCS={
-	"NOTHING", 
-	"MEAT", 
-	"BEEF", 
-	"PORK", 
-	"POULTRY", 
-	"MUTTON", 
-	"FISH",
-	"WHEAT", 
-	"CORN", 
-	"RICE", 
-	"CARROTS", 
-	"TOMATOES", 
-	"PEPPERS", 
-	"GREENS",
-	"FRUIT", 
-	"APPLES", 
-	"BERRIES", 
-	"ORANGES", 
-	"LEMONS", 
-	"GRAPES", 
-	"OLIVES",
-	"POTATOES", 
-	"CACTUS", 
-	"DATES", 
-	"SEAWEED", 
-	"STONE", 
-	"LIMESTONE",
-	"FLINT", 
-	"GRANITE", 
-	"OBSIDIAN", 
-	"MARBLE", 
-	"SAND", 
-	"JADE", 
-	"IRON",
-	"LEAD", 
-	"BRONZE", 
-	"SILVER", 
-	"GOLD", 
-	"ZINC", 
-	"COPPER", 
-	"TIN", 
-	"MITHRIL",
-	"ADAMANTITE", 
-	"STEEL", 
-	"BRASS", 
-	"WOOD", 
-	"PINE", 
-	"BALSA", 
-	"OAK", 
-	"MAPLE",
-	"REDWOOD", 
-	"HICKORY", 
-	"SCALES", 
-	"FUR", 
-	"LEATHER", 
-	"HIDE", 
-	"WOOL",
-	"FEATHERS", 
-	"COTTON", 
-	"HEMP",
-	"WATER",
-	"SALT WATER",
-	"LIQUID",
-	"GLASS",
-	"PAPER",
-	"CLAY",
-	"DIAMOND","CHINA","CRYSTAL","GEM", "PEARL", "PLATINUM","MILK",
-	"EGGS","HOPS","COFFEEBEANS","COFFEE","OPAL","TOPAZ","AMETHYST","GARNET",
-	"AMBER","AQUAMARINE","CRYSOBERYL","IRONWOOD","SILK","COCOA","BLOOD","BONE", "COAL", "LAMP OIL"
+	"NOTHING", //0
+	"MEAT",  //1
+	"BEEF", //2
+	"PORK", //3
+	"POULTRY", //4
+	"MUTTON", //5
+	"FISH",//6
+	"WHEAT", //7
+	"CORN", //8
+	"RICE", //9
+	"CARROTS", //10
+	"TOMATOES", //11
+	"PEPPERS", //12
+	"GREENS",//13
+	"FRUIT", //14
+	"APPLES", //15
+	"BERRIES", //16
+	"ORANGES", //17
+	"LEMONS", //18
+	"GRAPES", //19
+	"OLIVES",//20
+	"POTATOES", //21
+	"CACTUS", //22
+	"DATES", //23
+	"SEAWEED", //24
+	"STONE", //25
+	"LIMESTONE",//26
+	"FLINT", //27
+	"GRANITE", //28
+	"OBSIDIAN", //29
+	"MARBLE", //30
+	"SAND", //31
+	"JADE", //32
+	"IRON",//33
+	"LEAD", //34
+	"BRONZE", //35
+	"SILVER", //36
+	"GOLD", //37
+	"ZINC", //38
+	"COPPER", //39
+	"TIN", //40
+	"MITHRIL",//41
+	"ADAMANTITE", //42
+	"STEEL", //43
+	"BRASS", //44
+	"WOOD", //45
+	"PINE", //46
+	"BALSA", //47
+	"OAK", //48
+	"MAPLE",//49
+	"REDWOOD", //50
+	"HICKORY", //51
+	"SCALES", //52
+	"FUR", //53
+	"LEATHER", //54
+	"HIDE", //55
+	"WOOL",//56
+	"FEATHERS",//57 
+	"COTTON", //58
+	"HEMP",//59
+	"WATER",//60
+	"SALT WATER",//61
+	"LIQUID",//62
+	"GLASS",//63
+	"PAPER",//64
+	"CLAY",//65
+	"CHINA",//66
+	"DIAMOND",//67
+	"CRYSTAL",//68
+	"GEM", //69
+	"PEARL", //70
+	"PLATINUM",//71
+	"MILK",//72
+	"EGGS",//73
+	"HOPS",//74
+	"COFFEEBEANS",//75
+	"COFFEE",//76
+	"OPAL",//77
+	"TOPAZ",//78
+	"AMETHYST",//79
+	"GARNET",//80
+	"AMBER",
+	"AQUAMARINE",
+	"CRYSOBERYL",
+	"IRONWOOD",
+	"SILK",
+	"COCOA",
+	"BLOOD",
+	"BONE", 
+	"COAL", 
+	"LAMP OIL"
 	};
 	public final static int[][] RESOURCE_DATA={ // full code, base value, frequency, strength (1-10)
 	{RESOURCE_NOTHING,0,0,0}, 
@@ -268,8 +290,8 @@ public interface EnvResource extends Item
 	{RESOURCE_GLASS,10,0,3}, 
 	{RESOURCE_PAPER,10,0,0},
 	{RESOURCE_CLAY,1,50,1}, 
-	{RESOURCE_DIAMOND,5000,1,4}, 
 	{RESOURCE_CHINA,30,0,3}, 
+	{RESOURCE_DIAMOND,5000,1,4}, 
 	{RESOURCE_CRYSTAL,10,5,3}, 
 	{RESOURCE_GEM,100,1,3}, 
 	{RESOURCE_PEARL,1000,1,4}, 

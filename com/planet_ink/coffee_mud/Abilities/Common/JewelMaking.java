@@ -17,7 +17,7 @@ public class JewelMaking extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
-	private static final int RCP_EXTRAREQ=8;
+	private static final int RCP_EXTRAREQ=9;
 	
 	private Item building=null;
 	private Item fire=null;
@@ -225,9 +225,9 @@ public class JewelMaking extends CommonSkill
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		String itemName=null;
 		if(firstOther==null)
-			replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		else
-			replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			
 		if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
 			itemName="an "+itemName;
@@ -251,7 +251,36 @@ public class JewelMaking extends CommonSkill
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 
+		if(building instanceof Armor)
+		{
+			((Armor)building).baseEnvStats().setArmor(armordmg);
+			((Armor)building).setRawProperLocationBitmap(0);
+			for(int wo=1;wo<Item.wornLocation.length;wo++)
+			{
+				String WO=Item.wornLocation[wo].toUpperCase();
+				if(misctype.equalsIgnoreCase(WO))
+				{
+					((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
+					((Armor)building).setRawLogicalAnd(false);
+				}
+				else
+				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
+				||(misctype.toUpperCase().endsWith("||"+WO)))
+				{
+					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Armor)building).setRawLogicalAnd(false);
+				}
+				else
+				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
+				||(misctype.toUpperCase().endsWith("&&"+WO)))
+				{
+					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Armor)building).setRawLogicalAnd(true);
+				}
+			}
+		}
 		
 		
 		building.recoverEnvStats();
