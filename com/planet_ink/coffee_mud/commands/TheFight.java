@@ -42,7 +42,7 @@ public class TheFight
 		MOB target=mob.location().fetchInhabitant(whomToKill);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
-			mob.tell("I don't see that here.");
+			mob.tell("I don't see '"+whomToKill+"' here.");
 			return;
 		}
 		if(reallyKill)

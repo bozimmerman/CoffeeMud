@@ -158,7 +158,7 @@ public class Movement
 
 		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,"<S-NAME> open(s) "+openThis.name());
@@ -185,7 +185,7 @@ public class Movement
 
 		if((unlockThis==null)||(!Sense.canBeSeenBy(unlockThis,mob)))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatTounlock+"' here.");
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) "+unlockThis.name());
@@ -212,7 +212,7 @@ public class Movement
 
 		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatToClose+"' here.");
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,"<S-NAME> close(s) "+closeThis.name());
@@ -281,7 +281,7 @@ public class Movement
 
 		if((lockThis==null)||(!Sense.canBeSeenBy(lockThis,mob)))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatTolock+"' here.");
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,"<S-NAME> lock(s) "+lockThis.name());

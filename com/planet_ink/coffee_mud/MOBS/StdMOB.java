@@ -645,7 +645,7 @@ public class StdMOB implements MOB
 						return false;
 					if(!Sense.canBeSeenBy(affect.target(),this))
 					{
-						mob.tell("You don't see that here.");
+						mob.tell("2You don't see '"+affect.target().name()+"' here.");
 						return false;
 					}
 					if(!Sense.canTaste(this))
@@ -661,7 +661,7 @@ public class StdMOB implements MOB
 				&&((!Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
 				   ||(!isInCombat())||(affect.target()!=victim)))
 				{
-					mob.tell("You don't see that here.");
+					mob.tell("1You don't see '"+affect.target().name()+"' here.");
 					return false;
 				}
 				if(!Sense.aliveAwakeMobile(this,false))

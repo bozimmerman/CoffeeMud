@@ -59,7 +59,7 @@ public class Skill_Write extends StdAbility
 		Item target=mob.fetchInventory((String)commands.elementAt(0));
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 			return false;
 		}
 

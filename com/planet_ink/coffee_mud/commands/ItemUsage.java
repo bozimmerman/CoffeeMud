@@ -116,6 +116,9 @@ public class ItemUsage
 		}
 		commands.removeElementAt(0);
 
+		String containerName="";
+		if(commands.size()>0)
+			containerName=(String)commands.lastElement();
 		Item container=possibleContainer(mob,commands);
 		String whatToGet=Util.combine(commands,0);
 		boolean doneSomething=false;
@@ -145,7 +148,7 @@ public class ItemUsage
 							mob.tell(container.name()+" is closed.");
 					}
 					else
-						mob.tell("You don't see that here.");
+						mob.tell("You don't see '"+containerName+"' here.");
 				}
 				return;
 			}
@@ -265,7 +268,7 @@ public class ItemUsage
 			if((putThis==null)||((putThis!=null)&&(!Sense.canBeSeenBy(putThis,mob))))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToPut)<=0))
-					mob.tell("I don't see that here.");
+					mob.tell("I don't see '"+thingToPut+"' here.");
 				return;
 			}
 			else
@@ -332,7 +335,7 @@ public class ItemUsage
 			if((fillThis==null)||((fillThis!=null)&&(!Sense.canBeSeenBy(fillThis,mob))))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToFill)<=0))
-					mob.tell("I don't see that here.");
+					mob.tell("I don't see '"+thingToFill+"' here.");
 				return;
 			}
 			else
@@ -528,7 +531,7 @@ public class ItemUsage
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
 		if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 			return;
 		}
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink from <T-NAMESELF>.");
@@ -660,7 +663,7 @@ public class ItemUsage
 
 		if(openThis==null)
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return;
 		}
 		int malmask=(openThis instanceof MOB)?Affect.MASK_MALICIOUS:0;
@@ -680,7 +683,7 @@ public class ItemUsage
 
 		if(openThis==null)
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_PULL,"<S-NAME> pull(s) <T-NAME>.");

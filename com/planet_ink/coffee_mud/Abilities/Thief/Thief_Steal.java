@@ -47,7 +47,7 @@ public class Thief_Steal extends ThiefSkill
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
 		if((target==null)||(target.amDead())||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();

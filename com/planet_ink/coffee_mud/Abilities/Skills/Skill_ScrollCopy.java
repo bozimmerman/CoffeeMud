@@ -44,7 +44,7 @@ public class Skill_ScrollCopy extends StdAbility
 		Item target=mob.fetchInventory(Util.combine(commands,1));
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
-			mob.tell("You don't see that here.");
+			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
 		}
 

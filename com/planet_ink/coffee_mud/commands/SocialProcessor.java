@@ -332,7 +332,7 @@ public class SocialProcessor
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
-					mob.tell("You don't see that here.");
+					mob.tell("You don't see '"+thisName+"' here.");
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_SELL,"<S-NAME> sell(s) "+thisThang.name()+" to "+shopkeeper.name());
@@ -389,7 +389,7 @@ public class SocialProcessor
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)
-					mob.tell("You don't see that here.");
+					mob.tell("You don't see '"+thisName+"' here.");
 				return;
 			}
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VALUE,null);
@@ -496,7 +496,7 @@ public class SocialProcessor
 		MOB target=mob.location().fetchInhabitant(targetName);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
-			mob.tell("I don't see that here.");
+			mob.tell("I don't see '"+targetName+"' here.");
 			return;
 		}
 
