@@ -5466,7 +5466,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 
-		mob.tell("\n\rNow don't forget to equip him with stuff before saving!\n\r");
+		mob.tell("\n\rNow don't forget to equip "+me.charStats().himher()+" with stuff before saving!\n\r");
 	}
 
 	public static void modifyPlayer(MOB mob, MOB me)

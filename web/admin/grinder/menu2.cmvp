@@ -41,7 +41,9 @@
 	<INPUT TYPE=BUTTON NAME=FINDIT VALUE="Map Square Size" ONCLICK="Clicked2('/grinder/map2.cmvp');">
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
+		@if?!CheckAuthCode?AUTH_CMSAREAS=true@
 		<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
+		@endif@
 		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 </TR>

@@ -91,6 +91,7 @@ public class SaltWaterSurface extends WaterSurface
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;
 			room.rawExits()[Directions.DOWN]=null;
+			room.destroyRoom();
 			CMMap.delRoom(room);
 			skyedYet=false;
 		}

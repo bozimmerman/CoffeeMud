@@ -483,6 +483,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						}
 					}
 					room.clearSky();
+					room.destroyRoom();
 					CMMap.delRoom(room);
 					room.setGridParent(null);
 				}

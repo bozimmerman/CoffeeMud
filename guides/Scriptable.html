@@ -936,6 +936,10 @@ useless. </P>
     <TD>ISALIVE([code])</TD>
     <TD>Returns the health of the given mob.</TD></TR>
   <TR>
+    <TD>ISBEHAVE([code])</TD>
+    <TD>Returns the class ids of the behaviors on the 
+      given mob or item.</TD></TR>
+  <TR>
     <TD>ISCHARMED([code])</TD>
     <TD>Returns the name of the charm spell the mob is 
       under.</TD></TR>
@@ -2329,9 +2333,21 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isalive</SPAN><
 <P class=MsoNormal>This checks whether the character is 
 alive.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if 
-isalive($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT dead!<BR>end<BR></EM></P>
+<P class=MsoNormal><EM>if isalive($i)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT 
+dead!<BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isbehave</SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; 
+<BR></SPAN><EM>isbehave(character behaviorid)</EM></P>
+<P class=MsoNormal>This checks whether the character has a given behavior.&nbsp; 
+The behaviorid must be the full Java name of the behavior.&nbsp; </P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if isbehave($n, Mobile)<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is 
+mobile.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The 
+actor triggering me is not mobile.<BR>endif<BR></EM><BR><B 
+style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ischarmed(character)</EM></P>
 <P class=MsoNormal>This checks to see if the character 

@@ -183,6 +183,7 @@ public class Scriptable extends StdBehavior
 		"CLANRANK", // 66
 		"HASTITLE", // 67
 		"CLANDATA", // 68
+		"ISBEHAVE", // 69
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -1688,6 +1689,17 @@ public class Scriptable extends StdBehavior
 					returnable=(E.fetchEffect(arg2)!=null);
 				break;
 			}
+			case 69: // isbehave
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getPastBitClean(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if(E==null)
+					returnable=false;
+				else
+					returnable=(E.fetchBehavior(arg2)!=null);
+				break;
+			}
 			case 28: // questwinner
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -3177,6 +3189,14 @@ public class Scriptable extends StdBehavior
 				else
 				if(E.numEffects()>0)
 					results.append(E.fetchEffect(Dice.roll(1,E.numEffects(),-1)).name());
+				break;
+			}
+			case 69: // isbehave
+			{
+				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				for(int i=0;i<E.numBehaviors();i++)
+					results.append(E.fetchBehavior(i).ID()+" ");
 				break;
 			}
 			case 28: // questwinner
