@@ -147,6 +147,7 @@ public class ProtectedCitizens extends ActiveTicker
 		{
 			MOB M=(MOB)assMOBS.elementAt(a);
 			if((M!=null)
+			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
 			&&(M.location()!=null)
 			&&(Sense.aliveAwakeMobile(M,true)
@@ -179,6 +180,7 @@ public class ProtectedCitizens extends ActiveTicker
 				{
 					MOB M=R.fetchInhabitant(i);
 					if((M!=null)
+					&&(M.mayIFight(mob.getVictim()))
 					&&(M!=mob.getVictim())
 					&&(Sense.aliveAwakeMobile(M,true)
 					&&(!M.isInCombat())

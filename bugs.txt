@@ -1,8 +1,6 @@
 are stats working?
 cast scry with no target gives a list.
-the coin quest needs to stipulate that the QUESTOR can not be in the same room as the QUEST COIN.
 You may want to add some things to certain sectors, such as city, where people can`t randomly practice skills like fish or mining in the city.
-Have common skills preview their tool.
 
 
 

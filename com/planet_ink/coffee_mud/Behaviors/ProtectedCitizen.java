@@ -128,6 +128,7 @@ public class ProtectedCitizen extends ActiveTicker
 				{
 					MOB M2=R.fetchInhabitant(i);
 					if((M2!=null)
+					&&(M2.mayIFight(mob.getVictim()))
 					&&(M2!=mob.getVictim())
 					&&(Sense.aliveAwakeMobile(M2,true)
 					&&(!M2.isInCombat())
