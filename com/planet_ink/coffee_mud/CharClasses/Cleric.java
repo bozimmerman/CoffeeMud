@@ -168,8 +168,8 @@ public class Cleric extends StdCharClass
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
 				if((CMAble.getQualifyingLevel(ID(),A.ID())>0)
 				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				&&(mob.isMonster()||A.appropriateToMyAlignment(mob.getAlignment()))
-				&&(mob.isMonster()||(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this)))
+				&&(A.appropriateToMyAlignment(mob.getAlignment()))
+				&&(CMAble.getQualifyingLevel(ID(),A.ID())==mob.baseCharStats().getClassLevel(this))
 				&&(!CMAble.getDefaultGain(ID(),A.ID())))
 					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),CMAble.getDefaultParm(ID(),A.ID()),isBorrowedClass);
 			}
