@@ -39,7 +39,7 @@ public class Hireling extends StdBehavior
 		int mins=30;
 		if(dex>=0)
 		{
-			if(dex2>dex) 
+			if(dex2>dex)
 				mins = Util.s_int(getParms().substring(dex+1,dex2));
 			else
 				mins = Util.s_int(getParms().substring(dex + 1));
@@ -51,12 +51,12 @@ public class Hireling extends StdBehavior
 	{
 		if(dex>=0)
 		{
-			if (dex2 > dex) 
+			if (dex2 > dex)
 				return getParms().substring(dex2+1);
 		}
 		return "";
 	}
-        
+
 	public void allDone(MOB observer)
 	{
 		workingFor="";
@@ -82,7 +82,7 @@ public class Hireling extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		if(onTheJobUntil==0) return true;
 		MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
@@ -155,7 +155,7 @@ public class Hireling extends StdBehavior
 				ExternalPlay.quickSay(observer,null,"I wouldn't work for the likes of you.",false,false);
 				return false;
 			}
-			
+
 			if((observer.soulMate()==null)
 			&&(msg.amISource(observer))
 			&&((msg.targetMinor()==CMMsg.TYP_GIVE)||(msg.targetMinor()==CMMsg.TYP_DROP))
@@ -204,10 +204,10 @@ public class Hireling extends StdBehavior
 				allDone(observer);
 			}
 			else
-			if(((msg.sourceMessage().toUpperCase().indexOf(" SKILLS") > 0))) 
+			if(((msg.sourceMessage().toUpperCase().indexOf(" SKILLS") > 0)))
 			{
 				StringBuffer skills = new StringBuffer("");
-				for (int a = 0; a < observer.numAbilities(); a++) 
+				for (int a = 0; a < observer.numAbilities(); a++)
 				{
 					Ability A = observer.fetchAbility(a);
 					if(A.profficiency() == 0)

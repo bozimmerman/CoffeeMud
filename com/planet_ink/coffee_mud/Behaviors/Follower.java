@@ -58,7 +58,7 @@ public class Follower extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		if((direction>=0)&&(ticking instanceof MOB))
 		{
 			if(!canFreelyBehaveNormal(ticking)) return true;

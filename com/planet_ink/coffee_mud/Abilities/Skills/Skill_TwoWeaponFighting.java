@@ -84,7 +84,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)&&(affected instanceof MOB))
+		if((tickID==MudHost.TICK_MOB)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			if(mob.isInCombat())

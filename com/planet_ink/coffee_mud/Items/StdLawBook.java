@@ -22,7 +22,7 @@ public class StdLawBook extends StdItem
 	{
 		return new StdLawBook();
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))
@@ -64,7 +64,7 @@ public class StdLawBook extends StdItem
 				int which=-1;
 				if(Util.s_long(msg.targetMessage())>0)
 					which=Util.s_int(msg.targetMessage());
-				
+
 				boolean allowedToModify=mob.isASysOp(null);
 				if(A.getMap().hasMoreElements())
 					allowedToModify=mob.isASysOp((Room)A.getMap().nextElement());
@@ -84,10 +84,10 @@ public class StdLawBook extends StdItem
 							allowedToModify=true;
 					}
 				}
-				
+
 				if((allowedToModify)&&(!theLaw.lawIsActivated()))
 					changeTheLaw(A,B,mob,theLaw,"ACTIVATED","TRUE");
-				
+
 				try{
 					if(which<1)
 					{
@@ -733,10 +733,10 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. LEVEL 1 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE1TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("2. LEVEL 2 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE2TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("3. LEVEL 3 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE3TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("4. LEVEL 4 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE4TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("1. LEVEL 1 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE1TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("2. LEVEL 2 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE2TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("3. LEVEL 3 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE3TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("4. LEVEL 4 PAROLE TIME: "+(Util.s_int(theLaw.getInternalStr("PAROLE4TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
 			str.append("\n\r");
 			Vector V=theLaw.releaseRooms();
 			if(Util.combine(V,0).equals("@"))
@@ -783,12 +783,12 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=Util.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*Host.TICK_TIME/1000;
+						long oldTime=Util.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*MudHost.TICK_TIME/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((Util.s_int(s)!=oldTime)&&(Util.s_int(s)>0))
 						{
 							long x1=Util.s_int(s);
-							x1=x1*1000/Host.TICK_TIME;
+							x1=x1*1000/MudHost.TICK_TIME;
 							changeTheLaw(A,B,mob,theLaw,"PAROLE"+x+"TIME",""+x1);
 							mob.tell("Changed.");
 						}
@@ -821,10 +821,10 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. LEVEL 1 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL1TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("2. LEVEL 2 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL2TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("3. LEVEL 3 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL3TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
-			str.append("4. LEVEL 4 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL4TIME"))*Host.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("1. LEVEL 1 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL1TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("2. LEVEL 2 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL2TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("3. LEVEL 3 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL3TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
+			str.append("4. LEVEL 4 JAIL TIME: "+(Util.s_int(theLaw.getInternalStr("JAIL4TIME"))*MudHost.TICK_TIME/1000)+" seconds.\n\r");
 			str.append("\n\r");
 			Vector V=theLaw.jailRooms();
 			if(Util.combine(V,0).equals("@"))
@@ -871,12 +871,12 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=Util.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*Host.TICK_TIME/1000;
+						long oldTime=Util.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*MudHost.TICK_TIME/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((Util.s_int(s)!=oldTime)&&(Util.s_int(s)>0))
 						{
 							long x1=Util.s_int(s);
-							x1=x1*1000/Host.TICK_TIME;
+							x1=x1*1000/MudHost.TICK_TIME;
 							changeTheLaw(A,B,mob,theLaw,"JAIL"+x+"TIME",""+x1);
 							mob.tell("Changed.");
 						}

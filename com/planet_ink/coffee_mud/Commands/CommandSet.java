@@ -336,7 +336,6 @@ public class CommandSet extends Hashtable
 			put("BOARD",new Integer(MOUNT));
 			put("RIDE",new Integer(MOUNT));
 			put("M",new Integer(MOUNT));
-		put("SOUNDS",new Integer(SOUND));
 		put("NOSOUNDS",new Integer(NOSOUND));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
@@ -402,6 +401,7 @@ public class CommandSet extends Hashtable
 		put("SOUTH",new Integer(SOUTH));
 			put("S",new Integer(SOUTH));
 		put("SONGS",new Integer(SONGS));
+		put("SOUNDS",new Integer(SOUND));
 		put("SPELLS",new Integer(SPELLS));
 			put("SP",new Integer(SPELLS));
 		put("SPLIT",new Integer(SPLIT));

@@ -106,7 +106,7 @@ public class ROMPatrolman extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)

@@ -22,7 +22,7 @@ public class LinkedWeather extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.TICK_AREA) return true;
+		if(tickID!=MudHost.TICK_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
 		if(areaName==null){
 			if(getParms().length()==0)

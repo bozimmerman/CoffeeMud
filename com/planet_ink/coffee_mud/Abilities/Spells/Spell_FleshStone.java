@@ -17,7 +17,7 @@ public class Spell_FleshStone extends Spell
 	public Item statue=null;
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(affected!=null)
 		&&(statue!=null)
 		&&(affected instanceof MOB))

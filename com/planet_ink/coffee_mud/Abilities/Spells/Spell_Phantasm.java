@@ -19,7 +19,7 @@ public class Spell_Phantasm extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{

@@ -109,7 +109,7 @@ public class LightSource extends StdItem implements Light
 	public static boolean pleaseTickLightly(Light myLight,
 											int tickID)
 	{
-		if(tickID==Host.TICK_LIGHT_FLICKERS)
+		if(tickID==MudHost.TICK_LIGHT_FLICKERS)
 		{
 			if((myLight.owner()!=null)
 			&&(myLight.isLit())
@@ -186,7 +186,7 @@ public class LightSource extends StdItem implements Light
 					mob.tell("The water makes "+myLight.name()+" go out.");
 				else
 					mob.tell("The rain makes "+myLight.name()+" go out.");
-				myLight.tick(myLight,Host.TICK_LIGHT_FLICKERS);
+				myLight.tick(myLight,MudHost.TICK_LIGHT_FLICKERS);
 			}
 		}
 
@@ -197,7 +197,7 @@ public class LightSource extends StdItem implements Light
 				if(myLight.isLit())
 				{
 					myLight.light(false);
-					ExternalPlay.deleteTick(myLight,Host.TICK_LIGHT_FLICKERS);
+					ExternalPlay.deleteTick(myLight,MudHost.TICK_LIGHT_FLICKERS);
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -210,7 +210,7 @@ public class LightSource extends StdItem implements Light
 					else
 						mob.tell(myLight.name()+" is already lit.");
 					myLight.light(true);
-					ExternalPlay.startTickDown(myLight,Host.TICK_LIGHT_FLICKERS,myLight.getDuration());
+					ExternalPlay.startTickDown(myLight,MudHost.TICK_LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();
 					room.recoverRoomStats();
 				}

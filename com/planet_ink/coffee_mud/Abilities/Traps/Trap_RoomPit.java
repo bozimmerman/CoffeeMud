@@ -67,7 +67,7 @@ public class Trap_RoomPit extends StdTrap
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==Host.TICK_TRAP_DESTRUCTION)
+		if((tickID==MudHost.TICK_TRAP_DESTRUCTION)
 		&&(canBeUninvoked())
 		&&(pit!=null)
 		&&(pit.size()>1)

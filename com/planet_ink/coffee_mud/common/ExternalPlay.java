@@ -15,8 +15,8 @@ public class ExternalPlay
 	private static String nameOfMud="Unnamed CoffeeMud";
 	public static String mudName(){return nameOfMud;}
 
-	public static void setPlayer(ExternalCommand newPlayer, 
-								 ExternalSystem otherNewPlayer, 
+	public static void setPlayer(ExternalCommand newPlayer,
+								 ExternalSystem otherNewPlayer,
 								 ExternalHTTPRequests newWebPlayer,
 								 I3Interface i3)
 	{
@@ -37,7 +37,7 @@ public class ExternalPlay
 		}catch(HTTPRedirectException he){}
 		return page;
 	}
-	
+
 	public static I3Interface i3(){return i3interface;}
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
@@ -265,7 +265,7 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateQuests(quests);
 	}
-	public static void DBReadQuests(Host myHost)
+	public static void DBReadQuests(MudHost myHost)
 	{
 		if(sysPlayer!=null) sysPlayer.DBReadQuests(myHost);
 	}

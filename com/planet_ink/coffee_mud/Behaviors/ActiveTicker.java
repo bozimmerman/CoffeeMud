@@ -55,10 +55,10 @@ public class ActiveTicker extends StdBehavior
 
 	protected boolean canAct(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)
-		||(tickID==Host.TICK_ITEM_BEHAVIOR)
-		||(tickID==Host.TICK_ROOM_BEHAVIOR)
-		||((tickID==Host.TICK_AREA)&&(ticking instanceof Area)))
+		if((tickID==MudHost.TICK_MOB)
+		||(tickID==MudHost.TICK_ITEM_BEHAVIOR)
+		||(tickID==MudHost.TICK_ROOM_BEHAVIOR)
+		||((tickID==MudHost.TICK_AREA)&&(ticking instanceof Area)))
 		{
 			int a=Dice.rollPercentage();
 			if((--tickDown)<1)

@@ -331,7 +331,7 @@ public class Drowness extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if((!mob.amDead())&&(tickID==Host.TICK_MOB))
+			if((!mob.amDead())&&(tickID==MudHost.TICK_MOB))
 			{
 				if(mob.baseCharStats().getStat(CharStats.GENDER)=='F')
 				{

@@ -19,7 +19,7 @@ public class Chant_AnimalSpy extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		   &&(affected==spy))
 		{
 			if(spy.amDead()

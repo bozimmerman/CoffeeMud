@@ -12,7 +12,7 @@ public class RoomLoader
 	private static int updateBreak=1;
 	private final static String zeroes="000000000000";
 
-	public static void DBRead(Host myHost)
+	public static void DBRead(MudHost myHost)
 	{
 		Hashtable hash=new Hashtable();
 		while(CMMap.numAreas()>0)CMMap.delArea(CMMap.getFirstArea());
@@ -218,7 +218,7 @@ public class RoomLoader
 		DBReadContent(thisRoom,rooms,null);
 	}
 
-	public static void DBReadContent(Room thisRoom, Hashtable rooms, Host myHost)
+	public static void DBReadContent(Room thisRoom, Hashtable rooms, MudHost myHost)
 	{
 
 		Hashtable stuff=new Hashtable();
@@ -634,7 +634,7 @@ public class RoomLoader
 			D.update("UPDATE CMROEX SET "
 					+"CMROID='"+room.roomID()+"' "
 					+"WHERE CMROID='"+oldID+"'",0);
-			
+
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
@@ -642,7 +642,7 @@ public class RoomLoader
 					+"CMNRID='"+room.roomID()+"' "
 					+"WHERE CMNRID='"+oldID+"'",0);
 			DBConnector.DBDone(D);
-			
+
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROIT SET "
 					+"CMROID='"+room.roomID()+"' "

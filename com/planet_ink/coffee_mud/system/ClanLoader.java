@@ -15,12 +15,12 @@ public class ClanLoader
 	private static int currentRecordPos=1;
 	private static int recordCount=0;
 
-	public static void updateBootStatus(Host myHost, String loading)
+	public static void updateBootStatus(MudHost myHost, String loading)
 	{
 		myHost.setGameStatusStr("Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
-	public static void DBRead(Host myHost)
+	public static void DBRead(MudHost myHost)
 	{
 		DBConnection D=null;
 	    Clan C=null;
@@ -54,7 +54,7 @@ public class ClanLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
-		// log comment 
+		// log comment
 	}
 
 	public static void DBUpdate(Clan C)

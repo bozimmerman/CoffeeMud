@@ -28,10 +28,10 @@ public class Conquerable extends Arrest
 	private int checkDown=0;
 	private static final int CHECKFREQ=10;
 	private int pointDown=0;
-	private static final int POINTFREQ=(int)((10*60000)/Host.TICK_TIME);
+	private static final int POINTFREQ=(int)((10*60000)/MudHost.TICK_TIME);
 	private int fightDown=0;
 	private static final int FIGHTFREQ=2;
-	
+
 	// here are the codes for interacting with this behavior
 	// see Law.java for info
 	public boolean modifyBehavior(Environmental hostObj,
@@ -172,7 +172,7 @@ public class Conquerable extends Arrest
 	{
 		if((holdingClan.length()==0)||(!ExternalPlay.getSystemStarted()))
 			return;
-		
+
 		for(int v=0;v<clanItems.size();v++)
 		{
 			Item I=(Item)clanItems.elementAt(v);
@@ -192,7 +192,7 @@ public class Conquerable extends Arrest
 				}
 			}
 		}
-		
+
 		if(myArea!=null)
 		{
 			for(Enumeration e=myArea.getMap();e.hasMoreElements();)
@@ -207,7 +207,7 @@ public class Conquerable extends Arrest
 						M.setClanID("");
 				}
 			}
-			
+
 			ExternalPlay.channel("CLANTALK","ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				ExternalPlay.DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
@@ -219,7 +219,7 @@ public class Conquerable extends Arrest
 				ExternalPlay.DBDeleteData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST");
 				ExternalPlay.DBCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
-				
+
 		}
 		holdingClan="";
 		clanItems.clear();
@@ -229,24 +229,24 @@ public class Conquerable extends Arrest
 	{
 		if(!ExternalPlay.getSystemStarted())
 			return true;
-		
+
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=Host.TICK_AREA) return true;
+		if(tickID!=MudHost.TICK_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
 		Area A=(Area)ticking;
-		
+
 		if(A!=myArea) myArea=A;
-		
+
 		for(int i=clanItems.size()-1;i>=0;i--)
 		{
 			Item I=(Item)clanItems.elementAt(i);
-			if(!I.tick(this,Host.TICK_CLANITEM))
+			if(!I.tick(this,MudHost.TICK_CLANITEM))
 				clanItems.remove(I);
 			else
 				I.setDispossessionTime(0);
 		}
-		
+
 		// calculate total control points
 		// make sure all intelligent mobs belong to the clan
 		if((totalControlPoints<0)&&(myArea!=null))
@@ -367,13 +367,13 @@ public class Conquerable extends Arrest
 							((Item)I).setDispossessionTime(0);
 					}
 				}
-				
+
 				// make sure holding clan still holds
 				if((holdingClan.length()>0)
 				&&(!flagFound(A,holdingClan)))
 					endClanRule();
 			}
-			
+
 			if((--pointDown)<=0)
 			{
 				pointDown=POINTFREQ;
@@ -390,7 +390,7 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
-			
+
 			if((--fightDown)<=0)
 			{
 				fightDown=FIGHTFREQ;
@@ -463,22 +463,22 @@ public class Conquerable extends Arrest
 			noMultiFollows.remove(msg.target());
 			changeControlPoints(msg.source().getClanID(),-msg.target().envStats().level());
 		}
-			
-	
-		
+
+
+
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	private void declareWinner(String clanID)
 	{
 		if(holdingClan.equals(clanID))
 			return;
 		Clan C=Clans.getClan(clanID);
 		if(C==null) return;
-		
+
 		if(holdingClan.length()>0)
 		   endClanRule();
-		
+
 		holdingClan=clanID;
 		synchronized(clanControlPoints)
 		{
@@ -513,8 +513,8 @@ public class Conquerable extends Arrest
 				clanItems.addElement(I);
 		}
 	}
-										 
-	
+
+
 	private boolean flagFound(Area A, String clanID)
 	{
 		if(Clans.getClan(clanID)==null) return false;
@@ -536,7 +536,7 @@ public class Conquerable extends Arrest
 		}
 		return false;
 	}
-	
+
 	private boolean changeControlPoints(String clanID, int amount)
 	{
 		synchronized(clanControlPoints)
@@ -569,15 +569,15 @@ public class Conquerable extends Arrest
 		}
 		return true;
 	}
-	
-	
+
+
 	private static final String[] warCrys={
 		"INVADERS! Attack!",
 		"We are under attack! To arms!",
 		"Destroy the enemy!",
 		"War!!!!!"
 	};
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -586,7 +586,7 @@ public class Conquerable extends Arrest
 		&&(totalControlPoints>0))
 		{
 			// first look for kills and follows and register the points
-			// from those events.  Protect against multi-follows using 
+			// from those events.  Protect against multi-follows using
 			// a queue.
 			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool()!=null)&&(msg.tool() instanceof MOB))
 				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(!noMultiFollows.contains(msg.source()))))
@@ -630,12 +630,12 @@ public class Conquerable extends Arrest
 			&&(!Sense.isAnimalIntelligence(msg.source()))
 			&&(!msg.source().getClanID().equals(holdingClan))))
 			   msg.source().setClanID(holdingClan);
-				
+
 			if(msg.tool() instanceof ClanItem)
 				registerClanItem((ClanItem)msg.tool());
 			if(msg.target() instanceof ClanItem)
 				registerClanItem((ClanItem)msg.target());
-			
+
 			if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 			&&(msg.target() instanceof Room)
 			&&(holdingClan.length()>0)
@@ -666,7 +666,7 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
-			
+
 			if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			&&(myArea!=null)
 			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
@@ -716,7 +716,7 @@ public class Conquerable extends Arrest
 			}
 		}
 	}
-	
+
 	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
 	{
 		if((holdingClan.length()==0)

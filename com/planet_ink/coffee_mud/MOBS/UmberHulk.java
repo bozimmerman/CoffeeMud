@@ -50,7 +50,7 @@ public class UmberHulk extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((!amDead())&&(tickID==Host.TICK_MOB))
+		if((!amDead())&&(tickID==MudHost.TICK_MOB))
 		{
 			if((--confuseDown)<=0)
 			{

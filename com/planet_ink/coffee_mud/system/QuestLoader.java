@@ -12,7 +12,7 @@ public class QuestLoader
 	private static int updateBreak=1;
 	private final static String zeroes="000000000000";
 
-	public static void DBRead(Host myHost)
+	public static void DBRead(MudHost myHost)
 	{
 		Quests.shutdown();
 		DBConnection D=null;

@@ -33,7 +33,7 @@ public class Fighter_Charge extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 			if(done) unInvoke();
 		return super.tick(ticking,tickID);
 	}

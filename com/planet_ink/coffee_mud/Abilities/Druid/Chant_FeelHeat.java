@@ -37,7 +37,7 @@ public class Chant_FeelHeat extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if(tickID!=Host.TICK_MOB) return false;
+		if(tickID!=MudHost.TICK_MOB) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{
 			MOB dummy=(MOB)affecting();

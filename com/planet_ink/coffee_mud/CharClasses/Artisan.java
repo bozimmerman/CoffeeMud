@@ -84,7 +84,7 @@ public class Artisan extends StdCharClass
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)&&(ticking instanceof MOB))
+		if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			int exp=0;

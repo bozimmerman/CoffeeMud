@@ -97,7 +97,7 @@ public class Clans implements Clan, Tickable
 		}
 		return points;
 	}
-	
+
 	public Enumeration votes()
 	{
 		if(voteList==null)
@@ -160,7 +160,7 @@ public class Clans implements Clan, Tickable
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			ExternalPlay.deleteTick(C,Host.TICK_CLAN);
+			ExternalPlay.deleteTick(C,MudHost.TICK_CLAN);
 		}
 		all.clear();
 	}
@@ -316,12 +316,12 @@ public class Clans implements Clan, Tickable
 	}
 	public static void addClan(Clan C)
 	{
-		ExternalPlay.startTickDown(C,Host.TICK_CLAN,(int)Host.TICKS_PER_MUDDAY);
+		ExternalPlay.startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)
 	{
-		ExternalPlay.deleteTick(C,Host.TICK_CLAN);
+		ExternalPlay.deleteTick(C,MudHost.TICK_CLAN);
 		all.remove(C.ID().toUpperCase());
 	}
 
@@ -799,18 +799,18 @@ public class Clans implements Clan, Tickable
 		for(Enumeration e=clans();e.hasMoreElements();)
 		{
 			Clan C=(Clan)e.nextElement();
-			C.tick(C,Host.TICK_CLAN);
+			C.tick(C,MudHost.TICK_CLAN);
 		}
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.TICK_CLAN)
+		if(tickID!=MudHost.TICK_CLAN)
 			return true;
 		try{
 			DVector members=getMemberList();
 			int activeMembers=0;
-			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
+			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME;
 			int[] numTypes=new int[Clan.POSORDER.length];
 			for(int j=0;j<members.size();j++)
 			{
@@ -911,7 +911,7 @@ public class Clans implements Clan, Tickable
 				long duration=54;
 				if(data.size()>0) duration=Util.s_long((String)data.firstElement());
 				if(duration<=0) duration=54;
-				duration=duration*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
+				duration=duration*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME;
 				for(Enumeration e=votes();e.hasMoreElements();)
 				{
 					ClanVote CV=(ClanVote)e.nextElement();

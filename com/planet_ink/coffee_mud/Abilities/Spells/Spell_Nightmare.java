@@ -133,7 +133,7 @@ public class Spell_Nightmare extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 			notAgainThisRound=false;
 		return super.tick(ticking,tickID);
 	}

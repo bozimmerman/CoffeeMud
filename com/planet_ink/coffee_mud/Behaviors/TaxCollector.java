@@ -13,21 +13,21 @@ public class TaxCollector extends StdBehavior
 	private DVector paid=null;
 	private long waitTime=1000*60*2;
 	private long graceTime=1000*60*60;
-	
+
 	public Behavior newInstance()
 	{
 		return new TaxCollector();
 	}
 
 	public void setParms(String newParms)
-	{ 
-		super.setParms(newParms); 
-		demanded=null; 
+	{
+		super.setParms(newParms);
+		demanded=null;
 		paid=null;
 		waitTime=Util.getParmInt(newParms,"WAIT",1000*60*2);
 		graceTime=Util.getParmInt(newParms,"GRACE",1000*60*60);
 	}
-	
+
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);
@@ -50,7 +50,7 @@ public class TaxCollector extends StdBehavior
 			}
 		}
 	}
-	
+
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{
 		if((oking==null)||(!(oking instanceof MOB)))
@@ -79,20 +79,20 @@ public class TaxCollector extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if((tickID!=Host.TICK_MOB)||(!(ticking instanceof MOB))) 
+		if((tickID!=MudHost.TICK_MOB)||(!(ticking instanceof MOB)))
 			return true;
-		
+
 		MOB mob=(MOB)ticking;
 		if(demanded==null) demanded=new DVector(2);
 		if(paid==null) paid=new DVector(2);
-		
+
 		for(int i=paid.size()-1;i>=0;i--)
 		{
 			Long L=(Long)paid.elementAt(i,2);
 			if((System.currentTimeMillis()-L.longValue())>graceTime)
 				paid.removeElementAt(i);
 		}
-		
+
 		Room R=mob.location();
 		if((R!=null)
 		&&(!mob.isInCombat())
@@ -132,11 +132,11 @@ public class TaxCollector extends StdBehavior
 							V.addElement(mob.name());
 							try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
 						}
-							
+
 					}
 				}
 			}
-			
+
 			Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
 			if((I!=null)&&(I instanceof Coins))
 				ExternalPlay.get(mob,I.container(),I,false);

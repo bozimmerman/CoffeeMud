@@ -9,7 +9,7 @@ public interface ExternalSystem
 	public boolean deleteTick(Tickable E, int tickID);
 	public void suspendTicking(Tickable E, int tickID);
 	public void resumeTicking(Tickable E, int tickID);
-	
+
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);
@@ -22,7 +22,7 @@ public interface ExternalSystem
 	public void DBUpdateItems(Room room);
 	public void DBUpdateQuests(Vector quests);
 	public void DBUpdateQuest(Quest Q);
-	public void DBReadQuests(Host myHost);
+	public void DBReadQuests(MudHost myHost);
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
 	public void DBReadMOB(MOB mob);

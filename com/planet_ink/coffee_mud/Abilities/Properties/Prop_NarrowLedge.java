@@ -28,11 +28,11 @@ public class Prop_NarrowLedge extends Property
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_SPELL_AFFECT)
+		if(tickID==MudHost.TICK_SPELL_AFFECT)
 		{
 			synchronized(mobsToKill)
 			{
-				ExternalPlay.deleteTick(this,Host.TICK_SPELL_AFFECT);
+				ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				Vector V=((Vector)mobsToKill.clone());
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
@@ -80,7 +80,7 @@ public class Prop_NarrowLedge extends Property
 						falling.setProfficiency(0);
 						falling.setAffectedOne(msg.target());
 						falling.invoke(null,null,mob,true);
-						ExternalPlay.startTickDown(this,Host.TICK_SPELL_AFFECT,1);
+						ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 					}
 				}
 			}

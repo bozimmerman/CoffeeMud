@@ -30,7 +30,7 @@ public class Fighter_Heroism extends StdAbility
 		&&(mob.isInCombat())
 		&&(Dice.rollPercentage()==1)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false))
-		&&(tickID==Host.TICK_MOB))
+		&&(tickID==MudHost.TICK_MOB))
 			helpProfficiency(mob);
 		return super.tick(ticking,tickID);
 	}

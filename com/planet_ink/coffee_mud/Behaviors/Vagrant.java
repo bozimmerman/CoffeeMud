@@ -40,7 +40,7 @@ public class Vagrant extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{

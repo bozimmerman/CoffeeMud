@@ -40,7 +40,7 @@ public class Chicken extends StdMOB
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			if(Dice.rollPercentage()>95)
 			{

@@ -386,7 +386,7 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.TICK_ITEM_BEHAVIOR)
+		if(tickID==MudHost.TICK_ITEM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -398,7 +398,7 @@ public class StdItem implements Item
 			}
 		}
 		else
-		if(tickID!=Host.TICK_CLANITEM)
+		if(tickID!=MudHost.TICK_CLANITEM)
 		{
 			int a=0;
 			while(a<numEffects())
@@ -1153,7 +1153,7 @@ public class StdItem implements Item
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.TICK_ITEM_BEHAVIOR,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_ITEM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1162,7 +1162,7 @@ public class StdItem implements Item
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.TICK_ITEM_BEHAVIOR);
+			ExternalPlay.deleteTick(this,MudHost.TICK_ITEM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

@@ -25,12 +25,12 @@ public class StdClanCommonContainer extends StdClanContainer
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_CLANITEM)
+		if((tickID==MudHost.TICK_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(((MOB)owner()).isMonster())
 		&&(readableText().length()>0)

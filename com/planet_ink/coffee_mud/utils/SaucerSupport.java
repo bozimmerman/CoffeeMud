@@ -1021,7 +1021,7 @@ public class SaucerSupport
 		}
 		if((target instanceof Light)&&(((Light)target).isLit()))
 		{
-			((Light)target).tick(target,Host.TICK_LIGHT_FLICKERS);
+			((Light)target).tick(target,MudHost.TICK_LIGHT_FLICKERS);
 			((Light)target).light(false);
 		}
 	}
@@ -1743,7 +1743,7 @@ public class SaucerSupport
 		if((taskCode==0)||(taskCode==2))
 			ExternalPlay.DBUpdateMOBs(room);
 	}
-	
+
 	public static void obliterateArea(String areaName)
 	{
 		Room foundOne=CMMap.getFirstRoom();

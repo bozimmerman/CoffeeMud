@@ -24,7 +24,7 @@ public class Chant_FindMate extends Chant
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			if((theTrail==null)
 			||(affected == null)

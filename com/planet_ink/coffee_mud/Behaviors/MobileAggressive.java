@@ -30,7 +30,7 @@ public class MobileAggressive extends Mobile
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;

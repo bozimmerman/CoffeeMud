@@ -10,7 +10,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected double coinInterest=-0.008;
 	protected double itemInterest=-0.001;
-	protected static final Integer allDown=new Integer(new Long(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5).intValue());
+	protected static final Integer allDown=new Integer(new Long(Area.A_FULL_DAY*MudHost.TIME_TICK_DELAY*5).intValue());
 	protected static Hashtable bankTimes=new Hashtable();
 
 	public StdBanker()
@@ -178,7 +178,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(!super.tick(ticking,tickID))
 			return false;
 		try{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			boolean proceed=false;
 			// handle interest by watching the days go by...

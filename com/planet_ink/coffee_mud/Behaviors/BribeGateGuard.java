@@ -490,7 +490,7 @@ public class BribeGateGuard extends StdBehavior
 	{
 		super.tick(ticking, tickID);
 
-		if (tickID != Host.TICK_MOB) {
+		if (tickID != MudHost.TICK_MOB) {
 		  return true;
 		}
 		if (!canFreelyBehaveNormal(ticking)) {

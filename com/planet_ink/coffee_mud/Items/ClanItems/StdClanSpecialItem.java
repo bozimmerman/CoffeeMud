@@ -10,7 +10,7 @@ public class StdClanSpecialItem extends StdClanItem
 	public String ID(){	return "StdClanSpecialItem";}
 	public Environmental newInstance(){ return new StdClanSpecialItem();}
 	private Behavior B=null;
-	
+
 	public StdClanSpecialItem()
 	{
 		super();
@@ -25,7 +25,7 @@ public class StdClanSpecialItem extends StdClanItem
 		material=EnvResource.RESOURCE_PINE;
 		recoverEnvStats();
 	}
-	
+
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
@@ -50,12 +50,12 @@ public class StdClanSpecialItem extends StdClanItem
 		else
 			return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_CLANITEM)
+		if((tickID==MudHost.TICK_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())
@@ -87,7 +87,7 @@ public class StdClanSpecialItem extends StdClanItem
 				{
 					if((B==null)||(!B.ID().equals("TaxCollector")))
 						B=CMClass.getBehavior("TaxCollector");
-					if(B!=null) B.tick((MOB)owner(),Host.TICK_MOB);
+					if(B!=null) B.tick((MOB)owner(),MudHost.TICK_MOB);
 					break;
 				}
 			}

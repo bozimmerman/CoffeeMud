@@ -18,7 +18,7 @@ public class Chant_SummonDustdevil extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			if((affected!=null)
 			&&(affected instanceof MOB)

@@ -30,7 +30,7 @@ public class Spell_Blink extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)&&(affected!=null)&&(affected instanceof MOB))
+		if((tickID==MudHost.TICK_MOB)&&(affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
 			int roll=Dice.roll(1,8,0);

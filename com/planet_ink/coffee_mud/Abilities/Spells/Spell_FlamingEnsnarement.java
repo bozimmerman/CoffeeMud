@@ -68,7 +68,7 @@ public class Spell_FlamingEnsnarement extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{

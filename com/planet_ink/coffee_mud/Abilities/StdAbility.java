@@ -105,7 +105,7 @@ public class StdAbility implements Ability, Cloneable
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			ExternalPlay.startTickDown(this,Host.TICK_MOB,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_MOB,1);
 		}
 		tickDown=tickTime;
 	}
@@ -606,8 +606,8 @@ public class StdAbility implements Ability, Cloneable
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
 
-				if(tickAdjustmentFromStandard>(Host.TICKS_PER_MUDDAY/2))
-					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_MUDDAY/2);
+				if(tickAdjustmentFromStandard>(MudHost.TICKS_PER_MUDDAY/2))
+					tickAdjustmentFromStandard=(int)(MudHost.TICKS_PER_MUDDAY/2);
 
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
@@ -669,8 +669,8 @@ public class StdAbility implements Ability, Cloneable
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
-				if(tickAdjustmentFromStandard>(Host.TICKS_PER_MUDDAY/2))
-					tickAdjustmentFromStandard=(int)(Host.TICKS_PER_MUDDAY/2);
+				if(tickAdjustmentFromStandard>(MudHost.TICKS_PER_MUDDAY/2))
+					tickAdjustmentFromStandard=(int)(MudHost.TICKS_PER_MUDDAY/2);
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}
@@ -987,7 +987,7 @@ public class StdAbility implements Ability, Cloneable
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
 
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked()))
 		{

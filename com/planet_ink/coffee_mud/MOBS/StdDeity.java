@@ -744,7 +744,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&((--checkDown)<0))
 		{
 			checkDown=10;

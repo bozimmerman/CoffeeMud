@@ -489,9 +489,9 @@ public class StdMOB implements MOB
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
-		ExternalPlay.startTickDown(this,Host.TICK_MOB,1);
+		ExternalPlay.startTickDown(this,MudHost.TICK_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
-			tick(this,Host.TICK_MOB); // slap on the butt
+			tick(this,MudHost.TICK_MOB); // slap on the butt
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
@@ -1647,7 +1647,7 @@ public class StdMOB implements MOB
 					MOB victim=null;
 					if(msg.target() instanceof MOB)
 						victim=(MOB)msg.target();
-					
+
 					if(msg.value()>=0)
 						charStats().getCurrentClass().gainExperience(this,
 																	 victim,
@@ -1975,7 +1975,7 @@ public class StdMOB implements MOB
 		if(pleaseDestroy)
 			return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			movesSinceTick=0;
 			if(amDead)
@@ -2070,7 +2070,7 @@ public class StdMOB implements MOB
 				else
 				{
 					speeder=0.0;
-					peaceTime+=Host.TICK_TIME;
+					peaceTime+=MudHost.TICK_TIME;
 					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
 					&&(Sense.aliveAwakeMobile(this,true)))
@@ -2083,7 +2083,7 @@ public class StdMOB implements MOB
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
 					else
 					{
-						curState().adjFatigue(Host.TICK_TIME,maxState());
+						curState().adjFatigue(MudHost.TICK_TIME,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
 						&&(!isMonster())
                      	&&(Dice.rollPercentage()==1))
@@ -2096,7 +2096,7 @@ public class StdMOB implements MOB
 
 				if((riding()!=null)&&(CoffeeUtensils.roomLocation(riding())!=location()))
 					setRiding(null);
-				if((!isMonster())&&(((++minuteCounter)*Host.TICK_TIME)>60000))
+				if((!isMonster())&&(((++minuteCounter)*MudHost.TICK_TIME)>60000))
 				{
 					minuteCounter=0;
 					setAgeHours(AgeHours+1);

@@ -19,7 +19,7 @@ public class GoldLooter extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		if(--tickTock>0) return true;
 		((MOB)ticking).setBitmap(Util.setb(((MOB)ticking).getBitmap(),MOB.ATT_AUTOGOLD));
 		if((++tickTocker)==100) tickTocker=99;

@@ -70,7 +70,7 @@ public class Sinking extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=Host.TICK_MOB)
+		if(tickID!=MudHost.TICK_MOB)
 			return true;
 
 		if(affected==null)
@@ -218,7 +218,7 @@ public class Sinking extends StdAbility
 			F.setBorrowed(E,true);
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,Host.TICK_MOB,1);
+				ExternalPlay.startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 		}
 		return true;

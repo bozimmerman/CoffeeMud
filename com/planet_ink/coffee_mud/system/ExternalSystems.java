@@ -26,7 +26,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		return MOBloader.userList();
 	}
-	
+
 	public boolean deleteTick(Tickable E, int tickID)
 	{
 		return ServiceEngine.deleteTick(E,tickID);
@@ -42,20 +42,20 @@ public class ExternalSystems implements ExternalSystem
 	{ ClanLoader.DBDelete(C);}
 	public void DBCreateClan(Clan C)
 	{ ClanLoader.DBCreate(C);}
-	
+
 	public void DBUpdateEmail(MOB mob)
 	{ MOBloader.DBUpdateEmail(mob);}
-	
+
 	public void DBUpdateFollowers(MOB mob)
 	{
 		MOBloader.DBUpdateFollowers(mob);
 	}
-	
+
 	public String systemReport(String itemCode)
 	{
 		return ServiceEngine.report(itemCode);
 	}
-		
+
 	public void DBReadContent(Room thisRoom, Hashtable rooms)
 	{
 		RoomLoader.DBReadContent(thisRoom, rooms);
@@ -64,7 +64,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateExits(room);
 	}
-	public void DBReadQuests(Host myHost){QuestLoader.DBRead(myHost);}
+	public void DBReadQuests(MudHost myHost){QuestLoader.DBRead(myHost);}
 	public void DBUpdateQuest(Quest Q)
 	{
 		QuestLoader.DBUpdateQuest(Q);
@@ -149,7 +149,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdate(keyName,A);
 	}
-	
+
 	public void DBDeleteRoom(Room room)
 	{
 		RoomLoader.DBDelete(room);
@@ -174,7 +174,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.DBCreateCharacter(mob);
 	}
-		
+
 	public Vector DBReadData(String playerID, String section)
 	{ return DataLoader.DBRead(playerID,section);}
 	public Vector DBReadData(String playerID, String section, String key)

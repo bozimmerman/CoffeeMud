@@ -27,11 +27,11 @@ public class ServiceEngine
 	public static Tick confirmAndGetTickThread(Tickable E, int tickID)
 	{
 		Tick tock=null;
-		
+
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			Tick almostTock=(Tick)v.nextElement();
-			if((tock==null)&&(almostTock.numTickers()<Host.MAX_TICK_CLIENTS))
+			if((tock==null)&&(almostTock.numTickers()<MudHost.MAX_TICK_CLIENTS))
 				tock=almostTock;
 			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
 			{
@@ -168,7 +168,7 @@ public class ServiceEngine
 				topMOBClient=S.mob();
 			}
 		}
-		
+
 		if(itemCode.equalsIgnoreCase("totalMOBMillis"))
 			return ""+totalMOBMillis;
 		else
@@ -195,11 +195,11 @@ public class ServiceEngine
 		else
 		if(itemCode.equalsIgnoreCase("topMOBClient"))
 		{
-			if(topMOBClient!=null) 
+			if(topMOBClient!=null)
 				return topMOBClient.Name();
 			return "";
 		}
-		
+
 		int totalTickers=0;
 		long totalMillis=0;
 		long totalTicks=0;
@@ -336,8 +336,8 @@ public class ServiceEngine
 			else
 				return "";
 		}
-		
-		
+
+
 		return "";
 	}
 
@@ -399,7 +399,7 @@ public class ServiceEngine
 		if(client>=almostTock.numTickers()) return "";
 		TockClient C=(TockClient)almostTock.fetchTicker(client);
 		if(C==null) return "";
-		
+
 		if(which.toLowerCase().startsWith("tickername"))
 		{
 			Tickable E=C.clientObject;

@@ -35,7 +35,7 @@ public class Scrapping extends CommonSkill
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(tickID==Host.TICK_MOB))
+		&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((found==null)

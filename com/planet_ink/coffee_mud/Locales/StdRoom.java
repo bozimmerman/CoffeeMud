@@ -485,7 +485,7 @@ public class StdRoom
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.TICK_ROOM_BEHAVIOR)
+		if(tickID==MudHost.TICK_ROOM_BEHAVIOR)
 		{
 			if(numBehaviors()==0) return false;
 			for(int b=0;b<numBehaviors();b++)
@@ -1359,7 +1359,7 @@ public class StdRoom
 			   return;
 		}
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.TICK_ROOM_BEHAVIOR,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -1368,7 +1368,7 @@ public class StdRoom
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.TICK_ROOM_BEHAVIOR);
+			ExternalPlay.deleteTick(this,MudHost.TICK_ROOM_BEHAVIOR);
 	}
 	public int numBehaviors()
 	{

@@ -40,7 +40,7 @@ public class Chant_AstralProjection extends Chant
 		if((unInvoked)&&(canBeUninvoked()))
 			return super.tick(ticking,tickID);
 
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&(canBeUninvoked())
 		&&(tickDown==1))

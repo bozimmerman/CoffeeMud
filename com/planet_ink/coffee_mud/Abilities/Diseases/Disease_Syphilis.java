@@ -17,7 +17,7 @@ public class Disease_Syphilis extends Disease
 	public Environmental newInstance(){	return new Disease_Syphilis();}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_DELAY(){return new Long(MudHost.TICKS_PER_MUDDAY).intValue();}
 	protected String DISEASE_DONE(){return "Your syphilis clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) some uncomfortable red sores on <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}

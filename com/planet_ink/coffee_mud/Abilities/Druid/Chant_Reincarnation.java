@@ -39,7 +39,7 @@ public class Chant_Reincarnation extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(tickDown!=Integer.MAX_VALUE)
 		&&((--tickDown)<0))
 		{

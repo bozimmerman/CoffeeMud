@@ -188,7 +188,7 @@ public class SaveThread extends Thread
 					milliTotal+=(lastStop-lastStart);
 					tickTotal++;
 					status="sleeping";
-					Thread.sleep(Host.TIME_TICK_DELAY);
+					Thread.sleep(MudHost.TIME_TICK_DELAY);
 					lastStart=System.currentTimeMillis();
 					savePlayers();
 					//if(processed>0)

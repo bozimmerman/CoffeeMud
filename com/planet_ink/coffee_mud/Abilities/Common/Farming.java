@@ -29,7 +29,7 @@ public class Farming extends CommonSkill
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
-		   &&(tickID==Host.TICK_MOB))
+		   &&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)invoker();
 			if(tickUp==6)

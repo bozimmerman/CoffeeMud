@@ -52,7 +52,7 @@ public class GiantScorpion extends StdMOB
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		// ===== are we in combat?
-		if((!amDead())&&(tickID==Host.TICK_MOB))
+		if((!amDead())&&(tickID==MudHost.TICK_MOB))
 		{
 			if((--stingDown)<=0)
 			{

@@ -47,7 +47,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setInvoker(mob);
 		E.addEffect(T);
 		T.setBorrowed(E,true);
-		ExternalPlay.startTickDown(T,Host.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
+		ExternalPlay.startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}
 	public void gas(MOB mob)
@@ -258,7 +258,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 
 		if((getReset()>0)&&(getReset()<Integer.MAX_VALUE))
-			ExternalPlay.startTickDown(this,Host.TICK_TRAP_RESET,getReset());
+			ExternalPlay.startTickDown(this,MudHost.TICK_TRAP_RESET,getReset());
 		else
 			unInvoke();
 	}
@@ -296,13 +296,13 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TICK_TRAP_RESET)
+		if(tickID==MudHost.TICK_TRAP_RESET)
 		{
 			sprung=false;
 			return false;
 		}
 		else
-		if(tickID==Host.TICK_TRAP_DESTRUCTION)
+		if(tickID==MudHost.TICK_TRAP_DESTRUCTION)
 		{
 			unInvoke();
 			return false;

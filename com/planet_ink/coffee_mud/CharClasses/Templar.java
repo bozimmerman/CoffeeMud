@@ -119,7 +119,7 @@ public class Templar extends Cleric
 
 	public void tick(MOB myChar, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)&&((--tickDown)<=0))
+		if((tickID==MudHost.TICK_MOB)&&((--tickDown)<=0))
 		{
 			tickDown=5;
 			if(myChar.fetchEffect("Prayer_AuraStrife")==null)

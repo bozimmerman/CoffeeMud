@@ -87,7 +87,7 @@ public class Prop_WeakBridge extends Property
 								falling.setAffectedOne(msg.target());
 								falling.invoke(null,null,mob,true);
 							}
-							ExternalPlay.startTickDown(this,Host.TICK_SPELL_AFFECT,1);
+							ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
 						}
 					}
 				}
@@ -105,7 +105,7 @@ public class Prop_WeakBridge extends Property
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_SPELL_AFFECT)
+		if(tickID==MudHost.TICK_SPELL_AFFECT)
 		{
 			if(bridgeIsUp)
 			{
@@ -159,14 +159,14 @@ public class Prop_WeakBridge extends Property
 					}
 					if(affected instanceof Room)
 						((Room)affected).recoverEnvStats();
-					ExternalPlay.deleteTick(this,Host.TICK_SPELL_AFFECT);
-					ExternalPlay.startTickDown(this,Host.TICK_SPELL_AFFECT,ticksDown);
+					ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
+					ExternalPlay.startTickDown(this,MudHost.TICK_SPELL_AFFECT,ticksDown);
 				}
 			}
 			else
 			{
 				bridgeIsUp=true;
-				ExternalPlay.deleteTick(this,Host.TICK_SPELL_AFFECT);
+				ExternalPlay.deleteTick(this,MudHost.TICK_SPELL_AFFECT);
 				if(affected instanceof Room)
 					((Room)affected).recoverEnvStats();
 			}

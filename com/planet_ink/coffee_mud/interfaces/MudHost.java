@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.Properties;
 
-public interface Host
+public interface MudHost
 {
 	public final static long TICK_TIME=4000;
 	public final static long TIME_TICK_DELAY=10*60000; // 10 minutes, right now.

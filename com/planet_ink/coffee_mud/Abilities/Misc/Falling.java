@@ -81,7 +81,7 @@ public class Falling extends StdAbility
 		if(!super.tick(ticking,tickID))
 			return false;
 
-		if(tickID!=Host.TICK_MOB)
+		if(tickID!=MudHost.TICK_MOB)
 			return true;
 
 		if(affected==null)
@@ -249,7 +249,7 @@ public class Falling extends StdAbility
 			F.makeLongLasting();
 			E.addEffect(F);
 			if(!(E instanceof MOB))
-				ExternalPlay.startTickDown(F,Host.TICK_MOB,1);
+				ExternalPlay.startTickDown(F,MudHost.TICK_MOB,1);
 			E.recoverEnvStats();
 
 		}

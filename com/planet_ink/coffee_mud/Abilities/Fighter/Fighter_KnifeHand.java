@@ -22,7 +22,7 @@ public class Fighter_KnifeHand extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		   &&(affected!=null)
 		   &&(affected instanceof MOB))
 		{

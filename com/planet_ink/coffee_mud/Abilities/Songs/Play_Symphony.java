@@ -679,7 +679,7 @@ public class Play_Symphony extends Play
 					if((A!=null)
 					&&(A.invoker()==M)
 					&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-						A.tick(M,Host.TICK_MOB);
+						A.tick(M,MudHost.TICK_MOB);
 				}
 				return true;
 			}

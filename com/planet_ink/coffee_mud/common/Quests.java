@@ -47,12 +47,12 @@ public class Quests implements Cloneable, Quest
 	public void autostartup()
 	{
 		if((minWait()<0)||(waitInterval()<0))
-			ExternalPlay.deleteTick(this,Host.TICK_QUEST);
+			ExternalPlay.deleteTick(this,MudHost.TICK_QUEST);
 		else
 		if(!running())
 		{
 			waitRemaining=minWait+(Dice.roll(1,maxWait,0));
-			ExternalPlay.startTickDown(this,Host.TICK_QUEST,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_QUEST,1);
 		}
 	}
 	protected void setVars(Vector script)
@@ -1052,7 +1052,7 @@ public class Quests implements Cloneable, Quest
 		{
 			waitRemaining=-1;
 			ticksRemaining=duration();
-			ExternalPlay.startTickDown(this,Host.TICK_QUEST,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_QUEST,1);
 		}
 	}
 
@@ -1152,7 +1152,7 @@ public class Quests implements Cloneable, Quest
 		{
 			ticksRemaining=-1;
 			if((minWait()<0)||(maxWait<0))
-				ExternalPlay.deleteTick(this,Host.TICK_QUEST);
+				ExternalPlay.deleteTick(this,MudHost.TICK_QUEST);
 			else
 				waitRemaining=minWait+(Dice.roll(1,maxWait,0));
 		}
@@ -1223,12 +1223,12 @@ public class Quests implements Cloneable, Quest
 	public boolean running(){return ticksRemaining>=0;}
 	public boolean waiting(){return waitRemaining>=0;}
 	public int ticksRemaining(){return ticksRemaining;}
-	public int minsRemaining(){return new Long(ticksRemaining*Host.TICK_TIME/60000).intValue();}
+	public int minsRemaining(){return new Long(ticksRemaining*MudHost.TICK_TIME/60000).intValue();}
 	private long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.TICK_QUEST)
+		if(tickID!=MudHost.TICK_QUEST)
 			return false;
 		tickStatus=Tickable.STATUS_START;
 		if(running())
@@ -1442,7 +1442,7 @@ public class Quests implements Cloneable, Quest
 		if(quests.contains(Q))
 		{
 			Q.stopQuest();
-			ExternalPlay.deleteTick(Q,Host.TICK_QUEST);
+			ExternalPlay.deleteTick(Q,MudHost.TICK_QUEST);
 			quests.removeElement(Q);
 		}
 	}

@@ -17,7 +17,7 @@ public class Spell_GhostSound extends Spell
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)
+		if((tickID==MudHost.TICK_MOB)
 		&&(Dice.rollPercentage()<10)
 		&&(affected!=null)
 		&&(invoker!=null)

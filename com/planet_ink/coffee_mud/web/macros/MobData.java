@@ -375,35 +375,35 @@ public class MobData extends StdWebMacro
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.className(m.nextElement()));
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMeA.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMeA.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMeA.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMeA.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
@@ -490,8 +490,8 @@ public class MobData extends StdWebMacro
 		{
 			int level=M.baseEnvStats().level();
 			if(httpReq.isRequestParameter("LEVEL")) level=Util.s_int(httpReq.getRequestParameter("LEVEL"));
-			long rejuv=Host.TICKS_PER_RLMIN+Host.TICKS_PER_RLMIN+(level*Host.TICKS_PER_RLMIN/2);
-			if(rejuv>(Host.TICKS_PER_RLMIN*20)) rejuv=(Host.TICKS_PER_RLMIN*20);
+			long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(level*MudHost.TICKS_PER_RLMIN/2);
+			if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
 			M.baseEnvStats().setRejuv((int)rejuv);
 			M.baseEnvStats().setSpeed(M.baseCharStats().getCurrentClass().getLevelSpeed(M));
 			M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));
@@ -872,35 +872,35 @@ public class MobData extends StdWebMacro
 				mposs=new StringBuffer("");
 				Vector sortMe=new Vector();
 				for(Enumeration i=CMClass.items();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
-				{   
+				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())
 					&&(!(I instanceof ArchonOnly)))

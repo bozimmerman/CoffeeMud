@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class CommandProcessor
 {
 	public static CommandSet commandSet=CommandSet.getInstance();
-	public static Host myHost=null;
+	public static MudHost myHost=null;
 
 	private CommandProcessor(){}
 

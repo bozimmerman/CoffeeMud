@@ -80,7 +80,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(ticking==null) return true;
-		if(tickID!=Host.TICK_MOB)
+		if(tickID!=MudHost.TICK_MOB)
 		{
 			Log.errOut("CombatAbilities",ticking.name()+" wants to fight?!");
 			return true;

@@ -136,7 +136,7 @@ public class Missionary extends Cleric
 
 	public void tick(MOB myChar, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 		}
 		return;

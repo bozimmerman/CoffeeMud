@@ -14,7 +14,7 @@ public class StdClanItem extends StdItem implements ClanItem
 	protected String myClan="";
 	protected int ciType=0;
 	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}	
+	public void setCIType(int type){ ciType=type;}
 	public StdClanItem()
 	{
 		super();
@@ -28,10 +28,10 @@ public class StdClanItem extends StdItem implements ClanItem
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
-	
+
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(StdClanItem.stdExecuteMsg(this,msg))
@@ -43,24 +43,24 @@ public class StdClanItem extends StdItem implements ClanItem
 			return super.okMessage(myHost,msg);
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))
 			return false;
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public static boolean standardTick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.TICK_CLANITEM)
+		if(tickID!=MudHost.TICK_CLANITEM)
 			return true;
 		if((!(ticking instanceof Item))
 		||(!(ticking instanceof ClanItem))
 		||(((ClanItem)ticking).clanID().length()==0)
 		||(!(((Item)ticking).owner() instanceof MOB)))
 			return true;
-		
+
 		MOB M=((MOB)((Item)ticking).owner());
 		Item I=(Item)ticking;
 		if((!M.getClanID().equals(((ClanItem)I).clanID()))
@@ -78,10 +78,10 @@ public class StdClanItem extends StdItem implements ClanItem
 		if((I.amWearingAt(Item.INVENTORY))
 		&&(M.isMonster()))
 			I.wearAt(I.rawProperLocationBitmap());
-			
+
 		return true;
 	}
-	
+
 	protected static Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
@@ -141,7 +141,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return V;
 	}
-	
+
 	public static boolean stdOkMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.tool()==myHost)
@@ -198,7 +198,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				Clan C=Clans.getClan(msg.source().getClanID());
 				int relation=-1;
-				if(C!=null) 
+				if(C!=null)
 					relation=C.getClanRelations(((ClanItem)myHost).clanID());
 				else
 				{
@@ -215,7 +215,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		return true;
 	}
-	
+
 	public static boolean stdExecuteMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(myHost))
@@ -227,7 +227,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			&&(!M.getClanID().equals(((ClanItem)myHost).clanID())))
 			{
 				Clan C=Clans.getClan(M.getClanID());
-				
+
 				if(M.location()!=null)
 					M.location().show(M,(Item)myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
 				if(C!=null)

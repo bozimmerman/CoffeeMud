@@ -37,7 +37,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_TRAP_RESET)&&(getReset()>0))
+		if((tickID==MudHost.TICK_TRAP_RESET)&&(getReset()>0))
 		{
 			if((sprung)
 			&&(affected!=null)

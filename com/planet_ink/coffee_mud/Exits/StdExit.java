@@ -441,7 +441,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OPEN:
 			if((!hasADoor())||(isOpen())||(isLocked())) return;
 			if(defaultsClosed()||defaultsLocked())
-				ExternalPlay.startTickDown(this,Host.TICK_EXIT_REOPEN,openDelayTicks());
+				ExternalPlay.startTickDown(this,MudHost.TICK_EXIT_REOPEN,openDelayTicks());
 			isLocked=false;
 			isOpen=true;
 			break;
@@ -467,7 +467,7 @@ public class StdExit implements Exit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_EXIT_REOPEN)
+		if(tickID==MudHost.TICK_EXIT_REOPEN)
 		{
 			if(defaultsClosed())
 				isOpen=false;
@@ -479,7 +479,7 @@ public class StdExit implements Exit
 			return false;
 		}
 		else
-		if(tickID==Host.TICK_EXIT_BEHAVIOR)
+		if(tickID==MudHost.TICK_EXIT_BEHAVIOR)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{
@@ -635,7 +635,7 @@ public class StdExit implements Exit
 		}
 		// first one! so start ticking...
 		if(behaviors.size()==0)
-			ExternalPlay.startTickDown(this,Host.TICK_EXIT_BEHAVIOR,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_EXIT_BEHAVIOR,1);
 		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -644,7 +644,7 @@ public class StdExit implements Exit
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
 		if(behaviors.size()==0)
-			ExternalPlay.deleteTick(this,Host.TICK_EXIT_BEHAVIOR);
+			ExternalPlay.deleteTick(this,MudHost.TICK_EXIT_BEHAVIOR);
 	}
 
 	public int numBehaviors()

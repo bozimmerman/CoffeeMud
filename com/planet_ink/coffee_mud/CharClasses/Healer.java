@@ -104,7 +104,7 @@ public class Healer extends Cleric
 
 	public void tick(MOB myChar, int tickID)
 	{
-		if((tickID==Host.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
+		if((tickID==MudHost.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
 		{
 			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return;
 

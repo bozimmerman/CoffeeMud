@@ -27,7 +27,7 @@ public class MOBReSave extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
-		&&(tickID==Host.TICK_MOB)
+		&&(tickID==MudHost.TICK_MOB)
 		&&(!((MOB)ticking).amDead())
 		&&(!noRecurse)
 		&&(ExternalPlay.getSystemStarted())

@@ -530,7 +530,7 @@ public class StdArea implements Area
 		if(start)
 		{
 			stopTicking=false;
-			ExternalPlay.startTickDown(this,Host.TICK_AREA,1);
+			ExternalPlay.startTickDown(this,MudHost.TICK_AREA,1);
 		}
 		else
 			stopTicking=true;
@@ -722,7 +722,7 @@ public class StdArea implements Area
 	{
 		if(stopTicking) return false;
 		tickStatus=Tickable.STATUS_START;
-		if(tickID==Host.TICK_AREA)
+		if(tickID==MudHost.TICK_AREA)
 		{
 			for(int b=0;b<numBehaviors();b++)
 			{

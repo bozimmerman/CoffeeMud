@@ -106,7 +106,7 @@ public class Spell_Timeport extends Spell
 				ExternalPlay.suspendTicking(target,-1);
 				beneficialAffect(mob,target,3);
 				Ability A=target.fetchEffect(ID());
-				if(A!=null)	ExternalPlay.startTickDown(A,Host.TICK_MOB,1);
+				if(A!=null)	ExternalPlay.startTickDown(A,MudHost.TICK_MOB,1);
 			}
 		}
 		else

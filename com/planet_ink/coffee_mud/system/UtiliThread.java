@@ -57,7 +57,7 @@ public class UtiliThread extends Thread
 				MOB mob=(MOB)R.fetchInhabitant(m);
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
-					boolean ticked=ServiceEngine.isTicking(mob,Host.TICK_MOB);
+					boolean ticked=ServiceEngine.isTicking(mob,MudHost.TICK_MOB);
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 					if(CMMap.getPlayer(mob.Name())==null)
@@ -225,7 +225,7 @@ public class UtiliThread extends Thread
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				status="sleeping";
-				Thread.sleep(Host.TIME_TICK_DELAY);
+				Thread.sleep(MudHost.TIME_TICK_DELAY);
 				lastStart=System.currentTimeMillis();
 			}
 			catch(InterruptedException ioe)

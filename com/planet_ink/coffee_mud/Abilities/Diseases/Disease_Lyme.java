@@ -16,8 +16,8 @@ public class Disease_Lyme extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Lyme();}
 
-	protected int DISEASE_TICKS(){return new Long(9*Host.TICKS_PER_MUDDAY).intValue();}
-	protected int DISEASE_DELAY(){return new Long(Host.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(9*MudHost.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_DELAY(){return new Long(MudHost.TICKS_PER_MUDDAY).intValue();}
 	protected String DISEASE_DONE(){return "Your lyme disease goes away.";}
 	protected String DISEASE_START(){return "^G<S-NAME> get(s) lyme disease!^?";}
 	protected String DISEASE_AFFECT(){return "";}

@@ -28,7 +28,7 @@ public class StdInnKey extends StdKey implements InnKey
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_ITEM_BOUNCEBACK)
+		if(tickID==MudHost.TICK_ITEM_BOUNCEBACK)
 		{
 			this.destroyed=false;
 			this.setContainer(null);
@@ -67,7 +67,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.target()==myShopkeeper)
 		&&(msg.tool()==this))
 		{
-			ExternalPlay.deleteTick(this,Host.TICK_ITEM_BOUNCEBACK);
+			ExternalPlay.deleteTick(this,MudHost.TICK_ITEM_BOUNCEBACK);
 			myShopkeeper.addStoreInventory(this); //makes a copy
 			destroy();
 		}
@@ -92,7 +92,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(myShopkeeper!=null)
 		&&(msg.tool()==myShopkeeper)
 		&&(msg.target()==this))
-			ExternalPlay.startTickDown(this,Host.TICK_ITEM_BOUNCEBACK,(int)Host.TICKS_PER_MUDDAY);
+			ExternalPlay.startTickDown(this,MudHost.TICK_ITEM_BOUNCEBACK,(int)MudHost.TICKS_PER_MUDDAY);
 		return true;
 	}
 }

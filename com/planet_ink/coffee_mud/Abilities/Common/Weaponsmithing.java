@@ -43,7 +43,7 @@ public class Weaponsmithing extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
 			if((building==null)
@@ -127,7 +127,7 @@ public class Weaponsmithing extends CommonSkill
 	{
 		if((mob.isMonster())&&(!Sense.isAnimalIntelligence(mob)))
 			return true;
-		
+
 		String specialization="";
 		switch(specClass(weaponClass))
 		{

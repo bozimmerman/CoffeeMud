@@ -93,7 +93,7 @@ public class AntiVagrant extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 
 		// believe it or not, this is for arrest behavior.
 		if(speakDown>0)	{	speakDown--;return true;	}

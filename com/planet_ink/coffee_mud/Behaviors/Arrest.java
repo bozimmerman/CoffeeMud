@@ -18,7 +18,7 @@ public class Arrest extends StdBehavior
 
 	protected static final long ONE_REAL_DAY=(long)1000*60*60*24;
 	protected static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
-	
+
 	protected String getLawParms(){ return getParms();}
 
 	protected class ArrestWarrant implements Cloneable, LegalWarrant
@@ -89,7 +89,7 @@ public class Arrest extends StdBehavior
 		private Vector officerNames=new Vector();
 		private Vector judgeNames=new Vector();
 		private String[] messages=new String[Law.MSG_TOTAL];
-		
+
 		private boolean activated=true;
 
 		private Vector oldWarrants=new Vector();
@@ -119,7 +119,7 @@ public class Arrest extends StdBehavior
 		public Vector otherBits() { return otherBits;}
 		public Hashtable abilityCrimes(){ return abilityCrimes;}
 		public Hashtable basicCrimes(){ return basicCrimes;}
-		
+
 		public boolean hasModifiableNames(){return namesModifiable;}
 		public boolean hasModifiableLaws(){return lawsModifiable;}
 
@@ -536,7 +536,7 @@ public class Arrest extends StdBehavior
 			modifiableNames=false;
 		}
 		if((laws==null)&&(cleanOnly)) return null;
-		
+
 		if(laws==null)
 		{
 			Properties lawprops=new Properties();
@@ -1371,7 +1371,7 @@ public class Arrest extends StdBehavior
 		super.executeMsg(affecting, msg);
 		if(!(affecting instanceof Area)) return;
 		if(!theLawIsEnabled()) return;
-		
+
 		Area myArea=(Area)affecting;
 		Law laws=getLaws(affecting,false);
 		if(!laws.lawIsActivated()) return;
@@ -1639,11 +1639,11 @@ public class Arrest extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(!(ticking instanceof Area)) return true;
-		if(tickID!=Host.TICK_AREA) return true;
+		if(tickID!=MudHost.TICK_AREA) return true;
 		Area myArea=(Area)ticking;
-		
+
 		if(!theLawIsEnabled())return true;
-		
+
 		Law laws=getLaws(myArea,false);
 		if(!laws.lawIsActivated())
 		{

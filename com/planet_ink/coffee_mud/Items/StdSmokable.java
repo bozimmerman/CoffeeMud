@@ -8,7 +8,7 @@ public class StdSmokable extends StdContainer implements Light
 {
 	public String ID(){	return "StdSmokable";}
 	protected boolean lit=false;
-	protected long puffTicks=30000/Host.TICK_TIME;
+	protected long puffTicks=30000/MudHost.TICK_TIME;
 	protected int baseDuration=200;
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
@@ -94,7 +94,7 @@ public class StdSmokable extends StdContainer implements Light
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((tickID==Host.TICK_LIGHT_FLICKERS)
+		if((tickID==MudHost.TICK_LIGHT_FLICKERS)
 		&&(isLit())
 		&&(owner()!=null))
 		{
@@ -179,7 +179,7 @@ public class StdSmokable extends StdContainer implements Light
 					mob.tell("The water makes "+name()+" go out.");
 				else
 					mob.tell("The rain makes "+name()+" go out.");
-				tick(this,Host.TICK_LIGHT_FLICKERS);
+				tick(this,MudHost.TICK_LIGHT_FLICKERS);
 			}
 		}
 
@@ -190,7 +190,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(isLit())
 				{
 					light(false);
-					ExternalPlay.deleteTick(this,Host.TICK_LIGHT_FLICKERS);
+					ExternalPlay.deleteTick(this,MudHost.TICK_LIGHT_FLICKERS);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}
@@ -206,7 +206,7 @@ public class StdSmokable extends StdContainer implements Light
 					}
 
 					light(true);
-					ExternalPlay.startTickDown(this,Host.TICK_LIGHT_FLICKERS,1);
+					ExternalPlay.startTickDown(this,MudHost.TICK_LIGHT_FLICKERS,1);
 					recoverEnvStats();
 					room.recoverRoomStats();
 				}

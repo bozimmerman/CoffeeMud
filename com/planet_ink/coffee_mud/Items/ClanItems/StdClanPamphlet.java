@@ -10,8 +10,8 @@ public class StdClanPamphlet extends StdClanItem
 	public String ID(){	return "StdClanPamphlet";}
 	public Environmental newInstance(){ return new StdClanPamphlet();}
 	private int tradeTime=-1;
-	private static final int TRADEFREQ=(int)Host.TICKS_PER_MUDDAY;
-	
+	private static final int TRADEFREQ=(int)MudHost.TICKS_PER_MUDDAY;
+
 	public StdClanPamphlet()
 	{
 		super();
@@ -26,12 +26,12 @@ public class StdClanPamphlet extends StdClanItem
 		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((tickID==Host.TICK_CLANITEM)
+		if((tickID==MudHost.TICK_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(clanID().length()>0)
 		&&(((MOB)owner()).isMonster())

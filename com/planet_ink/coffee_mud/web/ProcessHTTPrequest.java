@@ -62,12 +62,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	HTTPserver webServer;
 
 	public boolean virtualPage;
-	
+
 	private Hashtable objects=null;
 
-	public ProcessHTTPrequest(Socket a_sock, 
-							  HTTPserver a_webServer, 
-							  INI a_page, 
+	public ProcessHTTPrequest(Socket a_sock,
+							  HTTPserver a_webServer,
+							  INI a_page,
 							  boolean a_isAdminServer)
 	{
 		// thread name contains both an instance counter and the client's IP address
@@ -96,7 +96,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		String lookFor = new String (mimePrefix + a_extension);
 		return page.getStr(lookFor.toUpperCase());
 	}
-	
+
 	private boolean process(String inLine) throws Exception
 	{
 		virtualPage = false;
@@ -113,7 +113,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				statusExtra = "Empty request";
 				return false;
 			}
-			
+
 			if(command.startsWith("["))
 			{
 				int err=400;
@@ -206,13 +206,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 
 	}
-	
+
 	public Hashtable getRequestObjects()
 	{
 		if(objects==null) objects=new Hashtable();
 		return objects;
 	}
-	
+
 	public void resetRequestEncodedParameters()
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -224,7 +224,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			try
 			{
 				buf.append(URLEncoder.encode(key,"UTF-8")+"="+URLEncoder.encode(value,"UTF-8"));
-			}  
+			}
 			catch(java.io.UnsupportedEncodingException es)
 			{
 				Log.errOut(getName(),"Wrong Encoding");
@@ -239,7 +239,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		requestParametersTable.put(key,value);
 		resetRequestEncodedParameters();
 	}
-	
+
 	public boolean isRequestParameter(String key)
 	{
 		if(key==null) return false;
@@ -256,7 +256,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		if(key==null) return null;
 		return (String)getRequestParameters().get(key);
 	}
-		
+
 	private Hashtable getRequestParameters()
 	{
 		// have we already parsed the parameters?
@@ -427,7 +427,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return input.toString();
 	}
-	
+
 	private int myEndif(StringBuffer s, int i)
 	{
 		int endifsToFind=1;
@@ -452,7 +452,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return -1;
 	}
-	
+
 	private String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
 	{
@@ -644,7 +644,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 							s.replace(i,i+6, "[back without loop]" );
 							continue;
 						}
-						
+
 						if(foundMacro.length()>0)
 						{
 							try
@@ -684,7 +684,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			throw new HTTPRedirectException(redirectTo);
 		}
-		
+
 		return s.toString().getBytes();
 	}
 
@@ -915,7 +915,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 				":" + status);
 
-		
+
 		try
 		{
 			if (sout != null)
@@ -1044,7 +1044,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			data.addElement(new String(out.toByteArray()));
 		else
 			data.addElement(out.toByteArray());
-		return data;					
+		return data;
 	}
 
 	public String getContentType(Vector data)
@@ -1061,7 +1061,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return "";
 	}
-	
+
 	public int getContentLength(Vector data)
 	{
 		for(int s=0;s<data.size();s++)
@@ -1076,7 +1076,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return -1;
 	}
-	
+
 	public String getHTTPRequest(InputStream sin)
 	{
 		try
@@ -1084,7 +1084,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			Vector inData = getData(sin);
 			//Log.sysOut("HTTP",inLine);
 
-			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String))) 
+			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String)))
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
@@ -1117,10 +1117,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return "[400 -- error occurred processing request]";
 	}
-	
-	
+
+
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
-	public Host getMUD(){return getWebServer().getMUD();}
+	public MudHost getMUD(){return getWebServer().getMUD();}
 }

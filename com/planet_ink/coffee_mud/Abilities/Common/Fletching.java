@@ -99,7 +99,7 @@ public class Fletching extends CommonSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.TICK_MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			if(building==null)
 				unInvoke();

@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.exceptions.*;
 import java.net.InetAddress;
 public interface ExternalHTTPRequests
 {
-	public byte [] doVirtualPage(byte [] data) 
+	public byte [] doVirtualPage(byte [] data)
 		throws HTTPRedirectException;
 	public String ServerVersionString();
 	public String getWebServerPortStr();
@@ -12,7 +12,7 @@ public interface ExternalHTTPRequests
 	public String getHTTPstatusInfo();
 	public String getHTTPclientIP();
 	public String getWebServerPartialName();
-	public Host getMUD();
+	public MudHost getMUD();
 	public boolean isRequestParameter(String key);
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);

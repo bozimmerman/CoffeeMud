@@ -14,9 +14,9 @@ public class Tick extends Thread
 	public long lastStop=0;
 	public long milliTotal=0;
 	public long tickTotal=0;
-	
+
 	private Vector tickers=new Vector();
-	
+
 	public Enumeration tickers(){return ((Vector)tickers.clone()).elements();}
 	public int numTickers(){return tickers.size();}
 	public TockClient fetchTicker(int i){
@@ -39,7 +39,7 @@ public class Tick extends Thread
 			tickers.addElement(C);
 		}
 	}
-	
+
 
 	private static int tickObjCounter=0;
 	public Tick()
@@ -67,15 +67,15 @@ public class Tick extends Thread
 
 	public static boolean tickTicker(TockClient C)
 	{
-		if(C.suspended) 
+		if(C.suspended)
 			return false;
-		
+
 		if((--C.tickDown)<1)
 		{
 			C.tickDown=C.reTickDown;
 			try
 			{
-				if(!C.clientObject.tick(C.clientObject,C.tickID)) 
+				if(!C.clientObject.tick(C.clientObject,C.tickID))
 					return true;
 			}
 			catch(Exception t)
@@ -85,7 +85,7 @@ public class Tick extends Thread
 		}
 		return false;
 	}
-	
+
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
@@ -97,7 +97,7 @@ public class Tick extends Thread
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				awake=false;
-				Thread.sleep(Host.TICK_TIME);
+				Thread.sleep(MudHost.TICK_TIME);
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;

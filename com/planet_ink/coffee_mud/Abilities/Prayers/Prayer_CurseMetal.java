@@ -42,7 +42,7 @@ public class Prayer_CurseMetal extends Prayer
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 		if(invoker==null)

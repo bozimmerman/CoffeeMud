@@ -26,7 +26,7 @@ public class Prayer_HealingAura extends Prayer
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return false;
-		if(tickID!=Host.TICK_MOB) return true;
+		if(tickID!=MudHost.TICK_MOB) return true;
 		MOB myChar=(MOB)affected;
 
 		if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return true;

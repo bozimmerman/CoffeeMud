@@ -27,8 +27,8 @@ public interface MOB
 	public static final int ATT_NOTEACH=32768;
 	public static final int ATT_AUTONOTIFY=65536;
 
-	public static final long SHEATH_TIME=3*Host.TICK_TIME;
-	
+	public static final long SHEATH_TIME=3*MudHost.TICK_TIME;
+
 	public static final boolean[] AUTOREV={false,
 										   false,
 										   false,
@@ -98,7 +98,7 @@ public interface MOB
 	public int adjustedArmor();
 	public int adjustedDamage(Weapon weapon, MOB target);
 	public long peaceTime();
-	
+
 
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/
@@ -175,8 +175,8 @@ public interface MOB
 	public Item fetchWornItem(String itemName);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
-	
-	
+
+
 	public int freeWearPositions(long wornCode);
 	public int numWearingHere(long wornCode);
 	public boolean isMine(Environmental env);

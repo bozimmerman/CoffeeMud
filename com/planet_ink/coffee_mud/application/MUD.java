@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Commands.sysop.*;
 import com.planet_ink.coffee_mud.web.*;
 
 
-public class MUD extends Thread implements Host
+public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)4.1;
 	public static final long  HOST_VERSION_MINOR=4;
@@ -259,9 +259,9 @@ public class MUD extends Thread implements Host
 		{
 			if (loadWebCommonPropPage())
 			{
-				webServerThread = new HTTPserver((Host)mudThreads.firstElement(),"pub");
+				webServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"pub");
 				webServerThread.start();
-				adminServerThread = new HTTPserver((Host)mudThreads.firstElement(),"admin");
+				adminServerThread = new HTTPserver((MudHost)mudThreads.firstElement(),"admin");
 				adminServerThread.start();
 				if(!HTTPserver.loadWebMacros())
 					Log.errOut("MUD","Unable to loadWebMacros");
@@ -270,8 +270,8 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
-		ExternalPlay.setPlayer(ExternalCommands.getInstance(), 
-							   new ExternalSystems(), 
+		ExternalPlay.setPlayer(ExternalCommands.getInstance(),
+							   new ExternalSystems(),
 							   new ProcessHTTPrequest(null,(adminServerThread!=null)?adminServerThread:(webServerThread!=null)?webServerThread:null,null,true),
 							   new IMudClient());
 
@@ -284,7 +284,7 @@ public class MUD extends Thread implements Host
 		}
 
 		int numChannelsLoaded=Channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),CommandSet.getInstance());
-		CommandProcessor.myHost=(Host)mudThreads.firstElement();
+		CommandProcessor.myHost=(MudHost)mudThreads.firstElement();
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
 		offlineReason="Booting: loading socials";
@@ -294,12 +294,12 @@ public class MUD extends Thread implements Host
 		else
 			Log.sysOut("MUD","Socials loaded    : "+Socials.num());
 
-		ClanLoader.DBRead((Host)mudThreads.firstElement());
+		ClanLoader.DBRead((MudHost)mudThreads.firstElement());
 		Log.sysOut("MUD","Clans loaded      : "+Clans.size());
 
 		Log.sysOut("MUD","Loading map...");
 		offlineReason="Booting: loading rooms (0% completed).";
-		RoomLoader.DBRead((Host)mudThreads.firstElement());
+		RoomLoader.DBRead((MudHost)mudThreads.firstElement());
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -328,7 +328,7 @@ public class MUD extends Thread implements Host
 			ExternalPlay.DBUpdateItems(room);
 		}
 
-		ExternalPlay.DBReadQuests((Host)mudThreads.firstElement());
+		ExternalPlay.DBReadQuests((MudHost)mudThreads.firstElement());
 		if(Quests.numQuests()>0)
 			Log.sysOut("MUD","Quests loaded     : "+Quests.numQuests());
 
@@ -339,10 +339,10 @@ public class MUD extends Thread implements Host
 
 			saveThread=new SaveThread();
 			saveThread.start();
-			
+
 			utiliThread=new UtiliThread();
 			utiliThread.start();
-			
+
 			Log.sysOut("MUD","Utility threads started");
 		}
 		catch (Throwable th)
@@ -454,7 +454,7 @@ public class MUD extends Thread implements Host
 						}
 						if(proceed!=0) break;
 					}
-					
+
 					int numAtThisAddress=0;
 					long ConnectionWindow=(180*1000);
 					long LastConnectionDelay=(5*60*1000);
@@ -487,7 +487,7 @@ public class MUD extends Thread implements Host
 							proceed=2;
 						}
 					}catch(java.lang.ArrayIndexOutOfBoundsException e){}
-					
+
 					accessed.addElement(address,new Long(System.currentTimeMillis()));
 					if(proceed!=0)
 					{
@@ -595,8 +595,8 @@ public class MUD extends Thread implements Host
 		saveThread.savePlayers();
 		if(S!=null)S.println("done");
 		Log.sysOut("MUD","All users saved.");
-		
-		
+
+
 		offlineReason="Shutting down...Save Thread";
 		saveThread.shutdown();
 		saveThread.interrupt();
@@ -608,7 +608,7 @@ public class MUD extends Thread implements Host
 		utiliThread=null;
 		if(S!=null)S.println("Utility thread stopped");
 		Log.sysOut("MUD","Utility/Save Threads stopped.");
-		
+
 
 		if(imserver!=null)
 		{
@@ -665,8 +665,8 @@ public class MUD extends Thread implements Host
 		webCommon=null;
 		Log.sysOut("MUD","Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
-		
-		
+
+
 		if(webServerThread!=null)
 		{
 			offlineReason="Shutting down...pub webserver";
@@ -740,7 +740,7 @@ public class MUD extends Thread implements Host
 	public static int killCount(ThreadGroup tGroup, Thread thisOne)
 	{
 		int killed=0;
-		
+
 		int ac = tGroup.activeCount();
 		Thread tArray[] = new Thread [ac+1];
 		tGroup.enumerate(tArray);
@@ -755,7 +755,7 @@ public class MUD extends Thread implements Host
 		}
 		return killed;
 	}
-	
+
 	public static void threadList(ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
@@ -791,7 +791,7 @@ public class MUD extends Thread implements Host
 		StringBuffer str=new StringBuffer("");
 		for(int m=0;m<mudThreads.size();m++)
 		{
-			Host mud=(Host)mudThreads.elementAt(m);
+			MudHost mud=(MudHost)mudThreads.elementAt(m);
 			str.append(" "+mud.getPort());
 		}
 		return str.toString().trim();

@@ -28,7 +28,7 @@ public class Ranger_Track extends StdAbility
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 		{
 			if(nextDirection==-999)
 				return true;

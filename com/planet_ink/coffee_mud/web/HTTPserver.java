@@ -17,44 +17,44 @@ public class HTTPserver extends Thread
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
 	public final static String ServerVersionString = "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
-	
+
 	public boolean isOK = false;
-	
+
 	public boolean isAdminServer = false;
 
 
 	public ServerSocket servsock=null;
 	public static int longestMacro=0;
 
-	private Host mud;
+	private MudHost mud;
 	private String partialName;
-	
+
 	String serverDir = null;
 	String serverTemplateDir = null;
-	
+
 	private static boolean displayedBlurb=false;
-	
+
 	public FileGrabber pageGrabber=new FileGrabber(this);
 	public FileGrabber templateGrabber=new FileGrabber(this);
-	
-	public HTTPserver(Host a_mud, String a_name)
+
+	public HTTPserver(MudHost a_mud, String a_name)
 	{
 		super("HTTP-"+a_name);
 		partialName = a_name;		//name without prefix
 		mud = a_mud;
 
-		
+
 		if (!initServer())
 			isOK = false;
 		else
 			isOK = true;
-	}	
+	}
 
 	public String getPartialName()	{return partialName;}
-	public Host getMUD()	{return mud;}
+	public MudHost getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
-	
+
 	private boolean initServer()
 	{
 		if (!loadPropPage())
@@ -62,7 +62,7 @@ public class HTTPserver extends Thread
 			Log.errOut(getName(),"ERROR: HTTPserver unable to read ini file.");
 			return false;
 		}
-		
+
 		if (page.getStr("PORT").length()==0)
 		{
 			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
@@ -115,7 +115,7 @@ public class HTTPserver extends Thread
 			serverTemplateDir = page.getStr("TEMPLATEDIRECTORY");
 		}
 
-		
+
 		// don't want any trailing / chars
 		serverTemplateDir = FileGrabber.fixDirName(serverTemplateDir);
 
@@ -135,7 +135,7 @@ public class HTTPserver extends Thread
 
 		addVirtualDirectories();
 
-		
+
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
@@ -146,25 +146,25 @@ public class HTTPserver extends Thread
 	}
 
 	public Hashtable getVirtualDirectories(){return pageGrabber.getVirtualDirectories();}
-	
+
 	private void addVirtualDirectories()
 	{
 		for (Enumeration e = page.keys() ; e.hasMoreElements() ;)
 		{
 			String s = (String) e.nextElement();
-			
+
 //Log.sysOut(getName(),s);
 			// nb: hard-coded!
 			if (s.startsWith("MOUNT/"))
 			{
 				// nb: hard-coded! - leaves in '/'
 				String v = s.substring(5);
-				
+
 				pageGrabber.addVirtualDirectory(v,page.getStr(s));
 			}
 		}
 	}
-	
+
 	private boolean loadPropPage()
 	{
 		if (page==null || !page.loaded)
@@ -177,7 +177,7 @@ public class HTTPserver extends Thread
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -194,7 +194,7 @@ public class HTTPserver extends Thread
 			isOK = false;
 			return;
 		}
-		
+
 
 		if (page.getInt("BACKLOG") > 0)
 			q_len = page.getInt("BACKLOG");
@@ -227,14 +227,14 @@ public class HTTPserver extends Thread
 			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
-			
-			
+
+
 			serverOK = true;
 
 			while(true)
 			{
 				sock=servsock.accept();
-				
+
 				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
 				W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
@@ -254,7 +254,7 @@ public class HTTPserver extends Thread
 			if (!serverOK)
 				isOK = false;
 		}
-		
+
 		try
 		{
 			if(servsock!=null)
@@ -284,7 +284,7 @@ public class HTTPserver extends Thread
 	public void shutdown()	{shutdown(null);}
 
 
-	
+
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does
 	public void interrupt()
@@ -309,12 +309,12 @@ public class HTTPserver extends Thread
 	{
 		return page.getInt("PORT");
 	}
-	
+
 	public String getPortStr()
 	{
 		return page.getStr("PORT");
 	}
-	
+
 	public static boolean loadWebMacros()
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;

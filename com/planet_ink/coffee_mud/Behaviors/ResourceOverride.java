@@ -18,7 +18,7 @@ public class ResourceOverride extends StdBehavior
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.TICK_ROOM_BEHAVIOR) return true;
+		if(tickID!=MudHost.TICK_ROOM_BEHAVIOR) return true;
 		if(!(ticking instanceof Room)) return true;
 		Room R=(Room)ticking;
 		if((lastResourceSet<0)

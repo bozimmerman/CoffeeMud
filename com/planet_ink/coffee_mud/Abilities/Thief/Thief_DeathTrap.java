@@ -36,7 +36,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		E.addEffect(T);
-		ExternalPlay.startTickDown(T,Host.TICK_TRAP_DESTRUCTION,new Long(Host.TICKS_PER_MUDDAY).intValue());
+		ExternalPlay.startTickDown(T,MudHost.TICK_TRAP_DESTRUCTION,new Long(MudHost.TICKS_PER_MUDDAY).intValue());
 		return T;
 	}
 
@@ -104,13 +104,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if(tickID==Host.TICK_TRAP_RESET)
+		if(tickID==MudHost.TICK_TRAP_RESET)
 		{
 			sprung=false;
 			return false;
 		}
 		else
-		if(tickID==Host.TICK_TRAP_DESTRUCTION)
+		if(tickID==MudHost.TICK_TRAP_DESTRUCTION)
 		{
 			unInvoke();
 			return false;

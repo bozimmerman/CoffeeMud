@@ -17,7 +17,7 @@ public class Dance_Swing extends Dance
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID==Host.TICK_MOB)
+		if(tickID==MudHost.TICK_MOB)
 			doneThisRound=false;
 		return super.tick(ticking,tickID);
 	}
