@@ -23,7 +23,8 @@ Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undrop
 Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
 WIZINFO type channel (shows logins, logoffs, creates, etc..)
 jewelmaking should allow you to add jewels to any item
-smokable stuff
+smokable stuff, mouth position pipes, smokable resources, etc.
+parse out all the commands into classes, so that access can be class based, and time req can be determined
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
