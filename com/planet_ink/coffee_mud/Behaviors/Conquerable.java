@@ -423,24 +423,17 @@ public class Conquerable extends Arrest
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((holdingClan.length()>0)
-		&&(msg.source().getClanID().equals(holdingClan))
-		&&(msg.source().isMonster())
-		&&(msg.target() instanceof MOB)
-		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(!((MOB)msg.target()).isInCombat())
-		&&(msg.source().getVictim()!=msg.target())
-		&&(((MOB)msg.target()).getClanID().equals(holdingClan)))
+		&&(msg.source().getClanID().equals(holdingClan)))
 		{
-			Clan C=Clans.getClan(holdingClan);
-			if(C==null)
+			if((msg.source().isMonster())
+			&&(msg.target() instanceof MOB)
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			&&(!((MOB)msg.target()).isInCombat())
+			&&(msg.source().getVictim()!=msg.target())
+			&&(((MOB)msg.target()).getClanID().equals(holdingClan)))
 			{
-				endClanRule();
-				return true;
-			}
-			MOB target=(MOB)msg.target();
-			msg.source().tell(target.name()+" is your leader, and you must obey "+target.charStats().himher()+".");
-			if(C.allowedToDoThis(target,Clan.FUNC_CLANCANORDERCONQUERED)==1)
-			{
+				MOB target=(MOB)msg.target();
+				msg.source().tell(target.name()+" is a fellow "+holdingClan+" member, and you must respect "+target.charStats().himher()+".");
 				if(target.getVictim()==msg.source())
 				{
 					target.makePeace();
@@ -448,7 +441,31 @@ public class Conquerable extends Arrest
 				}
 				return false;
 			}
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+			&&(msg.target() instanceof MOB)
+			&&(myArea!=null)
+			&&(((MOB)msg.target()).getStartRoom()!=null)
+			&&(((MOB)msg.target()).getStartRoom().getArea()==myArea))
+				msg.setValue(0);
 		}
+		else // must not be equal because of else to above
+		if((holdingClan.length()>0)
+		&&(msg.source().getClanID().length()>0)
+		&&(msg.target() instanceof MOB)
+		&&(((MOB)msg.target()).amFollowing()==msg.source())
+		&&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(!((MOB)msg.target()).isInCombat())
+		&&(msg.source().getVictim()!=msg.target())
+		&&(((MOB)msg.target()).getClanID().equals(holdingClan))
+		&&(noMultiFollows.contains(msg.target())))
+		{
+			noMultiFollows.remove(msg.target());
+			changeControlPoints(msg.source().getClanID(),-msg.target().envStats().level());
+		}
+			
+	
+		
 		return super.okMessage(myHost,msg);
 	}
 	
@@ -598,9 +615,9 @@ public class Conquerable extends Arrest
 							changeControlPoints(killer.getClanID(),msg.source().envStats().level());
 					}
 					else // a foreigner was killed
-					if((!killer.getClanID().equals(holdingClan))
+					if((killer.getClanID().equals(holdingClan))
 					&&(msg.source().getClanID().length()>0)
-					&&(flagFound((Area)myHost,killer.getClanID())))
+					&&(flagFound((Area)myHost,msg.source().getClanID())))
 						changeControlPoints(msg.source().getClanID(),-msg.source().envStats().level());
 				}
 			}

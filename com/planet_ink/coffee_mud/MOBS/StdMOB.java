@@ -1648,20 +1648,14 @@ public class StdMOB implements MOB
 					if(msg.target() instanceof MOB)
 						victim=(MOB)msg.target();
 					
-					if((clanID.length()==0)
-					||(victim==null)
-					||(!clanID.equals(victim.getClanID()))
-					||(Util.s_bool(msg.othersMessage())))
-					{
-						if(msg.value()>=0)
-							charStats().getCurrentClass().gainExperience(this,
-																		 victim,
-																		 msg.targetMessage(),
-																		 msg.value(),
-																		 Util.s_bool(msg.othersMessage()));
-						else
-							charStats().getCurrentClass().loseExperience(this,-msg.value());
-					}
+					if(msg.value()>=0)
+						charStats().getCurrentClass().gainExperience(this,
+																	 victim,
+																	 msg.targetMessage(),
+																	 msg.value(),
+																	 Util.s_bool(msg.othersMessage()));
+					else
+						charStats().getCurrentClass().loseExperience(this,-msg.value());
 				}
 				break;
 			case CMMsg.TYP_DEATH:
@@ -2014,7 +2008,7 @@ public class StdMOB implements MOB
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
 				curState().expendEnergy(this,maxState,false);
-				if(!Sense.canBreathe(this))
+				if((!Sense.canBreathe(this))&&(!Sense.isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CommonStrings.msp("choke.wav",10));
 					ExternalPlay.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MSG_OK_VISUAL,-1,null);

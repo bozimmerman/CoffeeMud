@@ -128,7 +128,6 @@ public class DBConnections
 								String DBPass, 
 								int numConnections)
 	{
-		Log.sysOut("DBConnections","Making database connections...");
 		lockedUp=true;
 		try
 		{
@@ -152,7 +151,6 @@ public class DBConnections
 			Log.errOut("DBConnections",""+sqle);
 			lockedUp=true;
 		}
-		Log.sysOut("DBConnections","Done making database connections.");		
 	}
 	
 	private void repairConnections(String DBClass,
