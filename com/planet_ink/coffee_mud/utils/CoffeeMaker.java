@@ -784,7 +784,7 @@ public class CoffeeMaker
 		return buf;
 	}
 
-	public static StringBuffer logTextDiff(String e1, String e2)
+	private static StringBuffer logTextDiff(String e1, String e2)
 	{
 		int start=0;
 		int end=e1.length()-1;
@@ -816,10 +816,16 @@ public class CoffeeMaker
 				}
 			}
 		}
-		return new StringBuffer("*1>"+e1.substring(start,end)+"\n\r*2>"+e2.substring(start,end2));
+		StringBuffer str=new StringBuffer("*1>");
+		if(end<start) str.append("");
+		else str.append(e1.substring(start,end));
+		str.append("\n\r*2>");
+		if(end2<start) str.append("");
+		else str.append(e2.substring(start,end2));
+		return str;
 	}
 
-	public static void logDiff(Environmental E1, Environmental E2)
+	private static void logDiff(Environmental E1, Environmental E2)
 	{
 		StringBuffer str=new StringBuffer("Unmatched - "+E1.Name()+"\n\r");
 		if(E1 instanceof MOB)
@@ -851,7 +857,7 @@ public class CoffeeMaker
 			if(!item.text().equals(dup.text()))
 				str.append(logTextDiff(item.text(),dup.text()));
 		}
-		//Log.sysOut("Generic",str.toString());
+		Log.sysOut("Generic",str.toString());
 	}
 
 	public static StringBuffer getRoomMobs(Room room, HashSet custom, Hashtable found)
@@ -910,7 +916,7 @@ public class CoffeeMaker
 							dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
 							dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 							dup.baseCharStats().setStat(CharStats.GENDER,mob.baseCharStats().getStat(CharStats.GENDER));
-							logDiff(mob,dup);
+							//logDiff(mob,dup);
 							dup.baseEnvStats().setHeight(oldHeight);
 							dup.baseEnvStats().setWeight(oldWeight);
 							dup.baseCharStats().setStat(CharStats.GENDER,oldGender);
@@ -977,7 +983,7 @@ public class CoffeeMaker
 					Item dup=(Item)dups.elementAt(v);
 					int oldHeight=item.baseEnvStats().height();
 					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
-					logDiff(item,dup);
+					//logDiff(item,dup);
 					item.baseEnvStats().setHeight(oldHeight);
 				}
 				dups.addElement(item);
