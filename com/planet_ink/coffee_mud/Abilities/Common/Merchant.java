@@ -24,7 +24,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		isAutoInvoked();
 		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("Archon",1,ID(),false);}
+					CMAble.addCharAbilityMapping("All",20,ID(),false);}
 	}
 	public Environmental newInstance(){	Merchant M=new Merchant(); M.setMiscText(text()); return M;}
 	public String text()
@@ -58,7 +58,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			stockValues=new Hashtable();
 			if(text.length()==0) return;
 			
-			Vector buf=XMLManager.parseAllXML(text());
+			Vector buf=XMLManager.parseAllXML(text);
 			if(buf==null)
 			{
 				Log.errOut("Merchant","Error parsing data.");
@@ -378,6 +378,17 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				break;
 			}
 		}
+		else
+		if(affect.amISource(M)&&(affect.sourceMinor()==Affect.TYP_DEATH))
+		{
+			Item I=(Item)removeStock("all",M);
+			while(I!=null)
+			{
+				M.addInventory(I);
+				I=(Item)removeStock("all",M);
+			}
+			M.recoverEnvStats();
+		}
 		return super.okAffect(myHost,affect);
 	}
 
@@ -405,10 +416,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((affect.tool()!=null)
 				&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
+					int price=yourValue(mob,affect.tool(),true);
 					Vector products=removeSellableProduct(affect.tool().name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					Money.setTotalMoney(M,mob,yourValue(mob,product,true));
+System.out.println(price);
+					Money.setTotalMoney(M,mob,price);
+					M.setMoney(M.getMoney()+price);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
@@ -419,15 +433,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 						}
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
 						if(M.location().okAffect(mob,msg))
-						{
-							M.tell(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 							M.location().send(mob,msg);
-						}
 						else
 							return;
 					}
-					if(M.session()!=null)
-						M.session().stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 					mob.location().recoverRoomStats();
 				}
 				break;
@@ -542,6 +551,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				I=(Item)removeStock(itemName,mob);
 			}
 			delStoreInventory(I);
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+			mob.recoverMaxState();
 			return true;
 		}
 		
