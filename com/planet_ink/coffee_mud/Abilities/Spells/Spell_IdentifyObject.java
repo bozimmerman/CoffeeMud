@@ -25,7 +25,7 @@ public class Spell_IdentifyObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> study(s) <T-NAMESELF> very closely.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> stud(ys) <T-NAMESELF> very closely.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -38,7 +38,7 @@ public class Spell_IdentifyObject extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> study(s) <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,"<S-NAME> stud(ys) <T-NAMESELF>, looking more frustrated every second.");
 
 
 		// return whether it worked

@@ -58,7 +58,8 @@ public class Bomb_Spores extends StdBomb
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
 				if(A==null) A=CMClass.getAbility("Disease_Cold");
-				if(A!=null) A.invoke(invoker(),target,true);
+				if(A!=null)
+					A.invoke(invoker(),target,true);
 			}
 		}
 	}

@@ -74,14 +74,15 @@ public class Monkey extends StdRace
 		
 		MOB myChar=(MOB)myHost;
 		if((affect.amITarget(myChar))
-		&&(Dice.rollPercentage()==1)
+		&&(Dice.rollPercentage()<10)
 		&&(affect.tool()!=null)
 		&&(affect.tool().ID().equals("Social"))
 		&&(affect.tool().name().equals("MATE <T-NAME>")
 			||affect.tool().name().equals("SEX <T-NAME>")))
 		{
 			Ability A=CMClass.getAbility("Disease_Aids");
-			if(A!=null)	A.invoke(affect.source(),myChar,true);
+			if(A!=null)	
+				A.invoke(affect.source(),myChar,true);
 		}
 	}
 	

@@ -84,7 +84,7 @@ public class Skill_ScrollCopy extends StdAbility
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,target,Affect.MSG_HANDS,"<S-NAME> copy(s) '"+thisSpell.name()+"' from <O-NAME>."))
+			if(mob.location().show(mob,null,target,Affect.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.name()+"' from <O-NAME>."))
 				thisSpell.teach(T,mob);
 		}
 		else

@@ -28,7 +28,7 @@ public class Thief_Lore extends ThiefSkill
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> study(s) <T-NAMESELF> and consider(s) for a moment.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> stud(ys) <T-NAMESELF> and consider(s) for a moment.");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -39,7 +39,7 @@ public class Thief_Lore extends ThiefSkill
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> study(s) <T-NAMESELF>, but can't remember a thing.");
+			beneficialVisualFizzle(mob,target,"<S-NAME> stud(ys) <T-NAMESELF>, but can't remember a thing.");
 		return success;
 	}
 }

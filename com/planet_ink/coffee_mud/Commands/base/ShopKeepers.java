@@ -12,6 +12,7 @@ public class ShopKeepers
 	
 	private static ShopKeeper shopkeeper(Room here, MOB mob)
 	{
+		if(here==null) return null;
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
@@ -24,12 +25,14 @@ public class ShopKeepers
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		String titleInName="";
+		if((room==null)||(mob==null)) return false;
 		for(int a=0;a<room.numAffects();a++)
 		{
 			Ability A=room.fetchAffect(a);
 			if((A!=null)&&(A instanceof LandTitle))
 			{ titleInName=((LandTitle)A).landOwner(); break;}
 		}
+		if(titleInName==null) return false;
 		if(titleInName.length()==0) return false;
 		if(titleInName.equals(mob.name())) return true;
 		if(titleInName.equals(mob.getClanID()))

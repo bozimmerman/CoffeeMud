@@ -1815,13 +1815,15 @@ public class StdMOB implements MOB
 						if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
 						{
 							Ability A=CMClass.getAbility("Disease_Cancer");
-							if(A!=null) A.invoke(this,this,true);
+							if((A!=null)&&(fetchAffect(A.ID())==null))
+								A.invoke(this,this,true);
 						}
 						else
-						if((AgeHours%1200)==0)
+						if(((AgeHours%1200)==0)&&(Dice.rollPercentage()<25))
 						{
 							Ability A=CMClass.getAbility("Disease_Arthritis");
-							if(A!=null) A.invoke(this,this,true);
+							if((A!=null)&&(fetchAffect(A.ID())==null))
+								A.invoke(this,this,true);
 						}
 					}
 				}

@@ -508,6 +508,14 @@ public class Util
 		return false;
 	}
 	
+	public static String sameCase(String str, char c)
+	{
+		if(Character.isUpperCase(c))
+			return str.toUpperCase();
+		else
+			return str.toLowerCase();
+	}
+	
 	public static String safetyFilter(String s)
 	{
 		StringBuffer s1=new StringBuffer(s);

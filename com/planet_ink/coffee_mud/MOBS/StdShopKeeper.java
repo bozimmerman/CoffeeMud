@@ -746,14 +746,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			switch(affect.targetMinor())
 			{
-			case Affect.TYP_GIVE:
-				if(!mob.isASysOp(mob.location()))
-				{
-					mob.tell(mob.charStats().HeShe()+" is not accepting charity.");
-					return false;
-				}
-				else
-					return super.okAffect(myHost,affect);
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
 			{
@@ -928,7 +920,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	public void affect(Environmental myHost, Affect affect)
 	{
-		super.affect(myHost,affect);
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
@@ -936,14 +927,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 			case Affect.TYP_GIVE:
 				if((affect.tool()!=null)
-				   &&((doISellThis(affect.tool())))
-				   ||((whatISell==DEAL_INVENTORYONLY)&&(mob.isASysOp(mob.location()))))
+				&&((doISellThis(affect.tool())))
+				||((whatISell==DEAL_INVENTORYONLY)&&(mob.isASysOp(mob.location()))))
+				{
 					storeInventory.addElement(affect.tool());
+					return;
+				}
+				super.affect(myHost,affect);
 				break;
 			case Affect.TYP_VALUE:
+				super.affect(myHost,affect);
 				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".",true,false);
 				break;
 			case Affect.TYP_SELL:
+				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
@@ -994,12 +991,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 					mob.location().recoverRoomStats();
 				}
-				return;
+				break;
 			case Affect.TYP_VIEW:
+				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
 					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
+				super.affect(myHost,affect);
 				if((affect.tool()!=null)
 				&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
@@ -1078,9 +1077,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
 					mob.location().recoverRoomStats();
 				}
-				return;
+				break;
 			case Affect.TYP_LIST:
 				{
+					super.affect(myHost,affect);
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
 					{
@@ -1090,8 +1090,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 						ExternalPlay.quickSay(this,mob,"\n\r"+str+"^T",true,false);
 				}
-				return;
+				break;
 			default:
+				super.affect(myHost,affect);
 				break;
 			}
 		}

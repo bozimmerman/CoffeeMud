@@ -69,6 +69,9 @@ public class Grouping
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
 			MOB mob2=thisSession.mob();
+			if((mob2!=null)&&(mob2.soulMate()!=null))
+				mob2=mob2.soulMate();
+			
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
@@ -247,7 +250,7 @@ public class Grouping
 			mob.tell("I don't see them here.");
 			return;
 		}
-		if(target.isMonster())
+		if((target.isMonster())&&(!mob.isMonster()))
 		{
 			mob.tell("You cannot follow '"+target.name()+"'.");
 			return;

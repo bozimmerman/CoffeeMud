@@ -120,7 +120,8 @@ public class StdWeapon extends StdItem implements Weapon
 					else
 						A=CMClass.getAbility("Disease_Infection");
 					
-					if(A!=null) A.invoke(affect.source(),affect.target(),true);
+					if((A!=null)&&(affect.target().fetchAffect(A.ID())==null))
+						A.invoke(affect.source(),affect.target(),true);
 				}
 				else
 				if((hurt>50)

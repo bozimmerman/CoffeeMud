@@ -53,7 +53,8 @@ public class Spell extends StdAbility
 					if(num>5)
 					{
 						Ability A2=CMClass.getAbility("Disease_Magepox");
-						if(A2!=null) A2.invoke(mob,target,true);
+						if((A2!=null)&&(target.fetchAffect(A2.ID())==null))
+							A2.invoke(mob,target,true);
 						break;
 					}
 				}

@@ -622,38 +622,47 @@ public class TelnetSession extends Thread implements Session
 					break;
 				case '(':
 					if(!wrapOnly)
-					if(((loop<buf.length()-2)&&(buf.charAt(loop+2)==')')&&(Character.toUpperCase(buf.charAt(loop+1))=='S'))
-					||((loop<buf.length()-3)&&(buf.charAt(loop+3)==')')&&(Character.toUpperCase(buf.charAt(loop+1))=='E')&&(Character.toUpperCase(buf.charAt(loop+2))=='S')))
 					{
-						int lastParen=loop+2;
-						if(Character.toUpperCase(buf.charAt(loop+1))=='E')
-							lastParen++;
-
-						String lastWord="";
-						if(lastSp>lastSpace)
+						char c2=Character.toUpperCase(buf.charAt(loop+1));
+						if(((loop<buf.length()-2)&&(buf.charAt(loop+2)==')')&&(c2=='S'))
+						||((loop<buf.length()-3)&&(buf.charAt(loop+3)==')')&&(Character.toUpperCase(buf.charAt(loop+2))=='S')&&((c2=='Y')||(c2=='E'))))
 						{
-							lastWord=Util.removeColors(buf.substring(lastSpace,lastSp)).trim().toUpperCase();
-							while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(0))))
-								  lastWord=lastWord.substring(1);
-							while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(lastWord.length()-1))))
-								  lastWord=lastWord.substring(0,lastWord.length()-1);
-						}
-						else
-						{
-							for(int i=(lastSpace-1);((i>=0)&&(!Character.isLetterOrDigit(buf.charAt(i))));i--)
-								lastWord=buf.charAt(i)+lastWord;
-							lastWord=Util.removeColors(lastWord).trim().toUpperCase();
-						}
-						if((lastWord.equals("A")||lastWord.equals("YOU")||lastWord.equals("1")||doSagain))
-						{
-							buf.delete(loop,lastParen+1);
-							doSagain=true;
-							loop--;
-						}
-						else
-						{
-							buf.deleteCharAt(lastParen);
-							buf.deleteCharAt(loop);
+							String lastWord="";
+							if(lastSp>lastSpace)
+							{
+								lastWord=Util.removeColors(buf.substring(lastSpace,lastSp)).trim().toUpperCase();
+								while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(0))))
+									  lastWord=lastWord.substring(1);
+								while((lastWord.length()>0)&&(!Character.isLetterOrDigit(lastWord.charAt(lastWord.length()-1))))
+									  lastWord=lastWord.substring(0,lastWord.length()-1);
+							}
+							else
+							{
+								for(int i=(lastSpace-1);((i>=0)&&(!Character.isLetterOrDigit(buf.charAt(i))));i--)
+									lastWord=buf.charAt(i)+lastWord;
+								lastWord=Util.removeColors(lastWord).trim().toUpperCase();
+							}
+							
+							int lastParen=(c2=='S')?loop+2:loop+3;
+							if((lastWord.equals("A")||lastWord.equals("YOU")||lastWord.equals("1")||doSagain))
+							{
+								if(c2=='Y')
+									buf.replace(loop,lastParen+1,Util.sameCase("y",buf.charAt(loop+1)));
+								else
+									buf.delete(loop,lastParen+1);
+								doSagain=true;
+								loop--;
+							}
+							else
+							{
+								if(c2=='Y')
+									buf.replace(loop,lastParen+1,Util.sameCase("ies",buf.charAt(loop+1)));
+								else
+								{
+									buf.deleteCharAt(lastParen);
+									buf.deleteCharAt(loop);
+								}
+							}
 						}
 					}
 					break;

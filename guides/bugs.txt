@@ -1,16 +1,10 @@
 GAES still isn't done
 mobs should recall when prisoner done -- better, you should be released from jail!
-script for a carriage
-lycanthropy too common
+try to finish the set alarm thing for radiant rooms
 journal date bug? (SQL Server 2000) Single QUOTE in journal
 When I boot a player, they're still listed according to the website and archon command 'where', but not to 'who'.. Plus, after having done it,t he CPU time is way up.
-level and type and wear locations for weaponsmithing and armorsmithing
-However, the system won't allow a MOB to be a group leader, it seems.  
 WEB WHO shows dead connections, mucked up when archon wizinv
-who listing doesn't show possessed mobs as possessed
-java.lang.NullPointerException at com.planet_ink.coffee_mud.Commands.base.ShopKeepers.doesOwnThisProper ty(ShopKeepers.java)
-Making anything chainmail doesn't include the material when using Armorsmithing
 For armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
 sorting on the properties/mob skills on the web page and in-game?
-lowering the chances on catching this and other diseases (lycanthropy)
-they do not accept charity?!?!? drop it!
+I don't suppose the help loading engine could be designed to load all the > files in the help directory?  Then we can make as many little > help files as
+fetch new classes from files and load them in?

@@ -48,7 +48,7 @@ public class Spell_Nightmare extends Spell
 					case 3:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
 						"<S-NAME> beg(s) for mercy."); break;
 					case 4:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
-						"<S-NAME> grab(s) <S-HIS-HER> head and cry(s)."); break;
+						"<S-NAME> grab(s) <S-HIS-HER> head and cr(ys)."); break;
 					case 5:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,
 						"<S-NAME> whimper(s)."); break;
 					case 6:	mob.location().show(mob,null,Affect.MSG_OK_ACTION,

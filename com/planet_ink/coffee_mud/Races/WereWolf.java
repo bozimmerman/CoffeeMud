@@ -34,12 +34,14 @@ public class WereWolf extends GiantWolf
 		&&(mob.fetchWieldedItem()==null)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
+		&&(Dice.rollPercentage()<50)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
 		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/5))))
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
-			if(A!=null)	A.invoke(mob,(MOB)msg.target(),true);
+			if((A!=null)&&(msg.target().fetchAffect(A.ID())==null))
+				A.invoke(mob,(MOB)msg.target(),true);
 		}
 		super.affect(myHost,msg);
 	}

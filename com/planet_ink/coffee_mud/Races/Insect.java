@@ -41,7 +41,8 @@ public class Insect extends StdRace
 		&&(((msg.targetCode()-Affect.MASK_HURT)>(((MOB)msg.target()).maxState().getHitPoints()/20))))
 		{
 			Ability A=CMClass.getAbility("Disease_Lyme");
-			if(A!=null)	A.invoke(mob,(MOB)msg.target(),true);
+			if((A!=null)&&(msg.target().fetchAffect(A.ID())==null))
+				A.invoke(mob,(MOB)msg.target(),true);
 		}
 		super.affect(myHost,msg);
 	}

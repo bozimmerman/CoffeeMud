@@ -36,7 +36,8 @@ public class CaveRoom extends StdRoom
 		   &&(Dice.rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Syphilis");
-			if(A!=null) A.invoke(msg.source(),msg.source(),true);
+			if((A!=null)&&(msg.source().fetchAffect(A.ID())==null))
+				A.invoke(msg.source(),msg.source(),true);
 		}
 		super.affect(myHost,msg);
 	}

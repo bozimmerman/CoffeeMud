@@ -349,6 +349,8 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					Session ses=(Session)Sessions.elementAt(s);
 					MOB smob=ses.mob();
+					if((smob!=null)&&(smob.soulMate()!=null))
+						smob=smob.soulMate();
 					if((!ses.killFlag())&&(smob!=null)
 					&&(!smob.amDead())
 					&&(smob.location()!=null)

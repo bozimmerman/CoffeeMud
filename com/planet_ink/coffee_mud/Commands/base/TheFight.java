@@ -304,7 +304,8 @@ public class TheFight
 		if((!target.isMonster())&&(Dice.rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Amnesia");
-			if(A!=null) A.invoke(target,target,true);
+			if((A!=null)&&(target.fetchAffect(A.ID())==null))
+				A.invoke(target,target,true);
 		}
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
@@ -548,7 +549,7 @@ public class TheFight
 		else
 		{
 			FullMsg msg=new FullMsg(mob,item,target,Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,"<T-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,"<T-NAME> fl(ys) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
 			if(mob.location().okAffect(mob,msg)&&((Room)target).okAffect(mob,msg2))
 			{
 				mob.location().send(mob,msg);

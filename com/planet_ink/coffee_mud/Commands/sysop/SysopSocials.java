@@ -116,7 +116,7 @@ public class SysopSocials
 		if(soc.sourceCode()==Affect.MSG_OK_ACTION)
 			soc.setSourceCode(Affect.MSG_HANDS);
 		mob.session().rawPrintln("\n\rYour action type="+((soc.sourceCode()==Affect.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((soc.sourceCode()==Affect.MSG_SPEAK)?"SPEAKING":((soc.sourceCode()==Affect.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
-		newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement ","WMNL","");
+		newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement ","WMSL","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -128,7 +128,7 @@ public class SysopSocials
 				case 'M':
 				soc.setSourceCode(Affect.MSG_HANDS);
 				break;
-				case 'N':
+				case 'S':
 				soc.setSourceCode(Affect.MSG_NOISE);
 				break;
 				case 'L':
@@ -149,7 +149,7 @@ public class SysopSocials
 		if(soc.othersCode()==Affect.MSG_OK_ACTION)
 			soc.setOthersCode(Affect.MSG_HANDS);
 		mob.session().rawPrintln("\n\rOthers affect type="+((soc.othersCode()==Affect.MSG_HANDS)?"HANDS":((soc.sourceCode()==Affect.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode()==Affect.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode()==Affect.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
-		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMNVH","");
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -167,7 +167,7 @@ public class SysopSocials
 				soc.setOthersCode(Affect.MSG_NOISYMOVEMENT);
 				soc.setTargetCode(Affect.MSG_NOISYMOVEMENT);
 				break;
-				case 'N':
+				case 'S':
 				soc.setOthersCode(Affect.MSG_NOISE);
 				soc.setTargetCode(Affect.MSG_NOISE);
 				break;
@@ -195,7 +195,7 @@ public class SysopSocials
 		if(soc.targetCode()==Affect.MSG_OK_ACTION)
 			soc.setTargetCode(Affect.MSG_HANDS);
 		mob.session().rawPrintln("\n\rTarget affect type="+((soc.othersCode()==Affect.MSG_HANDS)?"HANDS":((soc.sourceCode()==Affect.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode()==Affect.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode()==Affect.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
-		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMNVH","");
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMSVH","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -210,7 +210,7 @@ public class SysopSocials
 				case 'H':
 				soc.setTargetCode(Affect.MSG_HANDS);
 				break;
-				case 'N':
+				case 'S':
 				soc.setTargetCode(Affect.MSG_NOISE);
 				break;
 				case 'V':

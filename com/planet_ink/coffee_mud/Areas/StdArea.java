@@ -734,7 +734,8 @@ public class StdArea implements Area
 								Ability COLD=CMClass.getAbility("Disease_Cold");
 								if(Dice.rollPercentage()<(fluChance+(((M.location().domainConditions()&Room.CONDITION_WET)>0)?10:0)))
 									COLD=CMClass.getAbility("Disease_Flu");
-								if(COLD!=null) COLD.invoke(M,M,true);
+								if((COLD!=null)&&(M.fetchAffect(COLD.ID())==null))
+									COLD.invoke(M,M,true);
 							}
 						}
 						else

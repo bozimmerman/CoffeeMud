@@ -90,7 +90,8 @@ public class Social implements Environmental
 					&&(mob.charStats().getStat(CharStats.GENDER)!=tmob.charStats().getStat(CharStats.GENDER)))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
-						if(A!=null) A.invoke(tmob,tmob,true);
+						if((A!=null)&&(target.fetchAffect(A.ID())==null))
+							A.invoke(tmob,tmob,true);
 					}
 				}
 			}

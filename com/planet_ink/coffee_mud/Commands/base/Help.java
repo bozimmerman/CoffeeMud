@@ -17,7 +17,20 @@ public class Help
 		if(arcHelpFile==null)
 		{
 			arcHelpFile=new Properties();
-			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			File directory=new File("resources"+File.separatorChar+"help"+File.separatorChar);
+			if((directory.canRead())&&(directory.isDirectory()))
+			{
+				String[] list=directory.list();
+				for(int l=0;l<list.length;l++)
+				{
+					String item=list[l];
+					if((item!=null)&&(item.length()>0))
+					{
+						if(item.toUpperCase().endsWith(".INI")&&(item.toUpperCase().startsWith("ARC_")))
+							try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+item));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+					}
+				}
+			}
 			Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
 		}
 		return arcHelpFile;
@@ -29,14 +42,20 @@ public class Help
 		if(helpFile==null)
 		{
 			helpFile=new Properties();
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"misc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"skill_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"common_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"spell_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"chant_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			File directory=new File("resources"+File.separatorChar+"help"+File.separatorChar);
+			if((directory.canRead())&&(directory.isDirectory()))
+			{
+				String[] list=directory.list();
+				for(int l=0;l<list.length;l++)
+				{
+					String item=list[l];
+					if((item!=null)&&(item.length()>0))
+					{
+						if(item.toUpperCase().endsWith(".INI")&&(!item.toUpperCase().startsWith("ARC_")))
+							try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+item));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+					}
+				}
+			}
 			Resources.submitResource("MAIN HELP FILE",helpFile);
 		}
 		return helpFile;

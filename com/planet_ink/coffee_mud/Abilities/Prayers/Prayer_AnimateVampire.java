@@ -24,7 +24,8 @@ public class Prayer_AnimateVampire extends Prayer
 			   &&(msg.sourceMinor()==Affect.TYP_DEATH))
 			{
 				Ability A=CMClass.getAbility("Disease_Vampirism");
-				A.invoke(mob,mob,true);
+				if((A!=null)&&(mob.fetchAffect(A.ID())==null))
+					A.invoke(mob,mob,true);
 			}
 		}
 		return super.okAffect(myHost,msg);
