@@ -32,4 +32,5 @@ public interface Area extends Environmental
 	public final static int CLIMASK_COLD=2;
 	public final static int CLIMATE_WINDY=4;
 	public final static int CLIMASK_HOT=8;
+	public final static int CLIMASK_DRY=16;
 }

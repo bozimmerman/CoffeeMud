@@ -8,9 +8,9 @@ import java.util.*;
 public class StdDrink extends StdContainer implements Drink
 {
 
-	protected int amountOfThirstQuenched=50;
-	protected int amountOfLiquidHeld=500;
-	protected int amountOfLiquidRemaining=500;
+	protected int amountOfThirstQuenched=250;
+	protected int amountOfLiquidHeld=2000;
+	protected int amountOfLiquidRemaining=2000;
 
 	public StdDrink()
 	{

@@ -12,7 +12,7 @@ public class Spring extends StdDrink
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a spring";
-		amountOfThirstQuenched=100;
+		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
 		baseEnvStats().setWeight(5);
