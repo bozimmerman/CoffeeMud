@@ -191,7 +191,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
 			target=mob;
 		else
-		if(targetName.equalsIgnoreCase("self"))
+		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 		   target=mob;
 		else
 		if((targetName.length()>0)&&(mob.location()!=null))
@@ -260,7 +260,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 			target=mob.getVictim();
 		else
-		if(targetName.equalsIgnoreCase("self"))
+		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 		   target=mob;
 		else
 		if(mob.location()!=null)

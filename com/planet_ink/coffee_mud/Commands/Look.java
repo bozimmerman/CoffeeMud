@@ -37,7 +37,7 @@ public class Look extends StdCommand
 				mob.location().listExits(mob);
 				return false;
 			}
-			if(ID.equalsIgnoreCase("SELF"))
+			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 			
 			if(thisThang==null)

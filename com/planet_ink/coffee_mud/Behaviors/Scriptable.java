@@ -3807,7 +3807,7 @@ public class Scriptable extends StdBehavior
 				{
 					String s2=s.substring(7).trim();
 					Environmental E=null;
-					if(s2.equalsIgnoreCase("self"))
+					if(s2.equalsIgnoreCase("self")||s2.equalsIgnoreCase("me"))
 						E=scripted;
 					else
 						E=getArgumentItem(s2,source,monster,target,primaryItem,secondaryItem,msg);

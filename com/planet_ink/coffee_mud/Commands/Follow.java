@@ -98,7 +98,7 @@ public class Follow extends StdCommand
 		}
 
 		String whomToFollow=Util.combine(commands,1);
-		if((whomToFollow.equalsIgnoreCase("self"))
+		if((whomToFollow.equalsIgnoreCase("self")||whomToFollow.equalsIgnoreCase("me"))
 		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
 		{
 			nofollow(mob,true,quiet);

@@ -10,6 +10,7 @@ public class Prop_HereSpellCast extends Property
 	public String ID() { return "Prop_HereSpellCast"; }
 	public String name(){ return "Casting spells when here";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	public boolean bubbleAffect(){return true;}
 	private boolean processing=false;
 	protected int lastNum=-1;
 

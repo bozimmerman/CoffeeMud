@@ -2232,11 +2232,15 @@ public class Arrest extends StdBehavior
 						Room jail=findTheJail(W.criminal(),myArea,laws);
 						if(jail!=null)
 						{
+							
+							Ability A=W.criminal().fetchEffect("Prisoner");
+							if(A!=null){ A.unInvoke(); W.criminal().delEffect(A);}
+							
 							makePeace(officer.location());
 							W.setJail(jail);
 							// cuff him!
 							W.setState(Law.STATE_MOVING2);
-							Ability A=CMClass.getAbility("Skill_HandCuff");
+							A=CMClass.getAbility("Skill_HandCuff");
 							if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
 								A.invoke(officer,W.criminal(),true);
 							W.criminal().makePeace();

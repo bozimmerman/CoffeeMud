@@ -1,4 +1,5 @@
-In the Archon's Guide, small arrangement of links to various parts of the webpage 
+Prop_HereSpellCast broke
+MOB`s that are under your control should be able to purchase items if they have money. Remove curse for example. Order Sword.1 buy `remove curse` --- won`t work.
 take a look at WebIQ pregnancy stuff in session.
 
 Skills:
@@ -30,10 +31,12 @@ Misc:
   2. Add an option for Weather  
   3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
-fix healer? 
 The sage in the bazaar has much the same problem and should return the equipment that he never bothers to identify.
 ->The blacksmith at the bazaar should actually return the items, and possibly try and mend them.
 The shipyard in the bazaar. Sells ships for 1 gold. The ships are landlocked (thus being worth about 1 gold).
+Fluffy the Hampster in Animaland (Blacksmith) should return repaired objects but doesn`t.
+In Animaland: The `Smelly cigars` should actually light, like cigarettes do. Found on the `Little Pigs` MOB.
+In the Archon's Guide, small arrangement of links to various parts of the webpage 
 racial affects
 Install ship battery
 make diff levels of drunk, and disease_hangover
