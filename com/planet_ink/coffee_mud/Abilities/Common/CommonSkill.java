@@ -309,7 +309,7 @@ public class CommonSkill extends StdAbility
 			&&(I.material()==resource)
 			&&(!Sense.isOnFire(I))
 			&&(I.container()==null))
-				foundWood++;
+				foundWood+=I.envStats().weight();
 		}
 		return foundWood;
 	}
@@ -582,6 +582,45 @@ public class CommonSkill extends StdAbility
 			return false;
 		}
 		return true;
+	}
+	
+	protected void destroyResources(Room room, 
+									int howMuch, 
+									int finalMaterial, 
+									Item firstOther,
+									Item never)
+	{
+		if(room==null) return;
+		
+		if(howMuch>0)
+		for(int i=room.numItems()-1;i>=0;i--)
+		{
+			Item I=room.fetchItem(i);
+			if(I==null) break;
+			if(I==never) continue;
+			
+			if((firstOther!=null)&&(I==firstOther))
+				I.destroy();
+			else
+			if((I instanceof EnvResource)
+			&&(I.container()==null)
+			&&(!Sense.isOnFire(I))
+			&&(I.material()==finalMaterial))
+			{
+				if(I.baseEnvStats().weight()>howMuch)
+				{ 
+					I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
+					break;
+				}
+				else
+				{
+					howMuch-=I.baseEnvStats().weight();
+					I.destroy();
+					if(howMuch<=0) 
+						break;
+				}
+			}
+		}
 	}
 	
 	

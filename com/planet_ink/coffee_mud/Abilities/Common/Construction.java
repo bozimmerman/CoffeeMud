@@ -589,17 +589,8 @@ public class Construction extends CommonSkill
 			return false;
 
 		room=mob.location();
-		int woodDestroyed=woodRequired;
 		if(woodRequired>0)
-		for(int i=mob.location().numItems()-1;i>=0;i--)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null)
-			&&(I.material()==firstWood.material())
-			&&((--woodDestroyed)>=0))
-				I.destroy();
-		}
+			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 
 		switch(doingCode)
 		{

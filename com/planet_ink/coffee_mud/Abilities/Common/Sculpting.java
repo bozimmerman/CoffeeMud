@@ -322,17 +322,7 @@ public class Sculpting extends CommonSkill
 			building.text();
 			building.recoverEnvStats();
 			
-			int woodDestroyed=woodRequired;
-			for(int i=mob.location().numItems()-1;i>=0;i--)
-			{
-				Item I=mob.location().fetchItem(i);
-				if((I instanceof EnvResource)
-				&&(I!=building)
-				&&(I.container()==null)
-				&&(I.material()==firstWood.material())
-				&&((--woodDestroyed)>=0))
-					I.destroy();
-			}
+			destroyResources(mob.location(),woodRequired,firstWood.material(),null,building);
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 		}

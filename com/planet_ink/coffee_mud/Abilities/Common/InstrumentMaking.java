@@ -178,17 +178,7 @@ public class InstrumentMaking extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		int woodDestroyed=woodRequired;
-		for(int i=mob.location().numItems()-1;i>=0;i--)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null)
-			&&(!Sense.isOnFire(I))
-			&&(I.material()==firstWood.material())
-			&&((--woodDestroyed)>=0))
-				I.destroy();
-		}
+		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
