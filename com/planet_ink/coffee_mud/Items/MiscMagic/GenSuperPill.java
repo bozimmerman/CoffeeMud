@@ -75,10 +75,10 @@ public class GenSuperPill extends GenPill
 		mob.baseCharStats().setStat(CharStats.MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.MAX_DEXTERITY_ADJ)+Util.getParmPlus(readableText,"maxdex"));
 		mob.baseCharStats().setStat(CharStats.MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.MAX_INTELLIGENCE_ADJ)+Util.getParmPlus(readableText,"maxint"));
 
-		mob.baseState().setHitPoints(mob.curState().getHitPoints()+Util.getParmPlus(readableText,"hit"));
+		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+Util.getParmPlus(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+Util.getParmPlus(readableText,"hun"));
-		mob.curState().setMana(mob.curState().getMana()+Util.getParmPlus(readableText,"man"));
-		mob.curState().setMovement(mob.curState().getMovement()+Util.getParmPlus(readableText,"mov"));
+		mob.baseState().setMana(mob.baseState().getMana()+Util.getParmPlus(readableText,"man"));
+		mob.baseState().setMovement(mob.baseState().getMovement()+Util.getParmPlus(readableText,"mov"));
 		mob.curState().setThirst(mob.curState().getThirst()+Util.getParmPlus(readableText,"thi"));
 
 		mob.setPractices(mob.getPractices()+Util.getParmPlus(readableText,"prac"));

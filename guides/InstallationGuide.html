@@ -462,6 +462,33 @@ called <FONT face="Courier New">planet_ink</FONT>.</P>
 <P align=left><STRONG>9. </STRONG>  Now, with mysqld still running in the background, just 
 launch the mud.bat AS IT IS to start the mud..( I didnt have to make ANY changes 
 in there for this to work, hopefully the same for you...)<BR></P>
+<P><EM>Installing and using MySQL with CoffeeMud on a UN*X 
+or Linux machine</EM></P>
+<P><STRONG>1.</STRONG> Download and install mysql from <A 
+href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</A>. 
+Make sure mysqld is being run at boot time, and not by the root user. </P>
+<P><STRONG>2.</STRONG>&nbsp;Download and install the mysql jdbc api from <A 
+href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</A>.&nbsp;Extract 
+the .tar.gz file to a temporary directory.&nbsp;Then copy the extracted 
+/com/mysql/ directory (not just its contents) into /CoffeeMUD/com/.</P>
+<P><STRONG>3.</STRONG> Create a coffeemud database from the shell as root type, 
+"mysqladmin create coffeemud" (in this example we name the db 
+coffeemud).&nbsp;If you screw up, or need to delete the new db for some reason, 
+you can always do a "mysqladmin drop coffeemud". </P>
+<P><STRONG>4.</STRONG> Create a user for the new database (user in this example 
+is called coffee).&nbsp; As root, type "mysql" into the shell. Now enter: GRANT 
+ALL ON coffeemud.* TO coffee@localhost IDENTIFIED BY "password";&nbsp;&nbsp; 
+Enter a password for the user inside the quotes.&nbsp;Now type, "quit". </P>
+<P><STRONG>5.</STRONG> Edit the file CoffeeMUD/guides/coffeemuddbmysql.sql like 
+so:&nbsp;at line 9 insert "use coffeemud" (assuming the new db is called 
+coffeemud). Then save the changes. </P>
+<P><STRONG>6.</STRONG> Run the SQL file as follows:&nbsp;from the shell type, 
+"mysql &lt; coffeemuddbmysql.sql" </P>
+<P><STRONG>7.</STRONG> Edit the following settings in CoffeeMUD/coffeemud.ini: 
+<BR>DBCLASS=com.mysql.jdbc.Driver <BR>DBSERVICE=jdbc:mysql://localhost/coffeemud 
+<BR>DBUSER=coffee <BR>DBPASS=password <BR>DBCONNECTIONS=4 </P>
+<P>(no quotes on the password here)<BR>Save your changes and fire up 
+CoffeeMud!</P>
 <P>&nbsp;</P>              
             
             

@@ -310,7 +310,7 @@ public class Arrest extends StdBehavior
 	{
 		String lawName=getParms();
 		Laws laws=null;
-		if((lawName.equalsIgnoreCase("area"))&&(what!=null))
+		if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 			laws=(Laws)Resources.getResource("LEGAL-"+what.Name());
 		else
 		{
@@ -323,16 +323,19 @@ public class Arrest extends StdBehavior
 			Properties lawprops=new Properties();
 			try
 			{
-				if((lawName.equalsIgnoreCase("area"))&&(what!=null))
+				if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 				{
 					Vector data=ExternalPlay.DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
-					if((data!=null)&&(data.size()>0)) data=(Vector)data.firstElement();
 					if((data!=null)&&(data.size()>0))
-						lawprops.load(new ByteArrayInputStream(((String)data.elementAt(3)).getBytes()));
-					else
-					{
-						lawprops.load(new ByteArrayInputStream(defaultLaw.getBytes()));
-						ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",defaultLaw);
+					{ 
+						data=(Vector)data.firstElement();
+						if((data!=null)&&(data.size()>0))
+							lawprops.load(new ByteArrayInputStream(((String)data.elementAt(3)).getBytes()));
+						else
+						{
+							lawprops.load(new ByteArrayInputStream(defaultLaw.getBytes()));
+							ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",defaultLaw);
+						}
 					}
 				}
 				if(lawprops.isEmpty())
@@ -431,15 +434,9 @@ public class Arrest extends StdBehavior
 		if((M.isMonster())&&(M.location()!=null))
 		{
 			for(int i=0;i<laws.officerNames.size();i++)
-				if(CoffeeUtensils.containsString(M.displayText(),(String)laws.officerNames.elementAt(i)))
-				{
-					for(int b=0;b<M.numBehaviors();b++)
-					{
-						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
-							return true;
-					}
-				}
+				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.officerNames.elementAt(i)))
+				&&(Sense.isMobile(M))) 
+					return true;
 		}
 		return false;
 	}

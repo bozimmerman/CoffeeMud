@@ -79,7 +79,7 @@ public class JewelMaking extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((building!=null)&&(!aborted))
 				{
-					if((beingDone!=null)||(beingDone.size()<2))
+					if((beingDone!=null)&&(beingDone.size()>=2))
 					{
 						if(messedUp)
 							commonTell(mob,"You've ruined "+verb+"!");

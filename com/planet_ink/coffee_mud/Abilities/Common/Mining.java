@@ -59,7 +59,8 @@ public class Mining extends CommonSkill
 				if((found!=null)&&(!aborted))
 				{
 					int amount=Dice.roll(1,10,0);
-					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
+					if(((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
+					&&(found.material()!=EnvResource.RESOURCE_COAL))
 						amount=Dice.roll(1,85,0);
 					amount=amount*(abilityCode());
 					String s="s";

@@ -63,7 +63,9 @@ public class Foraging extends CommonSkill
 				MOB mob=(MOB)affected;
 				if((found!=null)&&(!aborted))
 				{
-					int amount=Dice.roll(1,5,0)*(abilityCode());
+					int amount=((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)?
+							   (Dice.roll(1,30,0)*(abilityCode())):
+							   (Dice.roll(1,5,0)*(abilityCode()));
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to gather "+amount+" pound"+s+" of "+foundShortName+".");

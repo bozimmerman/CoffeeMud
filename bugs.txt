@@ -11,4 +11,4 @@ my rapid shot skill doesn't increase. It is a Thief 14, Arcanist 14 skill. Combi
 allow guildmasters and clan bosses to do enchanters
 Arrest to dos:	deal with officernames, judgenames, jail rooms, release rooms
 Where are some archon powers?  If some goob starts a clan called 'TulathIsAJerk', I can't delete the offending clan.  Also, clandetails should be viewable to Archons as if they are a boss for a clan (i.e. all members, applicants, etc).  It would also be nice to be able to manually authorize a clan to active.
-
+get rid of horrible death cry when users are purged.
