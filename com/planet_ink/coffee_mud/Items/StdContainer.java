@@ -143,6 +143,11 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
+						if(!newitem.isGettable())
+						{
+							mob.tell("You can't get "+newitem.name()+".");
+							return false;
+						}
 						return true;
 					}
 					else

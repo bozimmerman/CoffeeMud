@@ -184,6 +184,7 @@ public class Arcanist extends Thief
 							&&((A2.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 								otherChoices.addElement(A2);
 						}
+						A=(Ability)A.copyOf();
 						A.setProfficiency(0);
 						A.setBorrowed(mob,true);
 						mob.addAbility(A);

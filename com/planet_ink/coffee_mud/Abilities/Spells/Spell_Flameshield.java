@@ -59,7 +59,7 @@ public class Spell_Flameshield extends Spell
 						if(invoker==null) invoker=source;
 						if(!msg.wasModified())
 						{
-							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
+							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/4.0),1);
 							ExternalPlay.postDamage(mob,source,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The flame shield around <S-NAME> flares and <DAMAGE> <T-NAME>!");
 						}
 					}
@@ -77,7 +77,7 @@ public class Spell_Flameshield extends Spell
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
 
-		affectableStats.setArmor(affectableStats.armor()-mob.envStats().level());
+		affectableStats.setArmor(affectableStats.armor()-5);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

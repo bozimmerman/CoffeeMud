@@ -9,8 +9,18 @@ public class Prop_AstralSpirit extends Property
 {
 	public String ID() { return "Prop_AstralSpirit"; }
 	public String name(){ return "Astral Spirit";}
+	public String displayText(){ return "(Spirit Form)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prop_AstralSpirit();}
+	public boolean autoInvocation(MOB mob)
+	{
+		if((mob!=null)&&(mob.fetchAffect(ID())==null))
+		{
+			mob.addNonUninvokableAffect(this);
+			return true;
+		}
+		return false;
+	}
 
 	public String accountForYourself()
 	{ return "an astral spirit";	}

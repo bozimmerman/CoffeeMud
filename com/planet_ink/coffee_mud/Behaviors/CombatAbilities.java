@@ -82,12 +82,12 @@ public class CombatAbilities extends StdBehavior
 		{
 			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
 			if((tryThisOne!=null)
-			&&((!((tryThisOne.quality()==Ability.MALICIOUS)
-				||(tryThisOne.quality()==Ability.BENEFICIAL_SELF)
-				||(tryThisOne.quality()==tryThisOne.BENEFICIAL_OTHERS))
-				||(tryThisOne.isAutoInvoked())
-				||(tryThisOne.triggerStrings()==null)
-				||(tryThisOne.triggerStrings().length==0))))
+			||(tryThisOne.isAutoInvoked())
+			||(tryThisOne.triggerStrings()==null)
+			||(tryThisOne.triggerStrings().length==0)
+			||((tryThisOne.quality()!=Ability.MALICIOUS)
+				&&(tryThisOne.quality()!=Ability.BENEFICIAL_SELF)
+				&&(tryThisOne.quality()!=tryThisOne.BENEFICIAL_OTHERS)))
 					tryThisOne=null;
 			
 			if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null))

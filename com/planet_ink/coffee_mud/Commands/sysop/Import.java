@@ -73,13 +73,14 @@ public class Import
 		
 		if((areaName.indexOf(""+((char)27))>=0)
 		||(areaName.indexOf("&")>=0)
+		||(areaName.indexOf("{")>=0)
 		||(areaName.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
 				if(areaName.indexOf(colors[s1][0])>=0)
 					areaName=Util.replaceAll(areaName,colors[s1][0],colors[s1][1]);
 		}
-		return Util.safetyFilter(areaName);
+		return Util.removeColors(Util.safetyFilter(areaName));
 	}
 	private static final String[][] colors={
 		{((char)27)+"ash"+((char)27),"^c"},
@@ -120,6 +121,24 @@ public class Import
 		{"&W","^w"},
 		{"&[",""},
 		{"&[","^?"},
+		{"{x","^?"},
+		{"{r","^R"},
+		{"{g","^G"},
+		{"{O","^Y"},
+		{"{b","^B"},
+		{"{p","^P"},
+		{"{M","^P"},
+		{"{c","^C"},
+		{"{w","^W"},
+		{"{D","^W"},
+		{"{z","^W"},
+		{"{R","^r"},
+		{"{G","^g"},
+		{"{Y","^y"},
+		{"{B","^b"},
+		{"{P","^p"},
+		{"{C","^c"},
+		{"{W","^w"},
 		{"@@k",""},
 		{"@@R","^R"},
 		{"@@G","^G"},
@@ -147,7 +166,8 @@ public class Import
 		{"@@5","^P"},
 		{"@@6","^C"},
 		{"@@0","^W"},
-		{"@@7","^W"}
+		{"@@7","^W"},
+		{"@@N","^?"}
 	};
 
 	private static String nextLine(Vector V)
@@ -259,6 +279,7 @@ public class Import
 		
 		if((s.indexOf(""+((char)27))>=0)
 		||(s.indexOf("&")>=0)
+		||(s.indexOf("{")>=0)
 		||(s.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
@@ -532,7 +553,7 @@ public class Import
 			else
 			if(word.startsWith("ICESHIELD")) i=232;
 			else
-			if(word.startsWith("SHOCKSHIELD")) i=232;
+			if(word.startsWith("SHOCKSHIELD")) i=89;
 			else
 			if(word.startsWith("BLADE BARRIER")) i=233;
 			else
@@ -645,7 +666,7 @@ public class Import
 		case 5: return "Spell_BurningHands";
 		case 6: return "Spell_Clog"; // call lightening, dumb
 		case 7: return "Spell_Charm";
-		case 8: return "Spell_Frost"; // chill touch
+		case 8: return "Undead_ColdTouch"; // chill touch
 		case 9: return "Spell_MirrorImage"; // clone
 		case 10: return "Spell_Feeblemind"; // color spray
 		case 11: return "Chant_CallRain";
@@ -681,8 +702,9 @@ public class Import
 		case 41: return "Spell_Ventriloquate";
 		case 42: return "Skill_Recall";
 		case 43: return "Prayer_RemovePoison";
-		case 44: return "Spell_DetectHidden";
+		case 44: return "Chant_Dragonsight";
 		case 45: return "Prayer_CureDisease"; // not the real ###
+		case 51: return "Spell_ShockingGrasp";
 		case 53: return "Spell_IdentifyObject";
 		case 54: return "Prayer_AnimateDead";
 		case 55: return "Spell_Fear";
@@ -690,6 +712,7 @@ public class Import
 		case 57: return "Spell_Light";
 		case 58: return "Spell_KnowAlignment";
 		case 59: return "Spell_DispelMagic";
+		case 60: return "Spell_FlamingHands";
 		case 61: return "Prayer_CureSerious";
 		case 62: return "Prayer_CauseLight";
 		case 63: return "Spell_WaterBreathing"; // water of lifew
@@ -704,21 +727,50 @@ public class Import
 		case 72: return "Spell_FaerieFog";
 		case 73: return "Spell_IceStorm";
 		case 74: return "Spell_PassDoor";
+		case 75: return "Spell_EnchantArmor";
 		case 76: return "Spell_StoneFlesh"; // stone
 		case 77: return "Spell_Infravision";
+		case 78: return "Prayer_RaiseDead";
 		case 80: return "Prayer_CreateWater";
 		case 81: return "Prayer_Restoration"; // refresh
 		case 82: return "Spell_ChangeSex";
 		case 83: return "Spell_Gate";
 		case 84: return "Spell_Haste";
+		case 85: return "Chant_SummonFire";
+		case 86: return "Spell_DetectTraps";
+		case 87: return "Thief_RemoveTraps";
+		case 88: return "Spell_Flameshield";
+		case 89: return "Spell_Shockshield";
+		case 90: return "Spell_PassDoor";
+		case 91: return "Spell_Scry";
+		case 93: return "Skill_Meditate";
+		case 94: return "Skill_Meditate";
 		case 97: return "Spell_Web";
 		case 98: return "Spell_EnchantArmor";
 		case 99: return "Spell_Teleport";
+		case 101: return ""; // create symbol
+		case 102: return ""; // alertness
+		case 103: return "Spell_Fatigue"; // fatigue
+		case 104: return ""; // grounding
+		case 105: return ""; // charged beacon
+		case 106: return ""; // resilience
+		case 107: return "Spell_Feeblemind";
+		case 108: return ""; // ill fortune
+		case 109: return "Spell_Slow";
+		case 110: return ""; // unravel defence
+		case 111: return ""; // holy sanctity
+		case 112: return ""; // divinity
+		case 113: return "Prayer_Restoration";
+		case 114: return "Undead_ColdTouch";
+		case 115: return ""; // spiritual wrath
+		case 120: return "Spell_Cloudkill";
+		case 121: return ""; // quickening
 		case 122: return "Chant_SummonElemental"; // summon elemental
-		case 201: return "Firebreath";
-		case 203: return "Gasbreath";
-		case 202: return "Frostbreath";
+		case 124: return ""; // uplift
 		case 200: return "Acidbreath";
+		case 201: return "Firebreath";
+		case 202: return "Frostbreath";
+		case 203: return "Gasbreath";
 		case 204: return "Lighteningbreath";
 		case 205: return "Spell_Frenzy";
 		case 206: return "Prayer_DispelGood";
@@ -763,6 +815,202 @@ public class Import
 		case 245: return "Prayer_Plague";
 		case 246: return "Spell_Delirium";
 		case 247: return "Chant_SpellWard";
+		case 291: return "Chant_PlantPass";
+		case 292: return "Spell_FeatherFall";
+		case 294: return "Spell_Polymorph";
+		case 295: return ""; // spiral blast
+		case 296: return "Spell_BurningHands";
+		case 299: return ""; // ice shard
+		case 300: return ""; //Torrent
+		case 301: return ""; //Black Hand
+		case 302: return ""; //Acetum Primus
+		case 303: return ""; //Black Lightning
+		case 304: return ""; //Galvanic Whip
+		case 305: return ""; //Disruption
+		case 306: return ""; //Spectral Furor
+		case 308: return ""; //Sulfurous Spray
+		case 309: return ""; //Sonic Resonance
+		case 310: return ""; //Black Fist
+		case 311: return ""; //Magnetic Thrust
+		case 313: return ""; //Caustic Fount
+		case 314: return ""; //Quantum Spike
+		case 315: return ""; //Energy Blast
+		case 342: return ""; //Benefic Aura
+		case 356: return ""; //Succor
+		case 402: return "Skill_Explosive";
+		case 500: return "Spell_ChainLightening"; 
+		case 501: return "Chant_Goodberry";
+		case 502: return "Prayer_FlameWeapon";
+		case 503: return "Chant_GrowClub"; // spiritual hammer
+		case 504: return "Spell_Frenzy";
+		case 505: return "Spell_Fireball";
+		case 506: return "Prayer_HolyWord";
+		case 507: return ""; // vine whip
+		case 508: return "Chant_Barkskin";
+		case 509: return "Prayer_ProtectElements";
+		case 510: return "Spell_Frenzy";
+		case 511: return ""; // fletch
+		case 512: return ""; // divine aid
+		case 513: return "Spell_Frenzy"; // divine fury
+		case 514: return "Prayer_Curse"; // lich curse
+		case 515: return "Spell_GiantStrength";
+		case 516: return "Prayer_Drain"; // withering hand
+		case 517: return "Spell_GraceOfTheCat"; // chaos armor
+		case 518: return ""; // soul scream
+		case 519: return "Spell_StinkingCloud";
+		case 520: return "Spell_Web";
+		case 521: return "Chant_PlantSnare";
+		case 522: return "Prayer_BladeBarrier";
+		case 523: return "Spell_ResistFire";
+		case 524: return ""; // heroes feast
+		case 525: return "Prayer_RemoveParalysis";
+		case 526: return "Druid_RecoverVoice";
+		case 527: return "Spell_Silence";
+		case 528: return "Spell_Hold";
+		case 529: return "Prayer_HolyWord";
+		case 530: return "Spell_PolymorphSelf";
+		case 531: return "Spell_GustOfWind";
+		case 532: return ""; //creepingdoom
+		case 533: return "Chant_Sunray";
+		case 534: return "Prayer_Calm";
+		case 535: return ""; //fireseed
+		case 536: return ""; //warmount
+		case 537: return ""; //despair
+		case 538: return "Spell_Forget";
+		case 539: return "Skill_Recall";
+		case 540: return "Spell_Portal";
+		case 541: return ""; // mass armor
+		case 542: return ""; // arcane perception
+		case 543: return ""; // mass armor
+		case 544: return "Spell_MassFeatherfall"; // mass featherfall
+		case 545: return ""; // mass refresh
+		case 546: return "Spell_MassFly";
+		case 547: return ""; // minor track
+		case 548: return ""; // major track
+		case 550: return "Spell_AcidFog";
+		case 551: return "Spell_ResistPoison";
+		case 553: return "Prayer_Poison";
+		case 554: return "Spell_AcidArrow";
+		case 555: return "Spell_MeteorStorm";
+		case 556: return "Spell_Frost";
+		case 559: return "Spell_GustOfWind";
+		case 560: return "Spell_StinkingCloud";
+		case 561: return ""; // skeletal armor
+		case 562: return "Prayer_AiryForm"; // wraithform
+		case 563: return "Spell_ManaBurn";
+		case 564: return "Undead_ColdTouch";	
+		case 565: return ""; // death chant
+		case 566: return ""; // life surge
+		case 567: return ""; // mana surge
+		case 568: return ""; // death aura
+		case 569: return ""; // dark ritual
+		case 570: return "Prayer_Deathfinger";
+		case 573: return ""; // crystal blades
+		case 574: return "Spell_Dragonfire"; // fiery dragon
+		case 575: return ""; // celestial thunder
+		case 576: return ""; // celestial lightning
+		case 577: return ""; // create mistletow
+		case 578: return "Prayer_Plague"; // toxin shot
+		case 579: return "Spell_Slow";
+		case 580: return "Chant_Dragonsight"; 
+		case 581: return "Spell_SummonSteed"; 
+		case 582: return ""; // rejuvenate
+		case 583: return "Spell_Haste";
+		case 584: return ""; // cacophony
+		case 585: return "Spell_Disintegrate";
+		case 586: return ""; // beacon
+		case 587: return "Prayer_Anger";
+		case 588: return "Spell_MassWaterbreath";
+		case 589: return "Spell_Gate";
+		case 590: return "Spell_Portal";
+		case 591: return ""; // tree transport
+		case 592: return ""; // treespeak
+		case 593: return ""; // bloodslash
+		case 594: return "Spell_SpellTurning";
+		case 595: return "Spell_ChainLightening";
+		case 596: return ""; // harmonic aura
+		case 597: return "Spell_Siphon";
+		case 598: return "Undead_ColdTouch";
+		case 599: return "Spell_ResistFire";
+		case 600: return "Spell_ResistCold";
+		case 601: return "Spell_ResistFire";
+		case 602: return "Prayer_Curse";
+		case 603: return "Spell_Knock";
+		case 604: return "Prayer_Deathfinger";
+		case 605: return "Spell_MinorGlobe";
+		case 606: return "Spell_Mirage";
+		case 607: return ""; // tarangreal
+		case 608: return ""; // kassandra
+		case 609: return ""; // sebat
+		case 610: return ""; // metandra
+		case 611: return ""; // vampiric blast
+		case 612: return ""; // dragonskin
+		case 613: return "Prayer_Heal";
+		case 614: return "Spell_ResistElectricity";
+		case 615: return ""; // shocking trap
+		case 616: return "Spell_Feeblemind"; //insanity
+		case 617: return ""; // holy shield
+		case 618: return ""; // evil spirit
+		case 619: return ""; // disgrace
+		case 620: return ""; // summon shadow
+		case 621: return ""; // dismantle
+		case 622: return ""; // astral walk
+		case 623: return "Prayer_SenseLife";
+		case 624: return ""; // take revenge
+		case 625: return "Spell_Hold";
+		case 626: return ""; // improved detect
+		case 627: return "Spell_ImprovedInvisibility";
+		case 628: return "Spell_MassSleep";
+		case 629: return ""; // desert heat
+		case 630: return "Prayer_DivineLuck";
+		case 631: return "Paralysis";
+		case 632: return ""; // lighting stroke
+		case 633: return "Spell_Repulsion";
+		case 634: return "Spel_MassSlow";
+		case 636: return "Prayer_ProtUndead";
+		case 637: return "Prayer_BlessItem";
+		case 638: return ""; // resiliance
+		case 639: return "Spell_Polymorph";
+		case 640: return "Prayer_Heal";
+		case 641: return "Prayer_Restoration";
+		case 643: return "Prayer_Restoration";
+		case 644: return "Spell_AcidArrow";
+		case 645: return ""; // etheral fist
+		case 646: return ""; // spectral furor
+		case 647: return "Undead_ColdTouch";
+		case 649: return ""; // disruption
+		case 650: return "Spell_Forget"; // mind wrack
+		case 651: return "Spell_Feeblemind"; // mind wrack
+		case 652: return ""; // sulferous spray
+		case 653: return ""; // caustic front
+		case 655: return ""; // galvan whip
+		case 656: return ""; // magnetic trust
+		case 657: return ""; // quantum spike
+		case 658: return ""; // mist walk
+		case 659: return ""; // solar flight
+		case 660: return ""; // blue fire
+		case 661: return ""; // hellenic flow
+		case 662: return ""; // lesser golem
+		case 663: return ""; // stone golem
+		case 664: return ""; // iron golem
+		case 665: return ""; // adamantite golem
+		case 666: return "Prayer_ProtGood";
+		case 667: return ""; // ruler aura
+		case 668: return "Chant_Reincarnation";
+		case 669: return "Skill_ControlUndead";
+		case 670: return ""; // assist
+		case 671: return ""; // corruption
+		case 672: return "Chant_Tornado";//hurricane
+		case 673: return ""; // sanctify lands
+		case 674: return ""; // deadly worm
+		case 675: return ""; // cursed lands
+		case 676: return ""; // lethargic mist
+		case 677: return ""; // black death
+		case 678: return "Spell_Dream";
+		case 679: return "Prayer_BladeBarrier";
+		case 680: return ""; // aid
+		case 681: return ""; // desert fist
+		
 		default:
 			Log.sysOut("Unknown spell num: "+i);
 			break;
@@ -949,36 +1197,28 @@ public class Import
 
 	private static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
 	{
-		if((str1.trim().length()>0)&&((Character.isLetter(str1.trim().charAt(0)))||(str1.trim().startsWith("'"))))
-		{
-			str1=str1.toUpperCase().trim();
-			if(str1.startsWith("'"))
-			   str1=str1.substring(1);
-			if(str1.startsWith("EXOTIC")) val1=0;
-			else
-			if(str1.startsWith("SWORD")) val1=1;
-			else
-			if(str1.startsWith("DAGGER")) val1=9;
-			else
-			if(str1.startsWith("SPEAR")) val1=3;
-			else
-			if(str1.startsWith("MACE"))
-			{
-				val1=4;
-				if(name.toUpperCase().endsWith("HAMMER"))
-					val1=11;
-			}
-			else
-			if(str1.startsWith("AXE")) val1=5;
-			else
-			if(str1.startsWith("FLAIL")) val1=6;
-			else
-			if(str1.startsWith("WHIP")) val1=7;
-			else
-			if(str1.startsWith("POLE")) val1=8;
-			else
-			if(str1.startsWith("STAFF")) val1=10;
-		}
+		final String[][] weaponTypes={
+			{ "exotic","0"},
+			{ "sword","1"},
+			{ "dagger","9"},
+			{ "spear","3"},
+			{ "staff","10"},
+			{ "mace","4"},
+			{ "axe","5"},
+			{ "flail","6"},
+			{ "whip","7"},
+			{ "polearm","8"},
+			{ "bow","0"},
+			{ "arrow","3"},
+			{ "lance","3"}
+		};
+		str1=str1.toLowerCase().trim();
+		if(str1.startsWith("'")) str1=str1.substring(1);
+		for(int wt=0;wt<weaponTypes.length;wt++)
+			if(str1.startsWith(weaponTypes[wt][0]))
+			{ val1=Util.s_int(str1); break;}
+		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
+			val1=11;
 
 		switch(val1)
 		{
@@ -1877,7 +2117,8 @@ public class Import
 						M.addAbility(CMClass.getAbility("WeakParalysis"));
 					}
 					else
-					if(special.equals("SPEC_CAST_GHOST"))
+					if((special.equals("SPEC_CAST_GHOST"))
+					||(special.equals("SPEC_UNDEAD")))
 					{
 						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 						M.addAbility(CMClass.getAbility("Spell_Spook"));
@@ -1946,6 +2187,7 @@ public class Import
 					}
 					else
 					if((special.equals("SPEC_GUARD"))
+					||(special.equals("SPEC_POLICEMAN"))
 					||(special.equals("SPEC_SPECIAL_GUARD")))
 						M.addBehavior(CMClass.getBehavior("GoodGuardian"));
 					else
@@ -1960,7 +2202,41 @@ public class Import
 						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
 					if(special.equals("SPEC_BREATH_ANY"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 						M.addAbility(CMClass.getAbility("Dragonbreath"));
+					}
+					else
+					if(special.equals("SPEC_CAST_CADAVER"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Prayer_Bury"));
+					}
+					else
+					if((special.equals("SPEC_REWIELD"))
+					||(special.equals("SPEC_WIZARDOFOZ"))
+					||(special.equals("SPEC_VAMP_HUNTER"))
+					||(special.equals("SPEC_MINO_GUARD")))
+					{
+						// who knows?
+					}
+					else
+					if(special.equals("SPEC_TAX_MAN"))
+					{
+						M.addBehavior(CMClass.getBehavior("RandomTeleporter"));
+						M.addBehavior(CMClass.getBehavior("Thiefness"));
+					}
+					else
+					if(special.equals("SPEC_STEPHEN"))
+					{
+						M.addBehavior(CMClass.getBehavior("RandomTeleporter"));
+						M.addBehavior(CMClass.getBehavior("Healer"));
+					}
+					else
+					if(special.equals("SPEC_CAST_BIGTIME"))
+					{
+						// In CoffeeMud, they all cast bigtime
+					}
 					else
 					if(special.equals("SPEC_BREATH_ACID"))
 					{
@@ -2120,54 +2396,50 @@ public class Import
 			if((obj.trim().length()>1)&&(Character.isLetter(obj.charAt(0))))
 				circleForm=true;
 			int objType=Util.s_int(obj);
+			final String[][] itemTypes={
+			{ "light","1"},
+			{ "scroll","2"},
+			{ "wand","3"},
+			{ "staff","4"},
+			{ "weapon","5"},
+			{ "treasure","8"},
+			{ "armor","9"},
+			{ "potion","10"},
+			{ "clothing","11"},
+			{ "furniture","12"},
+			{ "trash","13"},
+			{ "container","15"},
+			{ "drink","17"},
+			{ "key","18"},
+			{ "food","19"},
+			{ "money","20"},
+			{ "boat","22"},
+			{ "npc_corpse","99"},
+			{ "pc_corpse","99"},
+			{ "fountain","25"},
+			{ "pill","26"},
+			{ "protect",""},
+			{ "map","28"},
+			{ "portal",""},
+			{ "warp_stone",""},
+			{ "room_key","98"},
+			{ "gem",""},
+			{ "jewelry",""},
+			{ "jukebox",""},
+			{ "tattoo",""},
+			{ "pipe","32"}
+			};
+			
 			if(circleForm)
 			{
-				if(obj.equalsIgnoreCase("light")) objType=1;
-				else
-				if(obj.equalsIgnoreCase("scroll")) objType=2;
-				else
-				if(obj.equalsIgnoreCase("wand")) objType=3;
-				else
-				if(obj.equalsIgnoreCase("staff")) objType=4;
-				else
-				if(obj.equalsIgnoreCase("weapon")) objType=5;
-				else
-				if(obj.equalsIgnoreCase("treasure")) objType=8;
-				else
-				if(obj.equalsIgnoreCase("armor")) objType=9;
-				else
-				if(obj.equalsIgnoreCase("potion")) objType=10;
-				else
-				if(obj.equalsIgnoreCase("clothing")) objType=11;
-				else
-				if(obj.equalsIgnoreCase("furniture")) objType=12;
-				else
-				if(obj.equalsIgnoreCase("trash")) objType=13;
-				else
-				if(obj.equalsIgnoreCase("container")) objType=15;
-				else
-				if(obj.equalsIgnoreCase("drink")) objType=17;
-				else
-				if(obj.equalsIgnoreCase("key")) objType=18;
-				else
-				if(obj.equalsIgnoreCase("food")) objType=19;
-				else
-				if(obj.equalsIgnoreCase("money")) objType=20;
-				else
-				if(obj.equalsIgnoreCase("boat")) objType=22;
-				else
-				if(obj.equalsIgnoreCase("fountain")) objType=25;
-				else
-				if(obj.equalsIgnoreCase("pill")) objType=26;
-				else
-				if(obj.equalsIgnoreCase("map")) objType=28;
-				else
-				if(obj.equalsIgnoreCase("pipe")) objType=32;
-				else
-				if(obj.toUpperCase().endsWith("CORPSE")) objType=99;
-				else
 				if(obj.equalsIgnoreCase("jukebox"))
 					continue;// NO JUKE BOXES!
+				for(int it=0;it<itemTypes.length;it++)
+					if(obj.equalsIgnoreCase(itemTypes[it][0]))
+					{
+						objType=Util.s_int(itemTypes[it][1]);		
+						break;
+					}
 			}
 			int extraFlag=getBitMask(codeStr1,1);
 			int wearFlag=getBitMask(codeStr1,2);
@@ -2391,6 +2663,9 @@ public class Import
 			case 28: I=CMClass.getStdItem("GenReadable"); // don't use GemMaps any more...
 					 break;
 			case 29: I=CMClass.getStdItem("GenItem"); break;
+			case 98: I=CMClass.getStdItem("GenKey");
+					 ((Key)I).setKey(areaName+objectID);
+					 break;
 			case 99: I=CMClass.getStdItem("GenCorpse"); break;
 			case -1: I=CMClass.getStdItem("GenWallpaper"); break;
 			default:
@@ -2490,74 +2765,58 @@ public class Import
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
 			}
 
-			boolean materialchange=true;
-			if(objectDescription.equalsIgnoreCase("steel"))
-				I.setMaterial(EnvResource.RESOURCE_STEEL);
-			else
-			if(objectDescription.equalsIgnoreCase("cloth"))
-				I.setMaterial(EnvResource.RESOURCE_COTTON);
-			else
-			if(objectDescription.equalsIgnoreCase("leather"))
-				I.setMaterial(EnvResource.RESOURCE_LEATHER);
-			else
-			if(objectDescription.equalsIgnoreCase("metal"))
-				I.setMaterial(EnvResource.RESOURCE_TIN);
-			else
-			if(objectDescription.equalsIgnoreCase("glass"))
-				I.setMaterial(EnvResource.RESOURCE_GLASS);
-			else
-			if(objectDescription.equalsIgnoreCase("mithril"))
-				I.setMaterial(EnvResource.RESOURCE_MITHRIL);
-			else
-			if(objectDescription.equalsIgnoreCase("adamantite"))
-				I.setMaterial(EnvResource.RESOURCE_ADAMANTITE);
-			else
-			if(objectDescription.equalsIgnoreCase("wood"))
-				I.setMaterial(EnvResource.RESOURCE_OAK);
-			else
-			if(objectDescription.equalsIgnoreCase("iron"))
-				I.setMaterial(EnvResource.RESOURCE_IRON);
-			else
-			if(objectDescription.equalsIgnoreCase("brass"))
-				I.setMaterial(EnvResource.RESOURCE_BRASS);
-			else
-			if(objectDescription.equalsIgnoreCase("vellum"))
-				I.setMaterial(EnvResource.RESOURCE_HIDE);
-			else
-			if(objectDescription.equalsIgnoreCase("silver"))
-				I.setMaterial(EnvResource.RESOURCE_SILVER);
-			else
-			if(objectDescription.equalsIgnoreCase("gold"))
-				I.setMaterial(EnvResource.RESOURCE_GOLD);
-			else
-			if(objectDescription.equalsIgnoreCase("copper"))
-				I.setMaterial(EnvResource.RESOURCE_COPPER);
-			else
-			if(objectDescription.equalsIgnoreCase("bronze"))
-				I.setMaterial(EnvResource.RESOURCE_BRONZE);
-			else
-			if(objectDescription.equalsIgnoreCase("crystal"))
-				I.setMaterial(EnvResource.RESOURCE_CRYSTAL);
-			else
-			if(objectDescription.equalsIgnoreCase("clay"))
-				I.setMaterial(EnvResource.RESOURCE_CLAY);
-			else
-			if(objectDescription.equalsIgnoreCase("china"))
-				I.setMaterial(EnvResource.RESOURCE_CHINA);
-			else
-			if(objectDescription.equalsIgnoreCase("diamond"))
-				I.setMaterial(EnvResource.RESOURCE_DIAMOND);
-			else
-			if(objectDescription.equalsIgnoreCase("pearl"))
-				I.setMaterial(EnvResource.RESOURCE_PEARL);
-			else
-			if(objectDescription.equalsIgnoreCase("gem"))
-				I.setMaterial(EnvResource.RESOURCE_STEEL);
-			else
-			if(objectDescription.equalsIgnoreCase("paper"))
-				I.setMaterial(EnvResource.RESOURCE_PAPER);
-			else
-				materialchange=false;
+			final String[][] objDescs={
+				{"silver",""+EnvResource.RESOURCE_STEEL},
+				{"gold",""+EnvResource.RESOURCE_GOLD},
+				{"iron",""+EnvResource.RESOURCE_IRON},
+				{"mithril",""+EnvResource.RESOURCE_MITHRIL},
+				{"adamantite",""+EnvResource.RESOURCE_ADAMANTITE},
+				{"steel",""+EnvResource.RESOURCE_STEEL},
+				{"lead",""+EnvResource.RESOURCE_LEAD},
+				{"bronze",""+EnvResource.RESOURCE_BRONZE},
+				{"copper",""+EnvResource.RESOURCE_COPPER},
+				{"brass",""+EnvResource.RESOURCE_BRASS},
+				{"platinium",""+EnvResource.RESOURCE_PLATINUM},
+				{"titanium",""+EnvResource.RESOURCE_STEEL},
+				{"aliminum",""+EnvResource.RESOURCE_TIN},
+				{"aluminum",""+EnvResource.RESOURCE_TIN},
+				{"metal",""+EnvResource.RESOURCE_IRON},
+				{"wood",""+EnvResource.RESOURCE_WOOD},
+				{"ebony",""+EnvResource.RESOURCE_OBSIDIAN},
+				{"ice",""+EnvResource.RESOURCE_CRYSTAL},
+				{"energy",""+EnvResource.RESOURCE_MITHRIL},
+				{"hardwood",""+EnvResource.RESOURCE_BALSA},
+				{"softwood",""+EnvResource.RESOURCE_OAK},
+				{"flesh",""+EnvResource.RESOURCE_MEAT},
+				{"silk",""+EnvResource.RESOURCE_SILK},
+				{"wool",""+EnvResource.RESOURCE_WOOL},
+				{"cloth",""+EnvResource.RESOURCE_COTTON},
+				{"fur",""+EnvResource.RESOURCE_FUR},
+				{"water",""+EnvResource.RESOURCE_FRESHWATER},
+				{"oak",""+EnvResource.RESOURCE_OAK},
+				{"ivory",""+EnvResource.RESOURCE_OBSIDIAN},
+				{"diamond",""+EnvResource.RESOURCE_DIAMOND},
+				{"pearl",""+EnvResource.RESOURCE_PEARL},
+				{"gem",""+EnvResource.RESOURCE_GEM},
+				{"ruby",""+EnvResource.RESOURCE_GEM},
+				{"obsidian",""+EnvResource.RESOURCE_OBSIDIAN},
+				{"lead",""+EnvResource.RESOURCE_LEAD},
+				{"leather",""+EnvResource.RESOURCE_LEATHER},
+				{"glass",""+EnvResource.RESOURCE_GLASS},
+				{"vellum",""+EnvResource.RESOURCE_HIDE},
+				{"crystal",""+EnvResource.RESOURCE_CRYSTAL},
+				{"clay",""+EnvResource.RESOURCE_CLAY},
+				{"china",""+EnvResource.RESOURCE_CHINA},
+				{"paper",""+EnvResource.RESOURCE_PAPER},
+			};
+			boolean materialchange=false;
+			for(int ot=0;ot<objDescs.length;ot++)
+				if(objectDescription.equalsIgnoreCase(objDescs[ot][0]))
+				{
+					I.setMaterial(Util.s_int(objDescs[ot][1]));
+					materialchange=true;
+					break;
+				}
 
 			// correction for certain rings
 			if((((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)
@@ -3678,10 +3937,30 @@ public class Import
 					R.setRoomID(areaName+R.roomID());
 				int codeBits=getBitMask(codeLine,0);
 				int sectorType=getBitMask(codeLine,1);
+				final String[][] secTypes={
+				{ "inside",		"0"},
+				{ "city",		"1"},
+				{ "field",		"2"},
+				{ "forest",		"3"},
+				{ "hills",		"4"},
+				{ "mountain",	"5"},
+				{ "swim",		"6"},
+				{ "noswim",		"7"},
+				{ "unused",		"8"},
+				{ "air",		"9"},
+				{ "desert",		"10"}};
+				
 				if(Util.numBits(codeLine)==3)
 				{
 					codeBits=sectorType;
+					String secType=Util.getBit(codeLine,2);
 					sectorType=getBitMask(codeLine,2);
+					for(int st=0;st<secTypes.length;st++)
+						if(secType.equalsIgnoreCase(secTypes[st][0]))
+						{
+							sectorType=Util.s_int(secTypes[st][1]);
+							break;
+						}
 				}
 				if((codeBits&8)==0)
 				{
@@ -3754,6 +4033,9 @@ public class Import
 				if(Util.isSet(codeBits,2)) // no mobs room
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_ReqNoMOB"));
 
+				if(Util.isSet(codeBits,4)) // no summon out room
+					R.addNonUninvokableAffect(CMClass.getAbility("Prop_NoSummon"));
+				
 				if(Util.isSet(codeBits,9)) // two people only room
 				{
 					prop_RoomCapacity.setMiscText("2");

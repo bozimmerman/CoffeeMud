@@ -759,6 +759,14 @@ public class Util
 			return str.toLowerCase();
 	}
 	
+	public static Vector denumerate(Enumeration e)
+	{
+		Vector V=new Vector();
+		for(;e.hasMoreElements();)
+			V.addElement(e.nextElement());
+		return V;
+	}
+	
 	public static String safetyFilter(String s)
 	{
 		StringBuffer s1=new StringBuffer(s);

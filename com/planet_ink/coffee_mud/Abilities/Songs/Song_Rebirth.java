@@ -55,6 +55,12 @@ public class Song_Rebirth extends Song
 								rejuvedMOB.location().showOthers(rejuvedMOB,null,Affect.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
 								mob.location().bringMobHere(rejuvedMOB,false);
 							}
+							
+							Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
+							if(A!=null) rejuvedMOB.delAbility(A);
+							A=rejuvedMOB.fetchAffect("Prop_AstralSpirit");
+							if(A!=null) rejuvedMOB.delAffect(A);
+							
 							int it=0;
 							while(it<rejuvedMOB.location().numItems())
 							{

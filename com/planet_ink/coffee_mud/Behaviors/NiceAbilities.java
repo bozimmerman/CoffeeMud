@@ -35,7 +35,7 @@ public class NiceAbilities extends ActiveTicker
 
 			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 			int x=0;
-			while(((target==null)||(target==mob)||(target.isMonster()))&&((++x)<10))
+			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
 				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 
 			int tries=0;

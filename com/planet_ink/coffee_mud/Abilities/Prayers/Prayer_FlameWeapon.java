@@ -85,6 +85,18 @@ public class Prayer_FlameWeapon extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((auto||mob.isMonster())&&(commands.size()==0)&&(givenTarget==null))
+		{
+			Item I=mob.fetchWieldedItem();
+			if(I==null)
+				for(int i=0;i<mob.location().numItems();i++)
+				{
+					Item I2=mob.location().fetchItem(i);
+					if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
+					{ I2=I; break;}
+				}
+			if(I!=null) commands.addElement(I.Name());
+		}
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 

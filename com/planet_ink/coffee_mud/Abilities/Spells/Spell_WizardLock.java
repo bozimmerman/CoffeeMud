@@ -124,19 +124,21 @@ public class Spell_WizardLock extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
-				beneficialAffect(mob,target,0);
 				if(target instanceof Exit)
 				{
+					beneficialAffect(mob,target,0);
 					Exit exit=(Exit)target;
 					exit.setDoorsNLocks(exit.hasADoor(),false,exit.defaultsClosed(),
 										exit.hasALock(),true,exit.defaultsLocked());
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 				else
 				if(target instanceof Container)
 				{
+					beneficialAffect(mob,target,0);
 					Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 			}
 

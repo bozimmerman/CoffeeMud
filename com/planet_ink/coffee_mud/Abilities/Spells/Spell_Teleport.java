@@ -17,6 +17,11 @@ public class Spell_Teleport extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			commands.addElement(CMMap.getRandomArea().Name());
+		}
 		if(commands.size()<1)
 		{
 			mob.tell("Teleport to what area?");

@@ -9,57 +9,11 @@ public class Spell_MassSleep extends Spell
 {
 	public String ID() { return "Spell_MassSleep"; }
 	public String name(){return "Mass Sleep";}
-	public String displayText(){return "(Sleep)";}
+	public String displayText(){return "";}
 	public int quality(){return MALICIOUS;};
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_MassSleep();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-
-	public boolean okAffect(Environmental myHost, Affect affect)
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affected;
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
-		if((affect.amISource(mob))
-		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
-		&&(affect.sourceMajor()>0))
-		{
-			mob.tell("You are way too drowsy.");
-			return false;
-		}
-		return super.okAffect(myHost,affect);
-	}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly put the mob into
-		// a sleeping state, so that nothing they do
-		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
-	}
-
-
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-		if(canBeUninvoked())
-		{
-			mob.tell("You feel less drowsy.");
-			ExternalPlay.standIfNecessary(mob);
-		}
-	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -101,7 +55,9 @@ public class Spell_MassSleep extends Spell
 						mob.location().send(mob,msg);
 						if(!msg.wasModified())
 						{
-							success=maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
+							Spell_Sleep spell=new Spell_Sleep();
+							spell.setProfficiency(profficiency());
+							success=spell.maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
 							if(success)
 								target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 						}

@@ -53,6 +53,13 @@ public class Spell_PolymorphSelf extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			Vector V=Util.denumerate(CMClass.races());
+			if(V.size()>0)
+				commands.addElement(((Race)V.elementAt(Dice.roll(1,V.size(),-1))).name());
+		}
 		if(commands.size()==0)
 		{
 			mob.tell("You need to specify what to turn yourself into!");

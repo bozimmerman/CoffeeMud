@@ -29,8 +29,6 @@ public class Chant_Earthquake extends Chant
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
-
-	private MOB lastMOB=null;
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		// undo the affects of this spell
@@ -39,17 +37,13 @@ public class Chant_Earthquake extends Chant
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==Affect.TYP_STAND)
-		&&(mob.location()!=null)
-		&&(!oncePerRd))
+		&&(mob.location()!=null))
 		{
-			oncePerRd=true;
-			if(mob!=lastMOB)
+			if(!oncePerRd)
 			{
-				lastMOB=mob;
+				oncePerRd=true;
 				mob.location().show(mob,null,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
 			}
-			else
-				lastMOB=null;
 			return false;
 		}
 		return super.okAffect(myHost,msg);

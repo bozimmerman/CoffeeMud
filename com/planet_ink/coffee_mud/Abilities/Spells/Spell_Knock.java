@@ -16,6 +16,24 @@ public class Spell_Knock extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			int theDir=-1;
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Exit E=mob.location().getExitInDir(d);
+				if((E!=null)
+				&&(!E.isOpen()))
+				{ 
+					theDir=d; 
+					break;
+				}
+			}
+			if(theDir>=0)
+				commands.addElement(Directions.getDirectionName(theDir));
+		}
+		
 		String whatToOpen=Util.combine(commands,0);
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
@@ -24,6 +42,29 @@ public class Spell_Knock extends Spell
 		if(openThis==null)
 			openThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(openThis==null) return false;
+		
+		if(openThis instanceof Exit)
+		{
+			if(((Exit)openThis).isOpen())
+			{
+				mob.tell("That's already open!");
+				return false;
+			}
+		}
+		else
+		if(openThis instanceof Container)
+		{
+			if(((Container)openThis).isOpen())
+			{
+				mob.tell("That's already open!");
+				return false;
+			}
+		}
+		else
+		{
+			mob.tell("You can't cast knock on "+openThis.name()+"!");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

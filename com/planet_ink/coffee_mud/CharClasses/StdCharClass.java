@@ -350,7 +350,7 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		double lvlMul=1.0-Util.div(mob.envStats().level(),100.0);
+		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvGain=(int)Math.round(lvlMul*Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
 		
@@ -528,7 +528,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getLevelMove(MOB mob)
 	{
 		int move=100;
-		double lvlMul=1.0-Util.div(mob.envStats().level(),100.0);
+		double lvlMul=1.0;//-Util.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		for(int i=1;i<mob.baseEnvStats().level();i++)
 			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier()));

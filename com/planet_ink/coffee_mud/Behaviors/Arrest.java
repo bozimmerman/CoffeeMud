@@ -797,17 +797,17 @@ public class Arrest extends StdBehavior
 		{
 			String info=(String)laws.get("MURDER");
 			MOB criminal=(MOB)affect.tool();
-			for(int i=warrants.size()-1;i>=0;i--)
-			{
-				ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
-				if((W.victim!=null)
-				&&(W.criminal!=null)
-				&&(W.victim==affect.source())
-				&&(W.criminal==criminal))
-					warrants.removeElement(W);
-			}
 			if((info!=null)&&(info.length()>0))
 			{
+				for(int i=warrants.size()-1;i>=0;i--)
+				{
+					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					if((W.victim!=null)
+					&&(W.criminal!=null)
+					&&(W.victim==affect.source())
+					&&(W.criminal==criminal))
+						warrants.removeElement(W);
+				}
 				fillOutWarrant(criminal,
 							   myArea,
 							   affect.source(),
@@ -816,6 +816,7 @@ public class Arrest extends StdBehavior
 							   getBit(info,BIT_CRIMENAME),
 							   getBit(info,BIT_SENTENCE),
 							   getBit(info,BIT_WARNMSG));
+				return;
 			}
 		}
 		boolean arrestMobs=false;

@@ -839,7 +839,7 @@ public class Scoring
 				areasVec.addElement(A.name());
 		}
 		Collections.sort((List)areasVec);
-		StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
+		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)
 		{
@@ -849,7 +849,7 @@ public class Scoring
 				col=1;
 			}
 
-			msg.append(Util.padRight((String)areasVec.elementAt(i),25));
+			msg.append(Util.padRight((String)areasVec.elementAt(i),23)+"^N");
 		}
 		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if(!mob.isMonster())

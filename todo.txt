@@ -23,6 +23,8 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 putting a change bag into a changebag should combine your notes.
 SMTP capability
+add floating num to resources
+add energy as a base material type -- update import
 why does kick ignore stoneskin (or viceversa.
 zapper check on quests and questchats for eligible players
 behavior to have a mob read from a journal, tell a story, sing a song (fee?)
@@ -68,13 +70,8 @@ barbarian skill GUARDTOTEM. Requires 6 scalps of the same race. Prevents creatur
 Barbarian skill SCALPING, as discussed on the group....can't think of practical purposes, though....
 Barbarian skill WARTOTEM. Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, and does WARTOTEM command. Any critter of that race that fights in the room with the totem suffers penalties to attack and damage.
 Spell Think Tank--Collective Mind--Mana Pool: all party members divide the cost of any mana consumption. IE a wizard casts a spell that costs 100 mana while partied with 3 other people, each lose 25 mana.
-10 ) Aereon     Chant Restore Mana--Gives OTHER person 50 mana per cast.
-Always costs 50 Mana.
-11 ) Aereon     Barbarians should be able to LEATHERWORK the scalps into
-SCALP armors. SCALPS should have a value of 3 (1 better than leather, 1 worse
-than scales). Other than that, all scalps must be of the same critter for the
-purpose of leathworking a piece of armor.
-12 ) Aereon     if a creature flees from you you should get 10% his XP
+Barbarians should be able to LEATHERWORK the scalps into SCALP armors. SCALPS should have a value of 3 (1 better than leather, 1 worse than scales). Other than that, all scalps must be of the same critter for the purpose of leathworking a piece of armor.
+Corruption - each casting reduces target alignment by target level points. evil prayer
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

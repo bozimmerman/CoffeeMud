@@ -46,7 +46,7 @@ public class Healer extends ActiveTicker
 
 			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 			int x=0;
-			while(((target==null)||(target==mob)||(target.isMonster()))&&((++x)<10))
+			while(((target==null)||(target.getVictim()==mob)||(target==mob)||(target.isMonster()))&&((++x)<10))
 				target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 
 			Ability tryThisOne=(Ability)healingVector.elementAt(Dice.roll(1,healingVector.size(),-1));

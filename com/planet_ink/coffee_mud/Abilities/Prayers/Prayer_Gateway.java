@@ -38,6 +38,8 @@ public class Prayer_Gateway extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((auto||mob.isMonster())&&(commands.size()==0))
+			commands.addElement(CMMap.getRandomRoom().displayText());
 		if(commands.size()<1)
 		{
 			mob.tell("Pray for a gateway to where?");

@@ -18,7 +18,7 @@ public class Prop_RoomView extends Property
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((newRoom==null)||(!newRoom.roomID().equalsIgnoreCase(text().trim())))
+		if((newRoom==null)||(!CMMap.getExtendedRoomID(newRoom).equalsIgnoreCase(text().trim())))
 			newRoom=CMMap.getRoom(text());
 		if(newRoom==null) return super.okAffect(myHost,affect);
 

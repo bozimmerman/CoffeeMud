@@ -71,7 +71,6 @@ public class BasicSenses
 						name=Directions.getDirectionName(dirCode);
 				}
 				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.MSG_EXAMINESOMETHING,textMsg+name);
-
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))

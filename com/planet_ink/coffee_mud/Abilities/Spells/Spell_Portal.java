@@ -39,6 +39,11 @@ public class Spell_Portal extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			commands.addElement(CMMap.getRandomRoom().displayText());
+		}
 		if(commands.size()<1)
 		{
 			mob.tell("Create a portal to where?");
@@ -103,10 +108,21 @@ public class Spell_Portal extends Spell
 				e.setDoorsNLocks(false,true,false,false,false,false);
 				e.setExitParams("portal","close","open","closed.");
 				e.setName("portal");
+				Ability A1=CMClass.getAbility("Prop_RoomView");
+				if(A1!=null){
+					A1.setMiscText(CMMap.getExtendedRoomID(newRoom));
+					e.addNonUninvokableAffect(A1);
+				}
+				Exit e2=(Exit)e.copyOf();
+				Ability A2=CMClass.getAbility("Prop_RoomView");
+				if(A2!=null){
+					A2.setMiscText(CMMap.getExtendedRoomID(mob.location()));
+					e2.addNonUninvokableAffect(A2);
+				}
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				mob.location().rawExits()[Directions.GATE]=e;
-				newRoom.rawExits()[Directions.GATE]=e;
+				newRoom.rawExits()[Directions.GATE]=e2;
 				oldRoom=mob.location();
 				beneficialAffect(mob,e,5);
 			}

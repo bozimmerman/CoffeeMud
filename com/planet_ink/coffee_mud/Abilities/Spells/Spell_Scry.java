@@ -52,6 +52,22 @@ public class Spell_Scry extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			MOB M=null;
+			int tries=0;
+			while(((++tries)<100)&&(M==null))
+			{
+				Room R=CMMap.getRandomRoom();
+				if(R.numInhabitants()>0)
+					M=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
+				if(M.name().equals(mob.name()))
+					M=null;
+			}
+			if(M!=null)
+				commands.addElement(M.Name());
+		}
 		if(commands.size()<1)
 		{
 			mob.tell("Cast on whom?");

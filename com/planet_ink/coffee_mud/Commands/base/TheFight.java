@@ -284,32 +284,49 @@ public class TheFight
 		DeadBody Body=null;
 		if((target.soulMate()==null)&&(!target.isMonster()))
 		{
-			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERDEATH);
-			if(whatToDo.startsWith("UNL"))
-				target.charStats().getCurrentClass().unLevel(target);
-			else
-			if(whatToDo.startsWith("PUR"))
+			Vector whatsToDo=Util.parse(CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERDEATH));
+			for(int w=0;w<whatsToDo.size();w++)
 			{
-				MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
-				boolean found=ExternalPlay.DBUserSearch(deadMOB,target.ID());
-				if(found)
+				String whatToDo=(String)whatsToDo.elementAt(w);
+				if(whatToDo.startsWith("UNL"))
+					target.charStats().getCurrentClass().unLevel(target);
+				else
+				if(whatToDo.startsWith("ASTR"))
 				{
-					Body=target.killMeDead(true);
-					ExternalPlay.destroyUser(deadMOB);
+					Ability A=CMClass.getAbility("Prop_AstralSpirit");
+					if((A!=null)&&(target.fetchAbility(A.ID())==null))
+					{
+						target.addAbility(A);
+						A.autoInvocation(target);
+					}
 				}
-			}
-			else
-			if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
-			{
-				int expLost=Util.s_int(whatToDo);
-				target.tell("^F^*You lose "+expLost+" experience points.^?^.");
-				target.charStats().getCurrentClass().loseExperience(target,expLost);
-			}
-			else
-			{
-				int expLost=100*target.envStats().level();
-				target.tell("^F^*You lose "+expLost+" experience points.^?^.");
-				target.charStats().getCurrentClass().loseExperience(target,expLost);
+				else
+				if(whatToDo.startsWith("PUR"))
+				{
+					MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
+					boolean found=ExternalPlay.DBUserSearch(deadMOB,target.ID());
+					if(found)
+					{
+						Body=target.killMeDead(true);
+						ExternalPlay.destroyUser(deadMOB);
+					}
+				}
+				else
+				if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+				{
+					int expLost=Util.s_int(whatToDo);
+					target.tell("^F^*You lose "+expLost+" experience points.^?^.");
+					target.charStats().getCurrentClass().loseExperience(target,expLost);
+				}
+				else
+				if(whatToDo.length()<3)
+					continue;
+				else
+				{
+					int expLost=100*target.envStats().level();
+					target.tell("^F^*You lose "+expLost+" experience points.^?^.");
+					target.charStats().getCurrentClass().loseExperience(target,expLost);
+				}
 			}
 		}
 

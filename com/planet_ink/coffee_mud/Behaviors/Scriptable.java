@@ -3394,7 +3394,7 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case 12: // mask prog
-			case 18: // mask prog
+			case 18: // act prog
 				if(!affect.amISource(monster))
 				{
 					boolean doIt=false;
@@ -3403,7 +3403,7 @@ public class Scriptable extends StdBehavior
 					if(msg==null) msg=affect.sourceMessage();
 					if(msg==null) break;
 					msg=" "+msg.toUpperCase()+" ";
-					trigger=trigger.substring(9).trim();
+					trigger=Util.getPastBit(trigger.trim(),0);
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();

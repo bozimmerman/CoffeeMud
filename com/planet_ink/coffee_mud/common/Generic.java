@@ -146,7 +146,7 @@ public class Generic
 			if(get(f,512)) Log.errOut("Generic","Exit is level restricted!");
 			if(get(f,1024)) Log.errOut("Generic","Exit is class restricted!");
 			if(get(f,2048)) Log.errOut("Generic","Exit is alignment restricted!");
-			exit.setDoorsNLocks(HasDoor,!DefaultsClosed,DefaultsClosed,HasLock,DefaultsLocked,DefaultsLocked);
+			exit.setDoorsNLocks(HasDoor,(!HasDoor)||(!DefaultsClosed),DefaultsClosed,HasLock,HasLock&&DefaultsLocked,DefaultsLocked);
 		}
 	}
 

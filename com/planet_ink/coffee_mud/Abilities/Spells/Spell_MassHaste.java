@@ -9,29 +9,11 @@ public class Spell_MassHaste extends Spell
 {
 	public String ID() { return "Spell_MassHaste"; }
 	public String name(){return "Mass Haste";}
-	public String displayText(){return "(Hasted)";}
+	public String displayText(){return "";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_MassHaste();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSpeed(affectableStats.speed() * 2.0);
-	}
-
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		super.unInvoke();
-
-		if(canBeUninvoked())
-			mob.tell("You begin to slow down to a normal speed.");
-	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -69,7 +51,9 @@ public class Spell_MassHaste extends Spell
 				{
 					mob.location().send(mob,msg);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> speed(s) up!");
-					beneficialAffect(mob,target,0);
+					Spell_Haste haste=new Spell_Haste();
+					haste.setProfficiency(profficiency());
+					haste.beneficialAffect(mob,target,0);
 				}
 			}
 		}

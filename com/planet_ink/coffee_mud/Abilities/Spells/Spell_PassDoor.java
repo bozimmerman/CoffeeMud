@@ -41,6 +41,23 @@ public class Spell_PassDoor extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
+		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
+		{
+			commands.clear();
+			int theDir=-1;
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Exit E=mob.location().getExitInDir(d);
+				if((E!=null)
+				&&(!E.isOpen()))
+				{ 
+					theDir=d; 
+					break;
+				}
+			}
+			if(theDir>=0)
+				commands.addElement(Directions.getDirectionName(theDir));
+		}
 		String whatToOpen=Util.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(!auto)

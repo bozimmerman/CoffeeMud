@@ -22,6 +22,7 @@ public class Evoker extends SpecialistMage
 			myAbilitiesLoaded=true;
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_ContinualLight",25,true);
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_Shockshield",25,true);
 			CMAble.addCharAbilityMapping(ID(),13,"Spell_IceLance",25,true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_Ignite",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ForkedLightning",25,true);

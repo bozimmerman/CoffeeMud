@@ -22,6 +22,7 @@ public class Transmuter extends SpecialistMage
 			myAbilitiesLoaded=true;
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_MassWaterbreath",25,true);
 			CMAble.addCharAbilityMapping(ID(),10,"Spell_Misstep",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);
@@ -29,6 +30,7 @@ public class Transmuter extends SpecialistMage
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_AddLimb",25,true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Transformation",25,true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_BigMouth",25,true);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_MassFly",25,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Spell_Clone",25,true);
 		}
 	}
