@@ -37,7 +37,7 @@ public class MUD extends Thread implements Host
 	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
 	public boolean acceptConnections=false;
-	public int port=4444;
+	public int port=4455;
 	ServerSocket servsock=null;
 
 	public MUD()
