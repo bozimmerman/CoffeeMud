@@ -101,7 +101,7 @@ public class DBConnections
 			}
 			if(Result<0)
 			{
-				Log.errOut("DBConnections",""+DBToUse.getLastError());
+				Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
 			}
 		}
 		catch(Exception e)

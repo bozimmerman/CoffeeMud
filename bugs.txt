@@ -1,6 +1,5 @@
 cmstat table in ms access
 racial affects
-Look into stopping the autocombat stuff? Do Combat Queueing, whatever that is.
 Install ship battery
 make diff levels of drunk, and disease_hangover
 mutable body parts, with ability to grant powers

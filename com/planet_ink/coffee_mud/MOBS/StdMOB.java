@@ -2850,7 +2850,7 @@ public class StdMOB implements MOB
 	
 	public int numAllEffects()
 	{
-		return affects.size()+charStats().getMyRace().racialEffects(this).size();
+		return affects.size();//+charStats().getMyRace().racialEffects(this).size();
 	}
 	
 	public int numEffects()
@@ -2861,9 +2861,9 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			if(index<affects.size())
+			//if(index<affects.size())
 				return (Ability)affects.elementAt(index);
-			return (Ability)charStats().getMyRace().racialEffects(this).elementAt(index-affects.size());
+			//return (Ability)charStats().getMyRace().racialEffects(this).elementAt(index-affects.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
