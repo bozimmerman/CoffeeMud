@@ -1,1 +1,4 @@
 Range bug, This is a bug, because thief shouldn't be able to stab the MOB if the mob is at a range, OR the mob shouldn't have to advance at thief if thief isn't at range....
+Advancement needs to last longer than 1 second per level, Bo!  More like 30 seconds per level
+Still can't drop something in the air with reliability.  Perhaps that grid thing again?
+
