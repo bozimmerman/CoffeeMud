@@ -720,6 +720,43 @@ public class DBConnections
 		return 0;
 	}
 	
+	/** 
+	 * 
+	 * <br><br><b>Usage: update("UPDATE...");</b> 
+	 * @param updateString	the update SQL command
+	 * @return int	the responseCode, or -1
+	 */
+	public int queryRows(String queryString)
+	{
+		DBConnection DBToUse=null;
+		int Result=0;
+		try
+		{
+			DBToUse=DBFetch();
+			try
+			{
+				ResultSet R=DBToUse.query(queryString);
+				if(R==null)
+					Result=0;
+				else
+				while(R.next())
+					Result++;
+			}
+			catch(Exception sqle)
+			{
+				// queued by the connection for retry
+			}
+		}
+		catch(Exception e)
+		{
+			Log.errOut("DBConnections",""+e);
+		}
+		if(DBToUse!=null)
+			DBDone(DBToUse);
+		return Result;
+	}
+	
+	
 	/** read a buffer of data to numerous SQL records by
 	 * breaking the buffer into small chunks
 	 * 

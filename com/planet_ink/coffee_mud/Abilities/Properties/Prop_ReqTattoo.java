@@ -41,6 +41,11 @@ public class Prop_ReqTattoo extends Property
 		for(int v=0;v<V.size();v++)
 		{
 			String tattoo=(String)V.elementAt(v);
+			if((tattoo.length()>0)
+			&&(Character.isDigit(tattoo.charAt(0)))
+			&&(tattoo.indexOf(" ")>0)
+			&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+			   tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
 			int y=text().toUpperCase().indexOf(tattoo);
 			if(((x>0)
 				&&(text().charAt(x-1)=='-')

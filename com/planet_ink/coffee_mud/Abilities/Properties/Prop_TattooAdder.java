@@ -90,12 +90,18 @@ public class Prop_TattooAdder extends Property
 		if(addOnly) tattooMinus=false;
 		if(subOnly) tattooPlus=false;
 
-		if(mob.fetchTattoo(tattooName)!=null)
+		String tattoo=tattooName;
+		if((tattoo.length()>0)
+		&&(Character.isDigit(tattoo.charAt(0)))
+		&&(tattoo.indexOf(" ")>0)
+		&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+			tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+		if(mob.fetchTattoo(tattoo)!=null)
 		{
 			if(tattooMinus)
 			{
 				if(!silent)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" takes away the "+tattoo+" tattoo from <S-NAME>.");
 				mob.delTattoo(tattooName);
 			}
 		}
@@ -104,7 +110,7 @@ public class Prop_TattooAdder extends Property
 			if(tattooPlus)
 			{
 				if(!silent)
-					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattoo+" tattoo.");
 				mob.addTattoo(tattooName);
 			}
 		}

@@ -2584,6 +2584,37 @@ public class StdMOB implements MOB
 			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;
+			synchronized(tattoos)
+			{
+				try
+				{
+					String tattoo=null;
+					for(int t=0;t<numTattoos();t++)
+					{
+						tattoo=fetchTattoo(t);
+						if((tattoo.length()>0)
+						&&(Character.isDigit(tattoo.charAt(0)))
+						&&(tattoo.indexOf(" ")>0)
+						&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+						{
+							String tat=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+							int num=Util.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
+							if(num==1)
+							{
+								tattoos.removeElementAt(t);
+								t--;
+							}
+							else
+								tattoos.setElementAt((num-1)+" "+tat,t);
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					Log.errOut("StdMOB","Ticking tattoos.");
+					Log.errOut("StdMOB",e);
+				}
+			}
 		}
 
 		if(lastTickedDateTime>=0) lastTickedDateTime=System.currentTimeMillis();
@@ -2972,20 +3003,47 @@ public class StdMOB implements MOB
 	public void addTattoo(String of)
 	{
 		if(tattoos==null) tattoos=new Vector();
+		if(of.length()==0) return;
 		if((fetchTattoo(of)==null)&&(of!=null))
 			tattoos.addElement(of.toUpperCase().trim());
 	}
 	public void delTattoo(String of)
 	{
-		of=fetchTattoo(of);
-		if(of!=null) tattoos.removeElement(of);
+		if(tattoos==null) 
+			return;
+		synchronized(tattoos)
+		{
+			of=fetchTattoo(of);
+			if(of!=null) tattoos.removeElement(of);
+		}
 	}
 	public int numTattoos(){return (tattoos==null)?0:tattoos.size();}
 	public String fetchTattoo(int x){try{return (String)tattoos.elementAt(x);}catch(Exception e){} return null;}
-	public String fetchTattoo(String of){
+	public String fetchTattoo(String of)
+	{
+		
 		try{
+			if((of==null)||(of.length()==0)) 
+				return null;
+			if((Character.isDigit(of.charAt(0)))
+			&&(of.indexOf(" ")>0)
+			&&(Util.isNumber(of.substring(0,of.indexOf(" ")))))
+				of=of.substring(of.indexOf(" ")+1).trim();
+			else
+				of=of.trim();
+			String s=null;
 			for(int i=0;i<numTattoos();i++)
-				if(fetchTattoo(i).equalsIgnoreCase(of.trim())) return fetchTattoo(i);
+			{
+				s=fetchTattoo(i);
+				if(s.equalsIgnoreCase(of))
+					return fetchTattoo(i);
+				else
+				if((Character.isDigit(s.charAt(0)))
+				&&(s.indexOf(" ")>0)
+				&&(Util.isNumber(s.substring(0,s.indexOf(" "))))
+				&&(of.equalsIgnoreCase(s.substring(s.indexOf(" ")+1).trim())))
+					return fetchTattoo(i);
+			}
 		}catch(Exception e){}
 		return null;
 	}

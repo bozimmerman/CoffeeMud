@@ -502,6 +502,8 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
 		try{Thread.sleep(room.numItems());}catch(Exception e){}
+		if(DBConnector.queryRows("SELECT * FROM CMROIT  WHERE CMROID='"+room.roomID()+"'")>0)
+			Log.errOut("Failed to update items for room "+room.roomID()+".");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
 		DBUpdateContents(room);
@@ -515,6 +517,8 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		DBConnector.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
+		if(DBConnector.queryRows("SELECT * FROM CMROEX  WHERE CMROID='"+room.roomID()+"'")>0)
+			Log.errOut("Failed to update exits for room "+room.roomID()+".");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
 			Exit thisExit=room.rawExits()[e];
@@ -588,6 +592,8 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector();
 		DBConnector.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
+		if(DBConnector.queryRows("SELECT * FROM CMROCH  WHERE CMROID='"+room.roomID()+"'")>0)
+			Log.errOut("Failed to update mobs for room "+room.roomID()+".");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue updating mobs for room "+room.roomID());
 		for(int m=0;m<mobs.size();m++)

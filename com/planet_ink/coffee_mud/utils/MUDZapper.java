@@ -185,8 +185,17 @@ public class MUDZapper
 	public static boolean tattooCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
 		for(int v=0;v<mob.numTattoos();v++)
-			if(fromHere(V,plusMinus,fromHere,(String)mob.fetchTattoo(v)))
+		{
+			String tattoo=mob.fetchTattoo(v);
+			if((tattoo!=null)
+			&&(tattoo.length()>0)
+			&&(Character.isDigit(tattoo.charAt(0)))
+			&&(tattoo.indexOf(" ")>0)
+			&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+			   tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+			if(fromHere(V,plusMinus,fromHere,tattoo))
 				return true;
+		}
 		return false;
 	}
 

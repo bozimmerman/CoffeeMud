@@ -683,6 +683,8 @@ public class MOBloader
 		if(mob.Name().length()==0) return;
 		DBConnector.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
 		try{Thread.sleep(mob.inventorySize());}catch(Exception e){}
+		if(DBConnector.queryRows("SELECT * FROM CMCHIT  WHERE CMUSERID='"+mob.Name()+"'")>0)
+			Log.errOut("Failed to update items for mob "+mob.Name()+".");
 		Vector V=new Vector();
 		if(mob.inventorySize()>0)
 			DBUpdateContents(mob,V);
@@ -694,8 +696,10 @@ public class MOBloader
 	{
 		if((mob==null)||(mob.Name().length()==0))
 			return;
+		DBConnector.update("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
+		if(DBConnector.queryRows("SELECT * FROM CMCHFO  WHERE CMUSERID='"+mob.Name()+"'")>0)
+			Log.errOut("Failed to update followers for mob "+mob.Name()+".");
 		Vector V=new Vector();
-		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB thisMOB=mob.fetchFollower(f);
@@ -764,6 +768,8 @@ public class MOBloader
 	{
 		if(mob.Name().length()==0) return;
 		DBConnector.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
+		if(DBConnector.queryRows("SELECT * FROM CMCHAB  WHERE CMUSERID='"+mob.Name()+"'")>0)
+			Log.errOut("Failed to update abilities for mob "+mob.Name()+".");
 		Vector V=new Vector();
 		HashSet H=new HashSet();
 		for(int a=0;a<mob.numLearnedAbilities();a++)

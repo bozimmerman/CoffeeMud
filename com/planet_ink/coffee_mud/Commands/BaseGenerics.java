@@ -1995,9 +1995,15 @@ public class BaseGenerics extends StdCommand
 			behave=mob.session().prompt("Enter a tattoo to add/remove\n\r:","");
 			if(behave.length()>0)
 			{
-				if(E.fetchTattoo(behave)!=null)
+				String tattoo=behave;
+				if((tattoo.length()>0)
+				&&(Character.isDigit(tattoo.charAt(0)))
+				&&(tattoo.indexOf(" ")>0)
+				&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+					tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+				if(E.fetchTattoo(tattoo)!=null)
 				{
-					mob.tell(behave.trim().toUpperCase()+" removed.");
+					mob.tell(tattoo.trim().toUpperCase()+" removed.");
 					E.delTattoo(behave);
 				}
 				else

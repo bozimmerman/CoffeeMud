@@ -73,6 +73,9 @@ public class DBConnector
 	public static int update(String updateString)
 	{ return DBs.update(updateString);}
 	
+	public static int queryRows(String queryString)
+	{ return DBs.queryRows(queryString);}
+
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
 	 * You can then call DBConnection.query and DBConnection.update on this object.

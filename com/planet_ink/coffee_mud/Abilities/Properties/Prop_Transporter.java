@@ -26,63 +26,63 @@ public class Prop_Transporter extends Property
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	private Hashtable zapList=new Hashtable();
 	private Room room=null;
-	int tattooCode=-1;
+	int transCode=-1;
 
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}
 
-	public int tattooCode()
+	public int transCode()
 	{
-		if(tattooCode>=0) return tattooCode;
+		if(transCode>=0) return transCode;
 		if(affected==null) return -1;
 		if(affected instanceof Drink)
-			tattooCode= CMMsg.TYP_DRINK;
+			transCode= CMMsg.TYP_DRINK;
 		else
 		if(affected instanceof Food)
-			tattooCode= CMMsg.TYP_EAT;
+			transCode= CMMsg.TYP_EAT;
 		else
 		if(affected instanceof Rideable)
 		{
-			tattooCode= CMMsg.TYP_MOUNT;
+			transCode= CMMsg.TYP_MOUNT;
 			switch(((Rideable)affected).rideBasis())
 			{
 			case Rideable.RIDEABLE_ENTERIN:
-				tattooCode= CMMsg.TYP_ENTER; break;
+				transCode= CMMsg.TYP_ENTER; break;
 			case Rideable.RIDEABLE_SIT:
 			case Rideable.RIDEABLE_TABLE:
-				tattooCode= CMMsg.TYP_SIT; break;
+				transCode= CMMsg.TYP_SIT; break;
 			case Rideable.RIDEABLE_SLEEP:
-				tattooCode= CMMsg.TYP_SLEEP; break;
+				transCode= CMMsg.TYP_SLEEP; break;
 			}
 		}
 		else
 		if(affected instanceof MOB)
-			tattooCode= CMMsg.TYP_SPEAK;
+			transCode= CMMsg.TYP_SPEAK;
 		else
 		if(affected instanceof Weapon)
-			tattooCode= CMMsg.TYP_WEAPONATTACK;
+			transCode= CMMsg.TYP_WEAPONATTACK;
 		else
 		if(affected instanceof Armor)
-			tattooCode= CMMsg.TYP_WEAR;
+			transCode= CMMsg.TYP_WEAR;
 		else
 		if(affected instanceof Item)
-			tattooCode= CMMsg.TYP_GET;
+			transCode= CMMsg.TYP_GET;
 		else
 		if(affected instanceof Room)
-			tattooCode= CMMsg.TYP_ENTER;
+			transCode= CMMsg.TYP_ENTER;
 		else
 		if(affected instanceof Area)
-			tattooCode= CMMsg.TYP_ENTER;
+			transCode= CMMsg.TYP_ENTER;
 		else
 		if(affected instanceof Exit)
-			tattooCode= CMMsg.TYP_ENTER;
-		return tattooCode;
+			transCode= CMMsg.TYP_ENTER;
+		return transCode;
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((tattooCode()>=0)
-		   &&((msg.targetMinor()==tattooCode())||(msg.sourceMinor()==tattooCode()))
+		if((transCode()>=0)
+		   &&((msg.targetMinor()==transCode())||(msg.sourceMinor()==transCode()))
 		   &&(msg.amITarget(affected)||(msg.tool()==affected))
 		   &&(text().length()>0))
 		{

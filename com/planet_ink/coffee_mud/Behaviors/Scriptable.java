@@ -3798,7 +3798,13 @@ public class Scriptable extends StdBehavior
 					MOB themob=(MOB)newTarget;
 					boolean tattooMinus=tattooName.startsWith("-");
 					if(tattooMinus)	tattooName=tattooName.substring(1);
-					if(themob.fetchTattoo(tattooName)!=null)
+					String tattoo=tattooName;
+					if((tattoo.length()>0)
+					&&(Character.isDigit(tattoo.charAt(0)))
+					&&(tattoo.indexOf(" ")>0)
+					&&(Util.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+						tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+					if(themob.fetchTattoo(tattoo)!=null)
 					{
 						if(tattooMinus)
 							themob.delTattoo(tattooName);
