@@ -204,6 +204,17 @@ public class StdRideable extends StdMOB implements Rideable
 				}
 			}
 			break;
+		case Affect.TYP_GIVE:
+			if(affect.target() instanceof MOB)
+			{
+				MOB tmob=(MOB)affect.target();
+				if((amRiding(tmob))&&(!amRiding(affect.source())))
+				{
+					affect.source().tell(affect.source(),tmob,"<T-NAME> must dismount first.");
+					return false;
+				}
+			}
+			break;
 		case Affect.TYP_BUY:
 		case Affect.TYP_SELL:
 			if(amRiding(affect.source()))
