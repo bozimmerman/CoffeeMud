@@ -103,7 +103,20 @@ public class Burning extends StdAbility
 	{
 		if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
 		{
-			mob.tell("Ouch!!, "+affected.name()+" is on fire!");
+			if(affected instanceof Item)
+			switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+			{
+			case EnvResource.MATERIAL_LIQUID:
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_ROCK:
+				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is HOT!");
+				break;
+			default:
+				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is on fire!");
+				break;
+			}
 			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.NO_EFFECT,Weapon.TYPE_BURNING,null);
 			return false;
 		}
@@ -119,7 +132,26 @@ public class Burning extends StdAbility
 		&&(affected instanceof Item)
 		&&(affect.amITarget((Item)affected))
 		&&(affect.targetMinor()==Affect.TYP_GET))
+		{
+			if((affect.tool()==null)||(!(affect.tool() instanceof Item)))
+				return ouch(affect.source());
+			// the "oven" exception
+			Item container=(Item)affected;
+			Item target=(Item)affect.tool();
+			if((target.owner()==container.owner())
+			&&(target.container()==container))
+				switch(container.material()&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_MITHRIL:
+				case EnvResource.MATERIAL_PRECIOUS:
+				case EnvResource.MATERIAL_ROCK:
+					return true;
+				default:
+					break;
+				}
 			return ouch(affect.source());
+		}
 		return true;
 	}
 

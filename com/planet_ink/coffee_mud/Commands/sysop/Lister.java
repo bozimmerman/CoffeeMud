@@ -415,7 +415,72 @@ public class Lister
 				return;
 			}
 		}
-		ExternalPlay.listUsers(mob,sortBy);
+		StringBuffer head=new StringBuffer("");
+		head.append("[");
+		head.append(Util.padRight("Race",8)+" ");
+		head.append(Util.padRight("Class",10)+" ");
+		head.append(Util.padRight("Lvl",4)+" ");
+		head.append(Util.padRight("Hours",5)+" ");
+		if(sortBy!=6)
+			head.append(Util.padRight("Last",18)+" ");
+		else
+			head.append(Util.padRight("E-Mail",23)+" ");
+		head.append("] Character name\n\r");
+		Vector allUsers=ExternalPlay.getUserList();
+		Vector oldSet=allUsers;
+		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=5))
+		{
+			if(oldSet==allUsers) allUsers=new Vector();
+
+			if((sortBy<3)||(sortBy>4))
+			{
+				Vector selected=(Vector)oldSet.firstElement();
+				for(int u=1;u<oldSet.size();u++)
+				{
+					Vector V=(Vector)oldSet.elementAt(u);
+					if(((String)selected.elementAt(sortBy)).compareTo(((String)V.elementAt(sortBy)))>0)
+					   selected=V;
+				}
+				if(selected!=null)
+				{
+					oldSet.removeElement(selected);
+					allUsers.addElement(selected);
+				}
+			}
+			else
+			{
+				Vector selected=(Vector)oldSet.firstElement();
+				for(int u=1;u<oldSet.size();u++)
+				{
+					Vector V=(Vector)oldSet.elementAt(u);
+					if(Util.s_long((String)selected.elementAt(sortBy))>Util.s_long(((String)V.elementAt(sortBy))))
+					   selected=V;
+				}
+				if(selected!=null)
+				{
+					oldSet.removeElement(selected);
+					allUsers.addElement(selected);
+				}
+			}
+		}
+
+		for(int u=0;u<allUsers.size();u++)
+		{
+			Vector U=(Vector)allUsers.elementAt(u);
+
+			head.append("[");
+			head.append(Util.padRight((String)U.elementAt(2),8)+" ");
+			head.append(Util.padRight((String)U.elementAt(1),10)+" ");
+			head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+			head.append(Util.padRight((String)U.elementAt(4),5)+" ");
+			if(sortBy!=6)
+				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
+			else
+				head.append(Util.padRight((String)U.elementAt(6),23)+" ");
+			head.append("] "+Util.padRight((String)U.elementAt(0),15));
+			head.append("\n\r");
+		}
+		mob.tell(head.toString());
 	}
 
 	public static StringBuffer listRaces(Enumeration these)

@@ -71,10 +71,7 @@ public class Druid_PlantForm extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
-				affectableStats.setName("an "+raceName.toLowerCase());
-			else
-				affectableStats.setName("a "+raceName.toLowerCase());
+			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
 	}
@@ -215,10 +212,7 @@ public class Druid_PlantForm extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);
-				if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
-					raceName="An "+raceName;
-				else
-					raceName="A "+raceName;
+				raceName=Util.capitalize(Util.startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				mob.confirmWearability();
 			}

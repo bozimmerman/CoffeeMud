@@ -129,7 +129,19 @@ public class CoffeeUtensils
 			return true;
 		}
 	}
-
+	
+	public static boolean reachableItem(MOB mob, Environmental I)
+	{
+		if((I==null)||(!(I instanceof Item))) 
+			return true;
+		if((mob.isMine(I))
+		||((mob.riding()!=null)&&((I==mob.riding())
+								  ||(((Item)I).owner()==mob.riding())
+								  ||(((Item)I).ultimateContainer()==mob.riding()))))
+		   return true;
+		return false;
+	}
+	
 	public static Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
 	{
 		if(srchStr.length()==0) return null;

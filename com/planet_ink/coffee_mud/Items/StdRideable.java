@@ -202,6 +202,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 		}
 	}
+	
 	public String displayText()
 	{
  		if((numRiders()>0)&&(stateStringSubject(this).length()>0))
@@ -466,16 +467,15 @@ public class StdRideable extends StdContainer implements Rideable
 			break;
 		}
 		if((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
-		   &&(amRiding(affect.source())))
+		&&(amRiding(affect.source()))
+		&&((affect.sourceMessage()!=null)||(affect.othersMessage()!=null))
+		&&(((!CoffeeUtensils.reachableItem(affect.source(),affect.target())))
+			|| ((!CoffeeUtensils.reachableItem(affect.source(),affect.tool())))
+			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target())))))
 		{
-			if(((affect.target()!=null)&&(affect.target() instanceof Item)&&(affect.target()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.target())))
-			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(affect.tool()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.tool())))
-			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target()))))
-			{
 
-				affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
-				return false;
-			}
+			affect.source().tell("You cannot do that while "+stateString(affect.source())+" "+name()+".");
+			return false;
 		}
 		return super.okAffect(myHost,affect);
 	}

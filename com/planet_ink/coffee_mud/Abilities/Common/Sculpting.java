@@ -22,6 +22,7 @@ public class Sculpting extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_CONTAINMASK=8;
+	private static final int RCP_SPELL=9;
 
 	private Item building=null;
 	private Item key=null;
@@ -235,7 +236,13 @@ public class Sculpting extends CommonSkill
 			building.setMaterial(firstWood.material());
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			String spell=((String)foundRecipe.elementAt(RCP_SPELL)).trim();
+			if(spell.length()>0)
+			{
+				Ability A=CMClass.getAbility(spell);
+				if(A!=null)	building.addNonUninvokableAffect(A);
+			}
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			key=null;

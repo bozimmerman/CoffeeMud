@@ -134,6 +134,8 @@ public class StdTitle extends StdItem implements LandTitle
 		return A;
 	}
 
+	public boolean isReadable(){return true;}
+	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affect.targetMinor()==Affect.TYP_WRITE)
@@ -232,6 +234,24 @@ public class StdTitle extends StdItem implements LandTitle
 			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();
+		}
+		else
+		if((msg.amITarget(this))
+		&&(msg.targetMinor()==Affect.TYP_READSOMETHING))
+		{
+			if(Sense.canBeSeenBy(this,msg.source()))
+			{
+				if((landRoomID()==null)||(landRoomID().length()==0))
+					msg.source().tell("It appears to be a blank property title.");
+				else
+				if((landOwner()==null)||(landOwner().length()==0))
+					msg.source().tell("It states that the property herein known as '"+landRoomID()+"' is available for ownership.");
+				else
+					msg.source().tell("It states that the property herein known as '"+landRoomID()+"' is deeded to "+landOwner()+".");
+			}
+			else
+				msg.source().tell("You can't see that!");
+			return;
 		}
 	}
 }

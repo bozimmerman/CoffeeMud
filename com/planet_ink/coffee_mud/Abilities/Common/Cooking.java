@@ -41,6 +41,16 @@ public class Cooking extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Cooking();}
 
+	public boolean isMineForCooking(MOB mob, Item cooking)
+	{
+		if(mob.isMine(cooking)) return true;
+		if((mob.location()==cooking.owner())
+		&&(cooking.container()!=null)
+		&&(Sense.isOnFire(cooking.container())))
+		   return true;
+		return false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -51,7 +61,7 @@ public class Cooking extends CommonSkill
 			||(finalDish==null)
 			||(finalRecipe==null)
 			||(finalAmount<=0)
-			||(!mob.isMine(cooking))
+			||(!isMineForCooking(mob,cooking))
 			||(!contentsSame(potContents(cooking),oldContents))
 			||(!Sense.isOnFire(fire))
 			||(!mob.location().isContent(fire))
@@ -103,7 +113,11 @@ public class Cooking extends CommonSkill
 						Item food=((Item)finalDish.copyOf());
 						food.setMiscText(finalDish.text());
 						food.recoverEnvStats();
-						((MOB)cooking.owner()).addInventory(food);
+						if(cooking.owner() instanceof Room)
+							((Room)cooking.owner()).addItemRefuse(food,Item.REFUSE_PLAYER_DROP);
+						else
+						if(cooking.owner() instanceof MOB)
+							((MOB)cooking.owner()).addInventory(food);
 						food.setContainer(cooking);
 					}
 				}
@@ -137,7 +151,6 @@ public class Cooking extends CommonSkill
 				h.put(EnvResource.RESOURCE_DESCS[((Drink)pot).liquidType()&EnvResource.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
-		if(!(pot.owner() instanceof MOB)) return h;
 		Vector V=pot.getContents();
 		for(int v=0;v<V.size();v++)
 		{
@@ -359,12 +372,13 @@ public class Cooking extends CommonSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		Item possibleContainer=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if(!mob.isMine(target))
+		if(!isMineForCooking(mob,target))
 		{
-			commonTell(mob,"You'll need to pick that up first.");
+			commonTell(mob,"You probably need to pick that up first.");
 			return false;
 		}
 		if(!(target instanceof Container))

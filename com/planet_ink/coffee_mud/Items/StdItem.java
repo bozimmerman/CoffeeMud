@@ -838,15 +838,18 @@ public class StdItem implements Item
 			}
 			return;
 		case Affect.TYP_READSOMETHING:
-			if(Sense.canBeSeenBy(this,mob))
+			if(!(this instanceof LandTitle))
 			{
-				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
-					mob.tell("It says '"+readableText()+"'.");
+				if(Sense.canBeSeenBy(this,mob))
+				{
+					if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
+						mob.tell("It says '"+readableText()+"'.");
+					else
+						mob.tell("There is nothing written on "+name()+".");
+				}
 				else
-					mob.tell("There is nothing written on "+name()+".");
+					mob.tell("You can't see that!");
 			}
-			else
-				mob.tell("You can't see that!");
 			return;
 		case Affect.TYP_HOLD:
 			if((this.canWear(mob))&&(this.canBeWornAt(Item.HELD)))

@@ -10,6 +10,9 @@ public class ExternalPlay
 	private static boolean systemStarted=false;
 	private static I3Interface i3interface=null;
 	
+	private static String nameOfMud="Unnamed CoffeeMud";
+	public static String mudName(){return nameOfMud;}
+	
 	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer, I3Interface i3)
 	{
 		player=newPlayer;
@@ -50,7 +53,7 @@ public class ExternalPlay
 		if(player!=null) return player.getOpenRoomID(areaName);
 		return "";
 	}
-	public static void setSystemStarted(){systemStarted=true;}
+	public static void setSystemStarted(String mudsName){nameOfMud=mudsName;systemStarted=true;}
 	public static boolean getSystemStarted(){return systemStarted;}
 	
 	public static void obliterateArea(String areaName)
@@ -318,9 +321,10 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.userList();
 		return new Vector();
 	}
-	public static void listUsers(MOB mob, int sortBy)
+	public static Vector getUserList()
 	{
-		if(sysPlayer!=null) sysPlayer.listUsers(mob,sortBy);
+		if(sysPlayer!=null) return sysPlayer.getUserList();
+		return new Vector();
 	}
 	public static void DBReadFollowers(MOB mob, boolean bringToLife)
 	{

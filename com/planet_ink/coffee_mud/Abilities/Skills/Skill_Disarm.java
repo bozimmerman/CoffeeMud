@@ -34,9 +34,11 @@ public class Skill_Disarm extends StdAbility
 			mob.tell("You need a weapon to disarm someone!");
 			return false;
 		}
-		if((mob.getVictim().fetchWieldedItem()==null)
-		   ||(!(mob.getVictim().fetchWieldedItem() instanceof Weapon))
-		   ||((((Weapon)mob.getVictim().fetchWieldedItem()).weaponClassification()==Weapon.CLASS_NATURAL)))
+		Item hisWeapon=mob.fetchWieldedItem();
+		if(hisWeapon==null) hisWeapon=mob.fetchWornItem(Item.HELD);
+		if((hisWeapon==null)
+		   ||(!(hisWeapon instanceof Weapon))
+		   ||((((Weapon)hisWeapon).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
 			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
 			return false;
@@ -52,7 +54,6 @@ public class Skill_Disarm extends StdAbility
 			levelDiff=0;
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
-		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)

@@ -235,6 +235,8 @@ public class ItemUsage
 		if(!mob.location().okAffect(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
+		// we do this next step because, when a container is involved, 
+		// the item deserves to be the target of the GET.
 		if(!mob.isMine(target))
 		{
 			msg=new FullMsg(mob,getThis,null,Affect.MSG_GET,null);

@@ -1,20 +1,12 @@
 Sentience Sense chant to show everyone in all the "wild" areas of their present area.  Should be very high level. 19
 Detect Trespassing spell to show everyone in the area, and what rooms they are in. LVL 22
-could you make the RACE column longer in the WHO command? Maybe 12 or 15 characters. That way the polymorphed races work better.
-carpentry foot stool, shelf (just a shelf), coat tree, wardrobe, chest of drawers, wheel, bucket, board
-if you are sitting at a table/on a table/in a boat, you should be able to get any item from that container/furniture/whatever without getting up.
-gust of wind should blow you back 1 range plus 1 range per 5 levels of mage.
-PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Prayer--Sanctify Room. No item may be picked up except by owner of room, or if owner is present.
 Spell--Arcane Mark. Leaves writing in the description field of item. Alteration Magic. At least lvl 10
 Arcane Possession. Wear Zapper Abjuration spell. Probably LVL 14
 Boomerang--Conjuration 20-24. Item returns to owner
 Prayer LVL 6 (Neutral) LUCK. Adds 5 to all saving throws for duration.
-Sculpt OVEN, FORGE, STOVE, ICEBOX
-MAKE TITLES readables
 PROPERTY--InnateFear. Monster flees from listed MOBs.
-Fighter secret skill IMPROVED DISARM if they don't have anything in the wield position, it will cause them to drop what is in the held position.
-wizlist command to show who all the Immortals/Archons
+PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 
 Programming.html update
 	Updates to Locales, Mobs, Items for misc. methods.

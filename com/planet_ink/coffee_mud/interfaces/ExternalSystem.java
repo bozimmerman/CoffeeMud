@@ -29,7 +29,7 @@ public interface ExternalSystem
 	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates);
 	public void DBUpdateClan(String name, String clan, int role);
 	public void DBUpdateEmail(MOB mob);
-	public void listUsers(MOB mob, int sortBy);
+	public Vector getUserList();
 	public Vector userList();
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);

@@ -14,11 +14,14 @@
 % Stool	6	30	50	6	GenChair	CHAIR	1	0
 % Chair	6	30	80	10	GenChair	CHAIR	1	0
 % Bench	6	40	180	15	GenChair	CHAIR	4	0
-% Bed	6	50	350	20	GenBed	BED	2	0
-% Statue	12	120	450	100	GenItem	STATUE	0	0
-% Pillar	3	30	50	25	GenRideable	TABLE	20	0
-% Bust	6	80	150	50	GenItem	STATUE	0	0
-% Figurine	3	40	30	25	GenItem	STATUE	0	0
-% Sarcophogus	3	40	200	20	GenContainer		500	64
-% Steps	12	80	400	5	GenRideable	LADDER	3	0
-% Fountain	12	120	500	120	GenFountain		0	1
+% Bed	6	50	350	20	GenBed	BED	2	0	
+% Statue	12	120	450	100	GenItem	STATUE	0	0	
+% Pillar	3	30	50	25	GenRideable	TABLE	20	0	
+% Bust	6	80	150	50	GenItem	STATUE	0	0	
+% Figurine	3	40	30	25	GenItem	STATUE	0	0	
+% Sarcophogus	3	40	200	20	GenContainer		500	64	
+% Steps	12	80	400	5	GenRideable	LADDER	3	0	
+% Fountain	12	120	500	120	GenFountain		0	1	
+% Forge	15	80	1200	300	GenContainer	LID	1000	0	Burning
+% Stove	3	40	100	20	GenRideable	TABLE	100	0	Burning
+% Oven	6	60	500	50	GenContainer	LID	50	0	Burning

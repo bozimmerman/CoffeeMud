@@ -46,7 +46,7 @@ public class Grouping
 		{
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
-			head.append(Util.padRight("Race",8)+" ");
+			head.append(Util.padRight("Race",12)+" ");
 			head.append(Util.padRight("Class",12)+" ");
 			head.append(Util.padRight("Level",7));
 			head.append("] Character name^N^.\n\r");
@@ -94,7 +94,7 @@ public class Grouping
 		{
 			StringBuffer head=new StringBuffer("");
 			head.append("^x[");
-			head.append(Util.padRight("Race",8)+" ");
+			head.append(Util.padRight("Race",12)+" ");
 			head.append(Util.padRight("Class",12)+" ");
 			head.append(Util.padRight("Level",7));
 			head.append("] Character name^N^.\n\r");
@@ -136,7 +136,7 @@ public class Grouping
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		msg.append(Util.padRight(who.charStats().raceName(),8)+" ");
+		msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
 		int x=levelStr.lastIndexOf(" ");
 		if(x>=0) levelStr=levelStr.substring(x).trim();

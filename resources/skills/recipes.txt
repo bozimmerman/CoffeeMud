@@ -82,7 +82,7 @@ sushi	FOOD		0	FISH	1	SEAWEED	1
 tamales	FOOD		0	CORN	1	MEAT	-1	BEEF	-1								
 cheese enchiladas	FOOD		0	CORN	1	Cheese											
 kabobs	FOOD		0	PEPPERS	1	MEAT	-1	FISH	-1	BEEF	-1	POULTRY	-1	PORK	-1	MUTTON	-1
-fish n chips	FOOD		0	FISH	1	POTATO	1										
+fish n chips	FOOD		0	FISH	1	POTATOES	1										
 % fetticini	FOOD		0	FISH	1	Pasta	2										
 spaghetti	FOOD		0	Pasta	2	TOMATOES	1										
 spaghetti n % meatballs	FOOD		0	Pasta	2	TOMATOES	1	BEEF	1								

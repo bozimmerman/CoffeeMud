@@ -246,7 +246,27 @@ public class StdAbility implements Ability, Cloneable
 		return target;
 	}
 
+	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
+	{
+		if(commands.size()==1)
+			return null;
+
+		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
+		if((thisThang!=null)
+		&&(thisThang instanceof Item)
+		&&(((Item)thisThang) instanceof Container)
+		&&((!withStuff)||(((Container)thisThang).getContents().size()>0)))
+		{
+			commands.removeElementAt(commands.size()-1);
+			return (Item)thisThang;
+		}
+		return null;
+	}
+
 	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, int wornReqCode)
+	{ return getTarget(mob,location,givenTarget,null,commands,wornReqCode);}
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, int wornReqCode)
 	{
 		String targetName=Util.combine(commands,0);
 
@@ -255,13 +275,13 @@ public class StdAbility implements Ability, Cloneable
 			target=givenTarget;
 
 		if(location!=null)
-			target=location.fetchFromRoomFavorItems(null,targetName,wornReqCode);
+			target=location.fetchFromRoomFavorItems(container,targetName,wornReqCode);
 		if(target==null)
 		{
 			if(location!=null)
-				target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
+				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornReqCode);
 			else
-				target=mob.fetchCarried(null,targetName);
+				target=mob.fetchCarried(container,targetName);
 		}
 		if(target!=null) targetName=target.name();
 		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))

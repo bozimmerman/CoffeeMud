@@ -555,6 +555,15 @@ public class Util
 			return thisStr;
 		return thisStr+SPACES.substring(0,thisMuch-lengthMinusColors(thisStr));
 	}
+	public static String centerPreserve(String thisStr, int thisMuch)
+	{
+		if(thisStr.length()>=thisMuch)
+			return thisStr;
+		int lenMinusColors=lengthMinusColors(thisStr);
+		int left=(thisMuch-lenMinusColors)/2;
+		int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
+		return SPACES.substring(0,left)+thisStr+SPACES.substring(0,right);
+	}
 	public static String padLeftPreserve(String thisStr, int thisMuch)
 	{
 		if(thisStr.length()>=thisMuch)

@@ -149,9 +149,9 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.DBRead(mob);
 	}
-	public void listUsers(MOB mob, int sortBy)
+	public Vector getUserList()
 	{
-		MOBloader.listUsers(mob, sortBy);
+		return MOBloader.getUserList();
 	}
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{

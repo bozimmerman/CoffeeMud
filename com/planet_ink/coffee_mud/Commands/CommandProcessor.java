@@ -754,6 +754,9 @@ public class CommandProcessor
 			else
 				mob.tell("You aren't powerful enough to do that.");
 			break;
+		case CommandSet.WIZLIST:
+			BasicSenses.wizlist(mob,commands);
+			break;
 		case CommandSet.XML:
 			if(mob.isASysOp(null))
 				XMLIO.xml(mob,commands);

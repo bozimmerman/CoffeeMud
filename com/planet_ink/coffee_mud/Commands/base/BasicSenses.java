@@ -594,4 +594,30 @@ public class BasicSenses
 		if(room==null) return;
 		mob.tell(room.getArea().timeDescription(mob,room));
 	}
+
+	public static void wizlist(MOB mob, Vector commands)
+	{
+		StringBuffer head=new StringBuffer("");
+		head.append("^x[");
+		head.append(Util.padRight("Race",8)+" ");
+		head.append(Util.padRight("Lvl",4)+" ");
+		head.append(Util.padRight("Last",18)+" ");
+		head.append("] Archon Character Name^.^?\n\r");
+		mob.tell("^x["+Util.centerPreserve("The Archons of "+ExternalPlay.mudName(),head.length()-10)+"]^.^?");
+		Vector allUsers=ExternalPlay.getUserList();
+		for(int u=0;u<allUsers.size();u++)
+		{
+			Vector U=(Vector)allUsers.elementAt(u);
+			if(((String)U.elementAt(1)).equals("Archon"))
+			{
+				head.append("[");
+				head.append(Util.padRight((String)U.elementAt(2),8)+" ");
+				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
+				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
+				head.append("] "+Util.padRight((String)U.elementAt(0),25));
+				head.append("\n\r");
+			}
+		}
+		mob.tell(head.toString());
+	}
 }
