@@ -438,6 +438,7 @@ public class Construction extends CraftingSkill
 		String startStr=null;
 		int completion=35;
 		doingCode=-1;
+		workingOn=-1;
 		dir=-1;
 
 		room=null;
@@ -517,11 +518,9 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"You must specify an exit direction or room, followed by a description for it.");
 				return false;
 			}
-			workingOn=-1;
 			if(Directions.getGoodDirectionCode((String)commands.elementAt(1))>=0)
 			{
-				int dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
-
+				dir=Directions.getGoodDirectionCode((String)commands.elementAt(1));
 				if(mob.location().getExitInDir(dir)==null)
 				{
 					commonTell(mob,"There is no exit "+Directions.getInDirectionName(dir)+" to describe.");
@@ -564,7 +563,8 @@ public class Construction extends CraftingSkill
 		   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
 		if(!canBuild)
 		{
-			if((dir>=0)&&(data[doingCode][DAT_REQDIR].equals("1")))
+			if((dir>=0)
+			&&((data[doingCode][DAT_REQDIR].equals("1")||(workingOn==dir))))
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)

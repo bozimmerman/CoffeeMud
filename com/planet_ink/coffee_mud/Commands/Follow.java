@@ -12,7 +12,7 @@ public class Follow extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 
-	public void nofollow(MOB mob, boolean errorsOk, boolean quiet)
+	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob.amFollowing()!=null)
 		{
@@ -20,13 +20,13 @@ public class Follow extends StdCommand
 			// no room OKaffects, since the damn leader may not be here.
 			if(mob.okMessage(mob,msg))
 				mob.location().send(mob,msg);
+			else
+				return false;
 		}
 		else
 		if(errorsOk)
-		{
 			mob.tell("You aren't following anyone!");
-			return;
-		}
+		return true;
 	}
 
 	public void unfollow(MOB mob, boolean quiet)
@@ -52,8 +52,7 @@ public class Follow extends StdCommand
 		{
 			if(tofollow==mob)
 			{
-				nofollow(mob,true,false);
-				return true;
+				return nofollow(mob,true,false);
 			}
 			if(mob.getGroupMembers(new HashSet()).contains(tofollow))
 			{
@@ -61,15 +60,19 @@ public class Follow extends StdCommand
 					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
 				return false;
 			}
-			nofollow(mob,false,false);
-			FullMsg msg=new FullMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			if(nofollow(mob,false,false))
+			{
+				FullMsg msg=new FullMsg(mob,tofollow,null,CMMsg.MSG_FOLLOW,quiet?null:"<S-NAME> follow(s) <T-NAMESELF>.");
+				if(mob.location().okMessage(mob,msg))
+					mob.location().send(mob,msg);
+				else
+					return false;
+			}
 			else
 				return false;
 		}
 		else
-			nofollow(mob,!quiet,quiet);
+			return nofollow(mob,!quiet,quiet);
 		return true;
 	}
 
