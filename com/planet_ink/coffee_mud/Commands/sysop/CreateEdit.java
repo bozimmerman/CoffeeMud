@@ -49,6 +49,12 @@ public class CreateEdit
 			Rooms.destroy(mob,commands);
 		}
 		else
+		if(commandType.equals("RACE"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			Races.destroy(mob,commands);
+		}
+		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -297,6 +303,12 @@ public class CreateEdit
 			Rooms.modify(mob,commands);
 		}
 		else
+		if(commandType.equals("RACE"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			Races.modify(mob,commands);
+		}
+		else
 		if(commandType.equals("AREA"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -490,6 +502,12 @@ public class CreateEdit
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			Exits.create(mob,commands);
+		}
+		else
+		if(commandType.equals("RACE"))
+		{
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			Races.create(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))

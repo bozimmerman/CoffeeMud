@@ -74,7 +74,8 @@ public class Vine extends StdRace
 		{
 			if(((affect.targetMinor()==Affect.TYP_LEAVE)
 				||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-				||(affect.sourceMinor()==Affect.TYP_RETREAT))
+				||(affect.sourceMinor()==Affect.TYP_RETREAT)
+				||(affect.sourceMinor()==affect.TYP_RECALL))
 			&&(((MOB)myHost).fetchAffect("Chant_FreeVine")==null))
 			{
 				affect.source().tell("You can't really go anywhere -- you are rooted!");

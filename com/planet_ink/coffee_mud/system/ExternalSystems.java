@@ -174,4 +174,25 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.DBCreateCharacter(mob);
 	}
+		
+	public Vector DBReadData(String playerID, String section)
+	{ return DataLoader.DBRead(playerID,section);}
+	public Vector DBReadData(String playerID, String section, String key)
+	{ return DataLoader.DBRead(playerID,section,key);}
+	public Vector DBReadData(String section)
+	{ return DataLoader.DBRead(section);}
+	public void DBDeleteData(String playerID, String section)
+	{ DataLoader.DBDelete(playerID,section);}
+	public void DBDeleteData(String playerID, String section, String key)
+	{ DataLoader.DBDelete(playerID,section,key);}
+	public void DBDeleteData(String section)
+	{ DataLoader.DBDelete(section);}
+	public void DBCreateData(String player, String section, String key, String data)
+	{ DataLoader.DBCreate(player,section,key,data);}
+	public Vector DBReadRaces()
+	{ return DataLoader.DBReadRaces();}
+	public void DBDeleteRace(String raceID)
+	{ DataLoader.DBDeleteRace(raceID);}
+	public void DBCreateRace(String raceID,String data)
+	{ DataLoader.DBCreateRace(raceID,data);}
 }

@@ -50,4 +50,14 @@ public interface ExternalSystem
 	public void vassals(MOB mob, String leigeID);
 	public void tickAllTickers(Room here);
 	public String systemReport(String itemCode);
+	public Vector DBReadData(String playerID, String section);
+	public Vector DBReadData(String playerID, String section, String key);
+	public Vector DBReadData(String section);
+	public void DBDeleteData(String playerID, String section);
+	public void DBDeleteData(String playerID, String section, String key);
+	public void DBDeleteData(String section);
+	public void DBCreateData(String player, String section, String key, String data);
+	public Vector DBReadRaces();
+	public void DBDeleteRace(String raceID);
+	public void DBCreateRace(String raceID,String data);
 }

@@ -66,7 +66,7 @@ public class Generic
 			R.rawExits()[d]=oldR.rawExits()[d];
 		R.setDisplayText(oldR.displayText());
 		R.setDescription(oldR.description());
-		if(R instanceof GridLocale)
+		if((R instanceof GridLocale)&&(oldR instanceof GridLocale))
 		{
 			((GridLocale)R).setXSize(((GridLocale)oldR).xSize());
 			((GridLocale)R).setYSize(((GridLocale)oldR).ySize());

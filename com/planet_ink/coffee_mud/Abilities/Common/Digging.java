@@ -62,8 +62,7 @@ public class Digging extends CommonSkill
 					int amount=1;
 					if(Dice.rollPercentage()>90)
 						amount++;
-					if(((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
-					&&((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS))
+					if((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
 						amount=Dice.roll(1,55,0);
 					amount=amount*(abilityCode());
 					String s="s";

@@ -480,7 +480,7 @@ public class CMClass extends ClassLoader
 		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"),"com.planet_ink.coffee_mud.interfaces.Behavior");
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
-		
+
 		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		if(cmds.size()>1)
 		{
@@ -508,9 +508,45 @@ public class CMClass extends ClassLoader
 			Race R=(Race)races.elementAt(r);
 			R.copyOf();
 		}
+		Vector genRaces=ExternalPlay.DBReadRaces();
+		if(genRaces.size()>0)
+		{
+			int loaded=0;
+			for(int r=0;r<genRaces.size();r++)
+			{
+				Race GR=((Race)getRace("GenRace").copyOf());
+				GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
+				if(!GR.ID().equals("GenRace"))
+				{
+					addRace(GR);
+					loaded++;
+				}
+			}
+			if(loaded>0)
+				Log.sysOut("MUD","GenRaces loaded   : "+loaded);
+		}
 		return true;
 	}
 
+	public static void addRace(Race GR)
+	{
+		for(int i=0;i<races.size();i++)
+		{
+			Race R=(Race)races.elementAt(i);
+			if(R.ID().compareToIgnoreCase(GR.ID())>=0)
+			{
+				races.insertElementAt(GR,i);
+				return;
+			}
+		}
+		races.addElement(GR);
+	}
+	public static void delRace(Race R)
+	{
+		races.removeElement(R);
+	}
+	
+	
 	public static int addV(Vector addMe, Vector toMe)
 	{
 		for(int v=0;v<addMe.size();v++)

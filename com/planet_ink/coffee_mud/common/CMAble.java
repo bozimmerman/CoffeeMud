@@ -12,54 +12,59 @@ public class CMAble
 	public String defaultParm="";
 	public boolean isSecret=false;
 								
-	private static Hashtable classAbleMap=new Hashtable();
+	private static Hashtable completeAbleMap=new Hashtable();
 	private static Hashtable lowestQualifyingLevelMap=new Hashtable();
 	
-	public static void addCharAbilityMapping(String charClass, 
+	public static void addCharAbilityMapping(String ID, 
 											 int qualLevel,
 											 String ability, 
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain,false);
+		addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false);
 	}
-	public static void addCharAbilityMapping(String charClass, 
+	public static void addCharAbilityMapping(String ID, 
 											 int qualLevel,
 											 String ability, 
 											 int defaultProfficiency,
 											 String defParm,
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,qualLevel,ability,0,defParm,autoGain,false);
+		addCharAbilityMapping(ID,qualLevel,ability,0,defParm,autoGain,false);
 	}
 	
-	public static void addCharAbilityMapping(String charClass, 
+	public static void addCharAbilityMapping(String ID, 
 											 int qualLevel,
 											 String ability, 
 											 int defaultProfficiency,
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain,false);
+		addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false);
 	}
 	
-	public static void delCharAbilityMapping(String charClass,
+	public static void delCharAbilityMapping(String ID,
 											 String ability)
 	{
-		if(!classAbleMap.containsKey(charClass))
-			classAbleMap.put(charClass,new Hashtable());
-		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		if(!completeAbleMap.containsKey(ID))
+			completeAbleMap.put(ID,new Hashtable());
+		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		if(ableMap.containsKey(ability))
 			ableMap.remove(ability);
 	}
-	
-	public static Enumeration getClassAbles(String charClass)
+	public static void delCharMappings(String ID)
 	{
-		if(!classAbleMap.containsKey(charClass))
-			classAbleMap.put(charClass,new Hashtable());
-		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		if(completeAbleMap.containsKey(ID))
+			completeAbleMap.remove(ID);
+	}
+	
+	public static Enumeration getClassAbles(String ID)
+	{
+		if(!completeAbleMap.containsKey(ID))
+			completeAbleMap.put(ID,new Hashtable());
+		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		return ableMap.elements();
 	}
 	
-	public static void addCharAbilityMapping(String charClass, 
+	public static void addCharAbilityMapping(String ID, 
 											 int qualLevel,
 											 String ability, 
 											 int defaultProfficiency,
@@ -67,8 +72,8 @@ public class CMAble
 											 boolean autoGain,
 											 boolean secret)
 	{
-		delCharAbilityMapping(charClass,ability);
-		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		delCharAbilityMapping(ID,ability);
+		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		CMAble able=new CMAble();
 		able.abilityName=ability;
 		able.qualLevel=qualLevel;
@@ -92,12 +97,12 @@ public class CMAble
 		return lowLevel.intValue();
 	}
 	
-	public static Vector getLevelListings(String charClass, int level)
+	public static Vector getLevelListings(String ID, int level)
 	{
 		Vector V=new Vector();
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			for(Enumeration e=ableMap.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
@@ -106,9 +111,9 @@ public class CMAble
 					V.addElement(key);
 			}
 		}
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			for(Enumeration e=ableMap.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
@@ -119,19 +124,51 @@ public class CMAble
 		}
 		return V;
 	}
+	public static Vector getUpToLevelListings(String ID, 
+											  int level, 
+											  boolean ignoreAll,
+											  boolean gainedOnly)
+	{
+		Vector V=new Vector();
+		if(completeAbleMap.containsKey(ID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+			for(Enumeration e=ableMap.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				CMAble able=(CMAble)ableMap.get(key);
+				if((able.qualLevel<=level)
+				&&((!gainedOnly)||(able.autoGain)))
+					V.addElement(key);
+			}
+		}
+		if((completeAbleMap.containsKey("All"))&&(!ignoreAll))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+			for(Enumeration e=ableMap.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				CMAble able=(CMAble)ableMap.get(key);
+				if((able.qualLevel<=level)
+				&&((!gainedOnly)||(able.autoGain)))
+					V.addElement(key);
+			}
+		}
+		return V;
+	}
 	
-	public static int getQualifyingLevel(String charClass, 
+	public static int getQualifyingLevel(String ID, 
 										 String ability)
 	{
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).qualLevel;
 		}
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).qualLevel;
 		}
@@ -156,6 +193,15 @@ public class CMAble
 				greatestDiff=classLevel-level;
 				theLevel=level;
 			}
+		}
+		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		int classLevel=student.baseEnvStats().level();
+		if((level>=0)
+		&&(classLevel>=level)
+		&&((classLevel-level)>greatestDiff))
+		{
+			greatestDiff=classLevel-level;
+			theLevel=level;
 		}
 		if(theLevel<0) 
 			return CMAble.getQualifyingLevel(student.charStats().getCurrentClass().ID(),A.ID());
@@ -183,6 +229,15 @@ public class CMAble
 				theClass=C;
 			}
 		}
+		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		int classLevel=student.baseEnvStats().level();
+		if((level>=0)
+		&&(classLevel>=level)
+		&&((classLevel-level)>greatestDiff))
+		{
+			greatestDiff=classLevel-level;
+			theLevel=level;
+		}
 		if(theClass==null) 
 			return student.charStats().getClassLevel(student.charStats().getCurrentClass());
 		else
@@ -201,21 +256,25 @@ public class CMAble
 			&&(student.charStats().getClassLevel(C)>=level))
 				return true;
 		}
+		int level=CMAble.getQualifyingLevel(student.baseCharStats().getMyRace().ID(),A.ID());
+		if((level>=0)
+		&&(student.charStats().getClassLevel(student.baseCharStats().getMyRace().ID())>=level))
+			return true;
 		return false;
 	}
 
 	public static boolean getDefaultGain(String charClass, 
 										 String ability)
 	{
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(charClass))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).autoGain;
 		}
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).autoGain;
 		}
@@ -225,9 +284,9 @@ public class CMAble
 	
 	public static CMAble getAllAbleMap(String ability)
 	{
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return (CMAble)ableMap.get(ability);
 		}
@@ -238,9 +297,9 @@ public class CMAble
 										 String ability)
 	{
 		boolean secretFound=false;
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(charClass))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 			if(ableMap.containsKey(ability))
 				if(!((CMAble)ableMap.get(ability)).isSecret)
 					return false;
@@ -266,15 +325,24 @@ public class CMAble
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			String charClass=mob.charStats().getMyClass(c).ID();
-			if(classAbleMap.containsKey(charClass))
+			if(completeAbleMap.containsKey(charClass))
 			{
-				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+				Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 				if(ableMap.containsKey(ability))
 					if(!((CMAble)ableMap.get(ability)).isSecret)
 						return false;
 					else
 						secretFound=true;
 			}
+		}
+		if(completeAbleMap.containsKey(mob.charStats().getMyRace().ID()))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(mob.charStats().getMyRace().ID());
+			if(ableMap.containsKey(ability))
+				if(!((CMAble)ableMap.get(ability)).isSecret)
+					return false;
+				else
+					secretFound=true;
 		}
 		CMAble AB=getAllAbleMap(ability);
 		if(AB!=null) return AB.isSecret;
@@ -287,9 +355,22 @@ public class CMAble
 		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			String charClass=((CharClass)e.nextElement()).ID();
-			if(classAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
+			if(completeAbleMap.containsKey(charClass)&&(!charClass.equals("Archon")))
 			{
-				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+				Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
+				if(ableMap.containsKey(ability))
+					if(!((CMAble)ableMap.get(ability)).isSecret)
+						return false;
+					else
+						secretFound=true;
+			}
+		}
+		for(Enumeration e=CMClass.races();e.hasMoreElements();)
+		{
+			String ID=((Race)e.nextElement()).ID();
+			if(completeAbleMap.containsKey(ID))
+			{
+				Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 				if(ableMap.containsKey(ability))
 					if(!((CMAble)ableMap.get(ability)).isSecret)
 						return false;
@@ -305,15 +386,15 @@ public class CMAble
 	public static String getDefaultParm(String charClass, 
 										String ability)
 	{
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(charClass))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultParm;
 		}
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultParm;
 		}
@@ -323,15 +404,15 @@ public class CMAble
 	public static int getDefaultProfficiency(String charClass, 
 										     String ability)
 	{
-		if(classAbleMap.containsKey(charClass))
+		if(completeAbleMap.containsKey(charClass))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(charClass);
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultProfficiency;
 		}
-		if(classAbleMap.containsKey("All"))
+		if(completeAbleMap.containsKey("All"))
 		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).defaultProfficiency;
 		}

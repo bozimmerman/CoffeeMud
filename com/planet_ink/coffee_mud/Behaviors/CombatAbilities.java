@@ -74,9 +74,9 @@ public class CombatAbilities extends StdBehavior
 		int tries=0;
 		Ability tryThisOne=null;
 
-		while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
+		while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities()+mob.charStats().getMyRace().racialAbilities(mob).size())>0))
 		{
-			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
+			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities()+mob.charStats().getMyRace().racialAbilities(mob).size(),-1));
 
 			if((tryThisOne==null)
 			||(tryThisOne.isAutoInvoked())

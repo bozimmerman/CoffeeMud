@@ -258,7 +258,9 @@ public class GenRace extends StdRace
 									 "ARRIVE","HEALTHRACE","BODY","ESTATS",
 									 "ASTATS","CSTATS","ASTATE",
 									 "NUMRSC","GETRSCID","GETRSCPARM",
-									 "WEAPONCLASS","WEAPONXML"
+									 "WEAPONCLASS","WEAPONXML",
+									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
+									 "NUMCABLE","GETCABLE","GETCABLEPROF"
 									 };
 	public String getStat(String code){
 		int num=0;
@@ -298,6 +300,14 @@ public class GenRace extends StdRace
 		case 20: return ""+((Item)myResources().elementAt(num)).text();
 		case 21: return (naturalWeapon==null)?"":naturalWeapon.ID();
 		case 22: return (naturalWeapon==null)?"":naturalWeapon.text();
+		case 23: return (racialAbilityNames==null)?"0":(""+racialAbilityNames.length);
+		case 24: return (racialAbilityNames==null)?"":(""+racialAbilityNames[num]);
+		case 25: return (racialAbilityProfficiencies==null)?"0":(""+racialAbilityProfficiencies[num]);
+		case 26: return (racialAbilityQuals==null)?"false":(""+racialAbilityQuals[num]);
+		case 27: return (racialAbilityLevels==null)?"0":(""+racialAbilityLevels[num]);
+		case 28: return (culturalAbilityNames==null)?"0":(""+culturalAbilityNames.length);
+		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
+		case 30: return (culturalAbilityProfficiencies==null)?"0":(""+culturalAbilityProfficiencies[num]);
 		}
 		return "";
 	}
@@ -336,7 +346,7 @@ public class GenRace extends StdRace
 		case 15: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); Generic.setCharStats(adjStats,val);}break;
 		case 16: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); Generic.setCharStats(setStats,val);}break;
 		case 17: adjState=null;if(val.length()>0){adjState=new DefaultCharState(0); Generic.setCharState(adjState,val);}break;
-		case 18: if(val.length()==0) resourceChoices=null; break;
+		case 18: if(Util.s_int(val)==0) resourceChoices=null; break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())
 						resourceChoices.addElement(CMClass.getItem(val));
@@ -360,6 +370,43 @@ public class GenRace extends StdRace
 					 naturalWeapon.recoverEnvStats();
 				 }
 				 break;
+		case 23: racialAbilityMap=null;
+				 if(Util.s_int(val)==0) racialAbilityNames=null; 
+				 else racialAbilityNames=new String[Util.s_int(val)];
+				 break;
+		case 24: {   if(racialAbilityNames==null) racialAbilityNames=new String[num+1];
+				     racialAbilityNames[num]=val;
+					 break;
+				 }
+		case 25: {   if(racialAbilityProfficiencies==null) racialAbilityProfficiencies=new int[num+1];
+				     racialAbilityProfficiencies[num]=Util.s_int(val);
+					 break;
+				 }
+		case 26: {   if(racialAbilityQuals==null) racialAbilityQuals=new boolean[num+1];
+				     racialAbilityQuals[num]=Util.s_bool(val);
+					 break;
+				 }
+		case 27: {   if(racialAbilityLevels==null) racialAbilityLevels=new int[num+1];
+				     racialAbilityLevels[num]=Util.s_int(val);
+					 break;
+				 }
+		case 28: if(Util.s_int(val)==0){
+					 culturalAbilityNames=null; 
+					 culturalAbilityProfficiencies=null;
+				 }
+				 else{
+					 culturalAbilityNames=new String[Util.s_int(val)];
+					 culturalAbilityProfficiencies=new int[Util.s_int(val)];
+				 }
+				 break;
+		case 29: {   if(culturalAbilityNames==null) culturalAbilityNames=new String[num+1];
+				     culturalAbilityNames[num]=val;
+					 break;
+				 }
+		case 30: {   if(culturalAbilityProfficiencies==null) culturalAbilityProfficiencies=new int[num+1];
+				     culturalAbilityProfficiencies[num]=Util.s_int(val);
+					 break;
+				 }
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

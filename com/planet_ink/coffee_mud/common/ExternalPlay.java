@@ -406,4 +406,24 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.vassals(mob,leigeID);
 	}
+	public static Vector DBReadData(String playerID, String section)
+	{ if(sysPlayer!=null) return sysPlayer.DBReadData(playerID,section); return new Vector();}
+	public static Vector DBReadData(String playerID, String section, String key)
+	{ if(sysPlayer!=null) return sysPlayer.DBReadData(playerID,section,key); return new Vector();}
+	public static Vector DBReadData(String section)
+	{ if(sysPlayer!=null) return sysPlayer.DBReadData(section); return new Vector();}
+	public static void DBDeleteData(String playerID, String section)
+	{ if(sysPlayer!=null) sysPlayer.DBDeleteData(playerID,section);}
+	public static void DBDeleteData(String playerID, String section, String key)
+	{ if(sysPlayer!=null) sysPlayer.DBDeleteData(playerID,section,key);}
+	public static void DBDeleteData(String section)
+	{ if(sysPlayer!=null) sysPlayer.DBDeleteData(section);}
+	public static void DBCreateData(String player, String section, String key, String data)
+	{ if(sysPlayer!=null) sysPlayer.DBCreateData(player,section,key,data);}
+	public static Vector DBReadRaces()
+	{ if(sysPlayer!=null) return sysPlayer.DBReadRaces(); return new Vector();}
+	public static void DBDeleteRace(String raceID)
+	{ if(sysPlayer!=null) sysPlayer.DBDeleteRace(raceID);}
+	public static void DBCreateRace(String raceID,String data)
+	{ if(sysPlayer!=null) sysPlayer.DBCreateRace(raceID,data);}
 }

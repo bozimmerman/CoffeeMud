@@ -8,6 +8,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	// competency characteristics
 	protected int[] stats=new int[NUM_STATS];
+	protected int[] partials=null;
 	protected CharClass[] myClasses=null;
 	protected Integer[] myLevels=null;
 	protected Race myRace=null;

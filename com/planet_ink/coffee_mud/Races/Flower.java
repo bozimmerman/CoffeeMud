@@ -70,9 +70,10 @@ public class Flower extends Vine
 		&&(myHost instanceof MOB)
 		&&(affect.amISource((MOB)myHost)))
 		{
-			if(((affect.targetMinor()==Affect.TYP_LEAVE)
+			if((affect.targetMinor()==Affect.TYP_LEAVE)
 				||(affect.sourceMinor()==Affect.TYP_ADVANCE)
-				||(affect.sourceMinor()==Affect.TYP_RETREAT)))
+				||(affect.sourceMinor()==affect.TYP_RECALL)
+				||(affect.sourceMinor()==Affect.TYP_RETREAT))
 			{
 				affect.source().tell("You can't really go anywhere -- you are rooted!");
 				return false;

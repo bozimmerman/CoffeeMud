@@ -1,5 +1,7 @@
 ability to permasave a mpvar
-implement mana/move thing for abilities -- add to help
 scriptable -- add ability adding, and container checking
 using mpbehav should do something about semicolons
 Shouldn't be too hard to imp... The Admin site has the Complete lists of a few things, skills, behaviors, affects...  Would it be possible to get a page that lists all the known Resources in a cool table with like name, type, base value, scarcity and list of loaded locales that have it?
+I lost both of my feet, but I still have sandals in my feet location. I first lost my right foot, then my left leg (with foot attached).
+pardoning someone in jail should get them released.
+this little web macro was bombing things out still:  @AddRequestParameter?JOURNAL=CoffeeMUD News@

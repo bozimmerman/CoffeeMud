@@ -27,8 +27,11 @@ public class StdRace implements Race
 	private static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
-	protected Vector racialAbilities=null;
+	protected Hashtable racialAbilityMap=null;
 	protected String[] racialAbilityNames=null;
+	protected int[] racialAbilityLevels=null;
+	protected int[] racialAbilityProfficiencies=null;
+	protected boolean[] racialAbilityQuals=null;
 	protected String[] culturalAbilityNames=null;
 	protected int[] culturalAbilityProfficiencies=null;
 										 
@@ -465,25 +468,43 @@ public class StdRace implements Race
 		return Body;
 	}
 	
-	public Vector racialAbilities()
+	public Vector racialAbilities(MOB mob)
 	{
-		if(racialAbilities!=null) return racialAbilities;
-		if(racialAbilityNames!=null)
+		if((racialAbilityMap==null)
+		&&(racialAbilityNames!=null)
+		&&(racialAbilityLevels!=null)
+		&&(racialAbilityProfficiencies!=null)
+		&&(racialAbilityQuals!=null))
 		{
-			racialAbilities=new Vector();
+			racialAbilityMap=new Hashtable();
 			for(int i=0;i<racialAbilityNames.length;i++)
-			{
-				Ability A=CMClass.getAbility((String)racialAbilityNames[i]);
-				if(A!=null)
-				{
-					A.setProfficiency(100);
-					A.setBorrowed(null,true);
-					racialAbilities.addElement(A);
-				}
-			}
-			return racialAbilities;
+				CMAble.addCharAbilityMapping(ID(),
+											 racialAbilityLevels[i],
+											 racialAbilityNames[i],
+											 racialAbilityProfficiencies[i],
+											 "",
+											 racialAbilityQuals[i],
+											 false);
+											 
 		}
-		return empty;
+		if(racialAbilityMap==null) return empty;
+		if(racialAbilityMap.containsKey(new Integer(mob.baseEnvStats().level())))
+			return (Vector)racialAbilityMap.get(new Integer(mob.baseEnvStats().level()));
+		Vector V=CMAble.getUpToLevelListings(ID(),mob.baseEnvStats().level(),true,true);
+		Vector finalV=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			Ability A=CMClass.getAbility((String)V.elementAt(v));
+			if(A!=null)
+			{
+				A.setProfficiency(CMAble.getDefaultProfficiency(ID(),A.ID()));
+				A.setBorrowed(mob,true);
+				A.setMiscText(CMAble.getDefaultParm(ID(),A.ID()));
+				finalV.addElement(A);
+			}
+		}
+		racialAbilityMap.put(new Integer(mob.baseEnvStats().level()),finalV);
+		return finalV;
 	}
 
 	public String racialParms(){ return "";}

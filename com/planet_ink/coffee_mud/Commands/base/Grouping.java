@@ -409,9 +409,9 @@ public class Grouping
         for(int i=0;i<unacceptableOrders.length;i++)
         {
 			if((unacceptableOrders[i].startsWith(ORDER))
-			&&(!mob.isASysOp(target.location())))
+			&&(!mob.isASysOp(mob.location())))
 			{
-				mob.tell("You can't order '"+target.name()+"' to '"+order+"'.");
+				mob.tell("You can't order anyone to '"+order+"'.");
 				return;
 			}
         }

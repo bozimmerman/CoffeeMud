@@ -59,6 +59,8 @@ public class Arrest extends StdBehavior
 	private static final int BIT_SENTENCE=3;
 	private static final int BIT_WARNMSG=4;
 
+	private static Vector illegalRaces=null;
+	
 	private class ArrestWarrant implements Cloneable
 	{
 		public MOB criminal=null;
@@ -152,6 +154,7 @@ public class Arrest extends StdBehavior
 	{
 		super.setParms(newParms);
 		loadAttempt=false;
+		illegalRaces=null;
 	}
 
 	private Properties getLaws()
@@ -935,11 +938,11 @@ public class Arrest extends StdBehavior
 		if((affect.othersCode()!=Affect.NO_EFFECT)
 		   &&(affect.othersMessage()!=null))
 		{
-			if(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
+			if(affect.sourceMinor()==Affect.TYP_ENTER)
 			{
 				String nudity=(String)laws.get("NUDITY");
 				if((nudity!=null)
-				&&((!affect.source().isMonster())||(arrestMobs))
+				&&(!affect.source().isMonster())
 				&&(nudity.length()>0)
 				&&(affect.source().fetchWornItem(Item.ON_LEGS)==null)
 				&&(affect.source().fetchWornItem(Item.ON_WAIST)==null)
@@ -952,34 +955,7 @@ public class Arrest extends StdBehavior
 								   getBit(nudity,BIT_CRIMENAME),
 								   getBit(nudity,BIT_SENTENCE),
 								   getBit(nudity,BIT_WARNMSG));
-
-				String illegalRaces=(String)laws.get("TRESPASSERS");
-				String trespassing=(String)laws.get("TRESPASSING");
-				if((illegalRaces!=null)
-				&&(illegalRaces.length()>0)
-				&&(trespassing!=null)
-				&&(trespassing.length()>0))
-				{
-					Vector V=Util.parse(illegalRaces);
-					String myRace=affect.source().charStats().getMyRace().racialCategory();
-					for(int v=0;v<V.size();v++)
-					{
-						if(myRace.equalsIgnoreCase((String)V.elementAt(v)))
-						{
-							fillOutWarrant(affect.source(),
-										   myArea,
-										   null,
-										   getBit(trespassing,BIT_CRIMELOCS),
-										   getBit(trespassing,BIT_CRIMEFLAGS),
-										   getBit(trespassing,BIT_CRIMENAME),
-										   getBit(trespassing,BIT_SENTENCE),
-										   getBit(trespassing,BIT_WARNMSG));
-							break;
-						}
-					}
-				}
-
-
+				
 				String armed=(String)laws.get("ARMED");
 				Item w=null;
 				if((armed!=null)
@@ -1001,6 +977,37 @@ public class Arrest extends StdBehavior
 								   getBit(armed,BIT_CRIMENAME),
 								   getBit(armed,BIT_SENTENCE),
 								   getBit(armed,BIT_WARNMSG));
+				if(illegalRaces==null)
+				{
+					String illegalRaceStr=(String)laws.get("TRESPASSERS");
+					if((illegalRaceStr!=null)&&(illegalRaceStr.length()>0))
+						illegalRaces=Util.parse(illegalRaceStr);
+					else
+						illegalRaces=new Vector();
+				}
+				if(illegalRaces.size()>0)
+				{
+					String myRace=affect.source().charStats().getMyRace().racialCategory();
+					for(int v=0;v<illegalRaces.size();v++)
+					{
+						if(myRace.equalsIgnoreCase((String)illegalRaces.elementAt(v)))
+						{
+							String trespassing=(String)laws.get("TRESPASSING");
+							if((trespassing!=null)&&(trespassing.length()>0))
+							{
+								fillOutWarrant(affect.source(),
+											   myArea,
+											   null,
+											   getBit(trespassing,BIT_CRIMELOCS),
+											   getBit(trespassing,BIT_CRIMEFLAGS),
+											   getBit(trespassing,BIT_CRIMENAME),
+											   getBit(trespassing,BIT_SENTENCE),
+											   getBit(trespassing,BIT_WARNMSG));
+							}
+							break;
+						}
+					}
+				}
 			}
 			for(int i=0;i<otherCrimes.size();i++)
 			{
@@ -1695,6 +1702,7 @@ public class Arrest extends StdBehavior
 								||(!W.criminal.location().isInhabitant(officer)))
 								{
 									W.arrestingOfficer=getAnyElligibleOfficer(W.jail.getArea(),W.criminal,W.victim);
+									if(W.arrestingOfficer==null) W.arrestingOfficer=getAnyElligibleOfficer(myArea,W.criminal,W.victim);
 									if(W.arrestingOfficer==null) break;
 									officer=W.arrestingOfficer;
 									W.jail.bringMobHere(officer,false);
@@ -1705,8 +1713,13 @@ public class Arrest extends StdBehavior
 								if((W.criminal.isMonster())&&(W.criminal.getStartRoom()!=null))
 									W.releaseRoom=W.criminal.getStartRoom();
 								else
+								{
 									W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("RELEASEROOM"));
+									if(W.releaseRoom==null)
+										W.releaseRoom=getRoom(myArea,(String)laws.get("RELEASEROOM"));
+								}
 								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("JUDGE"));
+								if(W.releaseRoom==null) W.releaseRoom=getRoom(myArea,(String)laws.get("JUDGE"));
 								W.criminal.makePeace();
 								makePeace(officer.location());
 								Ability A=CMClass.getAbility("Skill_Track");

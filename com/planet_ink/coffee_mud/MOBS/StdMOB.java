@@ -2267,6 +2267,15 @@ public class StdMOB implements MOB
 						return true;
 				}
 			}
+			for(int a=0;a<charStats().getMyRace().racialAbilities(this).size();a++)
+			{
+				Ability A=(Ability)charStats().getMyRace().racialAbilities(this).elementAt(a);
+				for(int s=0;s<A.triggerStrings().length;s++)
+				{
+					if(A.triggerStrings()[s].startsWith(word))
+						return true;
+				}
+			}
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return false;
@@ -2276,21 +2285,33 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Ability)abilities.elementAt(index);
+			if(index<abilities.size())
+				return (Ability)abilities.elementAt(index);
+			return (Ability)charStats().getMyRace().racialAbilities(this).elementAt(index-abilities.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAbility(String ID)
 	{
+		Ability A=null;
 		for(int a=0;a<numAbilities();a++)
 		{
-			Ability A=fetchAbility(a);
+			A=fetchAbility(a);
 			if((A!=null)
 			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
+		for(int a=0;a<charStats().getMyRace().racialAbilities(this).size();a++)
+		{
+			A=(Ability)charStats().getMyRace().racialAbilities(this).elementAt(a);
+			if((A!=null)
+			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
+				return A;
+		}
+		A=(Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
+		if(A==null) A=(Ability)CoffeeUtensils.fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
+		return A;
 	}
 
 	public void addNonUninvokableAffect(Ability to)
