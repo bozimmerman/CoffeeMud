@@ -152,8 +152,10 @@ public class JewelMaking extends CommonSkill
 		if(firstWood!=null)
 			foundWood=findNumberOfResource(mob.location(),firstWood.material());
 		Item firstOther=null;
-		if(otherRequired.length()>0)
-			firstOther=findMostOfMaterial(mob.location(),otherRequired);
+		boolean resourceOther=otherRequired.startsWith("!");
+		if(resourceOther) otherRequired=otherRequired.substring(1);
+		if((otherRequired.length()>0)&&(!resourceOther))
+				firstOther=findMostOfMaterial(mob.location(),otherRequired);
 		if((firstOther==null)&&(otherRequired.length()>0))
 			firstOther=findFirstResource(mob.location(),otherRequired);
 		if(foundWood==0)

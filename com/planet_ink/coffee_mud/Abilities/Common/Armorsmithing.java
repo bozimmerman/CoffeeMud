@@ -89,7 +89,7 @@ public class Armorsmithing extends CommonSkill
 						if(refitting)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up smithing "+building.name()+".");
 					}
 					else
 					{

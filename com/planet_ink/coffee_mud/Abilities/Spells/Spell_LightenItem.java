@@ -26,7 +26,9 @@ public class Spell_LightenItem extends Spell
 		if((affected!=null)&&(affected instanceof Item))
 		{
 			Item item=(Item)affected;
-			if((item.owner()!=null)&&(item.owner() instanceof MOB))
+			if((item.owner()!=null)
+			&&(item.owner() instanceof MOB)
+			&&(((MOB)item.owner()).isMine(item)))
 			{
 				MOB mob=(MOB)item.owner();
 				mob.tell(item.name()+" grows heavy again.");

@@ -109,6 +109,7 @@ public class Skill_Cage extends StdAbility
 				}
 				else
 					((Item)caged).destroy();
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

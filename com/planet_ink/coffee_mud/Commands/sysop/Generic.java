@@ -1565,9 +1565,15 @@ public class Generic
 		String classID="begin!";
 		while(classID.length()>0)
 		{
-			mob.tell(showNumber+". Class: '"+E.baseCharStats().getCurrentClass().ID()+"'.");
+			StringBuffer str=new StringBuffer("");
+			for(int c=0;c<E.baseCharStats().numClasses();c++)
+			{
+				CharClass C=E.baseCharStats().getMyClass(c);
+				str.append(C.ID()+"("+E.baseCharStats().getClassLevel(C)+") ");
+			}
+			mob.tell(showNumber+". Class: '"+str.toString()+"'.");
 			if((showFlag!=showNumber)&&(showFlag>-999)) return;
-			classID=mob.session().prompt("Enter a new class (?)\n\r:","").trim();
+			classID=mob.session().prompt("Enter a class to add/remove(?)\n\r:","").trim();
 			if(classID.equalsIgnoreCase("?"))
 				mob.tell(Lister.reallyList(CMClass.charClasses(),-1).toString());
 			else
@@ -1577,7 +1583,68 @@ public class Generic
 			{
 				CharClass C=CMClass.getCharClass(classID);
 				if(C!=null)
-					E.baseCharStats().setCurrentClass(C);
+				{
+					if(E.baseCharStats().getClassLevel(C)>=0)
+					{
+						if(E.baseCharStats().numClasses()<2)
+							mob.tell("Final class may not be removed.  To change a class, add the new one first.");
+						else
+						{
+							StringBuffer charClasses=new StringBuffer("");
+							StringBuffer classLevels=new StringBuffer("");
+							for(int c=0;c<E.baseCharStats().numClasses();c++)
+							{
+								CharClass C2=E.baseCharStats().getMyClass(c);
+								int L2=E.baseCharStats().getClassLevel(C2);
+								if(C2!=C)
+								{
+									charClasses.append(";"+C2.ID());
+									classLevels.append(";"+L2);
+								}
+							}
+							E.baseCharStats().setMyClasses(charClasses.toString());
+							E.baseCharStats().setMyLevels(classLevels.toString());
+						}
+					}
+					else
+					{
+						int highLvl=Integer.MIN_VALUE;
+						CharClass highestC=null;
+						for(int c=0;c<E.baseCharStats().numClasses();c++)
+						{
+							CharClass C2=E.baseCharStats().getMyClass(c);
+							if(E.baseCharStats().getClassLevel(C2)>highLvl)
+							{
+								highestC=C2;
+								highLvl=E.baseCharStats().getClassLevel(C2);
+							}
+						}
+						E.baseCharStats().setCurrentClass(C);
+						int levels=E.baseCharStats().combinedSubLevels();
+						levels=E.baseEnvStats().level()-levels;
+						String lvl=null;
+						if(levels>0)
+						{
+							lvl=mob.session().prompt("Levels to give this class ("+levels+")\n\r:",""+levels).trim();
+							int lvl2=Util.s_int(lvl);
+							if(lvl2>levels) lvl2=levels;
+							E.baseCharStats().setClassLevel(C,lvl2);
+						}
+						else
+						{
+							lvl=mob.session().prompt("Levels to siphon from "+highestC.ID()+" for this class (0)\n\r:",""+0).trim();
+							int lvl2=Util.s_int(lvl);
+							if(lvl2>highLvl) lvl2=highLvl;
+							E.baseCharStats().setClassLevel(highestC,highLvl-lvl2);
+							E.baseCharStats().setClassLevel(C,lvl2);
+						}
+						
+					}
+					int levels=E.baseCharStats().combinedSubLevels();
+					levels=E.baseEnvStats().level()-levels;
+					C=E.baseCharStats().getCurrentClass();
+					E.baseCharStats().setClassLevel(C,levels);
+				}
 				else
 					mob.tell("Unknown character class! Try '?'.");
 			}

@@ -509,7 +509,7 @@ public class ItemUsage
 			maxToPut=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
-		
+
 		String thingToPut=Util.combine(commands,0);
 		int addendum=1;
 		String addendumStr="";
