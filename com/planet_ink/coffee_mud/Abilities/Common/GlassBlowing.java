@@ -209,7 +209,7 @@ public class GlassBlowing extends CommonSkill
 		displayText="You are blowing "+building.name();
 		verb="blowing "+building.name();
 		building.setDisplayText(itemName+" is here");
-		building.setDescription(itemName);
+		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(EnvResource.MATERIAL_GLASS);

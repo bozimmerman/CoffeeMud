@@ -67,11 +67,11 @@ public class Engraving extends CommonSkill
 		else
 			commands.remove(commands.firstElement());
 		
-		if((((target.material()&EnvResource.MATERIAL_GLASS)==0)
-			&&((target.material()&EnvResource.MATERIAL_METAL)==0)
-			&&((target.material()&EnvResource.MATERIAL_ROCK)==0)
-			&&((target.material()&EnvResource.MATERIAL_WOODEN)==0)
-			&&((target.material()&EnvResource.MATERIAL_MITHRIL)==0))
+		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))
 		{
 			mob.tell("You can't engrave onto that material.");

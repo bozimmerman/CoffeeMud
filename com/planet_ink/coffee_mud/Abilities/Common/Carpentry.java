@@ -242,7 +242,7 @@ public class Carpentry extends CommonSkill
 			displayText="You are carving "+building.name();
 			verb="carving "+building.name();
 			building.setDisplayText(itemName+" is here");
-			building.setDescription(itemName);
+			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());

@@ -210,7 +210,7 @@ public class Blacksmithing extends CommonSkill
 		displayText="You are smithing "+building.name();
 		verb="smithing "+building.name();
 		building.setDisplayText(itemName+" is here");
-		building.setDescription(itemName);
+		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.value())));
 		building.setMaterial(firstWood.material());

@@ -67,8 +67,8 @@ public class Embroidering extends CommonSkill
 		else
 			commands.remove(commands.firstElement());
 		
-		if((((target.material()&EnvResource.MATERIAL_CLOTH)==0)
-			&&((target.material()&EnvResource.MATERIAL_LEATHER)==0))
+		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
 			mob.tell("You can't embroider onto that material.");

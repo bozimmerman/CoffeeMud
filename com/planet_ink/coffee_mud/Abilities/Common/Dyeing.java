@@ -33,7 +33,7 @@ public class Dyeing extends CommonSkill
 
 	private String fixColor(String name, String colorWord)
 	{
-		int end=name.indexOf(" ^?");
+		int end=name.indexOf("^?");
 		if(end>0)
 		{
 			int start=name.substring(0,end).indexOf("^");
@@ -104,7 +104,7 @@ public class Dyeing extends CommonSkill
 		else
 			commands.remove(commands.firstElement());
 		
-		if(((target.material()&EnvResource.MATERIAL_CLOTH)==0)
+		if(((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 		||(!target.isGeneric()))
 		{
 			mob.tell("You can't dye that material.");

@@ -297,7 +297,7 @@ public class LeatherWorking extends CommonSkill
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
 			building.setDisplayText(itemName+" is here");
-			building.setDescription(itemName);
+			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
 			building.setMaterial(firstWood.material());
