@@ -182,7 +182,7 @@ public class PlayerData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			MOB M=Authenticate.getMOB(last);
+			MOB M=CMMap.getLoadPlayer(last);
 			if(M==null) return " @break@";
 			
 			StringBuffer str=new StringBuffer("");

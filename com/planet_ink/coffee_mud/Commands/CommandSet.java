@@ -205,6 +205,9 @@ public class CommandSet extends Hashtable
 	public static final int POUR=192;
 	public static final int CLANQUAL=193;
 	public static final int CLANTAX=194;
+	public static final int NOPURGE=195;
+
+	
 
 	private CommandSet()
 	{
@@ -263,6 +266,7 @@ public class CommandSet extends Hashtable
 		put("CLANQUAL",new Integer(CLANQUAL));
 		put("CLANREJECT",new Integer(CLANREJECT));
 		put("CLANRESIGN",new Integer(CLANRESIGN));
+		put("CLANTAX",new Integer(CLANTAX));
 		put("CLANVOTE",new Integer(CLANVOTE));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
@@ -375,6 +379,7 @@ public class CommandSet extends Hashtable
 		put("NOFOLLOW",new Integer(NOFOLLOW));
 			put("NOFOL",new Integer(NOFOLLOW));
 		put("NOTEACH",new Integer(NOTEACH));
+		put("NOPURGE",new Integer(NOPURGE));
 		put("OPEN",new Integer(OPEN));
 			put("OP",new Integer(OPEN));
 			put("O",new Integer(OPEN));

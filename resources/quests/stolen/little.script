@@ -15,6 +15,7 @@ QUEST_TIME_PROG stolen -1
 
 ONCE_PROG
 mpsetvar $i LOLLY ''
+questchat Waaaaaaahhhh!
 ~
 
 RAND_PROG 10

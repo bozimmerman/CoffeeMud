@@ -484,6 +484,12 @@ public class CommandProcessor
 		case CommandSet.NOFOLLOW:
 			Grouping.togglenofollow(mob);
 			break;
+		case CommandSet.NOPURGE:
+			if(mob.isASysOp(null))
+				SysOpSkills.nopurge(mob,commands);
+			else
+				mob.tell("You are not powerful enough to do that.\n\r");
+			break;
 		case CommandSet.NORTH:
 			Movement.standAndGo(mob,Directions.NORTH);
 			break;

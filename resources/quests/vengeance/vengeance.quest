@@ -5,9 +5,6 @@ set name vengeance
 set wait 3600
 set interval 3600
 
-set area Midgaard
-# inform the quest that it occurs in Midgaard
-
 set mob any
 # load up any mob from the above area.  Will set a room!
 

@@ -1,5 +1,5 @@
 # this script is for the human chosen to be the note bearer
-RAND_PROG 10
+GREET_PROG 50
 	if has($i 'a most secret note')
 		whisper "$n" I have a note I need to be delivered to ${2 delivery}.  If you would like the mission, say 'I accept', and I will give you the details. A reward is involved.
 		mpsetvar $i DELIVERY ''

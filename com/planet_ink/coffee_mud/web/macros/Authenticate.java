@@ -26,35 +26,6 @@ public class Authenticate extends StdWebMacro
 				return "false";
 		}
 	}
-
-	
-	public static MOB getMOB(String last)
-	{
-		if(!ExternalPlay.getSystemStarted())
-			return null;
-
-		MOB M=CMMap.getPlayer(last);
-		if(M==null)
-			for(Enumeration p=CMMap.players();p.hasMoreElements();)
-			{
-				MOB mob2=(MOB)p.nextElement();
-				if(mob2.Name().equalsIgnoreCase(last))
-				{ M=mob2; break;}
-			}
-		MOB TM=CMClass.getMOB("StdMOB");
-		if((M==null)&&(ExternalPlay.DBUserSearch(TM,last)))
-		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(TM.Name());
-			ExternalPlay.DBReadMOB(M);
-			ExternalPlay.DBReadFollowers(M,false);
-			if(M.playerStats()!=null)
-				M.playerStats().setUpdated(M.playerStats().lastDateTime());
-			M.recoverEnvStats();
-			M.recoverCharStats();
-		}
-		return M;
-	}
 	
 	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
@@ -82,7 +53,7 @@ public class Authenticate extends StdWebMacro
 	
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
-		MOB mob=getMOB(login);
+		MOB mob=CMMap.getLoadPlayer(login);
 		if(mob==null) return false;
 		boolean subOp=false;
 		boolean sysop=mob.isASysOp(null);

@@ -12,10 +12,32 @@ public class Prop_FightSpellCast extends Property
 	public String name(){ return "Casting spells when properly used during combat";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_FightSpellCast BOB=new Prop_FightSpellCast();	BOB.setMiscText(text()); return BOB;}
+	protected Hashtable spellH=null;
+	protected Vector spellV=null;
+	public Vector getMySpellsV()
+	{
+		if(spellV!=null) return spellV;
+		spellV=Prop_SpellAdder.getMySpellsV(this);
+		return spellV;
+	}
+	public Hashtable getMySpellsH()
+	{
+		if(spellH!=null) return spellH;
+		spellH=Prop_SpellAdder.getMySpellsH(this);
+		return spellH;
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		spellV=null;
+		spellH=null;
+	}
+
 	
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -28,7 +50,7 @@ public class Prop_FightSpellCast extends Property
 	public String accountForYourself()
 	{
 		String id="";
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);

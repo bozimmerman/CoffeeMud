@@ -173,7 +173,8 @@ public class Arcanist extends Thief
 				{
 					Ability A=((MOB)msg.target()).fetchAbility(msg.tool().text());
 					if((A!=null)
-					&&(mob.fetchAbility(A.ID())==null))
+					&&(mob.fetchAbility(A.ID())==null)
+					&&(CMAble.lowestQualifyingLevel(A.ID())<30))
 					{
 						Vector otherChoices=new Vector();
 						for(int a=0;a<mob.numLearnedAbilities();a++)

@@ -2410,6 +2410,10 @@ public class Scriptable extends StdBehavior
 			String back=varifyable.substring(t+2);
 			switch(c)
 			{
+			case 'a':
+				if(room!=null)
+					return room.name();
+				break;
 			case 'i':
 				if(monster!=null)
 					middle=monster.name();
@@ -2588,7 +2592,7 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
-			case 'a':
+			//case 'a':
 			case 'A':
 				// unnecessary, since, in coffeemud, this is part of the name
 				break;

@@ -401,8 +401,10 @@ public class MOBloader
 					newMOB.resetToMaxState();
 					newMOB.setFollowing(mob);
 					if(bringToLife)
+					{
 						newMOB.bringToLife(mob.location(),true);
-					mob.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+						mob.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+					}
 				}
 			}
 			DBConnector.DBDone(D);

@@ -27,7 +27,7 @@ public class JournalInfo extends StdWebMacro
 		if(lastlast!=null) num=Util.s_int(lastlast);
 		if((num<0)||(num>=info.size()))	return " @break@";
 		
-		MOB M=Authenticate.getMOB(Authenticate.getLogin(httpReq));
+		MOB M=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 		
 		String to=((String)((Vector)info.elementAt(num)).elementAt(3));
 		if(to.equalsIgnoreCase("all")||((M!=null)&&(M.isASysOp(null)||(to.equalsIgnoreCase(M.Name())))))

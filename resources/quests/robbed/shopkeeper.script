@@ -1,6 +1,6 @@
 # this script is for the shopkeeper chosen to be robbed
 ONCE_PROG
-QUESTCHAT Help! I've been ROBBED!!
+QUESTCHAT Help! My store in $a has been ROBBED!!
 mpsetvar $i ROBBED  ''
 mpset $i MONEY 0
 ~

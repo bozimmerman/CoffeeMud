@@ -1,5 +1,5 @@
 ONCE_PROG
-	QUESTCHAT Find and bring me $[1 treasurehunt] and you shall be rewarded!
+	QUESTCHAT Find and bring me $[1 treasurehunt] in $a and you shall be rewarded!
 	mpsetvar $i TREASUREHUNT  ''
 ~
 

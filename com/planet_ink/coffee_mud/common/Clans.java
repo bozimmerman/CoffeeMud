@@ -29,34 +29,6 @@ public class Clans implements Clan, Tickable
 	public int government=Clan.GVT_DICTATORSHIP;
 	//*****************
 	
-	public static MOB getMOB(String last)
-	{
-		if(!ExternalPlay.getSystemStarted())
-			return null;
-
-		MOB M=CMMap.getPlayer(last);
-		if(M==null)
-			for(Enumeration p=CMMap.players();p.hasMoreElements();)
-			{
-				MOB mob2=(MOB)p.nextElement();
-				if(mob2.Name().equalsIgnoreCase(last))
-				{ M=mob2; break;}
-			}
-		MOB TM=CMClass.getMOB("StdMOB");
-		if((M==null)&&(ExternalPlay.DBUserSearch(TM,last)))
-		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(TM.Name());
-			ExternalPlay.DBReadMOB(M);
-			ExternalPlay.DBReadFollowers(M,false);
-			if(M.playerStats()!=null)
-				M.playerStats().setUpdated(M.playerStats().lastDateTime());
-			M.recoverEnvStats();
-			M.recoverCharStats();
-		}
-		return M;
-	}
-	
 	public void updateVotes()
 	{
 		ExternalPlay.DBDeleteData(ID(),"CLANVOTES",ID()+"/CLANVOTES");
@@ -307,7 +279,7 @@ public class Clans implements Clan, Tickable
 		for(int m=0;m<members.size();m++)
 		{
 			String member=(String)members.elementAt(m,1);
-			MOB M=getMOB(member);
+			MOB M=CMMap.getLoadPlayer(member);
 			if(M!=null)
 			{
 				M.setClanID("");
@@ -346,18 +318,18 @@ public class Clans implements Clan, Tickable
 		          +getPremise()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
 				  +"^xType            :^.^N "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
-				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r"
-		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"
+				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r");
+		if((mob.getClanID().equalsIgnoreCase(ID()))
+		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+		{
+			msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
+			msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
+		}
+		msg.append("^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+":^.^N "+crewList(Clan.POS_LEADER)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+":^.^N "+crewList(Clan.POS_TREASURER)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+":^.^N "+crewList(Clan.POS_STAFF)+"\n\r"
 		          +"^xTotal Members   :^.^N "+getSize()+"\n\r");
-		if((mob.getClanID().equalsIgnoreCase(ID()))
-		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
-		{
-			msg.append("^xExperience Pts. :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
-			msg.append("^xExp. Tax Rate :^.^N "+getExp()+"\n\r");
-		}
 		if(all.size()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
@@ -805,7 +777,6 @@ public class Clans implements Clan, Tickable
 					setStatus(Clan.CLANSTATUS_FADING);
 					Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
 					clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
-					update();
 				}
 			}
 			else
@@ -814,13 +785,11 @@ public class Clans implements Clan, Tickable
 				case Clan.CLANSTATUS_FADING:
 					setStatus(Clan.CLANSTATUS_ACTIVE);
 					clanAnnounce(""+typeName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
-					update();
 					break;
 				case Clan.CLANSTATUS_PENDING:
 					setStatus(Clan.CLANSTATUS_ACTIVE);
 					Log.sysOut("Clans",""+typeName()+" '"+getName()+" now active with "+activeMembers+".");
 					clanAnnounce(""+typeName()+" "+name()+" now has sufficient members.  The "+typeName()+" is now fully approved.");
-					update();
 					break;
 				default:
 					break;
@@ -923,7 +892,7 @@ public class Clans implements Clan, Tickable
 				if(updateVotes)
 					updateVotes();
 			}
-			
+			update(); // also saves exp
 		}
 		catch(Exception x2)
 		{

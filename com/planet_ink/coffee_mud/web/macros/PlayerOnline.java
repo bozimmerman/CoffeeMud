@@ -36,7 +36,7 @@ public class PlayerOnline extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			MOB M=Authenticate.getMOB(last);
+			MOB M=CMMap.getLoadPlayer(last);
 			if(M!=null)
 			{
 				if(parms.containsKey("BANBYNAME"))

@@ -25,7 +25,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CLANVOTEO=18;
 	public static final int SYSTEM_CLANVOTER=19;
 	public static final int SYSTEM_CLANVOTED=20;
-	public static final int NUM_SYSTEM=21;
+	public static final int SYSTEM_AUTOPURGE=21;
+	public static final int NUM_SYSTEM=22;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;

@@ -1,35 +1,32 @@
-Generic instead of 20 wearslot iteration, it loops through 18
-put area names in questchat
-prop_spelladder doesn't work?!
-booting playerlist makes everyone appear at startroom.
-do the purge list -- have protected names list like ban, purge days by level
+- test autopurge!!!
 debug auction once and for all
-20.  Jewelmaking 		
-	1.  allow you to add jewels to any item 	
-21.  Construction 		
-	1.  needs to be able to modify door descriptions 	
-	2.  peephole. a window on a door (sortof) 	
-	3.  windows 	
-	4.  drawbridge 	
-	5.  WINDOW exits...exits that require the CRAWL command. 	
-22.  Pottery 	
-	1.  BRICKS converts a clay resource to a stone 
-	2.  flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc. 
-23.  Sculpting 	
-	1.  tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
-24.  Paper making 	
-	1.  Poster, Banner, and Screen. 
-25.  Tailoring 	
-	1.  pillow, sheets, blanket, large pillow, cushion 
-26.  Blacksmithing 	
-	1.  chain....works like rope, but heavy and metal. 
-	2.  Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes. 
-	3.  DRUM (metal barrel) 
-	4.  can (Like TIN can or coffee can) 
-27.  Masonry 	
-	1.  could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room? 
-	2.  tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own. 
-	3.  windows 
-	4.  POOL will convert the room into a Water room, with 1 level of underwater added for free 
-	5.  portcullis (but it requires METAL instead of stone) 
-	6.  WINDOW exits...exits that require the CRAWL command. 
+use zappermask for channels
+Jewelmaking 		
+	allow you to add jewels to any item 	
+Construction 		
+	needs to be able to modify door descriptions 	
+	peephole. a window on a door (sortof) 	
+	windows 	
+	drawbridge 	
+	WINDOW exits...exits that require the CRAWL command. 	
+Pottery 	
+	BRICKS converts a clay resource to a stone 
+	flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc. 
+Sculpting 	
+	tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
+Paper making 	
+	Poster, Banner, and Screen. y
+Tailoring 	
+	pillow, sheets, blanket, large pillow, cushion 
+Blacksmithing 	
+	chain....works like rope, but heavy and metal. 
+	Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes. 
+	DRUM (metal barrel) 
+	can (Like TIN can or coffee can) 
+Masonry 	
+	could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room? 
+	tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own. 
+	windows 
+	POOL will convert the room into a Water room, with 1 level of underwater added for free 
+	portcullis (but it requires METAL instead of stone) 
+	WINDOW exits...exits that require the CRAWL command. 

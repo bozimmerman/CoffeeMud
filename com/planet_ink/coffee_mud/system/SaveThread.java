@@ -210,7 +210,77 @@ public class SaveThread extends Thread
 		StringBuffer ok=DBConnector.errorStatus();
 		if(ok.length()!=0)
 			Log.errOut("Save Thread","DB: "+ok);
-
+		else
+		{
+			long[] levels=new long[2001];
+			for(int i=0;i<levels.length;i++) levels[i]=0;
+			String mask=CommonStrings.getVar(CommonStrings.SYSTEM_AUTOPURGE);
+			Vector maskV=Util.parseCommas(mask.trim());
+			for(int mv=0;mv<maskV.size();mv++)
+			{
+				Vector V=Util.parse(((String)maskV.elementAt(mv)).trim());
+				if(V.size()<2) continue;
+				int val=Util.s_int((String)V.lastElement());
+				if(val<=0) continue;
+				String cond=Util.combine(V,0,V.size()-1).trim();
+				int start=0;
+				int finish=levels.length-1;
+				if(cond.startsWith("<="))
+					finish=Util.s_int(cond.substring(2).trim());
+				else
+				if(cond.startsWith(">="))
+					start=Util.s_int(cond.substring(2).trim());
+				else
+				if(cond.startsWith("=="))
+				{
+					start=Util.s_int(cond.substring(2).trim());
+					finish=start;
+				}
+				else
+				if(cond.startsWith(">"))
+					start=Util.s_int(cond.substring(2).trim())+1;
+				else
+				if(cond.startsWith("<"))
+					finish=Util.s_int(cond.substring(2).trim())-1;
+				
+				if((start>=0)&&(finish<levels.length)&&(start<=finish))
+				{
+					long realVal=System.currentTimeMillis()-(val*1000*60*60*24);
+					for(int s=start;s<=finish;s++)
+						if(levels[s]==0) levels[s]=realVal;
+				}
+			}
+			
+			
+			status="autopurge process";
+			Vector allUsers=ExternalPlay.getUserList();
+			for(int u=0;u<allUsers.size();u++)
+			{
+				Vector user=(Vector)allUsers.elementAt(u);
+				String name=(String)user.elementAt(0);
+				if(CMMap.getPlayer(name)!=null) continue;
+				int level=Util.s_int((String)user.elementAt(3));
+				long last=Util.s_long((String)user.elementAt(5));
+				long when=Long.MAX_VALUE;
+				if(level>levels.length)
+					when=levels[levels.length-1];
+				else
+				if(level>=0)
+					when=levels[level];
+				else
+					continue;
+				
+				if(last<when)
+				{
+					MOB M=CMMap.getLoadPlayer(name);
+					if(M!=null)
+					{
+						ExternalPlay.destroyUser(M);
+						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(new IQCalendar(last).d2String())+".");
+					}
+				}
+			}
+		}
 	}
 
 	public void shutdown()

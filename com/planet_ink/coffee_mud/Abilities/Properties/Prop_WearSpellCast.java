@@ -15,11 +15,33 @@ public class Prop_WearSpellCast extends Property
 	private boolean processing=false;
 
 	public Environmental newInstance(){	Prop_WearSpellCast BOB=new Prop_WearSpellCast(); BOB.setMiscText(text()); return BOB;}
+	protected Hashtable spellH=null;
+	protected Vector spellV=null;
+	public Vector getMySpellsV()
+	{
+		if(spellV!=null) return spellV;
+		spellV=Prop_SpellAdder.getMySpellsV(this);
+		return spellV;
+	}
+	public Hashtable getMySpellsH()
+	{
+		if(spellH!=null) return spellH;
+		spellH=Prop_SpellAdder.getMySpellsH(this);
+		return spellH;
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		spellV=null;
+		spellH=null;
+	}
+
 
 	public String accountForYourself()
 	{
 		String id="";
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -38,7 +60,7 @@ public class Prop_WearSpellCast extends Property
 
 	public void addMeIfNeccessary(MOB newMOB)
 	{
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
@@ -56,7 +78,7 @@ public class Prop_WearSpellCast extends Property
 
 	public void removeMyAffectsFromLastMob()
 	{
-		Hashtable h=Prop_SpellAdder.getMySpellsH(this);
+		Hashtable h=getMySpellsH();
 		int x=0;
 		while(x<lastMOB.numAffects())
 		{

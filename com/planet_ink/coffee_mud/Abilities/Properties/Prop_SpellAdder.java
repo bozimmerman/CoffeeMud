@@ -14,6 +14,28 @@ public class Prop_SpellAdder extends Property
 	private Environmental lastMOB=null;
 	boolean processing=false;
 	public Environmental newInstance(){	Prop_SpellAdder BOB=new Prop_SpellAdder(); BOB.setMiscText(text());	return BOB;}
+	
+	protected Hashtable spellH=null;
+	protected Vector spellV=null;
+	public Vector getMySpellsV()
+	{
+		if(spellV!=null) return spellV;
+		spellV=Prop_SpellAdder.getMySpellsV(this);
+		return spellV;
+	}
+	public Hashtable getMySpellsH()
+	{
+		if(spellH!=null) return spellH;
+		spellH=Prop_SpellAdder.getMySpellsH(this);
+		return spellH;
+	}
+	
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		spellV=null;
+		spellH=null;
+	}
 
 	public static Vector getMySpellsV(Ability spellHolder)
 	{
@@ -40,7 +62,7 @@ public class Prop_SpellAdder extends Property
 		}
 		return theSpells;
 	}
-
+	
 	public static boolean didHappen(int defaultPct, Ability A)
 	{
 		if(A==null) return false;
@@ -78,8 +100,9 @@ public class Prop_SpellAdder extends Property
 			h.put(((Ability)V.elementAt(v)).ID(),((Ability)V.elementAt(v)).ID());
 		return h;
 	}
+	
 
-	public static MOB qualifiedMOB(Environmental target)
+	public MOB qualifiedMOB(Environmental target)
 	{
 		if((target!=null)&&(target instanceof MOB))
 			return (MOB)target;
@@ -95,12 +118,12 @@ public class Prop_SpellAdder extends Property
 	{
 		if(target==null) return;
 
-		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		Vector V=getMySpellsV();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=(Ability)V.elementAt(v);
 			Ability EA=target.fetchAffect(A.ID());
-			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
+			if((EA==null)&&(didHappen(100,this)))
 			{
 				A.invoke(qualifiedMOB(target),target,true);
 				EA=target.fetchAffect(A.ID());
@@ -110,9 +133,9 @@ public class Prop_SpellAdder extends Property
 		}
 	}
 
-	public void removeMyAffectsFromLastMob()
+	public void removeMyAffectsFrom(Environmental lastMOB)
 	{
-		Hashtable h=getMySpellsH(this);
+		Hashtable h=getMySpellsH();
 		int x=0;
 		while(x<lastMOB.numAffects())
 		{
@@ -131,20 +154,36 @@ public class Prop_SpellAdder extends Property
 		lastMOB=null;
 	}
 
+	public void affect(Environmental host, Affect msg)
+	{
+		if((affected instanceof Room)||(affected instanceof Area))
+		{
+			if((msg.targetMinor()==Affect.TYP_LEAVE)
+			||(msg.targetMinor()==Affect.TYP_RECALL))
+				removeMyAffectsFrom(msg.source());
+			if(msg.targetMinor()==Affect.TYP_ENTER)
+				addMeIfNeccessary(msg.source());
+		}
+	}
+	
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		if(processing) return;
-		processing=true;
-		if((lastMOB!=null)
-		 &&(affectedMOB!=lastMOB))
-			removeMyAffectsFromLastMob();
-
-		if((lastMOB==null)&&(affectedMOB!=null))
+		if((affected instanceof MOB)
+		   ||(affected instanceof Item))
 		{
-			addMeIfNeccessary(affectedMOB);
-			lastMOB=affectedMOB;
+			processing=true;
+			if((lastMOB!=null)
+			 &&(affectedMOB!=lastMOB))
+				removeMyAffectsFrom(lastMOB);
+
+			if((lastMOB==null)&&(affectedMOB!=null))
+			{
+				addMeIfNeccessary(affectedMOB);
+				lastMOB=affectedMOB;
+			}
+			super.affectEnvStats(affectedMOB,affectableStats);
+			processing=false;
 		}
-		super.affectEnvStats(affectedMOB,affectableStats);
-		processing=false;
 	}
 }

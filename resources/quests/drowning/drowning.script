@@ -1,6 +1,6 @@
 ONCE_PROG
 	if inlocale($i Water)
-		QUESTCHAT Help, I'm drowning!
+		QUESTCHAT Help, I'm in $a, and I'm drowning!
 	else
 		mpendquest drowning
 	endif

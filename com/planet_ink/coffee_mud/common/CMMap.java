@@ -181,6 +181,37 @@ public class CMMap
 		}
 		return null;
 	}
+	
+	public static MOB getLoadPlayer(String last)
+	{
+		if(!ExternalPlay.getSystemStarted())
+			return null;
+
+		MOB M=getPlayer(last);
+		if(M!=null) return M;
+		
+		for(Enumeration p=players();p.hasMoreElements();)
+		{
+			MOB mob2=(MOB)p.nextElement();
+			if(mob2.Name().equalsIgnoreCase(last))
+			{ return mob2;}
+		}
+		
+		MOB TM=CMClass.getMOB("StdMOB");
+		if(ExternalPlay.DBUserSearch(TM,last))
+		{
+			M=CMClass.getMOB("StdMOB");
+			M.setName(TM.Name());
+			ExternalPlay.DBReadMOB(M);
+			ExternalPlay.DBReadFollowers(M,false);
+			if(M.playerStats()!=null)
+				M.playerStats().setUpdated(M.playerStats().lastDateTime());
+			M.recoverEnvStats();
+			M.recoverCharStats();
+		}
+		return M;
+	}
+	
 	public static Enumeration players() { return playersList.elements(); }
 
 	public static Room getStartRoom(MOB mob)

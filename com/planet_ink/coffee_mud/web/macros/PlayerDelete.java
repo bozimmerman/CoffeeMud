@@ -17,7 +17,7 @@ public class PlayerDelete extends StdWebMacro
 
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";
-		MOB M=Authenticate.getMOB(last);
+		MOB M=CMMap.getLoadPlayer(last);
 		if(M==null) return " @break@";
 
 		ExternalPlay.destroyUser(M);

@@ -20,7 +20,7 @@ public class JournalFunction extends StdWebMacro
 			info=ExternalPlay.DBReadJournal(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
-		MOB M=Authenticate.getMOB(Authenticate.getLogin(httpReq));
+		MOB M=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 		String from="Unknown";
 		if(M!=null) M.Name();
 		if(parms.containsKey("NEWPOST"))
