@@ -33,10 +33,7 @@ public class Prayer_Curse extends Prayer
 		if(affected==null) return;
 		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_EVIL);
 		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
 			affectableStats.setArmor(affectableStats.armor()+10);
-		}
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()-1);

@@ -357,7 +357,7 @@ public class GrinderItems extends Dialog {
 		SymKey lSymKey=new SymKey();
 		okButton.addKeyListener(lSymKey);
 		CancelButton.addKeyListener(lSymKey);
-		SymPropertyChange lSymPropertyChange = new SymPropertyChange();
+		//SymPropertyChange lSymPropertyChange = new SymPropertyChange();
 		//SymKey aSymKey = new SymKey();
 		//SymText lSymText = new SymText();
 		//}}

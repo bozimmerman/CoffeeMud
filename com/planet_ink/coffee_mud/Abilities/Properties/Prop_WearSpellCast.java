@@ -69,7 +69,6 @@ public class Prop_WearSpellCast extends Property
 		int x=0;
 		while(x<lastMOB.numAffects())
 		{
-			int y=lastMOB.numAffects();
 			Ability thisAffect=lastMOB.fetchAffect(x);
 			String ID=(String)h.get(thisAffect.ID());
 			if((ID!=null)&&(thisAffect.invoker()==lastMOB))

@@ -295,8 +295,8 @@ public class GrinderMOBs extends Dialog {
 		okButton.addKeyListener(lSymKey);
 		CancelButton.addKeyListener(lSymKey);
 		SymKey aSymKey = new SymKey();
-		SymText lSymText = new SymText();
-		SymPropertyChange lSymPropertyChange = new SymPropertyChange();
+		//SymText lSymText = new SymText();
+		//SymPropertyChange lSymPropertyChange = new SymPropertyChange();
 		SymItem lSymItem = new SymItem();
 		inventory.addItemListener(lSymItem);
 		store.addItemListener(lSymItem);

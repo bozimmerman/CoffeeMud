@@ -204,9 +204,6 @@ public class ItemUsage
 				addendumStr="."+(++addendum);
 				continue;
 			}
-			else
-			if((doneSomething)&&(!(dropThis instanceof Item)))
-			   return;
 
 			if(!drop(mob,dropThis))
 				addendumStr="."+(++addendum);

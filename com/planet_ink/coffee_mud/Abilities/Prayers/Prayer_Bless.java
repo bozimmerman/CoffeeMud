@@ -35,10 +35,7 @@ public class Prayer_Bless extends Prayer
 		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_GOOD);
 		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_BONUS);
 		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
 			affectableStats.setArmor(affectableStats.armor()-10);
-		}
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+1);

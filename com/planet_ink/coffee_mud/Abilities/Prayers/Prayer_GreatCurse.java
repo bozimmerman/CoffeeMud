@@ -32,8 +32,7 @@ public class Prayer_GreatCurse extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-
+		
 		affectableStats.setArmor(affectableStats.armor()+20);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-10);
 	}

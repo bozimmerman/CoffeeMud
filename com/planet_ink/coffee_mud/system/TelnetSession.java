@@ -355,26 +355,31 @@ public class TelnetSession extends Thread implements Session
 				case '\\':
 					if(loop<buf.length()-1)
 					{
-						if(buf.charAt(loop+1)=='n')
+						switch(buf.charAt(loop+1))
 						{
+						case 'n':
+						case 'r':
+							{
 							buf.setCharAt(loop,'\n');
 							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&(buf.charAt(loop+2)!='\r')))
 								buf.setCharAt(loop+1,'\r');
 							else
 							if(loop<buf.length()-2)
 								buf.deleteCharAt(loop+1);
-						}
-						else
-						if((buf.charAt(loop+1)=='`')||(buf.charAt(loop+1)=='`'))
-						{
+							}
+							break;
+						case '`':
+							{
 							buf.setCharAt(loop,'\'');
 							buf.deleteCharAt(loop+1);
-						}
-						else
-						if(buf.charAt(loop+1)=='\'')
-						{
+							}
+							break;
+						case '\'':
+							{
 							buf.setCharAt(loop,'\'');
 							buf.deleteCharAt(loop+1);
+							}
+							break;
 						}
 					}
 					break;
