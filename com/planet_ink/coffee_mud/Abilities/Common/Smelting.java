@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Smelting extends CommonSkill
+public class Smelting extends CraftingSkill
 {
 	public String ID() { return "Smelting"; }
 	public String name(){ return "Smelting";}
@@ -196,8 +196,8 @@ public class Smelting extends CommonSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],null,null);
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],null,null);
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null);
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null);
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],false);
