@@ -41,6 +41,6 @@ public class Song_Mute extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.CAN_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SPEAK);
 	}
 }
