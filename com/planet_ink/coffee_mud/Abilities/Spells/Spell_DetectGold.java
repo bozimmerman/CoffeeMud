@@ -10,7 +10,7 @@ public class Spell_DetectGold extends Spell
 {
 	public String ID() { return "Spell_DetectGold"; }
 	public String name(){return "Detect Gold";}
-	public String displayText(){return "(Detect Gold)";}
+	public String displayText(){return "(Detecting Gold)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectGold();}

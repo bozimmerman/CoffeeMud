@@ -9,11 +9,15 @@ public class AntiVagrant extends StdBehavior
 {
 	public String ID(){return "AntiVagrant";}
 	private MOB target=null;
+	private int speakDown=2;
+	
 	public Behavior newInstance()
 	{
 		return new AntiVagrant();
 	}
 
+	
+	
 	public void wakeVagrants(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
@@ -56,11 +60,27 @@ public class AntiVagrant extends StdBehavior
 	}
 
 
+	public void affect(Environmental affecting, Affect msg)
+	{
+		// believe it or not, this is for arrest behavior.
+		super.affect(affecting,msg);
+		if((msg.sourceMinor()==Affect.TYP_SPEAK)
+		&&(affecting!=null)
+		&&(msg.amISource(affecting))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().toUpperCase().indexOf("SIT")>=0))
+			speakDown=2;
+	}
+	
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return;
+		
+		// believe it or not, this is for arrest behavior.
+		if(speakDown>0)	{	speakDown--;return;	}
+
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
 		wakeVagrants(mob);

@@ -541,7 +541,7 @@ public class Arrest extends StdBehavior
 							else
 							{
 								W.arrestingOfficer=officer;
-								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Lie down immediately!",false,false);
+								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Sit down on the ground immediately!",false,false);
 								W.state=STATE_ARRESTING;
 							}
 						}

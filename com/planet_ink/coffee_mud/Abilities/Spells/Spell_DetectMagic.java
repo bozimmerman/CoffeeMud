@@ -10,7 +10,7 @@ public class Spell_DetectMagic extends Spell
 {
 	public String ID() { return "Spell_DetectMagic"; }
 	public String name(){return "Detect Magic";}
-	public String displayText(){return "(Detect Magic)";}
+	public String displayText(){return "(Detecting Magic)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectMagic();}

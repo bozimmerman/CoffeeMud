@@ -10,7 +10,7 @@ public class Spell_DetectMetal extends Spell
 {
 	public String ID() { return "Spell_DetectMetal"; }
 	public String name(){return "Detect Metal";}
-	public String displayText(){return "(Detect Metal)";}
+	public String displayText(){return "(Detecting Metal)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectMetal();}

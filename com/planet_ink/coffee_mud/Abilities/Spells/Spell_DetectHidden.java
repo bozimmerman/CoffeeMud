@@ -10,7 +10,7 @@ public class Spell_DetectHidden extends Spell
 {
 	public String ID() { return "Spell_DetectHidden"; }
 	public String name(){return "Detect Hidden";}
-	public String displayText(){return "(Detect Hidden)";}
+	public String displayText(){return "(Detecting Hidden)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectHidden();}

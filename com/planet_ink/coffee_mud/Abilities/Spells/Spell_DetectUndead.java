@@ -10,7 +10,7 @@ public class Spell_DetectUndead extends Spell
 {
 	public String ID() { return "Spell_DetectUndead"; }
 	public String name(){return "Detect Undead";}
-	public String displayText(){return "(Detect Undead)";}
+	public String displayText(){return "(Detecting Undead)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_DetectUndead();}
