@@ -37,9 +37,7 @@ public class Song_Protection extends Song
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		if(affected==invoker) return;
-
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(invoker.envStats().level()));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
 	}
 
 
@@ -47,8 +45,6 @@ public class Song_Protection extends Song
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		if(affected==invoker) return;
-
 		affectableStats.setDexterity((int)Math.round(affectableStats.getDexterity()-3));
 	}
 
@@ -84,7 +80,7 @@ public class Song_Protection extends Song
 
 		if(Dice.rollPercentage()<(invoker.charStats().getCharisma()*4))
 		{
-			affect.source().location().show(affect.source(),affect.target(),Affect.MSG_OK_ACTION,"The musical aura around <T-NAME> protects "+((MOB)affect.target()).charStats().himher()+".");
+			affect.source().location().show(affect.source(),affect.target(),Affect.MSG_OK_ACTION,affect.othersMessage()+"\nThe musical aura around <T-NAME> protects <T-HIM-HER>.");
 			return false;
 		}
 

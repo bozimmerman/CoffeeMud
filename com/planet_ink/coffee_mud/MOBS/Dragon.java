@@ -353,7 +353,7 @@ public class Dragon extends StdMOB
 					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
 					if(!Message.wasModified())
 						damage=((short)Math.round(Math.random()*7)*DragonAge);
-					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_MALICIOUS+(damage),Affect.NO_EFFECT,null);
+					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_HURT+(damage),Affect.NO_EFFECT,null);
 					if(location().okAffect(msg))
 						location().send(this,msg);
 				}

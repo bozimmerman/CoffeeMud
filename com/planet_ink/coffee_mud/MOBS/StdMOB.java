@@ -640,7 +640,9 @@ public class StdMOB implements MOB
 			}
 			if(Util.bset(srcMajor,Affect.ACT_HANDS))
 			{
-				if(!Sense.canBeSeenBy(affect.target(),this))
+				if((!Sense.canBeSeenBy(affect.target(),this))
+				&&((!Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
+				   ||(!isInCombat())||(affect.target()!=victim)))
 				{
 					mob.tell("You don't see that here.");
 					return false;

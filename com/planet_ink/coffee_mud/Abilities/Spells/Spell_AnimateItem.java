@@ -13,7 +13,7 @@ public class Spell_AnimateItem extends Spell
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Animate Object";
+		name="Animate Item";
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -38,16 +38,13 @@ public class Spell_AnimateItem extends Spell
 
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify who or what to cast this on, and what you want it to emote.");
+			mob.tell("You must specify what to cast this on, and then what you want it to emote.");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0));
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
-		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
-			return false;
-		}
-		if(target==mob) return false;
+		Vector V=new Vector();
+		V.addElement((String)commands.elementAt(0));
+		Item target=getTarget(mob,mob.location(),givenTarget,V);
+		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

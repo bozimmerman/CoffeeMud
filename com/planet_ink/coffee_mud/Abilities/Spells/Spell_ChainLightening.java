@@ -38,29 +38,6 @@ public class Spell_ChainLightening extends Spell
 		return new Spell_ChainLightening();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly put the mob into
-		// a sleeping state, so that nothing they do
-		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SITTING);
-	}
-
-
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-		mob.tell("The movement under your feet stops.");
-		ExternalPlay.standIfNecessary(mob);
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Hashtable h=ExternalPlay.properTargets(this,mob);
@@ -105,7 +82,7 @@ public class Spell_ChainLightening extends Spell
 						int maxDie =  mob.envStats().level();
 						if (maxDie > 10)
 							maxDie = 10;
-						damage += Dice.roll(maxDie,6,1);
+						damage += Dice.roll(maxDie,4,1);
 						if(msg2.wasModified())
 							damage = (int)Math.round(Util.div(damage,2.0));
 						if(target.location()==mob.location())
