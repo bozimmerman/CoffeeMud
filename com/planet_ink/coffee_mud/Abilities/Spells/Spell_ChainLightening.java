@@ -74,21 +74,18 @@ public class Spell_ChainLightening extends Spell
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
-					{
-						mob.location().send(mob,msg2);
-						invoker=mob;
+					mob.location().send(mob,msg2);
+					invoker=mob;
 
-						int damage = 0;
-						int maxDie =  mob.envStats().level();
-						if (maxDie > 10)
-							maxDie = 10;
-						damage += Dice.roll(maxDie,4,1);
-						if(msg2.wasModified())
-							damage = (int)Math.round(Util.div(damage,2.0));
-						if(target.location()==mob.location())
-							ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The bolt <DAMAGE> <T-NAME>!");
-					}
+					int damage = 0;
+					int maxDie =  mob.envStats().level();
+					if (maxDie > 10)
+						maxDie = 10;
+					damage += Dice.roll(maxDie,4,1);
+					if((!msg.wasModified())&&(!msg2.wasModified()))
+						damage = (int)Math.round(Util.div(damage,2.0));
+					if(target.location()==mob.location())
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The bolt <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

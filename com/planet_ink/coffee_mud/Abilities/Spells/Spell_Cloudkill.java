@@ -97,32 +97,23 @@ public class Spell_Cloudkill extends Spell
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					mob.location().send(mob,msg2);
+					invoker=mob;
+
+					int damage = target.curState().getHitPoints();
+
+					int midLevel=(int)Math.round(Util.div(mob.envStats().level(),2.0));
+					while(midLevel<target.envStats().level())
+						damage-=(int)Math.round(Util.div(damage,2.0));
+
+					if((!msg.wasModified())&&(!msg2.wasModified()))
+						damage = (int)Math.round(Util.div(damage,2.0));
+
+					if(damage<0) damage=0;
+					if(target.location()==mob.location())
 					{
-						mob.location().send(mob,msg2);
-						invoker=mob;
-
-						int damage = target.curState().getHitPoints();
-
-						int midLevel=(int)Math.round(Util.div(mob.envStats().level(),2.0));
-						if(target.envStats().level()>=midLevel)
-						{
-							while(midLevel<target.envStats().level())
-							{
-								damage-=(int)Math.round(Util.div(damage,2.0));
-								midLevel++;
-							}
-						}
-
-						if(msg2.wasModified())
-							damage = (int)Math.round(Util.div(damage,2.0));
-
-						if(damage<0) damage=0;
-						if(target.location()==mob.location())
-						{
-							this.maliciousAffect(mob,target,2,-1);
-							ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURSTING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
-						}
+						this.maliciousAffect(mob,target,2,-1);
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURSTING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}
 			}
