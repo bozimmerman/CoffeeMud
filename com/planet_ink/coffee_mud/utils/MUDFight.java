@@ -397,7 +397,7 @@ public class MUDFight
 				if(whatToDo.startsWith("PUR"))
 				{
 					MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
-					boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,target.ID());
+					boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,target.name());
 					if(found)
 					{
 						Body=target.killMeDead(true);
