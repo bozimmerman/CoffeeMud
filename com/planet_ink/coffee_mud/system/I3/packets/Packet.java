@@ -18,6 +18,9 @@ public class Packet {
     final static public int LOCATE_REPLY = 8;
 	final static public int CHAN_WHO_REQ = 9;
 	final static public int CHAN_WHO_REP = 10;
+	final static public int CHAN_ADD     = 11;
+	final static public int CHAN_REMOVE  = 12;
+	final static public int CHAN_LISTEN  = 13;
 
     public String sender_mud = null;
     public String sender_name = null;

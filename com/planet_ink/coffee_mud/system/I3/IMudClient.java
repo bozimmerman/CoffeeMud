@@ -66,6 +66,54 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
+	public void i3channelAdd(MOB mob, String channel)
+	{
+		if((mob==null)||(!i3online())) return;
+		if((channel==null)||(channel.length()==0)||(Intermud.getLocalChannel(channel).length()>0))
+		{
+			mob.tell("You must specify a non-existant InterMud 3 channel name.");
+			return;
+		}
+		ChannelAdd ck=new ChannelAdd();
+		ck.sender_name=mob.name();
+		ck.channel=channel;
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
+	}
+	
+	public void i3channelListen(MOB mob, String channel)
+	{
+		if((mob==null)||(!i3online())) return;
+		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		{
+			mob.tell("You must specify an InterMud 3 channel name.");
+			return;
+		}
+		ChannelListen ck=new ChannelListen();
+		ck.sender_name=mob.name();
+		ck.channel=channel;
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
+	}
+	
+	public void i3channelRemove(MOB mob, String channel)
+	{
+		if((mob==null)||(!i3online())) return;
+		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		{
+			mob.tell("You must specify a valid InterMud 3 channel name.");
+			return;
+		}
+		ChannelDelete ck=new ChannelDelete();
+		ck.sender_name=mob.name();
+		ck.channel=channel;
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
+	}
+	
 	public void i3tell(MOB mob, String tellName, String mudName, String message)
 	{
 		if((mob==null)||(!i3online())) return;

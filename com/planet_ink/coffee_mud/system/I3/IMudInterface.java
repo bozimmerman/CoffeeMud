@@ -398,6 +398,9 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 			}
 			break;
+		default:
+			Log.errOut("IMudInterface","Unknown type: "+packet.type);
+			break;
 		}
 	}
 
