@@ -56,6 +56,7 @@ public class Fighter_CritStrike extends StdAbility
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
 			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+bonus,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			helpProfficiency(mob);
 		}
 		return true;
 	}

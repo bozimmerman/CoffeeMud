@@ -1735,7 +1735,7 @@ public class Import
 			if(Util.numBits(codeStr3)>2)
 			{
 				I.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr3,0)));
-				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 2);
+				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 3);
 				I.setBaseValue(Util.s_int(Util.getBit(codeStr3,2)));
 			}
 			else

@@ -91,29 +91,14 @@ public class Skill_Swim extends StdAbility
 			return false;
 		if(student.location()==null)
 			return false;
-		if(
-		   (student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		Skill_Swim myAbility=student.fetchAbility(ID());
+		if(myAbility.profficiency()<20)
+			return true;
+		if((student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		 &&(student.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
-			student.tell("You need to be on or in the water to learn to swim!");
-			teacher.tell("You need to be on or in the water to teach swimming!");
-			return false;
-		}
-		return true;
-	}
-
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBeLearnedBy(teacher,student))
-			return false;
-		if(student.location()==null)
-			return false;
-		if(
-		   (student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		 &&(student.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
-		{
-			student.tell("You need to be on or in the water to learn to swim!");
-			teacher.tell("You need to be on or in the water to teach swimming!");
+			student.tell("You need to be on or in the water to learn any more about swimming!");
+			teacher.tell("You need to be on or in the water to teach more about swimming!");
 			return false;
 		}
 		return true;
