@@ -71,7 +71,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		super.executeMsg(myHost,msg);
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
-		&&(affected!=null))
+		&&(affected instanceof Room))
 		{
 			updateLot();
 			Vector mobs=new Vector();

@@ -1,3 +1,4 @@
+no mass disintegrate player corpses
 Finish Scripting doc
 Install ship battery
 n of 11656 door is not there in margate, 11752 should have been no_mob
