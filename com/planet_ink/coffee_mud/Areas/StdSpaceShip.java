@@ -30,6 +30,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long velocity=0;
 	public long velocity(){return velocity;}
 	public void setVelocity(long v){velocity=v;}
+	public long accelleration=0;
+	public long accelleration(){return accelleration;}
+	public void setAccelleration(long v){accelleration=v;}
 	protected static Climate climateObj=null;
 	protected Vector parents=null;
     protected Vector parentsToLoad=new Vector();

@@ -582,6 +582,10 @@ public class StdContainer extends StdItem implements Container
 					if(E instanceof Scroll)
 						return true;
 					break;
+				case CONTAIN_SSCOMPONENTS:
+					if(E instanceof ShipComponent)
+						return true;
+					break;
 				}
 		return false;
 	}
