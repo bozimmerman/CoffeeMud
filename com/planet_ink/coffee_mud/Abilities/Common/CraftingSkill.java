@@ -482,6 +482,7 @@ public class CraftingSkill extends CommonSkill
 			&&(!Sense.isOnFire(I))
 			&&(I.material()==otherMaterial))
 			{
+				otherMaterial=-1;
 				lostValue+=I.value();
 				I.destroy();
 			}

@@ -1,5 +1,3 @@
-Shelter will instantaneously teleport the caster and his or her group. It doesn`t take the group, only the caster. Spell Shelter level 12 Conjuration.
-It takes all the metal on the ground to make one set of arrows, Like my 500 pounds of iron
 SMTP Server
 
 
