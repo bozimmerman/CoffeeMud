@@ -29,6 +29,11 @@ public class Fighter_Spring extends StdAbility
 			mob.tell("You are too tired to make a spring attack.");
 			return false;
 		}
+		if(mob.rangeToTarget()>=mob.location().maxRange())
+		{
+			mob.tell("There is no more room to spring back!");
+			return false;
+		}
 		
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -56,9 +61,17 @@ public class Fighter_Spring extends StdAbility
 				ExternalPlay.postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					mob.setAtRange(2);
-					target.setAtRange(2);
-					mob.curState().adjMovement(-50,mob.maxState());
+					new FullMsg(mob,victim,this,Affect.MSG_RETREAT,"<S-NAME> spring(s) back!");
+					if(mob.location().okAffect(msg))
+					{
+						mob.location().send(mob,msg);
+						if(mob.rangeToTarget()<mob.location().maxRange())
+						{
+							msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,null);
+							if(mob.location().okAffect(msg))
+								mob.location().send(mob,msg);
+						}
+					}
 				}
 			}
 		}

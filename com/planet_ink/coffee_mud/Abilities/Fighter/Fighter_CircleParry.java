@@ -20,6 +20,19 @@ public class Fighter_CircleParry extends StdAbility
 	boolean lastTime=false;
 	public Environmental newInstance(){	return new Fighter_CircleParry();}
 
+	public boolean anyWeapons(MOB mob)
+	{
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)
+			   &&((I.amWearingAt(Item.WIELD))
+			      ||(I.amWearingAt(Item.HELD))))
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -35,8 +48,7 @@ public class Fighter_CircleParry extends StdAbility
 			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
 			{
 				Item attackerWeapon=(Item)affect.tool();
-				Item myWeapon=mob.fetchWieldedItem();
-				if((myWeapon==null)
+				if((!anyWeapons(mob))
 				&&(attackerWeapon!=null)
 				&&(attackerWeapon instanceof Weapon)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)

@@ -38,7 +38,8 @@ public class Fighter_ReturnProjectile extends StdAbility
 		   ||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		&&(!(affect.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
-		&&(profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
+		&&(profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
+		&&(mob.fetchWornItem(Item.HELD)==null))
 		{
 			Item w=(Item)affect.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)

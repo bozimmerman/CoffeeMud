@@ -27,7 +27,7 @@ public class Fighter_Cartwheel extends StdAbility
 			mob.tell("You can only do this in combat!");
 			return false;
 		}
-		if((mob.rangeToTarget()+2)>mob.location().maxRange())
+		if(mob.rangeToTarget()>=mob.location().maxRange())
 		{
 			mob.tell("You can not get any further away here!");
 			return false;
@@ -52,9 +52,12 @@ public class Fighter_Cartwheel extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,null);
-				if(mob.location().okAffect(msg))
-					mob.location().send(mob,msg);
+				if(mob.rangeToTarget()<mob.location().maxRange())
+				{
+					msg=new FullMsg(mob,victim,this,Affect.MSG_RETREAT,null);
+					if(mob.location().okAffect(msg))
+						mob.location().send(mob,msg);
+				}
 			}
 		}
 		else
