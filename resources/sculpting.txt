@@ -12,3 +12,5 @@
 % Bed	6	50	350	20	GenBed	BED	2	
 % Statue	12	120	450	100	GenItem	STATUE	0	
 % Pillar	3	30	50	25	GenRideable	TABLE	20	
+% Bust	6	80	150	50	GenItem	STATUE	0	
+% Figurine	3	40	30	25	GenItem	STATUE	0	

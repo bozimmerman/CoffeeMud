@@ -46,6 +46,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Disarm",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Attack2",true); 
 			CMAble.addCharAbilityMapping(ID(),9,"Fighter_CritStrike",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);

@@ -33,7 +33,7 @@ public class Blacksmithing extends CommonSkill
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
-		//CMAble.addCharAbilityMapping("All",1,ID(),false);
+		CMAble.addCharAbilityMapping("All",1,ID(),false);
 	}
 	
 	public Environmental newInstance()
@@ -162,7 +162,8 @@ public class Blacksmithing extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			   ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
 			&&(I.container()==null))
 			{
 				if(firstWood==null)firstWood=I;
@@ -187,7 +188,6 @@ public class Blacksmithing extends CommonSkill
 		{
 			Item I=mob.location().fetchItem(i);
 			if((I instanceof EnvResource)
-			&&((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 			&&(I.container()==null)
 			&&((--woodDestroyed)>=0)
 			&&(I.material()==firstWood.material()))
@@ -220,12 +220,19 @@ public class Blacksmithing extends CommonSkill
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 		{
-			String of=mob.session().prompt("What is this a statue of?","");
-			if(of.trim().length()==0)
+			try
+			{
+				String of=mob.session().prompt("What is this a statue of?","");
+				if(of.trim().length()==0)
+					return false;
+				building.setName(itemName+" of "+of.trim());
+				building.setDisplayText(itemName+" of "+of.trim()+" is here");
+				building.setDescription(itemName+" of "+of.trim()+". ");
+			}
+			catch(java.io.IOException x)
+			{
 				return false;
-			building.setName(itemName+" of "+of.trim());
-			building.setDisplayText(itemName+" of "+of.trim()+" is here");
-			building.setDescription(itemname+" of "+of.trim()+". ");
+			}
 		}
 		else
 		if(building instanceof Container)

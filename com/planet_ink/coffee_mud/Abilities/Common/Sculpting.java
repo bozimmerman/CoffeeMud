@@ -254,12 +254,19 @@ public class Sculpting extends CommonSkill
 			key=null;
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 			{
-				String of=mob.session().prompt("What is this a statue of?","");
-				if(of.trim().length()==0)
+				try
+				{
+					String of=mob.session().prompt("What is this a statue of?","");
+					if(of.trim().length()==0)
+						return false;
+					building.setName(itemName+" of "+of.trim());
+					building.setDisplayText(itemName+" of "+of.trim()+" is here");
+					building.setDescription(itemName+" of "+of.trim()+". ");
+				}
+				catch(java.io.IOException x)
+				{
 					return false;
-				building.setName(itemName+" of "+of.trim());
-				building.setDisplayText(itemName+" of "+of.trim()+" is here");
-				building.setDescription(itemname+" of "+of.trim()+". ");
+				}
 			}
 			else
 			if(building instanceof Container)
