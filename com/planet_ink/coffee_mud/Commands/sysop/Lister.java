@@ -144,6 +144,24 @@ public class Lister
 		return lines;
 	}
 
+	public static StringBuffer roomTypes(Vector these, Room likeRoom)
+	{return roomDetails(these.elements(),likeRoom);}
+	public static StringBuffer roomTypes(Enumeration these, Room likeRoom)
+	{
+		StringBuffer lines=new StringBuffer("");
+		if(!these.hasMoreElements()) return lines;
+		if(likeRoom==null) return lines;
+		for(Enumeration r=these;r.hasMoreElements();)
+		{
+			Room thisThang=(Room)r.nextElement();
+			String thisOne=(String)thisThang.roomID();
+			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
+				lines.append(Util.padRight(thisOne,24)+": "+thisThang.ID()+"\n\r");
+		}
+		lines.append("\n\r");
+		return lines;
+	}
+
 	public static StringBuffer listSessions(MOB mob)
 	{
 		StringBuffer lines=new StringBuffer("^x");
@@ -506,7 +524,7 @@ public class Lister
 			s.rawPrintln(roomDetails(CMMap.rooms(),mob.location()).toString());
 		else
 		if("AREA".startsWith(listThis))
-			s.rawPrintln(reallyList(CMMap.rooms(),mob.location()).toString());
+			s.rawPrintln(roomTypes(CMMap.rooms(),mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.locales()).toString());

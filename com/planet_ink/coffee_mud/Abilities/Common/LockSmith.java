@@ -251,7 +251,7 @@ public class LockSmith extends CommonSkill
 		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
-		((Key)building).setKey("keyName");
+		((Key)building).setKey(keyName);
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(1);
 		building.setMaterial(firstWood.material());

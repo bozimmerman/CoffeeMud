@@ -26,7 +26,7 @@ public class Chant_Fertilization extends Chant
 					{
 						Ability A=M.fetchAffect("Farming");
 						if(A==null) A=M.fetchAffect("Foraging");
-						if(A!=null) A.setAbilityCode(2);
+						if(A!=null) A.setAbilityCode(4);
 					}
 				}
 		}

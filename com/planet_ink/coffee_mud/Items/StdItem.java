@@ -525,6 +525,7 @@ public class StdItem implements Item
 		{
 		case Affect.TYP_EXAMINESOMETHING:
 		case Affect.TYP_READSOMETHING:
+		case Affect.TYP_QUIETMOVEMENT:
 		case Affect.TYP_SPEAK:
 		case Affect.TYP_OK_ACTION:
 		case Affect.TYP_OK_VISUAL:

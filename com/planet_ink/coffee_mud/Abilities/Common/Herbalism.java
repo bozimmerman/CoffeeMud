@@ -243,8 +243,8 @@ public class Herbalism extends CommonSkill
 			building.setName("a potion of "+theSpell.name().toLowerCase());
 			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 			((Drink)building).setThirstQuenched(10);
-			((Drink)building).setLiquidHeld(100+experienceToLose);
-			((Drink)building).setLiquidRemaining(100+experienceToLose);
+			((Drink)building).setLiquidHeld(100);
+			((Drink)building).setLiquidRemaining(100);
 			building.setDescription("");
 			building.recoverEnvStats();
 			building.text();

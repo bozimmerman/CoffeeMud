@@ -16,7 +16,7 @@ public class Herbology extends CommonSkill
 	private String writing="";
 	private static boolean mapped=false;
 	private boolean messedUp=false;
-	private static final String[] herbList={"angelica","Mustard","anise",
+	private static final String[] herbList={"angelica","mustard","anise",
 											"myrrh","cassia","peppermint",
 											"chamomile","poppy","cloves",
 											"rosemary","lemon grass","mint",

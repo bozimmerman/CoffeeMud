@@ -169,7 +169,8 @@ public class StdTitle extends StdItem implements LandTitle
 		&&((msg.source().Name().equals(landOwner()))
 			||((msg.source().getClanID().equals(landOwner()))))
 		&&(msg.target()!=null)
-		&&(msg.target() instanceof MOB))
+		&&(msg.target() instanceof MOB)
+		&&(!(msg.target() instanceof Banker)))
 		{
 			Room R=CMMap.getRoom(landRoomID());
 			if(R==null)

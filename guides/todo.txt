@@ -1,6 +1,5 @@
 Bard Subclasses
 Programming.html update
-when you type langs it should tell you what language you are currently speaking
 
 
 //****** next version ********************************************************
