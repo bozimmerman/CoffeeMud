@@ -2179,6 +2179,7 @@ public class Import
 		Vector shopData=new Vector();
 		Vector specialData=new Vector();
 		Vector newRooms=new Vector();
+		Vector reLinkTable=null;
 		
 		boolean prompt=true;
 
@@ -2250,22 +2251,37 @@ public class Import
 						return;
 					}
 					else
-					while(true)
 					{
-						Room foundOne=null;
+						reLinkTable=new Vector();
 						for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 						{
 							Room r=(Room)e.nextElement();
-							if(r.getAreaID().equalsIgnoreCase(areaName))
-							{
-								foundOne=r;
-								break;
-							}
+							if(!r.getAreaID().equalsIgnoreCase(areaName))
+								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								{
+									Room dirR=r.doors()[d];
+									if((dirR!=null)&&(dirR.getAreaID().equalsIgnoreCase(areaName)))
+										reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
+								}
 						}
-						if(foundOne==null)
-							break;
-						else
-							myRooms.obliterateRoom(mob,foundOne);
+Log.sysOut("BLAH",reLinkTable.size()+"");						
+						while(true)
+						{
+							Room foundOne=null;
+							for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+							{
+								Room r=(Room)e.nextElement();
+								if(r.getAreaID().equalsIgnoreCase(areaName))
+								{
+									foundOne=r;
+									break;
+								}
+							}
+							if(foundOne==null)
+								break;
+							else
+								myRooms.obliterateRoom(mob,foundOne);
+						}
 					}
 				}
 				else
@@ -2931,6 +2947,31 @@ public class Import
 				}
 			}
 			mob.session().print("\n\nReset, and saving...");
+			
+			// try to re-link olde room links
+			if(reLinkTable!=null)
+				for(int r=0;r<reLinkTable.size();r++)
+				{
+					String link=(String)reLinkTable.elementAt(r);
+					String nextLink="";
+					if(r<(reLinkTable.size()-1))
+						nextLink=(String)reLinkTable.elementAt(r+1);
+					int s1=link.indexOf("/");
+					int s2=link.lastIndexOf("/");
+					String sourceRoomID=link.substring(0,s1);
+					int direction=Util.s_int(link.substring(s1+1,s2));
+					String destRoomID=link.substring(s2+1);
+					Room sourceRoom=CMMap.getRoom(sourceRoomID);
+					Room destRoom=CMMap.getRoom(destRoomID);
+					if((sourceRoom==null)||(destRoom==null))
+						Log.errOut("Import","Relink error: "+sourceRoomID+"="+sourceRoom+"/"+destRoomID+"="+destRoom);
+					else
+					{
+						sourceRoom.doors()[direction]=destRoom;
+						if((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/")))
+							ExternalPlay.DBUpdateExits(sourceRoom);
+					}
+				}
 			for(int r=0;r<newRooms.size();r++)
 			{
 				Room saveRoom=(Room)newRooms.elementAt(r);

@@ -7,7 +7,7 @@ X Look for "about the body" importables -- nah, too much work
 ! And they should stay open longer!
 ? Track -- make it smarter
 ! Are we able to cast spells on the invisible? Malicious?  Benevolent?
-? Under guildmaster should take you to sewer -- Import bug!  Do a room "checkup" before and room link "restore" after import to reattach to olde rooms.
+! Under guildmaster should take you to sewer -- Import bug!  Do a room "checkup" before and room link "restore" after import to reattach to olde rooms.
 ! consider consider, it is inaccurate
 ! edged, hammer, dagger import bug
 ? dark horseman -- don't hide WHILE in combat?
