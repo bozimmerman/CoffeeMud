@@ -18,7 +18,7 @@
  * 3. The end-user documentation included with the redistribution,
  *    if any, must include the following acknowledgment:
  *       "This product includes software developed by 
- *        Bo Zimmerman (http://www.zimmers.net/home/mud.html)."
+ *        Bo Zimmerman (http://coffeemud.zimmers.net)."
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
@@ -45,7 +45,7 @@
  *
  * This software consists of voluntary contributions made by many
  * individuals.  For more information on CoffeeMud, please see
- * <http://www.zimmers.net/home/mud.html>.
+ * <http://coffeemud.zimmers.net>.
  *
  */
 

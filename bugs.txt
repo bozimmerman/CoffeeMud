@@ -2,9 +2,10 @@ Half the time when I sign in, I have 10 hp out of full, about 50 mv out of full,
 I can put my armor back on after I start most dances and they don`t get stopped.
 (copy) not appearing next to your titles
 set stats from races should also set limits
+do something with cold rooms
 
 SMTP Server
-put email forwarding
+put email forwarding, per user basis.. no mailing list for
 figure out mailing lists
 
 Some solution for variable eq on mobs -- use rejuv! 

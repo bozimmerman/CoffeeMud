@@ -16,7 +16,7 @@ public class Ver extends StdCommand
 		mob.tell("CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
 		mob.tell("(C) 2000-2004 Bo Zimmerman");
 		mob.tell("bo@zimmers.net");
-		mob.tell("http://www.zimmers.net/home/mud.html");
+		mob.tell("http://coffeemud.zimmers.net");
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -850,7 +850,7 @@ public class MUD extends Thread implements MudHost
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
 				Log.sysOut("MUD","(C) 2000-2004 Bo Zimmerman");
-				Log.sysOut("MUD","www.zimmers.net/home/mud.html");
+				Log.sysOut("MUD","http://coffeemud.zimmers.net");
 
 				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));
 				if(MUD.isOK)
