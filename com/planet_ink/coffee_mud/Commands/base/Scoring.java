@@ -117,6 +117,9 @@ public class Scoring
 			{
 				if(reps==0)	say.append("      ");
 				else
+				if(reps>=99)
+					say.append("("+Util.padLeftPreserve(""+(reps+1),3)+") ");
+				else
 				if(reps>0)	
 					say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
 				if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)

@@ -342,6 +342,16 @@ public class Util
 	{
 		return ((num&bit)==bit);
 	}
+	public static int setb(int num, int bit)
+	{
+		return num|bit;
+	}
+	public static int unsetb(int num, int bit)
+	{
+		if(bset(num,bit))
+			num-=bit;
+		return num;
+	}
 	public static boolean isSet(int number, int bitnumber)
 	{
 		if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))

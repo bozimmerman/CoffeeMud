@@ -5,7 +5,7 @@
  */
 package com.planet_ink.coffee_mud.system.I3.server;
 
-
+import com.planet_ink.coffee_mud.system.I3.packets.ImudServices;
 /**
  * The Server class is the mudlib's interface to the
  * Imaginary Mud Server.  It is responsible with knowing all
@@ -27,14 +27,17 @@ public class Server {
      * is made once the server is running.
      * @param mud the name of the mud being started
      */
-    static public void start(String mud, int port) throws ServerSecurityException {
+    static public void start(String mud, 
+							 int port,
+							 ImudServices imud) 
+		throws ServerSecurityException {
         if( started ) {
             throw new ServerSecurityException("Illegal attempt to start Server.");
         }
         else {
             started = true;
         }
-        thread = new ServerThread(mud, port);
+        thread = new ServerThread(mud, port, imud);
         thread.start();
     }
 

@@ -31,13 +31,17 @@ public class ServerThread extends Thread {
     private Hashtable           objects;
     private int                 port;
     private boolean             running;
+	private ImudServices		intermuds;
 
-    protected ServerThread(String mname, int mport) {
+    protected ServerThread(String mname, 
+						   int mport,
+						   ImudServices imud) {
         super();
         setName("ServerThread");
         setPriority(Thread.NORM_PRIORITY + 1);
         mud_name = mname;
         port = mport;
+		intermuds=imud;
     }
 
     protected synchronized ServerObject copyObject(String str) throws ObjectLoadException {
@@ -124,7 +128,7 @@ public class ServerThread extends Thread {
         }
 		
         try {
-            Intermud.setup((ImudServices)Class.forName("com.planet_ink.coffee_mud.system.I3.IMudInterface").newInstance(),
+            Intermud.setup(intermuds,
                            (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.system.I3.IMudPeer").newInstance());
         }
         catch( Exception e ) {

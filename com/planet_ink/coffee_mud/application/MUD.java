@@ -7,6 +7,8 @@ import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.system.I3.*;
+import com.planet_ink.coffee_mud.system.I3.server.*;
 import com.planet_ink.coffee_mud.Commands.base.CommandProcessor;
 import com.planet_ink.coffee_mud.Commands.base.ExternalCommands;
 import com.planet_ink.coffee_mud.web.*;
@@ -14,6 +16,7 @@ import com.planet_ink.coffee_mud.web.*;
 
 public class MUD extends Thread implements Host
 {
+	public String nameID="CoffeeMud";
 	public SaveThread saveThread=null;
 	public INI page=null;
 	public boolean keepDown=true;
@@ -27,7 +30,8 @@ public class MUD extends Thread implements Host
 	public boolean isOK = false;
 	
 	public ServerSocket servsock=null;
-
+	public Server imserver=null;
+	
 	public INI webCommon=null;
 	public HTTPserver webServerThread=null;
 	public HTTPserver adminServerThread=null;
@@ -201,6 +205,10 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
+		String newID=page.getStr("MUDID");
+		if((newID!=null)&&(newID.length()>0))
+			nameID=newID;
+		
 		offlineReason=new String("Booting: connecting to database");
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
@@ -275,6 +283,18 @@ public class MUD extends Thread implements Host
 			fatalStartupError(4);
 			return false;
 		}
+		
+		try
+		{
+			IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),null);
+			imserver=new Server();
+			imserver.start("CoffeeMud",27766,imud);
+		}
+		catch(Exception e)
+		{
+			Log.errOut("MUD",e);
+		}
+		
 
 		acceptConnections = true;
 		Log.sysOut("MUD","Initialization complete.");

@@ -436,10 +436,15 @@ public class TelnetSession extends Thread implements Session
 			if(clookup==null)
 			{
 				clookup=new String[256];
-				// N B H - normal bold highlight
+				// N B H - normal bold highlight underline flash italic
 				clookup[(int)'N']="\033[0;37m";
 				clookup[(int)'!']="\033[1;37m";
 				clookup[(int)'H']="\033[1;36m";
+				clookup[(int)'_']="\033[4m";
+				clookup[(int)'*']="\033[5m";
+				clookup[(int)'/']="\033[6m";
+				// reset
+				clookup[(int)'^']="\033[0m";
 				// F S - NOT IN USE! fight spell
 				clookup[(int)'F']="\033[1;31m";
 				clookup[(int)'S']="\033[1;34m";
