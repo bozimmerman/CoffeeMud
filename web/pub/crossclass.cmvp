@@ -9,5 +9,19 @@
 <body>
 <h3>Cross Class Skill Information</h3><P>
 	@CrossBaseClassAbilities@
+<P>
+<BR>
+<BR>
+@BaseCharClassNext?RESET@
+@loop@
+@BaseCharClassNext@
+	@CharClassNext?RESET@
+	@loop@
+		@CharClassNext@
+		<A href="classes.cmvp?CLASS=@CharClassID@"><FONT COLOR=BLUE>@CharClassName@</FONT></A><BR>
+		@CharClassData?BALANCE@
+		<P>
+	@back@
+@back@
 </BODY>
 </HTML>
