@@ -127,7 +127,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_SILK=MATERIAL_CLOTH|85;
 	public final static int RESOURCE_COCOA=MATERIAL_VEGETATION|86;
 	public final static int RESOURCE_BLOOD=MATERIAL_LIQUID|87;
-	public final static int RESOURCE_BONE=MATERIAL_GLASS|88;
+	public final static int RESOURCE_BONE=MATERIAL_ROCK|88;
 	public final static int RESOURCE_COAL=MATERIAL_ROCK|89;
 	public final static int RESOURCE_LAMPOIL=MATERIAL_LIQUID|90;
 	public final static int RESOURCE_POISON=MATERIAL_LIQUID|91;

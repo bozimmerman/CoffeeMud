@@ -812,22 +812,23 @@ public class StdRoom
 				if((fol!=null)&&(fol.location()==oldRoom))
 					bringMobHere(fol,true);
 			}
-			if(mob.riding()!=null)
+		}
+		if(mob.riding()!=null)
+		{
+			if((mob.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_ENTERIN)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
+			&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
 			{
-				if((mob.riding().rideBasis()!=Rideable.RIDEABLE_SIT)
-				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_TABLE)
-				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_SLEEP)
-				&&(mob.riding().rideBasis()!=Rideable.RIDEABLE_LADDER))
-				{
-					if(mob.riding() instanceof MOB)
-						bringMobHere((MOB)mob.riding(),andFollowers);
-					else
-					if(mob.riding() instanceof Item)
-						bringItemHere((Item)mob.riding(),-1);
-				}
+				if(mob.riding() instanceof MOB)
+					bringMobHere((MOB)mob.riding(),andFollowers);
 				else
-					mob.setRiding(null);
+				if(mob.riding() instanceof Item)
+					bringItemHere((Item)mob.riding(),-1);
 			}
+			else
+				mob.setRiding(null);
 		}
 		oldRoom.recoverRoomStats();
 		recoverRoomStats();

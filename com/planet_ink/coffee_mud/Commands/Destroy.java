@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.IOException;
 
-public class Destroy extends StdCommand
+public class Destroy extends BaseItemParser
 {
 	public Destroy(){}
 
@@ -413,15 +413,134 @@ public class Destroy extends StdCommand
 		}
 
 	}
+	
+	public static boolean destroyItem(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
+	{
+		String msgstr=null;
+		int material=(dropThis instanceof Item)?((Item)dropThis).material():-1;
+		if(!quiet)
+		switch(material&EnvResource.MATERIAL_MASK)
+		{
+		case EnvResource.MATERIAL_LIQUID:
+			msgstr="<S-NAME> pour(s) out <T-NAME>.";
+			break;
+		case EnvResource.MATERIAL_PAPER:
+			msgstr="<S-NAME> tear(s) up <T-NAME>.";
+			break;
+		case EnvResource.MATERIAL_GLASS:
+			msgstr="<S-NAME> smash(es) <T-NAME>.";
+			break;
+		default:
+			return false;
+		}
+		FullMsg msg=new FullMsg(mob,dropThis,null,CMMsg.MSG_NOISYMOVEMENT,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MASK_GENERAL|CMMsg.MSG_DEATH,CMMsg.MSG_NOISYMOVEMENT,msgstr);
+		if(mob.location().okMessage(mob,msg))
+		{
+			mob.location().send(mob,msg);
+			return true;
+		}
+		else
+		if(dropThis instanceof Coins)
+		{
+			mob.setMoney(mob.getMoney()+((Coins)dropThis).numberOfCoins());
+			((Coins)dropThis).destroy();
+		}
+		return false;
+	}
+
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(!mob.isASysOp(mob.location()))
 		{
-			Command C=CMClass.getCommand("Kill");
-			if(C!=null) C.execute(mob,commands);
+			commands.removeElementAt(0);
+			if(commands.size()==0)
+			{
+				mob.tell("Destroy what?");
+				return false;
+			}
+			if(mob.location().fetchInhabitant(Util.combine(commands,0))!=null)
+			{
+				Command C=CMClass.getCommand("Kill");
+				commands.insertElementAt("KILL",0);
+				if(C!=null) C.execute(mob,commands);
+				return false;
+			}
+
+			Vector V=new Vector();
+			int maxToDrop=Integer.MAX_VALUE;
+			
+			if((commands.size()>1)
+			&&(Util.s_int((String)commands.firstElement())>0))
+			{
+				maxToDrop=Util.s_int((String)commands.firstElement());
+				commands.setElementAt("all",0);
+			}
+
+			String whatToDrop=Util.combine(commands,0);
+			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+			if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
+			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
+			int addendum=1;
+			String addendumStr="";
+			do
+			{
+				Item dropThis=mob.fetchCarried(null,whatToDrop+addendumStr);
+				if((dropThis==null)
+				&&(V.size()==0)
+				&&(addendumStr.length()==0)
+				&&(!allFlag))
+				{
+					dropThis=mob.fetchWornItem(whatToDrop);
+					if(dropThis!=null)
+					{
+						int matType=dropThis.material()&EnvResource.MATERIAL_MASK;
+						if((matType!=EnvResource.MATERIAL_GLASS)
+						&&(matType!=EnvResource.MATERIAL_LIQUID)
+						&&(matType!=EnvResource.MATERIAL_PAPER))
+						{
+							mob.tell(dropThis.Name()+" can not be easily destroyed.");
+							return false;
+						}
+						else	
+						if((!dropThis.amWearingAt(Item.HELD))&&(!dropThis.amWearingAt(Item.WIELD)))
+						{
+							mob.tell("You must remove that first.");
+							return false;
+						}
+						else
+						{
+							FullMsg newMsg=new FullMsg(mob,dropThis,null,CMMsg.MSG_REMOVE,null);
+							if(mob.location().okMessage(mob,newMsg))
+								mob.location().send(mob,newMsg);
+							else
+								return false;
+						}
+					}
+				}
+				if(dropThis==null) break;
+				if((Sense.canBeSeenBy(dropThis,mob))
+				&&(!V.contains(dropThis)))
+					V.addElement(dropThis);
+				addendumStr="."+(++addendum);
+			}
+			while((allFlag)&&(addendum<=maxToDrop));
+
+			if(V.size()==0)
+				mob.tell("You don't seem to be carrying that.");
+			else
+			for(int i=0;i<V.size();i++)
+			{
+				destroyItem(mob,(Item)V.elementAt(i),false,true);
+				if(V.elementAt(i) instanceof Coins)
+					((Coins)V.elementAt(i)).putCoinsBack();
+			}
+			mob.location().recoverRoomStats();
+			mob.location().recoverRoomStats();
 			return false;
 		}
+		
 		String commandType="";
 
 		if(commands.size()>1)
@@ -681,9 +800,9 @@ public class Destroy extends StdCommand
 		}
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	public int ticksToExecute(){return 1;}
+	public boolean canBeOrdered(){return false;}
+	public boolean arcCommand(){return false;}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

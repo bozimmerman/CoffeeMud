@@ -1944,7 +1944,7 @@ public class StdMOB implements MOB
 						&&(rb!=Rideable.RIDEABLE_LADDER))
 						{
 							if(riding() instanceof Item)
-								location().bringItemHere((Item)riding(),Item.REFUSE_PLAYER_DROP);
+								location().bringItemHere((Item)riding(),-1);
 							else
 							if(riding() instanceof MOB)
 								location().bringMobHere((MOB)riding(),true);
