@@ -149,7 +149,7 @@ public class ClanVote extends BaseClanner
 							}
 						}
 						int numVotes=C.getNumVoters(CV.function);
-						if(numVotes==(yeas+nays))
+						if(numVotes<=(yeas+nays))
 						{
 							updateVote=true;
 							if(yeas<=nays)

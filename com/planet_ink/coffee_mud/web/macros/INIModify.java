@@ -129,10 +129,12 @@ public class INIModify extends StdWebMacro
 					CMSecurity.setSysOp(ipage.getStr("SYSOPMASK"));
 				if(modified(modified,"GROUP_*"))
 					CMSecurity.parseGroups(ipage);
-				if(modified(modified,"CHANNELS")||(modified(modified,"ICHANNELS")))
+				if(modified(modified,"CHANNELS")
+				||(modified(modified,"ICHANNELS"))
+				||(modified(modified,"IMC2CHANNELS")))
 				{
 					ChannelSet.unloadChannels();
-					ChannelSet.loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"));
+					ChannelSet.loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"),ipage.getStr("IMC2CHANNELS"));
 				}
 			}
 			return "";

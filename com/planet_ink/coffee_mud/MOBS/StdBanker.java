@@ -539,8 +539,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_DEPOSIT:
 				{
 					if(msg.tool()==null) return false;
+					int balance=getBalance(mob);
 					if(msg.tool() instanceof Coins)
+					{
+						if((Integer.MAX_VALUE-balance)<=((Coins)msg.tool()).numberOfCoins())
+						{
+							CommonMsgs.say(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
+							return false;
+						}
 						return true;
+					}
 					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
 					&&((msg.source().getClanID().length()==0)
 					  ||(Clans.getClan(msg.source().getClanID())==null)))
@@ -553,7 +561,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
-					int balance=getBalance(mob);
 					int minbalance=minBalance(mob)+(((Item)msg.tool()).value()/2);
 					if(balance<minbalance)
 					{

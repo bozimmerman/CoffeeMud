@@ -10,9 +10,11 @@ public class ChannelSet
 	
 	protected static int numChannelsLoaded=0;
 	protected static int numIChannelsLoaded=0;
+	protected static int numImc2ChannelsLoaded=0;
 	protected static Vector channelNames=new Vector();
 	protected static Vector channelMasks=new Vector();
 	protected static Vector ichannelList=new Vector();
+	protected static Vector imc2channelList=new Vector();
 	protected static Vector channelQue=new Vector();
 	
 	public static int getNumChannels()
@@ -113,9 +115,29 @@ public class ChannelSet
 		channelNames=new Vector();
 		channelMasks=new Vector();
 		ichannelList=new Vector();
+		imc2channelList=new Vector();
 		channelQue=new Vector();
 	}
 
+	public static String[][] imc2ChannelsArray()
+	{
+		String[][] array=new String[numImc2ChannelsLoaded][3];
+		int num=0;
+		for(int i=0;i<channelNames.size();i++)
+		{
+			String name=(String)channelNames.elementAt(i);
+			String mask=(String)channelMasks.elementAt(i);
+			String iname=(String)imc2channelList.elementAt(i);
+			if((iname!=null)&&(iname.trim().length()>0))
+			{
+				array[num][0]=iname.trim();
+				array[num][1]=name.trim();
+				array[num][2]=mask;
+				num++;
+			}
+		}
+		return array;
+	}
 	public static String[][] iChannelsArray()
 	{
 		String[][] array=new String[numIChannelsLoaded][3];
@@ -141,7 +163,7 @@ public class ChannelSet
 		return Util.toStringArray(channelNames);
 	}
 	
-	public static int loadChannels(String list, String ilist)
+	public static int loadChannels(String list, String ilist, String imc2list)
 	{
 		while(list.length()>0)
 		{
@@ -169,6 +191,7 @@ public class ChannelSet
 			else
 				channelMasks.addElement("");
 			ichannelList.addElement("");
+			imc2channelList.addElement("");
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
 		}
@@ -198,24 +221,57 @@ public class ChannelSet
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
 			channelMasks.addElement(lvl);
+			imc2channelList.addElement("");
 			ichannelList.addElement(ichan);
+		}
+		while(imc2list.length()>0)
+		{
+			int x=imc2list.indexOf(",");
+
+			String item=null;
+			if(x<0)
+			{
+				item=imc2list.trim();
+				imc2list="";
+			}
+			else
+			{
+				item=imc2list.substring(0,x).trim();
+				imc2list=imc2list.substring(x+1);
+			}
+			int y1=item.indexOf(" ");
+			int y2=item.lastIndexOf(" ");
+			if((y1<0)||(y2<=y1)) continue;
+			numChannelsLoaded++;
+			numImc2ChannelsLoaded++;
+			String lvl=item.substring(y1+1,y2).trim();
+			String ichan=item.substring(y2+1).trim();
+			item=item.substring(0,y1);
+			channelNames.addElement(item.toUpperCase().trim());
+			channelQue.addElement(new Vector());
+			channelMasks.addElement(lvl);
+			imc2channelList.addElement(ichan);
+			ichannelList.addElement("");
 		}
 		channelNames.addElement(new String("CLANTALK"));
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
 		ichannelList.addElement("");
+		imc2channelList.addElement("");
 		numChannelsLoaded++;
 
 		channelNames.addElement(new String("AUCTION"));
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
 		ichannelList.addElement("");
+		imc2channelList.addElement("");
 		numChannelsLoaded++;
 
 		channelNames.addElement(new String("WIZINFO"));
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("+SYSOP -NAMES");
 		ichannelList.addElement("");
+		imc2channelList.addElement("");
 		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}

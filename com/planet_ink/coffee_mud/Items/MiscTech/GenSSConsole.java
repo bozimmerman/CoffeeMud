@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GenSSConsole extends StdItem
+public class GenSSConsole extends StdItem implements Electronics
 {
 	public String ID(){	return "GenSSConsole";}
 	private String readableText="";

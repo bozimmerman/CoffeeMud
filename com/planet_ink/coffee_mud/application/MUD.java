@@ -8,7 +8,8 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.i3.*;
-import com.planet_ink.coffee_mud.i3.server.*;
+import com.planet_ink.coffee_mud.i3.server.Server;
+import com.planet_ink.coffee_mud.i3.imc2.IMC2Driver;
 import com.planet_ink.coffee_mud.web.*;
 import com.planet_ink.coffee_mud.web.espresso.*;
 
@@ -23,6 +24,7 @@ public class MUD extends Thread implements MudHost
 	public static SaveThread saveThread=null;
 	public static UtiliThread utiliThread=null;
 	public static Server imserver=null;
+	public static IMC2Driver imc2server=null;
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
     public static EspressoServer espserver=null;
@@ -35,6 +37,7 @@ public class MUD extends Thread implements MudHost
 	public static boolean isOK = false;
 
 	public boolean acceptConnections=false;
+	public String host="MyHost";
 	public int port=5555;
 	ServerSocket servsock=null;
 
@@ -220,7 +223,9 @@ public class MUD extends Thread implements MudHost
 		CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
 		CMSecurity.parseGroups(page);
 
-		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"));
+		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),
+													  page.getStr("ICHANNELS"),
+													  page.getStr("IMC2CHANNELS"));
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
@@ -310,6 +315,32 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("MUD",e);
 		}
 
+		
+		try
+		{
+			if(page.getBoolean("RUNIMC2CLIENT"))
+			{
+				imc2server=new IMC2Driver();
+				if(!imc2server.imc_startup(false,
+										page.getStr("IMC2LOGIN"),
+										"",
+										page.getStr("IMC2MYEMAIL"),
+										page.getStr("IMC2MYWEB"),
+										page.getStr("IMC2HUBNAME"),
+										page.getInt("IMC2HUBPORT"),
+										page.getStr("IMC2PASS1"),
+										page.getStr("IMC2PASS2"),
+										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS"))))
+				{
+					Log.errOut("MUD","IMC2 Failed to start!");
+					imc2server=null;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			Log.errOut("MUD",e);
+		}
 
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
@@ -719,6 +750,10 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
+	public String getHost()
+	{
+		return host;
+	}
 	public int getPort()
 	{
 		return port;

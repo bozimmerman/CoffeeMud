@@ -1710,6 +1710,38 @@ public class Arrest extends StdBehavior
 	}
 
 
+	public void haveMobReactToLaw(MOB mob, MOB officer)
+	{
+		if((mob.isMonster())&&(!Sense.isSitting(mob))&&(mob.amFollowing()==null)&&(!mob.isInCombat()))
+		{
+			boolean good=Sense.isGood(mob);
+			boolean evil=Sense.isEvil(mob);
+			boolean neutral=(!good)&&(!evil);
+			if(evil
+			||(neutral&&(Dice.rollPercentage()>50))
+			||(Sense.flaggedBehaviors(mob,Behavior.FLAG_POTENTIALLYAGGRESSIVE).size()>0))
+			{
+				if(mob.envStats().level()>(officer.envStats().level()/2))
+					mob.setVictim(officer);
+				else
+				if(!Sense.isAnimalIntelligence(mob))
+					mob.enqueCommand(Util.parse("FLEE"),1);
+			}
+			else
+			if((good||neutral)
+			&&(!Sense.isAnimalIntelligence(mob)))
+			{
+				mob.makePeace();
+				mob.doCommand(Util.parse("SIT"));
+			}
+			else
+			if((Sense.isAnimalIntelligence(mob))&&(Dice.rollPercentage()>50))
+			{
+				mob.makePeace();
+				mob.doCommand(Util.parse("SIT"));
+			}
+		}
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -1799,9 +1831,18 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
-							W.setArrestingOfficer(officer);
-							CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
-							W.setState(Law.STATE_ARRESTING);
+							if(!Sense.isAnimalIntelligence(W.criminal()))
+							{
+								W.setArrestingOfficer(officer);
+								CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+								W.setState(Law.STATE_ARRESTING);
+							}
+							else
+							{
+								W.setArrestingOfficer(officer);
+								CommonMsgs.say(W.arrestingOfficer(),W.criminal(),"You are headed to the pound for "+restOfCharges(laws,W.criminal())+"!",false,false);
+								W.setState(Law.STATE_ARRESTING);
+							}
 						}
 					}
 					else
@@ -1846,18 +1887,17 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
-							if((W.criminal().isMonster())
-							&&(!Sense.isEvil(W.criminal()))
-							&&(!Sense.isSitting(W.criminal())))
-							{
-								W.criminal().makePeace();
-								W.criminal().doCommand(Util.parse("SIT"));
-							}
+							haveMobReactToLaw(W.criminal(),officer);
+							W.setState(Law.STATE_SUBDUEING);
 							if(Sense.isSitting(W.criminal())||Sense.isSleeping(W.criminal()))
-								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
+							{
+								if(!Sense.isAnimalIntelligence(W.criminal()))
+									CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
+							}
 							else
 								CommonMsgs.say(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
-							W.setState(Law.STATE_SUBDUEING);
+							if(W.criminal().isMonster())
+								haveMobReactToLaw(W.criminal(),officer);
 						}
 					}
 					else
@@ -1878,13 +1918,7 @@ public class Arrest extends StdBehavior
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
 						W.setTravelAttemptTime(0);
-						if((W.criminal().isMonster())
-						&&(!Sense.isEvil(W.criminal()))
-						&&(!Sense.isSitting(W.criminal())))
-						{
-							W.criminal().makePeace();
-							W.criminal().doCommand(Util.parse("SIT"));
-						}
+						haveMobReactToLaw(W.criminal(),officer);
 						if(W.crime().equalsIgnoreCase("pardoned"))
 						{
 							fileAllWarrants(laws,W.criminal());
@@ -1918,7 +1952,10 @@ public class Arrest extends StdBehavior
 						{
 							makePeace(officer.location());
 							// cuff him!
-							W.setState(Law.STATE_MOVING);
+							if(Sense.isAnimalIntelligence(W.criminal()))
+								W.setState(Law.STATE_JAILING);
+							else
+								W.setState(Law.STATE_MOVING);
 							if(cuff!=null){ cuff.unInvoke(); W.criminal().delEffect(cuff);}
 							Ability A=CMClass.getAbility("Skill_HandCuff");
 							if(A!=null)	A.invoke(officer,W.criminal(),true);

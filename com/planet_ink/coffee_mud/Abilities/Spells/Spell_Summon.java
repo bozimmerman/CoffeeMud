@@ -57,6 +57,11 @@ public class Spell_Summon extends Spell
 
 		int adjustment=(target.envStats().level()-mob.envStats().level())*3;
 		boolean success=profficiencyCheck(mob,-adjustment,auto);
+		if(success&&(!mob.mayIFight(target)))
+		{
+			mob.tell(target.name()+" is a player, so your playerkill flags must be on for this to work.");
+			success=false;
+		}
 
 		if(success)
 		{

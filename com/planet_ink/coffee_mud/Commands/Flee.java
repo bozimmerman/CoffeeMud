@@ -17,10 +17,13 @@ public class Flee extends Go
 		if(commands.size()>1) direction=Util.combine(commands,1);
 		if(mob==null) return false;
 		Room R=mob.location();
-		if((R==null)||(!mob.isInCombat()))
+		if((!mob.isMonster())||(mob.amFollowing()!=null))
 		{
-			mob.tell(getScr("Movement","fleeerr1"));
-			return false;
+			if((R==null)||(!mob.isInCombat()))
+			{
+				mob.tell(getScr("Movement","fleeerr1"));
+				return false;
+			}
 		}
 
 		int directionCode=-1;

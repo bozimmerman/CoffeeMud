@@ -31,6 +31,7 @@ public interface MudHost
 
 	public final static int MAX_TICK_CLIENTS=32;
 
+	public String getHost();
 	public int getPort();
 	public void shutdown(Session S, boolean keepItDown, String externalCommand);
 }

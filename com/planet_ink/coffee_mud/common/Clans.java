@@ -503,11 +503,11 @@ public class Clans implements Clan, Tickable
 			switch(function)
 			{
 			case FUNC_CLANACCEPT:
-				return (role==Clan.POS_BOSS)?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
 			case FUNC_CLANASSIGN:
 				return 0;
 			case FUNC_CLANEXILE:
-				return (role==Clan.POS_BOSS)?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
 			case FUNC_CLANHOMESET:
 				return 0;
 			case FUNC_CLANTAX:
@@ -521,7 +521,7 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANDECLARE:
 				return 0;
 			case FUNC_CLANPROPERTYOWNER:
-				return (role==Clan.POS_BOSS)?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
 			case FUNC_CLANENCHANT:
 				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER))?1:-1;
 			case FUNC_CLANWITHDRAW:

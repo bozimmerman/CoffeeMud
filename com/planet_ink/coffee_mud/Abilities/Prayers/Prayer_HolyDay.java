@@ -48,7 +48,10 @@ public class Prayer_HolyDay extends Prayer
 			return false;
 		}
 		else
-		if(((msg.sourceMinor()==CMMsg.TYP_BUY)||(msg.sourceMinor()==CMMsg.TYP_SELL))
+		if(((msg.sourceMinor()==CMMsg.TYP_BUY)
+			||(msg.sourceMinor()==CMMsg.TYP_SELL)
+			||(msg.sourceMinor()==CMMsg.TYP_WITHDRAW)
+			||(msg.sourceMinor()==CMMsg.TYP_DEPOSIT))
 		&&(msg.source()!=invoker()))
 		{
 			msg.source().tell("You are not allowed to work on the holy day of "+godName+".");
