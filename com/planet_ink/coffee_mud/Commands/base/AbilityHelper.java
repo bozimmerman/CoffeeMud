@@ -18,7 +18,7 @@ public class AbilityHelper
 		
 		String mobClass=mob.charStats().getCurrentClass().name().toUpperCase().substring(0,3);
 		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
-		String mobRace=mob.charStats().getMyRace().name().toUpperCase().substring(0,3);
+		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase().substring(0,3);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
 		text=text.toUpperCase();
 		// do class first

@@ -1,3 +1,1 @@
 Some mage stuff at the trading post.
- Maybe a behavior based on GateGuard that allow/disallows certain categories.
-I am also trying to make a room that will provide faster healing and regen rates when in that room? What should I be doing to achieve that?
