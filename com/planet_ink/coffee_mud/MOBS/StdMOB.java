@@ -1646,21 +1646,22 @@ public class StdMOB implements MOB
 				{
 					MOB victim=null;
 					if(msg.target() instanceof MOB)
-					{
 						victim=(MOB)msg.target();
-						if((clanID.length()>0)
-						&&(clanID.equals(victim.getClanID()))
-						&&(!Util.s_bool(msg.othersMessage())))
-						   msg.setValue(0);
+					
+					if((clanID.length()==0)
+					||(victim==null)
+					||(!clanID.equals(victim.getClanID()))
+					||(Util.s_bool(msg.othersMessage())))
+					{
+						if(msg.value()>=0)
+							charStats().getCurrentClass().gainExperience(this,
+																		 victim,
+																		 msg.targetMessage(),
+																		 msg.value(),
+																		 Util.s_bool(msg.othersMessage()));
+						else
+							charStats().getCurrentClass().loseExperience(this,-msg.value());
 					}
-					if(msg.value()>=0)
-						charStats().getCurrentClass().gainExperience(this,
-																	 victim,
-																	 msg.targetMessage(),
-																	 msg.value(),
-																	 Util.s_bool(msg.othersMessage()));
-					else
-						charStats().getCurrentClass().loseExperience(this,-msg.value());
 				}
 				break;
 			case CMMsg.TYP_DEATH:

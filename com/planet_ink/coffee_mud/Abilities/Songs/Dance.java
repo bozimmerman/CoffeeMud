@@ -136,6 +136,7 @@ public class Dance extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Dance newOne=(Dance)this.copyOf();
+				newOne.invoker=mob;
 				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 

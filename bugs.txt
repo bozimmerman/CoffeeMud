@@ -1,6 +1,9 @@
-guildmasters should be able to LIST their funds.
-do something about journal dates.. i like the dual date idea
-
+a player grouped should be able to build on clan property, as should mobs. . neither works
+a vote thats done and over with should allow more votes.
+native aggressives to clan areas can attack members
+still getting exp for killing natives 
+if you attack a mob followed for conquest purposes, lose exp!
+golems are not damaged by lack of breathe
 
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! 
