@@ -95,6 +95,8 @@ public class Chant_Hibernation extends Chant
 			mob.curState().setThirst(oldState.getThirst());
 			double hp=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
 			mob.curState().adjHitPoints((int)Math.round((hp*.1)+(mob.envStats().level()/2)),mob.maxState());
+			double move=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
+			mob.curState().adjMovement((int)Math.round((move*.1)+(mob.envStats().level()/2)),mob.maxState());
 		}
 		else
 		{

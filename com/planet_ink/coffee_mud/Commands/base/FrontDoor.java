@@ -344,7 +344,7 @@ public class FrontDoor
 							}
 						if(newRace!=null)
 						{
-							StringBuffer str=ExternalPlay.getHelpText(newRace.ID().toUpperCase());
+							StringBuffer str=ExternalPlay.getHelpText(newRace.ID().toUpperCase(),mob);
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
 							if(!mob.session().confirm("^!Is ^H"+newRace.name()+"^N^! correct (Y/n)?^N","Y"))
 								newRace=null;
@@ -439,7 +439,7 @@ public class FrontDoor
 						}
 						if((newClass!=null)&&(classOkForMe(mob,newClass)))
 						{
-							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
+							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase(),mob);
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");
 							if(!mob.session().confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
 								newClass=null;

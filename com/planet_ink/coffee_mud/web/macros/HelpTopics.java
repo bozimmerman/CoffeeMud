@@ -24,7 +24,7 @@ public class HelpTopics extends StdWebMacro
 		{
 			if((last!=null)&&(last.length()>0))
 			{
-				StringBuffer s=ExternalPlay.getHelpText(last);
+				StringBuffer s=ExternalPlay.getHelpText(last,null);
 				if(s!=null)
 					return helpHelp(s).toString();
 			}

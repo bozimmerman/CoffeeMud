@@ -195,20 +195,20 @@ public class Help
 	}
 
 
-	public static StringBuffer getHelpText(String helpStr)
+	public static StringBuffer getHelpText(String helpStr, MOB forMOB)
 	{
 		if(getHelpFile().size()==0)
 			return null;
 		if(helpStr.length()==0) return null;
-		StringBuffer thisTag=getHelpText(helpStr,getHelpFile());
+		StringBuffer thisTag=getHelpText(helpStr,getHelpFile(),forMOB);
 		if(thisTag!=null) return thisTag;
 		if(getArcHelpFile().size()==0) return null;
-		thisTag=getHelpText(helpStr,getArcHelpFile());
+		thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB);
 		return thisTag;
 	}
 
 
-	public static String fixHelp(String tag, String str)
+	public static String fixHelp(String tag, String str, MOB forMOB)
 	{
 		if(str.startsWith("<ABILITY>"))
 		{
@@ -410,7 +410,7 @@ public class Help
 		return str;
 	}
 
-	public static StringBuffer getHelpText(String helpStr,Properties rHelpFile)
+	public static StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
@@ -477,7 +477,7 @@ public class Help
 				return CMMap.getArea(helpStr.trim()).getAreaStats();
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
-		return new StringBuffer(fixHelp(helpStr,thisTag));
+		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
 	}
 
 	public static void help(MOB mob, String helpStr)
@@ -491,9 +491,9 @@ public class Help
 		if(helpStr.length()==0)
 			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
 		else
-			thisTag=getHelpText(helpStr,getHelpFile());
+			thisTag=getHelpText(helpStr,getHelpFile(),mob);
 		if((thisTag==null)&&(mob.isASysOp(mob.location())))
-			thisTag=getHelpText(helpStr,getArcHelpFile());
+			thisTag=getHelpText(helpStr,getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
 			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
@@ -561,7 +561,7 @@ public class Help
 			}
 		}
 		else
-			thisTag=getHelpText(helpStr,getArcHelpFile());
+			thisTag=getHelpText(helpStr,getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
 			mob.tell("No archon help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");

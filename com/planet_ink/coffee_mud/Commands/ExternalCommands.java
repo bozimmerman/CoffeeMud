@@ -161,9 +161,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.doCommand(mob,commands);
 	}
-	public StringBuffer getHelpText(String helpStr)
+	public StringBuffer getHelpText(String helpStr, MOB forMOB)
 	{
-		return Help.getHelpText(helpStr);
+		return Help.getHelpText(helpStr,forMOB);
 	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{

@@ -362,7 +362,8 @@ public class Property implements Ability, Cloneable
 	{ return true;	}
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}
-	public int usageCost(MOB mob){return 0;}
+	private static final int[] cost=new int[3];
+	public int[] usageCost(MOB mob){return cost;}
 
 
 	public void addAffect(Ability to){}

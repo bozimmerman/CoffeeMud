@@ -24,9 +24,9 @@ public class CharClassData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText(C.ID());
+					StringBuffer s=ExternalPlay.getHelpText(C.ID(),null);
 					if(s==null)
-						s=ExternalPlay.getHelpText(C.name());
+						s=ExternalPlay.getHelpText(C.name(),null);
 					if(s!=null)
 						str.append(helpHelp(s));
 				}

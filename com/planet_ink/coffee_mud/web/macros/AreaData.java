@@ -170,8 +170,8 @@ public class AreaData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText("AREA_"+A.Name());
-					if(s==null)	s=ExternalPlay.getHelpText(A.Name());
+					StringBuffer s=ExternalPlay.getHelpText("AREA_"+A.Name(),null);
+					if(s==null)	s=ExternalPlay.getHelpText(A.Name(),null);
 					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("CLIMATES"))

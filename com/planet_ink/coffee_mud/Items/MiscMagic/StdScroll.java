@@ -67,7 +67,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 		else
 		{
-			manaRequired=50;
+			manaRequired=25;
 		}
 		if(manaRequired>mob.curState().getMana())
 		{

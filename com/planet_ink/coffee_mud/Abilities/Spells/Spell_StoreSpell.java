@@ -144,7 +144,7 @@ public class Spell_StoreSpell extends Spell
 		int x=A.text().indexOf("/");
 		if(x>=0) charges=Util.s_int(A.text().substring(x+1));
 		overridemana=-1;
-		int mana=usageCost(mob)+wandThis.usageCost(mob);
+		int mana=usageCost(mob)[0]+wandThis.usageCost(mob)[0];
 		if(mana>mob.maxState().getMana())
 			mana=mob.maxState().getMana();
 		overridemana=mana;

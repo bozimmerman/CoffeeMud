@@ -24,9 +24,9 @@ public class AbilityData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText(A.ID());
+					StringBuffer s=ExternalPlay.getHelpText(A.ID(),null);
 					if(s==null)
-						s=ExternalPlay.getHelpText(A.Name());
+						s=ExternalPlay.getHelpText(A.Name(),null);
 					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("RANGES"))

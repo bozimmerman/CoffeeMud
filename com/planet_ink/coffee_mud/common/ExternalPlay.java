@@ -187,9 +187,9 @@ public class ExternalPlay
 		if(player!=null) return player.drop(mob,dropThis,quiet,optimize);
 		return false;
 	}
-	public static StringBuffer getHelpText(String helpStr)
+	public static StringBuffer getHelpText(String helpStr, MOB forMOB)
 	{
-		if(player!=null) return player.getHelpText(helpStr);
+		if(player!=null) return player.getHelpText(helpStr, forMOB);
 		return null;
 	}
 	public static void read(MOB mob, Environmental thisThang, String theRest)

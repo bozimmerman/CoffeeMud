@@ -273,6 +273,32 @@ public class CommonSkill extends StdAbility
 		return fire;
 	}
 
+	public int[] usageCost(MOB mob)
+	{
+		if(mob==null)
+		{
+			int[] usage=new int[3];
+			usage[0]=overrideMana();
+			usage[1]=overrideMana();
+			usage[2]=overrideMana();
+			return usage;
+		}
+		if(usageType()==Ability.USAGE_NADA) return new int[3];
+		
+		int consumed=25;
+		int diff=mob.envStats().level()-CMAble.qualifyingLevel(mob,this);
+		if(diff>0)
+		switch(diff)
+		{
+		case 1: consumed=20; break;
+		case 2: consumed=15; break;
+		case 3: consumed=10; break;
+		default: consumed=5; break;
+		}
+		if(overrideMana()>=0) consumed=overrideMana();
+		return buildCostArray(mob,consumed);
+	}
+	
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;
@@ -617,24 +643,35 @@ public class CommonSkill extends StdAbility
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
 
-		int manaConsumed=25;
-		int diff=mob.envStats().level()-CMAble.qualifyingLevel(mob,this);
-		if(diff>0)
-		switch(diff)
+		int[] consumed=usageCost(mob);
+		if(mob.curState().getMana()<consumed[0])
 		{
-		case 1: manaConsumed=20; break;
-		case 2: manaConsumed=15; break;
-		case 3: manaConsumed=10; break;
-		default: manaConsumed=5; break;
-		}
-
-		if(mob.curState().getMana()<manaConsumed)
-		{
-			commonTell(mob,"<S-NAME> don't have enough mana to do that.");
+			if(mob.maxState().getMana()==consumed[0])
+				mob.tell("You must be at full mana to do that.");
+			else
+				mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
+		mob.curState().adjMana(-consumed[0],mob.maxState());
+		if(mob.curState().getMovement()<consumed[1])
+		{
+			if(mob.maxState().getMovement()==consumed[1])
+				mob.tell("You must be at full movement to do that.");
+			else
+				mob.tell("You don't have enough movement to do that.  You are too tired.");
+			return false;
+		}
+		mob.curState().adjMovement(-consumed[1],mob.maxState());
+		if(mob.curState().getHitPoints()<consumed[2])
+		{
+			if(mob.maxState().getHitPoints()==consumed[2])
+				mob.tell("You must be at full health to do that.");
+			else
+				mob.tell("You don't have enough hit points to do that.");
+			return false;
+		}
+		mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 		activityRoom=mob.location();
-		mob.curState().adjMana(-manaConsumed,mob.maxState());
 		helpProfficiency(mob);
 
 		return true;

@@ -166,7 +166,16 @@ public class Charlatan extends StdCharClass
 			&&(myChar.isMine(affect.tool()))
 			&&(myChar.charStats().getClassLevel(this)>=30)
 			&&(CMAble.getQualifyingLevel(ID(),affect.tool().ID())<1))
-				myChar.curState().adjMana(40,myChar.maxState());
+			{
+				Ability A=((Ability)affect.tool());
+				if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+					myChar.curState().adjMana(A.usageCost(myChar)[0]/4,myChar.maxState());
+				if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+					myChar.curState().adjMovement(A.usageCost(myChar)[1]/4,myChar.maxState());
+				if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+					myChar.curState().adjMovement(A.usageCost(myChar)[2]/4,myChar.maxState());
+			}
+				
 			
 			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
 			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))

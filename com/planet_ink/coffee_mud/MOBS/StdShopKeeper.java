@@ -798,6 +798,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						else
 						{
 							curState().setMana(maxState().getMana());
+							curState().setMovement(maxState().getMovement());
 							Vector V=new Vector();
 							if(A.canTarget(mob))
 							{
@@ -819,6 +820,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								if(!mob.isMine(I)) mob.addInventory(I);
 							}
 							curState().setMana(maxState().getMana());
+							curState().setMovement(maxState().getMovement());
 						}
 					}
 

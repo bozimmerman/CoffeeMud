@@ -71,10 +71,6 @@ public class CombatAbilities extends StdBehavior
 				return true;
 		}
 
-		double aChance=Util.div(mob.curState().getMana(),mob.maxState().getMana());
-		if((Math.random()>aChance)||(mob.curState().getMana()<50))
-			return true;
-
 		int tries=0;
 		Ability tryThisOne=null;
 
@@ -95,10 +91,31 @@ public class CombatAbilities extends StdBehavior
 			tries++;
 		}
 
-		mob.curState().adjMana(5,mob.maxState());
+		
 		boolean wandThis=true;
 		if(tryThisOne!=null)
 		{
+			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
+			{
+				if((Math.random()>Util.div(mob.curState().getMana(),mob.maxState().getMana()))
+				   ||(mob.curState().getMana()<tryThisOne.usageCost(mob)[0]))
+					return true;
+				mob.curState().adjMana(5,mob.maxState());
+			}
+			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
+			{
+				if((Math.random()>Util.div(mob.curState().getMovement(),mob.maxState().getMovement()))
+				   ||(mob.curState().getMovement()<tryThisOne.usageCost(mob)[1]))
+					return true;
+				mob.curState().adjMovement(5,mob.maxState());
+			}
+			if(Util.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
+			{
+				if((Math.random()>Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
+				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob)[2]))
+					return true;
+			}
+			
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
 				victim=mob;
 

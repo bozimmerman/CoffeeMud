@@ -22,8 +22,8 @@ public class BehaviorData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText("BEHAVIOR_"+B.ID());
-					if(s==null)	s=ExternalPlay.getHelpText(B.ID());
+					StringBuffer s=ExternalPlay.getHelpText("BEHAVIOR_"+B.ID(),null);
+					if(s==null)	s=ExternalPlay.getHelpText(B.ID(),null);
 					str.append(helpHelp(s));
 				}
 				String strstr=str.toString();

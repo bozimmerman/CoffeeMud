@@ -83,6 +83,8 @@ public class Chant_Nectar extends Chant
 					M.curState().adjHitPoints(hp,M.maxState());
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
 					M.curState().adjMana(mana,M.maxState());
+					int move=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
+					M.curState().adjMovement(move,M.maxState());
 				}
 				break;
 			default:

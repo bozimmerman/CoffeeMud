@@ -407,9 +407,56 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
-	public int usageCost(MOB mob)
+	protected int[] buildCostArray(MOB mob, int consumed)
 	{
-		if(mob==null) return overrideMana();
+		int[] usageCosts=new int[3];
+		boolean useMana=Util.bset(usageType(),Ability.USAGE_MANA);
+		boolean useMoves=Util.bset(usageType(),Ability.USAGE_MOVEMENT);
+		boolean useHits=Util.bset(usageType(),Ability.USAGE_HITPOINTS);
+		int divider=1;
+		if((useMana)&&(useMoves)&&(useHits)) divider=3;
+		else
+		if((useMana)&&(useMoves)&&(!useHits)) divider=2;
+		else
+		if((useMana)&&(!useMoves)&&(useHits)) divider=2;
+		else
+		if((!useMana)&&(useMoves)&&(useHits)) divider=2;
+		
+		if(useMana){
+			usageCosts[0]=consumed/divider;
+			if((usageCosts[0]>0)&&(usageCosts[0]<5))
+				usageCosts[0]=5;
+			if(consumed==Integer.MAX_VALUE) 
+				usageCosts[0]=mob.maxState().getMana();
+		}
+		if(useMoves){
+			usageCosts[1]=consumed/divider;
+			if((usageCosts[1]>0)&&(usageCosts[0]<5))
+				usageCosts[1]=5;
+			if(consumed==Integer.MAX_VALUE) 
+				usageCosts[1]=mob.maxState().getMovement();
+		}
+		if(useHits){
+			usageCosts[2]=consumed/divider;
+			if((usageCosts[2]>0)&&(usageCosts[0]<5))
+				usageCosts[2]=5;
+			if(consumed==Integer.MAX_VALUE) 
+				usageCosts[2]=mob.maxState().getHitPoints();
+		}
+		return usageCosts;
+	}
+	
+	public int[] usageCost(MOB mob)
+	{
+		if(mob==null)
+		{
+			int[] usage=new int[3];
+			usage[0]=overrideMana();
+			usage[1]=overrideMana();
+			usage[2]=overrideMana();
+			return usage;
+		}
+		if(usageType()==Ability.USAGE_NADA) return new int[3];
 		
 		int diff=0;
 		for(int c=0;c<mob.charStats().numClasses();c++)
@@ -421,16 +468,10 @@ public class StdAbility implements Ability, Cloneable
 				diff+=(classLevel-qualifyingLevel);
 		}
 	
-		int manaConsumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
-		if(diff>0)
-			manaConsumed=manaConsumed - (manaConsumed /10 * diff);
-		if(manaConsumed<5) manaConsumed=5;
-		if(overrideMana()==Integer.MAX_VALUE)
-			manaConsumed=mob.maxState().getMana();
-		else
-		if(overrideMana()>=0) 
-			manaConsumed=overrideMana();
-		return manaConsumed;
+		int consumed=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MANACOST);
+		if(diff>0) consumed=consumed - (consumed /10 * diff);
+		if(overrideMana()>=0) consumed=overrideMana();
+		return buildCostArray(mob,consumed);
 	}
 	
 	public void helpProfficiency(MOB mob)
@@ -477,17 +518,34 @@ public class StdAbility implements Ability, Cloneable
 			if(!Sense.aliveAwakeMobile(mob,false))
 				return false;
 
-			int manaConsumed=usageCost(mob);
-			
-			if(mob.curState().getMana()<manaConsumed)
+			int[] consumed=usageCost(mob);
+			if(mob.curState().getMana()<consumed[0])
 			{
-				if(mob.maxState().getMana()==manaConsumed)
+				if(mob.maxState().getMana()==consumed[0])
 					mob.tell("You must be at full mana to do that.");
 				else
 					mob.tell("You don't have enough mana to do that.");
 				return false;
 			}
-			mob.curState().adjMana(-manaConsumed,mob.maxState());
+			mob.curState().adjMana(-consumed[0],mob.maxState());
+			if(mob.curState().getMovement()<consumed[1])
+			{
+				if(mob.maxState().getMovement()==consumed[1])
+					mob.tell("You must be at full movement to do that.");
+				else
+					mob.tell("You don't have enough movement to do that.  You are too tired.");
+				return false;
+			}
+			mob.curState().adjMovement(-consumed[1],mob.maxState());
+			if(mob.curState().getHitPoints()<consumed[2])
+			{
+				if(mob.maxState().getHitPoints()==consumed[2])
+					mob.tell("You must be at full health to do that.");
+				else
+					mob.tell("You don't have enough hit points to do that.");
+				return false;
+			}
+			mob.curState().adjHitPoints(-consumed[2],mob.maxState());
 			helpProfficiency(mob);
 		}
 		else

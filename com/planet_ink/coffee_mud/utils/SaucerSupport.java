@@ -1152,9 +1152,10 @@ public class SaucerSupport
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
 			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
-			int oldMana=mob.curState().getMana();
+			CharState oldState=mob.curState().cloneCharState();
 			A.invoke(mob,V,null,false);
-			mob.curState().setMana(oldMana);
+			mob.curState().setMana(oldState.getMana());
+			mob.curState().setMovement(oldState.getMovement());
 		}
 		else
 		if((nextRoom.ID().indexOf("Surface")>0)
@@ -1166,9 +1167,10 @@ public class SaucerSupport
 			Vector V=new Vector();
 			V.add(Directions.getDirectionName(direction));
 			if(A.profficiency()<50)	A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
-			int oldMana=mob.curState().getMana();
+			CharState oldState=mob.curState().cloneCharState();
 			A.invoke(mob,V,null,false);
-			mob.curState().setMana(oldMana);
+			mob.curState().setMana(oldState.getMana());
+			mob.curState().setMovement(oldState.getMovement());
 		}
 		else
 		if(mob.fetchAbility("Thief_Sneak")!=null)
@@ -1183,9 +1185,10 @@ public class SaucerSupport
 				if(A2!=null)
 					A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 			}
-			int oldMana=mob.curState().getMana();
+			CharState oldState=mob.curState().cloneCharState();
 			A.invoke(mob,V,null,false);
-			mob.curState().setMana(oldMana);
+			mob.curState().setMana(oldState.getMana());
+			mob.curState().setMovement(oldState.getMovement());
 		}
 		else
 			ExternalPlay.move(mob,direction,false,false);

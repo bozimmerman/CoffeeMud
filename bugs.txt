@@ -2,6 +2,4 @@ ability to permasave a mpvar
 implement mana/move thing for abilities -- add to help
 scriptable -- add ability adding, and container checking
 using mpbehav should do something about semicolons
-
-
-
+Shouldn't be too hard to imp... The Admin site has the Complete lists of a few things, skills, behaviors, affects...  Would it be possible to get a page that lists all the known Resources in a cool table with like name, type, base value, scarcity and list of loaded locales that have it?

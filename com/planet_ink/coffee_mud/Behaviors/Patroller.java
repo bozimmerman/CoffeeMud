@@ -156,9 +156,10 @@ public class Patroller extends ActiveTicker
 						if(A2!=null)
 							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 					}
-					int oldMana=mob.curState().getMana();
+					CharState oldState=mob.curState().cloneCharState();
 					A.invoke(mob,V,null,false);
-					mob.curState().setMana(oldMana);
+					mob.curState().setMana(oldState.getMana());
+					mob.curState().setMovement(oldState.getMovement());
 				}
 				else
 					ExternalPlay.move(mob,direction,false,false);
