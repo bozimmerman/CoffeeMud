@@ -1328,7 +1328,7 @@ public class Generic
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
-				for(int i=0;i<Area.TECH_DESCS.length-1;i++)
+				for(int i=0;i<Area.TECH_DESCS.length;i++)
 					say.append(Area.TECH_DESCS[i]+", ");
 				mob.tell(say.toString().substring(0,say.length()-2));
 				q=false;
@@ -1337,7 +1337,7 @@ public class Generic
 			{
 				q=true;
 				int newValue=-1;
-				for(int i=0;i<Area.TECH_DESCS.length-1;i++)
+				for(int i=0;i<Area.TECH_DESCS.length;i++)
 					if(newType.equalsIgnoreCase(Area.TECH_DESCS[i]))
 						newValue=i;
 				if(newValue>=0)

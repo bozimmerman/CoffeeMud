@@ -37,7 +37,7 @@ public class EndlessSky extends StdGrid
 		if(!super.okAffect(myHost,affect))
 			return false;
 
-		return InTheAir.isOkAffect(this,affect);
+		return InTheAir.isOkAirAffect(this,affect);
 	}
 	public String getChildLocaleID(){return "InTheAir";}
 

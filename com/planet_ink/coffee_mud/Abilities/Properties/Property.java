@@ -319,7 +319,6 @@ public class Property implements Ability, Cloneable
 		}
 		return defaultValue;
 	}
-	
 	public void setMiscText(String newMiscText)
 	{ miscText=newMiscText;}
 	public String text()
@@ -362,6 +361,7 @@ public class Property implements Ability, Cloneable
 	{ return true;	}
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}
+	public int usageCost(MOB mob){return 0;}
 
 
 	public void addAffect(Ability to){}

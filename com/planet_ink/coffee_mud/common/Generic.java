@@ -571,9 +571,12 @@ public class Generic
 					String loc=(String)e.nextElement();
 					Item childI=(Item)itemLocTable.get(loc);
 					Item parentI=(Item)identTable.get(loc);
-					childI.setContainer(parentI);
-					childI.recoverEnvStats();
-					parentI.recoverEnvStats();
+					if(parentI!=null)
+					{
+						childI.setContainer(parentI);
+						childI.recoverEnvStats();
+						parentI.recoverEnvStats();
+					}
 				}
 				for(Enumeration e=mobRideTable.keys();e.hasMoreElements();)
 				{

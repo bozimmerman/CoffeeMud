@@ -406,7 +406,7 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
-	public int manaCost(MOB mob)
+	public int usageCost(MOB mob)
 	{
 		if(mob==null) return overrideMana();
 		
@@ -476,7 +476,7 @@ public class StdAbility implements Ability, Cloneable
 			if(!Sense.aliveAwakeMobile(mob,false))
 				return false;
 
-			int manaConsumed=manaCost(mob);
+			int manaConsumed=usageCost(mob);
 			
 			if(mob.curState().getMana()<manaConsumed)
 			{

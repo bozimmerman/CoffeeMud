@@ -331,6 +331,25 @@ public class StdGrid extends StdRoom implements GridLocale
 				for(int y=0;y<subMap[x].length;y++)
 				{
 					Room room=subMap[x][y];
+					if(room!=null)
+					{
+						while(room.numInhabitants()>0)
+						{
+							MOB M=room.fetchInhabitant(0);
+							if(M!=null)
+							if((M.getStartRoom()==null)
+							||(M.getStartRoom()==room)
+							||(M.getStartRoom().ID().length()==0))
+								M.destroy();
+							else
+								M.getStartRoom().bringMobHere(M,false);
+						}
+						while(room.numItems()>0)
+						{
+							Item I=room.fetchItem(0);
+							if(I!=null) I.destroy();
+						}
+					}
 					CMMap.delRoom(room);
 				}
 			subMap=null;

@@ -1,11 +1,6 @@
 Misc/Architecture:
 =================
-ability to deposit in someone elses bank account
-MOTD It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
-tread water for water surfaces with water beneath
 add floating num to resources -- whether the item will float
-difference report for a given mob against all others of same level/race, ditto for weapons/armor -- compare the stuff to tims spec sheet
-can the death/morgue strings be specified by the player's deity?
 clan boss deletion automatically assigns a new one
 Programming.html updates: 	need special section for languages, poisons, diseases, traps
 GenRaces
@@ -19,14 +14,13 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
 give rooms maximum weight saveable to db
-on your back for wearing backpacks
 zapper check on quests and questchats for eligible players
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 apply languages to writing as well. Should be simple, right? ha!
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
 parse out all the commands into classes, so that access can be class based, and time req can be determined
 could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)?
-BOOKS! paper with multiple pages to post on. Add to the papermaking skill. Also add Poster, Banner, and Screen.
+BOOKS! paper with multiple pages to post on. Add to the papermaking skill.
 msx support
 resource override parameter allows for resources to APPEAR as different names. For example ResourceOverride(berries smurfberries)
 have a setting for no prompt, which also takes out the blank line after the prompt.
@@ -34,12 +28,12 @@ possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would g
 LYING DOWN position?
 group formations as an alternative way of determining range
 if you tell enough 'sentient'(?) muds a rumour it spreads throughout town/area/world?
-subclasses might cost QUEST points instead of TRAINs.
 quest points could be used to raise max stat (but not the actual stat).
 a config to allow a linefeed at ticks
 quest points can be used to avoid instantdeath rooms, it teleports you back to recall, but without the loss of life, XP, and equipment.
 Corpses should note time/manner of death
 maybe doors in your house need to be able to stay in the state you last left them (unless they are SMARTdoors of the future....)
+ability to deposit in someone elses bank account
 
 New Commands:
 =============
@@ -149,6 +143,7 @@ Additions/Updates
 	blacksmith TRASHCAN. A container that has the property of trashcollection, 
 		even in a privately owned property. Anything placed in the trashcan will 
 		be destroyed in 30 minutes.
+	paper making Poster, Banner, and Screen.
 	sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that 
 		hold water and people. 
 	construct needs to be able to modify door descriptions

@@ -89,7 +89,7 @@ public class StdMOB implements MOB
 	public CharState curState=new DefaultCharState();
 	public CharState maxState=new DefaultCharState();
 	public CharState baseState=new DefaultCharState();
-	private long lastTickedDateTime=System.currentTimeMillis();
+	private long lastTickedDateTime=0;
 	public long lastTickedDateTime(){return lastTickedDateTime;}
 
 	// mental characteristics

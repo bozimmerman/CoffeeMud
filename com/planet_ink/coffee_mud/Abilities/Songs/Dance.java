@@ -70,7 +70,7 @@ public class Dance extends StdAbility
 				undance(mob,null,this);
 				return false;
 			}
-			if(invokerManaCost<0) invokerManaCost=manaCost(invoker());
+			if(invokerManaCost<0) invokerManaCost=usageCost(invoker());
 			if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 			{
 				mob.tell("The dancing exhausts you.");

@@ -26,12 +26,12 @@ public class IndoorInTheAir extends StdRoom
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect)) return false;
-		return InTheAir.isOkAffect(this,affect);
+		return InTheAir.isOkAirAffect(this,affect);
 	}
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		InTheAir.affect(this,affect);
+		InTheAir.airAffects(this,affect);
 	}
 	
 }

@@ -46,6 +46,9 @@ public class UnderWaterGrid extends StdGrid
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
+				if(d==Directions.UP)
+					alts[d]=subMap[0][0];
+				else
 				if(d!=Directions.DOWN)
 					alts[d]=findCenterRoom(d);
 				else

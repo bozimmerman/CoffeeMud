@@ -197,6 +197,11 @@ public class StdJournal extends StdItem
 				String date=(String)entry.elementAt(2);
 				String to=(String)entry.elementAt(3);
 				String subject=(String)entry.elementAt(4);
+				if(subject.startsWith("MOTD"))
+				{
+					subject=subject.substring(4);
+					date=""+(Util.s_long(date)+(1000*60*60*24));
+				}
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
 					if(Util.s_long(date)>lastTimeDate)

@@ -187,10 +187,14 @@ public class CMMap
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String deity=mob.getWorshipCharID().toUpperCase();
+		deity.replace(' ','_');
 		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
 		String roomID=(String)startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+			roomID=(String)startRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get("ALL");
 
@@ -208,10 +212,14 @@ public class CMMap
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String deity=mob.getWorshipCharID().toUpperCase();
+		deity.replace(' ','_');
 		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
 		String roomID=(String)deathRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)deathRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+			roomID=(String)deathRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)deathRooms.get("ALL");
 
@@ -231,10 +239,14 @@ public class CMMap
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
+		String deity=mob.getWorshipCharID().toUpperCase();
+		deity.replace(' ','_');
 		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
 		String roomID=(String)bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)bodyRooms.get(align);
+		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+			roomID=(String)bodyRooms.get(deity);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)bodyRooms.get("ALL");
 
@@ -252,34 +264,15 @@ public class CMMap
 
 	private static void pageRooms(INI page, Hashtable table, String start)
 	{
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(Enumeration i=page.keys();i.hasMoreElements();)
 		{
-			Race R=(Race)r.nextElement();
-			String cat=R.racialCategory().toUpperCase();
-			cat.replace(' ','_');
-			String thisOne=page.getProperty(start+"_"+R.racialCategory().toUpperCase());
-			if((thisOne!=null)&&(thisOne.length()>0))
-				table.put(cat,thisOne);
+			String k=(String)i.nextElement();
+			if(k.startsWith(start+"_"))
+				table.put(k.substring(start.length()+1),page.getProperty(k));
 		}
-		String thisOne=page.getProperty(start+"_GOOD");
-		if((thisOne!=null)&&(thisOne.length()>0))
-			table.put("GOOD",thisOne);
-		thisOne=page.getProperty(start+"_NEUTRAL");
-		if((thisOne!=null)&&(thisOne.length()>0))
-			table.put("NEUTRAL",thisOne);
-		thisOne=page.getProperty(start+"_EVIL");
-		if((thisOne!=null)&&(thisOne.length()>0))
-			table.put("EVIL",thisOne);
-
-		thisOne=page.getProperty(start);
+		String thisOne=page.getProperty(start);
 		if((thisOne!=null)&&(thisOne.length()>0))
 			table.put("ALL",thisOne);
-		else
-		{
-			thisOne=page.getProperty(start+"_ALL");
-			if((thisOne!=null)&&(thisOne.length()>0))
-				table.put("ALL",thisOne);
-		}
 	}
 
 	public static void initStartRooms(INI page)

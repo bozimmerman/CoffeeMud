@@ -135,8 +135,8 @@ public class Falling extends StdAbility
 		{
 			Item item=(Item)affected;
 			if((room==null)
-			   &&(item.owner()!=null)
-			   &&(item.owner() instanceof Room))
+			&&(item.owner()!=null)
+			&&(item.owner() instanceof Room))
 				room=(Room)item.owner();
 
 			if((room==null)
@@ -150,7 +150,7 @@ public class Falling extends StdAbility
 			else
 			{
 				Room nextRoom=room.getRoomInDir(direction);
-				if(!canFallFrom(room,direction))
+				if(canFallFrom(room,direction))
 				{
 					room.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
 					Vector V=new Vector();
@@ -245,6 +245,8 @@ public class Falling extends StdAbility
 				F.invoker=(MOB)E;
 			else
 				F.invoker=CMClass.getMOB("StdMOB");
+			F.setBorrowed(E,true);
+			F.makeLongLasting();
 			E.addAffect(F);
 			if(!(E instanceof MOB))
 				ExternalPlay.startTickDown(F,Host.MOB_TICK,1);

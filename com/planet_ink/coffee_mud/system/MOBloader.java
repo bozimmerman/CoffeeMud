@@ -266,7 +266,7 @@ public class MOBloader
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
 					MOB M=(MOB)CMMap.getPlayer((String)thisUser.firstElement());
-					if(M!=null)
+					if((M!=null)&&(M.lastTickedDateTime()>0))
 						thisUser.addElement(""+M.lastTickedDateTime());
 					else
 						thisUser.addElement(DBConnections.getRes(R,"CMDATE"));

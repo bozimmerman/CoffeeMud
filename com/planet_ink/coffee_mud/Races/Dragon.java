@@ -14,7 +14,7 @@ public class Dragon extends StdRace
 	protected int heightVariance(){return 80;}
 	protected int lightestWeight(){return 2000;}
 	protected int weightVariance(){return 500;}
-	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
 	public String racialCategory(){return "Dragon";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

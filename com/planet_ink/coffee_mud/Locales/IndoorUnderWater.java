@@ -35,43 +35,18 @@ public class IndoorUnderWater extends StdRoom implements Drink
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(Sense.isSleeping(this)) 
-			return super.okAffect(myHost,affect);
-			  
-		if((affect.targetMinor()==affect.TYP_FIRE)
-		||(affect.targetMinor()==affect.TYP_GAS)
-		||(affect.sourceMinor()==affect.TYP_FIRE)
-		||(affect.sourceMinor()==affect.TYP_GAS))
+		switch(UnderWater.isOkUnderWaterAffect(this,affect))
 		{
-			affect.source().tell("That won't work underwater.");
-			return false;
-		}
-		else
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
-		{
-			if(liquidType()==EnvResource.RESOURCE_SALTWATER)
-			{
-				affect.source().tell("You don't want to be drinking saltwater.");
-				return false;
-			}
-			return true;
+		case -1: return false;
+		case 1: return true;
 		}
 		return super.okAffect(myHost,affect);
 	}
+	
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
-		{
-			MOB mob=affect.source();
-			boolean thirsty=mob.curState().getThirst()<=0;
-			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState());
-			if(thirsty)
-				mob.tell("You are no longer thirsty.");
-			else
-			if(full)
-				mob.tell("You have drunk all you can.");
-		}
+		UnderWater.sinkAffects(this,affect);
 	}
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

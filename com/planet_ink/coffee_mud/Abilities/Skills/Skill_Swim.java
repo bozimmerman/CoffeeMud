@@ -70,12 +70,14 @@ public class Skill_Swim extends StdAbility
 
 		boolean success=profficiencyCheck(0,auto);
 		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
-		if(mob.location().okAffect(mob,msg))
+		Room R=mob.location();
+		if((R!=null)
+		&&(R.okAffect(mob,msg)))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			success=profficiencyCheck(0,auto);
 			if(!success)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
+				R.show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
 			else
 			{
 				if(mob.fetchAffect(ID())==null)
@@ -86,25 +88,9 @@ public class Skill_Swim extends StdAbility
 			}
 			mob.delAffect(this);
 			mob.recoverEnvStats();
+			if(mob.location()!=R)
+				mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,null);
 		}
 		return success;
-	}
-
-	public boolean canBePracticedBy(MOB teacher, MOB student)
-	{
-		if(!super.canBePracticedBy(teacher,student))
-			return false;
-		if(student.location()==null)
-			return false;
-		Ability myAbility=student.fetchAbility(ID());
-		if(myAbility.profficiency()<20)
-			return true;
-		if(!placeToSwim(student.location()))
-		{
-			student.tell("You need to be on or in the water to learn any more about swimming!");
-			teacher.tell("You need to be on or in the water to teach more about swimming!");
-			return false;
-		}
-		return true;
 	}
 }

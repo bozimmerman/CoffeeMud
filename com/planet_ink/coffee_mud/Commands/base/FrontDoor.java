@@ -536,6 +536,11 @@ public class FrontDoor
 			long last=Util.s_long((String)entry.elementAt(2));
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
+			if(subject.startsWith("MOTD"))
+			{
+				subject=subject.substring(4);
+				last=last+(1000*60*60*24);
+			}
 			String message=(String)entry.elementAt(5);
 			boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
 			if((last>pstats.lastDateTime())

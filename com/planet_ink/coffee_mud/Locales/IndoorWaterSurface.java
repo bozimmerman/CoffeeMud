@@ -24,52 +24,10 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(Sense.isSleeping(this)) 
-			return super.okAffect(myHost,affect);
-		
-		if(((affect.targetMinor()==Affect.TYP_LEAVE)
-			||(affect.targetMinor()==Affect.TYP_ENTER)
-			||(affect.targetMinor()==Affect.TYP_FLEE))
-		   &&(affect.amITarget(this))
-		   &&(!Sense.isWaterWorthy(affect.source())))
+		switch(WaterSurface.isOkWaterSurfaceAffect(this,affect))
 		{
-			MOB mob=affect.source();
-			boolean hasBoat=false;
-			for(int i=0;i<mob.inventorySize();i++)
-			{
-				Item I=mob.fetchInventory(i);
-				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
-				{	hasBoat=true; break;}
-			}
-			if((!Sense.isSwimming(mob))&&(!hasBoat)&&(!Sense.isInFlight(mob)))
-			{
-				mob.tell("You need to swim or ride a boat that way.");
-				return false;
-			}
-			else
-			if(Sense.isSwimming(mob))
-				if(mob.envStats().weight()>Math.round(Util.mul(mob.maxCarry(),0.50)))
-				{
-					mob.tell("You are too encumbered to swim.");
-					return false;
-				}
-		}
-		else
-		if(((affect.sourceMinor()==Affect.TYP_SIT)||(affect.sourceMinor()==Affect.TYP_SLEEP))
-		&&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
-		{
-			affect.source().tell("You cannot rest here.");
-			return false;
-		}
-		else
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
-		{
-			if(liquidType()==EnvResource.RESOURCE_SALTWATER)
-			{
-				affect.source().tell("You don't want to be drinking saltwater.");
-				return false;
-			}
-			return true;
+		case -1: return false;
+		case 1: return true;
 		}
 		return super.okAffect(myHost,affect);
 	}
@@ -77,25 +35,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		if((affect.target() instanceof Item)
-		&&((affect.targetMinor()==Affect.TYP_DROP)
-			||((affect.targetMinor()==Affect.TYP_THROW)
-			   &&(affect.tool()!=null)
-			   &&(affect.tool()==this)))
-		&&(!Sense.isSleeping(this)))
-			((Item)affect.target()).destroy();
-		else
-		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
-		{
-			MOB mob=affect.source();
-			boolean thirsty=mob.curState().getThirst()<=0;
-			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState());
-			if(thirsty)
-				mob.tell("You are no longer thirsty.");
-			else
-			if(full)
-				mob.tell("You have drunk all you can.");
-		}
+		UnderWater.sinkAffects(this,affect);
 	}
 	public int thirstQuenched(){return 1000;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

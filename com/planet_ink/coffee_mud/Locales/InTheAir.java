@@ -26,7 +26,7 @@ public class InTheAir extends StdRoom
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect)) return false;
-		return isOkAffect(this,affect);
+		return isOkAirAffect(this,affect);
 	}
 	
 	public static void makeFall(Environmental E, Room room, int avg)
@@ -52,7 +52,7 @@ public class InTheAir extends StdRoom
 		}
 	}
 	
-	public static void affect(Room room, Affect affect)
+	public static void airAffects(Room room, Affect affect)
 	{
 		if(Sense.isSleeping(room)) return;
 		boolean foundReversed=false;
@@ -62,7 +62,8 @@ public class InTheAir extends StdRoom
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
-			if(mob!=null)
+			if((mob!=null)
+			&&((mob.getStartRoom()==null)||(mob.getStartRoom()!=room)))
 			{
 				Ability A=mob.fetchAffect("Falling");
 				if(A!=null)
@@ -111,10 +112,10 @@ public class InTheAir extends StdRoom
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		InTheAir.affect(this,affect);
+		InTheAir.airAffects(this,affect);
 	}
 	
-	public static boolean isOkAffect(Room room, Affect affect)
+	public static boolean isOkAirAffect(Room room, Affect affect)
 	{
 		if(Sense.isSleeping(room)) 
 			return true;
@@ -150,7 +151,7 @@ public class InTheAir extends StdRoom
 				return false;
 			}
 		}
-		InTheAir.affect(room,affect);
+		InTheAir.airAffects(room,affect);
 		return true;
 	}
 }
