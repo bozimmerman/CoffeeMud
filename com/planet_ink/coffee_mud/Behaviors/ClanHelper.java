@@ -36,6 +36,7 @@ public class ClanHelper extends StdBehavior
 		if((source!=observer)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
+		&&(!BrotherHelper.isBrother(source,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 		&&((!observer.isGeneric())||(!target.isGeneric())||(observer.name().equals(target.name()))))

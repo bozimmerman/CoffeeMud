@@ -39,8 +39,7 @@ public class Poison extends StdAbility
 		MOB mob=(MOB)affected;
 		if(mob==null) return false;
 		if(invoker==null) return false;
-		if(mob==invoker) return true;
-
+		
 		if((--tickDown)<=0)
 		{
 			tickDown=3;

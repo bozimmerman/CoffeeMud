@@ -36,6 +36,7 @@ public class Guard extends StdBehavior
 		if((source!=observer)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
+		&&(!BrotherHelper.isBrother(source,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 			Aggressive.startFight(observer,source,true);
 	}

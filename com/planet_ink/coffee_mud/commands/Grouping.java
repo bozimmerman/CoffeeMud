@@ -106,7 +106,6 @@ public class Grouping
 		}
 
 		Hashtable group=getGroupMembers(mob);
-		mob.tell("Ok.");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();

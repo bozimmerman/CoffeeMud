@@ -19,6 +19,9 @@ public class BrotherHelper extends StdBehavior
 	
 	public static boolean isBrother(MOB target, MOB observer)
 	{
+		if((observer.getStartRoom()!=null)
+		&&(observer.getStartRoom()==target.getStartRoom()))
+			return true;
 		if((observer.ID().equals(target.ID()))
 		&&(observer.name().equals(target.name())))
 			return true;
