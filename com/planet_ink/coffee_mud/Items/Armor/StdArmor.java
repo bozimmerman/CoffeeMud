@@ -49,7 +49,7 @@ public class StdArmor extends StdContainer implements Armor
 			case EnvResource.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
 			case EnvResource.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" has a few smell splinters ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return name()+" has a few small splinters ("+usesRemaining()+"%)";
 			default: return name()+" is slightly damaged ("+usesRemaining()+"%)";
 			}
 		}

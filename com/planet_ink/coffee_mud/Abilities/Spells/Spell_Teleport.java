@@ -53,6 +53,12 @@ public class Spell_Teleport extends Spell
 		while((tries<20)&&(newRoom==null))
 		{
 			newRoom=(Room)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+			if(((newRoom.roomID().length()==0)&&(Dice.rollPercentage()>50))
+			||((newRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(Dice.rollPercentage()>10)))
+			{
+				newRoom=null;
+				continue;
+			}
 			FullMsg enterMsg=new FullMsg(mob,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 			Session session=mob.session();
 			mob.setSession(null);

@@ -622,7 +622,20 @@ public class CoffeeUtensils
 				}
 			}
 		}
-		deadMOB.destroy();
+		StringBuffer newNoPurge=new StringBuffer("");
+		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		if((protectedOnes!=null)&&(protectedOnes.size()>0))
+		{
+			for(int b=0;b<protectedOnes.size();b++)
+			{
+				String B=(String)protectedOnes.elementAt(b);
+				if(!B.equalsIgnoreCase(deadMOB.name()))
+					newNoPurge.append(B+"\n");
+			}
+			Resources.updateResource("protectedplayers.ini",newNoPurge);
+			Resources.saveFileResource("protectedplayers.ini");		deadMOB.destroy();
+		}
+		
 		CMClass.DBEngine().DBDeleteMOB(deadMOB);
 		if(deadMOB.session()!=null)
 		{

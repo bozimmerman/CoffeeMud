@@ -17,6 +17,8 @@ public class Sounder extends StdBehavior
 	protected static int TICK_MASK=65536;
 	protected static int ROOM_MASK=32768;
 	private CMMsg lastMsg=null;
+	private boolean oncePerRound1=false;
+	private boolean oncePerRound2=false;
 
 	public Sounder()
 	{
@@ -231,6 +233,30 @@ public class Sounder extends StdBehavior
 					triggers[v]=CMMsg.TYP_LEAVE|ROOM_MASK;
 					strings[v]=s.substring(17).trim();
 				}
+				else
+				if((s.toUpperCase().startsWith("DAMAGE ")))
+				{
+					triggers[v]=CMMsg.TYP_DAMAGE;
+					strings[v]=s.substring(7).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("DAMAGE_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_DAMAGE|ROOM_MASK;
+					strings[v]=s.substring(12).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("FIGHT ")))
+				{
+					triggers[v]=CMMsg.TYP_WEAPONATTACK;
+					strings[v]=s.substring(6).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("FIGHT_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_WEAPONATTACK|ROOM_MASK;
+					strings[v]=s.substring(11).trim();
+				}
 			}
 		}
 		tickReset();
@@ -320,6 +346,8 @@ public class Sounder extends StdBehavior
 				break;
 			}
 		}
+		oncePerRound1=false;
+		oncePerRound2=false;
 		return true;
 	}
 
@@ -360,6 +388,22 @@ public class Sounder extends StdBehavior
 			if((msg.target()!=null)
 			&&(msg.target()==getBehaversRoom(E)))
 				lookFor=CMMsg.TYP_LEAVE;
+			break;
+		case CMMsg.TYP_WEAPONATTACK:
+			if((msg.target()!=null)
+			&&(msg.target()!=E)
+			&&((msg.source()==E)||(msg.tool()==E)||(E instanceof Room)||(E instanceof Exit))
+			&&(!oncePerRound1))
+			{
+				lookFor=CMMsg.TYP_WEAPONATTACK;
+				oncePerRound1=true;
+			}
+			break;
+		case CMMsg.TYP_DAMAGE:
+			if((msg.target()!=null)
+			&&(msg.source()!=E)
+			&&((msg.target()==E)||(msg.tool()==E)||(E instanceof Room)||(E instanceof Exit)))
+				lookFor=CMMsg.TYP_DAMAGE;
 			break;
 		}
 		lastMsg=msg;

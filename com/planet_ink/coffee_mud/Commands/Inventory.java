@@ -12,7 +12,7 @@ public class Inventory extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 
-	public static StringBuffer getInventory(MOB seer, MOB mob)
+	public static StringBuffer getInventory(MOB seer, MOB mob, String mask)
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean foundAndSeen=false;
@@ -33,12 +33,34 @@ public class Inventory extends StdCommand
 			msg.append("(nothing you can see right now)");
 		else
 		{
-			msg.append(CMLister.niceLister(seer,viewItems,true));
-			if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
-				msg.append("(some ^ygold^? coins you can't see)");
+			if((mask!=null)&&(mask.trim().length()>0))
+			{
+				mask=mask.trim().toUpperCase();
+				if(!mask.startsWith("all")) mask="all "+mask;
+				Vector V=(Vector)viewItems.clone();
+				viewItems.clear();
+				Item I=(Item)V.firstElement();
+				while(I!=null)
+				{
+					I=(Item)EnglishParser.fetchEnvironmental(V,mask,false);
+					if(I!=null)
+					{
+						viewItems.addElement(I);
+						V.remove(I);
+					}
+				}
+			}
+			if(viewItems.size()>0)
+			{
+				msg.append(CMLister.niceLister(seer,viewItems,true));
+				if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
+					msg.append("(some ^ygold^? coins you can't see)");
+				else
+				if(mob.getMoney()>0)
+					msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
+			}
 			else
-			if(mob.getMoney()>0)
-				msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
+				msg.append("(nothing like that you can see right now)");
 		}
 		return msg;
 	}
@@ -49,10 +71,10 @@ public class Inventory extends StdCommand
 	{
 		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
 		{
-			commands.addElement(getInventory((MOB)commands.firstElement(),mob));
+			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuffer msg=getInventory(mob,mob);
+		StringBuffer msg=getInventory(mob,mob,Util.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else

@@ -9,11 +9,18 @@ public class CorpseEater extends ActiveTicker
 {
 	public String ID(){return "CorpseEater";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+    private boolean EatItems=false;
 	public CorpseEater()
 	{
 		minTicks=5; maxTicks=20; chance=75;
 		tickReset();
 	}
+
+    public void setParms(String newParms) 
+	{
+        super.setParms(newParms);
+        EatItems=(newParms.toUpperCase().indexOf("EATITEMS") > 0);
+    }
 
 
 	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
@@ -60,7 +67,7 @@ public class CorpseEater extends ActiveTicker
 						if(!MUDZapper.zapperCheck(getParms(),mob2))
 							continue;
 					}
-					if(I instanceof Container)
+					if((I instanceof Container)&&(!EatItems))
 						((Container)I).emptyPlease();
 					thisRoom.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
 					I.destroy();

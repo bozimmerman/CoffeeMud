@@ -650,7 +650,7 @@ public class Destroy extends BaseItemParser
 			else
 			{
 				StringBuffer newNoPurge=new StringBuffer("");
-				Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+				Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 				if((protectedOnes!=null)&&(protectedOnes.size()>0))
 					for(int b=0;b<protectedOnes.size();b++)
 					{
