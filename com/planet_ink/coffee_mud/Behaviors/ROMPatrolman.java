@@ -34,12 +34,11 @@ public class ROMPatrolman extends StdBehavior
 		if(victim==null) return;
 		if(BrotherHelper.isBrother(victim,observer)) return;
 		observer.location().show(observer,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***");
-		Vector V=observer.location().getArea().getMyMap();
-		for(int r=0;r<V.size();r++)
+		for(Iterator r=observer.location().getArea().getMap();r.hasNext();)
 		{
-			Room room=(Room)V.elementAt(r);
-			if((room!=observer.location())&&(room.numPCInhabitants()>0))
-				room.showHappens(Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
+			Room R=(Room)r.next();
+			if((R!=observer.location())&&(R.numPCInhabitants()>0))
+				R.showHappens(Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
 		}
  
 		Item weapon=observer.fetchWieldedItem();

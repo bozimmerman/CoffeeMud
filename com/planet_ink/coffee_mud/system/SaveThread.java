@@ -9,8 +9,6 @@ public class SaveThread extends Thread
 {
 	public static boolean started=false;
 	private static boolean shutDown=false;
-	public boolean reset=true;
-	public int timeSaveTicker=0;
 	public long lastStart=0;
 	public long lastStop=0;
 	public static long milliTotal=0;
@@ -48,53 +46,6 @@ public class SaveThread extends Thread
 				}
 			}
 		}
-	}
-	
-	public void tickTock()
-	{
-		if(CMMap.numAreas()<=0)
-			return;
-		Area A=CMMap.getFirstArea();
-		if(reset)
-		{
-			reset=false;
-			StringBuffer timeRsc=Resources.getFileResource("time.txt");
-			if(timeRsc.length()<30)
-			{
-				timeRsc=new StringBuffer("<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>");
-				Resources.updateResource("time.txt",timeRsc);
-				Resources.saveFileResource("time.txt");
-			}
-			Vector V=XMLManager.parseAllXML(timeRsc.toString());
-			A.setTimeOfDay(XMLManager.getIntFromPieces(V,"TIME"));
-			A.setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
-			A.setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
-			A.setYear(XMLManager.getIntFromPieces(V,"YEAR"));
-		}
-		boolean raiseLowerTheSun=A.setTimeOfDay(A.getTimeOfDay()+1);
-		if(A.getTimeOfDay()>=Area.A_FULL_DAY)
-		{
-			raiseLowerTheSun=A.setTimeOfDay(0);
-			A.setDayOfMonth(A.getDayOfMonth()+1);
-			if(A.getDayOfMonth()>Area.DAYS_IN_MONTH)
-			{
-				A.setDayOfMonth(1);
-				A.setMonth(A.getMonth()+1);
-				if(A.getMonth()>Area.MONTHS_IN_YEAR)
-				{
-					A.setMonth(1);
-					A.setYear(A.getYear()+1);
-				}
-			}
-		}
-		if(raiseLowerTheSun) raiseLowerTheSunEverywhere();
-		
-		if((++timeSaveTicker)<Host.TIME_SAVE_DELAY)
-			return;
-		timeSaveTicker=0;
-		StringBuffer timeRsc=new StringBuffer("<DAY>"+A.getDayOfMonth()+"</DAY><MONTH>"+A.getMonth()+"</MONTH><YEAR>"+A.getYear()+"</YEAR>");
-		Resources.updateResource("time.txt",timeRsc);
-		Resources.saveFileResource("time.txt");
 	}
 	
 	public void checkHealth()
@@ -171,61 +122,6 @@ public class SaveThread extends Thread
 
 	}
 	
-	public void raiseLowerTheSunEverywhere()
-	{
-		if(CMMap.numAreas()==0) return;
-		
-		Area A=CMMap.getFirstArea();
-		for(Iterator r=CMMap.rooms();r.hasNext();)
-		{
-			Room R=(Room)r.next();
-			if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
-			{
-				R.recoverEnvStats();
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB mob=R.fetchInhabitant(m);
-					if(!mob.isMonster())
-					{
-						if(((R.domainType()&Room.INDOORS)==0)
-						&&(!Sense.isSleeping(mob))
-						&&(Sense.canSee(mob)))
-						{
-							switch(A.getTODCode())
-							{
-							case Area.TIME_DAWN:
-								mob.tell("The sun begins to rise in the west."); 
-								break;
-							case Area.TIME_DAY:
-								break;
-								//mob.tell("The sun is now shining brightly."); break;
-							case Area.TIME_DUSK:
-								mob.tell("The sun begins to set in the east."); break;
-							case Area.TIME_NIGHT:
-								mob.tell("The sun has set and darkness again covers the world."); break;
-							}
-						}
-						else
-						{
-							switch(A.getTODCode())
-							{
-							case Area.TIME_DAWN:
-								mob.tell("It is now daytime."); break;
-							case Area.TIME_DAY: break;
-								//mob.tell("The sun is now shining brightly."); break;
-							case Area.TIME_DUSK: break;
-								//mob.tell("It is almost nighttime."); break;
-							case Area.TIME_NIGHT:
-								mob.tell("It is nighttime."); break;
-							}
-						}
-					}
-				}
-			}
-			R.recoverRoomStats();
-		}
-	}
-
 	public void shutdown()
 	{
 		shutDown=true;
@@ -247,7 +143,7 @@ public class SaveThread extends Thread
 			{
 				itemSweep();
 				checkHealth();
-				tickTock();
+				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
 				int processed=0;
 				lastStop=System.currentTimeMillis();
 				milliTotal+=(lastStop-lastStart);
@@ -290,8 +186,7 @@ public class SaveThread extends Thread
 		}
 		
 		// force final time save!
-		timeSaveTicker=19;
-		tickTock();
+		if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
 		
 		Log.sysOut("SaveThread","Shutdown complete.");
 	}

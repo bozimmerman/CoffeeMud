@@ -70,6 +70,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack3",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Tumble",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Fighter_SizeOpponent",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Fighter_Berzerk",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_CoverDefence",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Heroism",true);

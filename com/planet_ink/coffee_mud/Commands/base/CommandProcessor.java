@@ -558,10 +558,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.TICKTOCK:
 					if(mob.isASysOp(null))
-					{
-						mob.tell("..tick..tock..");
-						myHost.speedTime();
-					}
+						SysOpSkills.ticktock(mob,commands);
 					else
 						mob.tell("Huh?\n\r");
 					break;

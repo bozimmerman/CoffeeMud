@@ -1182,11 +1182,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			String name=mob.name();
 			if(whatISell==DEAL_CLANDSELLER)
 				name=mob.getClanID();
-			Vector rooms=getStartRoom().getArea().getMyMap();
 			Vector roomsHandling=new Vector();
-			for(int r=0;r<rooms.size();r++)
+			for(Iterator r=getStartRoom().getArea().getMap();r.hasNext();)
 			{
-				Room R=(Room)rooms.elementAt(r);
+				Room R=(Room)r.next();
 				LandTitle A=getTitle(R);
 				if((A!=null)&&(!roomsHandling.contains(R)))
 				{

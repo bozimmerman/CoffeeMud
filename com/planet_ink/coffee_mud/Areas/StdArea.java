@@ -23,6 +23,7 @@ public class StdArea implements Area
 	protected static int time=0;
 	protected static int timeCode=Area.TIME_DAWN;
 	protected static int seasonCode=Area.SEASON_SPRING;
+	protected static boolean reReadTime=true;
 	
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -625,10 +626,9 @@ public class StdArea implements Area
 			
 			if(say!=null)
 			{
-				Vector myMap=getMyMap();
-				for(int r=0;r<myMap.size();r++)
+				for(Iterator r=getMap();r.hasNext();)
 				{
-					Room R=(Room)myMap.elementAt(r);
+					Room R=(Room)r.next();
 					if((R.domainType()&Room.INDOORS)==0)
 					for(int i=0;i<R.numInhabitants();i++)
 					{
@@ -952,6 +952,117 @@ public class StdArea implements Area
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{}
 
+	public void raiseLowerTheSunEverywhere()
+	{
+		Area A=this;
+		for(Iterator r=CMMap.rooms();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
+			{
+				R.recoverEnvStats();
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB mob=R.fetchInhabitant(m);
+					if(!mob.isMonster())
+					{
+						if(((R.domainType()&Room.INDOORS)==0)
+						&&(!Sense.isSleeping(mob))
+						&&(Sense.canSee(mob)))
+						{
+							switch(A.getTODCode())
+							{
+							case Area.TIME_DAWN:
+								mob.tell("The sun begins to rise in the west."); 
+								break;
+							case Area.TIME_DAY:
+								break;
+								//mob.tell("The sun is now shining brightly."); break;
+							case Area.TIME_DUSK:
+								mob.tell("The sun begins to set in the east."); break;
+							case Area.TIME_NIGHT:
+								mob.tell("The sun has set and darkness again covers the world."); break;
+							}
+						}
+						else
+						{
+							switch(A.getTODCode())
+							{
+							case Area.TIME_DAWN:
+								mob.tell("It is now daytime."); break;
+							case Area.TIME_DAY: break;
+								//mob.tell("The sun is now shining brightly."); break;
+							case Area.TIME_DUSK: break;
+								//mob.tell("It is almost nighttime."); break;
+							case Area.TIME_NIGHT:
+								mob.tell("It is nighttime."); break;
+							}
+						}
+					}
+				}
+			}
+			R.recoverRoomStats();
+		}
+	}
+
+	public void tickTock(int howManyHours)
+	{
+		Area A=this;
+		if(reReadTime)
+		{
+			reReadTime=false;
+			StringBuffer timeRsc=Resources.getFileResource("time.txt");
+			if(timeRsc.length()<30)
+			{
+				timeRsc=new StringBuffer("<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>");
+				Resources.updateResource("time.txt",timeRsc);
+				Resources.saveFileResource("time.txt");
+			}
+			Vector V=XMLManager.parseAllXML(timeRsc.toString());
+			A.setTimeOfDay(XMLManager.getIntFromPieces(V,"TIME"));
+			A.setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
+			A.setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
+			A.setYear(XMLManager.getIntFromPieces(V,"YEAR"));
+		}
+		boolean raiseLowerTheSun=A.setTimeOfDay(A.getTimeOfDay()+howManyHours);
+		if(A.getTimeOfDay()>=Area.A_FULL_DAY)
+		{
+			raiseLowerTheSun=A.setTimeOfDay(A.getTimeOfDay()-Area.A_FULL_DAY);
+			A.setDayOfMonth(A.getDayOfMonth()+1);
+			if(A.getDayOfMonth()>Area.DAYS_IN_MONTH)
+			{
+				A.setDayOfMonth(1);
+				A.setMonth(A.getMonth()+1);
+				if(A.getMonth()>Area.MONTHS_IN_YEAR)
+				{
+					A.setMonth(1);
+					A.setYear(A.getYear()+1);
+				}
+			}
+		}
+		else
+		if(A.getTimeOfDay()<0)
+		{
+			raiseLowerTheSun=A.setTimeOfDay(Area.A_FULL_DAY+A.getTimeOfDay());
+			A.setDayOfMonth(A.getDayOfMonth()-1);
+			if(A.getDayOfMonth()<1)
+			{
+				A.setDayOfMonth(Area.DAYS_IN_MONTH);
+				A.setMonth(A.getMonth()-1);
+				if(A.getMonth()<1)
+				{
+					A.setMonth(Area.MONTHS_IN_YEAR);
+					A.setYear(A.getYear()-1);
+				}
+			}
+		}
+		if(raiseLowerTheSun) raiseLowerTheSunEverywhere();
+		
+		StringBuffer timeRsc=new StringBuffer("<DAY>"+A.getDayOfMonth()+"</DAY><MONTH>"+A.getMonth()+"</MONTH><YEAR>"+A.getYear()+"</YEAR>");
+		Resources.updateResource("time.txt",timeRsc);
+		Resources.saveFileResource("time.txt");
+	}
+	
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
@@ -1038,10 +1149,9 @@ public class StdArea implements Area
 	
 	public void fillInAreaRooms()
 	{
-		Vector V=getMyMap();
-		for(int r=0;r<V.size();r++)
+		for(Iterator r=getMap();r.hasNext();)
 		{
-			Room R=(Room)V.elementAt(r);
+			Room R=(Room)r.next();
 			R.clearSky();
 			if(R.ID().length()>0)
 			{
@@ -1050,10 +1160,9 @@ public class StdArea implements Area
 			}
 		}
 		myRooms=null;
-		V=getMyMap();
-		for(int r=0;r<V.size();r++)
+		for(Iterator r=getMap();r.hasNext();)
 		{
-			Room R=(Room)V.elementAt(r);
+			Room R=(Room)r.next();
 			R.clearSky();
 			R.giveASky(0);
 		}
@@ -1118,8 +1227,8 @@ public class StdArea implements Area
 	{
 		StringBuffer s=new StringBuffer("");
 		s.append(description()+"\n\r");
-		Vector myMap=this.getMyMap();
-		s.append("Number of rooms: "+myMap.size()+"\n\r");
+		getMap();
+		s.append("Number of rooms: "+myRooms.size()+"\n\r");
 		
 		Vector mobRanges=new Vector();
 		int totalMOBs=0;
@@ -1130,9 +1239,9 @@ public class StdArea implements Area
 		int medianLevel=0;
 		long totalAlignments=0;
 		int averageAlignment=0;
-		for(int r=0;r<myMap.size();r++)
+		for(Iterator r=getMap();r.hasNext();)
 		{
-			Room R=(Room)myMap.elementAt(r);
+			Room R=(Room)r.next();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);
@@ -1176,9 +1285,19 @@ public class StdArea implements Area
 	
 	public void clearMap(){myRooms=null;}
 	
-	public synchronized Vector getMyMap()
+	public int mapSize()
 	{
-		if(myRooms!=null) return myRooms;
+		getMap();
+		return myRooms.size();
+	}
+	public Room getRandomRoom()
+	{
+		if(mapSize()==0) return null;
+		return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
+	}
+	public synchronized Iterator getMap()
+	{
+		if(myRooms!=null) return myRooms.iterator();
 		Vector myMap=new Vector();
 		for(Iterator r=CMMap.rooms();r.hasNext();)
 		{
@@ -1187,7 +1306,7 @@ public class StdArea implements Area
 				myMap.addElement(R);
 		}
 		myRooms=myMap;
-		return myMap;
+		return myMap.iterator();
 	}
 	
 	public int nextWeatherType(Room room)

@@ -66,10 +66,11 @@ public class FasterRoom extends StdBehavior
 			else
 			if(ticking instanceof Area)
 			{
-				Area area=(Area)ticking;
-				Vector V=area.getMyMap();
-				for(int v=0;v<V.size();v++)
-					doBe((Room)V.elementAt(v),burst,health);
+				for(Iterator r=((Area)ticking).getMap();r.hasNext();)
+				{
+					Room R=(Room)r.next();
+					doBe(R,burst,health);
+				}
 			}
 		}
 	}

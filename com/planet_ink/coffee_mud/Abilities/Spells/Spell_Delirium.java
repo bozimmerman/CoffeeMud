@@ -21,11 +21,10 @@ public class Spell_Delirium extends Spell
 	{
 		if(likeThisOne instanceof Room)
 		{
-			Vector V=invoker.location().getArea().getMyMap();
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+				Room R=(Room)invoker.location().getArea().getRandomRoom();
 				if(!R.displayText().equals(likeThisOne.displayText()))
 					return R;
 			}
@@ -33,11 +32,10 @@ public class Spell_Delirium extends Spell
 		else
 		if(likeThisOne instanceof Exit)
 		{
-			Vector V=invoker.location().getArea().getMyMap();
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+				Room R=(Room)invoker.location().getArea().getRandomRoom();
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Exit x=R.getExitInDir(d);
@@ -49,11 +47,10 @@ public class Spell_Delirium extends Spell
 		else
 		if(likeThisOne instanceof MOB)
 		{
-			Vector V=invoker.location().getArea().getMyMap();
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+				Room R=(Room)invoker.location().getArea().getRandomRoom();
 				if(R.numInhabitants()>0)
 				{
 					MOB possible=R.fetchInhabitant(Dice.roll(1,R.numInhabitants(),-1));
@@ -65,11 +62,10 @@ public class Spell_Delirium extends Spell
 		else
 		if(likeThisOne instanceof Item)
 		{
-			Vector V=invoker.location().getArea().getMyMap();
 			int tries=0;
 			while((++tries)<1000)
 			{
-				Room R=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+				Room R=(Room)invoker.location().getArea().getRandomRoom();
 				if(R.numItems()>0)
 				{
 					Item possible=R.fetchItem(Dice.roll(1,R.numItems(),-1));

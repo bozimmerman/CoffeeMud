@@ -225,10 +225,12 @@ public class Ranger_FindWater extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 
 		Vector rooms=new Vector();
-		Vector localMap=mob.location().getArea().getMyMap();
-		for(int r=0;r<localMap.size();r++)
-			if(waterHere(mob,(Room)localMap.elementAt(r),null).length()>0) 
-				rooms.addElement((Room)localMap.elementAt(r));
+		for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if(waterHere(mob,R,null).length()>0) 
+				rooms.addElement(R);
+		}
 		
 		if(rooms.size()<=0)
 		for(Iterator r=CMMap.rooms();r.hasNext();)

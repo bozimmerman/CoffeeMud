@@ -52,10 +52,9 @@ public class ResetWhole extends ActiveTicker
 		{
 			if(ticking instanceof Area)
 			{
-				Vector rooms=((Area)ticking).getMyMap();
-				for(int r=0;r<rooms.size();r++)
+				for(Iterator r=((Area)ticking).getMap();r.hasNext();)
 				{
-					Room R=(Room)rooms.elementAt(r);
+					Room R=(Room)r.next();
 					for(int b=0;b<R.numBehaviors();b++)
 					{
 						Behavior B=R.fetchBehavior(b);

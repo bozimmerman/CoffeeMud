@@ -626,18 +626,17 @@ public class Generic
 		buf.append(XMLManager.convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{
-			Vector rooms=area.getMyMap();
-			if(rooms.size()==0)
+			if(area.mapSize()==0)
 				buf.append("<AROOMS />");
 			else
 			{
 				buf.append("<AROOMS>");
-				for(int r=0;r<rooms.size();r++)
+				for(Iterator r=area.getMap();r.hasNext();)
 				{
-					Room room=(Room)rooms.elementAt(r);
+					Room R=(Room)r.next();
 					if(S!=null) S.rawPrint(".");
-					if((room!=null)&&(room.ID()!=null)&&(room.ID().length()>0))
-						buf.append(getRoomXML(room,true)+"\n\r");
+					if((R!=null)&&(R.ID()!=null)&&(R.ID().length()>0))
+						buf.append(getRoomXML(R,true)+"\n\r");
 				}
 				buf.append("</AROOMS>");
 			}

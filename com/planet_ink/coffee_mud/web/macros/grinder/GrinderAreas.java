@@ -88,7 +88,9 @@ public class GrinderAreas
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.className(A)))
 		{
-			allMyDamnRooms=A.getMyMap();
+			allMyDamnRooms=new Vector();
+			for(Iterator r=A.getMap();r.hasNext();)
+				allMyDamnRooms.addElement(r.next());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);
 			if(A==null)
@@ -107,7 +109,9 @@ public class GrinderAreas
 		{
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
-			allMyDamnRooms=A.getMyMap();
+			allMyDamnRooms=new Vector();
+			for(Iterator r=A.getMap();r.hasNext();)
+				allMyDamnRooms.addElement(r.next());
 			CMMap.delArea(A);
 			oldName=A.name();
 			ExternalPlay.DBDeleteArea(A);

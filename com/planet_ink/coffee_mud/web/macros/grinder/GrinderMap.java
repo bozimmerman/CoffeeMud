@@ -19,10 +19,9 @@ public class GrinderMap
 	{
 		area=A;
 		areaMap=new Vector();
-		Vector rooms=A.getMyMap();
-		for(int r=0;r<rooms.size();r++)
+		for(Iterator r=A.getMap();r.hasNext();)
 		{
-			Room R=(Room)rooms.elementAt(r);
+			Room R=(Room)r.next();
 			if(R.ID().length()>0)
 			{
 				GrinderRoom GR=new GrinderRoom(R);

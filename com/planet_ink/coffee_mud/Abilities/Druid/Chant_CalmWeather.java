@@ -41,7 +41,7 @@ public class Chant_CalmWeather extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int size=mob.location().getArea().getMyMap().size();
+		int size=mob.location().getArea().mapSize();
 		size=size-(mob.envStats().level()*20);
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(-size,auto);

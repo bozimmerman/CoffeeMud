@@ -135,10 +135,12 @@ public class Ranger_TrackAnimal extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 
 		Vector rooms=new Vector();
-		Vector localMap=mob.location().getArea().getMyMap();
-		for(int r=0;r<localMap.size();r++)
-			if(animalHere((Room)localMap.elementAt(r))!=null) 
-				rooms.addElement((Room)localMap.elementAt(r));
+		for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+		{
+			Room R=(Room)r.next();
+			if(animalHere(R)!=null) 
+				rooms.addElement(R);
+		}
 		
 		if(rooms.size()<=0)
 		for(Iterator r=CMMap.rooms();r.hasNext();)

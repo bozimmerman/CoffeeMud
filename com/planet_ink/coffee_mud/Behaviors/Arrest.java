@@ -1265,18 +1265,17 @@ public class Arrest extends StdBehavior
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
-								Vector V=judge.location().getArea().getMyMap();
 								Room jail=null;
-								for(int v=0;v<V.size();v++)
+								for(Iterator r=judge.location().getArea().getMap();r.hasNext();)
 								{
-									Room R=(Room)V.elementAt(v);
+									Room R=(Room)r.next();
 									if(CoffeeUtensils.containsString(R.displayText(),(String)laws.get("JAIL")))
 									{ jail=R; break; }
 								}
 								if(jail==null)
-								for(int v=0;v<V.size();v++)
+								for(Iterator r=judge.location().getArea().getMap();r.hasNext();)
 								{
-									Room R=(Room)V.elementAt(v);
+									Room R=(Room)r.next();
 									if(CoffeeUtensils.containsString(R.description(),(String)laws.get("JAIL")))
 									{ jail=R; break; }
 								}

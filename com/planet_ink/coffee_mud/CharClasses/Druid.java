@@ -105,6 +105,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_CharmArea",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",true);
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Chant_AlterTime",true);
 		}
 	}
 

@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
-import java.util.Vector;
+import java.util.*;
 
 public interface Area extends Environmental
 {
@@ -102,10 +102,13 @@ public interface Area extends Environmental
 	public void forceWeatherTick();
 	public void tickControl(boolean start);
 	public StringBuffer getAreaStats();
+	public void tickTock(int howManyHours);
 	
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);
-	public Vector getMyMap();
+	public Iterator getMap();
+	public int mapSize();
+	public Room getRandomRoom();
 	public void clearMap();
 	
 	public void toggleMobility(boolean onoff);

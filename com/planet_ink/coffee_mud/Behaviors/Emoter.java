@@ -119,11 +119,10 @@ public class Emoter extends ActiveTicker
 			if(ticking instanceof Area)
 			{
 				emoter=CMClass.getMOB("StdMOB");
-				Vector V=((Area)ticking).getMyMap();
-				for(int r=0;r<V.size();r++)
+				for(Iterator r=((Area)ticking).getMap();r.hasNext();)
 				{
-					Room room=(Room)V.elementAt(r);
-					emoteHere(room,emoter,emote);
+					Room R=(Room)r.next();
+					emoteHere(R,emoter,emote);
 				}
 				return;
 			}

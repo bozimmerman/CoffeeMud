@@ -25,7 +25,7 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			if(A.getMyMap().size()==0)
+			if(A.mapSize()==0)
 			{
 				GrinderRooms.createLonelyRoom(A,null,0,false);
 				A.clearMap();
@@ -120,9 +120,9 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			for(int a=0;a<A.getMyMap().size();a++)
+			for(Iterator r=A.getMap();r.hasNext();)
 			{
-				Room R=(Room)A.getMyMap().elementAt(a);
+				Room R=(Room)r.next();
 				if(R.ID().toUpperCase().endsWith(find.toUpperCase()))
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());
@@ -130,9 +130,9 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(int a=0;a<A.getMyMap().size();a++)
+			for(Iterator r=A.getMap();r.hasNext();)
 			{
-				Room R=(Room)A.getMyMap().elementAt(a);
+				Room R=(Room)r.next();
 				if(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());
@@ -140,9 +140,9 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(int a=0;a<A.getMyMap().size();a++)
+			for(Iterator r=A.getMap();r.hasNext();)
 			{
-				Room R=(Room)A.getMyMap().elementAt(a);
+				Room R=(Room)r.next();
 				if(R.description().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());

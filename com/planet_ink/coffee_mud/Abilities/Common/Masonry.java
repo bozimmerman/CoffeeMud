@@ -323,13 +323,15 @@ public class Masonry extends CommonSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			Vector rooms=mob.location().getArea().getMyMap();
-			for(int r=0;r<rooms.size();r++)
-				if(((Room)rooms.elementAt(r)).displayText().equalsIgnoreCase(title))
+			for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+			{
+				Room R=(Room)r.next();
+				if(R.displayText().equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");
 					return false;
 				}
+			}
 			designTitle=title;
 		}
 		else

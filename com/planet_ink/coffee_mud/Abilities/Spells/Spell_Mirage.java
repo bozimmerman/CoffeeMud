@@ -53,8 +53,7 @@ public class Spell_Mirage extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Vector V=mob.location().getArea().getMyMap();
-		if(V.size()<2)
+		if(mob.location().getArea().mapSize()<2)
 		{
 			mob.tell("This area is too small to cast this spell.");
 			return false;
@@ -71,7 +70,7 @@ public class Spell_Mirage extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		newRoom=mob.location();
 		while(newRoom==mob.location())
-			newRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+			newRoom=mob.location().getArea().getRandomRoom();
 
 		if(success)
 		{

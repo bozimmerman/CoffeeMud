@@ -645,12 +645,6 @@ public class MUD extends Thread implements Host
 		offlineReason=str;
 	}
 	
-	public void speedTime()
-	{
-		if(saveThread!=null)
-			saveThread.tickTock();
-	}
-	
 	public static void main(String a[]) throws IOException
 	{
 		Log.startLogFiles();
