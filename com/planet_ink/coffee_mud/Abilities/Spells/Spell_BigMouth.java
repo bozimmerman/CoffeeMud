@@ -33,6 +33,7 @@ public class Spell_BigMouth extends Spell
 					mob.tell("Your stomach is too full.");
 					return false;
 				}
+
 				if(msg.target() instanceof MOB)
 				{
 					MOB target=(MOB)msg.target();
@@ -49,6 +50,12 @@ public class Spell_BigMouth extends Spell
 				else
 				if(!(msg.target() instanceof Item))
 					return super.okMessage(myHost,msg);
+				else
+				if((!Sense.isGettable((Item)msg.target()))||(msg.target().displayText().length()==0))
+				{
+					mob.tell("You can not eat "+msg.target().name());
+					return false;
+				}
 						
 				msg.modify(msg.source(),msg.target(),msg.tool(),
 						  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
