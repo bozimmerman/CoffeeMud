@@ -344,25 +344,29 @@ public class TelnetSession extends Thread implements Session
 		PlayerStats pstats=mob().playerStats();
 		if(pstats==null) return clookup;
 		
-		if((pstats.getColorStr().length()>0)
-		&&(!pstats.getColorStr().equals(lastColorStr)))
+		if(!pstats.getColorStr().equals(lastColorStr))
 		{
-			String changes=pstats.getColorStr();
-			lastColorStr=changes;
-			clookup=(String[])CommonStrings.standardColorLookups().clone();
-			int x=changes.indexOf("#");
-			while(x>0)
+			if(pstats.getColorStr().length()==0)
+				clookup=CommonStrings.standardColorLookups();
+			else
 			{
-				String sub=changes.substring(0,x);
-				changes=changes.substring(x+1);
-				clookup[(int)sub.charAt(0)]=sub.substring(1);
-				x=changes.indexOf("#");
-			}
-			for(int i=0;i<clookup.length;i++)
-			{
-				String s=clookup[i];
-				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
-					clookup[i]=clookup[(int)s.charAt(1)];
+				String changes=pstats.getColorStr();
+				lastColorStr=changes;
+				clookup=(String[])CommonStrings.standardColorLookups().clone();
+				int x=changes.indexOf("#");
+				while(x>0)
+				{
+					String sub=changes.substring(0,x);
+					changes=changes.substring(x+1);
+					clookup[(int)sub.charAt(0)]=sub.substring(1);
+					x=changes.indexOf("#");
+				}
+				for(int i=0;i<clookup.length;i++)
+				{
+					String s=clookup[i];
+					if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
+						clookup[i]=clookup[(int)s.charAt(1)];
+				}
 			}
 		}
 		return clookup;
