@@ -171,6 +171,8 @@ CREATE TABLE CMCLAN (
 	CMRCLL varchar (50) NULL ,
 	CMDNAT varchar (50) NULL ,
 	CMSTAT integer NULL ,
+	CMMORG varchar (50) NULL ,
+	CMTROP integer NULL ,
 	PRIMARY KEY (CMCLID) 
 );
 

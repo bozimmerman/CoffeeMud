@@ -63,51 +63,53 @@ public class ChannelSet
 											 MOB M, 
 											 int i)
 	{
-		if(M==null) return false;
+		if((sender==null)
+		||(M==null)
+		||(M.amDead())
+		||(M.location()==null)
+		||(M.playerStats()==null))
+		    return false;
 		
 		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
-		&&(sender!=null)
 		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
 		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
 			return false;
 		
-		if((!M.amDead())
-		&&(M.location()!=null)
-		&&((sender==null)
-			||(M.playerStats()==null)
-			||(!M.playerStats().getIgnored().contains(sender.Name())))
+		if((!M.playerStats().getIgnored().contains(sender.Name()))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
-		&&((sender==null)
-		   ||(!areaReq)
+		&&((!areaReq)
 		   ||(M.location().getArea()==sender.location().getArea()))
 		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
 		return false;
 	}
+	
 	public static boolean mayReadThisChannel(MOB sender,
 											 boolean areaReq,
 											 Session ses, 
 											 int i)
 	{
-		if(ses==null) return false;
+		if(ses==null) 
+		    return false;
 		MOB M=ses.mob();
-		if(M==null) return false;
+		
+		if((sender==null)
+		||(M==null)
+		||(M.amDead())
+		||(M.location()==null)
+		||(M.playerStats()==null))
+		    return false;
 		
 		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
-		&&(sender!=null)
 		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
 		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
 			return false;
 		
+		
 		if((!ses.killFlag())
-		&&(!M.amDead())
-		&&(M.location()!=null)
-		&&((sender==null)
-			||(M.playerStats()==null)
-			||(!M.playerStats().getIgnored().contains(sender.Name())))
+		&&(!M.playerStats().getIgnored().contains(sender.Name()))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
-		&&((sender==null)
-		   ||(!areaReq)
+		&&((!areaReq)
 		   ||(M.location().getArea()==sender.location().getArea()))
 		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
 			return true;
@@ -117,8 +119,10 @@ public class ChannelSet
 	public static boolean mayReadThisChannel(MOB M, int i)
 	{
 	    if(M==null) return false;
+	    
 	    if(i>=ChannelSet.getNumChannels())
 	        return false;
+	    
 		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
 		&&((M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT)))
 		    return false;

@@ -31,7 +31,6 @@ public class ClanMorgueSet extends BaseClanner
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
 		commands.setElementAt("clanmorgueeset",0);
 
-		LandTitle l=null;
 		Room R=mob.location();
 		if(skipChecks)
 			R=CMMap.getRoom(Util.combine(commands,1));
@@ -62,28 +61,19 @@ public class ClanMorgueSet extends BaseClanner
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 			{
-				l=CoffeeUtensils.getLandTitle(R);
-				if(l==null)
+				if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
 				{
 					mob.tell("Your "+C.typeName()+" does not own this room.");
 					return false;
 				}
 				else
 				{
-					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
+					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 					{
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
-						{
-							C.setRecall(CMMap.getExtendedRoomID(R));
-							C.update();
-							mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
-							clanAnnounce(mob, "Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
-							return false;
-						}
-					}
-					else
-					{
-						mob.tell("Your "+C.typeName()+" does not own this room.");
+						C.setRecall(CMMap.getExtendedRoomID(R));
+						C.update();
+						mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
+						clanAnnounce(mob, "Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
 						return false;
 					}
 				}

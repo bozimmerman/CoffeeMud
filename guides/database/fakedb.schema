@@ -139,6 +139,8 @@ CMPOLI string NULL
 CMRCLL string NULL
 CMDNAT string NULL
 CMSTAT integer NULL
+CMMORG string NULL
+CMTROP integer NULL
 
 CMQUESTS
 CMQUESID string KEY

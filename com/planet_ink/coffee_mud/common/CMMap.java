@@ -381,6 +381,18 @@ public class CMMap
 
 	public static Room getBodyRoom(MOB mob)
 	{
+	    if((mob.getClanID().length()>0)
+	    &&(mob.getClanRole()!=Clan.POS_APPLICANT)
+	    &&((!mob.isMonster())||(mob.getStartRoom()==null)))
+	    {
+	        Clan C=Clans.getClan(mob.getClanID());
+		    if((C!=null)&&(C.getMorgue().length()>0))
+		    {
+		        Room room=CMMap.getRoom(Clans.getClan(mob.getClanID()).getMorgue());
+		        if((room!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.getClanID(),room)))
+		            return room;
+		    }
+	    }
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
 		race.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();

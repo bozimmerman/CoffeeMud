@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -62,28 +63,19 @@ public class ClanDonateSet extends BaseClanner
 			}
 			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
 			{
-				l=CoffeeUtensils.getLandTitle(R);
-				if(l==null)
+				if(!CoffeeUtensils.doesOwnThisProperty(C.ID(),R))
 				{
 					mob.tell("Your "+C.typeName()+" does not own this room.");
 					return false;
 				}
 				else
 				{
-					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
+					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
 					{
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
-						{
-							C.setDonation(CMMap.getExtendedRoomID(R));
-							C.update();
-							mob.tell("Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
-							clanAnnounce(mob, "Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
-							return false;
-						}
-					}
-					else
-					{
-						mob.tell("Your "+C.typeName()+" does not own this room.");
+						C.setDonation(CMMap.getExtendedRoomID(R));
+						C.update();
+						mob.tell("Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
+						clanAnnounce(mob, "Your "+C.typeName()+" donation is now set to "+R.roomTitle()+".");
 						return false;
 					}
 				}

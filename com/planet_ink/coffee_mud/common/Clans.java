@@ -28,7 +28,9 @@ public class Clans implements Clan, Tickable
 	protected String clanName="";
 	protected String clanPremise="";
 	protected String clanRecall="";
+	protected String clanMorgue="";
 	protected String clanDonationRoom="";
+	protected int clanTrophies=0;
 	protected String AcceptanceSettings="";
 	protected int clanType=Clan.TYPE_CLAN;
 	protected int ClanStatus=0;
@@ -164,6 +166,9 @@ public class Clans implements Clan, Tickable
 		exp=exp+howMuch;
 		if(exp<0) exp=0;
 	}
+
+	public int getTrophies(){return clanTrophies;}
+	public void setTrophies(int trophyFlag){clanTrophies=trophyFlag;}
 
 	public void setTaxes(double rate){
 		taxRate=rate;
@@ -780,6 +785,9 @@ public class Clans implements Clan, Tickable
 
 	public String getRecall() { return clanRecall; }
 	public void setRecall(String newRecall) { clanRecall=newRecall; }
+
+	public String getMorgue() { return clanMorgue; }
+	public void setMorgue(String newMorgue) { clanMorgue=newMorgue; }
 
 	public String getDonation() { return clanDonationRoom; }
 	public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
