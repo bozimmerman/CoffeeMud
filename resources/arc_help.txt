@@ -8,6 +8,6 @@ reset order ticktock
 import export xml
 
 ^HSkills^N
-chargen possess goto wizinv
+genchar possess goto wizinv
 where snoop visible
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!

@@ -10,6 +10,7 @@ public class Ranger_Hide extends StdAbility
 {
 	public String ID() { return "Ranger_Hide"; }
 	public String name(){ return "Woodland Hide";}
+	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}

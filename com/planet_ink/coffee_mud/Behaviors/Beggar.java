@@ -39,7 +39,11 @@ public class Beggar extends StdBehavior
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB mob2=mob.location().fetchInhabitant(i);
-			if((mob2!=null)&&(mob2!=mob)&&(!mobsHitUp.contains(mob2))&&(!mob2.isMonster()))
+			if((mob2!=null)
+			   &&(Sense.canBeSeenBy(mob2,mob))
+			   &&(mob2!=mob)
+			   &&(!mobsHitUp.contains(mob2))
+			   &&(!mob2.isMonster()))
 			{
 				switch(Dice.roll(1,10,0))
 				{

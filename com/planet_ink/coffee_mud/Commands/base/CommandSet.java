@@ -116,7 +116,7 @@ public class CommandSet extends Hashtable
 	public static final int ARCTOPICS=104;
 	public static final int DUMPFILE=105;
 	public static final int VER=106;
-	public static final int CHARGEN=107;
+	public static final int GENCHAR=107;
 	public static final int POSSESS=108;
 	public static final int GOTO=109;
 	public static final int WIZINV=110;
@@ -190,7 +190,7 @@ public class CommandSet extends Hashtable
 		put("CHANNELS",new Integer(CHANNELS));
 		put("CHANTS",new Integer(CHANTS));
 		put("CHANWHO",new Integer(CHANWHO));
-		put("CHARGEN",new Integer(CHARGEN));
+		put("GENCHAR",new Integer(GENCHAR));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

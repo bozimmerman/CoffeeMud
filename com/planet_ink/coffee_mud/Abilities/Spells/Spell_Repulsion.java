@@ -101,6 +101,9 @@ public class Spell_Repulsion extends Spell
 							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 								target.setAtRange(target.rangeToTarget());
 							else
+							if(target.location().maxRange()<2)
+								target.setAtRange(target.location().maxRange());
+							else
 								target.setAtRange(2);
 							if(target.getVictim()!=null)
 								target.getVictim().setAtRange(target.rangeToTarget());

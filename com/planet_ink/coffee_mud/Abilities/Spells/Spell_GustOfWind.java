@@ -94,7 +94,9 @@ public class Spell_GustOfWind extends Spell
 						MOB victim=target.getVictim();
 						if((victim!=null)&&(target.rangeToTarget()>=0))
 							target.setAtRange(target.rangeToTarget()+1);
-							
+						if(target.rangeToTarget()>target.location().maxRange())
+							target.setAtRange(target.location().maxRange());
+						
 						mob.location().send(mob,msg);
 						if((!Sense.isFlying(target))
 						&&(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level())))

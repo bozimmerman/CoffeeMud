@@ -1107,6 +1107,29 @@ public class StdMOB implements MOB
 				return ok;
 			}
 			else
+			if(affect.targetMinor()==Affect.TYP_RETREAT)
+			{
+				if(curState().getMovement()<25)
+				{
+					tell("You are too tired.");
+					return false;
+				}
+				if((location()!=null)
+				   &&(rangeToTarget()>=location().maxRange()))
+				{
+					tell("You cannot retreat any further.");
+					return false;
+				}
+				curState().adjMovement(-25,maxState());
+				setAtRange(rangeToTarget()+1);
+				if(victim!=null)
+				{
+					victim.setAtRange(rangeToTarget());
+					victim.recoverEnvStats();
+				}
+				recoverEnvStats();
+			}
+			else
 			if(affect.tool()!=null)
 			{
 				int useRange=rangeToTarget();
@@ -1640,28 +1663,39 @@ public class StdMOB implements MOB
 					 	ExternalPlay.drawIfNecessary(this);
 					
 					Item weapon=this.fetchWieldedItem();
-					if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
-					   ||(rangeToTarget()<=minRange(weapon)))
+					double curSpeed=Math.floor(speeder);
+					speeder+=envStats().speed();
+					int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
+					if(Sense.aliveAwakeMobile(this,true))
 					{
-						double curSpeed=Math.floor(speeder);
-						speeder+=envStats().speed();
-						if(Sense.aliveAwakeMobile(this,true))
+						for(int s=0;s<numAttacks;s++)
 						{
-							int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
-							for(int s=0;s<numAttacks;s++)
-								if((!amDead())
-								&&(curState().getHitPoints()>0)
-								&&((s==0)||(!Sense.isSitting(this))))
+							if((!amDead())
+							&&(curState().getHitPoints()>0)
+							&&(victim!=null)
+							&&((s==0)||(!Sense.isSitting(this))))
+							{
+								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
+									weapon=this.fetchWieldedItem();
+								if(((getBitmap()&MOB.ATT_AUTOMELEE)>0)
+								&&(curState().getMovement()>=25)
+								&&(rangeToTarget()<minRange(weapon)))
 								{
-									if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
-										weapon=this.fetchWieldedItem();
-									ExternalPlay.postAttack(this,victim,weapon);
+									FullMsg msg=new FullMsg(this,victim,Affect.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
+									if(location().okAffect(msg))
+										location().send(this,msg);
 								}
-							
-							if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
-								curState().adjMovement(-1,maxState());
+								else
+								if(((getBitmap()&MOB.ATT_AUTOMELEE)==0)
+								||(rangeToTarget()<=minRange(weapon)))
+									ExternalPlay.postAttack(this,victim,weapon);
+							}
 						}
+							
+						if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
+							curState().adjMovement(-1,maxState());
 					}
+						
 					if(!isMonster())
 					{
 						MOB target=this.getVictim();

@@ -48,7 +48,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Fighter_BattleCry",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Battlecry",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Berzerk",true);
@@ -60,7 +60,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_WeaponBreak",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Sweep",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_RallyCry",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Rallycry",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_MountedCombat",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Endurance",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);

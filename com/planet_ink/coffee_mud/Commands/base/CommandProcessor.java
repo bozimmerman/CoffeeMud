@@ -144,7 +144,7 @@ public class CommandProcessor
 				case CommandSet.CHANWHO:
 					channels.channelWho(mob,Util.combine(commands,1));
 					break;
-				case CommandSet.CHARGEN:
+				case CommandSet.GENCHAR:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.chargen(mob,commands);
 					else

@@ -132,6 +132,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_SHUTDOWN=68;
 	public static final int TYP_VIEW=69;
 	public static final int TYP_RETIRE=70;
+	public static final int TYP_RETREAT=71;
 	
 
 	// helpful message groupings
@@ -208,6 +209,7 @@ public interface Affect extends Cloneable
 	public static final int MSG_SHUTDOWN=MASK_GENERAL|TYP_SHUTDOWN;
 	public static final int MSG_VIEW=MASK_SOUND|MASK_MOUTH|TYP_VIEW;
 	public static final int MSG_RETIRE=MASK_GENERAL|TYP_RETIRE;
+	public static final int MSG_RETREAT=MASK_MOVE|MASK_SOUND|TYP_RETREAT;
 		
 }
 

@@ -30,7 +30,7 @@ public class MudChat extends StdBehavior
 	private MOB lastReactedTo=null;
 	private Vector responseQue=new Vector();
 	private int tickDown=3;
-	private final static int TALK_WAIT_DELAY=15;
+	private final static int TALK_WAIT_DELAY=8;
 	private int talkDown=0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
@@ -83,9 +83,11 @@ public class MudChat extends StdBehavior
 					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
 				break;
 			case '%':
-				otherChatGroup=includeChatData(str.substring(1).trim());
-				for(int v1=1;v1<otherChatGroup.size();v1++)
-					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+				{
+	  				StringBuffer rsc2=new StringBuffer(Resources.getFileResource(str.substring(1).trim()).toString());
+	  				if(rsc2.length()<1) { Log.sysOut("MudChat","Error reading resource "+resourceName); }
+	  				rsc.insert(0,rsc2.toString());
+				}
 				break;
 			case '0':
 			case '1':
@@ -103,46 +105,6 @@ public class MudChat extends StdBehavior
 			}
 			str=nextLine(rsc);
 		}
-	}
-
-	private static Vector includeChatData(String resourceName)
-	{
-		StringBuffer rsc=new StringBuffer(Resources.getFileResource(resourceName).toString());
-		Vector currentChatGroup=new Vector();
-		String str=nextLine(rsc);
-		Vector currentChatPattern=null;
-		while(str!=null)
-		{
-			if(str.length()>0)
-			switch(str.charAt(0))
-			{
-			case '"':
-				Log.sysOut("MudChat",str.substring(1));
-				break;
-			case '(':
-			case '[':
-			case '{':
-				currentChatPattern=new Vector();
-				currentChatPattern.addElement(str);
-				currentChatGroup.addElement(currentChatPattern);
-				break;
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				if(currentChatPattern!=null)
-					currentChatPattern.addElement(str);
-				break;
-			}
-			str=nextLine(rsc);
-		}
-		return currentChatGroup;
 	}
 
 	public static String nextLine(StringBuffer tsc)
@@ -172,6 +134,7 @@ public class MudChat extends StdBehavior
 		for(int i=1;i<chatGroups.size();i++)
 		{
 			Vector V=(Vector)chatGroups.elementAt(i);
+			Vector Names=new Vector();
 			if(V.size()>0)
 				if(((String)V.elementAt(0)).length()>0)
 				{
@@ -182,21 +145,19 @@ public class MudChat extends StdBehavior
 						int y=names.indexOf(" ");
 						if(y>=0)
 						{
-							name=names.substring(0,y).trim().toUpperCase();
+							Names.addElement(names.substring(0,y).trim().toUpperCase());
 							names=names.substring(y+1);
 						}
 						else
 						{
-							name=names.trim().toUpperCase();
+							Names.addElement(names.trim().toUpperCase());
 							names="";
 						}
-						if(name.length()>0)
-						{
-							if(myName.toUpperCase().indexOf(name)>=0)
-							{
-								return V;
-							}
-						}
+					}
+					for(int j=0;j<Names.size();j++)
+					{
+						if(((String)Names.elementAt(j)).equalsIgnoreCase(myName))
+							return V;
 					}
 				}
 		}
