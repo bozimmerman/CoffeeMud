@@ -47,74 +47,51 @@ public class WebHelper
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 	
-		StringBuffer areasList=(StringBuffer)Resources.getResource("areasListHTML");
+		Vector areasVec=new Vector();
 
-		if (areasList == null || areasList.toString().trim().length() == 0)
-		{
-// OLD		Hashtable areasHash=new Hashtable();
-			Vector areasVec=new Vector();
-
-			for(int a=0;a<CMMap.numAreas();a++)
+		for(int a=0;a<CMMap.numAreas();a++)
+			if(!Sense.isHidden(CMMap.getArea(a)))
 				areasVec.addElement(((Area)CMMap.getArea(a)).name());
 
-/* OLD			for(int m=0;m<CMMap.numRooms();m++)
+		Collections.sort((List)areasVec);
+		StringBuffer msg=new StringBuffer("\n\r");
+		int col=0;
+		int percent = 100/AT_MAX_COL;
+		for(int i=0;i<areasVec.size();i++)
+		{
+			if (col == 0)
 			{
-				Room room=CMMap.getRoom(m);
-				if(areasHash.get(room.getAreaID())==null)
-				{
-					areasHash.put(room.getAreaID(),room.getAreaID());
-					areasVec.addElement(room.getAreaID());
-				}
+				msg.append("<tr>");
+				// the bottom elements can be full width if there's
+				//  not enough to fill one row
+				// ie.   -X- -X- -X-
+				//       -X- -X- -X-
+				//       -----X-----
+				//       -----X-----
+				if (i > areasVec.size() - AT_MAX_COL)
+					percent = 100;
 			}
-*/
-			Collections.sort((List)areasVec);
-			StringBuffer msg=new StringBuffer("\n\r");
-			int col=0;
-			int percent = 100/AT_MAX_COL;
-			for(int i=0;i<areasVec.size();i++)
-			{
-				if (col == 0)
-				{
-					msg.append("<tr>");
-					// the bottom elements can be full width if there's
-					//  not enough to fill one row
-					// ie.   -X- -X- -X-
-					//       -X- -X- -X-
-					//       -----X-----
-					//       -----X-----
-					if (i > areasVec.size() - AT_MAX_COL)
-						percent = 100;
-				}
 
-				msg.append("<td");
+			msg.append("<td");
 				
-				if (percent == 100)
-					msg.append(" colspan=\"" + AT_MAX_COL + "\"");	//last element is width of remainder
-				else
-					msg.append(" width=\"" + percent + "%\"");
-/*
-				if (i == areasVec.size() - 1)
-					msg.append(" colspan=\"" + (5 - col) + "\"");	//last element is width of remainder
-				else
-					msg.append(" width=\"20%\"");
-*/				
-				msg.append(" class=\"cmAreaTblEntry\">");
-				msg.append((String)areasVec.elementAt(i));
-				msg.append("</td>");
-				// finish the row
-				if((percent == 100) || (++col)> (AT_MAX_COL-1 ))
-				{
-					msg.append("</tr>\n\r");
-					col=0;
-				}
+			if (percent == 100)
+				msg.append(" colspan=\"" + AT_MAX_COL + "\"");	//last element is width of remainder
+			else
+				msg.append(" width=\"" + percent + "%\"");
+			
+			msg.append(" class=\"cmAreaTblEntry\">");
+			msg.append((String)areasVec.elementAt(i));
+			msg.append("</td>");
+			// finish the row
+			if((percent == 100) || (++col)> (AT_MAX_COL-1 ))
+			{
+				msg.append("</tr>\n\r");
+				col=0;
 			}
 			if (!msg.toString().endsWith("</tr>\n\r"))
 				msg.append("</tr>\n\r");
-			
-			Resources.submitResource("areasListHTML",msg);
-			areasList=msg;
 		}
-		return areasList.toString();
+		return msg.toString();
 	}
 
 	public static String htmlPlayerList()

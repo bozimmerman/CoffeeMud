@@ -702,36 +702,28 @@ public class Scoring
 
 	public void areas(MOB mob)
 	{
-		StringBuffer areasList=(StringBuffer)Resources.getResource("areasList");
-		if(areasList==null)
+		Vector areasVec=new Vector();
+		for(int a=0;a<CMMap.numAreas();a++)
 		{
-
-			Vector areasVec=new Vector();
-			for(int a=0;a<CMMap.numAreas();a++)
-			{
-				Area A=CMMap.getArea(a);
-				if(!Sense.isHidden(A))
-					areasVec.addElement(A.name());
-			}
-			Collections.sort((List)areasVec);
-			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
-			int col=0;
-			for(int i=0;i<areasVec.size();i++)
-			{
-				if((++col)>3)
-				{
-					msg.append("\n\r");
-					col=1;
-				}
-
-				msg.append(Util.padRight((String)areasVec.elementAt(i),25));
-			}
-			msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
-			Resources.submitResource("areasList",msg);
-			areasList=msg;
+			Area A=CMMap.getArea(a);
+			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
+				areasVec.addElement(A.name());
 		}
+		Collections.sort((List)areasVec);
+		StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
+		int col=0;
+		for(int i=0;i<areasVec.size();i++)
+		{
+			if((++col)>3)
+			{
+				msg.append("\n\r");
+				col=1;
+			}
 
+			msg.append(Util.padRight((String)areasVec.elementAt(i),25));
+		}
+		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln(areasList.toString());
+			mob.session().colorOnlyPrintln(msg.toString());
 	}
 }
