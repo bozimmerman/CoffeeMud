@@ -45,10 +45,8 @@ public class Spell_StoneFlesh extends Spell
 			Ability A=(Ability)target.fetchAffect(a);
 			if((A.canBeUninvoked())&&(A instanceof Spell_FleshStone))
 			{
-				if((A.invoker()!=null)
-				&&((A.invoker()==mob)
-				||(A.invoker().envStats().level()<mob.envStats().level())))
-						revokeThis=A;
+				revokeThis=A;
+				break;
 			}
 		}
 

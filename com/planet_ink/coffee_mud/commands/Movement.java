@@ -89,7 +89,7 @@ public class Movement
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if((follower.amFollowing()==mob)&&(follower.location()!=mob.location()))
+			if((follower.amFollowing()==mob)&&(follower.location()==thisRoom))
 			{
 				follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 				move(follower,directionCode,false);

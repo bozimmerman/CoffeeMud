@@ -108,7 +108,7 @@ public class Skill_Trip extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff>0) 
 			levelDiff=levelDiff*5;
 		else 
