@@ -9,7 +9,7 @@ public class Prop_RideAdjuster extends Property
 {
 	public String ID() { return "Prop_RideAdjuster"; }
 	public String name(){ return "Adjustments to stats when ridden";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
 	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
 	private CharState adjCharState=null;

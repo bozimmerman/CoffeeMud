@@ -1,15 +1,7 @@
-!If you set the maxstats to 100 the engine freezes during the character creation
-?I am invisible to them through INVISIBILITY TO MARK... But when I try to SHADOW them then
-!Wears the shield first and then wields the polearm he is able to do both.
-!If you are treading water on a standard WaterSurface room, you can swim UP into the sky. 
-!Concerning the Archon's Goodybag. If you get a Half Note from the bag and get the cash from that sleeve, it all works fine. If you then get another Half Note from the bag and get the cash from the new one, you find it's empty. They do not re-pop in the bag filled.
-!Prop_RideAdjuster no workie for rideable mobs
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 !expand prop retainable to add monthly costs.
-!can you make the patroller behavior valid for items (like boats?)
 !GenPerfume A GenItem that can accept an Emoter Behavior as a parameter (so that I can code 
-!	recipes of perfumes into a common skill (Apothecary).)  Worn on all locations, when worn, 
-!	empties some and Emote: smell.  smells like 
+!recipes of perfumes into a common skill (Apothecary).)  Worn on all locations, when worn, 
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 racial affects
 Install ship battery

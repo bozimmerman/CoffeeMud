@@ -236,3 +236,4 @@ public class Emoter extends ActiveTicker
 		return true;
 	}
 }
+

@@ -69,8 +69,24 @@ public class Patroller extends ActiveTicker
 			Room thisRoom=null;
 			if(ticking instanceof MOB) thisRoom=((MOB)ticking).location();
 			else
-			if((ticking instanceof Item)&&(((Item)ticking).owner() instanceof Room)&&(!((Item)ticking).amDestroyed()))
+			if((ticking instanceof Item)
+			&&(((Item)ticking).owner() instanceof Room)
+			&&(!((Item)ticking).amDestroyed()))
 				thisRoom=(Room)((Item)ticking).owner();
+			if(thisRoom instanceof GridLocale)
+			{
+				Vector V=((GridLocale)thisRoom).getAllRooms();
+				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+				if(R!=null) 
+				{
+					if(ticking instanceof Item)
+						R.bringItemHere((Item)ticking,-1);
+					else
+					if(ticking instanceof MOB)
+						R.bringMobHere((MOB)ticking,true);
+				}
+				thisRoom=R;
+			}
 			if(thisRoom==null) return true;
 			
 			Room thatRoom=null;
@@ -129,20 +145,13 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				Item I=(Item)ticking;
-				if(thisRoom instanceof GridLocale)
-				{
-					Vector V=((GridLocale)thisRoom).getAllRooms();
-					Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
-					if(R!=null) R.bringItemHere(I,0);
-					thisRoom=R;
-				}
 				
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
-				
+				thatRoom.bringItemHere(I,-1);
 				if(I.owner()==thatRoom)
 				{
 					step++;
-					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
+					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
 				}
 				else
 				if(I.owner()==thisRoom)
@@ -153,13 +162,6 @@ public class Patroller extends ActiveTicker
 			{
 				// ridden things dont wander!
 				MOB mob=(MOB)ticking;
-				if(thisRoom instanceof GridLocale)
-				{
-					Vector V=((GridLocale)thisRoom).getAllRooms();
-					Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
-					if(R!=null) R.bringMobHere(mob,true);
-					thisRoom=mob.location();
-				}
 
 				// handle doors!
 				if(E.hasADoor()&&(!E.isOpen()))

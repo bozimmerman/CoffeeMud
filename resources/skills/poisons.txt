@@ -10,4 +10,4 @@ decreptifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1
 XXX	DRINK	Poison_XXX	25	SOME SNAKE BLOOD	1	LEAD	1	SOME TROLL BLOOD	1	
 slumberall	DRINK	Poison_Slumberall	9	POULTRY	1	MILK	1	SEAWEED	1	
 glowgell	DRINK	Poison_Glowgell	1	SOME INSECT GUTS	1	WATER	1			
-perfume	GenPerfume	min=5 max=10 chance=100 expires=500;smells good.;has a grand aroma.;smells flowery.;	1	FLOWERS	1	WATER	1			
+perfume	GenPerfume	SMELL min=5 max=10 chance=100 expires=500;smell(s) good.;<S-HAS-HAVE> a grand aroma.;smell(s) flowery.;	1	FLOWERS	1	WATER	1			

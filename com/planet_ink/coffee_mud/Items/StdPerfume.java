@@ -25,6 +25,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		liquidType=EnvResource.RESOURCE_PERFUME;
 		capacity=0;
 		baseGoldValue=100;
+		setRawProperLocationBitmap(Item.WIELD|Item.ABOUT_BODY|Item.FLOATING_NEARBY|Item.HELD|Item.ON_ARMS|Item.ON_BACK|Item.ON_EARS|Item.ON_EYES|Item.ON_FEET|Item.ON_HANDS|Item.ON_HEAD|Item.ON_LEFT_FINGER|Item.ON_RIGHT_FINGER|Item.ON_LEGS|Item.ON_LEFT_WRIST|Item.ON_MOUTH|Item.ON_NECK|Item.ON_RIGHT_WRIST|Item.ON_TORSO|Item.ON_WAIST);
 		recoverEnvStats();
 	}
 
@@ -34,7 +35,7 @@ public class StdPerfume extends StdDrink implements Perfume
 	{
 		StringBuffer list=new StringBuffer("");
 		for(int i=0;i<smellList.size();i++)
-			list.append(";"+((String)smellList.elementAt(i)));
+			list.append(((String)smellList.elementAt(i))+";");
 		return list.toString();
 	}
 	public void setSmellList(String list)
@@ -42,17 +43,18 @@ public class StdPerfume extends StdDrink implements Perfume
 	
 	public void wearIfAble(MOB mob, Perfume me)
 	{
-		Behavior E=mob.fetchBehavior("Emoter");
+		Ability E=mob.fetchEffect("Prop_MOBEmoter");
 		if(E!=null)
-			mob.tell("The perfume wouldn't do you any good right now anyway.");
+			mob.tell("You can't put any perfume on right now.");
 		else
 		{
-			E=CMClass.getBehavior("Emoter");
-			mob.addBehavior(E);
+			E=CMClass.getAbility("Prop_MOBEmoter");
 			String s=getSmellList();
 			if(s.toUpperCase().indexOf("EXPIRES")<0)
 				s="expires=100 "+s;
-			E.setParms("SMELL "+s);
+			E.setMiscText("SMELL "+s);
+			mob.addNonUninvokableEffect(E);
+			E.setBorrowed(mob,true);
 		}
 	}
 	
