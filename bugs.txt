@@ -1,3 +1,4 @@
+reduce the chance that the gated demon is hostile towards the caster, but change the mana cost to be a heckuva lot more.  Doesn't need to be caster's full mana, though.
 compare trip and body flip
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
