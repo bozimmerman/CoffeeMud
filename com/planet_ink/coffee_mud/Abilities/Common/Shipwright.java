@@ -74,9 +74,9 @@ public class Shipwright extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
 					}
 					else
 					{

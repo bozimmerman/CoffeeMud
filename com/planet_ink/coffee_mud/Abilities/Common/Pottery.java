@@ -77,7 +77,7 @@ public class Pottery extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> completely mess(es) up "+building.name()+".");
+						commonEmote(mob,"<S-NAME> mess(es) up "+building.name()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}

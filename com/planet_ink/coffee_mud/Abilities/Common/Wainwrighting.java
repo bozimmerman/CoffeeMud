@@ -74,7 +74,7 @@ public class Wainwrighting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.name()+".");
+						commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);

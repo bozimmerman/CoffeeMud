@@ -68,7 +68,7 @@ public class PaperMaking extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> completely mess(es) up making "+building.name()+".");
+						commonTell(mob,"<S-NAME> mess(es) up making "+building.name()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}

@@ -46,7 +46,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> completely mess(es) up crafting the Holy Avenger.");
+						commonEmote(mob,"<S-NAME> mess(es) up crafting the Holy Avenger.");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}

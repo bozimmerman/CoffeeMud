@@ -72,9 +72,9 @@ public class ScrimShaw extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
 						else
-							commonTell(mob,"<S-NAME> completely mess(es) up scrimshawing "+building.name()+".");
+							commonTell(mob,"<S-NAME> mess(es) up scrimshawing "+building.name()+".");
 					}
 					else
 					{

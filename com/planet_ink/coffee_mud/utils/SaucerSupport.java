@@ -38,6 +38,10 @@ public class SaucerSupport
 			zapCodes.put("-PLAYER",new Integer(10));
 			zapCodes.put("-NPC",new Integer(11));
 			zapCodes.put("-MOB",new Integer(11));
+			zapCodes.put("-RACECAT",new Integer(12));
+			zapCodes.put("-RACECATS",new Integer(12));
+			zapCodes.put("+RACECAT",new Integer(13));
+			zapCodes.put("+RACECATS",new Integer(13));
 		}
 		return zapCodes;
 	}
@@ -50,9 +54,13 @@ public class SaucerSupport
 									+"-baseclass  (<WORD> all base classes)  <BR>"
 									+"+thief +mage +ranger (create exceptions to -class and -baseclass) <BR>"
 									+"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
-									+"-race (<WORD> all racial categories)  <BR>"
+									+"-race (<WORD> all races)  <BR>"
 									+"+elf +dwarf +human +half +gnome (create exceptions to -race)  <BR>"
-									+"-elf -dward -human -half -gnome (<WORD> only listed races)  <BR>"
+									+"-elf -dwarf -human -half -gnome (<WORD> only listed races)  <BR>"
+									+"-racecat (<WORD> all racial categories)  <BR>"
+									+"+racecat (do not <WORD> all racial categories)  <BR>"
+									+"+elf +insect +humanoid +canine +gnome (create exceptions to -racecat)  <BR>"
+									+"-elf -insect -humanoid -canine -gnome (create exceptions to +racecat)  <BR>"
 									+"-alignment (<WORD> all alignments)  <BR>"
 									+"+evil +good +neutral (create exceptions to -alignment)  <BR>"
 									+"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
@@ -248,8 +256,27 @@ public class SaucerSupport
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
-							String cat=R.racialCategory().toUpperCase();
+							String cat=R.name().toUpperCase();
 							if(cat.length()>6) cat=cat.substring(0,6);
+							if((!cats.contains(R.name())
+							&&(fromHere(V,'+',v+1,cat))))
+							   cats.addElement(R.name());
+						}
+						for(int c=0;c<cats.size();c++)
+							buf.append(((String)cats.elementAt(c))+", ");
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 12: // -Racecats
+					{
+						buf.append("Allows only these racial categories ");
+						Vector cats=new Vector();
+						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						{
+							Race R=(Race)r.nextElement();
+							String cat=R.racialCategory().toUpperCase();
 							if((!cats.contains(R.racialCategory())
 							&&(fromHere(V,'+',v+1,cat))))
 							   cats.addElement(R.racialCategory());
@@ -349,6 +376,20 @@ public class SaucerSupport
 				case 11: // -MOB
 					buf.append("Disallows mobs/npcs.  ");
 					break;
+				case 13: // +racecats
+					{
+						buf.append("Disallows the following racial cat(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								buf.append(str2+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				}
 			else
 			{
@@ -398,12 +439,12 @@ public class SaucerSupport
 		getZapCodes();
 		
 		String mobClass=mob.charStats().displayClassName().toUpperCase().substring(0,3);
-		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
-		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase();
+		String mobRaceCat=mob.charStats().getMyRace().racialCategory().toUpperCase();
+		if(mobRaceCat.length()>6) mobRaceCat=mobRaceCat.substring(0,6);
+		String mobRace=mob.charStats().getMyRace().name().toUpperCase();
 		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
 		String mobGender=mob.charStats().genderName().toUpperCase();
-		String mobName=mob.name().toUpperCase();
 		int level=mob.envStats().level();
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		
@@ -426,7 +467,7 @@ public class SaucerSupport
 					if(!fromHere(V,'+',v+1,mobClass)) return false;
 					break;
 				case 1: // -baseclass
-					if((!fromHere(V,'+',v+1,mobBaseClass))
+					if((!fromHere(V,'+',v+1,mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3)))
 					&&(!fromHere(V,'+',v+1,mobClass))) return false;
 					break;
 				case 2: // -Race
@@ -460,6 +501,14 @@ public class SaucerSupport
 				case 11: // -MOB
 					if(mob.isMonster()) return false;
 					break;
+				case 12: // -Racecat
+					if(!fromHere(V,'+',v+1,mobRaceCat)) 
+						return false;
+					break;
+				case 13: // +Racecat
+					if(fromHere(V,'-',v+1,mobRaceCat)) 
+						return false;
+					break;
 				}
 			else
 			if(str.startsWith("-"+mobClass)) return false;
@@ -470,7 +519,7 @@ public class SaucerSupport
 			else
 			if(str.startsWith("-"+mobGender)) return false;
 			else
-			if(str.startsWith("-"+mobName)) return false;
+			if(str.startsWith("-"+mob.name().toUpperCase())) return false;
 			else
 			if(levelCheck(str,'-',0,level)) return false;
 		}
