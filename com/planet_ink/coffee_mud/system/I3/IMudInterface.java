@@ -325,6 +325,7 @@ public class IMudInterface implements ImudServices, Serializable
 				ChannelWhoReply wkr=new ChannelWhoReply();
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
+				wkr.channel=wk.channel;
 				int channelInt=ExternalPlay.channelInt(wk.channel);
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)

@@ -23,7 +23,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)7.2;
+	public static final float HOST_VERSION_MINOR=(float)7.3;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -441,6 +441,7 @@ public class MUD extends Thread implements Host
 		{
 			imserver.shutdown();
 			imserver=null;
+			S.println("IMServer stopped.");
 		}
 		
 		for(int s=0;s<Sessions.size();s++)
