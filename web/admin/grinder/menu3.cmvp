@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMUD MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
+		function Clicked2(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.target="MAP";
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</script>
+</head>
+<BODY>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/quickfind.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
+<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TR>
+	<TD WIDTH=50% ALIGN=LEFT>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<INPUT TYPE=TEXT NAME=ROOMSIZE VALUE="">
+	<INPUT TYPE=BUTTON NAME=FINDIT VALUE="Map Square Size" ONCLICK="Clicked2('/grinder/worldmap.cmvp');">
+	</TD>
+	<TD WIDTH=40% ALIGN=RIGHT>
+		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

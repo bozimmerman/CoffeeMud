@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ <BODY> @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ <BODY> @AddFile?/grinder/nopriv.cmvp@ @else@
+
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<title>CoffeeMUD MUDGrinder</title>
+	<SCRIPT LANGUAGE="JavaScript">
+	<!--
+		function Clicked(action,link,room,linksto)
+		{
+			document.SELECTAREA.OLDROOM.value=document.SELECTAREA.ROOM.value;
+			document.SELECTAREA.OLDLINK.value=document.SELECTAREA.LINK.value;
+			document.SELECTAREA.ROOM.value=room;
+			document.SELECTAREA.LINK.value=link;
+			document.SELECTAREA.LINKSTO.value=linksto;
+			document.SELECTAREA.action='/grinder/'+action;
+			document.SELECTAREA.submit();
+		}
+
+function showSelected() {
+	showDiv(document.all.layerSelect.value);
+}
+
+function showDiv(pass) { 
+  var divs = document.getElementsByTagName('div'); 
+  for(i=0;i<divs.length;i++){ 
+    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
+      if (document.getElementById) // DOM3 = IE5, NS6 
+        divs[i].style.visibility="visible";// show/hide 
+      else 
+        if (document.layers) // Netscape 4 
+          document.layers[divs[i]].display = 'visible'; 
+        else // IE 4 
+          document.all.divs[i].visibility = 'visible'; 
+    } else { 
+      if (document.getElementById) 
+        divs[i].style.visibility="hidden"; 
+      else 
+        if (document.layers) // Netscape 4 
+          document.divs[i].visibility = 'hidden'; 
+        else // IE 4 
+          document.all.divs[i].visibility = 'hidden'; 
+    } 
+  } 
+} 
+
+function setVariables() {
+  if (navigator.appName == "Netscape") {
+    v=".top=";
+    w=".left=";
+    dS="document.";
+    sD="";
+    x="window.pageXOffset";
+    y="window.pageYOffset";
+  }
+  else {
+    v=".pixelTop=";
+    w=".pixelLeft=";
+    dS="";
+    sD=".style";
+    x="document.body.scrollLeft";
+    y="document.body.scrollTop";
+   }
+}
+
+function checkLocation() {
+  object="layersMenu";
+  yy=eval(y);
+  xx=eval(x);
+  eval(dS+object+sD+v+yy);
+  eval(dS+object+sD+w+xx);
+  setTimeout("checkLocation()",10);
+}
+	//-->
+	</SCRIPT>
+</head>
+
+<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+
+<FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
+<INPUT TYPE=HIDDEN NAME=LINK VALUE="">
+<INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
+@MUDGrinder?WORLDMAP@
+</FORM>
+
+@endif@
+@endif@
+</BODY>
+</HTML>
