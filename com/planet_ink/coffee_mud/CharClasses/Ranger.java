@@ -57,6 +57,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Fighter_TrueShot",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
@@ -77,6 +78,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_ResistPoison",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_WaterBreathing",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_WindGust",false);

@@ -53,6 +53,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Attack2",true); 
+			CMAble.addCharAbilityMapping(ID(),8,"Fighter_TrueShot",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Fighter_CritStrike",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
@@ -63,6 +64,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_CriticalShot",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Fighter_Whomp",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack3",true);
