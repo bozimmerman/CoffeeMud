@@ -31,8 +31,8 @@ public class Auction extends Channel
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		int channelInt=ChannelSet.getChannelInt("AUCTION");
-		int channelNum=ChannelSet.getChannelNum("AUCTION");
+		int channelInt=ChannelSet.getChannelIndex("AUCTION");
+		int channelNum=ChannelSet.getChannelCodeNumber("AUCTION");
 
 		if(Util.isSet(pstats.getChannelMask(),channelInt))
 		{

@@ -260,6 +260,13 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
       evaluated.&nbsp; See the @loop@ macro.&nbsp; This macro is actually
       returned by many other macros as a means of creating breaks in
 loops.</TD></TR>
+<TR><TD>ChannelBackLogNext</TD><TD>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be 
+	encrypted login data.  Also requires CHANNEL to be the name of a valid channel. 
+	Returns the next available channel message, and sets ReqParm CHANNELBACKLOGNUM.  Will
+	not break out if MacParm EMPTYOK is given.</TD></TR>
+<TR><TD>ChannelNext</TD><TD>Requires ReqParms LOGIN and PASSWORD to be unencrypted login data, or AUTH to be 
+	encrypted login data.  Returns the next available channel in ReqParm CHANNEL.  Will
+	clear out if MacParm RESET is given.</TD></TR>
 <TR><TD>CharClassData</TD><TD>Requires ReqParm CLASS be set to a
       valid&nbsp;character class&nbsp;id.&nbsp;Returns data about this class
       depending on MacParms found.&nbsp; Valid MacParms include: help, playable,

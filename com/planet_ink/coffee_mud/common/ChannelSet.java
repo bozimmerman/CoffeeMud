@@ -60,6 +60,32 @@ public class ChannelSet
 	
 	public static boolean mayReadThisChannel(MOB sender,
 											 boolean areaReq,
+											 MOB M, 
+											 int i)
+	{
+		if(M==null) return false;
+		
+		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		&&(sender!=null)
+		&&((!sender.getClanID().equals("ALL"))||(M.getClanID().length()==0))
+		&&((!M.getClanID().equalsIgnoreCase(sender.getClanID()))||(M.getClanRole()==Clan.POS_APPLICANT)))
+			return false;
+		
+		if((!M.amDead())
+		&&(M.location()!=null)
+		&&((sender==null)
+			||(M.playerStats()==null)
+			||(!M.playerStats().getIgnored().contains(sender.Name())))
+		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
+		&&((sender==null)
+		   ||(!areaReq)
+		   ||(M.location().getArea()==sender.location().getArea()))
+		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+			return true;
+		return false;
+	}
+	public static boolean mayReadThisChannel(MOB sender,
+											 boolean areaReq,
 											 Session ses, 
 											 int i)
 	{
@@ -88,6 +114,23 @@ public class ChannelSet
 		return false;
 	}
 	
+	public static boolean mayReadThisChannel(MOB M, int i)
+	{
+	    if(M==null) return false;
+	    if(i>=ChannelSet.getNumChannels())
+	        return false;
+		if(getChannelName(i).equalsIgnoreCase("CLANTALK")
+		&&(M.getClanID().length()==0)||(M.getClanRole()==Clan.POS_APPLICANT))
+		    return false;
+		
+		if((!M.amDead())
+		&&(M.location()!=null)
+		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
+		&&(!Util.isSet(M.playerStats().getChannelMask(),i)))
+			return true;
+		return false;
+	}
+
 	public static void channelQueUp(int i, CMMsg msg)
 	{
 		Vector q=getChannelQue(i);
@@ -99,7 +142,7 @@ public class ChannelSet
 		}
 	}
 	
-	public static int getChannelInt(String channelName)
+	public static int getChannelIndex(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -107,7 +150,7 @@ public class ChannelSet
 		return -1;
 	}
 
-	public static int getChannelNum(String channelName)
+	public static int getChannelCodeNumber(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))

@@ -50,7 +50,7 @@ public class BaseChanneler extends StdCommand
 									 String message,
 									 boolean systemMsg)
 	{
-		int channelInt=ChannelSet.getChannelInt(channelName);
+		int channelInt=ChannelSet.getChannelIndex(channelName);
 		if(channelInt<0) return;
 		
 		message=CommonStrings.applyFilter(message,CommonStrings.SYSTEM_CHANNELFILTER);

@@ -1070,7 +1070,7 @@ public final class IMC2Driver extends Thread {
 			return;
 		channelName=read_channel_name(channelName);
 		if(channelName.length()==0) return;
-		int channelInt=ChannelSet.getChannelInt(channelName);
+		int channelInt=ChannelSet.getChannelIndex(channelName);
 		if(channelInt<0) return;
 		String str="^Q^q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^?^.";
 		if(emote>0) 

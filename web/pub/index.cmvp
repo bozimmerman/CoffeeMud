@@ -30,6 +30,7 @@ Players currently online: <b>@NUMPLAYERS@</B>
 <LI><a href="deities.cmvp"><FONT COLOR=GREEN><B>Installed Deities</B></FONT></a>
 <LI><a href="socials.cmvp"><FONT COLOR=GREEN><B>Socials List</B></FONT></a>
 <LI><a href="sounds.zip"><FONT COLOR=GREEN><B>Download Sounds for MSP support</B></FONT></a>
+<LI><a href="channels.cmvp"><FONT COLOR=GREEN><B>Channel Backlogs</B></FONT></a>
 <P>
 <LI><B>Player Races: </B>
 	@loop@

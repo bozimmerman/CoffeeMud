@@ -56,8 +56,8 @@ public class Channel extends BaseChanneler
 		PlayerStats pstats=mob.playerStats();
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		commands.removeElementAt(0);
-		int channelInt=ChannelSet.getChannelInt(channelName);
-		int channelNum=ChannelSet.getChannelNum(channelName);
+		int channelInt=ChannelSet.getChannelIndex(channelName);
+		int channelNum=ChannelSet.getChannelCodeNumber(channelName);
 
 		if((pstats!=null)&&(Util.isSet(pstats.getChannelMask(),channelInt)))
 		{

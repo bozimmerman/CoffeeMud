@@ -39,7 +39,7 @@ public class ChanWho extends StdCommand
 		if(x>0)
 		{
 			mud=channel.substring(x+1);
-			int channelInt=ChannelSet.getChannelInt(channel.substring(0,x).toUpperCase());
+			int channelInt=ChannelSet.getChannelIndex(channel.substring(0,x).toUpperCase());
 			channel=ChannelSet.getChannelName(channelInt).toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
@@ -49,7 +49,7 @@ public class ChanWho extends StdCommand
 			CMClass.I3Interface().i3chanwho(mob,channel,mud);
 			return false;
 		}
-		int channelInt=ChannelSet.getChannelInt(channel.toUpperCase());
+		int channelInt=ChannelSet.getChannelIndex(channel.toUpperCase());
 		channel=ChannelSet.getChannelName(channelInt);
 		if(channelInt<0)
 		{
