@@ -1,7 +1,6 @@
 @if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
 @if?!CheckReqParm?SYSOP=true@ @AddFile?nopriv.cmvp@ @else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<!-- tell spiders to sod off -->
@@ -19,7 +18,7 @@
 <FORM NAME=NEWAREA METHOD=GET ACTION="newarea2.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <TABLE WIDTH=200 BORDER=1>
-<TR><TD ALIGN=CENTER><B>Enter a name:</B></TD></TR>
+<TR><TD ALIGN=CENTER><FONT COLOR=WHITE><B>Enter a name:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER><INPUT TYPE=TEXT NAME=AREA VALUE=""></TD></TR>
 <TR><TD ALIGN=CENTER><INPUT TYPE=SUBMIT VALUE="Submit">
 </TD></TR></TABLE>

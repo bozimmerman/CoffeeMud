@@ -530,6 +530,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)
 		{
 			Log.errOut(getName(), "Exception in doVirtualPage() - " + e.getMessage() );
+			Log.errOut(getName(),e);
 		}
 
 		if (redirectTo != null)
@@ -760,6 +761,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)
 		{
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
+			Log.errOut(getName(),e);
 		}
 		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 				":" + status);
@@ -835,6 +837,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		catch (Exception e)
 		{
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
+			Log.errOut(getName(),e);
 		}
 		return "";
 	}

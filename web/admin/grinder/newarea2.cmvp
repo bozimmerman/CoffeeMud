@@ -18,7 +18,7 @@
 <FORM NAME=NEWAREA METHOD=GET ACTION="modarea.cmvp" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-Your new area '@AreaName@' has been successfully created.<P>
+<FONT COLOR=WHITE>Your new area '@AreaName@' has been successfully created.</FONT><P>
 <INPUT TYPE=SUBMIT VALUE="Continue">
 @else@
 <FORM NAME=NEWAREA METHOD=GET ACTION="loggedin.cmvp" TARGET=_top>

@@ -193,10 +193,9 @@ public class GrinderMap
 	public StringBuffer getHTMLTable()
 	{
 		StringBuffer buf=new StringBuffer("");
-		buf.append("<TABLE WIDTH="+(map.Xbound*138)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+		buf.append("<TABLE WIDTH="+((Xbound+1)*138)+" BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 		for(int y=0;y<=Ybound;y++)
 		{
-			boolean altsAlreadyDone[]=new boolean[4];
 			// up=nwes
 			// down=sewn
 			for(int l=0;l<5;l++)
@@ -208,39 +207,83 @@ public class GrinderMap
 					if(GR==null)
 						buf.append("<TD COLSPAN=5 WIDTH=138><BR></TD>");
 					else
-					switch(l)
 					{
-					case 0: // north, up
-						{
-						buf.append("<TD WIDTH=24><BR></TD>");
-						buf.append("<TD WIDTH=30 BGCOLOR=RED>U1</TD>");
-						buf.append("<TD WIDTH=30><BR></TD>");
-						buf.append("<TD WIDTH=30 BGCOLOR=RED>U2</TD>");
-						buf.append("<TD WIDTH=24><BR></TD>");
+						int up=-1;
+						int down=-1;
+						if(GR.doors[Directions.UP]!=null)
+							up=findRelGridDir(GR,GR.doors[Directions.UP].room);
+						if(GR.doors[Directions.DOWN]!=null)
+							down=findRelGridDir(GR,GR.doors[Directions.DOWN].room);
+						if(up<0){
+							if(down==Directions.NORTH)
+								up=Directions.EAST;
+							else
+								up=Directions.NORTH;
 						}
-						break;
-					case 1: // west, east
-						{
-						buf.append("<TD WIDTH=24 BGCOLOR=GREEN>L1</TD>");
-						buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 BGCOLOR=YELLOW ALIGN=CENTER>"+GR.roomID+"</TD>");
-						buf.append("<TD WIDTH=24 BGCOLOR=BLUE>R1</TD>");
+						if(down<0){
+							if(up==Directions.SOUTH)
+								down=Directions.WEST;
+							else
+								down=Directions.SOUTH;
 						}
-						break;
-					case 2: // nada
-						buf.append("<TD WIDTH=24><BR></TD>");
-						buf.append("<TD WIDTH=24><BR></TD>");
-						break;
-					case 3: // alt e,w
-						buf.append("<TD WIDTH=24 BGCOLOR=GREEN>L2</TD>");
-						buf.append("<TD WIDTH=24 BGCOLOR=BLUE>R2</TD>");
-						break;
-					case 4: // south, down
-						buf.append("<TD WIDTH=24><BR></TD>");
-						buf.append("<TD WIDTH=30 BGCOLOR=PURPLE>D1</TD>");
-						buf.append("<TD WIDTH=30><BR></TD>");
-						buf.append("<TD WIDTH=30 BGCOLOR=PURPLE>D2</TD>");
-						buf.append("<TD WIDTH=24><BR></TD>");
-						break;
+						switch(l)
+						{
+						case 0: // north, up
+							{
+							buf.append("<TD WIDTH=24><BR></TD>");
+							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.NORTH,GR)+"</TD>");
+							buf.append("<TD WIDTH=30><BR></TD>");
+							String alt="<BR>";
+							if(up==Directions.NORTH) alt=getDoorLabelGif(Directions.UP,GR);
+							if(down==Directions.NORTH) alt=getDoorLabelGif(Directions.DOWN,GR);
+							buf.append("<TD WIDTH=30>"+alt+"</TD>");
+							buf.append("<TD WIDTH=24><BR></TD>");
+							}
+							break;
+						case 1: // west, east
+							{
+							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR)+"</TD>");
+							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 BGCOLOR=#CCCCFF VALIGN=TOP>");
+							String roomID=GR.roomID;
+							if(roomID.indexOf("#")>0)
+							    roomID=roomID.substring(roomID.indexOf("#"));
+							buf.append("<FONT SIZE=-1><B>"+roomID+"</B></FONT><BR>");
+							buf.append("<FONT SIZE=-2>("+CMClass.className(GR.room)+")<BR>");
+							String displayText=GR.room.displayText();
+							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";
+							buf.append(displayText+"</FONT></TD>");
+							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.EAST,GR)+"</TD>");
+							}
+							break;
+						case 2: // nada
+							buf.append("<TD WIDTH=24><BR></TD>");
+							buf.append("<TD WIDTH=24><BR></TD>");
+							break;
+						case 3: // alt e,w
+							{
+							String alt="<BR>";
+							if(up==Directions.WEST) alt=getDoorLabelGif(Directions.UP,GR);
+							if(down==Directions.WEST) alt=getDoorLabelGif(Directions.DOWN,GR);
+							buf.append("<TD WIDTH=24>"+alt+"</TD>");
+							alt="<BR>";
+							if(up==Directions.EAST) alt=getDoorLabelGif(Directions.UP,GR);
+							if(down==Directions.EAST) alt=getDoorLabelGif(Directions.DOWN,GR);
+							buf.append("<TD WIDTH=24>"+alt+"</TD>");
+							}
+							break;
+						case 4: // south, down
+							{
+							buf.append("<TD WIDTH=24><BR></TD>");
+							buf.append("<TD WIDTH=30>"+getDoorLabelGif(Directions.SOUTH,GR)+"</TD>");
+							buf.append("<TD WIDTH=30><BR></TD>");
+							String alt="<BR>";
+							if(up==Directions.SOUTH) alt=getDoorLabelGif(Directions.UP,GR);
+							if(down==Directions.SOUTH) alt=getDoorLabelGif(Directions.DOWN,GR);
+							buf.append("<TD WIDTH=30>"+alt+"</TD>");
+							buf.append("<TD WIDTH=24><BR></TD>");
+							}
+							break;
+						}
 					}
 				}
 				buf.append("</TR>");
@@ -250,84 +293,68 @@ public class GrinderMap
 		return buf;
 	}
 									 
+	private GrinderRoom getRoomInDir(GrinderRoom room, int d)
+	{
+	    switch(d)
+	    {
+	        case Directions.NORTH:
+	            if(room.y>0)
+	                return grid[room.x][room.y-1];
+	            break;
+	        case Directions.SOUTH:
+	            if(room.y<Ybound)
+	                return grid[room.x][room.y+1];
+	            break;
+	        case Directions.EAST:
+	            if(room.x<Xbound)
+	                return grid[room.x+1][room.y]; 
+	            break;
+	        case Directions.WEST:
+	            if(room.x>0)
+	                return grid[room.x-1][room.y]; 
+	            break;
+	    }
+		return null;
+	}
+	
+	private int findRelGridDir(GrinderRoom room, String roomID)
+	{
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			GrinderRoom possRoom=getRoomInDir(room,d);
+			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))
+				return d;
+		}
+		return -1;
+	}
+	
     private String getDoorLabelGif(int d, GrinderRoom room)
 	{
-	    MapGrinder.Direction dir=(MapGrinder.Direction)room.doors[d];
+	    GrinderDir dir=(GrinderDir)room.doors[d];
 	    String dirLetter=""+Directions.getDirectionName(d).toUpperCase().charAt(0);
+		GrinderRoom roomPointer=null;
 	    if((dir==null)||((dir!=null)&&(dir.room.length()==0)))
 			return "<IMG SRC=\"images/E"+dirLetter+".gif\">";
 	    else
 	    if((d==Directions.UP)||(d==Directions.DOWN))
 	    {
-	        int actualDirection=-1;
-	        MapGrinder.Room roomPointer=null;
-	        if((room.y>0)&&(grid[room.x][room.y-1]!=null)&&(grid[room.x][room.y-1].roomID.equals(dir.room)))
-	        {
-	            actualDirection=Directions.NORTH;
-	            roomPointer=grid[room.x][room.y-1];
-	        }
-	        if((room.y<Ybound)&&(grid[room.x][room.y+1]!=null)&&(grid[room.x][room.y+1].roomID.equals(dir.room)))
-	        {
-	            actualDirection=Directions.SOUTH;
-	            roomPointer=grid[room.x][room.y+1];
-	        }
-	        if((room.x<MapGrinder.Xbound)&&(grid[room.x+1][room.y]!=null)&&(grid[room.x+1][room.y].roomID.equals(dir.room)))
-	        {
-	            actualDirection=Directions.EAST;
-	            roomPointer=grid[room.x+1][room.y]; 
-	        }
-	        if((room.x>0)&&(grid[room.x-1][room.y]!=null)&&(grid[room.x-1][room.y].roomID.equals(dir.room)))
-	        {
-	            actualDirection=Directions.WEST;
-	            roomPointer=grid[room.x-1][room.y]; 
-	        }
-	                    
-	        if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))
-    	        dirLetter+="R";
-    	                    
-    	    MapGrinder.Exit exit=dir.exit;
-    	    if((exit==null)||((exit!=null)&&(exit.classID.length()==0)))
-				return "<IMG SRC=\"images/U"+dirLetter+".gif\">";
-    	    else
-    	    if(exit.hasADoor)
-				return "<IMG SRC=\"images/D"+dirLetter+".gif\">";
-    	    else
-				return "<IMG SRC=\"images/O"+dirLetter+".gif\">";
+			int actualDir=findRelGridDir(room,dir.room);
+			if(actualDir>=0) roomPointer=getRoomInDir(room,actualDir);
 	    }
 	    else
-	    {
-	        MapGrinder.Room roomPointer=null;
-	        switch(d)
-	        {
-	            case Directions.NORTH:
-	                if(room.y>0)
-	                    roomPointer=grid[room.x][room.y-1];
-	                break;
-	            case Directions.SOUTH:
-	                if(room.y<MapGrinder.Ybound)
-	                    roomPointer=grid[room.x][room.y+1];
-	                break;
-	            case Directions.EAST:
-	                if(room.x<MapGrinder.Xbound)
-	                    roomPointer=grid[room.x+1][room.y]; 
-	                break;
-	            case Directions.WEST:
-	                if(room.x>0)
-	                    roomPointer=grid[room.x-1][room.y]; 
-	                break;
-	        }
-	        if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))
-    	        dirLetter+="R";
-    	    MapGrinder.Exit exit=dir.exit;
-    	    doorLabel.setToolTipText(Directions.getDirectionName(d)+" to "+dir.room);
-    	    if((exit==null)||((exit!=null)&&(exit.classID.length()==0)))
-				return "<IMG SRC=\"images/U"+dirLetter+".gif\">";
-    	    else
-    	    if(exit.hasADoor)
-    	        setupLabel("D"+dirLetter+".gif",doorLabel,"D",d);
-    	    else
-    	        setupLabel("O"+dirLetter+".gif",doorLabel,"O",d);
-	    }
+	        roomPointer=getRoomInDir(room,d);
+		
+	    if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))
+    	    dirLetter+="R";
+		String theRest=".gif\" ALT=\""+Directions.getDirectionName(d)+" to "+dir.room+"\">";
+    	Exit exit=dir.exit;
+    	if(exit==null)
+			return "<IMG SRC=\"images/U"+dirLetter+theRest;
+    	else
+    	if(exit.hasADoor())
+			return "<IMG SRC=\"images/D"+dirLetter+theRest;
+    	else
+			return "<IMG SRC=\"images/O"+dirLetter+theRest;
     }
 
 	public void placeRoom(GrinderRoom room, 
