@@ -175,6 +175,17 @@ public class RandomMonsters extends ActiveTicker
 		return monsters;
 	}
 
+	public boolean canFlyHere(MOB M, Room R)
+	{
+		if(R==null) return true;
+		if(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==Room.DOMAIN_INDOORS_AIR)
+		||((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==Room.DOMAIN_OUTDOORS_AIR))
+		{
+			if(!Sense.isInFlight(M))
+				return false;
+		}
+		return true;
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -238,11 +249,8 @@ public class RandomMonsters extends ActiveTicker
 						if(restrictedLocales==null)
 						{
 							int tries=0;
-							while(((room==null)||(room.roomID().length()==0))
-							&&((++tries)<100)
-							&&(Sense.isInFlight(M)
-							  ||(((room.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
-							    &&((room.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))))
+							while(((room==null)||(room.roomID().length()==0)||(!canFlyHere(M,room)))
+							&&((++tries)<100))
 								room=((Area)ticking).getRandomRoom();
 						}
 						else
@@ -252,9 +260,7 @@ public class RandomMonsters extends ActiveTicker
 							{
 								Room R=(Room)e.nextElement();
 								if(okRoomForMe(M,R)
-								&&(Sense.isInFlight(M)
-								  ||(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
-								    &&((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)))
+								&&(canFlyHere(M,R))
 								&&(R.roomID().trim().length()>0))
 									map.addElement(R);
 							}
