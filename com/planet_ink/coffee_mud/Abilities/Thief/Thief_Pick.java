@@ -24,7 +24,6 @@ public class Thief_Pick extends ThiefSkill
 
 		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Thief",5);
 		recoverEnvStats();
 	}
 

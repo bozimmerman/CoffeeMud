@@ -16,8 +16,6 @@ public class Prayer_Sacrifice extends Prayer
 		baseEnvStats().setLevel(3);
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

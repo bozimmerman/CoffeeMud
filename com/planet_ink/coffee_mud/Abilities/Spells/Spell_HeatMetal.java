@@ -28,9 +28,6 @@ public class Spell_HeatMetal extends Spell
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Mage",11);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}
@@ -75,7 +72,7 @@ public class Spell_HeatMetal extends Spell
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item item=mob.fetchInventory(i);
-			if((!item.amWearingAt(Item.INVENTORY))&&(item.material()==Item.METAL)&&(item.location()==null)&&(!mob.amDead()))
+			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY))&&(item.material()==Item.METAL)&&(item.location()==null)&&(!mob.amDead()))
 			{
 				int damage=Dice.roll(1,6,1);
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,item.name()+" "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");

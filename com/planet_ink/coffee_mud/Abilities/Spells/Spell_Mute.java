@@ -27,9 +27,6 @@ public class Spell_Mute extends Spell
 
 		baseEnvStats().setLevel(10);
 
-		addQualifyingClass("Mage",10);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -17,8 +17,6 @@ public class Prayer_CurseItem extends Prayer
 
 		baseEnvStats().setLevel(24);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -121,12 +119,17 @@ public class Prayer_CurseItem extends Prayer
 					while(a<target.numAffects())
 					{
 						Ability A=target.fetchAffect(a);
-						int b=target.numAffects();
-						if(A instanceof Prayer_BlessItem)
-							A.unInvoke();
-						if(A instanceof Prayer_Bless)
-							A.unInvoke();
-						if(b==target.numAffects())
+						if(A!=null)
+						{
+							int b=target.numAffects();
+							if(A instanceof Prayer_BlessItem)
+								A.unInvoke();
+							if(A instanceof Prayer_Bless)
+								A.unInvoke();
+							if(b==target.numAffects())
+								a++;
+						}
+						else
 							a++;
 					}
 					target.recoverEnvStats();

@@ -200,10 +200,13 @@ public class Prop_HaveAdjuster extends Property
 	{
 		int x=0;
 		while(x<mylastMOB.numAffects())
-			if(mylastMOB.fetchAffect(x)==me)
-				mylastMOB.delAffect(mylastMOB.fetchAffect(x));
+		{
+			Ability aff=mylastMOB.fetchAffect(x);
+			if((aff!=null)&&(aff==me))
+				mylastMOB.delAffect(aff);
 			else
 				x++;
+		}
 		mylastMOB.recoverEnvStats();
 		mylastMOB.recoverMaxState();
 		mylastMOB.recoverCharStats();

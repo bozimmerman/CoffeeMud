@@ -7,6 +7,8 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Paladin extends StdCharClass
 {
+	private static boolean abilitiesLoaded=false;
+	
 	public Paladin()
 	{
 		super();
@@ -22,6 +24,52 @@ public class Paladin extends StdCharClass
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;
 		damageBonusPerLevel=1;
+		if(!abilitiesLoaded)
+		{
+			abilitiesLoaded=true;
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Axe",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Paladin_LayHands",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Cleric_Turn",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Skill_Attack3",true);	
+			
+			// qualify for all prayers
+			Cleric c=new Cleric(); // make sure a cleric is available
+			for(int level=1;level<22;level++)
+			{
+				Vector V=CMAble.getLevelListings(c.ID(),level);
+				for(int v=0;v<V.size();v++)
+				{
+					String prayer=(String)V.elementAt(v);
+					if(prayer.startsWith("Prayer_"))
+						CMAble.addCharAbilityMapping(ID(),level+4,prayer,false);
+				}
+			}
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureLight",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_DetectEvil",true);
+		}
 	}
 
 	public boolean playerSelectable()
@@ -69,20 +117,12 @@ public class Paladin extends StdCharClass
 	public void newCharacter(MOB mob, boolean isBorrowedClass)
 	{
 		super.newCharacter(mob, isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Paladin_LayHands"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Fighter_BlindFighting"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Fighter_Rescue"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Attack2"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Attack3"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Bash"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Dirt"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Disarm"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Dodge"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Parry"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Skill_Trip"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Cleric_Turn"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Prayer_CureLight"), isBorrowedClass);
-		giveMobAbility(mob,CMClass.getAbility("Prayer_DetectEvil"), isBorrowedClass);
+		for(int a=0;a<CMClass.abilities.size();a++)
+		{
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
+				this.giveMobAbility(mob,A,isBorrowedClass);
+		}
 		if(!mob.isMonster())
 			outfit(mob);
 	}

@@ -36,14 +36,14 @@ public class GrinderRoom extends Dialog {
 		setBackground(new java.awt.Color(255,255,128));
 		setForeground(java.awt.Color.blue);
 		setFont(new Font("Dialog", Font.BOLD, 12));
-		setSize(377,418);
+		setSize(377,523);
 		setVisible(false);
 		okButton.setLabel("OK");
 		add(okButton);
-		okButton.setBounds(12,384,66,24);
+		okButton.setBounds(12,492,66,24);
 		CancelButton.setLabel("Cancel");
 		add(CancelButton);
-		CancelButton.setBounds(300,384,66,24);
+		CancelButton.setBounds(288,492,66,24);
 		JLabel1.setRequestFocusEnabled(false);
 		JLabel1.setSelectedTextColor(java.awt.Color.blue);
 		JLabel1.setCaretColor(java.awt.Color.blue);
@@ -55,7 +55,7 @@ public class GrinderRoom extends Dialog {
 		JLabel1.setBackground(java.awt.Color.yellow);
 		JLabel1.setBounds(12,12,336,24);
 		add(roomClass);
-		roomClass.setBounds(48,36,300,25);
+		roomClass.setBounds(48,36,300,21);
 		lroomClass.setText("Class:");
 		add(lroomClass);
 		lroomClass.setForeground(java.awt.Color.black);
@@ -82,8 +82,6 @@ public class GrinderRoom extends Dialog {
 		mobs.setEnabled(false);
 		add(mobs);
 		mobs.setBounds(48,240,144,84);
-		add(items);
-		items.setBounds(204,240,144,84);
 		delMOB.setLabel("Del");
 		delMOB.setEnabled(false);
 		add(delMOB);
@@ -91,6 +89,7 @@ public class GrinderRoom extends Dialog {
 		addMOB.setLabel("Add");
 		addMOB.setEnabled(false);
 		add(addMOB);
+		addMOB.setFont(new Font("Dialog", Font.BOLD, 12));
 		addMOB.setBounds(48,324,48,24);
 		modMOB.setLabel("Edit");
 		modMOB.setEnabled(false);
@@ -113,8 +112,46 @@ public class GrinderRoom extends Dialog {
 		description.setBounds(48,108,300,108);
 		items.setEnabled(false);
 		add(items);
+		items.setBounds(204,240,144,84);
+		lBehavs.setText("Behaviors:");
+		add(lBehavs);
+		lBehavs.setForeground(java.awt.Color.black);
+		lBehavs.setBounds(48,348,72,24);
+		behaviors.setEnabled(false);
+		add(behaviors);
+		behaviors.setBounds(48,372,144,84);
+		delBEHAV.setLabel("Del");
+		delBEHAV.setEnabled(false);
+		add(delBEHAV);
+		delBEHAV.setBounds(144,456,48,24);
+		addBEHAV.setLabel("Add");
+		addBEHAV.setEnabled(false);
+		add(addBEHAV);
+		addBEHAV.setBounds(48,456,48,24);
+		modBEHAV.setLabel("Edit");
+		modBEHAV.setEnabled(false);
+		add(modBEHAV);
+		modBEHAV.setBounds(96,456,48,24);
+		props.setEnabled(false);
+		add(props);
+		props.setBounds(204,372,144,84);
+		delPROPS.setLabel("Del");
+		delPROPS.setEnabled(false);
+		add(delPROPS);
+		delPROPS.setBounds(300,456,48,24);
+		addPROPS.setLabel("Add");
+		addPROPS.setEnabled(false);
+		add(addPROPS);
+		addPROPS.setBounds(204,456,48,24);
+		modPROPS.setLabel("Edit");
+		modPROPS.setEnabled(false);
+		add(modPROPS);
+		modPROPS.setBounds(252,456,48,24);
+		lProps.setText("Properties/Affects:");
+		add(lProps);
+		lProps.setForeground(java.awt.Color.black);
+		lProps.setBounds(204,348,144,24);
 		setTitle("Yo baby yo baby yo!");
-		setResizable(false);
 		//}}
 		
 		JLabel1.setText(text);
@@ -143,12 +180,20 @@ public class GrinderRoom extends Dialog {
 		SymItem lSymItem = new SymItem();
 		mobs.addItemListener(lSymItem);
 		items.addItemListener(lSymItem);
+		props.addItemListener(lSymItem);
+		behaviors.addItemListener(lSymItem);
 		delMOB.addActionListener(lSymAction);
 		delItem.addActionListener(lSymAction);
+		delPROPS.addActionListener(lSymAction);
+		delBEHAV.addActionListener(lSymAction);
 		addMOB.addActionListener(lSymAction);
 		addItem.addActionListener(lSymAction);
+		addPROPS.addActionListener(lSymAction);
+		addBEHAV.addActionListener(lSymAction);
 		modMOB.addActionListener(lSymAction);
 		modItem.addActionListener(lSymAction);
+		modPROPS.addActionListener(lSymAction);
+		modBEHAV.addActionListener(lSymAction);
 		roomClass.addItemListener(lSymItem);
 		//}}
 
@@ -230,6 +275,21 @@ public class GrinderRoom extends Dialog {
             myParent.items.add("Loading...");
             myParent.mobs.add("Loading...");
             try { this.sleep(500); }catch(Exception e){}
+            if((myParent!=null)&&(myParent.room!=null))
+            {
+                for(int b=0;b<myParent.room.behaviors.size();b++)
+                {
+                    MapGrinder.Behavior behav=(MapGrinder.Behavior)myParent.room.behaviors.elementAt(b);
+                    behaviors.add(behav.classID+" ("+behav.parms+")");
+                }
+                for(int p=0;p<myParent.room.affects.size();p++)
+                {
+                    MapGrinder.Ability able=(MapGrinder.Ability)myParent.room.affects.elementAt(p);
+                    props.add(able.classID+" ("+able.misctext+")");
+                } 
+                myParent.addBEHAV.setEnabled(true);
+                myParent.addPROPS.setEnabled(true);
+            }
             if(MapGrinder.loadRoomItems(myParent.room))
             {
                 Vector V=TheGrinder.getItemTypes();
@@ -312,14 +372,24 @@ public class GrinderRoom extends Dialog {
 	javax.swing.JLabel lmobs = new javax.swing.JLabel();
 	javax.swing.JLabel litems = new javax.swing.JLabel();
 	java.awt.List mobs = new java.awt.List(4);
-	java.awt.TextArea description = new java.awt.TextArea("",0,0,TextArea.SCROLLBARS_VERTICAL_ONLY);
-	java.awt.List items = new java.awt.List(4);
 	java.awt.Button delMOB = new java.awt.Button();
 	java.awt.Button addMOB = new java.awt.Button();
 	java.awt.Button modMOB = new java.awt.Button();
 	java.awt.Button addItem = new java.awt.Button();
 	java.awt.Button modItem = new java.awt.Button();
 	java.awt.Button delItem = new java.awt.Button();
+	java.awt.TextArea description = new java.awt.TextArea("",0,0,TextArea.SCROLLBARS_VERTICAL_ONLY);
+	java.awt.List items = new java.awt.List(4);
+	javax.swing.JLabel lBehavs = new javax.swing.JLabel();
+	java.awt.List behaviors = new java.awt.List(4);
+	java.awt.Button delBEHAV = new java.awt.Button();
+	java.awt.Button addBEHAV = new java.awt.Button();
+	java.awt.Button modBEHAV = new java.awt.Button();
+	java.awt.List props = new java.awt.List(4);
+	java.awt.Button delPROPS = new java.awt.Button();
+	java.awt.Button addPROPS = new java.awt.Button();
+	java.awt.Button modPROPS = new java.awt.Button();
+	javax.swing.JLabel lProps = new javax.swing.JLabel();
 	//}}
     
     // Used for addNotify check.
@@ -346,6 +416,18 @@ public class GrinderRoom extends Dialog {
 				modMOB_ActionPerformed(event);
 			else if (object == modItem)
 				modItem_ActionPerformed(event);
+			else if (object == delBEHAV)
+				delBEHAV_ActionPerformed(event);
+			else if (object == delPROPS)
+				delPROPS_ActionPerformed(event);
+			else if (object == addBEHAV)
+				addBEHAV_ActionPerformed(event);
+			else if (object == addPROPS)
+				addPROPS_ActionPerformed(event);
+			else if (object == modBEHAV)
+				modBEHAV_ActionPerformed(event);
+			else if (object == modPROPS)
+				modPROPS_ActionPerformed(event);
 			
 		}
 	}
@@ -490,6 +572,10 @@ public class GrinderRoom extends Dialog {
 				mobs_ItemStateChanged(event);
 			else if (object == items)
 				items_ItemStateChanged(event);
+			if (object == props)
+				props_ItemStateChanged(event);
+			else if (object == behaviors)
+				behaviors_ItemStateChanged(event);
 			else if (object == roomClass)
 				roomClass_ItemStateChanged(event);
 		}
@@ -516,6 +602,27 @@ public class GrinderRoom extends Dialog {
 	        delItem.setEnabled(true);
 	    }
 	}
+	void props_ItemStateChanged(java.awt.event.ItemEvent event)
+	{
+	    modPROPS.setEnabled(false);
+	    delPROPS.setEnabled(false);
+	    if(props.getItemCount()>0)
+	    {
+	        modPROPS.setEnabled(true);
+	        delPROPS.setEnabled(true);
+	    }
+	}
+
+	void behaviors_ItemStateChanged(java.awt.event.ItemEvent event)
+	{
+	    modBEHAV.setEnabled(false);
+	    delBEHAV.setEnabled(false);
+	    if(behaviors.getItemCount()>0)
+	    {
+	        modBEHAV.setEnabled(true);
+	        delBEHAV.setEnabled(true);
+	    }
+	}
 
 	void delMOB_ActionPerformed(java.awt.event.ActionEvent event)
 	{
@@ -529,7 +636,31 @@ public class GrinderRoom extends Dialog {
 	        room.dirtyItems=true;
 	    }
 	}
+	void delPROPS_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    if(props.getSelectedIndex()<0)
+	        return;
+	    MapGrinder.Ability able=(MapGrinder.Ability)room.affects.elementAt(props.getSelectedIndex());
+	    if(GrinderOKCancel.askMe(myParent,"Delete this Property/Affect?","Delete Affect "+able.classID+"?"))
+	    {
+	        room.affects.removeElementAt(props.getSelectedIndex());
+	        props.remove(props.getSelectedIndex());
+	        room.dirty=true;
+	    }
+	}
 
+	void delBEHAV_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    if(behaviors.getSelectedIndex()<0)
+	        return;
+	    MapGrinder.Behavior able=(MapGrinder.Behavior)room.behaviors.elementAt(behaviors.getSelectedIndex());
+	    if(GrinderOKCancel.askMe(myParent,"Delete this Behavior?","Delete Behavior "+able.classID+"?"))
+	    {
+	        room.behaviors.removeElementAt(behaviors.getSelectedIndex());
+	        behaviors.remove(behaviors.getSelectedIndex());
+	        room.dirty=true;
+	    }
+	}
     private void delItem(int itemDex, Vector V, MapGrinder.Item item)
     {
         for(int i=room.items.size()-1;i>=0;i--)
@@ -588,6 +719,25 @@ public class GrinderRoom extends Dialog {
 	        room.mobs.addElement(mob);
 	        room.dirtyItems=true;
 	    }
+	}
+
+	void addPROPS_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    // not yet implemented
+	}
+
+	void addBEHAV_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    // not yet implemented
+	}
+	void modPROPS_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    // not yet implemented
+	}
+
+	void modBEHAV_ActionPerformed(java.awt.event.ActionEvent event)
+	{
+	    // not yet implemented
 	}
 
 	void addItem_ActionPerformed(java.awt.event.ActionEvent event)

@@ -24,10 +24,6 @@ public class Spell_Charm extends Spell
 
 		baseEnvStats().setLevel(6);
 
-		addQualifyingClass("Mage",6);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-		addQualifyingClass("Thief",24);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
@@ -71,9 +67,9 @@ public class Spell_Charm extends Spell
 
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-
-		if(affect.amISource((MOB)affected))
-			((MOB)affected).setFollowing(invoker);
+		MOB mob=(MOB)affected;
+		if((affect.amISource(mob))&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
+			ExternalPlay.follow(mob,invoker,true);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -81,9 +77,9 @@ public class Spell_Charm extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return;
-
-		if(affected == affecting())
-			((MOB)affecting()).setFollowing(invoker);
+		MOB mob=(MOB)affecting();
+		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
+			ExternalPlay.follow(mob,invoker,true);
 	}
 
 
@@ -97,10 +93,7 @@ public class Spell_Charm extends Spell
 		super.unInvoke();
 
 		mob.tell("Your free-will returns.");
-		mob.tell("You are no longer following anyone.");
-		if(mob.amFollowing()!=null)
-			mob.amFollowing().tell(mob.name()+" is no longer following you.");
-		mob.setFollowing(null);
+		ExternalPlay.follow(mob,null,false);
 	}
 
 
@@ -140,7 +133,7 @@ public class Spell_Charm extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(-50-((target.charStats().getIntelligence()*3)+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(-25-((target.charStats().getIntelligence()*2)+(levelDiff*15)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -156,10 +149,7 @@ public class Spell_Charm extends Spell
 				{
 					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
 					if(success);
-					{
-						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> follow(s) <S-NAME>!");
-						target.setFollowing(mob);
-					}
+						ExternalPlay.follow(target,mob,false);
 				}
 			}
 		}

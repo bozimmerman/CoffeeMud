@@ -20,8 +20,6 @@ public class Paladin_LayHands extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Paladin",1);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		recoverEnvStats();

@@ -21,9 +21,8 @@ public class Song_Valor extends Song
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(3);
+		
 		quality=Ability.BENEFICIAL_OTHERS;
-		addQualifyingClass("Bard",3);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

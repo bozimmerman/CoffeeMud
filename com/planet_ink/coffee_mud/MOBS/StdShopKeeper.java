@@ -325,7 +325,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if(!mob.isASysOp())
+				if(!mob.isASysOp(mob.location()))
 				{
 					mob.tell("The Shopkeeper is not accepting charity.");
 					return false;
@@ -352,7 +352,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int i=0;i<mob.inventorySize();i++)
 						{
 							Item I=mob.fetchInventory(i);
-							if((I instanceof Key)&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.location()==affect.tool()))
+							if((I!=null)
+							&&(I instanceof Key)
+							&&(((Key)I).getKey().equals(((Container)affect.tool()).keyName()))&&(I.location()==affect.tool()))
 								return true;
 						}
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
@@ -416,7 +418,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp())))
+				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:
@@ -440,7 +442,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							{
 								int a=mob.inventorySize();
 								Item I=mob.fetchInventory(i);
-								if(I.location()==affect.tool())
+								if((I!=null)&&(I.location()==affect.tool()))
 								{
 									I.remove();
 									storeInventory.addElement(I);
@@ -520,8 +522,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof MOB)
 					{
+						product.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+						product.recoverEnvStats();
+						product.setMiscText(product.text());
 						((MOB)product).bringToLife(mob.location());
-						((MOB)product).setFollowing(mob);
+						ExternalPlay.follow((MOB)product,mob,false);
+						if(((MOB)product).amFollowing()==null)
+							mob.tell("You cannot accept any more followers!");
 					}
 					else
 					if(product instanceof Ability)

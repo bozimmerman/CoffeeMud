@@ -22,11 +22,6 @@ public class Skill_Dodge extends StdAbility
 
 		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Fighter",7);
-		addQualifyingClass("Thief",6);
-		addQualifyingClass("Ranger",7);
-		addQualifyingClass("Paladin",7);
-		addQualifyingClass("Bard",7);
 		recoverEnvStats();
 	}
 

@@ -13,15 +13,12 @@ public class Spell_Ventriloquate extends Spell
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Ventrilloquate";
+		name="Ventriloquate";
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(1);
-
-		addQualifyingClass("Mage",1);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

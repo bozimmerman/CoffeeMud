@@ -26,9 +26,6 @@ public class Spell_SummonMonster extends Spell
 
 		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Mage",7);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}
@@ -53,7 +50,7 @@ public class Spell_SummonMonster extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
-				target.setFollowing(mob);
+				ExternalPlay.follow(target,mob,true);
 			}
 		}
 		else

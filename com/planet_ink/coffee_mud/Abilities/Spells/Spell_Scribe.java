@@ -20,9 +20,6 @@ public class Spell_Scribe extends Spell
 
 		baseEnvStats().setLevel(14);
 
-		addQualifyingClass("Mage",14);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -66,7 +63,7 @@ public class Spell_Scribe extends Spell
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A instanceof Spell)&&(A.qualifies(mob))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
+			if((A!=null)&&(A instanceof Spell)&&(A.qualifies(mob))&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))&&(!A.ID().equals(this.ID())))
 				scrollThis=(Spell)A;
 		}
 		if(scrollThis==null)

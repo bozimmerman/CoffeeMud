@@ -28,9 +28,6 @@ public class Spell_Polymorph extends Spell
 
 		baseEnvStats().setLevel(15);
 
-		addQualifyingClass("Mage",15);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

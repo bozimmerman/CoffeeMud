@@ -17,8 +17,6 @@ public class Prayer_Calm extends Prayer
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -36,8 +34,11 @@ public class Prayer_Calm extends Prayer
 
 		boolean someoneIsFighting=false;
 		for(int i=0;i<mob.location().numInhabitants();i++)
-			if(mob.location().fetchInhabitant(i).isInCombat())
+		{
+			MOB inhab=mob.location().fetchInhabitant(i);
+			if((inhab!=null)&&(inhab.isInCombat()))
 				someoneIsFighting=true;
+		}
 
 		if((success)&&(someoneIsFighting))
 		{
@@ -50,11 +51,14 @@ public class Prayer_Calm extends Prayer
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<mob.location().numInhabitants();i++)
-					if(mob.location().fetchInhabitant(i).isInCombat())
+				{
+					MOB inhab=mob.location().fetchInhabitant(i);
+					if((inhab!=null)&&(inhab.isInCombat()))
 					{
-						mob.location().fetchInhabitant(i).tell("You feel at peace.");
-						mob.location().fetchInhabitant(i).makePeace();
+						inhab.tell("You feel at peace.");
+						inhab.makePeace();
 					}
+				}
 			}
 		}
 		else

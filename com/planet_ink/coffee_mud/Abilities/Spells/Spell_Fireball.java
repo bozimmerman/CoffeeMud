@@ -26,9 +26,6 @@ public class Spell_Fireball extends Spell
 
 		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Mage",7);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

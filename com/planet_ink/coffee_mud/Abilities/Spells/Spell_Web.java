@@ -27,9 +27,6 @@ public class Spell_Web extends Spell
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Mage",16);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -27,9 +27,6 @@ public class Spell_InsatiableThirst extends Spell
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Mage",1);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -7,9 +7,42 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class RoomLoader
 {
-	public static void DBRead(Vector h)
+	public static void DBRead(Vector areas, Vector h)
 	{
 		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMAREA");
+			while(R.next())
+			{
+				String areaName=DBConnections.getRes(R,"CMAREA");
+				String areaType=DBConnections.getRes(R,"CMTYPE");
+				Area A=CMClass.getAreaType(areaType);
+				if(A==null) A=CMClass.getAreaType("StdArea");
+				if(A==null)
+				{
+					Log.errOut("Could not create area: "+areaName);
+					return;
+				}
+				A.setName(areaName);
+				areas.addElement(A);
+				A.setClimateType((int)DBConnections.getLongRes(R,"CMCLIM"));
+				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
+				A.setDescription(DBConnections.getRes(R,"CMDESC"));
+				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
+				A.tickControl(true);
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+		
+		Hashtable newAreasToCreate=new Hashtable();
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -24,7 +57,16 @@ public class RoomLoader
 				else
 				{
 					newRoom.setID(roomID);
-					newRoom.setAreaID(DBConnections.getRes(R,"CMAREA"));
+					String areaName=DBConnections.getRes(R,"CMAREA");
+					Area myArea=CMMap.getArea(areaName);
+					if(myArea==null)
+					{
+						myArea=(Area)CMClass.getAreaType("StdArea").copyOf();
+						myArea.setName(areaName);
+						if(!newAreasToCreate.containsKey(areaName))
+							newAreasToCreate.put(areaName,areaName);
+					}
+					newRoom.setArea(myArea);
 					newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
 					newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
 					newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
@@ -39,6 +81,21 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
+		
+		// handle stray areas
+		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
+		{
+			String areaName=(String)e.nextElement();
+			Log.sysOut("Area","Creating unhandled area: "+areaName);
+			Area realArea=DBCreate(areaName,"StdArea");
+			for(int r=0;r<h.size();r++)
+			{
+				Room R=(Room)h.elementAt(r);
+				if(R.getArea().name().equals(areaName))
+					R.setArea(realArea);
+			}
+		}
+		
 		// now grab the exits
 		try
 		{
@@ -89,6 +146,12 @@ public class RoomLoader
 			DBReadContent(thisRoom);
 			thisRoom.startItemRejuv();
 			thisRoom.recoverRoomStats();
+		}
+		for(int a=0;a<areas.size();a++)
+		{
+			Area A=(Area)areas.elementAt(a);
+			StringBuffer s=A.getAreaStats();
+			Resources.submitResource("HELP_"+A.name().toUpperCase(),s);
 		}
 	}
 
@@ -185,34 +248,37 @@ public class RoomLoader
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item thisItem=room.fetchItem(i);
-				thisItem.setPossessionTime(null); // saved items won't clear!
-				if(thisItem.location()==item)
+				if(thisItem!=null)
 				{
-					D=DBConnector.DBFetch();
-					sql=
-					"INSERT INTO CMROIT ("
-					+"CMROID, "
-					+"CMITNM, "
-					+"CMITID, "
-					+"CMITLO, "
-					+"CMITTX, "
-					+"CMITRE, "
-					+"CMITUR, "
-					+"CMITLV, "
-					+"CMITAB"
-					+") values ("
-					+"'"+room.ID()+"',"
-					+(++newItemNumber)+","
-					+"'"+thisItem.ID()+"',"
-					+Integer.toString(itemNumber)+","
-					+"'"+thisItem.text()+" ',"
-					+thisItem.baseEnvStats().rejuv()+","
-					+thisItem.usesRemaining()+","
-					+thisItem.baseEnvStats().level()+","
-					+thisItem.baseEnvStats().ability()+")";
-					D.update(sql);
-					DBConnector.DBDone(D);
-					newItemNumber=DBUpdateContents(room,thisItem,newItemNumber);
+					thisItem.setPossessionTime(null); // saved items won't clear!
+					if(thisItem.location()==item)
+					{
+						D=DBConnector.DBFetch();
+						sql=
+						"INSERT INTO CMROIT ("
+						+"CMROID, "
+						+"CMITNM, "
+						+"CMITID, "
+						+"CMITLO, "
+						+"CMITTX, "
+						+"CMITRE, "
+						+"CMITUR, "
+						+"CMITLV, "
+						+"CMITAB"
+						+") values ("
+						+"'"+room.ID()+"',"
+						+(++newItemNumber)+","
+						+"'"+thisItem.ID()+"',"
+						+Integer.toString(itemNumber)+","
+						+"'"+thisItem.text()+" ',"
+						+thisItem.baseEnvStats().rejuv()+","
+						+thisItem.usesRemaining()+","
+						+thisItem.baseEnvStats().level()+","
+						+thisItem.baseEnvStats().ability()+")";
+						D.update(sql);
+						DBConnector.DBDone(D);
+						newItemNumber=DBUpdateContents(room,thisItem,newItemNumber);
+					}
 				}
 			}
 		}
@@ -317,7 +383,7 @@ public class RoomLoader
 			{
 				MOB thisMOB=room.fetchInhabitant(m);
 
-				if(CoffeeUtensils.isEligibleMonster(thisMOB))
+				if((thisMOB!=null)&&(CoffeeUtensils.isEligibleMonster(thisMOB)))
 				{
 					D=DBConnector.DBFetch();
 					str=
@@ -370,7 +436,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			String str="UPDATE CMROOM SET "
-					+"CMAREA='"+room.getAreaID()+"',"
+					+"CMAREA='"+room.getArea().name()+"',"
 					+"CMDESC1='"+room.displayText()+" ',"
 					+"CMDESC2='"+room.description()+" ',"
 					+"CMROTX='"+room.text()+" '"
@@ -396,7 +462,7 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROOM SET "
 					+"CMROID='"+room.ID()+"', "
-					+"CMAREA='"+room.getAreaID()+"' "
+					+"CMAREA='"+room.getArea().name()+"' "
 					+"WHERE CMROID='"+oldID+"'");
 			DBConnector.DBDone(D);
 
@@ -427,7 +493,100 @@ public class RoomLoader
 		}
 	}
 
-
+	public static Area DBCreate(String areaName, String areaType)
+	{
+		Area A=CMClass.getAreaType(areaType);
+		if(A==null) A=CMClass.getAreaType("StdArea");
+		if((A==null)||(areaName.length()==0)) return null;
+		Resources.removeResource("areasList");
+		A=(Area)A.copyOf();
+		A.setName(areaName);
+		CMMap.AREAS.addElement(A);
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="INSERT INTO CMAREA ("
+			+"CMAREA,"
+			+"CMTYPE,"
+			+"CMCLIM,"
+			+"CMSUBS,"
+			+"CMDESC,"
+			+"CMROTX"
+			+") values ("
+			+"'"+A.name()+"',"
+			+"'"+CMClass.className(A)+"',"
+			+""+A.climateType()+","
+			+"'"+A.getSubOpList()+"',"
+			+"'"+A.description()+" ',"
+			+"'"+A.text()+" ')";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",str);
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		if(A==null) return null;
+		A.tickControl(true);
+		return A;
+	}
+	
+	public static void DBUpdate(Area A)
+	{
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="UPDATE CMAREA SET "
+				+"CMTYPE='"+CMClass.className(A)+"',"
+				+"CMCLIM="+A.climateType()+","
+				+"CMSUBS='"+A.getSubOpList()+"',"
+				+"CMDESC='"+A.description()+" ',"
+				+"CMROTX='"+A.text()+" '"
+				+"WHERE CMAREA='"+A.name()+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",str);
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+	}
+	
+	public static void DBDelete(Area A)
+	{
+		if(A==null) return;
+		A.tickControl(false);
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMAREA WHERE CMAREA='"+A.name()+"'");
+			if(DBConnector.DBConfirmDeletions)
+			{
+				ResultSet R=D.query("SELECT * FROM CMAREA WHERE CMAREA='"+A.name()+"'");
+				if((R!=null)&&(R.next()))
+					Log.errOut("DBDeleteArea","Delete Failed.");
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+	}
+	
+	
 	public static void DBCreate(Room room, String LocaleID)
 	{
 		if(room.ID().length()==0) return;
@@ -446,7 +605,7 @@ public class RoomLoader
 			+") values ("
 			+"'"+room.ID()+"',"
 			+"'"+LocaleID+"',"
-			+"'"+room.getAreaID()+"',"
+			+"'"+room.getArea().name()+"',"
 			+"'"+room.displayText()+" ',"
 			+"'"+room.description()+" ',"
 			+"'"+room.text()+" ')";
@@ -470,7 +629,11 @@ public class RoomLoader
 		try
 		{
 			while(room.numInhabitants()>0)
-				room.delInhabitant(room.fetchInhabitant(0));
+			{
+				MOB inhab=room.fetchInhabitant(0);
+				if(inhab!=null)
+					room.delInhabitant(inhab);
+			}
 			DBUpdateMOBs(room);
 
 			for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
@@ -483,8 +646,11 @@ public class RoomLoader
 			while(room.numItems()>0)
 			{
 				Item thisItem=room.fetchItem(0);
-				thisItem.setLocation(null);
-				room.delItem(thisItem);
+				if(thisItem!=null)
+				{
+					thisItem.setLocation(null);
+					room.delItem(thisItem);
+				}
 			}
 			DBUpdateItems(room);
 

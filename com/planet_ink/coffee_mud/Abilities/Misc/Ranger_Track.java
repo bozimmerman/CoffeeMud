@@ -24,8 +24,6 @@ public class Ranger_Track extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Ranger",1);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		recoverEnvStats();

@@ -25,10 +25,6 @@ public class Skill_Disarm extends StdAbility
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Fighter",11);
-		addQualifyingClass("Ranger",8);
-		addQualifyingClass("Paladin",8);
-		addQualifyingClass("Thief",11);
 		recoverEnvStats();
 	}
 

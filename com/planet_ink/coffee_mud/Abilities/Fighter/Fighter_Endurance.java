@@ -22,7 +22,6 @@ public class Fighter_Endurance extends StdAbility
 
 		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Fighter",19);
 		recoverEnvStats();
 	}
 

@@ -41,14 +41,14 @@ public class MobileGoodGuardian extends Mobile
 		{
 			Room room=thisRoom.doors()[d];
 			Exit exit=thisRoom.exits()[d];
-			if((room!=null)&&(exit!=null)&&(room.getAreaID().equals(thisRoom.getAreaID())))
+			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
 			{
 				if(exit.isOpen())
 				{
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
-						if(inhab.isInCombat()&&(inhab.getAlignment()>650))
+						if((inhab!=null)&&(inhab.isInCombat())&&(inhab.getAlignment()>650))
 						{
 							dirCode=d;
 							break;

@@ -25,8 +25,6 @@ public class Song_Serenity extends Song
 
 		baseEnvStats().setLevel(9);
 
-		addQualifyingClass("Bard",9);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

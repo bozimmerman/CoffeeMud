@@ -35,8 +35,11 @@ public class WaterSurface extends StdRoom
 			MOB mob=affect.source();
 			boolean hasBoat=false;
 			for(int i=0;i<mob.inventorySize();i++)
-				if(mob.fetchInventory(i) instanceof Boat)
+			{
+				Item I=mob.fetchInventory(i);
+				if((I!=null)&&(I instanceof Boat))
 				{	hasBoat=true; break;}
+			}
 			if((!Sense.isSwimming(mob))&&(!hasBoat)&&(!Sense.isFlying(mob)))
 			{
 				mob.tell("You need to swim or ride a boat that way.");

@@ -24,8 +24,6 @@ public class Song_Rebirth extends Song
 
 		baseEnvStats().setLevel(25);
 
-		addQualifyingClass("Bard",25);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -65,7 +63,7 @@ public class Song_Rebirth extends Song
 				{
 					Item body=mob.location().fetchItem(i);
 					int x=0;
-					if((body instanceof DeadBody)&&((x=body.name().toUpperCase().indexOf("BODY OF"))>=0))
+					if((body!=null)&&(body instanceof DeadBody)&&((x=body.name().toUpperCase().indexOf("BODY OF"))>=0))
 					{
 						String mobName=body.name().substring(x+7).trim();
 						MOB rejuvedMOB=(MOB)CMMap.MOBs.get(mobName);
@@ -83,7 +81,7 @@ public class Song_Rebirth extends Song
 							while(it<rejuvedMOB.location().numItems())
 							{
 								Item item=rejuvedMOB.location().fetchItem(it);
-								if(item.location()==body)
+								if((item!=null)&&(item.location()==body))
 								{
 									FullMsg msg2=new FullMsg(rejuvedMOB,body,item,Affect.MSG_GET,null);
 									rejuvedMOB.location().send(rejuvedMOB,msg2);

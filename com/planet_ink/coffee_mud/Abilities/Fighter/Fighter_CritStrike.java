@@ -23,7 +23,6 @@ public class Fighter_CritStrike extends StdAbility
 
 		baseEnvStats().setLevel(9);
 
-		addQualifyingClass("Fighter",9);
 		recoverEnvStats();
 	}
 

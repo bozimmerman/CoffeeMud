@@ -12,8 +12,6 @@ public class LightSource extends StdItem implements Light
 	protected boolean destroyedWhenBurnedOut=true;
 
 	protected MOB invoker=null;
-	protected Environmental heldBy=null;
-
 
 	public LightSource()
 	{
@@ -97,7 +95,6 @@ public class LightSource extends StdItem implements Light
 				{
 					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+name()+"."));
 					invoker=mob;
-					heldBy=mob;
 					lit=true;
 					ExternalPlay.startTickDown(this,Host.LIGHT_FLICKERS,durationTicks);
 					this.recoverEnvStats();
@@ -128,57 +125,35 @@ public class LightSource extends StdItem implements Light
 			baseEnvStats().setDisposition(baseEnvStats().disposition()-Sense.IS_LIGHT);
 		super.recoverEnvStats();
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		if((!burnedOut)&&(lit))
-		{
-			if(affected instanceof MOB)
-			{
-				invoker=(MOB)affected;
-				if(!this.amWearingAt(Item.INVENTORY))
-					heldBy=affected;
-				// what happens when it is moved to inventory?
-			}
-			else
-			if(affected instanceof Room)
-			{
-				heldBy=affected;
-			}
-		}
-		super.affectEnvStats(affected,affectableStats);
-	}
-
+	
 	public boolean tick(int tickID)
 	{
 		if(tickID==Host.LIGHT_FLICKERS)
 		{
-			if((heldBy!=null)
+			if((owner!=null)
 			&&(lit)
 			&&(!burnedOut))
 			{
-				if(heldBy instanceof Room)
+				if(owner instanceof Room)
 				{
 					burnedOut=true;
 					if(invoker!=null)
-						((Room)heldBy).show(invoker,null,Affect.MSG_OK_VISUAL,name()+" flickers and burns out.");
+						((Room)owner).show(invoker,null,Affect.MSG_OK_VISUAL,name()+" flickers and burns out.");
 					if(destroyedWhenBurnedOut)
 						this.destroyThis();
-					((Room)heldBy).recoverRoomStats();
+					((Room)owner).recoverRoomStats();
 				}
 				else
-				if(heldBy instanceof MOB)
+				if(owner instanceof MOB)
 				{
-					((MOB)heldBy).tell(((MOB)heldBy),null,name()+" flickers and burns out.");
+					((MOB)owner).tell(((MOB)owner),null,name()+" flickers and burns out.");
 					burnedOut=true;
 					if(destroyedWhenBurnedOut)
 						this.destroyThis();
-					((MOB)heldBy).location().recoverRoomStats();
+					((MOB)owner).location().recoverRoomStats();
 				}
 				if(destroyedWhenBurnedOut)
-				{
 					invoker=null;
-					heldBy=null;
-				}
 			}
 
 			lit=false;

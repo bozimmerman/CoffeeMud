@@ -27,9 +27,6 @@ public class Spell_Shelter extends Spell
 
 		baseEnvStats().setLevel(12);
 
-		addQualifyingClass("Mage",12);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -49,6 +46,7 @@ public class Spell_Shelter extends Spell
 		while(i<shelter.numInhabitants())
 		{
 			mob=shelter.fetchInhabitant(0);
+			if(mob==null) break;
 			mob.tell(mob,null,"You return to your previous location.");
 
 			FullMsg enterMsg=new FullMsg(mob,previousLocation,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere!");

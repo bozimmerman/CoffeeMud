@@ -70,7 +70,7 @@ public class Song extends StdAbility
 		{
 			int n=mob.numAffects();
 			Ability A=(Ability)mob.fetchAffect(a);
-			if(A instanceof Song)
+			if((A!=null)&&(A instanceof Song))
 				A.unInvoke();
 			if(mob.numAffects()==n)
 				a++;

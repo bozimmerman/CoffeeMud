@@ -24,8 +24,6 @@ public class Song_Rage extends Song
 
 		baseEnvStats().setLevel(7);
 
-		addQualifyingClass("Bard",7);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -306,7 +306,9 @@ public class MOBloader
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if(thisItem.location()==item)
+				if((thisItem!=null)
+				&&(thisItem.savable())
+				&&(thisItem.location()==item))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHIT ("
@@ -387,7 +389,7 @@ public class MOBloader
 			for(int f=0;f<mob.numFollowers();f++)
 			{
 				MOB thisMOB=mob.fetchFollower(f);
-				if(thisMOB.isMonster())
+				if((thisMOB!=null)&&(thisMOB.isMonster()))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHFO ("
@@ -441,17 +443,28 @@ public class MOBloader
 		while(mob.inventorySize()>0)
 		{
 			Item thisItem=mob.fetchInventory(0);
-			thisItem.setLocation(null);
-			mob.delInventory(thisItem);
+			if(thisItem!=null)
+			{
+				thisItem.setLocation(null);
+				mob.delInventory(thisItem);
+			}
 		}
 		DBUpdateItems(mob);
 
 		while(mob.numFollowers()>0)
-			mob.fetchFollower(0).setFollowing(null);
+		{
+			MOB follower=mob.fetchFollower(0);
+			if(follower!=null)
+				follower.setFollowing(null);
+		}
 		DBUpdateFollowers(mob);
 
 		while(mob.numAbilities()>0)
-			mob.delAbility(mob.fetchAbility(0));
+		{
+			Ability A=mob.fetchAbility(0);
+			if(A!=null)
+				mob.delAbility(A);
+		}
 		DBUpdateAbilities(mob);
 	}
 
@@ -474,7 +487,7 @@ public class MOBloader
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability thisAbility=mob.fetchAbility(a);
-				if(!thisAbility.isBorrowed(mob))
+				if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHAB ("
@@ -538,10 +551,11 @@ public class MOBloader
 		}
 	}
 
-	public static void DBUserSearch(MOB mob, String Login)
+	public static boolean DBUserSearch(MOB mob, String Login)
 	{
 		DBConnection D=null;
-		mob.setUserInfo("","",Calendar.getInstance());
+		boolean returnable=false;
+		if(mob!=null) mob.setUserInfo("","",Calendar.getInstance());
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -549,11 +563,15 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
-				String password=DBConnector.getRes(R,"CMPASS");
-				Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
 				if(Login.equalsIgnoreCase(username))
 				{
-					mob.setUserInfo(username,password,newCalendar);
+					returnable=true;
+					if(mob!=null)
+					{
+						String password=DBConnector.getRes(R,"CMPASS");
+						Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
+						mob.setUserInfo(username,password,newCalendar);
+					}
 					break;
 				}
 			}
@@ -564,6 +582,7 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		return returnable;
 	}
 
 }

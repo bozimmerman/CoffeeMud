@@ -10,11 +10,11 @@ public class StdRoom
 {
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	protected String name="room";
-	protected String myAreaID="StdArea";
 	protected String displayText="Standard Room";
 	protected String miscText="";
 	protected String description="";
 	private String objectID=myID;
+	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -116,17 +116,17 @@ public class StdRoom
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
-	public String getAreaID()
-	{
-		return myAreaID;
-	}
 	public void setID(String newID)
 	{
 		myID=newID;
 	}
-	public void setAreaID(String newArea)
+	public Area getArea()
 	{
-		myAreaID=newArea;
+		return myArea;
+	}
+	public void setArea(Area newArea)
+	{
+		myArea=newArea;
 	}
 
 	protected void giveASky(Room room)
@@ -140,7 +140,7 @@ public class StdRoom
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
 			EndlessSky sky=new EndlessSky();
-			sky.setAreaID(room.getAreaID());
+			sky.setArea(room.getArea());
 			sky.setID("");
 			room.doors()[Directions.UP]=sky;
 			room.exits()[Directions.UP]=o;
@@ -152,6 +152,9 @@ public class StdRoom
 
 	public boolean okAffect(Affect affect)
 	{
+		if(!getArea().okAffect(affect))
+			return false;
+		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -173,7 +176,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
 						   if(!otherRoom.okAffect(affect)) return false;
 					}
 				}
@@ -191,22 +194,28 @@ public class StdRoom
 			}
 		}
 
-		for(int i=0;i<inhabitants.size();i++)
-			if(!((MOB)inhabitants.elementAt(i)).okAffect(affect))
-				return false;
-
-		for(int i=0;i<contents.size();i++)
-			if(!((Item)contents.elementAt(i)).okAffect(affect))
-				return false;
-
-		for(int i=0;i<affects.size();i++)
-			if(!((Ability)fetchAffect(i)).okAffect(affect))
-				return false;
-
-		for(int b=0;b<behaviors.size();b++)
+		for(int i=0;i<numInhabitants();i++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			if(!B.okAffect(this,affect))
+			MOB inhab=fetchInhabitant(i);
+			if((inhab!=null)&&(!inhab.okAffect(affect)))
+				return false;
+		}
+		for(int i=0;i<numItems();i++)
+		{
+			Item content=fetchItem(i);
+			if((content!=null)&&(!content.okAffect(affect)))
+				return false;
+		}
+		for(int i=0;i<numAffects();i++)
+		{
+			Ability A=fetchAffect(i);
+			if((A!=null)&&(!A.okAffect(affect)))
+				return false;
+		}
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(!B.okAffect(this,affect)))
 				return false;
 		}
 
@@ -222,6 +231,9 @@ public class StdRoom
 
 	public void affect(Affect affect)
 	{
+		
+		getArea().affect(affect);
+		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -257,7 +269,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
 						   otherRoom.affect(affect);
 					}
 				}
@@ -267,32 +279,42 @@ public class StdRoom
 			}
 		}
 
-		for(int i=0;i<contents.size();i++)
-			((Item)contents.elementAt(i)).affect(affect);
-
-		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Exit thisExit=exits()[i];
+			Item content=fetchItem(i);
+			if(content!=null)
+				content.affect(affect);
+		}
+
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit thisExit=exits()[d];
 			if(thisExit!=null)
 				thisExit.affect(affect);
 		}
 
-		for(int b=0;b<behaviors.size();b++)
+		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			B.affect(this,affect);
+			Behavior B=fetchBehavior(b);
+			if(B!=null)
+				B.affect(this,affect);
 		}
 
-		for(int i=0;i<affects.size();i++)
-			((Ability)fetchAffect(i)).affect(affect);
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if(A!=null)
+				A.affect(affect);
+		}
+		
 	}
 
 	public void startItemRejuv()
 	{
-		for(int c=0;c<contents.size();c++)
+		for(int c=0;c<numItems();c++)
 		{
-			Item item=(Item)contents.elementAt(c);
-			if(item.location()==null)
+			Item item=fetchItem(c);
+			if((item!=null)&&(item.location()==null))
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
@@ -307,23 +329,27 @@ public class StdRoom
 		if(tickID==Host.ROOM_BEHAVIOR_TICK)
 		{
 			if(behaviors.size()==0) return false;
-
-			for(int b=0;b<behaviors.size();b++)
+			for(int b=0;b<numBehaviors();b++)
 			{
-				Behavior B=(Behavior)behaviors.elementAt(b);
-				B.tick(this,tickID);
+				Behavior B=fetchBehavior(b);
+				if(B!=null) B.tick(this,tickID);
 			}
 		}
 		else
 		{
 			int a=0;
-			while(a<affects.size())
+			while(a<numAffects())
 			{
-				Ability A=(Ability)affects.elementAt(a);
-				int s=affects.size();
-				if(!A.tick(tickID))
-					A.unInvoke();
-				if(affects.size()==s)
+				Ability A=fetchAffect(a);
+				if(A!=null)
+				{
+					int s=affects.size();
+					if(!A.tick(tickID))
+						A.unInvoke();
+					if(affects.size()==s)
+						a++;
+				}
+				else
 					a++;
 			}
 		}
@@ -341,36 +367,46 @@ public class StdRoom
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int a=0;a<affects.size();a++)
+		Area myArea=getArea();
+		if(myArea!=null)
+			myArea.affectEnvStats(this,envStats());
+		for(int a=0;a<numAffects();a++)
 		{
-			Ability affect=(Ability)affects.elementAt(a);
-			affect.affectEnvStats(this,envStats);
+			Ability affect=fetchAffect(a);
+			if(affect!=null)
+				affect.affectEnvStats(this,envStats);
 		}
-		for(int i=0;i<contents.size();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Item item=(Item)contents.elementAt(i);
-			item.affectEnvStats(this,envStats);
+			Item item=fetchItem(i);
+			if(item!=null)
+				item.affectEnvStats(this,envStats);
 		}
-		for(int b=0;b<inhabitants.size();b++)
+		for(int m=0;m<numInhabitants();m++)
 		{
-			MOB mob=(MOB)inhabitants.elementAt(b);
-			mob.affectEnvStats(this,envStats);
+			MOB mob=fetchInhabitant(m);
+			if(mob!=null)
+				mob.affectEnvStats(this,envStats);
 		}
 	}
 	public void recoverRoomStats()
 	{
 		recoverEnvStats();
-		for(int b=0;b<inhabitants.size();b++)
+		for(int m=0;m<numInhabitants();m++)
 		{
-			MOB mob=(MOB)inhabitants.elementAt(b);
-			mob.recoverCharStats();
-			mob.recoverEnvStats();
-			mob.recoverMaxState();
+			MOB mob=fetchInhabitant(m);
+			if(mob!=null)
+			{
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				mob.recoverMaxState();
+			}
 		}
-		for(int i=0;i<contents.size();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Item item=(Item)contents.elementAt(i);
-			item.recoverEnvStats();
+			Item item=fetchItem(i);
+			if(item!=null)
+				item.recoverEnvStats();
 		}
 	}
 
@@ -381,6 +417,7 @@ public class StdRoom
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
+		getArea().affectEnvStats(affected,affectableStats);
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition();
@@ -392,16 +429,21 @@ public class StdRoom
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}//rooms will never be asked this, so this method should always do NOTHING
+	{
+		getArea().affectCharStats(affectedMob,affectableStats);
+	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}//rooms will never be asked this, so this method should always do NOTHING
+	{
+		getArea().affectCharState(affectedMob,affectableMaxState);
+	}
 
 	public void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			Say.append("^BArea  :^N("+myAreaID+")"+"\n\r");
+			if(myArea!=null)
+				Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
 			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}
@@ -410,10 +452,11 @@ public class StdRoom
 			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			Say.append("^L" + description()+"^N\n\r\n\r");
 		}
-		for(int c=0;c<contents.size();c++)
+		
+		for(int c=0;c<numItems();c++)
 		{
-			Item item=(Item)contents.elementAt(c);
-			if(item.location()==null)
+			Item item=fetchItem(c);
+			if((item!=null)&&(item.location()==null))
 				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||(mob.readSysopMsgs())))
 				{
 					Say.append("     ");
@@ -428,10 +471,10 @@ public class StdRoom
 					Say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 				}
 		}
-		for(int i=0;i<inhabitants.size();i++)
+		for(int i=0;i<numInhabitants();i++)
 		{
-			MOB mob2=(MOB)inhabitants.elementAt(i);
-			if((mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
+			MOB mob2=fetchInhabitant(i);
+			if((mob2!=null)&&(mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
 			{
 				if(mob.readSysopMsgs())
 					Say.append("^H("+CMClass.className(mob2)+")^N ");
@@ -444,6 +487,7 @@ public class StdRoom
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}
+		
 		if(Say.length()==0)
 			mob.tell("You can't see anything!");
 		else
@@ -464,10 +508,13 @@ public class StdRoom
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB fol=mob.fetchFollower(f);
-			if(fol.location()==oldRoom)
-				oldRoom.delInhabitant(fol);
-			addInhabitant(fol);
-			fol.setLocation(this);
+			if(fol!=null)
+			{
+				if(fol.location()==oldRoom)
+					oldRoom.delInhabitant(fol);
+				addInhabitant(fol);
+				fol.setLocation(this);
+			}
 		}
 		oldRoom.recoverRoomStats();
 		recoverRoomStats();
@@ -520,10 +567,10 @@ public class StdRoom
 	{
 		if(Log.debugChannelOn())
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		for(int i=0;i<inhabitants.size();i++)
+		for(int i=0;i<numInhabitants();i++)
 		{
-			MOB otherMOB=(MOB)inhabitants.elementAt(i);
-			if(otherMOB!=source)
+			MOB otherMOB=fetchInhabitant(i);
+			if((otherMOB!=null)&&(otherMOB!=source))
 				otherMOB.affect(msg);
 		}
 		affect(msg);
@@ -615,32 +662,48 @@ public class StdRoom
 	{
 		int numUsers=0;
 		for(int i=0;i<numInhabitants();i++)
-			if(!fetchInhabitant(i).isMonster())
+		{
+			MOB inhab=fetchInhabitant(i);
+			if((inhab!=null)
+			&&(!inhab.isMonster()))
 				numUsers++;
+		}
 		return numUsers;
 	}
 	public MOB fetchPCInhabitant(int which)
 	{
 		int numUsers=0;
 		for(int i=0;i<numInhabitants();i++)
-			if(!fetchInhabitant(i).isMonster())
+		{
+			MOB inhab=fetchInhabitant(i);
+			if((inhab!=null)
+			&&(!inhab.isMonster()))
+			{
 				if(numUsers==which)
-					return fetchInhabitant(i);
+					return inhab;
 				else
 					numUsers++;
+			}
+		}
 		return null;
 	}
 	public boolean isInhabitant(MOB mob)
 	{
-		for(int i=0;i<inhabitants.size();i++)
-			if(mob==inhabitants.elementAt(i))
+		for(int i=0;i<numInhabitants();i++)
+		{
+			MOB mob2=fetchInhabitant(i);
+			if((mob2!=null)&&(mob==mob2))
 				return true;
+		}
 		return false;
 	}
 	public MOB fetchInhabitant(int i)
 	{
-		if(i<inhabitants.size())
+		try
+		{
 			return (MOB)inhabitants.elementAt(i);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public void delInhabitant(MOB mob)
@@ -671,15 +734,21 @@ public class StdRoom
 	}
 	public boolean isContent(Item item)
 	{
-		for(int i=0;i<contents.size();i++)
-			if(item==contents.elementAt(i))
+		for(int i=0;i<numItems();i++)
+		{
+			Item I=fetchItem(i);
+			if((I!=null)&&(item==I))
 				return true;
+		}
 		return false;
 	}
 	public Item fetchItem(int i)
 	{
-		if(i<contents.size())
+		try
+		{
 			return (Item)contents.elementAt(i);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName)
@@ -746,18 +815,24 @@ public class StdRoom
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(affects.elementAt(i)==to)
+		for(int i=0;i<numAffects();i++)
+		{
+			Ability A=fetchAffect(i);
+			if((A!=null)&&(A==to))
 				return;
+		}
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(affects.elementAt(i)==to)
+		for(int i=0;i<numAffects();i++)
+		{
+			Ability A=fetchAffect(i);
+			if((A!=null)&&(A==to))
 				return;
+		}
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -776,15 +851,21 @@ public class StdRoom
 	}
 	public Ability fetchAffect(int index)
 	{
-		if(index <numAffects())
+		try
+		{
 			return (Ability)affects.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAffect(String ID)
 	{
-		for(int a=0;a<affects.size();a++)
-			if(((Ability)affects.elementAt(a)).ID().equals(ID))
-			   return (Ability)affects.elementAt(a);
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.ID().equals(ID)))
+			   return A;
+		}
 		return null;
 	}
 
@@ -793,9 +874,12 @@ public class StdRoom
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int i=0;i<behaviors.size();i++)
-			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
-				return;
+		for(int b=0;b<numBehaviors();b++)
+		{
+			Behavior B=fetchBehavior(b);
+			if((B!=null)&&(B.ID().equals(to.ID())))
+			   return;
+		}
 		if(behaviors.size()==0)
 			ExternalPlay.startTickDown(this,Host.ROOM_BEHAVIOR_TICK,1);
 		to.startBehavior(this);
@@ -813,8 +897,11 @@ public class StdRoom
 	}
 	public Behavior fetchBehavior(int index)
 	{
-		if(index <numBehaviors())
+		try
+		{
 			return (Behavior)behaviors.elementAt(index);
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 }

@@ -69,7 +69,7 @@ public class Follower extends StdBehavior
 
 			if(otherRoom!=null)
 			{
-				if(!otherRoom.getAreaID().equals(thisRoom.getAreaID()))
+				if(!otherRoom.getArea().name().equals(thisRoom.getArea().name()))
 					direction=-1;
 			}
 			else
@@ -81,8 +81,11 @@ public class Follower extends StdBehavior
 
 			boolean move=true;
 			for(int m=0;m<thisRoom.numInhabitants();m++)
-				if(thisRoom.fetchInhabitant(m).isASysOp())
+			{
+				MOB inhab=thisRoom.fetchInhabitant(m);
+				if((inhab!=null)&&(inhab.isASysOp(thisRoom)))
 					move=false;
+			}
 			if(move)
 				ExternalPlay.move(mob,direction,false);
 			direction=-1;

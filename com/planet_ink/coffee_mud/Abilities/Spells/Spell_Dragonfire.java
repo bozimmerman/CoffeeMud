@@ -26,9 +26,6 @@ public class Spell_Dragonfire extends Spell
 
 		baseEnvStats().setLevel(23);
 
-		addQualifyingClass("Mage",23);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

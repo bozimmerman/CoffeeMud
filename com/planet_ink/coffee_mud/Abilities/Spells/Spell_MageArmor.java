@@ -28,9 +28,6 @@ public class Spell_MageArmor extends Spell
 
 		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Mage",5);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

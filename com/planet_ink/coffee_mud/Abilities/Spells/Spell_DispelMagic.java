@@ -20,9 +20,6 @@ public class Spell_DispelMagic extends Spell
 
 		baseEnvStats().setLevel(5);
 
-		addQualifyingClass("Mage",5);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -43,7 +40,7 @@ public class Spell_DispelMagic extends Spell
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A.canBeUninvoked())&&(A instanceof Spell))
+			if((A!=null)&&(A.canBeUninvoked())&&(A instanceof Spell))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)

@@ -20,8 +20,6 @@ public class Prayer_BladeBarrier extends Prayer
 
 		baseEnvStats().setLevel(18);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

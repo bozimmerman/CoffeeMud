@@ -23,10 +23,6 @@ public class Specialization_BluntWeapon extends Specialization_Weapon
 		weaponType=Weapon.CLASS_BLUNT;
 		secondWeaponType=Weapon.CLASS_STAFF;
 
-		addQualifyingClass("Fighter",1);
-		addQualifyingClass("Ranger",1);
-		addQualifyingClass("Paladin",1);
-		addQualifyingClass("Cleric",1);
 		recoverEnvStats();
 	}
 

@@ -18,8 +18,6 @@ public class Prayer_CauseCritical extends Prayer
 
 		baseEnvStats().setLevel(14);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

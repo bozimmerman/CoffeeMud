@@ -17,8 +17,6 @@ public class Prayer_MassParalyze extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(20);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 

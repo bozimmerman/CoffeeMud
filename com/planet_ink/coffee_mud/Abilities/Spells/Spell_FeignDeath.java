@@ -27,9 +27,6 @@ public class Spell_FeignDeath extends Spell
 
 		baseEnvStats().setLevel(13);
 
-		addQualifyingClass("Mage",13);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -56,10 +53,14 @@ public class Spell_FeignDeath extends Spell
 
 	public void peaceAt(MOB mob)
 	{
-		if(mob.location()!=null)
-		for(int m=0;m<mob.location().numInhabitants();m++)
-			if(mob.location().fetchInhabitant(m).getVictim()==mob)
-				mob.location().fetchInhabitant(m).setVictim(null);
+		Room room=mob.location();
+		if(room==null) return;
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+			MOB inhab=room.fetchInhabitant(m);
+			if((inhab!=null)&&(inhab.getVictim()==mob))
+				inhab.setVictim(null);
+		}
 	}
 	
 	/** this method defines how this thing responds
@@ -117,6 +118,8 @@ public class Spell_FeignDeath extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -132,8 +135,13 @@ public class Spell_FeignDeath extends Spell
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			beneficialAffect(mob,target,0);
 
-			while(target.numFollowers()>0)
-				target.fetchFollower(0).setFollowing(null);
+			int tries=0;
+			while((target.numFollowers()>0)&&((++tries)<1000))
+			{
+				MOB follower=target.fetchFollower(0);
+				if(follower!=null)
+					follower.setFollowing(null);
+			}
 			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!\n\r");
 			Body.setName("the body of "+target.name());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");

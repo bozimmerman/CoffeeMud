@@ -46,7 +46,11 @@ public class Goblin extends StdMOB
 			goblinType *= -1;
 
 		while(this.inventorySize()>0)
-			this.delInventory(this.fetchInventory(0));
+		{
+			Item I=fetchInventory(0);
+			if(I!=null)
+				this.delInventory(I);
+		}
 
 		birthType=goblinType;
 		setMoney(randomizer.nextInt() % 15);

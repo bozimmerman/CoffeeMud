@@ -20,9 +20,6 @@ public class Spell_LocateObject extends Spell
 
 		baseEnvStats().setLevel(10);
 
-		addQualifyingClass("Mage",10);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -43,7 +40,7 @@ public class Spell_LocateObject extends Spell
 		}
 		
 		int levelFind=0;
-		if((mob.isASysOp())&&(Util.s_int((String)commands.lastElement())>0))
+		if((mob.isASysOp(mob.location()))&&(Util.s_int((String)commands.lastElement())>0))
 		{
 			levelFind=Util.s_int((String)commands.lastElement());
 			commands.remove(commands.lastElement());
@@ -61,15 +58,24 @@ public class Spell_LocateObject extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
+				Vector itemsFound=new Vector();
 				for(int m=0;m<CMMap.map.size();m++)
 				{
 					Room room=(Room)CMMap.map.elementAt(m);
 					Environmental item=room.fetchItem(null,what);
 					if(item!=null)
-						mob.tell(item.name()+" is in a place called '"+room.displayText()+"'.");
+					{
+						String str=item.name()+" is in a place called '"+room.displayText()+"'.";
+						if(mob.isASysOp(null))
+							mob.tell(str);
+						else
+							itemsFound.addElement(str);
+					}
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
+						if(inhab==null) break;
+						
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(inhab instanceof ShopKeeper))
 							item=((ShopKeeper)inhab).getStock(what);
@@ -77,9 +83,22 @@ public class Spell_LocateObject extends Spell
 						{
 							if((levelFind==0)
 							 ||(item.envStats().level()<=levelFind))
-								mob.tell(item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
+							{
+								String str=item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.";
+								if(mob.isASysOp(null))
+									mob.tell(str);
+								else
+									itemsFound.addElement(str);
+							}
 						}
 					}
+				}
+				if(!mob.isASysOp(null))
+				{
+					if(itemsFound.size()==0)
+						mob.tell("There doesn't seem to be anything in the wide world called '"+what+"'.");
+					else
+						mob.tell((String)itemsFound.elementAt(Dice.roll(1,itemsFound.size(),-1)));
 				}
 			}
 

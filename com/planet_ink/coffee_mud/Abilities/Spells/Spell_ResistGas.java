@@ -25,9 +25,6 @@ public class Spell_ResistGas extends Spell
 
 		baseEnvStats().setLevel(9);
 
-		addQualifyingClass("Mage",9);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -25,7 +25,6 @@ public class Fighter_Berzerk extends StdAbility
 
 		baseEnvStats().setLevel(20);
 
-		addQualifyingClass("Fighter",20);
 		recoverEnvStats();
 	}
 

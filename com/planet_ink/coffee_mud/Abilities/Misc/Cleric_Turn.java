@@ -21,9 +21,6 @@ public class Cleric_Turn extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Cleric",1);
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
-
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

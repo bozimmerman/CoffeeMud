@@ -22,12 +22,17 @@ public class CombatAbilities extends StdBehavior
 	{
 		Vector oldAbilities=new Vector();
 		for(int a=0;a<mob.numAbilities();a++)
-			oldAbilities.addElement(mob.fetchAbility(a));
+		{
+			Ability A=mob.fetchAbility(a);
+			if(A!=null)
+				oldAbilities.addElement(A);
+		}
 		mob.charStats().getMyClass().newCharacter(mob,true);
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability newOne=mob.fetchAbility(a);
-			if((!oldAbilities.contains(newOne))
+			if((newOne!=null)
+			&&(!oldAbilities.contains(newOne))
 			&&(newOne.qualifyingLevel(mob)>mob.baseEnvStats().level()))
 			{
 				mob.delAbility(newOne);
@@ -68,17 +73,20 @@ public class CombatAbilities extends StdBehavior
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canActAtAll(ticking)) return;
+		if(ticking==null) return;
 		MOB mob=(MOB)ticking;
+		
+		if(tickID!=Host.MOB_TICK) return;
+		if(!canActAtAll(mob)) return;
 		if(!mob.isInCombat()) return;
+		MOB victim=mob.getVictim();
+		if(victim==null) return;
 
 		// insures we only try this once!
 		for(int b=0;b<mob.numBehaviors();b++)
 		{
 			Behavior B=mob.fetchBehavior(b);
-			if(B==this)
+			if((B==null)||(B==this))
 				break;
 			else
 			if(B instanceof CombatAbilities)
@@ -94,7 +102,7 @@ public class CombatAbilities extends StdBehavior
 
 		while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
 		{
-			tryThisOne=mob.fetchAbility((int)Math.round(Math.random()*mob.numAbilities()));
+			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
 			if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null))
 			{
 				if(!((tryThisOne.quality()==Ability.MALICIOUS)
@@ -110,12 +118,8 @@ public class CombatAbilities extends StdBehavior
 		mob.curState().adjMana(5,mob.maxState());
 		if(tryThisOne!=null)
 		{
-			MOB victim=mob.getVictim();
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
 				victim=mob;
-
-			//if(!tryThisOne.qualifies(mob))
-			//	mob.curState().adjMana(20,mob.maxState());
 
 			tryThisOne.setProfficiency(Dice.roll(1,50,mob.baseEnvStats().level()));
 			Vector V=new Vector();
@@ -123,9 +127,8 @@ public class CombatAbilities extends StdBehavior
 			tryThisOne.invoke(mob,V,victim,false);
 		}
 		else
-		if((mob.getVictim()!=null)
-		 &&(mob.getVictim().location()!=null)
-		 &&(!mob.getVictim().amDead())
+		if((victim.location()!=null)
+		&&(!victim.amDead())
 		&&(Dice.rollPercentage()<25)
 		&&(mob.fetchAbility("Skill_WandUse")!=null))
 		{
@@ -134,10 +137,10 @@ public class CombatAbilities extends StdBehavior
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				if((I instanceof Wand)&&(!I.amWearingAt(Item.INVENTORY)))
+				if((I!=null)&&(I instanceof Wand)&&(!I.amWearingAt(Item.INVENTORY)))
 					myWand=I;
 				else
-				if(I instanceof Wand)
+				if((I!=null)&&(I instanceof Wand))
 					backupWand=I;
 			}
 			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob)))
@@ -156,13 +159,12 @@ public class CombatAbilities extends StdBehavior
 				||(A.quality()==Ability.BENEFICIAL_SELF)
 				||(A.quality()==Ability.BENEFICIAL_OTHERS)))
 				{
-					MOB victim=mob.getVictim();
 					if(A.quality()==Ability.MALICIOUS)
 						victim=mob;
 					Vector V=new Vector();
 					V.addElement("say");
-					V.addElement(mob.getVictim().name());
-					V.addElement("zap");
+					V.addElement(victim.name());
+					V.addElement(((Wand)myWand).magicWord());
 					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 				}
 			}

@@ -32,14 +32,15 @@ public class VeryAggressive extends Aggressive
 		{
 			Room room=thisRoom.doors()[d];
 			Exit exit=thisRoom.exits()[d];
-			if((room!=null)&&(exit!=null)&&(room.getAreaID().equals(thisRoom.getAreaID())))
+			if((room!=null)&&(exit!=null)&&(room.getArea().name().equals(thisRoom.getArea().name())))
 			{
 				if(exit.isOpen())
 				{
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
-						if((!inhab.isMonster())
+						if((inhab!=null)
+						&&(!inhab.isMonster())
 						&&(inhab.envStats().level()<(mob.envStats().level()+11))
 						&&(inhab.envStats().level()>(mob.envStats().level()-11)))
 						{

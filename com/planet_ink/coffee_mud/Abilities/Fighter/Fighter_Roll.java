@@ -23,7 +23,6 @@ public class Fighter_Roll extends StdAbility
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Fighter",16);
 		recoverEnvStats();
 	}
 

@@ -24,7 +24,6 @@ public class Skill_ScrollCopy extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Mage",1);
 		recoverEnvStats();
 	}
 
@@ -83,7 +82,11 @@ public class Skill_ScrollCopy extends StdAbility
 		T.setName(target.name());
 		T.charStats().setGender('N');
 		while(T.numAbilities()>0)
-			T.delAbility(T.fetchAbility(0));
+		{
+			Ability A=T.fetchAbility(0);
+			if(A!=null)
+				T.delAbility(A);
+		}
 		thisSpell.setProfficiency(50);
 		T.addAbility(thisSpell);
 		if(!thisSpell.canBeLearnedBy(T,mob))

@@ -18,8 +18,6 @@ public class Prayer_HolyAura extends Prayer
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -77,19 +75,24 @@ public class Prayer_HolyAura extends Prayer
 				while(a<target.numAffects())
 				{
 					Ability A=target.fetchAffect(a);
-					int b=target.numAffects();
-					if(A instanceof Prayer_Curse)
-						A.unInvoke();
+					if(A!=null)
+					{
+						int b=target.numAffects();
+						if(A instanceof Prayer_Curse)
+							A.unInvoke();
+						else
+						if(A instanceof Prayer_Bless)
+							A.unInvoke();
+						else
+						if(A instanceof Prayer_GreatCurse)
+							A.unInvoke();
+						else
+						if(A instanceof Prayer_HolyWord)
+							A.unInvoke();
+						if(b==target.numAffects())
+							a++;
+					}
 					else
-					if(A instanceof Prayer_Bless)
-						A.unInvoke();
-					else
-					if(A instanceof Prayer_GreatCurse)
-						A.unInvoke();
-					else
-					if(A instanceof Prayer_HolyWord)
-						A.unInvoke();
-					if(b==target.numAffects())
 						a++;
 				}
 				target.recoverEnvStats();

@@ -20,9 +20,6 @@ public class Spell_Disenchant extends Spell
 
 		baseEnvStats().setLevel(22);
 
-		addQualifyingClass("Mage",22);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -26,13 +26,14 @@ public interface ExternalCommand
 	public boolean drop(MOB mob, Environmental dropThis);
 	public void read(MOB mob, Environmental thisThang, String theRest);
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
+	public void follow(MOB mob, MOB tofollow, boolean quiet);
 	
 	// messages
 	public long adjustedAttackBonus(MOB mob);
 	public void resistanceMsgs(Affect affect, MOB source, MOB target);
 	public String mobCondition(MOB mob);
-	public String shortAlignmentStr(MOB mob);
-	public String alignmentStr(MOB mob);
+	public String shortAlignmentStr(int al);
+	public String alignmentStr(int al);
 	public StringBuffer getInventory(MOB seer, MOB mob);
 	public void score(MOB mob);
 	public StringBuffer showWho(MOB who, boolean shortForm);

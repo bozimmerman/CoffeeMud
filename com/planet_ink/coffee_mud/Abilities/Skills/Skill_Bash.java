@@ -24,9 +24,6 @@ public class Skill_Bash extends StdAbility
 
 		baseEnvStats().setLevel(4);
 
-		addQualifyingClass("Fighter",4);
-		addQualifyingClass("Ranger",4);
-		addQualifyingClass("Paladin",4);
 		recoverEnvStats();
 	}
 

@@ -23,8 +23,6 @@ public class Thief_Peek extends ThiefSkill
 
 		baseEnvStats().setLevel(2);
 
-		addQualifyingClass("Thief",2);
-		addQualifyingClass("Bard",13);
 		recoverEnvStats();
 	}
 

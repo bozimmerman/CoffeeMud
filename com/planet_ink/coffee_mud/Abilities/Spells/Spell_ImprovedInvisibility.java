@@ -26,9 +26,6 @@ public class Spell_ImprovedInvisibility extends Spell
 
 		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Mage",19);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

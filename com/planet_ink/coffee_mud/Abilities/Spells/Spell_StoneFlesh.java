@@ -20,9 +20,6 @@ public class Spell_StoneFlesh extends Spell
 
 		baseEnvStats().setLevel(19);
 
-		addQualifyingClass("Mage",19);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
@@ -43,7 +40,7 @@ public class Spell_StoneFlesh extends Spell
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A.canBeUninvoked())&&(A instanceof Spell_FleshStone))
+			if((A!=null)&&(A.canBeUninvoked())&&(A.ID().equalsIgnoreCase("Spell_FleshStone")))
 			{
 				revokeThis=A;
 				break;

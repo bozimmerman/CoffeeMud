@@ -20,14 +20,17 @@ public class Aggressive extends StdBehavior
 
 	public static void startFight(MOB monster, MOB mob, boolean fightMOBs)
 	{
-		if(((!mob.isMonster())||(fightMOBs))
+		if((mob!=null)
+		&&(monster!=null)
+		&&(mob!=monster)
+		&&((!mob.isMonster())||(fightMOBs))
 		&&(monster.location()!=null)
-		&&(canFreelyBehaveNormal(monster))
 		&&(monster.location().isInhabitant(mob))
+		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))
-		&&((mob.charStats().getMyClass()==null)||(!(mob.charStats().getMyClass().ID().equals("Archon"))))
-		&&(mob!=monster))
+		&&(!mob.isASysOp(mob.location())))
 		{
+			// special backstab sneak attack!
 			if(Sense.isHidden(monster))
 			{
 				Ability A=monster.fetchAbility("Thief_BackStab");
@@ -37,6 +40,8 @@ public class Aggressive extends StdBehavior
 					A.invoke(monster,mob,false);
 				}
 			}
+			
+			// normal attack
 			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
 			monster.setVictim(mob);
 		}
@@ -47,7 +52,7 @@ public class Aggressive extends StdBehavior
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
-			if(mob!=observer)
+			if((mob!=null)&&(mob!=observer))
 			{
 				startFight(observer,mob,false);
 				if(observer.isInCombat()) break;

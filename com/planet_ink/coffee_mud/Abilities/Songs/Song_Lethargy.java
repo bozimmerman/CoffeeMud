@@ -24,8 +24,6 @@ public class Song_Lethargy extends Song
 
 		baseEnvStats().setLevel(18);
 
-		addQualifyingClass("Bard",18);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

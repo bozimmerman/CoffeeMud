@@ -22,8 +22,6 @@ public class Song_Quickness extends Song
 		baseEnvStats().setLevel(17);
 		quality=Ability.BENEFICIAL_OTHERS;
 
-		addQualifyingClass("Bard",17);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

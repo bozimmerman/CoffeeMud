@@ -32,7 +32,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateMOBs(room);
 	}
-	public void DBCreate(Room room, String LocaleID)
+	public void DBCreateRoom(Room room, String LocaleID)
 	{
 		RoomLoader.DBCreate(room,LocaleID);
 	}
@@ -40,7 +40,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateRoom(room);
 	}
-	public void DBUpdate(MOB mob)
+	public void DBUpdateMOB(MOB mob)
 	{
 		MOBloader.DBUpdate(mob);
 	}
@@ -56,19 +56,32 @@ public class ExternalSystems implements ExternalSystem
 	{
 		ServiceEngine.clearDebri(room,taskCode);
 	}
-	public void DBUserSearch(MOB mob, String Login)
+	public boolean DBUserSearch(MOB mob, String Login)
 	{
-		MOBloader.DBUserSearch(mob,Login);
+		return MOBloader.DBUserSearch(mob,Login);
 	}
-	public StringBuffer listTicks()
+	public StringBuffer listTicks(int whichTick)
 	{
-		return ServiceEngine.listTicks();
+		return ServiceEngine.listTicks(whichTick);
 	}
-	public void DBDelete(Room room)
+	public Area DBCreateArea(String areaName, String areaType)
+	{
+		return RoomLoader.DBCreate(areaName,areaType);
+	}
+	public void DBDeleteArea(Area A)
+	{
+		RoomLoader.DBDelete(A);
+	}
+	public void DBUpdateArea(Area A)
+	{
+		RoomLoader.DBUpdate(A);
+	}
+	
+	public void DBDeleteRoom(Room room)
 	{
 		RoomLoader.DBDelete(room);
 	}
-	public void DBRead(MOB mob)
+	public void DBReadMOB(MOB mob)
 	{
 		MOBloader.DBRead(mob);
 	}
@@ -80,7 +93,7 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.DBReadFollowers(mob);
 	}
-	public void DBDelete(MOB mob)
+	public void DBDeleteMOB(MOB mob)
 	{
 		MOBloader.DBDelete(mob);
 	}

@@ -17,8 +17,6 @@ public class Prayer_RemovePoison extends Prayer
 		quality=Ability.OK_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -34,10 +32,13 @@ public class Prayer_RemovePoison extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			if((A.ID().toUpperCase().indexOf("POISON")>=0)
-			||(A.name().toUpperCase().indexOf("POISON")>=0)
-			||(A.displayText().toUpperCase().indexOf("POISON")>=0))
-				offenders.addElement(A);
+			if(A!=null)
+			{
+				if((A.ID().toUpperCase().indexOf("POISON")>=0)
+				||(A.name().toUpperCase().indexOf("POISON")>=0)
+				||(A.displayText().toUpperCase().indexOf("POISON")>=0))
+					offenders.addElement(A);
+			}
 		}
 		return offenders;
 	}

@@ -19,9 +19,6 @@ public class StdAbility implements Ability, Cloneable
 	protected int profficiency=0;
 	protected boolean isAnAutoEffect=false;
 
-	private Vector qualifyingClassNames=new Vector();
-	private Vector qualifyingClassLevels=new Vector();
-
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected Environmental affected=null;
@@ -32,21 +29,11 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean putInCommandlist=true;
 
 	protected int quality=Ability.INDIFFERENT;
-
+	
 	protected long tickDown=-1;
-
-	private int lowestQualifyingLevel=Integer.MAX_VALUE;
 
 	public StdAbility()
 	{
-	}
-
-	protected void addQualifyingClass(String className, int atLevel)
-	{
-		qualifyingClassNames.addElement(className);
-		qualifyingClassLevels.addElement(new Integer(atLevel));
-		if(atLevel<lowestQualifyingLevel)
-			lowestQualifyingLevel=atLevel;
 	}
 
 	public boolean qualifies(MOB student)
@@ -95,17 +82,10 @@ public class StdAbility implements Ability, Cloneable
 		if(student.charStats().getMyClass()==null)
 			return -1;
 
-		if(lowestQualifyingLevel==Integer.MAX_VALUE)
-			return -1;
-
-		if(student.charStats().getMyClass().ID().equals("Archon"))
-			return lowestQualifyingLevel;
-
-		for(int i=0;i<qualifyingClassNames.size();i++)
-			if(student.charStats().getMyClass().ID().equals((String)qualifyingClassNames.elementAt(i)))
-				return ((Integer)qualifyingClassLevels.elementAt(i)).intValue();
-
-		return -1;
+		if(student.isASysOp(null))
+			return CMAble.lowestQualifyingLevel(ID());
+		
+		return CMAble.getQualifyingLevel(student.charStats().getMyClass().ID(),ID());
 	}
 
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)

@@ -17,8 +17,6 @@ public class Prayer_HolyWord extends Prayer
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(23);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -71,9 +69,13 @@ public class Prayer_HolyWord extends Prayer
 
 		String str=auto?"The holy word is spoken.":"<S-NAME> speak(s) the holy word of <S-HIS-HER> god to <T-NAMESELF>.";
 		String missStr="<S-NAME> speak(s) the holy word of <S-HIS-HER> god, but nothing happens.";
-		for(int i=0;i<mob.location().numInhabitants();i++)
+		Room room=mob.location();
+		if(room!=null)
+		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB target=mob.location().fetchInhabitant(i);
+			MOB target=room.fetchInhabitant(i);
+			if(target==null) break;
+			
 			affectType=Affect.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|Affect.ACT_GENERAL;
 			if(target.getAlignment()<350)
@@ -99,22 +101,27 @@ public class Prayer_HolyWord extends Prayer
 							while(a<target.numAffects())
 							{
 								Ability A=target.fetchAffect(a);
-								int b=target.numAffects();
-								if(A instanceof Prayer_Curse)
-									A.unInvoke();
+								if(A!=null)
+								{
+									int b=target.numAffects();
+									if(A instanceof Prayer_Curse)
+										A.unInvoke();
+									else
+									if(A instanceof Prayer_Bless)
+										A.unInvoke();
+									else
+									if(A instanceof Prayer_HolyAura)
+										A.unInvoke();
+									else
+									if(A instanceof Prayer_GreatCurse)
+										A.unInvoke();
+									else
+									if(A instanceof Prayer_UnholyWord)
+										A.unInvoke();
+									if(b==target.numAffects())
+										a++;
+								}
 								else
-								if(A instanceof Prayer_Bless)
-									A.unInvoke();
-								else
-								if(A instanceof Prayer_HolyAura)
-									A.unInvoke();
-								else
-								if(A instanceof Prayer_GreatCurse)
-									A.unInvoke();
-								else
-								if(A instanceof Prayer_UnholyWord)
-									A.unInvoke();
-								if(b==target.numAffects())
 									a++;
 							}
 							target.recoverEnvStats();

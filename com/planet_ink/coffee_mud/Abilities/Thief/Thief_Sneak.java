@@ -23,7 +23,6 @@ public class Thief_Sneak extends ThiefSkill
 
 		baseEnvStats().setLevel(4);
 
-		addQualifyingClass("Thief",4);
 		recoverEnvStats();
 	}
 

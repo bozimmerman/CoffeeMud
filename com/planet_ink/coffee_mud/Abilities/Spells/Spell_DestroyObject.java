@@ -20,9 +20,6 @@ public class Spell_DestroyObject extends Spell
 
 		baseEnvStats().setLevel(12);
 
-		addQualifyingClass("Mage",12);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

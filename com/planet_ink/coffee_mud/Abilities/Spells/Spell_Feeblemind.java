@@ -27,9 +27,6 @@ public class Spell_Feeblemind extends Spell
 
 		baseEnvStats().setLevel(11);
 
-		addQualifyingClass("Mage",11);
-		addQualifyingClass("Ranger",baseEnvStats().level()+4);
-
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 	}

@@ -17,8 +17,6 @@ public class Prayer_CureBlindness extends Prayer
 		quality=Ability.OK_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -37,14 +35,17 @@ public class Prayer_CureBlindness extends Prayer
 		for(int a=0;a<fromMe.numAffects();a++)
 		{
 			Ability A=fromMe.fetchAffect(a);
-			newMOB.recoverEnvStats();
-			A.affectEnvStats(newMOB,newMOB.envStats());
-			if((!Sense.canSee(newMOB))
-			   ||(!A.okAffect(msg)))
-			if((A.invoker()==null)
-			   ||((A.invoker()!=null)
-				  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
-					offenders.addElement(A);
+			if(A!=null)
+			{
+				newMOB.recoverEnvStats();
+				A.affectEnvStats(newMOB,newMOB.envStats());
+				if((!Sense.canSee(newMOB))
+				   ||(!A.okAffect(msg)))
+				if((A.invoker()==null)
+				   ||((A.invoker()!=null)
+					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
+						offenders.addElement(A);
+			}
 		}
 		return offenders;
 	}

@@ -22,8 +22,6 @@ public class Song_Nothing extends Song
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Bard",1);
-
 		setProfficiency(100);
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
@@ -46,7 +44,7 @@ public class Song_Nothing extends Song
 		for(int a=0;a<mob.numAffects();a++)
 		{
 			Ability A=(Ability)mob.fetchAffect(a);
-			if(A instanceof Song)
+			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}
 		unsing(mob);

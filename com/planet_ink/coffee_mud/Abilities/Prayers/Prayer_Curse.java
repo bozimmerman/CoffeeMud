@@ -17,8 +17,6 @@ public class Prayer_Curse extends Prayer
 		baseEnvStats().setLevel(7);
 		holyQuality=Prayer.HOLY_EVIL;
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -83,16 +81,21 @@ public class Prayer_Curse extends Prayer
 					while(a<target.numAffects())
 					{
 						Ability A=target.fetchAffect(a);
-						int b=target.numAffects();
-						if(A instanceof Prayer_Bless)
-							A.unInvoke();
+						if(A!=null)
+						{
+							int b=target.numAffects();
+							if(A instanceof Prayer_Bless)
+								A.unInvoke();
+							else
+							if(A instanceof Prayer_UnholyWord)
+								A.unInvoke();
+							else
+							if(A instanceof Prayer_GreatCurse)
+								A.unInvoke();
+							if(b==target.numAffects())
+								a++;
+						}
 						else
-						if(A instanceof Prayer_UnholyWord)
-							A.unInvoke();
-						else
-						if(A instanceof Prayer_GreatCurse)
-							A.unInvoke();
-						if(b==target.numAffects())
 							a++;
 					}
 					target.recoverEnvStats();

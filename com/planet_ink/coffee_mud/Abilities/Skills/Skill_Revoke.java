@@ -23,10 +23,6 @@ public class Skill_Revoke extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
-		addQualifyingClass("Ranger",5);
-		addQualifyingClass("Paladin",5);
-		addQualifyingClass("Cleric",1);
-		addQualifyingClass("Mage",1);
 		recoverEnvStats();
 	}
 
@@ -60,7 +56,7 @@ public class Skill_Revoke extends StdAbility
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A.invoker()==mob)&&(A.canBeUninvoked()))
+			if((A!=null)&&(A.invoker()==mob)&&(A.canBeUninvoked()))
 				revokeThis=A;
 		}
 

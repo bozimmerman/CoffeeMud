@@ -22,8 +22,6 @@ public class Skill_Recall extends StdAbility
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(1);
-		for(int c=0;c<CMClass.charClasses.size();c++)
-			addQualifyingClass(((CharClass)CMClass.charClasses.elementAt(c)).ID(),1);
 		recoverEnvStats();
 	}
 
@@ -55,7 +53,7 @@ public class Skill_Recall extends StdAbility
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
-					if(follower.isMonster())
+					if((follower!=null)&&(follower.isMonster())&&(follower.location()!=null))
 					{
 						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,Affect.MSG_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
 						if(follower.location().okAffect(msg2))

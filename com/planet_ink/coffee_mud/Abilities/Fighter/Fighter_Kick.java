@@ -23,7 +23,6 @@ public class Fighter_Kick extends StdAbility
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(2);
-		addQualifyingClass("Fighter",2);
 		recoverEnvStats();
 	}
 

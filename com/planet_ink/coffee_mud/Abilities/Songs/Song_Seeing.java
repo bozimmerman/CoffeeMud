@@ -23,8 +23,6 @@ public class Song_Seeing extends Song
 
 		baseEnvStats().setLevel(2);
 
-		addQualifyingClass("Bard",2);
-
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

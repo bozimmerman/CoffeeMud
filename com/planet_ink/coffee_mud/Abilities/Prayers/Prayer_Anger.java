@@ -18,8 +18,6 @@ public class Prayer_Anger extends Prayer
 
 		baseEnvStats().setLevel(16);
 
-		addQualifyingClass("Cleric",baseEnvStats().level());
-		addQualifyingClass("Paladin",baseEnvStats().level()+4);
 		recoverEnvStats();
 	}
 
@@ -37,8 +35,11 @@ public class Prayer_Anger extends Prayer
 
 		boolean someoneIsFighting=false;
 		for(int i=0;i<mob.location().numInhabitants();i++)
-			if(mob.location().fetchInhabitant(i).isInCombat())
+		{
+			MOB inhab=mob.location().fetchInhabitant(i);
+			if((inhab!=null)&&(inhab.isInCombat()))
 				someoneIsFighting=true;
+		}
 
 		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{
@@ -59,16 +60,18 @@ public class Prayer_Anger extends Prayer
 						MOB target=null;
 						while((tries<100)&&(target==null))
 						{
-							int which=(int)Math.round(Math.random()*new Integer(mob.location().numInhabitants()).doubleValue());
-							target=mob.location().fetchInhabitant(which);
-							if(target==inhab) target=null;
-							if(target==mob) target=null;
+							target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+							if(target!=null)
+							{
+								if(target==inhab) target=null;
+								if(target==mob) target=null;
+							}
 							tries++;
 						}
 						FullMsg amsg=new FullMsg(mob,inhab,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND,null);
 						if((target!=null)&&(mob.location().okAffect(amsg)))
 						{
-							mob.location().fetchInhabitant(i).tell("You feel angry.");
+							inhab.tell("You feel angry.");
 							inhab.setVictim(target);
 						}
 					}
