@@ -8,6 +8,7 @@ import java.util.*;
 public class GenSSConsole extends StdItem
 {
 	public String ID(){	return "GenSSConsole";}
+	private String readableText="";
 	public GenSSConsole()
 	{
 		super();
@@ -47,7 +48,7 @@ public class GenSSConsole extends StdItem
 	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenItem)) return false;
+		if(!(E instanceof GenSSConsole)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;

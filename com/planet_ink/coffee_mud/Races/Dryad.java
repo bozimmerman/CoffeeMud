@@ -23,7 +23,7 @@ public class Dryad extends StdRace
 	private String[]racialAbilityNames={"Chant_GrowOak","Druid_PlantForm"};
 	private int[]racialAbilityLevels={1, 10};
 	private int[]racialAbilityProfficiencies={100, 60};
-	private boolean[]racialAbilityQuals={false};
+	private boolean[]racialAbilityQuals={false,false};
 	public String[] racialAbilityNames(){return racialAbilityNames;}
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
