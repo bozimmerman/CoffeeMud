@@ -1,13 +1,25 @@
-Blowgun	1	20	5	25	GenSling	darts	1	2	2	
-Staff-Sling	3	40	10	75	GenSling	bullets	10	4	4	LEATHER
+Blowgun	5	20	5	99	GenSling	darts	1	2	2
+Staff-Sling	9	40	10	275	GenSling	bullets	10	4	4	LEATHER
 Sling	1	30	0	15	GenSling	bullets	50	2	2	LEATHER
-Short Bow	1	60	10	500	GenBow	arrows	20	4	3	
-Long Bow	3	80	15	750	GenBow	arrows	20	5	4	
-Composite Short Bow	6	130	15	750	GenBow	arrows	20	6	4	
-Composite Long Bow	9	150	20	1050	GenBow	arrows	20	7	5	
-Light Crossbow	12	150	20	650	GenBow	bolts	1	6	2	
-Heavy Crossbow	15	170	25	1250	GenBow	bolts	5	8	3	
+Short Bow	6	60	10	235	GenBow	arrows	20	4	3
+Long Bow	13	80	15	552	GenBow	arrows	20	8	5
+Composite Short Bow	9	130	15	452	GenBow	arrows	20	7	4
+Composite Long Bow	20	150	20	1248	GenBow	arrows	20	16	6
+Simple Crossbow	1	150	20	395	GenBow	bolts	2	6	2
+Heavy Crossbow	16	170	25	1400	GenBow	bolts	1	20	4
 Quiver of 50 Arrows	5	40	5	25	GenItem	arrows	50			METAL
 Pack of 50 Bolts	5	30	2	25	GenItem	bolts	50			METAL
 Pack of 50 Bullets	1	20	0	5	GenItem	bullets	50			STONE
 Pack of 5 Blow-Darts	1	30	2	25	GenItem	darts	5			METAL
+Short War Bow	25	120	12	1456	GenBow	arrows	20	24	3
+Long War Bow	35	160	18	2779	GenBow	arrows	20	32	5
+Siege Bow	58	250	30	7033	GenBow	arrows	20	50	9
+Hand Crossbow	8	180	5	147	GenBow	darts	5	4	2
+Giant Bow	38	200	50	6203	GenBow	arrows	20	48	7
+Repeating Crossbow	35	300	30	4000	GenBow	bolts	30	40	5
+Atlatl	31	80	2	347	GenSling	javelins	1	8	4
+Pack of 10 Javelins	1	30	5	50	GenItem	javelins	10
+Arm Sling	50	90	1	707	GenSling	bullets	50	16	3
+Light Crossbow	8	160	20	620	GenBow	bolts	2	10	3
+Wrist Crossbow	45	200	4	2773	GenBow	darts	20	40	2
+
