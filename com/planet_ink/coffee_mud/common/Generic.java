@@ -792,7 +792,7 @@ public class Generic
 		
 		if(E instanceof Rideable)
 		{
-			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDEB"));
+			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setMobCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
 		}
 		

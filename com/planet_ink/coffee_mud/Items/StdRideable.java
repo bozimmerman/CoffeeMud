@@ -181,11 +181,11 @@ public class StdRideable extends StdContainer implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
-			if(amRiding(affect.source())&&amRiding(affect.source()))
+			if(amRiding(affect.source()))
 				affect.source().setRiding(null);
 			break;
 		case Affect.TYP_MOUNT:
-			if(!amRiding(affect.source())&&amRiding(affect.source()))
+			if(!amRiding(affect.source()))
 				affect.source().setRiding(this);
 			break;
 		}

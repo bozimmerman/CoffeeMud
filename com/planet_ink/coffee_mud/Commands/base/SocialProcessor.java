@@ -610,7 +610,7 @@ public class SocialProcessor
 		String word="mount(s) ";
 		if(recipient instanceof Item)
 			word="board(s) ";
-		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_DISMOUNT,"<S-NAME> "+word+" <T-NAMESELF>.");
+		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+word+"<T-NAMESELF>.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
@@ -624,7 +624,7 @@ public class SocialProcessor
 		String word="dismount(s) ";
 		if(mob.riding() instanceof Item)
 			word="disembark(s) from ";
-		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,"<S-NAME> "+word+" <T-NAMESELF>.");
+		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,"<S-NAME> "+word+"<T-NAMESELF>.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

@@ -1286,10 +1286,10 @@ public class Generic
 	private String rideDesc(int num)
 	{
 		String rideableType=null;
-		if(num==Rideable.RIDEABLE_AIR)
+		if(num==Rideable.RIDEABLE_WATER)
 			rideableType="Water-based (Floating)";
 		else
-		if(num==Rideable.RIDEABLE_WATER)
+		if(num==Rideable.RIDEABLE_AIR)
 			rideableType="Air-based (Flying)";
 		else
 			rideableType="Land-based";

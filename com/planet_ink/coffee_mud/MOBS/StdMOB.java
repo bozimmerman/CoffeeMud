@@ -714,7 +714,10 @@ public class StdMOB implements MOB
 						   &&(((MOB)riding()).getVictim()==target)
 						   &&(((MOB)riding()).rangeToTarget()>=0)
 						   &&(((MOB)riding()).rangeToTarget()<atRange))
+						{
 							atRange=((MOB)riding()).rangeToTarget();
+							recoverEnvStats();
+						}
 						else
 						for(int r=0;r<riding().numRiders();r++)
 						{
@@ -727,6 +730,7 @@ public class StdMOB implements MOB
 							   &&(otherMOB.rangeToTarget()<atRange))
 							{
 								atRange=otherMOB.rangeToTarget();
+								recoverEnvStats();
 								break;
 							}
 						}
@@ -744,7 +748,8 @@ public class StdMOB implements MOB
 								atRange=maxRange(affect.tool());
 						}
 						else
-							atRange=maxRange(affect.tool());
+								recoverEnvStats();
+						atRange=maxRange(affect.tool());
 					}
 				}
 			}
@@ -894,12 +899,13 @@ public class StdMOB implements MOB
 			   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 			   &&(atRange>maxRange(affect.tool())))
 			{
-				atRange--;
-				if(victim!=null) victim.setAtRange(atRange);
 				String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
 				affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
 				if(location().okAffect(affect))
 					return true;
+				atRange--;
+				if(victim!=null){ victim.setAtRange(atRange); victim.recoverEnvStats();}
+				recoverEnvStats();
 				location().send(this,affect);
 				return false;
 			}
