@@ -15,7 +15,7 @@ public class Spell_ChainLightening extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new Hashtable();
 
 		Hashtable myGroup=mob.getGroupMembers(new Hashtable());

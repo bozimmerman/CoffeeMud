@@ -128,7 +128,7 @@ public class Dance extends StdAbility
 				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
-				Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+				Hashtable h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(h.get(mob)==null) h.put(mob,mob);
 

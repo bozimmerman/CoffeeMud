@@ -35,7 +35,7 @@ public class Fighter_Sweep extends StdAbility
 			mob.tell("You must be in combat to sweep!");
 			return false;
 		}
-		Hashtable h=ExternalPlay.properTargets(this,mob,false);
+		Hashtable h=properTargets(mob,givenTarget,false);
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{
 			MOB m=(MOB)e.nextElement();

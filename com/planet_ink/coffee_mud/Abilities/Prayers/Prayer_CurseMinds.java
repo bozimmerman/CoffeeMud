@@ -57,7 +57,7 @@ public class Prayer_CurseMinds extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
 		boolean success=profficiencyCheck(0,auto);

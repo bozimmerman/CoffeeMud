@@ -108,7 +108,7 @@ public class Song extends StdAbility
 				Song newOne=(Song)this.copyOf();
 				newOne.referenceSong=newOne;
 
-				Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+				Hashtable h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(h.get(mob)==null) h.put(mob,mob);
 

@@ -17,7 +17,7 @@ public class Spell_MassWaterbreath extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,false);
+		Hashtable h=properTargets(mob,givenTarget,false);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth casting this on.");

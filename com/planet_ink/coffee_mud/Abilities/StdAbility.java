@@ -494,6 +494,17 @@ public class StdAbility implements Ability, Cloneable
 		return true;
 	}
 
+	public Hashtable properTargets(MOB mob, Environmental givenTarget, boolean auto)
+	{
+		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
+		{
+			if(h==null) h=new Hashtable();
+			if(!h.containsKey(givenTarget))
+				h.put(givenTarget,givenTarget);
+		}
+		return h;
+	}
 
 
 	public boolean maliciousAffect(MOB mob,

@@ -77,7 +77,7 @@ public class Prayer_Tremor extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");

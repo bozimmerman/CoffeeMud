@@ -79,7 +79,7 @@ public class Fighter_CircleTrip extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth tripping.");

@@ -83,7 +83,7 @@ public class Spell_Gate extends Spell
 			if((mob.location().okAffect(mob,msg))&&(newRoom.okAffect(mob,msg)))
 			{
 				mob.location().send(mob,msg);
-				Hashtable h=ExternalPlay.properTargets(this,mob,false);
+				Hashtable h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
 
 				Room thisRoom=mob.location();

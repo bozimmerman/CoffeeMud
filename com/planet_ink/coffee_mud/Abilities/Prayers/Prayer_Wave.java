@@ -20,7 +20,7 @@ public class Prayer_Wave extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		int dir=Directions.getGoodDirectionCode(Util.combine(commands,0));
 		if(dir<0)

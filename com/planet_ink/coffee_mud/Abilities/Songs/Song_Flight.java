@@ -54,7 +54,7 @@ public class Song_Flight extends Song
 				Song newOne=(Song)this.copyOf();
 				newOne.referenceSong=newOne;
 
-				Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+				Hashtable h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 
 				// malicious songs must not affect the invoker!

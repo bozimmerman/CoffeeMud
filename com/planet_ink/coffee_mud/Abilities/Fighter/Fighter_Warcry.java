@@ -63,7 +63,7 @@ public class Fighter_Warcry extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+				Hashtable h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				for(Enumeration e=h.elements();e.hasMoreElements();)
 				{

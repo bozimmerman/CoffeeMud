@@ -19,7 +19,7 @@ public class Prayer_MassHeal extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{

@@ -55,7 +55,7 @@ public class Chant_SummonInsects extends Chant
 			return false;
 		}
 
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -62,7 +62,7 @@ public class Spell_Repulsion extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
+		Hashtable h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell("There doesn't appear to be anyone here worth repelling.");

@@ -74,7 +74,7 @@ public class Chant_SummonTornado extends Chant
 					if((I!=null)&&(I.container()==null))
 						stuff.addElement(I);
 				}
-				Hashtable H=ExternalPlay.properTargets(this,mob,true);
+				Hashtable H=properTargets(mob,givenTarget,true);
 				if(H!=null)
 				for(Enumeration e=H.elements();e.hasMoreElements();)
 					stuff.addElement((MOB)e.nextElement());
