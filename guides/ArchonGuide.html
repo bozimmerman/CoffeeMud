@@ -6,18 +6,191 @@
 <BODY>&nbsp;
 <P style="TEXT-ALIGN: center" align=center><STRONG><SPAN 
 style="FONT-SIZE: 18pt">The Novice Archon's Guide</SPAN></STRONG><B><SPAN 
-style="FONT-SIZE: 18pt"><BR><STRONG>to World Construction and Destruction 
-v4.0</STRONG></SPAN></B></P>
+style="FONT-SIZE: 18pt"><BR>to 
+CoffeeMud 4.0</SPAN></B></P>
 <P style="TEXT-ALIGN: center" align=center><STRONG>By Archon Grothus Gallslanger 
 of the&nbsp;Free City of Maltan</STRONG></P>
 <P style="TEXT-ALIGN: center" align=center>&nbsp;</P>
-<P>Causing buildings and towers to appear along paved 
-streets, mountains to rise from the dust, and then breathing life into this 
-worlds denizens may seem like a daunting task, but you will quickly discover 
-that it is not so.&nbsp; All it takes is some careful planning, and educated 
-execution.</P>
-<P><STRONG>Planning is the First 
-Step</STRONG></P>
+<P><STRONG><IMG src="images/mug.jpg"></STRONG> </P>
+<P><STRONG>World Construction and Destruction</STRONG></P>
+<P>Causing buildings and towers to appear along paved streets, mountains to rise 
+from the dust, and then breathing life into this worlds denizens may seem like a 
+daunting task, but you will quickly discover that it is not so.&nbsp; All it 
+takes is some careful planning, and educated execution.</P>
+<P>Towards that end, but before we get started properly on the business of 
+molding a universe, we must needs take a moment to reflect on the powers of the 
+Archon, and how the universes underlying laws are navigated.&nbsp; Herein, 
+therefore, I have copied from the sacred scrolls the archaic and confusing runes 
+of "CoffeeMud Administration" for your consideration.</P>
+<P align=left><STRONG>CoffeeMud Administration</STRONG></P>
+<P align=left>       The administration of 
+your CoffeeMud server is done from within the game server itself, when you are 
+logged in as your Archon player.&nbsp;&nbsp; Some functions can be performed from the 
+<A href="MUDGrinder.html">MUDGrinder</a>.</P>
+<P align=left><EM>AHELP<BR></EM>This is the command that Archons will use to get help 
+on all of the commands in this section, on various administrative topics, and on 
+all of the various building "tools" discussed elsewhere in this document, 
+including such things as behaviors and properties.&nbsp; The atopics command can 
+give you a comprehensive list of all the topics you can get help on with 
+ahelp.</P>
+<P align=left><EM>SHUTDOWN<BR></EM>Although CoffeeMud can also be brought down 
+by killing the Java virtual machine, the proper way to shut down CoffeeMud is by 
+entering the shutdown command.&nbsp; This will ensure that all users are saved 
+back to disk, and that the system goes down in a polite and orderly 
+manner.&nbsp; This is also the command which should be used when changes are 
+made to your "coffeemud.ini" file.&nbsp; Changes to your INI file do not take 
+affect until your server is restarted.</P>
+<P align=left><EM>SAVE<BR></EM>This command is used to update your CoffeeMud 
+database. If you use "save user",&nbsp;the system will&nbsp;update the players 
+data.&nbsp; "save room" can make aspects of&nbsp;a room permanent by saving it 
+to the database.&nbsp; Saving rooms is discussed further below in the section on 
+building.</P>
+<P align=left><EM>LIST<BR></EM>The Archon is able to list lots of different 
+things, for many different reasons.&nbsp; "list users" will show you all of the 
+players, and when they logged on last.&nbsp; This is useful for weeding out olde 
+players (see DESTROY below).&nbsp; "list sessions" will show you a list of all 
+active players.&nbsp; "list threads" will show you how many Java threads are 
+active.&nbsp; "list ticks" will show you all the objects making use of those 
+threads! "list reports" will who you your resource usage.&nbsp; You may also 
+list things like locales, items, weapons, armor, mobs, and other things 
+discussed further down in the sections on world building.</P>
+<P align=left><EM>SYSMSGS<BR></EM>This important little trick is vital to those doing 
+CoffeeMud development from the command line. It gives the Archon a unique vision 
+of the world sometimes necessary for his work.&nbsp; For one, it makes 
+everything visible to the Archon regardless of its state of visibility, 
+darkness, fog, or any/all other conditions.&nbsp; It also reveals the unique 
+identifying codes, classes, and names by which things are known or 
+identified.&nbsp; All of this is very important when trying to modify or destroy 
+things you no longer want in your world.</P>
+<P align=left><EM>WIZINV<BR></EM>Sometimes an Archon wants a little privacy, and 
+this command gives it to him or her.&nbsp; It will make the Archon completely 
+undetectable, allowing free movement without harassment from players or 
+monsters.</P>
+<P align=left><EM>TAKE<BR></EM>Use this command if a player or monster has 
+something that doesn't belong to them, and you need it back.</P>
+<P align=left><EM>POSSESS<BR></EM>Easily the most fun part of being an Archon is 
+to possess one of the monsters and harass the players, making them think the 
+monsters have truely come to life!&nbsp; Some enjoy this so much that they 
+forget to return to their true bodies!</P>
+<P align=left><EM>ORDER<BR></EM>Although any player may order around their 
+followers, an Archon can order ANYONE to do ANYTHING.</P>
+<P align=left><EM>BEACON<BR></EM>The beacon command is used to change the unique home, 
+start room, or recall room of either the Archon, or some targeted player.&nbsp; 
+Rarely used, it is typically invoked only as reward for&nbsp;a player or perhaps 
+a lesser admin.</P>
+<P align=left><EM>BOOT<BR></EM>If a player becomes troublesome, or you just want them 
+to go away, you will use this power to knock them temporarily out of your mud, 
+regardless of where they are in your world.&nbsp; To make them STAY away, you 
+will have to investigate commands such as destroy or ban.</P>
+<P align=left><EM>GOTO<BR></EM>Allows the Archon to zap him or herself directly 
+to the room or mob of his or her choice.&nbsp; The argument is a valid Room ID, 
+room name, mob name, or area name.&nbsp; You will find yourself using the goto 
+command quite a bit.&nbsp; Walking everywhere sucks.</P>
+<P><EM>TRANSFER<BR></EM>Allows the Archon to zap&nbsp;someone directly to the 
+room or mob of his or her choice.&nbsp; The argument is either ALL or the name 
+of the target, and a valid Room ID, room name, mob name, or area name.&nbsp; Use 
+this when you want someone to go somewhere NOW.</P>
+<P align=left><EM>SNOOP<BR></EM>This command can let you watch other players as 
+they wander your world.&nbsp; This command gives you a second pair of eyes to 
+look over the shoulder of the player of your choice.&nbsp; You will see 
+everything they see, almost as if you were them yourself.</P>
+<P align=left><EM>WHERE<BR></EM>Allows the Archon to who all is online, and 
+where they are on the map. An argument, such as "where orc",&nbsp;may be given 
+to specify a specific mob name.&nbsp; That way, you can find out where you might 
+have misplaced that wandering zombie.</P>
+<P align=left><EM>UNLOAD<BR></EM>If you've made any changes to your help files 
+or other resources, and don't want to have to reboot the whole MUD, you can use 
+this command as a short-cut.&nbsp; It unloads "resources" (try "list resources") 
+that are in memory.&nbsp; By unloading resources from memory, you force 
+CoffeeMud to reload your changes from disk.</P>
+<P align=left><EM>RESET<BR></EM>Giving a parameter of "room" or "area", this 
+command will make everything reset back to the state it was last saved at.</P>
+<P align=left><EM>EXPORT<BR></EM>If you need a backup to your database, you can 
+save your areas one at a time as files, for reimportation in the event of a 
+disaster.&nbsp; This command will generate files with the extension 
+.cmare.&nbsp; They are XML formatted text files containing all the data you told 
+the system to export.&nbsp; In addition to rooms and areas, you can also 
+specifically export some items or mobs from a room.&nbsp; The import command 
+could then be used later to load the data you exported back in.</P>
+<P align=left><EM>IMPORT<BR></EM>Import will suck in one or more data files and 
+recreate rooms, areas, mobs, items, and lots of other stuff from the contents of 
+those files.&nbsp;&nbsp;The data files that import will successfully 
+read&nbsp;include (of course) the CoffeeMud .cmare files discussed under the 
+export command.&nbsp;&nbsp;In addition, import&nbsp;will also take in area 
+data&nbsp;files from other MUDs, such as ROM, CircleMUD, and others.&nbsp; Of 
+the non-CoffeeMud area files, the ROM format is by far the best supported.</P>
+<P align=left><EM>MERGE<BR></EM>This powerful tool is rarely used, but is vital if you 
+need to make small changes to&nbsp;identical items or mobs scattered all around 
+your world.&nbsp; It uses item or mob data gathered from the&nbsp;export command 
+to merge with the&nbsp;items and mobs you specify in the real world, making the 
+necessary world corrections&nbsp;&nbsp;that you want it to.</P>
+<P align=left><EM>CREATE<BR></EM>Depending on the argument, this command can 
+bring almost anything into existence, from rooms to doors, from monsters to 
+items.&nbsp; The create command is discussed at length in the sections on 
+building rooms and areas.</P>
+<P align=left><EM>COPY<BR></EM>Depending on the argument, this command can make 
+copies of almost anything in your mud, from rooms to monsters and items.&nbsp; 
+The thing you want to copy must exist somewhere in the world for you to properly 
+copy it.&nbsp; You can even specify how many things you wish to copy, for those 
+moments when one pot pie just won't do.</P>
+<P align=left><EM>MODIFY<BR></EM>If something which exists is not quite right, 
+this command can make it right.&nbsp; By telling the system exactly what you 
+want to modify, you can change it into what it ought to be.&nbsp;&nbsp;&nbsp; 
+The modify command is discussed&nbsp;further in the sections on building rooms 
+and areas.</P>
+<P align=left><EM>DESTROY<BR></EM>Last but not least, this powerful command can 
+be used to banish objects and mobs, rooms and areas, or even players -- 
+permanently.&nbsp;A&nbsp; player (user) need not be online to be destroyed. The 
+destroy command, as it relates to rooms, exits, items, and mobs,&nbsp;is 
+discussed&nbsp;further in the sections on building rooms and areas.&nbsp; </P>
+<P align=left><EM>GENCHAR<BR></EM>This little tool accepts a character class 
+name and a level, and it shows you the stats of an "average" player of that 
+class and level.&nbsp; Although it's not a vital administration tool, CharGen 
+can be a helpful aid in the construction of monsters, perhaps.</P>
+<P align=left><EM>DUMPFILE<BR></EM>When you want to view some text file on 
+your&nbsp;computer through the MUD.</P>
+<P align=left><EM>ANNOUNCE<BR></EM>If there is some message you wish to give to everyone 
+presently on your mud, this is the surest way to make sure they receive it.</P>
+<P align=left><EM>TICKTOCK<BR></EM>This simple little power will advance the world's time 
+clock by one hour every time it is used.&nbsp; If it's day, and you want it to 
+be night, or vis-versa, this is the way to go.</P>
+<P align=left><EM>BAN<BR></EM>Deadly, but necessary, this command allows you to 
+specify player names, or partial player names, or IP addresses or IP ranges that 
+you wish to keep OUT of your mud.</P>
+<P><EM>I3<BR></EM>This module is used to 
+manage InterMud 3 chatting channels.&nbsp; I3 is a component of CoffeeMud that 
+provides for chatting channels which span across many many muds in cyperspace, 
+allowing players and admins to talk to folks playing on other muds.</P>
+<P align=left><STRONG>Security</STRONG>        
+              
+       </P>
+<P align=left>        
+      CoffeeMud has three security levels built into it: 
+the Archon, the Area SubOp, and the player.&nbsp;</P>
+<P align=left>The Archon has access to all commands above, 
+and rights to use them anywhere in the world.&nbsp; The Archon has rights to all 
+the functions of the MUDGrinder, and the power to enforce any rule.&nbsp; The 
+Archon is all powerful.&nbsp; Archons are defined as any player with the 
+Character Class called "Archon".&nbsp; Archons can be created by having OTHER 
+Archons modifying them and making their current class Archon.&nbsp; Archons can also be 
+created by reading from the Manual of the Archons, which is an item that 
+can be created at will by an Archon.</P>
+<P align=left>The Area SubOp (also called an Area Archon) is 
+a&nbsp;player with limited rights and powers within a single Area of the 
+world.&nbsp;&nbsp; Unlike the full Archon, an Area SubOp may be any class.&nbsp; 
+While residing in an Area that has designated the player as an Area SubOp, the 
+player has access to the all of the commands and powers of the Archon EXCEPT: 
+ban, dumpfile, import, export, load, merge, ticktock, unload, and wizinv. Area 
+SubOps are also unable to see hidden areas, see the unseen (wizinv, nondetection 
+etc) people on the who list, destroy users, create the Manual of the Archons, 
+the Archon Staff, or the Archon 
+Wand, manage the I3 settings, write on disallowed journals, or access any MUDGrinder functionality 
+aside from the management of their own areas.</P>
+<P align=left>        
+  Players are just players, and are unable to wipe their own noses 
+with an Archon to provide them a tissue.</P>
+<P><STRONG>Building Your World: Planning 
+is the First Step</P></STRONG>
 <P>Before a single bird can flitter through the skies that 
 you opened up, you must have planned the placement of that sky, and the song of 
 that bird.&nbsp; I am assuming you have been given some general area to 
@@ -1297,8 +1470,7 @@ listed under GenItem, plus one more:</P>
       have a little clarity!</TD></TR></TABLE></P>
 <P>
 <P>
-<P><STRONG>Modifying 
-Items</STRONG></P>
+<P><STRONG>Modifying Items</STRONG></P>
 <P>There are properties of items, armor, weapons, and 
 containers that can be modified by the Archon.&nbsp; If one wishes to modify a 
 dagger, one must either hold the dagger, or have the dagger present in the 
@@ -1356,8 +1528,7 @@ other "non-Generic" items, the following properties will be presented:</P>
   field.</TD></TR></TABLE></P>
 <P>
 <P>
-<P><STRONG>Destroying 
-Items</STRONG></P>
+<P><STRONG>Destroying Items</STRONG></P>
 <P>To destroy an item that is either being held by you, or 
 is in the same room as you, you need only issue the destroy command.&nbsp; Items 
 that have been set to rejuv will not do so.&nbsp; If the item was a permanently 
@@ -1370,12 +1541,11 @@ streets.&nbsp; To do this, the Archon need only issue the create command once
 again.&nbsp; Summoning a goblin is as simple as entering "create Goblin".</P>
 <P><STRONG>The "GenMob"&nbsp;and 
 "GenUndead"</STRONG></P>
-<P>Whenever a GenMob&nbsp;or GenUndead is created, much 
-like the GenItem above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The only 
-difference between the GenMob and GenUndead is that the GenUndead can 
-be&nbsp;TURNed by a Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties 
-include:</P>
+<P>Whenever a GenMob&nbsp;or GenUndead is created, much like 
+the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The only difference 
+between the GenMob and GenUndead is that the GenUndead can be&nbsp;TURNed by a 
+Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
   <TR>
@@ -1392,8 +1562,8 @@ include:</P>
     <TD>what one sees when one looks at the mob</TD></TR>
   <TR>
     <TD><EM>Display Text</EM></TD>
-    <TD>what one sees when&nbsp;the mob&nbsp;is lurking 
-      in a room.</TD></TR>
+    <TD>what one sees when&nbsp;the mob&nbsp;is lurking in 
+      a room.</TD></TR>
   <TR>
     <TD><EM>Rejuv Ticks</EM></TD>
     <TD>the number of ticks (4 second intervals), after 
@@ -1413,19 +1583,18 @@ include:</P>
       higher level, or "too tough" for a lower level.&nbsp;</TD></TR>
   <TR>
     <TD><EM>Attacks/Round</EM></TD>
-    <TD>this represents the number of attacks the 
-      creature receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
+    <TD>this represents the number of attacks the creature 
+      receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
   <TR>
-    <TD><EM>Attack 
-Adjustment</EM></TD>
+    <TD><EM>Attack Adjustment</EM></TD>
     <TD>this represents the MOBs ability to slay other 
       beings.&nbsp; At first level, this should be a 0.&nbsp; At 25th level, 
       this may be as much as 150-200.&nbsp; You should keep the default, either 
       way.</TD></TR>
   <TR>
     <TD><EM>Damage/Hit</EM></TD>
-    <TD>this represents the maximum amount of damage a 
-      MOB does when striking its opponents.&nbsp; At first level, 4-8 is 
+    <TD>this represents the maximum amount of damage a MOB 
+      does when striking its opponents.&nbsp; At first level, 4-8 is 
       plenty.&nbsp; At 25th level, 10-30 is a good range, depending upon the 
       monsters speed.&nbsp; Just keep the default.</TD></TR>
   <TR>
@@ -1443,8 +1612,8 @@ Adjustment</EM></TD>
       at default.</TD></TR>
   <TR>
     <TD><EM>Alignment </EM></TD>
-    <TD>aside from the creatures experience level, this 
-      is the most important determinate of whether a player gets experience for 
+    <TD>aside from the creatures experience level, this is 
+      the most important determinate of whether a player gets experience for 
       killing it.&nbsp; You should make the alignment reflect the creature’s 
       obvious disposition.&nbsp; Making children evil, or a good orc doesn't do 
       anyone any good.</TD></TR>
@@ -1531,8 +1700,7 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
     <TD>this is where you would "stock" your shopkeeper 
       with items that match their type.</TD></TR>
   <TR>
-    <TD><EM>Prejudice 
-Factors</EM></TD>
+    <TD><EM>Prejudice Factors</EM></TD>
     <TD>
       <P>This complicated field is where you can adjust the 
       prices the ShopKeeper sells from the programmed normal.&nbsp; An 
@@ -1548,8 +1716,8 @@ Factors</EM></TD>
       (like 0.3 or 0.75) will lower prices.&nbsp; Values of 0.0 are NOT 
       allowed.&nbsp; If you need to all but not allow buying and selling, a 
       value of 0.000000001 should do.&nbsp; </P>
-      <P>Each adjustment may also contain the name of one 
-      or more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
+      <P>Each adjustment may also contain the name of one or 
+      more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
       Racial Category is specified, then the adjustment will ONLY apply to that 
       race.&nbsp; The adjustments are read from left to right, so adjustments 
       without any racial categories should be listed LAST.&nbsp; In the above 
@@ -1560,8 +1728,8 @@ Factors</EM></TD>
       apply to a player will cancel evaluation of the rest of the 
       field!&nbsp;&nbsp; </P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
-<P>A Banker is a special type of ShopKeeper that holds 
-money and items in a special private account for players.&nbsp; Bankers can pay 
+<P>A Banker is a special type of ShopKeeper that holds money 
+and items in a special private account for players.&nbsp; Bankers can pay 
 interest on money left in the account, and charge interest on items left with 
 them.&nbsp; Whenever a GenBanker is created, much like the GenShopKeeper above, 
 you are presented with a list of properties to fill in.&nbsp; Pressing enter 
@@ -1582,9 +1750,9 @@ fields listed above under GenMob and GenShopKeeper, plus&nbsp;one&nbsp;more:</P>
 account.</TD></TR>
   <TR>
     <TD><EM>Item Interest</EM></TD>
-    <TD>This is the amount of interest paid (or CHARGED 
-      if negative) every game week (about once a real day) on items left in a 
-      users account.</TD></TR>
+    <TD>This is the amount of interest paid (or CHARGED if 
+      negative) every game week (about once a real day) on items left in a users 
+      account.</TD></TR>
   <TR>
     <TD><EM>Bank Name</EM></TD>
     <TD>This is a unique identifier for the bank chain. 
@@ -1627,10 +1795,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Cleric 
-    Requirements</EM></TD>
-    <TD>This field describes the requirements for a 
-      cleric to work for this deity. The value in this field include the 
-      following masks: 
+Requirements</EM></TD>
+    <TD>This field describes the requirements for a cleric 
+      to work for this deity. The value in this field include the following 
+      masks: 
       <P>
       <UL>
         <LI>+sysop (allow archons or area subops to bypass 
@@ -1639,10 +1807,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         check) 
         <LI>-class (disallow all classes) 
         <LI>-baseclass (disallow all base classes) 
-        <LI>+thief +bard +ranger etc.. (create exceptions 
-        to -class and -baseclass) 
-        <LI>-paladin -bard -mage etc.. (disallow only 
-        listed classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions to 
+        -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only listed 
+        classes) 
         <LI>-race (disallow all racial categories) 
         <LI>+elf +dwarf +human +half +gnome (create 
         exceptions to -race) 
@@ -1661,10 +1829,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>-level (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
-        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
-        (disallow only listed levels, put your level for 10) 
-        <LI>-tattoos (disallow all tattoos, even a lack of 
-        a tatoo) 
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 (disallow 
+        only listed levels, put your level for 10) 
+        <LI>-tattoos (disallow all tattoos, even a lack of a 
+        tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
         <LI>+tattoos (allow any or no tattoos) 
@@ -1702,22 +1870,22 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         the player. For example: SAY "Allah is Great" 
         <LI>TIME [HOUR] - the other tasks must be performed 
         at the specified hour. For example: TIME 3 
-        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an 
-        item of the type must be placed in the specified container. For example: 
+        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item 
+        of the type must be placed in the specified container. For example: 
         PUTTHING dagger pit 
         <LI>BURNTHING [THING NAME] - an item of the type 
         given must be burnt or set afire. This is typically done with the 
         FIREBUILDING skill. For example: BURNTHING the ceremonial log 
         <LI>EAT [FOOD NAME] - the specified item must be 
         eaten. For example: EAT holy pie. 
-        <LI>DRINK [DRINK NAME] - the specified drink must 
-        be consumed. For example: DRINK holy fountain 
+        <LI>DRINK [DRINK NAME] - the specified drink must be 
+        consumed. For example: DRINK holy fountain 
         <LI>INROOM - the player must be in the specified 
         room number. For example: INROOM NewArea#123 
         <LI>RIDING - the player must be on the specified 
         mount. For example: RIDING holy altar 
-        <LI>CAST - the player must cast the specified 
-        spell. For example: CAST Prayer_Bless 
+        <LI>CAST - the player must cast the specified spell. 
+        For example: CAST Prayer_Bless 
         <LI>EMOTE - the player must emote the following 
         thing. For example: EMOTE kneels before the throan 
         <LI>PUTVALUE [MINIMUM VALUE] [CONTAINER NAME] - an 
@@ -1732,15 +1900,14 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
         <LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at 
         least the specified amount must be burnt, such as using the FIREBUILDING 
         skill. For instance: BURNVALUE "wooden statue" 
-        <LI>SITTING 0 - the player must be sitting (the 0 
-        is required!) 
+        <LI>SITTING 0 - the player must be sitting (the 0 is 
+        required!) 
         <LI>STANDING 0 - the player must be standing (the 0 
         is required!) 
         <LI>SLEEPING 0 - the player must be sleeping (the 0 
         is required!) </LI></UL></TD></TR>
   <TR>
-    <TD><EM>Worshipper 
-Ritual</EM></TD>
+    <TD><EM>Worshipper Ritual</EM></TD>
     <TD>For a worshipper to receive one of the blessings 
       of the deity, the player must perform a particular ritual consisting of 
       one or more actions. This field will list the tasks in the ritual which 
@@ -1748,8 +1915,8 @@ Ritual</EM></TD>
       field above. </TD></TR></TABLE></STRONG>
 <P><STRONG><BR></P><BR>Modifying MOBs</STRONG> 
 <P></P>
-<P>There are properties of&nbsp;mobs that can be modified 
-by the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
+<P>There are properties of&nbsp;mobs that can be modified by 
+the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
 be&nbsp;present in the room.&nbsp; The Archon can then issue the command "modify 
 goblin".&nbsp; If the item is a GenMob or GenUndead, then the same properties as 
 above will be presented.&nbsp; See Appendix B for more information.&nbsp; For 
@@ -1763,9 +1930,9 @@ all other MOBs, the following properties will be presented:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Level</EM></TD>
-    <TD>this is the level of the mob.&nbsp; Please see 
-      the Level entry under GenMob for more information.&nbsp; On some mobs, 
-      such as Dragons, this can have a profound impact.</TD></TR>
+    <TD>this is the level of the mob.&nbsp; Please see the 
+      Level entry under GenMob for more information.&nbsp; On some mobs, such as 
+      Dragons, this can have a profound impact.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>This number represents an adjustment to the base 
@@ -1790,8 +1957,7 @@ all other MOBs, the following properties will be presented:</P>
     <TD><EM>MiscText</EM></TD>
     <TD>For non-generic MOBs, this is a 
       completely&nbsp;unused field.</TD></TR></TABLE>
-<P><STRONG>Destroying MOBs</STRONG> 
-</P>
+<P><STRONG>Destroying MOBs</STRONG> </P>
 <P>To destroy a MOB&nbsp;that is in the same room as you, 
 you need only issue the destroy command.&nbsp;&nbsp;MOBs that have been set to 
 rejuv will not do so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in 
@@ -1808,18 +1974,17 @@ you wish to give to your new creature using the procedure described above under
 temporary control of your monster, allowing them to pick up the items you 
 created and wear or wield them as necessary.&nbsp; Another way is to "order" the 
 mob to pick up the items you created, and then "order" them again to wear or 
-wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are 
-exceptions, MOBs will be the primary beneficiary of Behaviors (see above under 
-Creating MOBs), and Items (and occasionally Rooms) will benefit from 
-Affects.&nbsp; Some of the useful Affects for Rooms are already described above 
-under Creating Rooms.&nbsp; For Generic Items, Prop_HaveAdjuster, 
-Prop_WearAdjuster, Prop_HaveZapper and others are commonly used.&nbsp; For 
-Generic MOBs, you will find many useful Behaviors which will add great depth to 
-your MUD.&nbsp; The MudChat behavior may be added to ANY Mob to add an extra 
-dimension. "Aggressive", "MOBTeacher", and "Mobile" are also extremely common 
-behaviors to give to your MOBs.&nbsp; It is highly recommended that any Archon 
-wishing to create a rich and wonderous universe spend time perusing the help 
-files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
+wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are exceptions, MOBs will be the 
+primary beneficiary of Behaviors (see above under Creating MOBs), and Items (and 
+occasionally Rooms) will benefit from Affects.&nbsp; Some of the useful Affects 
+for Rooms are already described above under Creating Rooms.&nbsp; For Generic 
+Items, Prop_HaveAdjuster, Prop_WearAdjuster, Prop_HaveZapper and others are 
+commonly used.&nbsp; For Generic MOBs, you will find many useful Behaviors which 
+will add great depth to your MUD.&nbsp; The MudChat behavior may be added to ANY 
+Mob to add an extra dimension. "Aggressive", "MOBTeacher", and "Mobile" are also 
+extremely common behaviors to give to your MOBs.&nbsp; It is highly recommended 
+that any Archon wishing to create a rich and wonderous universe spend time 
+perusing the help files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 
 which have had the Rejuv Ticks property set to some reasonable number, will not 
@@ -1832,9 +1997,7 @@ or both, are exactly the way you want them to be when the system is
 rebooted.&nbsp; Players in the room, including yourself and your followers, will 
 be ignored by the command to save the mobs.</P>
 <P>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT 
-size=5>Appendix A: Special Standard 
-Items</FONT></STRONG></P>
+<P class=MsoNormal><STRONG><FONT size=5>Appendix A: Special Standard Items</FONT></STRONG></P>
 <P class=MsoNormal>Map</P>
 <UL>
   <LI>
@@ -1852,8 +2015,8 @@ Items</FONT></STRONG></P>
 LockableContainer, etc</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The name of the key 
-  which will open this container.</DIV></LI></UL>
+  <DIV class=MsoNormal>misc text - The name of the key which 
+  will open this container.</DIV></LI></UL>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
@@ -1906,10 +2069,9 @@ item)</P>
 Weapons)</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>ability - Equates to a 5 point 
-  attack bonus, and 1 point damage bonus for every ability point above 0.&nbsp; 
-  Makes the weapon magical. Negative ability points do the 
-opposite.</DIV></LI></UL>
+  <DIV class=MsoNormal>ability - Equates to a 5 point attack 
+  bonus, and 1 point damage bonus for every ability point above 0.&nbsp; Makes 
+  the weapon magical. Negative ability points do the opposite.</DIV></LI></UL>
 <P class=MsoNormal>ScrollSpell</P>
 <UL>
   <LI>
@@ -1955,11 +2117,8 @@ etc.</P>
   <LI>
   <DIV class=MsoNormal>usesRemaining - The number of types 
   the manual may be read before becomming ineffective.</DIV></LI></UL>
-<P class=MsoNormal><STRONG><FONT 
-size=5></FONT></STRONG>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT 
-size=5>Appendix B: Special Standard 
-MOBs</FONT></STRONG></P>
+<P class=MsoNormal><STRONG><FONT size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT size=5>Appendix B: Special Standard MOBs</FONT></STRONG></P>
 <P class=MsoNormal>Dragon</P>
 <DIV class=MsoNormal>
 <UL>
@@ -2153,8 +2312,7 @@ weapons that do a specific amount of damage which are balanced with the
 WEAPONSMITHING skills, use the following formula:</P>
 <P>Level= ((2*D)/(H+1) + (A-W)/5 +R)*((R/W)+2)+1</P>
 <P>where</P>
-<P>D=base DAMAGE of the weapon before material 
-modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Round the final number down, to a minimum level of 1.&nbsp; Some general 
@@ -2504,8 +2662,7 @@ following formula:
 <P>where 
 <P>L=Level required to use weapon,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon 
-<P>Round the final number down, to a minimum level of 
-1.</P>
+<P>Round the final number down, to a minimum level of 1.</P>
 <P><U>Determining Weapon Cost</U> 
 <P>
 <P></P>
@@ -2513,11 +2670,10 @@ weapon
 To compute the weapon’s base value use the following equation: 
 <P>Cost of Item= 2*(W*V+(5*D+A+R*10)*D)/(H+1) 
 <P>where 
-<P>D=base DAMAGE of the weapon before material 
-modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon<BR>V=VALUE of the material the weapon is made from 
-<P><U>Determining Weapon Damage 
-Type</U> 
+<P><U>Determining Weapon Damage Type</U> 
+
 <P>
 <P></P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -3045,8 +3201,8 @@ Shirt (7 points) would provide a total ARMOR VALUE of 21 (7*3), and weigh 63
       <P align=center>3</P></TD>
     <TD vAlign=top width=118>
       <P align=center>4.5</P></TD></TR></TABLE></P>
-<P>&nbsp;The armor weights are recommendations.&nbsp; If 
-you wish to create a lighter version of chain mail that gives the same armor 
+<P>&nbsp;The armor weights are recommendations.&nbsp; If you 
+wish to create a lighter version of chain mail that gives the same armor 
 protection (like Elven Chainmail) go right ahead.&nbsp; It will not increase the 
 level, it will increase the COST of the armor.</P>
 <P><U>Armor Cost</U> 

@@ -1,9 +1,8 @@
-Programming.html update
-	Updates to Locales, Mobs, Items for misc. methods.
 Installation.html update
 	Upgrade guide
+Programming.html update
+	Updates to Locales, Mobs, Items for misc. methods.
 Archons Guide updates
-	Archon commands review
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns
@@ -15,6 +14,7 @@ Archons Guide updates
 GenRaces
 GenCharClasses
 racial abilities (abilities tied to the race)
+like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 SMTP capability

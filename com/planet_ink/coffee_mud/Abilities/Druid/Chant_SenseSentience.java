@@ -14,7 +14,6 @@ public class Chant_SenseSentience extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SenseSentience();}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

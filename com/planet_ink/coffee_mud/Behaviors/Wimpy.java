@@ -57,7 +57,7 @@ public class Wimpy extends StdBehavior
 						for(int b=0;b<monster.numBehaviors();b++)
 						{
 							B=monster.fetchBehavior(b);
-							if((B!=null)&&(B.grantsMobility()))
+							if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 							{
 								int tries=0;
 								while(((++tries)<100)&&(oldRoom==monster.location()))

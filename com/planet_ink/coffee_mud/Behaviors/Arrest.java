@@ -476,6 +476,18 @@ public class Arrest extends StdBehavior
 		return true;
 	}
 
+	public boolean isTroubleMaker(MOB M)
+	{
+		if(M==null) return false;
+		for(int b=0;b<M.numBehaviors();b++)
+		{
+			Behavior B=M.fetchBehavior(b);
+			if((B!=null)&&(Util.bset(flags(),Behavior.FLAG_TROUBLEMAKING)))
+				return true;
+		}
+		return false;
+	}
+	
 	public Room getRoom(Area A, String roomstr)
 	{
 		Room jail=null;
@@ -729,6 +741,9 @@ public class Arrest extends StdBehavior
 			return false;
 		}
 
+		if((W.victim!=null)&&(isTroubleMaker(W.victim)))
+			W.actionCode=W.actionCode/2;
+		
 		if((isStillACrime(W))
 		&&(Sense.canBeSeenBy(W.criminal,W.witness)))
 			warrants.addElement(W);
@@ -953,7 +968,7 @@ public class Arrest extends StdBehavior
 					for(int b=0;b<M.numBehaviors();b++)
 					{
 						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(B.grantsMobility()))
+						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 							return true;
 					}
 				}

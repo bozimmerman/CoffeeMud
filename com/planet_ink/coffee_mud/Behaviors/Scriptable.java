@@ -2798,6 +2798,7 @@ public class Scriptable extends StdBehavior
 				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,4));
 				MOB E=lastKnownLocation.fetchInhabitant(m);
 				if((E!=null)&&(arg2.length()>0))
 				{
@@ -2805,7 +2806,13 @@ public class Scriptable extends StdBehavior
 					int max=Util.s_int(arg3);
 					if(max<min) max=min;
 					if(min>0)
-						ExternalPlay.postDamage(E,E,null,(max==min)?min:Dice.roll(1,max-min,min),Affect.NO_EFFECT,-1,null);
+					{
+						int dmg=(max==min)?min:Dice.roll(1,max-min,min);
+						if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
+							dmg=E.curState().getHitPoints()-1;
+						if(dmg>0)
+							ExternalPlay.postDamage(E,E,null,dmg,Affect.NO_EFFECT,-1,null);
+					}
 				}
 				break;
 			}

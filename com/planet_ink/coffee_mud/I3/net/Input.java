@@ -4,7 +4,7 @@
  * The Input class accepts user input.
  */
 
-package com.planet_ink.coffee_mud.system.I3.net;
+package com.planet_ink.coffee_mud.i3.net;
 
 /**
  * This class is designed to accept user input

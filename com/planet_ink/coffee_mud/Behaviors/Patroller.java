@@ -9,7 +9,7 @@ public class Patroller extends ActiveTicker
 {
 	public String ID(){return "Patroller";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public boolean grantsMobility(){return true;}
+	public long flags(){return Behavior.FLAG_MOBILITY;}
 
 	private int step=0;
 

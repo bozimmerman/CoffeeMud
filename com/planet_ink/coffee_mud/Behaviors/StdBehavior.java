@@ -15,7 +15,7 @@ public class StdBehavior implements Behavior
 	public String ID(){return "StdBehavior";}
 	public String name(){return ID();}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public boolean grantsMobility(){return false;}
+	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	

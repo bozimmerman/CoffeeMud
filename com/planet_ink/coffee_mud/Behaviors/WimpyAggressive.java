@@ -8,6 +8,7 @@ import java.util.*;
 public class WimpyAggressive extends Aggressive
 {
 	public String ID(){return "WimpyAggressive";}
+	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean mobKiller=false;

@@ -34,7 +34,12 @@ public interface Behavior extends Cloneable, Tickable, MsgListener, Comparable
 	public static final int CAN_ROOMS=8;
 	public static final int CAN_EXITS=16;
 	
-	public boolean grantsMobility();
+	// some behavioral flags for the rest of the system to look for
+	public static final long FLAG_MOBILITY=1;
+	public static final long FLAG_TROUBLEMAKING=2;
+	public static final long FLAG_POTENTIALLYAGGRESSIVE=3;
+	
+	public long flags();
 	public boolean grantsAggressivenessTo(MOB M);
 	
 	/** quick and easy access to the basic values in this object */

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system.I3.net;
+package com.planet_ink.coffee_mud.i3.net;
 
 import java.net.ServerSocket;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system.I3;
+package com.planet_ink.coffee_mud.i3;
 
 import java.util.*;
 import java.net.*;
@@ -6,7 +6,7 @@ import java.io.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.system.I3.packets.*;
+import com.planet_ink.coffee_mud.i3.packets.*;
 
 public class IMudClient implements I3Interface
 {

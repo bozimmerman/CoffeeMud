@@ -9,7 +9,7 @@
  * express written consent of George Reese.
  */
 
-package com.planet_ink.coffee_mud.system.I3.persist;
+package com.planet_ink.coffee_mud.i3.persist;
 
 /**
  * Any object which should persist over time should

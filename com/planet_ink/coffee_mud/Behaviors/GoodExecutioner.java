@@ -9,11 +9,19 @@ import java.util.*;
 public class GoodExecutioner  extends StdBehavior
 {
 	public String ID(){return "GoodExecutioner";}
+	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
 	public Behavior newInstance()
 	{
 		return new GoodExecutioner();
 	}
 
+	public boolean grantsAggressivenessTo(MOB M)
+	{
+		return (((M.getAlignment()<350)&&(M.isMonster()))
+		||((M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
+		   &&(M.isMonster())));
+	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

@@ -4,7 +4,7 @@
  * An interface for mudlib object's to implement
  */
 
-package com.planet_ink.coffee_mud.system.I3.server;
+package com.planet_ink.coffee_mud.i3.server;
 
 
 /**

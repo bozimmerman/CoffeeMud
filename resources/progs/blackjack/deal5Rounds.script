@@ -1,7 +1,7 @@
 # This is a helper script.  Load it BEFORE card dealing scripts
 # two functions, dealCard and dealHouseCard
 
-LOAD=progs/unDeal.script~
+LOAD=progs/blackjack/unDeal.script~
 
 ~
 FUNCTION_PROG dealCard

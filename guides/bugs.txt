@@ -1,0 +1,3 @@
+Property to put mobs to sleep at night
+Property to close up shops and send shopkeepers home, or to sleep, or unseen, and to make sure they don't respond.
+check ban list on grinder logins.

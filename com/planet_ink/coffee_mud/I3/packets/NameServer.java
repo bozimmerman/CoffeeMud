@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.system.I3.packets;
+package com.planet_ink.coffee_mud.i3.packets;
 import java.io.Serializable;
 
 public class NameServer implements Serializable {

@@ -9,7 +9,7 @@ public class Mobile extends ActiveTicker
 {
 	public String ID(){return "Mobile";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	public boolean grantsMobility(){return true;}
+	public long flags(){return Behavior.FLAG_MOBILITY;}
 	protected boolean wander=false;
 	protected boolean dooropen=false;
 	protected Vector restrictedLocales=null;

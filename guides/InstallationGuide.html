@@ -10,28 +10,43 @@
 <IMG src="images/zip.jpg">
 <P><STRONG><FONT size=5>Installation:</FONT></STRONG></P>
 <P>The first and most critical step in installing CoffeeMud 
-4.0 is to make sure that you have downloaded and installed the latest version of the Sun Java JDK.&nbsp; As of this 
-writing, that version is Java 1.4.0.&nbsp; CoffeeMud uses the latest Sun 
-classes, so stay up to date!</P>
-<P>The&nbsp;second step in installing CoffeeMud 4.0 is to unpack the 
-CoffeeMud.zip package into a directory on your hard drive.&nbsp; This directory 
-may be called, for instance, "CoffeeMud".</P>
+4.0 is to make sure that you have downloaded and installed the latest version of 
+the Sun Java JDK.&nbsp; As of this writing, that version is Java 1.4.1.&nbsp; CoffeeMud uses the 
+latest Sun classes, so stay up to date!&nbsp; If you are using some flavor of Unix or Linux instead of Windows, make 
+sure you aren't trying to get by with GCJ -- CoffeeMud 
+(and Sun) do not support it.</P>
+<P>Now, if you are upgrading from a previous version of CoffeeMud, you need to stop 
+here and skip ahead to the section on upgrading.&nbsp; If this 
+is your first installation, keep reading.</P>
+<P>You will now need to&nbsp;unpack the CoffeeMud.zip package into a directory 
+on your hard drive.&nbsp; This directory may be called, for instance, 
+"CoffeeMud".</P>
 <P align=center><STRONG><FONT size=6>Congratulations!</FONT></STRONG></P>
 <P align=left>You have successfully installed CoffeeMud.&nbsp; </P>
 <P align=left>You may wish, at this point, to investigate the settings and 
 components of the CoffeeMud server.&nbsp; If so, by all means, finish reading 
 this document.&nbsp; If you couldn't care less, then go into the your CoffeeMud 
 directory on a command line and enter:</P>
-<P align=left><STRONG>java 
--Xms25535000 -Xmx85535000 com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds 
-Name"</STRONG></P>
+<P align=left><STRONG>java -classpath "." 
+-Xms25535000</STRONG> <STRONG>-Xmx85535000 
+com.planet_ink.coffee_mud.application.MUD&nbsp;"Your Muds Name"</STRONG></P>
 <P align=left>          
               
            
               
         This will start up the CoffeeMud 
-server.&nbsp;Remember to change the "Your Muds Name" text at the end to the unique name 
-you want to give your mud.</P>
+server.&nbsp;Remember to change the "Your Muds Name" text at the end to the 
+unique name you want to give your mud.&nbsp; If you are running Windows, you 
+might also get away with first modifying the file mud.bat using Notepad, and 
+then&nbsp;executing that&nbsp;file.&nbsp; If you are running some flavor of 
+FreeBSD, Unix, or Linux, you also have a mudLINUX.bat you may first modify, then 
+make executable using the command <STRONG>chmod 755 mudLINUX.bat, </STRONG>          
+              
+           
+              
+              
+               
+   and then execute.</P>
 <P align=left>Now, connect to the server on port&nbsp;5555 using your telnet or 
 other MUD client.&nbsp; Create yourself a new character.&nbsp; This new 
 character will be your administrative player, or Archon, so most of the player 
@@ -44,7 +59,8 @@ are:</P>
 <P align=left>  Doing this will turn your player into an Archon.&nbsp; 
 An Archon is an all-powerful administrative player who is capable of all manner 
 of magical conjurations.&nbsp; If you are happy and ready to start making maps 
-and other such nonsense, you may want to switch to reading the Archon's Guide, 
+and other such nonsense, you may want to switch to reading the 
+<A href="ArchonGuide.html">Archon's Guide</A>, 
 which is also part of the guides package in CoffeeMud.&nbsp; You will probably want to 
 import a bunch of areas into your database right away.&nbsp; If so, 
 you should enter:</P>
@@ -69,17 +85,96 @@ supported as well.</P>
 Archon abilities or the system in general,&nbsp;you may want to finish reading this document.&nbsp; Otherwise, 
 once you have your administrator and a few areas, you are technically 
 ready to play!</P>
-<IMG src="images/settings.jpg">
+<P>&nbsp;</P>
+<P><STRONG><IMG src="images/mug.jpg"></STRONG> </P>
+<P><STRONG><FONT size=5>Upgrading From a Previous Version of 
+CoffeeMud</FONT></STRONG></P>
+<P>There are three upgrade paths,&nbsp;one&nbsp;where&nbsp;the database schema 
+was not changed&nbsp;(4.0.0.0 to 4.0.1.0), and two others where the database 
+schema was changed (i.e. 3.0 to 4.0)&nbsp;.&nbsp; If you are unsure, or don't 
+know how to tell, go ahead and follow the changed database schema process.</P>
+<P><EM>Unchanged Database Schema Process</EM></P>
+<P>If you are upgrading to a version where the&nbsp;database schema has 
+(presumably) not changed, you still must expect that many other things probably 
+have.&nbsp;&nbsp; Therefore, follow these steps:</P>
+<P><STRONG>1.</STRONG> First go into the directory that contains your olde 
+version of CoffeeMud and obliterate the entire "com" path.&nbsp; Just wipe it 
+away.&nbsp; You won't need it, and it will just cause problems anyway.&nbsp; If 
+you had any custom classes in there, you might want to pull them out first and 
+copy them elsewhere.</P>
+<P><STRONG>2.</STRONG> Next, save away (in another directory) your coffeemud.ini 
+file, and perhaps your mud.bat or mudLINUX.bat .&nbsp; Also save away&nbsp;any 
+files in the resources or web&nbsp;directory you might have customized to your 
+mud, including perhaps your resources/text/intro.txt file for instance.</P>
+<P><STRONG>3.</STRONG> Now unpack/unzip the new version of CoffeeMud on TOP of 
+your olde one.</P>
+<P><STRONG>4.</STRONG> Open up the coffeemud.ini file that comes with the new 
+version and also open up your olde customized coffeemud.ini file you saved away 
+in step 2.&nbsp; Copy over from the old&nbsp;ini file&nbsp;the settings that 
+differ from the new one.&nbsp; The idea here is that the new coffeemud.ini file 
+may contain new settings you need to be aware of.&nbsp; However, your old custom 
+settings will still apply in the new version -- especially your database 
+settings for instance.</P>
+<P><STRONG>5.</STRONG> Copy your intro.txt on top of the one from the new 
+build.&nbsp; As in step 4, merge any other files back into their counterparts in 
+the new build.</P>
+<P><STRONG>6. </STRONG>Smile, you are done.</P>
+<P><EM>Changed FakeDB Database Schema Process</EM></P>
+<P>If you are upgrading to a version with an updated database 
+schema,&nbsp;follow the&nbsp;correct instructions for your database type.&nbsp; 
+If you are using&nbsp;fakedb, follow the instructions below.&nbsp; If you don't 
+know whether or not you are using fakedb, then you ARE using fakedb and should 
+follow these instructions:</P>
+<P><STRONG>1. </STRONG>Go into the CoffeeMud directory for your olde version and 
+copy the entire "data" directory to somewhere else on your hard drive.&nbsp; 
+Remember where you put it!</P>
+<P><STRONG>2.</STRONG> To back to the beginning of this section and follow steps 
+1 through 5 from the <EM>unchanged database schema</EM> process.</P>
+<P><STRONG>3.&nbsp;</STRONG>From the command line, go into your CoffeeMud 
+directory, and from there into the data directory.&nbsp; Delete all the files 
+matching fakedb.data.*&nbsp; Do NOT delete the&nbsp;fakedb.schema! If everything 
+went well, the new fakedb.schema from the new version of CoffeeMud is still in 
+your data directory.&nbsp;</P>
+<P><STRONG>4.</STRONG> Still from the command line, go into your CoffeeMud 
+directory and enter the following:</P>
+<P><STRONG>java com.planet_ink.fakedb.DBUpgrade</STRONG></P>
+<P><STRONG>5. </STRONG>Follow the instructions for this little program.</P>
+<P><STRONG>6. </STRONG>Smile, you are done.</P>
+<P><EM>Changed Database Schema Process (not FakeDB)</EM></P>
+<P>Now, if you are upgrading to a version with an updated database schema and 
+you are NOT using fakedb, but are using Access, SQL Server, MySQL, or some other 
+database, follow these instructions:</P>
+<P><STRONG>1.</STRONG> To back to the beginning of this section and follow steps 
+1 through 5 from the <EM>unchanged database schema</EM> process.</P>
+<P><STRONG>2. </STRONG>Following the instructions provided by your database 
+system, create a brand NEW database for the new version of 
+CoffeeMud.&nbsp;&nbsp;You will need to use the appropriate database schema 
+provided in the new version of CoffeeMud to do this.&nbsp; If you have forgotten 
+what this means, consult the section of this document dealing with the CoffeeMud 
+Database.&nbsp; Make sure you preserve your olde CoffeeMud database from the 
+olde version!</P>
+<P><STRONG>3. </STRONG>From the command line, go into your CoffeeMud directory 
+and enter the following from the command line:</P>
+<P><STRONG>java com.planet_ink.fakedb.DBUpgrade</STRONG></P>
+<P><STRONG>4. </STRONG>Follow the instructions for this little program.</P>
+<P><STRONG>5. </STRONG>Now open up your coffeemud.ini file and make any changes 
+necessary to point CoffeeMud to the database for the new version.&nbsp; This may 
+require creating a new ODBC data source, or just modifying the DBSERVICE line, 
+depending on your database type.</P>
+<P><STRONG>6. </STRONG>Smile, you are done.</P>
+<P>&nbsp;</P>
+<P>
+<IMG src="images/settings.jpg"> </P>
 <P align=left><STRONG><FONT size=5>Settings:</FONT></STRONG></P>
 <P align=left>All of the general purpose settings for the 
 CoffeeMud server are kept in the INI file, called "coffeemud.ini".&nbsp; This 
 file may be modified with your favorite text editor: notepad, vi, emacs, 
 copycon, Whatever!&nbsp; </P>
-<P align=left>If you are happy with the standard 
-installation, you will usually also be content to leave the INI file 
-alone.&nbsp; You will eventually, however, probably find a need to at least modify the "START" 
-setting.&nbsp; Any changes to the coffeemud.ini file will require that CoffeeMud 
-be restarted (see the section on "CoffeeMud Administration") before the changes will 
+<P align=left>      If 
+you are happy with the standard installation, you will usually also be 
+content to leave the INI file alone.&nbsp; You will eventually, however, probably find a need 
+to at least modify the "START" setting.&nbsp; Any changes to the 
+coffeemud.ini file will require that CoffeeMud be restarted before the changes will 
 take effect. </P>
 <P align=left><EM>SYSMSGS, ERRMSGS, DBGMSGS<BR></EM>These entries refer to 
 logged system messages, logged error messages, and logged debug messages 
@@ -136,15 +231,16 @@ channels&nbsp; is 16 or 32, I forget.<BR><BR><EM>RUNWEBSERVERS<BR></EM>This sett
 start up the built-in web servers.&nbsp; A value of "TRUE" will turn on the web 
 servers.&nbsp; Even if you don't wish to publish any of your MUDs information to 
 the web, you may want to run the Admin web server so that you can use the 
-MUDGrinder area editing tool.&nbsp; See the MUDGrinder Guide (MUDGrinder.html)
+MUDGrinder area editing tool.&nbsp; See the <A href="MUDGrinder.html">MUDGrinder Guide</A>
 for more information on this tool.&nbsp; For more information on the CoffeeMud 
-web server in general, please read the WebServer Guide 
-(WebServer.html).<BR><BR><EM>ITEMS, MOBS, BEHAVIORS, ABILITIES, CHARCLASSES, RACES, 
-COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings 
-each specify a path on your local drive which will contain Java class 
-files.&nbsp; These class files are typically classes which you might want to use 
-with your CoffeeMud system, but which are not included with the standard 
-CoffeeMud distribution.&nbsp;</P>
+web server in general, please read the <A href="WebServer.html">WebServer Guide</A>.
+<BR><BR><EM>ITEMS, MOBS, BEHAVIORS, ABILITIES, CHARCLASSES, RACES, 
+COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings each 
+specify a path on your local drive which will contain Java class files.&nbsp; 
+These class files are typically classes which you might want to use with 
+your CoffeeMud system, but which are not included with the standard CoffeeMud 
+distribution.&nbsp;See the <A href="Programming.html">Programmer's Guide</A>
+for more information on writing custom classes for CoffeeMud.</P>
 <P align=left><EM>DBCLASS<BR></EM>This specifies the name of the Java class 
 which will be used as your&nbsp;JDBC or ODBC database driver.&nbsp;&nbsp;If you 
 are using a System ODBC data&nbsp;source, this entry will typically be 
@@ -166,9 +262,12 @@ fakedb, and thus blank by default.</P>
 <P align=left><EM>DBCONNECTIONS<BR></EM>This &nbsp;is the number of independent connections to 
 make to the database through your JDBC/ODBC driver.&nbsp; 1 or 2 is 
 plenty.&nbsp; CoffeeMud is not&nbsp;especially database intensive.
-<P align=left><EM>* In Addition to the above, you will find other numerous flags 
-and settings which allow you to better customize your CoffeeMud.&nbsp; Make sure 
-you look through your coffeemud.ini file for more information on these.</EM>      
+<P align=left><EM>* In Addition to the 
+above, you will find other numerous flags and settings which allow you to better 
+customize your CoffeeMud.&nbsp; Make sure you look through your coffeemud.ini 
+file for more information on these. If you wish to customize some of 
+the CoffeeMud game settings, it is highly recommended that you read through 
+the INI file as if it were just another Installation Guide.</EM>&nbsp;&nbsp;      
              
       
 <P>
@@ -214,9 +313,9 @@ with the number of players which join your MUD.&nbsp; All of this growth can be
 managed, however, within CoffeeMud itself, by your Archon administrative 
 user.&nbsp; You should not need to, nor should you attempt to affect individual 
 rows in your database for any reason.</P>
-<P align=left>(<STRONG>Supplementary instructions for installing and using MySQL 
-with CoffeeMud on a Windows machine)</STRONG></P>
-<P align=left>STEP 1: Go to <A class=moz-txt-link-abbreviated 
+<P align=left><EM>Installing and using MySQL with CoffeeMud 
+on a Windows machine</EM></P>
+<P align=left><STRONG>1. </STRONG>  Go to <A class=moz-txt-link-abbreviated 
 href="http://www.mysql.com">www.mysql.com</A>, click on Downloads (one of the 
 tabs at the very top), scroll down under "MySQL database server &amp; Standard 
 Clients:"&nbsp;and click on MySQL 4.0 -- Production release (recommended). 
@@ -224,7 +323,7 @@ Scroll down to "Windows downloads", you will see Windows 95/98/NT/2000/XP, and
 click on the "Pick a mirror" link to the right, and choose a place to 
 download&nbsp;from.. You will be promted to save a file called 
 "mysql-4.0.1.2-win.zip" (or whatever the newest version is). Save that to a temp 
-folder (WARNING, the file is about 21 megs!).<BR><BR>STEP 2: Go back to the 
+folder (WARNING, the file is about 21 megs!).<BR><BR><STRONG>2. </STRONG>  Go back to the 
 Downloads tab, this time scroll down to "Application Programming Interfaces 
 (APIs), and click on "MySQL Connector /J -- for connecting to MySQL from Java". 
 On the next screen, click on "MySQL Connector /J3.0 -- production release". On 
@@ -232,11 +331,11 @@ the next page, click on the download link for "Source and Binaries (zip)" ( be
 SURE to get the&nbsp;ZIP file, not the (tar.gz)!) The file name should be 
 "mysql-connector-java-3.0.7-stable.zip". Again, save this file to&nbsp;your temp 
 folder as well.</P>
-<P align=left>STEP 3: Locate the mysql-4.0.1.2-win.zip file you downloaded and 
+<P align=left><STRONG>3. </STRONG>  Locate the mysql-4.0.1.2-win.zip file you downloaded and 
 unzip it ( if you dont know how to do that..I dont think running a mud 
 should&nbsp;be on your list of priorities...) and run the setup.exe file there. 
 Just hit Next<BR>for all the prompts, and it should install to c:\mysql by 
-default.<BR><BR>STEP 4: Go to your coffeemud folder, open the guides\database 
+default.<BR><BR><STRONG>4. </STRONG>  Go to your coffeemud folder, open the guides\database 
 folder, and you will see a file called "coffeemuddbmysql.sql". Open that 
 file&nbsp;with a text editor or notepad etc... (you might want to make a backup 
 copy<BR>first...) Now, add the following:<BR><BR><FONT face="Courier New"># 
@@ -246,7 +345,7 @@ coffeemud&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
 &lt;----ADD THIS LINE!<BR>CREATE TABLE CMCHAB (<BR>CMUSERID char (50) NULL 
 ,<BR>CMABID char (50) NULL ,<BR>CMABPF int NULL ,<BR>CMABTX text 
 NULL<BR></FONT>etc..<BR>etc..<BR><BR>Now copy the edited coffeemuddbmysql.sql to 
-your c:\mysql\bin folder.<BR><BR>STEP 5: Now, open a DOS window (Start &gt; Run 
+your c:\mysql\bin folder.<BR><BR><STRONG>5. </STRONG>  Now, open a DOS window (Start &gt; Run 
 &gt; type "command" and hit enter) and type cd c:\mysql\bin and hit Enter. Your 
 prompt should now be c:\mysql\bin&gt; then type "mysqld" (notice the d on the 
 end..?). After&nbsp; a few moments, it should start up the mysql server. You 
@@ -258,134 +357,29 @@ Welcome to the MySQL monitor etc. etc. etc.. and now the prompt should simply
 say "mysql&gt;" . Now type "create database coffeemud;" (please note the 
 semi-colon";"!!!) and hit enter. You should get "Query OK, 1 row affected 
 &lt;0.11sec)" or something like that... then type "\q" and that should quit you 
-out of the monitor.<BR><BR>STEP 6: Now that your out of the monitor, you should 
+out of the monitor.<BR><BR><STRONG>6. </STRONG>  Now that your out of the monitor, you should 
 be back to the c:\mysql\bin&gt; prompt. Now type "mysql &lt; 
 coffeemuddbmysql.sql"&nbsp; (without the quotes of course) and hit enter... 
 again, after a moment or 2, it SHOULD<BR>return you to the c:\mysql\bin&gt; 
 prompt. Go ahead and close that window now. In theory, you should now have mysql 
-running and a coffeemud database&nbsp;all set for it to access.<BR><BR>STEP 7: 
+running and a coffeemud database&nbsp;all set for it to access.<BR><BR><STRONG>7. 
+</STRONG>  
 Now go to your coffeemud folder and open your coffeemud.ini file in notepad or 
 some text editor, and look for the section that says:<BR><FONT 
 face="Courier New">DBCLASS=com.planet_ink.fakedb.Driver<BR>DBSERVICE=jdbc:fakedb:data<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2<BR></FONT><BR>and 
 change it to:<BR><BR><FONT 
-face="Courier New">DBCLASS=com.mysql.jdbc.Driver<BR>DBSERVICE=jdbc:mysql://localhost/coffeemud<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=4<BR></FONT><BR>STEP 
-8: Go back to the other file you downloaded in STEP 2, 
+face="Courier New">DBCLASS=com.mysql.jdbc.Driver<BR>DBSERVICE=jdbc:mysql://localhost/coffeemud<BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=4<BR></FONT><BR><STRONG>8. </STRONG> 
+ Go back to the other file you downloaded in STEP 2, 
 mysql-connector-java-3.0.7-stable.zip, and now extract that into a temp folder. 
 Inside, there should be a "mysql-connector-java-3.0.7-stable" folder and inside 
 that, a "com" folder, and inside THAT, a "mysql" folder. Copy the mysql folder 
 over into your c:\coffeemud\com folder. So now inside c:\coffeemud\com, ther 
 should be 2 folders, one called <FONT face="Courier New">mysql</FONT>, and one 
 called <FONT face="Courier New">planet_ink</FONT>.</P>
-<P align=left>STEP 9: Now, with mysqld still running in the background, just 
+<P align=left><STRONG>9. </STRONG>  Now, with mysqld still running in the background, just 
 launch the mud.bat AS IT IS to start the mud..( I didnt have to make ANY changes 
-in there for this to work, hopefully the same for you...)<BR><BR></P>
-<IMG src="images/mug.jpg">
-<P align=left><FONT size=5><STRONG>CoffeeMud Administration:</STRONG></FONT></P>
-<P align=left>The administration of your CoffeeMud server 
-is done from within the game server itself, when you are logged in as your 
-Archon player.&nbsp; You may use "ahelp" and "atopics" to see a list of some 
-Archon specific functionality.&nbsp; Many of these commands are discussed in 
-depth in the Archon's Guide (ArchonGuide.html).&nbsp; Here are a few highlights 
-of the Archon commands:</P>
-<P align=left><EM>SHUTDOWN<BR></EM>Although CoffeeMud can 
-also be brought down by killing the Java virtual machine, the proper way to shut 
-down CoffeeMud is by entering the shutdown command.&nbsp; This will ensure that 
-all users are saved back to disk, and that the system goes down in a polite and 
-orderly manner.&nbsp; This is also the command which should be used when changes 
-are made to your "coffeemud.ini" file.&nbsp; Changes to your INI file do not 
-take affect until your server is restarted.</P>
-<P align=left><EM>LIST<BR></EM>The Archon is able to list 
-lots of different things, for many different reasons.&nbsp; "list users" will 
-show you all of the players, and when they logged on last.&nbsp; This is useful 
-for weeding out olde players (see DESTROY below).&nbsp; "list sessions" will 
-show you a list of all active players.&nbsp; "list threads" will show you how 
-many Java threads are active.&nbsp; "list ticks" will show you all the objects 
-making use of those threads! "list reports" will who you your resource usage.</P>
-<P align=left><EM>TAKE<BR></EM>Use this command if a player 
-or monster has something that doesn't belong to them, and you need it back.</P>
-<P align=left><EM>POSSESS<BR></EM>Easily the most fun part 
-of being an Archon is to possess one of the monsters and harass the players, 
-making them think the monsters have truely come to life!</P>
-<P align=left><EM>ORDER<BR></EM>Although any player may 
-order around their followers, an Archon can order ANYONE to do ANYTHING.</P>
-<P align=left><EM>UNLOAD<BR></EM>If you've made any 
-changes to your help files or other resources, and don't want to have to reboot the whole MUD, you 
-can use this command as a short-cut.</P>
-<P align=left><EM>DUMPFILE<BR></EM>When you want to view 
-some text file on your system through the MUD.</P>
-<P align=left><EM>WIZINV<BR></EM>Sometimes an Archon wants a 
-little privacy, and this command gives it to him or her.&nbsp; It will make the 
-Archon completely undetectable, allowing free movement without harassment from 
-players or monsters.</P>
-<P align=left><EM>RESET<BR></EM>Giving a parameter of "room" 
-or "area", this command will make everything reset back to the state it was last 
-saved at.</P>
-<P align=left><EM>GOTO<BR></EM>Allows the Archon to zap him 
-or herself directly to the room or mob of his or her choice.&nbsp; The argument is a 
-valid Room ID, room name, mob name, or area name.</P>
-<P><EM>TRANSFER<BR></EM>Allows the Archon to zap&nbsp;someone directly to the 
-room or mob of his or her choice.&nbsp; The argument is either ALL or the name 
-of the target, and a valid Room ID, room name, mob name, or area name.</P>
-<P align=left><EM>SNOOP<BR></EM>This command can let you 
-watch other players as they wander your world.</P>
-<P align=left><EM>WHERE<BR></EM>Allows the Archon to who all is online, and
-where they are on the map.  An argument may be given to specify a specific mob name.</P>
-<P align=left><EM>EXPORT<BR></EM>If you need a backup to 
-your database, you can save your areas one at a time as files, for reimportation 
-in the event of a disaster.</P>
-<P align=left><EM>IMPORT<BR></EM>In addition to allowing the 
-reimportation of areas saved using EXPORT, IMPORT will also take in area files 
-from other MUDs, such as ROM, CircleMUD, and others.&nbsp; The ROM format is by 
-far the best supported, however.</P>
-<P align=left><EM>GENCHAR<BR></EM>Although it's not a vital 
-administration tool, CharGen can be used to take a glimpse of what the "typical" 
-user of a particular class might look like.&nbsp; This can be a helpful aid in 
-the construction of monsters, perhaps.</P>
-<P align=left><EM>SAVE<BR></EM>This command, depending on 
-the argument, can update the players data, or can make aspects of the Archons 
-room permanent by saving it to the database.</P>
-<P align=left><EM>CREATE<BR></EM>Depending on the argument, 
-this command can bring almost anything into existence, from rooms to doors, from 
-monsters to items.</P>
-<P align=left><EM>COPY<BR></EM>Depending on the argument, 
-this command can make copies of almost anything in your mud, 
-from rooms to monsters and items.</P>
-<P align=left><EM>MODIFY<BR></EM>If something which exists 
-is not quite right, this command can make it right.</P>
-<P align=left><EM>DESTROY<BR></EM>Last but not least, this 
-powerful command can be used to banish objects and mobs, rooms and areas, or 
-even players -- permanently.&nbsp; A&nbsp; player (user) need not be online to 
-be destroyed.</P>
-<P align=left>&nbsp;</P>
-<IMG src="images/sprockets.jpg">
-<P align=left><FONT size=5><STRONG>Rebuilding CoffeeMud:</STRONG></FONT></P>
-<UL>
-<LI>Go to your coffee mud directory and edit the makemud.bat, 
-the first line will be something like:
-SET JAVACPATH= 
-           
-   C:\j2sdk1.4.1_02\bin\javac This might be different for you 
-depending on where your java development package is installed.&nbsp;
-
-<LI>Save the bat file.
-
-<LI>            
- Run the bat file by double clicking on it. This will 
-compile the mud, making all the .class files.
-
-<LI>Go back to the mud directory and edit the 'mud.bat' and modify
-this file to read what your mud is called, I called mine starbucks: 
-java -Xms65535000 -Xmx115535000 com.planet_ink.coffee_mud.application.MUD "Starbucks"
-
-<LI>Double click on the mud.bat and a DOS prompt will start running and
-initialize everything for you.
-
-<LI> Open up your favorite mud client, if you don't have one you 
-can click onstart&gt;run and type 'telnet' in the prompt and press OK.
-<LI>To connect to your local machine you would type in 
-  the host name or ip address section 'localhost' and connect to port 5555 by 
-  default. The port can be changed in the coffeemud.ini file with lots of other 
-  stuff.</LI></UL>              
+in there for this to work, hopefully the same for you...)<BR></P>
+<P>&nbsp;</P>              
             
             
 </BODY>

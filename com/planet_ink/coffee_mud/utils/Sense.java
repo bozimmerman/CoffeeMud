@@ -379,7 +379,7 @@ public class Sense
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
-			if((B!=null)&&(B.grantsMobility()))
+			if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 				return true;
 		}
 		return false;

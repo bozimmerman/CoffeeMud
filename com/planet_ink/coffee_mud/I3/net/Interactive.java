@@ -5,10 +5,10 @@
  * of interactive connections.
  */
 
-package com.planet_ink.coffee_mud.system.I3.net;
+package com.planet_ink.coffee_mud.i3.net;
 
-import com.planet_ink.coffee_mud.system.I3.server.ServerUser;
-import com.planet_ink.coffee_mud.system.I3.server.Server;
+import com.planet_ink.coffee_mud.i3.server.ServerUser;
+import com.planet_ink.coffee_mud.i3.server.Server;
 import com.planet_ink.coffee_mud.utils.Log;
 
 import java.io.DataInputStream;

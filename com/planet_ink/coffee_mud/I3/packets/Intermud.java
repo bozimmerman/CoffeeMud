@@ -7,10 +7,10 @@
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
  */
-package com.planet_ink.coffee_mud.system.I3.packets;
-import com.planet_ink.coffee_mud.system.I3.packets.InvalidPacketException;
-import com.planet_ink.coffee_mud.system.I3.net.Interactive;
-import com.planet_ink.coffee_mud.system.I3.persist.*;
+package com.planet_ink.coffee_mud.i3.packets;
+import com.planet_ink.coffee_mud.i3.packets.InvalidPacketException;
+import com.planet_ink.coffee_mud.i3.net.Interactive;
+import com.planet_ink.coffee_mud.i3.persist.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 

@@ -290,7 +290,7 @@ public class CommandSet extends Hashtable
 		put("EAT",new Integer(EAT));
 		put("EMAIL",new Integer(EMAIL));
 		put("EMOTE",new Integer(EMOTE));
-			put(":",new Integer(EMOTE));
+			put(",",new Integer(EMOTE));
 		put("ENTER",new Integer(ENTER));
 			put("EN",new Integer(ENTER));
 		put("EQUIPMENT",new Integer(EQUIPMENT));

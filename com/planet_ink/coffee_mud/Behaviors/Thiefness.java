@@ -8,6 +8,7 @@ import java.util.*;
 public class Thiefness extends CombatAbilities
 {
 	public String ID(){return "Thiefness";}
+	public long flags(){return Behavior.FLAG_TROUBLEMAKING;}
 	private int tickDown=0;
 	public Behavior newInstance()
 	{

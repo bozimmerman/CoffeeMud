@@ -3,9 +3,9 @@
  * Copyright (c) 1996 George Reese
  * The mudlib interface to the server.
  */
-package com.planet_ink.coffee_mud.system.I3.server;
+package com.planet_ink.coffee_mud.i3.server;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.system.I3.packets.ImudServices;
+import com.planet_ink.coffee_mud.i3.packets.ImudServices;
 /**
  * The Server class is the mudlib's interface to the
  * Imaginary Mud Server.  It is responsible with knowing all

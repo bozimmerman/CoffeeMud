@@ -1,12 +1,12 @@
-package com.planet_ink.coffee_mud.system.I3;
+package com.planet_ink.coffee_mud.i3;
 
 import java.util.*;
 import java.io.Serializable;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.system.I3.packets.ImudServices;
-import com.planet_ink.coffee_mud.system.I3.packets.*;
+import com.planet_ink.coffee_mud.i3.packets.ImudServices;
+import com.planet_ink.coffee_mud.i3.packets.*;
 
 public class IMudInterface implements ImudServices, Serializable
 {

@@ -6,7 +6,7 @@
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
  */
-package com.planet_ink.coffee_mud.system.I3.packets;
+package com.planet_ink.coffee_mud.i3.packets;
 
 import java.util.Vector;
 

@@ -1231,7 +1231,7 @@ public class Import
 					for(int b=M.numBehaviors()-1;b>=0;b--)
 					{
 						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(B.grantsMobility()))
+						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 						{
 							if(guardian.ID().equals("GoodGuardian"))
 								guardian=CMClass.getBehavior("MobileGoodGuardian");

@@ -8,7 +8,7 @@ import java.util.*;
 public class Mime extends ActiveTicker
 {
 	public String ID(){return "Mime";}
-	public boolean grantsMobility(){return true;}
+	public long flags(){return Behavior.FLAG_MOBILITY;}
 	public Mime()
 	{
 		super();

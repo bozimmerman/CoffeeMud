@@ -1,5 +1,5 @@
-package com.planet_ink.coffee_mud.system.I3;
+package com.planet_ink.coffee_mud.i3;
 
-public class IMudUser extends com.planet_ink.coffee_mud.system.I3.net.Interactive
+public class IMudUser extends com.planet_ink.coffee_mud.i3.net.Interactive
 {
 }

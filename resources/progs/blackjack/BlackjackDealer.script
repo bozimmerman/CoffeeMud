@@ -4,7 +4,7 @@
 # The primary thing to know is that the ante and max bets are driven by the mob's level (level to 20*level)
 # and that they should have a 'deck of cards' on them
 
-LOAD=progs/deal5Rounds.script~
+LOAD=progs/blackjack/deal5Rounds.script~
 
 ~
 FUNCTION_PROG endGame

@@ -10,6 +10,7 @@ public class MobileAggressive extends Mobile
 	public String ID(){return "MobileAggressive";}
 	protected int tickWait=0;
 	protected int tickDown=0;
+	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	
 	public Behavior newInstance()
 	{

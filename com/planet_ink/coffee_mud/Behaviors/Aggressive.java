@@ -9,6 +9,7 @@ import java.util.*;
 public class Aggressive extends StdBehavior
 {
 	public String ID(){return "Aggressive";}
+	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
 	
