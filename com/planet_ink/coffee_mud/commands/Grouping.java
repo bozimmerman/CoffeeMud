@@ -222,13 +222,14 @@ public class Grouping
 				num++;
 		}
 
-		gold=(int)Math.floor(Util.div(gold,num));
+		gold=(int)Math.floor(Util.div(gold,num+1));
 
 		if((gold*num)>mob.getMoney())
 		{
 			mob.tell("You don't have that much gold.");
 			return;
 		}
+		boolean eligible=false;
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB recipient=mob.fetchFollower(f);
@@ -242,7 +243,9 @@ public class Grouping
 				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) "+C.name()+" to <T-NAMESELF>.");
 				if(mob.location().okAffect(newMsg))
 					mob.location().send(mob,newMsg);
+				eligible=true;
 			}
 		}
+		if(!eligible) mob.tell("Noone appears to be eligible to receive any of your gold.");
 	}
 }

@@ -63,6 +63,7 @@ public class Spell_GiantStrength extends Spell
 		if (affectableStats.getMyClass().ID().equals("Cleric"))
 			increase = 6;
 		affectableStats.setStrength(affectableStats.getStrength() + increase);
+		if(affectableStats.getStrength()>25)affectableStats.setStrength(25);
 	}
 
 

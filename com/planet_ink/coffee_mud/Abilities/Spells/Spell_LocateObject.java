@@ -57,13 +57,15 @@ public class Spell_LocateObject extends Spell
 				for(int m=0;m<CMMap.map.size();m++)
 				{
 					Room room=(Room)CMMap.map.elementAt(m);
-					Item item=room.fetchItem(null,what);
+					Environmental item=room.fetchItem(null,what);
 					if(item!=null)
 						mob.tell(item.name()+" is in a place called '"+room.displayText()+"'.");
 					for(int i=0;i<room.numInhabitants();i++)
 					{
 						MOB inhab=room.fetchInhabitant(i);
 						item=inhab.fetchInventory(what);
+						if((item==null)&&(inhab instanceof ShopKeeper))
+							item=((ShopKeeper)inhab).getStock(what);
 						if(item!=null)
 							mob.tell(item.name()+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
 					}

@@ -33,7 +33,7 @@ public class Utils
 				{
 					MOB mob2=room.fetchInhabitant(m);
 					E=mob2.fetchInventory(name);
-					if((E==null)&&(E instanceof ShopKeeper))
+					if((E==null)&&(mob2 instanceof ShopKeeper))
 						E=((ShopKeeper)mob2).getStock(name);
 				}
 				if(E!=null) break;	

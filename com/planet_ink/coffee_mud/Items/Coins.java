@@ -27,6 +27,25 @@ public class Coins extends StdItem
 		return new Coins();
 	}
 
+	public String name()
+	{
+		if(envStats().ability()==1)
+			return "a gold coin";
+		else
+		if(envStats().ability()==2)
+			return "two gold coins";
+		else
+			return "a pile of "+envStats().ability()+" gold coins";
+	}
+	
+	public String displayText()
+	{
+		if(envStats().ability()==1)
+			return name()+" sits here.";
+		else
+			return name()+" sit here.";
+	}
+	
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();

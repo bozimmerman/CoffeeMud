@@ -57,6 +57,7 @@ public class Spell_GraceOfTheCat extends Spell
 		if (affectableStats.getMyClass().ID().equals("Cleric"))
 			increase = 4;
 		affectableStats.setDexterity(affectableStats.getDexterity() + increase);
+		if(affectableStats.getDexterity()>25)affectableStats.setDexterity(25);
 	}
 
 

@@ -77,7 +77,11 @@ public class Thief_Swipe extends ThiefSkill
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 
-			int goldTaken=(int)Math.round(new Integer(target.getMoney()).doubleValue()*((new Integer(mob.envStats().level()-1).doubleValue()*.10)+.10)*Math.random());
+			double pct=0.25;
+			if(levelDiff>0) pct=0.15;
+			if(levelDiff>5) pct=0.10;
+			if(levelDiff>10) pct=0.05;
+			int goldTaken=(int)Math.round(new Integer(target.getMoney()).doubleValue()*pct*Math.random());
 			if(goldTaken>target.getMoney()) goldTaken=target.getMoney();
 
 			String str=null;

@@ -420,7 +420,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:
-				mob.tell("I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
+				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".",true,false);
 				break;
 			case Affect.TYP_SELL:
 				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
