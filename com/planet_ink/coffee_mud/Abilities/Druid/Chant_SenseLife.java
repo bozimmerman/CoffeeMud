@@ -11,7 +11,6 @@ public class Chant_SenseLife extends Chant
 	public String name(){ return "Life Echoes";}
 	public String displayText(){return "(Life Echoes)";}
 	private Room lastRoom=null;
-	public Environmental newInstance(){	return new Chant_SenseLife();}
 
 	public void unInvoke()
 	{

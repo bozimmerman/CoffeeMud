@@ -11,8 +11,7 @@ public class Song_Mana extends Song
 	public String ID() { return "Song_Mana"; }
 	public String name(){ return "Mana";}
 	public int quality(){ return OK_OTHERS;}
-	public Environmental newInstance(){	return new Song_Mana();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

@@ -15,7 +15,6 @@ public class Fighter_SmokeSignals extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_SmokeSignals();}
 	public int usageType(){return USAGE_MOVEMENT;}
 	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
 	public int quality(){return Ability.INDIFFERENT;}
@@ -34,7 +33,7 @@ public class Fighter_SmokeSignals extends StdAbility
 			msg.addTrailerMsg(new FullMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.targetMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	public Item getRequiredFire(MOB mob)
 	{
 		Item fire=null;
@@ -66,7 +65,7 @@ public class Fighter_SmokeSignals extends StdAbility
 		if(getRequiredFire(mob)==null) return false;
 		Room R=mob.location();
 		int weather=R.getArea().getClimateObj().weatherType(R);
-		
+
 		if(((R.domainType()&Room.INDOORS)==Room.INDOORS)
 		||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
 		{
@@ -85,14 +84,14 @@ public class Fighter_SmokeSignals extends StdAbility
 			mob.tell("You won't be able to get a signal up in these weather conditions.");
 			return false;
 		}
-		
-		
+
+
 		if(commands.size()==0)
 		{
 			mob.tell("You need to specify the message to send up in the smoke signals.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -12,7 +12,6 @@ public class Spell_Grease extends Spell
 	public String displayText(){return "(Covered in Grease)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Grease();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 

@@ -16,7 +16,6 @@ public class Skill_Dodge extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Skill_Dodge();}
 	private boolean doneThisRound=false;
 
 	public boolean tick(Tickable ticking, int tickID)

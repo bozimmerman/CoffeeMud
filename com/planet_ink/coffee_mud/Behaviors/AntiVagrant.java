@@ -19,10 +19,7 @@ public class AntiVagrant extends ActiveTicker
 		minTicks=2; maxTicks=3; chance=99;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new AntiVagrant();
-	}
+
 
 	public void setParms(String parms)
 	{

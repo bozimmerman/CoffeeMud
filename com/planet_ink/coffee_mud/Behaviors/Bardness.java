@@ -9,10 +9,7 @@ public class Bardness extends CombatAbilities
 {
 	public String ID(){return "Bardness";}
 	private int tickDown=0;
-	public Behavior newInstance()
-	{
-		return new Bardness();
-	}
+
 
 	public void startBehavior(Environmental forMe)
 	{

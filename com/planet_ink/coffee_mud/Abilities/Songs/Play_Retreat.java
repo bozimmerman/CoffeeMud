@@ -12,7 +12,6 @@ public class Play_Retreat extends Play
 	public String name(){ return "Retreat";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Play_Retreat();}
 	protected boolean persistantSong(){return false;}
 	protected String songOf(){return "a "+name();}
 	int directionCode=-1;

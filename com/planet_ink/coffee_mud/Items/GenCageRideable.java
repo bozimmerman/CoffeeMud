@@ -23,10 +23,6 @@ public class GenCageRideable extends StdCageRideable
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenCageRideable();
-	}
 	public boolean isGeneric(){return true;}
 
 	public String text()

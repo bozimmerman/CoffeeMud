@@ -13,7 +13,6 @@ public class Chant_Grapevine extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_Grapevine();}
 	Vector myChants=new Vector();
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

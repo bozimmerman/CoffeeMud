@@ -9,7 +9,7 @@ public class Dwarven extends Language
 {
 	public String ID() { return "Dwarven"; }
 	public String name(){ return "Dwarven";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public Dwarven()
 	{
@@ -17,10 +17,9 @@ public class Dwarven extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Dwarven();}
-	
+
 	public Vector translationVector()
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"o"};
@@ -37,6 +36,6 @@ public class Dwarven extends Language
 			wordLists.addElement(five);
 			wordLists.addElement(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 }

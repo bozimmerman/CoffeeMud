@@ -10,9 +10,8 @@ public class Prop_CommonTwister extends Property
 	public String ID() { return "Prop_CommonTwister"; }
 	public String name(){ return "Common Twister";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_CommonTwister();}
 	private DVector changes=new DVector(3);
-	
+
 	public String accountForYourself()
 	{ return "Twists around what the gathering common skills gives you.";	}
 
@@ -29,9 +28,9 @@ public class Prop_CommonTwister extends Property
 			if((skill.length()>0)&&(mask.length()>0))
 				changes.addElement(skill,mask,s);
 		}
-		
+
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
@@ -69,7 +68,7 @@ public class Prop_CommonTwister extends Property
 			String newname=Util.getParmStr(var,"NAME","");
 			String newdisp=Util.getParmStr(var,"DISPLAY","");
 			String newmat=Util.getParmStr(var,"MATERIAL","");
-			
+
 			if(newname.length()>0)
 			{
 				if(newname.equals("*"))

@@ -9,10 +9,7 @@ public class Guard extends StdBehavior
 {
 	public String ID(){return "Guard";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
-	public Behavior newInstance()
-	{
-		return new Guard();
-	}
+
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

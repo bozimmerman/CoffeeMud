@@ -11,7 +11,6 @@ public class Prop_UseSpellCast2 extends Property
 	public String ID() { return "Prop_UseSpellCast2"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_UseSpellCast2 BOB=new Prop_UseSpellCast2();	BOB.setMiscText(text()); return BOB;}
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -51,7 +50,7 @@ public class Prop_UseSpellCast2 extends Property
 				{
 					int x=t.indexOf("/");
 					if(x<0)
-					{ 
+					{
 						V2=Util.parse(t);
 						A.setMiscText("");
 					}

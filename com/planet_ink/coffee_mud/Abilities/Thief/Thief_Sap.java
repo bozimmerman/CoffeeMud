@@ -15,7 +15,6 @@ public class Thief_Sap extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Sap();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

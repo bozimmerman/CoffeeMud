@@ -10,7 +10,6 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	public String ID() { return "Prop_AreaForSale"; }
 	public String name(){ return "Putting an area up for sale";}
 	protected int canAffectCode(){return Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_AreaForSale();}
 	protected Hashtable lastItemNums=new Hashtable();
 	public String accountForYourself()
 	{ return "For Sale";	}

@@ -11,7 +11,6 @@ public class Spell_ArcaneMark extends Spell
 	public String name(){return "Arcane Mark";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){ return new Spell_ArcaneMark();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

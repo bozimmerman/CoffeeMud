@@ -10,7 +10,6 @@ public class Spell_Meld extends Spell
 	public String ID() { return "Spell_Meld"; }
 	public String name(){return "Meld";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Meld();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)

@@ -11,7 +11,6 @@ public class Bomb_Poison extends StdBomb
 	public String name(){ return "poison gas bomb";}
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "some poison";}
-	public Environmental newInstance(){	return new Bomb_Poison();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

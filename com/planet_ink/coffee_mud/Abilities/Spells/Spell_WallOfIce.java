@@ -15,7 +15,6 @@ public class Spell_WallOfIce extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_WallOfIce();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	private int amountRemaining=0;

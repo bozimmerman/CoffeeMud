@@ -6,5 +6,4 @@ public class Acidbreath extends Dragonbreath
 	public String name(){ return "Acidbreath";}
 	public String text(){return "acid";}
 	public void setMiscText(String newText){super.setMiscText(text());}
-	public Environmental newInstance(){	return new Acidbreath();}
 }

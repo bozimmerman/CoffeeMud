@@ -12,7 +12,6 @@ public class Chant_EnhanceBody extends Chant
 	public String name(){ return "Enhance Body";}
 	public String displayText(){return "(Enhanced Body)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_EnhanceBody();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

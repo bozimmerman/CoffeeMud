@@ -16,7 +16,6 @@ public class Chant_PlantConstriction extends Chant
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Chant_PlantConstriction();}
 
 	public void unInvoke()
 	{
@@ -54,7 +53,7 @@ public class Chant_PlantConstriction extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -71,7 +70,7 @@ public class Chant_PlantConstriction extends Chant
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
@@ -79,7 +78,7 @@ public class Chant_PlantConstriction extends Chant
 		&&((Item)affected).amWearingAt(Item.ON_ARMS))
 			affectableStats.setSpeed(affectableStats.speed()/2.0);
 	}
-	
+
 	public void affectCharState(MOB aff, CharState affectableState)
 	{
 		if((affected instanceof Item)
@@ -87,7 +86,7 @@ public class Chant_PlantConstriction extends Chant
 		&&((Item)affected).amWearingAt(Item.ON_LEGS))
 			affectableState.setMovement(affectableState.getMovement()/2);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

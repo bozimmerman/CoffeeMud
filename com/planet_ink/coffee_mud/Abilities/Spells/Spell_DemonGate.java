@@ -15,7 +15,6 @@ public class Spell_DemonGate extends Spell
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
 	MOB myTarget=null;
-	public Environmental newInstance(){	return new Spell_DemonGate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 

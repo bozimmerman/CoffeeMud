@@ -12,7 +12,6 @@ public class Prayer_Annul extends Prayer
 	public String name(){ return "Annul";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Prayer_Annul();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -29,7 +28,7 @@ public class Prayer_Annul extends Prayer
 			return false;
 		}
 
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -12,7 +12,6 @@ public class Chant_Darkvision extends Chant
 	public String displayText(){return "(Darkvision)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_Darkvision();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

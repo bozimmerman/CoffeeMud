@@ -15,7 +15,6 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_RemoveTraps();}
 	public Environmental lastChecked=null;
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 

@@ -12,7 +12,6 @@ public class Prayer_EarthMud extends Prayer
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_EarthMud();}
 
 	public void unInvoke()
 	{

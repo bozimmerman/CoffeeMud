@@ -16,7 +16,6 @@ public class Skill_Feint extends StdAbility
 	private static final String[] triggerStrings = {"FEINT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Feint();}
 	private boolean done=false;
 	public int usageType(){return USAGE_MOVEMENT;}
 

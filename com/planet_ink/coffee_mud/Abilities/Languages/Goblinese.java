@@ -17,7 +17,6 @@ public class Goblinese extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Goblinese();}
 	public Vector translationVector()
 	{
 		if(wordLists==null)
@@ -25,11 +24,11 @@ public class Goblinese extends Language
 			String[] one={"i","klpt","ih","g"};
 			String[] two={"te","il","ag","go"};
 			String[] three={"nik","rem","tit","nip","pop","pon","ipi","wip","pec"};
-			String[] 
+			String[]
 four={"perp","merp","nerp","pein","noog","gobo","koer","werp","terp","tert","grlt","Jrl","gran","kert"};
-			String[] 
+			String[]
 five={"whamb","thwam","nipgo","pungo","upoin","krepe","tungo","pongo","twang","hrgap","splt","krnch","baam","poww"};
-			String[] 
+			String[]
 six={"tawthak","krsplt","palpep","poopoo","dungdung","owwie","greepnak","tengak","grnoc","pisspiss","phlyyytt","plllb","hrangnok","ticktick","nurang"};
 			wordLists=new Vector();
 			wordLists.addElement(one);

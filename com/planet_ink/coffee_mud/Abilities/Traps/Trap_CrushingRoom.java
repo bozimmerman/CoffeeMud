@@ -13,7 +13,6 @@ public class Trap_CrushingRoom extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 24;}
 	public String requiresToSet(){return "100 pounds of stone";}
-	public Environmental newInstance(){	return new Trap_CrushingRoom();}
 	public int baseRejuvTime(int level){ return 16;}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)

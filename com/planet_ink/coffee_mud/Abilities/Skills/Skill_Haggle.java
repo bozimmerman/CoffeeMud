@@ -15,7 +15,6 @@ public class Skill_Haggle extends StdAbility
 	private static final String[] triggerStrings = {"HAGGLE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Haggle();}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

@@ -20,8 +20,6 @@ public class Prop_ClosedDayNight extends Property
 	private int closeTime=-1;
 	private String Home=null;
 	private String shopMsg=null;
-	public Environmental newInstance()
-	{	Prop_ClosedDayNight newOne=new Prop_ClosedDayNight(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "";	}

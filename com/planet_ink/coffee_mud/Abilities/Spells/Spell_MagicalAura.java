@@ -14,7 +14,6 @@ public class Spell_MagicalAura extends Spell
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	return new Spell_MagicalAura();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -15,7 +15,6 @@ public class Thief_Palm extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"PALM"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Palm();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int combatCastingTime(){return 0;}
 	public int castingTime(){return 0;}

@@ -14,7 +14,6 @@ public class Skill_Spellcraft extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Skill_Spellcraft();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}

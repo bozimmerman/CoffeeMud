@@ -9,7 +9,6 @@ public class Prop_WeaponImmunity extends Property
 	public String ID() { return "Prop_WeaponImmunity"; }
 	public String name(){ return "Weapon Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_WeaponImmunity BOB=new Prop_WeaponImmunity();	BOB.setMiscText(text());return BOB;}
 
 	public String accountForYourself()
 	{
@@ -36,7 +35,7 @@ public class Prop_WeaponImmunity extends Property
 			if(M==null) return true;
 			if(!msg.amITarget(M)) return true;
 			if(msg.tool()==null) return true;
-			
+
 			String text=text().toUpperCase();
 			boolean immune=text.indexOf("+ALL")>=0;
 			int x=-1;
@@ -59,7 +58,7 @@ public class Prop_WeaponImmunity extends Property
 						break;
 					}
 				}
-				
+
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
 				x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
@@ -95,7 +94,7 @@ public class Prop_WeaponImmunity extends Property
 					}
 				}
 			}
-			
+
 			if((x<0)&&(msg.tool() instanceof Ability))
 			{
 				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES;

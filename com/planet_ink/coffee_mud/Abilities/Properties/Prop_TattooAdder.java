@@ -10,13 +10,6 @@ public class Prop_TattooAdder extends Property
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS|Ability.CAN_EXITS;}
 	int tattooCode=-1;
-	public Environmental newInstance()
-	{
-		Prop_TattooAdder BOB=new Prop_TattooAdder();
-		BOB.setMiscText(text());
-		BOB.tattooCode=-1;
-		return BOB;
-	}
 
 	public int tattooCode()
 	{
@@ -55,11 +48,11 @@ public class Prop_TattooAdder extends Property
 	{
 		String tattooName=text();
 		if(tattooName.length()==0) return;
-		
+
 		boolean tattooPlus=true;
 		boolean tattooMinus=false;
-		
-		
+
+
 		if(tattooName.startsWith("+-")||tattooName.startsWith("-+"))
 		{
 			tattooMinus=true;
@@ -75,7 +68,7 @@ public class Prop_TattooAdder extends Property
 			tattooMinus=true;
 			tattooName=tattooName.substring(1);
 		}
-		
+
 		if(addOnly) tattooMinus=false;
 		if(subOnly) tattooPlus=false;
 
@@ -96,8 +89,8 @@ public class Prop_TattooAdder extends Property
 			}
 		}
 	}
-	
-	
+
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((tattooCode()==CMMsg.TYP_DEATH)&&(msg.sourceMinor()==tattooCode()))

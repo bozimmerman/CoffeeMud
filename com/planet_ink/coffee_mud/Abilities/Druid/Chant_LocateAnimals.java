@@ -17,7 +17,6 @@ public class Chant_LocateAnimals extends Chant
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	public long flags(){return Ability.FLAG_TRACKING;}
-	public Environmental newInstance(){	return new Chant_LocateAnimals();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -13,7 +13,6 @@ public class Chant_Mold extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Mold();}
 
 	public void unInvoke()
 	{

@@ -11,7 +11,6 @@ public class Prayer_Freedom extends Prayer
 	public String name(){ return "Freedom";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_Freedom();}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{

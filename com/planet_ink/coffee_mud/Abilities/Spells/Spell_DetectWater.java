@@ -14,7 +14,6 @@ public class Spell_DetectWater extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
-	public Environmental newInstance(){	return new Spell_DetectWater();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()
@@ -218,7 +217,7 @@ public class Spell_DetectWater extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting liquid things.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

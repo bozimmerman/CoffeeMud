@@ -12,7 +12,6 @@ public class Chant_DeepDarkness extends Chant
 	public String displayText(){return "(Deep Darkness spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_DeepDarkness();}
 
 	public void unInvoke()
 	{
@@ -30,8 +29,8 @@ public class Chant_DeepDarkness extends Chant
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The deep darkness starts to lift.");
 		}
 	}
-	
-	
+
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==MudHost.TICK_SPELL_AFFECT)

@@ -15,7 +15,6 @@ public class Thief_Search extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"SEARCH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Search();	}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

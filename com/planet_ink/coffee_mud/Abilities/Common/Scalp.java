@@ -21,7 +21,6 @@ public class Scalp extends CommonSkill
 		displayText="You are scalping something...";
 		verb="scalping";
 	}
-	public Environmental newInstance(){	return new Scalp();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -91,14 +90,14 @@ public class Scalp extends CommonSkill
 				&&(Sense.canBeSeenBy(I2,mob))
 				&&(I2.container()==null))
 				{
-					I=I2; 
+					I=I2;
 					break;
 				}
 			}
 		}
 		else
 			I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
-		
+
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)
@@ -112,7 +111,7 @@ public class Scalp extends CommonSkill
 		{
 			commonTell(mob,I.name()+" has already been scalped.");
 			return false;
-			
+
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

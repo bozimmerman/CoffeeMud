@@ -13,7 +13,6 @@ public class Spell_PredictWeather extends Spell
 	public String displayText(){return "(Forecast Weather)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_PredictWeather();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	String lastPrediction="";

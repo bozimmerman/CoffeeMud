@@ -12,7 +12,6 @@ public class Chant_LightningWard extends Chant
 	public String name(){ return "Lightning Ward";}
 	public String displayText(){return "(Lightning Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_LightningWard();}
 
 	public void unInvoke()
 	{

@@ -25,7 +25,6 @@ public class Skill_Parry extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
-	public Environmental newInstance(){	return new Skill_Parry();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

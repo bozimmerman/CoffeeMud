@@ -17,7 +17,6 @@ import java.util.*;
 public class Spell_CEqParalysis extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqParalysis"; }
   public String name(){return "ClanEnchant Paralysis";}
-  public Environmental newInstance(){	return new Spell_CEqParalysis();}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {

@@ -34,13 +34,6 @@ public class Prop_ClanEquipment extends Property
 	    "ZVP", "ZOP", "ZYV", "ZAL"};
 	protected String secretWord = words[Dice.roll(1, words.length, 0) - 1];
 
-	public Environmental newInstance()
-	{
-		Prop_ClanEquipment Prop = new Prop_ClanEquipment();
-		Prop.setMiscText(text());
-		return Prop;
-	}
-
 	public String accountForYourself()
 	{
 		// My slightly complicated way of showing the clan effect when ID'd

@@ -13,7 +13,6 @@ public class Spell_TimeStop extends Spell
 	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Spell_TimeStop();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	protected Vector fixed=new Vector();

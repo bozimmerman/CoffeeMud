@@ -11,10 +11,7 @@ public class VeryAggressive extends Aggressive
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected int tickWait=0;
 	protected int tickDown=0;
-	public Behavior newInstance()
-	{
-		return new VeryAggressive();
-	}
+
 
 	public void setParms(String newParms)
 	{

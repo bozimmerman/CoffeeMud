@@ -8,7 +8,6 @@ public class Fighter_SwampTactics extends Fighter_FieldTactics
 {
 	public String ID() { return "Fighter_SwampTactics"; }
 	public String name(){ return "Swamp Tactics";}
-	public Environmental newInstance(){	return new Fighter_SwampTactics();}
 	private static final Integer[] landClasses = {new Integer(Room.DOMAIN_OUTDOORS_SWAMP)};
 	public Integer[] landClasses(){return landClasses;}
 }

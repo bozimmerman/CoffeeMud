@@ -12,5 +12,4 @@ public class Prop_ItemTransReceiver extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	public String accountForYourself()
 	{ return "Item Transporter Receiver";	}
-	public Environmental newInstance(){	Prop_ItemTransReceiver BOB=new Prop_ItemTransReceiver();	BOB.setMiscText(text()); return BOB;}
 }

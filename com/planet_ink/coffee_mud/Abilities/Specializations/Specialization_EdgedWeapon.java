@@ -17,5 +17,4 @@ public class Specialization_EdgedWeapon extends Specialization_Weapon
 		secondWeaponType=Weapon.CLASS_DAGGER;
 	}
 
-	public Environmental newInstance(){	return new Specialization_EdgedWeapon();}
 }

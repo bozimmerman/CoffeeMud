@@ -14,7 +14,6 @@ public class Prayer_Etherealness extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Etherealness();}
 
 
 	public void unInvoke()

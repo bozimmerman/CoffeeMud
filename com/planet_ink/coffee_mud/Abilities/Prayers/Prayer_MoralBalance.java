@@ -11,7 +11,6 @@ public class Prayer_MoralBalance extends Prayer
 	public String name(){ return "Moral Balance";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_MoralBalance();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

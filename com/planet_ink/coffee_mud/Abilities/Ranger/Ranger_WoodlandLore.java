@@ -15,9 +15,8 @@ public class Ranger_WoodlandLore extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Ranger_WoodlandLore();}
 	public int classificationCode(){ return Ability.SKILL;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -14,7 +14,6 @@ public class Prayer_Vampirism extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
-	public Environmental newInstance(){	return new Prayer_Vampirism();}
 
 	public void unInvoke()
 	{
@@ -66,7 +65,7 @@ public class Prayer_Vampirism extends Prayer
 		if(affected==null) return;
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+1);
 	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -88,7 +87,7 @@ public class Prayer_Vampirism extends Prayer
 				msg.source().curState().adjHunger(D.thirstQuenched()*5,msg.source().maxState());
 		}
 	}
-	
+
 	public boolean raceWithBlood(Race R)
 	{
 		Vector V=R.myResources();
@@ -104,7 +103,7 @@ public class Prayer_Vampirism extends Prayer
 		}
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -170,7 +169,7 @@ public class Prayer_Vampirism extends Prayer
 		return true;
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

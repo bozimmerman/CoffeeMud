@@ -10,7 +10,6 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String ID() { return "Prop_RoomForSale"; }
 	public String name(){ return "Putting a room up for sale";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prop_RoomForSale();}
 
 	private final static String theStr=" This lot is for sale (look id).";
 	protected int lastItemNums=-1;
@@ -128,8 +127,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return V;
 	}
 
-	public static int updateLotWithThisData(Room R, 
-											LandTitle T, 
+	public static int updateLotWithThisData(Room R,
+											LandTitle T,
 											boolean clearRoomIfUnsold,
 											int lastNumItems)
 	{
@@ -181,7 +180,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
 			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
 				updateItems=true;
-				
+
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
@@ -191,7 +190,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.setDispossessionTime(0);
 					updateItems=true;
 				}
-						
+
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.envStats().rejuv()!=0))
 				{
@@ -201,12 +200,12 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				}
 			}
 			lastNumItems=R.numItems();
-			if(updateItems) 
+			if(updateItems)
 				CMClass.DBEngine().DBUpdateItems(R);
 			return lastNumItems;
 		}
 	}
-	
+
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot()
 	{

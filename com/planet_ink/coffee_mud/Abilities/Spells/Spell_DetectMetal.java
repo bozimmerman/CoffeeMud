@@ -13,7 +13,6 @@ public class Spell_DetectMetal extends Spell
 	public String displayText(){return "(Detecting Metal)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectMetal();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()

@@ -15,7 +15,6 @@ public class Druid_MyPlants extends StdAbility
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"MYPLANTS","PLANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Druid_MyPlants();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public static boolean isMyPlant(Item I, MOB mob)

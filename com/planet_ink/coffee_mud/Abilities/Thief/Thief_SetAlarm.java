@@ -15,7 +15,6 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"SETALARM"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_SetAlarm();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private boolean sprung=false;
 	public Room room1=null;

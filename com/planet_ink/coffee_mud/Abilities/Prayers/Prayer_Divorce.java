@@ -12,7 +12,6 @@ public class Prayer_Divorce extends Prayer
 	public String name(){ return "Divorce";}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Prayer_Divorce();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

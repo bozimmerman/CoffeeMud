@@ -12,7 +12,6 @@ public class Spell_Timeport extends Spell
 	public String displayText(){return "(Time Travelling)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Timeport();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	private final static int mask=

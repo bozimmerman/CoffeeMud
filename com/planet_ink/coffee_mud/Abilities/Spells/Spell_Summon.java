@@ -10,7 +10,6 @@ public class Spell_Summon extends Spell
 	public String ID() { return "Spell_Summon"; }
 	public String name(){return "Summon";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_Summon();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 

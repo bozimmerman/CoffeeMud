@@ -13,7 +13,6 @@ public class Spell_Frenzy extends Spell
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int hpAdjustment=0;
-	public Environmental newInstance(){	return new Spell_Frenzy();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -15,7 +15,6 @@ public class Thief_TrophyCount extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Thief_TrophyCount();}
 	private static final String[] triggerStrings = {"TROPHYCOUNT"};
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}

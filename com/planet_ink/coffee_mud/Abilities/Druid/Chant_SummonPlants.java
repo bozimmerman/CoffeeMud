@@ -13,7 +13,6 @@ public class Chant_SummonPlants extends Chant
 	protected int canTargetCode(){return 0;}
 	protected Room PlantsLocation=null;
 	protected Item littlePlants=null;
-	public Environmental newInstance(){	return new Chant_SummonPlants();}
 
 	public void unInvoke()
 	{

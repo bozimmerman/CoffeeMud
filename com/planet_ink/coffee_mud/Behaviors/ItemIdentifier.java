@@ -8,10 +8,7 @@ import java.util.*;
 public class ItemIdentifier extends StdBehavior
 {
 	public String ID(){return "ItemIdentifier";}
-	public Behavior newInstance()
-	{
-		return new ItemIdentifier();
-	}
+
 	private int cost(Item item)
 	{
 		int cost=500+(item.envStats().level()*20);

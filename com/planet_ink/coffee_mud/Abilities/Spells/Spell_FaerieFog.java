@@ -13,7 +13,6 @@ public class Spell_FaerieFog extends Spell
 	public String displayText(){return "(Faerie Fog)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_FaerieFog();}
 	public int classificationCode() {	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 

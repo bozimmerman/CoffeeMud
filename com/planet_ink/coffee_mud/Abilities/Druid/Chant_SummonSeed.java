@@ -11,7 +11,6 @@ public class Chant_SummonSeed extends Chant
 	public String name(){ return "Summon Seeds";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonSeed();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -43,7 +43,6 @@ public class Dance extends StdAbility
 		return affectType;
 	}
 
-	public Environmental newInstance(){	return new Dance();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -92,7 +91,7 @@ public class Dance extends StdAbility
 				A.unInvoke();
 		}
 	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((invoker()!=null)
@@ -129,9 +128,9 @@ public class Dance extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		
+
 		undance(mob,null,true);
-		
+
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";

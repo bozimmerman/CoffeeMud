@@ -12,7 +12,6 @@ public class Prop_Transporter extends Property
 	private Hashtable zapList=new Hashtable();
 	private Room room=null;
 	int tattooCode=-1;
-	public Environmental newInstance(){	return new Prop_Transporter();}
 
 	public String accountForYourself()
 	{ return "Zap them elsewhere";	}

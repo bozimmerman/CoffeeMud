@@ -15,7 +15,6 @@ public class Ranger_Sneak extends StdAbility
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"WSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Ranger_Sneak();}
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

@@ -14,7 +14,6 @@ public class Prayer_Curse extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_Curse();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

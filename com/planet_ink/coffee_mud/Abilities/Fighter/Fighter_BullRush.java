@@ -17,7 +17,6 @@ public class Fighter_BullRush extends StdAbility
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"BULLRUSH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Fighter_BullRush();}
 	public long flags(){return Ability.FLAG_MOVING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

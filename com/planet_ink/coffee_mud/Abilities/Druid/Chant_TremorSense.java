@@ -12,7 +12,6 @@ public class Chant_TremorSense extends Chant
 	public String displayText(){return "(Tremor Sense)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_TremorSense();}
 	private Vector rooms=new Vector();
 
 	public void unInvoke()
@@ -102,7 +101,7 @@ public class Chant_TremorSense extends Chant
 			mob.tell("You must be sitting on the ground for this chant to work.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

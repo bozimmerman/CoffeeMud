@@ -11,8 +11,7 @@ public class Poison_Mindsap extends Poison
 	public String name(){ return "Mindsap";}
 	private static final String[] triggerStrings = {"POISONSAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Mindsap();}
-	
+
 	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your thoughts clear up.";}

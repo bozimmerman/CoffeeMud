@@ -15,7 +15,6 @@ public class Thief_Hide extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"HIDE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Hide();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 

@@ -10,7 +10,6 @@ public class Prop_ReqClasses extends Property
 	public String ID() { return "Prop_ReqClasses"; }
 	public String name(){ return "Class Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqClasses newOne=new Prop_ReqClasses();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean passesMuster(MOB mob)
 	{

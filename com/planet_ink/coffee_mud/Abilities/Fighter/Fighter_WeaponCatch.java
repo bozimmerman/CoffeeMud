@@ -17,7 +17,6 @@ public class Fighter_WeaponCatch extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	public Environmental newInstance(){	return new Fighter_WeaponCatch();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

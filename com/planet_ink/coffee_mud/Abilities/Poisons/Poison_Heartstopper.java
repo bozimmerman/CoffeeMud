@@ -11,8 +11,7 @@ public class Poison_Heartstopper extends Poison
 	public String name(){ return "Heartstopper";}
 	private static final String[] triggerStrings = {"POISONSTOP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Heartstopper();}
-	
+
 	protected int POISON_TICKS(){return 8;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "The poison runs its course.";}

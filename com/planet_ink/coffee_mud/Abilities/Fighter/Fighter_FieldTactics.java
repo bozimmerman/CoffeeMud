@@ -16,7 +16,6 @@ public class Fighter_FieldTactics extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_FieldTactics();}
 	private static final Integer[] landClasses = {new Integer(-1)};
 	public Integer[] landClasses(){return landClasses;}
 	protected boolean activated=false;
@@ -47,7 +46,7 @@ public class Fighter_FieldTactics extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public boolean hiding(Environmental mob)
 	{
 		if(!(mob instanceof MOB)) return false;
@@ -57,7 +56,7 @@ public class Fighter_FieldTactics extends StdAbility
 	{
 		return Sense.isSitting(mob)&&(mob.riding()==null);
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)

@@ -16,5 +16,4 @@ public class Specialization_FlailedWeapon extends Specialization_Weapon
 		weaponType=Weapon.CLASS_FLAILED;
 	}
 
-	public Environmental newInstance(){	return new Specialization_FlailedWeapon();}
 }

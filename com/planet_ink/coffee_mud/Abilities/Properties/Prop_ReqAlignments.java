@@ -10,7 +10,6 @@ public class Prop_ReqAlignments extends Property
 	public String ID() { return "Prop_ReqAlignments"; }
 	public String name(){ return "Alignment Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqAlignments newOne=new Prop_ReqAlignments();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean passesMuster(MOB mob)
 	{

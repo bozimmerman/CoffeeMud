@@ -16,7 +16,6 @@ public class Chant_HowlersMoon extends Chant
 	public long flags(){return FLAG_MOONCHANGING;}
 	private int ticksTicked=0;
 	private int fromDir=-1;
-	public Environmental newInstance(){	return new Chant_HowlersMoon();}
 
 	public void unInvoke()
 	{

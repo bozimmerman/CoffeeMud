@@ -12,7 +12,6 @@ public class Prayer_DemonicConsumption extends Prayer
 	public int quality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_DemonicConsumption();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

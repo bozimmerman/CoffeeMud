@@ -12,7 +12,6 @@ public class Chant_SpeedBirth extends Chant
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public Environmental newInstance(){	return new Chant_SpeedBirth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

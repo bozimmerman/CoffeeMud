@@ -10,7 +10,6 @@ public class Prop_ReqNoMOB extends Property
 	public String ID() { return "Prop_ReqNoMOB"; }
 	public String name(){ return "Monster Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqNoMOB newOne=new Prop_ReqNoMOB();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean passesMuster(MOB mob)
 	{

@@ -32,7 +32,6 @@ public class Chant_CharmAnimal extends Chant
 		return charmer;
 	}
 
-	public Environmental newInstance(){	return new Chant_CharmAnimal();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

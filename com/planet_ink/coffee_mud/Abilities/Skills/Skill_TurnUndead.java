@@ -16,7 +16,6 @@ public class Skill_TurnUndead extends StdAbility
 	private static final String[] triggerStrings = {"TURN"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_TurnUndead();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

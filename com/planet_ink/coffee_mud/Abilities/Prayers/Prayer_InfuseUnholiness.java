@@ -15,7 +15,6 @@ public class Prayer_InfuseUnholiness extends Prayer
 	public int quality(){return INDIFFERENT;};
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	return new Prayer_InfuseUnholiness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

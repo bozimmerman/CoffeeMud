@@ -12,7 +12,6 @@ public class Chant_WindColor extends Chant
 	public String name(){ return "Wind Color";}
 	public String displayText(){return "(Wind Color)";}
 	Room lastRoom=null;
-	public Environmental newInstance(){	return new Chant_WindColor();}
 
 	public void unInvoke()
 	{

@@ -12,7 +12,6 @@ public class Spell_GiantStrength extends Spell
 	public String displayText(){return "(Giant-Strength spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Spell_GiantStrength();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

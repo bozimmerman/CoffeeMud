@@ -14,7 +14,6 @@ public class Spell_DetectTraps extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
-	public Environmental newInstance(){	return new Spell_DetectTraps();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()

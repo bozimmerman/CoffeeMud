@@ -13,7 +13,6 @@ public class Chant_CrystalGrowth extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
-	public Environmental newInstance(){	return new Chant_CrystalGrowth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -34,7 +33,7 @@ public class Chant_CrystalGrowth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
+
 				Item building=null;
 				Ability A=null;
 				switch(Dice.roll(1,10,0))

@@ -13,7 +13,6 @@ public class Trap_AcidSpray extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 15;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_AcidSpray();}
 
 	public void spring(MOB target)
 	{

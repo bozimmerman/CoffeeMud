@@ -13,7 +13,6 @@ public class Trap_Gluey extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 11;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_Gluey();}
 
 	public void spring(MOB target)
 	{

@@ -14,7 +14,6 @@ public class Chant_SpeedTime extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Chant_SpeedTime();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

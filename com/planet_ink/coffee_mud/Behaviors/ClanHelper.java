@@ -8,10 +8,7 @@ import java.util.*;
 public class ClanHelper extends StdBehavior
 {
 	public String ID(){return "ClanHelper";}
-	public Behavior newInstance()
-	{
-		return new ClanHelper();
-	}
+
 
 	protected boolean mobKiller=false;
 	public void startBehavior(Environmental forMe)

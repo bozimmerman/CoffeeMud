@@ -15,7 +15,6 @@ public class Chant_Treeform extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
-	public Environmental newInstance(){	return new Chant_Treeform();}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

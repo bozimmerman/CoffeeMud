@@ -9,7 +9,7 @@ public class ThievesCant extends Language
 {
 	public String ID() { return "ThievesCant"; }
 	public String name(){ return "Thieves Cant";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public ThievesCant()
 	{
@@ -17,10 +17,9 @@ public class ThievesCant extends Language
 		if(!mapped){mapped=true;
 				CMAble.addCharAbilityMapping("Bard",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new ThievesCant();}
-	
+
 	public Vector translationVector()
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"a","i"};
@@ -37,6 +36,6 @@ public class ThievesCant extends Language
 			wordLists.addElement(five);
 			wordLists.addElement(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 }

@@ -14,7 +14,6 @@ public class Prayer_PeaceRitual extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_PeaceRitual();}
 	public String clan1="";
 	public String clan2="";
 
@@ -128,7 +127,7 @@ public class Prayer_PeaceRitual extends Prayer
 			mob.tell("You must wait until a member of "+clan2+" is online before beginning the ritual.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

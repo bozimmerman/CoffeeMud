@@ -13,7 +13,6 @@ public class Prop_HaveSpellCast extends Property
 	private Item myItem=null;
 	private MOB lastMOB=null;
 	boolean processing=false;
-	public Environmental newInstance(){	Prop_HaveSpellCast BOB=new Prop_HaveSpellCast();BOB.setMiscText(text());return BOB;}
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -73,7 +72,7 @@ public class Prop_HaveSpellCast extends Property
 				{
 					int x=t.indexOf("/");
 					if(x<0)
-					{ 
+					{
 						V2=Util.parse(t);
 						A.setMiscText("");
 					}

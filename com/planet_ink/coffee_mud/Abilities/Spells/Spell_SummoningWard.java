@@ -12,7 +12,6 @@ public class Spell_SummoningWard extends Spell
 	public String displayText(){return "(Summoning Ward)";}
 	public int quality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	public Environmental newInstance(){	return new Spell_SummoningWard();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

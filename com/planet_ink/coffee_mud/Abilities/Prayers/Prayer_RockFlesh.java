@@ -11,7 +11,6 @@ public class Prayer_RockFlesh extends Prayer
 	public String name(){return "Rock Flesh";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_RockFlesh();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

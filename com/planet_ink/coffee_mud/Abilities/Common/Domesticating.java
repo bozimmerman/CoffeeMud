@@ -23,7 +23,6 @@ public class Domesticating extends CommonSkill
 					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
 		}
 	}
-	public Environmental newInstance(){	return new Domesticating();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -12,7 +12,6 @@ public class Spell_MirrorImage extends Spell
 	public String displayText(){return "(Mirror Image spell)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_MirrorImage();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	private	Random randomizer = new Random(System.currentTimeMillis());

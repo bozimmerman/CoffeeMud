@@ -11,7 +11,6 @@ public class Prayer_ChainStrike extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int maxRange(){return 2;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Prayer_ChainStrike();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

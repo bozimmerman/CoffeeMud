@@ -17,7 +17,6 @@ public class Elvish extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Elvish();}
 	public Vector translationVector()
 	{
 		if(wordLists==null)
@@ -41,7 +40,7 @@ public class Elvish extends Language
 	private static final Hashtable hashwords=new Hashtable();
 	public Hashtable translationHash()
 	{
-		if((hashwords!=null)&&(hashwords.size()>0)) 
+		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;
 		hashwords.put("ABANDON","avarta");
 		hashwords.put("ABLE","pol");

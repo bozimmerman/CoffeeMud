@@ -11,9 +11,8 @@ public class Dance_Clog extends Dance
 	public String ID() { return "Dance_Clog"; }
 	public String name(){ return "Clog Dance";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Dance_Clog();}
 	protected String danceOf(){return name();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -13,7 +13,6 @@ public class Thief_Countertracking extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.INDIFFERENT;}
-	public Environmental newInstance(){	return new Thief_Countertracking();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 

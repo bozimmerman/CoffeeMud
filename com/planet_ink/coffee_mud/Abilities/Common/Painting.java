@@ -32,7 +32,6 @@ public class Painting extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",5,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Painting();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

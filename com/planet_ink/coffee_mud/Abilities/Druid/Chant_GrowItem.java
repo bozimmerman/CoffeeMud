@@ -13,7 +13,6 @@ public class Chant_GrowItem extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
-	public Environmental newInstance(){	return new Chant_GrowItem();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

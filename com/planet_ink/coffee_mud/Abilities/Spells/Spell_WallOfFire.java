@@ -15,7 +15,6 @@ public class Spell_WallOfFire extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_WallOfFire();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 

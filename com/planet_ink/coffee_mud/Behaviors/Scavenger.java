@@ -9,17 +9,14 @@ public class Scavenger extends ActiveTicker
 {
 	public String ID(){return "Scavenger";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	
+
 	public Scavenger()
 	{
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
 	}
 
-	public Behavior newInstance()
-	{
-		return new Scavenger();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

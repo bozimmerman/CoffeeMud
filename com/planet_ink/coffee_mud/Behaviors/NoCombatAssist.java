@@ -8,10 +8,7 @@ import java.util.*;
 public class NoCombatAssist extends StdBehavior
 {
 	public String ID(){return "NoCombatAssist";}
-	public Behavior newInstance()
-	{
-		return new NoCombatAssist();
-	}
+
 
 	int tickTocker=1;
 	int tickTock=0;

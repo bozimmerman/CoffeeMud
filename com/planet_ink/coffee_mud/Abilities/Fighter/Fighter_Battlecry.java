@@ -11,7 +11,6 @@ public class Fighter_Battlecry extends StdAbility
 	public String name(){ return "Battle Cry";}
 	public String displayText(){return "(Battle Cry)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Fighter_Battlecry();}
 	private static final String[] triggerStrings = {"BATTLECRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}

@@ -15,7 +15,6 @@ public class Fighter_AutoBash extends StdAbility
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Fighter_AutoBash();}
 	public int classificationCode(){ return Ability.SKILL; }
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
@@ -32,7 +31,7 @@ public class Fighter_AutoBash extends StdAbility
 
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -14,7 +14,6 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"LURE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Lure();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 

@@ -11,7 +11,6 @@ public class Prayer_DivinePerspective extends Prayer
 	public String displayText(){return "(Perspective)";}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Prayer_DivinePerspective();}
 	public String mobName="";
 	public boolean noRecurse=false;
 
@@ -32,7 +31,7 @@ public class Prayer_DivinePerspective extends Prayer
 	{
 		super.executeMsg(myHost,msg);
 		if(noRecurse)return;
-		
+
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)

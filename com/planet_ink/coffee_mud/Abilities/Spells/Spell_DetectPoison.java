@@ -12,7 +12,6 @@ public class Spell_DetectPoison extends Spell
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_DetectPoison();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)

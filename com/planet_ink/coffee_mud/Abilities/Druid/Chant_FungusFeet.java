@@ -11,7 +11,6 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	public String name(){ return "Fungus Feet";}
 	public String displayText(){return "(Fungus Feet)";}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_FungusFeet();}
 	public int abilityCode(){return 0;}
 	int plagueDown=8;
 	double drawups=1.0;
@@ -89,7 +88,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
 		{
 			mob.tell(target.name()+" has no feet!");

@@ -12,7 +12,6 @@ public class Chant_SnatchLight extends Chant
 	public String displayText(){return "(Snatch Light)";}
 	public int quality(){ return Ability.OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_SnatchLight();}
 
 	public Room snatchLocation()
 	{
@@ -22,7 +21,7 @@ public class Chant_SnatchLight extends Chant
 		   return ((MOB)invoker).location();
 		return null;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -103,8 +102,8 @@ public class Chant_SnatchLight extends Chant
 		}
 		return true;
 	}
-	
-	
+
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

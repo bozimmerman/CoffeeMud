@@ -15,7 +15,6 @@ public class Prayer_BladeBarrier extends Prayer
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	String lastMessage=null;
-	public Environmental newInstance(){	return new Prayer_BladeBarrier();}
 
 
 	public void unInvoke()

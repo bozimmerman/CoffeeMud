@@ -11,5 +11,4 @@ public class Trap_EnterGas extends Trap_Enter
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_GAS;}
-	public Environmental newInstance(){	return new Trap_EnterGas();}
 }

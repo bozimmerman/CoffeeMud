@@ -61,7 +61,6 @@ public class Masonry extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",5,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Masonry();}
 
 	public Exit generify(Exit E)
 	{

@@ -12,7 +12,6 @@ public class Prayer_FleshRock extends Prayer
 	public String displayText(){return "(Flesh to Rock)";}
 	public int quality(){return MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_FleshRock();}
 
 	public Item statue=null;
 	public boolean tick(Tickable ticking, int tickID)

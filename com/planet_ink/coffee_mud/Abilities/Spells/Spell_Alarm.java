@@ -15,7 +15,6 @@ public class Spell_Alarm extends Spell
 
 	boolean waitingForLook=false;
 
-	public Environmental newInstance(){	return new Spell_Alarm();}
 	public int classificationCode(){	return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;}
 
 

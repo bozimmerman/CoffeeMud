@@ -11,7 +11,6 @@ public class Play_Solo extends Play
 	public String ID() { return "Play_Solo"; }
 	public String name(){ return "Solo";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Solo();}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}
@@ -67,7 +66,7 @@ public class Play_Solo extends Play
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				
+
 				Vector songsToCancel=new Vector();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{

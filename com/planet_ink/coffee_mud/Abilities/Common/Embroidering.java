@@ -22,7 +22,6 @@ public class Embroidering extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Embroidering();}
 
 	public void unInvoke()
 	{

@@ -15,7 +15,6 @@ public class Thief_MakeBomb extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"BOMB"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_MakeBomb();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

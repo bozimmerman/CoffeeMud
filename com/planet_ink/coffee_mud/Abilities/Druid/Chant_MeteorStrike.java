@@ -11,7 +11,6 @@ public class Chant_MeteorStrike extends Chant
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Chant_MeteorStrike();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -13,7 +13,6 @@ public class Trap_MonsterCage extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a caged monster";}
-	public Environmental newInstance(){	return new Trap_MonsterCage();}
 
 	private MOB monster=null;
 

@@ -13,7 +13,6 @@ public class Chant_Treemorph extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	Item tree=null;
 	Race treeForm=null;
-	public Environmental newInstance(){	return new Chant_Treemorph();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -12,7 +12,6 @@ public class Spell_DivineBeauty extends Spell
 	public String displayText(){return "(Divine Beauty)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Spell_DivineBeauty();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

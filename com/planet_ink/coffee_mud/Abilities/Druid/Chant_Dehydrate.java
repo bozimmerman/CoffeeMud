@@ -11,7 +11,6 @@ public class Chant_Dehydrate extends Chant
 	public String name(){return "Dehydrate";}
 	public String displayText(){return "(Dehydrate)";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Chant_Dehydrate();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

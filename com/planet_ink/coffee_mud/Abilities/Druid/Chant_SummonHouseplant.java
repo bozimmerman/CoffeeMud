@@ -12,7 +12,6 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	public String name(){ return "Summon Houseplant";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonHouseplant();}
 	private boolean processing=false;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

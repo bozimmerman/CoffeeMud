@@ -13,14 +13,13 @@ public class Prayer_Forgive extends Prayer
 	protected int canAffectCode(){return 0;}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_Forgive();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
 		if((Bs!=null)&&(Bs.size()>0)) B=(Behavior)Bs.firstElement();
-		
+
 		String name=Util.combine(commands,0);
 		if(name.trim().length()==0)
 		{

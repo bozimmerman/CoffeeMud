@@ -17,20 +17,19 @@ public class Gigantic extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Gigantic();}
 	public Vector translationVector()
 	{
 		if(wordLists==null)
 		{
 			String[] one={"o","est","e","am"};
-			String[] 
+			String[]
 two={"on","dva","sa","is","id","et","bo","ja","te","me","za","ve"};
 			String[] three={"pet","set","tre","mal","maz","mat","ane","dom"};
-			String[] 
+			String[]
 four={"nast","sest","osam","bedu","beda","mene","mame","maja","beli","nesi"};
-			String[] 
+			String[]
 five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","anaht","maram","nezme"};
-			String[] 
+			String[]
 six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
 			wordLists=new Vector();
 			wordLists.addElement(one);
@@ -47,7 +46,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		if(msg==null) return msg;
 		return msg.toUpperCase();
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((beingSpoken())
@@ -66,7 +65,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	private static final Hashtable hashwords=new Hashtable();
 	public Hashtable translationHash()
 	{

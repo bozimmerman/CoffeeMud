@@ -7,7 +7,6 @@ public class Prop_NoSummon extends Property
 	public String ID() { return "Prop_NoSummon"; }
 	public String name(){ return "Summon Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_NoSummon();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

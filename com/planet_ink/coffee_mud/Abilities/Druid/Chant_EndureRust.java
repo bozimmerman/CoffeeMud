@@ -14,16 +14,15 @@ public class Chant_EndureRust extends Chant
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int quality(){return Ability.BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Chant_EndureRust();}
 	private HashSet dontbother=new HashSet();
-	
+
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)&&(canBeUninvoked()))
 			((MOB)affected).tell("Your rust endurance fades.");
 		super.unInvoke();
 	}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((((msg.target()==affected)&&(affected instanceof Item))

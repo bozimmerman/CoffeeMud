@@ -10,7 +10,6 @@ public class Spell_Duplicate extends Spell
 	public String ID() { return "Spell_Duplicate"; }
 	public String name(){return "Duplicate";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Duplicate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

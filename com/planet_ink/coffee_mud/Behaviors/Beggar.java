@@ -10,10 +10,7 @@ public class Beggar extends StdBehavior
 	public String ID(){return "Beggar";}
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
-	public Behavior newInstance()
-	{
-		return new Beggar();
-	}
+
 
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{

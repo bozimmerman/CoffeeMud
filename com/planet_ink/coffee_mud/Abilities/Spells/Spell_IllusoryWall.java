@@ -11,7 +11,6 @@ public class Spell_IllusoryWall extends Spell
 	public String name(){return "Illusory Wall";}
 	protected int canAffectCode(){return CAN_EXITS;}
 	protected int canTargetCode(){return CAN_EXITS;}
-	public Environmental newInstance(){ return new Spell_IllusoryWall();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -14,7 +14,6 @@ public class Prayer_ProtDisease extends Prayer
 	public String displayText(){ return "(Protection Disease)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtDisease();}
 
 
 	public void unInvoke()

@@ -9,7 +9,6 @@ public class Spell_Gate extends Spell
 	public String ID() { return "Spell_Gate"; }
 	public String name(){return "Gate";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){ return new Spell_Gate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
@@ -51,7 +50,7 @@ public class Spell_Gate extends Spell
 			mob.tell("You need to stand up!");
 			return false;
 		}
-		
+
 		Vector candidates=new Vector();
 		MOB target=null;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -93,7 +92,7 @@ public class Spell_Gate extends Spell
 				beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to invoke transportation, but fizzle(s) the spell.");
 			newRoom=room;
 		}
-				
+
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 		if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 		{

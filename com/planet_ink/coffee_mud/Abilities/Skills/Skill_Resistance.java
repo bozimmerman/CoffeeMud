@@ -19,8 +19,7 @@ public class Skill_Resistance extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
-	public Environmental newInstance(){	return new Skill_Resistance();}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -69,7 +68,7 @@ public class Skill_Resistance extends StdAbility
 		if(resistanceCode>0)
 			displayText="(Resistance to "+newText.trim().toLowerCase()+")";
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

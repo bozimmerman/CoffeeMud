@@ -12,7 +12,6 @@ public class Spell_InsatiableThirst extends Spell
 	//blic String displayText(){return "123456789*123456789*12345";}
 	public String displayText(){return "(Insatiable Thirst)";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_InsatiableThirst();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

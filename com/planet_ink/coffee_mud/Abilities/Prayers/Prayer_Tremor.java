@@ -14,7 +14,6 @@ public class Prayer_Tremor extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Tremor();}
 	private boolean oncePerRd=false;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -15,5 +15,4 @@ public class Skill_WandUse extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_WandUse();	}
 }

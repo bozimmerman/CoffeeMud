@@ -14,7 +14,6 @@ public class Chant_IllusionaryForest extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	Room newRoom=null;
-	public Environmental newInstance(){	return new Chant_IllusionaryForest();}
 
 	public void unInvoke()
 	{

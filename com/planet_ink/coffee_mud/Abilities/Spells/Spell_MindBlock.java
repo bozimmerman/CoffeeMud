@@ -12,7 +12,6 @@ public class Spell_MindBlock extends Spell
 	public String displayText(){return "(Mind Block)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_MindBlock();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	int amountAbsorbed=0;

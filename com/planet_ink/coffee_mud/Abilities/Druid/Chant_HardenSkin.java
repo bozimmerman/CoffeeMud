@@ -12,7 +12,6 @@ public class Chant_HardenSkin extends Chant
 	public String name(){ return "Harden Skin";}
 	public String displayText(){return "(Harden Skin)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_HardenSkin();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -12,7 +12,6 @@ import java.util.*;
 public class FieryRoom extends ActiveTicker {
         public String ID(){return "FieryRoom";}
 		protected int canImproveCode(){return Behavior.CAN_ROOMS;}
-        public Behavior newInstance() {return new FieryRoom();}
         private String newDisplay="";
         private String newDesc="";
         private int directDamage=10;

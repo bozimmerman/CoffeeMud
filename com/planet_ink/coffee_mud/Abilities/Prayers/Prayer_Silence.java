@@ -14,7 +14,6 @@ public class Prayer_Silence extends Prayer
 	public String displayText(){ return "(Silenced)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Silence();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

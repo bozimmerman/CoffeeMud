@@ -14,7 +14,6 @@ public class Spell_CombatPrecognition extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int overrideMana(){return 100;}
 	boolean lastTime=false;
-	public Environmental newInstance(){	return new Spell_CombatPrecognition();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -22,7 +22,6 @@ public class Spell_IncreaseGravity extends Spell
 			theGravityRoom=(Room)affected;
 		return theGravityRoom;
 	}
-	public Environmental newInstance(){	return new Spell_IncreaseGravity();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean tick(Tickable ticking, int tickID)

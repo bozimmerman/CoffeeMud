@@ -11,7 +11,6 @@ public class Play_Blues extends Play
 	public String ID() { return "Play_Blues"; }
 	public String name(){ return "Blues";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Play_Blues();}
 	protected String songOf(){return "the "+name();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

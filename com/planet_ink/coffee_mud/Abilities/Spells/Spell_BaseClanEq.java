@@ -19,7 +19,6 @@ public class Spell_BaseClanEq extends Spell
 	public String ID() { return "Spell_BaseClanEq"; }
 	public String name(){return "Enchant Clan Equipment Base Model";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_BaseClanEq();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected String type="";

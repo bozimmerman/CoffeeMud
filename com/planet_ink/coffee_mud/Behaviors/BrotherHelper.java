@@ -8,10 +8,7 @@ import java.util.*;
 public class BrotherHelper extends StdBehavior
 {
 	public String ID(){return "BrotherHelper";}
-	public Behavior newInstance()
-	{
-		return new BrotherHelper();
-	}
+
 	protected boolean mobKiller=false;
 
 	public static boolean isBrother(MOB target, MOB observer)

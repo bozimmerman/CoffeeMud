@@ -11,7 +11,6 @@ public class Bomb_Smoke extends StdBomb
 	public String name(){ return "smoke bomb";}
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "something wooden";}
-	public Environmental newInstance(){	return new Bomb_Smoke();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

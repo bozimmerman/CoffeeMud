@@ -11,7 +11,6 @@ public class Chant_MuddyGrounds extends Chant
 	public String name(){return "Muddy Grounds";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_MuddyGrounds();}
 
 	public void unInvoke()
 	{

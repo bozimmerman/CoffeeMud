@@ -11,7 +11,6 @@ public class Prayer_RemoveParalysis extends Prayer
 	public String name(){ return "Remove Paralysis";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_RemoveParalysis();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

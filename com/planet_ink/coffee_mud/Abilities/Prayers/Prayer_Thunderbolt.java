@@ -11,7 +11,6 @@ public class Prayer_Thunderbolt extends Prayer
 	public String name(){ return "Thunderbolt";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Thunderbolt();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -16,7 +16,6 @@ public class Druid_DruidicPass extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Druid_DruidicPass();	}
 
 	public int classificationCode()
 	{

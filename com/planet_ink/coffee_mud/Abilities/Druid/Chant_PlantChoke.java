@@ -16,7 +16,6 @@ public class Chant_PlantChoke extends Chant
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Chant_PlantChoke();}
 
 	public void unInvoke()
 	{
@@ -54,7 +53,7 @@ public class Chant_PlantChoke extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -71,7 +70,7 @@ public class Chant_PlantChoke extends Chant
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
@@ -79,7 +78,7 @@ public class Chant_PlantChoke extends Chant
 		&&(((MOB)aff).isMine(affected)))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -95,7 +94,7 @@ public class Chant_PlantChoke extends Chant
 				return false;
 			}
 		}
-		
+
 		if(target.getWearPositions(Item.ON_NECK)==0)
 		{
 			if(!auto)

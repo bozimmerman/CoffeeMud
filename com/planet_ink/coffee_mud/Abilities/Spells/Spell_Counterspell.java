@@ -12,7 +12,6 @@ public class Spell_Counterspell extends Spell
 	public String displayText(){return "(Counterspell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Counterspell();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	public boolean ticked=false;
 

@@ -14,7 +14,6 @@ public class Prayer_CurseMetal extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_CURSE;}
-	public Environmental newInstance(){	return new Prayer_CurseMetal();}
 
 	private Vector affectedItems=new Vector();
 

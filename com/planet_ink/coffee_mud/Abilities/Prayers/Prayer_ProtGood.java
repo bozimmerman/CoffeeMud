@@ -14,7 +14,6 @@ public class Prayer_ProtGood extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtGood();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

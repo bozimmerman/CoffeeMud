@@ -36,7 +36,6 @@ public class Fletching extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Fletching();	}
 
 	protected Vector loadRecipes()
 	{
@@ -126,8 +125,8 @@ public class Fletching extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}

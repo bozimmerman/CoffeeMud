@@ -11,7 +11,6 @@ public class Dance_Swords extends Dance
 	public String ID() { return "Dance_Swords"; }
 	public String name(){ return "Swords";}
 	public int quality(){ return INDIFFERENT;}
-	public Environmental newInstance(){	return new Dance_Swords();}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected String danceOf(){return name()+" Dance";}
 	protected boolean skipStandardDanceInvoke(){return true;}

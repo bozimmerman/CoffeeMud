@@ -13,7 +13,6 @@ public class Trap_AcidPit extends Trap_RoomPit
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 18;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_AcidPit();}
 	public int baseRejuvTime(int level)
 	{
 		int time=super.baseRejuvTime(level);

@@ -12,7 +12,6 @@ public class Spell_FakeArmor extends Spell
 	protected int canTargetCode(){return 0;}
 	private Item myItem=null;
 	private static boolean notAgainThisRound=false;
-	public Environmental newInstance(){	return new Spell_FakeArmor();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -11,7 +11,6 @@ public class Prayer_Deathfinger extends Prayer
 	public String name(){ return "Deathfinger";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Deathfinger();}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -10,7 +10,6 @@ public class Prop_ReqRaces extends Property
 	public String ID() { return "Prop_ReqRaces"; }
 	public String name(){ return "Room/Exit Race Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqRaces newOne=new Prop_ReqRaces(); newOne.setMiscText(text());return newOne;}
 
 	public boolean passesMuster(MOB mob)
 	{

@@ -11,7 +11,6 @@ public class Chant_Sunray extends Chant
 	public String name(){ return "Sunray";}
 	public String displayText(){return "(Sunray)";}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Sunray();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

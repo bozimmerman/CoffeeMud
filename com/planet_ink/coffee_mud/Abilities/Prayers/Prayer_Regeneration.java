@@ -15,7 +15,6 @@ public class Prayer_Regeneration extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	String lastMessage=null;
-	public Environmental newInstance(){	return new Prayer_Regeneration();}
 
 
 	public void unInvoke()

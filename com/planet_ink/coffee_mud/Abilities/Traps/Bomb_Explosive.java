@@ -11,7 +11,6 @@ public class Bomb_Explosive extends StdBomb
 	public String name(){ return "explosive bomb";}
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a pound of coal";}
-	public Environmental newInstance(){	return new Bomb_Explosive();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

@@ -13,7 +13,6 @@ public class Spell_TrueSight extends Spell
 	public String displayText(){return "(True Sight)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_TrueSight();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()
@@ -59,7 +58,7 @@ public class Spell_TrueSight extends Spell
 			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE>  true sight.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

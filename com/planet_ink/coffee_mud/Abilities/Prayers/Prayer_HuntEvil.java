@@ -17,7 +17,6 @@ public class Prayer_HuntEvil extends Prayer
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
-	public Environmental newInstance(){	return new Prayer_HuntEvil();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -120,7 +119,7 @@ public class Prayer_HuntEvil extends Prayer
 				break;
 			}
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{

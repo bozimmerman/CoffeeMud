@@ -14,11 +14,10 @@ public class Thief_Comprehension extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"COMPREHEND","COMPREHENSION"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Comprehension();}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	private Vector queue=new Vector();
 
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -49,7 +48,7 @@ public class Thief_Comprehension extends ThiefSkill
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -64,7 +63,7 @@ public class Thief_Comprehension extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

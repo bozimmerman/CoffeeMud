@@ -11,7 +11,6 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 	public String name(){ return "Called Shot";}
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Fighter_CalledShot();}
 
 	protected boolean prereqs(MOB mob)
 	{
@@ -20,7 +19,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 			mob.tell("You are too close to perform a called shot!");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{

@@ -14,7 +14,6 @@ public class Spell_Cloudkill extends Spell
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Cloudkill();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -12,7 +12,6 @@ public class Spell_WaterCannon extends Spell
 	public int minRange(){return 2;}
 	public int maxRange(){return 3;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){ return new Spell_WaterCannon();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
    public void affectEnvStats(Environmental affected, EnvStats affectableStats)

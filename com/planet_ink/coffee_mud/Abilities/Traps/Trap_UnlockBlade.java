@@ -11,5 +11,4 @@ public class Trap_UnlockBlade extends Trap_Unlock
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_PIT_BLADE;}
-	public Environmental newInstance(){	return new Trap_UnlockBlade();}
 }

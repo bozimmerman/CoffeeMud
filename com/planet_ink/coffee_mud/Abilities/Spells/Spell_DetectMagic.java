@@ -13,7 +13,6 @@ public class Spell_DetectMagic extends Spell
 	public String displayText(){return "(Detecting Magic)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectMagic();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	public void unInvoke()
@@ -86,7 +85,7 @@ public class Spell_DetectMagic extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting magic.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -18,10 +18,7 @@ public class Decay extends ActiveTicker
 	boolean activated=false;
 	protected String answer=" vanishes!";
 
-	public Behavior newInstance()
-	{
-		return new Decay();
-	}
+
 
 	public void setParms(String newParms)
 	{

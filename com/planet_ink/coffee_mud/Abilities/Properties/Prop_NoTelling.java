@@ -10,7 +10,6 @@ public class Prop_NoTelling extends Property
 	public String ID() { return "Prop_NoTelling"; }
 	public String name(){ return "Tel Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_NoTelling();}
 
 	public String accountForYourself()
 	{ return "No Telling Field";	}

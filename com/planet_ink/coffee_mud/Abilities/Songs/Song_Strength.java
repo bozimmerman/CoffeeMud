@@ -11,8 +11,7 @@ public class Song_Strength extends Song
 	public String ID() { return "Song_Strength"; }
 	public String name(){ return "Strength";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Song_Strength();}
-	
+
 	private int amount=0;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

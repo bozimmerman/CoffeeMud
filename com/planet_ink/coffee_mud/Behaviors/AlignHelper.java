@@ -8,10 +8,7 @@ import java.util.*;
 public class AlignHelper extends StdBehavior
 {
 	public String ID(){return "AlignHelper";}
-	public Behavior newInstance()
-	{
-		return new AlignHelper();
-	}
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every message listed in the CMMsg interface

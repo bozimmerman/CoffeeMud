@@ -11,7 +11,6 @@ public class Prop_SafePet extends Property
 	public String ID() { return "Prop_SafePet"; }
 	public String name(){ return "Unattackable Pets";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_SafePet();}
 
 	public String accountForYourself()
 	{ return "Unattackable";	}

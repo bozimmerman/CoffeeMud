@@ -12,7 +12,6 @@ public class Chant_AstralProjection extends Chant
 	public String name(){return "Astral Projection";}
 	public String displayText(){return "(Astral Projection)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_AstralProjection();}
 
 	public void unInvoke()
 	{

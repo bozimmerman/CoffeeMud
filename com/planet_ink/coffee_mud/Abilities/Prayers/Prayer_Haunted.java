@@ -14,7 +14,6 @@ public class Prayer_Haunted extends Prayer
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Haunted();	}
 	protected int level=14;
 	protected int numDone=0;
 	protected int numMax=Integer.MAX_VALUE;
@@ -56,7 +55,7 @@ public class Prayer_Haunted extends Prayer
 			}
 			if(B!=null)
 			{
-				Prayer_AnimateGhost.makeGhostFrom(R,B,null,level);	
+				Prayer_AnimateGhost.makeGhostFrom(R,B,null,level);
 				B.destroy();
 				level+=5;
 				numDone++;
@@ -65,7 +64,7 @@ public class Prayer_Haunted extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();

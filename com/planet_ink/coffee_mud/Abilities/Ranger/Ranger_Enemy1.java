@@ -9,7 +9,6 @@ public class Ranger_Enemy1 extends StdAbility
 {
 	public String ID() { return "Ranger_Enemy1"; }
 	public String name(){ return "Favored Enemy 1";}
-	public Environmental newInstance(){	Ranger_Enemy1 BOB=new Ranger_Enemy1();	BOB.setMiscText(text()); return BOB;}
 	public String displayText(){ return "(Enemy of the "+text()+")";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

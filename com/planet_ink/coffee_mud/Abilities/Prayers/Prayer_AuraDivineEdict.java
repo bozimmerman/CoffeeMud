@@ -15,7 +15,6 @@ public class Prayer_AuraDivineEdict extends Prayer
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_AuraDivineEdict();	}
 	private String godName="the gods";
 	private boolean noRecurse=false;
 

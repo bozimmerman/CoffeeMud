@@ -10,7 +10,6 @@ public class Spell_StoreSpell extends Spell
 	public String ID() { return "Spell_StoreSpell"; }
 	public String name(){return "Store Spell";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_StoreSpell();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return overridemana;}
 	public String spellName="";

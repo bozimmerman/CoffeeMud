@@ -16,5 +16,4 @@ public class Specialization_Hammer extends Specialization_Weapon
 		weaponType=Weapon.CLASS_HAMMER;
 	}
 
-	public Environmental newInstance(){	return new Specialization_Hammer();	}
 }

@@ -8,10 +8,7 @@ import java.util.*;
 public class CombatAssister extends StdBehavior
 {
 	public String ID(){return "CombatAssister";}
-	public Behavior newInstance()
-	{
-		return new CombatAssister();
-	}
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every message listed in the CMMsg interface

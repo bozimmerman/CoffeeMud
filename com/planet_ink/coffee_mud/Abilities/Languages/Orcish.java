@@ -9,7 +9,7 @@ public class Orcish extends Language
 {
 	public String ID() { return "Orcish"; }
 	public String name(){ return "Orcish";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public Orcish()
 	{
@@ -17,9 +17,8 @@ public class Orcish extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Orcish();}
 	public Vector translationVector()
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"a"};
@@ -36,6 +35,6 @@ public class Orcish extends Language
 			wordLists.addElement(five);
 			wordLists.addElement(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 }

@@ -12,7 +12,6 @@ public class Spell_MajorGlobe extends Spell
 	public String displayText(){return "(Greater Globe/Invul.)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_MajorGlobe();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	int amountAbsorbed=0;

@@ -10,7 +10,6 @@ public class Prop_Retainable extends Property
 	public String ID() { return "Prop_Retainable"; }
 	public String name(){ return "Ability to set Price/Retainability of a pet.";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_Retainable();}
 
 	public String accountForYourself()
 	{ return "Retainable";	}

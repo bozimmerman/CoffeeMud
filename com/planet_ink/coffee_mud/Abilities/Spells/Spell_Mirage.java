@@ -12,7 +12,6 @@ public class Spell_Mirage extends Spell
 	public String displayText(){return "(Mirage spell)";}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Spell_Mirage();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	Room newRoom=null;

@@ -23,7 +23,6 @@ public class Mining extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Mining();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

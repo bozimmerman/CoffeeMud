@@ -19,10 +19,7 @@ public class Patroller extends ActiveTicker
 		minTicks=5; maxTicks=10; chance=100;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new Patroller();
-	}
+
 
 	private Vector getSteps()
 	{

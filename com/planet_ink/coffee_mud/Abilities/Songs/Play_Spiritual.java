@@ -12,7 +12,6 @@ public class Play_Spiritual extends Play
 	public String ID() { return "Play_Spiritual"; }
 	public String name(){ return "Spiritual";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Spiritual();}
 	protected String songOf(){return name()+" Music";}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -17,7 +17,6 @@ public class Fighter_CircleTrip extends StdAbility
 	private static final String[] triggerStrings = {"CIRCLETRIP","CTRIP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Fighter_CircleTrip();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

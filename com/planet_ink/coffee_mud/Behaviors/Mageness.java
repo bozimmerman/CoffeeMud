@@ -8,10 +8,7 @@ import java.util.*;
 public class Mageness extends CombatAbilities
 {
 	public String ID(){return "Mageness";}
-	public Behavior newInstance()
-	{
-		return new Mageness();
-	}
+
 
 	protected void getSomeMoreMageAbilities(MOB mob)
 	{

@@ -16,7 +16,6 @@ public class Dance_Stop extends Dance
 		super();
 		setProfficiency(100);
 	}
-	public Environmental newInstance(){	return new Dance_Stop();}
 	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
 
 

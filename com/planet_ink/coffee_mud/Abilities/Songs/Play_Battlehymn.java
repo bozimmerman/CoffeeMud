@@ -12,9 +12,8 @@ public class Play_Battlehymn extends Play
 	public String ID() { return "Play_Battlehymn"; }
 	public String name(){ return "Battlehymn";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Battlehymn();}
 	protected String songOf(){return "a "+name();}
-	
+
 	private int timesTicking=0;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

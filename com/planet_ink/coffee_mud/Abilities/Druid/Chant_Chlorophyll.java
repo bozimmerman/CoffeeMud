@@ -12,7 +12,6 @@ public class Chant_Chlorophyll extends Chant
 	public String displayText(){return "(Chlorophyll)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_Chlorophyll();}
 
 
 	public void unInvoke()

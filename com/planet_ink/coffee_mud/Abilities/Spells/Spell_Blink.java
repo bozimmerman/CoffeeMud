@@ -12,7 +12,6 @@ public class Spell_Blink extends Spell
 	public String displayText(){return "(Blink spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Blink();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public void unInvoke()

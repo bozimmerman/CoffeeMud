@@ -17,7 +17,6 @@ import java.util.*;
 public class Spell_CEqAcid extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqAcid"; }
   public String name(){return "ClanEnchant Acid";}
-  public Environmental newInstance(){	return new Spell_CEqAcid();}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {

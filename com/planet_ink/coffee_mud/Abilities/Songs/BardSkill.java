@@ -11,8 +11,7 @@ public class BardSkill extends StdAbility
 	public String name(){ return "a Bard Skill";}
 	public int quality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){	return Ability.SKILL;}
-	public Environmental newInstance(){	return new BardSkill();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -10,7 +10,6 @@ public class Prop_RoomView extends Property
 	public String ID() { return "Prop_RoomView"; }
 	public String name(){ return "Different Room View";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	return new Prop_RoomView();}
 	private Room newRoom=null;
 
 	public String accountForYourself()

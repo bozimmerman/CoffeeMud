@@ -12,7 +12,6 @@ public class Prayer_BirdsEye extends Prayer
 	public String name(){ return "Birds Eye";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.INDIFFERENT;}
-	public Environmental newInstance(){	return new Prayer_BirdsEye();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

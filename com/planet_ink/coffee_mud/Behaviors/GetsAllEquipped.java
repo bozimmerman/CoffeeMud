@@ -14,13 +14,10 @@ public class GetsAllEquipped extends ActiveTicker
 		maxTicks=5;minTicks=10;chance=100;
 		tickReset();
 	}
-	
+
 	private boolean DoneEquipping=false;
 
-	public Behavior newInstance()
-	{
-		return new GetsAllEquipped();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

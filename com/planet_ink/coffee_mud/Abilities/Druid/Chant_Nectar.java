@@ -11,7 +11,6 @@ public class Chant_Nectar extends Chant
 	public String name(){ return "Nectar";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_Nectar();	}
 	public Vector drank=null;
 	private int lastNum=-1;
 

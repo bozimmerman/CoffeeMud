@@ -10,7 +10,6 @@ public class Prop_NoPurge extends Property
 	public String ID() { return "Prop_NoPurge"; }
 	public String name(){ return "Prevents automatic purging";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prop_NoPurge();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

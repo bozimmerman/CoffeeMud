@@ -12,7 +12,6 @@ public class Spell_BigMouth extends Spell
 	public String displayText(){return "(Big Mouth)";}
 	public int quality(){return OK_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance()	{ return new Spell_BigMouth();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -56,7 +55,7 @@ public class Spell_BigMouth extends Spell
 					mob.tell("You can not eat "+msg.target().name());
 					return false;
 				}
-						
+
 				msg.modify(msg.source(),msg.target(),msg.tool(),
 						  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
 						  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
@@ -110,7 +109,7 @@ public class Spell_BigMouth extends Spell
 	private Room lastKnownLocation()
 	{
 		Room R=null;
-		if(affected instanceof MOB) 
+		if(affected instanceof MOB)
 			R=((MOB)affected).location();
 		if(R==null)R=CoffeeUtensils.roomLocation(affected);
 		if(R!=null) lastKnownRoom=R;

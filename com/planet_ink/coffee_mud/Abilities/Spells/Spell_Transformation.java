@@ -11,7 +11,6 @@ public class Spell_Transformation extends Spell
 	public String name(){return "Transformation";}
 	public String displayText(){return "(Transformation)";}
 	public int quality(){return BENEFICIAL_SELF;};
-	public Environmental newInstance(){	return new Spell_Transformation();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	private int inc=0;
 
@@ -47,7 +46,7 @@ public class Spell_Transformation extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already transformed.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

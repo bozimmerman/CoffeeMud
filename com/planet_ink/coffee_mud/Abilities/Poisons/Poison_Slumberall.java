@@ -11,7 +11,6 @@ public class Poison_Slumberall extends Poison
 	public String name(){ return "Slumberall";}
 	private static final String[] triggerStrings = {"POISONSLEEP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Slumberall();}
 
 	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}

@@ -12,7 +12,6 @@ public class Spell_Enthrall extends Spell
 	public String displayText(){return "(Enthralled)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Enthrall();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 

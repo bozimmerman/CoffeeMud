@@ -13,7 +13,6 @@ public class Chant_Unbreakable extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_Unbreakable();}
 	private int maintainCondition=100;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -23,7 +22,7 @@ public class Chant_Unbreakable extends Chant
 		if(maintainCondition>0)
 			((Item)affected).setUsesRemaining(maintainCondition);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -45,12 +44,12 @@ public class Chant_Unbreakable extends Chant
 			msg.source().tell(affected.name()+" is unbreakable!");
 			return false;
 		}
-		   
+
 		return true;
 	}
 
-	
-	
+
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -94,7 +93,7 @@ public class Chant_Unbreakable extends Chant
 					maintainCondition=-1;
 				else
 					maintainCondition=target.usesRemaining();
-				
+
 				beneficialAffect(mob,target,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is unbreakable!");
 				target.recoverEnvStats();

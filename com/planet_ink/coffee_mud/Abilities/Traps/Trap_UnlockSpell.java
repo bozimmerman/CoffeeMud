@@ -16,5 +16,4 @@ public class Trap_UnlockSpell extends Trap_Unlock
 		super();
 		setMiscText("Spell_Sleep");
 	}
-	public Environmental newInstance(){	return new Trap_UnlockSpell();}
 }

@@ -8,7 +8,6 @@ public class Spell_Dream extends Spell
 {
 	public String ID() { return "Spell_Dream"; }
 	public String name(){return "Dream";}
-	public Environmental newInstance(){	return new Spell_Dream();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -13,14 +13,13 @@ public class TemporaryImmunity extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new TemporaryImmunity();}
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=MudHost.TIME_MILIS_PER_MUDHOUR*30;
 	private int tickDown=10;
 	private DVector set=new DVector(2);
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
@@ -35,12 +34,12 @@ public class TemporaryImmunity extends StdAbility
 				if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
 					set.removeElementAt(s);
 			}
-			
+
 			if(set.size()==0){ unInvoke(); return false;}
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public String text()
 	{
 		if(set.size()==0) return "";
@@ -73,7 +72,7 @@ public class TemporaryImmunity extends StdAbility
 			}
 		}
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

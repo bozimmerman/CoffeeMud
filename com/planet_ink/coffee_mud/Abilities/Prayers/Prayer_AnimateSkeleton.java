@@ -12,7 +12,6 @@ public class Prayer_AnimateSkeleton extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_AnimateSkeleton();}
 
 	public static void makeSkeletonFrom(Room R, DeadBody body, MOB mob, int level)
 	{
@@ -79,7 +78,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		R.show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 		R.recoverRoomStats();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);

@@ -19,7 +19,6 @@ public class Play_Symphony extends Play
 		else
 			return BENEFICIAL_OTHERS;
 	}
-	public Environmental newInstance(){	return new Play_Symphony();}
 	public final static int CODE_UPSAVE=1;
 	public final static int CODE_UPDAMAGEPER3=2;
 	public final static int CODE_UPSTAT=3;

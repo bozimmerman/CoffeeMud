@@ -13,15 +13,14 @@ public class Chant_ExplosiveDecompression extends Chant
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public boolean bubbleAffect(){return true;}
-	public Environmental newInstance(){	return new Chant_ExplosiveDecompression();}
-	
+
 	public void affectEnvStats(Environmental affecting, EnvStats stats)
 	{
 		super.affectEnvStats(affected,stats);
 		if(affecting instanceof MOB)
 			stats.setSensesMask(stats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -16,7 +16,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public String[] triggerStrings(){return triggerStrings;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease();}
 	public int classificationCode(){return Ability.DISEASE;}
 
 	protected int DISEASE_TICKS(){return 48;}

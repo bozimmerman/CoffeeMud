@@ -16,7 +16,6 @@ public class Skill_Map extends StdAbility
 	private static final String[] triggerStrings = {"MAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Map();}
 
 	Vector roomsMappedAlready=new Vector();
 	protected Item map=null;

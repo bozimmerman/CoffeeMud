@@ -23,7 +23,6 @@ public class Butchering extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Butchering();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -103,14 +102,14 @@ public class Butchering extends CommonSkill
 				&&(Sense.canBeSeenBy(I2,mob))
 				&&(I2.container()==null))
 				{
-					I=I2; 
+					I=I2;
 					break;
 				}
 			}
 		}
 		else
 			I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
-		
+
 		if(I==null) return false;
 		if((!(I instanceof DeadBody))
 		   ||(((DeadBody)I).charStats()==null)

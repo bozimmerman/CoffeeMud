@@ -11,7 +11,6 @@ public class Spell_Breadcrumbs extends Spell
 	public String name(){return "Breadcrumbs";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Breadcrumbs();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 	public Vector trail=null;
 

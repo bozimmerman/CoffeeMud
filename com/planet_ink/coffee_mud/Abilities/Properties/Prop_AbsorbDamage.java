@@ -9,7 +9,6 @@ public class Prop_AbsorbDamage extends Property
 	public String ID() { return "Prop_AbsorbDamage"; }
 	public String name(){ return "Absorb Damage";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_AbsorbDamage BOB=new Prop_AbsorbDamage();	BOB.setMiscText(text());return BOB;}
 
 	public String accountForYourself()
 	{
@@ -35,9 +34,9 @@ public class Prop_AbsorbDamage extends Property
 				M=(MOB)((Item)affected).owner();
 			if(M==null) return true;
 			if(!msg.amITarget(M)) return true;
-			
+
 			String text=text().toUpperCase();
-			
+
 			int immune=text.indexOf("+ALL");
 			int x=-1;
 			for(int i=0;i<CharStats.affectTypeMap.length;i++)
@@ -58,7 +57,7 @@ public class Prop_AbsorbDamage extends Property
 							immune=x;
 					}
 				}
-			
+
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
 				x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
@@ -94,7 +93,7 @@ public class Prop_AbsorbDamage extends Property
 					}
 				}
 			}
-			
+
 			if((x<0)&&(msg.tool() instanceof Ability))
 			{
 				int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES;
@@ -120,7 +119,7 @@ public class Prop_AbsorbDamage extends Property
 					break;
 				}
 			}
-			if(immune>0) 
+			if(immune>0)
 			{
 				int lastNumber=-1;
 				x=0;

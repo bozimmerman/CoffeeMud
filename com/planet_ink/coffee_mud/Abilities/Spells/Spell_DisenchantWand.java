@@ -10,7 +10,6 @@ public class Spell_DisenchantWand extends Spell
 	public String ID() { return "Spell_DisenchantWand"; }
 	public String name(){return "Disenchant Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_DisenchantWand();	}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

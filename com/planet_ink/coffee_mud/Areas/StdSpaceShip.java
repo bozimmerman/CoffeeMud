@@ -115,7 +115,17 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void setSubOpList(String list){}
 	public void addSubOp(String username){}
 	public void delSubOp(String username){}
-	public Environmental newInstance(){	return new StdSpaceShip();}
+	public Environmental newInstance()
+	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdSpaceShip();
+	}
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdSpaceShip E)
 	{

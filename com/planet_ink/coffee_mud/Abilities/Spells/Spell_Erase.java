@@ -10,7 +10,6 @@ public class Spell_Erase extends Spell
 	public String ID() { return "Spell_Erase"; }
 	public String name(){return "Erase Scroll";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Erase();}
 	public int classificationCode() {	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

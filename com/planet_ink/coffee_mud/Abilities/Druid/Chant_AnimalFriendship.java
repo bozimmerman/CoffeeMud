@@ -10,7 +10,6 @@ public class Chant_AnimalFriendship extends Chant
 	public String ID() { return "Chant_AnimalFriendship"; }
 	public String name(){ return "Animal Friendship";}
 	public String displayText(){return "(Animal Friendship)";}
-	public Environmental newInstance()	{	return new Chant_AnimalFriendship();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

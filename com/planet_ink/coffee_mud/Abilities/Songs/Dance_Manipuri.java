@@ -11,7 +11,6 @@ public class Dance_Manipuri extends Dance
 	public String ID() { return "Dance_Manipuri"; }
 	public String name(){ return "Manipuri";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Manipuri();}
 	private int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 	private int increment=1;

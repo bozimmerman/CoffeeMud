@@ -13,7 +13,6 @@ public class Spell_LowerResists extends Spell
 	public String displayText(){return "(Lowered Resistances)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_LowerResists();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	int amount=0;

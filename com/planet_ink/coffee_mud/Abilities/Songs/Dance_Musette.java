@@ -11,9 +11,8 @@ public class Dance_Musette extends Dance
 	public String ID() { return "Dance_Musette"; }
 	public String name(){ return "Musette";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Dance_Musette();}
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

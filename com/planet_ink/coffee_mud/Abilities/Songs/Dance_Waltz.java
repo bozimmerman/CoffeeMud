@@ -11,9 +11,8 @@ public class Dance_Waltz extends Dance
 	public String ID() { return "Dance_Waltz"; }
 	public String name(){ return "Waltz";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Waltz();}
 	private int[] statadd=null;
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -23,7 +22,7 @@ public class Dance_Waltz extends Dance
 			int classLevel=CMAble.qualifyingClassLevel(invoker(),this);
 			classLevel=(classLevel+1)/9;
 			classLevel++;
-			
+
 			for(int i=0;i<classLevel;i++)
 				statadd[Dice.roll(1,CharStats.NUM_BASE_STATS,-1)]+=3;
 		}

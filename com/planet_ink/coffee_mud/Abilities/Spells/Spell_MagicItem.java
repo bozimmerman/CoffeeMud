@@ -11,7 +11,6 @@ public class Spell_MagicItem extends Spell
 	public String ID() { return "Spell_MagicItem"; }
 	public String name(){return "Magic Item";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_MagicItem();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

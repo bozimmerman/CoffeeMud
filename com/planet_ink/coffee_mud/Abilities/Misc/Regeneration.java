@@ -22,7 +22,6 @@ public class Regeneration extends StdAbility
 	private static final String[] triggerStrings = {"REGENERATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Regeneration();}
 	public int classificationCode(){return Ability.SKILL;}
 	private int permanentDamage=0;
 

@@ -13,7 +13,6 @@ public class Prayer_Revival extends Prayer
 	public String displayText(){return "(Revival)";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Prayer_Revival();}
 
 	public void unInvoke()
 	{
@@ -26,7 +25,7 @@ public class Prayer_Revival extends Prayer
 		super.unInvoke();
 
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -72,12 +71,12 @@ public class Prayer_Revival extends Prayer
 					{
 						MOB M=(MOB)clerics.elementAt(Dice.roll(1,clerics.size(),-1));
 						if(M!=mob)
-							CommonMsgs.say(mob,null,"Preach it "+M.name()+"!",false,false); 
+							CommonMsgs.say(mob,null,"Preach it "+M.name()+"!",false,false);
 						else
-							CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false); 
+							CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false);
 					}
 					else
-						CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false); 
+						CommonMsgs.say(mob,null,"I LOVE "+D.name()+"!",false,false);
 					break;
 			case 8:	CommonMsgs.say(mob,null,"Holy is the name of "+D.name()+"!",false,false); break;
 			case 9:	CommonMsgs.say(mob,null,"Do you BELIEVE?!? I BELIEVE!!!",false,false); break;
@@ -103,7 +102,7 @@ public class Prayer_Revival extends Prayer
 					if(M.getWorshipCharID().length()==0)
 					{
 						Ability A=CMClass.getAbility("Prayer_UndeniableFaith");
-						if(A!=null) 
+						if(A!=null)
 							if(A.invoke(mob,M,true))
 							{
 								if(M.getWorshipCharID().equals(mob.getWorshipCharID()))

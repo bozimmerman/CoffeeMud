@@ -14,7 +14,6 @@ public class Thief_Surrender extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"SURRENDER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Surrender();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -17,7 +17,6 @@ public class Undead_LifeDrain extends StdAbility
 	private static final String[] triggerStrings = {"DRAINLIFE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Undead_LifeDrain();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

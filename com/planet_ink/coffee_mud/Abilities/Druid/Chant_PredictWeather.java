@@ -12,7 +12,6 @@ public class Chant_PredictWeather extends Chant
 	public String name(){ return "Predict Weather";}
 	public String displayText(){return "(Predict Weather)";}
 	String lastPrediction="";
-	public Environmental newInstance(){	return new Chant_PredictWeather();}
 
 	public void unInvoke()
 	{

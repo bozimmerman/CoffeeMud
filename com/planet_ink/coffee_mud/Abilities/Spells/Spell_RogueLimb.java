@@ -12,7 +12,6 @@ public class Spell_RogueLimb extends Spell
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_RogueLimb();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public MOB rogueLimb=null;

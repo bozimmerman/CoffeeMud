@@ -11,7 +11,6 @@ public class Dance_Swing extends Dance
 	public String ID() { return "Dance_Swing"; }
 	public String name(){ return "Swing";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Swing();}
 	private boolean doneThisRound=false;
 	protected String danceOf(){return name()+" Dancing";}
 

@@ -13,7 +13,6 @@ public class Spell_DetectGold extends Spell
 	public String displayText(){return "(Detecting Gold)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectGold();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	Room lastRoom=null;
@@ -177,7 +176,7 @@ public class Spell_DetectGold extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting golden things.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

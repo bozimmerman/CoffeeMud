@@ -15,7 +15,6 @@ public class Paladin_HealingHands extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Paladin_HealingHands();}
 	protected long lastDone=0;
 	public long flags(){return Ability.FLAG_HEALING;}
 

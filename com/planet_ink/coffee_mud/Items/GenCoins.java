@@ -18,10 +18,6 @@ public class GenCoins extends GenItem implements Coins
 		setDescription("");
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenCoins();
-	}
 
 	public int numberOfCoins(){return envStats().ability();}
 	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}

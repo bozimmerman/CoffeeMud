@@ -14,7 +14,6 @@ public class Prayer_SunCurse extends Prayer
 	public String displayText(){ return "(Sun Curse)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_SunCurse();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

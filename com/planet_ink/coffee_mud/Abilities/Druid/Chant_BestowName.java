@@ -13,7 +13,6 @@ public class Chant_BestowName extends Chant
 	public String displayText(){return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_BestowName();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
@@ -25,7 +24,7 @@ public class Chant_BestowName extends Chant
 			affected.delEffect(affected.fetchEffect(ID()));
 			affectedStats.setName(null);
 		}
-		else							   
+		else
 		if((text().length()>0))
 			affectedStats.setName(text());
 	}
@@ -49,7 +48,7 @@ public class Chant_BestowName extends Chant
 			mob.tell("Your name may not contain a space.");
 			return false;
 		}
-		
+
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		if((!Sense.isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet()).contains(target)))
@@ -57,7 +56,7 @@ public class Chant_BestowName extends Chant
 			mob.tell("This chant only works on non-player animals in your group.");
 			return false;
 		}
-		
+
 		if((target.name().toUpperCase().startsWith("A "))
 		||(target.name().toUpperCase().startsWith("AN "))
 		||(target.name().toUpperCase().startsWith("SOME ")))
@@ -65,7 +64,7 @@ public class Chant_BestowName extends Chant
 		else
 		if(target.name().indexOf(" ")>=0)
 			myName=myName+", "+target.name();
-			
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

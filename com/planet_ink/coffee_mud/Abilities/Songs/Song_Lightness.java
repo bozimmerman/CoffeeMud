@@ -11,7 +11,6 @@ public class Song_Lightness extends Song
 	public String ID() { return "Song_Lightness"; }
 	public String name(){ return "Lightness";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Song_Lightness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

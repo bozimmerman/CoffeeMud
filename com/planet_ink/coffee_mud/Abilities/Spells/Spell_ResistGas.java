@@ -13,7 +13,6 @@ public class Spell_ResistGas extends Spell
 	public String displayText(){return "(Resist Gas)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Spell_ResistGas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

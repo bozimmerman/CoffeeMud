@@ -17,8 +17,7 @@ public class Prop_RideAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
-	
-	public Environmental newInstance(){	Prop_RideAdjuster BOB=new Prop_RideAdjuster();	BOB.setMiscText(text()); return BOB;}
+
 
 	public String accountForYourself()
 	{

@@ -11,7 +11,6 @@ public class Song_Friendship extends Song
 	public String ID() { return "Song_Friendship"; }
 	public String name(){ return "Friendship";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Song_Friendship();}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 

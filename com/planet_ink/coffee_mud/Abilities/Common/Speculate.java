@@ -21,7 +21,6 @@ public class Speculate extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Speculate();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

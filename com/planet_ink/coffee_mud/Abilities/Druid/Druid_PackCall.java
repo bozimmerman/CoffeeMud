@@ -17,7 +17,6 @@ public class Druid_PackCall extends StdAbility
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Druid_PackCall();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -20,10 +20,7 @@ public class ActiveTicker extends StdBehavior
 		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
 	}
 
-	public Behavior newInstance()
-	{
-		return new ActiveTicker();
-	}
+
 
 	public void setParms(String newParms)
 	{

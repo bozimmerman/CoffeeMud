@@ -17,7 +17,6 @@ public class Skill_WildernessLore extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
-	public Environmental newInstance(){	return new Skill_WildernessLore();}
 	public int usageType(){return USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

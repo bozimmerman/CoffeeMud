@@ -13,7 +13,6 @@ public class Trap_DeepPit extends Trap_RoomPit
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 14;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_DeepPit();}
 
 	public void finishSpringing(MOB target)
 	{

@@ -26,7 +26,6 @@ public class Taxidermy extends CraftingSkill
 					CMAble.addCharAbilityMapping("All",20,ID(),false);
 		}
 	}
-	public Environmental newInstance(){	return new Taxidermy();}
 
 	public void unInvoke()
 	{
@@ -68,7 +67,7 @@ public class Taxidermy extends CraftingSkill
 				}
 				if(s.length()==0)
 					header=true;
-				else 
+				else
 				{
 					V2.addElement(s);
 					header=false;
@@ -113,7 +112,7 @@ public class Taxidermy extends CraftingSkill
 				}
 			}
 		}
-		
+
 		verb="stuffing";
 		String str=Util.combine(commands,0);
 		Item I=mob.location().fetchItem(null,str);

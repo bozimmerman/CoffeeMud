@@ -12,7 +12,6 @@ public class Spell_Weaken extends Spell
 	public String displayText(){return "(Weaken spell)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Weaken();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

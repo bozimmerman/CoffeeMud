@@ -14,7 +14,6 @@ public class Thief_Listen extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"LISTEN"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Listen();	}
 
 	private Room sourceRoom=null;
 	private Room room=null;

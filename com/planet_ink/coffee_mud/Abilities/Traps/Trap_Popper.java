@@ -13,7 +13,6 @@ public class Trap_Popper extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_Popper();}
 
 	public void spring(MOB target)
 	{

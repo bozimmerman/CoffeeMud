@@ -12,10 +12,7 @@ public class ArchonSkill extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	
-	public Environmental newInstance()
-	{ return new ArchonSkill();	}
-	
+
 	public int classificationCode()
 	{ return Ability.SKILL;	}
 

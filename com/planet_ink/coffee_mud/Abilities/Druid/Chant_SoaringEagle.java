@@ -12,7 +12,6 @@ public class Chant_SoaringEagle extends Chant
 	public String displayText(){return "(Soaring Eagle)";}
 	public int quality(){ return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_SoaringEagle();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

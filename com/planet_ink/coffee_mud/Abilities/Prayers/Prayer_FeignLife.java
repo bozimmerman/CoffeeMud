@@ -14,7 +14,6 @@ public class Prayer_FeignLife extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_FeignLife();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

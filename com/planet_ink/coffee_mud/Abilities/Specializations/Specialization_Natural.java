@@ -16,7 +16,6 @@ public class Specialization_Natural extends Specialization_Weapon
 		weaponType=Weapon.CLASS_NATURAL;
 	}
 
-	public Environmental newInstance(){	return new Specialization_Natural();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

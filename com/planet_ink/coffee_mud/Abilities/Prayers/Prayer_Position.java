@@ -12,7 +12,6 @@ public class Prayer_Position extends Prayer
 	public String name(){ return "Position";}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int quality(){return Ability.INDIFFERENT;}
-	public Environmental newInstance(){	return new Prayer_Position();}
 	public Room lastPosition=null;
 
 	private int getRoomDirection(Room R, Room toRoom, Vector ignore)
@@ -97,7 +96,7 @@ public class Prayer_Position extends Prayer
 			theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString());
 		return theTrail.toString();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(lastPosition==null) lastPosition=mob.getStartRoom();

@@ -15,7 +15,6 @@ public class Falling extends StdAbility
 	boolean temporarilyDisable=false;
 	public Room room=null;
 	int damageToTake=0;
-	public Environmental newInstance(){	return new Falling();}
 
 	private boolean reversed(){return profficiency()==100;}
 

@@ -14,7 +14,6 @@ public class Prayer_DrunkenStupor extends Prayer
 	public String displayText(){ return "(Drunken Stupod)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_DrunkenStupor();}
 	public Ability inebriation=null;
 
 	private Ability getInebriation()

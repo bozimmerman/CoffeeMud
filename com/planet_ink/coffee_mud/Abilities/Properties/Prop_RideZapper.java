@@ -10,7 +10,6 @@ public class Prop_RideZapper extends Property
 	public String ID() { return "Prop_RideZapper"; }
 	public String name(){ return "Restrictions to riding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	Prop_RideZapper BOB=new Prop_RideZapper();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

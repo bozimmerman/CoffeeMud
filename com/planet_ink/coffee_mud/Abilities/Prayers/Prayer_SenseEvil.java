@@ -14,7 +14,6 @@ public class Prayer_SenseEvil extends Prayer
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_SenseEvil();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

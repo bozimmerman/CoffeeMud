@@ -14,7 +14,6 @@ public class Spell_Advancement extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Spell_Advancement();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -12,7 +12,6 @@ public class Spell_Invisibility extends Spell
 	public String displayText(){return "(Invisibility spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Invisibility();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	/** this method defines how this thing responds

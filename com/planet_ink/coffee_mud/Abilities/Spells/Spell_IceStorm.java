@@ -12,7 +12,6 @@ public class Spell_IceStorm extends Spell
 	public int maxRange(){return 5;}
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_IceStorm();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

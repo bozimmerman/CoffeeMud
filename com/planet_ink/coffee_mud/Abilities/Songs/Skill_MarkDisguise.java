@@ -10,7 +10,6 @@ public class Skill_MarkDisguise extends Skill_Disguise
 {
 	public String ID() { return "Skill_MarkDisguise"; }
 	public String name(){ return "Mark Disguise";}
-	public Environmental newInstance(){	return new Skill_MarkDisguise();}
 	private static final String[] triggerStrings = {"MARKDISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public MOB mark=null;
@@ -63,7 +62,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 				return false;
 			}
 		}
-		
+
 		mark=target;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

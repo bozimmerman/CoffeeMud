@@ -14,7 +14,6 @@ public class Prayer_AuraHeal extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
-	public Environmental newInstance(){	return new Prayer_AuraHeal();	}
 	private int tickDown=4;
 
 	public void unInvoke()
@@ -37,7 +36,7 @@ public class Prayer_AuraHeal extends Prayer
 
 		if((--tickDown)>=0) return super.tick(ticking,tickID);
 		tickDown=4;
-		
+
 		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))
 		{

@@ -12,7 +12,6 @@ public class Prayer_Disenchant extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_Disenchant();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

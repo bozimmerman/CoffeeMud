@@ -13,7 +13,6 @@ public class Chant_CloudWalk extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_CloudWalk();}
 
 	public void unInvoke()
 	{

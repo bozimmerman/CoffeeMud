@@ -11,7 +11,6 @@ public class Spell_RechargeWand extends Spell
 	public String name(){return "Recharge Wand";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Spell_RechargeWand();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 

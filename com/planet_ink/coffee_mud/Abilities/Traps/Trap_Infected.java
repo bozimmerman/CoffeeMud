@@ -13,7 +13,6 @@ public class Trap_Infected extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 13;}
 	public String requiresToSet(){return "some diseased food";}
-	public Environmental newInstance(){	return new Trap_Infected();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

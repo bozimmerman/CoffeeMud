@@ -10,7 +10,6 @@ public class Spell_Fear extends Spell
 	public String name(){return "Fear";}
 	public String displayText(){return "(Afraid)";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_Fear();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

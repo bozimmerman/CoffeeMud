@@ -10,7 +10,6 @@ public class Prop_WearZapper extends Property
 	public String ID() { return "Prop_WearZapper"; }
 	public String name(){ return "Restrictions to wielding/wearing/holding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_WearZapper BOB=new Prop_WearZapper();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

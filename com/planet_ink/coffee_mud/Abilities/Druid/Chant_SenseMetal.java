@@ -13,7 +13,6 @@ public class Chant_SenseMetal extends Chant
 	public String displayText(){return "(Sensing Metal)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_SenseMetal();}
 
 	public void unInvoke()
 	{
@@ -24,7 +23,7 @@ public class Chant_SenseMetal extends Chant
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer tuned to metals.");
 	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((msg.source()==affected)
@@ -36,7 +35,7 @@ public class Chant_SenseMetal extends Chant
 			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"You sense metals strongly in the earth here.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(host,msg);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

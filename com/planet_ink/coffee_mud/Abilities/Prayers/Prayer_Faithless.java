@@ -11,7 +11,6 @@ public class Prayer_Faithless extends Prayer
 	public String name(){ return "Faithless";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Faithless();}
 	protected int overrideMana(){return 100;}
 	private String godName="";
 
@@ -37,7 +36,7 @@ public class Prayer_Faithless extends Prayer
 		if(levelDiff<0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
 		Deity D=null;
-		if(target.getWorshipCharID().length()>0) 
+		if(target.getWorshipCharID().length()>0)
 			D=CMMap.getDeity(target.getWorshipCharID());
 		int type=affectType(auto);
 		int mal=CMMsg.MASK_MALICIOUS;

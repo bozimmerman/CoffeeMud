@@ -12,7 +12,6 @@ public class Spell_SlowProjectiles extends Spell
 	public String displayText(){return "(Slow Projectiles)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Spell_SlowProjectiles();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

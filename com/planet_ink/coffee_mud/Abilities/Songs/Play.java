@@ -35,7 +35,6 @@ public class Play extends StdAbility
 		return affectType;
 	}
 
-	public Environmental newInstance(){	return new Play();}
 	public String instrumentName(){
 		if(instrument!=null) return instrument.name();
 		return "something";

@@ -13,7 +13,6 @@ public class Spell_AddLimb extends Spell
 	public int quality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_AddLimb();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public Item itemRef=null;
 	public long wornRef=0;

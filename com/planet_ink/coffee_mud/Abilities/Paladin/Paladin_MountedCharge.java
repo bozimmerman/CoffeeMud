@@ -14,7 +14,6 @@ public class Paladin_MountedCharge extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Paladin_MountedCharge();}
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
@@ -58,7 +57,7 @@ public class Paladin_MountedCharge extends StdAbility
 			mob.tell("You can not charge while in melee!");
 			return false;
 		}
-		
+
 		if(mob.riding()==null)
 		{
 			mob.tell("You must be mounted to use this skill.");

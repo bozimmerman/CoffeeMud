@@ -10,6 +10,5 @@ public class Skill_Chantcraft extends Skill_Songcraft
 {
 	public String ID() { return "Skill_Chantcraft"; }
 	public String name(){ return "Chantcraft";}
-	public Environmental newInstance(){	return new Skill_Chantcraft();}
 	public int craftType(){return Ability.CHANT;}
 }

@@ -15,12 +15,11 @@ public class Archon_Multiwatch extends ArchonSkill
 	private static final String[] triggerStrings = {"MULTIWATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Archon_Multiwatch();}
 	public int usageType(){return USAGE_MOVEMENT;}
-	
+
 	public static Hashtable DATA=new Hashtable();
 	public static Hashtable IPS=new Hashtable();
-	
+
 	public static final int DATA_GOODSPEECH=0;
 	public static final int DATA_ANYSPEECH=1;
 	public static final int DATA_DIRSPEECH=2;
@@ -30,11 +29,11 @@ public class Archon_Multiwatch extends ArchonSkill
 	public static final int DATA_TYPEDCOMMAND=6;
 	public static final int DATA_SYNCHROFOUND=7;
 	public static final int DATA_ORDER=8;
-	
+
 	public static final int DATA_TOTAL=10;
 
 	public String lastCommand=null;
-	
+
 	public boolean nonIPnonMonsterWithMe(MOB me)
 	{
 		if((me.location()!=null)&&(me.session()!=null))
@@ -44,15 +43,15 @@ public class Archon_Multiwatch extends ArchonSkill
 			{
 				MOB M=R.fetchInhabitant(i);
 				if((M==null)||(M==me)) continue;
-				
+
 				if((M.session()!=null)&&(M.session().getAddress().equals(me.session().getAddress())))
 					return true;
 			}
 		}
 		return false;
 	}
-	
-	
+
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -62,7 +61,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			if(!DATA.containsKey(msg.source()))
 				DATA.put(msg.source(),new int[DATA_TOTAL]);
 			int[] data=(int[])DATA.get(msg.source());
-			
+
 			if(data==null) return;
 			if(msg.tool() instanceof Social)
 			{
@@ -105,7 +104,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		}
 	}
 
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -125,7 +124,7 @@ public class Archon_Multiwatch extends ArchonSkill
 					Vector V=null;
 					if(mob.session().getAddress()!=null)
 						V=(Vector)IPS.get(mob.session().getAddress());
-					
+
 					if(V!=null)
 					for(int v=0;v<V.size();v++)
 					{
@@ -148,7 +147,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(Util.combine(commands,0).equalsIgnoreCase("auto"))
@@ -282,7 +281,7 @@ public class Archon_Multiwatch extends ArchonSkill
 				}
 				report.append("\n\r");
 			}
-					
+
 			mob.tell(report.toString());
 			return true;
 		}
@@ -291,7 +290,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			mob.tell("Try MULTIWATCH AUTO, MULTIWATCH STOP, or MULTIWATCH ADD name1 name2..");
 			return false;
 		}
-		
+
 	}
 
 }

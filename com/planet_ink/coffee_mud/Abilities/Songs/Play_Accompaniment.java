@@ -12,7 +12,6 @@ public class Play_Accompaniment extends Play
 	public String ID() { return "Play_Accompaniment"; }
 	public String name(){ return "Accompaniment";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Accompaniment();}
 
 	public void affectEnvStats(Environmental E, EnvStats stats)
 	{

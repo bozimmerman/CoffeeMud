@@ -14,7 +14,6 @@ public class Thief_FrameMark extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"FRAME"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_FrameMark();}
 	protected int overrideMana(){return 50;}
 
 	public MOB getMark(MOB mob)

@@ -13,7 +13,6 @@ public class Trap_Snare extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "5 pounds of cloth";}
-	public Environmental newInstance(){	return new Trap_Snare();}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{

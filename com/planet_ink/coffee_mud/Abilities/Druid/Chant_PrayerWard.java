@@ -12,7 +12,6 @@ public class Chant_PrayerWard extends Chant
 	public String displayText(){return "(Prayer Ward)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_PrayerWard();}
 
 	public void unInvoke()
 	{

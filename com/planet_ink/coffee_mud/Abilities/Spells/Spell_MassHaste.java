@@ -12,7 +12,6 @@ public class Spell_MassHaste extends Spell
 	public String displayText(){return "";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_MassHaste();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -15,7 +15,6 @@ public class Fighter_Berzerk extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Fighter_Berzerk();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public int hpAdjustment=0;

@@ -13,7 +13,6 @@ public class Trap_WeaponSwing extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 9;}
 	public String requiresToSet(){return "a melee weapon";}
-	public Environmental newInstance(){	return new Trap_WeaponSwing();}
 
 	private Item getPoison(MOB mob)
 	{

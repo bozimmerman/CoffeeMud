@@ -11,7 +11,6 @@ public class Prayer_CureDisease extends Prayer
 	public String name(){ return "Cure Disease";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_CureDisease();}
 
 	public static Vector returnOffensiveAffects(Environmental fromMe)
 	{

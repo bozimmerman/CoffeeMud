@@ -73,7 +73,7 @@ public class StdExit implements Exit
 		{
 			Log.errOut(ID(),e);
 		}
-		return new StdItem();
+		return new StdExit();
 	}
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit E)

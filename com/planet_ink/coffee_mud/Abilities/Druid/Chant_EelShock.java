@@ -14,7 +14,6 @@ public class Chant_EelShock extends Chant
 	public int maxRange() {return 3;}
 	public int minRange() {return 0;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_EelShock();}
 
 	public void unInvoke()
 	{

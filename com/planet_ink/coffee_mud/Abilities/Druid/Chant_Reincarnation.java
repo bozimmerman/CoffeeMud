@@ -12,7 +12,6 @@ public class Chant_Reincarnation extends Chant
 	public String name(){ return "Reincarnation";}
 	public String displayText(){return "(Reincarnation Geas)";}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Chant_Reincarnation();}
 	public boolean canBeUninvoked(){return false;}
 	protected int overrideMana(){return 200;}
 
@@ -65,7 +64,7 @@ public class Chant_Reincarnation extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean isGolem(Race R)
 	{
 		MOB M=(MOB)CMClass.sampleMOB().copyOf();

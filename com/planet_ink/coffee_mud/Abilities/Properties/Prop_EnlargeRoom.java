@@ -10,12 +10,10 @@ public class Prop_EnlargeRoom extends Property
 	public String ID() { return "Prop_EnlargeRoom"; }
 	public String name(){ return "Change a rooms movement requirements";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance()
-	{	Prop_EnlargeRoom newOne=new Prop_EnlargeRoom(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "Enlarged";	}
-	
+
 	private double dval(String s)
 	{
 		if(s.indexOf(".")>=0)

@@ -10,9 +10,8 @@ public class Play_Instrument extends Play
 	public String ID() { return "Play_Instrument"; }
 	public String name(){ return "Instruments";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_WOODS;}
-	public Environmental newInstance(){	return new Play_Instrument();}
 	public String mimicSpell(){return "";}
-	
+
 	protected void inpersistantAffect(MOB mob)
 	{
 		if((getSpell()!=null)
@@ -23,8 +22,8 @@ public class Play_Instrument extends Play
 			((Ability)getSpell().copyOf()).invoke(invoker(),chcommands,null,true);
 		}
 	}
-	
-		
+
+
 	protected String songOf()
 	{
 		if(instrument!=null)

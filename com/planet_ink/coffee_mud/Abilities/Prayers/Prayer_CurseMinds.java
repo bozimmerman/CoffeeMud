@@ -12,7 +12,6 @@ public class Prayer_CurseMinds extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	public String displayText(){ return "(Cursed Mind)";}
-	public Environmental newInstance(){	return new Prayer_CurseMinds();}
 
 	boolean notAgain=false;
 

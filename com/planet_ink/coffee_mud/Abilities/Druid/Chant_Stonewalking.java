@@ -12,7 +12,6 @@ public class Chant_Stonewalking extends Chant
 	public String displayText(){return "(Stonewalking spell)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Stonewalking();}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

@@ -51,10 +51,7 @@ public class MovingRoom extends ActiveTicker
 		tickReset();
 	}
 
-	public Behavior newInstance()
-	{
-		return new MovingRoom();
-	}
+
 
 	public void setParms(String newParms)
 	{

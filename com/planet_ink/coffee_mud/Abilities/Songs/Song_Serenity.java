@@ -11,7 +11,6 @@ public class Song_Serenity extends Song
 	public String ID() { return "Song_Serenity"; }
 	public String name(){ return "Serenity";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Song_Serenity();	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -11,5 +11,4 @@ public class Trap_EnterBlade extends Trap_Enter
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_PIT_BLADE;}
-	public Environmental newInstance(){	return new Trap_EnterBlade();}
 }

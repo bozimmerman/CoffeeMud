@@ -14,7 +14,6 @@ public class Prayer_Behemoth extends Prayer
 	public String displayText(){return "(Behemoth)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_Behemoth();}
 
 
 	public void unInvoke()

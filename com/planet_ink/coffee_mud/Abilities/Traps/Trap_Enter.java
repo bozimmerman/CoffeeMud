@@ -10,7 +10,6 @@ public class Trap_Enter extends Trap_Trap
 	public String name(){ return "Entry Trap";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Trap_Enter();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

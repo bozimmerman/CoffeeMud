@@ -11,7 +11,6 @@ public class Prayer_RestoreVoice extends Prayer
 	public String name(){ return "Restore Voice";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_RestoreVoice();}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{

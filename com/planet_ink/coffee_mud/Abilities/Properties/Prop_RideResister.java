@@ -12,7 +12,6 @@ public class Prop_RideResister extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private CharStats adjCharStats=null;
 
-	public Environmental newInstance(){	Prop_RideResister BOB=new Prop_RideResister();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

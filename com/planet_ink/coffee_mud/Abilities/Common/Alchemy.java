@@ -31,7 +31,6 @@ public class Alchemy extends CraftingSkill
 					CMAble.addCharAbilityMapping("Bard",10,ID(),false);
 					CMAble.addCharAbilityMapping("Cleric",1,ID(),false);}
 	}
-	public Environmental newInstance(){ return new Alchemy();	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -16,7 +16,6 @@ public class Skill_Buffoonery extends BardSkill
 	private static final String[] triggerStrings = {"BUFFOONERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Buffoonery();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 

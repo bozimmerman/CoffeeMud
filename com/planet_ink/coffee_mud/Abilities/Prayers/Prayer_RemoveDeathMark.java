@@ -13,7 +13,6 @@ public class Prayer_RemoveDeathMark extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_RemoveDeathMark();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -36,7 +35,7 @@ public class Prayer_RemoveDeathMark extends Prayer
 			{
 				E=M.fetchEffect("Thief_Mark");
 				if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
-					remove.put(E,M);			
+					remove.put(E,M);
 			}
 		}
 
@@ -57,7 +56,7 @@ public class Prayer_RemoveDeathMark extends Prayer
 					A.unInvoke();
 					M.delEffect(A);
 				}
-					
+
 			}
 		}
 		else

@@ -14,7 +14,6 @@ public class Prayer_UnholyWord extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
-	public Environmental newInstance(){	return new Prayer_UnholyWord();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

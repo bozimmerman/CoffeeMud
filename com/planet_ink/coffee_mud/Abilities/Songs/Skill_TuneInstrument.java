@@ -16,7 +16,6 @@ public class Skill_TuneInstrument extends BardSkill
 	private static final String[] triggerStrings = {"TUNEINSTRUMENT","TUNE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_TuneInstrument();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -7,10 +7,6 @@ import java.util.*;
 public class StdPlanet extends StdArea implements SpaceObject
 {
 	public String ID(){	return "StdPlanet";}
-	public Environmental newInstance()
-	{
-		return new StdPlanet();
-	}
 	public Environmental copyOf()
 	{
 		try

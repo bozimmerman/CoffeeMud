@@ -23,7 +23,6 @@ public class Skill_HandCuff extends StdAbility
 	public int amountRemaining=0;
 	public boolean oldAssist=false;
 
-	public Environmental newInstance(){	return new Skill_HandCuff();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

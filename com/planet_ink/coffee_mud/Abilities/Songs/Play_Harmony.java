@@ -12,9 +12,8 @@ public class Play_Harmony extends Play
 	public String name(){ return "Harmony";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Play_Harmony();}
 	protected boolean persistantSong(){return false;}
-	
+
 	protected void inpersistantAffect(MOB mob)
 	{
 		if(mob.getVictim()!=null)
@@ -22,4 +21,3 @@ public class Play_Harmony extends Play
 		mob.makePeace();
 	}
 }
-	

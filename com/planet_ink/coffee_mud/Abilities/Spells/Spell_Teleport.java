@@ -10,7 +10,6 @@ public class Spell_Teleport extends Spell
 	public String ID() { return "Spell_Teleport"; }
 	public String name(){return "Teleport";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){return new Spell_Teleport();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
@@ -48,7 +47,7 @@ public class Spell_Teleport extends Spell
 			mob.tell("You need to stand up!");
 			return false;
 		}
-		
+
 		Room newRoom=null;
 		int tries=0;
 		while((tries<20)&&(newRoom==null))

@@ -12,7 +12,6 @@ public class Chant_GasWard extends Chant
 	public String name(){ return "Gas Ward";}
 	public String displayText(){return "(Gas Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_GasWard();}
 
 	public void unInvoke()
 	{

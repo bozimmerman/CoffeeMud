@@ -9,10 +9,7 @@ public class PuddleMaker extends StdBehavior
 {
 	public String ID(){return "PuddleMaker";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
-	public Behavior newInstance()
-	{
-		return new PuddleMaker();
-	}
+
 
 	public boolean coldWetWeather(int weather)
 	{

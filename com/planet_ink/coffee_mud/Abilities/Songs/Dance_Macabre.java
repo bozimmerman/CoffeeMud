@@ -11,9 +11,8 @@ public class Dance_Macabre extends Dance
 	public String ID() { return "Dance_Macabre"; }
 	public String name(){ return "Macabre";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Macabre();}
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	private boolean activated=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -34,7 +33,7 @@ public class Dance_Macabre extends Dance
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50);
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(Sense.isHidden(affected))

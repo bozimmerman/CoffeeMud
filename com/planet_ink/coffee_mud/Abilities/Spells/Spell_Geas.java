@@ -12,7 +12,6 @@ public class Spell_Geas extends Spell
 	public String displayText(){return "(Geas to "+text()+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
-	public Environmental newInstance(){	return new Spell_Geas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public EnglishParser.geasStep STEP=null;
 

@@ -11,7 +11,6 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	public String name(){ return "Summon Tree";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonTree();}
 	private int material=0;
 	private int oldMaterial=-1;
 

@@ -9,8 +9,6 @@ public class Prop_EnterAdjuster extends Property
 	public String ID() { return "Prop_EnterAdjuster"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	public Environmental newInstance()
-	{	Prop_EnterAdjuster newOne=new Prop_EnterAdjuster(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "Goodies for entry.";	}

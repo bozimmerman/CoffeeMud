@@ -11,11 +11,10 @@ public class Prop_ModExperience extends Property
 	public String ID() { return "Prop_ModExperience"; }
 	public String name(){ return "Modifying Experience Gained";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prop_ModExperience();}
 
 	public String accountForYourself()
 	{ return "";	}
-	
+
 
 	public int translateAmount(int amount, String val)
 	{
@@ -24,7 +23,7 @@ public class Prop_ModExperience extends Property
 		else
 			return Util.s_int(val);
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
@@ -50,7 +49,7 @@ public class Prop_ModExperience extends Property
 				&&(!MUDZapper.zapperCheck(mask,msg.source())))
 					return super.okMessage(myHost,msg);
 			}
-			
+
 			if(s.length()==0)
 				msg.setValue(0);
 			else

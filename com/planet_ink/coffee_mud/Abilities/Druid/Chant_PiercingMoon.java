@@ -13,7 +13,6 @@ public class Chant_PiercingMoon extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_PiercingMoon();}
 	public long flags(){return FLAG_MOONSUMMONING|FLAG_WEATHERAFFECTING;}
 
 	public void unInvoke()

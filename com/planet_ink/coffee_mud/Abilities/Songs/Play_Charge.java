@@ -12,16 +12,15 @@ public class Play_Charge extends Play
 	public String name(){ return "Charge!";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Play_Charge();}
 	protected boolean persistantSong(){return false;}
 	Vector chcommands=null;
-	
+
 	protected void inpersistantAffect(MOB mob)
 	{
 		Ability A=CMClass.getAbility("Fighter_Charge");
 		if(A!=null) A.invoke(mob,chcommands,null,true);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))
@@ -37,4 +36,3 @@ public class Play_Charge extends Play
 		return true;
 	}
 }
-	

@@ -9,7 +9,6 @@ public class Play_Harmonicas extends Play_Instrument
 	public String ID() { return "Play_Harmonicas"; }
 	public String name(){ return "Harmonicas";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_HARMONICAS;}
-	public Environmental newInstance(){	return new Play_Harmonicas();}
 	public String mimicSpell(){return "Spell_Awe";}
 	private static Ability theSpell=null;
 	protected Ability getSpell()

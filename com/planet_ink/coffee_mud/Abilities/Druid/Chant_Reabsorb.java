@@ -12,7 +12,6 @@ public class Chant_Reabsorb extends Chant
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Reabsorb();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -45,7 +44,7 @@ public class Chant_Reabsorb extends Chant
 			mob.tell("That magic won't work here.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -17,7 +17,6 @@ public class Skill_Meditation extends StdAbility
 	private static final String[] triggerStrings = {"MEDITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Meditation();}
 
 	public void unInvoke()
 	{

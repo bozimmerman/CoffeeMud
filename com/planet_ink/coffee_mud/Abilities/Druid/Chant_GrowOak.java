@@ -11,7 +11,6 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	public String name(){ return "Grow Oak";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_GrowOak();}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected int hpRemaining=0;
 	protected int lastHp=-1;

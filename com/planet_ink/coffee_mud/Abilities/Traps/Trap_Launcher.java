@@ -13,7 +13,6 @@ public class Trap_Launcher extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 6;}
 	public String requiresToSet(){return "a ranged weapon";}
-	public Environmental newInstance(){	return new Trap_Launcher();}
 
 	private Item getPoison(MOB mob)
 	{

@@ -11,7 +11,6 @@ public class Chant_AntTrain extends Chant
 	public String name(){return "Ant Train";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_AntTrain();}
 
 	boolean wasntMine=false;
 

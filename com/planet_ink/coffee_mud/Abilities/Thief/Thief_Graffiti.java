@@ -14,7 +14,6 @@ public class Thief_Graffiti extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"GRAFFITI"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Graffiti();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -27,7 +26,7 @@ public class Thief_Graffiti extends ThiefSkill
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))
 			target=(Room)givenTarget;
-		
+
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WOOD)
 		   &&(mob.location().domainType()!=Room.DOMAIN_INDOORS_STONE))
@@ -35,7 +34,7 @@ public class Thief_Graffiti extends ThiefSkill
 			mob.tell("You can't put graffiti here.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

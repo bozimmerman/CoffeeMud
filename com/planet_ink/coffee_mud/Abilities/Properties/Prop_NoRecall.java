@@ -10,7 +10,6 @@ public class Prop_NoRecall extends Property
 	public String ID() { return "Prop_NoRecall"; }
 	public String name(){ return "Recall Neuralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_NoRecall();	}
 
 	public String accountForYourself()
 	{ return "No Recall Field";	}

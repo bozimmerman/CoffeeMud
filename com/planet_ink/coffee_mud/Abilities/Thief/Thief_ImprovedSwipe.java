@@ -13,7 +13,6 @@ public class Thief_ImprovedSwipe extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Thief_ImprovedSwipe();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 

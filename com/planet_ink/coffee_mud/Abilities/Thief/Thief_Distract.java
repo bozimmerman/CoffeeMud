@@ -15,7 +15,6 @@ public class Thief_Distract extends ThiefSkill
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"DISTRACT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Distract();}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;
 

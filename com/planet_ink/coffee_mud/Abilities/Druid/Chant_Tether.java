@@ -13,11 +13,10 @@ public class Chant_Tether extends Chant
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_Tether();}
 	public Room tetheredTo=null;
 	public Room lastRoom=null;
 
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -27,7 +26,7 @@ public class Chant_Tether extends Chant
 			&&(lastRoom!=null))
 				tetheredTo=lastRoom;
 			lastRoom=mob.location();
-			
+
 			if(msg.amISource(mob)
 			&&(msg.target()==null)
 			&&(msg.tool()==null)
@@ -42,7 +41,7 @@ public class Chant_Tether extends Chant
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -55,7 +54,7 @@ public class Chant_Tether extends Chant
 		if(canBeUninvoked())
 			mob.tell("Your tether has left you.");
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

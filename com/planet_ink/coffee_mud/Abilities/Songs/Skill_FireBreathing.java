@@ -17,7 +17,6 @@ public class Skill_FireBreathing extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
-	public Environmental newInstance(){	return new Skill_FireBreathing();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

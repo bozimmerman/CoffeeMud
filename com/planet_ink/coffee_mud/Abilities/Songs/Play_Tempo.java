@@ -11,7 +11,6 @@ public class Play_Tempo extends Play
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Tempo();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

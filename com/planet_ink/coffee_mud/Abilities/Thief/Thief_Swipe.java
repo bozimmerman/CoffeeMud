@@ -14,7 +14,6 @@ public class Thief_Swipe extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"SWIPE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Swipe();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 

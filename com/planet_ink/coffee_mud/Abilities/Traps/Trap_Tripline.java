@@ -13,7 +13,6 @@ public class Trap_Tripline extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a pound of cloth";}
-	public Environmental newInstance(){	return new Trap_Tripline();}
 
 	public int baseRejuvTime(int level){return 2;}
 

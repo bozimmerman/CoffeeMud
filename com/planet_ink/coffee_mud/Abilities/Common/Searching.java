@@ -22,7 +22,6 @@ public class Searching extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Searching();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -15,7 +15,6 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DEATHTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_DeathTrap();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private boolean sprung=false;
 

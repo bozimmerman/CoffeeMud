@@ -24,6 +24,13 @@ public class StdBehavior implements Behavior
 	/** return a new instance of the object*/
 	public Behavior newInstance()
 	{
+		try{
+			return (Behavior)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
 		return new StdBehavior();
 	}
 	public Behavior copyOf()

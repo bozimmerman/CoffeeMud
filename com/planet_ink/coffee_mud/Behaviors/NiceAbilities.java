@@ -15,10 +15,7 @@ public class NiceAbilities extends ActiveTicker
 		tickReset();
 	}
 
-	public Behavior newInstance()
-	{
-		return new NiceAbilities();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -9,7 +9,6 @@ public class Play_Xylophones extends Play_Instrument
 	public String ID() { return "Play_Xylophones"; }
 	public String name(){ return "Xylophones";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_XYLOPHONES;}
-	public Environmental newInstance(){	return new Play_Xylophones();}
 	public String mimicSpell(){return "Spell_Slow";}
 	private static Ability theSpell=null;
 	protected Ability getSpell()

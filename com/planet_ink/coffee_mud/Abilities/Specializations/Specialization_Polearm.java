@@ -16,5 +16,4 @@ public class Specialization_Polearm extends Specialization_Weapon
 		weaponType=Weapon.CLASS_POLEARM;
 	}
 
-	public Environmental newInstance(){	return new Specialization_Polearm();	}
 }

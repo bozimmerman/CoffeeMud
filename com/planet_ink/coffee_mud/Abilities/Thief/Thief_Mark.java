@@ -16,7 +16,6 @@ public class Thief_Mark extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Thief_Mark();}
 	public int code=0;
 
 	public int abilityCode(){return code;}

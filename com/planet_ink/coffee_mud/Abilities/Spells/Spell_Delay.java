@@ -14,7 +14,6 @@ public class Spell_Delay extends Spell
 	protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
 	private Vector parameters=null;
-	public Environmental newInstance(){	return new Spell_Delay();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

@@ -11,7 +11,6 @@ public class Dance_Morris extends Dance
 	public String ID() { return "Dance_Morris"; }
 	public String name(){ return "Morris";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Dance_Morris();}
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -12,7 +12,6 @@ public class Chant_SpeedAging extends Chant
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public Environmental newInstance(){	return new Chant_SpeedAging();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

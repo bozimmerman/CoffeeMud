@@ -9,12 +9,11 @@ import java.io.File;
 public class MasterWeaponsmithing extends Weaponsmithing
 {
 	public String ID() { return "MasterWeaponsmithing"; }
-	public Environmental newInstance(){	return new MasterWeaponsmithing();}
 	public String name(){ return "Master Weaponsmithing";}
 	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private static boolean mapped2=false;
-	
+
 	public MasterWeaponsmithing()
 	{
 		if(!mapped2){mapped2=true;
@@ -53,8 +52,8 @@ public class MasterWeaponsmithing extends Weaponsmithing
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
@@ -68,5 +67,5 @@ public class MasterWeaponsmithing extends Weaponsmithing
 			commands.insertElementAt(new Integer(autoGenerate),0);
 		return super.invoke(mob,commands,givenTarget,auto);
 	}
-	
+
 }

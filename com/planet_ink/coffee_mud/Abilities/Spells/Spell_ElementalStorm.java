@@ -12,7 +12,6 @@ public class Spell_ElementalStorm extends Spell
 	public String displayText(){return "";}
 	public int maxRange(){return 1;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){return new Spell_ElementalStorm();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

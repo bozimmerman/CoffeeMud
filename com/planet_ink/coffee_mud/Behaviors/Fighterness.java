@@ -8,10 +8,7 @@ import java.util.*;
 public class Fighterness extends CombatAbilities
 {
 	public String ID(){return "Fighterness";}
-	public Behavior newInstance()
-	{
-		return new Fighterness();
-	}
+
 
 	public void startBehavior(Environmental forMe)
 	{

@@ -16,7 +16,6 @@ public class Spell_AcidFog extends Spell
 	public int minRange(){return 2;}
 	public int maxRange(){return 5;}
 	Room castingLocation=null;
-	public Environmental newInstance(){	return new Spell_AcidFog();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean tick(Tickable ticking, int tickID)

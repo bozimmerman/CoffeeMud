@@ -25,7 +25,6 @@ public class Spell extends StdAbility
 		return affectType;
 	}
 
-	public Environmental newInstance(){	return new Spell();}
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
 								   int tickAdjustmentFromStandard,

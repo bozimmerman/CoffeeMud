@@ -14,7 +14,6 @@ public class Prayer_Sanctuary extends Prayer
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_Sanctuary();}
 
 
 	public void unInvoke()

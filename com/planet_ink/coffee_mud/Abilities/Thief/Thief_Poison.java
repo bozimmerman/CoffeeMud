@@ -20,7 +20,6 @@ public class Thief_Poison extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"DOPOISON"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Poison();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

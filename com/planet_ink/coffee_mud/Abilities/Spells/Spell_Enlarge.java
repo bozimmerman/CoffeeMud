@@ -11,7 +11,6 @@ public class Spell_Enlarge extends Spell
 	public String name(){return "Enlarge Object";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
-	public Environmental newInstance(){	return new Spell_Enlarge();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

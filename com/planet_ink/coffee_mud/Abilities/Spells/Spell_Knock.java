@@ -11,7 +11,6 @@ public class Spell_Knock extends Spell
 	public String name(){return "Knock";}
 	public String displayText(){return "(Knock Spell)";}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
-	public Environmental newInstance(){	return new Spell_Knock();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

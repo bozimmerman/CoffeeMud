@@ -12,7 +12,6 @@ public class Chant_Camelback extends Chant
 	public String displayText(){return "(Camelback)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Camelback();}
 
 	public void affectCharState(MOB affected, CharState affectableMaxState)
 	{

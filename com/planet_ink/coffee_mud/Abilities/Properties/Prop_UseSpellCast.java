@@ -11,7 +11,6 @@ public class Prop_UseSpellCast extends Property
 	public String ID() { return "Prop_UseSpellCast"; }
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_UseSpellCast BOB=new Prop_UseSpellCast();	BOB.setMiscText(text()); return BOB;}
 
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{
@@ -29,7 +28,7 @@ public class Prop_UseSpellCast extends Property
 				{
 					int x=t.indexOf("/");
 					if(x<0)
-					{ 
+					{
 						V2=Util.parse(t);
 						A.setMiscText("");
 					}

@@ -10,7 +10,6 @@ public class Chant_MetalMold extends Chant
 	public String ID() { return "Chant_MetalMold"; }
 	public String name(){return "Metal Mold";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_MetalMold();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

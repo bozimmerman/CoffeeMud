@@ -14,7 +14,6 @@ public class Prayer_Wings extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_Wings();}
 
 
 	public void unInvoke()

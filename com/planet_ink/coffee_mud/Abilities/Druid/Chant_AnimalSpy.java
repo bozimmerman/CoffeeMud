@@ -13,7 +13,6 @@ public class Chant_AnimalSpy extends Chant
 	public int quality(){return Ability.OK_OTHERS;}
 	private MOB spy=null;
 	private boolean disable=false;
-	public Environmental newInstance()	{	return new Chant_AnimalSpy();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

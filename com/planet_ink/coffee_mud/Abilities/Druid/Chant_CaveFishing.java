@@ -12,13 +12,12 @@ public class Chant_CaveFishing extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_CaveFishing();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-			
+
 		Environmental waterSrc=null;
 		if((target.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 		||(target.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
@@ -46,7 +45,7 @@ public class Chant_CaveFishing extends Chant
 			mob.tell("This chant cannot be used outdoors.");
 			return false;
 		}
-			
+
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

@@ -12,7 +12,6 @@ public class Play_Mystical extends Play
 	public String ID() { return "Play_Mystical"; }
 	public String name(){ return "Mystical";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Mystical();}
 	protected String songOf(){return name()+" Music";}
 
 	public boolean tick(Tickable ticking, int tickID)

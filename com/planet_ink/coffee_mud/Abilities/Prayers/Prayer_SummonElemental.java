@@ -14,7 +14,6 @@ public class Prayer_SummonElemental extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_SummonElemental();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

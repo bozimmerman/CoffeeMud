@@ -12,7 +12,6 @@ public class Chant_ColdWard extends Chant
 	public String name(){ return "Cold Ward";}
 	public String displayText(){return "(Cold Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_ColdWard();}
 
 
 	public void unInvoke()

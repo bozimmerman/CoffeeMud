@@ -121,6 +121,13 @@ public class StdArea implements Area
 
 	public Environmental newInstance()
 	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
 		return new StdArea();
 	}
 	public boolean isGeneric(){return false;}

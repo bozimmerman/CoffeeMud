@@ -15,7 +15,6 @@ public class Chant_PlantSnare extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int amountRemaining=0;
-	public Environmental newInstance(){	return new Chant_PlantSnare();}
 	public long flags(){return Ability.FLAG_BINDING;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

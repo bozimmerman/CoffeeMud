@@ -14,7 +14,6 @@ public class StdTrap extends StdAbility implements Trap
 	protected int trapLevel(){return -1;}
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new StdTrap();}
 
 	public int baseRejuvTime(int level)
 	{

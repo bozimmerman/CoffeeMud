@@ -10,7 +10,6 @@ public class Spell_Clairevoyance extends Spell
 	public String name(){return "Clairevoyance";}
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Clairevoyance();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 	public static final DVector scries=new DVector(2);
 
@@ -114,7 +113,7 @@ public class Spell_Clairevoyance extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -12,7 +12,6 @@ public class Spell_MassSleep extends Spell
 	public String displayText(){return "";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_MassSleep();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -15,9 +15,8 @@ public class Thief_Panhandling extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"PANHANDLE","PANHANDLING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Panhandling();	}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+
 	Vector mobsHitUp=new Vector();
 	int tickTock=0;
 
@@ -101,7 +100,7 @@ public class Thief_Panhandling extends ThiefSkill
 						if(amount<1) amount=1;
 						mob2.enqueCommand(Util.parse("GIVE "+amount+" \""+mob.Name()+"\""),1);
 					}
-									   
+
 					mobsHitUp.addElement(mob2);
 					break;
 				}
@@ -111,7 +110,7 @@ public class Thief_Panhandling extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -124,7 +123,7 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell("You stop panhandling.");
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

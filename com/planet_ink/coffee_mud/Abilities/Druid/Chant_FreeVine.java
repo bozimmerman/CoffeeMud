@@ -13,7 +13,6 @@ public class Chant_FreeVine extends Chant
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_FreeVine();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

@@ -9,7 +9,7 @@ public class Draconic extends Language
 {
 	public String ID() { return "Draconic"; }
 	public String name(){ return "Draconic";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public Draconic()
 	{
@@ -17,10 +17,9 @@ public class Draconic extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Draconic();}
-	
+
 	public Vector translationVector()
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"y"};
@@ -37,6 +36,6 @@ public class Draconic extends Language
 			wordLists.addElement(five);
 			wordLists.addElement(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 }

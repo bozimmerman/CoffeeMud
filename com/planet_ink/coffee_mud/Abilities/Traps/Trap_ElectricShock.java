@@ -13,7 +13,6 @@ public class Trap_ElectricShock extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 19;}
 	public String requiresToSet(){return "10 pounds of metal";}
-	public Environmental newInstance(){	return new Trap_ElectricShock();}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{

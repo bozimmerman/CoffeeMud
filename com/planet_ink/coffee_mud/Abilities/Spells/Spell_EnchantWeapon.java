@@ -10,7 +10,6 @@ public class Spell_EnchantWeapon extends Spell
 	public String ID() { return "Spell_EnchantWeapon"; }
 	public String name(){return "Enchant Weapon";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_EnchantWeapon();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

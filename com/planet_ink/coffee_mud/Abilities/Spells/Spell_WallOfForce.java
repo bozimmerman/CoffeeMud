@@ -15,7 +15,6 @@ public class Spell_WallOfForce extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_WallOfForce();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	private Item theWall=null;

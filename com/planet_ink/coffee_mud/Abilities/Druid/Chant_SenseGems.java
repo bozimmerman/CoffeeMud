@@ -14,8 +14,7 @@ public class Chant_SenseGems extends Chant_SensePlants
 	public String displayText(){return "(Sensing Gems)";}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String word(){return "gems";};
-	public Environmental newInstance(){	return new Chant_SenseGems();}
-	
+
 	private int[] myMats={EnvResource.MATERIAL_PRECIOUS,
 						  EnvResource.MATERIAL_GLASS};
 	protected int[] okMaterials(){	return myMats;}

@@ -14,7 +14,6 @@ public class Prayer_DivineResistance extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_DivineResistance();}
 	private HashSet permProts=new HashSet();
 	private int prots=4;
 
@@ -42,7 +41,7 @@ public class Prayer_DivineResistance extends Prayer
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		
+
 		if((msg.target()==affected)
 		&&(affected instanceof MOB)
 		&&((msg.tool()==null)||(!permProts.contains(msg.tool())))

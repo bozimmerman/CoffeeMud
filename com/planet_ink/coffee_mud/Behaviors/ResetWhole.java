@@ -12,10 +12,7 @@ public class ResetWhole extends StdBehavior
 
 	protected long lastAccess=-1;
 
-	public Behavior newInstance()
-	{
-		return new ResetWhole();
-	}
+
 
 	public void executeMsg(Environmental E, CMMsg msg)
 	{

@@ -12,7 +12,6 @@ public class Chant_BreatheWater extends Chant
 	public String name(){ return "Fish Gills";}
 	public String displayText(){return "(Fish Gills)";}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Chant_BreatheWater();}
 
 	public void unInvoke()
 	{

@@ -12,7 +12,6 @@ public class Spell_Blur extends Spell
 	public String displayText(){return "(Blur spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Blur();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

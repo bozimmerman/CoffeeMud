@@ -15,7 +15,6 @@ public class Paladin_Breakup extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Paladin_Breakup();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

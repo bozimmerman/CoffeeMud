@@ -13,7 +13,6 @@ public class Trap_PoisonGas extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 17;}
 	public String requiresToSet(){return "some poison";}
-	public Environmental newInstance(){	return new Trap_PoisonGas();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

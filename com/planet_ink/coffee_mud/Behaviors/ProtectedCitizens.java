@@ -17,10 +17,7 @@ public class ProtectedCitizens extends ActiveTicker
 	private int maxAssistance=1;
 	private Hashtable assisters=new Hashtable();
 
-	public Behavior newInstance()
-	{
-		return new ProtectedCitizens();
-	}
+
 
 	public ProtectedCitizens()
 	{

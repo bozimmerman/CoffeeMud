@@ -20,7 +20,6 @@ public class Skill_TwoWeaponFighting extends StdAbility
 	private boolean middleOfTheFight=false;
 	private Weapon lastWeapon=null;
 	private Weapon lastPrimary=null;
-	public Environmental newInstance(){	return new Skill_TwoWeaponFighting();	}
 
 
 	private Weapon getFirstWeapon(MOB mob)
@@ -91,7 +90,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			{
 				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 					CommonMsgs.draw(mob,true,true);
-				
+
 				Item primaryWeapon=getFirstWeapon(mob);
 				Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!

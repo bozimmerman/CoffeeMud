@@ -16,7 +16,6 @@ public class Song_Nothing extends Song
 		super();
 		setProfficiency(100);
 	}
-	public Environmental newInstance(){	return new Song_Nothing();}
 	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
 
 

@@ -13,7 +13,6 @@ public class Prayer_FlameWeapon extends Prayer
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_FlameWeapon();}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 	private boolean notAgain=false;
 

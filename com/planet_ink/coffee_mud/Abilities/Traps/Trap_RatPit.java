@@ -13,9 +13,8 @@ public class Trap_RatPit extends Trap_SnakePit
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 12;}
 	public String requiresToSet(){return "some caged rats";}
-	public Environmental newInstance(){	return new Trap_RatPit();}
-	
-	
+
+
 	protected Item getCagedAnimal(MOB mob)
 	{
 		if(mob==null) return null;
@@ -32,5 +31,5 @@ public class Trap_RatPit extends Trap_SnakePit
 		}
 		return null;
 	}
-	
+
 }

@@ -9,7 +9,6 @@ public class Play_Harps extends Play_Instrument
 	public String ID() { return "Play_Harps"; }
 	public String name(){ return "Harps";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_HARPS;}
-	public Environmental newInstance(){	return new Play_Harps();}
 	public String mimicSpell(){return "Spell_Friends";}
 	private static Ability theSpell=null;
 	protected Ability getSpell()

@@ -10,7 +10,6 @@ public class Spell_Portal extends Spell
 	public String ID() { return "Spell_Portal"; }
 	public String name(){return "Portal";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_Portal();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

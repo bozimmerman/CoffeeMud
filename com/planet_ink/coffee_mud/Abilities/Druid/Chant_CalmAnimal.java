@@ -12,7 +12,6 @@ public class Chant_CalmAnimal extends Chant
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_CalmAnimal();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

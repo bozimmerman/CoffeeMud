@@ -39,7 +39,6 @@ public class ClanCrafting extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new ClanCrafting(); }
 
 	protected Vector loadRecipes()
 	{
@@ -109,8 +108,8 @@ public class ClanCrafting extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
@@ -309,7 +308,7 @@ public class ClanCrafting extends CraftingSkill
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
 		}
-		
+
 		if((Sense.isReadable(building))
 		&&((building.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
 			building.setMaterial(EnvResource.RESOURCE_PAPER);
@@ -363,7 +362,7 @@ public class ClanCrafting extends CraftingSkill
 			int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
 			((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 		}
-		
+
 		if(building instanceof Container)
 			if(capacity>0)
 			{

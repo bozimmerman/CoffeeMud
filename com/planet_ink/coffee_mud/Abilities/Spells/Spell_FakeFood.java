@@ -9,7 +9,6 @@ public class Spell_FakeFood extends Spell
 	public String ID() { return "Spell_FakeFood"; }
 	public String name(){return "Fake Food";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_FakeFood();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -10,7 +10,6 @@ public class Prop_ReqEntry extends Property
 	public String ID() { return "Prop_ReqEntry"; }
 	public String name(){ return "All Room/Exit Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqEntry newOne=new Prop_ReqEntry(); newOne.setMiscText(text());return newOne;}
 
 	public String accountForYourself()
 	{

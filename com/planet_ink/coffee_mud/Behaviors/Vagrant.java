@@ -11,10 +11,7 @@ public class Vagrant extends StdBehavior
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	private int sleepForTicks=0;
 	private int wakeForTicks=0;
-	public Behavior newInstance()
-	{
-		return new Vagrant();
-	}
+
 
 	public boolean okMessage(Environmental oking, CMMsg msg)
 	{

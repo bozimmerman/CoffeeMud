@@ -13,10 +13,7 @@ public class Emoter extends ActiveTicker
 		minTicks=10;maxTicks=30;chance=50;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new Emoter();
-	}
+
 
 	public void setParms(String newParms)
 	{
@@ -68,7 +65,7 @@ public class Emoter extends ActiveTicker
 			}
 		}
 	}
-	
+
 	private Vector parseEmotes()
 	{
 		if(emotes!=null) return emotes;
@@ -92,7 +89,7 @@ public class Emoter extends ActiveTicker
 			Vector thisEmoteV=new Vector();
 			String thisEmote=newParms;
 			x=newParms.indexOf(";");
-			if(x<0)	
+			if(x<0)
 				newParms="";
 			else
 			{
@@ -192,7 +189,7 @@ public class Emoter extends ActiveTicker
 			{
 				if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking)))
 					return true;
-				
+
 				emoter=CMClass.getMOB("StdMOB");
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
@@ -209,7 +206,7 @@ public class Emoter extends ActiveTicker
 					emoter.setName(name);
 			}
 			if(emoter==null) return true;
-			
+
 			emoteHere(room,emoter,emote,true);
 
 			if(((Boolean)emote.elementAt(1)).booleanValue())

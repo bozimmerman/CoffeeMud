@@ -14,7 +14,6 @@ public class Prop_WearSpellCast extends Property
 	private MOB lastMOB=null;
 	private boolean processing=false;
 
-	public Environmental newInstance(){	Prop_WearSpellCast BOB=new Prop_WearSpellCast(); BOB.setMiscText(text()); return BOB;}
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
 	public Vector getMySpellsV()
@@ -74,7 +73,7 @@ public class Prop_WearSpellCast extends Property
 				{
 					int x=t.indexOf("/");
 					if(x<0)
-					{ 
+					{
 						V2=Util.parse(t);
 						A.setMiscText("");
 					}

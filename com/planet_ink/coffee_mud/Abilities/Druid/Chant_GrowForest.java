@@ -11,7 +11,6 @@ public class Chant_GrowForest extends Chant
 	public String name(){ return "Grow Forest";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_GrowForest();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -29,7 +29,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",20,ID(),false);}
 	}
-	public Environmental newInstance(){	Merchant M=new Merchant(); M.setMiscText(text()); return M;}
 	public String text()
 	{
 		String text="";

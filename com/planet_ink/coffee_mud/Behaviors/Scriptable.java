@@ -195,10 +195,7 @@ public class Scriptable extends StdBehavior
 		"MPUNLOCK" // 47
 	};
 
-	public Behavior newInstance()
-	{
-		return new Scriptable();
-	}
+
 
 	protected class ScriptableResponse
 	{
@@ -413,8 +410,8 @@ public class Scriptable extends StdBehavior
 		if(inAreaRoom!=null) return inAreaRoom;
 		return room;
 	}
-	
-	
+
+
 	private void scriptableError(Environmental scripted, String cmdName, String errType, String errMsg)
 	{
 		if(scripted!=null)
@@ -425,13 +422,13 @@ public class Scriptable extends StdBehavior
 		}
 		else
 			Log.errOut("Scriptable","*/*/"+cmdName+"/"+errType+"/"+errMsg);
-		
+
 	}
 
 	private boolean simpleEvalStr(Environmental scripted,
-								  String arg1, 
-								  String arg2, 
-								  String cmp, 
+								  String arg1,
+								  String arg2,
+								  String cmp,
 								  String cmdName)
 	{
 		int x=arg1.compareToIgnoreCase(arg2);
@@ -561,9 +558,9 @@ public class Scriptable extends StdBehavior
 		{
 			try{
 				Vector V=null;
-				if(mob) 
+				if(mob)
 					V=loadMobsFromFile(null,Util.getCleanBit(thisName,1));
-				else 
+				else
 					V=loadItemsFromFile(null,Util.getCleanBit(thisName,1));
 				if(V!=null)
 				{
@@ -667,12 +664,12 @@ public class Scriptable extends StdBehavior
 	}
 
 	public boolean eval(Environmental scripted,
-						MOB source, 
-						Environmental target, 
-						MOB monster, 
-						Item primaryItem, 
-						Item secondaryItem, 
-						String msg, 
+						MOB source,
+						Environmental target,
+						MOB monster,
+						Item primaryItem,
+						Item secondaryItem,
+						String msg,
 						String evaluable)
 	{
 		Vector formatCheck=Util.parse(evaluable);
@@ -1226,7 +1223,7 @@ public class Scriptable extends StdBehavior
 						if((TimeClock.PHASE_DESC[a]).startsWith(arg1.toUpperCase())
 						&&(monster.location().getArea().getTimeObj().getMoonPhase()==a))
 						{
-							returnable=true; 
+							returnable=true;
 							break;
 						}
 				}
@@ -2024,12 +2021,12 @@ public class Scriptable extends StdBehavior
 	}
 
 	public String functify(Environmental scripted,
-						   MOB source, 
-						   Environmental target, 
-						   MOB monster, 
-						   Item primaryItem, 
-						   Item secondaryItem, 
-						   String msg, 
+						   MOB source,
+						   Environmental target,
+						   MOB monster,
+						   Item primaryItem,
+						   Item secondaryItem,
+						   String msg,
 						   String evaluable)
 	{
 		String uevaluable=evaluable.toUpperCase().trim();
@@ -2834,9 +2831,9 @@ public class Scriptable extends StdBehavior
 
 	private MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
 	{
-		if((randMOB!=null)&&(randMOB!=monster)) 
+		if((randMOB!=null)&&(randMOB!=monster))
 			return randMOB;
-		
+
 		if((room!=null)&&(room.numInhabitants()>0))
 		{
 			int tries=0;
@@ -3073,9 +3070,9 @@ public class Scriptable extends StdBehavior
 					}
 					if((dir>=0)&&(E!=null))
 					{
-						if(c=='x') 
+						if(c=='x')
 							middle=Directions.getDirectionName(dir);
-						else 
+						else
 							middle=E.name();
 					}
 				}
@@ -3106,7 +3103,7 @@ public class Scriptable extends StdBehavior
 		}
 		return varifyable;
 	}
-	
+
 	public DVector getScriptVarSet(String mobname, String varname)
 	{
 		DVector set=new DVector(2);
@@ -3161,7 +3158,7 @@ public class Scriptable extends StdBehavior
 			{
 				if(val.length()==0)
 					continue;
-				
+
 				H=new Hashtable();
 				Resources.submitResource("SCRIPTVAR-"+name,H);
 			}
@@ -3222,13 +3219,13 @@ public class Scriptable extends StdBehavior
 	}
 
 
-	public void execute(Environmental scripted, 
-						MOB source, 
-						Environmental target, 
-						MOB monster, 
-						Item primaryItem, 
-						Item secondaryItem, 
-						Vector script, 
+	public void execute(Environmental scripted,
+						MOB source,
+						Environmental target,
+						MOB monster,
+						Item primaryItem,
+						Item secondaryItem,
+						Vector script,
 						String msg)
 	{
 		for(int si=1;si<script.size();si++)
@@ -3439,7 +3436,7 @@ public class Scriptable extends StdBehavior
 							if(CoffeeMaker.GENMOBCODES[i].equalsIgnoreCase(arg2))
 							{
 								CoffeeMaker.setGenMobStat((MOB)newTarget,CoffeeMaker.GENMOBCODES[i],arg3);
-								found=true; 
+								found=true;
 								break;
 							}
 						}
@@ -3486,7 +3483,7 @@ public class Scriptable extends StdBehavior
 							if(CoffeeMaker.GENITEMCODES[i].equalsIgnoreCase(arg2))
 							{
 								CoffeeMaker.setGenItemStat((Item)newTarget,CoffeeMaker.GENITEMCODES[i],arg3);
-								found=true; 
+								found=true;
 								break;
 							}
 						}
@@ -3998,7 +3995,7 @@ public class Scriptable extends StdBehavior
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				if(!which.equals("*"))
 				{
-					if(E!=null) 
+					if(E!=null)
 						which=E.Name();
 					else
 						which="";
@@ -4014,7 +4011,7 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(!arg1.equals("*"))
 				{
-					if(E!=null) 
+					if(E!=null)
 						arg1=E.Name();
 					else
 						arg1="";
@@ -4062,7 +4059,7 @@ public class Scriptable extends StdBehavior
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
 				if(E instanceof MOB)
 				{
-					
+
 					String arg2="";
 					String arg3="";
 					if(Util.numBits(s)>2)
@@ -4071,7 +4068,7 @@ public class Scriptable extends StdBehavior
 						if(Util.numBits(s)>3)
 							arg3=Util.getPastBit(s,2);
 					}
-					
+
 					CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 					if(caged!=null)
 					{
@@ -4858,12 +4855,12 @@ public class Scriptable extends StdBehavior
 		super.tick(ticking,tickID);
 
 		MOB mob=getScriptableMOB(ticking);
-		
+
 		Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
 		if((mob==null)||(lastKnownLocation==null))
 			return true;
-		
+
 		Environmental affecting=(ticking instanceof Environmental)?((Environmental)ticking):null;
 
 		Vector scripts=getScripts();

@@ -8,10 +8,7 @@ import java.util.*;
 public class MoneyChanger extends StdBehavior
 {
 	public String ID(){return "MoneyChanger";}
-	public Behavior newInstance()
-	{
-		return new MoneyChanger();
-	}
+
 	public void startBehavior(Environmental forMe)
 	{
 		if(forMe==null) return;

@@ -19,10 +19,7 @@ public class MOBEater extends ActiveTicker
 		tickReset();
 	}
 
-	public Behavior newInstance()
-	{
-		return new MOBEater();
-	}
+
 
 	public void startBehavior(Environmental forMe)
 	{

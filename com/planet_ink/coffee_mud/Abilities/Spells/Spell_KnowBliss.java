@@ -14,7 +14,6 @@ public class Spell_KnowBliss extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int hpAdjustment=0;
-	public Environmental newInstance(){	return new Spell_KnowBliss();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void unInvoke()

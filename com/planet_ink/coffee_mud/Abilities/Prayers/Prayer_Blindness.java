@@ -14,7 +14,6 @@ public class Prayer_Blindness extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Blindness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

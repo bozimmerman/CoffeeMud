@@ -15,7 +15,6 @@ public class Skill_Explosive extends StdAbility
 	private static final String[] triggerStrings = {"EXPLOTOUCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Explosive();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

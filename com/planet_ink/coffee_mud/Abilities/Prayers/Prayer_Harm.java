@@ -11,7 +11,6 @@ public class Prayer_Harm extends Prayer
 	public String name(){ return "Harm";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Harm();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

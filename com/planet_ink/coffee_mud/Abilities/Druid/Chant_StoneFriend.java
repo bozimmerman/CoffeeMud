@@ -32,7 +32,6 @@ public class Chant_StoneFriend extends Chant
 		return charmer;
 	}
 
-	public Environmental newInstance(){	return new Chant_StoneFriend();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -16,7 +16,6 @@ public class Poison extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"POISONSTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison();}
 	public int classificationCode(){return Ability.POISON;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!

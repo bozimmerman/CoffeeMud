@@ -15,7 +15,6 @@ public class Thief_Robbery extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"ROBBERY","ROB"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Robbery();}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}

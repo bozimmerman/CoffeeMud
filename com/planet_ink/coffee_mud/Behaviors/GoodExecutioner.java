@@ -10,10 +10,7 @@ public class GoodExecutioner  extends StdBehavior
 {
 	public String ID(){return "GoodExecutioner";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE;}
-	public Behavior newInstance()
-	{
-		return new GoodExecutioner();
-	}
+
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{

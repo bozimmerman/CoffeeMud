@@ -10,7 +10,6 @@ public class Prop_NoChannel extends Property
 	public String ID() { return "Prop_NoChannel"; }
 	public String name(){ return "Channel Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_NoChannel();}
 
 	public String accountForYourself()
 	{ return "No Channeling Field";	}

@@ -11,7 +11,6 @@ public class Prop_PracticeDummy extends Property
 	public String ID() { return "Prop_PracticeDummy"; }
 	public String name(){ return "Practice Dummy";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_PracticeDummy();}
 
 	public String accountForYourself()
 	{ return "Undefeatable";	}

@@ -13,7 +13,6 @@ public class Trap_SnakePit extends Trap_RoomPit
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "some caged snakes";}
-	public Environmental newInstance(){	return new Trap_SnakePit();}
 
 	private Vector monsters=null;
 

@@ -26,10 +26,7 @@ public class Healer extends ActiveTicker
 		}
 	}
 
-	public Behavior newInstance()
-	{
-		return new Healer();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

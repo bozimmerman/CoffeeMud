@@ -14,7 +14,6 @@ public class Thief_Kamikaze extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"KAMIKAZE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Kamikaze();}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -54,8 +53,8 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		return true;
 	}
-	
-	
+
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -85,7 +84,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		commands.removeElementAt(commands.size()-1);
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.INTELLIGENCE)<3))
 		{
 			mob.tell("You can't talk "+target.name()+" into a kamikaze mission.");
@@ -97,7 +96,7 @@ public class Thief_Kamikaze extends ThiefSkill
 			mob.tell("Send "+target.charStats().himher()+" which direction?");
 			return false;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -110,7 +109,7 @@ public class Thief_Kamikaze extends ThiefSkill
 				mob.tell(target.charStats().HeShe()+" requires "+amountRequired+" coins to do this.");
 			return false;
 		}
-		
+
 		Trap bombFound=null;
 		for(int i=0;i<target.inventorySize();i++)
 		{
@@ -130,7 +129,7 @@ public class Thief_Kamikaze extends ThiefSkill
 			mob.tell(target.name()+" must have some bombs for this to work.");
 			return false;
 		}
-		
+
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(!success)

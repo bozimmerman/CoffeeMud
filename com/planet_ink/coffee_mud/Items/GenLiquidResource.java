@@ -20,10 +20,6 @@ public class GenLiquidResource extends GenDrink implements EnvResource, Drink
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenLiquidResource();
-	}
 	private int domainSource=-1;
 	public int domainSource(){return domainSource;}
 	public void setDomainSource(int src){domainSource=src;}

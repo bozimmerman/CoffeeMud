@@ -17,7 +17,6 @@ public class Skill_Climb extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
-	public Environmental newInstance(){	return new Skill_Climb();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

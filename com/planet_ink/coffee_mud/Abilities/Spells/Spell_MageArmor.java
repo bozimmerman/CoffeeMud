@@ -12,7 +12,6 @@ public class Spell_MageArmor extends Spell
 	public String displayText(){return "(Mage Armor)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_MageArmor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	Item theArmor=null;

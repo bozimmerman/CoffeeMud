@@ -14,7 +14,6 @@ public class Prayer_Earthshield extends Prayer
 	public String displayText(){ return "(In Earthshield)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Earthshield();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

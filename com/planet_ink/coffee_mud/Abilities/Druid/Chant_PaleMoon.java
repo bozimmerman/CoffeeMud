@@ -14,7 +14,6 @@ public class Chant_PaleMoon extends Chant
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}
-	public Environmental newInstance(){	return new Chant_PaleMoon();}
 
 	public void unInvoke()
 	{

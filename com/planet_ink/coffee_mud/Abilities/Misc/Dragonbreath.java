@@ -17,7 +17,6 @@ public class Dragonbreath extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAGONBREATH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Dragonbreath();}
 	public int classificationCode(){return Ability.SKILL;}
 	private final static String[][] DragonColors={
 		{"WHITE","c"},

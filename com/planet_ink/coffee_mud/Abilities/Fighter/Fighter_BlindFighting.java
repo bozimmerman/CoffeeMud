@@ -15,7 +15,6 @@ public class Fighter_BlindFighting extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_BlindFighting();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -14,7 +14,6 @@ public class Chant_BlueMoon extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}
-	public Environmental newInstance(){	return new Chant_BlueMoon();}
 
 	public void unInvoke()
 	{

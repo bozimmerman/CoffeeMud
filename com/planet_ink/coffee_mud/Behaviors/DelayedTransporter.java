@@ -17,10 +17,7 @@ public class DelayedTransporter extends ActiveTicker
 		minTicks=5;maxTicks=5;chance=100;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new DelayedTransporter();
-	}
+
 
 	public void setParms(String newParms)
 	{

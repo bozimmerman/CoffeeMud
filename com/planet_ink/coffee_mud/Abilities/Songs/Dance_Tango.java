@@ -11,8 +11,7 @@ public class Dance_Tango extends Dance
 	public String ID() { return "Dance_Tango"; }
 	public String name(){ return "Tango";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Tango();}
-	
+
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);

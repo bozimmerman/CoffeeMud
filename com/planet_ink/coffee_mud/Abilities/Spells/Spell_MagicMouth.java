@@ -11,7 +11,6 @@ public class Spell_MagicMouth extends Spell
 	public String name(){return "Magic Mouth";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){ return new Spell_MagicMouth();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	Room myRoomContainer=null;

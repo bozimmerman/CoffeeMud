@@ -24,7 +24,6 @@ public class Prayer extends StdAbility
 		if(auto) affectType=affectType|CMMsg.MASK_GENERAL;
 		return affectType;
 	}
-	public Environmental newInstance(){	return new Prayer();}
 
 	protected String prayWord(MOB mob)
 	{
@@ -164,5 +163,5 @@ public class Prayer extends StdAbility
 		}
 		return true;
 	}
-	
+
 }

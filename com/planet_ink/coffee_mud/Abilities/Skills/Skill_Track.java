@@ -26,7 +26,6 @@ public class Skill_Track extends StdAbility
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
-	public Environmental newInstance(){	return new Skill_Track();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -177,10 +176,10 @@ public class Skill_Track extends StdAbility
 			mob.tell("Track whom?");
 			return false;
 		}
-		
+
 		if(givenTarget==null)
 			givenTarget=CMMap.getRoom(mobName);
-		
+
 		if(givenTarget==null)
 			givenTarget=CMMap.getArea(mobName);
 
@@ -222,9 +221,9 @@ public class Skill_Track extends StdAbility
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		boolean success=profficiencyCheck(mob,0,auto);
-		
+
 		if(rooms.size()>0)
 		{
 			theTrail=null;

@@ -15,7 +15,6 @@ public class Prayer_CurseFlames extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
-	public Environmental newInstance(){	return new Prayer_CurseFlames();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

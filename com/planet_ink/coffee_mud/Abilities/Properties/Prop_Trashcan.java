@@ -10,7 +10,6 @@ public class Prop_Trashcan extends Property
 	public String ID() { return "Prop_Trashcan"; }
 	public String name(){ return "Auto purges items put into a container";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prop_Trashcan();}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

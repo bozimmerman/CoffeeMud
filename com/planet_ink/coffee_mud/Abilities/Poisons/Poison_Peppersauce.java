@@ -11,8 +11,7 @@ public class Poison_Peppersauce extends Poison
 	public String name(){ return "Peppersauce";}
 	private static final String[] triggerStrings = {"POISONSAUCE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Peppersauce();}
-	
+
 	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your eyes clear up.";}
@@ -27,7 +26,7 @@ public class Poison_Peppersauce extends Poison
 		if(affected instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);

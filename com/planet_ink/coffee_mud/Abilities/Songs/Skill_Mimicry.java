@@ -16,7 +16,6 @@ public class Skill_Mimicry extends BardSkill
 	private static final String[] triggerStrings = {"MIMICRY","MIMIC"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Mimicry();}
 	public MOB mimicing=null;
 	private CMMsg lastMsg=null;
 	private boolean disabled=false;

@@ -12,7 +12,6 @@ public class Spell_Awe extends Spell
 	public String displayText(){return "(Awe spell)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int quality(){return BENEFICIAL_SELF;};
-	public Environmental newInstance(){	return new Spell_Awe();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

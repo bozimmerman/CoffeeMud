@@ -15,7 +15,6 @@ public class Thief_Snatch extends StdAbility
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"SNATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Snatch();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -13,7 +13,6 @@ public class Chant_Shapelessness extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_Shapelessness();}
 
 
 	public void unInvoke()

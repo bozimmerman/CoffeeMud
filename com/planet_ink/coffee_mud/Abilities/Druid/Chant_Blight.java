@@ -13,7 +13,6 @@ public class Chant_Blight extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_Blight();}
 
 	public void unInvoke()
 	{

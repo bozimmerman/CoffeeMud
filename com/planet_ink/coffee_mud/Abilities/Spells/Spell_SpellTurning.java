@@ -12,7 +12,6 @@ public class Spell_SpellTurning extends Spell
 	public String displayText(){return "(Spell Turning)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Spell_SpellTurning();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	private boolean oncePerRound=false;
 

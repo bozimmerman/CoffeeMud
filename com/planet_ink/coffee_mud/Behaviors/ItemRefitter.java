@@ -8,10 +8,7 @@ import java.util.*;
 public class ItemRefitter extends StdBehavior
 {
 	public String ID(){return "ItemRefitter";}
-	public Behavior newInstance()
-	{
-		return new ItemRefitter();
-	}
+
 	private int cost(Item item)
 	{
 		int cost=item.envStats().level()*100;

@@ -14,7 +14,6 @@ public class Prayer_HolyShield extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_HolyShield();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -10,5 +10,4 @@ public class Trap_GetBlade extends Trap_Get
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_PIT_BLADE;}
-	public Environmental newInstance(){	return new Trap_GetBlade();}
 }

@@ -24,7 +24,6 @@ public class LockSmith extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",15,ID(),false);}
 	}
-	public Environmental newInstance(){	return new LockSmith();}
 
 	public void unInvoke()
 	{

@@ -12,7 +12,6 @@ public class Chant_SummonWind extends Chant
 	public String name(){ return "Summon Wind";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonWind();}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -15,7 +15,6 @@ public class Prayer_LinkedHealth extends Prayer
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	MOB buddy=null;
-	public Environmental newInstance(){	return new Prayer_LinkedHealth();}
 
 
 	public void unInvoke()

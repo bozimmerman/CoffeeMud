@@ -11,7 +11,6 @@ public class Chant_Fertilization extends Chant
 	public String name(){return "Fertilization";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_Fertilization();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

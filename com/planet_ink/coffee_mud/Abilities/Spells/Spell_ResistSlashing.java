@@ -12,7 +12,6 @@ public class Spell_ResistSlashing extends Spell
 	public String displayText(){return "(Resist Slashing)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_ResistSlashing();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

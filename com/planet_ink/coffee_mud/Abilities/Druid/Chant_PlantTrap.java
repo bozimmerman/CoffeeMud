@@ -13,7 +13,6 @@ public class Chant_PlantTrap extends Chant implements Trap
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Chant_PlantTrap();}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
@@ -57,7 +56,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			}
 		}
 	}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -85,7 +84,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			mob.tell("You must know plant choke or plant constriction for this chant to work.");
 			return false;
 		}
-		
+
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");

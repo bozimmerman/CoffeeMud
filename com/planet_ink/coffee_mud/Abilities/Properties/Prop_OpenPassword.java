@@ -10,8 +10,6 @@ public class Prop_OpenPassword extends Property
 	public String ID() { return "Prop_OpenPassword"; }
 	public String name(){ return "Opening Password";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
-	public Environmental newInstance()
-	{	Prop_OpenPassword newOne=new Prop_OpenPassword(); newOne.setMiscText(text());return newOne; }
 
 	public String accountForYourself()
 	{ return "";	}

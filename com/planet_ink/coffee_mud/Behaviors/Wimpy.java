@@ -13,10 +13,7 @@ public class Wimpy extends StdBehavior
 	protected int tickDown=0;
 	protected boolean veryWimpy=false;
 
-	public Behavior newInstance()
-	{
-		return new Wimpy();
-	}
+
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return false;

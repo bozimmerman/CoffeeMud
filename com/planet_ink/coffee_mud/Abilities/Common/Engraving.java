@@ -23,7 +23,6 @@ public class Engraving extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Engraving();	}
 
 	public void unInvoke()
 	{

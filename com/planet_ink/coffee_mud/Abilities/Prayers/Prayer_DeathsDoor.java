@@ -14,9 +14,8 @@ public class Prayer_DeathsDoor extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_DeathsDoor();}
 
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -40,7 +39,7 @@ public class Prayer_DeathsDoor extends Prayer
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

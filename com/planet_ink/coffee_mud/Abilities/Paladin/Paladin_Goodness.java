@@ -15,7 +15,6 @@ public class Paladin_Goodness extends Paladin
 		super();
 		paladinsGroup=new Vector();
 	}
-	public Environmental newInstance(){	return new Paladin_Goodness();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

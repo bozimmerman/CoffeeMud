@@ -23,7 +23,6 @@ public class Chant extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public Environmental newInstance(){	return new Chant();	}
 	public int classificationCode()	{ return Ability.CHANT;	}
 
 	public boolean appropriateToMyAlignment(int alignment)

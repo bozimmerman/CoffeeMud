@@ -10,7 +10,6 @@ public class Spell_Farsight extends Spell
 	public String ID() { return "Spell_Farsight"; }
 	public String name(){return "Farsight";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_Farsight();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

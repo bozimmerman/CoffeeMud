@@ -16,7 +16,6 @@ public class Thief_SilentLoot extends ThiefSkill
 	private static final String[] triggerStrings = {"SILENTLOOT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private Item item=null;
-	public Environmental newInstance(){	return new Thief_SilentLoot();	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

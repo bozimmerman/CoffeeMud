@@ -18,7 +18,6 @@ public class Fighter_DualParry extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 
 	boolean lastTime=false;
-	public Environmental newInstance(){	return new Fighter_DualParry();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

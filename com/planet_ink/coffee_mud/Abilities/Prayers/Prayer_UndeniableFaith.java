@@ -13,11 +13,10 @@ public class Prayer_UndeniableFaith extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
-	public Environmental newInstance(){	return new Prayer_UndeniableFaith();}
 	protected int overrideMana(){return 100;}
 	private String godName="";
 	private static DVector convertStack=new DVector(2);
-		
+
 	public void unInvoke()
 	{
 		MOB M=(MOB)affected;
@@ -25,7 +24,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		if(canBeUninvoked())
 			M.tell("Your compelled faith is finally subsided.");
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -59,7 +58,7 @@ public class Prayer_UndeniableFaith extends Prayer
 		}
 		return true;
 	}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -73,8 +72,8 @@ public class Prayer_UndeniableFaith extends Prayer
 		}
 		return super.okMessage(host,msg);
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

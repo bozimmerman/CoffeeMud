@@ -11,7 +11,6 @@ public class Spell_MassDisintegrate extends Spell
 	public String name(){return "Mass Disintegrate";}
 	public int maxRange(){return 2;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_MassDisintegrate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public int overrideMana(){return 200;}
 

@@ -12,7 +12,6 @@ public class Spell_Toadstool extends Spell
 	public String displayText(){return "(Toadstool)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Toadstool();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	Race newRace=null;

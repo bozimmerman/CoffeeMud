@@ -13,7 +13,6 @@ public class Spell_Nightmare extends Spell
 	public int maxRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Nightmare();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public int amountRemaining=0;

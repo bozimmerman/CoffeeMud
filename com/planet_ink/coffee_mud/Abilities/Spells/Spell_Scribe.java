@@ -10,7 +10,6 @@ public class Spell_Scribe extends Spell
 	public String ID() { return "Spell_Scribe"; }
 	public String name(){return "Scribe";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Scribe();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

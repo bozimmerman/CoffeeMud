@@ -16,7 +16,6 @@ public class Play_Break extends Play
 		super();
 		setProfficiency(100);
 	}
-	public Environmental newInstance(){	return new Play_Break();}
 	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
 
 

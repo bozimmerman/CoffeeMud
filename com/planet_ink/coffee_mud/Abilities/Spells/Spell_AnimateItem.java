@@ -10,7 +10,6 @@ public class Spell_AnimateItem extends Spell
 	public String ID() { return "Spell_AnimateItem"; }
 	public String name(){return "Animate Item";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_AnimateItem();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

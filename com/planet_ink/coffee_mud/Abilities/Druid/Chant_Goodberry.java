@@ -12,7 +12,6 @@ public class Chant_Goodberry extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_Goodberry();}
 
 	public boolean checkDo(Item newTarget, Item originaltarget, Environmental owner)
 	{

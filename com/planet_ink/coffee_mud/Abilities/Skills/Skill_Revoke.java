@@ -17,7 +17,6 @@ public class Skill_Revoke extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int maxRange(){return 10;}
-	public Environmental newInstance(){	return new Skill_Revoke();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

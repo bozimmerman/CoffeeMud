@@ -17,7 +17,6 @@ public class Fighter_CounterAttack extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	public Environmental newInstance(){	return new Fighter_CounterAttack();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -13,7 +13,6 @@ public class Spell_WeaknessAcid extends Spell
 	public String displayText(){return "(Weakness to Acid)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_WeaknessAcid();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

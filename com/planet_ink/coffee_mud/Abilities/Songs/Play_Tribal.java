@@ -12,7 +12,6 @@ public class Play_Tribal extends Play
 	public String ID() { return "Play_Tribal"; }
 	public String name(){ return "Tribal";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Tribal();}
 	protected String songOf(){return name()+" Music";}
 
 	public boolean tick(Tickable ticking, int tickID)

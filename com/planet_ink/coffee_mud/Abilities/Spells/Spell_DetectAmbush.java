@@ -13,7 +13,6 @@ public class Spell_DetectAmbush extends Spell
 	public String displayText(){return "(Detecting Ambushes)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectAmbush();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	Room lastRoom=null;
@@ -76,7 +75,7 @@ public class Spell_DetectAmbush extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting ambushes.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

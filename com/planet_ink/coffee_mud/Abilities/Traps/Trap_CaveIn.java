@@ -13,7 +13,6 @@ public class Trap_CaveIn extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 22;}
 	public String requiresToSet(){return "100 pounds of wood";}
-	public Environmental newInstance(){	return new Trap_CaveIn();}
 	public int baseRejuvTime(int level){ return 6;}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)

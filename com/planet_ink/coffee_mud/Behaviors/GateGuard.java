@@ -8,10 +8,7 @@ import java.util.*;
 public class GateGuard extends StdBehavior
 {
 	public String ID(){return "GateGuard";}
-	public Behavior newInstance()
-	{
-		return new GateGuard();
-	}
+
 
 	protected int noticeTock=4;
 	protected boolean heardKnock=false;

@@ -11,7 +11,6 @@ public class Chant_Fertility extends Chant
 	public String name(){ return "Fertility";}
 	public String displayText(){return "(Fertility)";}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Chant_Fertility();}
 
 	public void unInvoke()
 	{

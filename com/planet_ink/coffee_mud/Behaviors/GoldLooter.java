@@ -8,10 +8,7 @@ import java.util.*;
 public class GoldLooter extends StdBehavior
 {
 	public String ID(){return "GoldLooter";}
-	public Behavior newInstance()
-	{
-		return new GoldLooter();
-	}
+
 
 	int tickTocker=1;
 	int tickTock=0;

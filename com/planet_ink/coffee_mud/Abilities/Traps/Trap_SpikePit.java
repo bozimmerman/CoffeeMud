@@ -13,7 +13,6 @@ public class Trap_SpikePit extends Trap_RoomPit
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 8;}
 	public String requiresToSet(){return "5 dagger-class weapons";}
-	public Environmental newInstance(){	return new Trap_SpikePit();}
 
 	public Vector daggerDamages=null;
 

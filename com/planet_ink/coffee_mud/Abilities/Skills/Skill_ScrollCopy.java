@@ -15,7 +15,6 @@ public class Skill_ScrollCopy extends StdAbility
 	private static final String[] triggerStrings = {"COPY","SCROLLCOPY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_ScrollCopy();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

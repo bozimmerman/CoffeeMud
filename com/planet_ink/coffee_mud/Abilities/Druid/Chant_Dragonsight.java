@@ -12,7 +12,6 @@ public class Chant_Dragonsight extends Chant
 	public String displayText(){return "(Dragonsight)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_Dragonsight();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

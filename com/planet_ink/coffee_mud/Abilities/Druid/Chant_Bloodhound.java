@@ -12,7 +12,6 @@ public class Chant_Bloodhound extends Chant
 	public String displayText(){return "(Bloodhound)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_Bloodhound();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -15,7 +15,6 @@ public class Thief_Shadowstrike extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"SHADOWSTRIKE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Shadowstrike();}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected int overrideMana(){return 100;}
 

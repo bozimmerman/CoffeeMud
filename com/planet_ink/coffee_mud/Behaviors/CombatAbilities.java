@@ -9,10 +9,7 @@ import java.io.*;
 public class CombatAbilities extends StdBehavior
 {
 	public String ID(){return "CombatAbilities";}
-	public Behavior newInstance()
-	{
-		return new CombatAbilities();
-	}
+
 
 	public int combatMode=0;
 

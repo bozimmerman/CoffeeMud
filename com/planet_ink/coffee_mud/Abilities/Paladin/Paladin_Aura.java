@@ -14,7 +14,6 @@ public class Paladin_Aura extends Paladin
 		super();
 		paladinsGroup=new Vector();
 	}
-	public Environmental newInstance(){	return new Paladin_Aura();}
 	private boolean pass=false;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -36,7 +36,6 @@ public class Shipwright extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",4,ID(),false);}
 	}
-	public Environmental newInstance(){return new Shipwright();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -139,8 +138,8 @@ public class Shipwright extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
@@ -248,7 +247,7 @@ public class Shipwright extends CraftingSkill
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			if(misctype.equalsIgnoreCase("BUNDLE")) 
+			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
 				itemName=Util.startWithAorAn(itemName);

@@ -11,7 +11,6 @@ public class Song_Comprehension extends Song
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
 	public int quality(){ return OK_OTHERS;}
-	public Environmental newInstance(){	return new Song_Comprehension();}
 
 	protected String getMsgFromAffect(String msg)
 	{

@@ -11,5 +11,4 @@ public class Trap_GetGas extends Trap_Get
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_GAS;}
-	public Environmental newInstance(){	return new Trap_GetGas();}
 }

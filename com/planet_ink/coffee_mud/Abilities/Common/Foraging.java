@@ -23,7 +23,6 @@ public class Foraging extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Foraging();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

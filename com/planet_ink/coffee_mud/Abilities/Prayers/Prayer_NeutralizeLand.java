@@ -13,7 +13,6 @@ public class Prayer_NeutralizeLand extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prayer_NeutralizeLand();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

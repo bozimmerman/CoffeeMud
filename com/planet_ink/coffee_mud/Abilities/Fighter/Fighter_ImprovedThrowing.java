@@ -16,7 +16,6 @@ public class Fighter_ImprovedThrowing extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_ImprovedThrowing();}
 	private boolean activated=false;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -53,5 +52,5 @@ public class Fighter_ImprovedThrowing extends StdAbility
 				activated=false;
 		}
 	}
-	
+
 }

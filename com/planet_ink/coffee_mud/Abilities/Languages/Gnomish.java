@@ -9,7 +9,7 @@ public class Gnomish extends Language
 {
 	public String ID() { return "Gnomish"; }
 	public String name(){ return "Gnomish";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public Gnomish()
 	{
@@ -17,9 +17,8 @@ public class Gnomish extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Gnomish();}
 	public Vector translationVector()
-	{ 
+	{
 		if(wordLists==null)
 		{
 			String[] one={"y"};
@@ -36,6 +35,6 @@ public class Gnomish extends Language
 			wordLists.addElement(five);
 			wordLists.addElement(six);
 		}
-		return wordLists; 
+		return wordLists;
 	}
 }

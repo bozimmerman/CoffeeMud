@@ -11,9 +11,8 @@ public class Play_March extends Play
 	public String ID() { return "Play_March"; }
 	public String name(){ return "March";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_March();}
 	protected String songOf(){return "a "+name();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

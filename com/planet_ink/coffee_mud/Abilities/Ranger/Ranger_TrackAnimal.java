@@ -23,7 +23,6 @@ public class Ranger_TrackAnimal extends StdAbility
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 
-	public Environmental newInstance(){	return new Ranger_TrackAnimal();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -17,10 +17,7 @@ public class WaterCurrents extends ActiveTicker
 		tickReset();
 	}
 
-	public Behavior newInstance()
-	{
-		return new WaterCurrents();
-	}
+
 
 	public void setParms(String newParms)
 	{

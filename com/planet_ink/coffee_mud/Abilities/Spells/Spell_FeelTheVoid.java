@@ -12,7 +12,6 @@ public class Spell_FeelTheVoid extends Spell
 	public String displayText(){return "(In a Void)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_FeelTheVoid();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 	private final static int mask=
 			EnvStats.CAN_NOT_TASTE|EnvStats.CAN_NOT_SMELL|EnvStats.CAN_NOT_SEE

@@ -12,7 +12,6 @@ public class Spell_CharmWard extends Spell
 	public String displayText(){return "(Charm Ward)";}
 	public int quality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
-	public Environmental newInstance(){	return new Spell_CharmWard();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

@@ -17,7 +17,6 @@ public class Skill_Trip extends StdAbility
 	private static final String[] triggerStrings = {"TRIP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Trip();}
 	public long flags(){return Ability.FLAG_MOVING;}
 	private int enhancement=0;
 	public int abilityCode(){return enhancement;}

@@ -11,7 +11,6 @@ public class Chant_PlantBed extends Chant
 	public String name(){ return "Plant Bed";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_PlantBed();}
 	private Item peaPod=null;
 
 	public void unInvoke()
@@ -43,7 +42,7 @@ public class Chant_PlantBed extends Chant
 			mob.tell("This chant will not work here.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

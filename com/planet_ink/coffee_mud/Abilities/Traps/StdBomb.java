@@ -13,7 +13,6 @@ public class StdBomb extends StdTrap
 	protected int canTargetCode(){return 0;}
 	public String requiresToSet(){return "";}
 	public boolean isABomb(){return true;}
-	public Environmental newInstance(){	return new StdBomb();}
 	public int baseRejuvTime(int level){ return 5;}
-	
+
 }

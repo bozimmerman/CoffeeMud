@@ -14,7 +14,6 @@ public class Spell_Delirium extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	int amountRemaining=0;
-	public Environmental newInstance(){	return new Spell_Delirium();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	private Environmental getRandomOtherName(Environmental likeThisOne)

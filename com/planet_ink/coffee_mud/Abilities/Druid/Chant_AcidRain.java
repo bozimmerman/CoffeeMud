@@ -12,7 +12,6 @@ public class Chant_AcidRain extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_AcidRain();}
 
 	public boolean isRaining(Room R)
 	{
@@ -22,7 +21,7 @@ public class Chant_AcidRain extends Chant
 			return true;
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
@@ -38,7 +37,7 @@ public class Chant_AcidRain extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();

@@ -14,7 +14,6 @@ public class Spell_Phantasm extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	MOB myTarget=null;
-	public Environmental newInstance(){	return new Spell_Phantasm();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)

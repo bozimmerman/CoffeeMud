@@ -10,7 +10,6 @@ public class Spell_Mend extends Spell
 	public String ID() { return "Spell_Mend"; }
 	public String name(){return "Mend";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Mend();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

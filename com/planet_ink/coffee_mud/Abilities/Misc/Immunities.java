@@ -19,7 +19,6 @@ public class Immunities extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
-	public Environmental newInstance(){	return new Immunities();}
 
 
 	public static Object[][] immunityTypes={

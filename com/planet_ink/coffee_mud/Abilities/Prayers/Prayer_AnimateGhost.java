@@ -12,7 +12,6 @@ public class Prayer_AnimateGhost extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_AnimateGhost();}
 
 	public static void makeGhostFrom(Room R, DeadBody body, MOB mob, int level)
 	{
@@ -21,7 +20,7 @@ public class Prayer_AnimateGhost extends Prayer
 			description="It looks dead.";
 		else
 			description+="\n\rIt also looks dead.";
-		
+
 		MOB newMOB=(MOB)CMClass.getMOB("GenUndead");
 		newMOB.setName((mob==null)?"a poltergeist":"a ghost");
 		newMOB.setDescription(description);
@@ -94,7 +93,7 @@ public class Prayer_AnimateGhost extends Prayer
 		R.show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 		R.recoverRoomStats();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);

@@ -13,10 +13,7 @@ public class Aggressive extends StdBehavior
 	protected int tickWait=0;
 	protected int tickDown=0;
 
-	public Behavior newInstance()
-	{
-		return new Aggressive();
-	}
+
 	public boolean grantsAggressivenessTo(MOB M)
 	{
 		return MUDZapper.zapperCheck(getParms(),M);

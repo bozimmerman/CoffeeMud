@@ -12,7 +12,6 @@ public class Prop_WearResister extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	private CharStats adjCharStats=null;
 
-	public Environmental newInstance(){	Prop_WearResister BOB=new Prop_WearResister();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{

@@ -11,7 +11,6 @@ public class Prop_AstralSpirit extends Property
 	public String name(){ return "Astral Spirit";}
 	public String displayText(){ return "(Spirit Form)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_AstralSpirit();}
 	public boolean autoInvocation(MOB mob)
 	{
 		if((mob!=null)&&(mob.fetchEffect(ID())==null))

@@ -12,7 +12,6 @@ public class Chant_SensePregnancy extends Chant
 	protected int canAffectCode(){return 0;}
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int manaOverride(){return 5;}
-	public Environmental newInstance(){	return new Chant_SensePregnancy();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

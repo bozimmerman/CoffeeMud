@@ -11,5 +11,4 @@ public class Trap_OpenNeedle extends Trap_Open
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_NEEDLE;}
-	public Environmental newInstance(){	return new Trap_OpenNeedle();}
 }

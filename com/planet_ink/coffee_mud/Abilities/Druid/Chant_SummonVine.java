@@ -13,7 +13,6 @@ public class Chant_SummonVine extends Chant
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonVine();}
 	private int peaceTicks=0;
 	public long flags(){return Ability.FLAG_SUMMONING;}
 

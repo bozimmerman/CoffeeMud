@@ -11,8 +11,7 @@ public class Dance_Butterfly extends Dance
 	public String ID() { return "Dance_Butterfly"; }
 	public String name(){ return "Butterfly";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Butterfly();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

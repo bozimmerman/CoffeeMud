@@ -13,10 +13,7 @@ public class Follower extends StdBehavior
 		direction=-1;
 	}
 
-	public Behavior newInstance()
-	{
-		return new Follower();
-	}
+
 
 	int direction=-1;
 

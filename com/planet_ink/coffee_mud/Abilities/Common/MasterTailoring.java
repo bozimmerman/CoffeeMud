@@ -37,7 +37,6 @@ public class MasterTailoring extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",30,ID(),false);}
 	}
-	public Environmental newInstance(){	return new MasterTailoring();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -135,8 +134,8 @@ public class MasterTailoring extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}

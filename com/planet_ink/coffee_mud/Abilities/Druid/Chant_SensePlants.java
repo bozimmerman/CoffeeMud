@@ -15,7 +15,6 @@ public class Chant_SensePlants extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	Room lastRoom=null;
 	protected String word(){return "plants";}
-	public Environmental newInstance(){	return new Chant_SensePlants();	}
 	private int[] myMats={EnvResource.MATERIAL_VEGETATION,
 						  EnvResource.MATERIAL_WOODEN};
 	protected int[] okMaterials(){	return myMats;}
@@ -91,7 +90,7 @@ public class Chant_SensePlants extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

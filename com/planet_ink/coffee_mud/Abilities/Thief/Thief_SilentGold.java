@@ -15,7 +15,6 @@ public class Thief_SilentGold extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"SILENTGOLD"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_SilentGold();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

@@ -12,7 +12,6 @@ public class Chant_VenomWard extends Chant
 	public String name(){ return "Venom Ward";}
 	public String displayText(){return "(Venom Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_VenomWard();}
 
 	public void unInvoke()
 	{

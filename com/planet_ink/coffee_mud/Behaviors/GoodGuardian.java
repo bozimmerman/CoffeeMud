@@ -8,10 +8,7 @@ import java.util.*;
 public class GoodGuardian extends StdBehavior
 {
 	public String ID(){return "GoodGuardian";}
-	public Behavior newInstance()
-	{
-		return new GoodGuardian();
-	}
+
 
 	public static MOB anyPeaceToMake(Room room, MOB observer)
 	{

@@ -11,8 +11,7 @@ public class Dance_Ballet extends Dance
 	public String ID() { return "Dance_Ballet"; }
 	public String name(){ return "Ballet";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Ballet();}
-	
+
 	private int amount=0;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

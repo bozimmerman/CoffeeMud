@@ -13,7 +13,6 @@ public class Chant_SummonSapling extends Chant
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonSapling();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean tick(Tickable ticking, int tickID)

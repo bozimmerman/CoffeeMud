@@ -12,6 +12,5 @@ public class Druid_ShapeShift3 extends Druid_ShapeShift
 	public int quality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return empty;}
 
-	public Environmental newInstance(){	return new Druid_ShapeShift3();}
-	
+
 }

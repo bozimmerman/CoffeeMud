@@ -11,7 +11,6 @@ public class Chant_SummonFear extends Chant
 	public String displayText(){return "(Afraid)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 1;}
-	public Environmental newInstance(){	return new Chant_SummonFear();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

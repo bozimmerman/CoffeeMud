@@ -12,7 +12,6 @@ public class Spell_Dragonfire extends Spell
 	public String displayText(){return "(Dragonfire)";}
 	public int maxRange(){return 3;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_Dragonfire();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

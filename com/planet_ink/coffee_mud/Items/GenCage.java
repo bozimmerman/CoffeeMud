@@ -22,10 +22,6 @@ public class GenCage extends StdCage
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenCage();
-	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public String keyName()

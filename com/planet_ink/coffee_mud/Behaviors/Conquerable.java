@@ -9,7 +9,6 @@ import java.util.*;
 public class Conquerable extends Arrest
 {
 	public String ID(){return "Conquerable";}
-	public Behavior newInstance(){ return new Conquerable();}
 	protected boolean defaultModifiableNames(){return false;}
 	protected String getLawParms(){ return "custom";}
 
@@ -44,7 +43,7 @@ public class Conquerable extends Arrest
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			
+
 			getLaws((Area)hostObj,false);
 			Integer I=null;
 			Vector V=null;
@@ -492,7 +491,7 @@ public class Conquerable extends Arrest
 				}
 			}
 		}
-		
+
 		return super.okMessage(myHost,msg);
 	}
 

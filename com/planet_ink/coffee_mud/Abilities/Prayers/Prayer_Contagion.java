@@ -14,7 +14,6 @@ public class Prayer_Contagion extends Prayer implements DiseaseAffect
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Contagion();	}
 
 	public void unInvoke()
 	{

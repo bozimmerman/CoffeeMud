@@ -21,10 +21,6 @@ public class GenCaged extends GenItem implements CagedAnimal
 		setMaterial(EnvResource.RESOURCE_MEAT);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenCaged();
-	}
 	public boolean cageMe(MOB M)
 	{
 		if(M==null) return false;

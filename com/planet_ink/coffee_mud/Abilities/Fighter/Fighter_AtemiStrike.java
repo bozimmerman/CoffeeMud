@@ -16,7 +16,6 @@ public class Fighter_AtemiStrike extends StdAbility
 	protected int canAffectCode(){return 0; }
 	protected int overrideMana(){return 100; }
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Fighter_AtemiStrike();	}
 	public int classificationCode(){ return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
@@ -77,13 +76,13 @@ public class Fighter_AtemiStrike extends StdAbility
 			mob.tell("You must be unarmed to perform the strike.");
 			return false;
 		}
-		
+
 		if(Sense.isGolem(target))
 		{
 			mob.tell(target,null,null,"You can't hurt <T-NAMESELF> with Atemi Strike.");
 			return false;
 		}
-		
+
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
 		{
 			mob.tell("You need hands to do this.");

@@ -11,7 +11,6 @@ public class Dance_Cotillon extends Dance
 	public String ID() { return "Dance_Cotillon"; }
 	public String name(){ return "Cotillon";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Cotillon();}
 	protected String danceOf(){return name()+" Dance";}
 	protected MOB whichLast=null;
 

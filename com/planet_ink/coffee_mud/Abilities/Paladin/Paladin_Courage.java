@@ -14,7 +14,6 @@ public class Paladin_Courage extends Paladin
 		super();
 		paladinsGroup=new Vector();
 	}
-	public Environmental newInstance(){	return new Paladin_Courage();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

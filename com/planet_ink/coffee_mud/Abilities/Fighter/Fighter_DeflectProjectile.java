@@ -15,7 +15,6 @@ public class Fighter_DeflectProjectile extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_DeflectProjectile();}
 	public int classificationCode(){ return Ability.SKILL;}
 	public boolean doneThisRound=false;
 

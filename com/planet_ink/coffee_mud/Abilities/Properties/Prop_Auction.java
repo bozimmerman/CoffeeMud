@@ -10,7 +10,6 @@ public class Prop_Auction extends Property
 	public String ID() { return "Prop_Auction"; }
 	public String name(){ return "Auction Ticker";}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Prop_Auction();}
 	public String accountForYourself(){ return "";	}
 	public Environmental auctioning=null;
 	public MOB highBidder=null;

@@ -12,7 +12,6 @@ public class Song_Dexterity extends Song
 	public String name(){ return "Dexterity";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	private int amount=0;
-	public Environmental newInstance(){	return new Song_Dexterity();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

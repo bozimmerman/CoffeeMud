@@ -10,7 +10,6 @@ public class Prop_SparringRoom extends Property
 	public String ID() { return "Prop_SparringRoom"; }
 	public String name(){ return "Player Death Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_SparringRoom();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

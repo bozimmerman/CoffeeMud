@@ -13,7 +13,6 @@ public class Spell_Infravision extends Spell
 	public String displayText(){return "(Infravision)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Infravision();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean successfulObservation=false;

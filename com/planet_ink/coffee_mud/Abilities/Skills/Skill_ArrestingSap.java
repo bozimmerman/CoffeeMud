@@ -15,7 +15,6 @@ public class Skill_ArrestingSap extends StdAbility
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Skill_ArrestingSap();}
 	private int enhancement=0;
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}

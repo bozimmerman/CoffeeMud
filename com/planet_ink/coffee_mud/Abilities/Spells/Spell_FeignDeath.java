@@ -12,7 +12,6 @@ public class Spell_FeignDeath extends Spell
 	public String name(){return "Feign Death";}
 	public String displayText(){return "(Feign Death)";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_FeignDeath();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public DeadBody Body=null;

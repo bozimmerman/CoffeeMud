@@ -21,7 +21,6 @@ public class FireBuilding extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance()	{return new FireBuilding();	}
 
 
 	public void unInvoke()
@@ -63,7 +62,7 @@ public class FireBuilding extends CommonSkill
 		&&(!Sense.isAnimalIntelligence(mob)))
 		&&(commands.size()==0))
 			commands.addElement("fire");
-		
+
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Light what?  Try light fire, or light torch...");

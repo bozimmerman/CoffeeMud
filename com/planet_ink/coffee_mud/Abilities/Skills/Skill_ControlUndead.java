@@ -16,7 +16,6 @@ public class Skill_ControlUndead extends StdAbility
 	private static final String[] triggerStrings = {"CONTROL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_ControlUndead();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -16,7 +16,6 @@ public class Paladin extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Vector paladinsGroup=null;
-	public Environmental newInstance(){	return new Paladin();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -50,11 +49,11 @@ public class Paladin extends StdAbility
 				}
 			}
 		}
-		if(Dice.rollPercentage()==1) 
+		if(Dice.rollPercentage()==1)
 			helpProfficiency(invoker);
 		return true;
 	}
-	
+
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

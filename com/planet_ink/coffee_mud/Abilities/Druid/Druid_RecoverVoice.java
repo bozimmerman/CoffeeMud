@@ -15,7 +15,6 @@ public class Druid_RecoverVoice extends StdAbility
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Druid_RecoverVoice();}
 	public int classificationCode(){return Ability.SKILL;}
 
 

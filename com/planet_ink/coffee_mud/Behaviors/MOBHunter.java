@@ -28,10 +28,7 @@ public class MOBHunter extends ActiveTicker
 		minTicks=600; maxTicks=1200; chance=100; radius=20;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-	    return new MOBHunter();
-	}
+
 
 	private boolean isHunting(MOB mob)
 	{

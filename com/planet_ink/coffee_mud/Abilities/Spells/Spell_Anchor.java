@@ -12,7 +12,6 @@ public class Spell_Anchor extends Spell
 	public String displayText(){return "(Anchor)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Anchor();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

@@ -17,7 +17,6 @@ public class Undead_ColdTouch extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"COLDTOUCH"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Undead_ColdTouch();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -9,7 +9,6 @@ public class Play_Organs extends Play_Instrument
 	public String ID() { return "Play_Organs"; }
 	public String name(){ return "Organs";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_ORGANS;}
-	public Environmental newInstance(){	return new Play_Organs();}
 	public String mimicSpell(){return "Prayer_ProtectHealth";}
 	protected int canAffectCode(){return 0;}
 	private static Ability theSpell=null;

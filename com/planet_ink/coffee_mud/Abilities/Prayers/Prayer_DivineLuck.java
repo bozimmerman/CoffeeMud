@@ -14,7 +14,6 @@ public class Prayer_DivineLuck extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_DivineLuck();}
 
 	private static final int[] allSaves={
 		CharStats.SAVE_ACID,

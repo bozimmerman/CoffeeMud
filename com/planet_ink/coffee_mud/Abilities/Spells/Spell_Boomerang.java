@@ -11,7 +11,6 @@ public class Spell_Boomerang extends Spell
 	public String name(){return "Returning";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Boomerang();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	private MOB owner=null;
 

@@ -12,7 +12,6 @@ public class Spell_PassDoor extends Spell
 	public String displayText(){return "(Translucent)";}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public Environmental newInstance(){	return new Spell_PassDoor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
@@ -24,7 +23,7 @@ public class Spell_PassDoor extends Spell
 		affectedStats.setHeight(-1);
 	}
 
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

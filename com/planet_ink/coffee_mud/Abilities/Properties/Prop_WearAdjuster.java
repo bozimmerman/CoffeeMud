@@ -17,8 +17,7 @@ public class Prop_WearAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
-	
-	public Environmental newInstance(){	Prop_WearAdjuster BOB=new Prop_WearAdjuster();	BOB.setMiscText(text()); return BOB;}
+
 
 	public String accountForYourself()
 	{

@@ -23,7 +23,6 @@ public class Hunting extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Hunting();}
 
 	public Room nearByRoom()
 	{

@@ -12,7 +12,6 @@ public class Chant_DistantFungalGrowth extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_DistantFungalGrowth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

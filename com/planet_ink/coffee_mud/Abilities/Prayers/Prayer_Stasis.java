@@ -14,7 +14,6 @@ public class Prayer_Stasis extends Prayer
 	public String displayText(){ return "(In stasis)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Stasis();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

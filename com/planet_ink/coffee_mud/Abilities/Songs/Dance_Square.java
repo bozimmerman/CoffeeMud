@@ -11,7 +11,6 @@ public class Dance_Square extends Dance
 	public String ID() { return "Dance_Square"; }
 	public String name(){ return "Square";}
 	public int quality(){ return INDIFFERENT;}
-	public Environmental newInstance(){	return new Dance_Square();}
 	protected boolean skipStandardDanceInvoke(){return true;}
 	protected String danceOf(){return name()+" Dance";}
 

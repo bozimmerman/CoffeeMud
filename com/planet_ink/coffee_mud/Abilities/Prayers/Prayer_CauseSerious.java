@@ -11,7 +11,6 @@ public class Prayer_CauseSerious extends Prayer
 	public String name(){ return "Cause Serious Wounds";}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_CauseSerious();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

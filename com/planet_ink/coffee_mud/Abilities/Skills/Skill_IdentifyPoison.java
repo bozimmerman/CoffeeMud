@@ -16,7 +16,6 @@ public class Skill_IdentifyPoison extends StdAbility
 	private static final String[] triggerStrings = {"IDPOISON","IDENTIFYPOISON"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_IdentifyPoison();	}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

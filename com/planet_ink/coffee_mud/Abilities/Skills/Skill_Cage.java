@@ -19,7 +19,6 @@ public class Skill_Cage extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public Environmental newInstance(){	return new Skill_Cage();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -80,7 +79,7 @@ public class Skill_Cage extends StdAbility
 				return false;
 			}
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

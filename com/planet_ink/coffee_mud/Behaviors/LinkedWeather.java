@@ -9,10 +9,7 @@ public class LinkedWeather extends StdBehavior
 {
 	public String ID(){return "LinkedWeather";}
 	protected int canImproveCode(){return Behavior.CAN_AREAS;}
-	public Behavior newInstance()
-	{
-		return new LinkedWeather();
-	}
+
 
 	protected long lastWeather=-1;
 	protected long lastPending=-1;

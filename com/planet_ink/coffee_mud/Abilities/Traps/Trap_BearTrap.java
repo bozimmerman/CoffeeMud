@@ -13,7 +13,6 @@ public class Trap_BearTrap extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 16;}
 	public String requiresToSet(){return "30 pounds of metal";}
-	public Environmental newInstance(){	return new Trap_BearTrap();}
 	public int baseRejuvTime(int level){ return 35;}
 
 	private int amountRemaining=250;

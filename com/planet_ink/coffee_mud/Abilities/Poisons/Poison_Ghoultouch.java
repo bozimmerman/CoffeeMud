@@ -11,9 +11,8 @@ public class Poison_Ghoultouch extends Poison
 	public String name(){ return "Ghoultouch";}
 	private static final String[] triggerStrings = {"POISONGHOUL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Ghoultouch();}
 	public long flags(){return Ability.FLAG_BINDING;}
-	
+
 	protected int POISON_TICKS(){return 15;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your muscles relax again.";}
@@ -28,7 +27,7 @@ public class Poison_Ghoultouch extends Poison
 		if(affected instanceof MOB)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);

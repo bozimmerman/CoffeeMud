@@ -11,7 +11,6 @@ public class Play_Background extends Play
 	public String ID() { return "Play_Background"; }
 	public String name(){ return "Background";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Background();}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -37,4 +36,4 @@ public class Play_Background extends Play
 		}
 	}
 }
-	
+

@@ -23,7 +23,6 @@ public class Chopping extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Chopping();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

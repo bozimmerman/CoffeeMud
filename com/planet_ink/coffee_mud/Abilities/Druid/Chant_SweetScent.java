@@ -11,7 +11,6 @@ public class Chant_SweetScent extends Chant
 	public String name(){ return "Sweet Scent";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_SweetScent();}
 
 
 	public boolean tick(Tickable ticking, int tickID)

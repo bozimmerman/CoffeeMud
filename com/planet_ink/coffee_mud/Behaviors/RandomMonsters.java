@@ -15,7 +15,7 @@ public class RandomMonsters extends ActiveTicker
 	protected int maxMonsters=1;
 	protected Vector restrictedLocales=null;
 	private boolean alreadyTriedLoad=false;
-	
+
 	public void setParms(String newParms)
 	{
 		int x=newParms.indexOf(";");
@@ -92,15 +92,12 @@ public class RandomMonsters extends ActiveTicker
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
 	}
-	
+
 	public RandomMonsters()
 	{
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new RandomMonsters();
-	}
+
 
 	public boolean okRoomForMe(MOB M, Room newRoom)
 	{
@@ -177,8 +174,8 @@ public class RandomMonsters extends ActiveTicker
 		}
 		return monsters;
 	}
-	
-	
+
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -197,9 +194,9 @@ public class RandomMonsters extends ActiveTicker
 		{
 			Vector monsters=getMonsters(ticking,getParms());
 			if(monsters==null) return true;
-			
+
 			int num=minMonsters;
-			if(maintained.size()>=minMonsters) 
+			if(maintained.size()>=minMonsters)
 				num=maintained.size()+1;
 			if(num>maxMonsters) num=maxMonsters;
 			while(maintained.size()<num)
@@ -218,7 +215,7 @@ public class RandomMonsters extends ActiveTicker
 						if(ticking instanceof GridLocale)
 						{
 							Vector map=((GridLocale)ticking).getAllRooms();
-							if(map.size()==0)	
+							if(map.size()==0)
 								M.bringToLife(((Room)ticking),true);
 							else
 							{

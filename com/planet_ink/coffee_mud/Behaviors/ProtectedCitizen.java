@@ -18,10 +18,7 @@ public class ProtectedCitizen extends ActiveTicker
 	private int maxAssistance=1;
 	private boolean wander=false;
 
-	public Behavior newInstance()
-	{
-		return new ProtectedCitizen();
-	}
+
 
 	public ProtectedCitizen()
 	{

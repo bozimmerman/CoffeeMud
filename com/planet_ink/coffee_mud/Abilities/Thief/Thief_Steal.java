@@ -14,13 +14,12 @@ public class Thief_Steal extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"STEAL"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Steal();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int code=0;
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
-	
+
 	private DVector lastOnes=new DVector(2);
 	private int timesPicked(MOB target)
 	{

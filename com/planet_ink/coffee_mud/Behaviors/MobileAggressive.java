@@ -12,10 +12,7 @@ public class MobileAggressive extends Mobile
 	protected int tickDown=0;
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 
-	public Behavior newInstance()
-	{
-		return new MobileAggressive();
-	}
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

@@ -13,7 +13,6 @@ public class Spell_WeaknessGas extends Spell
 	public String displayText(){return "(Weakness to Gas)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Spell_WeaknessGas();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

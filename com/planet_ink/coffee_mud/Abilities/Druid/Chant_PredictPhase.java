@@ -13,7 +13,6 @@ public class Chant_PredictPhase extends Chant
 	public int quality(){return Ability.OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_PredictPhase();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

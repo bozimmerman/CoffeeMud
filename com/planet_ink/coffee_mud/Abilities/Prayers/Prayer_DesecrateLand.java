@@ -13,7 +13,6 @@ public class Prayer_DesecrateLand extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prayer_DesecrateLand();}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

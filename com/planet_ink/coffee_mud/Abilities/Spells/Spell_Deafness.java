@@ -12,7 +12,6 @@ public class Spell_Deafness extends Spell
 	public String displayText(){return "(Deafen)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Deafness();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -18,19 +18,18 @@ public class Prop_ScrapExplode extends Property {
 	public String ID() { return "Prop_ScrapExplode"; }
 	public String name() { return "Scrap Explode"; }
 	protected int canAffectCode() { return Ability.CAN_ITEMS; }
-	public Environmental newInstance() {	return new Prop_ScrapExplode();}
 
 	public void executeMsg(Environmental myHost, CMMsg affect)
 	{
 	    super.executeMsg(myHost, affect);
 	    if((affect.target()!=null)&&(affect.target().equals(affected))
-	       &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping"))) 
+	       &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
 		{
 			Item item=(Item)affect.target();
 			MOB mob = (MOB)affect.source();
 			Room room = mob.location();
 			int damage = 3 * item.envStats().weight();
-			if (mob != null) 
+			if (mob != null)
 			{
 				MUDFight.postDamage(mob, mob, item, damage*2,  CMMsg.MSG_OK_VISUAL, Weapon.TYPE_PIERCING,
 				        "Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");

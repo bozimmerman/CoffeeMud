@@ -15,7 +15,6 @@ public class Prayer_HolyDay extends Prayer
 	public int quality(){ return MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_HolyDay();	}
 	private String godName="the gods";
 
 	public void unInvoke()
@@ -70,7 +69,7 @@ public class Prayer_HolyDay extends Prayer
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof Area)))
@@ -78,7 +77,7 @@ public class Prayer_HolyDay extends Prayer
 
 		if(((Area)affected).getTimeObj().getTimeOfDay()==15)
 			unInvoke();
-		
+
 		return super.tick(ticking,tickID);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -31,10 +31,6 @@ public class GenContainer extends StdContainer
 	{
 		readableText=newKeyName;
 	}
-	public Environmental newInstance()
-	{
-		return new GenContainer();
-	}
 	public boolean isGeneric(){return true;}
 
 	public String text()

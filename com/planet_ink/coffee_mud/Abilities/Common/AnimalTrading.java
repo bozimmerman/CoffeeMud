@@ -21,7 +21,6 @@ public class AnimalTrading extends CommonSkill
 					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
 		}
 	}
-	public Environmental newInstance(){	return new AnimalTrading();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

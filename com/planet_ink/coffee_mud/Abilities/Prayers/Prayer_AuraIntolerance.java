@@ -14,7 +14,6 @@ public class Prayer_AuraIntolerance extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_AuraIntolerance();	}
 
 
 	public void unInvoke()
@@ -51,15 +50,15 @@ public class Prayer_AuraIntolerance extends Prayer
 		}
 		return true;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
-		
+
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		Room R=((MOB)affected).location();
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -94,7 +93,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			mob.tell("You must worship a god to be intolerant.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

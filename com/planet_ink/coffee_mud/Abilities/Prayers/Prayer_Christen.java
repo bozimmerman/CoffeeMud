@@ -12,7 +12,6 @@ public class Prayer_Christen extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
-	public Environmental newInstance(){	return new Prayer_Christen();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -25,7 +24,7 @@ public class Prayer_Christen extends Prayer
 		commands.removeElementAt(commands.size()-1);
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
-		
+
 		if((!(target instanceof CagedAnimal))||(target.envStats().ability()<=0)||(!target.isGeneric()))
 		{
 			mob.tell("You may only christen a child.");
@@ -41,15 +40,15 @@ public class Prayer_Christen extends Prayer
 			mob.tell("The name may not have a space in it.");
 			return false;
 		}
-		
+
 		if(CMClass.DBEngine().DBUserSearch(null,name))
 		{
 			mob.tell("That name is already taken.  Please choose another.");
 			return false;
 		}
-		
+
 		name=Util.capitalize(name);
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -13,7 +13,6 @@ public class Prayer_DailyBread extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_DailyBread();}
 	protected int overrideMana(){return 100;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -34,7 +33,7 @@ public class Prayer_DailyBread extends Prayer
 			Item I=target.fetchInventory(i);
 			if((I!=null)&&(I instanceof Food))
 			{
-				if(I.container()!=null) 
+				if(I.container()!=null)
 				{
 					Bread=I;
 					BreadContainer=I.container();

@@ -12,7 +12,6 @@ public class Spell_Friends extends Spell
 	public String displayText(){return "(Friends spell)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Spell_Friends();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

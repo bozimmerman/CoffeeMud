@@ -12,7 +12,6 @@ public class Prayer_Sacrifice extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Prayer_Sacrifice();}
 
 	public static Item getBody(Room R)
 	{
@@ -51,7 +50,7 @@ public class Prayer_Sacrifice extends Prayer
 			mob.tell("You are not allowed to sacrifice a players corpse.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

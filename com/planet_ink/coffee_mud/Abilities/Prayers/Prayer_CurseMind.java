@@ -13,7 +13,6 @@ public class Prayer_CurseMind extends Prayer
 	public int quality(){return MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_CurseMind();}
 
 	boolean notAgain=false;
 

@@ -14,7 +14,6 @@ public class Chant_LoveMoon extends Chant
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return FLAG_MOONCHANGING;}
-	public Environmental newInstance(){	return new Chant_LoveMoon();}
 
 	public void unInvoke()
 	{

@@ -14,7 +14,6 @@ public class Spell_FlamingEnsnarement extends Spell
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_FlamingEnsnarement();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_BURNING|Ability.FLAG_HEATING;}
 

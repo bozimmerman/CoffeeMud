@@ -9,10 +9,7 @@ public class ResourceOverride extends StdBehavior
 {
 	public String ID(){return "ResourceOverride";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS;}
-	public Behavior newInstance()
-	{
-		return new ResourceOverride();
-	}
+
 
 	int lastResourceSet=-1;
 	public boolean tick(Tickable ticking, int tickID)

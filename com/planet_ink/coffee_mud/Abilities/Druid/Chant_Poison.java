@@ -13,7 +13,6 @@ public class Chant_Poison extends Chant
 	public int canAffectCode(){return 0;}
 	public int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Poison();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

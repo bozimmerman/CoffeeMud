@@ -17,5 +17,4 @@ public class Specialization_BluntWeapon extends Specialization_Weapon
 		secondWeaponType=Weapon.CLASS_STAFF;
 	}
 
-	public Environmental newInstance(){	return new Specialization_BluntWeapon();}
 }

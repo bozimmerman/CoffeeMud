@@ -13,7 +13,6 @@ public class Prayer_SanctifyRoom extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prayer_SanctifyRoom();}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -35,7 +34,7 @@ public class Prayer_SanctifyRoom extends Prayer
 				{ inRoom=true; break;}
 				if((text().length()>0)&&(M.getClanID().equals(text())))
 				{ inRoom=true; break;}
-				
+
 			}
 			if(!inRoom)
 			{

@@ -17,7 +17,6 @@ import java.util.*;
 public class Spell_CEqDisease extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqDisease"; }
   public String name(){return "ClanEnchant Disease";}
-  public Environmental newInstance(){	return new Spell_CEqDisease();}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
   {

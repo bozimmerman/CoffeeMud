@@ -8,7 +8,6 @@ public class Fighter_HillsTactics extends Fighter_FieldTactics
 {
 	public String ID() { return "Fighter_HillsTactics"; }
 	public String name(){ return "Hills Tactics";}
-	public Environmental newInstance(){	return new Fighter_HillsTactics();}
 	private static final Integer[] landClasses = {new Integer(Room.DOMAIN_OUTDOORS_HILLS)};
 	public Integer[] landClasses(){return landClasses;}
 }

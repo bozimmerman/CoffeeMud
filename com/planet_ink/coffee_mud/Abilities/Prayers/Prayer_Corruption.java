@@ -11,7 +11,6 @@ public class Prayer_Corruption extends Prayer
 	public String name(){ return "Corruption";}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Corruption();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

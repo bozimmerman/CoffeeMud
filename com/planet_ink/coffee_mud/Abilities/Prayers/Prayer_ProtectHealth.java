@@ -14,7 +14,6 @@ public class Prayer_ProtectHealth extends Prayer
 	public String displayText(){ return "(Protection of Health)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtectHealth();}
 
 
 	public void unInvoke()

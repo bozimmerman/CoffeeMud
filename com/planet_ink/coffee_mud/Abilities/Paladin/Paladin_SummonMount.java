@@ -15,7 +15,6 @@ public class Paladin_SummonMount extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Paladin_SummonMount();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public void unInvoke()

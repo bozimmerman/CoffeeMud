@@ -13,7 +13,6 @@ public class Prayer_Weather extends Prayer
 	protected int canAffectCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_Weather();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

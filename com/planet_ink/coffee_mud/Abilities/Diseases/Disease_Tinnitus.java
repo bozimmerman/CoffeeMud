@@ -14,7 +14,6 @@ public class Disease_Tinnitus extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Tinnitus();}
 
 	protected int DISEASE_TICKS(){return 100;}
 	protected int DISEASE_DELAY(){return 1;}
@@ -22,9 +21,9 @@ public class Disease_Tinnitus extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with tinnitus.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
-	
+
 	protected boolean ringing=false;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;

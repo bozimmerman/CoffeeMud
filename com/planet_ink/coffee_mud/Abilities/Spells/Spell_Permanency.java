@@ -12,7 +12,6 @@ public class Spell_Permanency extends Spell
 	public String name(){return "Permanency";}
 	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	public Environmental newInstance(){	return new Spell_Permanency();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

@@ -11,9 +11,8 @@ public class Dance_RagsSharqi extends Dance
 	public String ID() { return "Dance_RagsSharqi"; }
 	public String name(){ return "Rags Sharqi";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_RagsSharqi();}
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		if(invoker!=null)

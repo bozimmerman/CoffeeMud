@@ -11,7 +11,6 @@ public class Chant_Crossbreed extends Chant
 	public String name(){ return "Crossbreed";}
 	public String displayText(){return "(Crossbreed)";}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Chant_Crossbreed();}
 
 	public void unInvoke()
 	{

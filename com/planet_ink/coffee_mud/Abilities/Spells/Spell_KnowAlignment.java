@@ -9,7 +9,6 @@ public class Spell_KnowAlignment extends Spell
 {
 	public String ID() { return "Spell_KnowAlignment"; }
 	public String name(){return "Know Alignment";}
-	public Environmental newInstance(){	return new Spell_KnowAlignment();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

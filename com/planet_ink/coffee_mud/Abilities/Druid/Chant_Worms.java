@@ -11,7 +11,6 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public String name(){ return "Worms";}
 	public String displayText(){return "(Worms)";}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Worms();}
 	public int abilityCode(){return 0;}
 	int plagueDown=5;
 	public boolean tick(Tickable ticking, int tickID)

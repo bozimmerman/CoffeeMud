@@ -13,7 +13,6 @@ public class Song_Babble extends Song
 	public int quality(){ return MALICIOUS;}
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
-	public Environmental newInstance(){	return new Song_Babble();}
 	protected boolean skipStandardSongInvoke(){return true;}
 
 	protected int numChars(String words)

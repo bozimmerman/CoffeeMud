@@ -16,7 +16,6 @@ public class Skill_Puppeteer extends BardSkill
 	private static final String[] triggerStrings = {"PUPPETEER","PUPPET"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Puppeteer();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -14,7 +14,6 @@ public class Prayer_GreatCurse extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_GreatCurse();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

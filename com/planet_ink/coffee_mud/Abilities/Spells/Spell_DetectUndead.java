@@ -13,7 +13,6 @@ public class Spell_DetectUndead extends Spell
 	public String displayText(){return "(Detecting Undead)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectUndead();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 
 	Room lastRoom=null;

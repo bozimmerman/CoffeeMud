@@ -11,7 +11,6 @@ public class Song_Ode extends Song
 	public String ID() { return "Song_Ode"; }
 	public String name(){ return "Ode";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Song_Ode();	}
 	public MOB whom=null;
 	public Hashtable benefits=null;
 

@@ -12,7 +12,6 @@ public class Play_Dirge extends Play
 	public String name(){ return "Dirge";}
 	protected int canAffectCode(){return 0;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Dirge();}
 	protected boolean persistantSong(){return false;}
 	protected boolean skipStandardSongTick(){return true;}
 	protected String songOf(){return "a "+name();}

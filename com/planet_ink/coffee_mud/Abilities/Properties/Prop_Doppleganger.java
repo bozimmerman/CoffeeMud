@@ -10,7 +10,6 @@ public class Prop_Doppleganger extends Property
 	public String ID() { return "Prop_Doppleganger"; }
 	public String name(){ return "Doppleganger";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_Doppleganger();}
 	private boolean lastLevelChangers=true;
 
 	public String accountForYourself()

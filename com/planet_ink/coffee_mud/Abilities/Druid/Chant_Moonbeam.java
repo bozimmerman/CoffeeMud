@@ -11,7 +11,6 @@ public class Chant_Moonbeam extends Chant
 	public String ID() { return "Chant_Moonbeam"; }
 	public String name(){ return "Moonbeam";}
 	public String displayText(){return "(Moonbeam)";}
-	public Environmental newInstance(){	return new Chant_Moonbeam();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

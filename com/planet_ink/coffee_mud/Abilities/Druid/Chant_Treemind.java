@@ -12,7 +12,6 @@ public class Chant_Treemind extends Chant
 	public String displayText(){return "(Treemind)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	int amountAbsorbed=0;
-	public Environmental newInstance(){	return new Chant_Treemind();}
 
 	public void unInvoke()
 	{

@@ -15,7 +15,6 @@ public class Skill_EscapeBonds extends BardSkill
 	private static final String[] triggerStrings = {"ESCAPEBONDS","ESCAPE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_EscapeBonds();}
 	public int usageType(){return USAGE_MANA;}
 
 

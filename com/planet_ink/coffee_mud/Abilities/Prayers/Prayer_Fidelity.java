@@ -11,7 +11,6 @@ public class Prayer_Fidelity extends Prayer
 	public String name(){ return "Fidelity";}
 	public String displayText(){return "(Fidelity)";}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Prayer_Fidelity();}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public void unInvoke()

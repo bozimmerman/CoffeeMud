@@ -12,7 +12,6 @@ public class Prayer_MassMobility extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Mass Mobility)";}
-	public Environmental newInstance(){	return new Prayer_MassMobility();}
 
 
 

@@ -16,7 +16,6 @@ public class Fighter_Fragmentation extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_Fragmentation();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -25,7 +24,7 @@ public class Fighter_Fragmentation extends StdAbility
 			((Weapon)msg.target()).destroy();
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -41,7 +40,7 @@ public class Fighter_Fragmentation extends StdAbility
 			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"<T-NAME> fragment(s) in <S-NAME>!"));
 			msg.setValue(msg.value()+(2*(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),100.0)))));
 		}
-			
+
 		return super.okMessage(myHost,msg);
 	}
 

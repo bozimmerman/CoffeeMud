@@ -12,7 +12,6 @@ public class Prayer_SenseAlignment extends Prayer
 	//public String displayText(){ return "(Sense Alignment)";}
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_SenseAlignment();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

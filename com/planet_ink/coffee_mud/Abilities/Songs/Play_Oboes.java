@@ -9,7 +9,6 @@ public class Play_Oboes extends Play_Instrument
 	public String ID() { return "Play_Oboes"; }
 	public String name(){ return "Oboes";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_OBOES;}
-	public Environmental newInstance(){	return new Play_Oboes();}
 	public String mimicSpell(){return "Spell_AcidArrow";}
 	protected int canAffectCode(){return 0;}
 	private static Ability theSpell=null;

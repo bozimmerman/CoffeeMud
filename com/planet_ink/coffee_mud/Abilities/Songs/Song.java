@@ -30,7 +30,6 @@ public class Song extends StdAbility
 		return affectType;
 	}
 
-	public Environmental newInstance(){	return new Song();}
 
 	public void executeMsg(Environmental host, CMMsg msg)
 	{

@@ -9,8 +9,7 @@ public class Paladin_ImprovedResists extends Paladin
 {
 	public String ID() { return "Paladin_ImprovedResists"; }
 	public String name(){ return "Paladin`s Resistance";}
-	public Environmental newInstance(){	return new Paladin_ImprovedResists();}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

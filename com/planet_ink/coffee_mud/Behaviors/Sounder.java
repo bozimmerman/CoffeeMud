@@ -24,10 +24,7 @@ public class Sounder extends StdBehavior
 		maxTicks=23;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new Sounder();
-	}
+
 
 	protected void tickReset()
 	{

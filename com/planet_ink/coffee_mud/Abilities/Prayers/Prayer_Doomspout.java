@@ -14,7 +14,6 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	public String displayText(){ return "(Doomspout)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Doomspout();}
 	int plagueDown=4;
 	String godName="The Demon";
 
@@ -43,12 +42,12 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			case 6:	CommonMsgs.say(mob,null,"The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!",false,false); break;
 			case 7:	CommonMsgs.say(mob,null,"Nothing can save you! Throw yourself on the mercy of "+godName+"!",false,false); break;
 			case 8:	CommonMsgs.say(mob,null,godName+" will show us no mercy!",false,false); break;
-			case 9:	CommonMsgs.say(mob,null,godName+" has spoken! We will all be destroyed!",false,false); 
+			case 9:	CommonMsgs.say(mob,null,godName+" has spoken! We will all be destroyed!",false,false);
 					break;
 			case 10:
 			case 11:
 			case 12:
-					CommonMsgs.say(mob,null,"Our doom is upon us! The end is near!",false,false); 
+					CommonMsgs.say(mob,null,"Our doom is upon us! The end is near!",false,false);
 					break;
 			}
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));

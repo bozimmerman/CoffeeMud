@@ -12,7 +12,6 @@ public class Prayer_MassDeafness extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Deafness)";}
-	public Environmental newInstance(){	return new Prayer_MassDeafness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -13,7 +13,6 @@ public class Trap_Boulders extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "50 pounds of boulders";}
-	public Environmental newInstance(){	return new Trap_Boulders();}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{

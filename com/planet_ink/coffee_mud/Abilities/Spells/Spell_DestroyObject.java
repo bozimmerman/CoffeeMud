@@ -10,7 +10,6 @@ public class Spell_DestroyObject extends Spell
 	public String ID() { return "Spell_DestroyObject"; }
 	public String name(){return "Destroy Object";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_DestroyObject();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -25,7 +24,7 @@ public class Spell_DestroyObject extends Spell
 			mob.tell("You are not allowed to destroy a player corpse.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands, givenTarget, auto))
 			return false;
 

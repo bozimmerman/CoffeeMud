@@ -20,10 +20,7 @@ public class RandomTeleporter extends ActiveTicker
 		restrictedLocales=null;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new RandomTeleporter();
-	}
+
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{

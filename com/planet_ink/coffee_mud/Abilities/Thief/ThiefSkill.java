@@ -11,8 +11,7 @@ public class ThiefSkill extends StdAbility
 	public String name(){ return "a Thief Skill";}
 	public int quality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){	return Ability.THIEF_SKILL;}
-	public Environmental newInstance(){	return new ThiefSkill();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

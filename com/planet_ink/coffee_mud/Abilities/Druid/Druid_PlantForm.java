@@ -15,7 +15,6 @@ public class Druid_PlantForm extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 
-	public Environmental newInstance(){	return new Druid_PlantForm();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public Race newRace=null;

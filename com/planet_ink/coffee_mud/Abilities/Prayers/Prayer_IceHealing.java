@@ -14,7 +14,6 @@ public class Prayer_IceHealing extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_HEALING;}
-	public Environmental newInstance(){	return new Prayer_IceHealing();}
 
 
 	public void unInvoke()

@@ -10,7 +10,6 @@ public class Prop_SpellReflecting extends Property
 	public String ID() { return "Prop_SpellReflecting"; }
 	public String name(){ return "Spell reflecting property";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_SpellReflecting BOB=new Prop_SpellReflecting();	BOB.setMiscText(text());return BOB;}
 
 	protected int minLevel=1;
 	protected int maxLevel=30;

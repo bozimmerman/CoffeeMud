@@ -13,14 +13,13 @@ public class Prayer_Condemnation extends Prayer
 	protected int canAffectCode(){return 0;}
 	public int quality(){ return OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Condemnation();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
 		if((Bs!=null)&&(Bs.size()>0)) B=(Behavior)Bs.firstElement();
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 		Vector warrants=new Vector();

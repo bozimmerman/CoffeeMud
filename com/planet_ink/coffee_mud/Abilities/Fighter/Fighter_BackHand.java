@@ -16,7 +16,6 @@ public class Fighter_BackHand extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_BackHand();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

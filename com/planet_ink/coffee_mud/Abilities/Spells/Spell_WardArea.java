@@ -14,7 +14,6 @@ public class Spell_WardArea extends Spell implements Trap
 	protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
 	private Vector parameters=null;
-	public Environmental newInstance(){	return new Spell_WardArea();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
 

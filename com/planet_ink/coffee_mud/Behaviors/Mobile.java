@@ -26,10 +26,7 @@ public class Mobile extends ActiveTicker
 		restrictedLocales=null;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new Mobile();
-	}
+
 
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{

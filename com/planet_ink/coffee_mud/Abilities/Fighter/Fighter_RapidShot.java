@@ -16,7 +16,6 @@ public class Fighter_RapidShot extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_RapidShot();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)

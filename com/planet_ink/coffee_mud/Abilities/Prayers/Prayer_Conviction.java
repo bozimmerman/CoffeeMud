@@ -14,7 +14,6 @@ public class Prayer_Conviction extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Conviction();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

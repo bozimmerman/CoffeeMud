@@ -11,7 +11,6 @@ public class Song_Clumsiness extends Song
 	public String ID() { return "Song_Clumsiness"; }
 	public String name(){ return "Clumsiness";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Song_Clumsiness();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

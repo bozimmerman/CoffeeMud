@@ -10,7 +10,6 @@ public class Spell_ForkedLightning extends Spell
 	public String name(){return "Forked Lightning";}
 	public int maxRange(){return 2;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_ForkedLightning();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -20,7 +20,6 @@ public class Spell_Spellbinding extends Spell
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_Spellbinding();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	protected DVector spellbindings=new DVector(2);
 
@@ -51,12 +50,12 @@ public class Spell_Spellbinding extends Spell
 			return Util.toByteList(bytes.toByteArray());
 		}
 		catch(Exception e)
-		{ 
+		{
 			Log.errOut("Spell_Spellbinding",e);
 		}
 		return super.text();
 	}
-	
+
 	public void setMiscText(String text)
 	{
 		if(text.length()==0)
@@ -69,12 +68,12 @@ public class Spell_Spellbinding extends Spell
 				spellbindings=(DVector)new ObjectInputStream(bytes).readObject();
 			}
 			catch(Exception e)
-			{ 
+			{
 				Log.errOut("Spell_Spellbinding",e);
 			}
 		}
 	}
-	
+
 	protected String getMsgFromAffect(String msg)
 	{
 		if(msg==null) return null;
@@ -128,7 +127,7 @@ public class Spell_Spellbinding extends Spell
 			unInvoke();
 		super.executeMsg(host,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		// the invoke method for spells receives as
@@ -177,7 +176,7 @@ public class Spell_Spellbinding extends Spell
 			else
 				V.addElement(A.ID(),new Integer(50+A.usageCost(mob)[Ability.USAGE_MANAINDEX]));
 		}
-		
+
 		int totalcost=0;
 		for(int v=0;v<V.size();v++)
 			totalcost+=((Integer)V.elementAt(v,2)).intValue();
@@ -192,7 +191,7 @@ public class Spell_Spellbinding extends Spell
 			for(int x=0;x<priorBinding.spellbindings.size();x++)
 				if(((String)priorBinding.spellbindings.elementAt(x,1)).equalsIgnoreCase(key))
 				{	thePriorKey=(DVector)priorBinding.spellbindings.elementAt(x,2);}
-		
+
 		for(int v=0;v<V.size();v++)
 			for(int v2=0;v2<V.size();v2++)
 				if((v!=v2)&&(((String)V.elementAt(v,1)).equals((String)V.elementAt(v2,1))))
@@ -207,9 +206,9 @@ public class Spell_Spellbinding extends Spell
 					mob.tell("The same spell can not be bound to the same trigger more than once.");
 					return false;
 				}
-		
+
 		boolean success=profficiencyCheck(mob,0,auto);
-		
+
 		if(mob.curState().getMana()>(curMana-totalcost))
 			mob.curState().setMana(curMana-totalcost);
 

@@ -13,7 +13,6 @@ public class Spell_DetectInvisible extends Spell
 	public String displayText(){return "(Detecting Invisible)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectInvisible();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public void unInvoke()

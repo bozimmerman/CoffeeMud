@@ -24,7 +24,6 @@ public class Farming extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Farming();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

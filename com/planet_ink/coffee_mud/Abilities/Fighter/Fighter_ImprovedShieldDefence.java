@@ -16,7 +16,6 @@ public class Fighter_ImprovedShieldDefence extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_ImprovedShieldDefence();}
 	private boolean gettingBonus=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -45,5 +44,5 @@ public class Fighter_ImprovedShieldDefence extends StdAbility
 		&&(!mob.amDead()))
 			helpProfficiency(mob);
 	}
-	
+
 }

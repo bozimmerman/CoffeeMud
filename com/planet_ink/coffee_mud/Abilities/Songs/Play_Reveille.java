@@ -12,7 +12,6 @@ public class Play_Reveille extends Play
 	public String name(){ return "Reveille";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Play_Reveille();}
 	protected boolean skipStandardSongTick(){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

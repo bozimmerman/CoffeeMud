@@ -14,7 +14,6 @@ public class Chant_RestoreMana extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int overrideMana(){return 50;}
-	public Environmental newInstance(){	return new Chant_RestoreMana();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

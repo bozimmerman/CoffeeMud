@@ -8,10 +8,7 @@ import java.util.*;
 public class Druidness extends CombatAbilities
 {
 	public String ID(){return "Druidness";}
-	public Behavior newInstance()
-	{
-		return new Druidness();
-	}
+
 	boolean confirmedSetup=false;
 
 	public void startBehavior(Environmental forMe)

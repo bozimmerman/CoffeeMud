@@ -10,17 +10,16 @@ public class Prop_ReqCapacity extends Property
 	public String ID() { return "Prop_ReqCapacity"; }
 	public String name(){ return "Capacity Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqCapacity newOne=new Prop_ReqCapacity();	newOne.setMiscText(text());	return newOne;}
-	
+
 	public int peopleCap=Integer.MAX_VALUE;
 	public int itemCap=Integer.MAX_VALUE;
 	public int maxWeight=Integer.MAX_VALUE;
 
 	public String accountForYourself()
-	{ 
+	{
 		return "Person limit: "+((peopleCap==Integer.MAX_VALUE)?"None":(""+peopleCap))
 		  +"\n\rItem limit  : "+((itemCap==Integer.MAX_VALUE)?"None":(""+itemCap))
-		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));	
+		  +"\n\rWeight limit: "+((maxWeight==Integer.MAX_VALUE)?"None":(""+maxWeight));
 	}
 
 	public void setMiscText(String txt)
@@ -41,7 +40,7 @@ public class Prop_ReqCapacity extends Property
 			maxWeight=Util.getParmInt(txt,"weight",maxWeight);
 		}
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected!=null)

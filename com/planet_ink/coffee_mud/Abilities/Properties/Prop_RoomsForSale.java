@@ -9,7 +9,6 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 {
 	public String ID() { return "Prop_RoomsForSale"; }
 	public String name(){ return "Putting a cluster of rooms up for sale";}
-	public Environmental newInstance(){	return new Prop_RoomsForSale();}
 
 	private void fillCluster(Room R, Vector V)
 	{

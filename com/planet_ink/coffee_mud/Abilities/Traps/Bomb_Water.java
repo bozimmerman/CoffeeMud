@@ -11,7 +11,6 @@ public class Bomb_Water extends StdBomb
 	public String name(){ return "water bomb";}
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a water container";}
-	public Environmental newInstance(){	return new Bomb_Water();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

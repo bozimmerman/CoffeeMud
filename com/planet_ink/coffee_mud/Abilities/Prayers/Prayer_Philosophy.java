@@ -13,7 +13,6 @@ public class Prayer_Philosophy extends Prayer
 	public String displayText(){return "(Philosophy spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Prayer_Philosophy();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

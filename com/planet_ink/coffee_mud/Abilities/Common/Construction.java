@@ -62,7 +62,6 @@ public class Construction extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Construction();}
 
 	public Exit generify(Exit E)
 	{

@@ -8,10 +8,7 @@ import java.util.*;
 public class CommonSpeaker extends StdBehavior
 {
 	public String ID(){return "CommonSpeaker";}
-	public Behavior newInstance()
-	{
-		return new CommonSpeaker();
-	}
+
 
 	int tickTocker=1;
 	int tickTock=0;

@@ -12,7 +12,6 @@ public class Chant_CheetahBurst extends Chant
 	public String displayText(){return "(Cheetah Burst)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_CheetahBurst();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

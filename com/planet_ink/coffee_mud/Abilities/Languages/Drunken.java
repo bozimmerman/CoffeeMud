@@ -9,7 +9,7 @@ public class Drunken extends Language
 {
 	public String ID() { return "Drunken"; }
 	public String name(){ return "Drunken";}
-	public static Vector wordLists=null;	
+	public static Vector wordLists=null;
 	private static boolean mapped=false;
 	public Drunken()
 	{
@@ -17,13 +17,12 @@ public class Drunken extends Language
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("Archon",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Drunken();}
-	
+
 	public Vector translationVector()
-	{ 
-		return wordLists; 
+	{
+		return wordLists;
 	}
-	
+
 	protected Vector getSChoices(StringBuffer word)
 	{
 		Vector V=new Vector();
@@ -36,7 +35,7 @@ public class Drunken extends Language
 		}
 		return V;
 	}
-	
+
 	protected Vector getVChoices(StringBuffer word)
 	{
 		Vector V=new Vector();
@@ -51,16 +50,16 @@ public class Drunken extends Language
 		}
 		return V;
 	}
-	
-	protected String translate(String word) 
+
+	protected String translate(String word)
 	{
 		StringBuffer sbw=new StringBuffer(word);
 		Vector V=getSChoices(sbw);
 		if(V.size()>0)
 			sbw.insert(((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue()+1,'h');
 		if(Dice.rollPercentage()<50)
-			return fixCase(word,sbw.toString()); 
-		
+			return fixCase(word,sbw.toString());
+
 		V=getVChoices(sbw);
 		if(V.size()>0)
 		switch(Dice.roll(1,3,0))
@@ -86,7 +85,7 @@ public class Drunken extends Language
 				break;
 			}
 		}
-		return fixCase(word,sbw.toString()); 
+		return fixCase(word,sbw.toString());
 	}
-	
+
 }

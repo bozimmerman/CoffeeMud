@@ -39,7 +39,6 @@ public class Weaponsmithing extends CraftingSkill
 		{mapped=true;
 		 CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Weaponsmithing();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -195,8 +194,8 @@ public class Weaponsmithing extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
@@ -305,7 +304,7 @@ public class Weaponsmithing extends CraftingSkill
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);

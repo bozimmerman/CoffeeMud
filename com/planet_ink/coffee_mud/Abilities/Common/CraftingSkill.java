@@ -10,8 +10,7 @@ public class CraftingSkill extends CommonSkill
 	public String ID() { return "CraftingSkill"; }
 	public String name(){ return "Crafting Skill";}
 	public long flags(){return FLAG_CRAFTING;}
-	public Environmental newInstance()	{	return new CraftingSkill();	}
-	
+
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -135,10 +134,10 @@ public class CraftingSkill extends CommonSkill
 		return mostItem;
 	}
 
-	
+
 	protected Item fetchFoundOtherEncoded(MOB mob, String otherRequired)
 	{
-		if((otherRequired==null)||(otherRequired.trim().length()==0)) 
+		if((otherRequired==null)||(otherRequired.trim().length()==0))
 			return null;
 		Item firstOther=null;
 		boolean resourceOther=otherRequired.startsWith("!");
@@ -149,7 +148,7 @@ public class CraftingSkill extends CommonSkill
 			firstOther=findFirstResource(mob.location(),otherRequired);
 		return firstOther;
 	}
-	
+
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
 	protected int fixResourceRequirement(int resource, int amt)
@@ -173,9 +172,9 @@ public class CraftingSkill extends CommonSkill
 		if(amt<0) amt=1;
 		return amt;
 	}
-	protected int[][] fetchFoundResourceData(MOB mob, 
+	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
-											 String req1Desc, int[] req1, 
+											 String req1Desc, int[] req1,
 											 int req2Required,
 											 String req2Desc, int[] req2,
 											 boolean bundle,
@@ -184,7 +183,7 @@ public class CraftingSkill extends CommonSkill
 		int[][] data=new int[2][2];
 		if((req1Desc!=null)&&(req1Desc.length()==0)) req1Desc=null;
 		if((req2Desc!=null)&&(req2Desc.length()==0)) req2Desc=null;
-		
+
 		// the fake resource generation:
 		if(autoGeneration>0)
 		{
@@ -194,7 +193,7 @@ public class CraftingSkill extends CommonSkill
 			data[0][FOUND_CODE]=autoGeneration;
 			return data;
 		}
-		
+
 		Item firstWood=null;
 		Item firstOther=null;
 		if(req1!=null)
@@ -217,7 +216,7 @@ public class CraftingSkill extends CommonSkill
 			data[0][FOUND_AMT]=findNumberOfResource(mob.location(),firstWood.material());
 			data[0][FOUND_CODE]=firstWood.material();
 		}
-		
+
 		if(req2!=null)
 		{
 			for(int i=0;i<req2.length;i++)

@@ -15,7 +15,6 @@ public class Chant_PlantWall extends Chant
 	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){return new Chant_PlantWall();}
 
 	private int amountRemaining=0;
 	private Item theWall=null;

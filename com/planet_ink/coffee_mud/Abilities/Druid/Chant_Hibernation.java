@@ -15,7 +15,6 @@ public class Chant_Hibernation extends Chant
 	protected int canTargetCode(){return 0;}
 	private CharState oldState=null;
 	private int roundsHibernating=0;
-	public Environmental newInstance(){	return new Chant_Hibernation();}
 
 
 	public void unInvoke()

@@ -19,7 +19,6 @@ public class Prayer_Avatar extends Prayer
 	}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_Avatar();}
 
 
 	public void unInvoke()

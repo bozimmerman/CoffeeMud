@@ -15,7 +15,6 @@ public class Prop_ItemTransporter extends Property
 	protected Item nextDestination=null;
 	private static Hashtable possiblePossibilities=new Hashtable();
 	private static Hashtable lastLooks=new Hashtable();
-	public Environmental newInstance(){	Prop_ItemTransporter BOB=new Prop_ItemTransporter();	BOB.setMiscText(text()); return BOB;}
 
 	public String accountForYourself()
 	{ return "Item Transporter";	}

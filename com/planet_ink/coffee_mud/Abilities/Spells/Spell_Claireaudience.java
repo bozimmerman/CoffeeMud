@@ -10,10 +10,9 @@ public class Spell_Claireaudience extends Spell
 	public String name(){return "Claireaudience";}
 	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Claireaudience();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
 	public static final DVector scries=new DVector(2);
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -111,7 +110,7 @@ public class Spell_Claireaudience extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -15,7 +15,6 @@ public class Thief_MarkInvisibility extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Thief_MarkInvisibility();}
 	public boolean active=false;
 	public MOB mark=null;
 

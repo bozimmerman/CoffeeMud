@@ -11,8 +11,7 @@ public class Poison_Venom extends Poison
 	public String name(){ return "Venom";}
 	private static final String[] triggerStrings = {"POISONBITE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Venom();}
-	
+
 	protected int POISON_TICKS(){return 25;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 2;}
 	protected String POISON_DONE(){return "The venom runs its course.";}
@@ -21,7 +20,7 @@ public class Poison_Venom extends Poison
 	protected String POISON_CAST(){return "^F<S-NAME> bite(s) <T-NAMESELF>!^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,9,1):0;}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-7);

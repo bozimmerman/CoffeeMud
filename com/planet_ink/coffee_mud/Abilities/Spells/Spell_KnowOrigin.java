@@ -13,7 +13,6 @@ public class Spell_KnowOrigin extends Spell
 	public int quality(){return INDIFFERENT;};
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_KnowOrigin();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public Room origin(MOB mob, Environmental meThang)

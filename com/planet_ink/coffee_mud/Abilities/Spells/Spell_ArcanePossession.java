@@ -11,7 +11,6 @@ public class Spell_ArcanePossession extends Spell
 	public String name(){return "Arcane Possession";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_ArcanePossession();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	private MOB owner=null;
 

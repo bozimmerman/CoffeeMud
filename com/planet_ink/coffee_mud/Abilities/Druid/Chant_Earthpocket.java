@@ -12,7 +12,6 @@ public class Chant_Earthpocket extends Chant
 	public String displayText(){return "(Earthpocket: "+(super.tickDown/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY))+")";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_Earthpocket();}
 	private Container pocket=null;
 
 	public void unInvoke()
@@ -51,7 +50,7 @@ public class Chant_Earthpocket extends Chant
 		}
 		return true;
 	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -65,7 +64,7 @@ public class Chant_Earthpocket extends Chant
 		movePocket();
 		return true;
 	}
-	
+
 	public void movePocket()
 	{
 		if((affected instanceof MOB)&&(pocket!=null))
@@ -102,7 +101,7 @@ public class Chant_Earthpocket extends Chant
 			}
 		}
 	}
-	
+
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -115,7 +114,7 @@ public class Chant_Earthpocket extends Chant
 			mob.tell("The earthpocket can only be summoned or seen in a cave.");
 			return false;
 		}
-		
+
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already connected with an earthpocket.");

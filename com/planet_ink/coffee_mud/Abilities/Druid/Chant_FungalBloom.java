@@ -11,7 +11,6 @@ public class Chant_FungalBloom extends Chant
 	public String name(){ return "Fungal Bloom";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_FungalBloom();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

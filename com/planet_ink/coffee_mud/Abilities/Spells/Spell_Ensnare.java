@@ -14,7 +14,6 @@ public class Spell_Ensnare extends Spell
 	public int minRange(){return 1;}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Ensnare();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public int amountRemaining=0;

@@ -12,7 +12,6 @@ public class Chant_ControlWeather extends Chant
 	public String name(){ return "Control Weather";}
 	protected int canAffectCode(){return Ability.CAN_AREAS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_ControlWeather();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

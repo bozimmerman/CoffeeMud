@@ -13,7 +13,6 @@ public class Spell_ReverseGravity extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	private Vector childrenAffects=new Vector();
-	public Environmental newInstance(){	return new Spell_ReverseGravity();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 

@@ -16,7 +16,6 @@ public class Skill_Joke extends BardSkill
 	private static final String[] triggerStrings = {"JOKE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Joke();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -14,7 +14,6 @@ public class Prayer_UnholyArmament extends Prayer
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public Environmental newInstance(){	return new Prayer_UnholyArmament();}
 	public static final long[] checkOrder={
 		Item.WIELD,
 		Item.ON_TORSO,
@@ -33,7 +32,7 @@ public class Prayer_UnholyArmament extends Prayer
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		if(mob.isInCombat())
 		{
 			mob.tell("Not during combat!");
@@ -75,7 +74,7 @@ public class Prayer_UnholyArmament extends Prayer
 			I=CMClass.getArmor("GenArmor");
 			I.setRawProperLocationBitmap(pos);
 			I.baseEnvStats().setLevel(mob.envStats().level());
-			if(pos==Item.ABOUT_BODY) 
+			if(pos==Item.ABOUT_BODY)
 				I.setMaterial(EnvResource.RESOURCE_COTTON);
 			else
 				I.setMaterial(EnvResource.RESOURCE_MITHRIL);
@@ -150,10 +149,10 @@ public class Prayer_UnholyArmament extends Prayer
 		if((mob.fetchInventory(null,I.name()+"$")!=null)
 		||(mob.location().fetchItem(null,I.name()+"$")!=null))
 			I=null;
-		
-		
+
+
 		boolean success=profficiencyCheck(mob,0,auto);
-		
+
 		if((success)&&(I!=null))
 		{
 			// it worked, so build a copy of this ability,

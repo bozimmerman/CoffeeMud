@@ -12,7 +12,6 @@ public class Spell_SongShield extends Spell
 	public String displayText(){return "(Song Shield)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_SongShield();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()

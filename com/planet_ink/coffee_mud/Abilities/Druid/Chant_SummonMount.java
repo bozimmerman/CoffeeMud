@@ -13,7 +13,6 @@ public class Chant_SummonMount extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonMount();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public void unInvoke()

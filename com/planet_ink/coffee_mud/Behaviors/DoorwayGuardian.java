@@ -8,10 +8,7 @@ import java.util.*;
 public class DoorwayGuardian extends StdBehavior
 {
 	public String ID(){return "DoorwayGuardian";}
-	public Behavior newInstance()
-	{
-		return new DoorwayGuardian();
-	}
+
 
 	public Exit[] getParmExits(MOB monster)
 	{

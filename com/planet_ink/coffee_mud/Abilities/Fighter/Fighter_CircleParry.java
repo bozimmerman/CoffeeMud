@@ -18,7 +18,6 @@ public class Fighter_CircleParry extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 
 	boolean lastTime=false;
-	public Environmental newInstance(){	return new Fighter_CircleParry();}
 
 	public boolean anyWeapons(MOB mob)
 	{

@@ -10,7 +10,6 @@ public class Prop_Resistance extends Property
 	public String name(){ return "Stuff Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	private CharStats adjCharStats=null;
-	public Environmental newInstance(){	Prop_Resistance BOB=new Prop_Resistance();BOB.setMiscText(text());return BOB;}
 
 	private void ensureStarted()
 	{

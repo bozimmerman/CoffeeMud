@@ -9,7 +9,6 @@ public class Play_Flutes extends Play_Instrument
 	public String ID() { return "Play_Flutes"; }
 	public String name(){ return "Flutes";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_FLUTES;}
-	public Environmental newInstance(){	return new Play_Flutes();}
 	public String mimicSpell(){return "Chant_CharmAnimal";}
 	private static Ability theSpell=null;
 	protected Ability getSpell()

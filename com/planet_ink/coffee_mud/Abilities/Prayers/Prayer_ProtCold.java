@@ -15,7 +15,6 @@ public class Prayer_ProtCold extends Prayer
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtCold();}
 
 	public void unInvoke()
 	{

@@ -16,7 +16,6 @@ public class Fighter_TrueShot extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_TrueShot();}
 	private boolean gettingBonus=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

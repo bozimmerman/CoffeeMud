@@ -8,10 +8,7 @@ import java.util.*;
 public class PlayerHelper extends StdBehavior
 {
 	public String ID(){return "PlayerHelper";}
-	public Behavior newInstance()
-	{
-		return new PlayerHelper();
-	}
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every message listed in the CMMsg interface

@@ -11,7 +11,6 @@ public class Play_Ballad extends Play
 	public String ID() { return "Play_Ballad"; }
 	public String name(){ return "Ballad";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Ballad();}
 	protected String songOf(){return "a "+name();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

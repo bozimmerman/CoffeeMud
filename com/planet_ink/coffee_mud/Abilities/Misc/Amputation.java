@@ -19,7 +19,6 @@ public class Amputation extends StdAbility
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Amputation();}
 	public int quality(){return Ability.INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"AMPUTATE"};
@@ -227,13 +226,13 @@ public class Amputation extends StdAbility
 	}
 
 // ****************************************************************************
-// False Realities 
+// False Realities
 // Addition by Tulath, 4/10/04.
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
-	public static void unamputate(Environmental target, Amputation A, String gone) 
+	public static void unamputate(Environmental target, Amputation A, String gone)
 	{
-		if (target != null) 
+		if (target != null)
 		{
 			if (target instanceof MOB) {
 			    ((MOB)target).location().show(((MOB)target), null, CMMsg.MSG_OK_VISUAL, "^G<S-YOUPOSS> " + gone + " miraculously regrows!!^?");
@@ -253,7 +252,7 @@ public class Amputation extends StdAbility
 		for (int i = 0; i < theRest.size(); i++)
 		    A.setMiscText(A.text() + ((String)theRest.elementAt(i)) + ";");
 	}
-	
+
 	public static int getRacialCode(String name)
 	{
 		name=name.toUpperCase();
@@ -402,7 +401,7 @@ public class Amputation extends StdAbility
 					return false;
 				}
 			}
-				
+
 			if(gone==null)
 				gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 

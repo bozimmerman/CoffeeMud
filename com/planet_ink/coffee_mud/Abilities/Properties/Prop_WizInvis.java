@@ -12,7 +12,6 @@ public class Prop_WizInvis extends Property
 	public String name(){ return "Wizard Invisibility";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	boolean disabled=false;
-	public Environmental newInstance(){	return new Prop_WizInvis();}
 
 	public String accountForYourself()
 	{ return "Wizard Invisibile";	}
@@ -105,7 +104,7 @@ public class Prop_WizInvis extends Property
 			&&(!CMSecurity.isAllowed(msg.source(),msg.source().location(),"SYSMSGS")))
 				msg.source().setBitmap(Util.unsetb(msg.source().getBitmap(),MOB.ATT_SYSOPMSGS));
 		}
-		
+
 		return super.okMessage(myHost,msg);
 	}
 }

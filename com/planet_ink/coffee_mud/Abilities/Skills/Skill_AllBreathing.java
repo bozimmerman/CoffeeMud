@@ -17,7 +17,6 @@ public class Skill_AllBreathing extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Skill_AllBreathing();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -16,7 +16,6 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"MUMMYROT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Disease_MummyRot();}
 	public int classificationCode(){return Ability.DISEASE;}
 	public int abilityCode(){return 0;}
 

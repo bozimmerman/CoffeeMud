@@ -17,7 +17,6 @@ public class Thief_Assassinate extends ThiefSkill
 	private static final String[] triggerStrings = {"ASSASSINATE"};
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Assassinate();}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	private Vector theTrail=null;
 	public int nextDirection=-2;

@@ -18,7 +18,6 @@ public class Chant_FindMate extends Chant
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
-	public Environmental newInstance(){	return new Chant_FindMate();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

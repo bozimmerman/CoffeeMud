@@ -16,7 +16,6 @@ public class Chant_LocatePlants extends Chant
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
-	public Environmental newInstance(){	return new Chant_LocatePlants();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -14,7 +14,6 @@ public class Chant_ControlFire extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
-	public Environmental newInstance(){	return new Chant_ControlFire();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

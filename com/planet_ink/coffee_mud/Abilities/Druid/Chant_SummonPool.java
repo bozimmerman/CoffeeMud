@@ -13,7 +13,6 @@ public class Chant_SummonPool extends Chant
 	protected int canTargetCode(){return 0;}
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
-	public Environmental newInstance(){	return new Chant_SummonPool();	}
 
 	public void unInvoke()
 	{

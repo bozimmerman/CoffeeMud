@@ -12,7 +12,6 @@ public class Spell_FindFamiliar extends Spell
 	public String displayText(){return "(Find Familiar)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_FindFamiliar();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

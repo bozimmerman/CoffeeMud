@@ -14,7 +14,6 @@ public class Prop_HaveResister extends Property
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
-	public Environmental newInstance(){	Prop_HaveResister BOB=new Prop_HaveResister();	BOB.setMiscText(text());return BOB;}
 
 	public void setMiscText(String newText)
 	{

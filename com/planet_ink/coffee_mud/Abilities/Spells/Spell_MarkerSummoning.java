@@ -10,7 +10,6 @@ public class Spell_MarkerSummoning extends Spell
 	public String ID() { return "Spell_MarkerSummoning"; }
 	public String name(){return "Marker Summoning";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_MarkerSummoning();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 

@@ -9,7 +9,6 @@ public class Paladin_DiseaseImmunity extends Paladin
 {
 	public String ID() { return "Paladin_DiseaseImmunity"; }
 	public String name(){ return "Disease Immunity";}
-	public Environmental newInstance(){	return new Paladin_DiseaseImmunity();}
 
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -16,5 +16,4 @@ public class Specialization_Axe extends Specialization_Weapon
 		weaponType=Weapon.CLASS_AXE;
 	}
 
-	public Environmental newInstance(){	return new Specialization_Axe();}
 }

@@ -11,7 +11,6 @@ public class Song_Inebriation extends Song
 	public String ID() { return "Song_Inebriation"; }
 	public String name(){ return "Drunkenness";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Song_Inebriation();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

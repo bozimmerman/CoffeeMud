@@ -14,7 +14,6 @@ public class Prayer_Benediction extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Benediction();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

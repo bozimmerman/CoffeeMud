@@ -16,7 +16,6 @@ public class Prayer_Monolith extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Monolith();}
 
 	private final static int TYP_ICE=0;
 	private final static int TYP_FIRE=1;

@@ -527,7 +527,7 @@ system to load and build, and take up a lot of database disk space.&nbsp; For
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
 <P><FONT size=4>Each MOB must also 
-have custom "ID()" and "newInstance" methods as shown below.&nbsp; Notice that 
+have a custom "ID()" method as shown below.&nbsp; Notice that 
 the ID() is the same as the name of the 
 class.&nbsp; This is no accident -- this is required!</FONT></P><PRE>public class MyNewMOB extends StdMOB 
 { 
@@ -536,11 +536,6 @@ class.&nbsp; This is no accident -- this is required!</FONT></P><PRE>public clas
 	{ 
 		super(); 
 	}
-
-	public Environmental newInstance() 
-	{ 
-		return new MyNewMOB(); 
-	} 
 }
 </PRE>
 <P><FONT size=4>All of your 
@@ -737,7 +732,7 @@ system to load and build, and take up a lot of database disk space.&nbsp; For
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
 <P><FONT size=4>Each Item must also 
-have a custom newInstance() and ID() methods as shown below.&nbsp; Notice that 
+have a custom ID() method as shown below.&nbsp; Notice that 
 the ID() is the same as the name of the class.&nbsp; This is no accident -- this 
 is required!</FONT></P><PRE>public class MyNewSword extends StdWeapon 
 { 
@@ -746,11 +741,6 @@ is required!</FONT></P><PRE>public class MyNewSword extends StdWeapon
 	{ 
 		super(); 
 	}
-		
-	public Environmental newInstance() 
-	{ 
-		return new MyNewSword(); 
-	} 
 }
 </PRE>
 <P><FONT size=4>All of your 
@@ -1707,16 +1697,13 @@ public class Ravenous implements Behavior
 	public String ID(){return "Ravenous";}
 	public String name(){return "Ravenous Eater";}
 	
-	public Behavior newInstance()
-	{	return new Ravenous();	}
 </PRE>
 <P align=left><FONT size=4>Our first 
 step, as seen above, is to make sure we define an ID() method with the classes 
 name, just as we do in other CoffeeMud objects.&nbsp; Notice that the ID() is 
 the same as the name of the class.&nbsp; This is no accident -- this is 
 required!&nbsp; The next step is to give the Behavior a name, which is entirely 
-unimportant to players, but helpful for Archons.&nbsp; And, of course, we must 
-define a newInstance() method to return a coy of the behavior.</FONT></P><PRE>	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+unimportant to players, but helpful for Archons.&nbsp; </FONT></P><PRE>	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 </PRE>
@@ -2457,10 +2444,6 @@ public class SlidingDoor extends StdExit
 	public boolean defaultsLocked(){return false;}
 	public boolean defaultsClosed(){return true;}
 	public int openDelayTicks(){return 45;}
-	public Environmental newInstance()
-	{
-		return new SlidingDoor();
-	}
 }
 </PRE>
 <P align=left><FONT size=4>As you can 
@@ -2515,10 +2498,6 @@ public class RoadGrid extends StdGrid
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;
-	}
-	public Environmental newInstance()
-	{
-		return new RoadGrid();
 	}
 	public String getChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}
@@ -2742,19 +2721,18 @@ package.&nbsp; This Property class already implements the Ability interface, and
 already has dummy methods for most of the Ability interface methods which are 
 unnecessary or are unused in a Property.</FONT></P>
 <P><FONT size=4>Each property must 
-also have custom "ID()", "name()" and "newInstance" methods as shown 
+also have custom "ID()", and "name()" methods as shown 
 below.&nbsp; Notice that the ID() is the same as the name of the class.&nbsp; 
 This is no accident -- this is required!</FONT></P><PRE>public class Prop_AstralSpirit extends Property
 {
    public String ID() { return "Prop_AstralSpirit"; }
    public String name(){ return "Astral Spirit";}
-   public Environmental newInstance(){   return new Prop_AstralSpirit();}
 </PRE>
 <P></P>
 <P align=left><FONT size=4>Above we 
 see the aforementioned methods defined.&nbsp; The Property does not differ from 
 other Abilities, or indeed other Environmental objects in this respect.&nbsp; A 
-unique ID(), name() and a newInstance() method must be defined for each new 
+unique ID(), and name() method must be defined for each new 
 class.</FONT></P><PRE>   protected int canAffectCode(){return Ability.CAN_MOBS;}
    public String accountForYourself()
    { return "an astral spirit";   }
@@ -2893,19 +2871,18 @@ aforementioned package.&nbsp; This StdAbility class already implements the
 Ability interface, and already has numerous support methods which aid in the 
 creation of custom abilities.</FONT></P>
 <P><FONT size=4>Each ability must also 
-have custom "ID()", "name()" and "newInstance" methods as shown below.&nbsp; 
+have custom "ID()" and "name()"  methods as shown below.&nbsp; 
 Notice that the ID() is the same as the name of the class.&nbsp; This is no 
 accident -- this is required!</FONT></P><PRE>public class Skill_Trip extends StdAbility
 {
    public String ID() { return "Skill_Trip"; }
    public String name(){ return "Trip";}
-   public Environmental newInstance(){   return new Skill_Trip();}
 </PRE>
 <P></P>
 <P align=left><FONT size=4>Above we 
 see the aforementioned methods defined.&nbsp; This skill&nbsp;does not differ 
 from other Abilities, or indeed other Environmental objects in this 
-respect.&nbsp; A unique ID(), name() and a newInstance() method must be defined 
+respect.&nbsp; A unique ID() and name() method must be defined 
 for each new class.</FONT></P><PRE>   public String displayText(){ return "(Tripped)";}
 </PRE>
 <P></P>
@@ -3290,7 +3267,6 @@ public class Spell_ResistFire extends Spell
    public String displayText(){return "(Resist Fire)";}
    public int quality(){ return BENEFICIAL_OTHERS;}
    protected int canAffectCode(){return CAN_MOBS;}
-   public Environmental newInstance(){	return new Spell_ResistFire();}
    public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 </PRE></FONT>
@@ -3380,7 +3356,6 @@ public class Prayer_Anger extends Prayer
    public String name(){ return "Anger";}
    public int quality(){ return MALICIOUS;}
    public long flags(){return Ability.FLAG_UNHOLY;}
-   public Environmental newInstance(){   return new Prayer_Anger();}
 
    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
    {
@@ -3448,7 +3423,6 @@ public class Chant_AlterTime extends Chant
    public int quality(){return Ability.INDIFFERENT;}
    protected int canAffectCode(){return 0;}
    protected int canTargetCode(){return 0;}
-   public Environmental newInstance(){   return new Chant_AlterTime();}
 
    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
    {
@@ -3556,7 +3530,6 @@ public class Poison_BeeSting extends Poison
 {
 	public String ID() { return "Poison_BeeSting"; }
 	public String name(){ return "Bee Sting";}
-	public Environmental newInstance(){	return new Poison_BeeSting();}
 </PRE>
 <P align=left><FONT size=4>The Poison 
 base class in the Poisons package provides a tidy template upon which your more 
@@ -3624,7 +3597,6 @@ public class Disease_Cold extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Cold();}
 </PRE>
 <P align=left><FONT size=4>The Disease 
 base class provides many important base services that allows CoffeeMud to 
@@ -3754,7 +3726,6 @@ public class Elvish extends Language
 	public String ID() { return "Elvish"; }
 	public String name(){ return "Elvish";}
 	
-	public Environmental newInstance(){	return new Elvish();}
 </PRE>
 <P align=left><FONT size=4>Like all 
 Abilities, the Language requires an ID which is the same as its class name, and 

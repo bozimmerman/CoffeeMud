@@ -14,7 +14,6 @@ public class Prayer_Tithe extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Tithe();}
 
 	public void unInvoke()
 	{
@@ -28,7 +27,7 @@ public class Prayer_Tithe extends Prayer
 		if(canBeUninvoked())
 			mob.tell("Your need to tithe fades.");
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -68,7 +67,7 @@ public class Prayer_Tithe extends Prayer
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

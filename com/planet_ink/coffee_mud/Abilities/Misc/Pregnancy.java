@@ -32,7 +32,6 @@ public class Pregnancy extends StdAbility
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Pregnancy();}
 	public int quality(){return Ability.INDIFFERENT;}
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"IMPREGNATE"};
@@ -42,8 +41,8 @@ public class Pregnancy extends StdAbility
 	public int classificationCode(){return Ability.PROPERTY;}
 	private boolean labor=false;
 	private int ticksInLabor=0;
-	
-	
+
+
 	public Race mixRaces(MOB babe, Race race1, Race race2, String ID, String name)
 	{
 		Race GR=CMClass.getRace("GenRace").copyOf();
@@ -175,7 +174,7 @@ public class Pregnancy extends StdAbility
 		CMClass.DBEngine().DBCreateRace(GR.ID(),GR.racialParms());
 		return GR;
 	}
-	
+
 	public Race getRace(MOB babe, String race1, String race2)
 	{
 		if(race1.indexOf(race2)>=0)
@@ -183,7 +182,7 @@ public class Pregnancy extends StdAbility
 		else
 		if(race2.indexOf(race1)>=0)
 			return CMClass.getRace(race2);
-		
+
 		Race R=null;
 		if(race1.equalsIgnoreCase("Human")||race2.equalsIgnoreCase("Human"))
 		{
@@ -205,7 +204,7 @@ public class Pregnancy extends StdAbility
 			String halfRace=(race1.equalsIgnoreCase("Halfling")?race2:race1);
 			R=CMClass.getRace(halfRace);
 			if((R!=null)&&(!R.ID().endsWith("ling")))
-			{	
+			{
 				halfRace=R.ID()+"ling";
 				Race testR=CMClass.getRace(halfRace);
 				if(testR!=null)
@@ -241,7 +240,7 @@ public class Pregnancy extends StdAbility
 		return R;
 	}
 
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -288,12 +287,12 @@ public class Pregnancy extends StdAbility
 
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchEffect(ID());
-							while(A!=null){ 
+							while(A!=null){
 								mob.delEffect(A);
 								A=mob.fetchEffect(ID());
 							}
 							A=mob.fetchAbility(ID());
-							while(A!=null){ 
+							while(A!=null){
 								mob.delAbility(A);
 								A=mob.fetchAbility(ID());
 							}

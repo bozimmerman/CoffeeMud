@@ -14,7 +14,6 @@ public class Thief_Con extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"CON"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Con();}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	private MOB lastChecked=null;
 

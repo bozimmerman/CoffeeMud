@@ -13,7 +13,6 @@ public class Prop_SpellAdder extends Property
 	private Item myItem=null;
 	private Environmental lastMOB=null;
 	boolean processing=false;
-	public Environmental newInstance(){	Prop_SpellAdder BOB=new Prop_SpellAdder(); BOB.setMiscText(text());	return BOB;}
 
 	protected Hashtable spellH=null;
 	protected Vector spellV=null;
@@ -55,7 +54,7 @@ public class Prop_SpellAdder extends Property
 					thisOne=thisOne.substring(0,x).trim();
 				}
 			}
-				
+
 			Ability A=(Ability)CMClass.getAbility(thisOne);
 			if(A!=null)
 			{
@@ -155,7 +154,7 @@ public class Prop_SpellAdder extends Property
 				{
 					int x=t.indexOf("/");
 					if(x<0)
-					{ 
+					{
 						V2=Util.parse(t);
 						A.setMiscText("");
 					}

@@ -13,7 +13,6 @@ public class Spell_DetectHidden extends Spell
 	public String displayText(){return "(Detecting Hidden)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_DetectHidden();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 

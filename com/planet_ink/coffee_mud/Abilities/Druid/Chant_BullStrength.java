@@ -12,7 +12,6 @@ public class Chant_BullStrength extends Chant
 	public String displayText(){return "(Bull Strength)";}
 	public int quality(){ return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Chant_BullStrength();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -10,10 +10,9 @@ public class Spell_Disenchant extends Spell
 	public String ID() { return "Spell_Disenchant"; }
 	public String name(){return "Disenchant";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Disenchant();	}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
 
-	
+
 	public static int disenchantItem(Item target)
 	{
 		int level=target.baseEnvStats().level();
@@ -72,8 +71,8 @@ public class Spell_Disenchant extends Spell
 		if(doneSomething) return level;
 		return -999;
 	}
-							   
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);

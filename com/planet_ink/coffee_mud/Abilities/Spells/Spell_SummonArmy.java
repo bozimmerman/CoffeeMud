@@ -11,7 +11,6 @@ public class Spell_SummonArmy extends Spell
 	public String name(){return "Summon Army";}
 	public String displayText(){return "(Monster Summoning)";}
 	public int quality(){return BENEFICIAL_SELF;};
-	public Environmental newInstance(){	return new Spell_SummonArmy();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 

@@ -12,7 +12,6 @@ public class Spell_Grow extends Spell
 	public String displayText(){return "(Grow)";}
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Grow();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	private int oldWeight=0;
 

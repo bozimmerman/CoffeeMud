@@ -12,7 +12,6 @@ public class Chant_FireWard extends Chant
 	public String name(){ return "Fire Ward";}
 	public String displayText(){return "(Fire Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_FireWard();}
 
 	public void unInvoke()
 	{

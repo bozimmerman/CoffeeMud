@@ -13,9 +13,8 @@ public class Chant_Rockthought extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Rockthought();}
 	CMMsg stubb=null;
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -28,7 +27,7 @@ public class Chant_Rockthought extends Chant
 			stubb=msg;
 		super.executeMsg(host,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected instanceof MOB)
@@ -38,7 +37,7 @@ public class Chant_Rockthought extends Chant
 			((MOB)affected).location().send((MOB)affected,stubb);
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

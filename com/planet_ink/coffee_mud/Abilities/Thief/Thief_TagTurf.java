@@ -15,14 +15,13 @@ public class Thief_TagTurf extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"TURFTAG","TAGTURF"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_TagTurf();	}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
 			return false;
-		
+
 		if((!msg.source().Name().equals(text()))
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.THIEF_SKILL))
@@ -32,7 +31,7 @@ public class Thief_TagTurf extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);
@@ -52,7 +51,7 @@ public class Thief_TagTurf extends ThiefSkill
 										msg.NO_EFFECT,null));
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -81,8 +80,8 @@ public class Thief_TagTurf extends ThiefSkill
 			return false;
 		}
 
-		
-		
+
+
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		FullMsg msg=new FullMsg(mob,null,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> tag(s) this place as <S-HIS-HER> turf.");

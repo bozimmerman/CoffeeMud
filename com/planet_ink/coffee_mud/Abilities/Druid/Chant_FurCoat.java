@@ -12,7 +12,6 @@ public class Chant_FurCoat extends Chant
 	public String displayText(){return "(Fur Coat)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_FurCoat();}
 
 	Item theArmor=null;
 

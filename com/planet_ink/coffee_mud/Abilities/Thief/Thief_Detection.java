@@ -15,7 +15,6 @@ public class Thief_Detection extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"DETECT","DETECTION"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Detection();	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

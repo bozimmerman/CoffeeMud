@@ -13,7 +13,6 @@ public class Skill_SlowFall extends BardSkill
 	public String displayText(){return activated?"(Slow Fall)":"";}
 	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Skill_SlowFall();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}

@@ -15,7 +15,6 @@ public class Skill_Recall extends StdAbility
 	private static final String[] triggerStrings = {"RECALL","/"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Recall();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -11,8 +11,7 @@ public class Dance_Salsa extends Dance
 	public String ID() { return "Dance_Salsa"; }
 	public String name(){ return "Salsa";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Salsa();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -21,7 +20,7 @@ public class Dance_Salsa extends Dance
 		MOB mob=(MOB)affected;
 		if(mob==null)
 			return false;
-		
+
 		Vector choices=new Vector();
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
@@ -66,7 +65,7 @@ public class Dance_Salsa extends Dance
 					break;
 				}
 		}
-		
+
 		return true;
 	}
 

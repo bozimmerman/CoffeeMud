@@ -10,7 +10,6 @@ public class Spell_EnchantArmor extends Spell
 	public String ID() { return "Spell_EnchantArmor"; }
 	public String name(){return "Enchant Armor";}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_EnchantArmor();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

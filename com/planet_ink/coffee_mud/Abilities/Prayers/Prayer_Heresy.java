@@ -14,14 +14,13 @@ public class Prayer_Heresy extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Prayer_Heresy();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
 		if((Bs!=null)&&(Bs.size()>0)) B=(Behavior)Bs.firstElement();
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

@@ -12,7 +12,6 @@ public class Chant_Brittle extends Chant
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Brittle();}
 	private int oldCondition=-1;
 	private boolean noRecurse=true;
 	public void affectEnvStats(Environmental E, EnvStats stats)
@@ -21,7 +20,7 @@ public class Chant_Brittle extends Chant
 		if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
 		{
 			noRecurse=true;
-			if(oldCondition==-1) 
+			if(oldCondition==-1)
 				oldCondition=((Item)E).usesRemaining();
 			if(((Item)E).usesRemaining()<oldCondition)
 			{
@@ -35,7 +34,7 @@ public class Chant_Brittle extends Chant
 			noRecurse=false;
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true);

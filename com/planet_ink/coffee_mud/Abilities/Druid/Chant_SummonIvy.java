@@ -12,7 +12,6 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 	public String name(){ return "Summon Ivy";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonIvy();}
 	private boolean processing=false;
 
 	public static Item buildIvy(MOB mob, Room room)

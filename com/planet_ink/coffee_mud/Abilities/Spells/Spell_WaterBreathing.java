@@ -13,7 +13,6 @@ public class Spell_WaterBreathing extends Spell
 	public String displayText(){return "(Water Breathing)";}
 	public int quality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_WaterBreathing();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()

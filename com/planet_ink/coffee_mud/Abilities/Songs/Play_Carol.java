@@ -11,7 +11,6 @@ public class Play_Carol extends Play
 	public String ID() { return "Play_Carol"; }
 	public String name(){ return "Carol";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Carol();}
 	protected String songOf(){return "a "+name();}
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
@@ -20,4 +19,3 @@ public class Play_Carol extends Play
 			stats.setStat(CharStats.SAVE_MIND,stats.getStat(CharStats.SAVE_MIND)+(invokerLevel()*2)+invoker().charStats().getStat(CharStats.CHARISMA));
 	}
 }
-	

@@ -13,7 +13,6 @@ public class Chant_Shillelagh extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_Shillelagh();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

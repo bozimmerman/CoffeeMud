@@ -11,7 +11,6 @@ public class Prop_Invisibility extends Property
 	public String name(){ return "Persistant Invisibility";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	private int ticksSinceLoss=100;
-	public Environmental newInstance(){	return new Prop_Invisibility();}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

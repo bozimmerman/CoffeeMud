@@ -13,7 +13,6 @@ public class Trap_SleepGas extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 7;}
 	public String requiresToSet(){return "some slumberall poison";}
-	public Environmental newInstance(){	return new Trap_SleepGas();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

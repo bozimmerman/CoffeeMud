@@ -14,7 +14,6 @@ public class Prayer_HolyAura extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_BLESSING;}
-	public Environmental newInstance(){	return new Prayer_HolyAura();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

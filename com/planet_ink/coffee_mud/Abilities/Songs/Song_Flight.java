@@ -11,7 +11,6 @@ public class Song_Flight extends Song
 	public String ID() { return "Song_Flight"; }
 	public String name(){ return "Flight";}
 	public int quality(){ return INDIFFERENT;}
-	public Environmental newInstance(){	return new Song_Flight();}
 	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)

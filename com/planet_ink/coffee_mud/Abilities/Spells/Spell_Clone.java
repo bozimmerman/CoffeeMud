@@ -14,7 +14,6 @@ public class Spell_Clone extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int overrideMana(){return 200;}
-	public Environmental newInstance(){	return new Spell_Clone();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

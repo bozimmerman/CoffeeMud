@@ -12,7 +12,6 @@ public class Spell_MindFog extends Spell
 	public String displayText(){return "(Mind Fog)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_MindFog();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

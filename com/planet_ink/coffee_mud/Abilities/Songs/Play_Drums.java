@@ -9,7 +9,6 @@ public class Play_Drums extends Play_Instrument
 	public String ID() { return "Play_Drums"; }
 	public String name(){ return "Drums";}
 	protected int requiredInstrumentType(){return MusicalInstrument.TYPE_DRUMS;}
-	public Environmental newInstance(){	return new Play_Drums();}
 	public String mimicSpell(){return "Spell_Deafness";}
 	private static Ability theSpell=null;
 	protected Ability getSpell()

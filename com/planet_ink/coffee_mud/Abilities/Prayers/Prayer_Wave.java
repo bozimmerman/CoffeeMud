@@ -14,7 +14,6 @@ public class Prayer_Wave extends Prayer
 	public String displayText(){ return "(Waved)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_EXITS;}
-	public Environmental newInstance(){	return new Prayer_Wave();}
 
 
 

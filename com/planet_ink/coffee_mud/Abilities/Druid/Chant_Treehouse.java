@@ -13,7 +13,6 @@ public class Chant_Treehouse extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_Treehouse();}
 
 	public void unInvoke()
 	{

@@ -13,7 +13,6 @@ public class Chant_ChargeMetal extends Chant
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_ChargeMetal();}
 
 	private Vector affectedItems=new Vector();
 

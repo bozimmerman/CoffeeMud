@@ -15,7 +15,6 @@ public class Skill_Convert extends StdAbility
 	private static final String[] triggerStrings = {"CONVERT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Convert();}
 	private static DVector convertStack=new DVector(2);
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -13,7 +13,6 @@ public class Trap_Ignition extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 8;}
 	public String requiresToSet(){return "a container of lamp oil";}
-	public Environmental newInstance(){	return new Trap_Ignition();}
 
 	private Item getPoison(MOB mob)
 	{

@@ -12,7 +12,6 @@ public class Prayer_Gills extends Prayer
 	public String name(){ return "Gills";}
 	public String displayText(){return "(Gills)";}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Prayer_Gills();}
 
 	public void unInvoke()
 	{

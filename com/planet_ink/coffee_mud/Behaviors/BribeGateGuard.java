@@ -22,10 +22,7 @@ public class BribeGateGuard extends StdBehavior
 		return "BribeGateGuard";
 	}
 
-	public Behavior newInstance()
-	{
-		return new BribeGateGuard();
-	}
+
 
 	private int price()
 	{

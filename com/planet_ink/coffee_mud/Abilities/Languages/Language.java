@@ -19,7 +19,6 @@ public class Language extends StdAbility
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGPRACCOST);}
 	public int classificationCode(){return Ability.LANGUAGE;}
-	public Environmental newInstance(){	return new Language();}
 
 	private static Hashtable emptyHash=new Hashtable();
 	private static Vector emptyVector=new Vector();
@@ -219,7 +218,7 @@ public class Language extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		
+
 		if((affected instanceof MOB)
 		&&(!msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)

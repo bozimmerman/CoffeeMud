@@ -16,7 +16,6 @@ public class Prayer_HealingAura extends Prayer
 	protected int canTargetCode(){return 0;}
 	public boolean  canBeUninvoked(){return false;}
 	public boolean  isAutoInvoked(){return true;}
-	public Environmental newInstance(){	return new Prayer_HealingAura();}
 	private int fiveDown=5;
 	private int tenDown=10;
 	private int twentyDown=20;

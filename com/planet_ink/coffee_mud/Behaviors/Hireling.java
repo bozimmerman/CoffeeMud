@@ -8,7 +8,6 @@ import java.util.*;
 public class Hireling extends StdBehavior
 {
 	public String ID(){return "Hireling";}
-	public Behavior newInstance(){	return new Hireling();}
 
 	private Hashtable partials=new Hashtable();
 	private String workingFor="";

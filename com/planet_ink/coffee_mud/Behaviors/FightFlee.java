@@ -14,11 +14,8 @@ public class FightFlee extends ActiveTicker
 		minTicks=1;maxTicks=1;chance=33;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new FightFlee();
-	}
-	
+
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);

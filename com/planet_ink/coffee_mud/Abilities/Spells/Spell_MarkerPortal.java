@@ -10,7 +10,6 @@ public class Spell_MarkerPortal extends Spell
 	public String ID() { return "Spell_MarkerPortal"; }
 	public String name(){return "Marker Portal";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_MarkerPortal();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 

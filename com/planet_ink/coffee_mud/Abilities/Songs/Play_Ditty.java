@@ -11,7 +11,6 @@ public class Play_Ditty extends Play
 	public String ID() { return "Play_Ditty"; }
 	public String name(){ return "Ditty";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_Ditty();}
 	protected String songOf(){return "a "+name();}
 	public long flags(){return Ability.FLAG_HEALING;}
 

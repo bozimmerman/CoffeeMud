@@ -14,7 +14,6 @@ public class Spell_GustOfWind extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean doneTicking=false;
-	public Environmental newInstance(){	return new Spell_GustOfWind();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 

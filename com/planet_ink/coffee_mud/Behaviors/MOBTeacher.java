@@ -11,11 +11,8 @@ public class MOBTeacher extends CombatAbilities
 	private MOB myMOB=null;
 	private boolean teachEverything=true;
 	private boolean noCommon=false;
-	
-	public Behavior newInstance()
-	{
-		return new MOBTeacher();
-	}
+
+
 
 	public void startBehavior(Environmental forMe)
 	{
@@ -84,7 +81,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyClasses("StdCharClass");
 		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());
 		myMOB.recoverCharStats();
-		
+
 		Hashtable myAbles=new Hashtable();
 		Ability A=null;
 		for(int a=0;a<myMOB.numAbilities();a++)
@@ -94,7 +91,7 @@ public class MOBTeacher extends CombatAbilities
 		}
 		myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 		myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
-		
+
 		int pct=100;
 		Vector V=null;
 		A=(Ability)CMClass.getAbility(getParms());
@@ -116,7 +113,7 @@ public class MOBTeacher extends CombatAbilities
 				V.removeElementAt(v);
 			}
 		}
-		
+
 		if(V!=null)
 		for(int v=0;v<V.size();v++)
 		{
@@ -132,7 +129,7 @@ public class MOBTeacher extends CombatAbilities
 				pct=Util.s_int(s.substring(0,s.length()-1));
 				continue;
 			}
-			
+
 			A=(Ability)CMClass.getAbility(s);
 			CharClass C=CMClass.getCharClass(s);
 			if((C!=null)&&(!C.ID().equals("StdCharClass")))

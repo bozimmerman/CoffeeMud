@@ -11,7 +11,6 @@ public class Fighter_Warcry extends StdAbility
 	public String name(){ return "War Cry";}
 	public String displayText(){return "(War Cry)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Fighter_Warcry();}
 	private static final String[] triggerStrings = {"WARCRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}

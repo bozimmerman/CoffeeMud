@@ -13,7 +13,6 @@ public class Trap_FloodRoom extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 29;}
 	public String requiresToSet(){return "100 pounds of stone, 10 water containers";}
-	public Environmental newInstance(){	return new Trap_FloodRoom();}
 	public int baseRejuvTime(int level){ return 16;}
 
 	private int numWaterskins(MOB mob)

@@ -12,7 +12,6 @@ public class Chant_WarningWinds extends Chant
 	public String name(){ return "Warning Winds";}
 	public String displayText(){return "(Warning Winds)";}
 	Room lastRoom=null;
-	public Environmental newInstance(){	return new Chant_WarningWinds();}
 
 	public void unInvoke()
 	{

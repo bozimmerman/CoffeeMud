@@ -11,10 +11,9 @@ public class Dance_Grass extends Dance
 	public String ID() { return "Dance_Grass"; }
 	public String name(){ return "Grass";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Grass();}
 	public static Ability kick=null;
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

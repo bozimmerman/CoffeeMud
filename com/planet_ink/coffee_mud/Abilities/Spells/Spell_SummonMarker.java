@@ -11,7 +11,6 @@ public class Spell_SummonMarker extends Spell
 	public String name(){return "Summon Marker";}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Spell_SummonMarker();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public void unInvoke()

@@ -9,7 +9,6 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 {
 	public String ID() { return "Prop_LotsForSale"; }
 	public String name(){ return "Putting many rooms up for sale";}
-	public Environmental newInstance(){	return new Prop_LotsForSale();}
 
 
 	private static boolean isCleanRoom(Room fromRoom, Room theRoom)
@@ -38,7 +37,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		if(!(affected instanceof Room))
 			return;
 		lastItemNums=updateLotWithThisData((Room)affected,this,true,lastItemNums);
-		
+
 		Room R=(Room)affected;
 		if(landOwner().length()==0)
 		{

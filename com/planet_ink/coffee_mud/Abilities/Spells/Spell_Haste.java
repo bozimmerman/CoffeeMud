@@ -12,7 +12,6 @@ public class Spell_Haste extends Spell
 	public String displayText(){return "(Haste spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){ return new Spell_Haste();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -13,7 +13,6 @@ public class Poison_Liquor extends Poison_Alcohol
 	public String name(){ return "Liquor";}
 	private static final String[] triggerStrings = {"LIQUORUP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Liquor();}
 	public int classificationCode(){return Ability.POISON;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

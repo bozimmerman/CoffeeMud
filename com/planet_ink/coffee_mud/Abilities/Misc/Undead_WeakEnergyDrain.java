@@ -16,7 +16,6 @@ public class Undead_WeakEnergyDrain extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"DRAINWEAKENERGY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Undead_WeakEnergyDrain();}
 	public int classificationCode(){return Ability.SKILL;}
 	public int levelsDown=1;
 

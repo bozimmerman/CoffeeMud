@@ -14,7 +14,6 @@ public class Prayer_Cannibalism extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
-	public Environmental newInstance(){	return new Prayer_Cannibalism();}
 
 	public void unInvoke()
 	{
@@ -53,7 +52,7 @@ public class Prayer_Cannibalism extends Prayer
 		&&(msg.target() instanceof Drink))
 			msg.source().curState().adjThirst(-((Drink)msg.target()).thirstQuenched(),msg.source().maxState());
 	}
-	
+
 	public boolean raceWithBlood(Race R)
 	{
 		Vector V=R.myResources();
@@ -69,7 +68,7 @@ public class Prayer_Cannibalism extends Prayer
 		}
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -135,7 +134,7 @@ public class Prayer_Cannibalism extends Prayer
 		return true;
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

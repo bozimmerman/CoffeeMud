@@ -13,7 +13,6 @@ public class Trap_Noise extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_Noise();}
 
 	public void spring(MOB target)
 	{

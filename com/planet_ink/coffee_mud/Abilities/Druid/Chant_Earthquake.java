@@ -13,7 +13,6 @@ public class Chant_Earthquake extends Chant
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_Earthquake();}
 	private boolean oncePerRd=false;
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -11,7 +11,6 @@ public class Prayer_CureLight extends Prayer
 	public String name(){ return "Cure Light Wounds";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALING;}
-	public Environmental newInstance(){	return new Prayer_CureLight();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -38,7 +38,6 @@ public class Armorsmithing extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Armorsmithing(); }
 	protected String primeMaterialDesc(){return "metal";}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -152,8 +151,8 @@ public class Armorsmithing extends CraftingSkill
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
-		{	
-			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+		{
+			autoGenerate=((Integer)commands.firstElement()).intValue();
 			commands.removeElementAt(0);
 			givenTarget=null;
 		}
@@ -263,7 +262,7 @@ public class Armorsmithing extends CraftingSkill
 				amount=Util.s_int((String)commands.lastElement());
 				commands.removeElementAt(commands.size()-1);
 			}
-			   
+
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName);
@@ -296,7 +295,7 @@ public class Armorsmithing extends CraftingSkill
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 			int lostValue=destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null,autoGenerate);

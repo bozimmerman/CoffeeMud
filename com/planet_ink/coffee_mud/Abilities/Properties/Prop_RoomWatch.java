@@ -9,7 +9,6 @@ public class Prop_RoomWatch extends Property
 	public String ID() { return "Prop_RoomWatch"; }
 	public String name(){ return "Different Room Can Watch";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){return new Prop_RoomWatch();}
 	private Vector newRooms=null;
 
 	public String accountForYourself()

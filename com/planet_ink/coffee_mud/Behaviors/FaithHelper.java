@@ -8,10 +8,7 @@ import java.util.*;
 public class FaithHelper extends StdBehavior
 {
 	public String ID(){return "FaithHelper";}
-	public Behavior newInstance()
-	{
-		return new FaithHelper();
-	}
+
 	protected boolean mobKiller=false;
 
 	public void startBehavior(Environmental forMe)

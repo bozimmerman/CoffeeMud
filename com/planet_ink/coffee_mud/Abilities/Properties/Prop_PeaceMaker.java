@@ -10,7 +10,6 @@ public class Prop_PeaceMaker extends Property
 	public String ID() { return "Prop_PeaceMaker"; }
 	public String name(){ return "Strike Neuralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_PeaceMaker();}
 	public String accountForYourself()
 	{ return "Peace Maker";	}
 

@@ -13,7 +13,6 @@ public class Trap_SpellBlast extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 23;}
 	public String requiresToSet(){return "a spell scroll";}
-	public Environmental newInstance(){	return new Trap_SpellBlast();}
 
 	private Item getPoison(MOB mob)
 	{

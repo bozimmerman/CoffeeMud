@@ -15,7 +15,6 @@ public class Thief_Trap extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"TRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Trap();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}

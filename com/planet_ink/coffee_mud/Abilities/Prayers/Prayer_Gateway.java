@@ -10,7 +10,6 @@ public class Prayer_Gateway extends Prayer
 	public String ID() { return "Prayer_Gateway"; }
 	public String name(){return "Gateway";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_Gateway();}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
 
 	Room newRoom=null;

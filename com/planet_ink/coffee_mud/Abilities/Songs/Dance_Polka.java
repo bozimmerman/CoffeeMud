@@ -11,7 +11,6 @@ public class Dance_Polka extends Dance
 	public String ID() { return "Dance_Polka"; }
 	public String name(){ return "Polka";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Dance_Polka();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

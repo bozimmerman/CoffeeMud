@@ -54,7 +54,17 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 	{
 	}
 
-	public Environmental newInstance()	{ return new StdAbility(); }
+	public Environmental newInstance()
+	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdAbility();
+	}
 	public int classificationCode(){ return Ability.SKILL; }
 
 	protected static final EnvStats envStats=new DefaultEnvStats();

@@ -14,7 +14,6 @@ public class Spell_ContinualLight extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_ContinualLight();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

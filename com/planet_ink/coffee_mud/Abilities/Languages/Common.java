@@ -19,7 +19,6 @@ public class Common extends Language
 					CMAble.addCharAbilityMapping("All",1,ID(),100,true);}
 		profficiency=100;
 	}
-	public Environmental newInstance(){	return new Common();}
 	public int profficiency(){return 100;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

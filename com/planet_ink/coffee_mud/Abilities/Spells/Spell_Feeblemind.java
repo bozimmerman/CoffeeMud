@@ -12,7 +12,6 @@ public class Spell_Feeblemind extends Spell
 	public String displayText(){return "(Feeblemind spell)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Feeblemind();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

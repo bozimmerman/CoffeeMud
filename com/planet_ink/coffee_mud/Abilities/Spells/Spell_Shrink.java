@@ -14,7 +14,6 @@ public class Spell_Shrink extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Shrink();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()

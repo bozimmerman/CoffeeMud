@@ -12,10 +12,9 @@ public class Chant_CaveIn extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|CAN_EXITS;}
-	public Environmental newInstance(){	return new Chant_CaveIn();}
 	public int amountRemaining=0;
 	public long flags(){return Ability.FLAG_BINDING;}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof Exit)
@@ -57,7 +56,7 @@ public class Chant_CaveIn extends Chant
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=null;

@@ -29,7 +29,6 @@ public class Scrapping extends CommonSkill
 					CMAble.addCharAbilityMapping("Archon",20,ID(),false);
 		}
 	}
-	public Environmental newInstance(){	return new Scrapping();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

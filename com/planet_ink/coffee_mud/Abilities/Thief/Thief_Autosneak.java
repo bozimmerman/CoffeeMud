@@ -15,9 +15,8 @@ public class Thief_Autosneak extends ThiefSkill
 	public int quality(){return Ability.OK_SELF;}
 	private static final String[] triggerStrings = {"AUTOSNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Autosneak();}
 	private boolean noRepeat=false;
-	
+
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
@@ -34,12 +33,12 @@ public class Thief_Autosneak extends ThiefSkill
 		return true;
 	}
 
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		
+
 		if((affected instanceof MOB)
 		&&(!noRepeat)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)

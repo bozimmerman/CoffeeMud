@@ -8,10 +8,7 @@ import java.util.*;
 public class Drowness extends StdBehavior
 {
 	public String ID(){return "Drowness";}
-	public Behavior newInstance()
-	{
-		return new Drowness();
-	}
+
 
 	boolean confirmedSetup=false;
 	public int darkDown=4;

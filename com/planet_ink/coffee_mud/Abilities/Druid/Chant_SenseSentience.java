@@ -13,7 +13,6 @@ public class Chant_SenseSentience extends Chant
 	public int quality(){ return INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SenseSentience();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -33,7 +33,6 @@ public class Smelting extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Smelting();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

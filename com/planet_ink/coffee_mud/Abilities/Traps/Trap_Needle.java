@@ -13,7 +13,6 @@ public class Trap_Needle extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 4;}
 	public String requiresToSet(){return "some poison";}
-	public Environmental newInstance(){	return new Trap_Needle();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

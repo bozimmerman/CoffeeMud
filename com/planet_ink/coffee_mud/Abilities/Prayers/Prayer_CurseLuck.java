@@ -13,7 +13,6 @@ public class Prayer_CurseLuck extends Prayer
 	public int quality(){return MALICIOUS;};
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_CurseLuck();}
 	private HashSet permProts=new HashSet();
 	private int prots=4;
 	boolean notAgain=false;
@@ -51,7 +50,7 @@ public class Prayer_CurseLuck extends Prayer
 
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		
+
 		if((msg.target()==affected)
 		&&(affected instanceof MOB)
 		&&((msg.tool()==null)||(!permProts.contains(msg.tool())))

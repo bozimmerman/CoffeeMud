@@ -14,10 +14,7 @@ public class TaxCollector extends StdBehavior
 	private long waitTime=1000*60*2;
 	private long graceTime=1000*60*60;
 
-	public Behavior newInstance()
-	{
-		return new TaxCollector();
-	}
+
 
 	public void setParms(String newParms)
 	{

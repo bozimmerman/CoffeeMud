@@ -23,7 +23,6 @@ public class Lacquerring extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Lacquerring();}
 
 	private String fixColor(String name, String colorWord)
 	{

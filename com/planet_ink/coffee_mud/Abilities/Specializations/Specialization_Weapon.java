@@ -21,7 +21,6 @@ public class Specialization_Weapon extends StdAbility
 	protected int secondWeaponType=-1;
 
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Specialization_Weapon();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

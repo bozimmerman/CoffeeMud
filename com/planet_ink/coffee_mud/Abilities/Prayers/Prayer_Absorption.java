@@ -14,7 +14,6 @@ public class Prayer_Absorption extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_Absorption();	}
 	protected Ability absorbed=null;
 
 	public void unInvoke()
@@ -52,13 +51,13 @@ public class Prayer_Absorption extends Prayer
 				mob.tell("You have already absorbed a skill from someone.");
 			return false;
 		}
-		
+
 		absorbed=null;
 		int tries=0;
 		while((absorbed==null)&&((++tries)<100))
 		{
 			absorbed=target.fetchAbility(Dice.roll(1,target.numAbilities(),-1));
-			if(mob.fetchAbility(absorbed.ID())!=null) 
+			if(mob.fetchAbility(absorbed.ID())!=null)
 				absorbed=null;
 			else
 			if(absorbed.isAutoInvoked())
@@ -67,7 +66,7 @@ public class Prayer_Absorption extends Prayer
 			if(CMAble.qualifyingLevel(mob,absorbed)>0)
 				absorbed=null;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

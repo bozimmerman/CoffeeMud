@@ -13,7 +13,6 @@ public class Trap_Boomerang extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 24;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_Boomerang();}
 
 	public void spring(MOB target)
 	{

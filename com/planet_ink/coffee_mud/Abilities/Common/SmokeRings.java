@@ -21,7 +21,6 @@ public class SmokeRings extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new SmokeRings();}
 
 	public void executeMsg(Environmental affected, CMMsg msg)
 	{

@@ -18,7 +18,6 @@ public class Fighter_Cleave extends StdAbility
 
 	private MOB thisTarget=null;
 	private MOB nextTarget=null;
-	public Environmental newInstance(){	return new Fighter_Cleave();}
 	public int classificationCode(){ return Ability.SKILL;	}
 
 	public boolean tick(Tickable ticking, int tickID)

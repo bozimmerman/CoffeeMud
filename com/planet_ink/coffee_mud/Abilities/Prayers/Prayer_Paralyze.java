@@ -14,7 +14,6 @@ public class Prayer_Paralyze extends Prayer
 	public String displayText(){ return "(Paralyzed)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Paralyze();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

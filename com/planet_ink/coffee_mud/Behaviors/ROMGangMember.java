@@ -8,10 +8,7 @@ import java.util.*;
 public class ROMGangMember extends StdBehavior
 {
 	public String ID(){return "ROMGangMember";}
-	public Behavior newInstance()
-	{
-		return new ROMGangMember();
-	}
+
 
 	int tickTock=5;
 	public void pickAFight(MOB observer)

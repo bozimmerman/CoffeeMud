@@ -10,7 +10,6 @@ public class Prop_ReqHeight extends Property
 	public String ID() { return "Prop_ReqHeight"; }
 	public String name(){ return "Height Restrictions";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqHeight newOne=new Prop_ReqHeight();	newOne.setMiscText(text());	return newOne;}
 
 	public String accountForYourself()
 	{ return "Height limit: "+Util.s_int(text());	}

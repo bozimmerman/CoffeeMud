@@ -11,7 +11,6 @@ public class Song_Mercy extends Song
 	public String ID() { return "Song_Mercy"; }
 	public String name(){ return "Mercy";}
 	public int quality(){ return INDIFFERENT;}
-	public Environmental newInstance(){	return new Song_Mercy();}
 
 	private Room lastRoom=null;
 	private int count=3;

@@ -25,7 +25,6 @@ public class AnimalTraining extends CommonSkill
 					CMAble.addCharAbilityMapping("Archon",1,ID(),false);
 		}
 	}
-	public Environmental newInstance(){	return new AnimalTraining();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

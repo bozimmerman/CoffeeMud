@@ -13,7 +13,6 @@ public class Spell_PhantomHound extends Spell
 	public int quality(){ return MALICIOUS;}
 	private MOB victim=null;
 	private int pointsLeft=0;
-	public Environmental newInstance(){	return new Spell_PhantomHound();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(Tickable ticking, int tickID)

@@ -16,7 +16,6 @@ public class Chant_Rockfeet extends Chant
 	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Chant_Rockfeet();}
 
 	public void unInvoke()
 	{
@@ -44,12 +43,12 @@ public class Chant_Rockfeet extends Chant
 		}
 		return;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if((target.getWearPositions(Item.ON_HANDS)==0)
 		&&(target.getWearPositions(Item.ON_FEET)==0))
 		{

@@ -11,7 +11,6 @@ public class Prop_TicketTaker extends Property
 	public String name(){ return "Ticket Taker";}
 	public String displayText() {return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
-	public Environmental newInstance(){	Prop_TicketTaker BOB=new Prop_TicketTaker();	BOB.setMiscText(text());return BOB;	}
 
 	public String accountForYourself()
 	{

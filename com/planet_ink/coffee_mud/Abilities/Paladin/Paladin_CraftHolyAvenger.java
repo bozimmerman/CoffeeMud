@@ -12,7 +12,6 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	public String name(){ return "Craft Holy Avenger";}
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Paladin_CraftHolyAvenger();}
 
 	private Item building=null;
 	private Item fire=null;

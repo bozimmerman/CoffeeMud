@@ -15,7 +15,6 @@ public class Fighter_KiStrike extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Fighter_KiStrike();}
 	public int classificationCode(){return Ability.SKILL;}
 	boolean done=false;
 

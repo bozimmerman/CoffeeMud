@@ -9,7 +9,6 @@ public class Prop_Tattoo extends Property
 	public String ID() { return "Prop_Tattoo"; }
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	Prop_Tattoo BOB=new Prop_Tattoo();	BOB.setMiscText(text());return BOB;}
 
 	public static Vector getTattoos(MOB mob)
 	{

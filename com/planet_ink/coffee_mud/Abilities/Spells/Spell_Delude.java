@@ -13,7 +13,6 @@ public class Spell_Delude extends Spell
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	int previousAlignment=500;
-	public Environmental newInstance(){	return new Spell_Delude();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()

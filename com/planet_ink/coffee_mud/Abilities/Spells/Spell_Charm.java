@@ -12,7 +12,6 @@ public class Spell_Charm extends Spell
 	public String displayText(){return "(Charmed)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Charm();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 

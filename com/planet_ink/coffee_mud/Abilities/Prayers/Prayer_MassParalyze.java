@@ -12,7 +12,6 @@ public class Prayer_MassParalyze extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_BINDING|Ability.FLAG_PARALYZING;}
 	public String displayText(){ return "(Paralyzed)";}
-	public Environmental newInstance(){	return new Prayer_MassParalyze();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

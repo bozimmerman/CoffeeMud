@@ -40,7 +40,6 @@ public class Cooking extends CraftingSkill
 		if(ID().equals("Cooking")&&(!mapped))
 		{mapped=true; CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Cooking();}
 
 	public boolean isMineForCooking(MOB mob, Item cooking)
 	{

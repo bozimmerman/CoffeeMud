@@ -15,7 +15,6 @@ public class Thief_Snipe extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"SNIPE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Snipe();}
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 

@@ -11,7 +11,6 @@ public class Dance_Tarantella extends Dance
 	public String ID() { return "Dance_Tarantella"; }
 	public String name(){ return "Tarantella";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Tarantella();}
 	private int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 

@@ -11,7 +11,6 @@ public class Bomb_AcidBurst extends StdBomb
 	public String name(){ return "acid burst bomb";}
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "some lemons";}
-	public Environmental newInstance(){	return new Bomb_AcidBurst();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

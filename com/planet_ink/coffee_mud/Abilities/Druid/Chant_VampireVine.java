@@ -10,7 +10,6 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public String ID() { return "Chant_VampireVine"; }
 	public String name(){ return "Vampire Vine";}
 	public String displayText(){return "(Vampire Vine)";}
-	public Environmental newInstance(){	return new Chant_VampireVine();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

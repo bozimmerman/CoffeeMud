@@ -13,7 +13,6 @@ public class Thief_SenseLaw extends ThiefSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Thief_SenseLaw();}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public static final Vector empty=new Vector();
@@ -42,7 +41,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		if(V.size()==0) return null;
 		return (Behavior)V.firstElement();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

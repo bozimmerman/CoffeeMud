@@ -8,7 +8,6 @@ public class Prop_NoCharm extends Property
 	public String ID() { return "Prop_NoCharm"; }
 	public String name(){ return "Charm Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prop_NoCharm();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -14,7 +14,6 @@ public class Disease_Yawning extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Yawning();}
 
 	protected int DISEASE_TICKS(){return 30;}
 	protected int DISEASE_DELAY(){return 3;}
@@ -25,13 +24,13 @@ public class Disease_Yawning extends Disease
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))	
+		if(!super.tick(ticking,tickID))
 			return false;
-		
-		if(affected==null) 
+
+		if(affected==null)
 			return false;
-		
-		if(!(affected instanceof MOB)) 
+
+		if(!(affected instanceof MOB))
 			return true;
 
 		MOB mob=(MOB)affected;

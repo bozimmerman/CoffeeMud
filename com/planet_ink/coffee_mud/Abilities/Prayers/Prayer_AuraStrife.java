@@ -15,7 +15,6 @@ public class Prayer_AuraStrife extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public boolean autoInvocation(MOB mob){return true;}
-	public Environmental newInstance(){	return new Prayer_AuraStrife();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -11,7 +11,6 @@ public class Spell_Spook extends Spell
 	public String name(){return "Spook";}
 	public String displayText(){return "(Spooked)";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_Spook();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

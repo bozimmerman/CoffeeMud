@@ -12,7 +12,6 @@ public class Chant_Thorns extends Chant
 	public String displayText(){return "(Thorns)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Thorns();}
 
 
 	public void unInvoke()

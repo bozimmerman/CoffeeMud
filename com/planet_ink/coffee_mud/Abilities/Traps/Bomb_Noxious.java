@@ -11,7 +11,6 @@ public class Bomb_Noxious extends StdBomb
 	public String name(){ return "stink bomb";}
 	protected int trapLevel(){return 12;}
 	public String requiresToSet(){return "an egg";}
-	public Environmental newInstance(){	return new Bomb_Noxious();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

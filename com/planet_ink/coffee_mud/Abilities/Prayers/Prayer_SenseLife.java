@@ -15,7 +15,6 @@ public class Prayer_SenseLife extends Prayer
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	private Room lastRoom=null;
-	public Environmental newInstance(){	return new Prayer_SenseLife();}
 
 	public void unInvoke()
 	{

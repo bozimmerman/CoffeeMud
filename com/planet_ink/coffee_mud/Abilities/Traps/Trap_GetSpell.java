@@ -17,5 +17,4 @@ public class Trap_GetSpell extends Trap_Get
 		setMiscText("Spell_Sleep");
 	}
 
-	public Environmental newInstance(){	return new Trap_GetSpell();}
 }

@@ -22,10 +22,7 @@ public class Mime extends ActiveTicker
 	private boolean disabled=false;
 	private CMMsg lastMsg=null;
 
-	public Behavior newInstance()
-	{
-		return new Mime();
-	}
+
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

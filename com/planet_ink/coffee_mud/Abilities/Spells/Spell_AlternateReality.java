@@ -12,7 +12,6 @@ public class Spell_AlternateReality extends Spell
 	public String displayText(){return "(Alternate Reality)";}
 	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_AlternateReality();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()

@@ -12,7 +12,6 @@ public class Chant_Shamblermorph extends Chant
 	public String displayText(){return "(Shamblermorph)";}
 	public int quality(){return Ability.OK_OTHERS;}
 	protected static Race treeForm=null;
-	public Environmental newInstance(){	return new Chant_Shamblermorph();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -21,7 +20,7 @@ public class Chant_Shamblermorph extends Chant
 		if(treeForm!=null)	affectableStats.setMyRace(treeForm);
 		affectableStats.setStat(CharStats.GENDER,'N');
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -15,7 +15,6 @@ public class Fighter_Intimidate extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_Intimidate();}
 	public int classificationCode(){ return Ability.SKILL;}
 	public Room lastRoom=null;
 

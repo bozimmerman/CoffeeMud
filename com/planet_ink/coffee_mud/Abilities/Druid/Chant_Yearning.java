@@ -11,7 +11,6 @@ public class Chant_Yearning extends Chant
 	public String name(){ return "Yearning";}
 	public String displayText(){return "(Sexual Yearnings)";}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Yearning();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

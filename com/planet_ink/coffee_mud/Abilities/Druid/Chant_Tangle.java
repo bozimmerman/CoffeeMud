@@ -13,7 +13,6 @@ public class Chant_Tangle extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 2;}
 	public Item thePlants=null;
-	public Environmental newInstance(){	return new Chant_Tangle();}
 	public int amountRemaining=0;
 	public long flags(){return Ability.FLAG_BINDING;}
 

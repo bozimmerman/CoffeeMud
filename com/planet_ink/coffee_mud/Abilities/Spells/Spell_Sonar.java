@@ -13,7 +13,6 @@ public class Spell_Sonar extends Spell
 	public String displayText(){return "(Sonar)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Sonar();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()

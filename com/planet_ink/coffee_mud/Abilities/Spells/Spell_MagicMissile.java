@@ -12,7 +12,6 @@ public class Spell_MagicMissile extends Spell
 	public String displayText(){return "(Magic Missile spell)";}
 	public int maxRange(){return 1;}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){return new Spell_MagicMissile();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

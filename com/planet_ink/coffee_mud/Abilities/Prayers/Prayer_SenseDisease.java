@@ -15,7 +15,6 @@ public class Prayer_SenseDisease extends Prayer
 	public int quality(){ return OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 	private Room lastRoom=null;
-	public Environmental newInstance(){	return new Prayer_SenseDisease();}
 
 	public void unInvoke()
 	{
@@ -67,7 +66,7 @@ public class Prayer_SenseDisease extends Prayer
 				V.addElement(I);
 			}
 		}
-		if(V!=null) 
+		if(V!=null)
 			return V;
 		else
 			return empty;

@@ -12,7 +12,6 @@ public class Spell_ObscureSelf extends Spell
 	public String displayText(){return "(Obscure Self)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_ObscureSelf();	}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 	private final static String[][] stuff={
 		{"<S-NAME>","<T-NAME>","someone"},

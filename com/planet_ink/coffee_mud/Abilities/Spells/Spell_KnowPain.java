@@ -11,7 +11,6 @@ public class Spell_KnowPain extends Spell
 	public String name(){return "Know Pain";}
 	public String displayText(){return "(Spell_KnowPain)";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){ return new Spell_KnowPain();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -12,7 +12,6 @@ public class Spell_FutureDeath extends Spell
 	public int quality(){return MALICIOUS;};
 	protected int canTargetCode(){return CAN_MOBS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_FutureDeath();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 

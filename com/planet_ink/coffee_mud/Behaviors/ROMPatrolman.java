@@ -9,10 +9,7 @@ public class ROMPatrolman extends StdBehavior
 {
 	public String ID(){return "ROMPatrolman";}
 	int tickTock=0;
-	public Behavior newInstance()
-	{
-		return new ROMPatrolman();
-	}
+
 
 	public static void keepPeace(MOB observer)
 	{

@@ -14,7 +14,6 @@ public class Thief_StripItem extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"STRIPITEM"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_StripItem();}
 	public int usageType(){return USAGE_MOVEMENT;}
 	public int code=0;
 

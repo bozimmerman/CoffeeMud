@@ -10,7 +10,6 @@ public class Prop_NarrowLedge extends Property
 	public String ID() { return "Prop_NarrowLedge"; }
 	public String name(){ return "The Narrow Ledge";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	return new Prop_NarrowLedge();}
 
 	protected int check=16;
 	protected String name="the narrow ledge";

@@ -16,7 +16,6 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 	private Room myProperLocation=null;
 	private Vector contents=new Vector();
 	private Vector ccontents=new Vector();
-	public Environmental newInstance(){	return new ItemRejuv();	}
 
 	public void loadContent(ItemTicker ticker,
 							Item item,

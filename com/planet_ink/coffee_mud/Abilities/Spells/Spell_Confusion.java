@@ -12,7 +12,6 @@ public class Spell_Confusion extends Spell
 	public String displayText(){return "(Confusion spell)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Confusion();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	boolean notAgain=false;

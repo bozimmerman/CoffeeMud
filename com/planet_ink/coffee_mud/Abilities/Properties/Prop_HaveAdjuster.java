@@ -20,7 +20,6 @@ public class Prop_HaveAdjuster extends Property
 	boolean gotClass=false;
 	boolean gotRace=false;
 	boolean gotSex=false;
-	public Environmental newInstance(){	Prop_HaveAdjuster BOB=new Prop_HaveAdjuster();	BOB.setMiscText(text()); return BOB;}
 
 	public static int setAdjustments(String newText, EnvStats adjEnvStats, CharStats adjCharStats, CharState adjCharState)
 	{
@@ -217,7 +216,7 @@ public class Prop_HaveAdjuster extends Property
 		}
 		return id;
 	}
-	
+
 	public String accountForYourself()
 	{
 		return fixAccoutings("Affects the owner: "+text());

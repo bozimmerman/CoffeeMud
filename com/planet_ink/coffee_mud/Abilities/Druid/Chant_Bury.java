@@ -12,7 +12,6 @@ public class Chant_Bury extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
-	public Environmental newInstance()	{	return new Chant_Bury();}
 
 	public static Item getBody(Room R)
 	{
@@ -64,7 +63,7 @@ public class Chant_Bury extends Chant
 			mob.tell("You are not allowed to bury a players corpse.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

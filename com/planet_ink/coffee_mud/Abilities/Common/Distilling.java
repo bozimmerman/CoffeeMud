@@ -14,7 +14,6 @@ public class Distilling extends Cooking
 	public String[] triggerStrings(){return triggerStrings;}
 	public String cookWordShort(){return "distill";};
 	public String cookWord(){return "distilling";};
-	public Environmental newInstance(){	return new Distilling();}
 	public boolean honorHerbs(){return false;}
 	private static boolean myMapped=false;
 
@@ -24,7 +23,7 @@ public class Distilling extends Cooking
 		if(ID().equals("Distilling")&&(!myMapped))
 		{myMapped=true; CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
-	
+
 	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("DISTILLING RECIPES");

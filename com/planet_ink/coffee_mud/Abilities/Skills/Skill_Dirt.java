@@ -18,7 +18,6 @@ public class Skill_Dirt extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int maxRange(){return 1;}
-	public Environmental newInstance(){	return new Skill_Dirt();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

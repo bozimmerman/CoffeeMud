@@ -13,7 +13,6 @@ public class Trap_Greasy extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a container of lamp oil";}
-	public Environmental newInstance(){	return new Trap_Greasy();}
 	int times=20;
 
 	private Item getPoison(MOB mob)

@@ -12,7 +12,6 @@ public class Prayer_Sanctum extends Prayer
 	public String displayText(){return "(Sanctum)";}
 	public int quality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prayer_Sanctum();}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

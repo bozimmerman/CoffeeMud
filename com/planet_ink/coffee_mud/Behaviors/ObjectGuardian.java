@@ -8,10 +8,7 @@ import java.util.*;
 public class ObjectGuardian extends StdBehavior
 {
 	public String ID(){return "ObjectGuardian";}
-	public Behavior newInstance()
-	{
-		return new ObjectGuardian();
-	}
+
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

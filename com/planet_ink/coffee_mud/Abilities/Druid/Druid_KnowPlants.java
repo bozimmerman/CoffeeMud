@@ -15,7 +15,6 @@ public class Druid_KnowPlants extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	private static final String[] triggerStrings = {"KNOWPLANT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Druid_KnowPlants();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public static boolean isPlant(Item I)

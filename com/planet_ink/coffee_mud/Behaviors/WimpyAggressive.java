@@ -12,10 +12,7 @@ public class WimpyAggressive extends Aggressive
 	protected int tickWait=0;
 	protected int tickDown=0;
 	protected boolean mobKiller=false;
-	public Behavior newInstance()
-	{
-		return new WimpyAggressive();
-	}
+
 
 	public boolean grantsAggressivenessTo(MOB M)
 	{

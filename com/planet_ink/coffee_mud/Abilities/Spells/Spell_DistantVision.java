@@ -10,7 +10,6 @@ public class Spell_DistantVision extends Spell
 	public String ID() { return "Spell_DistantVision"; }
 	public String name(){return "Distant Vision";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_DistantVision();	}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

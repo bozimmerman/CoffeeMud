@@ -12,7 +12,6 @@ public class Prayer_MassBlindness extends Prayer
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Blindness)";}
-	public Environmental newInstance(){	return new Prayer_MassBlindness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

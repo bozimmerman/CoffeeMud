@@ -14,7 +14,6 @@ public class Skill_Imitation extends BardSkill
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
-	public Environmental newInstance(){	return new Skill_Imitation();}
 	private static final String[] triggerStrings = {"IMITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}

@@ -12,7 +12,6 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public String displayText(){return "(Diseased)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_IllusoryDisease();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 	private int diseaseTick=5;
 

@@ -15,7 +15,6 @@ public class Thief_Flank extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"FLANK"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Flank();}
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB target=null;
 

@@ -12,7 +12,6 @@ public class Chant_Drifting extends Chant
 	public String displayText(){return "(Drifting)";}
 	public int quality(){return OK_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Drifting();}
 	public long flags(){return Ability.FLAG_MOVING;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -47,7 +46,7 @@ public class Chant_Drifting extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

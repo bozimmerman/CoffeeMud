@@ -15,7 +15,6 @@ public class Skill_Slapstick extends BardSkill
 	private static final String[] triggerStrings = {"SLAPSTICK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Slapstick();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -10,7 +10,6 @@ public class Spell_Wish extends Spell
 	public String ID() { return "Spell_Wish"; }
 	public String name(){return "Wish";}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_Wish();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
@@ -139,7 +138,7 @@ public class Spell_Wish extends Spell
 				{	objectWish=objectWish.substring(0,objectWish.length()-(1+redundantEnds[i].length())); i=-1;}i++;}
 			String goldWish=objectWish.toUpperCase();
 			objectWish=objectWish.toLowerCase().trim();
-			
+
 			String[] redundantGoldStarts={"A PILE OF","A STACK OF","PILE OF","STACK OF"};
 			i=0;
 			while(i<redundantGoldStarts.length)
@@ -168,7 +167,7 @@ public class Spell_Wish extends Spell
 				wishDrain(mob,(baseLoss+experienceRequired),false);
 				return true;
 			}
-		   
+
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);
@@ -651,7 +650,7 @@ public class Spell_Wish extends Spell
 						mob.tell("That's beyond your power, but you lost exp even for trying.");
 						return false;
 					}
-						
+
 					if(target instanceof MOB)
 					{
 						MOB MT=(MOB)target;
@@ -683,9 +682,9 @@ public class Spell_Wish extends Spell
 				}
 				return true;
 			}
-			
-			
-			
+
+
+
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" WAS ")>=0))

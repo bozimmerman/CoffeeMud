@@ -22,7 +22,6 @@ public class Ranger_FindWater extends StdAbility
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
-	public Environmental newInstance(){	return new Ranger_FindWater();}
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

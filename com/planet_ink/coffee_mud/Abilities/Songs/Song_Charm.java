@@ -11,10 +11,6 @@ public class Song_Charm extends Song
 	public String ID() { return "Song_Charm"; }
 	public String name(){ return "Suave";}
 	public int quality(){ return INDIFFERENT;}
-	public Environmental newInstance()
-	{
-		return new Song_Charm();
-	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);

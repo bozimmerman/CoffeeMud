@@ -27,10 +27,7 @@ public class RandomTraps extends ActiveTicker
 	{
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new RandomTraps();
-	}
+
 
 	public void setParms(String newParms)
 	{
@@ -235,7 +232,7 @@ public class RandomTraps extends ActiveTicker
 					Room R=null;
 					try{R=(Room)elligible.elementAt(r);}catch(IndexOutOfBoundsException e){}
 					if(R==null) continue;
-					
+
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{

@@ -14,7 +14,6 @@ public class Disease_Anthrax extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Infection();}
 
 	protected int DISEASE_TICKS(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*10).intValue();}
 	protected int DISEASE_DELAY(){return 15;}

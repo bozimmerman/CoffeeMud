@@ -10,7 +10,6 @@ public class Prop_RoomDark extends Property
 	public String ID() { return "Prop_RoomDark"; }
 	public String name(){ return "Darkening Property";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_RoomDark();}
 
 	public String accountForYourself()
 	{ return "Darkened";	}

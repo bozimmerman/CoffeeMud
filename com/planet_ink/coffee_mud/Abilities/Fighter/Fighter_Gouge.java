@@ -18,7 +18,6 @@ public class Fighter_Gouge extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	protected int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Fighter_Gouge();}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -87,7 +86,7 @@ public class Fighter_Gouge extends StdAbility
 			mob.tell("Your hands must be free to gouge.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

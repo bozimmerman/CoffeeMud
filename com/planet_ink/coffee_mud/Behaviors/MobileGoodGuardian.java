@@ -8,10 +8,7 @@ import java.util.*;
 public class MobileGoodGuardian extends Mobile
 {
 	public String ID(){return "MobileGoodGuardian";}
-	public Behavior newInstance()
-	{
-		return new MobileGoodGuardian();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

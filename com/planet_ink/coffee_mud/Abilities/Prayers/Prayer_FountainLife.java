@@ -16,7 +16,6 @@ public class Prayer_FountainLife extends Prayer
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
 	protected int overrideMana(){return Integer.MAX_VALUE;}
-	public Environmental newInstance(){	return new Prayer_FountainLife();}
 
 	public void unInvoke()
 	{

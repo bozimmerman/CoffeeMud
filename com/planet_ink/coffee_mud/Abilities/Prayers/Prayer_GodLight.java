@@ -12,7 +12,6 @@ public class Prayer_GodLight extends Prayer
 	public String displayText(){return "(Godlight)";}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Prayer_GodLight();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

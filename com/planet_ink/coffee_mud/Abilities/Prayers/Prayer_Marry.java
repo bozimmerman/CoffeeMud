@@ -12,7 +12,6 @@ public class Prayer_Marry extends Prayer
 	public String name(){ return "Marry";}
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int quality(){return Ability.OK_OTHERS;}
-	public Environmental newInstance(){	return new Prayer_Marry();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

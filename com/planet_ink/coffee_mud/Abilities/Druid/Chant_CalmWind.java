@@ -13,7 +13,6 @@ public class Chant_CalmWind extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_CalmWind();}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -12,7 +12,6 @@ public class Spell_ComprehendLangs extends Spell
 	public String displayText(){return "(Comprehend Languages)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_ComprehendLangs();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 

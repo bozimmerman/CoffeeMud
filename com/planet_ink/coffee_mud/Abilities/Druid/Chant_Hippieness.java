@@ -13,7 +13,6 @@ public class Chant_Hippieness extends Chant
 	public int quality(){ return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_CURSE;}
-	public Environmental newInstance(){ return new Chant_Hippieness();}
 	private String oldClan="";
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -32,7 +31,7 @@ public class Chant_Hippieness extends Chant
 		&&(((MOB)affected).getClanID().length()>0)
 		&&(oldClan.length()>0))
 			((MOB)affected).setClanID("");
-		
+
 		if((msg.source()==affected)
 		&&(msg.tool() instanceof Ability)
 		&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
@@ -43,7 +42,7 @@ public class Chant_Hippieness extends Chant
 		}
 		return super.okMessage(host,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -59,7 +58,7 @@ public class Chant_Hippieness extends Chant
 				if((I!=null)&&(I.fitsOn(Item.ON_MOUTH)))
 					CommonMsgs.get(mob,I.container(),I,false);
 			}
-			
+
 			if(mob.inventorySize()>0)
 			{
 				Item I=mob.fetchInventory(Dice.roll(1,mob.inventorySize(),-1));
@@ -99,8 +98,8 @@ public class Chant_Hippieness extends Chant
 		}
 		return true;
 	}
-	
-	
+
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

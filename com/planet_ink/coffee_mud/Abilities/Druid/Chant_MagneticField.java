@@ -12,7 +12,6 @@ public class Chant_MagneticField extends Chant
 	public String displayText(){return "(Magnetic Field chant)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_MagneticField();}
 	public long flags(){return Ability.FLAG_BINDING;}
 
 	public boolean wearingHeldMetal(Environmental affected)
@@ -72,8 +71,8 @@ public class Chant_MagneticField extends Chant
 		}
 		return true;
 	}
-							 
-	
+
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

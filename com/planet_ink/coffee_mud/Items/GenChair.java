@@ -23,8 +23,4 @@ public class GenChair extends GenRideable
 		setRideBasis(Rideable.RIDEABLE_SIT);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenChair();
-	}
 }

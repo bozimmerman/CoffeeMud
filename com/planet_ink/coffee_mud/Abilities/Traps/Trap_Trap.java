@@ -310,9 +310,4 @@ public class Trap_Trap extends StdAbility implements Trap
 		return true;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Trap_Trap();
-	}
-
 }

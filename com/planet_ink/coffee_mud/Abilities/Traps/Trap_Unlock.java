@@ -10,7 +10,6 @@ public class Trap_Unlock extends Trap_Trap
 	public String name(){ return "Unlock Trap";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Trap_Unlock();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

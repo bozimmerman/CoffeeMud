@@ -15,7 +15,6 @@ public class Skill_Warrants extends BardSkill
 	private static final String[] triggerStrings = {"WARRANTS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_Warrants();}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public Behavior getArrest(Area A)

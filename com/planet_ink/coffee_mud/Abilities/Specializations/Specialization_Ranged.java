@@ -17,5 +17,4 @@ public class Specialization_Ranged extends Specialization_Weapon
 		secondWeaponType=Weapon.CLASS_THROWN;
 	}
 
-	public Environmental newInstance(){	return new Specialization_Ranged();	}
 }

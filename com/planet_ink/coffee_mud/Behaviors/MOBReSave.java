@@ -19,10 +19,7 @@ public class MOBReSave extends ActiveTicker
 		minTicks=140; maxTicks=140; chance=100;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new MOBReSave();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

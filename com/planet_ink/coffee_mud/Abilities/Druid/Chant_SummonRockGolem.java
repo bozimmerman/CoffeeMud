@@ -13,7 +13,6 @@ public class Chant_SummonRockGolem extends Chant
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Chant_SummonRockGolem();}
 	public long flags(){return Ability.FLAG_SUMMONING;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -57,7 +56,7 @@ public class Chant_SummonRockGolem extends Chant
 			mob.tell("You can not summon a rock golem here.");
 			return false;
 		}
-		
+
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)

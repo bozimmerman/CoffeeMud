@@ -13,7 +13,6 @@ public class Chant_RustCurse extends Chant
 	public int quality(){ return MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){return new Chant_RustCurse();}
 
 	public void unInvoke()
 	{
@@ -25,7 +24,7 @@ public class Chant_RustCurse extends Chant
 			M.tell("You don't feel so damp any more.");
 	}
 
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -81,15 +80,15 @@ public class Chant_RustCurse extends Chant
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

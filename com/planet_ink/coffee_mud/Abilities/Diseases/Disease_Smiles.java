@@ -14,7 +14,6 @@ public class Disease_Smiles extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Smiles();}
 
 	protected int DISEASE_TICKS(){return 10;}
 	protected int DISEASE_DELAY(){return 2;}

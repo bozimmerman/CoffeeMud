@@ -16,16 +16,15 @@ public class Chant_FindPlant extends Chant
 	protected String lookingFor="plants";
 	private Vector theTrail=null;
 	private int nextDirection=-2;
-	public Environmental newInstance(){	return new Chant_FindPlant();}
 	public int whatImLookingFor=-1;
-	
+
 	private int[] myMats={EnvResource.MATERIAL_VEGETATION,
 						  EnvResource.MATERIAL_WOODEN};
 	protected int[] okMaterials(){	return myMats;}
 	private int[] myRscs={EnvResource.RESOURCE_COTTON,
 						  EnvResource.RESOURCE_HEMP};
 	protected int[] okResources(){	return myRscs;}
-	
+
 	private Vector allResources=null;
 	protected Vector allOkResources()
 	{
@@ -147,9 +146,9 @@ public class Chant_FindPlant extends Chant
 			int c=((Integer)allOkResources().elementAt(i)).intValue();
 			String d=EnvResource.RESOURCE_DESCS[c&EnvResource.RESOURCE_MASK];
 			if(d.equalsIgnoreCase(s))
-			{	
+			{
 				lookingFor=d.toLowerCase();
-				whatImLookingFor=c; 
+				whatImLookingFor=c;
 				break;
 			}
 		}
@@ -158,7 +157,7 @@ public class Chant_FindPlant extends Chant
 			mob.tell("'"+s+"' cannot be found with this chant.    Use 'CHANT \""+name()+"\" LIST' for a list.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -181,7 +180,7 @@ public class Chant_FindPlant extends Chant
 				break;
 			}
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{

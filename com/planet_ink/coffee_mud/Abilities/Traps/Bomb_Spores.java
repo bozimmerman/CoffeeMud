@@ -11,7 +11,6 @@ public class Bomb_Spores extends StdBomb
 	public String name(){ return "spore bomb";}
 	protected int trapLevel(){return 15;}
 	public String requiresToSet(){return "some diseased meat";}
-	public Environmental newInstance(){	return new Bomb_Spores();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

@@ -14,10 +14,7 @@ public class CorpseEater extends ActiveTicker
 		minTicks=5; maxTicks=20; chance=75;
 		tickReset();
 	}
-	public Behavior newInstance()
-	{
-		return new CorpseEater();
-	}
+
 
 	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
 	{

@@ -32,10 +32,6 @@ public class GenCigar extends StdSmokable
 	{
 		readableText=newKeyName;
 	}
-	public Environmental newInstance()
-	{
-		return new GenCigar();
-	}
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -13,7 +13,6 @@ public class Sinking extends StdAbility
 	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Room room=null;
-	public Environmental newInstance(){	return new Sinking();}
 
 	private boolean reversed(){return profficiency()==100;}
 
@@ -80,7 +79,7 @@ public class Sinking extends StdAbility
 				stopSinking(mob);
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

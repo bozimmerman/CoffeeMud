@@ -17,7 +17,6 @@ public class Skill_Attack3 extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	private boolean active=true;
-	public Environmental newInstance(){	return new Skill_Attack3();	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -14,7 +14,6 @@ public class Prayer_BoneMoon extends Prayer
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int quality(){ return INDIFFERENT;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_MOONCHANGING;}
-	public Environmental newInstance(){	return new Prayer_BoneMoon();	}
 	protected int level=1;
 
 	public void unInvoke()
@@ -54,7 +53,7 @@ public class Prayer_BoneMoon extends Prayer
 			}
 			if(B!=null)
 			{
-				Prayer_AnimateSkeleton.makeSkeletonFrom(R,B,null,level);	
+				Prayer_AnimateSkeleton.makeSkeletonFrom(R,B,null,level);
 				B.destroy();
 				level+=3;
 			}
@@ -62,7 +61,7 @@ public class Prayer_BoneMoon extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();

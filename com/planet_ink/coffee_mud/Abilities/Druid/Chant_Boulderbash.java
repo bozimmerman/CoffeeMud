@@ -13,7 +13,6 @@ public class Chant_Boulderbash extends Chant
 	public int maxRange(){return 2;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Boulderbash();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

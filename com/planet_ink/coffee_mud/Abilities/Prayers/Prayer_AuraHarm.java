@@ -14,7 +14,6 @@ public class Prayer_AuraHarm extends Prayer
 	protected int canTargetCode(){return 0;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-	public Environmental newInstance(){	return new Prayer_AuraHarm();	}
 	private int tickDown=4;
 
 
@@ -38,7 +37,7 @@ public class Prayer_AuraHarm extends Prayer
 
 		if((--tickDown)>=0) return super.tick(ticking,tickID);
 		tickDown=4;
-		
+
 		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))
 		{

@@ -15,7 +15,6 @@ public class Fighter_CoupDeGrace extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int maxRange(){return 0;}
-	public Environmental newInstance(){	return new Fighter_CoupDeGrace();}
 	public int classificationCode(){ return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 

@@ -29,7 +29,6 @@ public class CommonSkill extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
-	public Environmental newInstance()	{	return new CommonSkill();	}
 	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
 	private int yield=1;

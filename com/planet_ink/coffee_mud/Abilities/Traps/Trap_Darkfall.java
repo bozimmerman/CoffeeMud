@@ -13,7 +13,6 @@ public class Trap_Darkfall extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "";}
-	public Environmental newInstance(){	return new Trap_Darkfall();}
 
 	public int baseRejuvTime(int level){return 20;}
 

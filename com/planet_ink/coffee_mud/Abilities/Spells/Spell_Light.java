@@ -13,7 +13,6 @@ public class Spell_Light extends Spell
 	public String displayText(){return "(Light)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Light();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -12,7 +12,6 @@ public class Spell_Slow extends Spell
 	public String displayText(){return "(Slow spell)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_Slow();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

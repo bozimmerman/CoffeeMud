@@ -15,7 +15,6 @@ public class Prayer_SenseTraps extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	Room lastRoom=null;
-	public Environmental newInstance(){	return new Prayer_SenseTraps();	}
 
 	public void unInvoke()
 	{
@@ -149,7 +148,7 @@ public class Prayer_SenseTraps extends Prayer
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -13,7 +13,6 @@ public class Prayer_CreateIdol extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	public Environmental newInstance(){	return new Prayer_CreateIdol();	}
 	public boolean bubbleAffect(){return true;}
 
 	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
@@ -46,8 +45,8 @@ public class Prayer_CreateIdol extends Prayer
 			affectableState.setMovement(20);
 		}
 	}
-	
-	
+
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -69,7 +68,7 @@ public class Prayer_CreateIdol extends Prayer
 			mob.tell("You must worship a god to use this prayer.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		int material=-1;

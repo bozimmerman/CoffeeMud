@@ -14,7 +14,6 @@ public class Disease_Lycanthropy extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Lycanthropy();}
 
 	protected int DISEASE_TICKS(){return 9999999;}
 	protected int DISEASE_DELAY(){return 50;}
@@ -158,7 +157,7 @@ public class Disease_Lycanthropy extends Disease
 
 		MOB mob=(MOB)affected;
 		if(mob.amDead()) return true;
-		
+
 		if(!changed)
 		{
 			if(mob.location()==null) return true;

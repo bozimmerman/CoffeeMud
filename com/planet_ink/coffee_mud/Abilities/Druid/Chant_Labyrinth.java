@@ -13,7 +13,6 @@ public class Chant_Labyrinth extends Chant
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_Labyrinth();}
 	Room oldRoom=null;
 
 	public void unInvoke()

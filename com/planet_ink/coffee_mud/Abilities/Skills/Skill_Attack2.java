@@ -16,7 +16,6 @@ public class Skill_Attack2 extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Skill_Attack2();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

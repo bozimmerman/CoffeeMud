@@ -11,7 +11,6 @@ public class Dance_Jingledress extends Dance
 	public String ID() { return "Dance_Jingledress"; }
 	public String name(){ return "Jingledress";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Jingledress();}
 	protected String danceOf(){return name()+" Dance";}
 	public long flags(){return Ability.FLAG_HEALING;}
 

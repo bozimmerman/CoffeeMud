@@ -12,7 +12,6 @@ public class Chant_VolcanicChasm extends Chant
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_VolcanicChasm();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -37,7 +36,7 @@ public class Chant_VolcanicChasm extends Chant
 		}
 		return true;
 	}
-	
+
 	protected boolean checked=false;
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -51,7 +50,7 @@ public class Chant_VolcanicChasm extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();

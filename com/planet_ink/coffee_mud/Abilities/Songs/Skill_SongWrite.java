@@ -16,7 +16,6 @@ public class Skill_SongWrite extends BardSkill
 	private static final String[] triggerStrings = {"SONGWRITE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	public Environmental newInstance(){	return new Skill_SongWrite();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

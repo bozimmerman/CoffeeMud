@@ -16,7 +16,6 @@ public class Chant_WhisperWard extends Chant implements Trap
 	Room myRoomContainer=null;
 	int myTrigger=CMMsg.TYP_ENTER;
 	boolean waitingForLook=false;
-	public Environmental newInstance(){	return new Chant_WhisperWard();	}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}

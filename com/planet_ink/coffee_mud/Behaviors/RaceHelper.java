@@ -8,10 +8,7 @@ import java.util.*;
 public class RaceHelper extends StdBehavior
 {
 	public String ID(){return "RaceHelper";}
-	public Behavior newInstance()
-	{
-		return new RaceHelper();
-	}
+
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

@@ -24,7 +24,6 @@ public class Drilling extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Drilling();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -124,7 +123,7 @@ public class Drilling extends CommonSkill
 			commonTell(mob,"You need to empty "+I.name()+" first.");
 			return false;
 		}
-		
+
 		verb="drilling";
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -14,7 +14,6 @@ public class Disease_Pneumonia extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Pneumonia();}
 
 	protected int DISEASE_TICKS(){return 38;}
 	protected int DISEASE_DELAY(){return 3;}

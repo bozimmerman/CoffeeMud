@@ -11,7 +11,6 @@ public class Poison_Caffeine extends Poison {
 	public String displayText(){ return "(CAFFEINATED!!)";}
 	private static final String[] triggerStrings = {"POISONHYPER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Caffeine();}
 
 	protected int POISON_TICKS(){return 30;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 5;}

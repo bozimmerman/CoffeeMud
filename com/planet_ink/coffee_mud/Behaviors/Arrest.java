@@ -12,7 +12,6 @@ public class Arrest extends StdBehavior
 	public String ID(){return "Arrest";}
 	public long flags(){return Behavior.FLAG_LEGALBEHAVIOR;}
 	protected int canImproveCode(){return Behavior.CAN_AREAS;}
-	public Behavior newInstance(){ return new Arrest();}
 
 	protected boolean loadAttempt=false;
 
@@ -679,7 +678,7 @@ public class Arrest extends StdBehavior
 		if(officer.isMonster())
 			MUDTracker.wanderAway(officer,true,true);
 	}
-	
+
 	public MOB getAWitnessHere(Room R)
 	{
 		if(R!=null)
@@ -825,7 +824,7 @@ public class Arrest extends StdBehavior
 		}
 		return true;
 	}
-	
+
 	public boolean isStillACrime(LegalWarrant W)
 	{
 		// will witness talk, or victim press charges?

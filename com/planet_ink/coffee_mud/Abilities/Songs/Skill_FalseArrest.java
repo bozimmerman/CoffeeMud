@@ -14,7 +14,6 @@ public class Skill_FalseArrest extends BardSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"ARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Skill_FalseArrest();}
 	protected int overrideMana(){return 50;}
 
 	public Behavior getArrest(Area A)

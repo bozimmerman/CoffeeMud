@@ -14,7 +14,6 @@ public class Disease_Fever extends Disease
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
-	public Environmental newInstance(){	return new Disease_Fever();}
 
 	protected int DISEASE_TICKS(){return 15;}
 	protected int DISEASE_DELAY(){return 3;}
@@ -22,7 +21,7 @@ public class Disease_Fever extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a fever.^?";}
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return 0;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

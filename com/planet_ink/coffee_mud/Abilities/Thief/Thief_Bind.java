@@ -24,7 +24,6 @@ public class Thief_Bind extends ThiefSkill
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
 
-	public Environmental newInstance(){	return new Thief_Bind();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

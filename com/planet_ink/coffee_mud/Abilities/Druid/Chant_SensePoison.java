@@ -12,7 +12,6 @@ public class Chant_SensePoison extends Chant
 	public int quality(){return Ability.OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
-	public Environmental newInstance(){	return new Chant_SensePoison();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

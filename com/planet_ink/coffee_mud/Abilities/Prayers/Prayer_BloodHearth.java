@@ -13,7 +13,6 @@ public class Prayer_BloodHearth extends Prayer
 	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Prayer_BloodHearth();}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
@@ -23,7 +22,7 @@ public class Prayer_BloodHearth extends Prayer
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;
-		
+
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		{
 			HashSet H=msg.source().getGroupMembers(new HashSet());

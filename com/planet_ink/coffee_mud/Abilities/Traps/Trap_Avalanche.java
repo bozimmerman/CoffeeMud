@@ -13,7 +13,6 @@ public class Trap_Avalanche extends StdTrap
 	protected int canTargetCode(){return 0;}
 	protected int trapLevel(){return 25;}
 	public String requiresToSet(){return "100 pounds of stone";}
-	public Environmental newInstance(){	return new Trap_Avalanche();}
 
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{

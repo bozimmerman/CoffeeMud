@@ -14,7 +14,6 @@ public class Fighter_SizeOpponent extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Fighter_SizeOpponent();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

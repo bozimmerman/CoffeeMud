@@ -12,7 +12,6 @@ public class Prayer_Sermon extends Prayer
 	public String displayText(){return "(Sermon)";}
 	public int quality(){return OK_OTHERS;};
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Sermon();}
 	public long flags(){return Ability.FLAG_CHARMING|Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 

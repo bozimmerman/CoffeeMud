@@ -12,7 +12,6 @@ public class Song_Rebirth extends Song
 	public String name(){ return "Rebirth";}
 	public int quality(){ return INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
-	public Environmental newInstance(){	return new Song_Rebirth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -15,12 +15,11 @@ public class Thief_Squatting extends ThiefSkill
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"SQUAT","SQUATTING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Squatting();	}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private boolean failed=false;
 	private Room room=null;
 	private LandTitle title=null;
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -42,7 +41,7 @@ public class Thief_Squatting extends ThiefSkill
 		}
 		super.executeMsg(host,msg);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -75,7 +74,7 @@ public class Thief_Squatting extends ThiefSkill
 		failed=false;
 	}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

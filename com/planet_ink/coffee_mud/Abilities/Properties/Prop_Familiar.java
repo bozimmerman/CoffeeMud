@@ -29,7 +29,6 @@ public class Prop_Familiar extends Property
 	private boolean imthedaddy=false;
 	private int familiarType=0;
 
-	public Environmental newInstance(){	Prop_Familiar BOB=new Prop_Familiar();	BOB.setMiscText(text());return BOB;	}
 
 	public String accountForYourself()
 	{

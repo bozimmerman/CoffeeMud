@@ -11,9 +11,8 @@ public class Dance_War extends Dance
 	public String ID() { return "Dance_War"; }
 	public String name(){ return "War";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_War();}
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

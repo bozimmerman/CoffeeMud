@@ -10,7 +10,6 @@ public class Prop_ReqLevels extends Property
 	public String ID() { return "Prop_ReqLevels"; }
 	public String name(){ return "Level Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-	public Environmental newInstance(){	Prop_ReqLevels newOne=new Prop_ReqLevels();	newOne.setMiscText(text());	return newOne;}
 
 	public boolean passesMuster(MOB mob, Room R)
 	{

@@ -11,8 +11,7 @@ public class Poison_Bloodboil extends Poison
 	public String name(){ return "Blood Boil";}
 	private static final String[] triggerStrings = {"POISONBURN"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Poison_Bloodboil();}
-	
+
 	protected int POISON_TICKS(){return 20;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 2;}
 	protected String POISON_DONE(){return "Your blood stops burning.";}
@@ -27,7 +26,7 @@ public class Poison_Bloodboil extends Poison
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-1);

@@ -16,7 +16,6 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	protected Vector rangersGroup=null;
-	public Environmental newInstance(){	return new Ranger_AnimalFrenzy();}
 	public int classificationCode(){ return Ability.SKILL;}
 
 	public boolean tick(Tickable ticking, int tickID)

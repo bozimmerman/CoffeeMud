@@ -16,10 +16,7 @@ public class InstantDeath extends ActiveTicker
 
 	boolean activated=false;
 
-	public Behavior newInstance()
-	{
-		return new InstantDeath();
-	}
+
 
 	public void killEveryoneHere(MOB spareMe, Room R)
 	{

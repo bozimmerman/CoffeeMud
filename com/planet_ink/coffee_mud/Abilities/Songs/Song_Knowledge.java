@@ -11,7 +11,6 @@ public class Song_Knowledge extends Song
 	public String ID() { return "Song_Knowledge"; }
 	public String name(){ return "Knowledge";}
 	public int quality(){ return OK_OTHERS;}
-	public Environmental newInstance(){	return new Song_Knowledge();}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -11,9 +11,8 @@ public class Dance_Capoeira extends Dance
 	public String ID() { return "Dance_Capoeira"; }
 	public String name(){ return "Capoeira";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Dance_Capoeira();}
 	protected String danceOf(){return name()+" Dance";}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

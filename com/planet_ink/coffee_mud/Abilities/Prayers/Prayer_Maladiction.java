@@ -14,7 +14,6 @@ public class Prayer_Maladiction extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_Maladiction();}
 
 	public void unInvoke()
 	{
@@ -41,7 +40,7 @@ public class Prayer_Maladiction extends Prayer
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

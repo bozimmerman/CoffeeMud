@@ -10,7 +10,6 @@ public class Spell_Dismissal extends Spell
 	public String ID() { return "Spell_Dismissal"; }
 	public String name(){return "Dismissal";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_Dismissal();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_MOVING|Ability.FLAG_TRANSPORTING;}
 

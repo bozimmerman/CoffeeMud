@@ -12,7 +12,6 @@ public class Spell_MassFeatherfall extends Spell
 	public String displayText(){return "";}
 	public int quality(){ return OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
-	public Environmental newInstance(){	return new Spell_MassFeatherfall();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

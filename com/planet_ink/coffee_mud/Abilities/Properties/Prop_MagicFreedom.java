@@ -10,7 +10,6 @@ public class Prop_MagicFreedom extends Property
 	public String ID() { return "Prop_MagicFreedom"; }
 	public String name(){ return "Magic Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_MagicFreedom();}
 
 	public String accountForYourself()
 	{ return "Anti-Magic Field";	}

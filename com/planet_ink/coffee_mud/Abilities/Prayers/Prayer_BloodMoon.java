@@ -14,7 +14,6 @@ public class Prayer_BloodMoon extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){ return MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_CURSE;}
-	public Environmental newInstance(){	return new Prayer_BloodMoon();	}
 
 
 	public void unInvoke()

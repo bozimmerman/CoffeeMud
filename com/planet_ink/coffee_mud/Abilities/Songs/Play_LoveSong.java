@@ -11,9 +11,8 @@ public class Play_LoveSong extends Play
 	public String ID() { return "Play_LoveSong"; }
 	public String name(){ return "Love Song";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public Environmental newInstance(){	return new Play_LoveSong();}
 	protected String songOf(){return "a "+name();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -77,4 +76,3 @@ public class Play_LoveSong extends Play
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+6);
 	}
 }
-	

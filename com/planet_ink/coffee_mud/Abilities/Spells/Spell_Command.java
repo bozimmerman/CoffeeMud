@@ -10,7 +10,6 @@ public class Spell_Command extends Spell
 	public String ID() { return "Spell_Command"; }
 	public String name(){return "Command";}
 	public int quality(){return MALICIOUS;};
-	public Environmental newInstance(){	return new Spell_Command();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -7,10 +7,7 @@ import java.util.*;
 public class MudChat extends StdBehavior
 {
 	public String ID(){return "MudChat";}
-	public Behavior newInstance()
-	{
-		return new MudChat();
-	}
+
 
 	//----------------------------------------------
 	// format: first group is general mob (no other

@@ -11,7 +11,6 @@ public class Play_Lullabies extends Song
 	public String ID() { return "Play_Lullabies"; }
 	public String name(){ return "Lullabies";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Play_Lullabies();	}
 
 	boolean asleep=false;
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

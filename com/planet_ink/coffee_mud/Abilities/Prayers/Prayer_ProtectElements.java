@@ -14,7 +14,6 @@ public class Prayer_ProtectElements extends Prayer
 	public String displayText(){ return "(Protection/Elements)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtectElements();}
 
 
 	public void unInvoke()

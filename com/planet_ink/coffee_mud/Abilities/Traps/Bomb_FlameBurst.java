@@ -11,7 +11,6 @@ public class Bomb_FlameBurst extends StdBomb
 	public String name(){ return "flame burst bomb";}
 	protected int trapLevel(){return 17;}
 	public String requiresToSet(){return "some lamp oil";}
-	public Environmental newInstance(){	return new Bomb_FlameBurst();}
 
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{

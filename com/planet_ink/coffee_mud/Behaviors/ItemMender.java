@@ -8,10 +8,7 @@ import java.util.*;
 public class ItemMender extends StdBehavior
 {
 	public String ID(){return "ItemMender";}
-	public Behavior newInstance()
-	{
-		return new ItemMender();
-	}
+
 	private int cost(Item item)
 	{
 		int cost=((100-item.usesRemaining())*2)+item.envStats().level();

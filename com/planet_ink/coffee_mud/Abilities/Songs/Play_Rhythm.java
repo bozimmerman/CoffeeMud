@@ -11,8 +11,7 @@ public class Play_Rhythm extends Play
 	public String ID() { return "Play_Rhythm"; }
 	public String name(){ return "Rhythm";}
 	public int quality(){ return MALICIOUS;}
-	public Environmental newInstance(){	return new Play_Rhythm();}
-	
+
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
@@ -20,4 +19,4 @@ public class Play_Rhythm extends Play
 			stats.setStat(CharStats.SAVE_MAGIC,stats.getStat(CharStats.SAVE_MAGIC)-(invoker().charStats().getStat(CharStats.CHARISMA)+(invokerLevel()*2)));
 	}
 }
-	
+

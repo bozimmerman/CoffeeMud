@@ -16,10 +16,9 @@ public class Fighter_FarShot extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	public Environmental newInstance(){	return new Fighter_FarShot();}
 	public int classificationCode(){return Ability.SKILL;}
 	public int checkDown=4;
-	
+
 	protected Vector qualifiedWeapons=new Vector();
 
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -48,14 +47,14 @@ public class Fighter_FarShot extends StdAbility
 			}
 		}
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof Item)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_ITEMNOMAXRANGE);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

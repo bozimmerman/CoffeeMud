@@ -13,7 +13,6 @@ public class Spell_AchillesArmor extends Spell
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int overrideMana(){return 100;}
-	public Environmental newInstance(){	return new Spell_AchillesArmor();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 	private int vulnerability=0;
 

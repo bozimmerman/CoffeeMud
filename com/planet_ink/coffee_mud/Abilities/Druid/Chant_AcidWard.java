@@ -12,7 +12,6 @@ public class Chant_AcidWard extends Chant
 	public String name(){ return "Acid Ward";}
 	public String displayText(){return "(Acid Ward)";}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
-	public Environmental newInstance(){	return new Chant_AcidWard();}
 
 	public void unInvoke()
 	{

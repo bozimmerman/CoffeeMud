@@ -7,7 +7,6 @@ public class Prop_NoTeleportOut extends Property
 	public String ID() { return "Prop_NoTeleportOut"; }
 	public String name(){ return "Teleport OUT OF Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
-	public Environmental newInstance(){	return new Prop_NoTeleportOut();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

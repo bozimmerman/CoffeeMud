@@ -12,7 +12,6 @@ public class Song_Silence extends Song
 	public String name(){ return "Silencing";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean skipStandardSongTick(){return true;}
-	public Environmental newInstance(){	return new Song_Silence();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

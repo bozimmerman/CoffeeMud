@@ -14,7 +14,6 @@ public class Thief_Bribe extends ThiefSkill
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"BRIBE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Bribe();}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	private MOB lastChecked=null;
 

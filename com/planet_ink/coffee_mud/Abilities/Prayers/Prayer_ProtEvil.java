@@ -14,7 +14,6 @@ public class Prayer_ProtEvil extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Prayer_ProtEvil();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

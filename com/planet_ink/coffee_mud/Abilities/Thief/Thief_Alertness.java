@@ -17,7 +17,6 @@ public class Thief_Alertness extends ThiefSkill
 	private static final String[] triggerStrings = {"ALERTNESS"};
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Thief_Alertness();	}
 	Room room=null;
 
 
@@ -25,7 +24,7 @@ public class Thief_Alertness extends ThiefSkill
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
-			
+
 			MOB mob=(MOB)affected;
 			if(!Sense.aliveAwakeMobile(mob,true))
 			{ unInvoke(); return false;}
@@ -71,7 +70,7 @@ public class Thief_Alertness extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already alert.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

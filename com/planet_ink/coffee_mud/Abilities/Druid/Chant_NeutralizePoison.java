@@ -12,7 +12,6 @@ public class Chant_NeutralizePoison extends Chant
 	public int quality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_NeutralizePoison();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

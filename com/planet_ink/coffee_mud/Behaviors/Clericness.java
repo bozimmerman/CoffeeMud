@@ -8,11 +8,8 @@ import java.util.*;
 public class Clericness extends CombatAbilities
 {
 	public String ID(){return "Clericness";}
-	public Behavior newInstance()
-	{
-		return new Clericness();
-	}
-	
+
+
 	boolean confirmedSetup=false;
 
 	public void startBehavior(Environmental forMe)
