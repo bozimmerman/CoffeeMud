@@ -43,10 +43,10 @@ public class Fighter_Endurance extends StdAbility
 
 		MOB mob=(MOB)affected;
 
-		if((profficiencyCheck(0,false))
+		if(((Sense.isSitting(mob))||(Sense.isSleeping(mob)))
 		&&(!mob.isInCombat())
-		&&(tickID==Host.MOB_TICK)
-		&&(mob.curState().getHitPoints()<mob.maxState().getHitPoints()))
+		&&(profficiencyCheck(0,false))
+		&&(tickID==Host.MOB_TICK))
 		{
 			mob.curState().adjState(mob,mob.maxState());
 			helpProfficiency(mob);
