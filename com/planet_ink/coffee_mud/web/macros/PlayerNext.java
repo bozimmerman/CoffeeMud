@@ -48,7 +48,7 @@ public class PlayerNext extends StdWebMacro
 						String val=PlayerData.getBasic(M,code);
 						if((Util.isNumber(val)&&Util.isNumber(loweStr)))
 						{
-							if(Util.s_int(val)<Util.s_int(loweStr))
+							if(Util.s_long(val)<Util.s_long(loweStr))
 							{
 								loweStr=val;
 								lowestM=M;
