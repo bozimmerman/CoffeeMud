@@ -681,7 +681,6 @@ public class StdRoom
 	{
 		if(text.startsWith("<VARIES>"))
 		{
-			String end="";
 			int x=text.indexOf("</VARIES>");
 			if(x>=0)
 				return parseVariesCodes(text.substring(8,x))+text.substring(x+9);

@@ -2986,15 +2986,8 @@ public class Scriptable extends StdBehavior
 			}
 			case 2: // mpecho
 			{
-				String m=Util.getCleanBit(s,1);
-				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				if(lastKnownLocation!=null)
-				{
-					if(((newTarget!=null)&&(newTarget!=monster))||(m.startsWith("$")))
-						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
-					else
-						lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
-				}
+					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim()));
 				break;
 			}
 			case 13: // mpunaffect
@@ -3078,7 +3071,6 @@ public class Scriptable extends StdBehavior
 				if(newTarget!=null)
 				{
 					boolean found=false;
-					String val="";
 					if(newTarget instanceof MOB)
 					{
 						for(int i=0;i<Generic.GENMOBCODES.length;i++)

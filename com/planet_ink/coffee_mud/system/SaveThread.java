@@ -23,7 +23,6 @@ public class SaveThread extends Thread
 	public void itemSweep()
 	{
 		status="sweeping";
-		long itemKillTime=System.currentTimeMillis();
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();

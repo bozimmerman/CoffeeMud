@@ -50,7 +50,6 @@ public class MOBHunter extends ActiveTicker
 		MOB prey=null;
 		Vector rooms=new Vector();
 		SaucerSupport.getRadiantRooms(mob.location(),rooms,true,true,true,null,radius);
-		Area a=mob.location().getArea();
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);

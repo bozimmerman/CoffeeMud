@@ -45,7 +45,13 @@ public class Disease extends StdAbility implements DiseaseAffect
 				MOB targetMOB=(MOB)target;
 				if((Dice.rollPercentage()>targetMOB.charStats().getSave(CharStats.SAVE_DISEASE))
 				&&(targetMOB.location()!=null))
-					return invoke(diseased,targetMOB,true);
+				{
+					MOB following=targetMOB.amFollowing();
+					boolean doMe=invoke(diseased,targetMOB,true);
+					if(targetMOB.amFollowing()!=following)
+						targetMOB.setFollowing(following);
+					return doMe;
+				}
 			}
 			else
 			{

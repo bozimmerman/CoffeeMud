@@ -999,7 +999,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		ByteArrayOutputStream out=new ByteArrayOutputStream();
 		try
 		{
-			int timeout=0;
 			BufferedReader BR=new BufferedReader(new InputStreamReader(sin));
 			int contentLength=-1;
 			int c=-1;

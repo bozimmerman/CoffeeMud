@@ -40,7 +40,7 @@ public class JournalLoader
 			{
 				D=DBConnector.DBFetch();
 				String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
-				ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
+				ResultSet R=D.query(str);
 				while(R.next())
 				{
 					Vector entry=new Vector();

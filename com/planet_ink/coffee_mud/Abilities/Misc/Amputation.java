@@ -409,7 +409,6 @@ public class Amputation extends StdAbility
 		limb.baseEnvStats().setLevel(1);
 		limb.baseEnvStats().setWeight(5);
 		limb.recoverEnvStats();
-		Race R=null;
 		if(target!=null)
 		{
 			if(target instanceof MOB)

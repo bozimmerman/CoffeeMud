@@ -7,7 +7,6 @@ the interest and amusement of downloaders.
 Misc/Architecture:
 ==================
 add floating num to resources -- whether the item will float
-clan boss deletion automatically assigns a new one
 Programming.html updates: 	need special section for languages, poisons, diseases, traps
 GenRaces
 GenCharClasses -- zappercheck on quals

@@ -359,7 +359,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
-					&&(yourValue(mob,affect.tool(),true)>Money.totalMoney(mob)))
+					&&(yourValue(mob,affect.tool(),true)[0]>Money.totalMoney(mob)))
 					{
 						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
 						return false;
@@ -421,7 +421,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((affect.tool()!=null)
 				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
-					int price=yourValue(mob,affect.tool(),true);
+					int price=yourValue(mob,affect.tool(),true)[0];
 					Vector products=removeSellableProduct(affect.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
@@ -463,17 +463,17 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			super.affect(myHost,affect);
 	}
 
-	public int yourValue(MOB mob, Environmental product, boolean sellTo)
+	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
-		int val=0;
+		int[] val=new int[3];
 		if((product==null)||(!(product instanceof Item)))
 			return val;
-		val=stockPrice((Item)product);
+		val[0]=stockPrice((Item)product);
 		if((mob==null)||(mob==affected)) return val;
 
 		// the price is 200% at 0 charisma, and 100% at 30
-		val=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
-		if(val<=0) val=1;
+		val[0]=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
+		if(val[0]<=0) val[0]=1;
 		return val;
 	}
 
@@ -491,7 +491,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			Environmental E=(Environmental)inventory.elementAt(i);
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
-				int val=yourValue(mob,E,true);
+				int val=yourValue(mob,E,true)[0];
 				if((""+val).length()>(4+csize))
 					csize=(""+val).length()-4;
 			}
@@ -507,7 +507,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
 				String col=null;
-				int val=yourValue(mob,E,true);
+				int val=yourValue(mob,E,true)[0];
 				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{

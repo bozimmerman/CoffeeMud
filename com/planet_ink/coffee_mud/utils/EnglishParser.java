@@ -667,7 +667,7 @@ public class EnglishParser implements Tickable
 							Environmental E=sk.getStock(item,me);
 							if((E!=null)&&(E instanceof Item))
 							{
-								int price=sk.yourValue(me,E,true);
+								int price=sk.yourValue(me,E,true)[0];
 								if(price<=Money.totalMoney(me))
 								{
 									try{ExternalPlay.doCommand(me,Util.parse("BUY \""+E.name()+"\""));}catch(Exception e){}

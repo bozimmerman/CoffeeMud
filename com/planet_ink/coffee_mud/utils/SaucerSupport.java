@@ -1142,7 +1142,6 @@ public class SaucerSupport
 		if(!nextExit.isOpen())
 			return false;
 
-		int dir=direction;
 		if(((nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		   &&(!Sense.isWaterWorthy(mob))

@@ -40,7 +40,6 @@ public class QuestMgr extends StdWebMacro
 			}
 			if(parms.containsKey("DELETE"))
 			{
-				String name=Q.name();
 				Quests.delQuest(Q);
 				Quests.save();
 				httpReq.addRequestParameters("QUEST","");
@@ -66,7 +65,7 @@ public class QuestMgr extends StdWebMacro
 	
 	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q)
 	{
-		String oldParm=Q.script();
+		Q.script();
 		String script=httpReq.getRequestParameter("SCRIPT");
 		script=Util.replaceAll(script,"'","`");
 		script=Util.replaceAll(script,"\n",";");

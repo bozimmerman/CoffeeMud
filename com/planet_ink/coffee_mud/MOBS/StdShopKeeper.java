@@ -449,7 +449,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
 				{
-					if(yourValue(mob,affect.tool(),false)<2)
+					if(yourValue(mob,affect.tool(),false)[0]<2)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
 						return false;
@@ -496,11 +496,24 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if((affect.tool()!=null)
 				&&(doIHaveThisInStock(affect.tool().Name()+"$",mob)))
 				{
-					if((affect.targetMinor()!=Affect.TYP_VIEW)
-					&&(yourValue(mob,affect.tool(),true)>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
+					if(affect.targetMinor()!=Affect.TYP_VIEW)
 					{
-						ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
-						return false;
+						int[] val=yourValue(mob,affect.tool(),true);
+						if((val[2]>0)&&(val[2]>mob.getExperience()))
+						{
+							ExternalPlay.quickSay(this,mob,"You aren't experienced enough to buy "+affect.tool().name()+".",false,false);
+							return false;
+						}
+						if((val[1]>0)&&(val[1]>mob.getQuestPoint()))
+						{
+							ExternalPlay.quickSay(this,mob,"You don't have enough quest points to buy "+affect.tool().name()+".",false,false);
+							return false;
+						}
+						if((val[0]>0)&&(val[0]>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
+						{
+							ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
+							return false;
+						}
 					}
 					if(affect.tool() instanceof Item)
 					{
@@ -649,15 +662,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case Affect.TYP_VALUE:
 				super.affect(myHost,affect);
-				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".",true,false);
+				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)[0]+" for "+affect.tool().name()+".",true,false);
 				break;
 			case Affect.TYP_SELL:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
 				{
-					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
+					int val=yourValue(mob,affect.tool(),false)[0];
+					mob.setMoney(mob.getMoney()+val);
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
+					mob.tell(name()+" pays you "+val+" for "+affect.tool().name()+".");
 					if(affect.tool() instanceof Item)
 					{
 						Item item=(Item)affect.tool();
@@ -763,7 +777,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					Vector products=removeSellableProduct(affect.tool().Name()+"$",mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,yourValue(mob,product,true));
+					int[] val=yourValue(mob,product,true);
+					if(val[0]>0) com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,val[0]);
+					if(val[1]>0) mob.setQuestPoint(mob.getQuestPoint()-val[1]);
+					if(val[2]>0) mob.charStats().getCurrentClass().loseExperience(mob,val[2]);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
@@ -919,41 +936,51 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return 1.0;
 	}
 
-	public int yourValue(MOB mob, Environmental product, boolean sellTo)
+	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
-		int val=0;
-		if(product==null)
+		int[] val=new int[3];
+		if(product==null) return val;
+		Integer I=(Integer)prices.get(product.ID()+"/"+product.name());
+		if((I!=null)&&(I.intValue()<=-100))
+		{
+			if(I.intValue()<=-1000)
+				val[2]=(I.intValue()*-1)-1000;
+			else
+				val[1]=(I.intValue()*-1)-100;
 			return val;
+		}
+			
 		if(product instanceof Item)
-			val=((Item)product).value();
+			val[0]=((Item)product).value();
 		else
 		if(product instanceof Ability)
 		{
 			if(whatISell==DEAL_TRAINER)
-				val=CMAble.lowestQualifyingLevel(product.ID())*100;
+				val[0]=CMAble.lowestQualifyingLevel(product.ID())*100;
 			else
-				val=CMAble.lowestQualifyingLevel(product.ID())*75;
+				val[0]=CMAble.lowestQualifyingLevel(product.ID())*75;
 		}
 		else
 		if(product instanceof MOB)
 		{
 			Ability A=product.fetchAffect("Prop_Retainable");
 			if(A!=null)
-				val=Util.s_int(A.text());
-			if(val==0)
-				val=25*product.envStats().level();
+				val[0]=Util.s_int(A.text());
+			if(val[0]==0)
+				val[0]=25*product.envStats().level();
 		}
 		else
-			val=CMAble.lowestQualifyingLevel(product.ID())*25;
-		Integer I=(Integer)prices.get(product.ID()+"/"+product.name());
-		if((I!=null)&&(I.intValue()>=0)) val=I.intValue();
+			val[0]=CMAble.lowestQualifyingLevel(product.ID())*25;
+		if((I!=null)&&(I.intValue()>=0))
+			val[0]=I.intValue();
+		
 		if(mob==null) return val;
 
 		double d=prejudiceFactor(mob,sellTo);
-		val=(int)Math.round(Util.mul(d,val));
+		val[0]=(int)Math.round(Util.mul(d,val[0]));
 
 		//double halfPrice=Math.round(Util.div(val,2.0));
-		double quarterPrice=Math.round(Util.div(val,4.0));
+		double quarterPrice=Math.round(Util.div(val[0],4.0));
 
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
@@ -965,16 +992,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div((maximumDuplicatesBought-numberInStock(product)),maximumDuplicatesBought)));
 
 		// the price is 200% at 0 charisma, and 100% at 30
-		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
+		int sellPrice=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
 
 		if(buyPrice>sellPrice)buyPrice=sellPrice;
 
 		if(sellTo)
-			val=sellPrice;
+			val[0]=sellPrice;
 		else
-			val=buyPrice;
+			val[0]=buyPrice;
 
-		if(val<=0) val=1;
+		if(val[0]<=0) val[0]=1;
 		return val;
 	}
 
@@ -1053,9 +1080,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
-				int val=yourValue(mob,E,true);
-				if((""+val).length()>(4+csize))
-					csize=(""+val).length()-4;
+				int[] val=yourValue(mob,E,true);
+				if((val[2]>0)&&(((""+val[2]).length()+2)>(4+csize)))
+					csize=(""+val[2]).length()-2;
+				else
+				if((val[1]>0)&&(((""+val[1]).length()+2)>(4+csize)))
+					csize=(""+val[1]).length()-2;
+				else
+				if((""+val[0]).length()>(4+csize))
+					csize=(""+val[0]).length()-4;
 			}
 		}
 
@@ -1068,9 +1101,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
+				int val[]=yourValue(mob,E,true);
 				String col=null;
-				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				if(val[1]>0)
+					col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				else
+				if(val[2]>0)
+					col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				else
+					col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");

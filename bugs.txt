@@ -1,4 +1,6 @@
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
+allow duplicates of the quest to be run
+at stat base to the INI file
 Masonry
 	POOL will convert the room into a Water room, with 1 level of underwater added for free
 	portcullis (but it requires METAL instead of stone)

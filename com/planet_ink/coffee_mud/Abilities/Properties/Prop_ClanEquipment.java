@@ -235,7 +235,6 @@ public class Prop_ClanEquipment extends Property
 					{
 						mob.location().show(mob, null, Affect.MSG_OK_VISUAL,
 						                    me.name() + " glows brightly.");
-						boolean showDamn = CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
 						int flameDamage = Dice.roll(1, 6, 0);
 						flameDamage *= PowerLevel;
 						ExternalPlay.postDamage(mob,target,null,flameDamage, Affect.MASK_MALICIOUS|Affect.MASK_GENERAL|TypeOfEffect, WeaponType,
@@ -438,7 +437,6 @@ public class Prop_ClanEquipment extends Property
 			// Check to see if the person getting the equipment is of the same clan
 			// if they're not (or not an archon), STRIP THAT PROP!!
 			if ( (affect.source() != null)
-			    && (affect.source()instanceof MOB)
 			    && ( (source.getClanID() == null) ||
 			         (! (source.getClanID().equalsIgnoreCase(clanName))))
 			    && (! (source.isASysOp(source.location())))) 
