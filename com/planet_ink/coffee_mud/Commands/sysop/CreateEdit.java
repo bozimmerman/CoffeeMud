@@ -520,14 +520,14 @@ public class CreateEdit
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			if(commands.size()<3)
-				mob.tell("You must specify a valid quest string.  Try HELP QUESTS.");
+				mob.tell("You must specify a valid quest string.  Try AHELP QUESTS.");
 			else
 			{
 				String script=Util.combine(commands,2);
 				Quest Q=new Quests();
 				Q.setScript(script);
 				if((Q.name().length()==0)||(Q.duration()<0))
-					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try HELP QUESTS.");
+					mob.tell("You must specify a VALID quest string.  This one contained errors.  Try AHELP QUESTS.");
 				else
 				if(Quests.fetchQuest(Q.name())!=null)
 					mob.tell("That quest is already loaded.  Try list quests.");
