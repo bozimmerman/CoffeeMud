@@ -390,6 +390,7 @@ public class FrontDoor
 				}
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 				mob.baseCharStats().getCurrentClass().outfit(mob);
+				mob.setStartRoom(CMMap.getStartRoom(mob));
 				mob.bringToLife(mob.getStartRoom(),true);
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.MOBs.get(mob.ID())==null)

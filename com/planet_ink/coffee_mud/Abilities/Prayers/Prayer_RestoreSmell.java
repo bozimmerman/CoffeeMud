@@ -10,7 +10,7 @@ public class Prayer_RestoreSmell extends Prayer
 	public String ID() { return "Prayer_RestoreSmell"; }
 	public String name(){ return "Restore Smell";}
 	public int quality(){ return OK_OTHERS;}
-	public int holyQuality(){ return HOLY_GOOD;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
 	public Environmental newInstance(){	return new Prayer_RestoreSmell();}
 
 	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
