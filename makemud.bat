@@ -19,7 +19,7 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Behaviors\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\CharClasses\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\commands\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\commands\sysop\*.java
-c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\system\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\common\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Exits\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\interfaces\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\*.java
@@ -29,7 +29,7 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\Armor\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Locales\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\MOBS\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Races\*.java
-c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\common\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\system\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\utils\*.java
 
 set classpath=%classpath_%
