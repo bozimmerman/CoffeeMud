@@ -41,4 +41,10 @@ public class GenSSEngine extends GenShipComponent
 		if(!(E instanceof GenSSEngine)) return false;
 		return super.sameAs(E);
 	}
+	protected int maxThrust=1000;
+    public int getMaxThrust(){return maxThrust;}
+    public void setMaxThrust(int max){maxThrust=max;}
+	protected int thrust=1000;
+    public int getThrust(){return thrust;}
+    public void setThrust(int current){thrust=current;}
 }
