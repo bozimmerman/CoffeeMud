@@ -537,8 +537,8 @@ public class StdMOB implements MOB
 			return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
 			return false;
-		if((clanID.length()>0)&&(mob.getClanID().length()>0)
-		&&(Clans.getClanRelations(clanID,mob.getClanID())==Clan.REL_WAR))
+		if((getClanID().length()>0)&&(mob.getClanID().length()>0)
+		&&(Clans.getClanRelations(getClanID(),mob.getClanID())==Clan.REL_WAR))
 			return true;
 		if(!Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)) return false;
 		if(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)) return false;
