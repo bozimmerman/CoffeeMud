@@ -313,7 +313,7 @@ public class CreateEdit
 			else
 			if((thang!=null)&&(thang instanceof MOB))
 			{
-				if(!thang.isGeneric())
+				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					generic.genLevel(mob,thang);
 					generic.genAbility(mob,thang);

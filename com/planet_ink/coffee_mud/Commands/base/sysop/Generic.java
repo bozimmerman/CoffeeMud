@@ -760,9 +760,6 @@ public class Generic
 	void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
-		if(!E.isGeneric())
-			return;
-
 		if(E instanceof ShopKeeper)
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else
@@ -1932,6 +1929,7 @@ public class Generic
 		boolean ok=false;
 		while(!ok)
 		{
+			String oldName=mob.ID();
 			genName(mob,me);
 			genDescription(mob,me);
 			genLevel(mob,me);
@@ -1956,6 +1954,15 @@ public class Generic
 			me.recoverMaxState();
 			me.recoverEnvStats();
 			me.resetToMaxState();
+			if(!oldName.equals(me.ID()))
+			{
+				String newName=me.ID();
+				me.setName(oldName);
+				ExternalPlay.DBDeleteMOB(me);
+				me.setName(newName);
+				ExternalPlay.DBCreateCharacter(me);
+				ExternalPlay.DBUpdateMOB(me);
+			}
 		}
 	}
 	
