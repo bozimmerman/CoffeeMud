@@ -1,5 +1,4 @@
 retest the resource hunting chants
-merge on harp in greater gerighelm
 Ability to buy space ship areas, and add them to shopkeepers
 do new security system
 mutable body parts, with ability to grant powers

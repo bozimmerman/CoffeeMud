@@ -154,7 +154,7 @@ public class Merge extends StdCommand
 			mob.tell("Only the Archons can do that.");
 			return false;
 		}
-		boolean noisy=false;
+		boolean noisy=CommonStrings.isDebugging("MERGE");
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
 		if(commands.size()==0)
