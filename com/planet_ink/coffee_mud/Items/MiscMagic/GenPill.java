@@ -37,6 +37,7 @@ public class GenPill extends StdPill
 		baseGoldValue=200;
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_CORN;
+		decayTime=0;
 	}
 
 	public boolean isGeneric(){return true;}

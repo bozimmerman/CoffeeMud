@@ -24,58 +24,53 @@ import java.util.*;
 public class GenFoodResource extends GenFood implements EnvResource, Food
 {
 	public String ID(){	return "GenFoodResource";}
+	private boolean readyToSet=false;
+	
 	public GenFoodResource()
 	{
 		super();
 		setName("an edible resource");
 		setDisplayText("a pile of edible resource sits here.");
 		setDescription("");
-		setMaterial(EnvResource.RESOURCE_BERRIES);
+		material=EnvResource.RESOURCE_BERRIES;
 		setNourishment(200);
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
+		decayTime=0;
+	}
+	
+	public void setMaterial(int newValue)
+	{
+	    super.setMaterial(newValue);
+	    readyToSet=true;
 	}
 	
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-	    if((decayTime>0)&&(System.currentTimeMillis()>decayTime))
-	    {
-            if(fetchEffect("Poison_Rotten")==null)
-            {
-                Ability A=CMClass.getAbility("Poison_Rotten");
-                if(A!=null) this.addNonUninvokableEffect(A);
-            }
-            setNourishment(0);
-	        decayTime=0;
-	    }
-	    return super.okMessage(host,msg);
-	}
-
-	public void setMaterial(int newValue)
-	{
-	    super.setMaterial(newValue);
-    	if(fetchEffect("Poison_Rotten")==null)
+    	if((readyToSet)&&(fetchEffect("Poison_Rotten")==null)&&(owner!=null))
     	{
+    	    readyToSet=false;
 	        decayTime=0;
-		    switch(newValue&EnvResource.MATERIAL_MASK)
+		    switch(material&EnvResource.MATERIAL_MASK)
 		    {
 		    case EnvResource.MATERIAL_FLESH:
 			    {
 		        decayTime=System.currentTimeMillis()+(
 		            	   MudHost.TICK_TIME
-		        		  *CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+					        *CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)
+					      );
 		    	break;
 			    }
 		    case EnvResource.MATERIAL_VEGETATION:
 			    {
 		        decayTime=System.currentTimeMillis()+(
 		                MudHost.TICK_TIME
-				        *CommonStrings.SYSTEMI_TICKSPERMUDDAY
-				        *DefaultTimeClock.globalClock.getDaysInWeek());
+				        *CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)
+				        *5);
 			    break;
 			    }
 		    }
-		    switch(newValue)
+		    switch(material)
 		    {
 		    case EnvResource.RESOURCE_HERBS:
 		    case EnvResource.RESOURCE_WAX:
@@ -96,6 +91,17 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		    	break;
 		    }
     	}
+	    if((decayTime>0)&&(System.currentTimeMillis()>decayTime))
+	    {
+            if(fetchEffect("Poison_Rotten")==null)
+            {
+                Ability A=CMClass.getAbility("Poison_Rotten");
+                if(A!=null) this.addNonUninvokableEffect(A);
+            }
+            setNourishment(0);
+	        decayTime=0;
+	    }
+	    return super.okMessage(host,msg);
 	}
 	private int domainSource=-1;
 	public int domainSource(){return domainSource;}

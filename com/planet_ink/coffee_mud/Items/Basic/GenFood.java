@@ -34,8 +34,9 @@ public class GenFood extends StdFood
 		setDescription("");
 		baseGoldValue=5;
 		amountOfNourishment=500;
+		material=EnvResource.RESOURCE_MEAT;
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_MEAT);
+		decayTime=0;
 	}
 
 
