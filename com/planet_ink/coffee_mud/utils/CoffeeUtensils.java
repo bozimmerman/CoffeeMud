@@ -32,22 +32,12 @@ public class CoffeeUtensils
 		int x=toSrchStr.toUpperCase().indexOf(srchStr.toUpperCase());
 		if(x<0) return false;
 
-		if(x==0)
-		{
-			if(toSrchStr.length()<=srchStr.length())
-				return true;
-			//if(Character.isLetter(toSrchStr.charAt(x+srchStr.length())))
-			//   return false;
+		if(x==0) 
 			return true;
-		}
 		else
 		{
 			if(Character.isLetter(toSrchStr.charAt(x-1)))
 			   return false;
-			if(toSrchStr.length()<=x+srchStr.length())
-				return true;
-			//if(Character.isLetter(toSrchStr.charAt(x+srchStr.length())))
-			  // return false;
 			return true;
 		}
 	}

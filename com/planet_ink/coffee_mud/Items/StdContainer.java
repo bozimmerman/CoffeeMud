@@ -269,7 +269,7 @@ public class StdContainer extends StdItem implements Container
 				if(mob.isMine(this))
 				{
 					this.setContainer(null);
-					recursiveDropMOB(mob,this);
+					recursiveDropMOB(mob,this,this instanceof DeadBody);
 					mob.location().recoverRoomStats();
 				}
 				break;
@@ -434,7 +434,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	protected static void recursiveDropMOB(MOB mob, Item thisContainer)
+	protected static void recursiveDropMOB(MOB mob, Item thisContainer, boolean bodyFlag)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -443,7 +443,14 @@ public class StdContainer extends StdItem implements Container
 			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
 		thisContainer.remove();
-		mob.location().addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
+		if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
+		if(bodyFlag)
+		{
+			mob.location().addItem(thisContainer);
+			thisContainer.setDispossessionTime(null);
+		}
+		else
+			mob.location().addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
 		thisContainer.recoverEnvStats();
 		boolean nothingDone=true;
 		do
@@ -454,7 +461,7 @@ public class StdContainer extends StdItem implements Container
 				Item thisItem=mob.fetchInventory(i);
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				{
-					recursiveDropMOB(mob,thisItem);
+					recursiveDropMOB(mob,thisItem,bodyFlag);
 					nothingDone=false;
 					break;
 				}
