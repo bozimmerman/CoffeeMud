@@ -41,7 +41,13 @@ public class Fighter_Rescue extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=null;
+		if((commands.size()==0)
+		&&(mob.isInCombat())
+		&&(mob.getVictim().getVictim()!=mob))
+			target=mob.getVictim().getVictim();
+		if(target==null)
+			target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((target.amDead())||(!target.isInCombat()))

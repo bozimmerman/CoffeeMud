@@ -17,7 +17,7 @@ public class Ranger extends StdCharClass
 		bonusPracLevel=0;
 		manaMultiplier=10;
 		attackAttribute=CharStats.STRENGTH;
-		bonusAttackLevel=3;
+		bonusAttackLevel=2;
 		name=myID;
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;

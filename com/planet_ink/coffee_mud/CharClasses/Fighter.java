@@ -16,7 +16,7 @@ public class Fighter extends StdCharClass
 		bonusPracLevel=-1;
 		manaMultiplier=8;
 		attackAttribute=CharStats.STRENGTH;
-		bonusAttackLevel=3;
+		bonusAttackLevel=2;
 		name=myID;
 		practicesAtFirstLevel=3;
 		trainsAtFirstLevel=4;

@@ -76,9 +76,8 @@ public class Spell_LocateObject extends Spell
 						if(item!=null)
 						{
 							if((levelFind==0)
-							||((item.envStats().level()>levelFind-1)
-							 &&(item.envStats().level()<levelFind+1)))
-								mob.tell(item.name()+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
+							 ||(item.envStats().level()<=levelFind))
+								mob.tell(item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.");
 						}
 					}
 				}

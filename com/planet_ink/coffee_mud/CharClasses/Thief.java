@@ -16,7 +16,7 @@ public class Thief extends StdCharClass
 		bonusPracLevel=1;
 		manaMultiplier=12;
 		attackAttribute=CharStats.DEXTERITY;
-		bonusAttackLevel=2;
+		bonusAttackLevel=1;
 		damageBonusPerLevel=0;
 		name=myID;
 	}

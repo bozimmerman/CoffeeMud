@@ -302,7 +302,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelArmor(MOB mob)
 	{
-		return 75-((mob.baseEnvStats().level()-1)*5);
+		return 75-((mob.baseEnvStats().level()-1)*3);
 	}
 
 	public int getLevelDamage(MOB mob)
