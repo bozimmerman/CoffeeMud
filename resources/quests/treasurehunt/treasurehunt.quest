@@ -8,7 +8,7 @@ set interval 1800
 import items quests/treasurehunt/items.cmare
 # first command loads a set of items
 
-set mobtype Human
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
 # load up any mob from the any area of race human. Will set a room!
 
 give behavior Scriptable LOAD=quests/treasurehunt/treasurehunt.script

@@ -1,7 +1,0 @@
-see about shutdown problems -- havn't been able to at ALL lately.
-maps are picky -- need to make them less so.
-adapt Prop_Transportable to allow people to be transported when a rideable is entered.
-i wonder if you couldn't do something like just making each quest require a prior one be completed
-roomview should show messages from target room.
-
-

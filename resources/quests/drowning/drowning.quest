@@ -9,7 +9,7 @@ set interval 1800
 set locale WaterSurface
 # select a random locale of some water surface type
 
-set mobtype Human
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
 # find a random human in that area and bring him or her there
 
 give behavior Scriptable LOAD=quests/drowning/drowning.script

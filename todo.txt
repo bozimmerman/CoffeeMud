@@ -1,5 +1,6 @@
+Installation Guide 
+	integrate jeremys odbc info
 Archons Guide updates
-	Insert little blurbs about each item type so people know when to use them
 	Finish documenting behaviors/affects for items, mobs, etc. 
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes

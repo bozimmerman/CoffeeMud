@@ -99,7 +99,7 @@ public class Patroller extends ActiveTicker
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=thisRoom.getRoomInDir(d);
-					if(R.roomID().toUpperCase().endsWith(nxt.toUpperCase()))
+					if((R!=null)&&(R.roomID().toUpperCase().endsWith(nxt.toUpperCase())))
 					{
 						thatRoom=R;
 						direction=d;

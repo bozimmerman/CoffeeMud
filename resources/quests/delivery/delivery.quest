@@ -11,7 +11,7 @@ import items quests/delivery/note.cmare
 set area any
 # inform the quest that it occurs anywhere
 
-set mobtype Human
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin
 # load up any mob from the above area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/delivery/deliverer.script
@@ -29,7 +29,7 @@ set room
 set area any
 # set any other area as a designation
 
-set mobtype Human
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin
 # load up any other mob from any other area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/delivery/deliveree.script

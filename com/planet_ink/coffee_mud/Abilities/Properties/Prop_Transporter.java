@@ -27,6 +27,21 @@ public class Prop_Transporter extends Property
 		if(affected instanceof Food)
 			tattooCode= Affect.TYP_EAT;
 		else
+		if(affected instanceof Rideable)
+		{
+			tattooCode= Affect.TYP_MOUNT; 
+			switch(((Rideable)affected).rideBasis())
+			{
+			case Rideable.RIDEABLE_ENTERIN:
+				tattooCode= Affect.TYP_ENTER; break;
+			case Rideable.RIDEABLE_SIT:
+			case Rideable.RIDEABLE_TABLE:
+				tattooCode= Affect.TYP_SIT; break;
+			case Rideable.RIDEABLE_SLEEP:
+				tattooCode= Affect.TYP_SLEEP; break;
+			}
+		}
+		else
 		if(affected instanceof MOB)
 			tattooCode= Affect.TYP_SPEAK;
 		else
@@ -61,7 +76,13 @@ public class Prop_Transporter extends Property
 			if(otherRoom==null)
 				affect.source().tell("You are whisked nowhere at all, since '"+text()+"' is nowhere to be found.");
 			else
+			{
 				otherRoom.bringMobHere(affect.source(),true);
+				ExternalPlay.look(affect.source(),null,true);
+				if(affected instanceof Rideable)
+					affect.addTrailerMsg(new FullMsg(affect.source(),affected,Affect.TYP_DISMOUNT,null));
+			}
+			
 		}
 		super.affect(myHost,affect);
 	}

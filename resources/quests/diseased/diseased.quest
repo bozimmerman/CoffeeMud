@@ -5,7 +5,7 @@ set name diseased
 set wait 7200
 set interval 3600
 
-set mobtype Human
+set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
 # load up any mob from the above area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/diseased/diseased.script

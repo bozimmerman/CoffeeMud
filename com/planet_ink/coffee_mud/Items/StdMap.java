@@ -49,27 +49,17 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	public void doMapArea()
 	{
 		String newText=getMapArea();
+		Vector V=Util.parseSemicolons(getMapArea());
 		String newName="";
-		while(newText.length()>0)
+		for(int v=0;v<V.size();v++)
 		{
-			int y=newText.indexOf(";");
-			String areaName="";
-			if(y>=0)
-			{
-				areaName=newText.substring(0,y).trim();
-				newText=newText.substring(y+1);
-			}
-			else
-			{
-				areaName=newText;
-				newText="";
-			}
+			String areaName=(String)V.elementAt(v);
 			if(areaName.length()>0)
 			{
 				if(newName.length()==0)
 					newName="a map of ";
 				else
-				if(newText.length()==0)
+				if(v==V.size()-1)
 					newName+=", and ";
 				else
 					newName+=", ";
@@ -178,21 +168,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
 	public Hashtable makeMapRooms()
 	{
-		String newText=getMapArea();
-		Vector mapAreas=Util.parseSemicolons(newText);
+		Vector mapAreas=Util.parseSemicolons(getMapArea());
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
-			String area=(String)mapAreas.elementAt(a);
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			Area A=CMMap.getArea((String)mapAreas.elementAt(a));
+			if(A!=null)
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.getArea().Name().trim().equalsIgnoreCase(area))
-				{
-					MapRoom mr=new MapRoom();
-					mr.r=R;
-					mapRooms.put(R,mr);
-				}
+				MapRoom mr=new MapRoom();
+				mr.r=R;
+				mapRooms.put(R,mr);
 			}
 		}
 		clearTheSkys(mapRooms);

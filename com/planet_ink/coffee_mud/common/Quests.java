@@ -144,25 +144,51 @@ public class Quests implements Cloneable, Quest
 						M=null;
 						if(p.size()<3) continue;
 						Vector choices=new Vector();
-						String mobType=Util.combine(p,2).toUpperCase();
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
-						for(;e.hasMoreElements();)
+						Vector mobTypes=Util.parse(Util.combine(p,2).toUpperCase());
+						for(int t=0;t<mobTypes.size();t++)
 						{
-							Room R2=(Room)e.nextElement();
-							for(int i=0;i<R2.numInhabitants();i++)
+							String mobType=(String)mobTypes.elementAt(t);
+							if(mobType.startsWith("-")) continue;
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMap();
+							for(;e.hasMoreElements();)
 							{
-								MOB M2=R2.fetchInhabitant(i);
+								Room R2=(Room)e.nextElement();
+								for(int i=0;i<R2.numInhabitants();i++)
+								{
+									MOB M2=R2.fetchInhabitant(i);
+									if((M2!=null)&&(M2.isMonster()))
+									{
+										if(mobType.equalsIgnoreCase("any"))
+											choices.addElement(M2);
+										else
+										if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
+										||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
+										||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
+										||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
+											choices.addElement(M2);
+									}
+								}
+							}
+						}
+						if(choices!=null)
+						for(int t=0;t<mobTypes.size();t++)
+						{
+							String mobType=(String)mobTypes.elementAt(t);
+							if(!mobType.startsWith("-")) continue;
+							mobType=mobType.substring(1);
+							for(int i=choices.size()-1;i>=0;i--)
+							{
+								MOB M2=(MOB)choices.elementAt(i);
 								if((M2!=null)&&(M2.isMonster()))
 								{
-									if(mobType.equalsIgnoreCase("any"))
-										choices.addElement(M2);
-									else
 									if((CMClass.className(M2).toUpperCase().indexOf(mobType)>=0)
 									||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
 									||(M2.charStats().getMyRace().name().toUpperCase().indexOf(mobType)>=0)
-									||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0))
-										choices.addElement(M2);
+									||(M2.charStats().getCurrentClass().name().toUpperCase().indexOf(mobType)>=0)
+									||(M2.name().toUpperCase().indexOf(mobType)>=0)
+									||(M2.displayText().toUpperCase().indexOf(mobType)>=0))
+										choices.removeElement(M2);
 								}
 							}
 						}
@@ -170,7 +196,7 @@ public class Quests implements Cloneable, Quest
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
-							Log.errOut("Quest '"+name()+"', unfound mobtype '"+mobType+"'.");
+							Log.errOut("Quest '"+name()+"', unfound mobtype '"+p+"'.");
 							error=true; break;
 						}
 						else
@@ -193,30 +219,50 @@ public class Quests implements Cloneable, Quest
 						I=null;
 						if(p.size()<3) continue;
 						Vector choices=new Vector();
-						String itemType=Util.combine(p,2).toUpperCase();
-						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
-						for(;e.hasMoreElements();)
+						Vector itemTypes=Util.parse(Util.combine(p,2).toUpperCase());
+						for(int t=0;t<itemTypes.size();t++)
 						{
-							Room R2=(Room)e.nextElement();
-							for(int i=0;i<R2.numItems();i++)
+							String itemType=(String)itemTypes.elementAt(t);
+							if(itemType.startsWith("-")) continue;
+							Enumeration e=CMMap.rooms();
+							if(A!=null) e=A.getMap();
+							for(;e.hasMoreElements();)
 							{
-								Item I2=R2.fetchItem(i);
-								if(I2!=null)
+								Room R2=(Room)e.nextElement();
+								for(int i=0;i<R2.numItems();i++)
 								{
-									if(itemType.equalsIgnoreCase("any"))
-										choices.addElement(I2);
-									else
-									if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
-										choices.addElement(I2);
+									Item I2=R2.fetchItem(i);
+									if(I2!=null)
+									{
+										if(itemType.equalsIgnoreCase("any"))
+											choices.addElement(I2);
+										else
+										if(CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+											choices.addElement(I2);
+									}
 								}
+							}
+						}
+						if(choices!=null)
+						for(int t=0;t<itemTypes.size();t++)
+						{
+							String itemType=(String)itemTypes.elementAt(t);
+							if(!itemType.startsWith("-")) continue;
+							itemType=itemType.substring(1);
+							for(int i=choices.size()-1;i>=0;i--)
+							{
+								Item I2=(Item)choices.elementAt(i);
+								if((CMClass.className(I2).toUpperCase().indexOf(itemType)>=0)
+								||(I2.name().toUpperCase().indexOf(itemType)>=0)
+								||(I2.displayText().toUpperCase().indexOf(itemType)>=0))
+									choices.removeElement(I2);
 							}
 						}
 						if((choices!=null)&&(choices.size()>0))
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
-							Log.errOut("Quest '"+name()+"', unfound itemtype '"+itemType+"'.");
+							Log.errOut("Quest '"+name()+"', unfound itemtype '"+p+"'.");
 							error=true; break;
 						}
 						else

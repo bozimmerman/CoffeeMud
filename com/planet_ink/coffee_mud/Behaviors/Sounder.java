@@ -79,6 +79,30 @@ public class Sounder extends StdBehavior
 					strings[v]=s.substring(9).trim();
 				}
 				else
+				if((s.toUpperCase().startsWith("EAT_ROOM ")))
+				{
+					triggers[v]=Affect.TYP_EAT|ROOM_MASK;
+					strings[v]=s.substring(9).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("EAT ")))
+				{
+					triggers[v]=Affect.TYP_EAT;
+					strings[v]=s.substring(4).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("SIT ")))
+				{
+					triggers[v]=Affect.TYP_SIT;
+					strings[v]=s.substring(4).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("SIT_ROOM ")))
+				{
+					triggers[v]=Affect.TYP_SIT|ROOM_MASK;
+					strings[v]=s.substring(9).trim();
+				}
+				else
 				if((s.toUpperCase().startsWith("DROP ")))
 				{
 					triggers[v]=Affect.TYP_DROP;
@@ -101,6 +125,30 @@ public class Sounder extends StdBehavior
 				{
 					triggers[v]=Affect.TYP_WEAR|ROOM_MASK;
 					strings[v]=s.substring(10).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("DRINK ")))
+				{
+					triggers[v]=Affect.TYP_DRINK;
+					strings[v]=s.substring(6).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("DRINK_ROOM ")))
+				{
+					triggers[v]=Affect.TYP_DRINK|ROOM_MASK;
+					strings[v]=s.substring(11).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("MOUNT ")))
+				{
+					triggers[v]=Affect.TYP_MOUNT;
+					strings[v]=s.substring(6).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("MOUNT_ROOM ")))
+				{
+					triggers[v]=Affect.TYP_MOUNT|ROOM_MASK;
+					strings[v]=s.substring(11).trim();
 				}
 				else
 				if((s.toUpperCase().startsWith("REMOVE ")))
@@ -234,18 +282,17 @@ public class Sounder extends StdBehavior
 		switch(msg.targetMinor())
 		{
 		case Affect.TYP_GET:
-			if((msg.target()==E)||(!(E instanceof Item)))
-				lookFor=Affect.TYP_GET;
-			break;
 		case Affect.TYP_REMOVE:
-			if((msg.target()==E)||(!(E instanceof Item)))
-				lookFor=Affect.TYP_REMOVE;
-			break;
 		case Affect.TYP_WEAR:
 		case Affect.TYP_HOLD:
 		case Affect.TYP_WIELD:
+		case Affect.TYP_EAT:
+		case Affect.TYP_DRINK:
+		case Affect.TYP_SIT:
+		case Affect.TYP_SLEEP:
+		case Affect.TYP_MOUNT:
 			if((msg.target()==E)||(!(E instanceof Item)))
-				lookFor=Affect.TYP_WEAR;
+				lookFor=msg.targetMinor();
 			break;
 		case Affect.TYP_DROP:
 			if(((!(E instanceof Item))||(msg.target()==E))
