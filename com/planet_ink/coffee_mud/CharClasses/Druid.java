@@ -110,16 +110,16 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 			
-CMAble.addCharAbilityMapping(ID(),18,"Chant_PlantMaze",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_PlantMaze",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_GasWard",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
 			
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
-CMAble.addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonHeat",false);
 			
-CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
-CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
+			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonCold",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonInsects",false);
 			
@@ -131,7 +131,7 @@ CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
 			
-CMAble.addCharAbilityMapping(ID(),23,"Chant_GrowItem",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_GrowItem",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonLightning",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonMount",false);
 			

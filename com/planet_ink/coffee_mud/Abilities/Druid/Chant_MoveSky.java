@@ -11,6 +11,7 @@ public class Chant_MoveSky extends Chant
 	public String name(){ return "Move The Sky";}
 	public String displayText(){return "";}
 	public int quality(){return Ability.INDIFFERENT;}
+	public int overrideMana(){return 200;}
 	public Environmental newInstance(){	return new Chant_MoveSky();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

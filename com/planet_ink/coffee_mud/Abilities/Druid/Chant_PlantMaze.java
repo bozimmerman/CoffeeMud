@@ -15,6 +15,17 @@ public class Chant_PlantMaze extends Chant
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public Environmental newInstance(){	return new Chant_PlantMaze();}
 	Room oldRoom=null;
+	Item thePlants=null;
+	
+	public boolean tick(Tickable ticking,int tickID)
+	{
+		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
+		{
+			unInvoke();
+			return false;
+		}
+		return super.tick(ticking,tickID);
+	}
 	
 	public void unInvoke()
 	{
@@ -51,6 +62,19 @@ public class Chant_PlantMaze extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
+		if(thePlants==null)
+		{
+			mob.tell("There doesn't appear to be any plants here you can control!");
+			return false;
+		}
+		
+		if(mob.location().ID().length()==0)
+		{
+			mob.tell("You cannot invoke the plant maze here.");
+			return false;
+		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -77,27 +101,31 @@ public class Chant_PlantMaze extends Chant
 				Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXSize(10);
 				((GridLocale)newRoom).setYSize(10);
-				newRoom.setDisplayText("Forest Maze");
+				String s=((String)Util.parse(thePlants.name()).lastElement()).toLowerCase();
+				if(!s.endsWith("s"))s=s+"s";
+				String nos=s.substring(0,s.length()-1).toLowerCase();
+				newRoom.setDisplayText(Util.capitalize(nos)+" Maze");
+				newRoom.addNonUninvokableAffect(CMClass.getAbility("Prop_NoTeleportOut"));
 				StringBuffer desc=new StringBuffer("");
-				desc.append("This quaint forest glade is surrounded by tall oak trees.  A gentle breeze tosses leaves up into the air.");
+				desc.append("This quaint glade is surrounded by tall "+s+".  A gentle breeze tosses leaves up into the air.");
 				desc.append("<P>");
-				desc.append("The forest is dark and thick here.  Ominous looking trees seem to block every path, and the air is perfectly still.");
+				desc.append("This forest of "+s+" is dark and thick here.  Ominous looking "+s+" seem to block every path, and the air is perfectly still.");
 				desc.append("<P>");
-				desc.append("A light growth of tall evergreens surrounds you on all sides.  There are no apparant paths, but you can still see the sky through the leaves.");
+				desc.append("A light growth of tall "+s+" surrounds you on all sides.  There are no apparant paths, but you can still see the sky between the growths.");
 				desc.append("<P>");
-				desc.append("A light growth of tall evergreens surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from.");
+				desc.append("A light growth of tall "+s+" surrounds you on all sides.  You can hear the sound of a running brook, but can't tell which direction its coming from.");
 				desc.append("<P>");
-				desc.append("The trees around you are dark and old, their branches seeming to reach towards you.  In the distance, a wolfs howl can be heard.");
+				desc.append("The "+s+" around you are tall, dark and old, their leaves seeming to reach towards you.  In the distance, a wolfs howl can be heard.");
 				desc.append("<P>");
-				desc.append("The forest path seems to end at the base of a copse of tall evergreens.");
+				desc.append("The path seems to end at the base of a copse of tall "+s+".");
 				desc.append("<P>");
-				desc.append("You are standing in the middle of a light forest.  How you got here, you can't really say.");
+				desc.append("You are standing in the middle of a light forest of "+s+".  How you got here, you can't really say.");
 				desc.append("<P>");
-				desc.append("You are standing in the middle of a thick dark forest.  You wish you knew how you got here.");
+				desc.append("You are standing in the middle of a thick dark forest of "+s+".  You wish you knew how you got here.");
 				desc.append("<P>");
-				desc.append("The trees here seem to tower endlessly into the sky.  Their branches blocking out all but the smallest glimpses of the sky.");
+				desc.append("The "+s+" here seem to tower endlessly into the sky.  Their leaves are blocking out all but the smallest glimpses of the sky.");
 				desc.append("<P>");
-				desc.append("A forest seems to have grown up all around you.  The strange magical nature of the mushroom like trees makes you think you've entered a druidic grove.");
+				desc.append("A forest of "+s+" seems to have grown up tall all around you.  The strange magical nature of the "+s+" makes you think you've entered a druidic grove.");
 				newRoom.setArea(mob.location().getArea());
 				oldRoom=mob.location();
 				newRoom.setDescription(desc.toString());
@@ -127,8 +155,8 @@ public class Chant_PlantMaze extends Chant
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
-					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
+					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
+					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
 					if(oldRoom.okAffect(follower,leaveMsg)&&newerRoom.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())

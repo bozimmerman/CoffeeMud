@@ -110,7 +110,7 @@ public class Carpentry extends CommonSkill
 		}
 		super.unInvoke();
 	}
-
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
