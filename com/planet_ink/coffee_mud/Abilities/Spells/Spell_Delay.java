@@ -89,6 +89,16 @@ public class Spell_Delay extends Spell
 			return false;
 		}
 		
+		if(shooter.quality()==Ability.MALICIOUS)
+		for(int m=0;m<mob.location().numInhabitants();m++)
+		{
+			MOB M=mob.location().fetchInhabitant(m);
+			if((M!=null)&&(M!=mob)&&(!M.isMonster()))
+			{
+				mob.tell("You cannot delay that spell here -- there are other players present!");
+				return false;
+			}
+		}
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
