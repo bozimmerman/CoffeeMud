@@ -77,7 +77,8 @@ public class StdCharClass implements CharClass, Cloneable
 			}
 			else
 			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass())))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner")))
 			{
 				if(!quiet)
 					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");

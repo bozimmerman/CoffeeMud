@@ -57,6 +57,7 @@ public class Train extends StdCommand
 					break;
 				}
 			}
+			if(theClass==null) return false;
 		}
 
 		if(abilityCode<0)
@@ -144,6 +145,7 @@ public class Train extends StdCommand
 
 		if((abilityCode==106)
 		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
+		&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
 		&&(teacher.charStats().getClassLevel(theClass)<1))
 	    {
 			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI")))

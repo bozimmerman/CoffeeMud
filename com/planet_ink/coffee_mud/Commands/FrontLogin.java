@@ -15,7 +15,8 @@ public class FrontLogin extends StdCommand
 		if((thisClass.playerSelectable())
 		   &&((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 			  ||(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
-			  ||(thisClass.baseClass().equals(thisClass.ID())))
+			  ||(thisClass.baseClass().equals(thisClass.ID())
+			  ||(thisClass.ID().equals("Apprentice"))))
 		   &&thisClass.qualifiesForThisClass(mob,true))
 			return true;
 		return false;
@@ -455,6 +456,16 @@ public class FrontLogin extends StdCommand
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 
 				CharClass newClass=null;
+				Vector qualClasses=classQualifies(mob);
+				if(qualClasses.size()==0)
+				{
+					newClass=CMClass.getCharClass("Apprentice");
+					if(newClass==null) newClass=CMClass.getCharClass("StdCharClass");
+				}
+				else
+				if(qualClasses.size()==1)
+					newClass=(CharClass)qualClasses.firstElement();
+				else
 				while(newClass==null)
 				{
 					mob.session().print("\n\r^!Please choose from the following Classes:\n\r");
@@ -466,26 +477,24 @@ public class FrontLogin extends StdCommand
 					{
 						newClass=CMClass.getCharClass(ClassStr);
 						if(newClass==null)
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration c=qualClasses.elements();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(classOkForMe(mob,C))
-								if(C.name().equalsIgnoreCase(ClassStr))
-								{
-									newClass=C;
-									break;
-								}
+							if(C.name().equalsIgnoreCase(ClassStr))
+							{
+								newClass=C;
+								break;
+							}
 						}
 						if(newClass==null)
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration c=qualClasses.elements();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if(classOkForMe(mob,C))
-								if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
-								{
-									newClass=C;
-									break;
-								}
+							if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+							{
+								newClass=C;
+								break;
+							}
 						}
 						if((newClass!=null)&&(classOkForMe(mob,newClass)))
 						{

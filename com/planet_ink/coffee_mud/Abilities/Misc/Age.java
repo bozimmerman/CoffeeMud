@@ -98,7 +98,7 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.DEXTERITY,5);
 					babe.baseCharStats().setStat(CharStats.INTELLIGENCE,6);
 					babe.baseCharStats().setStat(CharStats.STRENGTH,6);
-					babe.baseCharStats().setStat(CharStats.WISDOM,4);
+					babe.baseCharStats().setStat(CharStats.WISDOM,6);
 					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
 					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*5);
 					babe.baseState().setHitPoints(4);

@@ -9,13 +9,13 @@ public class Artisan extends StdCharClass
 {
 	public String ID(){return "Artisan";}
 	public String name(){return "Artisan";}
-	public String baseClass(){return "Artisan";}
-	public int getMaxHitPointsLevel(){return 5;}
+	public String baseClass(){return "Commoner";}
+	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 5;}
 	public int getBonusManaLevel(){return 12;}
-	public int getBonusAttackLevel(){return -1;}
+	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 25;}
+	public int getLevelsPerBonusDamage(){ return 15;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
@@ -23,6 +23,7 @@ public class Artisan extends StdCharClass
 				Weapon.CLASS_NATURAL,
 				Weapon.CLASS_DAGGER};
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	public boolean playerSelectable(){	return true;}
 
 
 	public Artisan()
@@ -30,7 +31,7 @@ public class Artisan extends StdCharClass
 		super();
 		maxStatAdj[CharStats.WISDOM]=7;
 		maxStatAdj[CharStats.INTELLIGENCE]=7;
-		if(ID().equals(baseClass())&&(!loaded()))
+		if(!loaded())
 		{
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
@@ -77,10 +78,6 @@ public class Artisan extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return false;
-	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -126,7 +123,7 @@ public class Artisan extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector();
-			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			Weapon w=(Weapon)CMClass.getWeapon("Dagger");
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;
@@ -178,5 +175,5 @@ public class Artisan extends StdCharClass
 		}
 		return super.okMessage(myChar,msg);
 	}
-	public String otherBonuses(){return "";}
+	public String otherBonuses(){return "Gains experience when using common skills.";}
 }
