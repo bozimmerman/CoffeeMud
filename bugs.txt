@@ -1,7 +1,5 @@
 are stats working?
 cast scry with no target gives a list.
-You may want to add some things to certain sectors, such as city, where people can`t randomly practice skills like fish or mining in the city.
-
 
 
 SMTP Server

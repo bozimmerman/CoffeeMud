@@ -12,6 +12,8 @@ public class Spell_Claireaudience extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Claireaudience();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	public static final DVector scries=new DVector(2);
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -19,8 +21,8 @@ public class Spell_Claireaudience extends Spell
 			return;
 		MOB mob=(MOB)affected;
 
-		if(canBeUninvoked())
-		if(invoker!=null)
+		if(canBeUninvoked()) scries.removeElement(mob);
+		if((canBeUninvoked())&&(invoker!=null))
 			invoker.tell("The sounds of '"+mob.name()+"' fade.");
 		super.unInvoke();
 
@@ -58,7 +60,14 @@ public class Spell_Claireaudience extends Spell
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Cast on whom?");
+			StringBuffer scryList=new StringBuffer("");
+			for(int e=0;e<scries.size();e++)
+				if(scries.elementAt(e,2)==mob)
+					scryList.append(((e==0)?", ":"")+((MOB)scries.elementAt(e,1)).name());
+			if(scryList.length()>0)
+				mob.tell("Cast on or revoke from whom?  You currently have "+name()+" on the following: "+scryList.toString()+".");
+			else
+				mob.tell("Cast on whom?");
 			return false;
 		}
 		String mobName=Util.combine(commands,0).trim().toUpperCase();
@@ -97,7 +106,7 @@ public class Spell_Claireaudience extends Spell
 			return true;
 		}
 		else
-		if(A!=null)
+		if((A!=null)||(scries.contains(target)))
 		{
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
@@ -116,6 +125,7 @@ public class Spell_Claireaudience extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(newRoom!=mob.location()) newRoom.send(target,msg2);
+				scries.addElement(target,mob);
 				beneficialAffect(mob,target,0);
 			}
 
