@@ -54,15 +54,105 @@ public class Inebriation extends StdAbility
 		MOB mob=(MOB)affected;
 		if(mob==null) return true;
 
-		if((Dice.rollPercentage()<25)&&(Sense.aliveAwakeMobile(mob,true)))
+		if((Dice.rollPercentage()<20)&&(Sense.aliveAwakeMobile(mob,true)))
 		{
 			if(mob.getAlignment()<350)
+			switch(Dice.roll(1,9,-1))
+			{
+			case 0:
 				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around making ugly faces.");
+				break;
+			case 1:
+				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> belch(es) grotesquely.");
+				break;
+			case 2:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> spin(s) <S-HIS-HER> head around.");
+				break;
+			case 3:
+				mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> can't stop snarling.");
+				break;
+			case 4:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> just fell over!");
+				break;
+			case 5:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				break;
+			case 6:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				break;
+			case 7:
+				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely sh** faced!");
+				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely sh** faced!");
+				break;
+			case 8:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at the ground.");
+				break;
+			}
 			else
 			if(mob.getAlignment()<650)
+			switch(Dice.roll(1,9,-1))
+			{
+			case 0:
 				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around aimlessly.");
+				break;
+			case 1:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> burp(s) noncommitally.");
+				break;
+			case 2:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				break;
+			case 3:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				break;
+			case 4:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> almost fell over.");
+				break;
+			case 5:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and almost smile(s).");
+				break;
+			case 6:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es)!");
+				break;
+			case 7:
+				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely drunk!");
+				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely drunk!");
+				break;
+			case 8:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly ahead.");
+				break;
+			}
 			else
+			switch(Dice.roll(1,9,-1))
+			{
+			case 0:
 				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stagger(s) around trying to hug everyone.");
+				break;
+			case 1:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> hiccup(s) and smile(s).");
+				break;
+			case 2:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> bob(s) <S-HIS-HER> head back and forth.");
+				break;
+			case 3:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't stop smiling.");
+				break;
+			case 4:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> lean(s) slightly to one side.");
+				break;
+			case 5:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> look(s) around with glazed over eyes.");
+				break;
+			case 6:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> can't seem to focus.");
+				break;
+			case 7:
+				mob.location().showSource(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> are definitely a bit tipsy!");
+				mob.location().showOthers(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> is definitely a bit tipsy!");
+				break;
+			case 8:
+				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> stare(s) blankly at <S-HIS-HER> eyelids.");
+				break;
+			}
 
 		}
 		return true;
