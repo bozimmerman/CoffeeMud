@@ -78,20 +78,31 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckReqParm?SYSOP=true@
+@if?CheckReqParm?||SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
-<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Archon Utilities:</B></FONT></TD></TR>
+<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
+	@if?CheckReqParm?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
+	@endif@
+	@if?CheckReqParm?||AUTH_STAT=true&||AUTH_CMDPLAYERS=true@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
+	@endif@
+	@if?CheckReqParm?AUTH_JOURNALS=true@
 	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
 	<BR>
+	@endif@
+	@if?CheckReqParm?AUTH_CMDQUESTS=true@
 	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 	<BR>
+	@endif@
+	@if?CheckReqParm?AUTH_BAN=true@
 	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
 	<BR>
+	@endif@
+	@if?CheckReqParm?SYSOP=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
@@ -101,43 +112,46 @@
 	<A href="javascript:Clicked('stats.cmvp')"><FONT COLOR=WHITE>Statistics</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>View Server Log</FONT></a>
+	@endif@
 </TD></TR>
 </TABLE>
-<P>
 @endif@
-<TABLE WIDTH=200 BORDER=1>
-<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas available:</B></FONT></TD></TR>
-<TR><TD ALIGN=CENTER>
-<SELECT NAME=AREA HEIGHT=10>
-@MUDGrinder?AREALIST@
-</SELECT>
-<SCRIPT LANGUAGE=JavaScript>
-<!--
-	Sort(document.SELECTAREA.AREA);
--->
-</SCRIPT>
-</TD></TR>
-<TR><TD ALIGN=CENTER>
-@if?CheckReqParm?SYSOP=true@
-<TABLE BORDER=0><TR><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
-</TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
-</TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
-</TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
-</TD>
-</TR></TABLE>
-@else@
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
+@if?CheckReqParm?ANYMODAREAS=true@
+	<P>
+	<TABLE WIDTH=200 BORDER=1>
+	<TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Areas available:</B></FONT></TD></TR>
+	<TR><TD ALIGN=CENTER>
+	<SELECT NAME=AREA HEIGHT=10>
+	@MUDGrinder?AREALIST@
+	</SELECT>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		Sort(document.SELECTAREA.AREA);
+	-->
+	</SCRIPT>
+	</TD></TR>
+	<TR><TD ALIGN=CENTER>
+	@if?CheckReqParm?SYSOP=true@
+	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
+	</TD><TD ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
+	</TD><TD ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Map" ONCLICK="Clicked('maparea.cmvp');">
+	</TD><TD ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="if(confirm('Are you sure you want to delete this area?'))Clicked('areagone.cmvp');">
+	</TD>
+	</TR></TABLE>
+	@else@
+	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
+	@endif@
+	</TD></TR>
+	<TR><TD ALIGN=CENTER>
+	<INPUT TYPE=CHECKBOX NAME=MAPSTYLE>
+	<FONT COLOR=WHITE>Use Z-Level Mapping</FONT>
+	</TD></TR>
+	</TABLE>
 @endif@
-</TD></TR>
-<TR><TD ALIGN=CENTER>
-<INPUT TYPE=CHECKBOX NAME=MAPSTYLE>
-<FONT COLOR=WHITE>Use Z-Level Mapping</FONT>
-</TD></TR>
-</TABLE>
 <P>
 <CENTER>
 <INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Log Out" ONCLICK="Clicked2('/index.cmvp');">

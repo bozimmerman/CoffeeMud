@@ -178,7 +178,7 @@ public class Spell_BigMouth extends Spell
 											   TastyMorsel,
 											   null,
 											   CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,
-											   "<S-NAME> digests <T-NAMESELF>!!");
+											   "<S-NAME> digest(s) <T-NAMESELF>!!");
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));

@@ -487,7 +487,8 @@ public class Conquerable extends Arrest
 				if(value>0)
 				{
 					msg.setValue(msg.value()-value);
-					
+					C.setExp(C.getExp()+((long)value));
+					C.update();
 				}
 			}
 		}

@@ -895,7 +895,7 @@ public class List extends StdCommand
 		/*32*/{"BANNED","BAN"},
 		/*33*/{"TYPOS","KILLTYPOS"},
 		/*34*/{"LOG","LISTADMIN"},
-		/*35*/{"USERS","CMDPLAYERS"},
+		/*35*/{"USERS","CMDPLAYERS","STAT"},
 		/*36*/{"LINKAGES","CMDAREAS"},
 		/*37*/{"REPORTS","LISTADMIN"},
 		/*38*/{"THREADS","LISTADMIN"},

@@ -13,6 +13,7 @@ public class Spell_Portal extends Spell
 	public Environmental newInstance(){	return new Spell_Portal();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
 	Room newRoom=null;
 	Room oldRoom=null;

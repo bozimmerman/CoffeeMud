@@ -22,7 +22,7 @@ public class CMSecurity
 	// SUPERSKILL (never fails skills), IMMORT (never dies)
 	// JOURNALS, PKILL, SESSIONS, TRAILTO, 
 	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
-	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin
+	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 	// 
 	
 	public static void setSysOp(String zapCheck)
@@ -85,6 +85,35 @@ public class CMSecurity
 		if(mob.playerStats().getSecurityGroups().size()==0) return false;
 		return true;
 	}
+	
+	public static Vector getSecurityCodes(MOB mob, Room room)
+	{
+		Vector codes=new Vector();
+		HashSet tried=new HashSet();
+		for(Enumeration e=groups.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			codes.addElement(key);
+			HashSet H=(HashSet)groups.get(key);
+			for(Iterator i=H.iterator();i.hasNext();)
+			{
+				String s=(String)i.next();
+				if((!tried.contains(s))&&(!codes.contains(s)))
+				{
+					tried.add(s);
+					if(isAllowed(mob,room,s))
+					{
+						if(s.startsWith("AREA ")) 
+							s=s.substring(5).trim();
+						codes.addElement(s);
+					}
+				}
+			}
+		}
+		return codes;
+	}
+	
+	
 	public static boolean isAllowedStartsWith(MOB mob, Room room, String code)
 	{
 		if(isASysOp(mob)) return true;

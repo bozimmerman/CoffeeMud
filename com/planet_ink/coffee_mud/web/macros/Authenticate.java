@@ -55,22 +55,46 @@ public class Authenticate extends StdWebMacro
 	{
 		MOB mob=CMMap.getLoadPlayer(login);
 		if(mob==null) return false;
-		boolean subOp=false;
-		boolean sysop=CMSecurity.isASysOp(mob);
-		httpReq.addRequestParameters("SYSOP",""+sysop);
-		String AREA=httpReq.getRequestParameter("AREA");
-		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		if((mob.playerStats()!=null)
+		&&(mob.playerStats().password().equalsIgnoreCase(password))
+		&&(mob.Name().trim().length()>0)
+		&&(!bannedName(mob.Name())))
 		{
-			Area A=(Area)a.nextElement();
-			if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
-				if(A.amISubOp(mob.Name()))
-				{ subOp=true; break;}
+			boolean subOp=CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS");
+			boolean sysop=CMSecurity.isASysOp(mob);
+			String AREA=httpReq.getRequestParameter("AREA");
+			Room R=null;
+			boolean areasToModify=CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS");
+			int numFound=0;
+			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			{
+				Area A=(Area)a.nextElement();
+				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
+					if(A.amISubOp(mob.Name()))
+					{ 
+						if(areasToModify)
+							numFound++;
+						if((R==null)&&(A.getMap().hasMoreElements()))
+							R=(Room)A.getMap().nextElement();
+						if((AREA!=null)&&AREA.equals(A.Name()))
+						{
+							if(areasToModify)
+								subOp=true; 
+						}
+						else
+							subOp=true;
+						break;
+					}
+			}
+			httpReq.addRequestParameters("ANYMODAREAS",""+(((areasToModify)&&(numFound>0))||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
+			httpReq.addRequestParameters("SYSOP",""+sysop);
+			httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
+			Vector V=CMSecurity.getSecurityCodes(mob,R);
+			for(int v=0;v<V.size();v++)
+				httpReq.addRequestParameters("AUTH_"+((String)V.elementAt(v)),"true");
+			return true;
 		}
-		httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
-		return (mob.playerStats()!=null)
-			 &&(mob.playerStats().password().equalsIgnoreCase(password))
-			 &&(mob.Name().trim().length()>0)
-			 &&(!bannedName(mob.Name()));
+		return false;
 	}
 
 	private static char ABCeq(char C)

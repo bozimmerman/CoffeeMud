@@ -2158,6 +2158,8 @@ public class Arrest extends StdBehavior
 							dismissOfficer(officer);
 							W.setArrestingOfficer(null);
 							W.criminal().tell("\n\r\n\r");
+							if(W.criminal().isMonster())
+								MUDTracker.wanderAway(W.criminal(),true,true);
 						}
 						else
 						{
