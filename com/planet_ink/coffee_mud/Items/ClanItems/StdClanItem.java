@@ -148,6 +148,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
+		&&(myHost instanceof ClanItem)
 		&&(((ClanItem)myHost).clanID().length()>0))
 		{
 			MOB targetMOB=(MOB)msg.target();
@@ -170,6 +171,38 @@ public class StdClanItem extends StdItem implements ClanItem
 				if(alreadyHasOne!=null)
 				{
 					msg.source().tell(targetMOB.name()+" already has "+alreadyHasOne.name()+", and cannot have another Clan Item.");
+					return false;
+				}
+			}
+		}
+		else
+		if((msg.amITarget(myHost))
+		&&(msg.targetMinor()==CMMsg.TYP_GET)
+		&&(((ClanItem)myHost).clanID().length()>0))
+		{
+			MOB M=(MOB)msg.source();
+			if(msg.source().getClanID().length()==0)
+			{
+				msg.source().tell("You must belong to a clan to take a clan item.");
+				return false;
+			}
+			else
+			if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
+			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
+			{
+				Clan C=Clans.getClan(msg.source().getClanID());
+				int relation=-1;
+				if(C!=null) 
+					relation=C.getClanRelations(((ClanItem)myHost).clanID());
+				else
+				{
+					C=Clans.getClan(((ClanItem)myHost).clanID());
+					if(C!=null)
+						relation=C.getClanRelations(msg.source().getClanID());
+				}
+				if(relation!=Clan.REL_WAR)
+				{
+					msg.source().tell("You must be at war with this clan to take one of their items.");
 					return false;
 				}
 			}

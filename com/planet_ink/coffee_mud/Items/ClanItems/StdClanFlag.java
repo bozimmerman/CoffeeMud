@@ -38,8 +38,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		{
 			super.executeMsg(myHost,msg);
 			if((msg.amITarget(this))
-			&&((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
-			   ||((msg.targetMinor()==CMMsg.TYP_DROP)&&(owner() instanceof MOB))))
+			&&(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING))
 			{
 				Room R=msg.source().location();
 				Area A=null;

@@ -376,7 +376,7 @@ public class Arrest extends StdBehavior
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=getLaws((Area)hostObj);
+			Law laws=theLawIsEnabled()?getLaws((Area)hostObj,false):null;
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -399,9 +399,10 @@ public class Arrest extends StdBehavior
 				{
 					MOB framed=(MOB)V.elementAt(1);
 					LegalWarrant W=null;
-					for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
-						if(W.criminal()==mob)
-							W.setCriminal(framed);
+					if(laws!=null)
+						for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
+							if(W.criminal()==mob)
+								W.setCriminal(framed);
 					return true;
 				}
 				break;
@@ -409,7 +410,7 @@ public class Arrest extends StdBehavior
 				if(V.size()>0)
 				{
 					MOB officer=(MOB)V.elementAt(1);
-					LegalWarrant W=laws.getWarrant(mob,0);
+					LegalWarrant W=(laws!=null)?laws.getWarrant(mob,0):null;
 					if(W!=null)
 					{
 						if(W.arrestingOfficer()==null)
@@ -427,27 +428,28 @@ public class Arrest extends StdBehavior
 			case Law.MOD_WARRANTINFO: // warrant info
 				{
 					V.clear();
-					for(int i=0;i<laws.warrants().size();i++)
-					{
-						LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
-						if(isStillACrime(W))
+					if(laws!=null)
+						for(int i=0;i<laws.warrants().size();i++)
 						{
-							Vector V2=new Vector();
-							V2.addElement(W.criminal().name());
-							if(W.victim()==null) V2.addElement("");
-							else V2.addElement(W.victim().name());
-							if(W.witness()==null) V2.addElement("");
-							else V2.addElement(W.witness().name());
-							V2.addElement(fixCharge(W));
-							V.addElement(V2);
+							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+							if(isStillACrime(W))
+							{
+								Vector V2=new Vector();
+								V2.addElement(W.criminal().name());
+								if(W.victim()==null) V2.addElement("");
+								else V2.addElement(W.victim().name());
+								if(W.witness()==null) V2.addElement("");
+								else V2.addElement(W.witness().name());
+								V2.addElement(fixCharge(W));
+								V.addElement(V2);
+							}
 						}
-					}
 				}
 				return true;
 			case Law.MOD_LEGALINFO: // legal info
 				{
 					V.clear();
-					V.addElement(laws);
+					if(laws!=null) V.addElement(laws);
 				}
 				break;
 			case Law.MOD_LEGALTEXT: // legal text
@@ -455,30 +457,36 @@ public class Arrest extends StdBehavior
 			case Law.MOD_ISELLIGOFFICER: // is an elligible officer
 				if((mob.isMonster())
 				&&(mob.location()!=null)
+				&&(laws!=null)
 				&&(isElligibleOfficer(laws,mob,mob.location().getArea())))
 					return true;
 				return false;
 			case Law.MOD_HASWARRANT: // has a warrant out
-				return (laws.getWarrant(mob,0))!=null;
+				return (laws!=null)?((laws.getWarrant(mob,0))!=null):false;
 			case Law.MOD_ISOFFICER: // is a officer
 				if((mob.isMonster())
 				&&(mob.location()!=null)
+				&&(laws!=null)
 				&&(isAnyKindOfOfficer(laws,mob)))
 					return true;
 				return false;
 			case Law.MOD_ISJUDGE: // is a judge
 				if((mob.isMonster())
 				&&(mob.location()!=null)
+				&&(laws!=null)
 				&&(isTheJudge(laws,mob)))
 					return true;
 				return false;
 			case Law.MOD_SETNEWLAW:
-				laws.resetLaw();
-				if(getLawParms().equalsIgnoreCase("custom")
-				&&(hostObj!=null))
+				if(laws!=null)
 				{
-					ExternalPlay.DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
-					ExternalPlay.DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
+					laws.resetLaw();
+					if(getLawParms().equalsIgnoreCase("custom")
+					&&(hostObj!=null))
+					{
+						ExternalPlay.DBDeleteData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST");
+						ExternalPlay.DBCreateData(hostObj.Name(),"ARREST",hostObj.Name()+"/ARREST",laws.rawLawString());
+					}
 				}
 				break;
 			case Law.MOD_RULINGCLAN:
@@ -497,7 +505,7 @@ public class Arrest extends StdBehavior
 
 	protected boolean defaultModifiableNames(){return true;}
 
-	protected Law getLaws(Environmental what)
+	protected Law getLaws(Environmental what, boolean cleanOnly)
 	{
 		String lawName=getLawParms();
 
@@ -517,6 +525,8 @@ public class Arrest extends StdBehavior
 			laws=(Law)Resources.getResource("LEGAL-"+lawName);
 			modifiableNames=false;
 		}
+		if((laws==null)&&(cleanOnly)) return null;
+		
 		if(laws==null)
 		{
 			Properties lawprops=new Properties();
@@ -1341,7 +1351,7 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 
-	protected boolean theLawIsEnabled(Law laws)
+	protected boolean theLawIsEnabled()
 	{
 		return true;
 	}
@@ -1350,10 +1360,11 @@ public class Arrest extends StdBehavior
 	{
 		super.executeMsg(affecting, msg);
 		if(!(affecting instanceof Area)) return;
+		if(!theLawIsEnabled()) return;
+		
 		Area myArea=(Area)affecting;
-		Law laws=getLaws(affecting);
+		Law laws=getLaws(affecting,false);
 		if(msg.source()==null) return;
-		if(!theLawIsEnabled(laws)) return;
 
 		// the archons pardon
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -1616,16 +1627,22 @@ public class Arrest extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.TICK_AREA) return true;
 		if(!(ticking instanceof Area)) return true;
+		if(tickID!=Host.TICK_AREA) return true;
 		Area myArea=(Area)ticking;
-		Law laws=getLaws(myArea);
-		if(!theLawIsEnabled(laws))
+		
+		if(!theLawIsEnabled())
 		{
-			laws.warrants().clear();
-			laws.oldWarrants().clear();
+			Law laws=getLaws(myArea,true);
+			if(laws!=null)
+			{
+				laws.warrants().clear();
+				laws.oldWarrants().clear();
+			}
 			return true;
 		}
+		
+		Law laws=getLaws(myArea,false);
 
 
 		HashSet handled=new HashSet();

@@ -43,7 +43,7 @@ public class Conquerable extends Arrest
 		&&(hostObj!=null)
 		&&(hostObj instanceof Area))
 		{
-			Law laws=getLaws((Area)hostObj);
+			Law laws=theLawIsEnabled()?getLaws((Area)hostObj,false):null;
 			Integer I=null;
 			Vector V=null;
 			if(O instanceof Integer)
@@ -173,6 +173,8 @@ public class Conquerable extends Arrest
 					M.delInventory(I);
 					if(M.getClanID().equals(holdingClan))
 						M.setClanID("");
+					I.setRawWornCode(0);
+					I.setContainer(null);
 					M.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 				}
 			}
@@ -679,7 +681,7 @@ public class Conquerable extends Arrest
 		return C.allowedToDoThis(M,Clan.FUNC_CLANCANORDERCONQUERED)==1;
 	}
 
-	protected boolean theLawIsEnabled(Law laws)
+	protected boolean theLawIsEnabled()
 	{
 		if((holdingClan.length()==0)
 		||(!allowLaw)

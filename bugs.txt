@@ -1,4 +1,3 @@
-no channel message on conquest
 thisUser.addElement(((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name()); should check if the race exists.
 Matching rings These two rings have keyed identities. One ring is the master, one is the subordinate. The MOB wearing the subordinate ring will always try to move towards the MASTER ring.
 programmers guide needs updating
