@@ -17,8 +17,15 @@ called <i>CMVP</i> (Coffee MUD Virtual Pages) - this allows the server
 to insert information into the page before sending it to the browser.  
 It is NOT intended to be a full-blown web server! This document assumes you have
 some familiarty with HTTP, mime types, and stuff like that.</p>
+<P><STRONG>How to Connect:</STRONG><BR>By default, the public web site listens 
+on port 27744 and the administrative web site on port 27777.&nbsp; To browse the 
+default public web site, just open up the following URL in your 
+browser:<BR><BR><A 
+href="http://localhost:27744/">http://localhost:27744/</A></P>
+<P>To connect to the administrative web site, use the following URL:</P>
+<P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
-<p><b>What it doesn't do:</b><br>
+<p><b>What it does and doesn't do:</b><br>
 It only supports GET and HEAD requests (I think HEAD is HTTP 1.1, but it's supported anyway).
 It does not support POST (or, for that matter, PUT, DELETE, OPTIONS or TRACE...)
 <br>
