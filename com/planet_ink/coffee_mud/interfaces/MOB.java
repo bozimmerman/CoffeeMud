@@ -50,6 +50,7 @@ public interface MOB
 	public void tell(MOB source, Environmental target, String msg);
 	public void tell(String msg);
 	public void setSession(Session newSession);
+	public void setReplyTo(MOB mob);
 	public MOB replyTo();
 	
 	/** Whether a sessiob object is attached to this MOB */

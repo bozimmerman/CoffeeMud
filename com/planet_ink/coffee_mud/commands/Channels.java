@@ -90,7 +90,7 @@ public class Channels
 			return;
 		}
 
-		String str=" "+channelName+"S '"+Util.combine(commands,0)+"'";
+		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'";
 		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"You"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,mob.name()+str);
 		if(mob.location().okAffect(msg))
 		{

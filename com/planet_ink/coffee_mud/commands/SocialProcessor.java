@@ -40,6 +40,7 @@ public class SocialProcessor
 			{
 				mob.tell(mob,target,"You tell "+target.name()+" '"+text+"'.");
 				target.tell(mob,target,mob.name()+" tell(s) you '"+text+"'.");
+				target.setReplyTo(mob);
 			}
 			else
 			{
@@ -162,6 +163,7 @@ public class SocialProcessor
 		mob.tell("Ok.");
 		// deafness does not matter!
 		target.tell(mob.name()+" tells you '"+combinedCommands+"'");
+		target.setReplyTo(mob);
 	}
 
 	public void doSocial(Social social, MOB mob, Vector commands)

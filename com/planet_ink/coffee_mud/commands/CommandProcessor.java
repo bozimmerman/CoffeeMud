@@ -262,7 +262,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.REPLY:
 					if(mob.replyTo()==null)
-						mob.tell("No one has told me anything yet!");
+						mob.tell("No one has told you anything yet!");
 					else
 						socialProcessor.quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
 					break;

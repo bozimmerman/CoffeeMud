@@ -347,6 +347,10 @@ public class StdMOB implements MOB
 	{
 		return replyTo;
 	}
+	public void setReplyTo(MOB mob)
+	{
+		replyTo=mob;
+	}
 	public void bringToLife(Room newLocation)
 	{
 		setMiscText(miscText);
@@ -1001,7 +1005,7 @@ public class StdMOB implements MOB
 			if((Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))
 			&&(canhearsrc)&&(!asleep))
 			{
-				if(affect.targetMinor()==Affect.TYP_SPEAK)
+				if((affect.targetMinor()==Affect.TYP_SPEAK)&&(affect.source()!=null))
 					replyTo=affect.source();
 				tell(affect.source(),affect.target(),affect.targetMessage());
 			}
