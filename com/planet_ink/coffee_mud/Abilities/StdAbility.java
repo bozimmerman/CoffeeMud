@@ -334,12 +334,16 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto)
 	{
+		
 		if(auto)
 		{
 			isAnAutoEffect=true;
 			setProfficiency(100);
 			return true;
 		}
+		
+		if((mob!=null)&&(mob.location()!=null)&&(mob.isASysOp(mob.location())))
+		   return true;
 
 		isAnAutoEffect=false;
 		int pctChance=profficiency();
