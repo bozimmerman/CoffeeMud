@@ -4,9 +4,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Coins extends StdItem
+public class StdCoins extends StdItem implements Coins
 {
-	public Coins()
+	public StdCoins()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -24,7 +24,7 @@ public class Coins extends StdItem
 	}
 	public Environmental newInstance()
 	{
-		return new Coins();
+		return new StdCoins();
 	}
 
 	public String name()
@@ -37,7 +37,8 @@ public class Coins extends StdItem
 		else
 			return "a pile of "+envStats().ability()+" gold coins";
 	}
-	
+	public int numberOfCoins(){return envStats().ability();}
+	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}
 	public String displayText()
 	{
 		if(envStats().ability()==1)
@@ -55,26 +56,21 @@ public class Coins extends StdItem
 
 	public void affect(Affect affect)
 	{
-		if(affect.amITarget(this))
-		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
-			{
-			case Affect.TYP_GET:
-				{
-				setLocation(null);
-				if(mob.location().isContent(this))
-					destroyThis();
-				if(!mob.isMine(this))
-					mob.setMoney(mob.getMoney()+envStats().ability());
-				remove();
-				mob.location().recoverRoomStats();
-				return;
-				}
-			default:
-				break;
-			}
-		}
 		super.affect(affect);
+		switch(affect.targetMinor())
+		{
+		case Affect.TYP_GET:
+			if((affect.amITarget(this))||((affect.tool()==this)))
+			{
+				setLocation(null);
+				remove();
+				destroyThis();
+				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
+				affect.source().location().recoverRoomStats();
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

@@ -50,7 +50,7 @@ public class Spell_DetectGold extends Spell
 		if(I==null) return "";
 		if(I.location()==container)
 		{
-			if(((I.ID().equalsIgnoreCase("Coins"))
+			if(((I.ID().equalsIgnoreCase("StdCoins"))
 			||(I.ID().equalsIgnoreCase("GenCoins"))
 			&&(Sense.canBeSeenBy(I,mob))))
 				msg.append(I.name()+" glows golden.\n\r");

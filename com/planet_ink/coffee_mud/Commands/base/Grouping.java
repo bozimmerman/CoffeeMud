@@ -259,7 +259,7 @@ public class Grouping
 			   &&(!recipient.isMonster()))
 			{
 				mob.setMoney(mob.getMoney()-gold);
-				Item C=(Item)CMClass.getItem("Coins");
+				Item C=(Item)CMClass.getItem("StdCoins");
 				C.baseEnvStats().setAbility(gold);
 				C.recoverEnvStats();
 				mob.addInventory(C);

@@ -377,7 +377,7 @@ public class TheFight
 			{
 				if((source.getBitmap()&MOB.ATT_AUTOGOLD)==0)
 				{
-					Item C=(Item)CMClass.getItem("Coins");
+					Item C=(Item)CMClass.getItem("StdCoins");
 					C.baseEnvStats().setAbility(deadMoney);
 					C.recoverEnvStats();
 					C.setPossessionTime(Calendar.getInstance());
@@ -392,7 +392,7 @@ public class TheFight
 					int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
 					if(myAmount>0)
 					{
-						Item C=CMClass.getItem("Coins");
+						Item C=CMClass.getItem("StdCoins");
 						C.baseEnvStats().setAbility(myAmount);
 						C.setLocation(Body);
 						C.setPossessionTime(Calendar.getInstance());
