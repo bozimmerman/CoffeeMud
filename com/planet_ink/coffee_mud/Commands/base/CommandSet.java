@@ -198,9 +198,8 @@ public class CommandSet extends Hashtable
 		put("DESCRIPTION",new Integer(DESCRIPTION));
 		put("DISMOUNT",new Integer(DISMOUNT));
 			put("DISEMBARK",new Integer(DISMOUNT));
-			put("DISEM",new Integer(DISMOUNT));
-			put("DIS",new Integer(DISMOUNT));
-			put("DISM",new Integer(DISMOUNT));
+			put("LEAVE",new Integer(DISMOUNT));
+			put("EXIT",new Integer(DISMOUNT));
 		put("DOWN",new Integer(DOWN));
 			put("D",new Integer(DOWN));
 		put("DRINK",new Integer(DRINK));

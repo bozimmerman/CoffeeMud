@@ -88,6 +88,8 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_LAND:
 		case Rideable.RIDEABLE_WATER:
 			return "riding in";
+		case Rideable.RIDEABLE_ENTERIN:
+			return "in";
 		case Rideable.RIDEABLE_SIT:
 		case Rideable.RIDEABLE_TABLE:
 			return "on";
@@ -108,6 +110,8 @@ public class StdRideable extends StdContainer implements Rideable
 			return "sit(s) on";
 		case Rideable.RIDEABLE_TABLE:
 			return "sit(s) on";
+		case Rideable.RIDEABLE_ENTERIN:
+			return "get(s) into";
 		case Rideable.RIDEABLE_SLEEP:
 			if(commandType==Affect.TYP_SIT)
 				return "sit(s) down on";
@@ -128,6 +132,8 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SLEEP:
 		case Rideable.RIDEABLE_TABLE:
 			return "get(s) off of";
+		case Rideable.RIDEABLE_ENTERIN:
+			return "get(s) out of";
 		}
 		return "disembark(s) from";
 	}
@@ -142,6 +148,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SIT:	return "";
 		case Rideable.RIDEABLE_TABLE: return "";
 		case Rideable.RIDEABLE_SLEEP: return "";
+		case Rideable.RIDEABLE_ENTERIN: return "occupied by";
 		}
 		return "";
 	}
@@ -223,6 +230,7 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			else
 			if(((rideBasis()==Rideable.RIDEABLE_SIT)
+			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)
 			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
 			{
 				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
@@ -250,7 +258,8 @@ public class StdRideable extends StdContainer implements Rideable
 				return false;
 			}
 			else
-			if(rideBasis()==Rideable.RIDEABLE_SLEEP)
+			if((rideBasis()==Rideable.RIDEABLE_SLEEP)
+			||(rideBasis()==Rideable.RIDEABLE_ENTERIN))
 			{
 				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
 				{
@@ -352,7 +361,10 @@ public class StdRideable extends StdContainer implements Rideable
 				MOB tmob=(MOB)affect.target();
 				if((amRiding(tmob))&&(!amRiding(affect.source())))
 				{
-					affect.source().tell(affect.source(),tmob,"<T-NAME> must disembark first.");
+					if(rideBasis()==Rideable.RIDEABLE_ENTERIN)
+						affect.source().tell(affect.source(),tmob,"<T-NAME> must exit first.");
+					else
+						affect.source().tell(affect.source(),tmob,"<T-NAME> must disembark first.");
 					return false;
 				}
 			}

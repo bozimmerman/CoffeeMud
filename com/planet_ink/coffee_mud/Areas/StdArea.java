@@ -134,13 +134,13 @@ public class StdArea implements Area
 
 	public int weatherType(Room room)
 	{
-		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+		if((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS))
 			return Area.WEATHER_CLEAR;
 		return currentWeather;
 	}
 	public String weatherDescription(Room room)
 	{
-		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+		if((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS))
 			return "You can't tell much about the weather from here.";
 		return getWeatherDescription();
 	}
@@ -606,6 +606,73 @@ public class StdArea implements Area
 					a++;
 			}
 			weatherTick();
+			int coldChance=0;
+			int fluChance=0;
+			switch(weatherType(null))
+			{
+			case Area.WEATHER_BLIZZARD:
+			case Area.WEATHER_SLEET:
+			case Area.WEATHER_SNOW:
+				coldChance=99;
+				fluChance=25;
+				break;
+			case Area.WEATHER_HAIL:
+				coldChance=50;
+				break;
+			case Area.WEATHER_THUNDERSTORM:
+			case Area.WEATHER_RAIN:
+				coldChance=25;
+				break;
+			case Area.WEATHER_WINTER_COLD:
+				coldChance=75;
+				fluChance=10;
+				break;
+			}
+			if((coldChance>0)||(fluChance>0))
+			{
+				Vector V=getMyMap();
+				for(int r=0;r<V.size();r++)
+				{
+					Room R=(Room)V.elementAt(r);
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(!M.isMonster()))
+						{
+							long coveredPlaces=0;
+							for(int i=0;i<M.inventorySize();i++)
+							{
+								Item I=M.fetchInventory(i);
+								if(I==null)	continue;
+								if(I.amWearingAt(Item.ON_FEET))
+									coveredPlaces=coveredPlaces|Item.ON_FEET;
+								else
+								if(I.amWearingAt(Item.ON_HEAD))
+									coveredPlaces=coveredPlaces|Item.ON_HEAD;
+								else
+								if(I.amWearingAt(Item.ABOUT_BODY))
+									coveredPlaces=coveredPlaces|Item.ON_TORSO|Item.ON_LEGS;
+								else
+								if(I.amWearingAt(Item.ON_TORSO))
+									coveredPlaces=coveredPlaces|Item.ON_TORSO;
+								else
+								if(I.amWearingAt(Item.ON_LEGS))
+									coveredPlaces=coveredPlaces|Item.ON_LEGS;
+							}
+							if(coveredPlaces!=(Item.ON_FEET|Item.ON_HEAD|Item.ON_TORSO|Item.ON_LEGS))
+							{
+								if(Dice.rollPercentage()<coldChance)
+								{
+									Ability COLD=CMClass.getAbility("Disease_Cold");
+									if(Dice.rollPercentage()<fluChance)
+										COLD=CMClass.getAbility("Disease_Flu");
+									COLD.invoke(M,M,true);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 		return true;
 	}

@@ -1,16 +1,4 @@
-When failure to use skill/spell only take away half the mana
-
-Guild chat channels.
-
-furniture includes healers, mages, teleporters..
-
-Ability to serve a place, not just a person.
-
 eggs that hatch
-
-fighter skill -- dual parry
-
-tents - enter, have mobs wander into?
 
 ability to save riding status in the database.
 
@@ -34,11 +22,9 @@ for most, or Balance skill for thieves.
 
 add grid dimensions fields and to the grinder and editor
 
-The problems flying during storms is a good idea -- I noted that one.
+problems flying during storms
 
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
-
-scrimshaw common skill
 
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 
@@ -47,6 +33,8 @@ CONTINUAL LIGHT spell
 rain/show causes some metals to rust (take minute damage).
 
 Catch cold if you are naked!
+
+Amnesia
 
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
@@ -68,7 +56,6 @@ Leprecy: take more physical damage in combat.
 Heart Disease: All actions take 2* movement. 
 Lung Disease: Movement is recovered at 1/2 rate. 
 Infection: Hitpoints are recovered at 1/2 rate. 
-Flu: Mana is recovered at 1/2 rate.
 
 add currents to water. Scratch that, you can simulate currents by the teleport behavior, and a good emoter.
 

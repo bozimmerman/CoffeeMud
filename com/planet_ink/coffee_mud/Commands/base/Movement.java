@@ -61,6 +61,12 @@ public class Movement
 		}
 		if(dir<0)
 		{
+			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORN_REQ_UNWORNONLY);
+			if((getThis!=null)&&(getThis instanceof Rideable))
+			{
+				mount(mob,commands);
+				return;
+			}
 			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
 			return;
 		}

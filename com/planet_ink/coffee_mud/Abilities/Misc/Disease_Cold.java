@@ -29,13 +29,23 @@ public class Disease_Cold extends Disease
 		if((affected==null)||(invoker==null)) return false;
 
 		MOB mob=(MOB)affected;
+		if((getTickDownRemaining()==1)
+		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
+		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		{
+			mob.delAffect(this);
+			Ability A=CMClass.getAbility("Disease_Pneumonia");
+			A.invoke(invoker,mob,true);
+		}
+		else
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=Dice.roll(2,invoker.envStats().level(),1);
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_DISEASE,-1,null);
-			catchIt(mob);
+			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
+			A.catchIt(mob);
 			return true;
 		}
 		return false;

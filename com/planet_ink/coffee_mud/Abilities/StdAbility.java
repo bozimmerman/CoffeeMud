@@ -803,7 +803,7 @@ public class StdAbility implements Ability, Cloneable
 				if(tickDown<=0)
 				{
 					tickDown=-1;
-					this.unInvoke();
+					unInvoke();
 					return false;
 				}
 			}
