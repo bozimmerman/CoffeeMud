@@ -133,6 +133,7 @@ public class Get extends BaseItemParser
 			containerName=(String)commands.lastElement();
 		Vector containers=possibleContainers(mob,commands,Item.WORN_REQ_ANY);
 		int c=0;
+		
 
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)

@@ -53,6 +53,7 @@ public class Trapper extends Thief
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_TrophyCount",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_AvoidTraps",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Thief_IdentifyBombs",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_DetectTraps",false);
 
