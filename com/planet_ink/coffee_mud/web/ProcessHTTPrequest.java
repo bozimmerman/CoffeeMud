@@ -86,6 +86,20 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
+	public File grabFile(String fn)
+	{
+		GrabbedFile GF=getWebServer().pageGrabber.grabFile(fn);
+		if(GF==null) return null;
+		switch(GF.state)
+		{
+		case GF.STATE_OK:
+		case GF.STATE_IS_DIRECTORY:
+			return GF.file;
+		default:
+			return null;
+		}
+	}
+	
 
 
 	public String getMimeType(String a_extension)
@@ -734,14 +748,14 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 				switch (requestedFile.state)
 				{
-					case GrabbedFile.OK:
+					case GrabbedFile.STATE_OK:
 						break;
-					case GrabbedFile.IS_DIRECTORY:
+					case GrabbedFile.STATE_IS_DIRECTORY:
 						if (!filename.endsWith( "/" ))
 							filename += '/';
 						filename += page.getStr("DEFAULTFILE");
 						requestedFile = webServer.pageGrabber.grabFile(filename);
-						if (requestedFile.state != GrabbedFile.OK)
+						if (requestedFile.state != GrabbedFile.STATE_OK)
 						{
 							status = S_401;
 							statusExtra = "Directory listing for <i>" + requestMain + "</i> denied.";
@@ -749,17 +763,17 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						}
 						break;
 
-					case GrabbedFile.BAD_FILENAME:
+					case GrabbedFile.STATE_BAD_FILENAME:
 						status = S_400;
 						statusExtra = "The requested URL <i>" + requestMain + "</i> is invalid.";
 						processOK = false;
 						break;
-					case GrabbedFile.NOT_FOUND:
+					case GrabbedFile.STATE_NOT_FOUND:
 						status = S_404;
 						statusExtra = "The requested URL <i>" + requestMain + "</i> was not found on this server.";
 						processOK = false;
 						break;
-					case GrabbedFile.SECURITY_VIOLATION:
+					case GrabbedFile.STATE_SECURITY_VIOLATION:
 						status = S_401;
 						statusExtra = "Denied access to <i>" + requestMain + "</i>. WARNING: I will never be your best friend.";
 						processOK = false;
@@ -824,7 +838,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					///requestedFile = new File(webServer.getServerTemplateDir() + File.separatorChar + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
 					requestedFile = webServer.templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
 
-					if (requestedFile.state == GrabbedFile.OK)
+					if (requestedFile.state == GrabbedFile.STATE_OK)
 					{
 						virtualPage = true;
 						DataInputStream fileIn = new DataInputStream( new BufferedInputStream( new FileInputStream(requestedFile.file) ) );
@@ -968,7 +982,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			GrabbedFile requestedFile = webServer.pageGrabber.grabFile(filename);
 			if((requestedFile==null)
-			||(requestedFile.state!=GrabbedFile.OK))
+			||(requestedFile.state!=GrabbedFile.STATE_OK))
 				return "";
 			DataInputStream fileIn = new DataInputStream( new BufferedInputStream( new FileInputStream(requestedFile.file) ) );
 			byte[] replyData = new byte [ fileIn.available() ];

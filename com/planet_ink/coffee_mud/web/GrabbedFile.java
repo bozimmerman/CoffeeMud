@@ -16,11 +16,11 @@ public class GrabbedFile
 	public File file;
 	public int state;
 	
-	public static final int OK = 0;
-	public static final int IS_DIRECTORY = 1;	// file will be valid - not an error
-	public static final int BAD_FILENAME = 2;
-	public static final int NOT_FOUND = 3;
-	public static final int INTERNAL_ERROR = 4;
-	public static final int SECURITY_VIOLATION = 5;
+	public static final int STATE_OK = 0;
+	public static final int STATE_IS_DIRECTORY = 1;	// file will be valid - not an error
+	public static final int STATE_BAD_FILENAME = 2;
+	public static final int STATE_NOT_FOUND = 3;
+	public static final int STATE_INTERNAL_ERROR = 4;
+	public static final int STATE_SECURITY_VIOLATION = 5;
 	
 }

@@ -83,11 +83,11 @@ public class MOBloader
 				String buf=DBConnections.getRes(R,"CMPFIL");
 				pstats.setFriendsIgnoreStr(buf);
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
-				Vector V9=Util.parseSemicolons(XMLManager.returnXMLBlock(buf,"TATTS"),true);
+				Vector V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"TATTS"),true);
 				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 			
-				V9=Util.parseSemicolons(XMLManager.returnXMLBlock(buf,"EDUS"),true);
+				V9=Util.parseSemicolons(XMLManager.returnXMLValue(buf,"EDUS"),true);
 				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
 				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
 

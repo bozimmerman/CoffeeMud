@@ -17,13 +17,23 @@ public class AddRandomFile extends StdWebMacro
 		int d=Dice.roll(1,parms.size(),0);
 		String file=null;
 		int i=0;
+		boolean LINKONLY=false;
+		for(Enumeration e=parms.elements();e.hasMoreElements();)
+			if(((String)e.nextElement()).equalsIgnoreCase("LINKONLY"))
+				LINKONLY=true;
 		for(Enumeration e=parms.elements();e.hasMoreElements();)
 		{
 			file=(String)e.nextElement();
+			if(file.equalsIgnoreCase("LINKONLY")) continue;
 			if((++i)==d) break;
 		}
 		if((file!=null)&&(file.length()>0))
-			buf.append(httpReq.getPageContent(file));
+		{
+			if(LINKONLY)
+				buf.append(file);
+			else
+				buf.append(httpReq.getPageContent(file));
+		}
 		return buf.toString();
 	}
 }

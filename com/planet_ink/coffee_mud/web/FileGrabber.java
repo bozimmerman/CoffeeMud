@@ -148,7 +148,7 @@ public class FileGrabber
 			catch (Exception e)
 			{
 				gf.file = null;
-				gf.state = GrabbedFile.INTERNAL_ERROR;
+				gf.state = GrabbedFile.STATE_INTERNAL_ERROR;
 				return gf;
 			}
 
@@ -170,14 +170,14 @@ public class FileGrabber
 			catch (Exception e)
 			{
 				gf.file = null;
-				gf.state = GrabbedFile.BAD_FILENAME;
+				gf.state = GrabbedFile.STATE_BAD_FILENAME;
 				return gf;
 			}
 			
 			if (gf.file == null)	//?
 			{
 //pointless - it's null already!				gf.file = null;
-				gf.state = GrabbedFile.NOT_FOUND;
+				gf.state = GrabbedFile.STATE_NOT_FOUND;
 				return gf;
 			}
 			
@@ -207,7 +207,7 @@ public class FileGrabber
 			{
 				Log.errOut(webServer.getName(), "ALERT: attempt to access '" + fn +"'");
 				gf.file = null;
-				gf.state = GrabbedFile.SECURITY_VIOLATION;
+				gf.state = GrabbedFile.STATE_SECURITY_VIOLATION;
 				return gf;
 			}
 			
@@ -215,22 +215,22 @@ public class FileGrabber
 			if (!gf.file.exists())
 			{
 				gf.file = null;
-				gf.state = GrabbedFile.NOT_FOUND;
+				gf.state = GrabbedFile.STATE_NOT_FOUND;
 				return gf;
 			}
 	
 			
 			
 			if (gf.file.isDirectory())
-				gf.state = GrabbedFile.IS_DIRECTORY;
+				gf.state = GrabbedFile.STATE_IS_DIRECTORY;
 			else
-				gf.state = GrabbedFile.OK;
+				gf.state = GrabbedFile.STATE_OK;
 			
 		}
 		catch (Exception e)
 		{
 			gf.file = null;
-			gf.state = GrabbedFile.INTERNAL_ERROR;
+			gf.state = GrabbedFile.STATE_INTERNAL_ERROR;
 		}
 			
 		return gf;
