@@ -58,7 +58,8 @@ public class Spell_FloatingDisc extends Spell
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-		if(!(target instanceof Item))
+		if((!(target instanceof Item))
+		||(!((Item)target).isGettable()))
 		{
 			mob.tell("You cannot float "+target.name()+"!");
 			return false;

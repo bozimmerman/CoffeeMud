@@ -154,6 +154,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_PRACTICE=78;
 	public static final int TYP_TEACH=79;
 	public static final int TYP_REMOVE=80;
+	public static final int TYP_EXPCHANGE=81;
 	
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 	

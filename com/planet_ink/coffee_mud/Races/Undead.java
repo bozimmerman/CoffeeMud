@@ -73,6 +73,27 @@ public class Undead extends StdRace
 					return false;
 				}
 			}
+			else
+			if((msg.amITarget(mob))
+			&&(Util.bset(msg.targetCode(),Affect.MASK_MALICIOUS)
+				||Util.bset(msg.targetCode(),Affect.MASK_HURT))
+			&&((msg.targetMinor()==Affect.TYP_DISEASE)
+				||(msg.targetMinor()==Affect.TYP_GAS)
+				||(msg.targetMinor()==Affect.TYP_MIND)
+				||(msg.targetMinor()==Affect.TYP_PARALYZE)
+				||(msg.targetMinor()==Affect.TYP_POISON)
+				||(msg.targetMinor()==Affect.TYP_UNDEAD))
+			&&(!mob.amDead()))
+			{
+				String immunityName="certain";
+				if(msg.tool()!=null)
+					immunityName=msg.tool().name();
+				if(mob!=msg.source())
+					mob.location().show(mob,msg.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
+				else
+					mob.location().show(mob,msg.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
+				return false;
+			}
 		}
 		return super.okAffect(myHost,msg);
 	}

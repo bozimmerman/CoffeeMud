@@ -86,8 +86,17 @@ public class Song_Friendship extends Song
 			{
 				mob.setFollowing(null);
 				ExternalPlay.standIfNecessary(mob);
-				if((mob.isMonster())&&(!Sense.isMobile(mob)))
-					CoffeeUtensils.wanderAway(mob,true,true);
+				if(mob.isMonster())
+				{
+					if(Dice.rollPercentage()>50)
+					{
+						if(!Sense.isMobile(mob))
+							CoffeeUtensils.wanderAway(mob,true,true);
+					}
+					else
+					if((invoker!=null)&&(invoker!=mob))
+						mob.setVictim(invoker);
+				}
 			}
 		}
 		else

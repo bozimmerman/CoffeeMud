@@ -219,7 +219,19 @@ public class GenWallpaper implements Item
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
-					mob.tell("It says '"+readableText()+"'.");
+				{
+					if(readableText().startsWith("FILE=")
+						||readableText().startsWith("FILE="))
+					{
+						StringBuffer buf=Resources.getFileResource(readableText().substring(5));
+						if((buf!=null)&&(buf.length()>0))
+							mob.tell("It says '"+buf.toString()+"'.");
+						else
+							mob.tell("There is nothing written on "+name()+".");
+					}
+					else
+						mob.tell("It says '"+readableText()+"'.");
+				}
 				else
 					mob.tell("There is nothing written on "+name()+".");
 			}

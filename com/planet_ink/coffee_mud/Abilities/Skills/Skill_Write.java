@@ -60,6 +60,12 @@ public class Skill_Write extends StdAbility
 			mob.tell("You can't write on a scroll.");
 			return false;
 		}
+		
+		if(Util.combine(commands,1).toUpperCase().startsWith("FILE="))
+		{
+			mob.tell("You can't write that.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -89,6 +89,7 @@ public class MOBTeacher extends CombatAbilities
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
+
 			if(s.endsWith("%"))
 			{
 				pct=Util.s_int(s.substring(0,s.length()-1));
@@ -96,15 +97,15 @@ public class MOBTeacher extends CombatAbilities
 			}
 			A=(Ability)CMClass.getAbility(s);
 			CharClass C=CMClass.getCharClass(s);
-			if(A!=null)
-				addAbility(myMOB,A,pct,myAbles);
-			else
 			if(C!=null)
 			{
 				setTheCharClass(myMOB,C);
 				classAbles(myMOB,myAbles,pct);
 				myMOB.recoverCharStats();
 			}
+			else
+			if(A!=null)
+				addAbility(myMOB,A,pct,myAbles);
 		}
 		myMOB.recoverCharStats();
 		if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))

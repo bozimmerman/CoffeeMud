@@ -1608,6 +1608,13 @@ public class StdMOB implements MOB
 			case Affect.TYP_PANIC:
 				ExternalPlay.flee(mob,"");
 				break;
+			case Affect.TYP_EXPCHANGE:
+				if((affect.tool()!=null)&&(affect.tool() instanceof ExperiencePoints))
+				{
+					ExperiencePoints EXP=(ExperiencePoints)affect.tool();
+					
+				}
+				break;
 			case Affect.TYP_DEATH:
 				if((affect.tool()!=null)&&(affect.tool() instanceof MOB))
 					ExternalPlay.justDie((MOB)affect.tool(),this);

@@ -104,8 +104,17 @@ public class Spell_Enthrall extends Spell
 			mob.tell("Your free-will returns.");
 			ExternalPlay.follow(mob,null,false);
 			ExternalPlay.standIfNecessary(mob);
-			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				CoffeeUtensils.wanderAway(mob,true,true);
+			if(mob.isMonster())
+			{
+				if(Dice.rollPercentage()>50)
+				{
+					if(!Sense.isMobile(mob))
+						CoffeeUtensils.wanderAway(mob,true,true);
+				}
+				else
+				if((invoker!=null)&&(invoker!=mob))
+					mob.setVictim(invoker);
+			}
 		}
 	}
 

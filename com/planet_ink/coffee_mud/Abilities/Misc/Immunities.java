@@ -20,6 +20,22 @@ public class Immunities extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public int resistanceCode=0;
 	public Environmental newInstance(){	return new Immunities();}
+
+	
+	public static Object[][] immunityTypes={
+		{new Integer(Affect.TYP_ACID), new String("ACID")},
+		{new Integer(Affect.TYP_WATER), new String("WATER")},
+		{new Integer(Affect.TYP_COLD), new String("COLD")},
+		{new Integer(Affect.TYP_DISEASE), new String("DISEASE")},
+		{new Integer(Affect.TYP_ELECTRIC), new String("ELECTRIC")},
+		{new Integer(Affect.TYP_FIRE), new String("FIRE")},
+		{new Integer(Affect.TYP_GAS), new String("GAS")},
+		{new Integer(Affect.TYP_JUSTICE), new String("JUSTICE")},
+		{new Integer(Affect.TYP_MIND), new String("MIND")},
+		{new Integer(Affect.TYP_PARALYZE), new String("PARALYZE")},
+		{new Integer(Affect.TYP_POISON), new String("POISON")},
+		{new Integer(Affect.TYP_UNDEAD), new String("UNDEAD")},
+	};
 	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -27,32 +43,25 @@ public class Immunities extends StdAbility
 			return true;
 
 		MOB mob=(MOB)affected;
-		String text=text().toUpperCase();
 		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)
-			||Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&((affect.targetMinor()==Affect.TYP_ACID)&&((text.indexOf("ACID")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_WATER)&&((text.indexOf("WATER")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_COLD)&&((text.indexOf("COLD")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_DEATH)&&((text.indexOf("DEATH")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_DISEASE)&&((text.indexOf("DISEASE")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_ELECTRIC)&&((text.indexOf("ELECTRIC")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_FIRE)&&((text.indexOf("FIRE")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_GAS)&&((text.indexOf("GAS")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_JUSTICE)&&((text.indexOf("JUSTICE")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_MIND)&&((text.indexOf("MIND")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_PARALYZE)&&((text.indexOf("PARALYZE")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_POISON)&&((text.indexOf("POISON")>=0)||(text.equals("ALL"))))
-		&&((affect.targetMinor()==Affect.TYP_UNDEAD)&&((text.indexOf("UNDEAD")>=0)||(text.equals("ALL"))))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)||Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(!mob.amDead()))
 		{
-			String immunityName="certain";
-			if(affect.tool()!=null)
-				immunityName=affect.tool().name();
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
-			return false;
+			for(int i=0;i<immunityTypes.length;i++)
+				if((affect.targetMinor()==((Integer)immunityTypes[i][0]).intValue())
+				&&((text().toUpperCase().indexOf((String)immunityTypes[i][1])>=0)||(text().toUpperCase().equals("ALL"))))
+			{
+				String immunityName="certain";
+				if(affect.tool()!=null)
+					immunityName=affect.tool().name();
+				if(mob!=affect.source())
+					mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
+				else
+					mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+".");
+				return false;
+			}
 		}
 		return true;
 	}
-
 }
+
