@@ -37,15 +37,7 @@ public class GenDeity extends StdDeity
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>10))
-			CoffeeMaker.setPropertiesStr(this,newText,false);
-		recoverEnvStats();
-		recoverCharStats();
-		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
-		baseState().setMana(baseCharStats().getCurrentClass().getLevelMana(this));
-		baseState().setMovement(baseCharStats().getCurrentClass().getLevelMove(this));
-		recoverMaxState();
-		resetToMaxState();
+		CoffeeMaker.resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"CLERREQ","CLERRIT","WORREQ","WORRIT"};
 	public String getStat(String code)

@@ -55,6 +55,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateQuests(Vector quests)
 	{QuestLoader.DBUpdateQuests(quests);}
 	
+	public String DBReadRoomMOBData(String roomID, String mobID)
+	{ return RoomLoader.DBReadRoomMOBData(roomID,mobID);}
+	
 	public void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{RoomLoader.DBUpdateTheseMOBs(room,mobs);}
 	

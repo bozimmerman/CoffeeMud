@@ -41,14 +41,7 @@ public class GenBanker extends StdBanker
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>10))
-			CoffeeMaker.setPropertiesStr(this,newText,false);
-		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
-		recoverEnvStats();
-		recoverCharStats();
-		recoverMaxState();
-		resetToMaxState();
-		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
+		CoffeeMaker.resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT"};
 	public String getStat(String code)

@@ -15,8 +15,19 @@ public class CoffeeMaker
 
 	public static void resetGenMOB(MOB mob, String newText)
 	{
-		if((newText!=null)&&(newText.length()>10))
-			setPropertiesStr(mob,newText,false);
+		if((newText!=null)&&((newText.length()>10)||newText.startsWith("%DBID>")))
+		{
+			if(newText.startsWith("%DBID>"))
+			{
+				String dbstr=CMClass.DBEngine().DBReadRoomMOBData(newText.substring(6,newText.indexOf("/")),
+																  ((Object)mob).getClass().getName()+"@"+newText.substring(newText.indexOf("/")+1).trim());
+				setPropertiesStr(mob,dbstr,false);
+			}
+			else
+			{
+				setPropertiesStr(mob,newText,false);
+			}
+		}
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.baseState().setHitPoints(Dice.rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));

@@ -178,6 +178,34 @@ public class RoomLoader
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 			((Area)a.nextElement()).getAreaStats();
 	}
+	
+	public static String DBReadRoomMOBData(String roomID, String mobID)
+	{
+		DBConnection D=null;
+		// now grab the items
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMROCH WHERE CMROID='"+roomID+"'");
+			while(R.next())
+			{
+				String NUMID=DBConnections.getRes(R,"CMCHNM");
+				if(NUMID.equalsIgnoreCase(mobID))
+				{
+					String txt=DBConnections.getRes(R,"CMCHTX");
+					DBConnector.DBDone(D);
+					return txt;
+				}
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		return null;
+	}
 
 	private static void fixItemKeys(Hashtable itemLocs, Hashtable itemNums)
 	{
@@ -325,7 +353,11 @@ public class RoomLoader
 					itemNums.put(NUMID,newMOB);
 					newMOB.setStartRoom(thisRoom);
 					newMOB.setLocation(thisRoom);
-					newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
+					if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE))
+					&&(NUMID.indexOf(MOBID+"@")>=0))
+						newMOB.setMiscText("%DBID>"+roomID+"/"+NUMID.substring(NUMID.indexOf("@")+1));
+					else
+						newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
 					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
 					newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
 					newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
