@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
+import com.planet_ink.coffee_mud.Abilities.Misc.Injury;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -214,6 +215,8 @@ public class Fighter_CalledStrike extends StdAbility
 			{
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);
+				Ability A2=target.fetchEffect("Injury");
+				if(A2!=null) A2.setMiscText(mob.Name()+"/"+gone);
 				mob.recoverEnvStats();
 			}
 		}

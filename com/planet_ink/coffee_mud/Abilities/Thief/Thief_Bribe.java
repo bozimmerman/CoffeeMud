@@ -68,9 +68,7 @@ public class Thief_Bribe extends ThiefSkill
 			}
 		}
 		
-		if((((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
-		&&(!target.isMonster())
-		&&(!mob.isMonster()))
+		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell("You can't bribe someone to following you.");
 			return false;

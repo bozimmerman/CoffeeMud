@@ -24,6 +24,7 @@ public class Thief_BackStab extends ThiefSkill
 {
 	public String ID() { return "Thief_BackStab"; }
 	public String name(){ return "Back Stab";}
+	public String displayText(){return "(Backstabbing)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}

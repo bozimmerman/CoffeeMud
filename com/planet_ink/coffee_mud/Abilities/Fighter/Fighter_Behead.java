@@ -107,6 +107,8 @@ public class Fighter_Behead extends StdAbility
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(1);
 				int dmg=target.maxState().getHitPoints();
+				Ability A2=target.fetchEffect("Injury");
+				if(A2!=null) A2.setMiscText(mob.Name()+"/head");
 				MUDFight.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"^F^<FIGHT^><S-NAME> rear(s) back and behead(s) <T-NAME>!^</FIGHT^>^?"+CommonStrings.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				Item limb=CMClass.getItem("GenLimb");

@@ -28,6 +28,8 @@ public class Injury extends StdAbility
 	public String ID() { return "Injury"; }
 	public String name(){ return "Injury";}
 	
+	private CMMsg lastMsg=null;
+	private String lastLoc=null;
 	public int lastHP=-1;
 	//public final static String[] BODYPARTSTR={
 	//	"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
@@ -264,6 +266,20 @@ public class Injury extends StdAbility
 				{
 				    int randomRoll=Dice.roll(1,total,-1);
 				    int chosenOne=-1;
+					if((lastMsg!=null)
+					&&(lastLoc!=null)
+					&&((msg==lastMsg)||((lastMsg.trailerMsgs()!=null)&&(lastMsg.trailerMsgs().contains(msg))))
+					&&(remains.contains(lastLoc)))
+						chosenOne=remains.indexOf(lastLoc);
+					else
+					if((text().length()>0)
+					&&(text().startsWith(msg.source().Name()+"/"))
+					&&(remains.contains(text().substring(msg.source().Name().length()+2))))
+					{
+						chosenOne=remains.indexOf(text().substring(msg.source().Name().length()+2));
+						setMiscText("");
+					}
+					else
 					for(int i=0;i<chances.length;i++)
 					{
 					    if(chances[i]>0)
@@ -275,13 +291,15 @@ public class Injury extends StdAbility
 					    }
 					}
 					int BodyPct=(int)Math.round(Util.div(msg.value(),mob.maxState().getHitPoints())*100.0);
-					BodyPct*=4; // works out to 160%
+					int LimbPct=BodyPct*4;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
 						if((" "+((String)remains.elementAt(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 					    { bodyLoc=i; break;}
 					if(bodyLoc>=0)
 					{
+					    lastMsg=msg;
+					    lastLoc=(String)remains.elementAt(chosenOne);
 					    Vector bodyVec=injuries[bodyLoc];
 					    if(bodyVec==null){ injuries[bodyLoc]=new Vector(); bodyVec=injuries[bodyLoc];}
 					    int whichInjury=-1;
@@ -302,18 +320,33 @@ public class Injury extends StdAbility
 						    {
 						        Object[] O=new Object[2];
 						        O[0]=((String)remains.elementAt(chosenOne)).toLowerCase();
-						        O[1]=new Integer(BodyPct);
+						        O[1]=new Integer(LimbPct);
 						        bodyVec.addElement(O);
 						    }
 						    else
 						    {
 						        Object[] O=(Object[])bodyVec.elementAt(whichInjury);
-						        O[1]=new Integer(((Integer)O[1]).intValue()+BodyPct);
+						        O[1]=new Integer(((Integer)O[1]).intValue()+LimbPct);
 						        if(((Integer)O[1]).intValue()>100)
 						            O[1]=new Integer(100);
-						        if(((Integer)O[1]).intValue()>=100)
-						        {
-						            if(Amputation.validamputees[bodyLoc])
+						        if((((Integer)O[1]).intValue()>=100)
+								||((BodyPct>5)
+									&&((msg.tool() instanceof Electronics)||(BodyPct>10))))
+								{
+								    boolean proceed=true;
+								    if(msg.tool() instanceof Weapon)
+									{
+										switch(((Weapon)msg.tool()).weaponType())
+										{
+										case Weapon.TYPE_FROSTING:
+										case Weapon.TYPE_GASSING:
+										    proceed=false;
+											break;
+										default:
+											break;
+										}
+									}
+						            if(Amputation.validamputees[bodyLoc]&&proceed)
 				                    {
 							            bodyVec.removeElement(O);
 							            if(bodyVec.size()==0)

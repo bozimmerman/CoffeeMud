@@ -136,24 +136,6 @@ public class StdWeapon extends StdItem implements Weapon
 					if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
 						A.invoke(msg.source(),msg.target(),true,envStats().level());
 				}
-				else
-				if((hurt>100)
-				&&((this instanceof Electronics)
-				   ||(hurt>(tmob.maxState().getHitPoints()/10))))
-				{
-					switch(weaponType())
-					{
-					case Weapon.TYPE_FROSTING:
-					case Weapon.TYPE_GASSING:
-						break;
-					default:
-						{
-							Ability A=CMClass.getAbility("Amputation");
-							if(A!=null) A.invoke(msg.source(),new Vector(),msg.target(),true,envStats().level());
-						}
-						break;
-					}
-				}
 			}
 
 			if((subjectToWearAndTear())
