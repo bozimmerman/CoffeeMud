@@ -1,0 +1,82 @@
+package com.planet_ink.coffee_mud.Abilities.Archon;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Archon_Hush extends ArchonSkill
+{
+	boolean doneTicking=false;
+	public String ID() { return "Archon_Hush"; }
+	public String name(){ return "Hush";}
+	public String displayText(){ return "(Hushed)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"HUSH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public int maxRange(){return 1;}
+	public int usageType(){return USAGE_MOVEMENT;}
+
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+
+
+		if(((msg.sourceMinor()==CMMsg.TYP_TELL)
+			||((msg.othersMajor()&CMMsg.MASK_CHANNEL)>0))
+		&&(msg.source()==affected))
+		{
+			msg.source().tell("Your message drifts into oblivion.");
+			return false;
+		}
+		return true;
+	}
+
+	public void unInvoke()
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		if(canBeUninvoked())
+			mob.tell("You are no longer hushed!");
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		if(target==null) return false;
+		
+		Ability A=target.fetchEffect(ID());
+		if(A!=null)
+		{
+			A.unInvoke();
+			mob.tell(target.Name()+" is released from his hushing.");
+			return true;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"Silence falls upon <T-NAME>!":"^F<S-NAME> hush(es) <T-NAMESELF>.^?");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> hushed!");
+				maliciousAffect(mob,target,Integer.MAX_VALUE/2,-1);
+			}
+		}
+		else
+			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s).");
+		return success;
+	}
+}
