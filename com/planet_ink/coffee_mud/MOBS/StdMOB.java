@@ -1143,26 +1143,28 @@ public class StdMOB implements MOB
 					if(isInCombat())
 					{
 						Item weapon=this.fetchWieldedItem();
+						if(weapon==null) // try to wield anything!
+							for(int i=0;i<inventory.size();i++)
+							{
+								Item thisItem=(Item)inventory.elementAt(i);
+								if((thisItem.canBeWornAt(Item.WIELD))
+								 &&(thisItem.canWear(this))
+								 &&(!thisItem.amWearingAt(Item.INVENTORY)))
+								{
+									thisItem.wearAt(Item.WIELD);
+									weapon=thisItem;
+									break;
+								}
+							}
 						double curSpeed=Math.floor(speeder);
 						speeder+=envStats().speed();
 						if(Sense.aliveAwakeMobile(this,true))
 						{
 							int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
 							for(int s=0;s<numAttacks;s++)
-								ExternalPlay.postAttack(this,victim,weapon);
+								if((s==0)||(!Sense.isSitting(this)))
+									ExternalPlay.postAttack(this,victim,weapon);
 							curState().expendEnergy(this,maxState,true);
-							if(weapon==null) // try to wield anything!
-								for(int i=0;i<inventory.size();i++)
-								{
-									Item thisItem=(Item)inventory.elementAt(i);
-									if((thisItem.canBeWornAt(Item.WIELD))
-									 &&(thisItem.canWear(this))
-									 &&(!thisItem.amWearingAt(Item.INVENTORY)))
-									{
-										thisItem.wearAt(Item.WIELD);
-										break;
-									}
-								}
 						}
 						if(!isMonster())
 						{
