@@ -410,12 +410,16 @@ public class SysOpSkills
 		}
 		if(room==null)
 		{
-			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
+			if(mob.isASysOp(mob.location()))
+				mob.tell("Goto where? Try a Room ID, player name, area name, or room text!");
+			else
+				mob.tell("You aren't powerful enough to do that. Try 'GO'.");
 			return false;
 		}
 		if(!mob.isASysOp(room))
 		{
-			mob.tell("You aren't powerful enough to go there.");
+			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
+			return false;
 		}
 		if(curRoom==room)
 		{

@@ -235,10 +235,7 @@ public class CommandProcessor
 					movement.go(mob,commands);
 					break;
 				case CommandSet.GOTO:
-					if(mob.isASysOp(mob.location()))
-						sysopSkills.gotoCmd(mob,commands);
-					else
-						mob.tell("Try 'GO'.");
+					sysopSkills.gotoCmd(mob,commands);
 					break;
 				case CommandSet.GROUP:
 					grouping.group(mob);
@@ -463,6 +460,8 @@ public class CommandProcessor
 						mob.tell("..tick..tock..");
 						myHost.speedTime();
 					}
+					else
+						mob.tell("Huh?\n\r");
 					break;
 				case CommandSet.TIME:
 					basicSenses.time(mob,commands);
@@ -487,7 +486,6 @@ public class CommandProcessor
 						mob.tell("You lack the power to link rooms.\n\r");
 					break;
 				case CommandSet.UNLOADHELP:
-
 					if(mob.isASysOp(null))
 						unloadHelpFile(mob);
 					else

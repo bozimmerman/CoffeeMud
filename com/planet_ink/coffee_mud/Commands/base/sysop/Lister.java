@@ -240,24 +240,28 @@ public class Lister
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session thisSession=(Session)Sessions.elementAt(s);
-				if((thisSession.mob() != null)
-				&&(mob.isASysOp(thisSession.mob().location())))
+				if(thisSession.mob() != null)
 				{
-					lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
-					if(thisSession.mob().location() != null )
+					if(mob.isASysOp(thisSession.mob().location()))
 					{
-						lines.append(thisSession.mob().location().displayText());
-						lines.append(" ("+thisSession.mob().location().ID()+")");
+						lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+						if(thisSession.mob().location() != null )
+						{
+							lines.append(thisSession.mob().location().displayText());
+							lines.append(" ("+thisSession.mob().location().ID()+")");
+						}
+						else
+							lines.append("^B(no location)^?");
+						lines.append("\n\r");
 					}
-					else
-						lines.append("^B(no location)^?");
 				}
 				else
+				if(mob.isASysOp(null))
 				{
 					lines.append(Util.padRight("NAMELESS",17)+"| ");
 					lines.append("NOWHERE");
+					lines.append("\n\r");
 				}
-				lines.append("\n\r");
 			}
 		}
 		else

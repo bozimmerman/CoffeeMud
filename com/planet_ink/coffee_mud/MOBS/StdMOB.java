@@ -1150,7 +1150,7 @@ public class StdMOB implements MOB
 				}
 
 				if((!mayIFight(mob))
-				||(mob.envStats().level()>envStats().level()+26)&&isMonster()&&mob.isMonster())
+				||(mob.envStats().level()>envStats().level()+26)&&(!isMonster())&&(!mob.isMonster()))
 				{
 					if(!mayIFight(mob))
 						mob.tell("Player killing is highly discouraged.");

@@ -109,13 +109,6 @@ public class Mobs
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(!modMOB.isMonster())
-		{
-			mob.tell(modMOB.name()+" is a PLAYER (Sorry)!!\n\r");
-			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
-
 		if(command.equals("LEVEL"))
 		{
 			int newLevel=Util.s_int(restStr);

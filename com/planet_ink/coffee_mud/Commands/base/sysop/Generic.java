@@ -767,7 +767,12 @@ public class Generic
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else
 		if(E instanceof MOB)
-			modifyGenMOB(mob,(MOB)E);
+		{
+			if(((MOB)E).isMonster())
+				modifyGenMOB(mob,(MOB)E);
+			else
+				modifyPlayer(mob,(MOB)E);
+		}
 		else
 		if(E instanceof Exit)
 			modifyGenExit(mob,(Exit)E);
@@ -1918,6 +1923,42 @@ public class Generic
 
 		mob.tell("\n\rNow don't forget to equip him with stuff before saving!\n\r");
 	}
+	
+	public void modifyPlayer(MOB mob, MOB me)
+		throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		while(!ok)
+		{
+			genName(mob,me);
+			genDescription(mob,me);
+			genLevel(mob,me);
+			genRace(mob,me);
+			genGender(mob,me);
+			genHeight(mob,me);
+			genWeight(mob,me);
+			genSpeed(mob,me);
+			genAttack(mob,me);
+			genDamage(mob,me);
+			genArmor(mob,me);
+			genHitPoints(mob,me);
+			genAlignment(mob,me);
+			genMoney(mob,me);
+			genAbilities(mob,me);
+			genDisposition(mob,me);
+			genSensesMask(mob,me);
+			if(me instanceof Rideable)
+				genRideable(mob,(Rideable)me);
+			ok=true;
+			me.recoverCharStats();
+			me.recoverMaxState();
+			me.recoverEnvStats();
+			me.resetToMaxState();
+		}
+	}
+	
 	public void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
