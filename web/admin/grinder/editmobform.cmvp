@@ -368,6 +368,22 @@
 	@endif@
 @endif@
 <TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Tattoos:</B></FONT>
+	</TD>
+    <TD WIDTH=500 COLSPAN=2>
+    <INPUT TYPE=TEXT NAME=TATTOOS SIZE=30 VALUE="@MobData?TATTOOS@">
+    <FONT SIZE=-1><I>Semicolon delimited</I>
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Education:</B></FONT>
+	</TD>
+    <TD WIDTH=500 COLSPAN=2>
+    <INPUT TYPE=TEXT NAME=EDUCATIONS SIZE=30 VALUE="@MobData?EDUCATIONS@">
+    <FONT SIZE=-1><I>Semicolon delimited</I>
+    </TD>
+</TR>
+<TR>
 	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>MOB Inventory:</B></FONT></TD>
     <TD WIDTH=500 COLSPAN=2>
     @MobData?ITEMLIST@

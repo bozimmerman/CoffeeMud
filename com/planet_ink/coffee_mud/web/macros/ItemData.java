@@ -188,7 +188,7 @@ public class ItemData extends StdWebMacro
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
 							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-							  "ISKEY", "CONTENTTYPES"};
+							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -687,6 +687,20 @@ public class ItemData extends StdWebMacro
 							if((contains&mask)>0) str.append(" SELECTED");
 							str.append(">"+constr);
 						}
+					}
+					break;
+				case 67: // is instrument
+					if(I instanceof MusicalInstrument) return "true";
+					else return "false";
+				case 68: // instrument types
+					if((firstTime)&&(I instanceof MusicalInstrument))
+						old=""+((MusicalInstrument)I).instrumentType();
+					for(int r=0;r<MusicalInstrument.TYPE_DESC.length;r++)
+					{
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(r==Util.s_int(old))
+							str.append(" SELECTED");
+						str.append(">"+MusicalInstrument.TYPE_DESC[r]);
 					}
 					break;
 				}

@@ -190,7 +190,7 @@ public class GrinderMobs
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
 						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
-						  "CLANID"};
+						  "CLANID","TATTOOS","EDUCATIONS"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -202,7 +202,6 @@ public class GrinderMobs
 			}
 			String old=httpReq.getRequestParameter(parm);
 			if(old==null) old="";
-
 			if((M.isGeneric()||(!generic)))
 			switch(o)
 			{
@@ -320,7 +319,7 @@ public class GrinderMobs
 				if(M instanceof Deity)
 					((Deity)M).setClericSin(old);
 				break;
-			case 35: // worshipper ritual
+			case 35: // worshipper sins
 				if(M instanceof Deity)
 					((Deity)M).setWorshipSin(old);
 				break;
@@ -328,10 +327,30 @@ public class GrinderMobs
 				if(M instanceof Deity)
 					((Deity)M).setClericPowerup(old);
 				break;
-			case 37: // clan
+			case 37: // curses
+				break;
+			case 38: // powers
+				break;
+			case 39: // clan
 				M.setClanID(old);
 				if(M.getClanID().length()>0)
 					M.setClanRole(Clan.POS_MEMBER);
+				break;
+			case 40: // tattoos
+				{
+					Vector V=Util.parseSemicolons(old,true);
+					while(M.numTattoos()>0) M.delTattoo(M.fetchTattoo(0));
+					for(int v=0;v<V.size();v++)
+						M.addTattoo((String)V.elementAt(v));
+				}
+				break;
+			case 41: // educations
+				{
+					Vector V=Util.parseSemicolons(old,true);
+					while(M.numEducations()>0) M.delEducation(M.fetchEducation(0));
+					for(int v=0;v<V.size();v++)
+						M.addEducation((String)V.elementAt(v));
+				}
 				break;
 			}
 		}

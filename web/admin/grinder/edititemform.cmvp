@@ -516,6 +516,29 @@
 	    </TD>
 	</TR>
 @else@
+@if?ItemData?ISINSTRUMENT@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Instrument Type:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2>
+		<SELECT NAME=INSTRUMENTTYPE>
+		@ItemData?INSTRUMENTTYPE@
+		</SELECT>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Wearing Data:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=WORNDATA MULTIPLE>
+	    @ItemData?WORNDATA@
+	    </SELECT>
+	    <BR><FONT COLOR=WHITE>
+	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="on" @ItemData?ISTWOHANDED@>Is worn on All above Locations.
+	    <BR>
+	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="" @ItemData?ISUNTWOHANDED@>Is worn on ANY of the above Locations.
+	    </FONT>
+	    </TD>
+	</TR>
+@else@
 	@if?ItemData?ISWAND@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spell to cast:</B></FONT></TD>
@@ -592,6 +615,7 @@
 @endif@	
 @endif@	
 @endif@	
+@endif@
 @endif@
 @endif@
 @endif@

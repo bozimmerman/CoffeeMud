@@ -81,7 +81,8 @@ public class GrinderItems
 						  "ISPILL","ISSUPERPILL","ISPOTION","LIQUIDTYPES","AMMOTYPE",
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
-						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES"};
+						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
+						  "ISINSTRUMENT","INSTRUMENTTYPE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -158,7 +159,8 @@ public class GrinderItems
 					I.baseEnvStats().setArmor(Util.s_int(old));
 				break;
 			case 19: // worn data
-				if((I instanceof Armor)&&(httpReq.isRequestParameter("WORNDATA")))
+				if(((I instanceof Armor)||(I instanceof MusicalInstrument))
+				&&(httpReq.isRequestParameter("WORNDATA")))
 				{
 					int climate=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
 					for(int i=1;;i++)
@@ -166,7 +168,7 @@ public class GrinderItems
 							climate=climate|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 						else
 							break;
-					((Armor)I).setRawProperLocationBitmap(climate);
+					I.setRawProperLocationBitmap(climate);
 				}
 				break;
 			case 20: // height
@@ -362,6 +364,12 @@ public class GrinderItems
 							break;
 					((Container)I).setContainTypes(content);
 				}
+				break;
+			case 63: // is instrument:
+				break;
+			case 64: // instrumenttype
+				if(I instanceof MusicalInstrument)
+					((MusicalInstrument)I).setInstrumentType(Util.s_int(old));
 				break;
 			}
 		}

@@ -2,8 +2,6 @@ Something to hunt multiplayers with 1. the closest (in milliseconds) commands we
 A little thing, but it would come in handy - importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
-the grinder doesn't support geninstruments well (there is no field to determine instrument type)
-grinder to support tattoos and educations
 crafting info parm
 
 

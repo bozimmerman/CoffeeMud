@@ -481,7 +481,7 @@ public class MobData extends StdWebMacro
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
-						  "CLESIN","WORSIN","CLEPOW","CLANID"};
+						  "CLESIN","WORSIN","CLEPOW","CLANID","TATTOOS","EDUCATIONS"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -752,8 +752,26 @@ public class MobData extends StdWebMacro
 					old=((Deity)M).getClericPowerup();
 				str.append(old);
 				break;
-			case 37: // clan
+			case 37: // clanid
 				if(firstTime) old=M.getClanID();
+				str.append(old);
+				break;
+			case 38: // tattoos
+				if(firstTime)
+				{
+					old="";
+					for(int i=0;i<M.numTattoos();i++)
+						old+=M.fetchTattoo(i)+";";
+				}
+				str.append(old);
+				break;
+			case 39: // educations
+				if(firstTime)
+				{
+					old="";
+					for(int i=0;i<M.numEducations();i++)
+						old+=M.fetchEducation(i)+";";
+				}
 				str.append(old);
 				break;
 			}
