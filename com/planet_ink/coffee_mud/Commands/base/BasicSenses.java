@@ -122,12 +122,6 @@ public class BasicSenses
 			mob.tell("emote what?");
 			return;
 		}
-		for(int i=1;i<commands.size();i++)
-		{
-			String s=(String)commands.elementAt(i);
-			if(s.indexOf(" ")>=0)
-				commands.setElementAt("\""+s+"\"",i);
-		}
 		String emote="<S-NAME> "+Util.combine(commands,1);
 		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,emote);
 		if(mob.location().okAffect(msg))

@@ -33,6 +33,12 @@ public class Mobile extends ActiveTicker
 			
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
+			if(thisRoom instanceof GridLocale)
+			{
+				Vector V=((GridLocale)thisRoom).getAllRooms();
+				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+				if(R!=null) R.bringMobHere(mob,true);
+			}
 
 			int tries=0;
 			int direction=-1;

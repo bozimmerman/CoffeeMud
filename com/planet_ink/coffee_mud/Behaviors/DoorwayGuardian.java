@@ -27,6 +27,8 @@ public class DoorwayGuardian extends StdBehavior
 		if(!canFreelyBehaveNormal(oking)) return true;
 		MOB monster=(MOB)oking;
 		if(affect.target()==null) return true;
+		if(!Sense.canBeSeenBy(affect.source(),oking))
+			return true;
 		if(affect.target() instanceof Exit)
 		{
 			Exit exit=(Exit)affect.target();

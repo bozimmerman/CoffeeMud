@@ -78,13 +78,14 @@ public class ItemRefitter extends StdBehavior
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Armor))
 		{
-			source.setMoney(source.getMoney()-cost((Item)affect.tool()));
+			int cost=cost((Item)affect.tool());
+			source.setMoney(source.getMoney()-cost);
 			((Item)affect.tool()).baseEnvStats().setHeight(0);
 			((Item)affect.tool()).recoverEnvStats();
 			
-			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) "+affect.tool().name()+" to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) "+affect.tool().name()+" and "+cost+" coins to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.");
+			newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
 		}
 	}
