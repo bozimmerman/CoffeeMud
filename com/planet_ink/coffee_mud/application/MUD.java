@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.web.*;
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)6.2;
+	public static final float HOST_VERSION_MINOR=(float)6.3;
 	
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -175,6 +175,24 @@ public class MUD extends Thread implements Host
 			return false;
 		}
 		
+		offlineReason=new String("Booting: connecting to database");
+		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));
+		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
+		String DBerrors=DBConnector.errorStatus().toString();
+		if(DBerrors.length()==0)
+			Log.sysOut("MUD","Database connection successful.");
+		else
+		{
+			Log.errOut("MUD","Fatal database error: "+DBerrors);
+			System.exit(-1);
+		}
+		
+
 		if (page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
 		{
 			if (loadWebCommonPropPage())
@@ -189,24 +207,6 @@ public class MUD extends Thread implements Host
 			else
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
-
-		offlineReason=new String("Booting: connecting to database");
-		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
-		CommonStrings.setVar(CommonStrings.SYSTEM_EXPRATE,page.getStr("EXPRATE"));
-		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
-		String DBerrors=DBConnector.errorStatus().toString();
-		if(DBerrors.length()==0)
-			Log.sysOut("MUD","Database connection successful.");
-		else
-		{
-			Log.errOut("MUD","Fatal database error: "+DBerrors);
-			System.exit(-1);
-			//fatalStartupError(3);
-			//return false;
-		}
-		
 
 		ExternalPlay.setPlayer(ExternalCommands.getInstance(), new ExternalSystems(), new IMudClient());
 

@@ -127,7 +127,7 @@ public class DBConnection
 			try
 			{
 				myPreparedStatement=null;
-				myStatement=myConnection.createStatement();
+				myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			}
 			catch(SQLException e)
 			{

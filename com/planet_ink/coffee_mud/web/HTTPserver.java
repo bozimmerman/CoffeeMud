@@ -318,7 +318,7 @@ public class HTTPserver extends Thread
 	public static boolean loadWebMacros()
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
-		Vector webMacrosV=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "","com.planet_ink.coffee_mud.interfaces.WebMacro");
+		Vector webMacrosV=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "%DEFAULT%","com.planet_ink.coffee_mud.interfaces.WebMacro");
 		Log.sysOut("WEB","WebMacros loaded  : "+webMacrosV.size());
 		if(webMacrosV.size()==0) return false;
 		webMacros=new Hashtable();

@@ -17,10 +17,11 @@ public class SaltWaterSurface extends WaterSurface
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 	
-	public void giveASky()
+	public void giveASky(int depth)
 	{
 		if(skyedYet) return;
-		super.giveASky();
+		if(depth>1000) return;
+		super.giveASky(depth+1);
 		skyedYet=true;
 		if((rawDoors()[Directions.DOWN]==null)
 		&&((domainType()&Room.INDOORS)==0)
@@ -41,7 +42,7 @@ public class SaltWaterSurface extends WaterSurface
 				Room thatSea=null;
 				if((thatRoom!=null)&&(rawExits()[d]!=null))
 				{
-					thatRoom.giveASky();
+					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
 				}
 				if((thatSea!=null)&&(thatSea.ID().length()==0)&&(thatSea instanceof UnderSaltWaterGrid))

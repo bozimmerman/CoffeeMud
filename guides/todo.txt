@@ -1,4 +1,5 @@
 Add retainer capabilities to hireling
+Damn Scriptable Behavior
 the shopkeepers give way to much money for items. It is too lucrative
 Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
 mime behavior: A MOB will mimic any social that you do.
@@ -9,6 +10,7 @@ Map skill for bards.  The map "document" expands as the bard travels, but consum
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check for most, or Balance skill for thieves.  
 add grid dimensions fields and to the grinder and editor
+Behavior -- Rejuv -- for total area/room rejuv rates.
 problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.

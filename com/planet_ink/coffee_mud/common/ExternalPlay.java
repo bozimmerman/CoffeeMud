@@ -239,9 +239,9 @@ public class ExternalPlay
 		return false;
 	}
 	
-	public static void DBReadContent(Room thisRoom)
+	public static void DBReadContent(Room thisRoom, Hashtable rooms)
 	{
-		if(sysPlayer!=null) sysPlayer.DBReadContent(thisRoom);
+		if(sysPlayer!=null) sysPlayer.DBReadContent(thisRoom,rooms);
 	}
 	public static void DBUpdateExits(Room room)
 	{

@@ -204,7 +204,7 @@ public class StdCharClass implements CharClass, Cloneable
 		if(victim!=null)
 		{
 			double theAmount=new Integer(amount).doubleValue();
-			int levelLimit=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_EXPRATE));
+			int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
 			if(levelDiff<(-levelLimit) )

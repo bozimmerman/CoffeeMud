@@ -7,9 +7,15 @@ public class CommonStrings
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
-	public static final int SYSTEM_EXPRATE=3;
-	public static final int NUM_SYSTEM=5;
+	public static final int NUM_SYSTEM=3;
+	
+	public static final int SYSTEMI_EXPRATE=0;
+	public static final int SYSTEMI_SKYSIZE=1;
+	public static final int SYSTEMI_MAXSTAT=2;
+	public static final int NUMI_SYSTEM=3;
+	
 	private static String[] sysVars=new String[NUM_SYSTEM];
+	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
 
 	public static int pkillLevelDiff=26;
 	
@@ -20,6 +26,26 @@ public class CommonStrings
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
 		if(sysVars[varNum]==null) return "";
 		return sysVars[varNum];
+	}
+	
+	public static int getIntVar(int varNum)
+	{
+		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return -1;
+		if(sysInts[varNum]==null) return -1;
+		return sysInts[varNum].intValue();
+	}
+	
+	public static void setIntVar(int varNum, int val)
+	{
+		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
+		sysInts[varNum]=new Integer(val);
+	}
+	
+	public static void setIntVar(int varNum, String val)
+	{
+		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
+		if(val==null) val="0";
+		sysInts[varNum]=new Integer(Util.s_int(val));
 	}
 	
 	public static void setVar(int varNum, String val)

@@ -40,9 +40,9 @@ public class ExternalSystems implements ExternalSystem
 		return ServiceEngine.report();
 	}
 		
-	public void DBReadContent(Room thisRoom)
+	public void DBReadContent(Room thisRoom, Hashtable rooms)
 	{
-		RoomLoader.DBReadContent(thisRoom);
+		RoomLoader.DBReadContent(thisRoom, rooms);
 	}
 	public void DBUpdateExits(Room room)
 	{

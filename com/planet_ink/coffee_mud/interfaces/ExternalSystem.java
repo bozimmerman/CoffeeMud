@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
-import java.util.Vector;
+import java.util.*;
 public interface ExternalSystem
 {
 	// tick related
@@ -9,7 +9,7 @@ public interface ExternalSystem
 	public boolean deleteTick(Environmental E, int tickID);
 	
 	public void DBUpdateFollowers(MOB mob);
-	public void DBReadContent(Room thisRoom);
+	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room, String LocaleID);

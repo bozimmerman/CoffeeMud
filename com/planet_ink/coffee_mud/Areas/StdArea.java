@@ -1014,7 +1014,7 @@ public class StdArea implements Area
 		{
 			Room R=(Room)V.elementAt(r);
 			R.clearSky();
-			R.giveASky();
+			R.giveASky(0);
 		}
 		myRooms=null;
 	}
@@ -1027,7 +1027,7 @@ public class StdArea implements Area
 			if(R instanceof GridLocale)
 				((GridLocale)R).buildGrid();
 		}
-		R.giveASky();
+		R.giveASky(0);
 	}
 	
 	public int adjustMovement(int base, MOB mob, Room room)

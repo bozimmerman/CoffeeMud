@@ -330,7 +330,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 	public void reRoll()
 	{
 		int avg=0;
-		while((avg!=MAX_STATS)||(avg==0))
+		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
+		while((avg!=max)||(avg==0))
 		{
 			setStat(STRENGTH,3+(int)Math.floor(Math.random()*16.0));
 			setStat(INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));

@@ -2,8 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Sense;
-import com.planet_ink.coffee_mud.utils.Directions;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 public class EndlessSky extends StdGrid
@@ -19,7 +18,8 @@ public class EndlessSky extends StdGrid
 		domainCondition=Room.CONDITION_NORMAL;
 		setDisplayText("Up in the sky");
 		setDescription("");
-		size=3;
+		size=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		if(size==0) size=3;
 	}
 	public Environmental newInstance()
 	{
@@ -105,7 +105,9 @@ public class EndlessSky extends StdGrid
 				}
 			}
 		buildFinalLinks();
-		if((subMap[0][0]!=null)&&(subMap[0][0].rawDoors()[Directions.UP]==null))
+		if((subMap[0][0]!=null)
+		&&(subMap[0][0].rawDoors()[Directions.UP]==null)
+		&&(size>1))
 			linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);

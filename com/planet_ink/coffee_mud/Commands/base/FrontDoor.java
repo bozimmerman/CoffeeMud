@@ -304,7 +304,8 @@ public class FrontDoor
 
 						mob.session().println("Your current stats are: \n\r"
 											  +mob.charStats().getStats(maxStat)
-											  +Util.padRight("TOTAL POINTS",15)+": "+CharStats.MAX_STATS+"/"+(18*5));
+											  +Util.padRight("TOTAL POINTS",15)+": "
+											  +CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(18*5));
 						
 						mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 

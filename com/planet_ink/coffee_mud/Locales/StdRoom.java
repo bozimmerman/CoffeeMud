@@ -183,14 +183,16 @@ public class StdRoom
 		myArea=newArea;
 	}
 
-	public void giveASky()
+	public void giveASky(int depth)
 	{
 		if(skyedYet) return;
+		if(depth>1000) return;
 		skyedYet=true;
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+		&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE)>0))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			EndlessSky sky=new EndlessSky();
@@ -206,7 +208,7 @@ public class StdRoom
 				Room thatSky=null;
 				if((thatRoom!=null)&&(rawExits()[d]!=null))
 				{
-					thatRoom.giveASky();
+					thatRoom.giveASky(depth+1);
 					thatSky=thatRoom.rawDoors()[Directions.UP];
 				}
 				if((thatSky!=null)&&(thatSky.ID().length()==0)&&(thatSky instanceof EndlessSky))
@@ -307,7 +309,7 @@ public class StdRoom
 				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				if(!mob.isMonster())
-					giveASky();
+					giveASky(0);
 				break;
 			case Affect.TYP_AREAAFFECT:
 				// obsolete with the area objects
