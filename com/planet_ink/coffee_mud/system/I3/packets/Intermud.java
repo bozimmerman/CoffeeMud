@@ -368,7 +368,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 else if( type.equals("chanlist-reply") ) {
                     channelList(data);
                 }
-                else if( type.equals("locate_reply") ) {
+                else if( type.equals("locate-reply") ) {
                     try {
                         LocateReplyPacket p = new LocateReplyPacket(data);
 

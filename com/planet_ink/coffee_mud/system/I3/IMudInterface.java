@@ -23,6 +23,7 @@ public class IMudInterface implements ImudServices, Serializable
 		if(Name!=null) name=Name;
 		if(Version!=null) version=Version;
 		if(Channels!=null) channels=Channels;
+		port=Port;
 	}
 	
 	private MOB findSessMob(String mobName)
