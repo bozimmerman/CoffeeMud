@@ -982,10 +982,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		val[0]=(int)Math.round(Util.mul(d,val[0]));
 
 		//double halfPrice=Math.round(Util.div(val,2.0));
-		double quarterPrice=Math.round(Util.div(val[0],4.0));
-
-		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
-		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
+		// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
+		int buyPrice=(int)Math.round(Util.div(Util.mul(val[0],mob.charStats().getStat(CharStats.CHARISMA)),60.0));
 
 		if((product instanceof EnvResource)&&(numberInStock(product)!=0))
 			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div(((maximumDuplicatesBought*100)-numberInStock(product)),maximumDuplicatesBought*100)));
