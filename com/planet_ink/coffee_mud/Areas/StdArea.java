@@ -445,6 +445,9 @@ public class StdArea implements Area
 			if(A!=null)
 				A.affect(affect);
 		}
+		if((affect.sourceMinor()==Affect.TYP_RETIRE)
+		&&(amISubOp(affect.source().name())))
+			delSubOp(affect.source().name());
 	}
 
 	public void tickControl(boolean start)

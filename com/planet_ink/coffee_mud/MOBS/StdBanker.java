@@ -393,6 +393,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 				break;
 			}
 		}
+		else
+		if((affect.sourceMinor()==Affect.TYP_RETIRE)
+		&&(amISubOp(affect.source().name())))
+			delAllDeposits(affect.source().name());
 		super.affect(affect);
 	}
 	
