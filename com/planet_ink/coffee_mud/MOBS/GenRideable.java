@@ -38,16 +38,7 @@ public class GenRideable extends StdRideable
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>10))
-			Generic.setPropertiesStr(this,newText,false);
-		recoverEnvStats();
-		recoverCharStats();
-		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
-		baseState().setMana(baseCharStats().getCurrentClass().getLevelMana(this));
-		baseState().setMovement(baseCharStats().getCurrentClass().getLevelMove(this));
-		recoverMaxState();
-		resetToMaxState();
-		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
+		Generic.resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
 	public String getStat(String code)

@@ -11,6 +11,22 @@ public class Generic
 		return (x&m)==m;
 	}
 
+	
+	public static void resetGenMOB(MOB mob, String newText)
+	{
+		if((newText!=null)&&(newText.length()>10))
+			setPropertiesStr(mob,newText,false);
+		mob.recoverEnvStats();
+		mob.recoverCharStats();
+		mob.baseState().setHitPoints(Dice.rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+		mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
+		mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		if(mob.getWimpHitPoint()>0) 
+			mob.setWimpHitPoint((int)Math.round(Util.mul(mob.curState().getHitPoints(),.10)));
+	}
+	
 	public static String parseOutAngleBrackets(String s)
 	{
 		int x=s.indexOf("<");

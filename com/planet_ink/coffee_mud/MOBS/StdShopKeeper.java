@@ -1044,15 +1044,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(((LandTitle)I).landOwner().length()>0)
 						continue;
 					else
-					for(int d=0;d<4;d++)
 					{
-						Room R2=R.getRoomInDir(d);
-						LandTitle A2=null;
-						if(R2!=null)
-							A2=getTitle(R2);
-						if((A2!=null)&&(!A2.landOwner().equals(name)))
-						   continue;
+						boolean skipThisOne=false;
+						for(int d=0;d<4;d++)
+						{
+							Room R2=R.getRoomInDir(d);
+							LandTitle L2=null;
+							if(R2!=null) L2=getTitle(R2);
+							if(L2==null)
+							{ skipThisOne=false; break;}
+							if(L2.landOwner().equals(name)) 
+							{ skipThisOne=false; break;}
+							if(L2.landOwner().length()>0)
+								skipThisOne=true;
+						}
+						if(skipThisOne) continue;
 					}
+					
 					I.recoverEnvStats();
 					V.addElement(I);
 				}

@@ -455,12 +455,12 @@ public class StdMOB implements MOB
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
-		if((miscText!=null)&&(resetStats))
+		if((miscText!=null)&&(resetStats)&&(isGeneric()))
 		{
 			if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS))
-				setMiscText(Util.decompressString(miscText));
+				Generic.resetGenMOB(this,Util.decompressString(miscText));
 			else
-				setMiscText(new String(miscText));
+				Generic.resetGenMOB(this,new String(miscText));
 		}
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));

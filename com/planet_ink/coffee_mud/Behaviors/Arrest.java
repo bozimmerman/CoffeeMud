@@ -111,18 +111,7 @@ public class Arrest extends StdBehavior
 		"INEBRIATION=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_ALCOHOL=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_FIREBREATHER=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
-		"POISON_LIQUOR=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
-		"CRIME1=spit(s) spits;;witness;spitting in city limits;warning;Spitting is a dirty habit.\n"+
-		"CRIME2=wiggies wiggy wiggie;!home;witness;wiggying in public;warning;Wiggying is considered indecent.\n"+
-		"CRIME3=throttle \"grabs for your\";!home;witness;throttling in public;warning;Throttling is considered unacceptable behavior, as it violates the peace.\n"+
-		"CRIME4=\"barks at\" \"barks loudly at\";!indoors;witness;creating a disturbance;warning;We do not take kindly to people creating a nuisance of themselves.\n"+
-		"CRIME5=\"flicks a bird\" \"gives you the bird\";!indoors;witness recently;indecent public behavior;warning;'Flicking the bird' is considered unnacceptable behavior.\n"+
-		"CRIME6=\"flicks his whip across\" \"flicks her whip across\" \"his tongue over\" \"her tongue over\" \"tongue around you\" bites slaps \"vague stroking motions\" \"and ties his to a four\" \"and ties her to a four\" \"and ties you securely to a\";!indoors;witness recently;inappropriate public behavior;warning;If you need to do that, we kindly ask that you take it inside.\n"+
-		"CRIME7=\"ducks down low, charges forward\" \"head into your stomach\" \"doubles over in pain\" \"suddenly knees you\" \"rips out\" \"With a resounding WHAP\" \"to the floor, pinning\";!indoors;witness recently;public fighting;warning;Do NOT violate our peace.\n"+
-		"CRIME8=\"swears at\";!indoors;witness recently;inappropriate public language;warning;If you need to curse, go somewhere more private.\n"+
-		"CRIME9=\"stripping away\" \"has started to strip you\" \"clothes off and parades\" \"is exposing\" \"has just revealed\" \"pants and rudely moons\" \"bends over and gives you\";!indoors;witness;indecent exposure;warning;Nudity violates our high moral code.  Use the 'outfit' command if you need clothes!\n"+
-		"CRIME10=\"pukes on\" \"spews vomit and pukes all over your\";!indoors;witness recently;desecrating our streets;parole1;If you need to be sick, DO NOT do it on our streets.\n"+
-		"CRIME11=\"while stabbing a pin into a voodoo doll\";;witness;practicing voodoo;jail2;Voodoo is NOT tolerated here.\n";
+		"POISON_LIQUOR=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
 		
 
 	private class ArrestWarrant implements Cloneable
@@ -144,10 +133,7 @@ public class Arrest extends StdBehavior
 		public void setArrestingOfficer(MOB mob)
 		{
 			if((mob==null)&&(arrestingOfficer!=null))
-			{
-				Ability A=arrestingOfficer.fetchAffect("Skill_Track");
-				if(A!=null) A.unInvoke();
-			}
+				stopTracking(arrestingOfficer);
 			arrestingOfficer=mob;
 		}
 	}
@@ -433,6 +419,11 @@ public class Arrest extends StdBehavior
 	{
 		if((M.isMonster())&&(M.location()!=null))
 		{
+			if((laws.officerNames.size()==0)
+			||((laws.officerNames.size()==1)
+				&&(((String)laws.officerNames.firstElement()).equals("@"))))
+			   return false;
+			else
 			for(int i=0;i<laws.officerNames.size();i++)
 				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.officerNames.elementAt(i)))
 				&&(Sense.isMobile(M))) 
@@ -443,9 +434,14 @@ public class Arrest extends StdBehavior
 
 	public boolean isTheJudge(Laws laws, MOB M)
 	{
-		if(((M.isMonster()||M.soulMate()!=null))&&(M.location()!=null))
+		if(((M.isMonster()||M.soulMate()!=null))
+		&&(!Sense.isMobile(M))
+		&&(M.location()!=null))
 		{
 			String judgeName=laws.getMsg("JUDGE");
+			if((judgeName.length()==0)||(judgeName.equals("@")))
+				return false;
+			else
 			if((CoffeeUtensils.containsString(M.Name(),judgeName))
 			||(CoffeeUtensils.containsString(M.displayText(),judgeName))
 			||(CoffeeUtensils.containsString(M.name(),judgeName))
@@ -455,6 +451,32 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 
+	public MOB getTheJudgeHere(Laws laws, Room R)
+	{
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if(isTheJudge(laws,M))
+				return M;
+		}
+		return null;
+	}
+	
+	public Room findTheJudge(Laws laws, Area myArea)
+	{
+		for(Enumeration r=myArea.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB M=R.fetchInhabitant(i);
+				if(isTheJudge(laws,M))
+					return R;
+			}
+		}
+		return null;
+	}
+	
 	public boolean isElligibleOfficer(Laws laws, MOB M, Area myArea)
 	{
 		if((M.isMonster())&&(M.location()!=null))
@@ -815,6 +837,20 @@ public class Arrest extends StdBehavior
 		return W;
 	}
 
+	public Room findTheJail(MOB judge, Area myArea, Laws laws)
+	{
+		String jailRoom=laws.getMsg("JAIL");
+		Room jail=null;
+		if((jailRoom.length()==0)||(jailRoom.equals("@")))
+			return null;
+		else
+		{
+			jail=getRoom(judge.location().getArea(),jailRoom);
+			if(jail==null) jail=getRoom(myArea,jailRoom);
+		}
+		return jail;
+	}
+	
 	public boolean fillOutWarrant(MOB mob,
 								Laws laws,
 								Area myArea,
@@ -1328,6 +1364,45 @@ public class Arrest extends StdBehavior
 		}
 	}
 
+	public boolean trackTheJudge(MOB officer, Area myArea, Laws laws, boolean startFresh)
+	{
+		if(startFresh) stopTracking(officer);
+		Ability A=CMClass.getAbility("Skill_Track");
+		if(A!=null)
+		{
+			Room R=findTheJudge(laws,myArea);
+			if(R!=null)
+			{
+				A.invoke(officer,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),null,true);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void stopTracking(MOB officer)
+	{
+		Vector V=Sense.flaggedAffects(officer,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)
+		{ ((Ability)V.elementAt(v)).unInvoke(); officer.delAffect((Ability)V.elementAt(v));}
+	}
+	
+	public Room setReleaseRoom(Laws laws, Area myArea, MOB criminal)
+	{
+		Room room=null;
+		if((criminal.isMonster())&&(criminal.getStartRoom()!=null))
+			room=criminal.getStartRoom();
+		else
+		{
+			room=getRoom(criminal.location().getArea(),laws.getMsg("RELEASEROOM"));
+			if(room==null) room=getRoom(myArea,laws.getMsg("RELEASEROOM"));
+			if(room==null) room=findTheJudge(laws,myArea);
+			if(room==null) room=(Room)myArea.getMap().nextElement();
+		}
+		return room;
+	}
+	
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -1519,14 +1594,8 @@ public class Arrest extends StdBehavior
 								if(A!=null)A.unInvoke();
 								makePeace(officer.location());
 								ExternalPlay.standIfNecessary(W.criminal);
-								A=officer.fetchAffect("Skill_Track");
-								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Skill_Track");
-								if(A!=null)
-								{	
-									W.travelAttemptTime=System.currentTimeMillis();
-									A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
-								}
+								W.travelAttemptTime=System.currentTimeMillis();
+								trackTheJudge(officer,myArea,laws,false);
 								makePeace(officer.location());
 							}
 						}
@@ -1557,14 +1626,11 @@ public class Arrest extends StdBehavior
 							makePeace(officer.location());
 							if(officer.isMonster())
 								ExternalPlay.look(officer,null,true);
-							if(officer.location().fetchInhabitant(laws.getMsg("JUDGE"))!=null)
+							if(getTheJudgeHere(laws,officer.location())!=null)
 								W.state=STATE_REPORTING;
 							else
-							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
-							{
-								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
-							}
+							if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
+								trackTheJudge(officer,myArea,laws,false);
 							else
 							if((Dice.rollPercentage()>75)&&(laws.chitChat.size()>0))
 								ExternalPlay.quickSay(officer,W.criminal,(String)laws.chitChat.elementAt(Dice.roll(1,laws.chitChat.size(),-1)),false,false);
@@ -1587,14 +1653,11 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
-							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
+							MOB judge=getTheJudgeHere(laws,officer.location());
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
-								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
+								trackTheJudge(officer,myArea,laws,true);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
@@ -1638,14 +1701,11 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
-							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
+							MOB judge=getTheJudgeHere(laws,officer.location());
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
-								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Skill_Track");
-								if(A!=null) A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
+								trackTheJudge(officer,myArea,laws,true);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
@@ -1688,7 +1748,7 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
+							MOB judge=getTheJudgeHere(laws,officer.location());
 							setFree(W.criminal);
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
@@ -1730,11 +1790,11 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
+							MOB judge=getTheJudgeHere(laws,officer.location());
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
-								Room jail=getRoom(judge.location().getArea(),laws.getMsg("JAIL"));
+								Room jail=findTheJail(judge,myArea,laws);
 								if(jail!=null)
 								{
 									makePeace(officer.location());
@@ -1795,8 +1855,10 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
-							if((judge!=null)&&(Sense.aliveAwakeMobile(judge,true))&&(judge.location()==W.criminal.location()))
+							MOB judge=getTheJudgeHere(laws,officer.location());
+							if((judge!=null)
+							&&(Sense.aliveAwakeMobile(judge,true))
+							&&(judge.location()==W.criminal.location()))
 							{
 								setFree(W.criminal);
 								dismissOfficer(officer);
@@ -1857,12 +1919,12 @@ public class Arrest extends StdBehavior
 									W.state=STATE_RELEASE;
 							}
 							else
-							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
+							if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
 							{
 								Ability A=CMClass.getAbility("Skill_Track");
 								if(A!=null)
 								{
-									A.setAbilityCode(1);
+									A.setAbilityCode(1); // tells track to cache the path
 									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail)),W.jail,true);
 								}
 							}
@@ -1901,21 +1963,11 @@ public class Arrest extends StdBehavior
 									Ability A=CMClass.getAbility("Skill_HandCuff");
 									if(A!=null)	A.invoke(officer,W.criminal,true);
 								}
-								if((W.criminal.isMonster())&&(W.criminal.getStartRoom()!=null))
-									W.releaseRoom=W.criminal.getStartRoom();
-								else
-								{
-									W.releaseRoom=getRoom(W.criminal.location().getArea(),laws.getMsg("RELEASEROOM"));
-									if(W.releaseRoom==null)
-										W.releaseRoom=getRoom(myArea,laws.getMsg("RELEASEROOM"));
-								}
-								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),laws.getMsg("JUDGE"));
-								if(W.releaseRoom==null) W.releaseRoom=getRoom(myArea,laws.getMsg("JUDGE"));
+								W.releaseRoom=setReleaseRoom(laws,myArea,W.criminal);
 								W.criminal.makePeace();
 								makePeace(officer.location());
-								Ability A=officer.fetchAffect("Skill_Track");
-								if(A!=null) officer.delAffect(A);
-								A=CMClass.getAbility("Skill_Track");
+								stopTracking(officer);
+								Ability A=CMClass.getAbility("Skill_Track");
 								if(A!=null)
 								{
 									W.travelAttemptTime=System.currentTimeMillis();

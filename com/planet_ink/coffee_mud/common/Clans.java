@@ -428,6 +428,8 @@ public class Clans implements Clan, Tickable
 				return 0;
 			case FUNC_CLANPROPERTYOWNER:
 				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANENCHANT:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER))?1:-1;
 			case FUNC_CLANWITHDRAW:
 				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
 			case FUNC_CLANDEPOSITLIST:
@@ -465,6 +467,8 @@ public class Clans implements Clan, Tickable
 				return 0;
 			case FUNC_CLANPREMISE:
 				return 0;
+			case FUNC_CLANENCHANT:
+				return (role==Clan.POS_ENCHANTER)?1:-1;
 			case FUNC_CLANPROPERTYOWNER:
 				return (role==Clan.POS_LEADER)?1:-1;
 			case FUNC_CLANWITHDRAW:
@@ -504,6 +508,8 @@ public class Clans implements Clan, Tickable
 				return 0;
 			case FUNC_CLANPREMISE:
 				return 0;
+			case FUNC_CLANENCHANT:
+				return (role==Clan.POS_ENCHANTER)?1:-1;
 			case FUNC_CLANPROPERTYOWNER:
 				return (role==Clan.POS_LEADER)?1:-1;
 			case FUNC_CLANWITHDRAW:
@@ -545,6 +551,8 @@ public class Clans implements Clan, Tickable
 				return (role==Clan.POS_BOSS)?1:-1;
 			case FUNC_CLANPROPERTYOWNER:
 				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANENCHANT:
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER))?1:-1;
 			case FUNC_CLANWITHDRAW:
 				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
 			case FUNC_CLANDEPOSITLIST:

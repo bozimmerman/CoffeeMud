@@ -44,9 +44,9 @@ public class Thief_Snatch extends StdAbility
 		}
 
 		Item hisItem=mob.getVictim().fetchWieldedItem();
-		if((hisItem!=null)
-		   ||(!(hisItem instanceof Weapon))
-		   ||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
+		if((hisItem==null)
+		||(!(hisItem instanceof Weapon))
+		||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
 			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
 			return false;

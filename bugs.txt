@@ -1,14 +1,11 @@
 Undead Perhaps have the affect prevent them from following anyone but their creator.
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 allow duplicates of the quest to be run
-can only buy property adjacent to owned property, or adjacent to unsellable rooms.
 add an optional property limit to the list
 partitions as arbitrary areas
 Masonry	POOL will convert the room into a Water room, with 1 level of underwater added for free
 Masonry	portcullis (but it requires METAL instead of stone)
-SNATCH WEAPON doesn't ever seem to think anyone is wielding anything.
-my rapid shot skill doesn't increase. It is a Thief 14, Arcanist 14 skill. Combining my level 2 thief with my level 30 arcanist, I have more levels than it. Is there something wrong with it? Or do I need to become a thief 14 to get it working right?
 allow guildmasters and clan bosses to do enchanters
 Arrest to dos:	deal with officernames, judgenames, jail rooms, release rooms
 Where are some archon powers?  If some goob starts a clan called 'TulathIsAJerk', I can't delete the offending clan.  Also, clandetails should be viewable to Archons as if they are a boss for a clan (i.e. all members, applicants, etc).  It would also be nice to be able to manually authorize a clan to active.
-get rid of horrible death cry when users are purged.
+gain list should do qual

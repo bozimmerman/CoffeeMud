@@ -69,9 +69,9 @@ public class ExternalPlay
 	{
 		if(player!=null) player.obliterateRoom(deadRoom);
 	}
-	public static void destroyUser(MOB deadMOB)
+	public static void destroyUser(MOB deadMOB, boolean quiet)
 	{
-		if(player!=null) player.destroyUser(deadMOB);
+		if(player!=null) player.destroyUser(deadMOB,quiet);
 	}
 	public static void resetRoom(Room room)
 	{

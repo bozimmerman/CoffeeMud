@@ -109,6 +109,7 @@ public interface Clan extends Cloneable, Tickable
 	public static final int FUNC_CLANDEPOSITLIST=13;
 	public static final int FUNC_CLANDECLARE=14;
 	public static final int FUNC_CLANTAX=15;
+	public static final int FUNC_CLANENCHANT=16;
 	
 	public int allowedToDoThis(MOB mob, int function);
 	

@@ -43,9 +43,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		Rooms.obliterateRoom(deadRoom);
 	}
-	public void destroyUser(MOB deadMOB)
+	public void destroyUser(MOB deadMOB, boolean quiet)
 	{
-		Scoring.destroyUser(deadMOB);
+		Scoring.destroyUser(deadMOB,quiet);
 	}
 	public boolean doesOwnThisProperty(MOB mob, Room room)
 	{

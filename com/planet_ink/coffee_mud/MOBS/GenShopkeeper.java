@@ -37,14 +37,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>10))
-			Generic.setPropertiesStr(this,newText,false);
-		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
-		recoverEnvStats();
-		recoverCharStats();
-		recoverMaxState();
-		resetToMaxState();
-		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
+		Generic.resetGenMOB(this,newText);
 	}
 	private static String[] MYCODES={"WHATISELL","PREJUDICE"};
 	public String getStat(String code)

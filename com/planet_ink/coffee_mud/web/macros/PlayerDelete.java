@@ -20,7 +20,7 @@ public class PlayerDelete extends StdWebMacro
 		MOB M=CMMap.getLoadPlayer(last);
 		if(M==null) return " @break@";
 
-		ExternalPlay.destroyUser(M);
+		ExternalPlay.destroyUser(M,true);
 		Log.sysOut("PlayerDelete","Someone destroyed the user "+M.Name()+".");
 		return "";
 	}
