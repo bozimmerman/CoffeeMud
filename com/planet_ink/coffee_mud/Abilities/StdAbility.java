@@ -431,14 +431,14 @@ public class StdAbility implements Ability, Cloneable
 		}
 		if(useMoves){
 			usageCosts[1]=consumed/divider;
-			if((usageCosts[1]>0)&&(usageCosts[0]<5))
+			if((usageCosts[1]>0)&&(usageCosts[1]<5))
 				usageCosts[1]=5;
 			if(consumed==Integer.MAX_VALUE) 
 				usageCosts[1]=mob.maxState().getMovement();
 		}
 		if(useHits){
 			usageCosts[2]=consumed/divider;
-			if((usageCosts[2]>0)&&(usageCosts[0]<5))
+			if((usageCosts[2]>0)&&(usageCosts[2]<5))
 				usageCosts[2]=5;
 			if(consumed==Integer.MAX_VALUE) 
 				usageCosts[2]=mob.maxState().getHitPoints();

@@ -207,7 +207,27 @@ public class Help
 		return thisTag;
 	}
 
-
+	private static String getActualUsage(Ability A, int which, MOB forMOB)
+	{
+		if(forMOB==null){
+			forMOB=CMClass.getMOB("StdMOB");
+			forMOB.maxState().setMana(Integer.MAX_VALUE/2);
+			forMOB.maxState().setMovement(Integer.MAX_VALUE/2);
+			forMOB.maxState().setHitPoints(Integer.MAX_VALUE/2);
+		}
+		
+		int[] consumption=A.usageCost(forMOB);
+		int whichConsumed=consumption[0];
+		switch(which)
+		{
+		case Ability.USAGE_MOVEMENT: whichConsumed=consumption[1]; break;
+		case Ability.USAGE_MANA: whichConsumed=consumption[0]; break;
+		case Ability.USAGE_HITPOINTS: whichConsumed=consumption[2]; break;
+		}
+		if(whichConsumed==Integer.MAX_VALUE/2) return "all";
+		return ""+whichConsumed;
+	}
+	
 	public static String fixHelp(String tag, String str, MOB forMOB)
 	{
 		if(str.startsWith("<ABILITY>"))
@@ -324,6 +344,16 @@ public class Help
 					}
 					if(!A.isAutoInvoked())
 					{
+						prepend.append("\n\rUse Cost : ");
+						int cost[]=A.usageCost(forMOB);
+						if(A.usageType()==Ability.USAGE_NADA)
+							prepend.append("None");
+						if(Util.bset(A.usageType(),Ability.USAGE_MANA))
+							prepend.append("Mana ("+getActualUsage(A,Ability.USAGE_MANA,forMOB)+") ");
+						if(Util.bset(A.usageType(),Ability.USAGE_MOVEMENT))
+							prepend.append("Movement ("+getActualUsage(A,Ability.USAGE_MOVEMENT,forMOB)+") ");
+						if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
+							prepend.append("Hit Points ("+getActualUsage(A,Ability.USAGE_HITPOINTS,forMOB)+") ");
 						prepend.append("\n\rQuality  : ");
 						switch(A.quality())
 						{
