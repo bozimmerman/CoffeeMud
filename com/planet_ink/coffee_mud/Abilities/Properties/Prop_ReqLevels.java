@@ -77,6 +77,7 @@ public class Prop_ReqLevels extends Property
 		   &&(affect.target()!=null)
 		   &&(affect.target() instanceof Room)
 		   &&(affect.targetMinor()==Affect.TYP_ENTER)
+		   &&(!Sense.isSneaking(affect.source()))
 		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			Hashtable H=new Hashtable();

@@ -37,7 +37,8 @@ public class Spell_MagicMouth extends Spell
 			return;
 		}
 
-		if(affect.amITarget(myRoomContainer))
+		if((affect.amITarget(myRoomContainer))
+		&&(!Sense.isSneaking(affect.source())))
 		{
 			if((waitingForLook)&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
 			{
@@ -51,7 +52,8 @@ public class Spell_MagicMouth extends Spell
 		else
 		if(affect.amITarget(affected))
 		{
-			if(affect.targetMinor()==myTrigger)
+			if((affect.targetMinor()==myTrigger)
+			&&(!Sense.isSneaking(affect.source())))
 			{
 				doMyThing();
 				return;

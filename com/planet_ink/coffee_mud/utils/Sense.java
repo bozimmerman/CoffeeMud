@@ -115,6 +115,13 @@ public class Sense
 		   return false;
 		return true;
 	}
+	
+	public static boolean canSenseMoving(Environmental sensed, Environmental sensor)
+	{
+		if(isSneaking(sensed)&&(!canSeeSneakers(sensor)))
+		   return false;
+		return (canBeHeardBy(sensed,sendor)||canBeSeenBy(sensed,sensor));
+	}
 
 	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{

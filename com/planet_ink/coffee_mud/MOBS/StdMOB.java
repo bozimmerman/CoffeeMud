@@ -822,13 +822,6 @@ public class StdMOB implements MOB
 	
 	public boolean okAffect(Affect affect)
 	{
-		// sneaking exception
-		if((Sense.isSneaking(affect.source()))
-		 &&((affect.targetMinor()==Affect.TYP_LEAVE)||(affect.targetMinor()==Affect.TYP_ENTER))
-		 &&(!Sense.canSeeSneakers(this))
-		 &&(this!=affect.source()))
-			return true;
-		
 		if(charStats!=null)
 		{
 			if(!charStats().getCurrentClass().okAffect(this,affect))
@@ -1301,14 +1294,6 @@ public class StdMOB implements MOB
 
 	public void affect(Affect affect)
 	{
-		
-		// sneaking exception
-		if((Sense.isSneaking(affect.source()))
-		 &&((affect.targetMinor()==Affect.TYP_LEAVE)||(affect.targetMinor()==Affect.TYP_ENTER))
-		 &&(!Sense.canSeeSneakers(this))
-		 &&(this!=affect.source()))
-			return;
-		
 		if(charStats!=null)
 		{
 			charStats().getCurrentClass().affect(this,affect);
@@ -1580,11 +1565,21 @@ public class StdMOB implements MOB
 			&&((!asleep)&&(canseesrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
 			else
+			if((affect.othersMinor()==Affect.TYP_ENTER) // exceptions to movement
+			||(affect.othersMinor()==Affect.TYP_FLEE)
+			||(affect.othersMinor()==Affect.TYP_LEAVE))
+			{
+				if(((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
+				&&(Sense.canSenseMoving(affect.source(),this)))
+					tell(affect.source(),affect.target(),affect.othersMessage());
+			}
+			else
 			if(((Util.bset(othersMajor,Affect.MASK_MOVE))
 				||((Util.bset(othersMajor,Affect.MASK_MOUTH))&&(!Util.bset(othersMajor,Affect.MASK_SOUND))))
-			&&((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
+			&&(!asleep)
 			&&((canseesrc)||(canhearsrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
+			
 			if((affect.othersMinor()==Affect.TYP_DEATH)&&(victim!=null))
 			{
 				if(victim==affect.source()) 

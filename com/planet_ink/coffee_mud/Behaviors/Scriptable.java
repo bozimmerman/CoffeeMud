@@ -648,6 +648,7 @@ public class Scriptable extends ActiveTicker
 				trigger=((String)script.elementAt(0)).toUpperCase().trim();
 			if((lastKnownLocation!=null)
 			&&(affect.amITarget(lastKnownLocation))
+			&&(Sense.canSenseMoving(affect.source(),affecting))
 			&&(affect.targetMinor()==Affect.TYP_ENTER))
 			{
 				if((trigger.startsWith("GREET_PROG"))

@@ -39,7 +39,7 @@ public class Prop_ReqTattoo extends Property
 		&&(affect.target()!=null)
 		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER))
+			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER)&&(!Sense.isSneaking(affect.source())))
 			||((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_GET)))
 			{
 				Hashtable H=new Hashtable();

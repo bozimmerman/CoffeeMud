@@ -693,7 +693,8 @@ public class TheFight
 							   msg.othersCode(),
 							   newMsg);
 				}
-				room.send(source,msg);
+				if(source.mayIFight(target))
+					room.send(source,msg);
 			}
 		}
 		else

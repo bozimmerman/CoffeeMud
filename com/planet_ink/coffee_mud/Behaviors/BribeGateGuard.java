@@ -257,6 +257,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB observer=(MOB)affecting;
 		if((affect.sourceMinor()==Affect.TYP_ENTER)
 		&&(!affect.amISource(observer))
+		&&(Sense.canSenseMoving(affect.source(),affecting))
 		&&(!affect.source().isMonster()))
 		{
 			// check if the affect.source() has paid enough.  if so, add them to the paid list
