@@ -18,6 +18,25 @@ public class Druid_MyPlants extends StdAbility
 	public Environmental newInstance(){	return new Druid_MyPlants();}
 	public int classificationCode(){return Ability.SKILL;}
 
+	public static boolean isMyPlant(Item I, MOB mob)
+	{
+		if((I!=null)
+		&&(I.rawSecretIdentity().equals(mob.Name()))
+		&&(I.owner()!=null)
+		&&(I.owner() instanceof Room))
+		{
+			for(int a=0;a<I.numAffects();a++)
+			{
+				Ability A=I.fetchAffect(a);
+				if((A!=null)
+				&&((A.invoker()==mob)||(A.text().equals(mob.Name())))
+				&&(A instanceof Chant_SummonPlants))
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	public static Item myPlant(Room R, MOB mob, int which)
 	{
 		int plantNum=0;
@@ -25,23 +44,12 @@ public class Druid_MyPlants extends StdAbility
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
-			if((I!=null)
-			&&(I.rawSecretIdentity().equals(mob.Name()))
-			&&(I.owner()!=null)
-			&&(I.owner() instanceof Room))
+			if(isMyPlant(I,mob))
 			{
-				for(int a=0;a<I.numAffects();a++)
-				{
-					Ability A=I.fetchAffect(a);
-					if((A!=null)&&(A.invoker()==mob)&&(A instanceof Chant_SummonPlants))
-					{
-						if(plantNum==which)
-							return I;
-						else
-							plantNum++;
-						break;
-					}
-				}
+				if(plantNum==which)
+					return I;
+				else
+					plantNum++;
 			}
 		}
 		return null;

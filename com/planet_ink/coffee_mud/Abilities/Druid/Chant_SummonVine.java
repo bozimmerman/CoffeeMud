@@ -87,6 +87,7 @@ public class Chant_SummonVine extends Chant
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell("This magic will not work here.");

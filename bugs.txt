@@ -1,5 +1,2 @@
-gaian chant to make plants that butcher/forage/tailor/leatherwork.
 gaian blight chant -- no resources, damage plant creature, destroy plants
-gaian sweet scent -- plant attracts creatures int 1-2 to it
-gaian summon flytrap -- attracts and eats creatures of insect race
 restart doesn't work

@@ -10,12 +10,14 @@ public class Chant_FungalBloom extends Chant
 	public String ID() { return "Chant_FungalBloom"; }
 	public String name(){ return "Fungal Bloom";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	protected int canTargetCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	return new Chant_FungalBloom();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		||(mob.location().domainType()==Room.DOMAIN_INDOORS_AIR)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell("This magic will not work here.");
