@@ -14,6 +14,160 @@ public class Spell_Cogniportive extends Spell
 	public Environmental newInstance(){	return new Spell_Cogniportive();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
+	public String establishHome(Item me)
+	{
+		if(me instanceof LandTitle)
+			return ((LandTitle)me).landRoomID();
+		else
+		{
+			// check mobs worn items first!
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=CMMap.getRoom(r);
+				if(R!=null)
+				{
+					for(int s=0;s<R.numInhabitants();s++)
+					{
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)
+						&&(M.isMonster())
+						&&(!(M instanceof ShopKeeper))
+						&&(M.fetchInventory(me.name())!=null)
+						&&(!M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
+							return M.getStartRoom().ID();
+					}
+				}
+			}
+			// check shopkeepers second!
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=CMMap.getRoom(r);
+				if(R!=null)
+				{
+					for(int s=0;s<R.numInhabitants();s++)
+					{
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)&&(M instanceof ShopKeeper))
+						{
+							ShopKeeper S=(ShopKeeper)M;
+							if(S.doIHaveThisInStock(me.name(),null))
+								return M.getStartRoom().ID();
+						}
+					}
+				}
+			}
+			// check mobs inventory items third!
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=CMMap.getRoom(r);
+				if(R!=null)
+				{
+					for(int s=0;s<R.numInhabitants();s++)
+					{
+						MOB M=R.fetchInhabitant(s);
+						if((M!=null)
+						&&(M.isMonster())
+						&&(!(M instanceof ShopKeeper))
+						&&(M.fetchInventory(me.name())!=null)
+						&&(M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
+							return M.getStartRoom().ID();
+					}
+				}
+			}
+			// check room stuff last
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=CMMap.getRoom(r);
+				if((R!=null)&&(R.fetchItem(null,me.name())!=null))
+				   return R.ID();
+			}
+		}
+		return "";
+	}
+	
+	public void waveIfAble(MOB mob,
+						   Environmental afftarget,
+						   Item me)
+	{
+		if((mob!=null)
+		   &&(mob.isMine(me))
+		   &&(mob.location()!=null)
+		   &&(me!=null))
+		{
+			if(text().length()==0)
+				setMiscText(establishHome(me));
+			Environmental target=null;
+			if((mob.location()!=null))
+				target=afftarget;
+			Room home=CMMap.getRoom(text());
+			if(home==null)
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
+			else
+			{
+				Hashtable h=ExternalPlay.properTargets(this,mob,false);
+				if(h==null) return;
+
+				Room thisRoom=mob.location();
+				for(Enumeration f=h.elements();f.hasMoreElements();)
+				{
+					MOB follower=(MOB)f.nextElement();
+					FullMsg enterMsg=new FullMsg(follower,home,this,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears in a puff of smoke.");
+					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,Affect.MSG_LEAVE|Affect.MASK_MAGIC,"<S-NAME> disappear(s) in a puff of smoke.");
+					if(thisRoom.okAffect(leaveMsg)&&home.okAffect(enterMsg))
+					{
+						if(follower.isInCombat())
+						{
+							ExternalPlay.flee(follower,"NOWHERE");
+							follower.makePeace();
+						}
+						thisRoom.send(follower,leaveMsg);
+						home.bringMobHere(follower,false);
+						home.send(follower,enterMsg);
+						follower.tell("\n\r\n\r");
+						ExternalPlay.look(follower,null,true);
+					}
+				}
+			}
+		}
+	}
+	
+	public void affect(Affect affect)
+	{
+		MOB mob=affect.source();
+		
+		if(affected instanceof Item)
+		switch(affect.targetMinor())
+		{
+		case Affect.TYP_WAND_USE:
+			if(affect.amITarget(affected))
+				waveIfAble(mob,affect.tool(),(Item)affected);
+			break;
+		case Affect.TYP_SPEAK:
+			if(affect.sourceMinor()==Affect.TYP_SPEAK)
+			{
+				String msg=affect.sourceMessage();
+				int x=msg.indexOf("'");
+				if(x<0) break;
+				msg=msg.substring(x+1);
+				x=msg.lastIndexOf("'");
+				if(x<0) break;
+				msg=msg.substring(0,x);
+				Vector V=Util.parse(msg);
+				if(V.size()<2) break;
+				String str=(String)V.firstElement();
+				if(!str.equalsIgnoreCase("HOME")) break;
+				str=Util.combine(V,1);
+				if(CoffeeUtensils.containsString(affected.name(),str)
+				||CoffeeUtensils.containsString(affected.displayText(),str))
+					affect.addTrailerMsg(new FullMsg(affect.source(),affected,affect.target(),affect.NO_EFFECT,null,Affect.MASK_GENERAL|Affect.TYP_WAND_USE,affect.sourceMessage(),affect.NO_EFFECT,null));
+			}
+			break;
+		default:
+			break;
+		}
+		super.affect(affect);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
@@ -21,11 +175,12 @@ public class Spell_Cogniportive extends Spell
 		{
 			String str=Util.combine(commands,0).toUpperCase();
 			if(str.equals("MONEY")||str.equals("GOLD")||str.equals("COINS"))
-				mob.tell("You can't cast this spell on your own coins.");
+				mob.tell("You can't cast this spell on coins!");
 			return false;
 		}
 
-		if(target.fetchAffect(this.ID())!=null)
+		Ability A=target.fetchAffect(ID());
+		if(A!=null)
 		{
 			mob.tell(target.name()+" is already cogniportive!");
 			return false;
@@ -43,12 +198,10 @@ public class Spell_Cogniportive extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
-				beneficialAffect(mob,target,100);
-				Ability A=target.fetchAffect(ID());
-				if(A!=null){
-					A.makeLongLasting();
-					A.makeNonUninvokable();
-				}
+				beneficialAffect(mob,target,1000);
+				A=target.fetchAffect(ID());
+				if(A!=null)
+					A.setMiscText(((Spell_Cogniportive)A).establishHome(target));
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();

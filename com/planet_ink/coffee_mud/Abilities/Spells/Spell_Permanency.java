@@ -94,7 +94,10 @@ public class Spell_Permanency extends Spell
 					permanentAbility=theOne;
 					beneficialAffect(mob,target,Integer.MAX_VALUE);
 					if(target.fetchAffect(ID())!=null)
+					{
 						permanentAbility.makeLongLasting();
+						permanentAbility.makeNonUninvokable();
+					}
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}

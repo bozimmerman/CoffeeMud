@@ -727,6 +727,28 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					{
 						if((whatISell==DEAL_TRAINER)&&(!((Ability)affect.tool()).canBeLearnedBy(new Teacher(),mob)))
 							return false;
+						
+						if(affect.targetMinor()==Affect.TYP_BUY)
+						{
+							Ability A=(Ability)affect.tool();
+							if(A.canTarget(mob)){}
+							else
+							if(A.canTarget(CMClass.getItem("StdItem")))
+							{
+								Item I=mob.fetchWieldedItem();
+								if(I==null) I=mob.fetchWornItem(Item.HELD);
+								if(I==null)
+								{
+									ExternalPlay.quickSay(this,mob,"You need to be wielding or holding the item you want this cast on.",true,false);
+									return false;
+								}
+							}
+							else
+							{
+								ExternalPlay.quickSay(this,mob,"I don't know how to sell that spell.",true,false);
+								return false;
+							}
+						}
 					}
 					return true;
 				}
@@ -899,17 +921,32 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof Ability)
 					{
+						Ability A=(Ability)product;
 						if(whatISell==DEAL_TRAINER)
-							((Ability)product).teach(new Teacher(),mob);
+							A.teach(new Teacher(),mob);
 						else
 						{
 							curState().setMana(maxState().getMana());
 							Vector V=new Vector();
-							V.addElement(mob.name()+"$");
-							((Ability)product).invoke(this,V,mob,true);
+							if(A.canTarget(mob))
+							{
+								V.addElement(mob.name()+"$");
+								A.invoke(this,V,mob,true);
+							}
+							else
+							if(A.canTarget(CMClass.getItem("StdItem")))
+							{
+								Item I=mob.fetchWieldedItem();
+								if(I==null) I=mob.fetchWornItem(Item.HELD);
+								if(I==null) return;
+								V.addElement(I.name()+"$");
+								addInventory(I);
+								A.invoke(this,V,I,true);
+								delInventory(I);
+								if(!mob.isMine(I)) mob.addInventory(I);
+							}
 							curState().setMana(maxState().getMana());
 						}
-
 					}
 
 					if(mySession!=null)
