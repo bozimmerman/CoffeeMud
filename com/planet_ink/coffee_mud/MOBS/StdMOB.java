@@ -251,6 +251,11 @@ public class StdMOB implements MOB
 			if(affect!=null)
 				affect.affectEnvStats(this,envStats);
 		}
+		/* the follower light exception*/
+		if(!Sense.isLight(this))
+		for(int f=0;f<numFollowers();f++)
+			if(Sense.isLight(fetchFollower(f)))
+				envStats.setDisposition(envStats().disposition()|EnvStats.IS_LIGHT);
 	}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
@@ -303,8 +308,7 @@ public class StdMOB implements MOB
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(((Sense.isLight(this))||((amFollowing()!=null)&&(Sense.isLight(amFollowing()))))
-								   &&(affected instanceof Room))
+		if((Sense.isLight(this))&&(affected instanceof Room))
 		{
 			if(Sense.isInDark(affected))
 				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);

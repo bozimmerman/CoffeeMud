@@ -415,7 +415,7 @@ public class MUD extends Thread implements Host
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session session=Sessions.elementAt(s);
-			if(session.mob()!=null)
+			try
 			{
 				offlineReason=new String("Shutting down...Saving "+session.mob().name());
 				MOBloader.DBUpdate(session.mob());
@@ -424,6 +424,7 @@ public class MUD extends Thread implements Host
 				offlineReason=new String("Shutting down...Done saving "+session.mob().name());
 				offlineReason="Done saving mob "+session.mob().name();
 			}
+			catch(java.lang.NullPointerException n){}
 		}
 		Log.sysOut("MUD","All users saved.");
 		S.println("All users saved.");

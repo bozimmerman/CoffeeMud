@@ -2866,7 +2866,7 @@ public class Import
 						E.setDescription(descStr);
 						R.rawExits()[dirCode]=E;
 						Exit opExit=null;
-						if((linkRoom==null)&&(linkRoomID>=0))
+						if(((linkRoom==null)||(linkRoom.getArea().name()!=R.getArea().name()))&&(linkRoomID>=0))
 						{
 							for(int m=0;m<CMMap.numRooms();m++)
 							{
@@ -2890,7 +2890,8 @@ public class Import
 									linkRoom=R2;
 									if(opExit!=null)
 										opExit.setExitParams(opExit.doorName(),"close",opExit.openWord(),opExit.displayText());
-									ExternalPlay.DBUpdateExits(linkRoom);
+									if((!doneRooms.containsValue(linkRoom)))
+										ExternalPlay.DBUpdateExits(linkRoom);
 									break;
 								}
 							}
@@ -3266,7 +3267,8 @@ public class Import
 					else
 					{
 						sourceRoom.rawDoors()[direction]=destRoom;
-						if((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/")))
+						if(((!doneRooms.containsValue(sourceRoom)))
+						&&((nextLink.length()==0)||(!nextLink.startsWith(sourceRoomID+"/"))))
 							ExternalPlay.DBUpdateExits(sourceRoom);
 					}
 				}
