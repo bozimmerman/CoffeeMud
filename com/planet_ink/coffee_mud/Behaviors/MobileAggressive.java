@@ -33,8 +33,8 @@ public class MobileAggressive extends Mobile
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			Aggressive.tickAggressively(ticking,tickID,this);
-			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,this);
+			Aggressive.tickAggressively(ticking,tickID,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
+			VeryAggressive.tickVeryAggressively(ticking,tickID,wander,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
 		}
 		return true;
 	}

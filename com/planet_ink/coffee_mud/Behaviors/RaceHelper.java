@@ -41,7 +41,7 @@ public class RaceHelper extends StdBehavior
 		{
 			if(observer.charStats().getMyRace().ID().equalsIgnoreCase(target.charStats().getMyRace().ID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,false);
+				boolean yep=Aggressive.startFight(observer,source,(getParms().toUpperCase().indexOf("MOBKILL")>=0));
 				String reason="THAT`S MY FRIEND!! CHARGE!!";
 				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))

@@ -772,8 +772,12 @@ public class Arrest extends StdBehavior
 					warrants.removeElement(W);
 			}
 		}
-
-		if(affect.source().isMonster()) return;
+		boolean arrestMobs=false;
+		if(getLaws().get("ARRESTMOBS")!=null)
+			arrestMobs=((String)getLaws().get("ARRESTMOBS")).equalsIgnoreCase("true");
+		
+		if((affect.source().isMonster())&&(!arrestMobs)) 
+			return;
 
 		if(!Sense.aliveAwakeMobile(affect.source(),true))
 			return;
@@ -820,6 +824,7 @@ public class Arrest extends StdBehavior
 			{
 				String nudity=(String)laws.get("NUDITY");
 				if((nudity!=null)
+				&&((!affect.source().isMonster())||(arrestMobs))
 				&&(nudity.length()>0)
 				&&(affect.source().fetchWornItem(Item.ON_LEGS)==null)
 				&&(affect.source().fetchWornItem(Item.ON_WAIST)==null)
@@ -863,6 +868,7 @@ public class Arrest extends StdBehavior
 				String armed=(String)laws.get("ARMED");
 				Item w=null;
 				if((armed!=null)
+				&&((!affect.source().isMonster())||(arrestMobs))
 				&&(armed.length()>0)
 				&&((w=affect.source().fetchWieldedItem())!=null)
 				&&(w instanceof Weapon)
@@ -935,7 +941,7 @@ public class Arrest extends StdBehavior
 						for(int b=0;b<M.numBehaviors();b++)
 						{
 							Behavior B=M.fetchBehavior(b);
-							if((B!=null)&&(B instanceof Mobile))
+							if((B!=null)&&(B.grantsMobility()))
 								return true;
 						}
 					}

@@ -10,7 +10,6 @@ public class VeryAggressive extends Aggressive
 	public String ID(){return "VeryAggressive";}
 	protected int tickWait=0;
 	protected int tickDown=0;
-	protected boolean wander=false;
 	public Behavior newInstance()
 	{
 		return new VeryAggressive();
@@ -21,14 +20,6 @@ public class VeryAggressive extends Aggressive
 		super.setParms(newParms);
 		tickWait=getParmVal(newParms,"delay",0);
 		tickDown=tickWait;
-		wander=false;
-		Vector V=Util.parse(newParms);
-		for(int v=0;v<V.size();v++)
-		{
-			String s=(String)V.elementAt(v);
-			if(s.equalsIgnoreCase("WANDER"))
-				wander=true;
-		}
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
@@ -38,7 +29,8 @@ public class VeryAggressive extends Aggressive
 	public static void tickVeryAggressively(Tickable ticking,
 											int tickID,
 											boolean wander,
-											Behavior B)
+											boolean mobKiller,
+											String zapStr)
 	{
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
@@ -79,9 +71,10 @@ public class VeryAggressive extends Aggressive
 					{
 						MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
-						&&(!inhab.isMonster())
-						&&(inhab.envStats().level()<(mob.envStats().level()+11))
-						&&(inhab.envStats().level()>(mob.envStats().level()-11)))
+						&&((!inhab.isMonster())||(mobKiller))
+						&&(ExternalPlay.zapperCheck(zapStr,inhab))
+						&&(inhab.envStats().level()<(mob.envStats().level()+15))
+						&&(inhab.envStats().level()>(mob.envStats().level()-15)))
 						{
 							dirCode=d;
 							break;
@@ -94,7 +87,7 @@ public class VeryAggressive extends Aggressive
 		if(dirCode>=0)
 		{
 			ExternalPlay.move(mob,dirCode,false,false);
-			pickAFight(mob,B);
+			pickAFight(mob,zapStr,mobKiller);
 		}
 	}
 
@@ -104,7 +97,10 @@ public class VeryAggressive extends Aggressive
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickVeryAggressively(ticking,tickID,wander,this);
+			tickVeryAggressively(ticking,tickID,
+								 (getParms().toUpperCase().indexOf("WANDER")>=0),
+								 (getParms().toUpperCase().indexOf("MOBKILL")>=0),
+								 getParms());
 		}
 		return true;
 	}

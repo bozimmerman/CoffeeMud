@@ -28,7 +28,9 @@ public class Aggressive extends StdBehavior
 		tickDown=tickWait;
 	}
 	
-	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs)
+	public static boolean startFight(MOB monster, 
+									 MOB mob, 
+									 boolean fightMOBs)
 	{
 		if((mob!=null)
 		&&(monster!=null)
@@ -57,7 +59,7 @@ public class Aggressive extends StdBehavior
 		}
 		return false;
 	}
-	public static boolean pickAFight(MOB observer, Behavior B)
+	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		for(int i=0;i<observer.location().numInhabitants();i++)
@@ -65,9 +67,9 @@ public class Aggressive extends StdBehavior
 			MOB mob=observer.location().fetchInhabitant(i);
 			if((mob!=null)
 			&&(mob!=observer)
-			&&(ExternalPlay.zapperCheck(B.getParms(),mob)))
+			&&(ExternalPlay.zapperCheck(zapStr,mob)))
 			{
-				if(startFight(observer,mob,false))
+				if(startFight(observer,mob,mobKiller))
 					return true;
 			}
 		}
@@ -76,13 +78,14 @@ public class Aggressive extends StdBehavior
 
 	public static void tickAggressively(Tickable ticking, 
 										int tickID,
-										Behavior B)
+										boolean mobKiller,
+										String zapStr)
 	{
 		if(tickID!=Host.MOB_TICK) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
 
-		pickAFight((MOB)ticking,B);
+		pickAFight((MOB)ticking,zapStr,mobKiller);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -92,7 +95,7 @@ public class Aggressive extends StdBehavior
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
-			tickAggressively(ticking,tickID,this);
+			tickAggressively(ticking,tickID,(getParms().toUpperCase().indexOf("MOBKILL")>=0),getParms());
 		}
 		return true;
 	}

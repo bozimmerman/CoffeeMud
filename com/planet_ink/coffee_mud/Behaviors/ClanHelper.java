@@ -12,6 +12,8 @@ public class ClanHelper extends StdBehavior
 	{
 		return new ClanHelper();
 	}
+	
+	protected boolean mobKiller=false;
 	public void startBehavior(Environmental forMe)
 	{
 		super.startBehavior(forMe);
@@ -54,7 +56,7 @@ public class ClanHelper extends StdBehavior
 		{
 			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,false);
+				boolean yep=Aggressive.startFight(observer,source,true);
 				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
 				if((observer.getClanID().equals(target.getClanID()))
 				&&(!observer.getClanID().equals(source.getClanID())))

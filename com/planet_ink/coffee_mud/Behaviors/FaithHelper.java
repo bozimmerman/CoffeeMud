@@ -12,6 +12,7 @@ public class FaithHelper extends StdBehavior
 	{
 		return new FaithHelper();
 	}
+	protected boolean mobKiller=false;
 	
 	public void startBehavior(Environmental forMe)
 	{
@@ -52,7 +53,7 @@ public class FaithHelper extends StdBehavior
 		{
 			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID()))
 			{
-				boolean yep=Aggressive.startFight(observer,source,false);
+				boolean yep=Aggressive.startFight(observer,source,true);
 				String reason="THAT`S MY FRIEND!! CHARGE!!";
 				if((observer.getWorshipCharID().equals(target.getWorshipCharID()))
 				&&(!observer.getWorshipCharID().equals(source.getWorshipCharID())))
