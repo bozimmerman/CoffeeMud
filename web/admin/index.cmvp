@@ -23,8 +23,11 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<a href="pub/">Go to public pages</A><br>
 	<br>
 	Admin Info:<br>
-	<a href="pub/guides/ArchonGuide.html">Archon's Guide</a><BR>
+	<A HREF="pub/guides/InstallationGuide.html">The Installation Guide</A><br>
 	<A HREF="pub/guides/WebServer.html">The Web Server guide</A><br>
+	<a href="pub/guides/ArchonGuide.html">Archon's Guide</a><BR>
+	<A HREF="pub/guides/MUDGrinder.html">The MUDGrinder Guide</A><br>
+	<A HREF="pub/guides/Programming.html">The Programmer's Guide</A><br>
 	<A href="archonables.cmvp">MOB Behaviors/Properties</a><BR>
 	<P>
 	<FORM NAME=LOGIN METHOD=GET ACTION=/grinder/loggedin.cmvp TARGET=_top>
