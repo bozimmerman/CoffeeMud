@@ -123,6 +123,7 @@ public interface Area extends Environmental
 	public void fillInAreaRoom(Room R);
 	public Enumeration getMap();
 	public int mapSize();
+	public int numberOfIDedRooms();
 	public Room getRandomRoom();
 	public void clearMap();
 	

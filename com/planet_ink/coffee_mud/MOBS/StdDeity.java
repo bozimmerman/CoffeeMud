@@ -223,7 +223,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			break;
 		case Affect.TYP_REBUKE:
-			if(!msg.source().getWorshipCharID().equals(name()))
+			if(!msg.source().getWorshipCharID().equals(Name()))
 			{
 				msg.source().tell("You do not worship "+name()+".");
 				return false;
@@ -320,17 +320,20 @@ public class StdDeity extends StdMOB implements Deity
 			msg.source().setWorshipCharID(name());
 			break;
 		case Affect.TYP_REBUKE:
-			msg.source().setWorshipCharID("");
-			removeBlessings(msg.source());
-			if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
+			if(msg.source().getWorshipCharID().equals(Name()))
 			{
-				msg.source().tell("You feel the wrath of "+name()+"!");
-				msg.source().charStats().getCurrentClass().unLevel(msg.source());
-			}
-			else
-			{
-				msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
-				msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
+				msg.source().setWorshipCharID("");
+				removeBlessings(msg.source());
+				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
+				{
+					msg.source().tell("You feel the wrath of "+name()+"!");
+					msg.source().charStats().getCurrentClass().unLevel(msg.source());
+				}
+				else
+				{
+					msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
+					msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
+				}
 			}
 			break;
 		}

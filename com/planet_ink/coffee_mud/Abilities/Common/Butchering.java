@@ -25,6 +25,16 @@ public class Butchering extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Butchering();}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((body!=null)
+		&&(affected instanceof MOB)
+		&&(((MOB)affected).location()!=null)
+		&&((!((MOB)affected).location().isContent(body)))
+		&&((!((MOB)affected).isMine(body))))
+			unInvoke();
+		return super.tick(ticking,tickID);
+	}
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

@@ -34,6 +34,7 @@ public class MOBEater extends ActiveTicker
 				Stomach.setArea(lastKnownLocation.getArea());
 			Stomach.setName("The Stomach of "+forMe.name());
 			Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach.addNonUninvokableAffect(CMClass.getAbility("Prop_NoRecall"));
 		}
 	}
 
@@ -93,9 +94,15 @@ public class MOBEater extends ActiveTicker
 		&&(((MOB)ticking).isInCombat())
 		&&(!mob.amDead()))
 			trySwallowWhole(mob);
-		if(mob.amDead())
-			kill();
 		return true;
+	}
+	public void affect(Environmental mob, Affect msg)
+	{
+		if((mob instanceof MOB)
+		&&(msg.amISource((MOB)mob))
+		&&(msg.sourceMinor()==Affect.TYP_DEATH))
+			kill();
+		super.affect(mob,msg);
 	}
 	protected boolean trySwallowWhole(MOB mob)
 	{

@@ -81,19 +81,22 @@ public class CombatAbilities extends StdBehavior
 		while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
 		{
 			tryThisOne=mob.fetchAbility(Dice.roll(1,mob.numAbilities(),-1));
-			if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null))
-			{
-				if(!((tryThisOne.quality()==Ability.MALICIOUS)
+			if((tryThisOne!=null)
+			&&((!((tryThisOne.quality()==Ability.MALICIOUS)
 				||(tryThisOne.quality()==Ability.BENEFICIAL_SELF)
-				||(tryThisOne.quality()==tryThisOne.BENEFICIAL_OTHERS)))
+				||(tryThisOne.quality()==tryThisOne.BENEFICIAL_OTHERS))
+				||(tryThisOne.isAutoInvoked())
+				||(tryThisOne.triggerStrings()==null)
+				||(tryThisOne.triggerStrings().length==0))))
 					tryThisOne=null;
-			}
-			else
+			
+			if((tryThisOne!=null)&&(mob.fetchAffect(tryThisOne.ID())==null))
 				tryThisOne=null;
 			tries++;
 		}
 
 		mob.curState().adjMana(5,mob.maxState());
+		boolean wandThis=true;
 		if(tryThisOne!=null)
 		{
 			if(tryThisOne.quality()!=Ability.MALICIOUS)
@@ -102,10 +105,11 @@ public class CombatAbilities extends StdBehavior
 			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
-			tryThisOne.invoke(mob,V,victim,false);
+			if(tryThisOne.invoke(mob,V,victim,false))
+				wandThis=false;
 		}
-		else
-		if((victim.location()!=null)
+		if((wandThis)
+		&&(victim.location()!=null)
 		&&(!victim.amDead())
 		&&(Dice.rollPercentage()<25)
 		&&(mob.fetchAbility("Skill_WandUse")!=null))

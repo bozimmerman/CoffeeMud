@@ -68,7 +68,9 @@ public class Spell_Siphon extends Spell
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&((affect.targetCode()-Affect.MASK_HURT)>0)
 		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon))
+		&&(affect.tool() instanceof Weapon)
+		&&(Dice.rollPercentage()>50)
+		&&(affect.source().curState().getMana()>0))
 		{
 		
 			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> siphon(s) mana from <T-NAME>!");

@@ -28,7 +28,9 @@ public class Import
 			areaName=areaLine;
 		}
 		else
-		if((firstLine.indexOf("~")>=0)&&(firstLine.startsWith("#AREA ")))
+		if((firstLine.indexOf("~")>=0)
+		&&(firstLine.startsWith("#AREA "))
+		&&(firstLine.toUpperCase().indexOf(".ARE")<0))
 		{
 			String areaLine=firstLine;
 			areaLine=areaLine.substring(5).trim();
@@ -52,7 +54,7 @@ public class Import
 				areaName=lineAfter.trim();
 			}
 			else
-				areaName=removeAtAts(lineAfter).trim();
+				areaName=lineAfter.trim();
 		}
 		if(areaName.toUpperCase().startsWith("NAME "))
 		{
@@ -69,6 +71,14 @@ public class Import
 				areaName=areaName.substring(5).trim();
 		}
 		
+		if((areaName.indexOf(""+((char)27))>=0)
+		||(areaName.indexOf("&")>=0)
+		||(areaName.indexOf("@@")>=0))
+		{
+			for(int s1=0;s1<colors.length;s1++)
+				if(areaName.indexOf(colors[s1][0])>=0)
+					areaName=Util.replaceAll(areaName,colors[s1][0],colors[s1][1]);
+		}
 		return Util.safetyFilter(areaName);
 	}
 	private static final String[][] colors={
@@ -110,20 +120,35 @@ public class Import
 		{"&W","^w"},
 		{"&[",""},
 		{"&[","^?"},
+		{"@@k",""},
+		{"@@R","^R"},
+		{"@@G","^G"},
+		{"@@b","^Y"},
+		{"@@B","^B"},
+		{"@@p","^P"},
+		{"@@c","^C"},
+		{"@@g","^W"},
+		{"@@d","^W"},
+		{"@@r","^r"},
+		{"@@e","^g"},
+		{"@@y","^y"},
+		{"@@l","^b"},
+		{"@@m","^p"},
+		{"@@M","^p"},
+		{"@@a","^c"},
+		{"@@W","^w"},
+		{"@@x","^!"},
+		{"@@f","^*"},
+		{"@@i",""},
+		{"@@2","^R"},
+		{"@@3","^G"},
+		{"@@4","^Y"},
+		{"@@1","^B"},
+		{"@@5","^P"},
+		{"@@6","^C"},
+		{"@@0","^W"},
+		{"@@7","^W"}
 	};
-
-	private static String removeAtAts(String str)
-	{
-		int x=str.indexOf("@@");
-		while(x>=0)
-		{
-			if((x+3)>=str.length())
-				break;
-			str=str.substring(0,x)+str.substring(x+3);
-			x=str.indexOf("@@");
-		}
-		return str;
-	}
 
 	private static String nextLine(Vector V)
 	{
@@ -210,7 +235,6 @@ public class Import
 		return s;
 	}
 	
-	
 	private static String eatLineSquiggle(Vector V)
 	{
 		if(V.size()==0) return "";
@@ -234,10 +258,12 @@ public class Import
 		if(s.indexOf("^")>=0)	s=Util.replaceAll(s,"^","^^");
 		
 		if((s.indexOf(""+((char)27))>=0)
-		||(s.indexOf("&")>=0))
+		||(s.indexOf("&")>=0)
+		||(s.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
-				s=Util.replaceAll(s,colors[s1][0],colors[s1][1]);
+				if(s.indexOf(colors[s1][0])>=0)
+					s=Util.replaceAll(s,colors[s1][0],colors[s1][1]);
 		}
 		
 		int x=s.indexOf("@eng");
@@ -905,7 +931,7 @@ public class Import
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.addElement(Util.safetyFilter(removeAtAts((String)buf.elementAt(0))));
+					useThisOne.addElement(Util.safetyFilter((String)buf.elementAt(0)));
 				buf.removeElementAt(0);
 			}
 			else

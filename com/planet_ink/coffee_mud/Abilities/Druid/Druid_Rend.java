@@ -75,7 +75,7 @@ public class Druid_Rend extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.MSG_OK_ACTION,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
+				ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.MSG_NOISYMOVEMENT,Weapon.TYPE_PIERCING,"^F<S-NAME> <DAMAGE> <T-NAME> by rending <T-HIM-HER> with <S-HIS-HER> feet!^?");
 			}
 		}
 		else

@@ -1319,7 +1319,7 @@ public class StdArea implements Area
 	{
 		StringBuffer s=new StringBuffer("");
 		s.append(description()+"\n\r");
-		s.append("Number of rooms: "+mapSize()+"\n\r");
+		s.append("Number of rooms: "+numberOfIDedRooms()+"\n\r");
 
 		Vector mobRanges=new Vector();
 		int totalMOBs=0;
@@ -1402,6 +1402,20 @@ public class StdArea implements Area
 				makeMap();
 			return myRooms.size();
 		}
+	}
+	public int numberOfIDedRooms()
+	{
+		int num=0;
+		for(Enumeration e=getMap();e.hasMoreElements();)
+		{
+			Room R=(Room)e.nextElement();
+			if(R.roomID().length()>0)
+				if(R instanceof GridLocale)
+					num+=((GridLocale)R).getAllRooms().size();
+				else
+					num++;
+		}
+		return num;
 	}
 	public Room getRandomRoom()
 	{

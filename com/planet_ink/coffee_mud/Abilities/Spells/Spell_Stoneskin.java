@@ -47,19 +47,15 @@ public class Spell_Stoneskin extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((affect.amITarget(mob))
-		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		   &&((affect.targetCode()-Affect.MASK_HURT)>0))
+		if(affect.amITarget(mob)
+		&&(affect.tool()!=null)
+		&&(!mob.amDead())
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)&&((affect.targetCode()-Affect.MASK_HURT)>0)&&(affect.tool() instanceof Weapon)))
 		{
-			if((affect.tool()!=null)
-			&&(!mob.amDead())
-			&&(affect.tool() instanceof Weapon))
-			{
-				affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-				affect.addTrailerMsg(new FullMsg((MOB)affect.target(),affect.source(),Affect.MSG_OK_VISUAL,"The stone skin around <S-NAME> absorbs the attack from <T-NAME>."));
-				if((--HitsRemaining)<=0)
-					unInvoke();
-			}
+			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),affect.source(),Affect.MSG_OK_VISUAL,"The stone skin around <S-NAME> absorbs the attack from <T-NAME>."));
+			if((--HitsRemaining)<=0)
+				unInvoke();
 		}
 		return true;
 	}

@@ -55,23 +55,28 @@ public class Spell_CombatPrecognition extends Spell
 				FullMsg msg2=null;
 				switch(affect.targetMinor())
 				{
+				case Affect.TYP_JUSTICE:
+					if((Util.bset(affect.targetCode(),Affect.MASK_MOVE))
+					&&(tool!=null))
+						msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"physical":tool)+" from <T-NAME>.");
+					break;
 				case Affect.TYP_GAS:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+" from <T-NAME>.");
 					break;
 				case Affect.TYP_COLD:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"cold blast":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"cold blast":tool)+" from <T-NAME>.");
 					break;
 				case Affect.TYP_ELECTRIC:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"electrical attack":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"electrical attack":tool)+" from <T-NAME>.");
 					break;
 				case Affect.TYP_FIRE:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+" from <T-NAME>.");
 					break;
 				case Affect.TYP_WATER:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"weat blast":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"weat blast":tool)+" from <T-NAME>.");
 					break;
 				case Affect.TYP_ACID:
-					msg2=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <S-NAME>.");
+					msg2=new FullMsg(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<S-NAME> avoid(s) the "+((tool==null)?"acid attack":tool)+" from <T-NAME>.");
 					break;
 				}
 				if((msg2!=null)&&(mob.location()!=null)&&(mob.location().okAffect(mob,msg2)))

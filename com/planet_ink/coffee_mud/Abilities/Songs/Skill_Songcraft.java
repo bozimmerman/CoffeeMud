@@ -38,6 +38,7 @@ public class Skill_Songcraft extends StdAbility
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
 		&&(Sense.canBeSeenBy(msg.source(),mob))
+		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 		{
 			Ability A=(Ability)copyOf();

@@ -291,11 +291,13 @@ public class Util
 	public static String getCleanBit(String s, int which)
 	{
 		s=getBit(s,which);
-		if(s.startsWith("'"))
+		while(s.startsWith(" "))
+			s=s.substring(1);
+		if((s.startsWith("'"))||(s.startsWith("`")))
 			s=s.substring(1);
 		while(s.endsWith(" "))
 			s=s.substring(0,s.length()-1);
-		if(s.endsWith("'"))
+		if((s.endsWith("'"))||(s.endsWith("`")))
 			s=s.substring(0,s.length()-1);
 		return s;
 	}

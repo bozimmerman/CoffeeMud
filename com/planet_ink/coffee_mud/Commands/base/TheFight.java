@@ -90,7 +90,15 @@ public class TheFight
 	{
 		Hashtable h=null;
 		if(A.quality()!=Ability.MALICIOUS)
+		{
 			h=caster.getGroupMembers(new Hashtable());
+			for(Enumeration e=h.keys();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				if(M.location()!=caster.location())
+					h.remove(M);
+			}
+		}
 		else
 		if(caster.isInCombat())
 			h=allCombatants(caster);

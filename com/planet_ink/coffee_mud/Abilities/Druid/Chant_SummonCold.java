@@ -25,7 +25,7 @@ public class Chant_SummonCold extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int size=mob.location().getArea().mapSize();
+		int size=mob.location().getArea().numberOfIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(-size,auto);
