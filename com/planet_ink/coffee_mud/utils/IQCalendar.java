@@ -139,12 +139,18 @@ public class IQCalendar extends GregorianCalendar
 					int HH=Util.s_int(oldDate.substring(divider-2,divider).trim());
 					int MM=Util.s_int(oldDate.substring(divider+1,divider+3).trim());
 					String AP="AM";
-					if(HH==0) HH=12;
-					else
-					if(HH>=12)
-					{
+					if(oldDate.indexOf("PM")>divider)
 						AP="PM";
-						if(HH>12) HH=HH-12;
+					else
+					if(oldDate.indexOf("AM")<divider)
+					{
+						if(HH==0) HH=12;
+						else
+						if(HH>=12)
+						{
+							AP="PM";
+							if(HH>12) HH=HH-12;
+						}
 					}
 					TheDate=TheDate+" "+Integer.toString(HH)+":"+Integer.toString(MM)+" "+AP;
 				}

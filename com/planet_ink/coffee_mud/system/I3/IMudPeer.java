@@ -22,40 +22,30 @@ public class IMudPeer implements PersistentPeer
 	public void restore() throws PersistenceException
 	{
 		isRestoring=true;
-		StringBuffer buf=Resources.getFileResource("ppeer."+myID);
-		if((buf!=null)&&(buf.length()>0))
+		if(myobj instanceof Intermud)
 		{
 			try{
-				if(myobj instanceof Intermud)
-				{
-					((Intermud)myobj).password=Util.s_int(buf.toString());
-					/*
-					ByteArrayInputStream byin=new ByteArrayInputStream(buf.toString().getBytes());
-					
-					ObjectInputStream in=new ObjectInputStream(byin);
-					Object newobj;
-					newobj=in.readObject();
-					if(newobj instanceof Integer)
-						((Intermud)myobj).password=((Integer)newobj).intValue();
-					newobj=in.readObject();
-					if(newobj instanceof Hashtable)
-						((Intermud)myobj).banned=(Hashtable)newobj;
-					newobj=in.readObject();
-					if(newobj instanceof ChannelList)
-						((Intermud)myobj).channels=(ChannelList)newobj;
-					newobj=in.readObject();
-					if(newobj instanceof MudList)
-						((Intermud)myobj).muds=(MudList)newobj;
-					newobj=in.readObject();
-					if(newobj instanceof Vector)
-						((Intermud)myobj).name_servers=(Vector)newobj;
-					*/
-					
-				}
+				File F=new File("resources/ppeer."+myID);
+				ObjectInputStream in=new ObjectInputStream(new FileInputStream(F));
+				Object newobj;
+				newobj=in.readObject();
+				if(newobj instanceof Integer)
+					((Intermud)myobj).password=((Integer)newobj).intValue();
+				newobj=in.readObject();
+				if(newobj instanceof Hashtable)
+					((Intermud)myobj).banned=(Hashtable)newobj;
+				newobj=in.readObject();
+				if(newobj instanceof ChannelList)
+					((Intermud)myobj).channels=(ChannelList)newobj;
+				newobj=in.readObject();
+				if(newobj instanceof MudList)
+					((Intermud)myobj).muds=(MudList)newobj;
+				newobj=in.readObject();
+				if(newobj instanceof Vector)
+				((Intermud)myobj).name_servers=(Vector)newobj;
 			}
-			catch(Exception e)
-			{
-				Log.errOut("ImudPeer",e);
+			catch(Exception e){
+				Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
 		isRestoring=false;
@@ -69,31 +59,22 @@ public class IMudPeer implements PersistentPeer
      */
     public void save() throws PersistenceException
 	{
-		
-		ByteArrayOutputStream byout=new ByteArrayOutputStream();
-		try
+		if(myobj instanceof Intermud)
 		{
-			if(myobj instanceof Intermud)
-			{
-				byout.write(new String(""+((Intermud)myobj).password).getBytes());
-				/*
-				ObjectOutputStream out=new ObjectOutputStream(byout);
+			try{
+				File F=new File("resources/ppeer."+myID);
+				try{F.delete();}catch(Exception e){}
+				ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(F));
 				out.writeObject(new Integer(((Intermud)myobj).password));
 				out.writeObject(((Intermud)myobj).banned);
 				out.writeObject(((Intermud)myobj).channels);
 				out.writeObject(((Intermud)myobj).muds);
 				out.writeObject(((Intermud)myobj).name_servers);
-				*/
+			}
+			catch(Exception e){
+				Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
-		catch(Exception e)
-		{
-			Log.errOut("ImudPeer",e);
-		}
-		StringBuffer buf=new StringBuffer(new String(byout.toByteArray()));
-		Resources.removeResource("ppeer."+myID);
-		Resources.submitResource("ppeer."+myID,buf);
-		Resources.saveFileResource("ppeer."+myID);
 	}
 
     /**
