@@ -28,7 +28,7 @@ public class Horse extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,18);
 		affectableStats.setStat(CharStats.DEXTERITY,6);
-		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

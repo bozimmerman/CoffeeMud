@@ -1,5 +1,16 @@
 package com.planet_ink.coffee_mud.Races;
 
-public class Robin
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Robin extends Bird
 {
+	public Robin()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Robin";
+	}
 }

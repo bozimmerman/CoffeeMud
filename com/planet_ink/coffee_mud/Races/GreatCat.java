@@ -28,7 +28,7 @@ public class GreatCat extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,16);
 		affectableStats.setStat(CharStats.DEXTERITY,16);
-		affectableStats.setStat(CharStats.INTELLIGENCE,6);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

@@ -17,7 +17,7 @@ public class Bear extends StdRace
 		heightVariance=10;
 		lightestWeight=350;
 		weightVariance=10;
-		forbiddenWornBits=0;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -25,7 +25,7 @@ public class Bear extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,15);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
-		affectableStats.setStat(CharStats.INTELLIGENCE,4);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -30,7 +30,7 @@ public class Raven extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,8);
 		affectableStats.setStat(CharStats.DEXTERITY,12);
-		affectableStats.setStat(CharStats.INTELLIGENCE,13);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

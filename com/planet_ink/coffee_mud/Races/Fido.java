@@ -28,7 +28,7 @@ public class Fido extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,10);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
-		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

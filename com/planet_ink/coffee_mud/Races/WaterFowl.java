@@ -25,7 +25,7 @@ public class WaterFowl extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,3);
 		affectableStats.setStat(CharStats.DEXTERITY,3);
-		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

@@ -32,8 +32,9 @@ public class Rodent extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.DEXTERITY,18);
-		affectableStats.setStat(CharStats.SAVE_DISEASE,100);
+		affectableStats.setStat(CharStats.SAVE_DISEASE,affectableStats.getStat(CharStats.SAVE_DISEASE)+100);
 	}
 	public String arriveStr()
 	{

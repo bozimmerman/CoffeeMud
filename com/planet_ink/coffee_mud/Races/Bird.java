@@ -11,7 +11,7 @@ public class Bird extends StdRace
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bird";
+		name=myID;
 		shortestMale=3;
 		shortestFemale=3;
 		heightVariance=2;
@@ -30,7 +30,7 @@ public class Bird extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,3);
 		affectableStats.setStat(CharStats.DEXTERITY,12);
-		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{

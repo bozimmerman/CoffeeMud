@@ -31,7 +31,8 @@ public class Owl extends StdRace
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,8);
 		affectableStats.setStat(CharStats.DEXTERITY,12);
-		affectableStats.setStat(CharStats.INTELLIGENCE,18);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.WISDOM,18);
 	}
 	public String arriveStr()
 	{

@@ -44,6 +44,49 @@ public class StdRace implements Race
 
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
+		if((forbiddenWornBits&Item.HELD)>0)
+		{
+			if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
+			{
+				switch(affect.sourceMinor())
+				{
+				case Affect.TYP_CLOSE:
+				case Affect.TYP_DELICATE_HANDS_ACT:
+				case Affect.TYP_DROP:
+				case Affect.TYP_FILL:
+				case Affect.TYP_GET:
+				case Affect.TYP_GIVE:
+				case Affect.TYP_HANDS:
+				case Affect.TYP_HOLD:
+				case Affect.TYP_LOCK:
+				case Affect.TYP_OPEN:
+				case Affect.TYP_PULL:
+				case Affect.TYP_PUSH:
+				case Affect.TYP_PUT:
+				case Affect.TYP_UNLOCK:
+				case Affect.TYP_WEAR:
+				case Affect.TYP_WIELD:
+				case Affect.TYP_WRITE:
+					myChar.tell("Your anatomy prevents you from doing that.");
+					return false;
+				case Affect.TYP_DRINK:
+					if(affect.tool()==null) return true;
+					if(!myChar.isMine(affect.tool())) return true;
+					myChar.tell("You cannot drink from that.");
+					return false;
+				}
+			}
+			else
+			if(affect.amITarget(myChar))
+			{
+				switch(affect.targetMinor())
+				{
+				case Affect.TYP_GIVE:
+					affect.source().tell("You cannot give anything to the "+name()+".");
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
