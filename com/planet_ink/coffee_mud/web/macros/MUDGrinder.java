@@ -41,6 +41,19 @@ public class MUDGrinder extends StdWebMacro
 			ExternalPlay.obliterateArea(A.name());
 			return "The area "+A.name()+" has been successfully deleted.";
 		}
+		else
+		if(parms.containsKey("ADDAREA"))
+		{
+			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			if(AREA==null) return "false";
+			if(AREA.length()==0) return "false";
+			Area A=CMMap.getArea(AREA);
+			if(A==null)
+				A=ExternalPlay.DBCreateArea(AREA,"StdArea");
+			else
+				return "false";
+			return "true";
+		}
 		return "";
 	}
 	

@@ -9,8 +9,7 @@
 </head>
 
 <body>
-
-<div align="center">
+<CENTER>
 <IMG SRC="images/pyramid.jpg" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>CoffeeMUD Admin Server</H3>
 <B>@WEBSERVERVERSION@ '@WEBSERVERNAME@'</B> on port <B>@WEBSERVERPORT@</B><br>
@@ -26,7 +25,7 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	Admin Info:<br>
 	<A HREF="pub/guides/WebServer.html">The CoffeeMUD Web Server guide</A><br>
 	<P>
-	<FORM NAME=LOGIN METHOD=GET ACTION=/loggedin.cmvp TARGET=_top>
+	<FORM NAME=LOGIN METHOD=GET ACTION=/grinder/loggedin.cmvp TARGET=_top>
 	<TABLE WIDTH=200 BORDER=1>
 	<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER><B>Login to MUDGrinder</B></TD></TR>
 	<TR><TD WIDTH=50>Login:</TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>

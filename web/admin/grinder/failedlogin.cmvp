@@ -4,17 +4,22 @@
 <head>
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
 </head>
 
 <body>
 
-<div align="center">
+<CENTER>
 <IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
 <h3>MUDGrinder</H3>
 <P>
+<FORM NAME=NEWAREA METHOD=GET ACTION="loggedin.cmvp" TARGET=_top>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <B><FONT COLOR=RED>Your login or password was not matched in the 
 CoffeeMUD database.  Please go back and try again.</FONT><P>
+<INPUT TYPE=SUBMIT VALUE="Continue">
+</FORM>
 </body>
 </HTML>

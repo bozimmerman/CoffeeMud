@@ -14,7 +14,7 @@ public class Authenticate extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
-			return Encrypt(getLogin(httpReq))+"\""+Encrypt(getPassword(httpReq));
+			return Encrypt(getLogin(httpReq))+"-"+Encrypt(getPassword(httpReq));
 		else
 		{
 			if(authenticated(httpReq,getLogin(httpReq),getPassword(httpReq)))
@@ -24,7 +24,7 @@ public class Authenticate extends StdWebMacro
 		}
 	}
 	
-	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~1!23#4$5%6^78*9(0)-_=+[{]}|;:',./? ";
+	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
 	public static MOB getAuthenticatedMOB(String login)
@@ -126,7 +126,7 @@ public class Authenticate extends StdWebMacro
 			return login;
 		String auth=(String)httpReq.getRequestParameters().get("AUTH");
 		if(auth==null) return "";
-		if(auth.indexOf("\"")>=0) auth=auth.substring(0,auth.indexOf("\""));
+		if(auth.indexOf("-")>=0) auth=auth.substring(0,auth.indexOf("-"));
 		login=Decrypt(auth);
 		return login;
 	}
@@ -138,7 +138,7 @@ public class Authenticate extends StdWebMacro
 			return password;
 		String auth=(String)httpReq.getRequestParameters().get("AUTH");
 		if(auth==null) return "";
-		if(auth.indexOf("\"")>=0) auth=auth.substring(auth.indexOf("\"")+1);
+		if(auth.indexOf("-")>=0) auth=auth.substring(auth.indexOf("-")+1);
 		password=Decrypt(auth);
 		return password;
 	}

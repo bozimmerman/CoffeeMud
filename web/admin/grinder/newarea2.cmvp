@@ -1,11 +1,35 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+@if?!Authenticate@ @AddFile?failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SYSOP=true@ @AddFile?nopriv.cmvp@ @else@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="grinder.css">
+	<title>CoffeeMUD MUDGrinder</title>
+</head>
 
-<P>&nbsp;</P>
-
+<body>
+<CENTER>
+<IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3>MUDGrinder -- Create a New Area</H3>
+<br>
+@if?MUDGrinder?ADDAREA@
+<FORM NAME=NEWAREA METHOD=GET ACTION="modarea.cmvp" TARGET=_top>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+Your new area '@AreaName@' has been successfully created.<P>
+<INPUT TYPE=SUBMIT VALUE="Continue">
+@else@
+<FORM NAME=NEWAREA METHOD=GET ACTION="loggedin.cmvp" TARGET=_top>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<FONT COLOR=RED>Your new area could not be created.  Go back and make sure
+that an area with the same name does not already exist.</FONT><P>
+<INPUT TYPE=SUBMIT VALUE="Continue">
+@endif@
+</FORM>
 </BODY>
 </HTML>
+@endif@ 
+@endif@ 

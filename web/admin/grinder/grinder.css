@@ -1,11 +1,23 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
 
-<P>&nbsp;</P>
+body
+{
+	background-color: black;
+	color: silver;
+}
 
-</BODY>
-</HTML>
+.cmAreaTblEntry
+{
+	text-align: center;
+	font-size: 12pt;
+}
+
+.cmPlayerListEntry
+{
+	font-size: 10pt;
+}
+
+.cmPlayerListEntryArchon
+{
+	font-size: 12pt;
+	font-weight: bolder;
+}
