@@ -23,7 +23,6 @@ public class TelnetSession extends Thread implements Session
 	private static final int SOTIMEOUT=300;
 	private Vector previousCmd=new Vector();
 
-	private Calendar lastCMDDateTime=Calendar.getInstance();
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
 
@@ -1084,7 +1083,7 @@ public class TelnetSession extends Thread implements Session
 						if(input!=null)
 							enque(0,Util.parse(input));
 						if(mob==null) break;
-						if((((MOB)mob).lastTickedDateTime().after(lastCMDDateTime))||(!mob.isInCombat()))
+						if((((MOB)mob).lastTickedDateTime().after(lastStop))||(!mob.isInCombat()))
 						{
 							CMDS=deque();
 							if(CMDS!=null)
