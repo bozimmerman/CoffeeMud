@@ -23,7 +23,10 @@ public class WereBear extends Bear
 		forbiddenWornBits=0;
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{}
+	{
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+8);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+2);
+	}
 
 	public Vector myResources()
 	{

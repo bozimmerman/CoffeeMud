@@ -29,6 +29,7 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Detection",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
@@ -47,7 +48,7 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Song_Rage",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Song_Mute",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Distract",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Trip",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Thief_Peek",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Song_Serenity",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Song_Revelation",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Song_Friendship",false);
@@ -55,7 +56,7 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Song_Health",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Song_Mercy",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Peek",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Song_Silence",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Song_Dexterity",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_TwoWeaponFighting",false);

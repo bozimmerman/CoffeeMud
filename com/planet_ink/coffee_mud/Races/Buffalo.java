@@ -31,6 +31,11 @@ public class Buffalo extends Cow
 		}
 		return naturalWeapon;
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,17);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

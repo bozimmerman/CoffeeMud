@@ -21,6 +21,13 @@ public class Calf extends Cow
 		lightestWeight=150;
 		weightVariance=100;
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,13);
+		affectableStats.setStat(CharStats.DEXTERITY,5);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

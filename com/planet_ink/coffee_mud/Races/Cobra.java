@@ -17,6 +17,11 @@ public class Cobra extends Snake
 		lightestWeight=15;
 		weightVariance=20;
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.DEXTERITY,18);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

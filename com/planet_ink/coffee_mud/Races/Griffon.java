@@ -22,7 +22,8 @@ public class Griffon extends GreatBird
 		weightVariance=80;
 		forbiddenWornBits=Item.HELD|Item.WIELD;
 	}
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	{}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	
+	{}
 	public Vector myResources()
 	{
 		synchronized(resources)

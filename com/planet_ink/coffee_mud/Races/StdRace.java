@@ -41,6 +41,10 @@ public class StdRace implements Race
 	{
 
 	}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{
+
+	}
 	
 	public boolean okAffect(MOB myChar, Affect affect)
 	{

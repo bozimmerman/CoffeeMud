@@ -36,6 +36,10 @@ public class Wolf extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{
+		affectableMaxState.setMovement(affectableMaxState.getMovement()+150);
+	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

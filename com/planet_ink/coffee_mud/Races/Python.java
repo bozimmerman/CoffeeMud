@@ -28,6 +28,11 @@ public class Python extends Snake
 		}
 		return naturalWeapon;
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,15);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

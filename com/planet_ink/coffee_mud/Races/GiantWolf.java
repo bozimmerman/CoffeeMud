@@ -18,6 +18,21 @@ public class GiantWolf extends Wolf
 		weightVariance=60;
 		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK;
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+	}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{
+		affectableMaxState.setMovement(affectableMaxState.getMovement()+200);
+	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,13);
+		affectableStats.setStat(CharStats.DEXTERITY,13);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

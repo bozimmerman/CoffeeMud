@@ -24,12 +24,23 @@ public class Dog extends StdRace
 	}
 	public boolean playerSelectable(){return false;}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STRENGTH,10);
 		affectableStats.setStat(CharStats.DEXTERITY,10);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+	}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{
+		super.affectCharState(affectedMOB,affectableMaxState);
+		affectableMaxState.setMovement(affectableMaxState.getMovement()+100);
 	}
 	public Weapon myNaturalWeapon()
 	{

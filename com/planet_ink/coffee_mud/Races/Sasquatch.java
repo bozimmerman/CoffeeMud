@@ -15,7 +15,11 @@ public class Sasquatch extends Gorilla
 		name="Sasquatch";
 		forbiddenWornBits=0;
 	}
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats){}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+5);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.DEXTERITY)+5);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

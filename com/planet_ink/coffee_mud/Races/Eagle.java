@@ -11,6 +11,12 @@ public class Eagle extends GreatBird
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Eagle";
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,10);
+		affectableStats.setStat(CharStats.DEXTERITY,11);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

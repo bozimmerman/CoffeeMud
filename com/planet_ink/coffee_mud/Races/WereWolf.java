@@ -23,7 +23,9 @@ public class WereWolf extends GiantWolf
 		forbiddenWornBits=0;
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
-	{}
+	{
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+3);
+	}
 
 	public Vector myResources()
 	{

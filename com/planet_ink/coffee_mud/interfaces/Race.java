@@ -22,6 +22,7 @@ public interface Race
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats);
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState);
 
 
 	/** this method defines how this thing responds

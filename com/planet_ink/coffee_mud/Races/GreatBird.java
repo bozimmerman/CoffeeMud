@@ -25,6 +25,7 @@ public class GreatBird extends StdRace
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

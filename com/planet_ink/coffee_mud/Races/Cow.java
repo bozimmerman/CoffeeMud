@@ -27,7 +27,7 @@ public class Cow extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,18);
+		affectableStats.setStat(CharStats.STRENGTH,15);
 		affectableStats.setStat(CharStats.DEXTERITY,5);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}

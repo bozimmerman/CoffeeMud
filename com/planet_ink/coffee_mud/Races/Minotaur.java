@@ -32,7 +32,10 @@ public class Minotaur extends Cow
 		}
 		return naturalWeapon;
 	}
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats){}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+10);
+	}
 	public Vector myResources()
 	{
 		synchronized(resources)

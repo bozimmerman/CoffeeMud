@@ -24,7 +24,15 @@ public class Manticore extends GreatCat
 	}
 	public boolean playerSelectable(){return false;}
 
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	{}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	
+	{
+	}
+	
 	public Vector myResources()
 	{
 		synchronized(resources)
