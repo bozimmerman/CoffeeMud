@@ -39,7 +39,9 @@ public class Thief_Bribe extends ThiefSkill
 			mob.tell("Bribe whom?");
 			return false;
 		}
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Vector V=new Vector();
+		V.addElement(commands.elementAt(0));
+		MOB target=this.getTarget(mob,V,givenTarget);
 		if(target==null) return false;
 
 		commands.removeElementAt(0);
@@ -50,6 +52,12 @@ public class Thief_Bribe extends ThiefSkill
 			return false;
 		}
 
+		if(commands.size()<1)
+		{
+			mob.tell("Bribe "+target.charStats().himher()+" to do what?");
+			return false;
+		}
+		
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell("You can't bribe someone to follow.");

@@ -37,14 +37,14 @@ public class Prayer_UnholyWord extends Prayer
 
 		if(mob.getAlignment()<350)
 		{
-			affectableStats.setArmor((affectableStats.armor()-30)-(mob.envStats().level()*3));
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(mob.envStats().level()*2));
+			affectableStats.setArmor(affectableStats.armor()-30);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20);
 		}
 		else
 		if(mob.getAlignment()>650)
 		{
-			affectableStats.setArmor((affectableStats.armor()+30)+(mob.envStats().level()*3));
-			affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-20)-(mob.envStats().level()*2));
+			affectableStats.setArmor(affectableStats.armor()+30);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20);
 		}
 	}
 

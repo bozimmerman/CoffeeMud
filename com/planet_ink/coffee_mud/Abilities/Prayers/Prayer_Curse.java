@@ -35,7 +35,7 @@ public class Prayer_Curse extends Prayer
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			affectableStats.setArmor(affectableStats.armor()+10+mob.envStats().level());
+			affectableStats.setArmor(affectableStats.armor()+10);
 		}
 		else
 		if(affected instanceof Item)
