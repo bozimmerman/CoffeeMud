@@ -2886,6 +2886,47 @@ public class Import
 					pet.destroy();
 				}
 			}
+			// now fix the smurfy wells
+			for(int r=0;r<newRooms.size();r++)
+			{
+				Room smurfRoom=(Room)newRooms.elementAt(r);
+				for(int ei=0;ei<smurfRoom.numItems();ei++)
+				{
+					Item lookItem=smurfRoom.fetchItem(ei);
+					if(lookItem.displayText().length()==0)
+					{
+						for(int i=0;i<smurfRoom.numItems();i++)
+						{
+							Item I=smurfRoom.fetchItem(i);
+							if((I.displayText().length()>0)
+							&&(I.displayText().indexOf(lookItem.name())>=0))
+							{
+								String description=lookItem.description();
+								smurfRoom.delItem(lookItem);
+								
+								Item testItem=CMClass.getItem(I.ID());
+								if((testItem!=null)&&(testItem.description().equals(I.description())))
+									I.setDescription(description);
+								else
+									I.setDescription(I.description()+"%0D"+description);
+								ei=ei-1;
+								break;
+							}
+						}
+					}
+				}
+			}
+			mob.session().print("\n\nReset, and saving...");
+			for(int r=0;r<newRooms.size();r++)
+			{
+				Room saveRoom=(Room)newRooms.elementAt(r);
+				ExternalPlay.DBCreate(saveRoom,CMClass.className(saveRoom));
+				ExternalPlay.DBUpdateExits(saveRoom);
+				myRooms.clearDebriAndRestart(saveRoom,0);
+				saveRoom.recoverRoomStats();
+			}
+			mob.session().print("\n\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).ID());
+
 		}
 		catch(Exception e)
 		{
@@ -2893,20 +2934,6 @@ public class Import
 			mob.tell(e.getMessage());
 			return;
 		}
-
-
-
-		mob.session().print("\n\nReset, and saving...");
-		for(int r=0;r<newRooms.size();r++)
-		{
-			Room R=(Room)newRooms.elementAt(r);
-			ExternalPlay.DBCreate(R,CMClass.className(R));
-			ExternalPlay.DBUpdateExits(R);
-			myRooms.clearDebriAndRestart(R,0);
-			R.recoverRoomStats();
-		}
-		mob.session().print("\n\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).ID());
-
 		return;
 	}
 }
