@@ -14,7 +14,7 @@ public class Prop_CommonTwister extends Property
 	private DVector changes=new DVector(3);
 	
 	public String accountForYourself()
-	{ return "Must be crawled through.";	}
+	{ return "Twists around what the gathering common skills gives you.";	}
 
 	public void setMiscText(String text)
 	{

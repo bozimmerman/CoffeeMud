@@ -9,10 +9,6 @@ public class GenDoor extends GenExit
 	public String ID(){	return "GenDoor";}
 	public String Name(){ return "a door";}
 	public String displayText(){ return "";}
-	public boolean hasADoor(){return true;}
-	public boolean hasALock(){return false;}
-	public boolean defaultsLocked(){return false;}
-	public boolean defaultsClosed(){return true;}
 	public String closedText(){return "a closed door";}
 	public GenDoor()
 	{
