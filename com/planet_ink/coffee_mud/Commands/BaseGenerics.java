@@ -1143,14 +1143,17 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Rejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
+		if(E instanceof Item)
+			mob.tell(showNumber+". Rejuv/Pct: '"+E.baseEnvStats().rejuv()+"' (0=special).");
+		else
+			mob.tell(showNumber+". Rejuv Ticks: '"+E.baseEnvStats().rejuv()+"' (0=never).");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
 		int newLevel=Util.s_int(rlevel);
 		if((newLevel>0)||(rlevel.trim().equals("0")))
 		{
 			E.baseEnvStats().setRejuv(newLevel);
-			if(E.baseEnvStats().rejuv()==0)
+			if((E.baseEnvStats().rejuv()==0)&&(E instanceof MOB))
 			{
 				E.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 				mob.tell(E.Name()+" will now never rejuvinate.");
