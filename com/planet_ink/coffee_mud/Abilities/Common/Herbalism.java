@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Herbalism extends CommonSkill
+public class Herbalism extends CraftingSkill
 {
 	public String ID() { return "Herbalism"; }
 	public String name(){ return "Herbalism";}
@@ -88,6 +88,9 @@ public class Herbalism extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		boolean autoGenerate=false;
+		if((auto)&&(givenTarget==this))
+		{	autoGenerate=true; givenTarget=null;}
 		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()<1)
 		{
