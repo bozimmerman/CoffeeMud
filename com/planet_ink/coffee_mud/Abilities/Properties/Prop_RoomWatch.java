@@ -20,7 +20,7 @@ public class Prop_RoomWatch extends Property
 		super.affect(myHost,affect);
 		if(newRooms==null)
 		{
-			Vector V=Util.parseSemicolons(text());
+			Vector V=Util.parseSemicolons(text(),true);
 			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{

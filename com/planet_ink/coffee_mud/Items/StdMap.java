@@ -48,7 +48,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	}
 	public void doMapArea()
 	{
-		Vector V=Util.parseSemicolons(getMapArea());
+		Vector V=Util.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{
@@ -167,7 +167,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
 	public Hashtable makeMapRooms()
 	{
-		Vector mapAreas=Util.parseSemicolons(getMapArea());
+		Vector mapAreas=Util.parseSemicolons(getMapArea(),true);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{

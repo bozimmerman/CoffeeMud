@@ -16,12 +16,12 @@ public class Prop_Tattoo extends Property
 		Vector tattos=new Vector();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
-			tattos=Util.parseSemicolons(A.text().toUpperCase());
+			tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
 		else
 		{
 			A=mob.fetchAffect("Prop_Tattoo");
 			if(A!=null)
-				tattos=Util.parseSemicolons(A.text().toUpperCase());
+				tattos=Util.parseSemicolons(A.text().toUpperCase(),true);
 		}
 		return tattos;
 	}

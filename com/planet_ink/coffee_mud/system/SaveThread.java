@@ -78,7 +78,7 @@ public class SaveThread extends Thread
 		long[] levels=new long[2001];
 		for(int i=0;i<levels.length;i++) levels[i]=0;
 		String mask=CommonStrings.getVar(CommonStrings.SYSTEM_AUTOPURGE);
-		Vector maskV=Util.parseCommas(mask.trim());
+		Vector maskV=Util.parseCommas(mask.trim(),false);
 		for(int mv=0;mv<maskV.size();mv++)
 		{
 			Vector V=Util.parse(((String)maskV.elementAt(mv)).trim());

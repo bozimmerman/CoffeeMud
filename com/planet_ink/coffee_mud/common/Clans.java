@@ -817,13 +817,13 @@ public class Clans implements Clan, Tickable
 				switch(getGovernment())
 				{
 				case Clan.GVT_DEMOCRACY:
-					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTED));
+					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTED),false);
 					break;
 				case Clan.GVT_OLIGARCHY:
-					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTEO));
+					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTEO),false);
 					break;
 				case Clan.GVT_REPUBLIC:
-					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTER));
+					data=Util.parseCommas(CommonStrings.getVar(CommonStrings.SYSTEM_CLANVOTER),false);
 					break;
 				default:
 					data=new Vector();

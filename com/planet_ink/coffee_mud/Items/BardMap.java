@@ -39,7 +39,7 @@ public class BardMap extends GenMap
 	public Hashtable makeMapRooms()
 	{
 		String newText=getMapArea();
-		Vector mapAreas=Util.parseSemicolons(newText);
+		Vector mapAreas=Util.parseSemicolons(newText,true);
 		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{

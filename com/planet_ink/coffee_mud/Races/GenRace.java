@@ -259,7 +259,7 @@ public class GenRace extends StdRace
 		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
 		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
 		String body=XMLManager.getValFromPieces(raceData,"BODY");
-		Vector V=Util.parseSemicolons(body);
+		Vector V=Util.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
 				bodyMask()[v]=Util.s_int((String)V.elementAt(v));
@@ -428,7 +428,7 @@ public class GenRace extends StdRace
 		case 12: healthBuddy=CMClass.getRace(val); break;
 		case 13: 
 		{
-			Vector V=Util.parseSemicolons(val);
+			Vector V=Util.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
 				if(v<bodyMask().length)
 					bodyMask()[v]=Util.s_int((String)V.elementAt(v));

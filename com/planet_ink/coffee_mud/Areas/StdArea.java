@@ -324,7 +324,7 @@ public class StdArea implements Area
 	}
 	public void setSubOpList(String list)
 	{
-		subOps=Util.parseSemicolons(list);
+		subOps=Util.parseSemicolons(list,true);
 	}
 	public void addSubOp(String username){subOps.addElement(username);}
 	public void delSubOp(String username)

@@ -675,7 +675,7 @@ public class Util
 		return commands;
 	}
 
-	public static Vector parseCommas(String s)
+	public static Vector parseCommas(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
@@ -684,10 +684,11 @@ public class Util
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
-			if(s2.length()>0) V.addElement(s2);
+			if((!ignoreNulls)||(s2.length()>0))
+				V.addElement(s2);
 			x=s.indexOf(",");
 		}
-		if(s.trim().length()>0)
+		if((!ignoreNulls)||(s.trim().length()>0))
 			V.addElement(s.trim());
 		return V;
 	}
@@ -707,7 +708,7 @@ public class Util
 		return V;
 	}
 	
-	public static Vector parseSemicolons(String s)
+	public static Vector parseSemicolons(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
@@ -716,14 +717,14 @@ public class Util
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
-			if(s2.length()>0) V.addElement(s2);
+			if((!ignoreNulls)||(s2.length()>0))
+				V.addElement(s2);
 			x=s.indexOf(";");
 		}
-		if(s.trim().length()>0)
+		if((!ignoreNulls)||(s.trim().length()>0))
 			V.addElement(s.trim());
 		return V;
 	}
-	
 	
 	public static int lengthMinusColors(String thisStr)
 	{

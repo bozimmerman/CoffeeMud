@@ -16,7 +16,7 @@ public class Prop_AbilityImmunity extends Property
 
 	public void setMiscText(String newText)
 	{
-		diseases=Util.parseSemicolons(newText.toUpperCase());
+		diseases=Util.parseSemicolons(newText.toUpperCase(),true);
 		super.setMiscText(newText);
 	}
 

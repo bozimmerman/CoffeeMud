@@ -279,7 +279,7 @@ public class Amputation extends StdAbility
 		if(affected==null) return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
-		missingLimbs=Util.parseSemicolons(text());
+		missingLimbs=Util.parseSemicolons(text(),true);
 		amputations=new int[Race.BODY_PARTS];
 		for(int v=0;v<missingLimbs.size();v++)
 		{

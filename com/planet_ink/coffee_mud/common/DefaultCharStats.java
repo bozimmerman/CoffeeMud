@@ -141,7 +141,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 	}
 	public void setSaves(String str)
 	{
-		Vector V=Util.parseSemicolons(str);
+		Vector V=Util.parseSemicolons(str,false);
 		for(int x=CharStats.NUM_SAVE_START;x<CharStats.NUM_STATS;x++)
 		{
 			int vnum=x-CharStats.NUM_SAVE_START;

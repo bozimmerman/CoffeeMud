@@ -108,10 +108,10 @@ public class Arrest extends StdBehavior
 		"THIEF_FORGREY=;;forgery;jail2;Forgery is deceptive and quite illegal.\n"+
 		"THIEF_RACKETEER=;;racketeering <T-NAME>;jail3;Racketeering is a form of vicious theft.\n"+
 		"THIEF_ROBBERY=;;robbing <T-NAME>;jail3;Robbery violates our high moral code.\n"+
-		"INEBRIATION=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
-		"POISON_ALCOHOL=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
-		"POISON_FIREBREATHER=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
-		"POISON_LIQUOR=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
+		"INEBRIATION=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_ALCOHOL=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
 		
 
 	protected class ArrestWarrant implements Cloneable
@@ -175,7 +175,7 @@ public class Arrest extends StdBehavior
 					{
 						otherCrimes.addElement(Util.parse(words.substring(0,x)));
 						String[] bits=new String[BIT_NUMBITS];
-						Vector parsed=Util.parseSemicolons(words.substring(x+1));
+						Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
 						for(int i=0;i<BIT_NUMBITS;i++)
 							if(i<parsed.size())
 								bits[i]=(String)parsed.elementAt(i);
@@ -213,7 +213,7 @@ public class Arrest extends StdBehavior
 		{
 			String tlaw=getLaw(law);
 			String[] bits=new String[BIT_NUMBITS];
-			Vector parsed=Util.parseSemicolons(tlaw);
+			Vector parsed=Util.parseSemicolons(tlaw,false);
 			for(int i=0;i<BIT_NUMBITS;i++)
 				if(i<parsed.size())
 					bits[i]=(String)parsed.elementAt(i);
@@ -768,7 +768,7 @@ public class Arrest extends StdBehavior
 	public Room getRoom(Area A, String roomstr)
 	{
 		Room jail=null;
-		Vector V=Util.parseSemicolons(roomstr);
+		Vector V=Util.parseSemicolons(roomstr,true);
 		if(V.size()==0) return jail;
 		String which=(String)V.elementAt(Dice.roll(1,V.size(),-1));
 		jail=CMMap.getRoom(which);

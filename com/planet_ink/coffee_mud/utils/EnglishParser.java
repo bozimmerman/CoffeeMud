@@ -443,7 +443,7 @@ public class EnglishParser implements Tickable
 			}
 			if(likelys.size()==0) likelys=poss;
 			Hashtable map=(Hashtable)likelys.elementAt(Dice.roll(1,likelys.size(),-1));
-			Vector all=Util.parseSemicolons((String)map.get("INSTR"));
+			Vector all=Util.parseSemicolons((String)map.get("INSTR"),true);
 			g.que=new Vector();
 			for(int a=0;a<all.size();a++)
 				g.que.addElement(Util.parse((String)all.elementAt(a)));
