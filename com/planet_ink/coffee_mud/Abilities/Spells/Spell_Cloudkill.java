@@ -89,7 +89,7 @@ public class Spell_Cloudkill extends Spell
 					if((!msg.wasModified())&&(!msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 
-					if(damage<0) damage=0;
+					if(damage<=0) damage=1;
 					if(target.location()==mob.location())
 					{
 						maliciousAffect(mob,target,2,-1);

@@ -9,6 +9,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	private Vector storeInventory=new Vector();
 	protected Vector baseInventory=new Vector();
 	private Hashtable duplicateInventory=new Hashtable();
+	protected int maximumDuplicatesBought=5;
 
 	public StdShopKeeper()
 	{
@@ -186,6 +187,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			Environmental copy=thisThang.copyOf();
 			storeInventory.addElement(copy);
+			if(number>maximumDuplicatesBought) 
+				maximumDuplicatesBought=number;
 			if(number>1)
 				duplicateInventory.put(copy,new Integer(number));
 		}
@@ -388,6 +391,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(affect.tool() instanceof Ability)
 					{
 						ExternalPlay.quickSay(this,mob,"I'm not interested.",true,false);
+						return false;
+					}
+					if((numberInStock(affect.tool()))>=maximumDuplicatesBought)
+					{
+						ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying any more of those.",true,false);
 						return false;
 					}
 					if((affect.tool() instanceof Container)&&(((Container)affect.tool()).hasALock()))
@@ -661,6 +669,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
 		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
+		
+        if((!(product instanceof Ability)&&(numberInStock(product)!=0)))
+			buyPrice=(int)Math.round(Util.mul(buyPrice,Util.div((maximumDuplicatesBought-numberInStock(product)),maximumDuplicatesBought)));
 		
 		// the price is 200% at 0 charisma, and 100% at 30
 		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));

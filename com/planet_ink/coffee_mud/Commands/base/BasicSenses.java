@@ -23,7 +23,7 @@ public class BasicSenses
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				mob.location().listExits(mob);
-				break;
+				return;
 			}
 			if(ID.equalsIgnoreCase("SELF"))
 				ID=mob.name();
