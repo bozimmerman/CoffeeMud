@@ -36,5 +36,6 @@ public class JournalFunction extends StdWebMacro
 		if(lastlast!=null) num=Util.s_int(lastlast);
 		if((num<0)||(num>=info.size()))
 			return " @break@";
+		return "";
 	}
 }
