@@ -14,6 +14,9 @@ problems flying during storms
 Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 CONTINUAL LIGHT spell
+add Bridge to Construct and Mason, that allows a bridge over a watery surface. Must take a LOT of material, though. On the order of 4000.
+add fountain to the mason skill.
+add Arch to mason, that modifies an open passageway with a Majestic Arch
 rain/show causes some metals to rust (take minute damage).
 Amnesia as a disease
 eggs that hatch
@@ -22,14 +25,10 @@ can sit at tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help?????????????????????
-Leprecy: take more physical damage in combat. 
-Heart Disease: All actions take 2* movement. 
-Lung Disease: Movement is recovered at 1/2 rate. 
 Infection: Hitpoints are recovered at 1/2 rate. 
-add currents to water. Scratch that, you can simulate currents by the teleport behavior, and a good emoter.
+add currents to water...
 an ability to tell how many HP a MOB has
 ability to resist WHOMP
-Thief--Bonus for stealing, based on TARGET level.  about 1/6 the XP as for killing.
 gen-wizard player editor
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
@@ -70,15 +69,12 @@ Guilds will have the ability to take on a character and make him or her the clas
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
 Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)
 Assassin: Assassinate skill to auto-kill, lose something else though
-Barbarian: Free Berzerk, lower charisma
 Priests of specific Gods: bonuses to like spells, lose others
-Knights Order: special sword as part of outfit?
 Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
-Wizard: must memorize spells from book.  Profficiency check at memorize time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
+Wizard: must memorize spells from book.  Profficiency check at casting time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
 trashcan behavior that can be added to items to destroy unwanted items.
-MONK.  Master of unarmed/unarmored combat.  Get's defense bonus from WISDOM similar to a thief.  PRIME ATT: WIS and DEX (22 ea).  Gets faster attacks than a fighter, damage increases ONLY with unarmed similar to a fighter, Immunities similar to a paladin, except faster.  Also gains elemental resistances, similar to the resist spells.  Get's MEDITATION.
 ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
 Mage subclasses:
 Each level:  GAIN all spells from specialty school.  Qualifies for all non-opposed spells.  Does not qualify for opposed spells (unless this is too hard to code.)
