@@ -172,8 +172,8 @@ public class Clans implements Clan, Tickable
 	
 	public int getClanRelations(String id)
 	{
-		Integer I=(Integer)relations.get(id.toUpperCase());
-		if(I!=null) return I.intValue();
+		long i[]=(long[])relations.get(id.toUpperCase());
+		if(i!=null) return (int)i[0];
 		return	Clan.REL_NEUTRAL;
 	}
 	
@@ -194,10 +194,19 @@ public class Clans implements Clan, Tickable
 		}
 	}
 
+	public long getLastRelationChange(String id)
+	{
+		long i[]=(long[])relations.get(id.toUpperCase());
+		if(i!=null) return (long)i[1];
+		return 0;
+	}
 	public void setClanRelations(String id, int rel)
 	{
 		relations.remove(id.toUpperCase());
-		relations.put(id.toUpperCase(),new Integer(rel));
+		long[] i=new long[2];
+		i[0]=(long)rel;
+		i[1]=System.currentTimeMillis();
+		relations.put(id.toUpperCase(),i);
 	}
 	
 	public int getGovernment(){return government;}
@@ -596,7 +605,8 @@ public class Clans implements Clan, Tickable
 				String key=(String)e.nextElement();
 				str.append("<RELATION>");
 				str.append(XMLManager.convertXMLtoTag("CLAN",key));
-				str.append(XMLManager.convertXMLtoTag("STATUS",""+((Integer)relations.get(key)).intValue()));
+				long[] i=(long[])relations.get(key);
+				str.append(XMLManager.convertXMLtoTag("STATUS",""+i[0]));
 				str.append("</RELATION>");
 			}
 			str.append("</RELATIONS>");

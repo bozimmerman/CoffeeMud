@@ -1,8 +1,6 @@
-clan skipChecks wont ever be true, since you are going through commandprocessor
-clan votes -- final vote of all members should push decision
+also feel that talking should end the singing/chanting -- mouth pos ends -- 
 look into mobs on grid homes?
 prop_spelladder doesn't work?!
-require a duration for status change!
 no <> allowed in prompt cmd any more
 booting playerlist makes everyone appear at startroom.
 do the purge list -- have protected names list like ban, purge days by level

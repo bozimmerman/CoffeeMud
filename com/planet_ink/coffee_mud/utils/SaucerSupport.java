@@ -1037,6 +1037,14 @@ public class SaucerSupport
 			return false;
 
 		Room oldRoom=mob.location();
+		
+		for(int m=0;m<oldRoom.numInhabitants();m++)
+		{
+			MOB inhab=oldRoom.fetchInhabitant(m);
+			if((inhab!=null)&&(inhab.isASysOp(oldRoom)))
+				return false;
+		}
+			
 		if(oldRoom instanceof GridLocale)
 		{
 			Vector V=((GridLocale)oldRoom).getAllRooms();
@@ -1102,13 +1110,6 @@ public class SaucerSupport
 		if(direction<0)
 			return false;
 
-		for(int m=0;m<oldRoom.numInhabitants();m++)
-		{
-			MOB inhab=oldRoom.fetchInhabitant(m);
-			if((inhab!=null)&&(inhab.isASysOp(oldRoom)))
-				return false;
-		}
-			
 		Room nextRoom=oldRoom.getRoomInDir(direction);
 		Exit nextExit=oldRoom.getExitInDir(direction);
 		int opDirection=Directions.getOpDirectionCode(direction);

@@ -112,11 +112,11 @@ public class StdGrid extends StdRoom implements GridLocale
 						return grid[0][y];
 					break;
 				case Directions.NORTH:
-					if((((GridLocale)loc).ySize()==ySize()))
+					if((((GridLocale)loc).xSize()==xSize()))
 						return grid[x][0];
 					break;
 				case Directions.SOUTH:
-					if((((GridLocale)loc).ySize()==ySize()))
+					if((((GridLocale)loc).xSize()==xSize()))
 						return grid[x][grid[0].length-1];
 					break;
 				}

@@ -163,6 +163,7 @@ public interface Clan extends Cloneable, Tickable
 	public DVector getMemberList(int PosFilter);
 
 	public int getClanRelations(String id);
+	public long getLastRelationChange(String id);
 	public void setClanRelations(String id, int rel);
 	
 	public int getGovernment();
