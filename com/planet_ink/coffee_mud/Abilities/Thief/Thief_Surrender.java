@@ -78,7 +78,7 @@ public class Thief_Surrender extends ThiefSkill
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
-					vic.setMoney(vic.getMoney()+(10*vic.envStats().level());
+					vic.setMoney(vic.getMoney()+(10*vic.envStats().level()));
 					vic.makePeace();
 				}
 			}

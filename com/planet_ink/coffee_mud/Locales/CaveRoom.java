@@ -43,7 +43,7 @@ public class CaveRoom extends StdRoom
 		new Integer(EnvResource.RESOURCE_MITHRIL),
 		new Integer(EnvResource.RESOURCE_ADAMANTITE),
 		new Integer(EnvResource.RESOURCE_GEM),
-		new Integer(EnvResource.RESOURCE_DIAMOND),
+		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_CRYSTAL),
 		new Integer(EnvResource.RESOURCE_PLATINUM)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));

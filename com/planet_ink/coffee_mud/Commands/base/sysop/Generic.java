@@ -717,6 +717,17 @@ public class Generic
 			mob.tell("(no change)");
 	}
 
+	void genCondition(MOB mob, Item E)
+		throws IOException
+	{
+		mob.tell("\n\rCondition: '"+E.usesRemaining()+"'.");
+		int newLevel=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
+		if(newLevel>0)
+			E.setUsesRemaining(newLevel);
+		else
+			mob.tell("(no change)");
+	}
+
 	void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
@@ -1024,7 +1035,7 @@ public class Generic
 				int newValue=-1;
 				for(int i=0;i<EnvResource.RESOURCE_DESCS.length-1;i++)
 					if(newType.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
-						newValue=EnvResource.RESOURCES_ALL[i];
+						newValue=EnvResource.RESOURCE_DATA[i][0];
 				if(newValue>=0)
 					E.setMaterial(newValue);
 				else
@@ -1782,6 +1793,7 @@ public class Generic
 			else
 				genWeaponAmmo(mob,me);
 			genRejuv(mob,me);
+			genCondition(mob,me);
 			genAbility(mob,me);
 			genSecretIdentity(mob,me);
 			genGettable(mob,me);
@@ -1815,6 +1827,7 @@ public class Generic
 			genWornLocation(mob,me);
 			genRejuv(mob,me);
 			genArmor(mob,me);
+			genCondition(mob,me);
 			genAbility(mob,me);
 			genCapacity(mob,me);
 			genSecretIdentity(mob,me);

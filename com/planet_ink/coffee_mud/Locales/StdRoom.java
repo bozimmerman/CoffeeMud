@@ -162,7 +162,29 @@ public class StdRoom
 			if(resourceChoices()==null) 
 				myResource=-1;
 			else
-				myResource=((Integer)resourceChoices().elementAt(Dice.roll(1,resourceChoices().size(),-1))).intValue();
+			{
+				int totalChance=0;
+				for(int i=0;i<resourceChoices().size();i++)
+				{
+					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+					int chance=EnvResource.RESOURCE_DATA[resource&EnvResource.RESOURCE_MASK][2];
+					totalChance+=chance;
+				}
+				myResource=-1;
+				int theRoll=Dice.roll(1,totalChance,0);
+				totalChance=0;
+				for(int i=0;i<resourceChoices().size();i++)
+				{
+					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+					int chance=EnvResource.RESOURCE_DATA[resource&EnvResource.RESOURCE_MASK][2];
+					totalChance+=chance;
+					if(theRoll<=totalChance)
+					{
+						myResource=resource;
+						break;
+					}
+				}
+			}
 		}
 		if(myResource<0)
 			return null;
