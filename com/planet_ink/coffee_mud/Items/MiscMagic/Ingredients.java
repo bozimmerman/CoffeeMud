@@ -5,11 +5,11 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.system.*;
 
-public class Ingrediants extends BagOfHolding
+public class Ingredients extends BagOfHolding
 {
-	public String ID(){	return "Ingrediants";}
+	public String ID(){	return "Ingredients";}
 	boolean alreadyFilled=false;
-	public Ingrediants()
+	public Ingredients()
 	{
 		super();
 
@@ -18,7 +18,7 @@ public class Ingrediants extends BagOfHolding
 
 	public Environmental newInstance()
 	{
-		return new Ingrediants();
+		return new Ingredients();
 	}
 	
 	protected Item makeResource(String name, int type)

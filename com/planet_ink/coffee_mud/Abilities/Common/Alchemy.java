@@ -196,7 +196,7 @@ public class Alchemy extends CommonSkill
 			}
 			String recipeName=Util.combine(commands,0);
 			theSpell=null;
-			String ingrediant="";
+			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -209,7 +209,7 @@ public class Alchemy extends CommonSkill
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
-						ingrediant=(String)V.elementAt(1);
+						ingredient=(String)V.elementAt(1);
 					}
 				}
 			}
@@ -254,7 +254,7 @@ public class Alchemy extends CommonSkill
 			}
 			int resourceType=-1;
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(ingrediant))
+				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
 				{ resourceType=EnvResource.RESOURCE_DATA[i][0]; break;}
 
 			boolean found=false;
@@ -284,7 +284,7 @@ public class Alchemy extends CommonSkill
 				}
 				if(!found)
 				{
-					commonTell(mob,"This potion requires "+ingrediant+".  Please place some inside the "+building.name()+" and try again.");
+					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+building.name()+" and try again.");
 					return false;
 				}
 			}

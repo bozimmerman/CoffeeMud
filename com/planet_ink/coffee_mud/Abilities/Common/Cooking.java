@@ -157,16 +157,16 @@ public class Cooking extends CommonSkill
 	}
 
 
-	public Vector countIngrediants(Vector Vr)
+	public Vector countIngredients(Vector Vr)
 	{
 		String[] contents=new String[oldContents.size()];
 		int[] amounts=new int[oldContents.size()];
-		int numIngrediants=0;
+		int numIngredients=0;
 		for(Enumeration e=oldContents.keys();e.hasMoreElements();)
 		{
-			contents[numIngrediants]=(String)e.nextElement();
-			amounts[numIngrediants]=((Integer)oldContents.get(contents[numIngrediants])).intValue();
-			numIngrediants++;
+			contents[numIngredients]=(String)e.nextElement();
+			amounts[numIngredients]=((Integer)oldContents.get(contents[numIngredients])).intValue();
+			numIngredients++;
 		}
 
 		int amountMade=0;
@@ -178,20 +178,20 @@ public class Cooking extends CommonSkill
 		{
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingrediant=(String)Vr.elementAt(vr);
-				if(ingrediant.length()>0)
+				String ingredient=(String)Vr.elementAt(vr);
+				if(ingredient.length()>0)
 				{
 					int amount=1;
 					if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
 					if(amount==0) amount=1;
 					if(amount<0) amount=amount*-1;
-					if(ingrediant.equalsIgnoreCase("water"))
+					if(ingredient.equalsIgnoreCase("water"))
 						amount=amount*10;
 					for(int i=0;i<contents.length;i++)
 					{
-						String ingrediant2=(String)contents[i];
+						String ingredient2=(String)contents[i];
 						int amount2=amounts[i];
-						if(ingrediant.equalsIgnoreCase(ingrediant2))
+						if(ingredient.equalsIgnoreCase(ingredient2))
 						{
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
@@ -214,10 +214,10 @@ public class Cooking extends CommonSkill
 			codedList.addElement(new Integer(amountMade));
 			for(int i=0;i<contents.length;i++)
 			{
-				String ingrediant2=(String)contents[i];
+				String ingredient2=(String)contents[i];
 				int amount2=amounts[i];
 				if((amount2>0)
-				&&(!ingrediant2.equalsIgnoreCase("water")))
+				&&(!ingredient2.equalsIgnoreCase("water")))
 					codedList.addElement(contents[i]);
 			}
 		}
@@ -225,25 +225,25 @@ public class Cooking extends CommonSkill
 		return codedList;
 	}
 
-	public Vector extraIngrediantsInOldContents(Vector Vr)
+	public Vector extraIngredientsInOldContents(Vector Vr)
 	{
 		Vector extra=new Vector();
 		for(Enumeration e=oldContents.keys();e.hasMoreElements();)
 		{
 			boolean found=false;
-			String ingrediant=(String)e.nextElement();
+			String ingredient=(String)e.nextElement();
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingrediant2=(String)Vr.elementAt(vr);
-				if((ingrediant2.length()>0)&&(ingrediant2.equalsIgnoreCase(ingrediant)))
+				String ingredient2=(String)Vr.elementAt(vr);
+				if((ingredient2.length()>0)&&(ingredient2.equalsIgnoreCase(ingredient)))
 					found=true;
 			}
-			if(!found) extra.addElement(ingrediant);
+			if(!found) extra.addElement(ingredient);
 		}
 		return extra;
 	}
 
-	public Vector missingIngrediantsFromOldContents(Vector Vr)
+	public Vector missingIngredientsFromOldContents(Vector Vr)
 	{
 		Vector missing=new Vector();
 
@@ -252,20 +252,20 @@ public class Cooking extends CommonSkill
 		boolean hasOptional=false;
 		for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 		{
-			String ingrediant=(String)Vr.elementAt(vr);
-			if(ingrediant.length()>0)
+			String ingredient=(String)Vr.elementAt(vr);
+			if(ingredient.length()>0)
 			{
 				int amount=1;
 				if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
-				if((amount>=0)&&(!oldContents.containsKey(ingrediant.toUpperCase())))
-					missing.addElement(ingrediant);
+				if((amount>=0)&&(!oldContents.containsKey(ingredient.toUpperCase())))
+					missing.addElement(ingredient);
 				else
 				if(amount<0){
 					foundOptional=true;
-					if(oldContents.containsKey(ingrediant.toUpperCase()))
+					if(oldContents.containsKey(ingredient.toUpperCase()))
 						hasOptional=true;
 					else
-						possiblyMissing=ingrediant;
+						possiblyMissing=ingredient;
 				}
 			}
 		}
@@ -338,8 +338,8 @@ public class Cooking extends CommonSkill
 			Vector Vr=(Vector)allRecipes.elementAt(v);
 			if(oldContents.containsKey(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()))
 			   closeRecipes.addElement(Vr);
-			if((missingIngrediantsFromOldContents(Vr).size()==0)
-			&&(extraIngrediantsInOldContents(Vr).size()==0))
+			if((missingIngredientsFromOldContents(Vr).size()==0)
+			&&(extraIngredientsInOldContents(Vr).size()==0))
 				recipes.addElement(Vr);
 		}
 
@@ -347,14 +347,14 @@ public class Cooking extends CommonSkill
 		{
 			if(closeRecipes.size()==0)
 			{
-				commonTell(mob,"You don't know how to make anything out of those ingrediants.");
+				commonTell(mob,"You don't know how to make anything out of those ingredients.");
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
 			{
 				Vector Vr=(Vector)closeRecipes.elementAt(vr);
-				Vector missing=missingIngrediantsFromOldContents(Vr);
-				Vector extra=extraIngrediantsInOldContents(Vr);
+				Vector missing=missingIngredientsFromOldContents(Vr);
+				Vector extra=extraIngredientsInOldContents(Vr);
 				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(extra.size()>0)
 				{
@@ -386,7 +386,7 @@ public class Cooking extends CommonSkill
 			for(int vr=0;vr<recipes.size();vr++)
 			{
 				Vector Vr=(Vector)recipes.elementAt(vr);
-				Vector counts=countIngrediants(Vr);
+				Vector counts=countIngredients(Vr);
 				Integer amountMaking=(Integer)counts.elementAt(0);
 				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(counts.size()==1)
