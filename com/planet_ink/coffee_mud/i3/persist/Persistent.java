@@ -1,11 +1,12 @@
 /**
  * imaginary.persist.Persistent
  * Copyright (c) 1996 George Reese
- * A Persistent object is any object that can be saved
- * to some data store.
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
+ *
+ * A Persistent object is any object that can be saved
+ * to some data store.
  */
 
 package com.planet_ink.coffee_mud.i3.persist;

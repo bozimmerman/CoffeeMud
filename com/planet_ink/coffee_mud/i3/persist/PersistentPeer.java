@@ -1,12 +1,13 @@
 /**
  * imaginary.persist.PersistentPeer
  * Copyright (c) 1996 George Reese
- * The PersistentPeer is an interface for defining
- * a particular kind of persistence for a specific
- * object.
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
+ *
+ * The PersistentPeer is an interface for defining
+ * a particular kind of persistence for a specific
+ * object.
  */
 
 package com.planet_ink.coffee_mud.i3.persist;

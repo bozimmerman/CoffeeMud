@@ -1,10 +1,11 @@
 /**
  * imaginary.net.i3.ImudServices
  * Copyright (c) 1996 George Reese
- * The interface for a intermud services daemon
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
+ * 
+ * The interface for a intermud services daemon
  */
 package com.planet_ink.coffee_mud.i3.packets;
 

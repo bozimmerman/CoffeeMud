@@ -1,11 +1,12 @@
 /**
  * imaginary.net.i3.Intermud
  * Copyright (c) 1996 George Reese
- * This is the TCP/IP interface to version 3 of the
- * Intermud network.
  * This source code may not be modified, copied,
  * redistributed, or used in any fashion without the
  * express written consent of George Reese.
+ *
+ * This is the TCP/IP interface to version 3 of the
+ * Intermud network.
  */
 package com.planet_ink.coffee_mud.i3.packets;
 import com.planet_ink.coffee_mud.i3.packets.InvalidPacketException;

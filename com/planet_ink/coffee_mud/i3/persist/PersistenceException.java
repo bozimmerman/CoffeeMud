@@ -1,14 +1,15 @@
 /**
  * imaginary.persist.PersistenceException
  * Copyright (c) 1996 George Reese
+ * This source code may not be modified, copied,
+ * redistributed, or used in any fashion without the
+ * express written consent of George Reese.
+ *
  * A PersistenceException occurs whenever some error
  * condition interrupts a persistence operation.
  * This class maintains a chain of exceptions so
  * that an easy trace can be done to find out what
  * caused the problem.
- * This source code may not be modified, copied,
- * redistributed, or used in any fashion without the
- * express written consent of George Reese.
  */
 
 package com.planet_ink.coffee_mud.i3.persist;

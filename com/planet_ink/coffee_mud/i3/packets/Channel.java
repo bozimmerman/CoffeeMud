@@ -1,9 +1,6 @@
 /**
  * imaginary.net.i3.Channel
  * An I3 channel.
- * This source code may not be modified, copied,
- * redistributed, or used in any fashion without the
- * express written consent of George Reese.
  */
 
 package com.planet_ink.coffee_mud.i3.packets;
@@ -16,6 +13,13 @@ import java.io.Serializable;
  * class keeps a list of this channels for tracking.
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
+ */
+
+/**
+ * Copyright (c) 1996 George Reese
+ * This source code may not be modified, copied,
+ * redistributed, or used in any fashion without the
+ * express written consent of George Reese.
  */
 public class Channel implements Serializable {
     /**
