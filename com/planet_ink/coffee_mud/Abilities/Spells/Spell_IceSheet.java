@@ -66,7 +66,7 @@ public class Spell_IceSheet extends Spell
 				else
 				if((Util.bset(affect.sourceMajor(),Affect.ACT_MOVE)))
 				{
-					if(Dice.rollPercentage()>affect.source().charStats().getStat(CharStats.DEXTERITY)*4)
+					if(Dice.rollPercentage()>((affect.source().charStats().getStat(CharStats.DEXTERITY)*3)+25))
 					{
 						int oldDisposition=mob.baseEnvStats().disposition();
 						oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);

@@ -26,7 +26,7 @@ public class Spell_WallOfDarkness extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
-		minRange=0;
+		minRange=1;
 		maxRange=3;
 
 		uses=Integer.MAX_VALUE;
@@ -54,6 +54,7 @@ public class Spell_WallOfDarkness extends Spell
 		&&(mob.isInCombat())
 		&&(mob.getVictim()==invoker)
 		&&(mob.rangeToTarget()>=1)
+		&&(affect.amITarget(invoker))
 		&&((affect.targetCode()&Affect.MASK_MALICIOUS)>0))
 		{
 			if((affect.tool()!=null)&&(affect.tool() instanceof Ability))
@@ -79,6 +80,7 @@ public class Spell_WallOfDarkness extends Spell
 	{
 		super.unInvoke();
 		if((theWall!=null)
+		&&(invoker!=null)
 		&&(theWall.myOwner()!=null)
 		&&(theWall.myOwner() instanceof Room)
 		&&(((Room)theWall.myOwner()).isContent(theWall)))
@@ -92,7 +94,7 @@ public class Spell_WallOfDarkness extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
+		if(!mob.isInCombat())
 		{
 			mob.tell("You really should be in ranged combat to cast this.");
 			return false;
