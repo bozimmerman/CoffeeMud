@@ -38,8 +38,8 @@ in mind then, and in no particular order, the several essential object types in
 CoffeeMud are presented.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P><IMG src="images/rainbow.jpg" > 
 <P align=left><FONT color=mediumslateblue size=5><STRONG>Text:</STRONG></FONT></P>
-<P align=left><FONT size=4>Before we get 
-started with objects, needs must the topic of text display be covered. 
+<P align=left><FONT size=4>Before we 
+get started with objects, needs must the topic of text display be covered. 
 Throughout the system you will see text being sent to the user. Since a mud is a 
 text producing engine, this should be no great suprise. However, within that 
 text you will often see different kinds of codes and tags which affect the 
@@ -47,11 +47,11 @@ output. For instance, consider the following lines:</FONT></P><PRE>msg=new FullM
 mob.location().show(mob,null,Affect.MSG_OK_ACTION,
 				"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
 </PRE>
-<P align=left><FONT size=4>Focusing only 
-on the text for a moment, you will notice a that tags are used to designate a 
-player name, or the name of the target of a spell. You will also notice that (s) 
-and (es) is used to modify the proper form of a verb. These are key features of 
-the CoffeeMud text engine. Here is a more complete list of available 
+<P align=left><FONT size=4>Focusing 
+only on the text for a moment, you will notice a that tags are used to designate 
+a player name, or the name of the target of a spell. You will also notice that 
+(s) and (es) is used to modify the proper form of a verb. These are key features 
+of the CoffeeMud text engine. Here is a more complete list of available 
 tage:</FONT>&nbsp;</P>
 <TABLE width="100%" border=1>
   
@@ -82,7 +82,7 @@ tage:</FONT>&nbsp;</P>
   <TR>
     <TD width="20%">&lt;S-HAS-HAVE&gt;</TD>
     <TD>Outputs 'Have' if Observer=Source, otherwise 
-    'Has'.</TD></TR>
+      'Has'.</TD></TR>
   <TR>
     <TD width="20%">&lt;S-YOUPOSS&gt;</TD>
     <TD>Outputs 'Your' if Observer=Source, otherwise the 
@@ -122,7 +122,7 @@ tage:</FONT>&nbsp;</P>
   <TR>
     <TD width="20%">&lt;T-HAS-HAVE&gt;</TD>
     <TD>Outputs 'Have' if Observer=Target, otherwise 
-    'Has'.</TD></TR>
+      'Has'.</TD></TR>
   <TR>
     <TD width="20%">&lt;T-YOUPOSS&gt;</TD>
     <TD>Outputs 'Your' if Observer=Target, otherwise the 
@@ -135,12 +135,12 @@ tage:</FONT>&nbsp;</P>
     <TD width="20%">&lt;T-HISHERSELF&gt;</TD>
     <TD>Outputs 'Yourself' if Observer=Source, otherwise 
       the 'Hisself'/'Herself'</TD></TR></TABLE>
-<P align=left><FONT size=4>Occasionally, 
-you will find color/font codes embedded in system strings. For instance: 
-</FONT>&nbsp;</P><PRE>			msg.append("^!You are thirsty.^?\n\r");
+<P align=left><FONT size=4>Occasionally, you will find color/font codes embedded in 
+system strings. For instance: </FONT>&nbsp;</P><PRE>			msg.append("^!You are thirsty.^?\n\r");
 </PRE>
-<P align=left><FONT size=4>These codes, 
-defined in the system.TelnetSession class, are as follows: </FONT>&nbsp;</P>
+<P align=left><FONT size=4>These 
+codes, defined in the system.TelnetSession class, are as follows: 
+</FONT>&nbsp;</P>
 <TABLE width="50%" border=1>
   
   <TR>
@@ -1453,8 +1453,162 @@ using the following:</FONT></P><pre>
 <P align=left>&nbsp;</P>
 <P align=left><FONT size=5><STRONG><IMG src="images/clown.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5><STRONG><FONT color=blue>Behaviors:</FONT></STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a 
-Behavior.</FONT></P>
+<P align=left><FONT size=4>A Behavior is 
+defined as a property of an item, mob, exit, or room which takes proactive (as 
+opposed to REactive) steps on behalf of its host.&nbsp; Examples of Behaviors 
+include aggressiveness, mobility, auto-emoting, and scripting.&nbsp; Let's take 
+a look at a sample Behavior and see how they are put together:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Ravenous implements Behavior
+{
+	public String ID(){return "Ravenous";}
+	public String name(){return "Ravenous Eater";}
+	
+	public Behavior newInstance()
+	{	return new Ravenous();	}
+</PRE>
+<P align=left><FONT size=4>Our first 
+step, as seen above, is to make sure we define an ID() method with the classes 
+name, just as we do in other CoffeeMud objects.&nbsp; The next step is to give 
+the Behavior a name, which is entirely unimportant to players, but helpful for 
+Archons.&nbsp; And, of course, we must define a newInstance() method to return a 
+coy of the behavior.</FONT></P><PRE>	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	public boolean grantsMobility(){return false;}
+	public boolean grantsAggressivenessTo(MOB M){return false;}
+</PRE>
+<P align=left><FONT size=4>Next are some 
+important flags that tell the CoffeeMud system some important things about your 
+behavior.&nbsp; The first method (<FONT size=3><FONT size=4>canImproveCode)</FONT> </FONT>tells the behavior whether it 
+is properly used on Mobs, or Items, Rooms, Exits, or all of these.&nbsp; In this 
+case, our behavior only affects mobs.&nbsp; The next method (grantsMobility) 
+tells the system whether this behavior causes the mob to roam around.&nbsp; The 
+last method (grantsAggressivenessTo) says whether or not this method would 
+necessary cause the host mob to attack the mob (M) in the parameter.</FONT></P><PRE>	public void startBehavior(Environmental forMe) 
+	{}
+	public boolean modifyBehavior(MOB mob, Object O)
+	{ return false; }
+</PRE>
+<P align=left><FONT size=4>The next two 
+methods, seldom used, are still quite important.&nbsp; The first method 
+(startBehavior) receives as its parameter the brand new host of this 
+behavior.&nbsp; If the behavior instance needs to do any variable or other 
+preparation to either the behaving object host (forMe) or itself, it should do 
+so here.&nbsp; The next method (modifyBehavior) is just a custom interface for 
+allowing information or functionality to be passed to and from a behavior.&nbsp; 
+None of the parameters, nor the return values, nor this interface have any 
+specific or intended meaning beyond what you might want to give to it.&nbsp; 
+Unless the developer of the behavior calls this method him or herself, it will 
+likely never be called.</FONT></P><PRE>	public String getParms(){return super.getParms();}
+	public void setParms(String parameters)
+	{super.setParms(parameters);}
+</PRE>
+<P align=left><FONT size=4>These 
+methods, part of the StdBehavior and Behavior interface, are shown here just to 
+make you aware of how parameter strings passed to behaviors are accessed. 
+Sometimes prepatory code is also executed inside a setParms method, for 
+instance.&nbsp; Normally these methods would not appear in your own instance of 
+a Behavior.</FONT></P><PRE>	public boolean tick(Tickable ticking, int tickID)
+	{
+		MOB mob=getBehaversMOB(ticking);
+		Room room=getBehaversRoom(ticking);
+		
+		if((mob==null)||(room==null)||(tickID!=Host.MOB_TICK))
+			return super.tick(ticking,tickID);
+</PRE>
+<P align=left><FONT size=4>Now we get to 
+the Nitty Gritty of the Behaviors work.&nbsp; A behavior gets all or almost all 
+of its work done in a tick method.&nbsp; If you have not read the Digression 
+above about the tick method, you should definitely do so!&nbsp; In this example, 
+we call two internal StdBehavior methods to get some important starting 
+information about the behaving object host of the behavior.&nbsp; In this 
+example, our&nbsp;behaving object&nbsp;host&nbsp;will be a mob.&nbsp; However, 
+these methods may still intelligently return Item owners, or Exit rooms if the 
+host is other than a mob.&nbsp; The ticking parameter will always be the 
+behaving object host.</FONT></P>
+<P align=left><FONT size=4>The next line 
+checks to see if our host mob exists, and is in a room.&nbsp; We also check to 
+see if the tickID is the valid mob ticking id.&nbsp; If our host had been an 
+Item, Exit, or Room, this tickID would no longer be Host.MOB_TICK, but would 
+be&nbsp; Host.ITEM_BEHAVIOR_TICK, &nbsp;Host.ROOM_BEHAVIOR_TICK, or 
+Host.EXIT_BEHAVIOR_TICK.&nbsp; Since our host, in this case, is a Mob, we check 
+for MOB_TICK.</FONT></P><PRE>		if((!canActAtAll(mob))
+		||(!canFreelyBehaveNormal(mob)))
+			return super.tick(ticking,tickID);
+			
+</PRE>
+<P align=left><FONT size=4>Our next step 
+is to call a couple more internal StdBehavior methods.&nbsp; The first 
+(canActAtAll) returns true if the mob is alive, awake, and mobile.&nbsp; The 
+second method (canFreelyBehaveNormal) returns true if the mob is not currently 
+in combat, not charmed or following anyone, and is not severely injured.&nbsp; 
+We want our ravenous mob to follow this behavior only in the best of health and 
+mood.</FONT></P><PRE>		Item eatible=null;
+		for(int i=0;i&lt;mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)&amp;&amp;(I instanceof Food))
+				eatible=I;
+		}
+</PRE>
+<P align=left><FONT size=4>Next, we 
+iterate through the mob's inventory to find the last instance of a piece of 
+food.</FONT></P><PRE>		if(eatible!=null)
+		{
+			room.show(mob,eatible,null,"&lt;S-NAME&gt; gobble(s) up &lt;T-NAMESELF&gt;.");
+			return true;
+		}
+</PRE>
+<P align=left><FONT size=4>If some food 
+was found, the mob will eat it.&nbsp; Now, practically speaking, the mob will 
+quickly devour and use up any and all food which it may have had to begin 
+with.&nbsp; What we decide to do when the mob does NOT have food, therefore, is 
+just as important.</FONT></P><PRE>		int randMob=Dice.roll(1,room.numInhabitants(),-1);
+		MOB mobToHitUp=room.fetchInhabitant(randMob);
+		if((mobToHitUp==null)
+		||(mobToHitUp==mob)
+		||(Dice.rollPercentage()&gt;75))
+			return true;
+</PRE>
+<P align=left><FONT size=4>Since our mob 
+is hungry, and another mob is the most likely source of food, we will pick a 
+random inhabitant of the room, which is not ourselves, 25% of the time. 
+Otherwise, we just return true, and try again on the next tick.</FONT></P><PRE>		
+		int randItem=Dice.roll(1,mobToHitUp.inventorySize(),-1);
+		Item I=mobToHitUp.fetchInventory(randItem);
+		if((I!=null)&amp;&amp;(I instanceof Food))
+			eatible=I;
+		
+		if(eatible==null) return true;
+</PRE>
+<P align=left><FONT size=4>Next we will 
+pick a random piece of inventory from that mob, and see if it is food.&nbsp; If 
+not, we return true and try again on the next tick.</FONT></P><PRE>		ExternalPlay.quickSay(mob,mobToHitUp,
+				  "May I have some of your "+eatible.name()+"?",
+				  false,false);
+				  
+		return true;
+	}
+</PRE>
+<P align=left><FONT size=4>And lastly, 
+since we have picked a random mob in the room, and seen that he has food, we 
+will ask him for it!&nbsp; If it's a player, then perhaps he might even give us 
+some.&nbsp; If we are given food, we will eat it on the next tick for 
+sure!</FONT></P><PRE>	public void affect(Environmental affecting, Affect affect)
+	{}
+	public boolean okAffect(Environmental oking, Affect affect)
+	{	return true; }
+}
+</PRE><FONT size=4>
+<P align=left>The above two methods are shown here just to 
+remind you that, although a behavior's PRIMARY purpose is to be proactive in a 
+tick method, a behavior also has the ability to preview and respond to messages 
+affecting the host behaving object. That object will always be identified in the 
+affecting and oking parameters respectively. If these two methods mean nothing 
+to you, you should definitely go back and read the Digression on message 
+passing. </FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1556,10 +1710,10 @@ public NormalGuy()
 	if(!loaded())
 	{
 		setLoaded(true);
-		CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
-		CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,true);
-		CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,true);
-		CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",0,false);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,"",true,false);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,"",true,false);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,"",true,false);
+		CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",0,"",false,false);
 	}
 }
 </PRE>
@@ -1577,9 +1731,15 @@ parameter of the method is the ID() value of the Character Class itself,
 followed by the level at which this class gains or qualifies for the skill. Next 
 is the ID() value of the Ability to allow this class to qualify for, followed by 
 the default profficiency which this class displays in the skill (typically 0). 
-The last parameter establishes whether the player will receive this skill 
-automatically when he or she gains the appropriate level, or whether they merely 
-qualify for the skill. </FONT></P><pre>public boolean playerSelectable()
+The next parameter are any special parameters that affects the way this class 
+uses the skill, followed by a&nbsp;boolean which&nbsp;establishes whether the 
+player will receive this skill automatically when he or she gains the 
+appropriate level, or whether they merely qualify for the skill.&nbsp;&nbsp; The 
+last parameter, almost always false, determines whether the skill is "secret" 
+for this class.&nbsp; Secret skills are qualified for (or gained), but do not 
+appear on Qualify lists, Class information, or Help files.&nbsp; Secret skills 
+are never taught by Guildmasters (MOBTeachers) unless specifically told 
+to.</FONT></P><pre>public boolean playerSelectable()
 {
 	return true;
 }

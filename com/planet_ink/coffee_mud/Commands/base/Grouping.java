@@ -135,7 +135,7 @@ public class Grouping
 		String name=who.name();
 		if((who.session()!=null)&&(who.session().afkFlag()))
 			name=name+(" (idle: "+(who.session().getIdleMillis()/1000)+"s)");
-		msg.append("] "+Util.padRight(name,15));
+		msg.append("] "+Util.padRight(name,35));
 		msg.append("\n\r");
 		return msg;
 	}

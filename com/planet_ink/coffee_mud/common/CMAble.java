@@ -222,47 +222,47 @@ public class CMAble
 		return false;
 	}
 	
+	
+	public static CMAble getAllAbleMap(String ability)
+	{
+		if(classAbleMap.containsKey("All"))
+		{
+			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return (CMAble)ableMap.get(ability);
+		}
+		return null;
+	}
+	
 	public static boolean getSecretSkill(String charClass, 
 										 String ability)
 	{
+		boolean secretFound=false;
 		if(classAbleMap.containsKey(charClass))
 		{
 			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
 			if(ableMap.containsKey(ability))
-				return ((CMAble)ableMap.get(ability)).isSecret;
+				if(!((CMAble)ableMap.get(ability)).isSecret)
+					return false;
+				else
+					secretFound=true;
 		}
-		if(classAbleMap.containsKey("All"))
-		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
-			if(ableMap.containsKey(ability))
-				return ((CMAble)ableMap.get(ability)).isSecret;
-		}
-		return false;
+		CMAble AB=getAllAbleMap(ability);
+		if(AB!=null) return AB.isSecret;
+		return secretFound;
 	}
 	
 	public static boolean getAllSecretSkill(String ability)
 	{
-		if(classAbleMap.containsKey("All"))
-		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
-			if(ableMap.containsKey(ability))
-				return ((CMAble)ableMap.get(ability)).isSecret;
-		}
+		CMAble AB=getAllAbleMap(ability);
+		if(AB!=null) return AB.isSecret;
 		return false;
 	}
 	
 	public static boolean getSecretSkill(MOB mob,
 										 String ability)
 	{
-		if(classAbleMap.containsKey("All"))
-		{
-			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
-			if(ableMap.containsKey(ability))
-			{
-				CMAble AB=(CMAble)ableMap.get(ability);
-				if(AB.isSecret) return true;
-			}
-		}
+		boolean secretFound=false;
 		for(int c=0;c<mob.charStats().numClasses();c++)
 		{
 			String charClass=mob.charStats().getMyClass(c).ID();
@@ -270,19 +270,20 @@ public class CMAble
 			{
 				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
 				if(ableMap.containsKey(ability))
-				{
-					CMAble AB=(CMAble)ableMap.get(ability);
-					if(!AB.isSecret) return false;
-				}
+					if(!((CMAble)ableMap.get(ability)).isSecret)
+						return false;
+					else
+						secretFound=true;
 			}
 		}
-		return true;
+		CMAble AB=getAllAbleMap(ability);
+		if(AB!=null) return AB.isSecret;
+		return secretFound;
 	}
 	
 	public static boolean getSecretSkill(String ability)
 	{
-		if(getAllSecretSkill(ability)) return true;
-		boolean secret=true;
+		boolean secretFound=false;
 		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 		{
 			String charClass=((CharClass)e.nextElement()).ID();
@@ -290,13 +291,15 @@ public class CMAble
 			{
 				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
 				if(ableMap.containsKey(ability))
-				{
-					CMAble AB=(CMAble)ableMap.get(ability);
-					if(!AB.isSecret) return false;
-				}
+					if(!((CMAble)ableMap.get(ability)).isSecret)
+						return false;
+					else
+						secretFound=true;
 			}
 		}
-		return true;
+		CMAble AB=getAllAbleMap(ability);
+		if(AB!=null) return AB.isSecret;
+		return secretFound;
 	}
 	
 	public static String getDefaultParm(String charClass, 

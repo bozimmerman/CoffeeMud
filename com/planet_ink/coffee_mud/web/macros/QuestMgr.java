@@ -26,11 +26,11 @@ public class QuestMgr extends StdWebMacro
 		}
 		
 		String last=httpReq.getRequestParameter("QUEST");
-		if(last==null) return " @break@";
+		if(last==null) return "";
 		if(last.length()>0)
 		{
 			Q=Quests.fetchQuest(last);
-			if(Q==null) return " @break@";
+			if(Q==null) return "";
 			if(parms.containsKey("MODIFY"))
 			{
 				String err=populateQuest(httpReq,Q);
@@ -73,9 +73,13 @@ public class QuestMgr extends StdWebMacro
 		script=Util.replaceAll(script,"\r",";");
 		script=Util.replaceAll(script,";;",";");
 		script=Util.replaceAll(script,";;",";");
+		script=script.trim();
+		while(script.endsWith(";"))
+			script=script.substring(0,script.length()-1);
+		script=script.trim();
 		if((script==null)||(script.trim().length()==0))
 			return "No script was specified.";
-		Q.setScript(script.trim());
+		Q.setScript(script);
 		if(Q.name().length()==0)
 			return "You must specify a VALID quest string.  This one contained no name.";
 		else

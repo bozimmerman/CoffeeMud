@@ -47,8 +47,7 @@
 @endif@
 <P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
 <BR>
-<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>
-@if?!CheckReqParm?QUEST=@ @QuestData?SCRIPT@ @else@
+<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>@if?!CheckReqParm?QUEST=@ @QuestData?SCRIPT@ @else@
 set name MyQuest
 #   Set the quest name
 

@@ -118,6 +118,14 @@ public class Utils
 				else
 				{
 					Room newRoom=(Room)room.copyOf();
+					newRoom.clearSky();
+					if(newRoom instanceof GridLocale)
+						((GridLocale)newRoom).clearGrid();
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						newRoom.rawDoors()[d]=null;
+						newRoom.rawExits()[d]=null;
+					}
 					room.rawDoors()[dirCode]=newRoom;
 					newRoom.rawDoors()[Directions.getOpDirectionCode(dirCode)]=room;
 					if(room.rawExits()[dirCode]==null)

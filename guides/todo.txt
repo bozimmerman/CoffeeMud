@@ -19,6 +19,7 @@ Electronic items which can be activated/deactivated, grant some affect, and use 
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
 possible to have NE SE SW NW directions?
 racial abilities (abilities tied to the race)
+Conquest behavior
 GenRaces
 GenCharClasses
 Some solution for variable eq on mobs

@@ -1966,7 +1966,7 @@ public class Scriptable extends StdBehavior
 				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(roomName.length()>0)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1).trim());
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 					Room newRoom=getRoom(roomName,lastKnownLocation);
 					if(newRoom!=null)
 					{
@@ -2030,21 +2030,18 @@ public class Scriptable extends StdBehavior
 				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(roomName.length()>0)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1).trim());
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 					Room newRoom=getRoom(roomName,lastKnownLocation);
-					if(newRoom!=null)
+					if((newRoom!=null)&&(lastKnownLocation!=null))
 					{
 						Vector V=new Vector();
 						if(s.equalsIgnoreCase("all"))
 						{
-							if(lastKnownLocation!=null)
+							for(int x=0;x<lastKnownLocation.numInhabitants();x++)
 							{
-								for(int x=0;x<lastKnownLocation.numInhabitants();x++)
-								{
-									MOB m=lastKnownLocation.fetchInhabitant(x);
-									if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
-										V.addElement(m);
-								}
+								MOB m=lastKnownLocation.fetchInhabitant(x);
+								if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
+									V.addElement(m);
 							}
 						}
 						else
@@ -2112,7 +2109,7 @@ public class Scriptable extends StdBehavior
 				String whoName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
 				if(whoName.length()>0)
 				{
-					s=Util.getPastBit(s,1).trim();
+					s=Util.getCleanBit(s,1);
 					Quest Q=Quests.fetchQuest(s);
 					if(Q!=null) Q.declareWinner(whoName);
 				}
@@ -2161,7 +2158,7 @@ public class Scriptable extends StdBehavior
 				Vector vscript=new Vector();
 				vscript.addElement("FUNCTION_PROG ALARM_"+time);
 				vscript.addElement(parms);
-				que.addElement(new ScriptableResponse(source,target,monster,primaryItem,secondaryItem,vscript,Util.s_int(time),msg));
+				que.insertElementAt(new ScriptableResponse(source,target,monster,primaryItem,secondaryItem,vscript,Util.s_int(time),msg),0);
 				break;
 			}
 			default:
@@ -2567,11 +2564,13 @@ public class Scriptable extends StdBehavior
 				}
 			}
 
-			for(int q=que.size()-1;q>=0;q--)
-			{
-				ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
-				if(SB.tickOrGo()) que.removeElement(SB);
-			}
+			try{
+				for(int q=que.size()-1;q>=0;q--)
+				{
+					ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
+					if(SB.tickOrGo()) que.removeElement(SB);
+				}
+			}catch(Exception e){}
 		}
 		return true;
 	}

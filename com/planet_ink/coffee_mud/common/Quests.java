@@ -781,29 +781,26 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(!stuff.contains(M))
+						Vector V=new Vector();
+						V.addElement(E);
+						if(M.fetchAbility(A3.ID())!=null)
 						{
-							Vector V=new Vector();
-							V.addElement(E);
-							if(M.fetchAbility(A3.ID())!=null)
-							{
-								A3=M.fetchAbility(A3.ID());
-								V.addElement(A3);
-								V.addElement(A3);
-								V.addElement(A3.text());
-								A3.setMiscText(Util.combine(p,3));
-								A3.setProfficiency(100);
-							}
-							else
-							{
-								A3.setMiscText(Util.combine(p,3));
-								V.addElement(A3);
-								V.addElement(A3);
-								A3.setProfficiency(100);
-								M.addAbility(A3);
-							}
-							addons.addElement(V);
+							A3=M.fetchAbility(A3.ID());
+							V.addElement(A3);
+							V.addElement(A3);
+							V.addElement(A3.text());
+							A3.setMiscText(Util.combine(p,3));
+							A3.setProfficiency(100);
 						}
+						else
+						{
+							A3.setMiscText(Util.combine(p,3));
+							V.addElement(A3);
+							V.addElement(A3);
+							A3.setProfficiency(100);
+							M.addAbility(A3);
+						}
+						addons.addElement(V);
 					}
 					else
 					if(cmd.equals("BEHAVIOR"))
@@ -824,25 +821,22 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(!stuff.contains(E))
+						Vector V=new Vector();
+						V.addElement(E);
+						if(E.fetchBehavior(B.ID())!=null)
 						{
-							Vector V=new Vector();
-							V.addElement(E);
-							if(E.fetchBehavior(B.ID())!=null)
-							{
-								B=E.fetchBehavior(B.ID());
-								V.addElement(B);
-								V.addElement(B.getParms());
-								B.setParms(Util.combine(p,3));
-							}
-							else
-							{
-								V.addElement(B);
-								B.setParms(Util.combine(p,3));
-								E.addBehavior(B);
-							}
-							addons.addElement(V);
+							B=E.fetchBehavior(B.ID());
+							V.addElement(B);
+							V.addElement(B.getParms());
+							B.setParms(Util.combine(p,3));
 						}
+						else
+						{
+							V.addElement(B);
+							B.setParms(Util.combine(p,3));
+							E.addBehavior(B);
+						}
+						addons.addElement(V);
 					}
 					else
 					if(cmd.equals("AFFECT"))
@@ -863,30 +857,27 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(!stuff.contains(E))
+						Vector V=new Vector();
+						V.addElement(E);
+						if(E.fetchAffect(A3.ID())!=null)
 						{
-							Vector V=new Vector();
-							V.addElement(E);
-							if(E.fetchAffect(A3.ID())!=null)
-							{
-								A3=E.fetchAffect(A3.ID());
-								V.addElement(A3);
-								V.addElement(A3.text());
-								A3.makeLongLasting();
-								A3.setMiscText(Util.combine(p,3));
-							}
-							else
-							{
-								V.addElement(A3);
-								A3.setMiscText(Util.combine(p,3));
-								if(M!=null)
-									A3.startTickDown(M,E,99999);
-								else
-									A3.startTickDown(null,E,99999);
-								A3.makeLongLasting();
-							}
-							addons.addElement(V);
+							A3=E.fetchAffect(A3.ID());
+							V.addElement(A3);
+							V.addElement(A3.text());
+							A3.makeLongLasting();
+							A3.setMiscText(Util.combine(p,3));
 						}
+						else
+						{
+							V.addElement(A3);
+							A3.setMiscText(Util.combine(p,3));
+							if(M!=null)
+								A3.startTickDown(M,E,99999);
+							else
+								A3.startTickDown(null,E,99999);
+							A3.makeLongLasting();
+						}
+						addons.addElement(V);
 					}
 					else
 					{

@@ -120,6 +120,11 @@ public class ItemUsage
 			mob.tell("You don't have a "+((String)commands.elementAt(0))+".");
 			return;
 		}
+		long compareThisCode = compareThis.rawProperLocationBitmap();
+		if(Util.bset(compareThisCode,Item.HELD)
+		&&(!Util.bset(compareThisCode,Item.WIELD))
+		&&(compareThisCode!=Item.HELD))
+			compareThisCode=Util.unsetb(compareThisCode,Item.HELD);
 		Item toThis=null;
 		if(commands.size()==1)
 		{
@@ -129,12 +134,19 @@ public class ItemUsage
 				Item I=(Item)mob.fetchInventory(i);
 				if((I!=null)
 				&&(I!=compareThis)
-				&&(I.rawProperLocationBitmap()==compareThis.rawProperLocationBitmap())
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
 				{
-					if(!I.amWearingAt(Item.INVENTORY))
-					{ toThis=I; break;}
-					if(possible==null) possible=I;
+					long compareThatCode = I.rawProperLocationBitmap();
+					if(Util.bset(compareThatCode,Item.HELD)
+					&&(!Util.bset(compareThatCode,Item.WIELD))
+					&&(compareThatCode!=Item.HELD))
+						compareThatCode=Util.unsetb(compareThatCode,Item.HELD);
+					if(compareThisCode==compareThatCode)
+					{
+						if(!I.amWearingAt(Item.INVENTORY))
+						{ toThis=I; break;}
+						if(possible==null) possible=I;
+					}
 				}
 			}
 			if(toThis==null) toThis=possible;
