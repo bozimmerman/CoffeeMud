@@ -74,6 +74,10 @@ public interface Session
 						 String msg,
 						 boolean wrapOnly);
 
+	public Hashtable getFriends();
+	public void updateFriends();
+	public Hashtable getIgnored();
+	public void updateIgnored();
 
 	public void enque(int tickDown, Vector commands);
 	public Vector deque();

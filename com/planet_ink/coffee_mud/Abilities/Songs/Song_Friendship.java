@@ -28,6 +28,23 @@ public class Song_Friendship extends Song
 		return true;
 	}
 
+	public void unInvoke()
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			super.unInvoke();
+			if(mob!=invoker)
+			{
+				ExternalPlay.standIfNecessary(mob);
+				if((mob.isMonster())&&(!Sense.isMobile(mob)))
+					CoffeeUtensils.wanderAway(mob,true);
+			}
+		}
+		else
+			super.unInvoke();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

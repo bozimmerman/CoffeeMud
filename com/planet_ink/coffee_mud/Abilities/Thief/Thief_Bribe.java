@@ -17,6 +17,24 @@ public class Thief_Bribe extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_Bribe();}
 	private MOB lastChecked=null;
 
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		if(canBeUninvoked())
+		{
+			ExternalPlay.follow(mob,null,false);
+			ExternalPlay.standIfNecessary(mob);
+			if((mob.isMonster())&&(!Sense.isMobile(mob)))
+				CoffeeUtensils.wanderAway(mob,true);
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -72,6 +90,7 @@ public class Thief_Bribe extends ThiefSkill
 				try
 				{
 					ExternalPlay.doCommand(target,commands);
+					beneficialAffect(mob,target,0);
 				}
 				catch(Exception e)
 				{

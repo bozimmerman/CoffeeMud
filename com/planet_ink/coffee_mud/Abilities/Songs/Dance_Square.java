@@ -29,13 +29,16 @@ public class Dance_Square extends Dance
 			{
 				String cmd=msg.sourceMessage().substring(start+1,end);
 				MOB M=(MOB)affected;
-				try{
-					if(Sense.canBeHeardBy(invoker(),M)
-					&&Sense.canBeSeenBy(invoker(),M)
-					&&(M.location()==invoker().location()))
-						ExternalPlay.doCommand(M,Util.parse(cmd));
+				if(!cmd.toUpperCase().startsWith("FOL"))
+				{
+					try{
+						if(Sense.canBeHeardBy(invoker(),M)
+						&&Sense.canBeSeenBy(invoker(),M)
+						&&(M.location()==invoker().location()))
+							ExternalPlay.doCommand(M,Util.parse(cmd));
+					}
+					catch(Exception e){}
 				}
-				catch(Exception e){}
 			}
 		}
 		super.affect(myHost,msg);

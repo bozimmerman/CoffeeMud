@@ -90,6 +90,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Sermon",false);
 
 		}
 	}

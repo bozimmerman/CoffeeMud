@@ -109,9 +109,6 @@ public class CommandProcessor
 		case CommandSet.AUCTION:
 			Channels.auction(mob,commands);
 			break;
-		case CommandSet.AUTOMELEE:
-			TheFight.autoMelee(mob);
-			break;
 		case CommandSet.AUTOASSIST:
 			TheFight.autoAssist(mob);
 			break;
@@ -126,6 +123,12 @@ public class CommandProcessor
 			break;
 		case CommandSet.AUTOLOOT:
 			TheFight.autoloot(mob);
+			break;
+		case CommandSet.AUTOMELEE:
+			TheFight.autoMelee(mob);
+			break;
+		case CommandSet.AUTONOTIFY:
+			Channels.autoNotify(mob);
 			break;
 		case CommandSet.AUTOWEATHER:
 			BasicSenses.autoweather(mob);
@@ -346,6 +349,9 @@ public class CommandProcessor
 		case CommandSet.FOLLOW:
 			Grouping.follow(mob,commands);
 			break;
+		case CommandSet.FRIENDS:
+			Channels.friends(mob,commands);
+			break;
 		case CommandSet.GAIN:
 			AbilityEvoker.gain(mob,commands);
 			break;
@@ -405,6 +411,9 @@ public class CommandProcessor
 			}
 			else
 				mob.tell("What's your idea?");
+			break;
+		case CommandSet.IGNORE:
+			Channels.ignore(mob,commands);
 			break;
 		case CommandSet.IMPORT:
 			if(mob.isASysOp(null))

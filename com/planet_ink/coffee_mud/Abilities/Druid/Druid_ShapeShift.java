@@ -43,6 +43,13 @@ public class Druid_ShapeShift extends StdAbility
 	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",      "Bear",    "Scarab",     "Gorilla",  "Bull"},
 	{"WereBat","Manticore","WereWolf","Griffon","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
+	private static double[]   attadj=
+	{.7	      ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2      ,.7          ,1.0        ,.7};
+	private static double[]   dmgadj=
+	{.2		  ,.3         ,.4        ,.5	   ,.2			  ,.3       ,.3           ,.4         ,.5};
+	private static double[]   armadj=
+	{1.0	  ,.5         ,.4        ,.5	   ,1.0			  ,.3       ,1.0          ,.2         ,.2};
+	
 	private static String[] forms={"Rodent form",
 								   "Feline form",
 								   "K-9 form",
@@ -70,6 +77,12 @@ public class Druid_ShapeShift extends StdAbility
 			else
 				affectableStats.setName("a "+raceName.toLowerCase());
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
+												(int)Math.round(Util.mul(affectableStats.level(),attadj[getRaceCode()])));
+			affectableStats.setArmor(affectableStats.armor()+
+									(int)Math.round(Util.mul(affectableStats.level(),armadj[getRaceCode()])));
+			affectableStats.setDamage(affectableStats.damage()+
+									(int)Math.round(Util.mul(affectableStats.level(),dmgadj[getRaceCode()])));
 		}
 	}
 
@@ -112,6 +125,12 @@ public class Druid_ShapeShift extends StdAbility
 			return 3;
 		else
 			return 4;	
+	}
+	public int getRaceCode()
+	{ 
+		if((myRaceCode<0)||
+		(myRaceCode>attadj.length)) return 0;
+		return myRaceCode;
 	}
 	public Race getRace(int classLevel, int raceCode)
 	{

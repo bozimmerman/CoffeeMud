@@ -26,6 +26,7 @@ public class Enchanter extends SpecialistMage
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_MindFog",25,true);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Enthrall",25,true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_LowerResists",25,true);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_RogueLimb",25,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Spell_Geas",25,true);
 		}
 	}

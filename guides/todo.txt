@@ -1,16 +1,10 @@
 Bard Subclasses
 Programming.html update
 Installation.html update
-Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
-Spell: 'Rogue Limb'  One sof your limbs goes out of your control, causing you to do battle with it.  However, you take both sides of the damage.  heh.
-ignore list, for ignoreing players/gossips/who/etc.. 
-friends list, for filter who (who works ok, but who friends shows just friends)
-ReScore button for items, to get default att/armor from level.
-Arrest idea: banned substances (get, drop, eq, etc), and resisting arrest, and harder sentence for parole.
-
 
 //****** next version ********************************************************
 SMTP capability
+Arrest idea: banned substances (get, drop, eq, etc), and resisting arrest, and harder sentence for parole.
 Z-level for the GrinderMap (elevation?) how the heck would THAT work...
 group formations as an alternative way of determining range
 Room descriptions varying by the time of day.

@@ -28,6 +28,8 @@ public class TelnetSession extends Thread implements Session
 	private String lastStr=null;
 	private int spamStack=0;
 	private long lastOutput=0;
+	private Hashtable friends=null;
+	private Hashtable ignored=null;
 
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
@@ -444,6 +446,82 @@ public class TelnetSession extends Thread implements Session
 
 	}
 
+	public Hashtable getHashFrom(String str)
+	{
+		Hashtable h=new Hashtable();
+		if((str==null)||(str.length()==0)) return h;
+		int x=str.indexOf(";");
+		while(x>=0)
+		{
+			String fi=str.substring(0,x).trim();
+			if(fi.length()>0) h.put(fi,fi);
+			str=str.substring(x+1);
+			x=str.indexOf(";");
+		}
+		if(str.trim().length()>0)
+			h.put(str.trim(),str.trim());
+		return h;
+	}
+
+	public String getMyMsg(String name, String subject, String journal)
+	{
+		Vector V=JournalLoader.DBReadCached("PLAYER_FILTERS");
+		if(V==null) return "";
+		int index=JournalLoader.getFirstMsgIndex(V,name,null,subject);
+		if((index<0)||(index>=V.size()))
+			return "";
+		V=(Vector)V.elementAt(index);
+		if(V.size()>5)
+			return (String)V.elementAt(5);
+		return "";
+	}
+	
+	public Hashtable getFriends()
+	{
+		if((friends==null)&&(mob()!=null))
+			friends=getHashFrom(getMyMsg(mob().Name(),"FRIENDS","PLAYER_FILTERS"));
+		return friends;
+	}
+	public Hashtable getIgnored()
+	{
+		if((ignored==null)&&(mob()!=null))
+			ignored=getHashFrom(getMyMsg(mob().Name(),"IGNORED","PLAYER_FILTERS"));
+		return ignored;
+	}
+	
+	public void updatePrivateList(String name, String subject, String journal, String msg)
+	{
+		Vector V=JournalLoader.DBReadCached("PLAYER_FILTERS");
+		if(V!=null)
+		{
+			int index=JournalLoader.getFirstMsgIndex(V,name,null,subject);
+			if((index>=0)&&(index<V.size()))
+				JournalLoader.DBDelete(journal,index);
+		}
+		JournalLoader.DBWrite(journal,name,"ANY",subject,msg,-1);
+	}
+	public String getPrivateList(Hashtable h)
+	{
+		if((h==null)||(h.size()==0)) return "";
+		StringBuffer list=new StringBuffer("");
+		for(Enumeration e=h.elements();e.hasMoreElements();)
+			list.append(((String)e.nextElement())+";");
+		return list.toString();
+	}
+	
+	public void updateFriends()
+	{
+		if(mob()!=null)
+			updatePrivateList(mob().Name(),"FRIENDS","PLAYER_FILTERS",getPrivateList(getFriends()));
+	}
+	public void updateIgnored()
+	{
+		if(mob()!=null)
+			updatePrivateList(mob().Name(),"IGNORED","PLAYER_FILTERS",getPrivateList(getIgnored()));
+	}
+
+	
+	
 	public String filter(Environmental source,
 						 Environmental target,
 						 Environmental tool,

@@ -64,6 +64,15 @@ public class Grouping
 			return;
 		}
 
+		Hashtable friends=null;
+		if((mobName!=null)
+		&&(mobName.equalsIgnoreCase("friends"))
+		&&(!mob.isMonster()))
+		{
+			friends=mob.session().getFriends();
+			mobName=null;
+		}
+		
 		StringBuffer msg=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{
@@ -75,6 +84,7 @@ public class Grouping
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
 			&&((Sense.isSeen(mob2)||(mob.isASysOp(null))))
+			&&((friends==null)||(friends.containsKey(mob2.Name())||(friends.containsKey("All"))))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}

@@ -301,6 +301,7 @@ public class Channels
 				&&(!M.amDead())
 				&&(M.location()!=null)
 				&&(M.envStats().level()>=lvl)
+				&&(!ses.getIgnored().containsKey(mob.Name()))
 				&&(M.okAffect(M,msg)))
 				{
 					M.affect(M,msg);
@@ -345,6 +346,155 @@ public class Channels
 		}
 		else
 			mob.tell("The "+channelName+" channel is already off.");
+	}
+	
+	public static void friends(MOB mob, Vector commands)
+	{
+		if(mob.isMonster()) return;
+		Session sess=mob.session();
+		Hashtable h=sess.getFriends();
+		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
+		{
+			if(h.size()==0)
+				mob.tell("You have no friends listed.  Use FRIENDS ADD to add more.");
+			else
+			{
+				StringBuffer str=new StringBuffer("Your listed friends are: ");
+				for(Enumeration e=h.elements();e.hasMoreElements();)
+					str.append(((String)e.nextElement())+" ");
+				mob.tell(str.toString());
+			}
+		}
+		else
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("ADD"))
+		{
+			String name=Util.combine(commands,2);
+			if(name.length()==0)
+			{
+				mob.tell("Add whom?");
+				return;
+			}
+			MOB M=CMClass.getMOB("StdMOB");
+			if(name.equalsIgnoreCase("all"))
+				M.setName("All");
+			else
+			if(!ExternalPlay.DBUserSearch(M,name))
+			{
+				mob.tell("No player by that name was found.");
+				return;
+			}
+			if(h.get(M.Name())!=null)
+			{
+				mob.tell("That name is already on your list.");
+				return;
+			}
+			h.put(M.Name(),M.Name());
+			sess.updateFriends();
+			mob.tell("The Player '"+M.Name()+"' has been added to your friends list.");
+		}
+		else
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
+		{
+			String name=Util.combine(commands,2);
+			if(name.length()==0)
+			{
+				mob.tell("Remove whom?");
+				return;
+			}
+			if(h.get(name)==null)
+			{
+				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
+				return;
+			}
+			h.remove(name);
+			sess.updateFriends();
+			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
+		}
+		else
+		{
+			mob.tell("Parameter '"+((String)commands.elementAt(1))+"' is not recognized.  Try LIST, ADD, or REMOVE.");
+			return;
+		}
+	}
+
+	public static void autoNotify(MOB mob)
+	{
+		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))
+		{
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
+			mob.tell("Notificatoin of the arrival of your FRIENDS is now off.");
+		}
+		else
+		{
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
+			mob.tell("Notification of the arrival of your FRIENDS is now on.");
+		}
+	}
+
+	public static void ignore(MOB mob, Vector commands)
+	{
+		if(mob.isMonster()) return;
+		Session sess=mob.session();
+		Hashtable h=sess.getIgnored();
+		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
+		{
+			if(h.size()==0)
+				mob.tell("You have no names on your ignore list.  Use IGNORE ADD to add more.");
+			else
+			{
+				StringBuffer str=new StringBuffer("You are ignoring: ");
+				for(Enumeration e=h.elements();e.hasMoreElements();)
+					str.append(((String)e.nextElement())+" ");
+				mob.tell(str.toString());
+			}
+		}
+		else
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("ADD"))
+		{
+			String name=Util.combine(commands,2);
+			if(name.length()==0)
+			{
+				mob.tell("Add whom?");
+				return;
+			}
+			MOB M=CMClass.getMOB("StdMOB");
+			if(!ExternalPlay.DBUserSearch(M,name))
+			{
+				mob.tell("No player by that name was found.");
+				return;
+			}
+			if(h.get(M.Name())!=null)
+			{
+				mob.tell("That name is already on your list.");
+				return;
+			}
+			h.put(M.Name(),M.Name());
+			sess.updateIgnored();
+			mob.tell("The Player '"+M.Name()+"' has been added to your ignore list.");
+		}
+		else
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
+		{
+			String name=Util.combine(commands,2);
+			if(name.length()==0)
+			{
+				mob.tell("Remove whom?");
+				return;
+			}
+			if(h.get(name)==null)
+			{
+				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
+				return;
+			}
+			h.remove(name);
+			sess.updateIgnored();
+			mob.tell("The Player '"+name+"' has been removed from your ignore list.");
+		}
+		else
+		{
+			mob.tell("Parameter '"+((String)commands.elementAt(1))+"' is not recognized.  Try LIST, ADD, or REMOVE.");
+			return;
+		}
 	}
 
 	public static void quiet(MOB mob)

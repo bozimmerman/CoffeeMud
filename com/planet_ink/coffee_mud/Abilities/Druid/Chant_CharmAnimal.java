@@ -65,6 +65,9 @@ public class Chant_CharmAnimal extends Chant
 		{
 			mob.tell("Your free-will returns.");
 			ExternalPlay.follow(mob,null,false);
+			ExternalPlay.standIfNecessary(mob);
+			if((mob.isMonster())&&(!Sense.isMobile(mob)))
+				CoffeeUtensils.wanderAway(mob,true);
 		}
 	}
 

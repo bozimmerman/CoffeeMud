@@ -196,6 +196,9 @@ public class CommandSet extends Hashtable
 	public static final int TRANSFER=183;
 	public static final int NOTEACH=184;
 	public static final int AFK=185;
+	public static final int FRIENDS=186;
+	public static final int IGNORE=187;
+	public static final int AUTONOTIFY=188;
 
 	private CommandSet()
 	{
@@ -212,14 +215,15 @@ public class CommandSet extends Hashtable
 			put("ATOPICS",new Integer(ARCTOPICS));
 		put("AREAS",new Integer(AREAS));
 		put("AUCTION",new Integer(AUCTION));
-		put("AUTOLOOT",new Integer(AUTOLOOT));
+		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("AUTOGOLD",new Integer(AUTOGOLD));
 		put("AUTOGUARD",new Integer(AUTOGUARD));
 			put("GUARD",new Integer(AUTOGUARD));
 		put("AUTOEXITS",new Integer(AUTOEXITS));
 		put("AUTOIMPROVEMENT",new Integer(AUTOIMPROVEMENT));
+		put("AUTOLOOT",new Integer(AUTOLOOT));
 		put("AUTOMELEE",new Integer(AUTOMELEE));
-		put("AUTOASSIST",new Integer(AUTOASSIST));
+		put("AUTONOTIFY",new Integer(AUTONOTIFY));
 		put("AUTOWEATHER",new Integer(AUTOWEATHER));
 		put("AUTODRAW",new Integer(AUTODRAW));
 		put("BEACON",new Integer(BEACON));
@@ -303,7 +307,9 @@ public class CommandSet extends Hashtable
 		put("FLEE",new Integer(FLEE));
 		put("FOLLOW",new Integer(FOLLOW));
 			put("FOL",new Integer(FOLLOW));
+			put("FO",new Integer(FOLLOW));
 			put("F",new Integer(FOLLOW));
+		put("FRIENDS",new Integer(FRIENDS));
 		put("GAIN",new Integer(GAIN));
 		put("GET",new Integer(GET));
 			put("G",new Integer(GET));
@@ -323,6 +329,7 @@ public class CommandSet extends Hashtable
 			put("H",new Integer(HOLD));
 		put("I3",new Integer(I3));
 		put("IDEA",new Integer(IDEA));
+		put("IGNORE",new Integer(IGNORE));
 		put("IMPORT",new Integer(IMPORT));
 		put("INVENTORY",new Integer(INVENTORY));
 			put("INV",new Integer(INVENTORY));

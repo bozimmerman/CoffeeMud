@@ -197,6 +197,15 @@ public class FrontDoor
 					ExternalPlay.DBReadFollowers(mob,true);
 				}
 				ExternalPlay.DBUpdateIP(mob);
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session S=Sessions.elementAt(s);
+					if((S!=null)
+					&&(S.mob()!=null)
+					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+					&&((S.getFriends().containsKey(mob.Name())||S.getFriends().containsKey("All"))))
+						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
+				}
 			}
 			else
 			{
@@ -464,6 +473,15 @@ public class FrontDoor
 
 				ExternalPlay.DBUpdateIP(mob);
 				Log.sysOut("FrontDoor","Created user: "+mob.Name());
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session S=Sessions.elementAt(s);
+					if((S!=null)
+					&&(S.mob()!=null)
+					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
+					&&((S.getFriends().containsKey(mob.Name())||S.getFriends().containsKey("All"))))
+						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
+				}
 				return true;
 			}
 			return false;

@@ -144,6 +144,7 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateDead",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Sermon",false);
 
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Restoration",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);

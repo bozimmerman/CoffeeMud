@@ -65,12 +65,13 @@ public class SocialProcessor
 				}
 				else
 				{
+					boolean ignore=((!target.isMonster())&&(target.session().getIgnored().containsKey(mob.Name())));
 					FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^TYou tell "+target.name()+" '"+text+"'^?^.",Affect.MSG_TELL,"^T"+mob.name()+" tell(s) you '"+text+"'^?^.",Affect.NO_EFFECT,null);
 					if((mob.location().okAffect(mob,msg))
-					&&(target.okAffect(target,msg)))
+					&&((ignore)||(target.okAffect(target,msg))))
 					{
 						mob.affect(mob,msg);
-						if(mob!=target)
+						if((mob!=target)&&(!ignore))
 						{
 							target.affect(target,msg);
 							if(msg.trailerMsgs()!=null)

@@ -88,7 +88,39 @@ public class JournalLoader
 		}
 		return journal;
 	}
+	public static synchronized Vector DBReadCached(String Journal)
+	{
+		if(Journal==null) return DBRead(Journal);
+		Vector journal=(Vector)Resources.getResource("JOURNAL_"+Journal);
+		if(journal==null)
+		{
+			journal=DBRead(Journal);
+		}
+		if(journal!=null)
+			Resources.submitResource("JOURNAL_"+Journal,journal);
+		return journal;
+	}
 
+	public static int getFirstMsgIndex(Vector journal, 
+									   String from, 
+									   String to, 
+									   String subj)
+	{
+		if(journal==null) return -1;
+		for(int i=0;i<journal.size();i++)
+		{
+			Vector V=(Vector)journal.elementAt(i);
+			if((from!=null)&&(!((String)V.elementAt(1)).equalsIgnoreCase(from)))
+				continue;
+			if((to!=null)&&(!((String)V.elementAt(3)).equalsIgnoreCase(to)))
+				continue;
+			if((subj!=null)&&(!((String)V.elementAt(4)).equalsIgnoreCase(subj)))
+				continue;
+			return i;
+		}
+		return -1;
+	}
+	
 	public static synchronized void DBDelete(String Journal, int which)
 	{
 		DBConnection D=null;
