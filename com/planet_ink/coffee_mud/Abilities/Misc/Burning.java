@@ -154,6 +154,12 @@ public class Burning extends StdAbility
 		if(target==null) return false;
 		if(target.fetchAffect("Burning")==null)
 		{
+			if((mob!=null)&&(mob.location()!=null))
+			{
+				FullMsg msg=new FullMsg(mob,target,Affect.MASK_GENERAL|Affect.TYP_FIRE,null);
+				if(mob.location().okAffect(msg))
+					mob.location().send(mob,msg);
+			}
 			beneficialAffect(mob,target,profficiency());
 			target.recoverEnvStats();
 			if(target instanceof Item)

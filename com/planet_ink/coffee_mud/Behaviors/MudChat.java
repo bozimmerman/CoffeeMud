@@ -210,9 +210,8 @@ public class MudChat extends StdBehavior
 			if(finalCommand.startsWith(":"))
 			{
 				finalCommand="emote "+finalCommand.substring(1).trim();
-				int t=finalCommand.indexOf(" her ");
-				while(t>=0)
-					finalCommand=finalCommand.substring(0,t)+" <S-HISHER> "+finalCommand.substring(t+2);
+				if(source!=null)
+					finalCommand=finalCommand.replaceAll(" her "," "+source.charStats().hisher()+" ");
 			}
 			else
 			if(finalCommand.startsWith("!"))
@@ -224,31 +223,15 @@ public class MudChat extends StdBehavior
 			if(target!=null)
 				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
 
-			int t=finalCommand.indexOf("$r");
-			while(t>=0)
-			{
-				finalCommand=finalCommand.substring(0,t)+rest+finalCommand.substring(t+2);
-				t=finalCommand.indexOf("$r");
-			}
-			t=finalCommand.indexOf("$t");
-			while((t>=0)&&(target!=null))
-			{
-				finalCommand=finalCommand.substring(0,t)+target.name()+finalCommand.substring(t+2);
-				t=finalCommand.indexOf("$t");
-			}
-			t=finalCommand.indexOf("$n");
-			while((t>=0)&&(target!=null))
-			{
-				finalCommand=finalCommand.substring(0,t)+source.name()+finalCommand.substring(t+2);
-				t=finalCommand.indexOf("$n");
-			}
-			t=finalCommand.indexOf("$$");
-			while((t>=0)&&(target!=null))
-			{
-				finalCommand=finalCommand.substring(0,t)+"$"+finalCommand.substring(t+2);
-				t=finalCommand.indexOf("$$");
-			}
-
+			if(finalCommand.indexOf("$r")>=0)
+				finalCommand=finalCommand.replaceAll("$r",rest);
+			if((target!=null)&&(finalCommand.indexOf("$t")>=0))
+				finalCommand=finalCommand.replaceAll("$t",target.name());
+			if((source!=null)&&(finalCommand.indexOf("$n")>=0))
+				finalCommand=finalCommand.replaceAll("$n",source.name());
+			if(finalCommand.indexOf("$$")>=0)
+				finalCommand=finalCommand.replaceAll("$$","$");
+	
 			Vector V=Util.parse(finalCommand);
 			V.insertElementAt(new Integer(RESPONSE_DELAY),0);
 			for(int f=0;f<responseQue.size();f++)

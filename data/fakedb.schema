@@ -121,3 +121,12 @@ CMDATE string NULL
 CMTONM string NULL
 CMSUBJ string NULL
 CMMSGT string NULL
+
+CMCLAN
+CMCLID string KEY
+CMTYPE integer NULL
+CMDESC string NULL
+CMACPT string NULL
+CMPOLI string NULL
+CMRCLL string NULL
+CMDNAT string NULL

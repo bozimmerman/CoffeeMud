@@ -97,6 +97,26 @@ public class IMudClient implements I3Interface
 		ChannelListen ck=new ChannelListen();
 		ck.sender_name=mob.name();
 		ck.channel=channel;
+		ck.onoff="1";
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
+	}
+	
+	public void i3channelSilence(MOB mob, String channel)
+	{
+		if((mob==null)||(!i3online())) return;
+		if((channel==null)
+		   ||(channel.length()==0)
+		   ||(Intermud.getLocalChannel(channel).length()==0))
+		{
+			mob.tell("You must specify a channel name listed in your INI file.");
+			return;
+		}
+		ChannelListen ck=new ChannelListen();
+		ck.sender_name=mob.name();
+		ck.channel=channel;
+		ck.onoff="0";
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
@@ -256,7 +276,7 @@ public class IMudClient implements I3Interface
 			for(int v=0;v<V.size();v++)
 			{
 				Mud m=(Mud)V.elementAt(v);
-				buf.append("["+Util.padRight(m.mud_name,20)+"] "+m.address+" ("+m.player_port+")\n\r");
+				buf.append("["+Util.padRight(m.mud_name,20)+"]["+Util.padRight(m.base_mudlib,20)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}
 		mob.session().unfilteredPrintln(buf.toString());

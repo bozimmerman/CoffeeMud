@@ -13,6 +13,7 @@ public interface I3Interface
 	public void giveChannelsList(MOB mob);
 	public void i3channelAdd(MOB mob, String channel);
 	public void i3channelListen(MOB mob, String channel);
+	public void i3channelSilence(MOB mob, String channel);
 	public void i3channelRemove(MOB mob, String channel);
 	public void i3mudInfo(MOB mob, String parms);
 }

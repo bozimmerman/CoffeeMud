@@ -143,3 +143,14 @@ CREATE TABLE CMJRNL (
 	CMMSGT text NULL,
 PRIMARY KEY (CMJKEY) 
 );
+
+CREATE TABLE CMCLAN (
+	CMCLID varchar (100) ,
+	CMTYPE integer ,
+	CMDESC text NULL ,
+	CMACPT varchar (255) NULL ,
+	CMPOLI text NULL ,
+	CMRCLL varchar (50) NULL ,
+	CMDNAT varchar (50) NULL ,
+	PRIMARY KEY (CMCLID) 
+);

@@ -37,7 +37,6 @@ public class Spell_GiantStrength extends Spell
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 6;
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH) + increase);
-		if(affectableStats.getStat(CharStats.STRENGTH)>25)affectableStats.setStat(CharStats.STRENGTH,25);
 	}
 
 

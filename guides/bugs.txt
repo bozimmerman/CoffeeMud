@@ -1,2 +1,3 @@
+remove all on held things.
 bug look for alternate materials in the common skills
 Damn Scriptable Behavior

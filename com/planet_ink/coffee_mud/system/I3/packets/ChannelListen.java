@@ -42,8 +42,8 @@ public class ChannelListen extends Packet  {
 
     public String toString() {
 		String str=
-			 "({\"channel-listen\",5,\"" + Server.getMudName() + "\",0,0,0,\"" + channel + "\",\"" +
-               onoff + "\",})";
+			 "({\"channel-listen\",5,\"" + Server.getMudName() + "\",0,0,0,\"" + channel + "\"," +
+               onoff + ",})";
 		return str;
     }
 }

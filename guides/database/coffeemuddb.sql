@@ -194,3 +194,19 @@ ALTER TABLE CMJRNL
 	);
 
 
+CREATE TABLE CMCLAN (
+	CMCLID char (100) ,
+	CMTYPE int ,
+	CMDESC text NULL ,
+	CMACPT char (255) NULL ,
+	CMPOLI text NULL ,
+	CMRCLL char (50) NULL ,
+	CMDNAT char (50( NULL
+);
+
+ALTER TABLE CMCLAN 
+	ADD 
+	( 
+		PRIMARY KEY (CMCLID)
+	);
+

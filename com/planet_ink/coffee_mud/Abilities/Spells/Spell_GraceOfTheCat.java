@@ -32,7 +32,6 @@ public class Spell_GraceOfTheCat extends Spell
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
 			increase = 4;
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY) + increase);
-		if(affectableStats.getStat(CharStats.DEXTERITY)>25)affectableStats.setStat(CharStats.DEXTERITY,25);
 	}
 
 

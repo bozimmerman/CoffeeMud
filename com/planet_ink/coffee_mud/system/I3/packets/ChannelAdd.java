@@ -41,8 +41,7 @@ public class ChannelAdd extends Packet  {
     public String toString() {
 		String str=
 			 "({\"channel-add\",5,\"" + Server.getMudName() + "\",\"" +
-               sender_name + "\",0,0,\"" + channel + "\",\"" +
-               0 + "\",})";
+               sender_name + "\",0,0,\"" + channel + "\",0,})";
 		return str;
     }
 }
