@@ -273,6 +273,10 @@ public class CMClass extends ClassLoader
 			size=tempV.size();
 			addV(tempV,abilities);
 			
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Diseases"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size=tempV.size();
+			addV(tempV,abilities);
+			
 			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
 			size+=tempV.size();
 			Log.sysOut("MUD","Properties loaded : "+size);

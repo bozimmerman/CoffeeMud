@@ -82,7 +82,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
-				newMOB.addAbility(CMClass.getAbility("Undead_MummyRot"));
+				newMOB.addAbility(CMClass.getAbility("Disease_MummyRot"));
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
 				B.startBehavior(newMOB);

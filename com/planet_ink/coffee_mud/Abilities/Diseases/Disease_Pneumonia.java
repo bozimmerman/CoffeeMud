@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Misc;
+package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;

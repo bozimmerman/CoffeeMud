@@ -59,6 +59,36 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
+				A=target.fetchAffect("Undead_EnergyDrain");
+				if(A!=null)
+				{
+					A.unInvoke();
+					target.delAffect(A);
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
+				}
+				A=target.fetchAffect("Undead_WeakEnergyDrain");
+				if(A!=null)
+				{
+					A.unInvoke();
+					target.delAffect(A);
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
+				}
+				A=target.fetchAffect("Undead_ColdTouch");
+				if(A!=null)
+				{
+					A.unInvoke();
+					target.delAffect(A);
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
+				}
 				Vector offensiveAffects=Prayer_RestoreSmell.returnOffensiveAffects(mob,target);
 				if(offensiveAffects.size()>0)
 				{

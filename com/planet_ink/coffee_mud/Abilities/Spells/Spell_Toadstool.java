@@ -28,12 +28,15 @@ public class Spell_Toadstool extends Spell
 				affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
 			newRace.setHeightWeight(affectableStats,'M');
 		}
+		affectableStats.setLevel(1);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 			affectableStats.setMyRace(newRace);
+		affectableStats.setMyClasses("StdCharClass");
+		affectableStats.setMyLevels("1");
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)

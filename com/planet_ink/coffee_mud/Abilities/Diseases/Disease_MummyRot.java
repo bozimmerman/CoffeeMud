@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Misc;
+package com.planet_ink.coffee_mud.Abilities.Diseases;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Undead_MummyRot extends StdAbility
+public class Disease_MummyRot extends StdAbility
 {
-	public String ID() { return "Undead_MummyRot"; }
+	public String ID() { return "Disease_MummyRot"; }
 	public String name(){ return "Mummy Rot";}
 	public String displayText(){ return "(Mummy Rot)";}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -16,7 +16,7 @@ public class Undead_MummyRot extends StdAbility
 	public boolean putInCommandlist(){return false;}
 	private static final String[] triggerStrings = {"MUMMYROT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public Environmental newInstance(){	return new Undead_MummyRot();}
+	public Environmental newInstance(){	return new Disease_MummyRot();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	int conDown=1;

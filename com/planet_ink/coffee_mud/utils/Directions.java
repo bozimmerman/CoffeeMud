@@ -99,6 +99,9 @@ public class Directions
 		else
 		if(("HERE").startsWith(theDir.toUpperCase()))
 		   return GATE;
+		else
+		if(("THERE").startsWith(theDir.toUpperCase()))
+		   return GATE;
 		
 		return code;
 	}
