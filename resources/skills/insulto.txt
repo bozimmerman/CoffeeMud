@@ -1,30 +1,8 @@
-100W Valvestate
-256k Paradise VGA card
-2Mbps leased line
-33600 modem using 60's Modem Technology(tm)
-ADSL line
-Cable & Wireless Internet Technology Manager
-CGA monitor
-Clive Of India
-EGA monitor refreshing at 43hz (interlaced)
-Gibson
-Gibson Les Paul Standard
-Hammond organ (modulating at 60hz)
-Ibanez
-Mac-Donald's hamburger
-Major Gil Jones 'Freedom Fighter' set
-MESA/Boogie Triple Rectifier
-Mr. Doostdar
-Mr. T
-NTV
-RawGibson(tm)
-Soldano 'HotRod' 100W head rigged into 20 4x12 cabinets
-VGA monitor refreshing at 60hz
 banana
 bike
 block of rust
 block of stilton
-burnt out Chevette
+burnt out log
 bus driver
 cable modem
 carp

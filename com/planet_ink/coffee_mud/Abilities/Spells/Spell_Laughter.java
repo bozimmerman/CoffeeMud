@@ -59,7 +59,7 @@ public class Spell_Laughter extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=1)
+		if(levelDiff>=5)
 		{
 			mob.tell(target.charStats().HeShe()+" looks too powerful.");
 			return false;

@@ -14,7 +14,7 @@ public class Prancer extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusManaLevel(){return 8;}
 	public int getBonusAttackLevel(){return 1;}
-	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	private static boolean abilitiesLoaded=false;
@@ -119,7 +119,7 @@ public class Prancer extends StdCharClass
 
 	public int getMovementMultiplier(){return 18;}
 	
-	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
+	public String statQualifications(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
@@ -240,3 +240,4 @@ public class Prancer extends StdCharClass
 		mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 }
+

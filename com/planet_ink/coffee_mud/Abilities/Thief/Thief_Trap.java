@@ -17,11 +17,14 @@ public class Thief_Trap extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Trap();}
 
+	protected int maxLevel(){return Integer.MAX_VALUE;}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
-		int qualifyingClassLevel=CMAble.qualifyingClassLevel(mob,this);
+		int qualifyingClassLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this)+1;
+		if(qualifyingClassLevel>maxLevel()) qualifyingClassLevel=maxLevel();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -60,9 +63,10 @@ public class Thief_Trap extends ThiefSkill
 		}
 		else
 		{
+			String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{
-				mob.tell("Trap what, with what kind of trap? Use trap list for a list.");
+				mob.tell("Trap what, with what kind of trap? Use "+cmdWord+" list for a list.");
 				return false;
 			}
 			String name=(String)commands.lastElement();
@@ -75,7 +79,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 			if(theTrap==null)
 			{
-				mob.tell("'"+name+"' is not a valid trap name.  Try TRAP LIST.");
+				mob.tell("'"+name+"' is not a valid trap name.  Try "+cmdWord.toUpperCase()+" LIST.");
 				return false;
 			}
 
