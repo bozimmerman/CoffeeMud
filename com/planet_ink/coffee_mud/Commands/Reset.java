@@ -479,50 +479,6 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("mobaggrfix"))
-		{
-			if(mob.session()==null) return false;
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				R.getArea().toggleMobility(false);
-				CoffeeUtensils.resetRoom(R);
-				boolean somethingDone=false;
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB M=R.fetchInhabitant(m);
-					if((M.isEligibleMonster())
-					&&(M.getStartRoom()==R))
-					{
-						Behavior B=M.fetchBehavior("MobileAggressive");
-						if(B!=null)
-						{
-							if(B.getParms().equalsIgnoreCase("MOBKILLER"))
-							{
-								B.setParms("MOBKILLER delay=140");
-								mob.session().println(M.name()+" in "+R.roomID());
-								somethingDone=true;
-							}
-						}
-						B=M.fetchBehavior("Aggressive");
-						if(B!=null)
-						{
-							if(B.getParms().equalsIgnoreCase("MOBKILLER"))
-							{
-								B.setParms("MOBKILLER delay=140");
-								mob.session().println(M.name()+" in "+R.roomID());
-							}
-						}
-						somethingDone=true;
-					}
-				}
-				if(somethingDone)
-					CMClass.DBEngine().DBUpdateMOBs(R);
-				R.getArea().toggleMobility(true);
-			}
-			mob.session().println("done!");
-		}
-		else
 		if(s.equalsIgnoreCase("worldmatconfirm"))
 		{
 			if(mob.session()==null) return false;
