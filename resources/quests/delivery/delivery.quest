@@ -5,6 +5,9 @@ set name delivery
 set wait 150
 set interval 1
 
+#since this quest relys on random specified mobs, most errors are turned OFF
+quiet
+
 import items quests/delivery/note.cmare
 #import our secret note
 

@@ -6,7 +6,7 @@ set wait 7200
 set interval 3600
 
 set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin -guildmaster -cityguard
-# load up any mob from the above area.  Will set a room!
+# load up any mob from any area.  Will set a room!
 
 give behavior Scriptable LOAD=quests/diseased/diseased.script
 # load the above behavior into the last mob (Human)
