@@ -99,6 +99,7 @@ public class MOBEater extends ActiveTicker
 			(Sense.canHear(mob)||Sense.canSee(mob)||Sense.canSmell(mob)))
 		{
 			MOB TastyMorsel = mob.getVictim();
+			if(TastyMorsel==null) return true;
 			if (TastyMorsel.envStats().weight()<1000)
 			{
 				// ===== if it is less than three so roll for it

@@ -48,12 +48,7 @@ public class Fighter_BlindFighting extends StdAbility
 		if((!Sense.canBeSeenBy(mob.getVictim(),mob))
 		&&(profficiencyCheck(0,false)))
 		{
-			int fullAdjustment=(int)ExternalPlay.adjustedAttackBonus(mob);
-			int successAdjustment=affectableStats.attackAdjustment()+(int)(Math.round(Util.div(fullAdjustment,2.0)));
-			int successDamage=affectableStats.damage()*2;
-
-			mob.envStats().setAttackAdjustment(successAdjustment);
-			mob.envStats().setDamage(successDamage);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_VICTIM);
 			helpProfficiency(mob);
 		}
 	}

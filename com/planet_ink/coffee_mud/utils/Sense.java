@@ -21,6 +21,7 @@ public class Sense
 	public final static int CAN_TASTE=4096;
 	public final static int CAN_SPEAK=8192;
 	public final static int CAN_BREATHE=16384;
+	public final static int CAN_SEE_VICTIM=32768;
 
 	public final static long ALLMASK=(int)Math.round((Integer.MAX_VALUE/2)-0.5);
 
@@ -40,6 +41,8 @@ public class Sense
 	{ return ((E.envStats().sensesMask()&CAN_SEE_BONUS)==CAN_SEE_BONUS); }
 	public static boolean canSeeInDark(Environmental E)
 	{ return ((E.envStats().sensesMask()&CAN_SEE_DARK)==CAN_SEE_DARK); }
+	public static boolean canSeeVictims(Environmental E)
+	{ return ((E.envStats().sensesMask()&CAN_SEE_VICTIM)==CAN_SEE_VICTIM); }
 	public static boolean canSeeInfrared(Environmental E)
 	{ return ((E.envStats().sensesMask()&CAN_SEE_INFRARED)==CAN_SEE_INFRARED); }
 	public static boolean canHear(Environmental E)
@@ -184,6 +187,8 @@ public class Sense
 					return true;
 				if((isInfrared(seen))&&(canSeeInfrared(seer)))
 				   return true;
+				if((canSeeVictims(seer))&&(mob.getVictim()==seen))
+					return true;
 				return false;
 			}
 			return true;

@@ -369,6 +369,7 @@ public class Dragon extends StdMOB
 			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{
 			MOB TastyMorsel = getVictim();
+			if(TastyMorsel==null) return true;
 			if (TastyMorsel.envStats().weight()<1500)
 			{
 				// ===== if it is less than three so roll for it
