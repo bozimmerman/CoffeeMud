@@ -57,7 +57,6 @@ public class Train extends StdCommand
 					break;
 				}
 			}
-			if(theClass==null) return false;
 		}
 
 		if(abilityCode<0)
@@ -83,7 +82,6 @@ public class Train extends StdCommand
 			}
 		}
 		commands.removeElementAt(0);
-
 
 		if(abilityCode==104)
 		{

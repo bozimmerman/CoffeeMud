@@ -158,9 +158,9 @@ public class Monk extends StdCharClass
 			{
 				affectableStats.setSpeed(affectableStats.speed()+1.0);
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((MOB)affected).charStats().getClassLevel(this));
-				if(affected.fetchEffect("Falling")!=null)
-					affectableStats.setWeight(0);
 			}
+			if(affected.fetchEffect("Falling")!=null)
+				affectableStats.setWeight(0);
 		}
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

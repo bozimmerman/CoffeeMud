@@ -196,6 +196,15 @@ public class DBConnections
 	{
 		return Connections.size();
 	}
+
+	public int numInUse()
+	{
+		int num=0;
+		for(int i=0;i<Connections.size();i++)
+			if(((DBConnection)Connections.elementAt(i)).inUse())
+				num++;
+		return num;
+	}
 	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 

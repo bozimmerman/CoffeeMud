@@ -105,9 +105,10 @@ public class Prop_Auction extends Property
 							}
 						}
 					}
+					if(M!=null)
+						M.doCommand(Util.parse("AUCTION CLOSE"));
+					setInvoker(null);
 				}
-				M.doCommand(V);
-				setInvoker(null);
 				return false;
 			}
 			M.doCommand(V);

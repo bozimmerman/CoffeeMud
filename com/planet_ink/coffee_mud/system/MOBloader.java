@@ -780,7 +780,7 @@ public class MOBloader
 	public static void DBUpdateAbilities(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-		DBConnection D=DBConnector.DBFetch();
+		DBConnection D=null;
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -911,7 +911,7 @@ public class MOBloader
 			DBConnector.DBDone(D);
 			DBUpdate(mob);
 		}
-		catch(SQLException sqle)
+		catch(Exception sqle)
 		{
 			Log.errOut("MOB",str);
 			Log.errOut("MOB","Create:"+sqle);

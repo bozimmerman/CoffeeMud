@@ -52,6 +52,10 @@ public class DBConnector
 	 */
 	public static DBConnection DBFetch()	
 	{return DBs.DBFetch();}
+	
+	public static int numDBConnectionsInUse()
+	{ return DBs.numInUse();}
+	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
 	 * You can then call DBConnection.query and DBConnection.update on this object.

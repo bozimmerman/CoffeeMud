@@ -170,6 +170,7 @@ public class Oracle extends Cleric
 						if((A!=null)
 						   &&(!CMAble.getSecretSkill(C.ID(),A.ID()))
 						   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=1)
+						   &&(CMAble.lowestQualifyingLevel(A.ID())<30)
 						   &&(CMAble.getQualifyingLevel(this.ID(),A.ID())<0)
 						   &&(mob.fetchAbility(A.ID())==null))
 						{

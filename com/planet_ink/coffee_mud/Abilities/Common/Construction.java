@@ -40,8 +40,8 @@ public class Construction extends CommonSkill
 		{"Gate","50","2","1","0"},
 		{"Fence","50","2","1","0"},
 		{"Demolish","0","0","1","0"},
-		{"Title","0","1","0","0"},
-		{"Description","0","1","0","0"},
+		{"Title","0","0","0","0"},
+		{"Description","0","0","0","0"},
 		{"Secret Door","200","1","1","0"},
 		{"Window","50","1","1","1"},
 		{"Crawlway","250","1","1","1"}//,{"Stairs","350","1","0","0"}

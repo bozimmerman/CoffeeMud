@@ -54,7 +54,7 @@ public interface CMMsg extends Cloneable
 
 	// helpful seperator masks
 	public static final int MINOR_MASK=2047;
-	public static final int MAJOR_MASK=4190208;
+	public static final int MAJOR_MASK=4192256;
 
 	// masks for all messages
 	public static final int MASK_HANDS=2048;       // small hand movements

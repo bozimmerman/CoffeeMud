@@ -1256,14 +1256,14 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_OPEN:
 				case CMMsg.TYP_CLOSE:
 				case CMMsg.TYP_THROW:
-					if(getWearPositions(Item.ON_ARMS)==0)
+					if(charStats().getBodyPart(Race.BODY_ARM)==0)
 					{
 						tell("You need arms to do that.");
 						return false;
 					}
 					break;
 				case CMMsg.TYP_DELICATE_HANDS_ACT:
-					if((getWearPositions(Item.ON_HANDS)==0)
+					if((charStats().getBodyPart(Race.BODY_HAND)==0)
 					&&(msg.othersMinor()!=CMMsg.NO_EFFECT))
 					{
 						tell("You need hands to do that.");
@@ -1271,7 +1271,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_JUSTICE:
-					if((getWearPositions(Item.ON_HANDS)==0)
+					if((charStats().getBodyPart(Race.BODY_HAND)==0)
 					&&(msg.target() instanceof Item))
 					{
 						tell("You need hands to do that.");
@@ -1285,14 +1285,14 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_PUT:
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_WRITE:
-					if(getWearPositions(Item.ON_HANDS)==0)
+					if(charStats().getBodyPart(Race.BODY_HAND)==0)
 					{
 						tell("You need hands to do that.");
 						return false;
 					}
 					break;
 				case CMMsg.TYP_DRINK:
-					if(getWearPositions(Item.ON_HANDS)==0)
+					if(charStats().getBodyPart(Race.BODY_HAND)==0)
 					{
 						if((msg.target()!=null)
 						&&(isMine(msg.target())))
@@ -2009,13 +2009,17 @@ public class StdMOB implements MOB
 			if((Util.bset(othersMajor,CMMsg.MASK_SOUND))
 			&&(!asleep)
 			&&(canhearsrc))
+			{
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
+			}
 			else
 			if(((Util.bset(othersMajor,CMMsg.MASK_EYES))
 			||(Util.bset(othersMajor,CMMsg.MASK_HANDS))
 			||(Util.bset(othersMajor,CMMsg.MASK_GENERAL)))
 			&&((!asleep)&&(canseesrc)))
+			{
 				tell(msg.source(),msg.target(),msg.tool(),msg.othersMessage());
+			}
 			else
 			if(((Util.bset(othersMajor,CMMsg.MASK_MOVE))
 				||((Util.bset(othersMajor,CMMsg.MASK_MOUTH))&&(!Util.bset(othersMajor,CMMsg.MASK_SOUND))))

@@ -18,6 +18,7 @@ public class Beacon extends StdCommand
 			mob.tell("You are not powerful enough to do that.");
 			return false;
 		}
+		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
 			if(mob.getStartRoom()==mob.location())

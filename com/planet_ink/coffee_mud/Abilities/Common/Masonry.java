@@ -37,8 +37,8 @@ public class Masonry extends CommonSkill
 		{"Roof","500","2","0","0"},
 		{"Archway","200","0","1","0"},
 		{"Demolish","0","0","1","0"},
-		{"Title","0","1","0","0"},
-		{"Description","0","1","0","0"},
+		{"Title","0","0","0","0"},
+		{"Description","0","0","0","0"},
 		{"Druidic Monument","1000","2","0","0"},
 		{"Window","100","1","1","1"},
 		{"Crawlway","500","1","1","1"},
@@ -483,15 +483,15 @@ public class Masonry extends CommonSkill
 		   dir=-1;
 		else
 		if(((dir<0)||(dir>3))
-		   &&(Util.s_int(data[doingCode][DAT_REQDIR])==1))
+		&&(Util.s_int(data[doingCode][DAT_REQDIR])==1))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
 			return false;
 		}
 
 		if(data[doingCode][DAT_REQNONULL].equals("1")
-		   &&(dir>=0)
-		   &&(mob.location().getExitInDir(dir)==null))
+		&&(dir>=0)
+		&&(mob.location().getExitInDir(dir)==null))
 		{
 			commonTell(mob,"There is a wall that way that needs to be demolished first.");
 			return false;
@@ -500,7 +500,7 @@ public class Masonry extends CommonSkill
 
 		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
-		   &&(data[doingCode][DAT_ROOF].equals("1")))
+		&&(data[doingCode][DAT_ROOF].equals("1")))
 		{
 			commonTell(mob,"That can only be built after a roof, which includes the frame.");
 			return false;
@@ -537,7 +537,7 @@ public class Masonry extends CommonSkill
 		{
 			if(commands.size()<3)
 			{
-				commonTell(mob,"You must specify an exit direction or room, followed by a description for it.");
+				commonTell(mob,"You must specify an exit direction or the word room, followed by a description for it.");
 				return false;
 			}
 			workingOn=-1;
@@ -561,7 +561,7 @@ public class Masonry extends CommonSkill
 			}
 			else
 				commands.removeElementAt(1);
-			designDescription=Util.combine(commands,2);
+			designDescription=Util.combine(commands,1);
 		}
 		else
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))

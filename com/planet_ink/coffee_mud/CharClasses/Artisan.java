@@ -116,28 +116,6 @@ public class Artisan extends StdCharClass
 		}
 	}
 
-	public void cloneFix(CharClass C)
-	{
-		super.cloneFix(C);
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-		{
-			Ability A=(Ability)a.nextElement();
-			if(A!=null)
-			{
-				int level=CMAble.getQualifyingLevel(ID(),A.ID());
-				if((!CMAble.getDefaultGain(baseClass(),A.ID()))
-				&&(level>0)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
-				{
-					if(level>1) level=level/2;
-					if(level<1) level=1;
-					CMAble.addCharAbilityMapping(ID(),level,A.ID(),25,true);
-				}
-			}
-		}
-	}
-
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==MudHost.TICK_MOB)&&(ticking instanceof MOB))

@@ -44,7 +44,7 @@ public class Auction extends Channel
 				V.addElement("The auction has been closed.");
 				CMClass.ThreadEngine().deleteTick(auctionA,MudHost.TICK_QUEST);
 				auctionA=null;
-				super.execute(mob,commands);
+				super.execute(mob,V);
 				return false;
 			}
 		}
