@@ -51,7 +51,10 @@ public class BrotherHelper extends StdBehavior
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(isBrother(target,observer))
 		&&(!isBrother(source,observer)))
-			Aggressive.startFight(observer,source,false);
+		{
+			boolean yep=Aggressive.startFight(observer,source,false);
+			if(yep)	ExternalPlay.quickSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
+		}
 	}
 
 }

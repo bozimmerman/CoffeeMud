@@ -44,6 +44,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Cleric_Turn",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_WandUse",false);

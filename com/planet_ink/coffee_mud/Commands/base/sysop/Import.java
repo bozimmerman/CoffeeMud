@@ -888,7 +888,7 @@ public class Import
 			if(Util.isSet(actFlag,2))
 				M.addBehavior(CMClass.getBehavior("Scavenger"));
 			if(Util.isSet(actFlag,4))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
+				M.addNonUninvokableAffect(CMClass.getAbility("Prop_Invisibility"));
 			if(Util.isSet(actFlag,5)&&Util.isSet(actFlag,1))
 				M.addBehavior(CMClass.getBehavior("Aggressive"));
 			M.setWimpHitPoint(0);
@@ -981,7 +981,7 @@ public class Import
 			}
 
 			if(Util.isSet(affFlag,16))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
+				M.addNonUninvokableAffect(CMClass.getAbility("Prop_Hidden"));
 
 			if(Util.isSet(affFlag,17))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Sleep"));
@@ -1177,6 +1177,7 @@ public class Import
 						}
 					}
 					M.addBehavior(guardian);
+					M.addBehavior(CMClass.getBehavior("AntiVagrant"));
 				}
 				if(Util.isSet(off,20))
 					M.addBehavior(CMClass.getBehavior("BrotherHelper"));
@@ -1215,7 +1216,8 @@ public class Import
 					resist.setMiscText(resist.text()+" evil");
 				if((Util.isSet(res,13))||(Util.isSet(imm,13)))
 					resist.setMiscText(resist.text()+" holy");
-				//if(Util.isSet(res,14)) nothing this specific (magic missile)
+				if(Util.isSet(res,14))
+					M.addNonUninvokableAffect(CMClass.getAbility("Spell_ResistMagicMissiles"));
 				if((Util.isSet(res,15))||(Util.isSet(imm,15)))
 					resist.setMiscText(resist.text()+" mind");
 				if((Util.isSet(res,16))||(Util.isSet(imm,16)))
@@ -1275,9 +1277,7 @@ public class Import
 						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
 					if(mobprg.equals("VAGABOND.PRG"))
-					{
-						//
-					}
+						M.addBehavior(CMClass.getBehavior("Vagrant"));
 					else
 					if(mobprg.equals("DRUNK.PRG"))
 					{
@@ -1291,17 +1291,13 @@ public class Import
 					}
 					else
 					if(mobprg.equals("BEGGAR.PRG"))
-					{
-						//
-					}
+						M.addBehavior(CMClass.getBehavior("Beggar"));
 					else
 					if(mobprg.equals("GATEGRD.PRG"))
-					{
-					}
+						M.addBehavior(CMClass.getBehavior("GateGuard"));
 					else
 					if(mobprg.equals("GATEGRD2.PRG"))
-					{
-					}
+						M.addBehavior(CMClass.getBehavior("GateGuard"));
 					else
 					if(mobprg.equals("CRIER.PRG"))
 					{
@@ -1357,7 +1353,7 @@ public class Import
 					}
 					else
 					if(special.equals("SPEC_GUARD"))
-						M.addBehavior(CMClass.getBehavior("Guard"));
+						M.addBehavior(CMClass.getBehavior("GoodGuardian"));
 					else
 					if(special.equals("SPEC_FIDO"))
 						M.addBehavior(CMClass.getBehavior("CorpseEater"));
@@ -1409,15 +1405,20 @@ public class Import
 					else
 					if(special.equals("SPEC_OGRE_MEMBER"))
 					{
+						Behavior B=CMClass.getBehavior("ROMGangMember");
+						B.setParms("Ogre");
+						M.addBehavior(B);
 					}
 					else
 					if(special.equals("SPEC_TROLL_MEMBER"))
 					{
+						Behavior B=CMClass.getBehavior("ROMGangMember");
+						B.setParms("Troll");
+						M.addBehavior(B);
 					}
 					else
 					if(special.equals("SPEC_PATROLMAN"))
-					{
-					}
+						M.addBehavior(CMClass.getBehavior("ROMPatrolman"));
 					else
 						returnAnError(mob,"Unknown special: "+special);
 				}

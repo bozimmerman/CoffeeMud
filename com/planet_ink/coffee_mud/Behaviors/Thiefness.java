@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Thiefness extends CombatAbilities
 {
+	private int tickDown=0;
 	public Thiefness()
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -39,8 +40,10 @@ public class Thiefness extends CombatAbilities
 		if(!canActAtAll(ticking)) return;
 		if(!(ticking instanceof MOB)) return;
 		MOB mob=(MOB)ticking;
+		if((--tickDown)<=0)
 		if((Dice.rollPercentage()<10)&&(mob.location()!=null))
 		{
+			tickDown=2;
 			MOB victim=null;
 			for(int i=0;i<mob.location().numInhabitants();i++)
 			{

@@ -94,7 +94,7 @@ public class Spell_ObscureSelf extends Spell
 					somethingsChanged=true;
 					sourceMessage=sourceMessage.substring(0,x)+"his or her"+sourceMessage.substring(x+("<T-HIS-HER>").length());
 				}
-				x=othersMessage.indexOf("<T-NAMESELF>");
+				x=sourceMessage.indexOf("<T-NAMESELF>");
 				if(x>=0)
 				{
 					somethingsChanged=true;

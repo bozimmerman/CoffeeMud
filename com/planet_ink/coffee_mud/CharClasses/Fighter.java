@@ -36,6 +36,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_TwoWeaponFighting",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",true);

@@ -21,12 +21,11 @@ public class TheFight
 	}
 	public void kill(MOB mob, Vector commands)
 	{
-		if(mob.isInCombat())
-			return;
-
 		if(commands.size()<2)
 		{
-			mob.tell("Kill whom?");
+			if(!mob.isInCombat())
+				mob.tell("Kill whom?");
+			return;
 		}
 		boolean reallyKill=false;
 		String whomToKill=Util.combine(commands,1);
@@ -46,6 +45,7 @@ public class TheFight
 			mob.tell("I don't see '"+whomToKill+"' here.");
 			return;
 		}
+		else
 		if(reallyKill)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> touch(es) <T-NAMESELF>.");
@@ -55,6 +55,19 @@ public class TheFight
 				target.curState().setHitPoints(0);
 				die(mob,target);
 			}
+		}
+		else
+		if(mob.isInCombat())
+		{
+			if((mob.getVictim()!=null)&&(mob.getVictim()==target))
+				mob.tell("You are already fighting "+mob.getVictim().name()+".");
+			else
+			if(mob.location().okAffect(new FullMsg(mob,target,Affect.MSG_WEAPONATTACK,null)))
+			{
+				mob.tell("You are now targeting "+target.name()+".");
+				mob.setVictim(target);
+			}
+			return;
 		}
 		else
 			postAttack(mob,target,mob.fetchWieldedItem());

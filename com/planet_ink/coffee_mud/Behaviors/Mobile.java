@@ -82,7 +82,7 @@ public class Mobile extends ActiveTicker
 			if(move)
 			{
 				Ability A=mob.fetchAbility("Thief_Sneak");
-				if(A!=null)
+				if((A!=null)&&(Dice.rollPercentage()<50))
 				{
 					Vector V=new Vector();
 					V.add(Directions.getDirectionName(direction));

@@ -40,6 +40,12 @@ public class ClanHelper extends StdBehavior
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
 		&&((!observer.isGeneric())||(!target.isGeneric())||(observer.name().equals(target.name()))))
-			Aggressive.startFight(observer,source,false);
+		{
+			boolean yep=Aggressive.startFight(observer,source,false);
+			String reason="DON'T HURT MY FRIEND!";
+			if(observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
+				reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
+			if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
+		}
 	}
 }

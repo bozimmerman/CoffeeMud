@@ -18,7 +18,7 @@ public class Aggressive extends StdBehavior
 		return new Aggressive();
 	}
 
-	public static void startFight(MOB monster, MOB mob, boolean fightMOBs)
+	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs)
 	{
 		if((mob!=null)
 		&&(monster!=null)
@@ -43,20 +43,23 @@ public class Aggressive extends StdBehavior
 			
 			// normal attack
 			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
+			return true;
 		}
+		return false;
 	}
-	public static void pickAFight(MOB observer)
+	public static boolean pickAFight(MOB observer)
 	{
-		if(!canFreelyBehaveNormal(observer)) return;
+		if(!canFreelyBehaveNormal(observer)) return false;
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
 			if((mob!=null)&&(mob!=observer))
 			{
-				startFight(observer,mob,false);
-				if(observer.isInCombat()) break;
+				if(startFight(observer,mob,false))
+					return true;
 			}
 		}
+		return false;
 	}
 
 	public static void tickAggressively(Environmental ticking, int tickID)

@@ -34,8 +34,12 @@ public class DoorwayGuardian extends StdBehavior
 
 			if(affect.targetMinor()!=Affect.TYP_CLOSE)
 			{
-				mob.tell(monster.name()+" won't let you.");
-				return false;
+				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> leave.");
+				if(monster.location().okAffect(msgs))
+				{
+					monster.location().send(monster,msgs);
+					return false;
+				}
 			}
 		}
 		else
@@ -46,8 +50,12 @@ public class DoorwayGuardian extends StdBehavior
 			Exit exit=(Exit)affect.tool();
 			if(!exit.hasADoor())
 				return true;
-			mob.tell(monster.name()+" won't let you.");
-			return false;
+			FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> leave.");
+			if(monster.location().okAffect(msgs))
+			{
+				monster.location().send(monster,msgs);
+				return false;
+			}
 		}
 		return true;
 	}

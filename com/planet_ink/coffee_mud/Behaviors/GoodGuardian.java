@@ -43,7 +43,10 @@ public class GoodGuardian extends StdBehavior
 		if(victim!=null)
 		{
 			if(!BrotherHelper.isBrother(victim,observer))
-				Aggressive.startFight(observer,victim,true);
+			{
+				boolean yep=Aggressive.startFight(observer,victim,true);
+				if(yep)	ExternalPlay.quickSay(observer,null,"PROTECT THE INNOCENT!",false,false);
+			}
 		}
 		else
 		if(anythingToDo)
@@ -59,13 +62,15 @@ public class GoodGuardian extends StdBehavior
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
 				&&(observer.getAlignment()>350)))
 				{
-					inhab.getVictim().makePeace();
-					inhab.makePeace();
-					didSomething=true;
+					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
+					FullMsg msgs=new FullMsg(observer,inhab,Affect.MSG_NOISYMOVEMENT,msg);
+					if(observer.location().okAffect(msgs))
+					{
+						inhab.getVictim().makePeace();
+						inhab.makePeace();
+					}
 				}
 			}
-			if(didSomething)
-				observer.location().show(observer,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) the fight.");
 		}
 	}
 
@@ -99,8 +104,20 @@ public class GoodGuardian extends StdBehavior
 		&&(!target.isInCombat())
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 		{
-			source.tell(monster.name()+" stops you.");
-			return false;
+			String msg="<S-NAME> stop(s) <T-NAME> from hurting "+target.name();
+			if(target.name().equals(monster.name()))
+			{
+				String name=monster.name();
+				if(name.lastIndexOf(" ")>0)
+					name=name.substring(name.lastIndexOf(" ")).trim();
+				msg="The other "+name+" stops <T-NAME> from hurting "+target.name()+".";
+			}
+			FullMsg msgs=new FullMsg(monster,source,Affect.MSG_NOISYMOVEMENT,msg);
+			if(monster.location().okAffect(msgs))
+			{
+				monster.location().send(monster,msgs);
+				return false;
+			}
 		}
 		return true;
 	}

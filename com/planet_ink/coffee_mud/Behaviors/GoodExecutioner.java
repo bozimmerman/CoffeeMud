@@ -30,8 +30,14 @@ public class GoodExecutioner  extends StdBehavior
 		// base 90% chance not to be executed
 		if(((source.getAlignment()<350)&&(source.isMonster()))
 		||((source.baseCharStats().getMyClass()!=null)
-		   &&(source.baseCharStats().getMyClass().name().equalsIgnoreCase("thief"))
+		   &&(source.baseCharStats().getMyClass().name().equalsIgnoreCase("Thief"))
 		   &&(source.isMonster())))
-			Aggressive.startFight(observer,source,true);
+		{
+			String reason="EVIL";
+			if(source.baseCharStats().getMyClass().name().equalsIgnoreCase("Thief"))
+				reason="a THIEF";
+			boolean yep=Aggressive.startFight(observer,source,true);
+			if(yep)	ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+		}
 	}
 }
