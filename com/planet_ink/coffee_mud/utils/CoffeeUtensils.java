@@ -505,7 +505,29 @@ public class CoffeeUtensils
 		return score;
 	}
 
-
-
+    public static double memoryUse ( Environmental E, int number )
+    {
+		double s=-1.0;
+		try
+		{
+            int n = number;
+            Object[] objs = new Object[n] ;
+            Environmental cl = E;
+            Runtime rt = Runtime.getRuntime() ;
+			long m0 =rt.totalMemory() - rt.freeMemory() ;
+			System.gc() ;
+			Thread.sleep( 500 ) ;
+            for (int i = 0 ; i < n ; ++i) objs[i] =
+                    E=cl.copyOf();
+			System.gc() ;
+			Thread.sleep( 1000 ) ;
+			long m1 =rt.totalMemory() - rt.freeMemory() ;
+            long dm = m1 - m0 ;
+            s = (double)dm / (double)n ;
+			if(s<0.0) return memoryUse(E,number);
+		}
+		catch(Exception e){return -1;}
+		return s;
+    }
 }
 

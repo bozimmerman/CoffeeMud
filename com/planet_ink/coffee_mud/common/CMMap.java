@@ -72,17 +72,46 @@ public class CMMap
 		roomsList.remove(oneToDel);
 		theWorldChanged();
 	}
+	
+	public static String getExtendedRoomID(Room R)
+	{
+		if(R.roomID().length()>0) return R.roomID();
+		Area A=R.getArea();
+		if(A==null) return "";
+		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		{
+			Room anyR=(Room)e.nextElement();
+			if((anyR instanceof GridLocale)
+			&&(((GridLocale)anyR).isMyChild(R)))
+				return ((GridLocale)anyR).getChildCode(R);
+		}
+		return R.roomID();
+	}
+	
 	public static Room getRoom(String calledThis)
 	{
 		Room R = null;
-
+		if(calledThis==null) return null;
+		if(calledThis.endsWith(")"))
+		{
+			int child=calledThis.lastIndexOf("#(");
+			if(child>1)
+			{
+				R=getRoom(calledThis.substring(0,child));
+				if((R!=null)&&(R instanceof GridLocale))
+					R=((GridLocale)R).getChild(calledThis);
+				else
+					R=null;
+			}
+		}
+		if(R==null)
 		for (Enumeration i=rooms(); i.hasMoreElements();)
 		{
 			R = (Room)i.nextElement();
 			if (R.roomID().equalsIgnoreCase(calledThis))
 				return R;
 		}
-		return null;
+		return R;
 	}
 	public static Enumeration rooms() {
 		return roomsList.elements();

@@ -39,19 +39,23 @@ public class Skill_Map extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		if((map.owner()==null)
+		||(map.owner()!=mob))
+			unInvoke();
+		else
 		if((msg.amISource(mob))
 		&&(map!=null)
 		&&(msg.targetMinor()==Affect.TYP_ENTER)
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof Room)
-		&&(msg.target().ID().length()>0)
-		&&(!roomsMappedAlready.contains(msg.target().ID())))
+		&&(!roomsMappedAlready.contains(msg.target())))
 		{
-			roomsMappedAlready.addElement(msg.target().ID());
-			map.setReadableText(map.readableText()+";"+msg.target().ID());
+			roomsMappedAlready.addElement(msg.target());
+			map.setReadableText(map.readableText()+";"+CMMap.getExtendedRoomID((Room)msg.target()));
 			if(map instanceof com.planet_ink.coffee_mud.interfaces.Map)
 				((com.planet_ink.coffee_mud.interfaces.Map)map).doMapArea();
 		}
+
 		super.affect(myHost,msg);
 	}
 
@@ -133,11 +137,10 @@ public class Skill_Map extends StdAbility
 					item=B;
 				}
 				map=item;
-				if((!roomsMappedAlready.contains(mob.location().roomID()))
-				&&(mob.location().roomID().length()>0))
+				if(!roomsMappedAlready.contains(mob.location()))
 				{
-					roomsMappedAlready.addElement(mob.location().roomID());
-					map.setReadableText(map.readableText()+";"+mob.location().roomID());
+					roomsMappedAlready.addElement(mob.location());
+					map.setReadableText(map.readableText()+";"+CMMap.getExtendedRoomID(mob.location()));
 					if(map instanceof com.planet_ink.coffee_mud.interfaces.Map)
 						((com.planet_ink.coffee_mud.interfaces.Map)map).doMapArea();
 				}
@@ -145,9 +148,11 @@ public class Skill_Map extends StdAbility
 				int x=rooms.indexOf(";");
 				while(x>=0)
 				{
-					String room=rooms.substring(0,x);
-					if((room.length()>0)&&(!roomsMappedAlready.contains(room)))
-						roomsMappedAlready.addElement(room);
+					String roomID=rooms.substring(0,x);
+					Room room=CMMap.getRoom(roomID);
+					if(room!=null)
+						if(!roomsMappedAlready.contains(room))
+							roomsMappedAlready.addElement(room);
 					rooms=rooms.substring(x+1);
 					x=rooms.indexOf(";");
 				}

@@ -36,7 +36,7 @@ public class BardMap extends GenMap
 		return myMap;
 	}
 
-	public Vector makeMapRooms()
+	public Hashtable makeMapRooms()
 	{
 		Vector mapAreas=new Vector();
 		String newText=getMapArea();
@@ -58,7 +58,7 @@ public class BardMap extends GenMap
 				mapAreas.addElement(areaName);
 		}
 
-		Vector mapRooms=new Vector();
+		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			String area=(String)mapAreas.elementAt(a);
@@ -67,9 +67,10 @@ public class BardMap extends GenMap
 			{
 				MapRoom mr=new MapRoom();
 				mr.r=room;
-				mapRooms.addElement(mr);
+				mapRooms.put(room,mr);
 			}
 		}
+		super.clearTheSkys(mapRooms);
 		return mapRooms;
 	}
 }

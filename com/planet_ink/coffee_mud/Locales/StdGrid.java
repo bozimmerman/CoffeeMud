@@ -2,8 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Directions;
-import com.planet_ink.coffee_mud.utils.Dice;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 public class StdGrid extends StdRoom implements GridLocale
@@ -266,6 +265,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	}
 	public boolean isMyChild(Room loc)
 	{
+		if(subMap==null) buildGrid();
 		if(subMap!=null)
 			for(int x=0;x<subMap.length;x++)
 				for(int y=0;y<subMap[x].length;y++)
@@ -291,6 +291,34 @@ public class StdGrid extends StdRoom implements GridLocale
 		alts=new Room[Directions.NUM_DIRECTIONS];
 	}
 
+	public String getChildCode(Room loc)
+	{
+		if(roomID().length()==0) return "";
+		if(subMap==null) buildGrid();
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
+				if(subMap[x][y]==loc)
+					return roomID()+"#("+x+","+y+")";
+		return "";
+		
+	}
+	public Room getChild(String childCode)
+	{
+		if(childCode.equals(roomID()))
+			return this;
+		if(!childCode.startsWith(roomID()+"#("))
+			return null;
+		int len=roomID().length()+2;
+		int comma=childCode.indexOf(',',len);
+		if(comma<0) return null;
+		if(subMap==null) buildGrid();
+		int x=Util.s_int(childCode.substring(len,comma));
+		int y=Util.s_int(childCode.substring(comma+1,childCode.length()-1));
+		if((x<subMap.length)&&(y<subMap[x].length))
+			return subMap[x][y];
+		return null;
+	}
+	
 	protected Room getGridRoom(int x, int y)
 	{
 		if(subMap==null) subMap=new Room[xsize][ysize];

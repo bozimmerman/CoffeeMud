@@ -55,7 +55,7 @@
 	<INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=FILE VALUE="new.script">
 @endif@
 </B></FONT><BR>
-@if?!CheckReqParm?SCRIPT=@
+@if?!CheckReqParm?RAWTEXT=@
 	@if?CheckReqParm?FUNCTION=CREATE@
 		<FONT COLOR=RED><B>@FileMgr?CREATE@</B></FONT>
 	@else@

@@ -462,6 +462,7 @@ public class FrontDoor
 				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);
 
+				ExternalPlay.DBUpdateIP(mob);
 				Log.sysOut("FrontDoor","Created user: "+mob.Name());
 				return true;
 			}

@@ -592,7 +592,7 @@ public class StdRoom
 			if(myArea!=null)
 				Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
 			Say.append("^!Locale:^N("+ID()+")"+"\n\r");
-			Say.append("^H("+roomID()+")^N ");
+			Say.append("^H("+CMMap.getExtendedRoomID(this)+")^N ");
 		}
 		if((Sense.canBeSeenBy(this,mob))
 		   ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))

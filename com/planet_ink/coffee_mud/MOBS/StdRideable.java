@@ -377,5 +377,18 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 			break;
 		}
+		switch(affect.sourceMinor())
+		{
+		case Affect.TYP_QUIT:
+		case Affect.TYP_PANIC:
+		case Affect.TYP_DEATH:
+			if(amRiding(affect.source()))
+			{
+			   affect.source().setRiding(null);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
+			break;
+		}
 	}
 }

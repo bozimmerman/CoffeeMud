@@ -732,6 +732,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 			if (processOK)
 			{
+				if(requestMain==null) requestMain="";
 				String filename = new String(requestMain);
 				requestedFile = webServer.pageGrabber.grabFile(filename);
 

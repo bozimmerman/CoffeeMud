@@ -38,8 +38,8 @@ public class Prayer_DivineLuck extends Prayer
 		super.affectCharStats(affectedMOB,affectableStats);
 		for(int i=0;i<allSaves.length;i++)
 			affectableStats.setStat(allSaves[i],
-				affectableStats.getStat(allSaves[i]
-					+1+(affectedMOB.envStats().level()/5)));
+				affectableStats.getStat(allSaves[i])
+					+1+(affectedMOB.envStats().level()/5));
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -81,27 +81,26 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		myMap=null;
 	}
 
-    public MapRoom[][] rebuildGrid(Vector areaMap)
+    public MapRoom[][] rebuildGrid(Hashtable areaMap)
     {
 	    // build grid!
 	    int xoffset=0;
 	    int yoffset=0;
-	    for(int x=0;x<areaMap.size();x++)
-	        if(((MapRoom)areaMap.elementAt(x)).x<xoffset)
-	            xoffset=((MapRoom)areaMap.elementAt(x)).x;
-
-	    for(int y=0;y<areaMap.size();y++)
-	        if(((MapRoom)areaMap.elementAt(y)).y<yoffset)
-	            yoffset=((MapRoom)areaMap.elementAt(y)).y;
+	    for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		{
+			MapRoom mr=(MapRoom)e.nextElement();
+	        if(mr.x<xoffset) xoffset=mr.x;
+	        if(mr.y<yoffset) yoffset=mr.y;
+		}
 
 	    xoffset=xoffset*-1;
 	    yoffset=yoffset*-1;
 
 	    int Xbound=0;
 	    int Ybound=0;
-	    for(int x=0;x<areaMap.size();x++)
-	    {
-	        MapRoom room=(MapRoom)areaMap.elementAt(x);
+	    for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		{
+			MapRoom room=(MapRoom)e.nextElement();
 	        room.x=room.x+xoffset;
 	        if(room.x>Xbound)
 	            Xbound=room.x;
@@ -110,9 +109,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	            Ybound=room.y;
 	    }
 	    MapRoom[][] grid=new MapRoom[Xbound+1][Ybound+1];
-	    for(int y=0;y<areaMap.size();y++)
-	    {
-	        MapRoom room=(MapRoom)areaMap.elementAt(y);
+	    for(Enumeration e=areaMap.elements();e.hasMoreElements();)
+		{
+			MapRoom room=(MapRoom)e.nextElement();
 	        grid[room.x][room.y]=room;
 	    }
 
@@ -139,7 +138,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 					{
 						room.x=0;
 						room.y=0;
-						areaMap.remove(room);
+						areaMap.remove(room.r);
 						grid[x][y]=null;
 						numStragglers++;
 					}
@@ -151,7 +150,33 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		return grid;
     }
 
-	public Vector makeMapRooms()
+	public void clearTheSkys(Hashtable mapRooms)
+	{
+		for(Enumeration e=mapRooms.keys();e.hasMoreElements();)
+		{
+			Room R=(Room)e.nextElement();
+			Room UP=R.rawDoors()[Directions.UP];
+			if((UP!=null)
+			&&(UP.roomID().length()==0)
+			&&(UP instanceof GridLocale))
+			{
+				Vector V=((GridLocale)UP).getAllRooms();
+				for(int v=0;v<V.size();v++)
+					mapRooms.remove(V.elementAt(v));
+			}
+			Room DOWN=R.rawDoors()[Directions.DOWN];
+			if((DOWN!=null)
+			&&(DOWN.roomID().length()==0)
+			&&(DOWN instanceof GridLocale))
+			{
+				Vector V=((GridLocale)DOWN).getAllRooms();
+				for(int v=0;v<V.size();v++)
+					mapRooms.remove(V.elementAt(v));
+			}
+		}
+	}
+	
+	public Hashtable makeMapRooms()
 	{
 		Vector mapAreas=new Vector();
 		String newText=getMapArea();
@@ -173,7 +198,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				mapAreas.addElement(areaName);
 		}
 
-		Vector mapRooms=new Vector();
+		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			String area=(String)mapAreas.elementAt(a);
@@ -184,18 +209,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				{
 					MapRoom mr=new MapRoom();
 					mr.r=R;
-					mapRooms.addElement(mr);
+					mapRooms.put(R,mr);
 				}
 			}
 		}
-
+		clearTheSkys(mapRooms);
 		return mapRooms;
 	}
 
 
 	public StringBuffer[][] finishMapMaking()
 	{
-		Vector mapRooms=makeMapRooms();
+		Hashtable mapRooms=makeMapRooms();
 		StringBuffer[][] map=new StringBuffer[0][0];
 		if(mapRooms.size()>0)
 		{
@@ -249,12 +274,12 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 					else
 					{
 						String paddedName=Util.padRight(room.r.displayText().trim(),30);
-						line1+="---"+dirChar(Directions.NORTH,grid,x,y)+"----";
+						line1+="---"+dirChar(Directions.NORTH,grid,x,y,'-')+"----";
 						line2+="!"+paddedName.substring(0,6)+"!";
-						line3+=dirChar(Directions.WEST,grid,x,y)+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y);
+						line3+=dirChar(Directions.WEST,grid,x,y,'!')+paddedName.substring(6,12)+dirChar(Directions.EAST,grid,x,y,'!');
 						line4+="!"+paddedName.substring(12,18)+"!";
 						line5+="!"+paddedName.substring(18,24)+"!";
-						line6+="---"+dirChar(Directions.SOUTH,grid,x,y)+"----";
+						line6+="---"+dirChar(Directions.SOUTH,grid,x,y,'-')+"----";
 					}
 				}
 				if(xcoord>=0)
@@ -295,7 +320,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	}
 
 
-	public char dirChar(int dirCode, MapRoom[][] grid, int x, int y)
+	public char dirChar(int dirCode, MapRoom[][] grid, int x, int y, char wall)
 	{
 		MapRoom room=grid[x][y];
 		if(room==null)
@@ -318,25 +343,30 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		}
 		MapRoom nextRoom=null;
 		try
+		{	nextRoom=grid[x][y];	}
+		catch(Throwable t){}
+		
+		if(nextRoom==null)
 		{
-			nextRoom=grid[x][y];
-			if(nextRoom==null)
-				return ' ';
-		}
-		catch(Throwable t)
-		{
+			if((room.r!=null)&&(room.r.getRoomInDir(dirCode)==null))
+				return wall;
 			return ' ';
 		}
+		dirCode=-1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
-			if(room.r.rawDoors()[d]==nextRoom.r)
+			if(room.r.getRoomInDir(d)==nextRoom.r)
 			{
 				dirCode=d;
 				break;
 			}
 		}
 		if(dirCode<0)
+		{
+			if((room.r!=null)&&(room.r.getRoomInDir(dirCode)==null))
+				return wall;
 			return ' ';
+		}
 		switch(dirCode)
 		{
 		case Directions.NORTH:
@@ -367,15 +397,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         return null;
     }
 
-    public MapRoom getRoom(Vector allRooms, String ID)
+    public MapRoom getRoom(Hashtable allRooms, Room droom)
     {
-        for(int r=0;r<allRooms.size();r++)
-        {
-            MapRoom room=(MapRoom)allRooms.elementAt(r);
-            if(room.r.roomID().equalsIgnoreCase(ID))
-                return room;
-        }
-        return null;
+		return (MapRoom)allRooms.get(droom);
     }
 
     public final static int CLUSTERSIZE=3;
@@ -428,7 +452,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
     public boolean anythingThatDirection(MapRoom room, int direction)
     {
-        Room D=room.r.rawDoors()[direction];
+        Room D=room.r.getRoomInDir(direction);
         if(D==null)
             return false;
         return true;
@@ -447,7 +471,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		boolean ok=false;
 		for(int e=0;e<Directions.NUM_DIRECTIONS-1;e++)
 		{
-			Exit exit=room.r.rawExits()[e];
+			Exit exit=room.r.getExitInDir(e);
 			if(exit!=null)
 			{
 				if(envStats().level()<2)
@@ -476,22 +500,22 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		return true;
 	}
 
-    public void placeRooms(Vector areaMap)
+    public void placeRooms(Hashtable areaMap)
     {
         if(areaMap==null) return;
         if(areaMap.size()==0) return;
 
-        for(int i=0;i<areaMap.size();i++)
+        for(Enumeration e=areaMap.elements();e.hasMoreElements();)
         {
-            MapRoom room=(MapRoom)areaMap.elementAt(i);
+            MapRoom room=(MapRoom)e.nextElement();
             room.x=0;
             room.y=0;
             for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
             {
-                Room dir=room.r.rawDoors()[d];
+                Room dir=room.r.getRoomInDir(d);
                 if(dir!=null)
 				{
-					MapRoom rm=getRoom(areaMap,dir.roomID());
+					MapRoom rm=getRoom(areaMap,dir);
 					if(rm!=null)
 	                    rm.positionedAlready=false;
 				}
@@ -503,18 +527,16 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         while((areaMap.size()>processed.size())&&(doneSomething))
         {
             doneSomething=false;
-            for(int i=0;i<areaMap.size();i++)
+            for(Enumeration e=areaMap.elements();e.hasMoreElements();)
             {
-                MapRoom room=(MapRoom)areaMap.elementAt(i);
-                if((processed.get(room.r.ID())==null)&&(okToPlace(room)))
+                MapRoom room=(MapRoom)e.nextElement();
+                if((processed.get(room.r)==null)&&(okToPlace(room)))
                 {
-                    placeRoom(room,0,0,processed,areaMap,true);
+                    placeRoom(room,areaMap,0,0,processed,true,true,0);
                     doneSomething=true;
                 }
             }
         }
-        //if(areaMap.size()>processed.size())
-        //    Log.errOut("Map","?!"+(areaMap.size()-processed.size())+" room(s) could not be placed.  I recommend restarting your server.");
     }
 
 	public void affect(Environmental myHost, Affect affect)
@@ -588,32 +610,34 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		super.affect(myHost,affect);
 	}
 
-    public void placeRoom(MapRoom room,
-							int favoredX,
-							int favoredY,
-							Hashtable processed,
-							Vector allRooms,
-							boolean doNotDefer)
+	public void placeRoom(MapRoom room,
+						  Hashtable areaMap,
+                          int favoredX,
+                          int favoredY,
+                          Hashtable processed,
+                          boolean doNotDefer,
+						  boolean passTwo,
+						  int depth)
     {
         if(room==null) return;
-
+        if(depth>500) return;
         MapRoom anythingAt=getProcessedRoomAt(processed,favoredX,favoredY);
         if(anythingAt!=null)
         {
             // maybe someone else will take care of it?
             if(!doNotDefer)
-                for(int r=0;r<allRooms.size();r++)
+                for(Enumeration e=areaMap.elements();e.hasMoreElements();)
                 {
-                    MapRoom roomToBlame=(MapRoom)allRooms.elementAt(r);
+                    MapRoom roomToBlame=(MapRoom)e.nextElement();
                     if(roomToBlame!=room)
-                        for(int rd=0;rd<Directions.NUM_DIRECTIONS-1;rd++)
+                        for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
                         {
-                            Room RD=roomToBlame.r.rawDoors()[rd];
-							if(RD!=null)
+                            Room RD=roomToBlame.r.getRoomInDir(rd);
+                            if((RD!=null)&&(RD==room.r))
 							{
-								MapRoom MR=getRoom(allRooms,RD.roomID());
-								if((RD!=null)&&(RD.roomID().equals(room.r.roomID()))&&(MR!=null)&&(!MR.positionedAlready))
-								    return;
+								MapRoom MR=getRoom(areaMap,RD);
+								if((MR!=null)&&(!MR.positionedAlready))
+									return;
 							}
                         }
                 }
@@ -633,65 +657,59 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
         // once done, is never undone.  A room is
         // considered processed only once!
-        processed.put(room.r.ID(),room);
+        processed.put(room.r,room);
 
-        for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
         {
-            String roomID=null;
-			Exit exit=null;
-            if(room.r.rawDoors()[d]!=null)
-			{
-                roomID=room.r.rawDoors()[d].roomID();
-				exit=room.r.rawExits()[d];
-			}
+            MapRoom nextRoom=null;
+            if(room.r.getRoomInDir(d)!=null)
+                nextRoom=getRoom(areaMap,room.r.getRoomInDir(d));
 
-            if((roomID!=null)&&(roomID.length()>0)&&(processed.get(roomID)==null))
+            if((nextRoom!=null)
+			&&(processed.get(nextRoom.r)==null)
+            &&(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN))))
             {
-                MapRoom nextRoom=getRoom(allRooms,roomID);
-                if((nextRoom!=null)&&(okToPlace(nextRoom,exit)))
+                int newFavoredX=room.x;
+                int newFavoredY=room.y;
+                switch(d)
                 {
-                    int newFavoredX=room.x;
-                    int newFavoredY=room.y;
-                    switch(d)
-                    {
-                        case Directions.NORTH:
-                            newFavoredY--; break;
-                        case Directions.SOUTH:
-                            newFavoredY++; break;
-                        case Directions.EAST:
-                            newFavoredX++; break;
-                        case Directions.WEST:
-                            newFavoredX--; break;
-                        case Directions.UP:
-                            if(!anythingThatDirection(room,Directions.NORTH))
-                                newFavoredY--;
-                            else
-                            if(!anythingThatDirection(room,Directions.WEST))
-                                newFavoredX--;
-                            else
-                            if(!anythingThatDirection(room,Directions.EAST))
-                                newFavoredX++;
-                            else
-                            if(!anythingThatDirection(room,Directions.SOUTH))
-                                newFavoredY++;
-                            break;
-                        case Directions.DOWN:
-                            if(!anythingThatDirection(room,Directions.SOUTH))
-                                newFavoredY++;
-                            else
-                            if(!anythingThatDirection(room,Directions.EAST))
-                                newFavoredX++;
-                            else
-                            if(!anythingThatDirection(room,Directions.WEST))
-                                newFavoredX--;
-                            else
-                            if(!anythingThatDirection(room,Directions.NORTH))
-                                newFavoredY--;
-                            break;
-                    }
-                    nextRoom.positionedAlready=true;
-                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false);
+                    case Directions.NORTH:
+                        newFavoredY--; break;
+                    case Directions.SOUTH:
+                        newFavoredY++; break;
+                    case Directions.EAST:
+                        newFavoredX++; break;
+                    case Directions.WEST:
+                        newFavoredX--; break;
+                    case Directions.UP:
+                        if(!anythingThatDirection(room,Directions.NORTH))
+                            newFavoredY--;
+                        else
+                        if(!anythingThatDirection(room,Directions.WEST))
+                            newFavoredX--;
+                        else
+                        if(!anythingThatDirection(room,Directions.EAST))
+                            newFavoredX++;
+                        else
+                        if(!anythingThatDirection(room,Directions.SOUTH))
+                            newFavoredY++;
+                        break;
+                    case Directions.DOWN:
+                        if(!anythingThatDirection(room,Directions.SOUTH))
+                            newFavoredY++;
+                        else
+                        if(!anythingThatDirection(room,Directions.EAST))
+                            newFavoredX++;
+                        else
+                        if(!anythingThatDirection(room,Directions.WEST))
+                            newFavoredX--;
+                        else
+                        if(!anythingThatDirection(room,Directions.NORTH))
+                            newFavoredY--;
+                        break;
                 }
+                nextRoom.positionedAlready=true;
+                placeRoom(nextRoom,areaMap,newFavoredX,newFavoredY,processed,false,passTwo,depth+1);
             }
         }
     }

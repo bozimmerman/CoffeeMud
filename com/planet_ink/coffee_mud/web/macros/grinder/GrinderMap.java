@@ -39,12 +39,11 @@ public class GrinderMap
 	    int xoffset=0;
 	    int yoffset=0;
 	    for(int x=0;x<areaMap.size();x++)
-	        if(((GrinderRoom)areaMap.elementAt(x)).x<xoffset)
-	            xoffset=((GrinderRoom)areaMap.elementAt(x)).x;
-
-	    for(int y=0;y<areaMap.size();y++)
-	        if(((GrinderRoom)areaMap.elementAt(y)).y<yoffset)
-	            yoffset=((GrinderRoom)areaMap.elementAt(y)).y;
+		{
+			GrinderRoom GR=(GrinderRoom)areaMap.elementAt(x);
+	        if(GR.x<xoffset) xoffset=GR.x;
+	        if(GR.y<yoffset) yoffset=GR.y;
+		}
 
 	    xoffset=xoffset*-1;
 	    yoffset=yoffset*-1;
@@ -472,8 +471,8 @@ public class GrinderMap
                             GrinderDir RD=roomToBlame.doors[rd];
                             if((RD!=null)
 							&&(RD.room!=null)
-							&&(RD.room.equals(room.roomID))
-							&&(!RD.positionedAlready))
+							&&(!RD.positionedAlready)
+							&&(RD.room.equals(room.roomID)))
                                 return;
                         }
                 }

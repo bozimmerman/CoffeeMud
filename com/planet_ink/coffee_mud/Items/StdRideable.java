@@ -523,12 +523,20 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 			break;
 		}
-		if((affect.sourceMinor()==Affect.TYP_STAND)
-		&&(amRiding(affect.source())))
+		switch(affect.sourceMinor())
 		{
-		   affect.source().setRiding(null);
-			if(affect.source().location()!=null)
-				affect.source().location().recoverRoomStats();
+		case Affect.TYP_STAND:
+		case Affect.TYP_QUIT:
+		case Affect.TYP_PANIC:
+		case Affect.TYP_DEATH:
+			if(amRiding(affect.source()))
+			{
+			   affect.source().setRiding(null);
+				if(affect.source().location()!=null)
+					affect.source().location().recoverRoomStats();
+			}
+			break;
 		}
 	}
+
 }

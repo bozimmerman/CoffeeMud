@@ -9,6 +9,8 @@ public interface GridLocale extends Room
 	public void clearGrid();
 	public String getChildLocaleID();
 	public boolean isMyChild(Room loc);
+	public String getChildCode(Room loc);
+	public Room getChild(String childCode);
 	public Vector getAllRooms();
 	public int xSize();
 	public int ySize();
