@@ -154,10 +154,16 @@ public class FrontLogin extends StdCommand
 
 	public void showTheNews(MOB mob)
 	{
-		if(mob.session()!=null)
-			mob.session().setTermID(
-			        ((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?Session.TERM_ANSI:0)
-			        +((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?Session.TERM_MSP:0));
+		if(mob.session()!=null)	
+		{
+		    boolean keepMXPOn=Util.bset(mob.session().getTermID(),Session.TERM_MXP);
+		    mob.session().initTermID(mob.getBitmap());
+		    if((Util.bset(mob.getBitmap(),MOB.ATT_MXP))&&(!keepMXPOn))
+		    {
+		        mob.tell("MXP codes have been disabled for this session.");
+		        mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
+		    }
+		}
 		if((mob.session()==null)
 		||(mob.isMonster())
 		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))

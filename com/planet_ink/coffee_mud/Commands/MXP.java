@@ -30,13 +30,13 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(!Util.bset(mob.getBitmap(),MOB.ATT_MCP))
+			if(!Util.bset(mob.getBitmap(),MOB.ATT_MXP))
 			{
 			    mob.session().rawPrint("\033[5z \033[1z<VERSION>\n\r");
 			    String s=mob.session().prompt("",1000).trim().toUpperCase();
 			    if((s.indexOf("<VERSION ")>=0)&&(s.indexOf("MXP=")>=0))
 			    {
-					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MCP));
+					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
 					mob.tell("MXP codes enabled.\n\r");
 			    }
 			    else

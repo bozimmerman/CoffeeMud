@@ -30,8 +30,8 @@ public class NOMXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(Util.bset(mob.getBitmap(),MOB.ATT_MCP))
-				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MCP));
+			if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MXP));
 			mob.tell("MXP codes are disabled.\033[3z \033[7z\n\r");
 		}
 		return false;
