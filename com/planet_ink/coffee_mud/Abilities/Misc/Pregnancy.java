@@ -195,6 +195,15 @@ public class Pregnancy extends StdAbility
 										for(int i=0;i<R.myResources().size();i++)
 											GR.setStat("GETRSCPARM"+i,((Item)R.myResources().elementAt(i)).text());
 										
+										GR.setStat("NUMOFT","");
+										if(R.outfit()!=null)
+										{
+											for(int i=0;i<R.outfit().size();i++)
+												GR.setStat("GETOFTID"+i,((Item)R.outfit().elementAt(i)).ID());
+											for(int i=0;i<R.outfit().size();i++)
+												GR.setStat("GETOFTPARM"+i,((Item)R.outfit().elementAt(i)).text());
+										}
+										
 										R.racialAbilities(null);
 										Vector data=CMAble.getUpToLevelListings(R.ID(),Integer.MAX_VALUE,true,false);
 										// kill half of them.
@@ -264,18 +273,22 @@ public class Pregnancy extends StdAbility
 
 					}
 					else
-					if((months<=1)&&(Dice.rollPercentage()==1))
-						mob.tell("Ouch! -- You had a labor pain!");
-					else
-					if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
-						mob.tell("You feel a kick in your gut.");
-					else
-					if((months<=1)&&(mob.location()!=null)&&(mob.location().getArea().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
 					{
-						if(Dice.rollPercentage()>25)
-							mob.tell("You feel really sick this morning.");
+						// pregnant folk get fatigued more often.
+						mob.curState().adjFatigue(months*100,mob.maxState());
+						if((months<=1)&&(Dice.rollPercentage()==1))
+							mob.tell("Ouch! -- You had a labor pain!");
 						else
-							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"**BLEH** <S-NAME> just threw up.");
+						if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
+							mob.tell("You feel a kick in your gut.");
+						else
+						if((months<7)&&(mob.location()!=null)&&(mob.location().getArea().getTimeOfDay()<2)&&(Dice.rollPercentage()==1))
+						{
+							if(Dice.rollPercentage()>25)
+								mob.tell("You feel really sick this morning.");
+							else
+								mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"**BLEH** <S-NAME> just threw up.");
+						}
 					}
 				}
 			}

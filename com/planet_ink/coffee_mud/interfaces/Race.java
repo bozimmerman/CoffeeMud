@@ -20,7 +20,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public long forbiddenWornBits();
 	public int[] bodyMask();
 	public boolean fertile();
-	public void outfit(MOB mob);
+	public Vector outfit();
 	public String healthText(MOB mob);
 	public Weapon myNaturalWeapon();
 	public Vector myResources();

@@ -1852,16 +1852,22 @@ to be checked without sending any messages to the player in question.
 </PRE>
 <P align=left><FONT size=4>The next 
 method, like statQualifications above, is for the benefit of the web macros. It 
-describes any special bonuses received due to being this class. </FONT></P><pre>public void outfit(MOB mob)
+describes any special bonuses received due to being this class. </FONT></P>
+<pre>public Vector outfit()
 {
-	Weapon w=(Weapon)CMClass.getWeapon("a mortgage");
-	if(mob.fetchInventory(w.ID())==null)
-		mob.addInventory(w);
+	if(outfitChoices==null)
+	{
+		outfitChoices=new Vector();
+		Weapon w=(Weapon)CMClass.getWeapon("a mortgage");
+		outfitChoices.addElement(w);
+	}
+	return outfitChoices;
 }
 </PRE>
 <P align=left><FONT size=4>The outfit 
-method should give the character any Class-Specific equipment they may need. 
-Clothing and so forth is actually covered by Races. </FONT></P><pre>public String weaponLimitations(){return "Weapons?  What for?";}
+method should return a Vector of any Class-Specific Item object equipment they may need. 
+Clothing and so forth is actually covered by Races. </FONT></P>
+<pre>public String weaponLimitations(){return "Weapons?  What for?";}
 public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
 public boolean okMessage(Environmental myHost, CMMsg msg)
 {
@@ -2052,7 +2058,22 @@ should consist only of automatically gained abilities appropriate to the level
 of the mob.&nbsp; If the four variables are set properly, the programmer will 
 not need to override the method from StdRace unless there other gender-based or 
 other special qualifications for skills not defined by those four 
-variables.</FONT></P><PRE>	private String[] culturalAbilityNames={"Dwarven","Mining"};
+variables.</FONT></P>
+<pre>public Vector outfit()
+{
+	if(outfitChoices==null)
+	{
+		outfitChoices=new Vector();
+		Weapon w=(Weapon)CMClass.getItem("GenPants");
+		outfitChoices.addElement(w);
+	}
+	return outfitChoices;
+}
+</PRE>
+<P align=left><FONT size=4>The outfit 
+method should return a Vector of any Race-Specific Item object equipment they may need.
+</FONT></P>
+<PRE>	private String[] culturalAbilityNames={"Dwarven","Mining"};
 	private int[] culturalAbilityProfficiencies={100,50};
 	
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}

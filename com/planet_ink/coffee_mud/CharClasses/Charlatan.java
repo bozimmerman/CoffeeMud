@@ -144,15 +144,15 @@ public class Charlatan extends StdCharClass
 	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level!";}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
-		if(mob.fetchInventory(w.ID())==null)
+		if(outfitChoices==null)
 		{
-			mob.addInventory(w);
-			if(mob.freeWearPositions(Item.WIELD)>0)
-				w.wearAt(Item.WIELD);
+			outfitChoices=new Vector();
+			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			outfitChoices.addElement(w);
 		}
+		return outfitChoices;
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -44,7 +44,6 @@ public class RaceData extends StdWebMacro
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.recoverMaxState();
-				R.outfit(mob);
 				mob2.recoverCharStats();
 				mob2.recoverEnvStats();
 				mob2.recoverMaxState();
@@ -169,9 +168,10 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					for(int i=0;i<mob.inventorySize();i++)
+					if(R.outfit()!=null)
+					for(int i=0;i<R.outfit().size();i++)
 					{
-						Item I=mob.fetchInventory(i);
+						Item I=(Item)R.outfit().elementAt(i);
 						if(I!=null)
 							str.append(I.Name()+", ");
 					}

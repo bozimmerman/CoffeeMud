@@ -242,14 +242,15 @@ public class Missionary extends Cleric
 		return true;
 	}
 
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
-		if(mob.fetchInventory(w.ID())==null)
+		if(outfitChoices==null)
 		{
-			mob.addInventory(w);
-			if(mob.freeWearPositions(Item.WIELD)>0)
-				w.wearAt(Item.WIELD);
+			outfitChoices=new Vector();
+			Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
+			outfitChoices.addElement(w);
 		}
+		return outfitChoices;
 	}
+	
 }

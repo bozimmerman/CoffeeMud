@@ -23,7 +23,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public Hashtable dispenseExperience(MOB killer, MOB killed);
 	public void level(MOB mob);
 	public void unLevel(MOB mob);
-	public void outfit(MOB mob);
+	public Vector outfit();
 	
 	public boolean armorCheck(MOB mob);
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);

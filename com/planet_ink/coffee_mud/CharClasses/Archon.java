@@ -41,15 +41,15 @@ public class Archon extends StdCharClass
 			mob.tell("This class cannot be learned.");
 		return false;
 	}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");
-		if(mob.fetchInventory(w.ID())==null)
+		if(outfitChoices==null)
 		{
-			mob.addInventory(w);
-			if(mob.freeWearPositions(Item.WIELD)>0)
-				w.wearAt(Item.WIELD);
+			outfitChoices=new Vector();
+			Weapon w=(Weapon)CMClass.getWeapon("ArchonStaff");
+			outfitChoices.addElement(w);
 		}
+		return outfitChoices;
 	}
 
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)

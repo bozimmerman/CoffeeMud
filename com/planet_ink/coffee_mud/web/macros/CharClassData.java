@@ -98,11 +98,10 @@ public class CharClassData extends StdWebMacro
 						str.append(C.statQualifications()+", ");
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					MOB mob=CMClass.getMOB("StdMOB");
-					C.outfit(mob);
-					for(int i=0;i<mob.inventorySize();i++)
+					if(C.outfit()!=null)
+					for(int i=0;i<C.outfit().size();i++)
 					{
-						Item I=mob.fetchInventory(i);
+						Item I=(Item)C.outfit().elementAt(i);
 						if(I!=null)
 							str.append(I.name()+", ");
 					}

@@ -20,6 +20,25 @@ public class CoffeeUtensils
 		return null;
 	}
 
+	public static void outfit(MOB mob, Vector items)
+	{
+		if((mob==null)||(items==null)||(items.size()==0))
+			return;
+		for(int i=0;i<items.size();i++)
+		{
+			Item I=(Item)items.elementAt(i);
+			if(mob.fetchInventory(I.name()+"$")==null)
+			{
+				I=(Item)I.copyOf();
+				I.text();
+				I.recoverEnvStats();
+				mob.addInventory(I);
+				if(I.whereCantWear(mob)<=0)
+					I.wearIfPossible(mob);
+			}
+		}
+	}
+	
 	public static Vector shopkeepers(Room here, MOB notMOB)
 	{
 		Vector V=new Vector();

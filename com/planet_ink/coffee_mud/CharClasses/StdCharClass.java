@@ -22,6 +22,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getMovementMultiplier(){return 5;}
 	protected int maxStatAdj[]={0,0,0,0,0,0};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
+	protected Vector outfitChoices=null;
 
 	public boolean playerSelectable()
 	{
@@ -137,9 +138,7 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 	}
 
-	public void outfit(MOB mob)
-	{
-	}
+	public Vector outfit(){return outfitChoices;}
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

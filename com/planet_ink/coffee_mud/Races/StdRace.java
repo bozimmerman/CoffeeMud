@@ -27,6 +27,7 @@ public class StdRace implements Race
 	private static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
+	protected Vector outfitChoices=null;
 	protected Hashtable racialAbilityMap=null;
 	public String[] racialAbilityNames(){return null;}
 	public int[] racialAbilityLevels(){return null;}
@@ -106,27 +107,6 @@ public class StdRace implements Race
 				A.invoke(msg.source(),myChar,true);
 		}
 	}
-	public void wearOutfit(MOB mob, Armor s1, Armor s2, Armor p1)
-	{
-		if((s1!=null)&&(mob.fetchInventory(s1.ID())==null))
-		{
-			mob.addInventory(s1);
-			if(mob.freeWearPositions(Item.ON_TORSO)>0)
-				s1.wearAt(Item.ON_TORSO);
-		}
-		if((p1!=null)&&(mob.fetchInventory(p1.ID())==null))
-		{
-			mob.addInventory(p1);
-			if(mob.freeWearPositions(Item.ON_LEGS)>0)
-				p1.wearAt(Item.ON_LEGS);
-		}
-		if((s2!=null)&&(mob.fetchInventory(s2.ID())==null))
-		{
-			mob.addInventory(s2);
-			if(mob.freeWearPositions(Item.ON_FEET)>0)
-				s2.wearAt(Item.ON_FEET);
-		}
-	}
 	public String arriveStr()
 	{
 		return "arrives";
@@ -134,9 +114,6 @@ public class StdRace implements Race
 	public String leaveStr()
 	{
 		return "leaves";
-	}
-	public void outfit(MOB mob)
-	{
 	}
 	public void level(MOB mob)
 	{
@@ -177,6 +154,8 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
+	public Vector outfit(){return outfitChoices;}
+	
 	public String healthText(MOB mob)
 	{
 		return CommonStrings.standardMobCondition(mob);

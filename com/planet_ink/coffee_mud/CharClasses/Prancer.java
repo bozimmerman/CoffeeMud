@@ -149,16 +149,17 @@ public class Prancer extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear cloth or vegetation armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
-		if(mob.fetchInventory(w.ID())==null)
+		if(outfitChoices==null)
 		{
-			mob.addInventory(w);
-			if(mob.freeWearPositions(Item.WIELD)>0)
-				w.wearAt(Item.WIELD);
+			outfitChoices=new Vector();
+			Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+			outfitChoices.addElement(w);
 		}
+		return outfitChoices;
 	}
+	
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

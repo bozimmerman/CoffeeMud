@@ -66,7 +66,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.recoverMaxState();
 						mob.resetToMaxState();
 						mob.charStats().getCurrentClass().startCharacter(mob,true,false);
-						mob.charStats().getCurrentClass().outfit(mob);
+						CoffeeUtensils.outfit(mob,mob.charStats().getCurrentClass().outfit());
 						mob.setSession(session);
 						CMClass.DBEngine().DBUpdateMOB(mob);
 					}

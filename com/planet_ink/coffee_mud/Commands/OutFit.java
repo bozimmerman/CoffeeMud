@@ -17,8 +17,10 @@ public class OutFit extends StdCommand
 		if(mob.charStats()==null) return false;
 		CharClass C=mob.charStats().getCurrentClass();
 		Race R=mob.charStats().getMyRace();
-		if(C!=null) C.outfit(mob);
-		if(R!=null) R.outfit(mob);
+		if(C!=null)
+			CoffeeUtensils.outfit(mob,C.outfit());
+		if(R!=null)
+			CoffeeUtensils.outfit(mob,R.outfit());
 		Command C2=CMClass.getCommand("Equipment");
 		if(C2!=null) C2.execute(mob,Util.parse("EQUIPMENT"));
 		return false;

@@ -516,7 +516,7 @@ public class FrontLogin extends StdCommand
 				mob.setWimpHitPoint(5);
 
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
-				mob.baseCharStats().getMyRace().outfit(mob);
+				CoffeeUtensils.outfit(mob,mob.baseCharStats().getMyRace().outfit());
 
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
@@ -542,7 +542,7 @@ public class FrontLogin extends StdCommand
 					break;
 				}
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
-				mob.baseCharStats().getCurrentClass().outfit(mob);
+				CoffeeUtensils.outfit(mob,mob.baseCharStats().getCurrentClass().outfit());
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 				mob.bringToLife(mob.getStartRoom(),true);
 				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");

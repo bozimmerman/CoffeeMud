@@ -42,18 +42,26 @@ public class Halfling extends StdRace
 		affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
 		affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+10);
 	}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		// Have to, since it requires use of special constructor
-		Armor s1=CMClass.getArmor("GenShirt");
-		s1.setName("a small tunic");
-		s1.setDisplayText("a small tunic is folded neatly here.");
-		s1.setDescription("It is a small but nicely made button-up tunic.");
-		Armor p1=CMClass.getArmor("GenPants");
-		p1.setName("some small pants");
-		p1.setDisplayText("some small pants lie here.");
-		p1.setDescription("They appear to be for a dimunitive person, and extend barely past the knee at that.");
-		wearOutfit(mob,s1,null,p1);
+		if(outfitChoices==null)
+		{
+			outfitChoices=new Vector();
+			// Have to, since it requires use of special constructor
+			Armor s1=CMClass.getArmor("GenShirt");
+			s1.setName("a small tunic");
+			s1.setDisplayText("a small tunic is folded neatly here.");
+			s1.setDescription("It is a small but nicely made button-up tunic.");
+			s1.text();
+			outfitChoices.addElement(s1);
+			Armor p1=CMClass.getArmor("GenPants");
+			p1.setName("some small pants");
+			p1.setDisplayText("some small pants lie here.");
+			p1.setDescription("They appear to be for a dimunitive person, and extend barely past the knee at that.");
+			p1.text();
+			outfitChoices.addElement(p1);
+		}
+		return outfitChoices;
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

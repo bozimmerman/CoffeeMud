@@ -42,25 +42,34 @@ public class Dwarf extends StdRace
 		affectableStats.setStat(CharStats.MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.MAX_CHARISMA_ADJ)-1);
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+10);
 	}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		// Have to, since it requires use of special constructor
-		Armor s1=CMClass.getArmor("GenShirt");
-		s1.setName("a grey work tunic");
-		s1.setDisplayText("a grey work tunic has been left here.");
-		s1.setDescription("There are lots of little loops and folks for hanging tools about it.");
+		if(outfitChoices==null)
+		{
+			outfitChoices=new Vector();
+			// Have to, since it requires use of special constructor
+			Armor s1=CMClass.getArmor("GenShirt");
+			s1.setName("a grey work tunic");
+			s1.setDisplayText("a grey work tunic has been left here.");
+			s1.setDescription("There are lots of little loops and folks for hanging tools about it.");
+			s1.text();
+			outfitChoices.addElement(s1);
 
-		Armor s2=CMClass.getArmor("GenShoes");
-		s2.setName("a pair of hefty work boots");
-		s2.setDisplayText("some hefty work boots have been left here.");
-		s2.setDescription("Thick and well worn boots with very tough souls.");
+			Armor s2=CMClass.getArmor("GenShoes");
+			s2.setName("a pair of hefty work boots");
+			s2.setDisplayText("some hefty work boots have been left here.");
+			s2.setDescription("Thick and well worn boots with very tough souls.");
+			s2.text();
+			outfitChoices.addElement(s2);
 
-		Armor p1=CMClass.getArmor("GenPants");
-		p1.setName("some hefty work pants");
-		p1.setDisplayText("some hefty work pants have been left here.");
-		p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
-
-		wearOutfit(mob,s1,s2,p1);
+			Armor p1=CMClass.getArmor("GenPants");
+			p1.setName("some hefty work pants");
+			p1.setDisplayText("some hefty work pants have been left here.");
+			p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
+			p1.text();
+			outfitChoices.addElement(p1);
+		}
+		return outfitChoices;
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

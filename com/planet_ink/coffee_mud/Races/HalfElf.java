@@ -45,13 +45,20 @@ public class HalfElf extends StdRace
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+5);
 		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+5);
 	}
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
-		// Have to, since it requires use of special constructor
-		Armor s1=CMClass.getArmor("GenShirt");
-		Armor s2=CMClass.getArmor("GenShoes");
-		Armor p1=CMClass.getArmor("GenPants");
-		wearOutfit(mob,s1,s2,p1);
+		if(outfitChoices==null)
+		{
+			outfitChoices=new Vector();
+			// Have to, since it requires use of special constructor
+			Armor s1=CMClass.getArmor("GenShirt");
+			outfitChoices.addElement(s1);
+			Armor s2=CMClass.getArmor("GenShoes");
+			outfitChoices.addElement(s2);
+			Armor p1=CMClass.getArmor("GenPants");
+			outfitChoices.addElement(p1);
+		}
+		return outfitChoices;
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

@@ -410,11 +410,11 @@ public class CommonStrings extends Scriptable
 
 	public static String armorStr(int armor){
 		return (armor<0)?armorStrs[0]:(
-			   (armor>=ARMOR_CEILING)?armorStrs[armorStrs.length-1]+" ("+armor+(Util.repeat("!",(armor-ARMOR_CEILING)/100))+")":(
+			   (armor>=ARMOR_CEILING)?armorStrs[armorStrs.length-1]+(Util.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
 				armorStrs[(int)Math.round(Math.floor(Util.mul(Util.div(armor,ARMOR_CEILING),armorStrs.length)))]+" ("+armor+")"));}
 	public static String fightingProwessStr(int prowess){
 		return (prowess<0)?fightStrs[0]:(
-			   (prowess>=ATTACK_CEILING)?fightStrs[fightStrs.length-1]+" ("+prowess+(Util.repeat("!",(prowess-ATTACK_CEILING)/100))+")":(
+			   (prowess>=ATTACK_CEILING)?fightStrs[fightStrs.length-1]+(Util.repeat("!",(prowess-ATTACK_CEILING)/100))+" ("+prowess+")":(
 				fightStrs[(int)Math.round(Math.floor(Util.mul(Util.div(prowess,ATTACK_CEILING),fightStrs.length)))]+" ("+prowess+")"));}
 	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{

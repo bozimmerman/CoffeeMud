@@ -176,9 +176,11 @@ public class Monk extends StdCharClass
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 
-	public void outfit(MOB mob)
+	public Vector outfit()
 	{
+		return null;
 	}
+	
 
 	public String weaponLimitations(){return "May use any weapon, but prefers unarmed.";}
 	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid skill failure.";}

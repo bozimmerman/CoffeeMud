@@ -3030,6 +3030,78 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	static void genOutfit(MOB mob, Race E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		while(true)
+		{
+			StringBuffer parts=new StringBuffer("");
+			int numResources=Util.s_int(E.getStat("NUMOFT"));
+			Vector V=new Vector();
+			for(int v=0;v<numResources;v++)
+			{
+				Item I=CMClass.getItem(E.getStat("GETOFTID"+v));
+				if(I!=null)
+				{
+					I.setMiscText(E.getStat("GETOFTPARM"+v));
+					I.recoverEnvStats();
+					parts.append(I.name()+", ");
+					V.addElement(I);
+				}
+			}
+			if(parts.toString().endsWith(", "))
+			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			mob.tell(showNumber+". Outfit: "+parts.toString()+".");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter an item name to remove or\n\rthe word new and an item name to add from your inventory\n\r:","");
+			if(newName.length()>0)
+			{
+				int partNum=-1;
+				for(int i=0;i<V.size();i++)
+					if(EnglishParser.containsString(((Item)V.elementAt(i)).name(),newName))
+					{ partNum=i; break;}
+				boolean updateList=false;
+				if(partNum<0)
+				{
+					if(!newName.toLowerCase().startsWith("new "))
+						mob.tell("That is neither an existing item name, or the word new followed by a valid item name.");
+					else
+					{
+						Item I=mob.fetchCarried(null,newName.substring(4).trim());
+						if(I!=null)
+						{
+							I=(Item)I.copyOf();
+							V.addElement(I);
+							mob.tell(I.name()+" added.");
+							updateList=true;
+						}
+
+					}
+				}
+				else
+				{
+					Item I=(Item)V.elementAt(partNum);
+					V.removeElementAt(partNum);
+					mob.tell(I.name()+" removed.");
+					updateList=true;
+				}
+				if(updateList)
+				{
+					E.setStat("NUMOFT","");
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETOFTID"+i,((Item)V.elementAt(i)).ID());
+					for(int i=0;i<V.size();i++)
+						E.setStat("GETOFTPARM"+i,((Item)V.elementAt(i)).text());
+				}
+			}
+			else
+			{
+				mob.tell("(no change)");
+				return;
+			}
+		}
+	}
 	static void genWeapon(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -3277,6 +3349,7 @@ public class BaseGenerics extends StdCommand
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
 			genAState(mob,me,++showNumber,showFlag);
 			genResources(mob,me,++showNumber,showFlag);
+			genOutfit(mob,me,++showNumber,showFlag);
 			genWeapon(mob,me,++showNumber,showFlag);
 			genRacialAbilities(mob,me,++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);

@@ -188,6 +188,20 @@ public class GenRace extends StdRace
 			}
 			str.append("</RESOURCES>");
 		}
+		if(myResources().size()==0)	str.append("<OUTFIT/>");
+		else
+		{
+			str.append("<OUTFIT>");
+			for(int i=0;i<myResources().size();i++)
+			{
+				Item I=(Item)myResources().elementAt(i);
+				str.append("<OFTITEM>");
+				str.append(XMLManager.convertXMLtoTag("OFCLASS",CMClass.className(I)));
+				str.append(XMLManager.convertXMLtoTag("OFDATA",CoffeeMaker.parseOutAngleBrackets(I.text())));
+				str.append("</OFTITEM>");
+			}
+			str.append("</OUTFIT>");
+		}
 		if(naturalWeapon==null) str.append("<WEAPON/>");
 		else
 		{
@@ -294,6 +308,26 @@ public class GenRace extends StdRace
 				resourceChoices.addElement(newOne);
 			}
 		}
+		
+		// now OUTFIT!
+		Vector oV=XMLManager.getRealContentsFromPieces(raceData,"OUTFIT");
+		outfitChoices=null;
+		if((oV!=null)&&(oV.size()>0))
+		{
+			outfitChoices=new Vector();
+			for(int x=0;x<oV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)oV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
+					continue;
+				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"OFCLASS"));
+				String idat=XMLManager.getValFromPieces(iblk.contents,"OFDATA");
+				newOne.setMiscText(CoffeeMaker.restoreAngleBrackets(idat));
+				newOne.recoverEnvStats();
+				outfitChoices.addElement(newOne);
+			}
+		}
+		
 		naturalWeapon=null;
 		Vector wblk=XMLManager.getRealContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
@@ -352,7 +386,8 @@ public class GenRace extends StdRace
 									 "NUMRSC","GETRSCID","GETRSCPARM",
 									 "WEAPONCLASS","WEAPONXML",
 									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
-									 "NUMCABLE","GETCABLE","GETCABLEPROF"
+									 "NUMCABLE","GETCABLE","GETCABLEPROF",
+									 "NUMOFT","GETOFTID","GETOFTPARM"
 									 };
 	public String getStat(String code){
 		int num=0;
@@ -400,6 +435,9 @@ public class GenRace extends StdRace
 		case 28: return (culturalAbilityNames==null)?"0":(""+culturalAbilityNames.length);
 		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
 		case 30: return (culturalAbilityProfficiencies==null)?"0":(""+culturalAbilityProfficiencies[num]);
+		case 31: return ""+((outfit()!=null)?outfit().size():0);
+		case 32: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
+		case 33: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
 		}
 		return "";
 	}
@@ -507,6 +545,22 @@ public class GenRace extends StdRace
 				 }
 		case 30: {   if(culturalAbilityProfficiencies==null) culturalAbilityProfficiencies=new int[num+1];
 				     culturalAbilityProfficiencies[num]=Util.s_int(val);
+					 break;
+				 }
+		case 31: if(Util.s_int(val)==0) outfitChoices=null; break;
+		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
+					 if(num>=outfitChoices.size())
+						outfitChoices.addElement(CMClass.getItem(val));
+					 else
+				        outfitChoices.setElementAt(CMClass.getItem(val),num);
+					 break;
+				 }
+		case 33: {   if((outfitChoices!=null)&&(num<outfitChoices.size()))
+					 {
+						Item I=(Item)outfitChoices.elementAt(num);
+						I.setMiscText(val);
+						I.recoverEnvStats();
+					 }
 					 break;
 				 }
 		}
