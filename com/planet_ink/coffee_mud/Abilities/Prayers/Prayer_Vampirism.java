@@ -87,7 +87,7 @@ public class Prayer_Vampirism extends Prayer
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target() instanceof Food))
-			msg.source().curState().adjHunger(-((Food)msg.target()).nourishment(),msg.source().maxState());
+			msg.source().curState().adjHunger(-((Food)msg.target()).nourishment(),msg.source().maxState().maxHunger(msg.source().baseWeight()));
 		else
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
@@ -97,9 +97,9 @@ public class Prayer_Vampirism extends Prayer
 			if(D.containsDrink()
 			&&(D.liquidType()!=EnvResource.RESOURCE_BLOOD)
 			&&((!(D instanceof Item))||((Item)D).material()!=EnvResource.RESOURCE_BLOOD))
-				msg.source().curState().adjThirst(-D.thirstQuenched(),msg.source().maxState());
+				msg.source().curState().adjThirst(-D.thirstQuenched(),msg.source().maxState().maxThirst(msg.source().baseWeight()));
 			else
-				msg.source().curState().adjHunger(D.thirstQuenched()*5,msg.source().maxState());
+				msg.source().curState().adjHunger(D.thirstQuenched()*5,msg.source().maxState().maxHunger(msg.source().baseWeight()));
 		}
 	}
 
@@ -128,8 +128,8 @@ public class Prayer_Vampirism extends Prayer
 		MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!Sense.isSleeping(M)))
 		{
-			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState());
-			M.curState().adjHunger(-2,M.maxState());
+			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState().maxThirst(M.baseWeight()));
+			M.curState().adjHunger(-2,M.maxState().maxHunger(M.baseWeight()));
 			if((M.isMonster())
 			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))
 			&&(M.fetchEffect("Butchering")==null)

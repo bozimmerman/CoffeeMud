@@ -60,7 +60,7 @@ public class Play_Blues extends Play
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			mob.curState().adjHunger(-2,mob.maxState());
+			mob.curState().adjHunger(-2,mob.maxState().maxHunger(mob.baseWeight()));
 		}
 		return true;
 	}

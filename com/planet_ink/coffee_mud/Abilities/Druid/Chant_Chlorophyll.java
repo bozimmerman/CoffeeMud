@@ -63,7 +63,7 @@ public class Chant_Chlorophyll extends Chant
 			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINDY)
 			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_WINTER_COLD)
 			   ||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_HEAT_WAVE)))
-			mob.curState().adjHunger(2,mob.maxState());
+			mob.curState().adjHunger(2,mob.maxState().maxHunger(mob.baseWeight()));
 			return true;
 		}
 	}

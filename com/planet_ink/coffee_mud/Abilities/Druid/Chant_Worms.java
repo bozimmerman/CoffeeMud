@@ -38,7 +38,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		if(!super.tick(ticking,tickID))
 			return false;
 		MOB mob=(MOB)affected;
-		mob.curState().adjHunger(-100,mob.maxState());
+		mob.curState().adjHunger(-100,mob.maxState().maxHunger(mob.baseWeight()));
 		if((--plagueDown)<=0)
 		{
 			plagueDown=5;

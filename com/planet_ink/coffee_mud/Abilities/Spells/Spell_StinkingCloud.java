@@ -50,7 +50,7 @@ public class Spell_StinkingCloud extends Spell
 				else
 				{
 					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");
-					vic.curState().adjHunger(-500,vic.maxState());
+					vic.curState().adjHunger(-500,vic.maxState().maxHunger(vic.baseWeight()));
 				}
 			}
 			else

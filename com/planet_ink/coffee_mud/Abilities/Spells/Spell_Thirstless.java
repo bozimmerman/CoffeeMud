@@ -39,7 +39,7 @@ public class Spell_Thirstless extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof MOB)
-			((MOB)affected).curState().setThirst(((MOB)affected).maxState().getThirst());
+			((MOB)affected).curState().setThirst(((MOB)affected).maxState().maxThirst(((MOB)affected).baseWeight()));
 		return super.tick(ticking, tickID);
 	}
 

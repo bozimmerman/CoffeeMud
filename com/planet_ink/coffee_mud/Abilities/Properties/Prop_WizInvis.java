@@ -77,8 +77,8 @@ public class Prop_WizInvis extends Property
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affected.curState().setHunger(affected.maxState().getHunger());
-		affected.curState().setThirst(affected.maxState().getThirst());
+		affected.curState().setHunger(affected.maxState().maxHunger(affected.baseWeight()));
+		affected.curState().setThirst(affected.maxState().maxThirst(affected.baseWeight()));
 	}
 
 	public void unInvoke()

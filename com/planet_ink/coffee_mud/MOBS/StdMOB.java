@@ -332,6 +332,7 @@ public class StdMOB implements MOB
 		else
 			return charStats().getMyRace().getMaxWeight();
 	}
+	
 	public int maxCarry()
 	{
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();

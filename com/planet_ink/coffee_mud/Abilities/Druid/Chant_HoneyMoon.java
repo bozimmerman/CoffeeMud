@@ -63,8 +63,8 @@ public class Chant_HoneyMoon extends Chant
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB M=room.fetchInhabitant(i);
-				M.curState().adjHunger(+10,M.maxState());
-				M.curState().adjThirst(+10,M.maxState());
+				M.curState().adjHunger(+10,M.maxState().maxHunger(M.baseWeight()));
+				M.curState().adjThirst(+10,M.maxState().maxThirst(M.baseWeight()));
 			}
 		}
 		return true;

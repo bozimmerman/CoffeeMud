@@ -58,7 +58,7 @@ public class Wand_Nourishment extends StdWand
 			case CMMsg.TYP_WAND_USE:
 				if((mob.isMine(this))&&(!amWearingAt(Item.INVENTORY)))
 					if(msg.targetMessage().toUpperCase().indexOf("SHAZAM")>=0)
-						if(mob.curState().adjHunger(50,mob.maxState()))
+						if(mob.curState().adjHunger(50,mob.maxState().maxHunger(mob.baseWeight())))
 							mob.tell("You are full.");
 						else
 							mob.tell("You feel nourished.");

@@ -53,7 +53,7 @@ public class ShallowWater extends StdRoom implements Drink
 		{
 			MOB mob=msg.source();
 			boolean thirsty=mob.curState().getThirst()<=0;
-			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState());
+			boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
 			if(thirsty)
 				mob.tell("You are no longer thirsty.");
 			else

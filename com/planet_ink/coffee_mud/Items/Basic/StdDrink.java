@@ -152,7 +152,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			case CMMsg.TYP_DRINK:
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
 				boolean thirsty=mob.curState().getThirst()<=0;
-				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState());
+				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState().maxThirst(mob.baseWeight()));
 				if(thirsty)
 					mob.tell("You are no longer thirsty.");
 				else

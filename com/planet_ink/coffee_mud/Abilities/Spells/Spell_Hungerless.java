@@ -39,7 +39,7 @@ public class Spell_Hungerless extends Spell
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected instanceof MOB)
-			((MOB)affected).curState().setHunger(((MOB)affected).maxState().getHunger());
+			((MOB)affected).curState().setHunger(((MOB)affected).maxState().maxHunger(((MOB)affected).baseWeight()));
 		return super.tick(ticking, tickID);
 	}
 

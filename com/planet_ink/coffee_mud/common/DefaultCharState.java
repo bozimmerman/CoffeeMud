@@ -75,7 +75,7 @@ public class DefaultCharState implements Cloneable, CharState
 	}
 	public int getHunger(){return Hunger;}
 	public void setHunger(int newVal){Hunger=newVal; if(Hunger>0)ticksHungry=0;}
-	public boolean adjHunger(int byThisMuch, CharState max)
+	public boolean adjHunger(int byThisMuch, int max)
 	{
 		Hunger+=byThisMuch;
 		if(Hunger<0)
@@ -84,16 +84,22 @@ public class DefaultCharState implements Cloneable, CharState
 			return false;
 		}
 		if(Hunger>0) ticksHungry=0;
-		if(Hunger>max.getHunger())
+		if(Hunger>max)
 		{
-			Hunger=max.getHunger();
+			Hunger=max;
 			return false;
 		}
 		return true;
 	}
+	public int maxHunger(int baseWeight)
+	{
+	    int factor=baseWeight/250;
+	    if(factor==0) factor=1;
+	    return getHunger()*factor;
+	}
 	public int getThirst(){return Thirst;}
 	public void setThirst(int newVal){Thirst=newVal; if(Thirst>0) ticksThirsty=0;}
-	public boolean adjThirst(int byThisMuch, CharState max)
+	public boolean adjThirst(int byThisMuch, int max)
 	{
 		Thirst+=byThisMuch;
 		if(Thirst<0)
@@ -102,13 +108,20 @@ public class DefaultCharState implements Cloneable, CharState
 			return false;
 		}
 		if(Thirst>0) ticksThirsty=0;
-		if(Thirst>max.getThirst())
+		if(Thirst>max)
 		{
-			Thirst=max.getThirst();
+			Thirst=max;
 			return false;
 		}
 		return true;
 	}
+	public int maxThirst(int baseWeight)
+	{
+	    int factor=baseWeight/250;
+	    if(factor==0) factor=1;
+	    return getThirst()*factor;
+	}
+	
 	public int getMana(){return Mana;}
 	public void setMana(int newVal){ Mana=newVal;}
 	public boolean adjMana(int byThisMuch, CharState max)
@@ -246,10 +259,10 @@ public class DefaultCharState implements Cloneable, CharState
 			if((!Sense.isSleeping(mob))
 			&&(!CMSecurity.isAllowed(mob,mob.location(),"IMMORT")))
 			{
-				int factor=mob.baseWeight()/150;
+				int factor=mob.baseWeight()/500;
 				if(factor<1) factor=1;
-				adjThirst(-(mob.location().thirstPerRound(mob)*factor),maxState);
-				adjHunger(-factor,maxState);
+				adjThirst(-(mob.location().thirstPerRound(mob)*factor),maxState.maxHunger(mob.baseWeight()));
+				adjHunger(-factor,maxState.maxThirst(mob.baseWeight()));
 			}
 			boolean thirsty=(getThirst()<=0);
 			boolean hungry=(getHunger()<=0);

@@ -56,7 +56,7 @@ public class Chant_Dehydrate extends Chant
 				{
 					if(target instanceof MOB)
 					{
-						((MOB)target).curState().adjThirst(-150 - (mob.envStats().level() * 100),((MOB)target).maxState());
+						((MOB)target).curState().adjThirst(-150 - (mob.envStats().level() * 100),((MOB)target).maxState().maxThirst(((MOB)target).baseWeight()));
 						mob.location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly thirsty!");
 					}
 					else

@@ -56,17 +56,17 @@ public class Prayer_Cannibalism extends Prayer
 			if(((((Item)msg.target()).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
 			&&(EnglishParser.containsString(msg.target().Name(),msg.source().charStats().getMyRace().name())))
 			{
-				msg.source().curState().adjHunger(+((Food)msg.target()).nourishment(),msg.source().maxState());
-				msg.source().curState().adjThirst(+((Food)msg.target()).nourishment()*2,msg.source().maxState());
+				msg.source().curState().adjHunger(+((Food)msg.target()).nourishment(),msg.source().maxState().maxHunger(msg.source().baseWeight()));
+				msg.source().curState().adjThirst(+((Food)msg.target()).nourishment()*2,msg.source().maxState().maxThirst(msg.source().baseWeight()));
 			}
 			else
-				msg.source().curState().adjHunger(-((Food)msg.target()).nourishment(),msg.source().maxState());
+				msg.source().curState().adjHunger(-((Food)msg.target()).nourishment(),msg.source().maxState().maxHunger(msg.source().baseWeight()));
 		}
 		else
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_DRINK)
 		&&(msg.target() instanceof Drink))
-			msg.source().curState().adjThirst(-((Drink)msg.target()).thirstQuenched(),msg.source().maxState());
+			msg.source().curState().adjThirst(-((Drink)msg.target()).thirstQuenched(),msg.source().maxState().maxThirst(msg.source().baseWeight()));
 	}
 
 	public boolean raceWithBlood(Race R)
@@ -94,8 +94,8 @@ public class Prayer_Cannibalism extends Prayer
 		MOB M=(MOB)affected;
 		if((M.location()!=null)&&(!Sense.isSleeping(M)))
 		{
-			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState());
-			M.curState().adjHunger(-2,M.maxState());
+			M.curState().adjThirst(-(M.location().thirstPerRound(M)*2),M.maxState().maxThirst(M.baseWeight()));
+			M.curState().adjHunger(-2,M.maxState().maxHunger(M.baseWeight()));
 			if((M.isMonster())
 			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))
 			&&(M.fetchEffect("Butchering")==null)
