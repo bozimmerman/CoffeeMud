@@ -16,7 +16,7 @@ public class Spell_InsatiableThirst extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

@@ -31,7 +31,7 @@ public class Spell_MagicItem extends Spell
 			mob.tell("You can't enchant that.");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -68,7 +68,8 @@ public class Spell_MagicItem extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
+		
 		int experienceToLose=1000+(100*CMAble.lowestQualifyingLevel(wandThis.ID()));
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");

@@ -108,8 +108,7 @@ public class Chant_BrownMold extends Chant
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		int level=adjustedLevel(caster);
-		if(level<1) level=1;
+		int level=20;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setAbility(25);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Mold"));
@@ -125,9 +124,9 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseEnvStats().setDamage(30+(12*(level/5)));
-		newMOB.baseEnvStats().setAttackAdjustment(30+(level));
-		newMOB.baseEnvStats().setArmor(100-(50+(level/2)));
+		newMOB.baseEnvStats().setDamage(25);
+		newMOB.baseEnvStats().setAttackAdjustment(60);
+		newMOB.baseEnvStats().setArmor(0);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();

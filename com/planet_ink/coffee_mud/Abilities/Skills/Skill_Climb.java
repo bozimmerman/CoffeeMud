@@ -33,6 +33,12 @@ public class Skill_Climb extends StdAbility
 			mob.tell("Climb where?");
 			return false;
 		}
+		if((mob.location().getRoomInDir(dirCode)==null)
+		||(mob.location().getExitInDir(dirCode)==null))
+		{
+			mob.tell("You can't climb that way.");
+			return false;
+		}
 		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
 		{
 			mob.tell("You need to stand up first!");

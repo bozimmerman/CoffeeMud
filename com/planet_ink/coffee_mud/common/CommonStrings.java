@@ -8,7 +8,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
 	public static final int SYSTEM_PLAYERFLEE=3;
-	public static final int NUM_SYSTEM=4;
+	public static final int SYSTEM_SHOWDAMAGE=4;
+	public static final int NUM_SYSTEM=5;
 	
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -341,18 +342,21 @@ public class CommonStrings extends Scriptable
 		int dexTool=str.indexOf("<TOOLNAME>");
 		return str.substring(0,dexTool)+weaponName+str.substring(dexTool+10);
 	}
-	public static String standardHitString(int weaponType, int weaponClass, int damageAmount, String weaponName)
+	
+	
+	public static String standardHitString(int weaponType, int weaponClass, int damageAmount,  String weaponName)
 	{
 		if((weaponName==null)||(weaponName.length()==0))
 			weaponClass=Weapon.CLASS_NATURAL;
+		boolean showDamn=CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).startsWith("NO");
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
-			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+"<T-HIM-HER>";
 		case Weapon.CLASS_THROWN:
-			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
+			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+"<T-HIM-HER>";
 		default:
-			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
+			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName;
 		}
 	}
 	

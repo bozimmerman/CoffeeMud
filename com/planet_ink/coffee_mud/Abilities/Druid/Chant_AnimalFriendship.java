@@ -49,9 +49,13 @@ public class Chant_AnimalFriendship extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already friendly to animals.");
+			target.tell("You are already friendly to animals.");
 			return false;
 		}
 
@@ -61,10 +65,6 @@ public class Chant_AnimalFriendship extends Chant
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
 
 		boolean success=profficiencyCheck(0,auto);
 

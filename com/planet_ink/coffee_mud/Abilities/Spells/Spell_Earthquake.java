@@ -112,11 +112,14 @@ public class Spell_Earthquake extends Spell
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						success=maliciousAffect(mob,target,5,-1);
-						if(success)
+						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
 						{
-							if(target.location()==mob.location())
-								ExternalPlay.postDamage(mob,target,this,10,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+							success=maliciousAffect(mob,target,5,-1);
+							if(success)
+							{
+								if(target.location()==mob.location())
+									ExternalPlay.postDamage(mob,target,this,10,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,-1,"The ground underneath <T-NAME> shakes as <T-NAME> fall(s) to the ground!!");
+							}
 						}
 					}
 				}

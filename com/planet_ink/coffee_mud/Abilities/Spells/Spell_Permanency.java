@@ -20,7 +20,7 @@ public class Spell_Permanency extends Spell
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -28,7 +28,7 @@ public class Spell_Permanency extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

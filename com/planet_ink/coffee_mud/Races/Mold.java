@@ -36,10 +36,15 @@ public class Mold extends StdRace
 		affectableState.setHitPoints(affectableState.getHitPoints()*4);
 		affectableState.setHunger(999999);
 		affectedMOB.curState().setHunger(affectableState.getHunger());
+		affectedMOB.curState().setMana(0);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.GENDER,(int)'N');
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.WISDOM,1);
+		affectableStats.setStat(CharStats.CHARISMA,1);
+		affectableStats.setStat(CharStats.STRENGTH,1);
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)-100);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+100);
@@ -86,23 +91,40 @@ public class Mold extends StdRace
 			if(affect.amITarget(myHost)&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 			{
 				int dmg=affect.targetCode()-Affect.MASK_HURT;
-				if(affect.sourceMinor()==Affect.TYP_FIRE)
+				switch(affect.sourceMinor())
 				{
-					affect.modify(affect.source(),affect.target(),affect.tool(),
-								  affect.sourceCode(),affect.sourceMessage(),
-								  Affect.MASK_HURT+1,affect.targetMessage(),
-								  affect.othersCode(),affect.othersMessage());
-					((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+dmg);
-				}
-				else
-				if(affect.sourceMinor()==Affect.TYP_COLD)
-				{
-					dmg=dmg*2;
-					if(dmg>1024) dmg=1000;
-					affect.modify(affect.source(),affect.target(),affect.tool(),
-								  affect.sourceCode(),affect.sourceMessage(),
-								  Affect.MASK_HURT+dmg,affect.targetMessage(),
-								  affect.othersCode(),affect.othersMessage());
+				case Affect.TYP_FIRE:
+					{
+						affect.modify(affect.source(),affect.target(),affect.tool(),
+									  affect.sourceCode(),affect.sourceMessage(),
+									  Affect.MASK_HURT+1,affect.targetMessage(),
+									  affect.othersCode(),affect.othersMessage());
+						((MOB)myHost).curState().setHitPoints(((MOB)myHost).curState().getHitPoints()+dmg);
+					}
+					break;
+				case Affect.TYP_WEAPONATTACK:
+					if((affect.tool()!=null)
+					   &&(affect.tool() instanceof Weapon)
+					   &&((((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_SLASHING)
+						||(((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_PIERCING)
+						||(((Weapon)affect.tool()).weaponClassification()==Weapon.TYPE_BASHING)))
+					{
+						affect.modify(affect.source(),affect.target(),affect.tool(),
+									  affect.sourceCode(),affect.sourceMessage(),
+									  Affect.MASK_HURT+1,affect.targetMessage(),
+									  affect.othersCode(),affect.othersMessage());
+					}
+					break;
+				case Affect.TYP_COLD:
+					{
+						dmg=dmg*2;
+						if(dmg>1024) dmg=1000;
+						affect.modify(affect.source(),affect.target(),affect.tool(),
+									  affect.sourceCode(),affect.sourceMessage(),
+									  Affect.MASK_HURT+dmg,affect.targetMessage(),
+									  affect.othersCode(),affect.othersMessage());
+					}
+					break;
 				}
 			}
 		}

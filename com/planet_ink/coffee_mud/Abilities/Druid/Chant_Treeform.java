@@ -147,9 +147,12 @@ public class Chant_Treeform extends Chant
 		}
 
 		MOB target=mob;
-		if(mob.fetchAffect(this.ID())!=null)
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already a tree.");
+			target.tell("You are already a tree.");
 			return false;
 		}
 
@@ -192,7 +195,7 @@ public class Chant_Treeform extends Chant
 					if(success)
 					{
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");
-						mob.tell("To return to your flesh body, try to leave this area.");
+						target.tell("To return to your flesh body, try to leave this area.");
 					}
 				}
 			}

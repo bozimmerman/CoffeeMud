@@ -62,7 +62,7 @@ public class Spell_SummonFlyer extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -71,7 +71,7 @@ public class Spell_SummonFlyer extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

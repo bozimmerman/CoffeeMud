@@ -91,7 +91,9 @@ public class Spell_Delay extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		mob.curState().setMana(0);
+		
+		if(!auto)mob.curState().setMana(0);
+		
 		Environmental target = mob.location();
 		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))
 		{

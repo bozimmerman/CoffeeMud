@@ -55,7 +55,7 @@ public class Spell_Wish extends Spell
 		}
 
 		String myWish=Util.combine(commands,0);
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -75,7 +75,8 @@ public class Spell_Wish extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
+		
 		int baseLoss=25;
 		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
 		boolean success=profficiencyCheck(0,auto);

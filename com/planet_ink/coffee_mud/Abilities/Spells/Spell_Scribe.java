@@ -32,7 +32,7 @@ public class Spell_Scribe extends Spell
 			mob.tell("You can't scribe onto that.");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -76,7 +76,8 @@ public class Spell_Scribe extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
+		
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");

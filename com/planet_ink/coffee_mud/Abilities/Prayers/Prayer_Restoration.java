@@ -27,7 +27,7 @@ public class Prayer_Restoration extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.curState().setMana(0);
+		if(!auto)mob.curState().setMana(0);
 		
 		boolean success=profficiencyCheck(0,auto);
 

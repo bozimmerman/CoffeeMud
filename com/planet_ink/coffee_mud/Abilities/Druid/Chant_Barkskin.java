@@ -35,9 +35,13 @@ public class Chant_Barkskin extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You skin is already like bark.");
+			target.tell("You skin is already like bark.");
 			return false;
 		}
 
@@ -48,10 +52,6 @@ public class Chant_Barkskin extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

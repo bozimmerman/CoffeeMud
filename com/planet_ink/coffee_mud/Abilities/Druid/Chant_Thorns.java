@@ -80,9 +80,12 @@ public class Chant_Thorns extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(mob.fetchAffect(this.ID())!=null)
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already covered in thorns.");
+			target.tell("You are already covered in thorns.");
 			return false;
 		}
 		

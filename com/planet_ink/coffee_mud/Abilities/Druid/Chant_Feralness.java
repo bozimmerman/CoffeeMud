@@ -61,9 +61,13 @@ public class Chant_Feralness extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already feral.");
+			target.tell("You are already feral.");
 			return false;
 		}
 
@@ -74,10 +78,6 @@ public class Chant_Feralness extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

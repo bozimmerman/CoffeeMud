@@ -59,16 +59,17 @@ public class Chant_FurCoat extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=mob;		
-		if(target==null) return false;
-
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You already have a fur coat.");
+			target.tell("You already have a fur coat.");
 			return false;
 		}
 		
-		if(Druid_ShapeShift.isShapeShifted(mob))
+		if(Druid_ShapeShift.isShapeShifted(target))
 		{
 			mob.tell("You cannot invoke this chant in your present form.");
 			return false;
@@ -109,7 +110,7 @@ public class Chant_FurCoat extends Chant
 				long wornCode=(Item.ON_TORSO|Item.ON_ARMS|Item.ON_FEET|Item.ON_WAIST|Item.ON_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
-				for(int i=mob.inventorySize()-1;i>=0;i--)
+				for(int i=target.inventorySize()-1;i>=0;i--)
 				{
 					Item I=mob.fetchInventory(i);
 					if((I.rawWornCode()&wornCode)>0)
@@ -120,7 +121,7 @@ public class Chant_FurCoat extends Chant
 				if(A!=null) theArmor.addNonUninvokableAffect(A);
 				theArmor.recoverEnvStats();
 				theArmor.text();
-				mob.addInventory(theArmor);
+				target.addInventory(theArmor);
 				theArmor.wearAt(wornCode);
 				success=beneficialAffect(mob,target,0);
 				mob.location().recoverRoomStats();

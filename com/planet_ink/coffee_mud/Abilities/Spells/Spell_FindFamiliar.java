@@ -22,7 +22,7 @@ public class Spell_FindFamiliar extends Spell
 			mob.tell("You cannot have any followers when casting this spell.");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -32,7 +32,8 @@ public class Spell_FindFamiliar extends Spell
 			return false;
 
 		mob.charStats().getCurrentClass().loseExperience(mob,100);
-		mob.curState().setMana(0);
+		
+		if(!auto)mob.curState().setMana(0);
 		
 		boolean success=profficiencyCheck(0,auto);
 

@@ -24,7 +24,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 		}
 				
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -35,7 +35,8 @@ public class Spell_Duplicate extends Spell
 
 		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
 		mob.charStats().getCurrentClass().loseExperience(mob,target.envStats().level()*5);
-		mob.curState().setMana(0);
+		
+		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

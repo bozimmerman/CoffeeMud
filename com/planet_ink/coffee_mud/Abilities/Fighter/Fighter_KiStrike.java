@@ -54,8 +54,9 @@ public class Fighter_KiStrike extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
-
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		if(!Sense.canSpeak(mob))
 		{
 			mob.tell("You can't speak!");
@@ -82,7 +83,7 @@ public class Fighter_KiStrike extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				done=false;
-				beneficialAffect(mob,mob,2);
+				beneficialAffect(mob,target,2);
 			}
 		}
 		else

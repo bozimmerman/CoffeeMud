@@ -36,10 +36,11 @@ public class Chant_CatsGrace extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
 		if(target.fetchAffect(ID())!=null)
 		{
-			mob.tell("You already have the grace of a cat.");
+			target.tell("You already have the grace of a cat.");
 			return false;
 		}
 

@@ -57,9 +57,12 @@ public class Chant_Treemind extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(mob.fetchAffect(this.ID())!=null)
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already have the mind of a tree.");
+			target.tell("You are already have the mind of a tree.");
 			return false;
 		}
 

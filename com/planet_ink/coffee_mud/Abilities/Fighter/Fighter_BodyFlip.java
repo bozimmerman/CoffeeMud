@@ -105,6 +105,7 @@ public class Fighter_BodyFlip extends StdAbility
 			levelDiff=0;
 		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 		boolean success=profficiencyCheck(adjustment,auto);
+		success=success&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),auto?"<T-NAME> flip(s) over!":"^F<S-NAME> flip(s) <T-NAMESELF> over!^?");
@@ -112,7 +113,7 @@ public class Fighter_BodyFlip extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				maliciousAffect(mob,target,2,-1);
-				target.tell("You hit the floor!");
+				target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the floor!");
 			}
 		}
 		else

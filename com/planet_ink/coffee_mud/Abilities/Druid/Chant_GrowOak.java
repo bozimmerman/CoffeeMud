@@ -83,13 +83,16 @@ public class Chant_GrowOak extends Chant_SummonPlants
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You must be at full mana to grow the oak.");
 			return false;
 		}
 		if(super.invoke(mob,commands,givenTarget,auto))
-		{ mob.curState().setMana(0); return true;}
+		{ 
+			if(!auto)mob.curState().setMana(0);
+			return true;
+		}
 		return false;
 	}
 }

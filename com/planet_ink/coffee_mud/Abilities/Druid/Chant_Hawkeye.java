@@ -36,10 +36,11 @@ public class Chant_Hawkeye extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
 		if(target.fetchAffect(ID())!=null)
 		{
-			mob.tell("You already have hawk vision.");
+			target.tell("You already have hawk vision.");
 			return false;
 		}
 

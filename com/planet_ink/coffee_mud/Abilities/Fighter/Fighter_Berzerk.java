@@ -62,16 +62,16 @@ public class Fighter_Berzerk extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("You are already berzerk.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			target.tell("You are already berzerk.");
+			return false;
+		}
+
 		if((!auto)&&(!mob.isInCombat()))
 		{
 			mob.tell("You aren't in combat!");

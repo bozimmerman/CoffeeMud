@@ -1,5 +1,96 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
 
-public class Chant_BlueMoon
+
+public class Chant_BlueMoon extends Chant
 {
+	public String ID() { return "Chant_BlueMoon"; }
+	public String name(){ return "Blue Moon";}
+	public String displayText(){return "(Blue Moon)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Chant_BlueMoon();}
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof Room)))
+			return;
+		Room R=(Room)affected;
+		if(canBeUninvoked())
+			R.showHappens(Affect.MSG_OK_VISUAL,"The blue moon sets.");
+
+		super.unInvoke();
+
+	}
+	public boolean okAffect(Environmental myHost, Affect affect)
+	{
+		if(!super.okAffect(myHost,affect))
+			return false;
+
+		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof MOB))
+		{
+			MOB mob=(MOB)affect.target();
+			int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
+			if(Sense.isEvil(mob))
+				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+			else
+			if(Sense.isGood(mob))
+				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
+		}
+		return true;
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		Room target=mob.location();
+		if(target==null) return false;
+		if((target.domainType()&Room.INDOORS)>0)
+		{
+			mob.tell("You cannot summon the blue moon here.");
+			return false;
+		}
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("This place is already under the red moon.");
+			return false;
+		}
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+		boolean success=profficiencyCheck(0,auto);
+
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+			invoker=mob;
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the sky.^?");
+			if(mob.location().okAffect(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				if(!msg.wasModified())
+				{
+					mob.location().showHappens(Affect.MSG_OK_VISUAL,"The Blue Moon Rises!");
+					beneficialAffect(mob,target,0);
+				}
+			}
+		}
+		else
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to the sky, but the magic fades.");
+		// return whether it worked
+		return success;
+	}
 }

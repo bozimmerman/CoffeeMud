@@ -35,14 +35,15 @@ public class Chant_Moonbeam extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("The moonbeam is already with you.");
-			return false;
-		}
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			target.tell("The moonbeam is already with you.");
+			return false;
+		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

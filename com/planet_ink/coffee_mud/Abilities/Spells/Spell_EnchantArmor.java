@@ -23,7 +23,7 @@ public class Spell_EnchantArmor extends Spell
 			mob.tell("You can't enchant that with an Enchant Armor spell!");
 			return false;
 		}
-		if(mob.curState().getMana()<mob.maxState().getMana())
+		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
 			return false;
@@ -33,7 +33,8 @@ public class Spell_EnchantArmor extends Spell
 			return false;
 
 		mob.charStats().getCurrentClass().loseExperience(mob,50);
-		mob.curState().setMana(0);
+		
+		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
 

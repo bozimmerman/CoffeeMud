@@ -80,18 +80,18 @@ public class Chant_SenseLife extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already sensing life.");
+			target.tell("You are already sensing life.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
-		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

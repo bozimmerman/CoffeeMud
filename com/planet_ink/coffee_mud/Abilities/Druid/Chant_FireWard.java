@@ -36,13 +36,14 @@ public class Chant_FireWard extends Chant
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(mob.fetchAffect(this.ID())!=null)
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already warding fire.");
+			target.tell("You are already warding fire.");
 			return false;
 		}
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
-			target=(MOB)givenTarget;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

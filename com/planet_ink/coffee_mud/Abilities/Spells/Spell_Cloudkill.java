@@ -90,7 +90,8 @@ public class Spell_Cloudkill extends Spell
 						damage = (int)Math.round(Util.div(damage,2.0));
 
 					if(damage<=0) damage=1;
-					if(target.location()==mob.location())
+					if((target.location()==mob.location())
+					&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
 					{
 						maliciousAffect(mob,target,2,-1);
 						ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
