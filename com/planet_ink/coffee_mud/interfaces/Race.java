@@ -90,6 +90,25 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
 	
+	public final static long[] BODY_WEARVECTOR={
+		Item.ON_HEAD, // ANTENEA, having any of these removes that pos
+		Item.ON_EYES, // EYES, having any of these adds this position
+		Item.ON_EARS, // EARS, gains a wear position here for every 2
+		Item.ON_HEAD, // HEAD, gains a wear position here for every 1
+		Item.ON_NECK, // NECK, gains a wear position here for every 1
+		Item.ON_ARMS, // ARMS, gains a wear position here for every 2
+		Item.ON_HANDS, // HANDS, gains a wear position here for every 1 
+		Item.ON_TORSO, // TORSO, gains a wear position here for every 1
+		Item.ON_LEGS, // LEGS, gains a wear position here for every 2
+		Item.ON_FEET, // FEET, gains a wear position here for every 2
+		Item.ON_HEAD, // NOSE, No applicable wear position for this body part
+		Item.ON_HEAD, // GILLS, No applicable wear position for this body part
+		Item.ON_MOUTH, // MOUTH, gains a wear position here for every 1
+		Item.ON_WAIST, // WAIST, gains a wear position here for every 1
+		Item.ON_BACK, // TAIL, having any of these removes that pos
+		Item.ON_BACK, // WINGS, having any of these removes that pos
+	};
+	
 	public final static long[][] BODY_WEARGRID={
 		{Item.ON_HEAD,-1}, // ANTENEA, having any of these removes that pos
 		{Item.ON_EYES,2}, // EYES, having any of these adds this position

@@ -75,3 +75,4 @@ Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0
 % Coat Rack	7	30	10	10	GenContainer		50	0	4096	
 % Couch	10	80	120	200	GenChair	CHAIR	3	0	0	
 % Sofa	16	90	100	250	GenChair	CHAIR	4	0	0	
+% Peg Leg	30	30	10	100	GenLimb		0	0	0	

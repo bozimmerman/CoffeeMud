@@ -1,3 +1,4 @@
+FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,SPELL
 Glass Cup	1	20	10	1	GenDrink		5
 Mug	1	20	10	1	GenDrink		5
 Plate	1	20	10	1	GenContainer		5
@@ -14,3 +15,4 @@ Marbles	2	5	1	1	GenItem
 Vase	6	20	10	5	GenDrink		10
 Carafe	8	20	5	10	GenDrink		8
 Vial	12	10	2	5	GenDrink		1
+a Glass Eye	30	20	5	10	GenLimb		0

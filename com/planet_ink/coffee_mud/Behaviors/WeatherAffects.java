@@ -32,7 +32,7 @@ public class WeatherAffects extends StdBehavior
 	public void setParms(String newParms)
 	{
 		parms=newParms;
-		puddlepct=Util.getParmInt(parms,"puddlechance",50);
+		puddlepct=Util.getParmInt(parms,"puddlepct",50);
 		windsheer=Util.getParmInt(parms,"windsheer",10);
 	}
 	
