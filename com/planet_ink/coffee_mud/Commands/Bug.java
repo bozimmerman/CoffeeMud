@@ -25,13 +25,67 @@ public class Bug extends StdCommand
 
 	private String[] access={"BUG"};
 	public String[] getAccessWords(){return access;}
+	
+	public boolean review(MOB mob,
+						  String journalID, 
+						  String journalWord,
+						  Vector commands,
+						  String security)
+	{
+		String first=(String)commands.elementAt(1);
+		String second=(commands.size()>2)?Util.combine(commands,2):"";
+		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
+		   return false;
+		if(!CMSecurity.isAllowed(mob,mob.location(),security))
+			return false;
+		if((second.length()>0)&&(!Util.isNumber(second)))
+			return false;
+		int count=Util.s_int(second);
+			
+		Item journalItem=CMClass.getItem("StdJournal");
+		if(journalItem==null)
+			mob.tell("This feature has been disabled.");
+		else
+		{
+			Vector journal=CMClass.DBEngine().DBReadJournal(journalID);
+			int size=0;
+			if(journal!=null) size=journal.size();
+			if(size<=0)
+				mob.tell("There are no "+journalWord+" listed at this time.");
+			else
+			{
+				journalItem.setName(journalID);						
+				if(count>size)
+					mob.tell("Maximum count of "+journalWord+" is "+size+".");
+				else
+				while(count<=size)
+				{
+					FullMsg msg=new FullMsg(mob,journalItem,null,CMMsg.MSG_READSOMETHING,null,CMMsg.MSG_READSOMETHING,""+count,CMMsg.MSG_READSOMETHING,null);
+					msg.setValue(1);
+					journalItem.executeMsg(mob,msg);
+					if(msg.value()==0)
+						break;
+					else
+					if(msg.value()<0)
+						size--;
+					else
+						count++;
+				}
+			}
+		}
+		return true;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if(Util.combine(commands,1).length()>0)
 		{
-			CMClass.DBEngine().DBWriteJournal("SYSTEM_BUGS",mob.Name(),"ALL","BUG",Util.combine(commands,1),-1);
-			mob.tell("Thank you for your assistance in debugging CoffeeMud!");
+			if(!review(mob,"SYSTEM_BUGS","bugs",commands,"KILLBUGS"))
+			{
+				CMClass.DBEngine().DBWriteJournal("SYSTEM_BUGS",mob.Name(),"ALL","BUG: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
+				mob.tell("Thank you for your assistance in debugging CoffeeMud!");
+			}
 		}
 		else
 			mob.tell("What's the bug? Be Specific!");

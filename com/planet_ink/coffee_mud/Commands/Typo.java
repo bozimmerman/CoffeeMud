@@ -19,19 +19,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Typo extends StdCommand
+public class Typo extends Bug
 {
 	public Typo(){}
 
 	private String[] access={"TYPO"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		if((Util.combine(commands,1).length()>0)&&(mob.location()!=null))
 		{
-			CMClass.DBEngine().DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS","("+CMMap.getExtendedRoomID(mob.location())+") "+Util.combine(commands,1),-1);
-			mob.tell("Thank you for your assistance!");
+			if(!review(mob,"SYSTEM_TYPOS","typos",commands,"KILLTYPOS"))
+			{
+				CMClass.DBEngine().DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPO: "+Util.padRight(Util.combine(commands,1),10),"("+CMMap.getExtendedRoomID(mob.location())+") "+Util.combine(commands,1),-1);
+				mob.tell("Thank you for your assistance!");
+			}
 		}
 		else
 			mob.tell("What's the typo?");

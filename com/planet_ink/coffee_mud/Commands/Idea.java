@@ -19,7 +19,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Idea extends StdCommand
+public class Idea extends Bug
 {
 	public Idea(){}
 
@@ -30,8 +30,11 @@ public class Idea extends StdCommand
 	{
 		if(Util.combine(commands,1).length()>0)
 		{
-			CMClass.DBEngine().DBWriteJournal("SYSTEM_IDEAS",mob.Name(),"ALL","IDEA",Util.combine(commands,1),-1);
-			mob.tell("Thank you for your contribution!");
+			if(!review(mob,"SYSTEM_IDEAS","ideas",commands,"KILLIDEAS"))
+			{
+				CMClass.DBEngine().DBWriteJournal("SYSTEM_IDEAS",mob.Name(),"ALL","IDEA: "+Util.padRight(Util.combine(commands,1),10),Util.combine(commands,1),-1);
+				mob.tell("Thank you for your contribution!");
+			}
 		}
 		else
 			mob.tell("What's your idea?");

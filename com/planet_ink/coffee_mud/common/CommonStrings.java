@@ -62,7 +62,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_SAYFILTER=36;
 	public static final int SYSTEM_CHANNELFILTER=37;
 	public static final int SYSTEM_WIZINFONAMES=38;
-	public static final int NUM_SYSTEM=39;
+	public static final int SYSTEM_MAILBOX=39;
+	public static final int NUM_SYSTEM=40;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;

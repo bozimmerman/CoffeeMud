@@ -41,7 +41,6 @@ public class SMTPserver extends Thread implements Tickable
 	private MudHost mud;
 	private static boolean displayedBlurb=false;
 	private static String domain="coffeemud";
-	private static String mailbox=null;
 	private static DVector journals=null;
 	
 	private HashSet oldEmailComplaints=new HashSet();
@@ -61,7 +60,7 @@ public class SMTPserver extends Thread implements Tickable
 
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
-	public String mailboxName(){return mailbox;}
+	public String mailboxName(){return CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX);}
 
 	public Properties getCommonPropPage()
 	{
@@ -94,9 +93,9 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		
 		domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
-		mailbox=page.getStr("MAILBOX");
+		String mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
-		else mailbox=mailbox.trim();
+		CommonStrings.setVar(CommonStrings.SYSTEM_MAILBOX,mailbox.trim());
 		
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING,Util.s_bool(page.getStr("FORWARD")));
 		
