@@ -42,7 +42,7 @@ public class Prayer_AuraFear extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(R!=null)&&(E!=null))
-			R.showHappens(CMMsg.MSG_OK_VISUAL,"The harmful aura around "+E.name()+" fades.");
+			R.showHappens(CMMsg.MSG_OK_VISUAL,"The fearful aura around "+E.name()+" fades.");
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
@@ -76,7 +76,9 @@ public class Prayer_AuraFear extends Prayer
 			MOB blame=((invoker!=null)&&(invoker!=M))?invoker:M;
 			if((M!=null)&&((H==null)||(!H.contains(M))))
 			{
-			    if(R.show(blame,M,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE,null))
+			    if(Dice.rollPercentage()<M.charStats().getStat(CharStats.SAVE_MIND))
+		            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> shudder(s) at the sight of <O-NAME>.");
+			    else
 			    {
 				    // do that fear thing
 				    // sit and cringe, or flee if mobile
@@ -88,7 +90,7 @@ public class Prayer_AuraFear extends Prayer
 					        try{if(C!=null) C.execute(M,Util.makeVector("Sit"));}catch(Exception e){}
 					        if(Sense.isSitting(M))
 					        {
-					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> cringe(s) in fear at the sight of <O-NAMESELF>.");
+					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
 					            Ability A=CMClass.getAbility("Spell_Fear");
 					            if(A!=null) A.startTickDown(blame,M,Integer.MAX_VALUE/3);
 					        }
@@ -96,13 +98,13 @@ public class Prayer_AuraFear extends Prayer
 				        else
 					    if(M.isInCombat())
 					    {
-				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAMESELF>.");
+				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 					        Command C=CMClass.getCommand("Flee");
 					        try{if(C!=null) C.execute(M,Util.makeVector("Flee"));}catch(Exception e){}
 					    }
 					    else
 					    {
-				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAMESELF>.");
+				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 				            MUDTracker.beMobile(M,false,true,false,false,null);
 					    }
 				    }
@@ -110,17 +112,17 @@ public class Prayer_AuraFear extends Prayer
 				    {
 					    if(M.isInCombat())
 					    {
-				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAMESELF>.");
+				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 					        Command C=CMClass.getCommand("Flee");
 					        try{if(C!=null) C.execute(M,Util.makeVector("Flee"));}catch(Exception e){}
 					    }
 					    else
 					    {
-				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAMESELF>.");
+				            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISE,"<S-NAME> scream(s) in fear at the sight of <O-NAME>.");
 				            MUDTracker.beMobile(M,false,true,false,false,null);
 				            if(M.location()==R)
 				            {
-					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> cringe(s) in fear at the sight of <O-NAMESELF>.");
+					            R.show(M,null,affected,CMMsg.MASK_EYES|CMMsg.MSG_HANDS|CMMsg.MASK_SOUND,"<S-NAME> cringe(s) in fear at the sight of <O-NAME>.");
 					            Ability A=CMClass.getAbility("Spell_Fear");
 					            if(A!=null) A.startTickDown(blame,M,Integer.MAX_VALUE/3);
 				            }
@@ -151,7 +153,10 @@ public class Prayer_AuraFear extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
+		    int affectType=affectType(auto);
+		    if((mob==target)&&(Util.bset(affectType,CMMsg.MASK_MALICIOUS)))
+		        affectType=Util.unsetb(affectType,CMMsg.MASK_MALICIOUS);
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of fear to surround <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
