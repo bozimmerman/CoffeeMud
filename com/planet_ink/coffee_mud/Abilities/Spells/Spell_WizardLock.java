@@ -142,7 +142,7 @@ public class Spell_WizardLock extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, encanting.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

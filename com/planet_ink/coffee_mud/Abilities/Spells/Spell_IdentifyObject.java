@@ -47,7 +47,7 @@ public class Spell_IdentifyObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> study(s) <T-NAMESELF> very closely.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> study(s) <T-NAMESELF> very closely.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -90,7 +90,7 @@ public class Chant_AnimalFriendship extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) for animal friendship.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) for animal friendship.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -92,7 +92,7 @@ public class Chant_Earthquake extends Chant
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> chant(s) thunderously.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> chant(s) thunderously.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

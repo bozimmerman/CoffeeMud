@@ -46,7 +46,7 @@ public class Prayer_Resurrect extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,body,this,affectType,auto?"<T-NAME> is resurrected!":"<S-NAME> resurrect(s) <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,body,this,affectType,auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				invoker=mob;

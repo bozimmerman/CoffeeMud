@@ -53,25 +53,25 @@ public class ROMGangMember extends StdBehavior
 		switch (Dice.roll(1,7,-1))
 		{
 		case 0:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) 'I've been looking for you, punk!'");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?");
 			break;
 		case 1:
 			observer.location().show(observer,victim,Affect.MSG_NOISYMOVEMENT,"With a scream of rage, <S-NAME> attack(s) <T-NAME>.");
 			break;
 		case 2:
-			observer.location().show(observer,victim,Affect.MSG_SPEAK,"<S-NAME> say(s) 'What's slimy "+vicParms+" trash like you doing around here?'");
+			observer.location().show(observer,victim,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'What's slimy "+vicParms+" trash like you doing around here?'^?");
 			break;
 		case 3:
-			observer.location().show(observer,victim,Affect.MSG_SPEAK,"<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'");
+			observer.location().show(observer,victim,Affect.MSG_SPEAK,"^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?");
 			break;
 		case 4:
-			observer.location().show(observer,victim,Affect.MSG_SPEAK,"<S-NAME> say(s) 'There's no cops to save you this time!'");
+			observer.location().show(observer,victim,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'There's no cops to save you this time!'^?");
 			break;
 		case 5:
-			observer.location().show(observer,victim,Affect.MSG_SPEAK,"<S-NAME> say(s) 'Time to join your brother, spud.'");
+			observer.location().show(observer,victim,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Time to join your brother, spud.'^?");
 			break;
 		case 6:
-			observer.location().show(observer,victim,Affect.MSG_SPEAK,"<S-NAME> say(s) 'Let's rock.'");
+			observer.location().show(observer,victim,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Let's rock.'^?");
 			break;
 		}
 

@@ -108,7 +108,7 @@ public class Spell_MassSleep extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

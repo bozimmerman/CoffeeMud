@@ -445,10 +445,10 @@ public class TelnetSession extends Thread implements Session
 				clookup[(int)'/']="\033[6m";
 				// reset
 				clookup[(int)'^']="\033[0m";
-				// F S - NOT IN USE! fight spell
+				// F S - fight spell
 				clookup[(int)'F']="^r";
 				clookup[(int)'S']="^b";
-				// E T Q - NOT IN USE! emote talk channeltalk
+				// E T Q - emote talk channeltalk
 				clookup[(int)'E']="^p";
 				clookup[(int)'T']="^g";
 				clookup[(int)'Q']="\033[0;36;44m";

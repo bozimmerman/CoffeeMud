@@ -41,7 +41,7 @@ public class Prayer_Hellfire extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Hellfire newOne=(Prayer_Hellfire)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"":"<S-NAME> invoke(s) the rage of <S-HIS-HER> god against the good inside <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) the rage of <S-HIS-HER> god against the good inside <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -52,18 +52,18 @@ public class ROMPatrolman extends StdBehavior
 		switch(Dice.roll(1,7,-1))
 		{
 		case 0:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) 'All roit! All roit! break it up!'");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> yell(s) 'All roit! All roit! break it up!'^?");
 			makePeace=true;
 			break;
 		case 1:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> sigh(s) 'Society's to blame, but what's a bloke to do?'");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> sigh(s) 'Society's to blame, but what's a bloke to do?'^?");
 			fight=true;
 			break;
 		case 2:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> mumble(s) 'bloody kids will be the death of us all.'");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> mumble(s) 'bloody kids will be the death of us all.'^?");
 			break;
 		case 3:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) 'Stop that! Stop that!' and attack(s).");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> yell(s) 'Stop that! Stop that!' and attack(s).^?");
 			fight=true;
 			break;
 		case 4:
@@ -75,7 +75,7 @@ public class ROMPatrolman extends StdBehavior
 			makePeace=true;
 			break;
 		case 6:
-			observer.location().show(observer,null,Affect.MSG_SPEAK,"<S-NAME> say(s) 'Settle down, you hooligans!'");
+			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Settle down, you hooligans!'^?");
 			break;
 		 }
 		

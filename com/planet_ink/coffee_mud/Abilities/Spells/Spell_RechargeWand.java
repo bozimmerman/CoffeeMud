@@ -62,7 +62,7 @@ public class Spell_RechargeWand extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

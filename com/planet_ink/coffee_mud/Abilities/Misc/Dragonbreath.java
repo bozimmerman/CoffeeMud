@@ -139,7 +139,7 @@ public class Dragonbreath extends StdAbility
 					damage += Dice.roll(maxDie,6,1);
 					if(msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.ACT_SOUND|strikeType,WeaponType,"The "+stuffWord+" <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.ACT_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

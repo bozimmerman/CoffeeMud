@@ -116,8 +116,8 @@ public class Chant_CharmAnimal extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":"<S-NAME> chant(s) at <T-NAMESELF>";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,str+".");
+			String str=auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>.^?";
+			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

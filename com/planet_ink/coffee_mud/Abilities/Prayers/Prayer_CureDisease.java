@@ -55,7 +55,7 @@ public class Prayer_CureDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A healing glow surrounds <T-NAME>.":"<S-NAME> cure(s) the disease in <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> cure(s) the disease in <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

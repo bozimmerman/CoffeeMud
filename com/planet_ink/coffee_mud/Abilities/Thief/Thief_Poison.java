@@ -92,7 +92,7 @@ public class Thief_Poison extends ThiefSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?"":"<S-NAME> attempt(s) to poison <T-NAMESELF>!";
+			str=auto?"":"^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.ACT_GENERAL:0),str,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(msg))
 			{

@@ -67,7 +67,7 @@ public class Prayer_CureBlindness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds <T-NAME>.":"<S-NAME> pray(s) for <T-NAMESELF> to see the light.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> pray(s) for <T-NAMESELF> to see the light.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

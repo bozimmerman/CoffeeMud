@@ -67,7 +67,7 @@ public class Chant_ResistPoison extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> chant(s) for an anti-venom field of protection around <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for an anti-venom field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -65,7 +65,7 @@ public class Chant_Moonbeam extends Chant
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!");
+		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,auto?"A moonbeam begin(s) to follow <S-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

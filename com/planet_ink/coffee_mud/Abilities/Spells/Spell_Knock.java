@@ -63,7 +63,7 @@ public class Spell_Knock extends Spell
 			beneficialWordsFizzle(mob,openThis,"<S-NAME> point(s) at "+openThis.name()+" and shouts incoherantly, but nothing happens.");
 		else
 		{
-			mob.location().show(mob,null,affectType,auto?openThis.name()+" begin(s) to glow!":"<S-NAME> point(s) at "+openThis.name());
+			mob.location().show(mob,null,affectType,auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at "+openThis.name()+".^?");
 			for(int a=0;a<openThis.numAffects();a++)
 			{
 				Ability A=openThis.fetchAffect(a);
@@ -75,7 +75,7 @@ public class Spell_Knock extends Spell
 				}
 			}
 
-			FullMsg msg=new FullMsg(mob,openThis,null,affectType,"<S-NAME> point(s) at <T-NAMESELF>");
+			FullMsg msg=new FullMsg(mob,openThis,null,affectType,"^S<S-NAME> point(s) at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				msg=new FullMsg(mob,openThis,null,Affect.MSG_UNLOCK,null);

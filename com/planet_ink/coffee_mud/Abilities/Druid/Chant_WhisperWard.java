@@ -150,7 +150,7 @@ public class Chant_WhisperWard extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> chant(s) to <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

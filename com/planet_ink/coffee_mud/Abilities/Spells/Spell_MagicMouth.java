@@ -149,7 +149,7 @@ public class Spell_MagicMouth extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) a spell upon <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

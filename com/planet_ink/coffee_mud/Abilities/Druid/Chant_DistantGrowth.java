@@ -73,7 +73,7 @@ public class Chant_DistantGrowth extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> chant(s) about a far away place.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> chant(s) about a far away place.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -104,7 +104,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"<S-NAME> blow(s) at <S-HIS-HER> enemies.");
+			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

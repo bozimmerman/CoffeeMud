@@ -64,7 +64,7 @@ public class Prayer_RestoreVoice extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds <T-NAME>.":"<S-NAME> pray(s) for <T-NAMESELF> to speak.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> pray(s) for <T-NAMESELF> to speak.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

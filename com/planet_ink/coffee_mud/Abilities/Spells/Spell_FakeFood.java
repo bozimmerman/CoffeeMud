@@ -43,7 +43,7 @@ public class Spell_FakeFood extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> invoke(s) a spell dramatically.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> invoke(s) a spell dramatically.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -59,7 +59,7 @@ public class Spell_Erase extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"The words on <T-NAME> fade.":"<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"The words on <T-NAME> fade.":"^S<S-NAME> whisper(s), and then rub(s) on <T-NAMESELF>, making the words fade.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -137,8 +137,8 @@ public class Spell_Enthrall extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			String str=auto?"":"<S-NAME> smile(s) powerfully at <T-NAMESELF>";
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,str+".");
+			String str=auto?"":"^S<S-NAME> smile(s) powerfully at <T-NAMESELF>.^?";
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

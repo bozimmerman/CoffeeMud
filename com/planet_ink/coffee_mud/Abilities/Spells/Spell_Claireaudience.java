@@ -99,7 +99,7 @@ public class Spell_Claireaudience extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> invoke(s) claireaudience, calling '"+mobName+"'.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> invoke(s) claireaudience, calling '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType,null);
 			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
 			{

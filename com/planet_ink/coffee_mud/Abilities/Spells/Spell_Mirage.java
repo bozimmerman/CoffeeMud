@@ -103,7 +103,7 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"<S-NAME> speak(s) and gesture(s) dramatically!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

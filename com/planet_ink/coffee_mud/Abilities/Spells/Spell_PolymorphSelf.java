@@ -127,7 +127,7 @@ public class Spell_PolymorphSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> whisper(s) to <T-NAMESELF> about "+R.name()+"s.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF> about "+R.name()+"s.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

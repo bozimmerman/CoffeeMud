@@ -33,7 +33,7 @@ public class Paladin_Aura extends Paladin
 				&&(profficiencyCheck(0,false)))
 				{
 					int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-					ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The aura around <S-NAME> <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException e)

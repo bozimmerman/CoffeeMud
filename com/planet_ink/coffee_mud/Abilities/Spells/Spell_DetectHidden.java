@@ -71,7 +71,7 @@ public class Spell_DetectHidden extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"<S-NAME> incant(s) softly and gain(s) keen vision!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) keen vision!":"^S<S-NAME> incant(s) softly and gain(s) keen vision!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -41,7 +41,7 @@ public class Prayer_MassHeal extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) surrounded by a white light.":"<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.");
+				FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);

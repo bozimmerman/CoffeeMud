@@ -61,7 +61,7 @@ public class Spell_ClarifyScroll extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> wave(s) <S-HIS-HER> fingers at <T-NAMESELF>, uttering a magical phrase.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

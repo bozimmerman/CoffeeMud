@@ -60,7 +60,7 @@ public class Spell_ChainLightening extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"A thunderous crack of lightning erupts!":"<S-NAME> invoke(s) a thunderous crack of lightning.");
+			mob.location().show(mob,null,affectType,auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

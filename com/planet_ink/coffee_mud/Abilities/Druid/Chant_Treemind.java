@@ -87,7 +87,7 @@ public class Chant_Treemind extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A treemind field envelopes <T-NAME>!":"<S-NAME> chant(s) for the hard protective mind of the tree."));
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A treemind field envelopes <T-NAME>!":"^S<S-NAME> chant(s) for the hard protective mind of the tree.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				amountAbsorbed=0;

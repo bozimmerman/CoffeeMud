@@ -65,7 +65,7 @@ public class SocialProcessor
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>."));
+				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"));
 				if(mob.okAffect(msg)&&target.okAffect(msg))
 				{
 					mob.affect(msg);
@@ -76,7 +76,7 @@ public class SocialProcessor
 		else
 		if(!isPrivate)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>."));
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"));
 			if(location.okAffect(msg))
 				location.send(mob,msg);
 		}
@@ -123,12 +123,12 @@ public class SocialProcessor
 
 		FullMsg msg=null;
 		if(target==null)
-			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'.");
+			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^?.");
 		else
 		if(theWord.equalsIgnoreCase("ask"))
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'.");
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'^?.");
 		else
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'.");
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

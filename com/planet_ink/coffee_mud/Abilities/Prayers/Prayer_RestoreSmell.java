@@ -64,7 +64,7 @@ public class Prayer_RestoreSmell extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds the nose of <T-NAME>.":"<S-NAME> pray(s) for <T-NAMESELF> to be able to smell the roses.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A visible glow surrounds the nose of <T-NAME>.":"^S<S-NAME> pray(s) for <T-NAMESELF> to be able to smell the roses.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

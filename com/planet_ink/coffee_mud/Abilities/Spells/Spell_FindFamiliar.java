@@ -64,7 +64,7 @@ public class Spell_FindFamiliar extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> call(s) for a familiar.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> call(s) for a familiar.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

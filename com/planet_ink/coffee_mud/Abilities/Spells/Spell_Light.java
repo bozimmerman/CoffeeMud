@@ -74,7 +74,7 @@ public class Spell_Light extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> invoke(s) a white light above <S-HIS-HER> head!");
+		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

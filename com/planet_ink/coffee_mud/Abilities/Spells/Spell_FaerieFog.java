@@ -93,7 +93,7 @@ public class Spell_FaerieFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -48,7 +48,7 @@ public class Chant_Farsight extends Chant
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a far off vision, but the magic fades.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"<S-NAME> chant(s) for a far off vision.");
+			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> chant(s) for a far off vision.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

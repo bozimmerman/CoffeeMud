@@ -109,7 +109,7 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".");
+			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

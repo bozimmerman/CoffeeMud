@@ -72,7 +72,7 @@ public class Spell_ResistAcid extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> feel(s) oilily protected.":"<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> feel(s) oilily protected.":"^S<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

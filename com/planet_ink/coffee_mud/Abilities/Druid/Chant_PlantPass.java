@@ -72,7 +72,7 @@ public class Chant_PlantPass extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,myPlant,this,affectType,"<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!");
+			FullMsg msg=new FullMsg(mob,myPlant,this,affectType,auto?"":"^S<S-NAME> chant(s) to <T-NAMESELF> and <S-IS-ARE> drawn into it!^?");
 			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg)))
 			{
 				mob.location().send(mob,msg);

@@ -98,7 +98,7 @@ public class Prayer_LinkedHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> pray(s) that <S-HIS-HER> health be linked with <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) that <S-HIS-HER> health be linked with <T-NAME>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

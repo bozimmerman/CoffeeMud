@@ -70,7 +70,7 @@ public class Prayer_Blindsight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) blindsight.":"<S-NAME> pray(s) for the blindsight.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) blindsight.":"^S<S-NAME> pray(s) for the blindsight.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

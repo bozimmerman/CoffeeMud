@@ -93,7 +93,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

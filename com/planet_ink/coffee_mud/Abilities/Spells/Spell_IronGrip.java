@@ -94,7 +94,7 @@ public class Spell_IronGrip extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!":"<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> watch(es) <T-HIS-HER> weapon hand turn to iron!":"^S<S-NAME> invoke(s) a spell on <T-NAMESELF> and <T-HIS-HER> weapon hand turns into iron!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

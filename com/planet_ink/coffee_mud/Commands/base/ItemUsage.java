@@ -623,7 +623,7 @@ public class ItemUsage
 			return;
 		}
 		int malmask=(openThis instanceof MOB)?Affect.MASK_MALICIOUS:0;
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_PUSH|malmask,"<S-NAME> push(es) <T-NAME>.");
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_PUSH|malmask,"^F<S-NAME> push(es) <T-NAME>^?.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

@@ -67,7 +67,7 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				Room room=mob.location();
-				room.show(mob,null,Affect.MSG_WEAPONATTACK,"<S-NAME> hack(s) at the wall of ice with "+w.name()+".");
+				room.show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of ice with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -159,7 +159,7 @@ public class Spell_WallOfIce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of ice appears!":"<S-NAME> conjur(s) up a mighty wall of ice!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of ice appears!":"^S<S-NAME> conjur(s) up a mighty wall of ice!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

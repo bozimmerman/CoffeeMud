@@ -68,7 +68,7 @@ public class Prayer_SenseInvisible extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> attain(s) clear eyes.":"<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become clear.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> attain(s) clear eyes.":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become clear.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

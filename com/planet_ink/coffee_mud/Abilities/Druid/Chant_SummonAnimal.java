@@ -82,7 +82,7 @@ public class Chant_SummonAnimal extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and summon(s) a companion from the Java Plain.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) and summon(s) a companion from the Java Plain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

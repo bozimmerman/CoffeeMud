@@ -66,7 +66,7 @@ public class Spell_WallOfStone extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"<S-NAME> hack(s) at the wall of stone with "+w.name()+".");
+				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0) 
 				{
@@ -147,7 +147,7 @@ public class Spell_WallOfStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of stone appears!":"<S-NAME> conjur(s) up a mighty wall of stone!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"A mighty wall of stone appears!":"^S<S-NAME> conjur(s) up a mighty wall of stone!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

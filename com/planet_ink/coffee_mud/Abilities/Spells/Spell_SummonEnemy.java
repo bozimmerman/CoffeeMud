@@ -58,7 +58,7 @@ public class Spell_SummonEnemy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> conjur(s) the dark shadow of a living creature...");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

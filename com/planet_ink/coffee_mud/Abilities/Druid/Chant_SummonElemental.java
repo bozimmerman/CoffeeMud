@@ -65,7 +65,7 @@ public class Chant_SummonElemental extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and summon(s) help from another Plain.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -100,7 +100,7 @@ public class Spell_Teleport extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> invoke(s) a teleportation spell.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> invoke(s) a teleportation spell.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -130,7 +130,7 @@ public class Spell_IceSheet extends Spell
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"":"<S-NAME> speak(s) and gesture(s) and ")+msgStr);
+			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

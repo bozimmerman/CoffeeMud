@@ -91,7 +91,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a free mind and body.":"<S-NAME> pray(s) for a free mind and body.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> pray(s) for a free mind and body.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

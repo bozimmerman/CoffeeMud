@@ -42,7 +42,7 @@ public class Prayer_Godstrike extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Godstrike newOne=(Prayer_Godstrike)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> is filled with holy fury!":"<S-NAME> invoke(s) the mighty power of <S-HIS-HER> god against the evil inside <T-NAMESELF>!");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> is filled with holy fury!":"^S<S-NAME> invoke(s) the mighty power of <S-HIS-HER> god against the evil inside <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -50,7 +50,7 @@ public class Prayer_Godstrike extends Prayer
 				{
 					int harming=Dice.roll(3,adjustedLevel(mob),15);
 					if(target.getAlignment()<350)
-						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The holy STRIKE of the gods <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(mob,target,this,harming,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe holy STRIKE of the gods <DAMAGE> <T-NAME>!^?");
 				}
 			}
 		}

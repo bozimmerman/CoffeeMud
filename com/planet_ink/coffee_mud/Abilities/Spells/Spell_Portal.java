@@ -100,7 +100,7 @@ public class Spell_Portal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"<S-NAME> evoke(s) a blinding, swirling portal here.");
+			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
 			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType,"A blinding, swirling portal appears here.");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

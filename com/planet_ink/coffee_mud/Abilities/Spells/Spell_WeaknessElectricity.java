@@ -108,7 +108,7 @@ public class Spell_WeaknessElectricity extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A shimmering conductive field appears around <T-NAMESELF>.":"<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A shimmering conductive field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering conductive field around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

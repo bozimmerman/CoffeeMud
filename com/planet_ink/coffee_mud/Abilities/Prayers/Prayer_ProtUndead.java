@@ -42,7 +42,7 @@ public class Prayer_ProtUndead extends Prayer
 		if(mob.charStats().getMyRace().name().equalsIgnoreCase("Undead"))
 		{
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
+			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.ACT_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
 		}
 		return super.tick(tickID);
 	}
@@ -96,7 +96,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> become(s) protected from the undead.":"<S-NAME> call(s) upon the protection of <S-HIS-HER> god from the undead.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> become(s) protected from the undead.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from the undead.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

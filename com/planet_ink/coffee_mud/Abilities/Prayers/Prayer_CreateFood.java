@@ -33,7 +33,7 @@ public class Prayer_CreateFood extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> call(s) to <S-HIS-HER> god for food.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for food.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -74,7 +74,7 @@ public class Spell_Shatter extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> starts vibrating!":"<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
 			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType,null);
 			if((mob.location().okAffect(msg))&&((mobTarget==null)||(mob.location().okAffect(msg2))))
 			{

@@ -51,7 +51,7 @@ public class Spell_Dismissal extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

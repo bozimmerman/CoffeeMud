@@ -114,7 +114,7 @@ public class Chant_SummonPlants extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) to the ground.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) to the ground.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

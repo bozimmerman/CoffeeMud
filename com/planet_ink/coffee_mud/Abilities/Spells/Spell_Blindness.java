@@ -83,7 +83,7 @@ public class Spell_Blindness extends Spell
 			// what happened.
 			invoker=mob;
 			String autoStr="A flashing light blazes at <T-NAME>!";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?autoStr:"You invoke a flashing light into <T-NAME>s eyes.",affectType,auto?autoStr:"<S-NAME> invoke(s) a flashing light into your eyes.",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"<S-NAME> invokes a flashing light into <T-NAME>s eyes.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?autoStr:"^SYou invoke a flashing light into <T-NAME>s eyes.^?",affectType,auto?autoStr:"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -540,7 +540,7 @@ public class StdAbility implements Ability, Cloneable
 										String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,message);
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T"+message+"^?");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 

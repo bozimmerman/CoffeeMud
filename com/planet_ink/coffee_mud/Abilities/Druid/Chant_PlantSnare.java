@@ -111,7 +111,7 @@ public class Chant_PlantSnare extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> chant(s) to the plants around <S-HIM-HER>.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

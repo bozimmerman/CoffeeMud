@@ -80,7 +80,7 @@ public class Spell_Summon extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> summon(s) <T-NAME> in a mighty cry!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
 			if((mob.location().okAffect(msg))&&(oldRoom.okAffect(msg)))
 			{
 				mob.location().send(mob,msg);

@@ -135,7 +135,7 @@ public class Chant_IllusionaryForest extends Chant
 				break;
 			}
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"<S-NAME> chant(s) dramatically!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> chant(s) dramatically!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

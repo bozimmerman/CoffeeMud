@@ -111,7 +111,7 @@ public class Spell_FloatingDisc extends Spell
 				}
 				target.envStats().setWeight(oldweight);
 			}
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> begin(s) to float around.":"<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

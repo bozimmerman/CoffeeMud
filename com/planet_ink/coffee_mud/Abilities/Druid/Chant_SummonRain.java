@@ -50,7 +50,7 @@ public class Chant_SummonRain extends Chant
 		boolean success=profficiencyCheck(-size,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"The sky changes color!":"<S-NAME> chant(s) into the sky for water!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for water!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

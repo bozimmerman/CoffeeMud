@@ -42,13 +42,13 @@ public class Chant_SpeedTime extends Chant
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"Something is happening!":"<S-NAME> begin(s) to chant...");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"Something is happening!":"^S<S-NAME> begin(s) to chant...^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<adjustedLevel(mob)/2;i++)
 					ExternalPlay.tickAllTickers(mob.location());
-				mob.location().show(mob,null,affectType,auto?"It stops.":"<S-NAME> stop(s) chanting.");
+				mob.location().show(mob,null,affectType,auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}
 		}
 		else

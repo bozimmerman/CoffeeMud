@@ -64,7 +64,7 @@ public class Spell_Fear extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> scare(s) <T-NAMESELF>.");
+				FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{

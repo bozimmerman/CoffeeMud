@@ -47,7 +47,7 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of anger descends":"<S-NAME> rage(s) for anger.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

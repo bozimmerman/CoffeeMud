@@ -245,7 +245,7 @@ public class Chant_LocateAnimals extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> chant(s) for the animals.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> chant(s) for the animals.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

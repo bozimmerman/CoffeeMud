@@ -41,37 +41,37 @@ public class CreateEdit
 		else
 		if(commandType.equals("EXIT"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits.destroy(mob,commands);
 		}
 		else
 		if(commandType.equals("ITEM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items.destroy(mob,commands);
 		}
 		else
 		if((commandType.equals("AREA"))&&(mob.isASysOp(null)))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms.destroyArea(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms.destroy(mob,commands);
 		}
 		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs.destroyUser(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			sysopSocials.destroy(mob,commands);
 		}
 		else
@@ -119,7 +119,7 @@ public class CreateEdit
 		else
 		if(commandType.equals("MOB"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs.destroy(mob,commands);
 		}
 		else
@@ -197,7 +197,7 @@ public class CreateEdit
 		throws Exception
 	{
 		String commandType="";
-		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		if(commands.size()>1)
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		if(commandType.equals("USERS"))
@@ -251,43 +251,43 @@ public class CreateEdit
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		if(commandType.equals("ITEM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items.modify(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms.modify(mob,commands);
 		}
 		else
 		if(commandType.equals("AREA"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms.modifyArea(mob,commands);
 		}
 		else
 		if(commandType.equals("EXIT"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits.modify(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			sysopSocials.modify(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs.modify(mob,commands);
 		}
 		else
 		if(commandType.equals("NEW"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs.modify(mob,commands);
 		}
 		else
@@ -371,7 +371,7 @@ public class CreateEdit
 
 	public void link(MOB mob, Vector commands)
 	{
-		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		rooms.link(mob,commands);
 	}
 
@@ -384,7 +384,7 @@ public class CreateEdit
 
 		if(commandType.equals("EXIT"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			exits.create(mob,commands);
 		}
 		else
@@ -396,31 +396,31 @@ public class CreateEdit
 		else
 		if(commandType.equals("ITEM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			items.create(mob,commands);
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms.create(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			sysopSocials.create(mob,commands);
 		}
 		else
 		if(commandType.equals("MOB"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			mobs.create(mob,commands);
 		}
 		else
 		if(commandType.equals("NEW"))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> wave(s) <S-HIS-HER> arms...");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			utils.newSomething(mob,commands);
 		}
 		else

@@ -141,7 +141,6 @@ public class Channels
 			cmdSet.put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
 			cmdSet.put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
 		}
-iChannelsArray();
 		return numChannelsLoaded;
 	}
 
@@ -179,8 +178,8 @@ iChannelsArray();
 			mob.tell("This channel is not yet available to you.");
 			return;
 		}
-		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'";
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"You"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,mob.name()+str);
+		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^^";
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
 		if(mob.location().okAffect(msg))
 		{
 			for(int s=0;s<Sessions.size();s++)

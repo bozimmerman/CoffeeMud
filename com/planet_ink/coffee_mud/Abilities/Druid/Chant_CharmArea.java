@@ -72,7 +72,7 @@ public class Chant_CharmArea extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"This area seems to twinkle with beauty.":"<S-NAME> chant(s), bringing forth the natural beauty of this place.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"This area seems to twinkle with beauty.":"^S<S-NAME> chant(s), bringing forth the natural beauty of this place.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

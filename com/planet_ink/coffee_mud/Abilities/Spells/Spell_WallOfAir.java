@@ -148,7 +148,7 @@ public class Spell_WallOfAir extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An swirling wall of air appears!":"<S-NAME> conjur(s) up a swirling wall of air!");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An swirling wall of air appears!":"^S<S-NAME> conjur(s) up a swirling wall of air!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -85,7 +85,7 @@ public class Spell_PredictWeather extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"<S-NAME> invoke(s) weather sensitivity!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";

@@ -57,7 +57,7 @@ public class Undead_LifeDrain extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			int much=mob.envStats().level();
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),auto?"":"<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),auto?"":"^S<S-NAME> clutch(es) <T-NAMESELF>, and drain(s) <T-HIS-HER> life!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

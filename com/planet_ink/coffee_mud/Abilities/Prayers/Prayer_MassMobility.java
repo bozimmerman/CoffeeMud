@@ -93,7 +93,7 @@ public class Prayer_MassMobility extends Prayer
 		if(auto) affectType=affectType|Affect.ACT_GENERAL;
 		if((success)&&(room!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

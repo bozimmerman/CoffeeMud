@@ -171,7 +171,7 @@ public class Spell_Grease extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> invoke a spell at <T-NAME>s feet..",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"<S-NAME> invoke(s) a spell at your feet.",affectType,auto?"":"<S-NAME> invokes a spell at <T-NAME>s feet");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",affectType,auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

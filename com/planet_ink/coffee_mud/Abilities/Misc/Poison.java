@@ -84,14 +84,14 @@ public class Poison extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			String str=auto?"":"<S-NAME> attempt(s) to poison <T-NAMESELF>!";
+			String str=auto?"":"^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON|(auto?Affect.ACT_GENERAL:0),str);
 			if(target.location().okAffect(msg))
 			{
 			    target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) green!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-NAME> turn(s) green!^?");
 				    success=maliciousAffect(mob,target,0,-1);
 				}
 			}

@@ -67,7 +67,7 @@ public class Skill_Bash extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is bashed!":"<S-NAME> bash(es) <T-NAMESELF>!";
+			str=auto?"<T-NAME> is bashed!":"^F<S-NAME> bash(es) <T-NAMESELF>!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),str);
 			if(mob.location().okAffect(msg))
 			{

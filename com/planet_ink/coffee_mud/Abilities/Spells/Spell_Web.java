@@ -109,7 +109,7 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

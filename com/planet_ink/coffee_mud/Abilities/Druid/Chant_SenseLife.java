@@ -108,7 +108,7 @@ public class Chant_SenseLife extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) softly, and then stop(s) to listen.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) softly, and then stop(s) to listen.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -80,7 +80,7 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

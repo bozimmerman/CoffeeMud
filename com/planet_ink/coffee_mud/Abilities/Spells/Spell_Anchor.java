@@ -101,7 +101,7 @@ public class Spell_Anchor extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An magical anchoring field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>."));
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -41,7 +41,7 @@ public class Prayer_Harm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> cringe(s) in pain.":"<S-NAME> pray(s) at <T-NAMESELF> for tremendous pain!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> pray(s) at <T-NAMESELF> for tremendous pain!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

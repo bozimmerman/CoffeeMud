@@ -245,7 +245,7 @@ public class Spell_DetectWater extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) liquid sensitivities!":"<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) liquid sensitivities!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

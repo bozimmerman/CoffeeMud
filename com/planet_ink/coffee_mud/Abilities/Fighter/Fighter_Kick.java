@@ -66,7 +66,7 @@ public class Fighter_Kick extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.postDamage(mob,target,this,damage,Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"<S-NAME> <DAMAGE> <T-NAME> with a ferocious KICK!");
+				ExternalPlay.postDamage(mob,target,this,damage,Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a ferocious KICK!^?");
 			}
 		}
 		else

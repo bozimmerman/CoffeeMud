@@ -77,7 +77,7 @@ public class Chant_Barkskin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -90,7 +90,7 @@ public class Prayer_ProtDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) disease protection.":"<S-NAME> pray(s) for protection from diseases.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) disease protection.":"^S<S-NAME> pray(s) for protection from diseases.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -95,7 +95,7 @@ public class Spell_Wish extends Spell
 
 		mob.curState().setMana(0);
 		int baseLoss=25;
-		FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> wish(es) for '"+myWish+"'!!");
+		FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
 		boolean success=profficiencyCheck(0,auto);
 		if(!success)
 		{

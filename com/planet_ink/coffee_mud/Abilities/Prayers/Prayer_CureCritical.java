@@ -40,7 +40,7 @@ public class Prayer_CureCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A bright white glow surrounds <T-NAME>.":"<S-NAME> pray(s) over <T-NAMESELF>, delivering a critical healing touch.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> pray(s) over <T-NAMESELF>, delivering a critical healing touch.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

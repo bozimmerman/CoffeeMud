@@ -245,7 +245,7 @@ public class Grouping
 			mob.tell("You cannot order someone to follow.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.");
+		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

@@ -45,7 +45,7 @@ public class Spell_Farsight extends Spell
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> get(s) a far off look, but the spell fizzles.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.");
+			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -63,7 +63,7 @@ public class Prayer_MassFreedom extends Prayer
 		boolean nothingDone=true;
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of freedom flows through the air":"<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of freedom flows through the air":"^S<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
 			if((room!=null)&&(room.okAffect(msg)))
 			{

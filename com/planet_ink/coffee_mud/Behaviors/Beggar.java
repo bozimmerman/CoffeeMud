@@ -25,7 +25,7 @@ public class Beggar extends StdBehavior
 			return;
 		MOB mob=(MOB)oking;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==Affect.TYP_GIVE))
-			msg.addTrailerMsg(new FullMsg(mob,msg.source(),Affect.MSG_SPEAK,"<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> "));
+			msg.addTrailerMsg(new FullMsg(mob,msg.source(),Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
 	
 	public void tick(Environmental ticking, int tickID)

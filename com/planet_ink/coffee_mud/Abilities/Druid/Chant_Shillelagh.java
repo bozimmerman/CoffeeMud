@@ -69,6 +69,11 @@ public class Chant_Shillelagh extends Chant
 			mob.tell("You cannot enchant this foreign material.");
 			return false;
 		}
+		if(((Weapon)target).fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target.name()+" is already enchanged.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -80,7 +85,7 @@ public class Chant_Shillelagh extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> appear(s) enchanted!":"<S-NAME> chant(s) to <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> appear(s) enchanted!":"^S<S-NAME> chant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

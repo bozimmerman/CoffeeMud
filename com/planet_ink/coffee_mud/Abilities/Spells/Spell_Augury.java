@@ -85,7 +85,7 @@ public class Spell_Augury extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				boolean aggressiveMonster=false;

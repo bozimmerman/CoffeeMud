@@ -132,7 +132,7 @@ public class Paladin_Defend extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_CAST_SOMANTIC_SPELL,"<S-NAME> assume(s) an all-out defensive posture.");
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_CAST_SOMANTIC_SPELL,"^S<S-NAME> assume(s) an all-out defensive posture.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

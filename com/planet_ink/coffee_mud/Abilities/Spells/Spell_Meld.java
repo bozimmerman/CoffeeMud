@@ -165,7 +165,7 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

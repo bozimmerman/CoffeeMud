@@ -102,7 +102,7 @@ public class Chant_WindGust extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"<S-NAME> chant(s) at <S-HIS-HER> enemies.");
+			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"^S<S-NAME> chant(s) at <S-HIS-HER> enemies.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

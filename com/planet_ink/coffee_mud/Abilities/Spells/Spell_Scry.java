@@ -110,7 +110,7 @@ public class Spell_Scry extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> invoke(s) the name of '"+mobName+"'.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> invoke(s) the name of '"+mobName+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType,null);
 			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
 			{

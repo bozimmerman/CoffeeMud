@@ -112,7 +112,7 @@ public class Spell_Ensnare extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

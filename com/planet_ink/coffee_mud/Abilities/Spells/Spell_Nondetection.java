@@ -82,7 +82,7 @@ public class Spell_Nondetection extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An undetectable field envelopes <T-NAME>!":"<S-NAME> invoke(s) an undetectable globe of protection around <T-NAMESELF>."));
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an undetectable globe of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				amountAbsorbed=0;

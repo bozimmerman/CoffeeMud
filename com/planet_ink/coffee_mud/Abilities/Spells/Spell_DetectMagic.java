@@ -71,7 +71,7 @@ public class Spell_DetectMagic extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"<S-NAME> incant(s) softly, and gain(s) sparkling eyes!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

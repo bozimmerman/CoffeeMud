@@ -69,7 +69,7 @@ public class Undead_ColdTouch extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"":"<S-NAME> extend(s) a chilling hand to <T-NAMESELF>!";
+			str=auto?"":"^S<S-NAME> extend(s) a chilling hand to <T-NAMESELF>!^?";
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),str);
 			if(mob.location().okAffect(msg))
 			{

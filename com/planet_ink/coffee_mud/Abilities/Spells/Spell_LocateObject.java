@@ -59,7 +59,7 @@ public class Spell_LocateObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> invoke(s) a divination, shouting '"+what+"'.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> invoke(s) a divination, shouting '"+what+"'^?.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -112,7 +112,7 @@ public class Chant_Tangle extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"<S-NAME> begin(s) to chant.");
+			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> begin(s) to chant.^?");
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else

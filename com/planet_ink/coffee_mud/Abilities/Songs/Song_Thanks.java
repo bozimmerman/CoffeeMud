@@ -108,9 +108,9 @@ public class Song_Thanks extends Song
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"The song of "+name()+" begins to play!":"<S-NAME> begin(s) to sing the Song of "+name()+".";
+			String str=auto?"^SThe song of "+name()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+name()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="<S-NAME> start(s) the Song of "+name()+" over again.";
+				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
 			if(mob.location().okAffect(msg))

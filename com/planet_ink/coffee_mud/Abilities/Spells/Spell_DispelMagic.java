@@ -84,7 +84,7 @@ public class Spell_DispelMagic extends Spell
 		boolean success=profficiencyCheck(diff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

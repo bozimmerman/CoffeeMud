@@ -131,7 +131,7 @@ public class Spell_FeignDeath extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!");
+		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

@@ -89,7 +89,7 @@ public class Spell_Cloudkill extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous green cloud appears!":"<S-NAME> evoke(s) a horrendous green cloud.");
+			mob.location().show(mob,null,affectType,auto?"A horrendous green cloud appears!":"^S<S-NAME> evoke(s) a horrendous green cloud.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

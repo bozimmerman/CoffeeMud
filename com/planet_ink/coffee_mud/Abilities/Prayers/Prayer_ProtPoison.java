@@ -91,7 +91,7 @@ public class Prayer_ProtPoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a anitidotal protection.":"<S-NAME> pray(s) for protection from poisons.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> pray(s) for protection from poisons.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -236,7 +236,7 @@ public class Chant_LocatePlants extends Chant
 
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> begin(s) to sense plant life!":"<S-NAME> chant(s) for a route to plant life.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

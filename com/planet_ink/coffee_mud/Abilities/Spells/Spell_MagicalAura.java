@@ -76,7 +76,7 @@ public class Spell_MagicalAura extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A magical aura appears around <T-NAME>.":"<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.");
+		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

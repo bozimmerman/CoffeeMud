@@ -85,7 +85,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"<S-NAME> chant(s) for weather sensitivity!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> chant(s) for weather sensitivity!^?");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";

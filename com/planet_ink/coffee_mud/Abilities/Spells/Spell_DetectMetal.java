@@ -67,7 +67,7 @@ public class Spell_DetectMetal extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) metallic senses!":"<S-NAME> incant(s) softly, and gain(s) metallic senses!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) metallic senses!":"^S<S-NAME> incant(s) softly, and gain(s) metallic senses!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -103,7 +103,7 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> listen(s) for a message from <S-HIS-HER> god.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

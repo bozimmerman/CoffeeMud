@@ -91,7 +91,7 @@ public class Spell_MindBlock extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A anti-psionic field envelopes <T-NAME>!":"<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>."));
+			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				amountAbsorbed=0;

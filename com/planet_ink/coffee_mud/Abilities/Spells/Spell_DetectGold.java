@@ -203,7 +203,7 @@ public class Spell_DetectGold extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) golden senses!":"<S-NAME> incant(s) softly, and gain(s) golden senses!");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -133,7 +133,7 @@ public class Spell_Delay extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"<S-NAME> point(s) and shout(s) 'NOW!'.");
+			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

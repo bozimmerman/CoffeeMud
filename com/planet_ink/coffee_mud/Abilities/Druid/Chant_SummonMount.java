@@ -94,7 +94,7 @@ public class Chant_SummonMount extends Chant
 		if((success)&&(newRoom!=null))
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) humbly for a mount.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> chant(s) humbly for a mount.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

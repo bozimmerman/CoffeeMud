@@ -48,7 +48,7 @@ public class TheFight
 		else
 		if(reallyKill)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> touch(es) <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"^F<S-NAME> touch(es) <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -60,11 +60,11 @@ public class TheFight
 		if(mob.isInCombat())
 		{
 			if((mob.getVictim()!=null)&&(mob.getVictim()==target))
-				mob.tell("You are already fighting "+mob.getVictim().name()+".");
+				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
 			else
 			if(mob.location().okAffect(new FullMsg(mob,target,Affect.MSG_WEAPONATTACK,null)))
 			{
-				mob.tell("You are now targeting "+target.name()+".");
+				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);
 			}
 			return;
@@ -143,6 +143,7 @@ public class TheFight
 						   String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
+		if(allDisplayMessage!=null) allDisplayMessage="^F"+allDisplayMessage+"^?";
 		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
 		if(target.location().okAffect(msg))
 		{
@@ -191,8 +192,8 @@ public class TheFight
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
-		deathRoom.showSource(target,null,Affect.MSG_DEATH,"!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!\n\r");
-		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"<S-NAME> is DEAD!!!\n\r");
+		deathRoom.showSource(target,null,Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^^\n\r");
+		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
 		
 		Hashtable beneficiaries=new Hashtable();
 		if((target.charStats()!=null)&&(target.charStats().getMyClass()!=null)&&(source!=null))
@@ -201,7 +202,7 @@ public class TheFight
 		if(target.soulMate()==null)
 		{
 			int expLost=100;
-			target.tell("You lose "+expLost+" experience points.");
+			target.tell("^F^*You lose "+expLost+" experience points.^?^^");
 			target.charStats().getMyClass().loseExperience(target,expLost);
 		}
 		
@@ -355,7 +356,7 @@ public class TheFight
 									target,
 									weapon,
 									Affect.MSG_NOISYMOVEMENT,
-									weapon.hitString(damageInt));
+									"^F"+weapon.hitString(damageInt)+"^?");
 			msg.tagModified(true);
 			// why was there no okaffect here?
 			if(source.location().okAffect(msg))

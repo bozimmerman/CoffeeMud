@@ -82,7 +82,7 @@ public class Wyvern extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON, "<S-NAME> sting(s) <T-NAMESELF>");
+ 				FullMsg msg=new FullMsg(this, target, null, Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON, "^F<S-NAME> sting(s) <T-NAMESELF>!^?");
 				if(location().okAffect(msg))
 				{
 					this.location().send(target,msg);

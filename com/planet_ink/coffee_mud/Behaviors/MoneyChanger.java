@@ -258,7 +258,7 @@ public class MoneyChanger extends StdBehavior
 				changeBag.text();
 				FullMsg newMsg=new FullMsg(observer,source,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) "+changeBag.name()+" to <T-NAMESELF>.");
 				affect.addTrailerMsg(newMsg);
-				newMsg=new FullMsg(observer,source,changeBag,Affect.MSG_SPEAK,"<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.");
+				newMsg=new FullMsg(observer,source,changeBag,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
 				affect.addTrailerMsg(newMsg);
 			}
 			else

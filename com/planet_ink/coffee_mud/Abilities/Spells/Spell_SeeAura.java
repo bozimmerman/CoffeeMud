@@ -47,7 +47,7 @@ public class Spell_SeeAura extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"You draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...",affectType,auto?"":"<S-NAME> draw(s) out your aura.",affectType,auto?"":"<S-NAME> draws out <T-NAME>s aura.");
+		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",affectType,auto?"":"^S<S-NAME> draw(s) out your aura.^?",affectType,auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
 		if(success)
 		{
 			if(mob.location().okAffect(msg))
