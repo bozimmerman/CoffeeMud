@@ -1,14 +1,12 @@
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
-prop_hereadjuster
+prop_hereadjuster, prop_here
 rob, disrobe, buffoonery, should piss mobs off.
-I can fletch a quiver of 500 arrows. Tells me that I need to put metal down first, even though there`s 500+ mithril and 3000+ adamantite available....
 test innkeepers
 test randmonmonster locale restrictions
 
 Skills:
 	soap recipe ash lime internal oragans.
-	elven steal.. mithrial 2 vegetation can be used with spell casters
-	being able to make doors out of metal
+	mithril weave.. mithrial 2 silk can be used with spell casters 2pts higher than silk, 500 per, smelt,
 	tailoring/leatherworking item: a hooded cloak
 	Need little kiddie shoes for the cobbling skill. Mary Janes maybe?
 Socials:
@@ -19,7 +17,7 @@ Misc:
 	Allow buying of spells from the healer to target a third party.
 	Immortals and higher maybe don't need to be hungry/thirsty?
 	Like with poofs, how about we do it for tranfers? One the room sees when a person is taken and one the room sees when a person is put there?
-61. DISPLAY command--to show an item to a friend without giving it to him.  
+61. SHOW, DISPLAY command--to show an item to a friend without giving it to him.  
  
 62. WRATH command  
   1. Archon ability that reduces a character to half remaining hp, mana, and movement if you piss them off. Good for subops who don't have the full range of skills available to an archon.  
@@ -35,13 +33,12 @@ Misc:
   2. Add an option for Weather  
   3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
-fix healer?
-Flea Powder! Something just to cure fleas.
+fix healer? 
 The sage in the bazaar has much the same problem and should return the equipment that he never bothers to identify.
 ->The blacksmith at the bazaar should actually return the items, and possibly try and mend them.
 The shipyard in the bazaar. Sells ships for 1 gold. The ships are landlocked (thus being worth about 1 gold).
 racial affects
 Install ship battery
 make diff levels of drunk, and disease_hangover
-mutable body parts, with ability to grant powers
+mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 document real estate, space ship selling, genairlock
