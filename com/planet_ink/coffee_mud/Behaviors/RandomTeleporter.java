@@ -110,13 +110,13 @@ public class RandomTeleporter extends ActiveTicker
 			{
 				R=CMMap.getRandomRoom();
 				if((!Sense.isInFlight(mob))
-				&&((R.domainConditions()==Room.DOMAIN_INDOORS_AIR)
-				||(R.domainConditions()==Room.DOMAIN_OUTDOORS_AIR)))
+				&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
 					R=null;
 				else
 				if((!Sense.isSwimming(mob))
-				&&((R.domainConditions()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(R.domainConditions()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+				&&((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 					R=null;
 				else
 				if(!okRoomForMe(mob.location(),R))

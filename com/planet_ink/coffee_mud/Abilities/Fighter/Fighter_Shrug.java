@@ -23,7 +23,7 @@ public class Fighter_Shrug extends StdAbility
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amITarget((MOB)affected))
-		&&((msg.targetCode()&Affect.MASK_HURT)>0)
+		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
 		&&(!msg.amISource((MOB)affected))
 		&&(Sense.aliveAwakeMobile((MOB)affected,true))
 		&&(msg.tool()!=null)

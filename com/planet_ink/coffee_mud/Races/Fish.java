@@ -54,7 +54,7 @@ public class Fish extends StdRace
 		MOB mob=(MOB)affected;
 		if(mob.location()!=null)
 	    {
-			if((mob.location().domainConditions()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))

@@ -31,7 +31,7 @@ public class Spell_FakeWeapon extends Spell
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(affect.tool()==affected)
-		&&((affect.targetCode()&Affect.MASK_HURT)>0))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
 			affect.modify(affect.source(),
 						  affect.target(),

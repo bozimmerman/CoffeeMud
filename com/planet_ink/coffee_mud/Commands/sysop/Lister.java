@@ -356,7 +356,7 @@ public class Lister
 					if(((Vector)linkedGroups.elementAt(g)).size()==0)
 						linkedGroups.removeElementAt(g);
 				}
-				
+
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
@@ -370,7 +370,7 @@ public class Lister
 						totalLevels+=M.envStats().level();
 					}
 				}
-				
+
 			}
 			StringBuffer ext=new StringBuffer("links ");
 			Vector myVec=null;
@@ -449,15 +449,15 @@ public class Lister
 					unlinkedGroups.append(((Area)V.firstElement()).name()+"\t");
 				unlinkedGroups.append("|\t");
 			}
-			
+
 		}
 		buf.append("\n\r");
 		buf.append("Small Group Areas:\t"+unlinkedGroups.toString());
 		Log.sysOut("Lister",buf.toString());
 		return buf;
 	}
-	
-	
+
+
 	public static StringBuffer journalList(String journal)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -528,7 +528,7 @@ public class Lister
 					||(CoffeeUtensils.containsString(M.displayText(),who)))
 					{
 						lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
-						lines.append(R.displayText());
+						lines.append(R.roomTitle());
 						lines.append(" ("+R.roomID()+")");
 						lines.append("\n\r");
 					}
@@ -542,7 +542,7 @@ public class Lister
 	{
 		mob.tell("\n\r^xCoffeeMud System Report:^.^N");
 		try
-		{ 
+		{
 			System.gc();
 			Thread.sleep(1500);
 		}catch(Exception e){}
@@ -743,7 +743,7 @@ public class Lister
 		}
 		return buf;
 	}
-	
+
 	public static StringBuffer listTicks(String whichTickTock)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -792,7 +792,7 @@ public class Lister
 		}
 		return msg;
 	}
-	
+
 	public static void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -861,7 +861,7 @@ public class Lister
 		if("SKILLS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
-		if("QUESTS".startsWith(listThis))
+		if(("QUESTS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(listQuests().toString());
 		else
 		if("DISEASES".startsWith(listThis))
@@ -870,19 +870,19 @@ public class Lister
 		if("POISONS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.POISON).toString());
 		else
-		if("TICKS".startsWith(listWord))
+		if(("TICKS".startsWith(listWord))&&(mob.isASysOp(null)))
 			mob.tell(listTicks(Util.combine(commands,1)).toString());
 		else
 		if("MAGIC".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.miscMagic()).toString());
 		else
-		if("BUGS".startsWith(listThis))
+		if(("BUGS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(journalList("SYSTEM_BUGS").toString());
 		else
-		if("IDEAS".startsWith(listThis))
+		if(("IDEAS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(journalList("SYSTEM_IDEAS").toString());
 		else
-		if("BANNED".startsWith(listThis))
+		if(("BANNED".startsWith(listThis))&&(mob.isASysOp(null)))
 		{
 			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
 			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
@@ -892,25 +892,25 @@ public class Lister
 			s.rawPrintln(str.toString());
 		}
 		else
-		if("TYPOS".startsWith(listThis))
+		if(("TYPOS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(journalList("SYSTEM_TYPOS").toString());
 		else
-		if("LOG".startsWith(listThis))
+		if(("LOG".startsWith(listThis))&&(mob.isASysOp(null)))
 			s.rawPrintln(Log.getLog().toString());
 		else
-		if("USERS".startsWith(listWord))
+		if(("USERS".startsWith(listWord))&&(mob.isASysOp(null)))
 			listUsers(mob,commands);
 		else
-		if("SESSIONS".startsWith(listThis))
+		if(("SESSIONS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(listSessions(mob).toString());
-		else
-		if("LINKAGES".startsWith(listThis))
-			mob.tell(listLinkages(mob).toString());
-		else
-		if("REPORTS".startsWith(listThis))
+        else
+        if(("LINKAGES".startsWith(listThis))&&(mob.isASysOp(null)))
+                mob.tell(listLinkages(mob).toString());
+        else
+		if(("REPORTS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(listReports(mob).toString());
 		else
-		if("THREADS".startsWith(listThis))
+		if(("THREADS".startsWith(listThis))&&(mob.isASysOp(null)))
 			mob.tell(listThreads(mob).toString());
 		else
 		if("RESOURCES".startsWith(listThis))

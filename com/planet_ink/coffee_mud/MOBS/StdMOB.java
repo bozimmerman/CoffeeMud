@@ -1400,6 +1400,23 @@ public class StdMOB implements MOB
 					mob.tell(name()+" can't accept any more followers.");
 					return false;
 				}
+                if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)>0)
+				&&(!isMonster())
+				&&(!mob.isMonster())
+				&&(!isASysOp(location()))
+				&&(!mob.isASysOp(location())))
+                {
+					if(envStats.level() > (mob.envStats().level() + CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)))
+					{
+						mob.tell(name() + " is too advanced for you.");
+						return false;
+					}
+					if(envStats.level() < (mob.envStats().level() - CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)))
+					{
+						mob.tell(name() + " is too inexperienced for you.");
+						return false;
+					}
+                }
 				break;
 			}
 		}

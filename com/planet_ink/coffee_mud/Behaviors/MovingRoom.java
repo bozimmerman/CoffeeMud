@@ -206,46 +206,55 @@ public class MovingRoom extends ActiveTicker
 		if(canAct(ticking,tickID))
 		{
 			Room aRoom=this.getBehaversRoom(ticking);
-			if (currentStop==0) {
-                        	isReversed=false;
-                        	nextStop=currentStop+1;
-                        } else if (currentStop==(listOfRooms.size()-1)) {
-                        	isReversed=true;
-                        	nextStop=currentStop-1;
-                        } else if (isReversed) {
-                        	nextStop=currentStop-1;
-                        } else {
-                        	nextStop=currentStop+1;}
-		        String currentStopS=(String)listOfRooms.elementAt(currentStop);
-                        String nextStopS=(String)listOfRooms.elementAt(nextStop);
-		        if(ticking instanceof Room){
-                          Room firstRoom = null;
-                          Room secondRoom = null;
-                          Room thisRooma = null;
+			if (currentStop==0) 
+			{
+                isReversed=false;
+                nextStop=currentStop+1;
+            } else if (currentStop==(listOfRooms.size()-1)) {
+                isReversed=true;
+                nextStop=currentStop-1;
+            } else if (isReversed) {
+                nextStop=currentStop-1;
+            } else {
+                nextStop=currentStop+1;
+			}
+		    String currentStopS=(String)listOfRooms.elementAt(currentStop);
+                    String nextStopS=(String)listOfRooms.elementAt(nextStop);
+		    if(ticking instanceof Room)
+			{
+                Room firstRoom = null;
+                Room secondRoom = null;
+                Room thisRooma = null;
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					thisRooma=(Room)r.nextElement();
-					if(thisRooma.roomID().equalsIgnoreCase(currentStopS)){
-					   firstRoom = thisRooma;
-                                           break;}
+					if(thisRooma.roomID().equalsIgnoreCase(currentStopS))
+					{
+						firstRoom = thisRooma;
+                        break;
+					}
 				}
-                       		Room thisRoomb = null;
+                Room thisRoomb = null;
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					thisRoomb=(Room)r.nextElement();
-					if(thisRoomb.ID().equalsIgnoreCase(nextStopS)){
+					if(thisRoomb.ID().equalsIgnoreCase(nextStopS))
+					{
 					   secondRoom = thisRoomb;
-					   break;}
+					   break;
+					}
 				}
-				if (currentStatus==0) {
-				//DEPARTING
+				if (currentStatus==0) 
+				{
+					//DEPARTING
 					if (firstRoom == null)
 						firstRoom=this.getBehaversRoom(ticking);
 					if (secondRoom == null)
 						secondRoom=this.getBehaversRoom(ticking);
 					if (thisRooma == null)
 						thisRooma=this.getBehaversRoom(ticking);
-					if (isReversed){
+					if (isReversed)
+					{
 						firstRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(5).toString(),secondRoom));
 						aRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(3).toString(),secondRoom));
 						if (((aRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]!=null) && ((currentStop==0) || (currentStop==(listOfRooms.size()-1))))||(aRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]!=null))
@@ -309,9 +318,10 @@ public class MovingRoom extends ActiveTicker
 						super.setParms("min="+roomInfos.elementAt(2)+" max="+roomInfos.elementAt(2)+" chance=100;"+roomInfos.elementAt(0)+";"+roomInfos.elementAt(1)+";"+roomInfos.elementAt(2));
 						currentStatus=1;
 					}
-                                } else {
+                } else {
 				//ARRIVING
-					if (isReversed){
+					if (isReversed)
+					{
 						aRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(2).toString(),secondRoom));
 						secondRoom.showHappens(Affect.MSG_OK_ACTION,fixOutputString(reverseVec.elementAt(4).toString(),secondRoom));
 						currentStatus=0;

@@ -223,7 +223,7 @@ public class Missionary extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_ELECTRIC))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;
@@ -233,7 +233,7 @@ public class Missionary extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_ACID))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;

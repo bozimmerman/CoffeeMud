@@ -27,7 +27,9 @@ public class AreaData extends StdWebMacro
 					if(behav.length()>0)
 					{
 						theclasses.addElement(behav);
-						theparms.addElement(theparm);
+						String t=theparm;
+						t=Util.replaceAll(t,"\"","&quot;");
+						theparms.addElement(t);
 					}
 					num++;
 					behav=httpReq.getRequestParameter("BEHAV"+num);
@@ -41,7 +43,9 @@ public class AreaData extends StdWebMacro
 				if(B!=null)
 				{
 					theclasses.addElement(CMClass.className(B));
-					theparms.addElement(B.getParms());
+					String t=B.getParms();
+					t=Util.replaceAll(t,"\"","&quot;");
+					theparms.addElement(t);
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
@@ -96,7 +100,9 @@ public class AreaData extends StdWebMacro
 					if(behav.length()>0)
 					{
 						theclasses.addElement(behav);
-						theparms.addElement(theparm);
+						String t=theparm;
+						t=Util.replaceAll(t,"\"","&quot;");
+						theparms.addElement(t);
 					}
 					num++;
 					behav=httpReq.getRequestParameter("AFFECT"+num);
@@ -110,7 +116,9 @@ public class AreaData extends StdWebMacro
 				if((Able!=null)&&(!Able.isBorrowed(E)))
 				{
 					theclasses.addElement(CMClass.className(Able));
-					theparms.addElement(Able.text());
+					String t=Able.text();
+					t=Util.replaceAll(t,"\"","&quot;");
+					theparms.addElement(t);
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");

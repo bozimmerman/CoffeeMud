@@ -84,8 +84,8 @@ public class SpecialistMage extends Mage
 					return false;
 				}
 			}
-			if(((affect.targetCode()&Affect.MASK_HURT)>0)
-			&&(myChar.charStats().getClassLevel(this)>=5)
+			if((myChar.charStats().getClassLevel(this)>=5)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
 				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));

@@ -209,7 +209,7 @@ public class Doomsayer extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_FIRE))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;
@@ -219,7 +219,7 @@ public class Doomsayer extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_COLD))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;

@@ -45,7 +45,7 @@ public class Paladin_Defend extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB))||(invoker==null))
 			return;
 		if((affect.amITarget(affected))
-		&&((affect.targetCode()&Affect.MASK_HURT)>0)
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon))
 			fullRound=false;

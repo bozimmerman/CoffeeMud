@@ -1,8 +1,2 @@
-! fish don't seem to survive underwater
-! pour command as a reverse fill
-! Allow get item from sack (allow the word from) instead of just get item sack  
-! swim is broken!
-! buy homes#2 gave me 262
-I can add parameters thru grinder for PropDayNight and it works fine. If I go back to edit the mob the Behavior itself is still there but with no properties.  Editing the mob in-game shows the correct properties associated with the behavior.
-It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
-
+difference report for a given mob against all others of same level/race, ditto for weapons/armor -- compare the stuff to tims spec sheet
+look at jonathans moving room problem -- reply to msg

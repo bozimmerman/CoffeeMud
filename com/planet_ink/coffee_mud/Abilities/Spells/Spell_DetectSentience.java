@@ -41,7 +41,7 @@ public class Spell_DetectSentience extends Spell
 						if((M!=null)&&(M.charStats().getStat(CharStats.INTELLIGENCE)>=2))
 						{
 							lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
-							lines.append(R.displayText());
+							lines.append(R.roomTitle());
 							lines.append("\n\r");
 						}
 					}

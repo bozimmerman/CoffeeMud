@@ -1,5 +1,3 @@
-Can we get some web macros that would list and display the deities?
-Room descriptions varying by the time of day.
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
 mobile parm LEASH=X rooms from start
 locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
@@ -9,6 +7,7 @@ ability to deposit in someone elses bank account
 BLACKSMITH chain....works like rope, but heavy and metal.
 TAILOR pillow, sheets, blanket, large pillow, cushion
 Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
+It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
 tread water for water surfaces with water beneath
 add floating num to resources -- whether the item will float
 barbarian skill improved throwing...does extra damage with hurled items.
@@ -18,10 +17,8 @@ Thief skill ALERTNESS gives one random description from an item in the room upon
 can the death/morgue strings be specified by the player's deity?
 1) Can DEATH allow you to specify room by the god of the player, with a default room for unholy folks?
 2) Can MORGUE get a setting 'DEATH' so the body goes with the person
-Minimum stat requirements... like +CHA 17 for a requirement for the goddess of beauty type of thing
-And minimum gold on hand or item requirements... like +GOLD 2 +ITEM "IRON POT" for the God of Wealth
 clan boss deletion automatically votes for a new one
- Programming.html update
+Programming.html update
 	need special section for languages
 	need special section for poisons
 	need special section for diseases
@@ -86,7 +83,6 @@ Barbarian skill SCALPING, as discussed on the group....can't think of practical 
 Barbarian skill WARTOTEM. Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, and does WARTOTEM command. Any critter of that race that fights in the room with the totem suffers penalties to attack and damage.
 Spell Think Tank--Collective Mind--Mana Pool: all party members divide the cost of any mana consumption. IE a wizard casts a spell that costs 100 mana while partied with 3 other people, each lose 25 mana.
 Barbarians should be able to LEATHERWORK the scalps into SCALP armors. SCALPS should have a value of 3 (1 better than leather, 1 worse than scales). Other than that, all scalps must be of the same critter for the purpose of leathworking a piece of armor.
-Corruption - each casting reduces target alignment by target level points. evil prayer
 barbarian skill Fragmentation A critical shot enhancement for barbarians that only works with thrown weapons, does an EXTRA 3 times damage, but destroys the thrown weapon in the process. (I am visualizing an axe that slams so hard into it's oponenent that the shaft splits and buries into the enemy as well...)
 new common skill FABRICATING....includes any assembly-type work.....cigarettes, computers, cars, robots, sensors, etc.
 construct needs to be able to modify door descriptions

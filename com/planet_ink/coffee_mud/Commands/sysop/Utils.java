@@ -145,13 +145,13 @@ public class Utils
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+room.displayText()+"s fall "+Directions.getInDirectionName(dirCode)+".");
+							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+room.roomTitle()+"s fall "+Directions.getInDirectionName(dirCode)+".");
 						else
-							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.displayText()+" falls "+Directions.getInDirectionName(dirCode)+".");
+							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
 						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+room.roomID()+".");
 					}
 					else
-						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.displayText()+" falls "+Directions.getInDirectionName(dirCode)+".");
+						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
 					room=newRoom;
 				}
 			}

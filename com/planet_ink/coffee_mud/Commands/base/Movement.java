@@ -483,7 +483,7 @@ public class Movement extends Scriptable
 				if((Sense.canBeSeenBy(e,mob))
 				&&((e.name().equalsIgnoreCase(desc))
 				||(e.displayText().equalsIgnoreCase(desc))
-				||(r.displayText().equalsIgnoreCase(desc))
+				||(r.roomTitle().equalsIgnoreCase(desc))
 				||(e.description().equalsIgnoreCase(desc))))
 				{
 					dir=d; break;

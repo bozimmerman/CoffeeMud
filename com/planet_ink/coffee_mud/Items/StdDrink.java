@@ -69,64 +69,59 @@ public class StdDrink extends StdContainer implements Drink,Item
 			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
-				case Affect.TYP_DRINK:
-					if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
+			case Affect.TYP_DRINK:
+				if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
+				{
+					if(!containsDrink())
 					{
-						if(!containsDrink())
-						{
-							mob.tell(name()+" is empty.");
-							return false;
-						}
-						if((liquidType()==EnvResource.RESOURCE_SALTWATER)
-						||(liquidType()==EnvResource.RESOURCE_LAMPOIL))
-						{
-							mob.tell("You don't want to be drinking "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
-							return false;
-						}
-						return true;
-					}
-					else
-					{
-						mob.tell("You don't have that.");
+						mob.tell(name()+" is empty.");
 						return false;
 					}
-				case Affect.TYP_FILL:
-					if(mob.isMine(this))
+					if((liquidType()==EnvResource.RESOURCE_SALTWATER)
+					||(liquidType()==EnvResource.RESOURCE_LAMPOIL))
 					{
-						if(liquidRemaining()>=amountOfLiquidHeld)
-						{
-							mob.tell(name()+" is full.");
-							return false;
-						}
-						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
-						{
-							Drink thePuddle=(Drink)affect.tool();
-							if(!thePuddle.containsDrink())
-							{
-								mob.tell(thePuddle.name()+" is empty.");
-								return false;
-							}
-							if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
-							{
-								mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
-										 +" left in "+name()+".  You must empty it before you can fill it with "
-										 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
-								return false;
+						mob.tell("You don't want to be drinking "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+						return false;
+					}
+					return true;
+				}
+				else
+				{
+					mob.tell("You don't have that.");
+					return false;
+				}
+			case Affect.TYP_FILL:
+				if((liquidRemaining()>=amountOfLiquidHeld)
+				&&(liquidHeld()<500000))
+				{
+					mob.tell(name()+" is full.");
+					return false;
+				}
+				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+				{
+					Drink thePuddle=(Drink)affect.tool();
+					if(!thePuddle.containsDrink())
+					{
+						mob.tell(thePuddle.name()+" is empty.");
+						return false;
+					}
+					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+					{
+						mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
+								 +" left in "+name()+".  You must empty it before you can fill it with "
+								 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+						return false;
 
-							}
-							return true;
-						}
-						else
-						{
-							mob.tell("You can't fill "+name()+" from that.");
-							return false;
-						}
 					}
-					else
-					{
-						mob.tell("You don't have that.");
-						return false;
-					}
+					return true;
+				}
+				else
+				{
+					mob.tell("You can't fill "+name()+" from that.");
+					return false;
+				}
+			default:
+				break;
 			}
 		}
 		return true;
@@ -156,12 +151,17 @@ public class StdDrink extends StdContainer implements Drink,Item
 				{
 					Drink thePuddle=(Drink)affect.tool();
 					int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+					if(amountOfLiquidHeld>=500000)
+						amountToTake=thePuddle.liquidRemaining();
 					if(amountToTake>thePuddle.liquidRemaining())
 						amountToTake=thePuddle.liquidRemaining();
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
-					amountOfLiquidRemaining+=amountToTake;
+					if((amountOfLiquidRemaining+amountToTake)<=Integer.MAX_VALUE)
+						amountOfLiquidRemaining+=amountToTake;
+					if(amountOfLiquidRemaining>amountOfLiquidHeld)
+						amountOfLiquidRemaining=amountOfLiquidHeld;
 					if((amountOfLiquidRemaining<=0)&&(disappearsAfterDrinking))
 						destroy();
 				}

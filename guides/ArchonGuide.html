@@ -740,9 +740,18 @@ plain and boring.&nbsp; </P>
 <P>To give the room a new name and description, utter the 
 invocation: "modify room" and follow the promptings.&nbsp;&nbsp; The <EM>display </EM>property is the&nbsp;short name that appears 
 at the top of the room description, while the <EM>description </EM>field is the long text.&nbsp; Type 
-whatever you like &nbsp;into these fields, and feel the power as the place takes 
-on a new form dictated by your creative magic.&nbsp; You may insert line breaks 
-using either %0D or \n.</P>
+whatever text you like into these fields, and feel the power as the place takes 
+on a new form dictated by your creative magic.&nbsp; These two fields support 
+the CoffeeMud color codes described in the Programmer's guide, as well as line 
+breaks using either %0D or \n.&nbsp; Normally, that's all you need to 
+know.&nbsp; However, these fields may also be customized to display different 
+text depending on the weather, season, or the time of day.&nbsp; This last is 
+done by starting the field with the string &lt;VARIES&gt;, and following it with 
+text surrounded by the appropriate codes in the following format: 
+&lt;CODE&gt;text&lt;/CODE&gt;.&nbsp; In all of these cases, the codes must be in 
+uppercase.&nbsp; Valid codes include: SUMMER, SPRING, WINTER, FALL, DAY, NIGHT, 
+DUSK, DAWN, RAIN, SLEET, SNOW, CLEAR, HEATWAVE, THUNDERSTORM, BLIZZARD, WINDY, 
+DROUGHT, DUSTSTORM, COLD, HAIL, CLOUDY.</P>
 <P>Rooms of the Grid and Maze sort present unique 
 challenges to the molder of universes.&nbsp; In the first place, if you have 
 SYSMSGS turned on, you will notice that the room ID displayed is a little 
@@ -1237,59 +1246,95 @@ differently than described above:</P>
       followed by some requirements. The requirments for each of these setting 
       are as follows: 
       <UL>
-        <LI>-sysop (archons and area subops may never read) 
-
-        <LI>-player (disallow all players) 
-        <LI>-mob (disallow all mobs/npcs) 
-        <LI>-class (disallow all classes) 
-        <LI>-baseclass (disallow all base classes) 
+        <LI>+SYSOP (allow archons or area subops to bypass 
+        the rules) 
+        <LI>-SYSOP (archons and area subops always fail the 
+        check) 
+        <LI>-PLAYER (disallow all players) 
+        <LI>-MOB (disallow all mobs/npcs) 
+        <LI>-CLASS (disallow all classes) 
+        <LI>-BASECLASS (disallow all base classes) 
         <LI>+thief +bard +ranger etc.. (create exceptions 
         to -class and -baseclass) 
         <LI>-paladin -bard -mage etc.. (disallow only 
         listed classes) 
-        <LI>-racecat (disallow all racial categories) 
+        <LI>-RACECAT (disallow all racial categories) 
         <LI>+elf +dwarf +humanoid +gnome (create exceptions 
         to -racecat) 
-        <LI>+racecat (allow all racial categories) 
-        <LI>-elf -dwarf -human -humanoid -gnome (create exceptions to +racecat) 
-        </LI>
-        <LI>-race (disallow all races) 
-        <LI>+elf +dwarf +human +half +gnome (create exceptions to -race) </LI>
-        <LI>-elf -dward -human -half -gnome&nbsp; (disallow listed races) </LI>
-        <LI>-alignment (disallow all alignments) 
+        <LI>+RACECAT (allow all racial categories) 
+        <LI>-elf -dwarf -human -humanoid -gnome (create 
+        exceptions to +racecat) 
+        <LI>-RACE (disallow all races) 
+        <LI>+elf +dwarf +human +half +gnome (create 
+        exceptions to -race) 
+        <LI>-elf -dward -human -half -gnome&nbsp; (disallow 
+        listed races) 
+        <LI>-ALIGNMENT (disallow all alignments) 
         <LI>+evil +good +neutral (create exceptions to 
         -alignment) 
         <LI>-evil -good -neutral (disallow only listed 
         alignments) 
-        <LI>-gender (disallow all genders) 
+        <LI>-GENDER (disallow all genders) 
         <LI>+male +female +neuter (create exceptions to 
         -gender) 
         <LI>-male -female -neuter (disallow only listed 
         genders) 
-        <LI>-level (disallow all levels) 
+        <LI>-LEVEL (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
         <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
         (disallow only listed levels, put your level for 10) 
-        <LI>-tattoos (disallow all tattoos, even a lack of 
+        <LI>-TATTOOS (disallow all tattoos, even a lack of 
         a tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
-        <LI>+tattoos (allow any or no tattoos) 
-        <LI>-mytattoo -thistattoo etc.. (create exceptions 
-        to +tattoos, requires +tattoos) 
-        <LI>-names (disallow everyone) 
+        <LI>+TATTOOS (allow any or no tattoos) 
+        <LI>-mytattoo -anytatto etc.. (create exceptions to 
+        +tattoos, requires +tattoos) 
+        <LI>-NAMES (disallow everyone) 
         <LI>+bob +sally +myname (create exceptions to 
         -names, requires -names) 
-        <LI>+names (allow everyone) 
+        <LI>+NAMES (allow everyone) 
         <LI>"-bob the orc"&nbsp; (create exceptions to 
         +names, requires +names) 
-        <LI>-clans (disallow all clans) 
+        <LI>-CLANS (disallow all clans) 
         <LI>+killers +myclan (create exceptions to -clans, 
         requires -clans) 
-        <LI>+names (allow all clans) 
+        <LI>+CLANS (allow all clans) 
         <LI>"-orc clan"&nbsp; (create exceptions to +clans, 
-        requires +clans)&nbsp; </LI></UL></TD></TR></TABLE></P>
+        requires +clans)&nbsp; 
+        <LI>-ANYCLASS (<WORD> all 
+        multi-class combinations) 
+        <LI>+thief +mage +ranger (exceptions -anyclass, 
+        allow any levels) 
+        <LI>+ANYCLASS (do not <WORD 
+        >all multi-class combinations) 
+        <LI>-thief -mage -ranger (exceptions to +anyclass, 
+        disallow any levels) 
+        <LI>-STR X (<WORD> those with 
+        strength less than X) 
+        <LI>+STR X (<WORD> those with 
+        strength greater than X) 
+        <LI>-INT X (<WORD> those with 
+        intelligence less than X) 
+        <LI>+INT X (<WORD> those with 
+        intelligence greater than X) 
+        <LI>-WIS X (<WORD> those with 
+        wisdom less than X) 
+        <LI>+WIS X (<WORD> those with 
+        wisdom greater than X) 
+        <LI>-CON X (<WORD> those with 
+        constitution less than X) 
+        <LI>+CON X (<WORD> those with 
+        constitution greater than X) 
+        <LI>-CHA X (<WORD> those with 
+        charisma less than X) 
+        <LI>+CHA X (<WORD> those with 
+        charisma greater than X) 
+        <LI>-DEX X (<WORD> those with 
+        dexterity less than X) 
+        <LI>+DEX X (<WORD> those with 
+        dexterity greater than X)</LI></UL></TD></TR></TABLE></P>
 <P><BR><STRONG>The "GenWeapon", "GenBow", "GenLasso", "GenNet", 
 "GenSling", "GenSpear"</STRONG></P>
 <P>These are the assorted weapons players and mobs use to 
@@ -2361,60 +2406,95 @@ fields listed above under GenMob, plus&nbsp;a few more:</P>
       following masks: 
       <P>
       <UL>
-        <LI>+sysop (allow archons or area subops to bypass 
+        <LI>+SYSOP (allow archons or area subops to bypass 
         the rules) 
-        <LI>-sysop (archons and area subops always fail the 
+        <LI>-SYSOP (archons and area subops always fail the 
         check) 
-        <LI>-player (disallow all players) 
-        <LI>-mob (disallow all mobs/npcs) 
-        <LI>-class (disallow all classes) 
-        <LI>-baseclass (disallow all base classes) 
+        <LI>-PLAYER (disallow all players) 
+        <LI>-MOB (disallow all mobs/npcs) 
+        <LI>-CLASS (disallow all classes) 
+        <LI>-BASECLASS (disallow all base classes) 
         <LI>+thief +bard +ranger etc.. (create exceptions 
         to -class and -baseclass) 
         <LI>-paladin -bard -mage etc.. (disallow only 
         listed classes) 
-        <LI>-racecat (disallow all racial categories) 
-        <LI>+elf +dwarf +humanoid +gnome (create exceptions to -racecat) 
-        <LI>+racecat (allow all racial categories) 
-        <LI>-elf -dwarf -human -humanoid -gnome (create exceptions to +racecat) 
-        </LI>
-        <LI>-race (disallow all races) 
-        <LI>+elf +dwarf +human +half +gnome (create exceptions to -race) </LI>
-        <LI>-elf -dward -human -half -gnome&nbsp; (disallow listed races) </LI>
-        <LI>-alignment (disallow all alignments) 
+        <LI>-RACECAT (disallow all racial categories) 
+        <LI>+elf +dwarf +humanoid +gnome (create exceptions 
+        to -racecat) 
+        <LI>+RACECAT (allow all racial categories) 
+        <LI>-elf -dwarf -human -humanoid -gnome (create 
+        exceptions to +racecat) 
+        <LI>-RACE (disallow all races) 
+        <LI>+elf +dwarf +human +half +gnome (create 
+        exceptions to -race) 
+        <LI>-elf -dward -human -half -gnome&nbsp; (disallow 
+        listed races) 
+        <LI>-ALIGNMENT (disallow all alignments) 
         <LI>+evil +good +neutral (create exceptions to 
         -alignment) 
         <LI>-evil -good -neutral (disallow only listed 
         alignments) 
-        <LI>-gender (disallow all genders) 
+        <LI>-GENDER (disallow all genders) 
         <LI>+male +female +neuter (create exceptions to 
         -gender) 
         <LI>-male -female -neuter (disallow only listed 
         genders) 
-        <LI>-level (disallow all levels) 
+        <LI>-LEVEL (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
         <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
         (disallow only listed levels, put your level for 10) 
-        <LI>-tattoos (disallow all tattoos, even a lack of 
+        <LI>-TATTOOS (disallow all tattoos, even a lack of 
         a tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
-        <LI>+tattoos (allow any or no tattoos) 
+        <LI>+TATTOOS (allow any or no tattoos) 
         <LI>-mytattoo -anytatto etc.. (create exceptions to 
         +tattoos, requires +tattoos) 
-        <LI>-names (disallow everyone) 
+        <LI>-NAMES (disallow everyone) 
         <LI>+bob +sally +myname (create exceptions to 
         -names, requires -names) 
-        <LI>+names (allow everyone) 
+        <LI>+NAMES (allow everyone) 
         <LI>"-bob the orc"&nbsp; (create exceptions to 
         +names, requires +names) 
-        <LI>-clans (disallow all clans) 
+        <LI>-CLANS (disallow all clans) 
         <LI>+killers +myclan (create exceptions to -clans, 
         requires -clans) 
-        <LI>+names (allow all clans) 
+        <LI>+CLANS (allow all clans) 
         <LI>"-orc clan"&nbsp; (create exceptions to +clans, 
-        requires +clans)&nbsp; </LI></UL></TD></TR>
+        requires +clans)&nbsp; 
+        <LI>-ANYCLASS (<WORD> all 
+        multi-class combinations) 
+        <LI>+thief +mage +ranger (exceptions -anyclass, 
+        allow any levels) 
+        <LI>+ANYCLASS (do not <WORD 
+        >all multi-class combinations) 
+        <LI>-thief -mage -ranger (exceptions to +anyclass, 
+        disallow any levels) 
+        <LI>-STR X (<WORD> those with 
+        strength less than X) 
+        <LI>+STR X (<WORD> those with 
+        strength greater than X) 
+        <LI>-INT X (<WORD> those with 
+        intelligence less than X) 
+        <LI>+INT X (<WORD> those with 
+        intelligence greater than X) 
+        <LI>-WIS X (<WORD> those with 
+        wisdom less than X) 
+        <LI>+WIS X (<WORD> those with 
+        wisdom greater than X) 
+        <LI>-CON X (<WORD> those with 
+        constitution less than X) 
+        <LI>+CON X (<WORD> those with 
+        constitution greater than X) 
+        <LI>-CHA X (<WORD> those with 
+        charisma less than X) 
+        <LI>+CHA X (<WORD> those with 
+        charisma greater than X) 
+        <LI>-DEX X (<WORD> those with 
+        dexterity less than X) 
+        <LI>+DEX X (<WORD> those with 
+        dexterity greater than X)</LI></UL></TD></TR>
   <TR>
     <TD><EM>Worship 
     Requirements</EM></TD>

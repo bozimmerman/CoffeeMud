@@ -69,9 +69,9 @@ public class Chant_DistantWindColor extends Chant
 				mob.location().send(mob,msg);
 				String msg2=Chant_WindColor.getWindColor(mob,newRoom);
 				if(msg2.length()==0)
-					mob.tell("The winds at "+newRoom.displayText()+" are clear.");
+					mob.tell("The winds at "+newRoom.roomTitle()+" are clear.");
 				else
-					mob.tell("The winds at "+newRoom.displayText()+" are "+msg2+".");
+					mob.tell("The winds at "+newRoom.roomTitle()+" are "+msg2+".");
 			}
 		}
 		else

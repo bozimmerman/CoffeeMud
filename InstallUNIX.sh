@@ -23,7 +23,7 @@ echo "
 "
 read yesnodocs
 
-echo "3. Do you want to compile the full program right now (say no if your only doing the docs, or changing the name of your MUD)? [y/n]"
+echo "3. Do you want to compile the full program right now (say no if you're only doing the docs, or changing the name of your MUD)? [y/n]"
 read yesnofullcompile
 
 echo "3. What have you decided to name your MUD (you can change this later by editing the mudUNIX.sh file) ?"
@@ -107,7 +107,7 @@ $JAVACPATH -verbose ./com/planet_ink/fakedb/*.java
 
 else
 
-echo "Wha!? No main compile for you...maybe you just wanted to compile the docs? Or change your MUD's name...any ways...I'll make this more intuitive in the future!"
+echo "What!? No main compile for you...maybe you just wanted to compile the docs? Or change your MUD's name...any ways...I'll make this more intuitive in the future!"
 fi
 
 #the following replaces ur mud name in the mudUNIX.sh, putting output in mudUNIX.new - then it copies mudUNIX.new to mudUNIX.sh

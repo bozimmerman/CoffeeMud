@@ -37,13 +37,17 @@ public class Thief_SilentLoot extends ThiefSkill
 					item.unWear();
 					item.removeFromOwnerContainer();
 					item.setContainer(null);
-					((MOB)affected).location().addItemRefuse(item,Item.REFUSE_MONSTER_EQ);
-					FullMsg msg=new FullMsg((MOB)affected,item,this,Affect.MSG_THIEF_ACT,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.MSG_THIEF_ACT,null,Affect.NO_EFFECT,null);
-					if(((MOB)affected).location().okAffect((MOB)affected,msg))
+					MOB mob=(MOB)affected;
+					mob.location().addItemRefuse(item,Item.REFUSE_MONSTER_EQ);
+					MOB victim=mob.getVictim();
+					mob.setVictim(null);
+					FullMsg msg=new FullMsg(mob,item,this,Affect.MSG_THIEF_ACT,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.MSG_THIEF_ACT,null,Affect.NO_EFFECT,null);
+					if(mob.location().okAffect(mob,msg))
 					{
-						((MOB)affected).location().send((MOB)affected,msg);
-						ExternalPlay.get((MOB)affected,null,item,true);
+						mob.location().send(mob,msg);
+						ExternalPlay.get(mob,null,item,true);
 					}
+					if(victim!=null) mob.setVictim(victim);
 				}
 			}
 		}

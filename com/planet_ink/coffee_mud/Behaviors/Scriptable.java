@@ -3223,7 +3223,7 @@ public class Scriptable extends StdBehavior
 
 		if(affect.amITarget(monster)
 		&&(!affect.amISource(monster))
-		&&((affect.targetCode()&Affect.MASK_HURT)>0)
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.source()!=monster))
 			lastToHurtMe=affect.source();
 

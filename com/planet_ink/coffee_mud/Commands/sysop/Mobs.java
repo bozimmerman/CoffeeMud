@@ -226,6 +226,8 @@ public class Mobs
 			return;
 		}
 
+		if(newMOB.Name().length()==0)
+			newMOB.setName("A Standard MOB");
 		newMOB.setStartRoom(mob.location());
 		newMOB.setLocation(mob.location());
 		newMOB.envStats().setRejuv(5000);

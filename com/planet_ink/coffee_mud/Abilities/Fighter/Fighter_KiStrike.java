@@ -25,23 +25,19 @@ public class Fighter_KiStrike extends StdAbility
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(!done)
-		&&((msg.targetCode()&Affect.MASK_HURT)>0))
+		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
 		{
+			done=true;
 			MOB mob=(MOB)affected;
 			if((Sense.aliveAwakeMobile(mob,true))
-			   &&(mob.location()!=null))
+			&&(mob.location()!=null))
+			{
 				mob.location().show(mob,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) KIA!");
+				unInvoke();
+			}
 
-			done=true;
 		}
 		return super.okAffect(myHost,msg);
-	}
-
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(tickID==Host.MOB_TICK)
-			if(done) unInvoke();
-		return super.tick(ticking,tickID);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

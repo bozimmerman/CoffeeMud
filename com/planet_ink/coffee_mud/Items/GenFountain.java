@@ -29,22 +29,4 @@ public class GenFountain extends GenWater
 	{
 		return new GenFountain();
 	}
-
-	public boolean okAffect(Environmental myHost, Affect affect)
-	{
-		if(affect.amITarget(this))
-		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
-			{
-				case Affect.TYP_FILL:
-					mob.tell("There's no need to fill the fountain.");
-					return false;
-				default:
-					break;
-			}
-		}
-		return super.okAffect(myHost,affect);
-	}
-
 }

@@ -71,25 +71,28 @@ public class Thief_Shadow extends ThiefSkill
 		&&(stillAShadowee())
 		&&(affect.amISource(shadowing))
 		&&(affect.amITarget(shadowing.location()))
-		&&(affect.othersMessage()!=null))
+		&&(!Sense.isSneaking(shadowing))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Exit))
 		{
-			String directionWent=affect.othersMessage();
-			int x=directionWent.lastIndexOf(" ");
-			if(x>=0)
+			
+			int dir=-1;
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(shadowing.location().getReverseExit(d)==affect.tool())
+					dir=d;
+			if((dir>=0)&&(affect.source().location()!=lastRoom))
 			{
-				directionWent=directionWent.substring(x+1);
-				int dir=Directions.getDirectionCode(directionWent);
-				if((dir>=0)&&(affect.source().location()!=lastRoom))
-				{
-					MOB mob=(MOB)invoker;
-					lastRoom=affect.source().location();
-					if(!mob.isMonster())
-						mob.session().enque(0,Util.parse(directionWent));
-					else
-						ExternalPlay.move(mob,dir,false,false);
-				}
+				String directionWent=Directions.getDirectionName(dir);
+				MOB mob=(MOB)invoker;
+				lastRoom=affect.source().location();
+				if(!mob.isMonster())
+					mob.session().enque(0,Util.parse(directionWent));
+				else
+					ExternalPlay.move(mob,dir,false,false);
 			}
 		}
+		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
+			lastTogether=System.currentTimeMillis();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -98,8 +101,8 @@ public class Thief_Shadow extends ThiefSkill
 		if(lastTogether==0) return true;
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=System.currentTimeMillis();
-		long secondsago=lastTogether-(5*IQCalendar.MILI_SECOND);
-		if(lastTogether>secondsago)
+		long secondsago=System.currentTimeMillis()-10000;
+		if(lastTogether<secondsago)
 		{
 			if((invoker!=null)&&(shadowing!=null))
 			{
@@ -213,6 +216,7 @@ public class Thief_Shadow extends ThiefSkill
 						mob.addAffect(A);
 						A.shadowing=target;
 						A.setAffectedOne(target);
+						A.lastTogether=System.currentTimeMillis();
 						mob.recoverEnvStats();
 					}
 					else

@@ -30,18 +30,23 @@ public class Thief_SilentGold extends ThiefSkill
 			&&((affect.source().getMoney()/10)>0))
 			{
 				Item C=CMClass.getItem("StdCoins");
-				C.baseEnvStats().setAbility(((MOB)affect.source()).getMoney()/10);
+				int amount=affect.source().getMoney()/10;
+				C.baseEnvStats().setAbility(amount);
 				C.recoverEnvStats();
-				affect.source().setMoney(affect.source().getMoney()-C.baseEnvStats().ability());
+				affect.source().setMoney(affect.source().getMoney()-amount);
 				affect.source().recoverEnvStats();
-				((MOB)affected).location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-				((MOB)affected).location().recoverRoomStats();
-				FullMsg msg=new FullMsg((MOB)affected,C,this,Affect.MSG_THIEF_ACT,"You silently autoloot "+(affect.source().getMoney()/10)+" gold from the corpse of "+affect.source().name(),Affect.MSG_THIEF_ACT,null,Affect.NO_EFFECT,null);
-				if(((MOB)affected).location().okAffect((MOB)affected,msg))
+				MOB mob=(MOB)affected;
+				mob.location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+				mob.location().recoverRoomStats();
+				MOB victim=mob.getVictim();
+				mob.setVictim(null);
+				FullMsg msg=new FullMsg(mob,C,this,Affect.MSG_THIEF_ACT,"You silently autoloot "+(amount)+" gold from the corpse of "+affect.source().name(),Affect.MSG_THIEF_ACT,null,Affect.NO_EFFECT,null);
+				if(mob.location().okAffect(mob,msg))
 				{
-					((MOB)affected).location().send((MOB)affected,msg);
-					ExternalPlay.get((MOB)affected,null,C,true);
+					mob.location().send(mob,msg);
+					ExternalPlay.get(mob,null,C,true);
 				}
+				if(victim!=null) mob.setVictim(victim);
 			}
 		}
 		return true;

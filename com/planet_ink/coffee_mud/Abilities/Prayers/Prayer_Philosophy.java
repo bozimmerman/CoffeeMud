@@ -9,6 +9,7 @@ public class Prayer_Philosophy extends Prayer
 {
 	public String ID() { return "Prayer_Philosophy"; }
 	public String name(){return "Philosophy";}
+	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HOLY;}
 	public String displayText(){return "(Philosophy spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -47,7 +48,7 @@ public class Prayer_Philosophy extends Prayer
 
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("You stop pondering life and mysteries of the universe.");
+			mob.tell("You stop pondering life and the mysteries of the universe.");
 	}
 
 

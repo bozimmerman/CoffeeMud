@@ -48,46 +48,88 @@ public class SaucerSupport
 			zapCodes.put("+CLANS",new Integer(15));
 			zapCodes.put("+NAME",new Integer(16));
 			zapCodes.put("+NAMES",new Integer(16));
+			zapCodes.put("-ANYCLASS",new Integer(17));
+			zapCodes.put("+ANYCLASS",new Integer(18));
+			zapCodes.put("+STR",new Integer(19));
+			zapCodes.put("+INT",new Integer(20));
+			zapCodes.put("+WIS",new Integer(21));
+			zapCodes.put("+DEX",new Integer(22));
+			zapCodes.put("+CON",new Integer(23));
+			zapCodes.put("+CHA",new Integer(24));
+			zapCodes.put("+STRENGTH",new Integer(19));
+			zapCodes.put("+INTELLIGENCE",new Integer(20));
+			zapCodes.put("+WISDOM",new Integer(21));
+			zapCodes.put("+DEXTERITY",new Integer(22));
+			zapCodes.put("+CONSTITUTION",new Integer(23));
+			zapCodes.put("+CHARISMA",new Integer(24));
+			zapCodes.put("-STR",new Integer(25));
+			zapCodes.put("-INT",new Integer(26));
+			zapCodes.put("-WIS",new Integer(27));
+			zapCodes.put("-DEX",new Integer(28));
+			zapCodes.put("-CON",new Integer(29));
+			zapCodes.put("-CHA",new Integer(30));
+			zapCodes.put("-STRENGTH",new Integer(25));
+			zapCodes.put("-INTELLIGENCE",new Integer(26));
+			zapCodes.put("-WISDOM",new Integer(27));
+			zapCodes.put("-DEXTERITY",new Integer(28));
+			zapCodes.put("-CONSTITUTION",new Integer(29));
+			zapCodes.put("-CHARISMA",new Integer(30));
 		}
 		return zapCodes;
 	}
 
-	private static final String ZAP ="+sysop (allow archons or area subops to bypass the rules)  <BR>"
-									+"-sysop (always <WORD> archons and area subops)  <BR>"
-									+"-player (<WORD> all players) <BR>"
-									+"-mob (<WORD> all mobs/npcs)  <BR>"
-									+"-class  (<WORD> all classes)  <BR>"
-									+"-baseclass  (<WORD> all base classes)  <BR>"
+	private static final String ZAP ="+SYSOP (allow archons or area subops to bypass the rules)  <BR>"
+									+"-SYSOP (always <WORD> archons and area subops)  <BR>"
+									+"-PLAYER (<WORD> all players) <BR>"
+									+"-MOB (<WORD> all mobs/npcs)  <BR>"
+									+"-CLASS  (<WORD> all classes)  <BR>"
+									+"-BASECLASS  (<WORD> all base classes)  <BR>"
 									+"+thief +mage +ranger (create exceptions to -class and -baseclass) <BR>"
 									+"-thief -mage  -ranger (<WORD> only listed classes)<BR>"
-									+"-race (<WORD> all races)  <BR>"
+									+"-RACE (<WORD> all races)  <BR>"
 									+"+elf +dwarf +human +half +gnome (create exceptions to -race)  <BR>"
 									+"-elf -dwarf -human -half -gnome (<WORD> only listed races)  <BR>"
-									+"-racecat (<WORD> all racial categories)  <BR>"
-									+"+racecat (do not <WORD> all racial categories)  <BR>"
+									+"-RACECAT (<WORD> all racial categories)  <BR>"
+									+"+RACECAT (do not <WORD> all racial categories)  <BR>"
 									+"+elf +insect +humanoid +canine +gnome (create exceptions to -racecat)  <BR>"
 									+"-elf -insect -humanoid -canine -gnome (create exceptions to +racecat)  <BR>"
-									+"-alignment (<WORD> all alignments)  <BR>"
+									+"-ALIGNMENT (<WORD> all alignments)  <BR>"
 									+"+evil +good +neutral (create exceptions to -alignment)  <BR>"
 									+"-evil -good -neutral (<WORD> only listed alignments)  <BR>"
-									+"-gender (<WORD> all genders)  <BR>"
+									+"-GENDER (<WORD> all genders)  <BR>"
 									+"+male +female +neuter (create exceptions to -gender)  <BR>"
 									+"-male -female -neuter (<WORD> only listed genders)  <BR>"
-									+"-tattoos (<WORD> all tattoos, even a lack of a tatoo) <BR>"
+									+"-TATTOOS (<WORD> all tattoos, even a lack of a tatoo) <BR>"
 									+"+mytatto +thistattoo +anytattoo etc..  (create exceptions to -tattoos) <BR>"
-									+"+tattoos (do not <WORD> any or no tattoos) <BR>"
+									+"+TATTOOS (do not <WORD> any or no tattoos) <BR>"
 									+"-mytattoo -anytatto, etc.. (create exceptions to +tattoos) <BR>"
-									+"-level (<WORD> all levels)  <BR>"
+									+"-LEVEL (<WORD> all levels)  <BR>"
 									+"+=1 +>5 +>=7 +<13 +<=20 (create exceptions to -level using level ranges)  <BR>"
 									+"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"
-									+"-names (<WORD> everyone) <BR>"
+									+"-NAMES (<WORD> everyone) <BR>"
 									+"+bob \"+my name\" etc.. (create name exceptions to -names) <BR>"
-									+"+names (do not <WORD> anyone who has a name) <BR>"
+									+"+NAMES (do not <WORD> anyone who has a name) <BR>"
 									+"-bob \"-my name\" etc.. (create name exceptions to +names) "
-									+"-clan (<WORD> anyone, even no clan) <BR>"
+									+"-CLAN (<WORD> anyone, even no clan) <BR>"
 									+"+Killers \"+Holy Avengers\" etc.. (create clan exceptions to -clan) <BR>"
-									+"+clan (do not <WORD> anyone, even non clan people) <BR>"
-									+"-Killers \"-Holy Avengers\" etc.. (create clan exceptions to +clan) ";
+									+"+CLAN (do not <WORD> anyone, even non clan people) <BR>"
+									+"-Killers \"-Holy Avengers\" etc.. (create clan exceptions to +clan) <BR>"
+									+"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
+									+"+thief +mage +ranger (exceptions -anyclass, allow any levels) <BR>"
+									+"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
+									+"-thief -mage -ranger (exceptions to +anyclass, disallow any levels) <BR>"
+									+"-STR X (<WORD> those with strength less than X)  <BR>"
+									+"+STR X (<WORD> those with strength greater than X)  <BR>"
+									+"-INT X (<WORD> those with intelligence less than X)  <BR>"
+									+"+INT X (<WORD> those with intelligence greater than X)  <BR>"
+									+"-WIS X (<WORD> those with wisdom less than X)  <BR>"
+									+"+WIS X (<WORD> those with wisdom greater than X)  <BR>"
+									+"-CON X (<WORD> those with constitution less than X)  <BR>"
+									+"+CON X (<WORD> those with constitution greater than X)  <BR>"
+									+"-CHA X (<WORD> those with charisma less than X)  <BR>"
+									+"+CHA X (<WORD> those with charisma greater than X)  <BR>"
+									+"-DEX X (<WORD> those with dexterity less than X)  <BR>"
+									+"+DEX X (<WORD> those with dexterity greater than X)";
 
 	public static String zapperInstructions(String CR, String word)
 	{
@@ -228,6 +270,7 @@ public class SaucerSupport
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
+			int val=-1;
 			if(zapCodes.containsKey(str))
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
@@ -443,6 +486,84 @@ public class SaucerSupport
 						buf.append(".  ");
 					}
 					break;
+				case 17: // -anyclass
+					{
+						buf.append("Requires levels in one of the following:  ");
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
+								buf.append(C.name()+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 18: // +anyclass
+					{
+						buf.append("Disallows any levels in any of the following:  ");
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,'+',v+1,C.name().toUpperCase().substring(0,3)))))
+								buf.append(C.name()+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 19: // -str
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a strength of at least "+val+".");
+					break;
+				case 20: // -int
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a intelligence of at least "+val+".");
+					break;
+				case 21: // -wis
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a wisdom of at least "+val+".");
+					break;
+				case 22: // -dex
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a dexterity of at least "+val+".");
+					break;
+				case 23: // -con
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a constitution of at least "+val+".");
+					break;
+				case 24: // -cha
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a charisma of at least "+val+".");
+					break;
+				case 25: // +str
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a strength of at most "+val+".");
+					break;
+				case 26: // +int
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a intelligence of at most "+val+".");
+					break;
+				case 27: // +wis
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a wisdom of at most "+val+".");
+					break;
+				case 28: // +dex
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a dexterity of at most "+val+".");
+					break;
+				case 29: // +con
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a constitution of at most "+val+".");
+					break;
+				case 30: // +cha
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					buf.append("Requires a charisma of at most "+val+".");
+					break;
 				}
 			else
 			{
@@ -513,6 +634,7 @@ public class SaucerSupport
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
+			int val=-1;
 			if(zapCodes.containsKey(str))
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
@@ -574,6 +696,80 @@ public class SaucerSupport
 					break;
 				case 16: // +names
 					if(nameCheck(V,'-',v+1,mob)) 
+						return false;
+					break;
+				case 17: // -anyclass
+					{
+						boolean found=false;
+						for(int c=0;c<mob.charStats().numClasses();c++)
+							if(fromHere(V,'+',v+1,mob.charStats().getMyClass(c).name().toUpperCase().substring(0,3))) 
+								found=true;
+						if(!found) return false;
+					}
+					break;
+				case 18: // +anyclass
+					for(int c=0;c<mob.charStats().numClasses();c++)
+						if(fromHere(V,'-',v+1,mob.charStats().getMyClass(c).name().toUpperCase().substring(0,3))) 
+							return false;
+					break;
+				case 19: // -str
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.STRENGTH)<val)
+						return false;
+					break;
+				case 20: // -int
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.INTELLIGENCE)<val)
+						return false;
+					break;
+				case 21: // -wis
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.WISDOM)<val)
+						return false;
+					break;
+				case 22: // -dex
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.DEXTERITY)<val)
+						return false;
+					break;
+				case 23: // -con
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.CONSTITUTION)<val)
+						return false;
+					break;
+				case 24: // -cha
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.CHARISMA)<val)
+						return false;
+					break;
+				case 25: // +str
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.STRENGTH)>val)
+						return false;
+					break;
+				case 26: // +int
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.INTELLIGENCE)>val)
+						return false;
+					break;
+				case 27: // +wis
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.WISDOM)>val)
+						return false;
+					break;
+				case 28: // +dex
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.DEXTERITY)>val)
+						return false;
+					break;
+				case 29: // +con
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.CONSTITUTION)>val)
+						return false;
+					break;
+				case 30: // +cha
+					val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+					if(mob.charStats().getStat(CharStats.CHARISMA)>val)
 						return false;
 					break;
 				}
@@ -856,16 +1052,16 @@ public class SaucerSupport
 					}
 				}
 
-				if((oldRoom.domainConditions()!=nextRoom.domainConditions())
+				if((oldRoom.domainType()!=nextRoom.domainType())
 				&&(!Sense.isInFlight(mob))
-				&&((nextRoom.domainConditions()==Room.DOMAIN_INDOORS_AIR)
-				||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_AIR)))
+				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
+				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
 					direction=-1;
 				else
-				if((oldRoom.domainConditions()!=nextRoom.domainConditions())
+				if((oldRoom.domainType()!=nextRoom.domainType())
 				&&(!Sense.isSwimming(mob))
-				&&((nextRoom.domainConditions()==Room.DOMAIN_INDOORS_UNDERWATER)
-				||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
+				&&((nextRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 					direction=-1;
 				else
 				if((!wander)&&(!oldRoom.getArea().Name().equals(nextRoom.getArea().Name())))

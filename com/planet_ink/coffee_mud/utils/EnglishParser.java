@@ -353,8 +353,8 @@ public class EnglishParser implements Tickable
 			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
-				roomStuff.addElement(R.displayText());
-				roomStuff.addElement(R.description());
+				roomStuff.addElement(R.roomTitle());
+				roomStuff.addElement(R.roomDescription());
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I=R.fetchItem(i);

@@ -39,8 +39,8 @@ server.&nbsp;Remember to change the "Your Muds Name" text at the end to the
 unique name you want to give your mud.&nbsp; If you are running Windows, you 
 might also get away with first modifying the file mud.bat using Notepad, and 
 then&nbsp;executing that&nbsp;file.&nbsp; If you are running some flavor of 
-FreeBSD, Unix, or Linux, you also have a mudLINUX.bat you may first modify, then 
-make executable using the command <STRONG>chmod 755 mudLINUX.bat, </STRONG>          
+FreeBSD, Unix, or Linux, you also have a mudLINUX.sh you may first modify, then 
+make executable using the command <STRONG>chmod 755 mudLINUX.sh, </STRONG>          
               
            
               
@@ -299,8 +299,8 @@ SQL Server, PostGRE SQL, MySQL, Oracle, and others.&nbsp; While this document
 cannot cover the step by step installation instructions for each of these 
 systems, it can be pointed out that everything you need has been provided.&nbsp; 
 Inside the "guides/database/" directory of your CoffeeMud package, 
-you will find four files: "coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbmysql.sql", and 
-"fakedb.schema".&nbsp; The first three are SQL Scripts which can be used to create 
+you will find four files: "coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbaccess.sql", "coffeemuddbmysql.sql", 
+and "fakedb.schema".&nbsp; The first&nbsp;four are SQL Scripts which can be used to create 
 the necessary tables in Microsoft SQL Server, MySQL, Oracle, Access, and some of 
 the others.&nbsp; The last is a copy of the same fakedb file from your "data" 
 directory, in case it becomes corrupted.&nbsp; Although the manner in which the 
@@ -338,7 +338,7 @@ close button.</P>
 <P align=left><STRONG>3.</STRONG> Now right click on the large grey area and 
 select "SQL View" from the context Menu.</P>
 <P align=left><STRONG>4.</STRONG> Inside your CoffeeMud/guides/database folder, 
-open up the coffeemuddb2.sql file using Notepad.&nbsp; You will see that the 
+open up the coffeemuddbaccess.sql file using Notepad.&nbsp; You will see that the 
 file contains numerous blocks of sql text.&nbsp; Each block begins with CREATE 
 TABLE, and ends with a semicolon ); </P>
 <P align=left><STRONG>5.</STRONG> Select the first block of text in your sql 

@@ -109,7 +109,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(R==null)
 					buf.append("the player is in some unknown place");
 				else
-					buf.append("the player is in '"+R.displayText()+"'");
+					buf.append("the player is in '"+R.roomTitle()+"'");
 				}
 				break;
 			case TRIGGER_RIDING:

@@ -40,9 +40,11 @@ public class Thief_BackStab extends ThiefSkill
 			return false;
 		}
 
+		ExternalPlay.drawIfNecessary(mob,false);
+		Item I=mob.fetchWieldedItem();
 		Weapon weapon=null;
-		if((mob.fetchWieldedItem()!=null)&&(mob.fetchWieldedItem() instanceof Weapon))
-			weapon=(Weapon)mob.fetchWieldedItem();
+		if((I!=null)&&(I instanceof Weapon))
+			weapon=(Weapon)I;
 		if(weapon==null)
 		{
 			mob.tell(mob,target,null,"Backstab <T-HIM-HER> with what? You need to wield a weapon!");

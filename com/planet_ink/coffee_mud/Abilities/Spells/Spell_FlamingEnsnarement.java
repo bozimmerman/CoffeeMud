@@ -16,6 +16,7 @@ public class Spell_FlamingEnsnarement extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_FlamingEnsnarement();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_BURNING|Ability.FLAG_HEATING;}
 
 	public int amountRemaining=0;
 	public boolean okAffect(Environmental myHost, Affect affect)
@@ -36,7 +37,7 @@ public class Spell_FlamingEnsnarement extends Spell
 			case Affect.TYP_ADVANCE:
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_FLEE:
-				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ensnarement."))
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the flaming ensnarement."))
 				{
 					amountRemaining-=mob.envStats().level();
 					if(amountRemaining<0)

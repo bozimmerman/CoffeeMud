@@ -29,22 +29,4 @@ public class Spring extends StdDrink
 	{
 		return new Spring();
 	}
-
-	public boolean okAffect(Environmental myHost, Affect affect)
-	{
-		if(affect.amITarget(this))
-		{
-			MOB mob=affect.source();
-			switch(affect.targetMinor())
-			{
-				case Affect.TYP_FILL:
-					mob.tell("You can't fill the magical spring.");
-					return false;
-				default:
-					break;
-			}
-		}
-		return super.okAffect(myHost,affect);
-	}
-
 }

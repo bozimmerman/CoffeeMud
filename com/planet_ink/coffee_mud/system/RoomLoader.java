@@ -378,20 +378,19 @@ public class RoomLoader
 	}
 
 	private static void DBUpdateContents(Room room)
-		throws SQLException
 	{
 		DBConnection D=null;
 		String sql=null;
-		try
+		Vector done=new Vector();
+		for(int i=0;i<room.numItems();i++)
 		{
-			Vector done=new Vector();
-			for(int i=0;i<room.numItems();i++)
+			Item thisItem=room.fetchItem(i);
+			if((thisItem!=null)&&(!done.contains(thisItem)))
 			{
-				Item thisItem=room.fetchItem(i);
-				if((thisItem!=null)&&(!done.contains(thisItem)))
+				done.addElement(thisItem);
+				thisItem.setDispossessionTime(0); // saved items won't clear!
+				try
 				{
-					done.addElement(thisItem);
-					thisItem.setDispossessionTime(0); // saved items won't clear!
 					D=DBConnector.DBFetch();
 					sql=
 					"INSERT INTO CMROIT ("
@@ -419,13 +418,13 @@ public class RoomLoader
 					D.update(sql);
 					DBConnector.DBDone(D);
 				}
+				catch(SQLException sqle)
+				{
+					Log.errOut("Room",sql);
+					Log.errOut("Room","UpdateItems"+sqle);
+					if(D!=null) DBConnector.DBDone(D);
+				}
 			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Room",sql);
-			Log.errOut("Room","UpdateItems"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
 
@@ -438,13 +437,13 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
 			DBConnector.DBDone(D);
-			DBUpdateContents(room);
 		}
 		catch(SQLException sqle)
 		{
 			Log.errOut("Room","UpdateItems"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		DBUpdateContents(room);
 	}
 
 	public static void DBUpdateExits(Room room)
@@ -499,21 +498,30 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
+			str="DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'";
+			D.update(str);
 			DBConnector.DBDone(D);
-			for(int m=0;m<mobs.size();m++)
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Room",str);
+			Log.errOut("Room","UpdateMOBs"+sqle.getMessage());
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		for(int m=0;m<mobs.size();m++)
+		{
+			MOB thisMOB=(MOB)mobs.elementAt(m);
+
+			String ride=null;
+			if(thisMOB.riding()!=null)
+				ride=""+thisMOB.riding();
+			else
+			if(thisMOB.amFollowing()!=null)
+				ride=""+thisMOB.amFollowing();
+			else
+				ride="";
+			try
 			{
-				MOB thisMOB=(MOB)mobs.elementAt(m);
-
-				String ride=null;
-				if(thisMOB.riding()!=null)
-					ride=""+thisMOB.riding();
-				else
-				if(thisMOB.amFollowing()!=null)
-					ride=""+thisMOB.amFollowing();
-				else
-					ride="";
-
 				D=DBConnector.DBFetch();
 				str=
 				 "INSERT INTO CMROCH ("
@@ -538,12 +546,12 @@ public class RoomLoader
 				D.update(str);
 				DBConnector.DBDone(D);
 			}
-		}
-		catch(SQLException sqle)
-		{
-			Log.errOut("Room",str);
-			Log.errOut("Room","UpdateMOBs"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			catch(SQLException sqle)
+			{
+				Log.errOut("Room",str);
+				Log.errOut("Room","UpdateMOBs"+sqle.getMessage());
+				if(D!=null) DBConnector.DBDone(D);
+			}
 		}
 	}
 

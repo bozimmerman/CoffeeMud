@@ -228,7 +228,7 @@ public class Purist extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&((affect.sourceMinor()==Affect.TYP_COLD)
 				||(affect.sourceMinor()==Affect.TYP_WATER)))
 			{
@@ -239,7 +239,7 @@ public class Purist extends Cleric
 			}
 			else
 			if((affect.amITarget(myChar))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.sourceMinor()==Affect.TYP_FIRE))
 			{
 				int recovery=affect.targetCode()-Affect.MASK_HURT;

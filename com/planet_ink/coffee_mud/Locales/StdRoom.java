@@ -599,6 +599,106 @@ public class StdRoom
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
+	protected final static String[][] variationCodes={
+		{"SUMMER","S"+Area.SEASON_SUMMER},
+		{"SPRING","S"+Area.SEASON_SPRING},
+		{"WINTER","S"+Area.SEASON_WINTER},
+		{"FALL","S"+Area.SEASON_FALL},
+		{"DAY","C"+Area.TIME_DAY},
+		{"DAYTIME","C"+Area.TIME_DAY},
+		{"NIGHT","C"+Area.TIME_NIGHT},
+		{"NIGHTTIME","C"+Area.TIME_NIGHT},
+		{"DAWN","C"+Area.TIME_DAWN},
+		{"DUSK","C"+Area.TIME_DUSK},
+		{"RAIN","W"+Area.WEATHER_RAIN},
+		{"SLEET","W"+Area.WEATHER_SLEET},
+		{"SNOW","W"+Area.WEATHER_SNOW},
+		{"CLEAR","W"+Area.WEATHER_CLEAR},
+		{"HEATWAVE","W"+Area.WEATHER_HEAT_WAVE},
+		{"THUNDERSTORM","W"+Area.WEATHER_THUNDERSTORM},
+		{"BLIZZARD","W"+Area.WEATHER_BLIZZARD},
+		{"WINDY","W"+Area.WEATHER_WINDY},
+		{"DROUGHT","W"+Area.WEATHER_DROUGHT},
+		{"DUSTSTORM","W"+Area.WEATHER_DUSTSTORM},
+		{"COLD","W"+Area.WEATHER_WINTER_COLD},
+		{"HAIL","W"+Area.WEATHER_HAIL},
+		{"CLOUDY","W"+Area.WEATHER_CLOUDY}
+	};
+	
+	protected String parseVariesCodes(String text)
+	{
+		StringBuffer buf=new StringBuffer("");
+		int x=text.indexOf("<");
+		while(x>=0)
+		{
+			buf.append(text.substring(0,x));
+			text=text.substring(x);
+			boolean found=false;
+			for(int i=0;i<variationCodes.length;i++)
+				if(text.startsWith("<"+variationCodes[i][0]+">"))
+				{
+					found=true;
+					int y=text.indexOf("</"+variationCodes[i][0]+">");
+					String dispute=null;
+					if(y>0)
+					{
+						dispute=text.substring(variationCodes[i][0].length()+2,y);
+						text=text.substring(y+variationCodes[i][0].length()+3);
+					}
+					else
+					{
+						dispute=text.substring(variationCodes[i][0].length()+2);
+						text="";
+					}
+					int num=Util.s_int(variationCodes[i][1].substring(1));
+					switch(variationCodes[i][1].charAt(0))
+					{
+					case 'W':
+						if(getArea().weatherType(null)==num)
+							buf.append(parseVariesCodes(dispute));
+						break;
+					case 'C':
+						if(getArea().getTODCode()==num)
+							buf.append(parseVariesCodes(dispute));
+						break;
+					case 'S':
+						if(getArea().getSeasonCode()==num)
+							buf.append(parseVariesCodes(dispute));
+						break;
+					}
+					break;
+				}
+			if(!found)
+				x=text.indexOf("<",1);
+			else
+				x=text.indexOf("<");
+		}
+		buf.append(text);
+		return buf.toString();
+	}
+	
+	protected String parseVaries(String text)
+	{
+		if(text.startsWith("<VARIES>"))
+		{
+			String end="";
+			int x=text.indexOf("</VARIES>");
+			if(x>=0)
+				return parseVariesCodes(text.substring(8,x))+text.substring(x+9);
+			else
+				return parseVariesCodes(text.substring(8));
+		}
+		else
+			return text;
+	}
+	
+	public String roomTitle(){
+		return parseVaries(displayText());
+	}
+	public String roomDescription(){
+		return parseVaries(description());
+	}
+	
 	protected void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
@@ -611,10 +711,10 @@ public class StdRoom
 		}
 		if(Sense.canBeSeenBy(this,mob))
 		{
-			Say.append("^O" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
+			Say.append("^O" + roomTitle()+Sense.colorCodes(this,mob)+"^L\n\r");
 			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
-				Say.append("^L" + description());
+				Say.append("^L" + roomDescription());
 				if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 				&&((domainType()&Room.INDOORS)==0))
 					Say.append("\n\r\n\r"+getArea().weatherDescription(this));

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GreatFish extends StdRace
+public class GreatFish extends GiantFish
 {
 	public String ID(){	return "GreatFish"; }
 	public String name(){ return "Great Fish"; }

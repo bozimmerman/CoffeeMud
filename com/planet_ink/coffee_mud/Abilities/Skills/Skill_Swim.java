@@ -36,8 +36,7 @@ public class Skill_Swim extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(placeToSwim(affected))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

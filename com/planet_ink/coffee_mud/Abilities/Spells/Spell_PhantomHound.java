@@ -96,7 +96,7 @@ public class Spell_PhantomHound extends Spell
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(affect.amISource((MOB)affected))
-		&&((affect.targetCode()&Affect.MASK_HURT)>0))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)))
 		{
 			affect.modify(affect.source(),
 						  affect.target(),

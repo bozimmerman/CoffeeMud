@@ -184,7 +184,8 @@ public class StdAbility implements Ability, Cloneable
 		if(target!=null)
 			targetName=target.name();
 
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		if((target==null)
+		||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{

@@ -342,7 +342,7 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
+				Say.append("^H("+CMMap.getExtendedRoomID(room)+")^? "+room.roomTitle()+Sense.colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
@@ -357,7 +357,7 @@ public class StdExit implements Exit
 					Say.append(displayText()+Sense.colorCodes(this,mob));
 				else
 				if(room!=null)
-					Say.append(room.displayText()+Sense.colorCodes(room,mob));
+					Say.append(room.roomTitle()+Sense.colorCodes(room,mob));
 			}
 			else
 			if((Sense.canBeSeenBy(this,mob))&&(closedText().trim().length()>0))

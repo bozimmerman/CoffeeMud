@@ -390,8 +390,8 @@ public class ClanCommands
 					{
 						C.setRecall(CMMap.getExtendedRoomID(R));
 						C.update();
-						mob.tell("Your clan home is now set to "+R.displayText()+".");
-						clanAnnounce(mob, "Your clan home is now set to "+R.displayText()+".");
+						mob.tell("Your clan home is now set to "+R.roomTitle()+".");
+						clanAnnounce(mob, "Your clan home is now set to "+R.roomTitle()+".");
 					}
 					else
 					{
@@ -450,8 +450,8 @@ public class ClanCommands
 					{
 						C.setDonation(CMMap.getExtendedRoomID(R));
 						C.update();
-						mob.tell("Your clan donation is now set to "+R.displayText()+".");
-						clanAnnounce(mob, "Your clan donation is now set to "+R.displayText()+".");
+						mob.tell("Your clan donation is now set to "+R.roomTitle()+".");
+						clanAnnounce(mob, "Your clan donation is now set to "+R.roomTitle()+".");
 					}
 					else
 					{

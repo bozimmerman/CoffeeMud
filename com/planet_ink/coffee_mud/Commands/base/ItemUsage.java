@@ -77,16 +77,11 @@ public class ItemUsage
 		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
 		boolean allFlag=false;
 		String preWord="";
-		if(possibleContainerID.equalsIgnoreCase("all")) allFlag=true;
-		if((commands.size()>3)&&(!allFlag))
-		{
+		if(possibleContainerID.equalsIgnoreCase("all")) 
+			allFlag=true;
+		else
+		if(commands.size()>2)
 			preWord=(String)commands.elementAt(commands.size()-2);
-			if(preWord.equalsIgnoreCase("from"))
-			{
-				commands.removeElementAt(commands.size()-2);
-				preWord="";
-			}
-		}
 
 		int maxContained=Integer.MAX_VALUE;
 		if(Util.s_int(preWord)>0)
@@ -119,6 +114,10 @@ public class ItemUsage
 					commands.removeElementAt(commands.size()-1);
 					if(allFlag&&(preWord.equalsIgnoreCase("all")))
 						commands.removeElementAt(commands.size()-1);
+					else
+					if((!allFlag)&&(preWord.equalsIgnoreCase("from")))
+						commands.removeElementAt(commands.size()-1);
+					preWord="";
 				}
 			}
 			if(thisThang==null) return V;
@@ -572,61 +571,44 @@ public class ItemUsage
 			return;
 		}
 		commands.removeElementAt(0);
-		if(commands.size()<2)
-		{
-			mob.tell("Into what should I pour the "+(String)commands.elementAt(0)+"?");
-			return;
-		}
 		Environmental fillFromThis=null;
 		String thingToFillFrom=(String)commands.elementAt(0);
 		fillFromThis=mob.fetchCarried(null,thingToFillFrom);
 		if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
 		{
-			mob.tell("I don't see a "+thingToFillFrom+" here.");
+			mob.tell("You don't seem to have '"+thingToFillFrom+"'.");
 			return;
 		}
 		commands.removeElementAt(0);
 
-		int maxToFill=Integer.MAX_VALUE;
-		if((commands.size()>1)
-		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		if((commands.size()>1)&&(((String)commands.firstElement())).equalsIgnoreCase("into"))
+			commands.removeElementAt(0);
+		
+		if(commands.size()<1)
 		{
-			maxToFill=Util.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
+			mob.tell("Into what should I pour the "+thingToFillFrom+"?");
+			return;
 		}
 		
 		String thingToFill=Util.combine(commands,0);
-		int addendum=1;
-		String addendumStr="";
-		Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
-		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
-		do
+		Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Item.WORN_REQ_ANY);
+		Item out=null;
+		if((fillThis==null)&&(thingToFill.equalsIgnoreCase("out")))
 		{
-			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
-			if(fillThis==null) break;
-			if((Sense.canBeSeenBy(fillThis,mob))
-			&&(!V.contains(fillThis)))
-				V.addElement(fillThis);
-			addendumStr="."+(++addendum);
+			out=CMClass.getItem("StdDrink");
+			((Drink)out).setLiquidHeld(999999);
+			((Drink)out).setLiquidRemaining(0);
+			out.setDisplayText("");
+			out.setName("out");
+			mob.location().addItemRefuse(out,Item.REFUSE_RESOURCE);
+			fillThis=out;
 		}
-		while((allFlag)&&(maxToFill<addendum));
-		if(V.size()==0)
+		if((fillThis==null)
+		||(!Sense.canBeSeenBy(fillThis,mob)))
 			mob.tell("I don't see '"+thingToFill+"' here.");
 		else
-		for(int i=0;i<V.size();i++)
 		{
-			Environmental fillThis=(Environmental)V.elementAt(i);
-			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> pour(s) <O-NAME> into <T-NAME>.");
-			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
-			{
-				if(get(mob,null,(Item)fillThis,false))
-					if(mob.location().okAffect(mob,fillMsg))
-						mob.location().send(mob,fillMsg);
-			}
-			else
+			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,(out==null)?"<S-NAME> pour(s) <O-NAME> into <T-NAME>.":"<S-NAME> pour(s) <O-NAME> <T-NAME>.");
 			if(mob.location().okAffect(mob,fillMsg))
 				mob.location().send(mob,fillMsg);
 		}
@@ -654,7 +636,7 @@ public class ItemUsage
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORN_REQ_ANY);
 			if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
 			{
-				mob.tell("I don't see a "+thingToFillFrom+" here.");
+				mob.tell("I don't see "+thingToFillFrom+" here.");
 				return;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -678,7 +660,7 @@ public class ItemUsage
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
 		do
 		{
-			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
+			Item fillThis=mob.fetchInventory(null,thingToFill+addendumStr);
 			if(fillThis==null) break;
 			if((Sense.canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))
@@ -687,7 +669,7 @@ public class ItemUsage
 		}
 		while((allFlag)&&(maxToFill<addendum));
 		if(V.size()==0)
-			mob.tell("I don't see '"+thingToFill+"' here.");
+			mob.tell("You don't seem to have '"+thingToFill+"'.");
 		else
 		for(int i=0;i<V.size();i++)
 		{

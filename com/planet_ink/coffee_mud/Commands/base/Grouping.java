@@ -10,6 +10,39 @@ import com.planet_ink.coffee_mud.common.*;
 public class Grouping
 {
 	private Grouping(){}
+	private final static String[] unacceptableOrders={
+          "SERVE",
+          "REBUKE",
+          "CLANAPPLY",
+          "CLANACCEPT",
+          "CLANREJECT",
+          "CLANASSIGN",
+          "CLANEXILE",
+          "CLANRESIGN",
+          "CLANHOMESET",
+          "CLANDONATESET",
+          "CLANCREATE",
+          "CLANPREMISE",
+          "PASSWORD",
+          "EMAIL",
+          "QUIT",
+          "DESCRIPTION",
+          "WITHDRAW",
+          "DEPOSIT",
+          "BUY",
+          "SELL",
+          "GAIN",
+          "TRAIN",
+          "PRACTICE",
+          "FRIENDS",
+          "IDEA",
+          "BUG",
+          "TYPO",
+          "PLAYERKILL",
+          "PROMPT",
+          "REPLY",
+		  "TELL"
+	};
 
 	public static void whois(MOB mob, String mobName)
 	{
@@ -371,13 +404,25 @@ public class Grouping
 		}
 
 		commands.removeElementAt(0);
+		String order=Util.combine(commands,0);
+		String ORDER=((String)commands.firstElement()).toUpperCase();
+        for(int i=0;i<unacceptableOrders.length;i++)
+        {
+			if((unacceptableOrders[i].startsWith(ORDER))
+			&&(!mob.isASysOp(target.location())))
+			{
+				mob.tell("You can't order '"+target.name()+"' to '"+order+"'.");
+				return;
+			}
+        }
+		
 		Vector doV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
 			if(target.willFollowOrdersOf(mob))
 			{
-				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'^?.");
+				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> order(s) <T-NAMESELF> to '"+order+"'^?.");
 				if(mob.location().okAffect(mob,msg))
 				{
 					mob.location().send(mob,msg);

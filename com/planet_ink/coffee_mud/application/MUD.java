@@ -17,8 +17,8 @@ import com.planet_ink.coffee_mud.web.*;
 
 public class MUD extends Thread implements Host
 {
-	public static final float HOST_VERSION_MAJOR=(float)4.1;
-	public static final long  HOST_VERSION_MINOR=0;
+	public static final float HOST_VERSION_MAJOR=(float)4.0;
+	public static final long  HOST_VERSION_MINOR=10;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -197,6 +197,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_ESC9,page.getStr("ESCAPE9"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_MSPPATH,page.getStr("SOUNDPATH"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));

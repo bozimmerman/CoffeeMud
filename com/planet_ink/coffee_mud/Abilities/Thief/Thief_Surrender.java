@@ -40,7 +40,7 @@ public class Thief_Surrender extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		if(success||(mob.getMoney()<gold))
+		if(success&&(mob.getMoney()>=gold))
 		{
 			StringBuffer enemiesList=new StringBuffer("");
 			for(int v=0;v<theList.size();v++)

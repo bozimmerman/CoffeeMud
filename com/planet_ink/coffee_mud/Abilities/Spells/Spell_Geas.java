@@ -50,7 +50,7 @@ public class Spell_Geas extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(msg.amITarget(mob)
-		&&((msg.targetCode()&Affect.MASK_HURT)>0)
+		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT))
 		&&((msg.targetCode()-Affect.MASK_HURT)>0))
 			ExternalPlay.postPanic(mob,msg);
 		if((msg.sourceMinor()==Affect.TYP_SPEAK)

@@ -96,7 +96,7 @@ public class Druid_MyPlants extends StdAbility
 						{
 							yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
 							yourPlants.append(Util.padRight(I.name(),20)+" ");
-							yourPlants.append(Util.padRight(R.displayText(),40));
+							yourPlants.append(Util.padRight(R.roomTitle(),40));
 							yourPlants.append("\n\r");
 							I=myPlant(R,mob,++i);
 						}

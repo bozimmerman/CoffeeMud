@@ -37,32 +37,24 @@ public class Lantern extends LightSource
 			switch(affect.targetMinor())
 			{
 				case Affect.TYP_FILL:
-					if(mob.isMine(this))
+					if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 					{
-						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+						if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
 						{
-							if(((Drink)affect.tool()).liquidType()!=EnvResource.RESOURCE_LAMPOIL)
-							{
-								mob.tell("You can only fill "+name()+" with lamp oil!");
-								return false;
-							}
-							Drink thePuddle=(Drink)affect.tool();
-							if(!thePuddle.containsDrink())
-							{
-								mob.tell(thePuddle.name()+" is empty.");
-								return false;
-							}
-							return true;
-						}
-						else
-						{
-							mob.tell("You can't fill "+name()+" from that.");
+							mob.tell("You can only fill "+name()+" with lamp oil!");
 							return false;
 						}
+						Drink thePuddle=(Drink)affect.tool();
+						if(!thePuddle.containsDrink())
+						{
+							mob.tell(thePuddle.name()+" is empty.");
+							return false;
+						}
+						return true;
 					}
 					else
 					{
-						mob.tell("You don't have that.");
+						mob.tell("You can't fill "+name()+" from that.");
 						return false;
 					}
 				default:

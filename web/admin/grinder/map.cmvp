@@ -167,10 +167,14 @@ function checkLocation() {
 	</SCRIPT>
 </head>
 
-@if?!CheckReqParm?MAPLEVEL=@ 
-<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
+@if?!CheckReqParm?MAPSTYLE=@
+	<BODY>
 @else@
-<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+	@if?!CheckReqParm?MAPLEVEL=@ 
+	<BODY OnLoad="preloadImages();setVariables();checkLocation();setTimeout(showDiv('@RequestParameterEncoded?MAPLEVEL@'),1000)">
+	@else@
+	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+	@endif@
 @endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>
