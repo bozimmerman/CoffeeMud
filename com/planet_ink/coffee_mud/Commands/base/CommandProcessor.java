@@ -697,8 +697,8 @@ public class CommandProcessor
 		if(thisTag==null) thisTag=rHelpFile.getProperty("CHANT_"+helpStr);
 		if(thisTag==null) thisTag=rHelpFile.getProperty("PROP_"+helpStr);
 		if(thisTag==null) thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr);
-
-		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<25))
+		
+		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{
 			String thisOtherTag=rHelpFile.getProperty(thisTag);
 			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))

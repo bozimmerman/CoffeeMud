@@ -52,7 +52,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Paladin_DiseaseImmunity",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Paladin_MountedCombat",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Paladin_Defend",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Paladin_Courage",true);

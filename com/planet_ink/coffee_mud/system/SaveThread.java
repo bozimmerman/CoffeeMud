@@ -237,6 +237,10 @@ public class SaveThread extends Thread
 					break;
 				}
 			}
+			catch(Exception e)
+			{
+				Log.errOut("SaveThread",e);
+			}
 		}
 		
 		// force final time save!

@@ -65,6 +65,7 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CauseSerious",true);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
+			//CMAble.addCharAbilityMapping(ID(),7,"Prayer_SenseAlignment",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
