@@ -53,11 +53,11 @@ public class Spell_TrueSight extends Spell
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
-		if(mob.fetchAffect(this.ID())!=null)
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You already have true sight.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE>  true sight.");
 			return false;
 		}
 

@@ -42,6 +42,11 @@ public class Prayer_Wings extends Prayer
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> wings.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

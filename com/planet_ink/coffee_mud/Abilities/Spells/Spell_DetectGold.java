@@ -172,15 +172,14 @@ public class Spell_DetectGold extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already detecting golden things.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting golden things.");
 			return false;
 		}
-
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
 
 		boolean success=profficiencyCheck(0,auto);
 

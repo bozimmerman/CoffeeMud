@@ -18,6 +18,63 @@ public class SysOpSkills
 		mob.tell("..tick..tock..");
 		A.tickTock(h);
 	}
+	
+	
+	public static void stat(MOB mob, Vector commands)
+	{
+		commands.removeElementAt(0);
+		int ableTypes=-1;
+		if(commands.size()>1)
+		{
+			String s=((String)commands.elementAt(0)).toUpperCase();
+			for(int a=0;a<Ability.TYPE_DESCS.length;a++)
+			{
+				if(Ability.TYPE_DESCS[a].equals(s))
+				{
+					ableTypes=a;
+					commands.removeElementAt(0);
+					break;
+				}
+			}
+		}
+		String MOBname=(String)Util.combine(commands,0);
+		MOB target=getTarget(mob,commands,true);
+		if((target==null)||((target!=null)&&(!target.isMonster())))
+			target=mob.location().fetchInhabitant(MOBname);
+		if((target==null)||((target!=null)&&(!target.isMonster())))
+		{
+			Enumeration r=mob.isASysOp(null)?CMMap.rooms():mob.location().getArea().getMap();
+			for(;r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				MOB mob2=R.fetchInhabitant(MOBname);
+				if(mob2!=null)
+				{
+					target=mob2;
+					break;
+				}
+			}
+		}
+		if(target==null)
+		{
+			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");
+			return;
+		}
+		
+		StringBuffer str=new StringBuffer("");
+		if(ableTypes>=0)
+		{
+			Vector V=new Vector();
+			int mask=Ability.ALL_CODES;
+			V.addElement(new Integer(ableTypes));
+			str=ExternalPlay.getAbilities(target,V,mask,false);
+		}
+		else
+			str=ExternalPlay.getScore(target);
+		if(!mob.isMonster())
+			mob.session().unfilteredPrintln(str.toString());
+		
+	}
 
 	public static void at(MOB mob, Vector commands)
 		throws Exception
@@ -856,8 +913,8 @@ public class SysOpSkills
 
 	public static boolean possess(MOB mob, Vector commands)
 	{
-		String MOBname=Util.combine(commands,1);
-
+		commands.removeElementAt(0);
+		String MOBname=Util.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 			target=mob.location().fetchInhabitant(MOBname);

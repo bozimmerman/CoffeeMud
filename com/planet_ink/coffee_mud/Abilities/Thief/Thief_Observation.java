@@ -38,15 +38,14 @@ public class Thief_Observation extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already observing.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already observing.");
 			return false;
 		}
-
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
 
 		boolean success=profficiencyCheck(0,auto);
 

@@ -43,6 +43,11 @@ public class Spell_Delude extends Spell
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already deluding others.");
+			return false;
+		}
 		boolean success=profficiencyCheck(0,auto);
 
 

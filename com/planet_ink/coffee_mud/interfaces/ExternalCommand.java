@@ -40,6 +40,7 @@ public interface ExternalCommand
 	public StringBuffer getHelpText(String helpStr);
 	public StringBuffer getScore(MOB mob);
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
+	public StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine);
 	public int channelInt(String channelName);
 	public void channel(MOB mob, String channelName, String message, boolean systemMsg);
 	public void channel(String channelName, String message, boolean systemMsg);

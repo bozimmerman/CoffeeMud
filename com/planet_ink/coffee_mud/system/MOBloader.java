@@ -193,7 +193,11 @@ public class MOBloader
 		if(mob.baseCharStats()!=null)
 		{
 			mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
+			int oldWeight=mob.baseEnvStats().weight();
+			int oldHeight=mob.baseEnvStats().height();
 			mob.baseCharStats().getMyRace().startRacing(mob,true);
+			if(oldWeight>0) mob.baseEnvStats().setWeight(oldWeight);
+			if(oldHeight>0) mob.baseEnvStats().setHeight(oldHeight);
 		}
 
 		mob.recoverCharStats();
@@ -609,7 +613,9 @@ public class MOBloader
 
 	public static void DBUpdateFollowers(MOB mob)
 	{
-		if(mob.Name().length()==0) return;
+		
+		if((mob==null)||(mob.Name().length()==0))
+			return;
 		Vector V=new Vector();
 		DBConnection D=DBConnector.DBFetch();
 		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");

@@ -70,6 +70,12 @@ public class StdDeity extends StdMOB implements Deity
 			case TRIGGER_SAY:
 				buf.append("the player says '"+DT.parm1.toLowerCase()+"'");
 				break;
+			case TRIGGER_READING:
+				if(DT.parm1.equals("0"))
+					buf.append("the player reads something");
+				else
+					buf.append("the player reads '"+DT.parm1.toLowerCase()+"'");
+				break;
 			case TRIGGER_TIME:
 				buf.append("the hour of the day is "+DT.parm1.toLowerCase()+"");
 				break;
@@ -372,10 +378,11 @@ public class StdDeity extends StdMOB implements Deity
 							yup=true;
 						break;
 					case TRIGGER_BURNTHING:
+					case TRIGGER_READING:
 					case TRIGGER_DRINK:
 					case TRIGGER_EAT:
 						if((msg.target()!=null)
-						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm1)))
+						&&(DT.parm1.equals("0")||CoffeeUtensils.containsString(msg.target().name(),DT.parm1)))
 						   yup=true;
 						break;
 					case TRIGGER_INROOM:
@@ -722,6 +729,12 @@ public class StdDeity extends StdMOB implements Deity
 						DT.parm1=Util.combine(V,1);
 					}
 					else
+					if(cmd.equals("READ"))
+					{
+						DT.triggerCode=TRIGGER_READING;
+						DT.parm1=Util.combine(V,1);
+					}
+					else
 					if(cmd.equals("DRINK"))
 					{
 						DT.triggerCode=TRIGGER_DRINK;
@@ -808,6 +821,7 @@ public class StdDeity extends StdMOB implements Deity
 	private static final int TRIGGER_SITTING=14;
 	private static final int TRIGGER_STANDING=15;
 	private static final int TRIGGER_SLEEPING=16;
+	private static final int TRIGGER_READING=17;
 	private static final int[] TRIG_WATCH={
 		Affect.TYP_SPEAK,		//0
 		-999,					//1
@@ -825,7 +839,8 @@ public class StdDeity extends StdMOB implements Deity
 		Affect.TYP_FIRE,		//13
 		-999,					//14
 		-999,					//15
-		-999					//16
+		-999,					//16
+		Affect.TYP_READSOMETHING//17
 	};
 
 	private static final int CONNECT_AND=0;

@@ -287,7 +287,7 @@ public class Carpentry extends CommonSkill
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(firstWood.material());
-			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
+			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-3;
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);

@@ -412,17 +412,6 @@ public class Help
 
 	public static StringBuffer getHelpText(String helpStr,Properties rHelpFile)
 	{
-		// the area exception
-		if(CMMap.getArea(helpStr.trim())!=null)
-		{
-			StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
-			if(s==null)
-			{
-				s=CMMap.getArea(helpStr.trim()).getAreaStats();
-				Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
-			}
-			return s;
-		}
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
@@ -458,6 +447,16 @@ public class Help
 				break;
 			}
 		}
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		{
+			Area A=(Area)e.nextElement();
+			if(CoffeeUtensils.containsString(A.name(),helpStr))
+			{
+				helpStr=A.name();
+				break;
+			}
+		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{
 			String thisOtherTag=rHelpFile.getProperty(thisTag);
@@ -469,6 +468,18 @@ public class Help
 				thisTag=thisOtherTag;
 			}
 		}
+		// the area exception
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			if(CMMap.getArea(helpStr.trim())!=null)
+			{
+				StringBuffer s=(StringBuffer)Resources.getResource("HELP_"+helpStr.trim().toUpperCase());
+				if(s==null)
+				{
+					s=CMMap.getArea(helpStr.trim()).getAreaStats();
+					Resources.submitResource("HELP_"+helpStr.trim().toUpperCase(),s);
+				}
+				return s;
+			}
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
 		return new StringBuffer(fixHelp(helpStr,thisTag));

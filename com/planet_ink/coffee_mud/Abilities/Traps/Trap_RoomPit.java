@@ -106,6 +106,28 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 	
+	public void affect(Environmental myHost, Affect affect)
+	{
+		boolean unSpring=false;
+		if((!sprung)
+		&&(affected instanceof Room)
+		&&(affect.amITarget(affected))
+		&&((affect.targetMinor()==Affect.TYP_ENTER)
+		&&(!affect.source().isMine(affected)))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Exit))
+		{
+			Room room=(Room)affected;
+			if((room.getExitInDir(Directions.DOWN)==affect.tool())
+			||(room.getReverseExit(Directions.DOWN)==affect.tool()))
+			{
+				unSpring=true;
+				sprung=true;
+			}
+		}
+		super.affect(myHost,affect);
+		if(unSpring) sprung=false;
+	}
 	public void finishSpringing(MOB target)
 	{
 		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))

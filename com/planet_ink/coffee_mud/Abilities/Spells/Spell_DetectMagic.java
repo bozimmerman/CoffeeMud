@@ -81,15 +81,15 @@ public class Spell_DetectMagic extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("You are already detecting magic.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting magic.");
+			return false;
+		}
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

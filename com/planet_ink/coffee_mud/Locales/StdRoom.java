@@ -785,6 +785,7 @@ public class StdRoom
 			return;
 		}
 
+		mob.tell("^DObvious exits:^.^N");
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
 			Exit exit=getExitInDir(i);
@@ -797,6 +798,18 @@ public class StdRoom
 			if(Say.length()>0)
 				mob.tell("^D" + Util.padRight(Dir,5)+":^.^N ^d"+Say+"^N^.");
 		}
+	}
+	public void listShortExits(MOB mob)
+	{
+		if(!Sense.canSee(mob)) return;
+		StringBuffer buf=new StringBuffer("^D[Exits: ");
+		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+		{
+			Exit exit=getExitInDir(i);
+			if((exit!=null)&&(exit.viewableText(mob, getRoomInDir(i)).length()>0))
+				buf.append(Directions.getDirectionName(i)+" ");
+		}
+		mob.tell(buf.toString().trim()+"]^.^N");
 	}
 
 	private void reallyReallySend(MOB source, Affect msg)

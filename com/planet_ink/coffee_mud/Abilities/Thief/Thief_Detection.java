@@ -38,12 +38,12 @@ public class Thief_Detection extends ThiefSkill
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
-
+		
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			target.tell("You are already detecting hidden things.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting hidden things.");
 			return false;
 		}
 

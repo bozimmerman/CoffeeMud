@@ -11,5 +11,5 @@ import export xml i3 merge
 
 ^HSkills^N
 genchar possess goto wizinv
-where snoop visible at
+where snoop visible at stat
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!

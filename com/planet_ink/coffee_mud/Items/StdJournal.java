@@ -135,6 +135,9 @@ public class StdJournal extends StdItem
 				if(!mob.isMonster())
 				{
 					String to="ALL";
+					if(getWriteReq().toUpperCase().indexOf("PRIVATE")>=0)
+						to=mob.Name();
+					else
 					if(mob.session().confirm("Is this a private message (y/N)?","N"))
 					{
 						to=mob.session().prompt("To whom:");

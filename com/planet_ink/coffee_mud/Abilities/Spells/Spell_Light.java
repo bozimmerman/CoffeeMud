@@ -42,15 +42,15 @@ public class Spell_Light extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("You already have light.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already <S-HAS-HAVE> light.");
+			return false;
+		}
+
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");

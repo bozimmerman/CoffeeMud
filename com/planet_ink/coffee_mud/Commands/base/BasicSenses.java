@@ -74,7 +74,7 @@ public class BasicSenses
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 				if((thisThang instanceof Room)&&(Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS)))
-					((Room)thisThang).listExits(mob);
+					((Room)thisThang).listShortExits(mob);
 
 			}
 			else
@@ -94,7 +94,7 @@ public class BasicSenses
 				mob.location().send(mob,msg);
 			if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOEXITS))
 			&&(Sense.canBeSeenBy(mob.location(),mob)))
-				mob.location().listExits(mob);
+				mob.location().listShortExits(mob);
 		}
 	}
 

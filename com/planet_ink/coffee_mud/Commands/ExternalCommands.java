@@ -16,6 +16,10 @@ public class ExternalCommands implements ExternalCommand
 	  if (self == null) self = new ExternalCommands();
 	  return self;
 	}
+	public StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine)
+	{
+		return Scoring.getAbilities(able,ofTypes,mask,addQualLine);
+	}
 
 	public ExternalCommands(CommandProcessor newProcessor)
 	{

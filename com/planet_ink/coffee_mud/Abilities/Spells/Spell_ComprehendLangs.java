@@ -87,6 +87,8 @@ public class Spell_ComprehendLangs extends Spell
 
 		MOB target=mob;
 		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		if(target.fetchAffect(ID())!=null)
 		{
 			mob.tell("You already have comprehension.");

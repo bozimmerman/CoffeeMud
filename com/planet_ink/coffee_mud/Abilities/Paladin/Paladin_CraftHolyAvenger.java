@@ -154,7 +154,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
-		int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
+		int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-5;
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

@@ -58,6 +58,8 @@ public class Language extends StdAbility
 	{
 		if(translationHash().containsKey(word.toUpperCase()))
 			return fixCase(word,(String)translationHash().get(word.toUpperCase()));
+		MOB M=CMMap.getPlayer(word);
+		if(M!=null) return word;
 		if(translationVector().size()>0)
 		{
 			String[] choices=null;

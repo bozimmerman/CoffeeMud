@@ -27,6 +27,7 @@ public class TelnetSession extends Thread implements Session
 	private String lastColorStr="";
 	private String lastStr=null;
 	private int spamStack=0;
+	private int pageBreak=-1;
 	private long lastOutput=0;
 	private Vector cmdQ=new Vector();
 	private Vector snoops=new Vector();
@@ -236,6 +237,33 @@ public class TelnetSession extends Thread implements Session
 			lastStr=msg.substring(2);
 		else
 			lastStr=msg;
+		if(pageBreak<0)
+			pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
+		if(pageBreak>0)
+		{
+			int lines=0;
+			for(int i=0;i<msg.length();i++)
+			{
+				if(msg.charAt(i)=='\n')
+				{
+					lines++;
+					if(lines>=pageBreak)
+					{
+						lines=0;
+						if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
+							i++;
+						out.print(msg.substring(0,i));
+						msg=msg.substring(i+1);
+						out.flush();
+						out.print("<pause - enter>");
+						out.flush();
+						try{
+							blockingIn();
+						}catch(Exception e){return;}
+					}
+				}
+			}
+		}
 		out.print(msg);
 		out.flush();
 	}

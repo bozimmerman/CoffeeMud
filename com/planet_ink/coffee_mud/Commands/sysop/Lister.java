@@ -778,6 +778,21 @@ public class Lister
 		return msg;
 	}
 
+	public static StringBuffer listSubOps(MOB mob)
+	{
+		StringBuffer msg=new StringBuffer("");
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+		{
+			Area A=(Area)a.nextElement();
+			msg.append(Util.padRight(A.Name(),25)+": ");
+			if(A.getSubOpList().length()==0)
+				msg.append("No Area SubOps defined.\n\r");
+			else
+				msg.append(A.getSubOpList()+"\n\r");
+		}
+		return msg;
+	}
+	
 	public static void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -824,6 +839,9 @@ public class Lister
 		else
 		if("CLASSES".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.charClasses()).toString());
+		else
+		if("SUBOPS".startsWith(listThis))
+			s.rawPrintln(listSubOps(mob).toString());
 		else
 		if("SPELLS".startsWith(listThis))
 			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SPELL).toString());
@@ -898,6 +916,6 @@ public class Lister
 		if("RESOURCES".startsWith(listThis))
 			s.rawPrintln(reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString());
 		else
-			s.rawPrintln("Can't list those, try ITEMS, POISONS, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
+			s.rawPrintln("Can't list those, try ITEMS, POISONS, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, SUBOPS, or AREA.");
 	}
 }

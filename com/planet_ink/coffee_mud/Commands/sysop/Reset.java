@@ -9,7 +9,9 @@ public class Reset
 
 	public static String getOpenRoomID(String AreaID)
 	{
-		int highest=0;
+		int highest=Integer.MIN_VALUE;
+		int lowest=Integer.MAX_VALUE;
+		Hashtable allNums=new Hashtable();
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -17,11 +19,19 @@ public class Reset
 			&&(R.roomID().startsWith(AreaID+"#")))
 			{
 				int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
-				if(newnum>=highest)
-					highest=newnum+1;
+				if(newnum>=highest)	highest=newnum;
+				if(newnum<=lowest) lowest=newnum;
+				allNums.put(new Integer(newnum),R);
 			}
 		}
-		return AreaID+"#"+highest;
+		if(highest<0) return AreaID+"#0";
+		if(lowest<highest)
+			for(int i=lowest;i<=highest;i++)
+			{
+				if(!allNums.containsKey(new Integer(i)))
+					return AreaID+"#"+i;
+			}
+		return AreaID+"#"+(highest+1);
 	}
 
 	public static int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
@@ -159,77 +169,44 @@ public class Reset
 			
 		}
 		else
-		if(s.toLowerCase().startsWith("golems"))
+		if(s.equalsIgnoreCase("arearoomids"))
 		{
-			if(s.toLowerCase().endsWith("change"))
+			Area A=mob.location().getArea();
+			boolean somethingDone=false;
+			for(Enumeration e=A.getMap();e.hasMoreElements();)
 			{
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				Room R=(Room)e.nextElement();
+				if((R.roomID().length()>0)
+				&&(R.roomID().indexOf("#")>0)
+				&&(!R.roomID().startsWith(A.Name())))
 				{
-					Room R=(Room)r.nextElement();
-					R.getArea().toggleMobility(false);
-					resetRoom(R);
-					boolean somethingDone=false;
-					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
-					somethingDone=false;
-					for(int m=0;m<R.numInhabitants();m++)
+					String oldID=R.roomID();
+					R.setRoomID(getOpenRoomID(A.Name()));
+					ExternalPlay.DBReCreate(R,oldID);
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						MOB M=R.fetchInhabitant(m);
-						if(M==mob) continue;
-						int d=M.baseEnvStats().disposition();
-						if((d&EnvStats.IS_GOLEM)>0)
-						{
-							somethingDone=true;
-							M.baseEnvStats().setDisposition(d-EnvStats.IS_GOLEM);
-						}
+						Room R2=(Room)r.nextElement();
+						if(R2!=R)
+						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							if(R2.rawDoors()[d]==R)
+							{
+								ExternalPlay.DBUpdateExits(R2);
+								break;
+							}
 					}
-					if(somethingDone)
-						ExternalPlay.DBUpdateMOBs(R);
-					R.getArea().toggleMobility(true);
+					if(R instanceof GridLocale)
+						R.getArea().fillInAreaRoom(R);
+					somethingDone=true;
+					mob.tell("Room "+oldID+" changed to "+R.roomID()+".");
 				}
 			}
-			StringBuffer is=new StringBuffer("");
-			StringBuffer isnot=new StringBuffer("");
-			Hashtable names=new Hashtable();
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				for(int i=0;i<R.numInhabitants();i++)
-				{
-					MOB M=R.fetchInhabitant(i);
-					if(names.contains(M.Name())) continue;
-					names.put(M.Name(),M.Name());
-					if(Sense.isGolem(M))
-						is.append(M.Name()+" ");
-					else
-						isnot.append(M.Name()+" ");
-				}
-			}
-			mob.tell("IS-"+is.toString());
-			Log.sysOut("GOLEMS","IS-"+is.toString());
-			mob.tell("ISNOT-"+isnot.toString());
-			Log.sysOut("GOLEMS","ISNOT-"+isnot.toString());
+			if(!somethingDone)
+				mob.tell("No rooms were found which needed renaming.");
+			else
+				mob.tell("Done renumbering rooms.");
 		}
 		else
-		if(s.toLowerCase().startsWith("norejuvers"))
-		{
-			StringBuffer is=new StringBuffer("");
-			Hashtable names=new Hashtable();
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				for(int i=0;i<R.numInhabitants();i++)
-				{
-					MOB M=R.fetchInhabitant(i);
-					if((M.baseEnvStats().rejuv()>0)&&(M.baseEnvStats().rejuv()<Integer.MAX_VALUE))
-						continue;
-					is.append(M.Name()+" ");
-				}
-			}
-			mob.tell("IS-"+is.toString());
-			Log.sysOut("REJUV","IS-"+is.toString());
-		}
-		else
-		if(s.equalsIgnoreCase("areaoramamana"))
+		if(s.equalsIgnoreCase("arearacemat"))
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
@@ -405,6 +382,8 @@ public class Reset
 			A.toggleMobility(true);
 			mob.tell("Done.");
 		}
+		else
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 	}
 	public static void resetRoom(Room room)
 	{

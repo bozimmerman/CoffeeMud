@@ -624,6 +624,9 @@ public class CommandProcessor
 		case CommandSet.STAND:
 			Movement.stand(mob);
 			break;
+		case CommandSet.STAT:
+			SysOpSkills.stat(mob,commands);
+			break;
 		case CommandSet.SYSMSGS:
 			if(mob.isASysOp(mob.location()))
 				SysOpSkills.toggleSysopMsgs(mob);

@@ -70,12 +70,13 @@ public class StdGrid extends StdRoom implements GridLocale
 
 		Room[][] subMap=getBuiltGrid();
 
+		Room oldLoc=loc;
 		if(loc.roomID().length()==0) // might be a child of an adjacent grid!
 		{
 			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
 				if((doors[x]!=null)
-				   &&(doors[x] instanceof GridLocale)
-				   &&(((GridLocale)doors[x]).isMyChild(loc)))
+				&&(doors[x] instanceof GridLocale)
+				&&(((GridLocale)doors[x]).isMyChild(loc)))
 				{
 					loc=doors[x];
 					oldDirCode=x;
@@ -91,6 +92,36 @@ public class StdGrid extends StdRoom implements GridLocale
 					break;
 				}
 		if(oldDirCode<0) return null;
+		
+		if((oldLoc!=loc)&&(loc instanceof GridLocale))
+		{
+			Room[][] grid=getBuiltGrid();
+			if(grid!=null)
+			{
+				int y=((GridLocale)loc).getChildY(oldLoc);
+				int x=((GridLocale)loc).getChildX(oldLoc);
+				if((x>=0)&&(y>=0))
+				switch(oldDirCode)
+				{
+				case Directions.EAST:
+					if((((GridLocale)loc).ySize()==ySize()))
+						return grid[grid.length-1][y];
+					break;
+				case Directions.WEST:
+					if((((GridLocale)loc).ySize()==ySize()))
+						return grid[0][y];
+					break;
+				case Directions.NORTH:
+					if((((GridLocale)loc).ySize()==ySize()))
+						return grid[x][0];
+					break;
+				case Directions.SOUTH:
+					if((((GridLocale)loc).ySize()==ySize()))
+						return grid[x][grid[0].length-1];
+					break;
+				}
+			}
+		}
 
 		return alts[oldDirCode];
 	}
@@ -319,6 +350,28 @@ public class StdGrid extends StdRoom implements GridLocale
 					return roomID()+"#("+x+","+y+")";
 		return "";
 		
+	}
+	public int getChildX(Room loc)
+	{
+		if(roomID().length()==0) return -1;
+		Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
+				if(subMap[x][y]==loc)
+					return x;
+		return -1;
+	}
+	public int getChildY(Room loc)
+	{
+		if(roomID().length()==0) return -1;
+		Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
+				if(subMap[x][y]==loc)
+					return y;
+		return -1;
 	}
 	public Room getChild(String childCode)
 	{

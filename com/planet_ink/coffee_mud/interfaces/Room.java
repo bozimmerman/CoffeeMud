@@ -84,6 +84,7 @@ public interface Room extends Environmental
 	public int pointsPerMove(MOB mob);
 	public int thirstPerRound(MOB mob);
 	
+	public void listShortExits(MOB mob);
 	public void listExits(MOB mob);
 	
 	public void send(MOB source, Affect msg);

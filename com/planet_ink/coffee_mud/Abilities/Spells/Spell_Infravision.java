@@ -42,15 +42,15 @@ public class Spell_Infravision extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
-		{
-			mob.tell("You are already using infravision.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already using infravision.");
+			return false;
+		}
+
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");

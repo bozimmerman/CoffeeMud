@@ -187,6 +187,11 @@ public class Spell_BigMouth extends Spell
 		if(target==null) return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the owner of a huge mouth.");
+			return false;
+		}
 
 		if(Stomach==null)
 		{

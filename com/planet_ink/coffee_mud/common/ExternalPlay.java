@@ -35,6 +35,11 @@ public class ExternalPlay
 		if(player!=null) return player.doesOwnThisProperty(mob,room);
 		return false;
 	}
+	public static StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine)
+	{
+		if(player!=null) return player.getAbilities(able,ofTypes,mask,addQualLine);
+		return new StringBuffer("");
+	}
 	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if(player!=null) player.postAttack(attacker,target,weapon);

@@ -223,10 +223,12 @@ public class RandomMonsters extends ActiveTicker
 						}
 						else
 							M.bringToLife(((Room)ticking),true);
+						Resources.removeResource("HELP_"+((Room)ticking).getArea().name().toUpperCase());
 					}
 					else
 					if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
 					{
+						Resources.removeResource("HELP_"+ticking.name().toUpperCase());
 						Room room=null;
 						if(restrictedLocales==null)
 						{

@@ -183,8 +183,8 @@ public class CommandSet extends Hashtable
 	public static final int CLANASSIGN=170;
 	public static final int CLANDONATESET=171;
 	public static final int CLANPREMISE=172;
-	//public static final int CLANWITHDRAW=173;
-	//public static final int CLANBALANCE=174;
+	public static final int CLANDECLARE=173; //
+	public static final int CLANVOTE=174; //
 	public static final int AT=175;
 	public static final int CLANCREATE=176;
 	public static final int EMAIL=177;
@@ -200,6 +200,7 @@ public class CommandSet extends Hashtable
 	public static final int IGNORE=187;
 	public static final int AUTONOTIFY=188;
 	public static final int WIZLIST=189;
+	public static final int STAT=190;
 
 	private CommandSet()
 	{
@@ -421,6 +422,7 @@ public class CommandSet extends Hashtable
 		put("SPLIT",new Integer(SPLIT));
 		put("STAND",new Integer(STAND));
 			put("ST",new Integer(STAND));
+		put("STAT",new Integer(STAT));
 		put("SYSMSGS",new Integer(SYSMSGS));
 		put("TAKE",new Integer(TAKE));
 		put("TEACH",new Integer(TEACH));

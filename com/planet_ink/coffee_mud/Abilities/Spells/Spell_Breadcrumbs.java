@@ -113,6 +113,11 @@ public class Spell_Breadcrumbs extends Spell
 		if(target==null) return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
 			target=(MOB)givenTarget;
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already dropping breadcrumbs.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

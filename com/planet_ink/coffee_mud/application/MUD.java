@@ -196,6 +196,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_ESC8,page.getStr("ESCAPE8"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_ESC9,page.getStr("ESCAPE9"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_MSPPATH,page.getStr("SOUNDPATH"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_MAXSTAT,page.getStr("MAXSTATS"));

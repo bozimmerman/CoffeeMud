@@ -31,25 +31,9 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 
 	public void recoverEnvStats()
 	{
-		baseEnvStats.setWeight(0);
+		baseEnvStats().setWeight(0);
+		super.recoverEnvStats();
+		baseEnvStats().setWeight(-recursiveWeight(this));
 		super.recoverEnvStats();
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		if(Sense.isLightSource(this))
-		{
-			if((!(affected instanceof Room))&&(rawWornCode()!=Item.INVENTORY))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
-			if(Sense.isInDark(affected))
-				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
-		}
-		if(!this.amWearingAt(Item.FLOATING_NEARBY))
-			affectableStats.setWeight(affectableStats.weight()+0);
-	}
-	protected int recursiveRoomWeight(MOB mob, Item thisContainer)
-	{
-		return 0;
-	}
-
 }
