@@ -40,8 +40,6 @@ public class Movement
 		int leaveCode=Affect.MSG_LEAVE;
 		if(flee) 
 			leaveCode=Affect.MSG_FLEE;
-			
-
 
 		FullMsg enterMsg=null;
 		FullMsg leaveMsg=null;

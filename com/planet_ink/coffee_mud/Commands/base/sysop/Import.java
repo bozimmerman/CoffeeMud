@@ -1691,7 +1691,8 @@ public class Import
 					 I.baseEnvStats().setAbility(val1);
 					 break;
 			case 21: I=CMClass.getStdItem("GenItem"); break;
-			case 22: I=CMClass.getStdItem("GenBoat"); break;
+			case 22: I=CMClass.getStdItem("GenBoat"); 
+					 break;
 			case 23: I=CMClass.getStdItem("GenCorpse"); break;
 			case 24: I=CMClass.getStdItem("GenCorpse"); break;
 			case 25: I=CMClass.getStdItem("GenWater");
@@ -1782,6 +1783,8 @@ public class Import
 			{
 				I.baseEnvStats().setLevel(Util.s_int(Util.getBit(codeStr3,0)));
 				I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) / 3);
+				if(I instanceof Rideable)
+					I.baseEnvStats().setWeight(Util.s_int(Util.getBit(codeStr3,1)) * 3);
 				I.setBaseValue(Util.s_int(Util.getBit(codeStr3,2)));
 			}
 			else

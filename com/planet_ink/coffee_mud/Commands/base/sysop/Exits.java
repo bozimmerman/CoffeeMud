@@ -82,6 +82,12 @@ public class Exits
 	public void modify(MOB mob, Vector commands)
 		throws IOException
 	{
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY EXIT [DIRECTION] ([NEW MISC TEXT])\n\r");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+			return;
+		}
 		int direction=Directions.getDirectionCode(((String)commands.elementAt(2)));
 		if(direction<0)
 		{

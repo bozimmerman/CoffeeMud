@@ -78,6 +78,30 @@ public class StdRideable extends StdContainer implements Rideable
 			}
 		}
 	}
+	public String displayText()
+	{
+ 		if(numRiders()>0)
+		{
+			StringBuffer sendBack=new StringBuffer(name());
+			sendBack.append(" is being ridden by ");
+			for(int r=0;r<numRiders();r++)
+			{
+				MOB rider=fetchRider(r);
+				if(rider!=null)
+					if(r>0)
+					{
+						sendBack.append(", ");
+						if(r==numRiders()-1)
+							sendBack.append("and ");
+					}
+					sendBack.append(rider.name());
+					
+			}
+			return sendBack.toString();
+		}
+		else
+			return displayText;
+	}
 	public boolean amRiding(MOB mob)
 	{
 		return riders.contains(mob);

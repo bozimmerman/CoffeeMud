@@ -567,7 +567,6 @@ public class StdMOB implements MOB
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
-		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
@@ -857,6 +856,30 @@ public class StdMOB implements MOB
 				}
 			}
 
+			// clear extraneous riding
+			if((affect.targetMinor()==Affect.TYP_ENTER)&&(riding()!=null))
+			{
+				if(riding() instanceof Item)
+				{
+					Item riding=(Item)riding();
+					if((riding.myOwner()!=location())
+					&&(affect.target()!=null)
+					&&(affect.target() instanceof Room)
+					&&(riding.myOwner()!=affect.target()))
+						setRiding(null);
+				}
+				else
+				if(riding() instanceof MOB)
+				{
+					MOB riding=(MOB)riding();
+					if((riding.location()!=location())
+					&&(affect.target()!=null)
+					&&(affect.target() instanceof Room)
+					&&(riding.location()!=affect.target()))
+						setRiding(null);
+				}
+			}
+			
 			if(Util.bset(srcMajor,Affect.ACT_MOVE))
 			{
 				if(((Sense.isSleeping(this))||(Sense.isSitting(this)))

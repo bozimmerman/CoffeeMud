@@ -591,6 +591,11 @@ public class StdItem implements Item
 					mob.tell("You can't get "+name()+".");
 					return false;
 				}
+				if((mob.riding()!=null)&&(mob.riding()==this))
+				{
+					mob.tell("You are riding "+name()+"!");
+					return false;
+				}
 				return true;
 			}
 			if(this instanceof Container)
