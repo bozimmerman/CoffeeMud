@@ -472,7 +472,9 @@ public class StdMOB implements MOB
 		if(location()==null) return false;
 		if(mob.location()==null) return false;
 		if(mob.amDead()) return false;
+		if(mob.curState().getHitPoints()<=0) return false;
 		if(amDead()) return false;
+		if(curState().getHitPoints()<=0) return false;
 		if(mob.isMonster()) return true;
 		if(isMonster()) return true;
 		if(mob==this) return true;

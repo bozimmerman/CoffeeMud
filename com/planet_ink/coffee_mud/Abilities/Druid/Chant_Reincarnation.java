@@ -104,7 +104,7 @@ public class Chant_Reincarnation extends Chant
 		{
 			int modifier=0;
 			if(target!=mob) modifier=Affect.MASK_MALICIOUS;
-			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geis!^?":"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -137,6 +137,18 @@ public class TheFight
 		if(target==null) return;
 		Room deathRoom=target.location();
 		if(deathRoom==null) return;
+		
+		// make sure he's not already dead, or with a pending death.
+		if(target.amDead()) return;
+		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
+		for(int i=0;i<addHere.trailerMsgs().size();i++)
+		{
+			Affect affect=(Affect)addHere.trailerMsgs().elementAt(i);
+			if((affect.source()==target)
+			&&(affect.sourceMinor()==Affect.MSG_DEATH))
+				return;
+		}
+		
 		FullMsg msg=new FullMsg(target,null,null,
 			Affect.MSG_OK_VISUAL,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
 			Affect.MSG_OK_VISUAL,null,

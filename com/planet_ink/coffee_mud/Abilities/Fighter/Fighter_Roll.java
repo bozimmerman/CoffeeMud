@@ -18,6 +18,7 @@ public class Fighter_Roll extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_Roll();}
 	public int classificationCode(){ return Ability.SKILL;}
+	public boolean doneThisRound=false;
 
 	public boolean okAffect(Affect affect)
 	{
@@ -36,8 +37,10 @@ public class Fighter_Roll extends StdAbility
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
+		&&(!doneThisRound)
 		&&(profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false)))
 		{
+			doneThisRound=true;
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			regain=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
 			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-regain,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
@@ -45,6 +48,13 @@ public class Fighter_Roll extends StdAbility
 		return true;
 	}
 
+	public boolean tick(int tickID)
+	{
+		if(tickID==Host.MOB_TICK)
+			doneThisRound=false;
+		return super.tick(tickID);
+	}
+	
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
