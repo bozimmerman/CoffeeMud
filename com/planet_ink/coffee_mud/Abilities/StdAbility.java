@@ -426,10 +426,19 @@ public class StdAbility implements Ability, Cloneable
 			if(!Sense.aliveAwakeMobile(mob,false))
 				return false;
 
-			Integer levelDiff=new Integer(mob.envStats().level()-envStats().level());
-			int manaConsumed=50-(int)Math.round(50.0*(levelDiff.doubleValue()/10.0));
-			if(manaConsumed<5) manaConsumed=5;
-			if(manaConsumed>50) manaConsumed=50;
+			int manaConsumed=50;
+			int diff=mob.envStats().level()-envStats().level();
+			if(diff>0)
+			switch(diff)
+			{
+			case 1: manaConsumed=40; break;
+			case 2: manaConsumed=35; break;
+			case 3: manaConsumed=25; break;
+			case 4: manaConsumed=20; break;
+			case 5: manaConsumed=15; break;
+			case 6: manaConsumed=10; break;
+			default: manaConsumed=5; break;
+			}
 
 			if(mob.curState().getMana()<manaConsumed)
 			{

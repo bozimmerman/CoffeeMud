@@ -10,7 +10,41 @@ public class Generic
 	{
 		return (x&m)==m;
 	}
-
+	
+	private static String parseOutAngleBrackets(String s)
+	{
+		int x=s.indexOf("<");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"%3C"+s.substring(x+1);
+			x=s.indexOf("<");
+		}
+		x=s.indexOf(">");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"%3E"+s.substring(x+1);
+			x=s.indexOf(">");
+		}
+		return s;
+	}
+	
+	private static String restoreAngleBrackets(String s)
+	{
+		int x=s.indexOf("%3C");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+"<"+s.substring(x+3);
+			x=s.indexOf("%3C");
+		}
+		x=s.indexOf("%3E");
+		while(x>=0)
+		{
+			s=s.substring(0,x)+">"+s.substring(x+3);
+			x=s.indexOf("%3E");
+		}
+		return s;
+	}
+	
 	private static int flags(Environmental E)
 	{
 		int f=0;
@@ -277,6 +311,7 @@ public class Generic
 		String roomClass=XMLManager.getValFromPieces(xml,"RCLAS");
 		Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
+		newRoom=(Room)newRoom.newInstance();
 		newRoom.setID(XMLManager.getValFromPieces(xml,"ROOMID"));
 		if(newRoom.ID().equals("NEW")) newRoom.setID(ExternalPlay.getOpenRoomID(myArea.name()));
 		if(CMMap.getRoom(newRoom.ID())!=null) return "Room Exists: "+newRoom.ID();
@@ -285,30 +320,34 @@ public class Generic
 		CMMap.map.addElement(newRoom);
 		newRoom.setDisplayText(XMLManager.getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(XMLManager.getValFromPieces(xml,"RDESC"));
-		newRoom.setMiscText(XMLManager.getValFromPieces(xml,"RTEXT"));
+		newRoom.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xml,"RTEXT")));
 		
 		// now EXITS!
 		Vector xV=XMLManager.getRealContentsFromPieces(xml,"ROOMEXITS");
-		if(xV==null) return unpackErr("Room","null 'xV'");
+		if(xV==null) return unpackErr("Room","null 'xV'"+" in room "+newRoom.ID());
 		for(int x=0;x<xV.size();x++)
 		{
 			XMLManager.XMLpiece xblk=(XMLManager.XMLpiece)xV.elementAt(x);
 			if((!xblk.tag.equalsIgnoreCase("REXIT"))||(xblk.contents==null))
-				return unpackErr("Room","??"+xblk.tag);
+				return unpackErr("Room","??"+xblk.tag+" in room "+newRoom.ID());
 			int dir=XMLManager.getIntFromPieces(xblk.contents,"XDIRE");
 			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS))
-				return unpackErr("Room","Unknown direction: "+dir);
+				return unpackErr("Room","Unknown direction: "+dir+" in room "+newRoom.ID());
 			String doorID=XMLManager.getValFromPieces(xblk.contents,"XDOOR");
 			Vector xxV=XMLManager.getContentsFromPieces(xblk.contents,"XEXIT");
-			if(xxV==null) return unpackErr("Room","null 'xxV'");
+			if(xxV==null) return unpackErr("Room","null 'xxV'"+" in room "+newRoom.ID());
 			Exit exit=CMClass.getExit("GenExit");
 			if(xxV.size()>0)
 			{
 				exit=CMClass.getExit(XMLManager.getValFromPieces(xxV,"EXID"));
-				if(xxV==null) return unpackErr("Room","null 'exit'");
-				exit.setMiscText(XMLManager.getValFromPieces(xxV,"EXDAT"));
+				if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.ID());
+				exit=(Exit)exit.newInstance();
+				exit.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xxV,"EXDAT")));
 				newRoom.exits()[dir]=exit;
 			}
+			else
+				exit=(Exit)exit.newInstance();
+			exit.recoverEnvStats();
 			if(doorID.length()>0)
 			{
 				Room link=CMMap.getRoom(doorID);
@@ -317,7 +356,7 @@ public class Generic
 				else
 				{
 					newRoom.exits()[dir]=exit; // get will get the fake one too!
-					exit.setExitParams(exit.doorName(),exit.closeWord()+"/"+doorID,exit.openWord(),exit.closedText());
+					exit.setExitParams(exit.doorName(),doorID,exit.openWord(),exit.closedText());
 				}
 			}
 		}
@@ -330,10 +369,16 @@ public class Generic
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Exit exit=room.exits()[d];
-				if((exit!=null)&&(exit.closeWord().endsWith("/"+newRoom.ID())))
+				if((exit!=null)&&(exit.closeWord().equalsIgnoreCase(newRoom.ID())))
 				{
-					int x=exit.closeWord().lastIndexOf("/");
-					exit.setExitParams(exit.doorName(),exit.closeWord().substring(0,x),exit.openWord(),exit.closedText());
+					Exit newExit=(Exit)exit.newInstance();
+					exit.setExitParams(exit.doorName(),newExit.closeWord(),exit.openWord(),exit.closedText());
+					room.doors()[d]=newRoom;
+					changed=true;
+				}
+				else
+				if((room.doors()[d]!=null)&&(room.doors()[d].ID().equals(newRoom.ID())))
+				{
 					room.doors()[d]=newRoom;
 					changed=true;
 				}
@@ -345,20 +390,21 @@ public class Generic
 		if(andContent)
 		{
 			Vector cV=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
-			if(cV==null) return unpackErr("Room","null 'cV'");
+			if(cV==null) return unpackErr("Room","null 'cV'"+" in room "+newRoom.ID());
 			if(cV.size()>0)
 			{
 				Vector mV=XMLManager.getRealContentsFromPieces(cV,"ROOMMOBS");
-				if(mV==null) return unpackErr("Room","null 'mV'");
+				if(mV!=null) //return unpackErr("Room","null 'mV'"+" in room "+newRoom.ID());
 				for(int m=0;m<mV.size();m++)
 				{
 					XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
 					if((!mblk.tag.equalsIgnoreCase("RMOB"))||(mblk.contents==null))
-						return unpackErr("Room","bad 'mblk'");
+						return unpackErr("Room","bad 'mblk'"+" in room "+newRoom.ID());
 					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
-					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass);
-					newMOB.setMiscText(XMLManager.getValFromPieces(mblk.contents,"MTEXT"));
+					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.ID());
+					newMOB=(MOB)newMOB.newInstance();
+					newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
 					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
 					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
 					newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
@@ -373,15 +419,16 @@ public class Generic
 				Hashtable itemLocTable=new Hashtable();
 				Hashtable identTable=new Hashtable();
 				Vector iV=XMLManager.getRealContentsFromPieces(cV,"ROOMITEMS");
-				if(iV==null) return unpackErr("Room","null 'iV'");
+				if(iV!=null) //return unpackErr("Room","null 'iV'"+" in room "+newRoom.ID());
 				for(int i=0;i<iV.size();i++)
 				{
 					XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
 					if((!iblk.tag.equalsIgnoreCase("RITEM"))||(iblk.contents==null))
-						return unpackErr("Room","bad 'iblk'");
-					String iClass=XMLManager.getValFromPieces(iblk.contents,"MCLAS");
+						return unpackErr("Room","bad 'iblk'"+" in room "+newRoom.ID());
+					String iClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
-					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass);
+					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.ID());
+					newItem=(Item)newItem.newInstance();
 					identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
 					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
@@ -389,10 +436,11 @@ public class Generic
 					newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
 					newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
 					newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
-					newItem.setMiscText(XMLManager.getValFromPieces(iblk.contents,"ITEXT"));
+					newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
 					newItem.setLocation(null);
 					newItem.recoverEnvStats();
 					newRoom.addItem(newItem);
+					newItem.recoverEnvStats();
 				}
 				for(Enumeration e=itemLocTable.keys();e.hasMoreElements();)
 				{
@@ -428,7 +476,7 @@ public class Generic
 		newArea.setDescription(XMLManager.getValFromPieces(aV,"ADESC"));
 		newArea.setClimateType(XMLManager.getIntFromPieces(aV,"ACLIM"));
 		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));
-		newArea.setMiscText(XMLManager.getValFromPieces(aV,"ADATA"));
+		newArea.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(aV,"ADATA")));
 		ExternalPlay.DBUpdateArea(newArea);
 		if(andRooms)
 		{
@@ -492,7 +540,7 @@ public class Generic
 		Vector items=new Vector();
 		if(andContent)
 		for(int i=0;i<room.numItems();i++)
-			inhabs.addElement(room.fetchItem(i));
+			items.addElement(room.fetchItem(i));
 		
 		buf.append("<AROOM>");
 		buf.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));
@@ -500,7 +548,7 @@ public class Generic
 		buf.append(XMLManager.convertXMLtoTag("RCLAS",CMClass.className(room)));
 		buf.append(XMLManager.convertXMLtoTag("RDISP",room.displayText()));
 		buf.append(XMLManager.convertXMLtoTag("RDESC",room.description()));
-		buf.append(XMLManager.convertXMLtoTag("RTEXT",room.text()));
+		buf.append(XMLManager.convertXMLtoTag("RTEXT",parseOutAngleBrackets(room.text())));
 		buf.append("<ROOMEXITS>");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
@@ -520,7 +568,7 @@ public class Generic
 				{
 					buf.append("<XEXIT>");
 					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
-					buf.append(XMLManager.convertXMLtoTag("EXDAT",exit.text()));
+					buf.append(XMLManager.convertXMLtoTag("EXDAT",parseOutAngleBrackets(exit.text())));
 					buf.append("</XEXIT>");
 				}
 				buf.append("</REXIT>");
@@ -545,7 +593,7 @@ public class Generic
 						buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 						buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
 						buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-						buf.append(XMLManager.convertXMLtoTag("MTEXT",mob.text()));
+						buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 						buf.append("</RMOB>");
 					}
 				}
@@ -570,7 +618,7 @@ public class Generic
 					buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
 					buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 					buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-					buf.append(XMLManager.convertXMLtoTag("ITEXT",item.text()));
+					buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
 					buf.append("</RITEM>");
 				}
 				buf.append("</ROOMITEMS>");

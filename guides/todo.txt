@@ -12,7 +12,7 @@
 
 ! ranged combat?! Yes! And thrown weapons! And ranged pole-arms!
 
-Add CoffeeMud area files!
+! Add CoffeeMud area files! can import and export rooms or areas
 
 Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 

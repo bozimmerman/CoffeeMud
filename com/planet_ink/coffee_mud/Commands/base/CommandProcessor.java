@@ -181,6 +181,12 @@ public class CommandProcessor
 				case CommandSet.EXITS:
 					mob.location().listExits(mob);
 					break;
+				case CommandSet.EXPORT:
+					if(mob.isASysOp(null))
+						importer.export(mob,commands);
+					else
+						mob.tell("Only the Archons may Export.\n\r");
+					break;
 				case CommandSet.FILL:
 					itemUsage.fill(mob,commands);
 					break;

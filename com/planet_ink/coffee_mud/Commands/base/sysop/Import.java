@@ -2252,21 +2252,35 @@ public class Import
 		}
 		if(buf.substring(0,20).indexOf("<AREA>")>=0)
 		{
+			mob.tell("Unpacking area from file: '"+areaFileName+"'...");
 			String error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),true);
 			if(error.length()>0)
 			{
 				mob.tell("An error occurred on import: "+error);
 				mob.tell("Please correct the problem and try the import again.");
+				return;
+			}
+			else
+			{
+				mob.tell("Area successfully imported!");
+				continue;
 			}
 		}
 		else
 		if(buf.substring(0,20).indexOf("<AROOM>")>=0)
 		{
+			mob.tell("Unpacking room from file: '"+areaFileName+"'...");
 			String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
 			if(error.length()>0)
 			{
 				mob.tell("An error occurred on import: "+error);
 				mob.tell("Please correct the problem and try the import again.");
+				return;
+			}
+			else
+			{
+				mob.tell("Area successfully imported!");
+				continue;
 			}
 		}
 			
@@ -3095,5 +3109,64 @@ public class Import
 		}
 		}
 	}
+	
+	public void export(MOB mob, Vector commands)
+	{
+		String commandType="";
+		String fileName="";
+		commands.removeElementAt(0);
+		if(commands.size()>0)
+		{
+			commandType=((String)commands.elementAt(0)).toUpperCase();
+			commands.removeElementAt(0);
+		}
+		else
+		{
+			mob.tell("Export what?  Room or Area?");
+			return;
+		}
+		if(commands.size()>0)
+		{
+			fileName=Util.combine(commands,0);
+		}
+		else
+		{
+			mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
+			return;
+		}
+		if((commandType.equalsIgnoreCase("ROOM"))
+		||(commandType.equalsIgnoreCase("AREA")))
+		{
+			String xml="";
+			if(commandType.equalsIgnoreCase("ROOM"))
+				xml=com.planet_ink.coffee_mud.common.Generic.getRoomXML(mob.location(),true).toString();
+			else
+				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),true).toString();
+			if(fileName.equalsIgnoreCase("SCREEN"))
+			{
+				mob.tell("Here it is:\n\r\n\r");
+				mob.session().rawPrintln(xml+"\n\r\n\r");
+			}
+			else
+			{
+				mob.tell("Exporting room(s)...");
+				try
+				{
+					if(fileName.indexOf(".")<0)
+						fileName=fileName+".cmare";
+					File f=new File(fileName);
+					FileOutputStream out=new FileOutputStream(f);
+					out.write(xml.getBytes());
+					out.close();
+					mob.tell("File '"+fileName+"' written.");
+				}
+				catch(java.io.IOException e)
+				{
+					mob.tell("A file error occurred: "+e.getMessage());
+				}
+			}
+		}
+	}
+	
 }
 
