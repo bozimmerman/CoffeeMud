@@ -73,8 +73,7 @@ CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
 
 CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
 //Rockthought Makes the target stubborn. Short duration, but must repeat the next action for the entire duration. For example...delver casts rockthought. Mage casts magic missile. Mage casts MM, casts MM, casts MM, casts MM. I think 1 combat round per 4 delver levels.... 
-CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
-//Snatch light 	snuffs out light sources for duration of chant. 
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
 CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
 //Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
@@ -111,9 +110,8 @@ CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
 //worms disease that damages opponent (from the inside out....uggghhh) 
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",false);
 
-CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
-//Unbreakable protects an item from damage for the duration of the spell. Gives item 100% resistance to spells/prayers/chants/songs as well. 
-CMAble.addCharAbilityMapping(ID(),22,"Chant_NaturesCurse",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_Homeopathy",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOres",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
@@ -122,8 +120,7 @@ CMAble.addCharAbilityMapping(ID(),22,"Chant_NaturesCurse",false);
 CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
 //Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
 			
-CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
-//Summon Rock Golem 	
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",false); // make contageous
 			
 CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);

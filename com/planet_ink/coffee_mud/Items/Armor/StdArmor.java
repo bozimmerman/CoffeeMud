@@ -427,6 +427,9 @@ public class StdArmor extends StdContainer implements Armor
 				}
 			}
 
+			if(oldUses!=usesRemaining())
+				recoverEnvStats();
+			
 			if((usesRemaining()<10)
 			&&(oldUses!=usesRemaining())
 			&&(owner()!=null)

@@ -149,6 +149,7 @@ public class StdWeapon extends StdItem implements Weapon
 			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
+				recoverEnvStats();
 				if((usesRemaining()<10)
 				&&(owner()!=null)
 				&&(owner() instanceof MOB)
